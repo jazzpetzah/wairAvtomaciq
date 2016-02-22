@@ -2,7 +2,6 @@ package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.pages.CallOngoingPage;
 
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.Then;
 
 import cucumber.api.java.en.When;
@@ -10,16 +9,11 @@ import static org.junit.Assert.assertTrue;
 
 public class CallOngoingPageSteps {
 
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
     private CallOngoingPage getPage() throws Exception {
         return pagesCollection.getPage(CallOngoingPage.class);
     }
-
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-    private static final long CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS = 5000;
 
     /**
      * Hangs up the current call
@@ -189,22 +183,4 @@ public class CallOngoingPageSteps {
             throw new AssertionError("State of mute button has not changed");
         }
     }
-
-//    /**
-//     * Checks to see if join group call overlay is present or not
-//     *
-//     * @param name text on the button
-//     * @throws Exception
-//     * @step. ^I see \"(.*)\" button$
-//     */
-//    @Then("^I( do not)? see \"(.*)\" button$")
-//    public void WhenISeeGroupCallJoinButton(String shouldNotSee, String name) throws Exception {
-//        if (shouldNotSee == null) {
-//            Assert.assertTrue(name + " button with not visible in group call overlay",
-//                    getCallingOverlayPage().waitUntilJoinGroupCallButtonVisible(name));
-//        } else {
-//            Assert.assertTrue(name + " button with not visible in group call overlay",
-//                    getCallingOverlayPage().waitUntilJoinGroupCallButtonNotVisible(name));
-//        }
-//    }
 }

@@ -11,10 +11,12 @@ import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.junit.Assert;
 
 public class DialogPageSteps {
@@ -31,7 +33,7 @@ public class DialogPageSteps {
     private static final String LONG_MESSAGE_ALIAS = "LONG_MESSAGE";
 
     private static String expandMessage(String message) {
-        final Map<String, String> specialStrings = new HashMap<String, String>();
+        final Map<String, String> specialStrings = new HashMap<>();
         specialStrings.put(LONG_MESSAGE_ALIAS, ANDROID_LONG_MESSAGE);
         if (specialStrings.containsKey(message)) {
             return specialStrings.get(message);
@@ -386,7 +388,7 @@ public class DialogPageSteps {
      */
     @Then("^I see group chat page with users (.*)$")
     public void ThenISeeGroupChatPage(String participantNameAliases) throws Exception {
-        List<String> participantNames = new ArrayList<String>();
+        List<String> participantNames = new ArrayList<>();
         for (String nameAlias : CommonSteps.splitAliases(participantNameAliases)) {
             participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias).getName());
         }
@@ -428,7 +430,7 @@ public class DialogPageSteps {
      * Checks for verified or non-verified conversation message
      *
      * @param nonVerified weather the message should show verified or non verified conversation
-     * @param userName the user who caused the downgrade of the conversation
+     * @param userName    the user who caused the downgrade of the conversation
      * @throws Exception
      * @step. ^I see a message informing me conversation is (not )?verified(?: caused by user (.*))?$
      */
@@ -503,7 +505,7 @@ public class DialogPageSteps {
 
     private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
 
-    private static enum PictureDestination {
+    private enum PictureDestination {
         DIALOG,
         PREVIEW;
     }
@@ -594,7 +596,7 @@ public class DialogPageSteps {
     /**
      * Verify whether the corresponding message is present in conversation view X times
      *
-     * @param msg the message to check
+     * @param msg   the message to check
      * @param times the expected count of message repetitions in the convo view
      * @throws Exception
      * @step. ^I see message (.*) (\\d+) times? in the conversation view$
@@ -607,22 +609,16 @@ public class DialogPageSteps {
     }
 
     /**
-     * Verify whether an image is present in conversation view X times
+     * Verify whether X images are present in conversation view
      *
-     * @param num the expected count of image repetitions in the convo view
+     * @param expectedCount the expected count of images in the convo view
      * @throws Exception
-     * @step. ^I see (\\d+) images? in the conversation view$
+     * @step. ^I see (\d+) images? in the conversation view$
      */
-    @Then("^I see (encrypted|non-encrypted) image (\\d+) times? in the conversation view$")
-    public void ISeeImageXTimes(String isEncrypted, int times) throws Exception {
-        if (isEncrypted.equals("encrypted")) {
-            Assert.assertTrue(String.format("The encrypted image is not present in the conversation view %s time(s)", times),
-                    getDialogPage().waitForXEncryptedImages(times));
-        } else {
-            Assert.assertTrue(
-                    String.format("The non-encrypted image is not present in the conversation view %s time(s)", times),
-                    getDialogPage().waitForXNonEncryptedImages(times));
-        }
+    @Then("^I see (\\d+) images? in the conversation view$")
+    public void ISeeXImages(int expectedCount) throws Exception {
+        Assert.assertTrue(String.format("There are less then %s images in the conversation view", expectedCount),
+                getDialogPage().waitForXImages(expectedCount));
     }
 
     /**

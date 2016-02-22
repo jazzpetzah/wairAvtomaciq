@@ -6,7 +6,6 @@ import java.util.function.Function;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -53,7 +52,8 @@ public class PersonalInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrPrivacyPolicyByText = text ->
             String.format("//UIAStaticText[@name='%s']", text);
 
-    private static final By xpathWireWebsiteUrl = By.xpath("//UIAElement[@name ='URL']");
+    // TODO: this locator has to be more precise
+    private static final By xpathWireWebsiteUrl = By.name("URL");
 
     private static final By nameAboutCloseButton = By.name("aboutCloseButton");
 
@@ -141,8 +141,7 @@ public class PersonalInfoPage extends IOSPage {
 
     public boolean isWireWebsitePageVisible() throws Exception {
         // This is to let the browser and the webpage to be loaded
-        Thread.sleep(5000);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathWireWebsiteUrl);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathWireWebsiteUrl, 15);
     }
 
     public void closeLegalPage() throws Exception {

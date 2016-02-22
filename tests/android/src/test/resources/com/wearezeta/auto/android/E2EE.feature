@@ -137,8 +137,7 @@ Feature: E2EE
     And User <Contact1> sends image <ImageName> to group conversation <GroupChatName>
     And I tap on contact name <GroupChatName>
     And I scroll to the bottom of conversation view
-    Then I see non-encrypted image 1 time in the conversation view
-    And I see encrypted image 1 time in the conversation view
+    Then I see 2 images in the conversation view
 
     Examples: 
       | Name      | Contact1  | Contact2  | ImageName   | GroupChatName |
@@ -468,7 +467,6 @@ Feature: E2EE
     Then I tap send anyway button
     And I do not see takeover screen
     Then I see message <Message2> 1 times in the conversation view
-    And I do not see unsent indicator next to "<Message2>" message
 
     Examples: 
       | Name      | Contact1  | Contact2  | Message1 | Message2 | GroupChatName |
@@ -487,8 +485,8 @@ Feature: E2EE
     Then I see no encrypted device text for user <Contact> in header of device detail page
 
     Examples: 
-      | Name      | Contact   | SimpleMessage |
-      | user1Name | user2Name | SimpleYo      |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C3512 @regression
   Scenario Outline: After login by phone on not 1st device I have to be asked for email login
@@ -528,8 +526,7 @@ Feature: E2EE
     When I see takeover screen from user "<Contact1>"
     Then I tap send anyway button
     And I do not see takeover screen
-    And I see my message "<Message2>" in the dialog
-    Then I do not see unsent indicator next to "<Message2>" message
+    Then I see my message "<Message2>" in the dialog
 
     Examples: 
       | Name      | Contact1  | Device  | Message1 | Message2        |
@@ -562,9 +559,6 @@ Feature: E2EE
     And I verify 2nd device
     When I press back button
     Then I see a message informing me conversation is verified
-    Then I see unsent indicator next to "<Message2>" message
-    When I tap resend button for message <Message2>
-    Then I do not see unsent indicator next to "<Message2>" message
 
     Examples: 
       | Name      | Contact1  | Device  | Message1 | Message2    |

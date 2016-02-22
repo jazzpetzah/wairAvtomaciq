@@ -89,7 +89,7 @@ public class LoginPageSteps {
         getLoginPage().setPassword(password);
         getLoginPage().clickLoginButton();
         getLoginPage().waitForLoginToFinish();
-        getFirstTimeOverlayPage().acceptIfVisible(2);
+        getFirstTimeOverlayPage().acceptIfVisible(5);
         getLoginPage().dismissSettingsWarningIfVisible(5);
     }
 

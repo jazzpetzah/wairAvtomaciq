@@ -1,6 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
-import com.wearezeta.auto.android.common.Memory;
+import com.wearezeta.auto.common.misc.ElementState;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +14,6 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import java.util.function.Predicate;
 
 public class DialogPage extends AndroidPage {
 
@@ -24,18 +23,11 @@ public class DialogPage extends AndroidPage {
     public static final By idDialogImages = By.id(idStrDialogImages);
 
     private static final By xpathLastPicture = By.xpath(String.format("(//*[@id='%s'])[last()]", idStrDialogImages));
-    
-    private static final By xpathE2EEDialogImagesBadges = By.xpath("//*[@id='" + idStrDialogImages
-            + "']/parent::*/parent::*//*[@id='v__row_conversation__e2ee']");
 
     public static final By idAddPicture = By.id("cursor_menu_item_camera");
 
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
         .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
-    
-    private static final Function<String, String> xpathStrConversationLockMessageByText = text -> String
-            .format("//*[@id='ltv__row_conversation__message' and @value='%s']/parent::*/following-sibling::*"
-                    + "/*[@id='v__row_conversation__e2ee']", text);
 
     private static final Function<String, String> xpathStrUnsentIndicatorByText = text -> String
         .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']", xpathStrConversationMessageByText.apply(text));
@@ -113,9 +105,21 @@ public class DialogPage extends AndroidPage {
     private static final int MAX_SWIPE_RETRIES = 5;
     private static final int MAX_CLICK_RETRIES = 5;
     
-    private Memory previousMediaButtonState;
-    private Memory previousConversationViewState;
-    private Memory previousVerifiedConversationShieldState;
+    private ElementState mediaButtonState = new ElementState(
+            () -> this.getElementScreenshot(getElement(idPlayPauseMedia)).orElseThrow(
+                    () -> new IllegalStateException("Cannot get a screenshot of Play/Pause button")
+            )
+    );
+    private ElementState conversationViewState = new ElementState(
+            () -> this.getElementScreenshot(getElement(idDialogRoot)).orElseThrow(
+                    () -> new IllegalStateException("Cannot get a screenshot of conversation view")
+            )
+    );
+    private ElementState verifiedConversationShieldState =new ElementState(
+            () -> this.getElementScreenshot(getElement(idVerifiedConversationShield)).orElseThrow(
+                    () -> new IllegalStateException("Cannot get a screenshot of verification shield")
+            )
+    );
 
     public DialogPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -416,22 +420,19 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idYoutubePlayButton);
     }
 
+    private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
+    private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
+
     public void rememberMediaControlButtonState() throws Exception {
-        previousMediaButtonState = new Memory(getDriver(), idPlayPauseMedia, 15000, 0.97d);
+        mediaButtonState.remember();
     }
     
     public boolean mediaControlButtonStateHasChanged() throws Exception {
-        if (previousMediaButtonState == null) {
-            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
-        }
-        return previousMediaButtonState.hasChanged();
+        return mediaButtonState.isChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE);
     }
     
     public boolean mediaControlButtonStateHasNotChanged() throws Exception {
-        if (previousMediaButtonState == null) {
-            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
-        }
-        return previousMediaButtonState.hasNotChanged();
+        return mediaButtonState.isNotChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE);
     }
 
     public void tapPlayPauseMediaBarBtn() throws Exception {
@@ -497,33 +498,30 @@ public class DialogPage extends AndroidPage {
         return selectVisibleElements(xpathDialogContent).size();
     }
 
+    private static final int CONVO_VIEW_STATE_CHANGE_TIMEOUT = 15;
+    private static final double CONVO_VIEW_MIN_SIMILARITY_SCORE = 0.5;
+
     public void rememberConversationView() throws Exception {
-        previousConversationViewState = new Memory(getDriver(), idDialogRoot, 15000, 0.50);
+        conversationViewState.remember();
     }
-    
+
+    private static final int SHIELD_STATE_CHANGE_TIMEOUT = 15;
+    private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
+
     public void rememberVerifiedConversationShield() throws Exception {
-        previousVerifiedConversationShieldState = new Memory(getDriver(), idVerifiedConversationShield, 15000, 0.97d);
+        verifiedConversationShieldState.remember();
     }
     
     public boolean verifiedConversationShieldStateHasChanged() throws Exception {
-        if (previousVerifiedConversationShieldState == null) {
-            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
-        }
-        return previousVerifiedConversationShieldState.hasChanged();
+        return verifiedConversationShieldState.isChanged(SHIELD_STATE_CHANGE_TIMEOUT, SHIELD_MIN_SIMILARITY_SCORE);
     }
     
     public boolean conversationViewStateHasChanged() throws Exception {
-        if (previousConversationViewState == null) {
-            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
-        }
-        return previousConversationViewState.hasChanged();
+        return conversationViewState.isChanged(CONVO_VIEW_STATE_CHANGE_TIMEOUT, CONVO_VIEW_MIN_SIMILARITY_SCORE);
     }
     
     public boolean conversationViewStateHasNotChanged() throws Exception {
-        if (previousConversationViewState == null) {
-            throw new IllegalStateException("Please call the corresponding remember step first to get the previous state of the element");
-        }
-        return previousConversationViewState.hasNotChanged();
+        return conversationViewState.isNotChanged(CONVO_VIEW_STATE_CHANGE_TIMEOUT, CONVO_VIEW_MIN_SIMILARITY_SCORE);
     }
 
     /**
@@ -534,44 +532,23 @@ public class DialogPage extends AndroidPage {
         getElement(idSwitchCameraButton).click();
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathDialogTakePhotoButton);
     }
-    
-    private final Predicate<? super WebElement> isEncryptedMessageFilter = (WebElement wel) -> wel.getSize().getWidth() > 0;
-    private final Predicate<? super WebElement> isNonEncryptedMessageFilter = (WebElement wel) -> wel.getSize().getWidth() <= 0;
 
-    public boolean waitForXEncryptedMessages(String msg, int times) throws Exception {
-        By locator = By.xpath(xpathStrConversationLockMessageByText.apply(msg));
-        if (times > 0) {
-            DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    private static final long IMAGES_VISIBILITY_TIMEOUT = 10000; // seconds;
+
+    public boolean waitForXImages(int expectedCount) throws Exception {
+        assert expectedCount >= 0;
+        final Optional<WebElement> imgElement = getElementIfDisplayed(idDialogImages);
+        if (expectedCount <= 1) {
+            return (expectedCount == 0 && !imgElement.isPresent()) || (expectedCount == 1 && imgElement.isPresent());
         }
-        return getElements(locator).stream().filter(isEncryptedMessageFilter).collect(Collectors.toList()).size() == times;
-    }
-
-    public boolean waitForXNonEncryptedMessages(String msg, int times) throws Exception {
-        By locator = By.xpath(xpathStrConversationLockMessageByText.apply(msg));
-        if (times > 0) {
-            DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
-        }
-        return getElements(locator).stream().filter(isNonEncryptedMessageFilter).collect(Collectors.toList()).size() == times;
-    }
-
-    public boolean waitForXEncryptedImages(int times) throws Exception {
-        final List<WebElement> allImageBadges = selectVisibleElements(xpathE2EEDialogImagesBadges);
-        return times == allImageBadges.stream().filter(WebElement::isDisplayed).count();
-    }
-
-    public boolean waitForXNonEncryptedImages(int times) throws Exception {
-        final List<WebElement> allImages = selectVisibleElements(idDialogImages);
-        final List<WebElement> allImageBadges = selectVisibleElements(xpathE2EEDialogImagesBadges);
-        return times == (allImages.size() - allImageBadges.stream().filter(WebElement::isDisplayed).count());
-    }
-
-    public void tapResendMsgIndicator(String message) throws Exception {
-        By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(message));
-        getElement(locator).click();
-    }
-
-    public boolean waitForUnsentIndicatorInvisible(String message) throws Exception {
-        By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(message));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+        final long msStarted = System.currentTimeMillis();
+        do {
+            int actualCnt = getElements(idDialogImages).size();
+            if (actualCnt >= expectedCount) {
+                return true;
+            }
+            Thread.sleep(500);
+        } while (System.currentTimeMillis() - msStarted <= IMAGES_VISIBILITY_TIMEOUT);
+        return false;
     }
 }

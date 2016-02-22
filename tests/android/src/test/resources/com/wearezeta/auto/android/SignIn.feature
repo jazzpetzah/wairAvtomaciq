@@ -83,7 +83,7 @@ Feature: Sign In
       | Name      | Email      | Password      | Contact   | ErrMessage                                           |
       | user1Name | user1Email | user1Password | user2Name | Please check your Internet connection and try again. |
 
-  @C43807 @staging
+  @C43807 @rc @regression
   Scenario Outline: Verify sign in with email address only
     Given There is 1 user with email address only where <Name> is me
     Given I see welcome screen
@@ -99,7 +99,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C43808 @staging
+  @C43808 @rc @regression
   Scenario Outline: Verify sign in with phone number only
     Given There is 1 user with phone number only where <Name> is me
     Given I see welcome screen
@@ -116,7 +116,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C43810 @staging
+  @C43810 @rc @regression
   Scenario Outline: Verify you can skip phone number input
     Given There is 1 user with email address only where <Name> is me
     Given I see welcome screen
