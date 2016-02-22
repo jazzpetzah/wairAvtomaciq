@@ -14,6 +14,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -39,10 +40,7 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.logging.Level;
 
@@ -56,7 +54,11 @@ public class CommonAndroidSteps {
 
     private static final Logger log = ZetaLogger.getLog(CommonAndroidSteps.class.getSimpleName());
 
-    private static ArrayList<BufferedImage> images = new ArrayList<>();
+    private final ElementState screenState = new ElementState(
+            () -> pagesCollection.getCommonPage().takeScreenshot().orElseThrow(
+                    () -> new IllegalStateException("Cannot take a screenshot of the whole screen")
+            )
+    );
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     public static final Platform CURRENT_PLATFORM = Platform.Android;
@@ -280,38 +282,11 @@ public class CommonAndroidSteps {
      * Takes 1st screenshot for comparison, previous taken screenshots will be cleaned
      *
      * @throws Exception
-     * @step. ^I take( 1st)? screenshot$
+     * @step. ^I take screenshot$
      */
-    @When("^I take( 1st)? screenshot$")
-    public void WhenITake1stScreenshot(String first) throws Exception {
-        final Optional<BufferedImage> screenshot = pagesCollection.getCommonPage().takeScreenshot();
-        if (screenshot.isPresent()) {
-            if (first != null || images.size() >= 2) {
-                images.clear();
-            }
-            images.add(screenshot.get());
-//            File outputfile = new File("/Project/screen_"+System.nanoTime()+".png");
-//            ImageIO.write(screenshot.get(), "png", outputfile);
-        } else {
-            throw new RuntimeException("Selenium has failed to take the screenshot from current page");
-        }
-    }
-
-    /**
-     * Takes 2nd screenshot for comparison
-     *
-     * @throws Exception
-     * @step. ^I take 2nd screenshot$
-     */
-    @When("^I take 2nd screenshot$")
-    public void WhenITake2ndScreenshot() throws Exception {
-        final Optional<BufferedImage> screenshot = pagesCollection.getCommonPage().takeScreenshot();
-        if (screenshot.isPresent()) {
-            if (images.size() == 2) images.remove(1);
-            images.add(screenshot.get());
-        } else {
-            throw new RuntimeException("Selenium has failed to take the screenshot from current page");
-        }
+    @When("^I take screenshot$")
+    public void WhenITake1stScreenshot() throws Exception {
+        screenState.remember();
     }
 
     /**
@@ -343,16 +318,23 @@ public class CommonAndroidSteps {
      * Compare that 1st and 2nd screenshots are equal/not equal
      *
      * @param shouldBeEqual equals to null if screenshots should be different
-     * @step. ^I compare 1st and 2nd screenshots and they are( not)?different$
+     * @step. ^I verify the previous and the current screenshots are( not)? different$
      */
-    @Then("^I compare 1st and 2nd screenshots and they are( not)? different$")
-    public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent(String shouldBeEqual) {
-        double score = ImageUtil.getOverlapScore(images.get(0), images.get(1));
-        double targetScore = 0.75d;
-        if (shouldBeEqual == null)
-            Assert.assertTrue("Screenshots overlap score=" + score + ", but expected less than " + targetScore, score < targetScore);
-        else
-            Assert.assertTrue("Screenshots overlap score=" + score + ", but expected more than " + targetScore, score >= targetScore);
+    @Then("^I verify the previous and the current screenshots are( not)? different$")
+    public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent(String shouldBeEqual) throws Exception {
+        final int timeoutSeconds = 10;
+        final double targetScore = 0.75d;
+        if (shouldBeEqual == null) {
+            Assert.assertTrue(
+                    String.format("The current screen state seems to be similar to the previous one after %s seconds",
+                            timeoutSeconds),
+                    screenState.isChanged(timeoutSeconds, targetScore));
+        } else {
+            Assert.assertTrue(
+                    String.format("The current screen state seems to be different to the previous one after %s seconds",
+                            timeoutSeconds),
+                    screenState.isNotChanged(timeoutSeconds, targetScore));
+        }
     }
 
     /**

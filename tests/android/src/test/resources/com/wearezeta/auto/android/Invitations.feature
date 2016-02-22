@@ -76,8 +76,7 @@ Feature: Invitations
     And I tap search in invites page
     And I tap invites page close button
     Then I see Contact list with no contacts
-    When I take screenshot
-    Then I compare 1st and 2nd screenshots and they are not different
+    Then I verify the previous and the current screenshots are not different
 
     Examples: 
       | Name      |
@@ -91,16 +90,13 @@ Feature: Invitations
     Given I see Contact list with no contacts
     When I tap Invite button at the bottom of conversations list
     And I hide keyboard
-    And I take 1st screenshot
+    And I take screenshot
     And I swipe up
-    And I take 2nd screenshot
-    Then I compare 1st and 2nd screenshots and they are not different
+    Then I verify the previous and the current screenshots are not different
     When I swipe right
-    And I take 2nd screenshot
-    Then I compare 1st and 2nd screenshots and they are not different
+    Then I verify the previous and the current screenshots are not different
     When I swipe left
-    And I take 2nd screenshot
-    Then I compare 1st and 2nd screenshots and they are not different
+    Then I verify the previous and the current screenshots are not different
 
     Examples: 
       | Name      |
