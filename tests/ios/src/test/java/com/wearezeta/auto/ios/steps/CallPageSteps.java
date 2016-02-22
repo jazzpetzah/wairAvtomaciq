@@ -47,6 +47,22 @@ public class CallPageSteps {
         getCallingOverlayPage().tapButtonByName(name);
     }
 
+    @When("^I see (.*) button is (not )?selected$")
+    public void ISeeButtonSelected(String buttonName, String shouldBeSelected) throws Exception {
+        if (shouldBeSelected == null) {
+            Assert.assertTrue(getCallingOverlayPage().isButtonSelected(buttonName).equals("1"));
+        }
+        else {
+            Assert.assertTrue(getCallingOverlayPage().isButtonSelected(buttonName).equals(""));
+        }
+
+    }
+
+    @When("I remember Mute button state")
+    public void IRememberMuteButtonState() {
+
+    }
+
     /**
      * Check whether the corresponding button on calling overlay is visible
      *
