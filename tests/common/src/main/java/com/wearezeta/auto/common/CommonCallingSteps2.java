@@ -49,7 +49,7 @@ public final class CommonCallingSteps2 {
     }
 
     public void setZcallVersion(String zcallVersion) {
-        zcallVersion = zcallVersion;
+        this.zcallVersion = zcallVersion;
     }
 
     private static final String AUTOCALL_DEFAULT_VERSION = "1.12";
@@ -60,7 +60,7 @@ public final class CommonCallingSteps2 {
     }
 
     public void setAutocallVersion(String autocallVersion) {
-        autocallVersion = autocallVersion;
+        this.autocallVersion = autocallVersion;
     }
 
     private static final String FIREFOX_DEFAULT_VERSION = "44.0";
