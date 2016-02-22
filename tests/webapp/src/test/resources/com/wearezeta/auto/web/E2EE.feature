@@ -426,13 +426,13 @@ Feature: E2EE
     When I Sign in using login <Email> and password <Password>
     And I am signed in properly
     And I open conversation with <GroupChatName>
-    And I write message <Message1>
+    And I write message <GroupMessage>
     And I send message
-    Then I see text message <Message1>
+    Then I see text message <GroupMessage>
     When I open conversation with <Contact1>
-    And I write message <Message2>
+    And I write message <UserMessage>
     And I send message
-    Then I see text message <Message2>
+    Then I see text message <UserMessage>
     When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
@@ -446,9 +446,9 @@ Feature: E2EE
     When I click confirm on history info page
     And I am signed in properly
     And I open conversation with <GroupChatName>
-    Then I do not see text message <Message2>
+    Then I do not see text message <GroupMessage>
     When I open conversation with <Contact1>
-    Then I do not see text message <Message1>
+    Then I do not see text message <UserMessage>
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
@@ -456,13 +456,13 @@ Feature: E2EE
     And I Sign in using login <Email> and password <Password>
     And I am signed in properly
     And I open conversation with <GroupChatName>
-    Then I see text message <Message2>
+    Then I see text message <GroupMessage>
     When I open conversation with <Contact1>
-    Then I see text message <Message1>
+    Then I see text message <UserMessage>
 
     Examples:
-      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1  | Message2    |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | User1Chat     | Hello 1:1 | Hello Group |
+      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | GroupMessage | UserMessage   |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | User1Chat     | Hello Group  | Hello User    |
 
   @C12054 @e2ee
   Scenario Outline: Verify you see an alert in verified 1:1 conversation when the other participant sends message from non-verified device
