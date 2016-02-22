@@ -13,6 +13,10 @@ import cucumber.api.java.en.When;
 public class CallingSteps {
     private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2.getInstance();
 
+    {
+        commonCallingSteps.setAutocallVersion("2.1");
+    }
+
     /**
      * Make call to a specific user. You may instantiate more than one incoming call from single caller by calling this step
      * multiple times

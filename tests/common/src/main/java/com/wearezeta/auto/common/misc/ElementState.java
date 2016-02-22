@@ -17,12 +17,13 @@ public class ElementState {
     private Optional<BufferedImage> previousScreenshot = Optional.empty();
     private FunctionalInterfaces.StateGetter stateGetter;
 
-    public ElementState(FunctionalInterfaces.StateGetter stateGetter) throws Exception {
+    public ElementState(FunctionalInterfaces.StateGetter stateGetter) {
         this.stateGetter = stateGetter;
     }
 
-    public void remember() throws Exception {
+    public ElementState remember() throws Exception {
         this.previousScreenshot = Optional.of(stateGetter.getState());
+        return this;
     }
 
     private boolean checkState(Function<Double, Boolean> checkerFunc, int timeoutSeconds) throws Exception {
@@ -33,7 +34,7 @@ public class ElementState {
                     this.previousScreenshot.orElseThrow(
                             () -> new IllegalStateException("Please remember the previous element state first")),
                     currentState, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-            log.debug(String.format("Actual score: %.2f; Time left: %s ms", score,
+            log.debug(String.format("Actual score: %.4f; Time left: %s ms", score,
                     System.currentTimeMillis() - msStarted));
             if (checkerFunc.apply(score)) {
                 return true;
@@ -45,14 +46,14 @@ public class ElementState {
 
     public boolean isChanged(int timeoutSeconds, double minScore) throws Exception {
         log.debug(String.format(
-                "Checking if element state has been changed in %s seconds (Min score: %.2f)...",
+                "Checking if element state has been changed in %s seconds (Min score: %.4f)...",
                 timeoutSeconds, minScore));
         return checkState((x) -> x < minScore, timeoutSeconds);
     }
 
     public boolean isNotChanged(int timeoutSeconds, double minScore) throws Exception {
         log.debug(String.format(
-                "Checking if element state has NOT been changed in %s seconds (Min score: %.2f)...",
+                "Checking if element state has NOT been changed in %s seconds (Min score: %.4f)...",
                 timeoutSeconds, minScore));
         return checkState((x) -> x >= minScore, timeoutSeconds);
     }

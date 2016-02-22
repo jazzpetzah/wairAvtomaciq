@@ -178,9 +178,7 @@ Feature: Calling
     And I press speaker button for ongoing call
     Then I see state of speaker button has changed for ongoing call
     When I hang up ongoing call
-    And I do not see ongoing call
-    And <Contact1> stops all calls to me
-    And <Contact2> stops all calls to me
+    Then I do not see ongoing call
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    | CallBackend |

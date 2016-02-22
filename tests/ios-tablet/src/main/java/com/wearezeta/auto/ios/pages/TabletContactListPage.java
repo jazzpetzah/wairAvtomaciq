@@ -13,31 +13,34 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
 public class TabletContactListPage extends ContactListPage {
-	private static final By xpathConversationListPage =
-			By.xpath("//UIAApplication[1]/UIAWindow[2]/UIACollectionView[1]");
+    private static final By xpathConversationListPage =
+            By.xpath("//UIAApplication[1]/UIAWindow[2]/UIACollectionView[1]");
 
     protected static final Function<String, String> xpathStrConvoListTitleByName = name ->
             String.format("%s/UIAStaticText[@value='%s']", xpathStrContactListItems, name);
 
-	public TabletContactListPage(Future<ZetaIOSDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
-	
-	@Override
-	public void swipeDown(int time) throws Exception {
-        DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationListPage), time,
-                20, 15, 20, 90);
-	}
-
-	@Override
-	public void swipeUp(int time) throws Exception {
-		DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationListPage), time,
-				20, 90, 20, 10);
-	}
+    public TabletContactListPage(Future<ZetaIOSDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
 
     @Override
-    public BufferedImage getConversationEntryScreenshot(String name) throws Exception {
+    public void swipeDown(int time) throws Exception {
+        DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationListPage), time,
+                20, 15, 20, 90);
+    }
+
+    @Override
+    public void swipeUp(int time) throws Exception {
+        DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(xpathConversationListPage), time,
+                20, 90, 20, 10);
+    }
+
+    public enum EntrySide {
+        LEFT, RIGHT
+    }
+
+    public BufferedImage getConversationEntryScreenshot(EntrySide side, String name) throws Exception {
         final By entryLocator = By.xpath(xpathStrConvoListEntryByName.apply(name));
         final WebElement entryElement = getElement(entryLocator,
                 String.format("Conversation list entry '%s' is not visible", name));
@@ -49,9 +52,18 @@ public class TabletContactListPage extends ContactListPage {
         final WebElement titleElement = getElement(titleLocator);
         final Point titleLocation = titleElement.getLocation();
         final Dimension titleDimension = titleElement.getSize();
-        return entryScreenshot.getSubimage(
-                0, titleLocation.y - entryLocation.y,
-                entryDimension.width / 3, titleDimension.height);
+        switch (side) {
+            case LEFT:
+                return entryScreenshot.getSubimage(
+                        0, titleLocation.y - entryLocation.y,
+                        entryDimension.width / 3, titleDimension.height);
+            case RIGHT:
+                return entryScreenshot.getSubimage(
+                        entryDimension.width * 2 / 3, titleLocation.y - entryLocation.y,
+                        entryDimension.width - entryDimension.width * 2 / 3, titleDimension.height);
+            default:
+                throw new IllegalArgumentException(String.format("Unsupported side value '%s'", side.name()));
+        }
         //ImageIO.write(resultImage, "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() + ".png"));
         // return resultImage;
     }

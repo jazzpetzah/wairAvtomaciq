@@ -1,13 +1,12 @@
 package com.wearezeta.auto.android.steps;
 
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.wearezeta.auto.common.misc.ElementState;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -229,7 +228,7 @@ public class ContactListPageSteps {
         }
     }
 
-    private BufferedImage previousPlayPauseBtnState = null;
+    private ElementState previousPlayPauseBtnState = null;
 
     /**
      * Save the current state of PlayPause button into the internal data
@@ -243,10 +242,10 @@ public class ContactListPageSteps {
     @When("^I remember the state of PlayPause button next to the (.*) conversation$")
     public void IRememberTheStateOfPlayPauseButton(String convoName)
             throws Exception {
-        convoName = usrMgr.findUserByNameOrNameAlias(convoName).getName();
-        previousPlayPauseBtnState = getContactListPage()
-                .getScreenshotOfPlayPauseButtonNextTo(convoName).orElseThrow(
-                        IllegalStateException::new);
+        final String name = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
+        previousPlayPauseBtnState = new ElementState(
+                () -> getContactListPage().getScreenshotOfPlayPauseButtonNextTo(name).orElseThrow(
+                        IllegalStateException::new)).remember();
     }
 
     private final static double MAX_SIMILARITY_THRESHOLD = 0.6;
@@ -262,32 +261,16 @@ public class ContactListPageSteps {
      * is changed$
      */
     @Then("^I see the state of PlayPause button next to the (.*) conversation is changed$")
-    public void ISeeThePlayPauseButtonStateIsChanged(String convoName)
-            throws Exception {
+    public void ISeeThePlayPauseButtonStateIsChanged(String convoName) throws Exception {
         if (previousPlayPauseBtnState == null) {
-            throw new IllegalStateException(
-                    "Please take a screenshot of previous button state first");
+            throw new IllegalStateException("Please take a screenshot of previous button state first");
         }
         convoName = usrMgr.findUserByNameOrNameAlias(convoName).getName();
-        final long millisecondsStarted = System.currentTimeMillis();
-        double score = 1;
-        while (System.currentTimeMillis() - millisecondsStarted <= STATE_CHANGE_TIMEOUT_SECONDS * 1000) {
-            final BufferedImage currentPlayPauseBtnState = getContactListPage()
-                    .getScreenshotOfPlayPauseButtonNextTo(convoName)
-                    .orElseThrow(IllegalStateException::new);
-            score = ImageUtil.getOverlapScore(currentPlayPauseBtnState,
-                    previousPlayPauseBtnState, ImageUtil.RESIZE_TO_MAX_SCORE);
-            if (score < MAX_SIMILARITY_THRESHOLD) {
-                break;
-            }
-            Thread.sleep(500);
-        }
-        Assert.assertTrue(
-                String.format(
-                        "The current and previous states of PlayPause button seems to be very similar after %d seconds (%.2f >= %.2f)",
-                        STATE_CHANGE_TIMEOUT_SECONDS, score,
-                        MAX_SIMILARITY_THRESHOLD),
-                score < MAX_SIMILARITY_THRESHOLD);
+        Assert.assertTrue(String.format(
+                "The current and previous states of PlayPause button for '%s' conversation " +
+                        "seems to be very similar after %d seconds",
+                convoName, STATE_CHANGE_TIMEOUT_SECONDS),
+                previousPlayPauseBtnState.isChanged(STATE_CHANGE_TIMEOUT_SECONDS, MAX_SIMILARITY_THRESHOLD));
     }
 
     /**
@@ -344,7 +327,7 @@ public class ContactListPageSteps {
         getContactListPage().selectConvoSettingsMenuItem(itemName);
     }
 
-    private Map<String, BufferedImage> previousUnreadIndicatorState = new HashMap<>();
+    private Map<String, ElementState> previousUnreadIndicatorState = new HashMap<>();
 
     /**
      * Save the state of conversation idicator into the internal field for the
@@ -356,10 +339,11 @@ public class ContactListPageSteps {
      */
     @When("^I remember unread messages indicator state for conversation (.*)")
     public void IRememberUnreadIndicatorState(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
+        final String comvoName = usrMgr.findUserByNameOrNameAlias(name).getName();
         this.previousUnreadIndicatorState.put(name,
-                getContactListPage().getMessageIndicatorScreenshot(name)
-                        .orElseThrow(IllegalStateException::new));
+                new ElementState(() -> getContactListPage().getMessageIndicatorScreenshot(comvoName)
+                        .orElseThrow(IllegalStateException::new)).remember()
+        );
     }
 
     private static final double MAX_UNREAD_DOT_SIMILARITY_THRESHOLD = 0.97;
@@ -374,36 +358,19 @@ public class ContactListPageSteps {
      * (.*)"
      */
     @Then("^I see unread messages indicator state is changed for conversation (.*)")
-    public void ISeeUnreadIndicatorStateIsChanged(String name)
-            throws Exception {
+    public void ISeeUnreadIndicatorStateIsChanged(String name) throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
         if (!this.previousUnreadIndicatorState.containsKey(name)) {
             throw new IllegalStateException(
                     String.format(
-                            "Please invoke the correspoding step to make a screenshot of previous state of '%s' conversation",
+                            "Please invoke the corresponding step to make a screenshot of previous state of '%s' conversation",
                             name));
         }
-        final int maxTries = 3;
-        int ntry = 1;
-        double score = 1;
-        do {
-            final BufferedImage currentIndicatorState = getContactListPage()
-                    .getMessageIndicatorScreenshot(name).orElseThrow(
-                            IllegalStateException::new);
-            score = ImageUtil.getOverlapScore(
-                    this.previousUnreadIndicatorState.get(name),
-                    currentIndicatorState, ImageUtil.RESIZE_NORESIZE);
-            if (score < MAX_UNREAD_DOT_SIMILARITY_THRESHOLD) {
-                break;
-            }
-            Thread.sleep(500);
-            ntry++;
-        } while (ntry <= maxTries);
         Assert.assertTrue(
                 String.format(
-                        "The current and previous states of Unread Dot seems to be very similar (%.2f >= %.2f)",
-                        score, MAX_UNREAD_DOT_SIMILARITY_THRESHOLD),
-                score < MAX_UNREAD_DOT_SIMILARITY_THRESHOLD);
+                        "The current and previous states of Unread Dot for conversation '%s' seems to be very similar",
+                        name),
+                this.previousUnreadIndicatorState.get(name).isChanged(10, MAX_UNREAD_DOT_SIMILARITY_THRESHOLD));
     }
 
     /**

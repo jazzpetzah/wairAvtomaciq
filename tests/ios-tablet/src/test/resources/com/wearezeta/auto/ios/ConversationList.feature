@@ -134,7 +134,7 @@ Feature: Conversation List
     Given I see conversations list
     When I tap on contact name <Contact2>
     And I navigate back to conversations list
-    Given I remember the state of <Contact> conversation item on iPad
+    Given I remember the left side state of <Contact> conversation item on iPad
     When User <Contact> securely pings conversation Myself
     And I see first item in contact list named <Contact>
     Then I see the state of <Contact> conversation item is changed on iPad
@@ -152,7 +152,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact2>
-    When I remember the state of <Contact> conversation item on iPad
+    When I remember the left side state of <Contact> conversation item on iPad
     And User <Contact> securely pings conversation Myself
     And I see first item in contact list named <Contact>
     Then I see the state of <Contact> conversation item is changed on iPad
@@ -232,11 +232,11 @@ Feature: Conversation List
     Given User Myself removes his avatar picture
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I remember the state of <Contact> conversation item on iPad
+    When I remember the left side state of <Contact> conversation item on iPad
     When <Contact> calls me using <CallBackend>
     And <Contact> stops all calls to me
     Then I see the state of <Contact> conversation item is changed on iPad
-    When I remember the state of <Contact> conversation item on iPad
+    When I remember the left side state of <Contact> conversation item on iPad
     And User <Contact> sends <Number> encrypted messages to user Myself
     Then I see the state of <Contact> conversation item is not changed on iPad
 
@@ -252,12 +252,12 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I remember the state of <Contact> conversation item on iPad
+    When I remember the left side state of <Contact> conversation item on iPad
     And <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
     Then I see the state of <Contact> conversation item is changed on iPad
-    When I remember the state of <Contact> conversation item on iPad
+    When I remember the left side state of <Contact> conversation item on iPad
     And User <Contact> sends <Number> encrypted messages to user Myself
     Then I see the state of <Contact> conversation item is not changed on iPad
 
@@ -274,14 +274,14 @@ Feature: Conversation List
     And I see conversations list
     When I tap on contact name <Contact2>
     And I navigate back to conversations list
-    And I remember the state of <Contact> conversation item on iPad
+    And I remember the left side state of <Contact> conversation item on iPad
     When User <Contact> sends 1 encrypted message to user Myself
     And I see first item in contact list named <Contact>
     Then I see the state of <Contact> conversation item is changed on iPad
-    When I remember the state of <Contact> conversation item on iPad
+    When I remember the left side state of <Contact> conversation item on iPad
     And User <Contact> sends 4 encrypted message to user Myself
     Then I see the state of <Contact> conversation item is changed on iPad
-    When I remember the state of <Contact> conversation item on iPad
+    When I remember the left side state of <Contact> conversation item on iPad
     And User <Contact> sends 5 encrypted messages to user Myself
     Then I see the state of <Contact> conversation item is changed on iPad
 
@@ -298,16 +298,16 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see conversations list
     And I tap on contact name <Contact2>
-    And I remember the state of <Contact> conversation item on iPad
+    And I remember the left side state of <Contact> conversation item on iPad
     When User <Contact> sends 1 encrypted message to user Myself
     And I see first item in contact list named <Contact>
     Then I see the state of <Contact> conversation item is changed on iPad
-    When I remember the state of <Contact> conversation item on iPad
+    When I remember the left side state of <Contact> conversation item on iPad
     And User <Contact> sends 4 encrypted message to user Myself
     Then I see the state of <Contact> conversation item is changed on iPad
-    When I remember the state of <Contact> conversation item on iPad
+    When I remember the left side state of <Contact> conversation item on iPad
     And User <Contact> sends 5 encrypted messages to user Myself
-    Then I see the state of <Contact> conversation item is changed
+    Then I see the state of <Contact> conversation item is changed on iPad
 
     Examples:
       | Name      | Contact   | Contact2  |

@@ -1,7 +1,11 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.email.ActivationMessage;
+import com.wearezeta.auto.common.email.WireMessage;
 import org.junit.Assert;
 
 import com.google.common.base.Throwables;
@@ -39,20 +43,8 @@ public class RegistrationSteps {
 
     {
         try {
-            userToRegister = new ClientUser();
-            ClientUsersManager
-                    .setClientUserAliases(
-                            userToRegister,
-                            new String[]{ClientUsersManager.NAME_ALIAS_TEMPLATE
-                                    .apply(1)},
-                            new String[]{ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
-                                    .apply(1)},
-                            new String[]{ClientUsersManager.EMAIL_ALIAS_TEMPLATE
-                                    .apply(1)},
-                            new String[]{ClientUsersManager.PHONE_NUMBER_ALIAS_TEMPLATE
-                                    .apply(1)});
-            usrMgr.appendCustomUser(userToRegister);
-        } catch (Exception e) {
+            userToRegister = usrMgr.findUserByNameOrNameAlias(ClientUsersManager.NAME_ALIAS_TEMPLATE.apply(1));
+        } catch (NoSuchUserException e) {
             Throwables.propagate(e);
         }
     }
@@ -120,8 +112,13 @@ public class RegistrationSteps {
      */
     @When("^I start listening for registration email$")
     public void IStartListeningForRegistrationEmail() throws Exception {
-        registrationMessage = BackendAPIWrappers
-                .initMessageListener(userToRegister);
+        final Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, ActivationMessage.MESSAGE_PURPOSE);
+        if (usrMgr.isSelfUserSet()) {
+            registrationMessage = BackendAPIWrappers.initMessageListener(usrMgr.getSelfUser(), additionalHeaders);
+        } else {
+            registrationMessage = BackendAPIWrappers.initMessageListener(userToRegister, additionalHeaders);
+        }
     }
 
     /**
@@ -146,8 +143,10 @@ public class RegistrationSteps {
     @Then("^I verify my registration via email$")
     public void IVerifyMyRegistrationData() throws Exception {
         BackendAPIWrappers.activateRegisteredUserByEmail(registrationMessage);
-        userToRegister.setUserState(UserState.Created);
-        usrMgr.setSelfUser(userToRegister);
+        if (!usrMgr.isSelfUserSet()) {
+            userToRegister.setUserState(UserState.Created);
+            usrMgr.setSelfUser(userToRegister);
+        }
     }
 
     /**

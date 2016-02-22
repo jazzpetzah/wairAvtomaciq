@@ -2,15 +2,13 @@ package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.InvitationsPage;
-import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import org.junit.Assert;
-
-import java.awt.image.BufferedImage;
 
 public class InvitationsPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
@@ -35,7 +33,7 @@ public class InvitationsPageSteps {
                 getInvitationsPage().waitUntilUserNameIsVisible(name));
     }
 
-    private BufferedImage previousAvatarState = null;
+    private ElementState avatarState = null;
 
     /**
      * Store a screenshot of user avatar for a future comparison
@@ -47,8 +45,9 @@ public class InvitationsPageSteps {
     @When("^I remember the state of (.*) avatar in the invites list$")
     public void IRememberTheStateOfAvatar(String alias) throws Exception {
         final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
-        this.previousAvatarState = getInvitationsPage().getAvatarScreenshot(name)
-                .orElseThrow(IllegalStateException::new);
+        this.avatarState = new ElementState(
+                () -> getInvitationsPage().getAvatarScreenshot(name).orElseThrow(IllegalStateException::new)
+        ).remember();
     }
 
     /**
@@ -97,17 +96,13 @@ public class InvitationsPageSteps {
      */
     @Then("^I verify the state of (.*) avatar in the invites list is changed$")
     public void IVerifyTheAvatarStateIsChanged(String alias) throws Exception {
-        if (this.previousAvatarState == null) {
+        if (this.avatarState == null) {
             throw new IllegalStateException("Please take a screenshot of previous avatar state first");
         }
         final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
-        final BufferedImage currentAvatarState = getInvitationsPage().getAvatarScreenshot(name)
-                .orElseThrow(IllegalStateException::new);
         final double minSimilarity = 0.97;
-        final double similarity = ImageUtil.getOverlapScore(currentAvatarState, previousAvatarState,
-                ImageUtil.RESIZE_TO_MAX_SCORE);
-        Assert.assertTrue(String.format("User avatar for '%s' seems to be the same (%.2f >= %.2f)", name,
-                similarity, minSimilarity), similarity < minSimilarity);
+        Assert.assertTrue(String.format("User avatar for '%s' seems to be the same", name),
+                this.avatarState.isChanged(10, minSimilarity));
     }
 
     /**

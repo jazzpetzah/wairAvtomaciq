@@ -51,7 +51,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSettingsPage);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathSettingsPage);
     }
 
     public void selectItem(String itemName) throws Exception {
@@ -90,7 +90,7 @@ public class SettingsPage extends IOSPage {
         final WebElement deleteButton = getElement(nameDeleteButton);
         deleteButton.click();
 
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDeleteButton, 3)) {
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDeleteButton)) {
             deleteButton.click();
         }
     }
@@ -102,12 +102,17 @@ public class SettingsPage extends IOSPage {
 
     public boolean isDeviceVisibleInList(String device) throws Exception {
         final By locator = By.xpath(xpathDeviceListEntry.apply(device));
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean verificationLabelVisibility(String deviceName, String verificaitonLabel) throws Exception {
-        final By locator = By.xpath(xpathStrDeviceVerificationLabel.apply(deviceName, verificaitonLabel));
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    public boolean isDeviceInvisibleInList(String device) throws Exception {
+        final By locator = By.xpath(xpathDeviceListEntry.apply(device));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public boolean verificationLabelVisibility(String deviceName, String verificationLabel) throws Exception {
+        final By locator = By.xpath(xpathStrDeviceVerificationLabel.apply(deviceName, verificationLabel));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public void tapCurrentDevice() throws Exception {

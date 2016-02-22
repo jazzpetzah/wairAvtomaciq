@@ -1,7 +1,6 @@
 package com.wearezeta.auto.common.backend;
 
 import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.email.ActivationMessage;
 import com.wearezeta.auto.common.email.InvitationMessage;
 import com.wearezeta.auto.common.email.MessagingUtils;
@@ -41,16 +40,10 @@ public final class BackendAPIWrappers {
     private static final int PHONE_NUMBER_ALREADY_REGISTERED_ERROR = 409;
     private static final int MAX_BACKEND_RETRIES = 5;
 
-    private static final long MAX_MSG_DELIVERY_OFFSET = 60 * 1000; // milliseconds
-
     private static final Logger log = ZetaLogger.getLog(BackendAPIWrappers.class.getSimpleName());
 
     public static void setDefaultBackendURL(String url) {
         BackendREST.setDefaultBackendURL(url);
-    }
-
-    public static Future<String> initMessageListener(ClientUser forUser) throws Exception {
-        return initMessageListener(forUser, null);
     }
 
     public static Future<String> initMessageListener(ClientUser forUser,

@@ -245,7 +245,7 @@ Feature: Calling
     Then I see <NumberOfAvatars> avatars on the Calling overlay
     And I wait for 10 seconds
     Then <Contact2> verify to have 2 flows
-    Then <Contact2> verify that all flows have greater than 0 bytes
+    # Then <Contact2> verify that all flows have greater than 0 bytes
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | CallBackend2 | NumberOfAvatars |

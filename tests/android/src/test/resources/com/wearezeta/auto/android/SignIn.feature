@@ -19,7 +19,6 @@ Feature: Sign In
   Scenario Outline: Sign in to Wire by phone
     Given There are 1 users where <Name> is me
     When I sign in using my phone number
-    And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
 
     Examples:
@@ -40,7 +39,6 @@ Feature: Sign In
     And I confirm sign out
     When User <Name2> is me
     And I sign in using my email or phone number
-    And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
     When I tap on my avatar
     Then I see personal info page
@@ -73,8 +71,8 @@ Feature: Sign In
     And I have entered password <Password>
     And I press Log in button
     Then I see error message "<ErrMessage>"
-    When I accept the error message
-    And I disable Airplane mode on the device
+    When I disable Airplane mode on the device
+    And I accept the error message
     And I press Log in button
     And I accept First Time overlay as soon as it is visible
     Then I see Contact list with contacts
@@ -83,7 +81,7 @@ Feature: Sign In
       | Name      | Email      | Password      | Contact   | ErrMessage                                           |
       | user1Name | user1Email | user1Password | user2Name | Please check your Internet connection and try again. |
 
-  @C43807 @staging
+  @C43807 @rc @regression
   Scenario Outline: Verify sign in with email address only
     Given There is 1 user with email address only where <Name> is me
     Given I see welcome screen
@@ -99,7 +97,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C43808 @staging
+  @C43808 @rc @regression
   Scenario Outline: Verify sign in with phone number only
     Given There is 1 user with phone number only where <Name> is me
     Given I see welcome screen
@@ -109,14 +107,13 @@ Feature: Sign In
     And I start listening for confirmation email
     And I press Log in button
     And I verify my email
-    And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
 
     Examples:
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C43810 @staging
+  @C43810 @rc @regression
   Scenario Outline: Verify you can skip phone number input
     Given There is 1 user with email address only where <Name> is me
     Given I see welcome screen

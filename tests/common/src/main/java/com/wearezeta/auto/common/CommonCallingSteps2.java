@@ -39,8 +39,30 @@ public final class CommonCallingSteps2 {
             .getLog(CommonCallingSteps2.class.getName());
 
     private static final String CALL_BACKEND_VERSION_SEPARATOR = ":";
+
+
     private static final String ZCALL_DEFAULT_VERSION = "1.12";
+    private String zcallVersion = ZCALL_DEFAULT_VERSION;
+
+    public String getZcallVersion() {
+        return zcallVersion;
+    }
+
+    public void setZcallVersion(String zcallVersion) {
+        this.zcallVersion = zcallVersion;
+    }
+
     private static final String AUTOCALL_DEFAULT_VERSION = "1.12";
+    private String autocallVersion = AUTOCALL_DEFAULT_VERSION;
+
+    public String getAutocallVersion() {
+        return autocallVersion;
+    }
+
+    public void setAutocallVersion(String autocallVersion) {
+        this.autocallVersion = autocallVersion;
+    }
+
     private static final String FIREFOX_DEFAULT_VERSION = "44.0";
     private static final String CHROME_DEFAULT_VERSION = "48.0.2564.97";
 
@@ -507,32 +529,25 @@ public final class CommonCallingSteps2 {
             String instanceType) {
         instanceType = instanceType.toLowerCase();
         if (instanceType.contains(CALL_BACKEND_VERSION_SEPARATOR)) {
-            final String[] versionedType = instanceType
-                    .split(CALL_BACKEND_VERSION_SEPARATOR);
+            final String[] versionedType = instanceType.split(CALL_BACKEND_VERSION_SEPARATOR);
             final String type = versionedType[0];
             final String version = versionedType[1];
             if (type == null || version == null) {
-                throw new IllegalArgumentException(
-                        "Could not parse instance type and/or version");
+                throw new IllegalArgumentException("Could not parse instance type and/or version");
             }
             return new VersionedInstanceType(type, version);
         } else {
             switch (instanceType) {
                 case "chrome":
-                    return new VersionedInstanceType(instanceType,
-                            CHROME_DEFAULT_VERSION);
+                    return new VersionedInstanceType(instanceType, CHROME_DEFAULT_VERSION);
                 case "firefox":
-                    return new VersionedInstanceType(instanceType,
-                            FIREFOX_DEFAULT_VERSION);
+                    return new VersionedInstanceType(instanceType, FIREFOX_DEFAULT_VERSION);
                 case "autocall":
-                    return new VersionedInstanceType(instanceType,
-                            AUTOCALL_DEFAULT_VERSION);
+                    return new VersionedInstanceType(instanceType, getAutocallVersion());
                 case "zcall":
-                    return new VersionedInstanceType(instanceType,
-                            ZCALL_DEFAULT_VERSION);
+                    return new VersionedInstanceType(instanceType, getZcallVersion());
                 default:
-                    throw new IllegalArgumentException(
-                            "Could not parse instance type and/or version");
+                    throw new IllegalArgumentException("Could not parse instance type and/or version");
             }
         }
     }

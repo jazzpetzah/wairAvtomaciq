@@ -146,8 +146,7 @@ public class ClientUsersManager {
                 FindBy.PHONENUMBER_ALIAS});
     }
 
-    public ClientUser findUserByNameOrNameAlias(String alias)
-            throws NoSuchUserException {
+    public ClientUser findUserByNameOrNameAlias(String alias) throws NoSuchUserException {
         return findUserBy(alias,
                 new FindBy[]{FindBy.NAME, FindBy.NAME_ALIAS});
     }
