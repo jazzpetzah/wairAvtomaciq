@@ -82,7 +82,7 @@ Feature: Log In
     Given There is 1 user with phone number only where <Name> is me
     Given I see welcome screen
     Given I rotate UI to landscape
-    When I switch to Email sign in screen
+    And I switch to Email sign in screen
     And I switch to Phone Login screen
     And I select Wire country on Phone Login page
     And I enter my phone number on Phone Login page
@@ -93,7 +93,7 @@ Feature: Log In
     And I enter password "<Password>"
     And I start listening for registration email
     And I tap Sign In button
-    And I verify my registration via email
+    When I verify my registration via email
     And I accept First Time overlay as soon as it is visible
     And I see the Conversations list with no conversations
     Then I see my name on Self Profile page
