@@ -13,11 +13,9 @@ public class TabletWelcomePage extends AndroidTabletPage {
 
     public static final By idHaveAccountButton = By.id("zb__welcome__sign_in");
 
-    private final static Function<String, String> xpathLinkByText = text -> String
-            .format("//*[@value='%s']", text);
+    private final static Function<String, String> xpathLinkByText = text -> String.format("//*[@value='%s']", text);
 
-    public TabletWelcomePage(Future<ZetaAndroidDriver> lazyDriver)
-            throws Exception {
+    public TabletWelcomePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 

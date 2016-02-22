@@ -694,9 +694,9 @@ public class CommonAndroidSteps {
      * @param count      the number of users to make
      * @param namePrefix the prefix for all of the users to share
      * @throws Exception
-     * @step. ^There \\w+ (\\d+) shared user[s]* with name prefix ([\\w\\.]+)$
+     * @step. ^There (?:are|is) (\d+) shared users? with name prefix ([\w\.]+)$$
      */
-    @Given("^There \\w+ (\\d+) shared user[s]* with name prefix ([\\w\\.]+)$")
+    @Given("^There (?:are|is) (\\d+) shared users? with name prefix ([\\w\\.]+)$")
     public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix) throws Exception {
         commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
     }

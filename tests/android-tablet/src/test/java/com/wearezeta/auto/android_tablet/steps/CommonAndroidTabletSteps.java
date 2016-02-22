@@ -633,16 +633,18 @@ public class CommonAndroidTabletSteps {
     }
 
     /**
-     * Verifies that there are N new users for a test, and makes them if they
-     * don't exist. -unused
+     * Verifies that there are N new users for a test, makes them if they don't
+     * exist, and sets one of those users to be the current user.
      *
-     * @param count the number of users to make
+     * @param count       the number of users to make
+     * @param myNameAlias the name of the user to set as the current user
      * @throws Exception
-     * @step. ^There \\w+ (\\d+) user[s]*$
+     * @step. ^There (?:is|are) (\\d+) users? where (.*) is me$
      */
-    @Given("^There \\w+ (\\d+) user[s]*$")
-    public void ThereAreNUsers(int count) throws Exception {
-        commonSteps.ThereAreNUsers(CURRENT_PLATFORM, count);
+    @Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
+    public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
+        commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
+        GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
     }
 
     /**
@@ -650,31 +652,19 @@ public class CommonAndroidTabletSteps {
      * exist, and sets one of those users to be the current user.
      *
      * @param count       the number of users to make
+     * @param what        either 'email' or 'phone number'
      * @param myNameAlias the name of the user to set as the current user
-     * @throws Throwable
-     * @step. ^There \\w+ (\\d+) user[s]* where (.*) is me$
-     */
-    @Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
-    public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
-            throws Throwable {
-        commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
-                myNameAlias);
-        GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
-    }
-
-    /**
-     * Verifies that there are N new users for a test all sharing a common
-     * prefix in their names and makes them if they don't exist.
-     *
-     * @param count      the number of users to make
-     * @param namePrefix the prefix for all of the users to share
      * @throws Exception
-     * @step. ^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$
+     * @step. ^There (?:are|is) (\d+) users? with (email address|phone number) only where (.*) is me$
      */
-    @Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
-    public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
-            throws Exception {
-        commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
+    @Given("^There (?:are|is) (\\d+) users? with (email address|phone number) only where (.*) is me$")
+    public void ThereAreNUsersWithZOnlyWhereXIsMe(int count, String what, String myNameAlias) throws Exception {
+        if (what.equals("email address")) {
+            commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(count, myNameAlias);
+        } else {
+            commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
+        }
+        GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
     }
 
     /**
@@ -684,14 +674,12 @@ public class CommonAndroidTabletSteps {
      * @param picture the file name of the picture to check against. The file name
      *                is relative to the pictures directory as defined in the
      *                Configurations.cnf file
-     * @throws Throwable
+     * @throws Exception
      * @step. ^(.*) has an avatar picture from file (.*)$
      */
     @Given("^(.*) has an avatar picture from file (.*)$")
-    public void GivenUserHasAnAvatarPicture(String name, String picture)
-            throws Throwable {
-        String picturePath = CommonUtils.getImagesPath(this.getClass()) + "/"
-                + picture;
+    public void GivenUserHasAnAvatarPicture(String name, String picture) throws Exception {
+        String picturePath = CommonUtils.getImagesPath(this.getClass()) + "/" + picture;
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {

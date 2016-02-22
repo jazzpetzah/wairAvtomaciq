@@ -108,4 +108,16 @@ public class EmailSignInPageSteps {
 	public void ITapOKOnErrorMessage() throws Exception {
 		getEmailSignInPage().acceptErrorMessage();
 	}
+
+	/**
+	 * Press the "Phone Login" button on the email sign in to switch to
+	 * phone number login
+	 *
+	 * @step. ^I switch to [Pp]hone [Ll]ogin screen$
+	 * @throws Exception
+	 */
+	@When("^I switch to [Pp]hone [Ll]ogin screen$")
+	public void ISwitchToPhoneLogin() throws Exception {
+        getEmailSignInPage().tapPhoneLogin();
+	}
 }

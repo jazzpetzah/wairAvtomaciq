@@ -1,7 +1,11 @@
 package com.wearezeta.auto.ios.steps;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.email.ActivationMessage;
+import com.wearezeta.auto.common.email.WireMessage;
 import cucumber.api.java.en.And;
 import org.junit.Assert;
 
@@ -177,7 +181,9 @@ public class RegistrationPageSteps {
      */
     @When("^I start activation email monitoring$")
     public void IStartActivationEmailMonitoring() throws Exception {
-        activationMessage = BackendAPIWrappers.initMessageListener(userToRegister);
+        final Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, ActivationMessage.MESSAGE_PURPOSE);
+        activationMessage = BackendAPIWrappers.initMessageListener(userToRegister, additionalHeaders);
     }
 
     @Then("^I verify registration address$")
