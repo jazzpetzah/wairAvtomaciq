@@ -352,7 +352,7 @@ Feature: People View
     Given Myself silenced group conversation with <GroupChatName>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item on iPad
+    When I remember the right side state of <GroupChatName> conversation item on iPad
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
@@ -375,7 +375,7 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item on iPad
+    When I remember the right side state of <GroupChatName> conversation item on iPad
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
@@ -395,7 +395,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item on iPad
+    When I remember the right side state of <GroupChatName> conversation item on iPad
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
@@ -417,7 +417,7 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item on iPad
+    When I remember the right side state of <GroupChatName> conversation item on iPad
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad

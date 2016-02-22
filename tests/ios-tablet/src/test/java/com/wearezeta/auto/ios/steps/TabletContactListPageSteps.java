@@ -26,14 +26,18 @@ public class TabletContactListPageSteps {
      * Store the screenshot of a particular conversation list entry
      *
      * @param nameAlias conversation name/alias
+     * @param side either 'left' or 'right'
      * @throws Exception
-     * @step. ^I remember the state of (.*) conversation item on iPad$
+     * @step. ^I remember the (left|right) side state of (.*) conversation item on iPad$
      */
-    @When("^I remember the state of (.*) conversation item on iPad$")
-    public void IRememberConvoItemState(String nameAlias) throws Exception {
+    @When("^I remember the (left|right) side state of (.*) conversation item on iPad$")
+    public void IRememberConvoItemState(String side, String nameAlias) throws Exception {
         final String name = usrMgr.replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
+        final TabletContactListPage.EntrySide entrySide = TabletContactListPage.EntrySide.valueOf(side.toUpperCase());
         this.savedConvoItemStates.put(name,
-                new ElementState(() -> getTabletContactListPage().getConversationEntryScreenshot(name)).remember()
+                new ElementState(
+                        () -> getTabletContactListPage().getConversationEntryScreenshot(entrySide, name)
+                ).remember()
         );
     }
 
@@ -43,7 +47,7 @@ public class TabletContactListPageSteps {
      * @param nameAlias          conversation name/alias
      * @param shouldNotBeChanged equals to null if the state should be changed
      * @throws Exception
-     * @step. ^I see the state of (.*) conversation item is (not )?changed on iPad$"
+     * @step. ^I see the (left|right) state of (.*) conversation item is (not )?changed on iPad$"
      */
     @Then("^I see the state of (.*) conversation item is (not )?changed on iPad$")
     public void IVerifyConvoState(String nameAlias, String shouldNotBeChanged) throws Exception {
