@@ -167,8 +167,8 @@ public class SettingsPageSteps {
             Assert.assertTrue(String.format("The device %s is not visible in the device list", device),
                     getSettingsPage().isDeviceVisibleInList(device));
         } else {
-            Assert.assertFalse(String.format("The device %s is still visible in the device list", device),
-                    getSettingsPage().isDeviceVisibleInList(device));
+            Assert.assertTrue(String.format("The device %s is still visible in the device list", device),
+                    getSettingsPage().isDeviceInvisibleInList(device));
         }
     }
 
