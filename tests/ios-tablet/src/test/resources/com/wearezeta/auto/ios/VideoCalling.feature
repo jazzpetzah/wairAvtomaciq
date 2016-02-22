@@ -76,7 +76,7 @@ Feature: Video Calling
     Given I see conversations list
     When <Contact> starts a video call to <Name> using <CallBackend>
     And I see call status message contains "<Contact> CALLING"
-    And I tap Accept button on Calling overlay
+    And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
@@ -98,7 +98,7 @@ Feature: Video Calling
     Given I see conversations list
     When <Contact> starts a video call to <Name> using <CallBackend>
     And I see call status message contains "<Contact> CALLING"
-    And I tap Accept button on Calling overlay
+    And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
