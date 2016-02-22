@@ -10,7 +10,7 @@ import org.openqa.selenium.By;
 public class CallIncomingPage extends AndroidPage {
     private static final By xpathIncomingCallContainer =
             By.xpath("//*[@id='ttv__calling__header__duration' and contains(@value, 'CALLING')]");
-    private static final By idMainContent = By.id("cpv__calling__participants");
+    private static final By idMainContent = By.id("iccv__incoming_call_controls");
     
     private static final Function<String, String> xpathCallingHeaderByName = name -> String
             .format("//*[@id='ttv__calling__header__name' and contains(@value, '%s')]", name);
@@ -36,11 +36,11 @@ public class CallIncomingPage extends AndroidPage {
     }
     
     public void ignoreCall() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 95, 20, 95);
+        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 50, 20, 50);
     }
     
     public void acceptCall() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 95, 80, 95);
+        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 50, 80, 50);
     }
 
 }
