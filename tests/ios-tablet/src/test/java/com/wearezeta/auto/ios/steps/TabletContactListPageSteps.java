@@ -1,6 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import org.junit.Assert;
 
@@ -8,7 +8,6 @@ import com.wearezeta.auto.ios.pages.TabletContactListPage;
 
 import cucumber.api.java.en.*;
 
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +20,7 @@ public class TabletContactListPageSteps {
         return pagesCollection.getPage(TabletContactListPage.class);
     }
 
-    private Map<String, BufferedImage> savedConvoItemScreenshots = new HashMap<>();
+    private Map<String, ElementState> savedConvoItemStates = new HashMap<>();
 
     /**
      * Store the screenshot of a particular conversation list entry
@@ -33,8 +32,9 @@ public class TabletContactListPageSteps {
     @When("^I remember the state of (.*) conversation item on iPad$")
     public void IRememberConvoItemState(String nameAlias) throws Exception {
         final String name = usrMgr.replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
-        this.savedConvoItemScreenshots.put(name,
-                getTabletContactListPage().getConversationEntryScreenshot(name));
+        this.savedConvoItemStates.put(name,
+                new ElementState(() -> getTabletContactListPage().getConversationEntryScreenshot(name)).remember()
+        );
     }
 
     /**
@@ -48,23 +48,18 @@ public class TabletContactListPageSteps {
     @Then("^I see the state of (.*) conversation item is (not )?changed on iPad$")
     public void IVerifyConvoState(String nameAlias, String shouldNotBeChanged) throws Exception {
         final String name = usrMgr.replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
-        if (!this.savedConvoItemScreenshots.containsKey(name)) {
+        if (!this.savedConvoItemStates.containsKey(name)) {
             throw new IllegalStateException(String.format(
                     "Please take a screenshot of '%s' conversation entry first", name));
         }
-        final BufferedImage actualConvoItemScreenshot =
-                getTabletContactListPage().getConversationEntryScreenshot(name);
-        final double score = ImageUtil.getOverlapScore(this.savedConvoItemScreenshots.get(name),
-                actualConvoItemScreenshot, ImageUtil.RESIZE_NORESIZE);
         final double minScore = 0.999;
+        final int timeoutSeconds = 10;
         if (shouldNotBeChanged == null) {
-            Assert.assertTrue(
-                    String.format("The state of '%s' conversation item seems to be the same (%.3f >= %.3f)",
-                            name, score, minScore), score < minScore);
+            Assert.assertTrue(String.format("The state of '%s' conversation item seems to be the same", name),
+                    this.savedConvoItemStates.get(name).isChanged(timeoutSeconds, minScore));
         } else {
-            Assert.assertTrue(
-                    String.format("The state of '%s' conversation item seems to be changed (%.3f < %.3f)",
-                            name, score, minScore), score >= minScore);
+            Assert.assertTrue(String.format("The state of '%s' conversation item seems to be changed", name),
+                    this.savedConvoItemStates.get(name).isNotChanged(timeoutSeconds, minScore));
         }
     }
 

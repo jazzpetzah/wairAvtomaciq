@@ -17,12 +17,13 @@ public class ElementState {
     private Optional<BufferedImage> previousScreenshot = Optional.empty();
     private FunctionalInterfaces.StateGetter stateGetter;
 
-    public ElementState(FunctionalInterfaces.StateGetter stateGetter) throws Exception {
+    public ElementState(FunctionalInterfaces.StateGetter stateGetter) {
         this.stateGetter = stateGetter;
     }
 
-    public void remember() throws Exception {
+    public ElementState remember() throws Exception {
         this.previousScreenshot = Optional.of(stateGetter.getState());
+        return this;
     }
 
     private boolean checkState(Function<Double, Boolean> checkerFunc, int timeoutSeconds) throws Exception {
