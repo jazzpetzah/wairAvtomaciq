@@ -4,10 +4,13 @@ import com.wearezeta.auto.android.pages.registration.AreaCodePage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
 
 public class TabletPhoneLoginPage extends AndroidTabletPage {
+    private final static By idCommitButton = By.id("pcb__signin__phone");
+
 	public TabletPhoneLoginPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -21,7 +24,7 @@ public class TabletPhoneLoginPage extends AndroidTabletPage {
     }
 
 	public void tapCommitButton() throws Exception {
-		getWelcomePage().clickConfirm();
+		getElement(idCommitButton).click();
 	}
 
     public void inputPhoneNumber(PhoneNumber number) throws Exception {

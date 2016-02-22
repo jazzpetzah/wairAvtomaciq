@@ -77,7 +77,7 @@ Feature: Log In
       | LinkText         |
       | Forgot Password? |
 
-  @C43811 @staging @torun
+  @C43811 @staging
   Scenario Outline: Verify you can sign in with phone number only
     Given There is 1 user with phone number only where <Name> is me
     Given I see welcome screen
