@@ -110,7 +110,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C12114 @staging @torun
+  @C12114 @staging
   Scenario Outline: Verify I can switch to another incoming audio call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
