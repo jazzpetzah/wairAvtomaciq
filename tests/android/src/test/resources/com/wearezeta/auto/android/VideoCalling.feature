@@ -21,7 +21,7 @@ Feature: VideoCalling
       | user1Name | user2Name | chrome      | 60      |
 
 
-  @C36390 @calling_basic @staging
+  @C36390 @calling_basic @rc
   Scenario Outline: Verify I can decline Video call with the app in the foreground
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -60,7 +60,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C36364 @calling_basic @staging
+  @C36364 @calling_basic @rc
   Scenario Outline: Verify I can decline Video call from the locked device
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

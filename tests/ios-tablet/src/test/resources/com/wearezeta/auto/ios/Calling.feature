@@ -214,7 +214,7 @@ Feature: Calling
     Given I see conversations list
     And I tap on contact name <Contact1>
     And I navigate back to conversations list
-    And I remember the state of <Contact2> conversation item on iPad
+    And I remember the left side state of <Contact2> conversation item on iPad
     When I tap on contact name <Contact1>
     And I click plus button next to text input
     And I press call button
@@ -244,7 +244,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I tap on contact name <Contact1>
-    And I remember the state of <Contact2> conversation item on iPad
+    And I remember the left side state of <Contact2> conversation item on iPad
     When I click plus button next to text input
     And I press call button
     And I see Calling overlay

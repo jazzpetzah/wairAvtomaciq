@@ -1,12 +1,10 @@
 package com.wearezeta.auto.android_tablet.steps;
 
-import java.awt.image.BufferedImage;
-
+import com.wearezeta.auto.common.misc.ElementState;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletConversationsListPage;
 import com.wearezeta.auto.android_tablet.pages.TabletPeoplePickerPage;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
@@ -76,9 +74,6 @@ public class PeoplePickerPageSteps {
         getPeoplePickerPage().tapFoundItem(item);
     }
 
-    private BufferedImage rememberedAvatar = null;
-    final static double MAX_SIMILARITY_VALUE = 0.90;
-
     /**
      * Check whether the particular user avatar is visible
      *
@@ -116,6 +111,9 @@ public class PeoplePickerPageSteps {
         }
     }
 
+    private ElementState rememberedAvatar = null;
+    final static double MAX_SIMILARITY_VALUE = 0.90;
+
     /**
      * Save the screenshot of current user avatar on People Picker page
      *
@@ -125,10 +123,10 @@ public class PeoplePickerPageSteps {
      */
     @When("^I remember (.*) avatar on [Pp]eople [Pp]icker page$")
     public void ITakeScreenshotOfContactAvatar(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        this.rememberedAvatar = getPeoplePickerPage()
-                .takeAvatarScreenshot(name).orElseThrow(
-                        IllegalStateException::new);
+        final String convoName = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        this.rememberedAvatar = new ElementState(
+                () -> getPeoplePickerPage().takeAvatarScreenshot(convoName).orElseThrow(IllegalStateException::new)
+        ).remember();
     }
 
     /**
@@ -142,22 +140,13 @@ public class PeoplePickerPageSteps {
      */
     @Then("^I verify (.*) avatar on [Pp]eople [Pp]icker page is not the same as the previous one$")
     public void IVerifyAvatarIsNotTheSame(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
+        final String convoName = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (this.rememberedAvatar == null) {
-            throw new IllegalStateException(
-                    "Please take a previous screenshot of user avatar first");
+            throw new IllegalStateException("Please take a previous screenshot of user avatar first");
         }
-        final BufferedImage currentAvatar = getPeoplePickerPage()
-                .takeAvatarScreenshot(name).orElseThrow(
-                        IllegalStateException::new);
-        final double score = ImageUtil.getOverlapScore(currentAvatar,
-                this.rememberedAvatar,
-                ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
         Assert.assertTrue(
-                String.format(
-                        "The current contact avatar of '%s' is very similar to the previous one (%.2f <-> %.2f)",
-                        name, score, MAX_SIMILARITY_VALUE),
-                score < MAX_SIMILARITY_VALUE);
+                String.format("The current contact avatar of '%s' is very similar to the previous one", convoName),
+                this.rememberedAvatar.isChanged(10, MAX_SIMILARITY_VALUE));
     }
 
     /**
@@ -210,7 +199,7 @@ public class PeoplePickerPageSteps {
     }
 
     private enum SwipeType {
-        LONG, SHORT;
+        LONG, SHORT
     }
 
     /**

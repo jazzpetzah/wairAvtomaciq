@@ -19,7 +19,6 @@ Feature: Sign In
   Scenario Outline: Sign in to Wire by phone
     Given There are 1 users where <Name> is me
     When I sign in using my phone number
-    And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
 
     Examples:
@@ -40,7 +39,6 @@ Feature: Sign In
     And I confirm sign out
     When User <Name2> is me
     And I sign in using my email or phone number
-    And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
     When I tap on my avatar
     Then I see personal info page
@@ -73,8 +71,8 @@ Feature: Sign In
     And I have entered password <Password>
     And I press Log in button
     Then I see error message "<ErrMessage>"
-    When I accept the error message
-    And I disable Airplane mode on the device
+    When I disable Airplane mode on the device
+    And I accept the error message
     And I press Log in button
     And I accept First Time overlay as soon as it is visible
     Then I see Contact list with contacts
@@ -109,7 +107,6 @@ Feature: Sign In
     And I start listening for confirmation email
     And I press Log in button
     And I verify my email
-    And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
 
     Examples:

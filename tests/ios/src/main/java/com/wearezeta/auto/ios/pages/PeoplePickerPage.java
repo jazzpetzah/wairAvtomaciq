@@ -67,6 +67,8 @@ public class PeoplePickerPage extends IOSPage {
                     "%s/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]/UIAStaticText[last()]",
                     xpathStrMainWindow, idx);
 
+    private static final By nameNoResults = By.name("No results.");
+
     public PeoplePickerPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -256,5 +258,9 @@ public class PeoplePickerPage extends IOSPage {
 
     public boolean isSendImageButtonInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSendImageButton);
+    }
+
+    public boolean waitUntilNoResultsLabelIsVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameNoResults);
     }
 }
