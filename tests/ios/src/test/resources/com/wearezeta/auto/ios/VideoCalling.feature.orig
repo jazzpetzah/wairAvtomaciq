@@ -54,6 +54,9 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
+<<<<<<< HEAD
+  @C12104 @staging
+=======
   @C12103 @staging
   Scenario Outline: Verify finishing video call
     Given There are 2 user where <Name> is me
@@ -77,6 +80,7 @@ Feature: Video Calling
       | user1Name | user2Name | chrome      |
 
 @C12104 @staging
+>>>>>>> master
   Scenario Outline: Verify ignoring Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -90,6 +94,7 @@ Feature: Video Calling
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
+<<<<<<< HEAD
 
   @C12107 @staging
   Scenario Outline: Verify getting missed call indication when someone called
@@ -109,3 +114,5 @@ Feature: Video Calling
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
+=======
+>>>>>>> master
