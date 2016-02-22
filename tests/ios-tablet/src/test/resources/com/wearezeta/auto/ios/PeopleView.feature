@@ -565,7 +565,7 @@ Feature: People View
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
-    Then I see the conversation "<Contact3>" does not exist in Search results
+    Then I see No Results label in People picker search result
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
@@ -589,7 +589,7 @@ Feature: People View
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
-    Then I see the conversation "<Contact3>" does not exist in Search results
+    Then I see No Results label in People picker search result
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |

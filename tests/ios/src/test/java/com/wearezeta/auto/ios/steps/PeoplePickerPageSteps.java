@@ -162,6 +162,19 @@ public class PeoplePickerPageSteps {
         }
     }
 
+    /**
+     * Verify whether No Results label is visible in search results
+     *
+     * @step. ^I see No Results label in People picker search result$
+     *
+     * @throws Exception
+     */
+    @Then("^I see No Results label in People picker search result$")
+    public void ISeeNoResultsLabel() throws Exception {
+        Assert.assertTrue("'No Results' label is not visible",
+                getPeoplePickerPage().waitUntilNoResultsLabelIsVisible());
+    }
+
     @When("^I search for user name (.*) and tap on it on People picker page$")
     public void WhenISearchForUserNameAndTapOnItOnPeoplePickerPage(String contact) throws Throwable {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
