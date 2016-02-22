@@ -51,9 +51,9 @@ Feature: Video Calling
     And I tap Leave button on Calling overlay
 
     Examples:
-      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
-    
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
+
   @C12103 @staging
   Scenario Outline: Verify finishing video call
     Given There are 2 user where <Name> is me
@@ -73,5 +73,5 @@ Feature: Video Calling
     Then I see dialog page
 
     Examples:
-      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |
