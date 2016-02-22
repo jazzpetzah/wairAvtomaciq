@@ -904,4 +904,64 @@ public class ContactListPageSteps {
 		webappPagesCollection.getPage(ContactListPage.class)
 				.clickCancelOnDeleteWarningSingle();
 	}
+
+	/**
+	 * Verifies if mute call button is visible for conversation
+	 *
+	 * @param contact conversation name string
+	 * @throws Exception
+	 * @step. ^I see mute call button for conversation (.*)
+	 */
+	@When("^I see mute call button for conversation (.*)")
+	public void ISeeMuteCallButton(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
+		contactListPage.isMuteCallButtonVisibleForConversation(contact);
+	}
+
+	/**
+	 * Verifies if video button is visible for conversation
+	 *
+	 * @param contact conversation name string
+	 * @throws Exception
+	 * @step. ^I see video button for conversation(.*)
+	 */
+	@When("^I see video button for conversation (.*)")
+	public void ISeeVideoButton(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
+		contactListPage.isVideoButtonVisibleForConversation(contact);
+	}
+
+	/**
+	 * Verifies if end call button is visible for conversation
+	 *
+	 * @param contact conversation name string
+	 * @throws Exception
+	 * @step. ^I see end call button for conversation(.*)
+	 */
+	@When("^I see end call button for conversation (.*)")
+	public void ISeeEndCallButton(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
+		contactListPage.isEndVideoCallButtonVisibleForConversation(contact);
+	}
+
+	/**
+	 * Clicks end video button for conversation
+	 *
+	 * @throws Exception
+	 * @step. ^I click end call button from conversation list$
+	 */
+	@When("^I click end call button from conversation list$")
+	public void IClickEndCallButton() throws Exception {
+
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
+		contactListPage.clickEndCallButton();
+	}
+
 }

@@ -716,4 +716,37 @@ public class ContactListPage extends WebPage {
 	public boolean waitForBadgeVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(WebAppLocators.ContactListPage.cssBadge));
 	}
+
+	public boolean isMuteCallButtonVisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathMuteCallButtonByContactName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(locator));
+	}
+
+	public boolean isVideoButtonVisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathVideoButtonByContactName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(locator));
+	}
+
+	public boolean isEndVideoCallButtonVisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathEndVideoCallButtonByContactName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(locator));
+	}
+
+	public void clickEndCallButton() throws Exception{
+		final String locator = WebAppLocators.ContactListPage.cssEndVideoCallButton;
+		WebElement endVideoCallButton = getDriver().findElementByCssSelector(locator);
+		endVideoCallButton.click();
+	}
 }

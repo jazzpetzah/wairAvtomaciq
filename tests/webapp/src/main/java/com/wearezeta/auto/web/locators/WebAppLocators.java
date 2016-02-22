@@ -75,6 +75,27 @@ public final class WebAppLocators {
 
 		public static final String cssLeaveButton = "[data-uie-name='do-leave']";
 
+		//call
+		public static final Function<String, String> xpathMuteCallButtonByContactName = (
+				name) -> String
+				.format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
+								+ "*//*[@data-uie-name='do-call-mute']",
+						name);
+
+		public static final Function<String, String> xpathVideoButtonByContactName = (
+				name) -> String
+				.format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
+								+ "*//*[@data-uie-name='do-video-call']",
+						name);
+
+		public static final Function<String, String> xpathEndVideoCallButtonByContactName = (
+				name) -> String
+				.format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
+								+ "*//*[@data-uie-name='do-call-controls-call-ignore']",
+						name);
+
+		public static final String cssEndVideoCallButton = "[data-uie-name='do-call-controls-call-ignore']";
+
 		public static final Function<String, String> xpathMuteIconByContactName = (
 				name) -> String.format(
 				"//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following::"
