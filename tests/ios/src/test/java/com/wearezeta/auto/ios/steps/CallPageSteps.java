@@ -58,9 +58,28 @@ public class CallPageSteps {
 
     }
 
-    @When("I remember Mute button state")
-    public void IRememberMuteButtonState() {
+    /**
+     * Remember the state of Mute button on calling overlay
+     *
+     * @throws Exception
+     * @step. ^I remember Mute button state on calling overlay$
+     */
+    @When("^I remember Mute button state on calling overlay$")
+    public void IRememberMuteButtonStateOnCalling() throws Exception {
+        getCallingOverlayPage().rememberMuteButtonState();
+    }
 
+    /**
+     * Verifies if Mute button state was changed
+     *
+     * @throws Exception
+     * @step. ^I see state of Mute button has changed on calling overlay page$
+     */
+    @When("^I see state of Mute button has changed on calling overlay page$")
+    public void VerifyStateOfMuteButtonHasChanged() throws Exception {
+        if (!getCallingOverlayPage().muteButtonStateHasChanged()) {
+            throw new AssertionError("State of mute button has not changed");
+        }
     }
 
     /**

@@ -5,6 +5,7 @@ import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.misc.ElementState;
 import org.openqa.selenium.By;
 
 public class CallingOverlayPage extends IOSPage {
@@ -37,6 +38,9 @@ public class CallingOverlayPage extends IOSPage {
             "//UIAWindow[@name='ZClientNotificationWindow']//UIACollectionCell");
 
     private static final By xpathGroupCallFullMessage = By.xpath("//UIAAlert[@name='The call is full']");
+
+    private static final int STATE_CHANGE_TIMEOUT = 15;
+    private static final double MIN_BUTTON_SIMILARITY_SCORE = 0.9;
 
 
 	public CallingOverlayPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -105,5 +109,23 @@ public class CallingOverlayPage extends IOSPage {
 
     public boolean isButtonInvisible(String name) throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), getButtonLocatorByName(name));
+    }
+
+    public String isButtonSelected(String name) throws Exception {
+        return getElement(getButtonLocatorByName(name)).getAttribute("value");
+    }
+
+    private ElementState muteButtonState = new ElementState(
+            () -> this.getElementScreenshot(getElement(nameMuteCallButton)).orElseThrow(
+                    () -> new IllegalStateException("Cannot get a screenshot of Mute button state")
+            )
+    );
+
+    public void rememberMuteButtonState() throws Exception {
+        muteButtonState.remember();
+    }
+
+    public boolean muteButtonStateHasChanged() throws Exception {
+        return muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
     }
 }

@@ -121,10 +121,10 @@ Feature: Video Calling
     And I tap Accept Video button on Calling overlay
     And I see Mute button on Calling overlay
     And I see Mute button is not selected
-    And I remember Mute button state
-    And I remember media container state
+    And I remember Mute button state on calling overlay
     And I tap Mute button on Calling overlay
     Then I see Mute button is selected
+    And I see state of Mute button has changed on calling overlay page
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
