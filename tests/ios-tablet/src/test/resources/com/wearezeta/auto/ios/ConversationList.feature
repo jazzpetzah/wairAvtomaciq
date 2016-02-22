@@ -307,7 +307,7 @@ Feature: Conversation List
     Then I see the state of <Contact> conversation item is changed on iPad
     When I remember the state of <Contact> conversation item on iPad
     And User <Contact> sends 5 encrypted messages to user Myself
-    Then I see the state of <Contact> conversation item is changed
+    Then I see the state of <Contact> conversation item is changed on iPad
 
     Examples:
       | Name      | Contact   | Contact2  |
