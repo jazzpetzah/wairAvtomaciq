@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android_tablet.steps;
 
-import java.awt.image.BufferedImage;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletConversationViewPage;
@@ -445,7 +443,7 @@ public class ConversationViewPageSteps {
 	private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
 
 	private enum PictureDestination {
-		CONVERSATION_VIEW, PREVIEW;
+		CONVERSATION_VIEW, PREVIEW
 	}
 
 	/**
@@ -633,8 +631,6 @@ public class ConversationViewPageSteps {
 		getConversationViewPage().tapSketchButtonOnPicturePreview();
 	}
 
-	private BufferedImage previousMediaButtonState = null;
-
 	/**
 	 * Store the screenshot of current media button state in the internal
 	 * variable for further comparison
@@ -648,8 +644,6 @@ public class ConversationViewPageSteps {
 	public void IRememberMediaButtonState() throws Exception {
 		getConversationViewPage().rememberMediaControlButtonState();
 	}
-
-	private static final double MAX_SIMILARITY_VALUE = 0.97;
 
 	/**
 	 * Verify whether the current state of media control button is changed in
