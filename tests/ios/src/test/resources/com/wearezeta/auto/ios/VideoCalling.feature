@@ -53,3 +53,18 @@ Feature: Video Calling
     Examples:
       | Name      | Contact   | CallBackend         | Timeout |
       | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+
+  @C12104 @staging @torun
+  Scenario Outline: Verify ignoring Video call
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When <Contact> starts a video call to me using <CallBackend>
+    And I see call status message contains "<Contact> CALLING"
+    And I tap Ignore button on the Calling overlay
+    Then I do not see Calling overlay
+
+    Examples:
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |
