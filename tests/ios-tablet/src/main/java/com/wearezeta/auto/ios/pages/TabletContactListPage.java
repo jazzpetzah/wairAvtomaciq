@@ -56,11 +56,11 @@ public class TabletContactListPage extends ContactListPage {
             case LEFT:
                 return entryScreenshot.getSubimage(
                         0, titleLocation.y - entryLocation.y,
-                        entryDimension.width / 3, titleDimension.height);
+                        entryDimension.width / 4, titleDimension.height);
             case RIGHT:
                 return entryScreenshot.getSubimage(
-                        entryDimension.width * 2 / 3, titleLocation.y - entryLocation.y,
-                        entryDimension.width - entryDimension.width * 2 / 3, titleDimension.height);
+                        entryDimension.width * 3 / 4, titleLocation.y - entryLocation.y,
+                        entryDimension.width - entryDimension.width * 3 / 4, titleDimension.height);
             default:
                 throw new IllegalArgumentException(String.format("Unsupported side value '%s'", side.name()));
         }
