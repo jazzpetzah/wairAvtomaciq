@@ -4,13 +4,12 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import java.util.function.Function;
 import org.openqa.selenium.By;
 
 public class CallOngoingVideoPage extends CallingOverlayPage {
 
     private static final By xpathOngoingCallContainer =
-            By.xpath("//*[@id='spv__self_preview']");
+            By.xpath("//*[@id='tcfl__calling__container' and //*[@id='spv__self_preview']]");
 
     public CallOngoingVideoPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -29,19 +28,22 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
 
     @Override
     public void toggleVideo() throws Exception {
-        // TODO click somewhere to hover in the call controls
+        getElementIfDisplayed(xpathOngoingCallContainer).
+                orElseThrow(() -> new IllegalStateException("No ongoing video call detected")).click();
         super.toggleVideo();
     }
 
     @Override
     public void hangup() throws Exception {
-        // TODO click somewhere to hover in the call controls
+        getElementIfDisplayed(xpathOngoingCallContainer).
+                orElseThrow(() -> new IllegalStateException("No ongoing video call detected")).click();
         super.hangup();
     }
 
     @Override
     public void toggleMute() throws Exception {
-        // TODO click somewhere to hover in the call controls
+        getElementIfDisplayed(xpathOngoingCallContainer).
+                orElseThrow(() -> new IllegalStateException("No ongoing video call detected")).click();
         super.toggleMute();
     }
 }
