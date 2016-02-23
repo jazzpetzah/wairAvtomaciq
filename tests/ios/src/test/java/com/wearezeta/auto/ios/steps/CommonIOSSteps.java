@@ -93,11 +93,17 @@ public class CommonIOSSteps {
         capabilities.setCapability("platformVersion", getPlatformVersion());
         capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT);
         final String backendType = getBackendType(this.getClass());
-        capabilities
-                .setCapability(
-                        "processArguments",
-                        "--args -TutorialOverlaysEnabled 0 -SkipFirstTimeUseChecks 1 -DisableHockeyUpdates 1 -UseHockey 1 -ZMBackendEnvironmentType "
-                                + backendType);
+        capabilities.setCapability("processArguments",
+                String.join(" ", new String[]{
+                        "--args",
+                        "-TutorialOverlaysEnabled", "0",
+                        "-SkipFirstTimeUseChecks", "1",
+                        "-DisableHockeyUpdates", "1",
+                        "-UseHockey", "1",
+                        "-ZMBackendEnvironmentType", backendType,
+                        // "--debug-log-network"
+                })
+        );
         if (enableAutoAcceptAlerts) {
             capabilities.setCapability("autoAcceptAlerts", true);
         }
