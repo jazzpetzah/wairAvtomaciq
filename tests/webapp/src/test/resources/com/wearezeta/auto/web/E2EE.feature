@@ -312,7 +312,7 @@ Feature: E2EE
     | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
 
-  @C12055 @e2ee
+  @C12055 @mute
   Scenario Outline: Verify it is possible to verify group conversation participants
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
