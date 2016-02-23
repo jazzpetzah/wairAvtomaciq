@@ -179,6 +179,12 @@ public final class WebAppLocators {
 								"@data-uie-value='%s']/..//*[@data-uie-name='status-unread']",
 						name);
 
+		public static final String idSelfVideoPreview = "video-element-local";
+
+		public static final Function<String, String> xpathUserNameByUserNameInCallingBanner = user -> String
+				.format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']",
+						user);
+
 		// leave warning
 		public static final String cssLeaveModal = ".modal-leave";
 		public static final String cssLeaveModalCancelButton = ".modal-leave .modal-close";

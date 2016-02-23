@@ -749,4 +749,24 @@ public class ContactListPage extends WebPage {
 		WebElement endVideoCallButton = getDriver().findElementByCssSelector(locator);
 		endVideoCallButton.click();
 	}
+
+	public boolean isSelfVideoVisible() throws Exception {
+		final String locator = WebAppLocators.ContactListPage.idSelfVideoPreview;
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(locator));
+	}
+
+	public boolean isSelfVideoNotVisible() throws Exception {
+		final String locator = WebAppLocators.ContactListPage.idSelfVideoPreview;
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(locator));
+	}
+
+	public boolean isUserNameVisibleInCallingBanner(String user) throws Exception {
+		String locator = WebAppLocators.ContactListPage.xpathUserNameByUserNameInCallingBanner
+				.apply(user);
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(locator));
+	}
+
 }

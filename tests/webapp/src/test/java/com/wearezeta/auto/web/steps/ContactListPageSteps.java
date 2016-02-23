@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import java.util.List;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -964,4 +965,39 @@ public class ContactListPageSteps {
 		contactListPage.clickEndCallButton();
 	}
 
+	/**
+	 * Checks if your self video is visible
+	 *
+	 * @param doNot is set to null if "do not" part does not exist
+	 * @throws Exception
+	 * @step. ^I( do not)? see my self video view$
+	 */
+	@When("^I( do not)? see my self video view$")
+	public void IDoNotSeeMySelfVideoView(String doNot)
+			throws Exception {
+		if (doNot == null) {
+			ContactListPage contactListPage = webappPagesCollection
+					.getPage(ContactListPage.class);
+			contactListPage.isSelfVideoVisible();
+		}
+		else {
+			ContactListPage contactListPage = webappPagesCollection.getPage(ContactListPage.class);
+			contactListPage.isSelfVideoNotVisible();
+		}
+	}
+
+	/**
+	 * Checks if the avatar of user you’re calling is visible
+	 *
+	 * @step. ^I see avatar of user (.*) in calling banner in conversation list$
+	 * @param nameAlias
+	 *            name of user whom you’re calling
+	 * @throws Exception
+	 */
+	@Then("^I see the name of user (.*) in calling banner in conversation list$")
+	public void ISeeNameOfUserInCalling(String nameAlias) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(nameAlias);
+		Assert.assertTrue(webappPagesCollection.getPage(
+				ContactListPage.class).isUserNameVisibleInCallingBanner(user.getName()));
+	}
 }

@@ -191,10 +191,13 @@ Feature: VideoCalling
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I start a video call
+    And I see my self video view
+    And I see the name of user <Contact> in calling banner in conversation list
     And I see mute call button for conversation <Contact>
     And I see video button for conversation <Contact>
     And I see end call button for conversation <Contact>
     Then I click end call button from conversation list
+    And I do not see my self video view
 
     Examples:
       | Login      | Password      | Name      | Contact   |
