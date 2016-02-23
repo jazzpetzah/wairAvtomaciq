@@ -909,46 +909,76 @@ public class ContactListPageSteps {
 	/**
 	 * Verifies if mute call button is visible for conversation
 	 *
+	 * @param doNot is set to null if "do not" part does not exist
 	 * @param contact conversation name string
 	 * @throws Exception
 	 * @step. ^I see mute call button for conversation (.*)
 	 */
-	@When("^I see mute call button for conversation (.*)")
-	public void ISeeMuteCallButton(String contact) throws Exception {
-		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		ContactListPage contactListPage = webappPagesCollection
-				.getPage(ContactListPage.class);
-		contactListPage.isMuteCallButtonVisibleForConversation(contact);
+	@When("^I( do not)? see mute call button for conversation (.*)")
+	public void ISeeMuteCallButton(String doNot, String contact) throws Exception {
+		if (doNot == null) {
+			contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+			ContactListPage contactListPage = webappPagesCollection
+					.getPage(ContactListPage.class);
+			contactListPage.isMuteCallButtonVisibleForConversation(contact);
+		}
+		else
+		{
+			contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+			ContactListPage contactListPage = webappPagesCollection
+					.getPage(ContactListPage.class);
+			contactListPage.isMuteCallButtonNotVisibleForConversation(contact);
+		}
 	}
 
 	/**
 	 * Verifies if video button is visible for conversation
-	 *
+     *
+	 * @param doNot is set to null if "do not" part does not exist
 	 * @param contact conversation name string
 	 * @throws Exception
 	 * @step. ^I see video button for conversation(.*)
 	 */
-	@When("^I see video button for conversation (.*)")
-	public void ISeeVideoButton(String contact) throws Exception {
+	@When("^I( do not)? see video button for conversation (.*)")
+	public void ISeeVideoButton(String doNot, String contact) throws Exception {
+		if (doNot == null) {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		ContactListPage contactListPage = webappPagesCollection
 				.getPage(ContactListPage.class);
 		contactListPage.isVideoButtonVisibleForConversation(contact);
+		}
+		else
+		{
+			contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+			ContactListPage contactListPage = webappPagesCollection
+					.getPage(ContactListPage.class);
+			contactListPage.isVideoButtonNotVisibleForConversation(contact);
+		}
 	}
 
 	/**
 	 * Verifies if end call button is visible for conversation
 	 *
+	 * @param doNot is set to null if "do not" part does not exist
 	 * @param contact conversation name string
 	 * @throws Exception
 	 * @step. ^I see end call button for conversation(.*)
 	 */
-	@When("^I see end call button for conversation (.*)")
-	public void ISeeEndCallButton(String contact) throws Exception {
+	@When("^I( do not)? see end call button for conversation (.*)")
+	public void ISeeEndCallButton(String doNot, String contact) throws Exception {
+		if (doNot == null) {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		ContactListPage contactListPage = webappPagesCollection
 				.getPage(ContactListPage.class);
 		contactListPage.isEndCallButtonVisibleForConversation(contact);
+		}
+		else
+		{
+			contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+			ContactListPage contactListPage = webappPagesCollection
+					.getPage(ContactListPage.class);
+			contactListPage.isEndCallButtonNotVisibleForConversation(contact);
+		}
 	}
 
 	/**
