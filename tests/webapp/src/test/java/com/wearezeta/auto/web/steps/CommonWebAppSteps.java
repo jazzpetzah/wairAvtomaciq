@@ -138,7 +138,7 @@ public class CommonWebAppSteps {
 		DesiredCapabilities capabilities, String loggingLevelName) {
 		final LoggingPreferences logs = new LoggingPreferences();
 		// set it to SEVERE by default
-		Level level = Level.SEVERE;
+		Level level = Level.ALL;
 		try {
 			level = Level.parse(loggingLevelName);
 		} catch (IllegalArgumentException e) {
