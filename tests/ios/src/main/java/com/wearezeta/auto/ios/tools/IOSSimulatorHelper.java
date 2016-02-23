@@ -143,7 +143,7 @@ public class IOSSimulatorHelper {
         Thread.sleep(500);
     }
 
-    public static void switchToAppsList() throws Exception {
+    public static void switchAppsList() throws Exception {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\"",

@@ -168,7 +168,6 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     And I tap on group chat with name <GroupChatName>
-    #And I swipe up on group chat page
     And I open group conversation details
     And I select participant <NonConnectedContact>
     Then I see connect to <NonConnectedContact> dialog
@@ -177,27 +176,21 @@ Feature: People View
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-  # broken functionality
   @C975 @regression @id555
   Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact1>
-    #And I swipe up on dialog page to open other user personal page
+    And I tap on contact name <Contact1>
     And I open conversation details
-    And I see <Contact1> user profile page
     And I press Add button
-    #And I dont see keyboard
-    And I tap on conversation <Contact2> in search result
-    Then I see user <Contact2> on People picker page is selected
-    And I tap on conversation <Contact2> in search result
-    Then I see user <Contact2> on People picker page is NOT selected
-    And I tap on conversation <Contact2> in search result
     And I tap on Search input on People picker page
-    #Then I see keyboard
-    #And I don't see Add to conversation button
+    When I tap on conversation <Contact2> in search result
+    Then I see user <Contact2> on People picker page is selected
+    When I tap on conversation <Contact2> in search result
+    Then I see user <Contact2> on People picker page is NOT selected
+    When I tap on conversation <Contact2> in search result
     And I press keyboard Delete button
     Then I see user <Contact2> on People picker page is NOT selected
 
@@ -213,7 +206,6 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I see <Contact1> user profile page
     And I press Add button
     And I tap on Search input on People picker page
     And I don't see Add to conversation button

@@ -150,16 +150,16 @@ public class PersonalInfoPage extends IOSPage {
 
     public boolean isTermsOfUsePageVisible() throws Exception {
         final By locator = By.xpath(xpathStrTermsOfUseByText.apply(TERMS_OF_USE_PAGE_VALUE));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
     public boolean isPrivacyPolicyPageVisible() throws Exception {
         final By locator = By.xpath(xpathStrPrivacyPolicyByText.apply(PRIVACY_POLICY_PAGE_VALUE));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
     public boolean isResetPasswordPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathChangePasswordPageChangePasswordButton);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathChangePasswordPageChangePasswordButton);
     }
 
     public void tapOnEditNameField() throws Exception {

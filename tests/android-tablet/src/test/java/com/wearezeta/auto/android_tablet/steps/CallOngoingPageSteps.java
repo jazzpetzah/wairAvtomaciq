@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android_tablet.steps;
 
 import com.wearezeta.auto.android_tablet.pages.TabletCallOngoingPage;
+import com.wearezeta.auto.common.misc.ElementState;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.Then;
@@ -12,10 +13,20 @@ public class CallOngoingPageSteps {
 
     private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
             .getInstance();
+    
+    private final ElementState specialButtonState;
+    private final ElementState muteButtonState;
+
+    public CallOngoingPageSteps() throws Exception {
+        this.muteButtonState = new ElementState(getPage().getMuteButtonStateFunction());
+        this.specialButtonState = new ElementState(getPage().getSpecialButtonStateFunction());
+    }
+    
 
     private TabletCallOngoingPage getPage() throws Exception {
         return pagesCollection.getPage(TabletCallOngoingPage.class);
     }
+
     /**
      * Hangs up the current call
      *
@@ -55,11 +66,11 @@ public class CallOngoingPageSteps {
         int actualUsersCount = getPage().getNumberOfParticipants();
         if (actualUsersCount != expectedUsersCount) {
             throw new AssertionError(String.format(
-                "The actual count of users in call %s does not equal to the expected count %s",
-                actualUsersCount, expectedUsersCount));
+                    "The actual count of users in call %s does not equal to the expected count %s",
+                    actualUsersCount, expectedUsersCount));
         }
     }
-    
+
     /**
      * Press on the mute button in the calling controls
      *
@@ -81,7 +92,7 @@ public class CallOngoingPageSteps {
     public void WhenIPressSpeakerButton() throws Exception {
         getPage().toggleSpeaker();
     }
-    
+
     /**
      * Press on the Video button in the calling controls
      *
@@ -92,7 +103,7 @@ public class CallOngoingPageSteps {
     public void WhenIPressVideoButton() throws Exception {
         getPage().toggleVideo();
     }
-    
+
     /**
      * Remembers the state of the video button in calling page
      *
@@ -103,7 +114,7 @@ public class CallOngoingPageSteps {
     public void IRememberStateOfVideoButton() throws Exception {
         IRememberStateOfSpacialActionButton();
     }
-    
+
     /**
      * Remembers the state of the speaker button in calling page
      *
@@ -114,7 +125,7 @@ public class CallOngoingPageSteps {
     public void IRememberStateOfSpeakerButton() throws Exception {
         IRememberStateOfSpacialActionButton();
     }
-    
+
     /**
      * Remembers the state of the special action button in calling page
      *
@@ -123,9 +134,9 @@ public class CallOngoingPageSteps {
      */
     @When("^I remember state of special action button for ongoing call$")
     public void IRememberStateOfSpacialActionButton() throws Exception {
-        getPage().rememberSpecialActionButtonState();
+        specialButtonState.remember();
     }
-    
+
     /**
      * Remembers the state of the mute button in calling page
      *
@@ -134,9 +145,9 @@ public class CallOngoingPageSteps {
      */
     @When("^I remember state of mute button for ongoing call$")
     public void IRememberStateOfMuteButton() throws Exception {
-        getPage().rememberMuteButtonState();
+        muteButtonState.remember();
     }
-    
+
     /**
      * Verifies change of video button state
      *
@@ -147,7 +158,7 @@ public class CallOngoingPageSteps {
     public void VerifyStateOfSpacialVideoHasChanged() throws Exception {
         VerifyStateOfSpecialActionButtonHasChanged();
     }
-    
+
     /**
      * Verifies change of speaker button state
      *
@@ -158,7 +169,9 @@ public class CallOngoingPageSteps {
     public void VerifyStateOfSpacialSpeakerHasChanged() throws Exception {
         VerifyStateOfSpecialActionButtonHasChanged();
     }
-    
+
+    private static final int STATE_CHANGE_TIMEOUT = 15;
+    private static final double MIN_BUTTON_SIMILARITY_SCORE = 0.4;
     /**
      * Verifies change of special action button state
      *
@@ -167,21 +180,38 @@ public class CallOngoingPageSteps {
      */
     @Then("^I see state of special action button has changed for ongoing call$")
     public void VerifyStateOfSpecialActionButtonHasChanged() throws Exception {
-        if (!getPage().specialActionButtonStateHasChanged()) {
+        if (!specialButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE)) {
             throw new AssertionError("State of special action button has not changed");
         }
     }
-    
+
     /**
      * Verifies change of mute button state
      *
      * @throws Exception
-     * @step. ^I see state of mute button has changed$
+     * @step. ^I see state of mute button has (not )?changed for ongoing call$
      */
-    @Then("^I see state of mute button has changed for ongoing call$")
-    public void VerifyStateOfMuteButtonHasChanged() throws Exception {
-        if (!getPage().muteButtonStateHasChanged()) {
-            throw new AssertionError("State of mute button has not changed");
+    @Then("^I see state of mute button has (not )?changed for ongoing call$")
+    public void VerifyStateOfMuteButtonHasChanged(String not) throws Exception {
+        if (not == null) {
+            if (!muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE)) {
+                throw new AssertionError("State of mute button has not changed");
+            }
+        } else if (!specialButtonState.isNotChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE)) {
+            throw new AssertionError("State of mute button has changed");
         }
+    }
+    
+    /**
+     * Verifies speaker button is not present
+     *
+     * @throws Exception
+     * @step. ^I do not see speaker button for ongoing call$
+     */
+    @Then("^I do not see speaker button for ongoing call$")
+    public void IDoNotSeeSpeakerButton() throws Exception {
+            if (getPage().toggleSpeakerIsVisible()) {
+                throw new AssertionError("Speaker button should not be visible");
+            }
     }
 }

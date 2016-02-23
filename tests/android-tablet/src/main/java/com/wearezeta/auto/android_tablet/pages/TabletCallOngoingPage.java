@@ -4,13 +4,14 @@ import com.wearezeta.auto.android.pages.CallOngoingPage;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 
 public class TabletCallOngoingPage extends AndroidTabletPage {
 
     public TabletCallOngoingPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
-    
+
     private CallOngoingPage getPage() throws Exception {
         return this.getAndroidPageInstance(CallOngoingPage.class);
     }
@@ -25,22 +26,6 @@ public class TabletCallOngoingPage extends AndroidTabletPage {
 
     public boolean waitUntilNameAppearsOnCallingBarCaption(String name) throws Exception {
         return getPage().waitUntilNameAppearsOnCallingBarCaption(name);
-    }
-
-    public void rememberSpecialActionButtonState() throws Exception {
-        getPage().rememberSpecialActionButtonState();
-    }
-    
-    public void rememberMuteButtonState() throws Exception {
-        getPage().rememberMuteButtonState();
-    }
-
-    public boolean specialActionButtonStateHasChanged() throws Exception {
-        return getPage().specialActionButtonStateHasChanged();
-    }
-    
-    public boolean muteButtonStateHasChanged() throws Exception {
-        return getPage().muteButtonStateHasChanged();
     }
 
     public boolean hangupIsVisible() throws Exception {
@@ -79,4 +64,11 @@ public class TabletCallOngoingPage extends AndroidTabletPage {
         return getPage().getNumberOfParticipants();
     }
 
+    public FunctionalInterfaces.StateGetter getMuteButtonStateFunction() throws Exception {
+        return getPage().getMuteButtonStateFunction();
+    }
+
+    public FunctionalInterfaces.StateGetter getSpecialButtonStateFunction() throws Exception {
+        return getPage().getSpecialButtonStateFunction();
+    }
 }

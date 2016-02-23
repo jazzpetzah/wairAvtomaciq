@@ -52,10 +52,6 @@ public class ImageFullScreenPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isSentTimeVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFullScreenTimeStamp);
-    }
-
     public String getTimeStamp() throws Exception {
         return getElement(nameFullScreenTimeStamp).getText();
     }
@@ -64,4 +60,11 @@ public class ImageFullScreenPage extends IOSPage {
         getElement(nameFullScreenSketchButton).click();
     }
 
+    public boolean isDownloadButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameFullScreenDownloadButton);
+    }
+
+    public boolean isSentTimeInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameFullScreenTimeStamp);
+    }
 }

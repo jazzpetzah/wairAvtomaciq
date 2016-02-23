@@ -226,8 +226,7 @@ Feature: Search
     And I tap on user name found on People picker page <Contact1>
     And I see call action button on People picker page
     And I click Call action button on People picker page
-    Then I see call overlay
-    Then I see calling overlay Big bar
+    Then I see outgoing call
 
     Examples:
       | Name      | Contact1  |
@@ -342,10 +341,9 @@ Feature: Search
     And I tap on user name found on People picker page <Contact2>
     And I see call action button on People picker page
     And I click Call action button on People picker page
-    Then I see call overlay
-    Then I see calling overlay Big bar
-    When I tap conversation details button
-    Then I see the correct number of participants in the title 2
+    Then I see outgoing call
+#    When I tap conversation details button
+#    Then I see the correct number of participants in the title 2
 
     Examples:
       | Name      | Contact1  | Contact2  |
