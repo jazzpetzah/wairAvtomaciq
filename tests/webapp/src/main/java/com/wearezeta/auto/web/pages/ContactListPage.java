@@ -735,10 +735,10 @@ public class ContactListPage extends WebPage {
 				By.xpath(locator));
 	}
 
-	public boolean isEndVideoCallButtonVisibleForConversation(
+	public boolean isEndCallButtonVisibleForConversation(
 			String conversationName) throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final String locator = WebAppLocators.ContactListPage.xpathEndVideoCallButtonByContactName
+		final String locator = WebAppLocators.ContactListPage.xpathEndCallButtonByContactName
 				.apply(conversationName);
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(locator));

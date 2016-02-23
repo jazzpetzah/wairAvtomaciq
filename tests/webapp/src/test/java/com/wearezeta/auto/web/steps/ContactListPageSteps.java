@@ -948,7 +948,7 @@ public class ContactListPageSteps {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		ContactListPage contactListPage = webappPagesCollection
 				.getPage(ContactListPage.class);
-		contactListPage.isEndVideoCallButtonVisibleForConversation(contact);
+		contactListPage.isEndCallButtonVisibleForConversation(contact);
 	}
 
 	/**

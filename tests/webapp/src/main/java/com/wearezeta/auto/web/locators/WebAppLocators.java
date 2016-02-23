@@ -88,7 +88,7 @@ public final class WebAppLocators {
 								+ "*//*[@data-uie-name='do-video-call']",
 						name);
 
-		public static final Function<String, String> xpathEndVideoCallButtonByContactName = (
+		public static final Function<String, String> xpathEndCallButtonByContactName = (
 				name) -> String
 				.format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
 								+ "*//*[@data-uie-name='do-call-controls-call-ignore']",
