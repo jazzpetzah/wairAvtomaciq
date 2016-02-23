@@ -89,7 +89,7 @@ public class ContactListPageSteps {
     @When("^I remember the state of conversation item number (\\d+)$")
     public void IRememberConvoItemStateByIdx(int convoIdx) throws Exception {
         this.savedConvoItemStatesByIdx.put(convoIdx,
-                new ElementState(() -> getContactListPage().getConversationEntryScreenshot(convoIdx))
+                new ElementState(() -> getContactListPage().getConversationEntryScreenshot(convoIdx)).remember()
         );
     }
 
