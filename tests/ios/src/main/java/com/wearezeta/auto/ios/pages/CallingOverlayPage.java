@@ -115,7 +115,7 @@ public class CallingOverlayPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), getButtonLocatorByName(name));
     }
 
-    public boolean isButtonSelected(String name, String value) throws Exception {
+    public boolean isMuteButtonSelected(String value) throws Exception {
         By locator = By.xpath(xpathStrIsMuteButtonSelected.apply(value));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
