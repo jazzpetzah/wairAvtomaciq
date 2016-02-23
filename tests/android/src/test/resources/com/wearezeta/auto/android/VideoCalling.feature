@@ -11,10 +11,10 @@ Feature: VideoCalling
     And I see incoming call
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
-    And I see ongoing call
-    And I hang up ongoing call
+    And I see ongoing video call
+    And I hang up ongoing video call
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
-    And I do not see ongoing call
+    And I do not see ongoing video call
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
@@ -51,10 +51,10 @@ Feature: VideoCalling
     Then I see incoming call
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
-    And I see ongoing call
-    And I hang up ongoing call
+    And I see ongoing video call
+    And I hang up ongoing video call
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
-    And I do not see ongoing call
+    And I do not see ongoing video call
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
@@ -93,10 +93,10 @@ Feature: VideoCalling
     Then I see outgoing call
     When <Contact> accepts next incoming call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see ongoing call
-    When I hang up ongoing call
+    And I see ongoing video call
+    When I hang up ongoing video call
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
-    And I do not see ongoing call
+    And I do not see ongoing video call
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
