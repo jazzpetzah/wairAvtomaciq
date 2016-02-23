@@ -118,8 +118,7 @@ Feature: Video Calling
     Given I sign in using my email or phone number
     And I dont see conversation <Contact> in contact list
     When <Contact> starts a video call to me using <CallBackend>
-    And I do not see Calling overlay
-    And <Contact> stops all calls to me
+    Then I do not see Calling overlay
 
     Examples:
       | Name      | Contact   | CallBackend |
