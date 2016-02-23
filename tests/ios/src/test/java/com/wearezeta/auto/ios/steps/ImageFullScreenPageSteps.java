@@ -55,8 +55,10 @@ public class ImageFullScreenPageSteps {
 
     @When("I verify image caption and download button are not shown")
     public void IDontSeeImageCaptionAndDownloadButton() throws Exception {
-        Assert.assertFalse(getImageFullScreenPage().isDownloadButtonVisible());
-        Assert.assertFalse(getImageFullScreenPage().isSentTimeVisible());
+        Assert.assertTrue("Image download button is visible, but should be hidden",
+                getImageFullScreenPage().isDownloadButtonInvisible());
+        Assert.assertTrue("Image timestamp label is visible, but should be hidden",
+                getImageFullScreenPage().isSentTimeInvisible());
     }
 
     @When("I tap close fullscreen page button")
