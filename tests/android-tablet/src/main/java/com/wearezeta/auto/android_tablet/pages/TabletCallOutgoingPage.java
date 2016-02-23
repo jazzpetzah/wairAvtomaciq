@@ -4,6 +4,7 @@ import com.wearezeta.auto.android.pages.CallOutgoingPage;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 
 public class TabletCallOutgoingPage extends AndroidTabletPage {
 
@@ -24,22 +25,6 @@ public class TabletCallOutgoingPage extends AndroidTabletPage {
         return getPage().waitUntilNotVisible();
     }
     
-    public void rememberSpecialActionButtonState() throws Exception {
-        getPage().rememberSpecialActionButtonState();
-    }
-    
-    public void rememberMuteButtonState() throws Exception {
-        getPage().rememberMuteButtonState();
-    }
-
-    public boolean specialActionButtonStateHasChanged() throws Exception {
-        return getPage().specialActionButtonStateHasChanged();
-    }
-    
-    public boolean muteButtonStateHasChanged() throws Exception {
-        return getPage().muteButtonStateHasChanged();
-    }
-
     public void toggleMute() throws Exception {
         getPage().toggleMute();
     }
@@ -54,6 +39,14 @@ public class TabletCallOutgoingPage extends AndroidTabletPage {
     
     public void toggleVideo() throws Exception {
         getPage().toggleVideo();
+    }
+    
+    public FunctionalInterfaces.StateGetter getMuteButtonStateFunction() throws Exception {
+        return getPage().getMuteButtonStateFunction();
+    }
+
+    public FunctionalInterfaces.StateGetter getSpecialButtonStateFunction() throws Exception {
+        return getPage().getSpecialButtonStateFunction();
     }
     
 }

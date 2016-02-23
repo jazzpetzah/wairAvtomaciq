@@ -35,18 +35,19 @@ Feature: Calling
     Then I see incoming call
     When I swipe to accept the call
     Then I see ongoing call
-    When I remember the current state of <MuteBtnName> button on the calling overlay
-    And I tap <MuteBtnName> button on the calling overlay
-    Then I see <MuteBtnName> button state is changed on the calling overlay
-    And I tap <MuteBtnName> button on the calling overlay
-    Then I see <MuteBtnName> button state is not changed on the calling overlay
-    And I do not see <SpeakerBtnName> button on the calling overlay
+    When I remember state of mute button for ongoing call
+    And I press mute button for ongoing call
+    Then I see state of mute button has changed for ongoing call
+    When I remember state of mute button for ongoing call
+    And I press mute button for ongoing call
+    Then I see state of mute button has changed for ongoing call
+    And I do not see speaker button for ongoing call
     When I hang up ongoing call
     Then I do not see ongoing call
 
     Examples:
-      | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
-      | user1Name | user2Name | autocall    | Speaker        | Mute        |
+      | Name      | Contact   | CallBackend | SpeakerBtnName |
+      | user1Name | user2Name | autocall    | Speaker        |
 
   @C821 @id4009 @regression @rc @rc44
   Scenario Outline: I can join group call in foreground (landscape)

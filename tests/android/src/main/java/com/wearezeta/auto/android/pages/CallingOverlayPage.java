@@ -1,8 +1,8 @@
 package com.wearezeta.auto.android.pages;
 
-import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
@@ -13,16 +13,21 @@ public abstract class CallingOverlayPage extends AndroidPage {
     //Could be VideoOnOff or SpeakOnOff
     private static final By idRight = By.id("ccbv__calling_controls__right_button");
 
-    private ElementState specialButtonState = new ElementState(
-            () -> this.getElementScreenshot(getElement(idRight)).orElseThrow(
+    private FunctionalInterfaces.StateGetter specialButtonStateFunction = ()  -> this.getElementScreenshot(getElement(idRight)).orElseThrow(
                     () -> new IllegalStateException("Cannot get a screenshot of special button state")
-            )
-    );
-    private ElementState muteButtonState = new ElementState(
-            () -> this.getElementScreenshot(getElement(idMute)).orElseThrow(
-                    () -> new IllegalStateException("Cannot get a screenshot of Mute button state")
-            )
-    );
+            );
+    private FunctionalInterfaces.StateGetter muteButtonStateFunction = ()  -> this.getElementScreenshot(getElement(idMute)).orElseThrow(
+                    () -> new IllegalStateException("Cannot get a screenshot of mute button state")
+            );
+    
+
+    public FunctionalInterfaces.StateGetter getSpecialButtonStateFunction() {
+        return specialButtonStateFunction;
+    }
+
+    public FunctionalInterfaces.StateGetter getMuteButtonStateFunction() {
+        return muteButtonStateFunction;
+    }
 
     public CallingOverlayPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -38,25 +43,6 @@ public abstract class CallingOverlayPage extends AndroidPage {
 
     private boolean specialActionIsVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idRight);
-    }
-
-    public void rememberSpecialActionButtonState() throws Exception {
-        specialButtonState.remember();
-    }
-
-    public void rememberMuteButtonState() throws Exception {
-        muteButtonState.remember();
-    }
-
-    private static final int STATE_CHANGE_TIMEOUT = 15;
-    private static final double MIN_BUTTON_SIMILARITY_SCORE = 0.4;
-
-    public boolean specialActionButtonStateHasChanged() throws Exception {
-        return specialButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
-    }
-
-    public boolean muteButtonStateHasChanged() throws Exception {
-        return muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
     }
 
     public void toggleMute() throws Exception {

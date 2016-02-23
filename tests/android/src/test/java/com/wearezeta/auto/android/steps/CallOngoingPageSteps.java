@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.pages.CallOngoingPage;
+import com.wearezeta.auto.common.misc.ElementState;
 
 import cucumber.api.java.en.Then;
 
@@ -10,6 +11,14 @@ import static org.junit.Assert.assertTrue;
 public class CallOngoingPageSteps {
 
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
+    
+    private final ElementState specialButtonState;
+    private final ElementState muteButtonState;
+
+    public CallOngoingPageSteps() throws Exception {
+        this.muteButtonState = new ElementState(getPage().getMuteButtonStateFunction());
+        this.specialButtonState = new ElementState(getPage().getSpecialButtonStateFunction());
+    }
 
     private CallOngoingPage getPage() throws Exception {
         return pagesCollection.getPage(CallOngoingPage.class);
@@ -122,7 +131,7 @@ public class CallOngoingPageSteps {
      */
     @When("^I remember state of special action button for ongoing call$")
     public void IRememberStateOfSpacialActionButton() throws Exception {
-        getPage().rememberSpecialActionButtonState();
+        specialButtonState.remember();
     }
     
     /**
@@ -133,7 +142,7 @@ public class CallOngoingPageSteps {
      */
     @When("^I remember state of mute button for ongoing call$")
     public void IRememberStateOfMuteButton() throws Exception {
-        getPage().rememberMuteButtonState();
+        muteButtonState.remember();
     }
     
     /**
@@ -158,6 +167,9 @@ public class CallOngoingPageSteps {
         VerifyStateOfSpecialActionButtonHasChanged();
     }
     
+    private static final int STATE_CHANGE_TIMEOUT = 15;
+    private static final double MIN_BUTTON_SIMILARITY_SCORE = 0.4;
+    
     /**
      * Verifies change of special action button state
      *
@@ -166,7 +178,7 @@ public class CallOngoingPageSteps {
      */
     @Then("^I see state of special action button has changed for ongoing call$")
     public void VerifyStateOfSpecialActionButtonHasChanged() throws Exception {
-        if (!getPage().specialActionButtonStateHasChanged()) {
+        if (!specialButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE)) {
             throw new AssertionError("State of special action button has not changed");
         }
     }
@@ -179,7 +191,7 @@ public class CallOngoingPageSteps {
      */
     @Then("^I see state of mute button has changed for ongoing call$")
     public void VerifyStateOfMuteButtonHasChanged() throws Exception {
-        if (!getPage().muteButtonStateHasChanged()) {
+        if (!muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE)) {
             throw new AssertionError("State of mute button has not changed");
         }
     }
