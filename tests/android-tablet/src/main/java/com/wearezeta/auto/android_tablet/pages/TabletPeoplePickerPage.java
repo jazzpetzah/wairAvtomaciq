@@ -9,7 +9,6 @@ import org.openqa.selenium.By;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import org.openqa.selenium.WebElement;
 
 public class TabletPeoplePickerPage extends AndroidTabletPage {
 
