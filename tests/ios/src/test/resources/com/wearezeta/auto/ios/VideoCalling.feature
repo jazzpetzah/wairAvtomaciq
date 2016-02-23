@@ -124,7 +124,7 @@ Feature: Video Calling
     And I remember Mute button state on calling overlay
     And I tap Mute button on Calling overlay
     Then I see Mute button is selected on calling overlay
-    And I see state of Mute button has changed on calling overlay page
+    And I see state of Mute button has changed on Calling overlay page
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |

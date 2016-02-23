@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.ios.pages.CallingOverlayPage;
 import org.junit.Assert;
 
@@ -11,8 +12,16 @@ import cucumber.api.java.en.When;
 public class CallPageSteps {
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    private final ElementState muteButtonState;
+
+    private static final int STATE_CHANGE_TIMEOUT = 15;
+    private static final double MIN_BUTTON_SIMILARITY_SCORE = 0.4;
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
+
+    public CallPageSteps() throws Exception {
+        this.muteButtonState = new ElementState(getCallingOverlayPage().getMuteButtonStateFunction());
+    }
 
     private CallingOverlayPage getCallingOverlayPage() throws Exception {
         return pagesCollection.getPage(CallingOverlayPage.class);
@@ -72,18 +81,18 @@ public class CallPageSteps {
      */
     @When("^I remember Mute button state on calling overlay$")
     public void IRememberMuteButtonStateOnCalling() throws Exception {
-        getCallingOverlayPage().rememberMuteButtonState();
+        muteButtonState.remember();
     }
 
     /**
      * Verifies if Mute button state was changed
      *
      * @throws Exception
-     * @step. ^I see state of Mute button has changed on calling overlay page$
+     * @step. ^I see state of Mute button has changed on Calling overlay page$
      */
-    @When("^I see state of Mute button has changed on calling overlay page$")
+    @When("^I see state of Mute button has changed on Calling overlay page$")
     public void VerifyStateOfMuteButtonHasChanged() throws Exception {
-        if (!getCallingOverlayPage().muteButtonStateHasChanged()) {
+        if (!muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE)) {
             throw new AssertionError("State of mute button has not changed");
         }
     }
