@@ -101,7 +101,8 @@ public class CallingSteps {
     public void UserXVerifesHavingXFlows(String callees, int numberOfFlows)
             throws Exception {
         for (String callee : splitAliases(callees)) {
-            Assert.assertTrue(commonCallingSteps.getFlows(callee).size() == numberOfFlows);
+            int actualFlowNumber = commonCallingSteps.getFlows(callee).size();
+            Assert.assertTrue(String.format("Expected flows number is : %s but actual flows number was : %s", numberOfFlows, actualFlowNumber), actualFlowNumber == numberOfFlows);
         }
     }
 
@@ -117,8 +118,8 @@ public class CallingSteps {
     public void UserXVerifesHavingXFlows(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
             for (Flow flow : commonCallingSteps.getFlows(callee)) {
-                Assert.assertTrue("incoming bytes", flow.getBytesIn() > 0L );
-                Assert.assertTrue("outgoing bytes", flow.getBytesOut() > 0L );
+                Assert.assertTrue("There is no incoming bytes", flow.getBytesIn() > 0L);
+                Assert.assertTrue("There is no outgoing bytes", flow.getBytesOut() > 0L);
             }
         }
     }
