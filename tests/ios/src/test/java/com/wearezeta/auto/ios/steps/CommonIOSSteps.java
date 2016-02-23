@@ -603,7 +603,7 @@ public class CommonIOSSteps {
                                                String isEncrypted,
                                                String imageFileName, String conversationType,
                                                String dstConversationName) throws Exception {
-        final String imagePath = IOSPage.getImagesPath() + imageFileName;
+        final String imagePath = CommonUtils.getSimulatorImagesPathFromConfig(this.getClass()) + "/" + imageFileName;
         final boolean isGroup = conversationType.equals("group");
         if (isEncrypted == null) {
             commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
