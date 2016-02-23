@@ -23,6 +23,18 @@ public class CallOngoingVideoPageSteps {
     private CallOngoingVideoPage getPage() throws Exception {
         return pagesCollection.getPage(CallOngoingVideoPage.class);
     }
+    
+    /**
+     * Taps on the ongoing video
+     *
+     * @throws Exception
+     * @step. ^I tap on ongoing video$
+     */
+    @When("^I tap on ongoing video$")
+    public void ITapOnOngoingVideo()
+            throws Exception {
+        getPage().tapOngoingVideo();
+    }
 
     /**
      * Hangs up the current call

@@ -110,6 +110,27 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
+  @C12114 @staging
+  Scenario Outline: (AUDIO-830) Verify I can switch to another incoming audio call
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    And <Contact1> starts a video call to me using <VideoCallBackend>
+    And I see call status message contains "<Contact1> CALLING"
+    And I tap Accept Video button on Calling overlay
+    When <Contact2> calls me using <AudioCallBackend>
+    And I see call status message contains "<Contact2> CALLING"
+    Then I tap Accept button on Calling overlay
+    And I do not see Accept Video button on Calling overlay
+    And I see Leave button on Calling overlay
+    And <Contact2> verifies that call status to me is changed to active in <Timeout> seconds
+    And <Contact1> verifies that call status to me is changed to destroyed in <Timeout> seconds
+
+    Examples:
+      | Name      | Contact1  | Contact2  | VideoCallBackend | AudioCallBackend | Timeout |
+      | user1Name | user2Name | user3Name | chrome           | autocall         | 60      |
+
   @C12110 @staging
   Scenario Outline: Verify blocked contact could not get through with a Video call
     Given There are 2 users where <Name> is me

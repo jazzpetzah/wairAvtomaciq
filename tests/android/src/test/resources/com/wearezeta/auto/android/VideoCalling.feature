@@ -12,6 +12,7 @@ Feature: VideoCalling
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
+    And I tap on ongoing video
     And I hang up ongoing video call
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
@@ -52,6 +53,7 @@ Feature: VideoCalling
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
+    And I tap on ongoing video
     And I hang up ongoing video call
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
@@ -80,7 +82,6 @@ Feature: VideoCalling
 
   @C36389 @calling_basic @staging
   Scenario Outline: Verify I can start Video call from the conversation
-
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
@@ -94,6 +95,7 @@ Feature: VideoCalling
     When <Contact> accepts next incoming call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see ongoing video call
+    And I tap on ongoing video
     When I hang up ongoing video call
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
