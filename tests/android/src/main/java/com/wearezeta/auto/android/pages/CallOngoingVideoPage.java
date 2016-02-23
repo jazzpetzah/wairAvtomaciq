@@ -26,24 +26,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOngoingCallContainer);
     }
 
-    @Override
-    public void toggleVideo() throws Exception {
-        getElementIfDisplayed(xpathOngoingCallContainer).
-                orElseThrow(() -> new IllegalStateException("No ongoing video call detected")).click();
-        super.toggleVideo();
-    }
-
-    @Override
-    public void hangup() throws Exception {
-        getElementIfDisplayed(xpathOngoingCallContainer).
-                orElseThrow(() -> new IllegalStateException("No ongoing video call detected")).click();
-        super.hangup();
-    }
-
-    @Override
-    public void toggleMute() throws Exception {
-        getElementIfDisplayed(xpathOngoingCallContainer).
-                orElseThrow(() -> new IllegalStateException("No ongoing video call detected")).click();
-        super.toggleMute();
+    public void tapOngoingVideo() throws Exception {
+        getElement(xpathOngoingCallContainer).click();
     }
 }
