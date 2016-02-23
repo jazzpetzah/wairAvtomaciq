@@ -109,3 +109,18 @@ Feature: Video Calling
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
+
+  @C12110 @staging
+  Scenario Outline: Verify blocked contact could not get through with a Video call
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User Myself blocks user <Contact>
+    Given I sign in using my email or phone number
+    And I dont see conversation <Contact> in contact list
+    When <Contact> starts a video call to me using <CallBackend>
+    And I do not see Calling overlay
+    And <Contact> stops all calls to me
+
+    Examples:
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |
