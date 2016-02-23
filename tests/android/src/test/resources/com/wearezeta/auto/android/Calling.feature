@@ -198,9 +198,9 @@ Feature: Calling
     And I press Call button
     Then I see outgoing call
     When <Contact1>,<Contact2> accept next incoming call automatically
-    Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    # Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see ongoing call
-    When I hang up ongoing call
+    And I hang up ongoing call
     Then I do not see ongoing call
 
     Examples:
