@@ -113,23 +113,6 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  @C3177 @regression @id1369
-  Scenario Outline: Verify Ping animation in the conversations list
-    Given There are 2 users where <Name> is me
-    Given User Myself removes his avatar picture
-    Given <Contact> is connected to Myself
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    Given I remember the state of <Contact> conversation item
-    When User <Contact> securely pings conversation Myself
-    # Wait for ping animation
-    And I wait for 2 seconds
-    Then I see the state of <Contact> conversation item is changed
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @C104 @regression @id2761
   Scenario Outline: Verify conversations are sorted according to most recent activity
     Given There are 4 users where <Name> is me
