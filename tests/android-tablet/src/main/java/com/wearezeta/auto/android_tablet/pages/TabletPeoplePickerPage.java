@@ -22,14 +22,11 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        final Optional<WebElement> pickerSearch = getElementIfDisplayed(PeoplePickerPage.xpathMainSearchField);
-        return pickerSearch.isPresent() && pickerSearch.get().getLocation().getX() >= 0;
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.idPickerListContainer);
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        final Optional<WebElement> pickerSearch = getElementIfDisplayed(PeoplePickerPage.xpathMainSearchField, 3);
-        return !pickerSearch.isPresent() || pickerSearch.get().getLocation().getX() < 0 ||
-                DriverUtils.waitUntilLocatorDissapears(getDriver(), PeoplePickerPage.xpathTopPeopleAvatars, 3);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), PeoplePickerPage.idPickerListContainer);
     }
 
     public void tapCloseButton() throws Exception {
