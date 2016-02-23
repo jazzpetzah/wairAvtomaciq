@@ -8,10 +8,10 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 
 public abstract class CallingOverlayPage extends AndroidPage {
-    private static final By idMute = By.id("ccbv__calling_controls__mute");
-    private static final By idHangup = By.id("ccbv__calling_controls__hangup");
+    protected static final By idMute = By.id("ccbv__calling_controls__mute");
+    protected static final By idHangup = By.id("ccbv__calling_controls__hangup");
     //Could be VideoOnOff or SpeakOnOff
-    private static final By idRight = By.id("ccbv__calling_controls__right_button");
+    protected static final By idRight = By.id("ccbv__calling_controls__right_button");
 
     private FunctionalInterfaces.StateGetter specialButtonStateFunction = ()  -> this.getElementScreenshot(getElement(idRight)).orElseThrow(
                     () -> new IllegalStateException("Cannot get a screenshot of special button state")
