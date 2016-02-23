@@ -38,8 +38,8 @@ public class CallingOverlayPage extends IOSPage {
     private static final By xpathGroupCallAvatars = By.xpath(
             "//UIAWindow[@name='ZClientNotificationWindow']//UIACollectionCell");
 
-    private static final FunctionalInterfaces.FunctionFor2Parameters<String, String, String> xpathStrIsButtonSelected = (name, value) ->
-            String.format("//UIAButton[@name='%s' and @value='%s']", name, value);
+    private static final Function<String, String> xpathStrIsMuteButtonSelected = value ->
+            String.format("//UIAButton[@name='CallMuteButton' and @value='%s']", value);
 
     private static final By xpathGroupCallFullMessage = By.xpath("//UIAAlert[@name='The call is full']");
 
@@ -116,7 +116,7 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isButtonSelected(String name, String value) throws Exception {
-        By locator = By.xpath(xpathStrIsButtonSelected.apply(name, value));
+        By locator = By.xpath(xpathStrIsMuteButtonSelected.apply(value));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 

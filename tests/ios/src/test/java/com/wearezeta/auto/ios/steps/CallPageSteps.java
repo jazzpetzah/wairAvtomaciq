@@ -58,9 +58,9 @@ public class CallPageSteps {
     @When("^I see (Mute|Call Video) button is (not )?selected on calling overlay$")
     public void ISeeButtonSelected(String buttonName, String shouldBeSelected) throws Exception {
         if (shouldBeSelected == null) {
-            Assert.assertTrue(getCallingOverlayPage().isButtonSelected(buttonName, "1"));
+            Assert.assertTrue("Button is not selected but should be", getCallingOverlayPage().isButtonSelected(buttonName, "1"));
         } else {
-            Assert.assertTrue(getCallingOverlayPage().isButtonSelected(buttonName, ""));
+            Assert.assertTrue("Button is selected but shouldn't be", getCallingOverlayPage().isButtonSelected(buttonName, ""));
         }
 
     }

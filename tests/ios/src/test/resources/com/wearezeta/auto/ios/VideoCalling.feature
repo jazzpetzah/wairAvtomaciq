@@ -120,10 +120,10 @@ Feature: Video Calling
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept Video button on Calling overlay
     And I see Mute button on Calling overlay
-    And I see Mute button is not selected
+    And I see Mute button is not selected on calling overlay
     And I remember Mute button state on calling overlay
     And I tap Mute button on Calling overlay
-    Then I see Mute button is selected
+    Then I see Mute button is selected on calling overlay
     And I see state of Mute button has changed on calling overlay page
 
     Examples:
