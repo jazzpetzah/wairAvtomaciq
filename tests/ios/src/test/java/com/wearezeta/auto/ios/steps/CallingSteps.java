@@ -8,8 +8,7 @@ import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import org.junit.Assert;
 
 public class CallingSteps {
 
@@ -102,7 +101,7 @@ public class CallingSteps {
     public void UserXVerifesHavingXFlows(String callees, int numberOfFlows)
             throws Exception {
         for (String callee : splitAliases(callees)) {
-            assertThat(commonCallingSteps.getFlows(callee), hasSize(numberOfFlows));
+            Assert.assertTrue(commonCallingSteps.getFlows(callee).size() == numberOfFlows);
         }
     }
 
@@ -118,8 +117,8 @@ public class CallingSteps {
     public void UserXVerifesHavingXFlows(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
             for (Flow flow : commonCallingSteps.getFlows(callee)) {
-                assertThat("incoming bytes", flow.getBytesIn(), greaterThan(0L));
-                assertThat("outgoing bytes", flow.getBytesOut(), greaterThan(0L));
+                Assert.assertTrue("incoming bytes", flow.getBytesIn() > 0L );
+                Assert.assertTrue("outgoing bytes", flow.getBytesOut() > 0L );
             }
         }
     }
