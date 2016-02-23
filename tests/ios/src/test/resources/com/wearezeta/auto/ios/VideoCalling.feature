@@ -131,6 +131,20 @@ Feature: Video Calling
       | Name      | Contact1  | Contact2  | VideoCallBackend | AudioCallBackend | Timeout |
       | user1Name | user2Name | user3Name | chrome           | autocall         | 60      |
 
+  @C12110 @staging
+  Scenario Outline: Verify blocked contact could not get through with a Video call
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User Myself blocks user <Contact>
+    Given I sign in using my email or phone number
+    And I dont see conversation <Contact> in contact list
+    When <Contact> starts a video call to me using <CallBackend>
+    Then I do not see Calling overlay
+
+    Examples:
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |
+
   @C28851 @staging
   Scenario Outline: Verify starting video call with action button in Search
     Given There are 2 user where <Name> is me
