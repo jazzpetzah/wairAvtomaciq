@@ -248,16 +248,14 @@ public abstract class IOSPage extends BasePage {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             final long millisecondsStarted = System.currentTimeMillis();
-            IOSSimulatorHelper.switchToAppsList();
+            IOSSimulatorHelper.switchAppsList();
             final long clickAtHelperDuration = (System.currentTimeMillis() - millisecondsStarted) / 1000; // seconds
             if (timeSeconds > clickAtHelperDuration + 1) {
                 Thread.sleep((timeSeconds - clickAtHelperDuration) * 1000);
             } else {
                 Thread.sleep(2000);
             }
-            IOSSimulatorHelper.clickAt("0.3", "0.5",
-                    String.format("%.3f", DriverUtils.SINGLE_TAP_DURATION / 1000.0));
-            // Wait for transition animation
+            IOSSimulatorHelper.switchAppsList();
             Thread.sleep(2000);
         } else {
             // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
