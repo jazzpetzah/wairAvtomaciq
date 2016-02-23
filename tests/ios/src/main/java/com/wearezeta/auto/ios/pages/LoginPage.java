@@ -111,9 +111,12 @@ public class LoginPage extends IOSPage {
     private static final int LOGIN_TIMEOUT_SECONDS = 30;
 
     public void dismissSettingsWarning() throws Exception {
-        getElement(nameMaybeLater,
-                String.format("MAYBE LATER label is not visible after %s seconds timeout", LOGIN_TIMEOUT_SECONDS),
-                LOGIN_TIMEOUT_SECONDS).click();
+        final WebElement maybeLaterBtn = getElement(nameMaybeLater, "MAYBE LATER link is not visible",
+                LOGIN_TIMEOUT_SECONDS);
+        maybeLaterBtn.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameMaybeLater, 3)) {
+            maybeLaterBtn.click();
+        }
     }
 
     public Boolean isSelfAvatarVisible() throws Exception {

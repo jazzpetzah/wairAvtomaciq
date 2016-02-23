@@ -36,8 +36,6 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By nameEditingItemPaste = By.name("Paste");
 
-    private static String imagesPath = "";
-
     private static final Function<String, String> xpathStrAlertByText = text ->
             String.format("//UIAAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
 
@@ -54,8 +52,6 @@ public abstract class IOSPage extends BasePage {
     public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
 
-        setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this.getClass()));
-
         this.onScreenKeyboard = new IOSKeyboard(driver);
     }
 
@@ -67,22 +63,22 @@ public abstract class IOSPage extends BasePage {
      * @throws Exception
      */
     private static ZetaIOSDriver fixUITreeIfBroken(final ZetaIOSDriver drv) throws Exception {
-//        if (drv.findElements(By.className("UIAWindow")).size() > 0) {
-//            return drv;
-//        }
-//        log.warn("Detected Appium UI tree corruption. Trying to fix...");
-//        try {
-//            if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
-//                drv.rotate(ScreenOrientation.LANDSCAPE);
-//                drv.rotate(ScreenOrientation.PORTRAIT);
-//            } else {
-//                drv.rotate(ScreenOrientation.PORTRAIT);
-//                drv.rotate(ScreenOrientation.LANDSCAPE);
-//            }
-//            Thread.sleep(500);
-//        } catch (WebDriverException e) {
-//            // pass silently
-//        }
+        if (drv.findElements(By.className("UIAWindow")).size() > 0) {
+            return drv;
+        }
+        log.warn("Detected Appium UI tree corruption. Trying to fix...");
+        try {
+            if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
+                drv.rotate(ScreenOrientation.LANDSCAPE);
+                drv.rotate(ScreenOrientation.PORTRAIT);
+            } else {
+                drv.rotate(ScreenOrientation.PORTRAIT);
+                drv.rotate(ScreenOrientation.LANDSCAPE);
+            }
+            Thread.sleep(500);
+        } catch (WebDriverException e) {
+            // pass silently
+        }
         return drv;
     }
 
@@ -112,14 +108,6 @@ public abstract class IOSPage extends BasePage {
 
     public void smallScrollUp() throws Exception {
         this.getDriver().swipe(10, 220, 10, 200, 500);
-    }
-
-    public static String getImagesPath() {
-        return imagesPath;
-    }
-
-    public static void setImagesPath(String imagesPath) {
-        IOSPage.imagesPath = imagesPath;
     }
 
     public void clickPopupSelectAllButton() throws Exception {
@@ -248,16 +236,14 @@ public abstract class IOSPage extends BasePage {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             final long millisecondsStarted = System.currentTimeMillis();
-            IOSSimulatorHelper.switchToAppsList();
+            IOSSimulatorHelper.switchAppsList();
             final long clickAtHelperDuration = (System.currentTimeMillis() - millisecondsStarted) / 1000; // seconds
             if (timeSeconds > clickAtHelperDuration + 1) {
                 Thread.sleep((timeSeconds - clickAtHelperDuration) * 1000);
             } else {
                 Thread.sleep(2000);
             }
-            IOSSimulatorHelper.clickAt("0.3", "0.5",
-                    String.format("%.3f", DriverUtils.SINGLE_TAP_DURATION / 1000.0));
-            // Wait for transition animation
+            IOSSimulatorHelper.switchAppsList();
             Thread.sleep(2000);
         } else {
             // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201

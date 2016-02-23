@@ -27,6 +27,7 @@ public class ElementState {
     }
 
     private boolean checkState(Function<Double, Boolean> checkerFunc, int timeoutSeconds) throws Exception {
+        final long msTimeout = timeoutSeconds * 1000;
         final long msStarted = System.currentTimeMillis();
         do {
             final BufferedImage currentState = stateGetter.getState();
@@ -35,12 +36,12 @@ public class ElementState {
                             () -> new IllegalStateException("Please remember the previous element state first")),
                     currentState, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
             log.debug(String.format("Actual score: %.4f; Time left: %s ms", score,
-                    System.currentTimeMillis() - msStarted));
+                    msTimeout + msStarted - System.currentTimeMillis()));
             if (checkerFunc.apply(score)) {
                 return true;
             }
             Thread.sleep(MS_INTERVAL);
-        } while (System.currentTimeMillis() - msStarted <= timeoutSeconds);
+        } while (System.currentTimeMillis() - msStarted <= msTimeout);
         return false;
     }
 

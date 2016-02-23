@@ -55,7 +55,7 @@ public class PeoplePickerPage extends AndroidPage {
 
     private static final By idNoResultsFound = By.id("ttv_pickuser__error_header");
 
-    private static final By idPickerListContainer = By.id("pfac__pickuser__header_list_view");
+    public static final By idPickerListContainer = By.id("pfac__pickuser__header_list_view");
 
     public PeoplePickerPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
