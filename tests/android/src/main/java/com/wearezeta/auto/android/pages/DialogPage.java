@@ -59,7 +59,7 @@ public class DialogPage extends AndroidPage {
 
     public static final By idVerifiedConversationShield = By.id("cursor_button_giphy");
 
-/    private static final By idPlayPauseMedia = By.id("gtv__media_play");
+    private static final By idPlayPauseMedia = By.id("gtv__media_play");
 
     private static final By idYoutubePlayButton = By.id("gtv__youtube_message__play");
 
