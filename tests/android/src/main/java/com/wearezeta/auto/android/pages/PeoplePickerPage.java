@@ -30,6 +30,8 @@ public class PeoplePickerPage extends AndroidPage {
 
     public static final By idQuickMenuCallButton = By.id("gtv__conversation_quick_menu__call_button");
 
+    public static final By idQuickMenuVideoCallButton = By.id("gtv__conversation_quick_menu__video_call_button");
+
     private static final Function<String, String> xpathStrPeoplePickerGroupByName = name -> String
             .format("//*[@id='ttv_pickuser_searchconversation_name' and @value='%s']", name);
 
@@ -187,15 +189,6 @@ public class PeoplePickerPage extends AndroidPage {
         DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idPickerListContainer), 1000, 15, 15, 15, 180);
     }
 
-    public boolean waitUntilOpenOrCreateConversationButtonIsVisible(String expectedCaption) throws Exception {
-        final By locator = By.xpath(xpathStrCreateOrOpenConversationButtonByCaption.apply(expectedCaption));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public boolean waitUntilOpenOrCreateConversationButtonIsInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCreateOrOpenConversationButton);
-    }
-
     public void swipeDown(int durationMilliseconds) throws Exception {
         DriverUtils.swipeByCoordinates(getDriver(), durationMilliseconds, 50, 20, 50, 90);
     }
@@ -219,6 +212,8 @@ public class PeoplePickerPage extends AndroidPage {
                 return idQuickMenuCameraButton;
             case "call":
                 return idQuickMenuCallButton;
+            case "video call":
+                return idQuickMenuVideoCallButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown action button name '%s'", name));
         }
