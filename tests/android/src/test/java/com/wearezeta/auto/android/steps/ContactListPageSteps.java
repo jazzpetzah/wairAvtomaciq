@@ -339,9 +339,9 @@ public class ContactListPageSteps {
      */
     @When("^I remember unread messages indicator state for conversation (.*)")
     public void IRememberUnreadIndicatorState(String name) throws Exception {
-        final String comvoName = usrMgr.findUserByNameOrNameAlias(name).getName();
-        this.previousUnreadIndicatorState.put(name,
-                new ElementState(() -> getContactListPage().getMessageIndicatorScreenshot(comvoName)
+        final String convoName = usrMgr.findUserByNameOrNameAlias(name).getName();
+        this.previousUnreadIndicatorState.put(convoName,
+                new ElementState(() -> getContactListPage().getMessageIndicatorScreenshot(convoName)
                         .orElseThrow(IllegalStateException::new)).remember()
         );
     }
@@ -366,8 +366,7 @@ public class ContactListPageSteps {
                             "Please invoke the corresponding step to make a screenshot of previous state of '%s' conversation",
                             name));
         }
-        Assert.assertTrue(
-                String.format(
+        Assert.assertTrue(String.format(
                         "The current and previous states of Unread Dot for conversation '%s' seems to be very similar",
                         name),
                 this.previousUnreadIndicatorState.get(name).isChanged(10, MAX_UNREAD_DOT_SIMILARITY_THRESHOLD));
