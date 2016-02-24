@@ -446,20 +446,6 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Verify that there is only one ping message visible in conversation
-     *
-     * @throws Exception
-     * @step. ^I see only one ping message$
-     */
-    @When("^I see only one ping message$")
-    public void ISeeOnlyOnePingMessage() throws Exception {
-        assertThat(
-                "PING action",
-                webappPagesCollection.getPage(ConversationPage.class).waitForNumberOfMessageHeadersContain(
-                        Collections.singleton("PING")), equalTo(1));
-    }
-
-    /**
      * Start call in opened conversation
      *
      * @step. ^I call$
