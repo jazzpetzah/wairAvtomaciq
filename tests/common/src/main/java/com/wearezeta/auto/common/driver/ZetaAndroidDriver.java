@@ -129,13 +129,11 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     }
 
     @Override
-    public void swipe(int startx, int starty, int endx, int endy,
-                      int durationMilliseconds) {
+    public void swipe(int startx, int starty, int endx, int endy, int durationMilliseconds) {
         if (androidOSVersion.compareTo("4.3") < 0) {
             // adb swipe command under 4.2 does not support duration parameter
             // and this fucks up all the tests
-            swipeViaTouchActions(startx, starty, endx, endy,
-                    durationMilliseconds);
+            swipeViaTouchActions(startx, starty, endx, endy, durationMilliseconds);
             return;
         }
 
@@ -150,6 +148,16 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         } catch (Exception e) {
             throw new WebDriverException(e.getMessage(), e);
         }
+    }
+
+    public void longTap(WebElement el, int durationMilliseconds) {
+        final Point location = el.getLocation();
+        final Dimension size = el.getSize();
+        this.longTap(location.x + size.width / 2, location.y + size.height / 2, durationMilliseconds);
+    }
+
+    public void longTap(int x, int y, int durationMilliseconds) {
+        this.swipe(x, y, x, y, durationMilliseconds);
     }
 
     public String getOSVersionString() {
@@ -243,17 +251,13 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     }
 
     private boolean isSessionLostBecause(Throwable e) {
-        return (e instanceof UnreachableBrowserException)
-                || (e instanceof SessionNotFoundException);
+        return (e instanceof UnreachableBrowserException) || (e instanceof SessionNotFoundException);
     }
 
     /**
      * This is workaround for some Selendroid issues when driver just generates unknown error when some transition in AUT is
      * currently in progress. Retry helps
      *
-     * @param driverCommand
-     * @param parameters
-     * @return
      */
     @Override
     public Response execute(String driverCommand, Map<String, ?> parameters) {
