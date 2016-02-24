@@ -58,7 +58,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2621 @regression @rc @id2413 @deployPictures
+  @C2621 @regression @rc @id2413
   Scenario Outline: Verify sending image [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -76,7 +76,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2615 @regression @rc @id2407 @deployPictures
+  @C2615 @regression @rc @id2407
   Scenario Outline: Verify sending image [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -161,7 +161,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName        |
       | user1Name | user2Name | user3Name | ReceivePingGroupChat |
 
-  @C2627 @regression @id2669 @deployPictures
+  @C2627 @regression @id2669
   Scenario Outline: Receive a camera roll picture from user from contact list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -175,7 +175,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @C2628 @regression @id2670 @deployPictures
+  @C2628 @regression @id2670
   Scenario Outline: Receive a camera roll picture from user from contact list [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
