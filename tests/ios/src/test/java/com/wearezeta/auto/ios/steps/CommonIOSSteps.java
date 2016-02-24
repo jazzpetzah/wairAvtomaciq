@@ -750,7 +750,7 @@ public class CommonIOSSteps {
             });
         }
         pool.shutdown();
-        final int secondsTimeout = (names.size() / poolSize + 1) * 40;
+        final int secondsTimeout = (names.size() / poolSize + 1) * 60;
         if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS)) {
             throw new IllegalStateException(String.format(
                     "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
