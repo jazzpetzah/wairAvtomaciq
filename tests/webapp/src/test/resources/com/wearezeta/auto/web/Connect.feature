@@ -299,16 +299,25 @@ Feature: Connect
   Scenario Outline: Verify you dont receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <User1> is me
     Given Myself is connected to <User2>
-    Given User <User2> sends message <Msg1> to conversation <User1>
+    Given User <User2> changes avatar picture to default
     Given I switch to Sign In page
+    Given I Sign in using login <User2Email> and password <User2Password>
+    Given I am signed in properly
+    Given I open self profile
+    Given I click gear button on self profile page
+    Given I select Log out menu item on self profile page
+    Given I see the clear data dialog
+    Given I click Logout button on clear data dialog
+    Given I see Sign In page
     Given I Sign in using login <User1> and password <User1Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <User2>
+    And Contact <User2> sends encrypted message <Msg1> to user <User1>
     Then I see text message <Msg1>
     And <User1> blocked <User2>
     And Contact <User2> sends image <Picture2> to single user conversation <User1>
     And User <User2> pinged in the conversation with <User1>
-    And User <User2> sends message <Msg2> to conversation <User1>
+    And Contact <User2> sends encrypted message <Msg2> to user <User1>
     And I do not see Contact list with name <Name>
     When I open self profile
     And I click gear button on self profile page
