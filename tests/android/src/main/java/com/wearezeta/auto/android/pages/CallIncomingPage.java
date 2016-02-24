@@ -36,11 +36,11 @@ public class CallIncomingPage extends AndroidPage {
     }
     
     public void ignoreCall() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 50, 20, 50);
+        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 85, 20, 85);
     }
     
     public void acceptCall() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 50, 80, 50);
+        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 85, 80, 85);
     }
 
 }
