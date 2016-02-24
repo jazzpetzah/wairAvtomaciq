@@ -916,17 +916,14 @@ public class ContactListPageSteps {
 	 */
 	@When("^I( do not)? see mute call button for conversation (.*)")
 	public void ISeeMuteCallButton(String doNot, String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
 		if (doNot == null) {
-			contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-			ContactListPage contactListPage = webappPagesCollection
-					.getPage(ContactListPage.class);
 			contactListPage.isMuteCallButtonVisibleForConversation(contact);
 		}
 		else
 		{
-			contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-			ContactListPage contactListPage = webappPagesCollection
-					.getPage(ContactListPage.class);
 			contactListPage.isMuteCallButtonNotVisibleForConversation(contact);
 		}
 	}
@@ -941,17 +938,14 @@ public class ContactListPageSteps {
 	 */
 	@When("^I( do not)? see video button for conversation (.*)")
 	public void ISeeVideoButton(String doNot, String contact) throws Exception {
-		if (doNot == null) {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		ContactListPage contactListPage = webappPagesCollection
 				.getPage(ContactListPage.class);
+		if (doNot == null) {
 		contactListPage.isVideoButtonVisibleForConversation(contact);
 		}
 		else
 		{
-			contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-			ContactListPage contactListPage = webappPagesCollection
-					.getPage(ContactListPage.class);
 			contactListPage.isVideoButtonNotVisibleForConversation(contact);
 		}
 	}
@@ -966,17 +960,14 @@ public class ContactListPageSteps {
 	 */
 	@When("^I( do not)? see end call button for conversation (.*)")
 	public void ISeeEndCallButton(String doNot, String contact) throws Exception {
-		if (doNot == null) {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		ContactListPage contactListPage = webappPagesCollection
 				.getPage(ContactListPage.class);
+		if (doNot == null) {
 		contactListPage.isEndCallButtonVisibleForConversation(contact);
 		}
 		else
 		{
-			contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-			ContactListPage contactListPage = webappPagesCollection
-					.getPage(ContactListPage.class);
 			contactListPage.isEndCallButtonNotVisibleForConversation(contact);
 		}
 	}
@@ -1005,13 +996,12 @@ public class ContactListPageSteps {
 	@When("^I( do not)? see my self video view$")
 	public void IDoNotSeeMySelfVideoView(String doNot)
 			throws Exception {
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
 		if (doNot == null) {
-			ContactListPage contactListPage = webappPagesCollection
-					.getPage(ContactListPage.class);
 			contactListPage.isSelfVideoVisible();
 		}
 		else {
-			ContactListPage contactListPage = webappPagesCollection.getPage(ContactListPage.class);
 			contactListPage.isSelfVideoNotVisible();
 		}
 	}
