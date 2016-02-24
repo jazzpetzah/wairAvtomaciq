@@ -39,6 +39,7 @@ Feature: Sign In
     And I confirm sign out
     When User <Name2> is me
     And I sign in using my email or phone number
+    And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
     When I tap on my avatar
     Then I see personal info page
