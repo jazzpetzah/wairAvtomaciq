@@ -253,8 +253,6 @@ Feature: People View
     And I click People button in group conversation
     And I see Group Participants popover
     When I click Add People button on Group Participants popover
-    And I see Add People message on Group Participants popover
-    And I confirm add to chat on Group Participants popover
     And I input user name <Contact3> in search field on Group Participants popover
     And I select user <Contact3> from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
@@ -271,9 +269,8 @@ Feature: People View
     And I click People button in group conversation
     And I see Group Participants popover
     And I click Add People button on Group Participants popover
-    And I confirm add to chat on Group Participants popover
+    And I see message that everyone is already added on Group Participants popover
 
-    #add last verification - that no one left to add
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName       | Message   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | AddToGroupChat | YOU ADDED |

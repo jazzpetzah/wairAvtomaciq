@@ -414,6 +414,12 @@ public class GroupPopoverPageSteps {
 				.clickAddPeopleButton();
 	}
 
+	@When("^I see message that everyone is already added on Group Participants popover$")
+	public void ISeeEveryoneAlreadyAddedMessage() throws Exception {
+		Assert.assertTrue(webappPagesCollection.getPage(
+				GroupPopoverContainer.class).isEveryoneAlreadyAddedMessageShown());
+	}
+
 	@Then("I see (\\d+) participants in the Group Participants popover")
 	public void ISeeXParticipants(int amount) throws Exception {
 		assertThat("People information under conversation name",
@@ -423,19 +429,6 @@ public class GroupPopoverPageSteps {
 		assertThat("Actual amount of people in popover", webappPagesCollection
 				.getPage(GroupPopoverContainer.class).getPeopleCount(),
 				equalTo(amount));
-	}
-
-	/**
-	 * Verifies there is a question if you want to add people
-	 *
-	 * @step. ^I see Add People message on Group Participants popover$
-	 * @throws Exception
-	 *
-	 */
-	@When("^I see Add People message on Group Participants popover$")
-	public void ISeeAddPeopleMessage() throws Exception {
-		Assert.assertTrue(webappPagesCollection.getPage(
-				GroupPopoverContainer.class).isAddPeopleMessageShown());
 	}
 
 	/**
@@ -510,19 +503,6 @@ public class GroupPopoverPageSteps {
 	public void IClickOpenConversation() throws Exception {
 		webappPagesCollection.getPage(GroupPopoverContainer.class)
 				.clickOpenConvButton();
-	}
-
-	/**
-	 * Click on continue people button
-	 *
-	 * @step. ^I confirm add to group chat on Group Participants popover$
-	 * @throws Exception
-	 *
-	 */
-	@When("^I confirm add to chat on Group Participants popover$")
-	public void IClickConfirmAddToChat() throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
-				.confirmAddPeople();
 	}
 
 	/**

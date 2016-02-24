@@ -350,7 +350,6 @@ public class ConversationPageSteps {
         WhenIClickPeopleButtonInGroup();
         GroupPopoverPageSteps cpSteps = new GroupPopoverPageSteps();
         cpSteps.IClickAddPeopleButton();
-        cpSteps.IClickConfirmAddToChat();
         cpSteps.ISearchForUser(contact);
         cpSteps.ISelectUserFromSearchResults(contact);
         cpSteps.IChooseToCreateGroupConversation();

@@ -128,6 +128,8 @@ public final class PopoverLocators {
 					xpathRootLocator + xpathPageRootLocator, name);
 
 			public static final String cssPeopleCount = ".participants-group-header .people";
+
+			public static final String cssEveryoneAlreadyAdded = "#participants-bubble .no-results";
 		}
 
 		public static final class LeaveGroupConfirmationPage {
