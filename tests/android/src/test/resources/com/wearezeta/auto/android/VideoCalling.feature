@@ -105,7 +105,7 @@ Feature: VideoCalling
       | user1Name | user2Name | chrome      | 60      |
 
   @C36363 @staging
-  Scenario Outline: Verify I can start Video call from Start UI
+  Scenario Outline: (AN-3536) Verify I can start Video call from Start UI
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
