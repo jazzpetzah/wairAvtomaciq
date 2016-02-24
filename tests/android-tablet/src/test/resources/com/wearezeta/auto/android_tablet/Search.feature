@@ -160,7 +160,7 @@ Feature: Search
     And I tap Search input
     And I enter "<Contact>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
-    When I tap Open Conversation button on People Picker page
+    When I tap Open Conversation action button on People Picker page
     Then I do not see People Picker page
     And I see the conversation view
 
@@ -180,7 +180,7 @@ Feature: Search
     And I tap Search input
     And I enter "<Contact>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
-    When I tap Open Conversation button on People Picker page
+    When I tap Open Conversation action button on People Picker page
     Then I do not see People Picker page
     And I see the conversation view
 
@@ -201,7 +201,7 @@ Feature: Search
     And I tap the found item <Contact1> on People Picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap the found item <Contact2> on People Picker page
-    When I tap Create Conversation button on People Picker page
+    When I tap Create Conversation action button on People Picker page
     Then I do not see People Picker page
     When I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
@@ -226,7 +226,7 @@ Feature: Search
     And I tap the found item <Contact1> on People Picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap the found item <Contact2> on People Picker page
-    When I tap Create Conversation button on People Picker page
+    When I tap Create Conversation action button on People Picker page
     Then I do not see People Picker page
     When I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
@@ -249,7 +249,7 @@ Feature: Search
     And I tap Search input
     And I enter "<Contact>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
-    When I tap Camera button on People Picker page
+    When I tap Send Image action button on People Picker page
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
@@ -270,7 +270,7 @@ Feature: Search
     And I tap Search input
     And I enter "<Contact>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
-    When I tap Camera button on People Picker page
+    When I tap Send Image action button on People Picker page
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
@@ -293,7 +293,7 @@ Feature: Search
     And I tap the found item <Contact1> on People Picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap the found item <Contact2> on People Picker page
-    When I tap Camera button on People Picker page
+    When I tap Send Image action button on People Picker page
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
@@ -322,7 +322,7 @@ Feature: Search
     And I tap the found item <Contact1> on People Picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap the found item <Contact2> on People Picker page
-    When I tap Camera button on People Picker page
+    When I tap Send Image action button on People Picker page
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
@@ -349,14 +349,14 @@ Feature: Search
     And I tap Search input
     And I enter "<Contact1>" into Search input on People Picker page
     When I tap the found item <Contact1> on People Picker page
-    Then I see Open Conversation button on People Picker page
+    Then I see Open Conversation action button on People Picker page
     When I enter "<Contact2>" into Search input on People Picker page
     And I tap the found item <Contact2> on People Picker page
-    Then I see Create Conversation button on People Picker page
+    Then I see Create Conversation action button on People Picker page
     When I type backspace in Search input on People Picker page
-    Then I see Open Conversation button on People Picker page
+    Then I see Open Conversation action button on People Picker page
     When I type backspace in Search input on People Picker page
-    Then I do not see Open Conversation button on People Picker page
+    Then I do not see Open Conversation action button on People Picker page
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -373,14 +373,14 @@ Feature: Search
     And I tap Search input
     And I enter "<Contact1>" into Search input on People Picker page
     When I tap the found item <Contact1> on People Picker page
-    Then I see Open Conversation button on People Picker page
+    Then I see Open Conversation action button on People Picker page
     When I enter "<Contact2>" into Search input on People Picker page
     And I tap the found item <Contact2> on People Picker page
-    Then I see Create Conversation button on People Picker page
+    Then I see Create Conversation action button on People Picker page
     When I type backspace in Search input on People Picker page
-    Then I see Open Conversation button on People Picker page
+    Then I see Open Conversation action button on People Picker page
     When I type backspace in Search input on People Picker page
-    Then I do not see Open Conversation button on People Picker page
+    Then I do not see Open Conversation action button on People Picker page
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -398,7 +398,7 @@ Feature: Search
     And I tap Search input
     And I enter "<Contact>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
-    When I tap Call button on People Picker page
+    When I tap Call action button on People Picker page
     Then I do not see People Picker page
     And I see the conversation view
     And I see calling overlay Big bar
@@ -419,7 +419,7 @@ Feature: Search
     And I tap Search input
     And I enter "<Contact>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
-    When I tap Call button on People Picker page
+    When I tap Call action button on People Picker page
     Then I do not see People Picker page
     And I see the conversation view
     And I see calling overlay Big bar
@@ -441,7 +441,7 @@ Feature: Search
     And I tap the found item <Contact1> on People Picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap the found item <Contact2> on People Picker page
-    When I tap Call button on People Picker page
+    When I tap Call action button on People Picker page
     And I see the conversation view
     And I see calling overlay Big bar
     And I tap Show Tools button on conversation view page
@@ -467,7 +467,7 @@ Feature: Search
     And I tap the found item <Contact1> on People Picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap the found item <Contact2> on People Picker page
-    When I tap Call button on People Picker page
+    When I tap Call action button on People Picker page
     Then I do not see People Picker page
     And I see the conversation view
     And I see calling overlay Big bar
