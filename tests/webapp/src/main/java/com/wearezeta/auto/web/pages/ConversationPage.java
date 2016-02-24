@@ -202,6 +202,11 @@ public class ConversationPage extends WebPage {
 		wait.until(visibilityOfTextInElementsLocated(locator, parts));
 	}
 
+	public int waitForNumberOfMessageHeadersContain(String text)
+			throws Exception {
+		return waitForNumberOfMessageHeadersContain(new HashSet<String>(Arrays.asList(text)));
+	}
+
 	public int waitForNumberOfMessageHeadersContain(Set<String> parts)
 			throws Exception {
 		final By locator = By
