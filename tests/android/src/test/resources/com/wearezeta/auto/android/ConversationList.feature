@@ -49,7 +49,7 @@ Feature: Conversation List
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I click on open conversation action button on People picker page
-    Then I see Connect to <Contact1> Dialog page
+    Then I see dialog page
 
     Examples:
       | Name      | Contact1  | Message    | Image       | SpotifyLink                                           |

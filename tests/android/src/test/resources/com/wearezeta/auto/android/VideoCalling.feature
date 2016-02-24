@@ -92,7 +92,7 @@ Feature: VideoCalling
     And I swipe on text input
     And I press Video Call button
     Then I see outgoing call
-    When <Contact> accepts next incoming call automatically
+    When <Contact> accepts next incoming video call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see ongoing video call
     And I tap on ongoing video

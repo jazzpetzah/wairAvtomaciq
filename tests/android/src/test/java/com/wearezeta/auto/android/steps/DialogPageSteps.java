@@ -365,21 +365,6 @@ public class DialogPageSteps {
     }
 
     /**
-     * Checks to see that the "Connected To XYZ" appears at the start of a new dialog (Should changed step name to "Connected
-     * to")
-     *
-     * @param contact
-     * @throws Exception
-     * @step. ^I see Connect to (.*) Dialog page$
-     */
-    @Then("^I see Connect to (.*) Dialog page$")
-    public void ThenISeeConnectToDialogPage(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(String.format("The name '%s' is not visible in start chat title", contact),
-                getDialogPage().waitUntilStartChatTitleContains(contact));
-    }
-
-    /**
      * Checks to see that a group chat exists, where the name of the group chat is the list of users
      *
      * @param participantNameAliases

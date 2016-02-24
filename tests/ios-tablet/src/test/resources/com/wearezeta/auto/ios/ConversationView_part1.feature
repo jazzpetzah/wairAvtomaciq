@@ -58,7 +58,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2621 @regression @rc @id2413 @deployPictures
+  @C2621 @regression @rc @id2413
   Scenario Outline: Verify sending image [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -76,7 +76,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2615 @regression @rc @id2407 @deployPictures
+  @C2615 @regression @rc @id2407
   Scenario Outline: Verify sending image [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -161,7 +161,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName        |
       | user1Name | user2Name | user3Name | ReceivePingGroupChat |
 
-  @C2627 @regression @id2669 @deployPictures
+  @C2627 @regression @id2669
   Scenario Outline: Receive a camera roll picture from user from contact list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -175,7 +175,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @C2628 @regression @id2670 @deployPictures
+  @C2628 @regression @id2670
   Scenario Outline: Receive a camera roll picture from user from contact list [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -317,43 +317,6 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C5237 @regression @id2403
-  Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User Myself sends 40 encrypted messages to user <Contact>
-    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
-    When I tap on contact name <Contact>
-    And I tap on text input to scroll to the end
-    And I tap media container
-    And I scroll media out of sight until media bar appears
-    And I tap on the media bar
-    Then I see conversation view is scrolled back to the playing media link <SoundCloudLink>
-
-    Examples:
-      | Name      | Contact   | SoundCloudLink                                                   |
-      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
-
-  @regression @id2404 @C3225
-  Scenario Outline: (MediaBar disappears on Simulator) Verify the Media Bar dissapears after playback finishes - SoundCloud [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User Myself sends 40 encrypted messages to user <Contact>
-    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
-    When I tap on contact name <Contact>
-    And I tap on text input to scroll to the end
-    When I tap media container
-    And I scroll media out of sight until media bar appears
-    Then I wait up to 35 seconds for media bar to disappear
-
-    Examples:
-      | Name      | Contact   | SoundCloudLink                                                   |
-      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
-
   @C2676 @regression @id2987
   Scenario Outline: I can send a sketch[PORTRAIT]
     Given There are 2 users where <Name> is me
@@ -450,89 +413,3 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SimpleGroup   |
-
-  @C2611 @regression @id3196
-  Scenario Outline: Play/pause SoundCloud media link from the media bar [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User Myself sends 40 encrypted messages to user <Contact>
-    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
-    When I tap on contact name <Contact>
-    And I tap on text input to scroll to the end
-    And I tap media container
-    And I scroll media out of sight until media bar appears
-    And I pause playing the media in media bar
-    Then I see media is paused on Media Bar
-    And I press play in media bar
-    Then I see media is playing on Media Bar
-    And I stop media in media bar
-    Then I see media is stopped on Media Bar
-
-    Examples:
-      | Name      | Contact   | SoundCloudLink                                                                       |
-      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
-
-  @C2612 @regression @id3197
-  Scenario Outline: Play/pause SoundCloud media link from the media bar [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User Myself sends 40 encrypted messages to user <Contact>
-    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
-    When I tap on contact name <Contact>
-    And I tap on text input to scroll to the end
-    And I tap media container
-    And I scroll media out of sight until media bar appears
-    And I pause playing the media in media bar
-    Then I see media is paused on Media Bar
-    And I press play in media bar
-    Then I see media is playing on Media Bar
-    And I stop media in media bar
-    Then I see media is stopped on Media Bar
-
-    Examples:
-      | Name      | Contact   | SoundCloudLink                                                                       |
-      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
-
-  @C2613 @regression @id3198
-  Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User Myself sends 40 encrypted messages to user <Contact1>
-    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact1>
-    When I tap on contact name <Contact1>
-    And I tap on text input to scroll to the end
-    And I tap media container
-    And I scroll media out of sight until media bar appears
-    And I tap on text input to scroll to the end
-    Then I dont see media bar on dialog page
-
-    Examples:
-      | Name      | Contact1  | SoundCloudLink                                                                       |
-      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
-
-  @C2614 @regression @id3199
-  Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User Myself sends 40 encrypted messages to user <Contact1>
-    Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact1>
-    When I tap on contact name <Contact1>
-    And I tap on text input to scroll to the end
-    And I tap media container
-    And I scroll media out of sight until media bar appears
-    And I tap on text input to scroll to the end
-    Then I dont see media bar on dialog page
-
-    Examples:
-      | Name      | Contact1  | SoundCloudLink                                                                       |
-      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |

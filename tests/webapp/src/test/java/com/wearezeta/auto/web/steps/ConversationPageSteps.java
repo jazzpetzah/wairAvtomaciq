@@ -243,17 +243,32 @@ public class ConversationPageSteps {
     /**
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
+     * @param message  constant part of the system message
      * @throws Exception
      * @throws AssertionError if action message did not appear in conversation
      * @step. ^I see (.*) action in conversation$
      */
     @Then("^I( do not)? see (.*) action in conversation$")
     public void ThenISeeActionInConversation(String doNot, String message) throws Exception {
+        ThenISeeActionInConversation(doNot, message, 1);
+    }
+
+    /**
+     * Checks action message (e.g. you left, etc.) appear in conversation
+     *
+     * @param message  constant part of the system message
+     * @param times  number of times the message appears
+     * @throws Exception
+     * @throws AssertionError if action message did not appear in conversation
+     * @step. ^I see (.*) action in conversation$
+     */
+    @Then("^I( do not)? see (.*) action (\\d+) times in conversation$")
+    public void ThenISeeActionInConversation(String doNot, String message, int times) throws Exception {
         if (doNot == null) {
-            webappPagesCollection.getPage(ConversationPage.class).waitForMessageHeaderContains(message);
+            assertThat(message + " action", webappPagesCollection.getPage(ConversationPage.class)
+                    .waitForNumberOfMessageHeadersContain(message), equalTo(times));
         } else {
             Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class).isActionMessageNotSent(message));
-
         }
     }
 
@@ -296,6 +311,21 @@ public class ConversationPageSteps {
      */
     @Then("^I( do not)? see (.*) action for (.*) in conversation$")
     public void ThenISeeActionForContactInConversation(String doNot, String message, String contacts) throws Exception {
+        ThenISeeActionForContactInConversation(doNot, message, 1, contacts);
+    }
+
+    /**
+     * Checks action message (e.g. you left, etc.) appear in conversation
+     *
+     * @param message  constant part of the system message
+     * @param times  number of times the message appears
+     * @param contacts list of comma separated contact names/aliases
+     * @throws AssertionError if action message did not appear in conversation
+     * @throws Exception
+     * @step. ^I see (.*) action for (.*) in conversation$
+     */
+    @Then("^I( do not)? see (.*) action (\\d+) times for (.*) in conversation$")
+    public void ThenISeeActionForContactInConversation(String doNot, String message, int times, String contacts) throws Exception {
         contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
         Set<String> parts = new HashSet<String>();
         parts.add(message);
@@ -304,7 +334,7 @@ public class ConversationPageSteps {
             webappPagesCollection.getPage(ConversationPage.class).waitForMessageHeaderContains(parts);
         } else {
             assertThat(message + " action for " + contacts, webappPagesCollection.getPage(ConversationPage.class)
-                    .waitForNumberOfMessageHeadersContain(parts), equalTo(0));
+                    .waitForNumberOfMessageHeadersContain(parts), equalTo(times));
         }
     }
 
@@ -413,20 +443,6 @@ public class ConversationPageSteps {
     public void IDontSeeTextMessage(String message) throws Exception {
         Assert.assertFalse("Saw text message " + message, webappPagesCollection.getPage(ConversationPage.class)
                 .isTextMessageVisible(message == null ? "" : message));
-    }
-
-    /**
-     * Verify that there is only one ping message visible in conversation
-     *
-     * @throws Exception
-     * @step. ^I see only one ping message$
-     */
-    @When("^I see only one ping message$")
-    public void ISeeOnlyOnePingMessage() throws Exception {
-        assertThat(
-                "PING action",
-                webappPagesCollection.getPage(ConversationPage.class).waitForNumberOfMessageHeadersContain(
-                        Collections.singleton("PING")), equalTo(1));
     }
 
     /**

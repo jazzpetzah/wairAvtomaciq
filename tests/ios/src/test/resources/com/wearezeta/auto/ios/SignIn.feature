@@ -60,7 +60,6 @@ Feature: Sign In
     Given I see sign in screen
     Given I see country picker button on Sign in screen
     When I enter phone number for user <Name>
-    Then I see verification code page
     When I enter verification code for user <Name>
     And I dismiss settings warning
     Then I see conversations list
@@ -75,7 +74,6 @@ Feature: Sign In
     Given I see sign in screen
     And I see country picker button on Sign in screen
     And I enter phone number for user Myself
-    And I see verification code page
     When I enter random verification code
     Then I see already registered phone number alert
 
@@ -89,7 +87,6 @@ Feature: Sign In
     Given I see sign in screen
     And I see country picker button on Sign in screen
     And I enter phone number for user <Name>
-    And I see verification code page
     When I tap RESEND code button
     Then I see Resend will be possible after 10 min alert
 
@@ -115,7 +112,6 @@ Feature: Sign In
     Given I see sign in screen
     And I see country picker button on Sign in screen
     And I enter phone number for user <Name>
-    And I see verification code page
     And I enter verification code for user <Name>
     And I have entered login <Email>
     And I start activation email monitoring

@@ -219,7 +219,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | GroupInfoCheck | 2                 |
 
   @C397 @id2292 @regression
-  Scenario Outline: (Bug AN-3428) Start 1to1 conversation from participants view
+  Scenario Outline: Start 1to1 conversation from participants view
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
@@ -229,11 +229,12 @@ Feature: People View
     When I tap on contact name <GroupChatName>
     And I tap conversation details button
     And I tap on group chat contact <Contact1>
-    And I see <Contact1> user profile page
+    Then I see <Contact1> user profile page
     And I click Open Conversation button on connected user page
-    And I tap conversation details button
-    And I close participants page by UI button
-    Then I see Connect to <Contact1> Dialog page
+    When I tap conversation details button
+    Then I see <Contact1> user name and email
+    When I close participants page by UI button
+    Then I see dialog page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |

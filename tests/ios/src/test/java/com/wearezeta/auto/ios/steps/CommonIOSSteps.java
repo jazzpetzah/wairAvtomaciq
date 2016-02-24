@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -15,6 +14,7 @@ import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.en.Then;
+import gherkin.formatter.model.Result;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -37,7 +37,6 @@ import static com.wearezeta.auto.common.CommonUtils.*;
 public class CommonIOSSteps {
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
-    private Date testStartedDate = new Date();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
@@ -113,7 +112,6 @@ public class CommonIOSSteps {
                     "$.delay(20000); true;");
         }
 
-        setTestStartedDate(new Date());
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
                 .resetDriver(getUrl(), capabilities, DRIVER_CREATION_RETRIES_COUNT);
     }
@@ -154,10 +152,9 @@ public class CommonIOSSteps {
         pagesCollection.clearAllPages();
 
         try {
-            if (getIsSimulatorFromConfig(getClass())) {
-                IOSCommonUtils.collectSimulatorLogs(getDeviceName(getClass()), getTestStartedDate());
-            }
-            if (scenario.getSourceTagNames().contains("@performance")) {
+            if (!scenario.getStatus().equals(Result.PASSED) && getIsSimulatorFromConfig(getClass())) {
+                IOSCommonUtils.collectSimulatorLogs(getDeviceName(getClass()));
+            } else if (scenario.getSourceTagNames().contains("@performance")) {
                 IOSLogListener.forceStopAll();
                 IOSLogListener.writeDeviceLogsToConsole(IOSLogListener.getInstance());
             }
@@ -620,14 +617,6 @@ public class CommonIOSSteps {
         }
     }
 
-    public Date getTestStartedDate() {
-        return testStartedDate;
-    }
-
-    public void setTestStartedDate(Date testStartedDate) {
-        this.testStartedDate = testStartedDate;
-    }
-
     /**
      * Rotate device to landscape
      *
@@ -750,7 +739,7 @@ public class CommonIOSSteps {
             });
         }
         pool.shutdown();
-        final int secondsTimeout = (names.size() / poolSize + 1) * 40;
+        final int secondsTimeout = (names.size() / poolSize + 1) * 60;
         if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS)) {
             throw new IllegalStateException(String.format(
                     "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));

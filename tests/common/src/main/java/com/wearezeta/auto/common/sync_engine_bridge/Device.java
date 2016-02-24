@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common.sync_engine_bridge;
 
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import akka.actor.ActorRef;
@@ -10,7 +11,12 @@ import com.waz.model.RConvId;
 import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
+import scala.concurrent.Await;
+import scala.concurrent.Future;
+import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
+
+import static akka.pattern.Patterns.gracefulStop;
 
 class Device extends RemoteEntity implements IDevice {
 
@@ -44,7 +50,13 @@ class Device extends RemoteEntity implements IDevice {
 
     private void respawn() {
         if (this.ref() != null) {
-            this.ref().tell(PoisonPill.getInstance(), null);
+            try {
+                Future<Boolean> stopped = gracefulStop(this.ref(), Duration.create(5, TimeUnit.SECONDS), null);
+                Await.result(stopped, Duration.create(6, TimeUnit.SECONDS));
+                // the actor has been stopped
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             this.setRef(null);
         }
 

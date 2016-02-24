@@ -139,7 +139,7 @@ Feature: Connect
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
     And I wait for 5 seconds
-    Then I see Connect to <Contact> Dialog page
+    Then I see dialog page
 
     Examples:
       | Name      | Contact   | WaitingMess      |
@@ -228,7 +228,7 @@ Feature: Connect
     And I press Clear button
     Then I see contact list with name <Contact>
     And I tap on contact name <Contact>
-    And I see Connect to <Contact> Dialog page
+    And I see dialog page
 
     Examples:
       | Name      | Contact   |

@@ -10,6 +10,9 @@ import com.waz.provision.ActorMessage.WaitUntilRegistered;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import org.apache.log4j.Logger;
+import scala.concurrent.Await;
+import scala.concurrent.Future;
+import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 
 import java.io.File;
@@ -22,6 +25,8 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
+import static akka.pattern.Patterns.gracefulStop;
 
 class RemoteProcess extends RemoteEntity implements IRemoteProcess {
     private static final Logger LOG = ZetaLogger.getLog(RemoteProcess.class.getSimpleName());
@@ -78,7 +83,13 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
         }
 
         if (this.ref() != null) {
-            this.ref().tell(PoisonPill.getInstance(), null);
+            try {
+                Future<Boolean> stopped = gracefulStop(this.ref(), Duration.create(5, TimeUnit.SECONDS), null);
+                Await.result(stopped, Duration.create(6, TimeUnit.SECONDS));
+                // the actor has been stopped
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             this.setRef(null);
         }
 

@@ -12,14 +12,14 @@ Feature: Ping
     When I click ping button
     Then I see <PING> action in conversation
     When I click ping button
-    Then I see <PING_AGAIN> action in conversation
+    Then I see <PING> action 2 times in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | PING       | PING_AGAIN       |
-      | user1Email | user1Password | user1Name | user2Name | you pinged | you pinged again |
+      | Login      | Password      | Name      | Contact   | PING       |
+      | user1Email | user1Password | user1Name | user2Name | you pinged |
 
   @C1718 @regression
-  Scenario Outline: Verify you cannot Ping several times in a row
+  Scenario Outline: Verify you can Ping several times in a row
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
@@ -30,12 +30,13 @@ Feature: Ping
     When I click ping button
     Then I see <PING> action in conversation
     When I click ping button
-    Then I see <PING_AGAIN> action in conversation
-    Then I see only one ping message
+    Then I see <PING> action 2 times in conversation
+    When I click ping button
+    Then I see <PING> action 3 times in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | PING       | PING_AGAIN       |
-      | user1Email | user1Password | user1Name | user2Name | you pinged | you pinged again |
+      | Login      | Password      | Name      | Contact   | PING       |
+      | user1Email | user1Password | user1Name | user2Name | you pinged |
 
   @C1719 @smoke
   Scenario Outline: Verify you can see Ping on the other side (group conversation)

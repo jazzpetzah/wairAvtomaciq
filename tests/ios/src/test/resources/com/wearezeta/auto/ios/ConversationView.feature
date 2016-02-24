@@ -155,7 +155,7 @@ Feature: Conversation View
       | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
   @C883 @regression @id394
-  Scenario Outline: Tap the cursor to get to the end of the conversation
+  Scenario Outline: (ZIOS-5920) Tap the cursor to get to the end of the conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -592,7 +592,7 @@ Feature: Conversation View
     Then I dont see conversation <GroupChatName> in contact list
     And I open search by taping on it
     And I search for user name <Contact1> and tap on it on People picker page
-    And I click open conversation button on People picker page
+    And I tap Open conversation action button on People picker page
     Then I see dialog page
     And I type the default message and send it
     And I see 1 default message in the dialog

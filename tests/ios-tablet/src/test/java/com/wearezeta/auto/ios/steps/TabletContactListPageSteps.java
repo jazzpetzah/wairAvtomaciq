@@ -56,7 +56,7 @@ public class TabletContactListPageSteps {
             throw new IllegalStateException(String.format(
                     "Please take a screenshot of '%s' conversation entry first", name));
         }
-        final double minScore = 0.99;
+        final double minScore = 0.999;
         final int timeoutSeconds = 10;
         if (shouldNotBeChanged == null) {
             Assert.assertTrue(String.format("The state of '%s' conversation item seems to be the same", name),

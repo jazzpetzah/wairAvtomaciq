@@ -145,6 +145,23 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
+  @C28851 @staging
+  Scenario Outline: Verify starting video call with action button in Search
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I open search by taping on it
+    And I input in People picker search field user name <Contact>
+    And I tap on conversation <Contact> in search result
+    And I tap Video call action button on People picker page
+    Then I see call status message contains "<Contact> RINGING"
+    And I see Leave button on Calling overlay
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
   @C12115 @staging
   Scenario Outline: Verify I can switch to another video call
     Given There are 3 users where <Name> is me
