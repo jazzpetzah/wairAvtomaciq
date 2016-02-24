@@ -12,7 +12,6 @@ Feature: VideoCalling
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
-    And I tap on ongoing video
     And I hang up ongoing video call
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
@@ -53,7 +52,6 @@ Feature: VideoCalling
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
-    And I tap on ongoing video
     And I hang up ongoing video call
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
@@ -95,7 +93,6 @@ Feature: VideoCalling
     When <Contact> accepts next incoming video call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see ongoing video call
-    And I tap on ongoing video
     When I hang up ongoing video call
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call

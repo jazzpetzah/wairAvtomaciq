@@ -29,4 +29,22 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
     public void tapOngoingVideo() throws Exception {
         getElement(xpathOngoingCallContainer).click();
     }
+
+    @Override
+    public void toggleVideo() throws Exception {
+        tapOngoingVideo();
+        super.toggleVideo();
+    }
+
+    @Override
+    public void hangup() throws Exception {
+        tapOngoingVideo();
+        super.hangup();
+    }
+
+    @Override
+    public void toggleMute() throws Exception {
+        tapOngoingVideo();
+        super.toggleMute();
+    }
 }

@@ -25,26 +25,13 @@ public class CallOngoingVideoPageSteps {
     }
     
     /**
-     * Taps on the ongoing video
-     *
-     * @throws Exception
-     * @step. ^I tap on ongoing video$
-     */
-    @When("^I tap on ongoing video$")
-    public void ITapOnOngoingVideo()
-            throws Exception {
-        getPage().tapOngoingVideo();
-    }
-
-    /**
      * Hangs up the current call
      *
      * @throws Exception
      * @step. ^I hang up ongoing video call$
      */
     @When("^I hang up ongoing video call$")
-    public void IHangUp()
-            throws Exception {
+    public void IHangUp() throws Exception {
         getPage().hangup();
     }
 
