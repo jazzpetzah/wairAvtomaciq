@@ -4,7 +4,8 @@ Feature: Sign Out
   Scenario Outline: Sign out from Wire
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
+    Given I see First Time overlay
+    Given I tap Got It button on First Time overlay
     Given I see Contact list with no contacts
     When I tap on my avatar
     And I tap options button
