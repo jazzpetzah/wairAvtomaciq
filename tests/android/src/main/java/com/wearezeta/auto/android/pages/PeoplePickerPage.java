@@ -6,7 +6,6 @@ import java.util.function.Function;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -188,14 +187,6 @@ public class PeoplePickerPage extends AndroidPage {
         DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idPickerListContainer), 1000, 15, 15, 15, 180);
     }
 
-    public void tapOpenConversationButton() throws Exception {
-        getElement(idCreateOrOpenConversationButton).click();
-    }
-
-    public boolean waitUntilOpenOrCreateConversationButtonIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCreateOrOpenConversationButton);
-    }
-
     public boolean waitUntilOpenOrCreateConversationButtonIsVisible(String expectedCaption) throws Exception {
         final By locator = By.xpath(xpathStrCreateOrOpenConversationButtonByCaption.apply(expectedCaption));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -209,22 +200,6 @@ public class PeoplePickerPage extends AndroidPage {
         DriverUtils.swipeByCoordinates(getDriver(), durationMilliseconds, 50, 20, 50, 90);
     }
 
-    public void tapCallButton() throws Exception {
-        getElement(idQuickMenuCallButton).click();
-    }
-
-    public void tapCameraButton() throws Exception {
-        getElement(idQuickMenuCameraButton).click();
-    }
-
-    public boolean isCallButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idQuickMenuCallButton);
-    }
-
-    public boolean isSendImageButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idQuickMenuCameraButton);
-    }
-
     public void swipeRightOnContactAvatar(String name) throws Exception {
         final By locator = By.xpath(xpathStrPeoplePickerContactByName.apply(name));
         DriverUtils.swipeRight(getDriver(), getDriver().findElement(locator), 500);
@@ -233,5 +208,31 @@ public class PeoplePickerPage extends AndroidPage {
     public void typeBackspaceInSearchInput() throws Exception {
         getPickerEdit().click();
         AndroidCommonUtils.tapBackspaceButton();
+    }
+
+    private By getActionButtonLocatorByName(String name) {
+        switch (name.toLowerCase()) {
+            case "open conversation":
+            case "create conversation":
+                return By.xpath(xpathStrCreateOrOpenConversationButtonByCaption.apply(name));
+            case "send image":
+                return idQuickMenuCameraButton;
+            case "call":
+                return idQuickMenuCallButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown action button name '%s'", name));
+        }
+    }
+
+    public boolean waitUntilActionButtonIsVisible(String name) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getActionButtonLocatorByName(name));
+    }
+
+    public boolean waitUntilActionButtonIsInvisible(String name) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), getActionButtonLocatorByName(name));
+    }
+
+    public void tapActionButton(String name) throws Exception {
+        getElement(getActionButtonLocatorByName(name)).click();
     }
 }

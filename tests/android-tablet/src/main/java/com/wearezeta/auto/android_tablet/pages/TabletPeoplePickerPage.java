@@ -82,27 +82,19 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
         getAndroidPeoplePickerPage().doLongSwipeDown();
     }
 
-    public void tapOpenOrCreateConversationButton() throws Exception {
-        getAndroidPeoplePickerPage().tapOpenConversationButton();
-    }
-
-    public boolean waitUntilOpenOrCreateConversationButtonIsVisible(String expectedCaption) throws Exception {
-        return getAndroidPeoplePickerPage().waitUntilOpenOrCreateConversationButtonIsVisible(expectedCaption);
-    }
-
-    public boolean waitUntilOpenConversationButtonIsInvisible() throws Exception {
-        return getAndroidPeoplePickerPage().waitUntilOpenOrCreateConversationButtonIsInvisible();
-    }
-
-    public void tapCameraButton() throws Exception {
-        getAndroidPeoplePickerPage().tapCameraButton();
-    }
-
-    public void tapCallButton() throws Exception {
-        getAndroidPeoplePickerPage().tapCallButton();
+    public void tapActionButton(String name) throws Exception {
+        getAndroidPeoplePickerPage().tapActionButton(name);
     }
 
     public void typeBackspaceInSearchInput() throws Exception {
         getAndroidPeoplePickerPage().typeBackspaceInSearchInput();
+    }
+
+    public boolean waitUntilActionButtonIsVisible(String buttonName) throws Exception {
+        return getAndroidPeoplePickerPage().waitUntilActionButtonIsVisible(buttonName);
+    }
+
+    public boolean waitUntilActionButtonIsInvisible(String buttonName) throws Exception {
+        return getAndroidPeoplePickerPage().waitUntilActionButtonIsInvisible(buttonName);
     }
 }
