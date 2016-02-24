@@ -400,8 +400,7 @@ Feature: Search
     And I tap the found item <Contact> on People Picker page
     When I tap Call button on People Picker page
     Then I do not see People Picker page
-    And I see the conversation view
-    And I see calling overlay Big bar
+    And I see outgoing call
 
     Examples:
       | Name      | Contact   |
@@ -421,8 +420,7 @@ Feature: Search
     And I tap the found item <Contact> on People Picker page
     When I tap Call button on People Picker page
     Then I do not see People Picker page
-    And I see the conversation view
-    And I see calling overlay Big bar
+    And I see outgoing call
 
     Examples:
       | Name      | Contact   |
@@ -442,8 +440,7 @@ Feature: Search
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap the found item <Contact2> on People Picker page
     When I tap Call button on People Picker page
-    And I see the conversation view
-    And I see calling overlay Big bar
+    And I see outgoing call
     And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     Then I see the participant avatar <Contact1> on Group popover
@@ -469,8 +466,7 @@ Feature: Search
     And I tap the found item <Contact2> on People Picker page
     When I tap Call button on People Picker page
     Then I do not see People Picker page
-    And I see the conversation view
-    And I see calling overlay Big bar
+    And I see outgoing call
     When I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     Then I see the participant avatar <Contact1> on Group popover
