@@ -174,7 +174,9 @@ Feature: Video Calling
     When <Contact2> starts a video call to me using <VideoCallBackend>
     And I tap Accept Video button on Calling overlay
     Then I see Mute button on Calling overlay
+    And <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
+    And <Contact2> verifies that call status to <Name> is changed to active in <Timeout> seconds
 
     Examples:
-      | Name      | Contact    | Contact2 | VideoCallBackend |
-      | user1Name | user2Name  | user3Name| chrome           |
+      | Name      | Contact    | Contact2 | VideoCallBackend | Timeout |
+      | user1Name | user2Name  | user3Name| chrome           | 60      |
