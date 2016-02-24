@@ -127,5 +127,5 @@ Feature: Video Calling
     And I see state of Mute button has changed on Calling overlay page
 
     Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | chrome      | 60      |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |

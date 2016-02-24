@@ -6,7 +6,6 @@ import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.openqa.selenium.By;
 
@@ -39,7 +38,9 @@ public class CallingOverlayPage extends IOSPage {
     private static final By xpathGroupCallAvatars = By.xpath(
             "//UIAWindow[@name='ZClientNotificationWindow']//UIACollectionCell");
 
-    private static final By xpathIsMuteButtonSelected = By.xpath("//UIAButton[@name='CallMuteButton' and @value='1']");
+    private static final By xpathMuteButtonSelected = By.xpath("//UIAButton[@name='CallMuteButton' and @value='1']");
+
+    private static final By xpathMuteButtonNotSelected = By.xpath("//UIAButton[@name='CallMuteButton' and @value='']");
 
     private static final By xpathGroupCallFullMessage = By.xpath("//UIAAlert[@name='The call is full']");
 
@@ -122,7 +123,11 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isMuteButtonSelected() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathIsMuteButtonSelected, 5);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMuteButtonSelected);
+    }
+
+    public boolean isMuteButtonNotSelected() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMuteButtonNotSelected);
     }
 
     public BufferedImage getMuteButtonScrenshot() throws Exception {

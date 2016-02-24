@@ -62,11 +62,10 @@ public class CallPageSteps {
     @When("^I see Mute button is (not )?selected on calling overlay$")
     public void ISeeButtonSelected(String shouldBeSelected) throws Exception {
         if (shouldBeSelected == null) {
-            Assert.assertTrue("Button is not selected but should be", getCallingOverlayPage().isMuteButtonSelected());
+            Assert.assertTrue("Mute button is not selected but should be", getCallingOverlayPage().isMuteButtonSelected());
         } else {
-            Assert.assertFalse("Button is selected but shouldn't be", getCallingOverlayPage().isMuteButtonSelected());
+            Assert.assertFalse("Mute button is selected but shouldn't be", getCallingOverlayPage().isMuteButtonNotSelected());
         }
-
     }
 
     /**
@@ -88,7 +87,7 @@ public class CallPageSteps {
      */
     @When("^I see state of Mute button has changed on Calling overlay page$")
     public void VerifyStateOfMuteButtonHasChanged() throws Exception {
-        Assert.assertTrue(muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE));
+        Assert.assertTrue("State of the Mute button has not been changed", muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE));
     }
 
     /**
