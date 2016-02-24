@@ -69,6 +69,8 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameNoResults = By.name("No results.");
 
+    private static final By nameVideoCallButton = By.name("actionBarVideoCallButton");
+
     public PeoplePickerPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -131,14 +133,6 @@ public class PeoplePickerPage extends IOSPage {
             final By locator = By.xpath(xpathStrPeoplePickerTopConnectionsAvatarByIdx.apply(i));
             getElement(locator).click();
         }
-    }
-
-    public boolean isCreateConversationButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameCreateConversationButton);
-    }
-
-    public void clickCreateConversationButton() throws Throwable {
-        getElement(nameCreateConversationButton).click();
     }
 
     public boolean isTopPeopleLabelVisible() throws Exception {
@@ -216,30 +210,6 @@ public class PeoplePickerPage extends IOSPage {
         getElement(locator).click();
     }
 
-    public boolean isOpenConversationButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameOpenConversationButton);
-    }
-
-    public void clickOpenConversationButton() throws Exception {
-        getElement(nameOpenConversationButton, "Open conversation button is not visible").click();
-    }
-
-    public boolean isCallButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCallButton);
-    }
-
-    public void clickCallButton() throws Exception {
-        getElement(nameCallButton, "Call button is not visible").click();
-    }
-
-    public boolean isSendImageButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSendImageButton);
-    }
-
-    public void clickSendImageButton() throws Exception {
-        getElement(nameSendImageButton, "Send image button is not visible").click();
-    }
-
     public void closeInviteList() throws Exception {
         getElement(xpathContactViewCloseButton).click();
     }
@@ -248,19 +218,36 @@ public class PeoplePickerPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), namePeopleYouMayKnowLabel);
     }
 
-    public boolean isOpenConversationButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameOpenConversationButton);
-    }
-
-    public boolean isCallButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCallButton);
-    }
-
-    public boolean isSendImageButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameSendImageButton);
-    }
-
     public boolean waitUntilNoResultsLabelIsVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameNoResults);
+    }
+
+    private By getActionButtonByName(String name) {
+        switch (name) {
+            case "Create conversation":
+                return nameCreateConversationButton;
+            case "Open conversation":
+                return nameOpenConversationButton;
+            case "Video call":
+                return nameVideoCallButton;
+            case "Call":
+                return nameCallButton;
+            case "Send image":
+                return nameSendImageButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown action button name: '%s'", name));
+        }
+    }
+
+    public void clickActionButton(String actionButtonName) throws Exception {
+        getElement(getActionButtonByName(actionButtonName)).click();
+    }
+
+    public boolean isActionButtonVisible(String actionButtonName) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getActionButtonByName(actionButtonName));
+    }
+
+    public boolean isActionButtonInvisible(String actionButtonName) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), getActionButtonByName(actionButtonName));
     }
 }

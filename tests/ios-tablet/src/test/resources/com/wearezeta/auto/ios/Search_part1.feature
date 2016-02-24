@@ -65,7 +65,7 @@ Feature: Search
     And I see top people list on People picker page
     Then I tap on first 1 top connections
     #And I click Go button to create 1:1 conversation
-    And I click open conversation button on People picker page
+    And I tap Open conversation action button on People picker page
     And I wait for 2 seconds
     And I see dialog page
 
@@ -85,7 +85,7 @@ Feature: Search
     And I see top people list on People picker page
     Then I tap on first 1 top connections
     #And I click Go button to create 1:1 conversation
-    And I click open conversation button on People picker page
+    And I tap Open conversation action button on People picker page
     And I wait for 2 seconds
     And I see dialog page
 
@@ -103,7 +103,7 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 2 top connections
-    And I click Create Conversation button on People picker page
+    And I tap Create conversation action button on People picker page
     And I wait for 5 seconds
     And I open group conversation details
     And I change group conversation name to <ConvoName>
@@ -127,7 +127,7 @@ Feature: Search
     And I see top people list on People picker page
     And I tap on first 2 top connections
     #And I click hide keyboard button
-    And I click Create Conversation button on People picker page
+    And I tap Create conversation action button on People picker page
     And I wait for 5 seconds
     And I open group conversation details
     And I change group conversation name to <ConvoName>

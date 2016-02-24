@@ -36,7 +36,7 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 1 top connections
-    And I click open conversation button on People picker page
+    And I tap Open conversation action button on People picker page
     And I wait for 2 seconds
     And I see dialog page
 
@@ -54,7 +54,7 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 2 top connections
-    When I click Create Conversation button on People picker page
+    When I tap Create conversation action button on People picker page
     And I see dialog page
     And I open group conversation details
     Then I see <ParticipantsCount> participant avatars
@@ -141,8 +141,7 @@ Feature: Search
     When I open search by taping on it
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I see call action button on People picker page
-    And I click call action button on People picker page
+    And I tap Call action button on People picker page
     Then I see Calling overlay
 
     Examples:
@@ -183,7 +182,7 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     When I tap on first 1 top connections
-    Then I see action buttons appeared on People picker page
+    Then I see Open conversation action button on People picker page
 
     Examples:
       | Name      | Contact   |
@@ -198,7 +197,7 @@ Feature: Search
     When I open search by taping on it
     And I input in People picker search field user name <Contact>
     When I tap on conversation <Contact> in search result
-    Then I see action buttons appeared on People picker page
+    Then I see Open conversation action button on People picker page
 
     Examples:
       | Name      | Contact   |
@@ -214,9 +213,9 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     When I tap on 1st top connection contact
-    Then I see open conversation action button on People picker page
+    Then I see Open conversation action button on People picker page
     When I tap on 2nd top connection contact
-    Then I see Create Conversation button on People picker page
+    Then I see Create conversation action button on People picker page
 
     Examples:
       | Name      |
@@ -232,9 +231,9 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     When I tap on 1st top connection contact
-    Then I see action buttons appeared on People picker page
+    Then I see Open conversation action button on People picker page
     When I tap on 1st top connection contact
-    Then I see action buttons disappeared on People picker page
+    Then I do not see Open conversation action button on People picker page
 
     Examples:
       | Name      |
@@ -250,15 +249,15 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 1st top connection contact
-    And I see action buttons appeared on People picker page
+    And I see Open conversation action button on People picker page
     And I tap on 2nd top connection contact
-    And I see Create Conversation button on People picker page
+    And I see Create conversation action button on People picker page
     And I press backspace button
     And I press backspace button
-    Then I see open conversation action button on People picker page
+    Then I see Open conversation action button on People picker page
     And I press backspace button
     And I press backspace button
-    Then I see action buttons disappeared on People picker page
+    Then I do not see Open conversation action button on People picker page
 
     Examples:
       | Name      |
@@ -274,8 +273,7 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 1st top connection contact
-    And I see open conversation action button on People picker page
-    And I click open conversation action button on People picker page
+    And I tap Open conversation action button on People picker page
     Then I see dialog page
 
     Examples:
@@ -293,17 +291,17 @@ Feature: Search
     And I see Invite more people button
     And I tap on 1st top connection contact
     And I DONT see Invite more people button
-    And I see action buttons appeared on People picker page
+    And I see Open conversation action button on People picker page
     And I tap on 1st top connection contact
-    And I see action buttons disappeared on People picker page
+    And I do not see Open conversation action button on People picker page
     And I see Invite more people button
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I DONT see Invite more people button
-    And I see action buttons appeared on People picker page
+    And I see Open conversation action button on People picker page
     And I press backspace button
     And I press backspace button
-    And I see action buttons disappeared on People picker page
+    And I do not see Open conversation action button on People picker page
     Then I see Invite more people button
 
     Examples:

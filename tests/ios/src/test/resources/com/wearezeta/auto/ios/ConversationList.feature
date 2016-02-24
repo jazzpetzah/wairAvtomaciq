@@ -250,7 +250,7 @@ Feature: Conversation List
     And I confirm delete conversation content
     And I open search by taping on it
     And I search for user name <Contact1> and tap on it on People picker page
-    And I click open conversation button on People picker page
+    And I tap Open conversation action button on People picker page
     Then I see dialog page
     And I see 0 conversation entries
 

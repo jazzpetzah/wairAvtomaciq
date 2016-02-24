@@ -444,7 +444,7 @@ Feature: People View
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
-    And I click open conversation button on People picker page
+    And I tap Open conversation action button on People picker page
     Then I see the system message CONNECTED TO <Contact1> in the conversation view
 
     Examples:
