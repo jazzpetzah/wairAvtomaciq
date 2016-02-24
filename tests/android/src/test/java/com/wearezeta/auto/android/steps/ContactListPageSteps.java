@@ -339,7 +339,7 @@ public class ContactListPageSteps {
      */
     @When("^I remember unread messages indicator state for conversation (.*)")
     public void IRememberUnreadIndicatorState(String name) throws Exception {
-        final String convoName = usrMgr.findUserByNameOrNameAlias(name).getName();
+        final String convoName = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         this.previousUnreadIndicatorState.put(convoName,
                 new ElementState(() -> getContactListPage().getMessageIndicatorScreenshot(convoName)
                         .orElseThrow(IllegalStateException::new)).remember()
@@ -359,7 +359,7 @@ public class ContactListPageSteps {
      */
     @Then("^I see unread messages indicator state is changed for conversation (.*)")
     public void ISeeUnreadIndicatorStateIsChanged(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (!this.previousUnreadIndicatorState.containsKey(name)) {
             throw new IllegalStateException(
                     String.format(
