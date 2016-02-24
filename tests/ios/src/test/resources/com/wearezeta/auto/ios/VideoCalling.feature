@@ -144,3 +144,20 @@ Feature: Video Calling
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
+
+  @C12115 @staging
+  Scenario Outline: Verify I can switch to another video call
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
+    Given I sign in using my email or phone number
+    And <Contact> starts a video call to me using <VideoCallBackend>
+    And I see call status message contains "<Contact> CALLING"
+    And I tap Accept Video button on Calling overlay
+    Then I see Switch Camera button on Calling overlay
+    When <Contact2> starts a video call to me using <VideoCallBackend>
+    And I tap Accept Video button on Calling overlay
+    Then I see Mute button on Calling overlay
+
+    Examples:
+      | Name      | Contact    | Contact2 | VideoCallBackend |
+      | user1Name | user2Name  | user3Name| chrome           |
