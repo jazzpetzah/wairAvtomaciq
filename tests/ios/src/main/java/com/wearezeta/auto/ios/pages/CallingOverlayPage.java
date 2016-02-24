@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -38,10 +39,11 @@ public class CallingOverlayPage extends IOSPage {
     private static final By xpathGroupCallAvatars = By.xpath(
             "//UIAWindow[@name='ZClientNotificationWindow']//UIACollectionCell");
 
-    private static final Function<String, String> xpathStrIsMuteButtonSelected = value ->
-            String.format("//UIAButton[@name='CallMuteButton' and @value='%s']", value);
+    private static final By xpathIsMuteButtonSelected = By.xpath("//UIAButton[@name='CallMuteButton' and @value='1']");
 
     private static final By xpathGroupCallFullMessage = By.xpath("//UIAAlert[@name='The call is full']");
+
+
 
     private FunctionalInterfaces.StateGetter muteButtonStateFunction = () -> this.getElementScreenshot(getElement(nameMuteCallButton)).orElseThrow(
             () -> new IllegalStateException("Cannot get a screenshot of mute button state")
@@ -119,8 +121,13 @@ public class CallingOverlayPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), getButtonLocatorByName(name));
     }
 
-    public boolean isMuteButtonSelected(String value) throws Exception {
-        By locator = By.xpath(xpathStrIsMuteButtonSelected.apply(value));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    public boolean isMuteButtonSelected() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathIsMuteButtonSelected, 5);
+    }
+
+    public BufferedImage getMuteButtonScrenshot() throws Exception {
+        return this.getElementScreenshot(getElement(nameMuteCallButton)).orElseThrow(
+                () -> new IllegalStateException("Cannot take a screenshot of Mute button")
+        );
     }
 }

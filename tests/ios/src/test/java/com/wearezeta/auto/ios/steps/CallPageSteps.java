@@ -12,16 +12,12 @@ import cucumber.api.java.en.When;
 public class CallPageSteps {
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final ElementState muteButtonState;
+    private final ElementState muteButtonState = new ElementState(() -> getCallingOverlayPage().getMuteButtonScrenshot());
 
     private static final int STATE_CHANGE_TIMEOUT = 15;
     private static final double MIN_BUTTON_SIMILARITY_SCORE = 0.4;
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
-
-    public CallPageSteps() throws Exception {
-        this.muteButtonState = new ElementState(getCallingOverlayPage().getMuteButtonStateFunction());
-    }
 
     private CallingOverlayPage getCallingOverlayPage() throws Exception {
         return pagesCollection.getPage(CallingOverlayPage.class);
@@ -66,9 +62,9 @@ public class CallPageSteps {
     @When("^I see Mute button is (not )?selected on calling overlay$")
     public void ISeeButtonSelected(String shouldBeSelected) throws Exception {
         if (shouldBeSelected == null) {
-            Assert.assertTrue("Button is not selected but should be", getCallingOverlayPage().isMuteButtonSelected("1"));
+            Assert.assertTrue("Button is not selected but should be", getCallingOverlayPage().isMuteButtonSelected());
         } else {
-            Assert.assertTrue("Button is selected but shouldn't be", getCallingOverlayPage().isMuteButtonSelected(""));
+            Assert.assertFalse("Button is selected but shouldn't be", getCallingOverlayPage().isMuteButtonSelected());
         }
 
     }
@@ -92,9 +88,7 @@ public class CallPageSteps {
      */
     @When("^I see state of Mute button has changed on Calling overlay page$")
     public void VerifyStateOfMuteButtonHasChanged() throws Exception {
-        if (!muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE)) {
-            throw new AssertionError("State of mute button has not changed");
-        }
+        Assert.assertTrue(muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE));
     }
 
     /**
