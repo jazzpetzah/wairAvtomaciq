@@ -59,11 +59,7 @@ public class DialogPage extends AndroidPage {
 
     public static final By idVerifiedConversationShield = By.id("cursor_button_giphy");
 
-    private static final String idStrStartChatLabel = "ttv__row_conversation__connect_request__chathead_footer__label";
-    private static final Function<String, String> xpathStrStartChatLabelByPartOfText = text -> String
-        .format("//*[@id='%s' and contains(@value, '%s')]", idStrStartChatLabel, text);
-
-    private static final By idPlayPauseMedia = By.id("gtv__media_play");
+/    private static final By idPlayPauseMedia = By.id("gtv__media_play");
 
     private static final By idYoutubePlayButton = By.id("gtv__youtube_message__play");
 
@@ -326,11 +322,6 @@ public class DialogPage extends AndroidPage {
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathDialogTakePhotoButton)) {
             throw new IllegalStateException("Take Photo button is still visible after being clicked");
         }
-    }
-
-    public boolean waitUntilStartChatTitleContains(String expectedText) throws Exception {
-        final By locator = By.xpath(xpathStrStartChatLabelByPartOfText.apply(expectedText));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     /**
