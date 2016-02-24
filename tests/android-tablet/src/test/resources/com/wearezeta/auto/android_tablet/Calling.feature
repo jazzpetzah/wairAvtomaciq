@@ -90,18 +90,19 @@ Feature: Calling
     Then I see incoming call
     When I swipe to accept the call
     Then I see ongoing call
-    When I remember the current state of <MuteBtnName> button on the calling overlay
-    And I tap <MuteBtnName> button on the calling overlay
-    Then I see <MuteBtnName> button state is changed on the calling overlay
-    And I tap <MuteBtnName> button on the calling overlay
-    Then I see <MuteBtnName> button state is not changed on the calling overlay
-    And I do not see <SpeakerBtnName> button on the calling overlay
+    When I remember state of mute button for ongoing call
+    And I press mute button for ongoing call
+    Then I see state of mute button has changed for ongoing call
+    When I remember state of mute button for ongoing call
+    And I press mute button for ongoing call
+    Then I see state of mute button has changed for ongoing call
+    And I do not see speaker button for ongoing call
     When I hang up ongoing call
     Then I do not see ongoing call
 
     Examples:
-      | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
-      | user1Name | user2Name | autocall    | Speaker        | Mute        |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
 
   @C487 @id2842 @calling_basic
   Scenario Outline: (AN-3145) I see miss call notification on the list and inside conversation view (portrait)
@@ -214,9 +215,7 @@ Feature: Calling
     Then I see ongoing call
     And <Contact2> calls me using <CallBackend>
     Then I see incoming call
-    And I see call participant <Contact2> on the calling overlay
-    And I see the conversation <Contact1> in my conversations list
-    And I see the conversation <Contact2> in my conversations list
+    Then I see incoming call from <Contact1>
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
