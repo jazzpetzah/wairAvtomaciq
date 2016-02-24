@@ -155,7 +155,7 @@ Feature: Conversation View
       | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
   @C883 @regression @id394
-  Scenario Outline: Tap the cursor to get to the end of the conversation
+  Scenario Outline: (ZIOS-5920) Tap the cursor to get to the end of the conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
