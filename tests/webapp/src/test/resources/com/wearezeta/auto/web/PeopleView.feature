@@ -212,6 +212,15 @@ Feature: People View
     Given User <KnownContact> changes avatar picture to default
     Given <UnknownContact> sent connection request to me
     Given I switch to Sign In page
+    Given I Sign in using login <KnownContact> and password <KnownContactPassword>
+    Given I am signed in properly
+    Given I see Contact list with name <ChatName>
+    Given I open self profile
+    Given I click gear button on self profile page
+    Given I select Log out menu item on self profile page
+    Given I see the clear data dialog
+    Given I click Logout button on clear data dialog
+    Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I open conversation with <ChatName>
@@ -299,7 +308,16 @@ Feature: People View
   Scenario Outline: Verify the new conversation is created on the other end from 1to1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given User <Contact1> changes avatar picture to default
     Given I switch to Sign In page
+    Given I Sign in using login <Contact1> and password <Contact1Password>
+    Given I am signed in properly
+    Given I open self profile
+    Given I click gear button on self profile page
+    Given I select Log out menu item on self profile page
+    Given I see the clear data dialog
+    Given I click Logout button on clear data dialog
+    Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     And I open conversation with <Contact1>
@@ -335,11 +353,11 @@ Feature: People View
     And I Sign in using login <Contact2> and password <Password>
     Given I am signed in properly
     And I see Contact list with name <Name>,<Contact1>
-    And I see <Message2> action for <Name>,<Contact1>,You in conversation
+    And I see <Message3> action for <Name>,<Contact1> in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Message                         | Message2                    |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | YOU STARTED A CONVERSATION WITH | STARTED A CONVERSATION WITH |
+      | Login      | Password      | Name      | Contact1  | Contact1Password | Contact2  | Message                         | Message2                    | Message3                  |
+      | user1Email | user1Password | user1Name | user2Name | user2Password    | user3Name | YOU STARTED A CONVERSATION WITH | STARTED A CONVERSATION WITH | START A CONVERSATION WITH |
 
   @C1697 @regression
   Scenario Outline: Verify you can unblock someone from a group conversation
