@@ -57,6 +57,7 @@ class Device extends RemoteEntity implements IDevice {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            this.setRef(null);
         }
 
         if (!spawnOnHostProcess()) {

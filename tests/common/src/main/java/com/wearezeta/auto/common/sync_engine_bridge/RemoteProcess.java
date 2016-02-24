@@ -90,6 +90,7 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            this.setRef(null);
         }
 
         restartProcess();
