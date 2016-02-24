@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import java.util.List;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -903,5 +904,120 @@ public class ContactListPageSteps {
 	public void IClickCancelButtonOnDeleteWarningForSingle() throws Throwable {
 		webappPagesCollection.getPage(ContactListPage.class)
 				.clickCancelOnDeleteWarningSingle();
+	}
+
+	/**
+	 * Verifies if mute call button is visible for conversation
+	 *
+	 * @param doNot is set to null if "do not" part does not exist
+	 * @param contact conversation name string
+	 * @throws Exception
+	 * @step. ^I see mute call button for conversation (.*)
+	 */
+	@When("^I( do not)? see mute call button for conversation (.*)")
+	public void ISeeMuteCallButton(String doNot, String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
+		if (doNot == null) {
+			contactListPage.isMuteCallButtonVisibleForConversation(contact);
+		}
+		else
+		{
+			contactListPage.isMuteCallButtonNotVisibleForConversation(contact);
+		}
+	}
+
+	/**
+	 * Verifies if video button is visible for conversation
+     *
+	 * @param doNot is set to null if "do not" part does not exist
+	 * @param contact conversation name string
+	 * @throws Exception
+	 * @step. ^I see video button for conversation(.*)
+	 */
+	@When("^I( do not)? see video button for conversation (.*)")
+	public void ISeeVideoButton(String doNot, String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
+		if (doNot == null) {
+		contactListPage.isVideoButtonVisibleForConversation(contact);
+		}
+		else
+		{
+			contactListPage.isVideoButtonNotVisibleForConversation(contact);
+		}
+	}
+
+	/**
+	 * Verifies if end call button is visible for conversation
+	 *
+	 * @param doNot is set to null if "do not" part does not exist
+	 * @param contact conversation name string
+	 * @throws Exception
+	 * @step. ^I see end call button for conversation(.*)
+	 */
+	@When("^I( do not)? see end call button for conversation (.*)")
+	public void ISeeEndCallButton(String doNot, String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
+		if (doNot == null) {
+		contactListPage.isEndCallButtonVisibleForConversation(contact);
+		}
+		else
+		{
+			contactListPage.isEndCallButtonNotVisibleForConversation(contact);
+		}
+	}
+
+	/**
+	 * Clicks end video button for conversation
+	 *
+	 * @throws Exception
+	 * @step. ^I click end call button from conversation list$
+	 */
+	@When("^I click end call button from conversation list$")
+	public void IClickEndCallButton() throws Exception {
+
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
+		contactListPage.clickEndCallButton();
+	}
+
+	/**
+	 * Checks if your self video is visible
+	 *
+	 * @param doNot is set to null if "do not" part does not exist
+	 * @throws Exception
+	 * @step. ^I( do not)? see my self video view$
+	 */
+	@When("^I( do not)? see my self video view$")
+	public void IDoNotSeeMySelfVideoView(String doNot)
+			throws Exception {
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
+		if (doNot == null) {
+			contactListPage.isSelfVideoVisible();
+		}
+		else {
+			contactListPage.isSelfVideoNotVisible();
+		}
+	}
+
+	/**
+	 * Checks if the avatar of user you’re calling is visible
+	 *
+	 * @step. ^I see avatar of user (.*) in calling banner in conversation list$
+	 * @param nameAlias
+	 *            name of user whom you’re calling
+	 * @throws Exception
+	 */
+	@Then("^I see the name of user (.*) in calling banner in conversation list$")
+	public void ISeeNameOfUserInCalling(String nameAlias) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(nameAlias);
+		Assert.assertTrue(webappPagesCollection.getPage(
+				ContactListPage.class).isUserNameVisibleInCallingBanner(user.getName()));
 	}
 }

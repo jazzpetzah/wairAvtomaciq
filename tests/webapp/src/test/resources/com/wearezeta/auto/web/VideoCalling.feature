@@ -180,3 +180,29 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+
+  @C12075 @videocalling
+  Scenario Outline: Verify I can cancel the outgoing video call (as a caller)
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    When I start a video call
+    And I see my self video view
+    And I see the name of user <Contact> in calling banner in conversation list
+    And I see mute call button for conversation <Contact>
+    And I see video button for conversation <Contact>
+    And I see end call button for conversation <Contact>
+    Then I click end call button from conversation list
+    And I do not see my self video view
+    And I do not see end call button for conversation <Contact>
+    And I do not see mute call button for conversation <Contact>
+    And I do not see video button for conversation <Contact>
+
+
+    Examples:
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
