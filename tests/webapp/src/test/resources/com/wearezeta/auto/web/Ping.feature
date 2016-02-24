@@ -44,11 +44,10 @@ Feature: Ping
     Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> changes avatar picture to default
     Given I switch to Sign In page
     Given I Sign in using login <Login1> and password <Password1>
     Given I am signed in properly
-    Given I see Welcome page
-    Given I confirm keeping picture on Welcome page
     Given I see Contact list with name <ChatName>
     Given I open self profile
     Given I click gear button on self profile page
