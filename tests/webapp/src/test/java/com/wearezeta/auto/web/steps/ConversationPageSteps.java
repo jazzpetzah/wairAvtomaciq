@@ -331,10 +331,15 @@ public class ConversationPageSteps {
         parts.add(message);
         parts.addAll(CommonSteps.splitAliases(contacts));
         if (doNot == null) {
-            webappPagesCollection.getPage(ConversationPage.class).waitForMessageHeaderContains(parts);
+            if(times > 1) {
+                assertThat(message + " action for " + contacts, webappPagesCollection.getPage(ConversationPage.class)
+                        .waitForNumberOfMessageHeadersContain(parts), equalTo(times));
+            } else {
+                webappPagesCollection.getPage(ConversationPage.class).waitForMessageHeaderContains(parts);
+            }
         } else {
             assertThat(message + " action for " + contacts, webappPagesCollection.getPage(ConversationPage.class)
-                    .waitForNumberOfMessageHeadersContain(parts), equalTo(times));
+                    .waitForNumberOfMessageHeadersContain(parts), equalTo(0));
         }
     }
 
