@@ -29,7 +29,8 @@ public class CallOngoingPage extends CallingOverlayPage {
     }
 
     public boolean waitUntilNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOngoingCallContainer);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOngoingCallContainer, 
+                VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilNameAppearsOnCallingBarCaption(String name) throws Exception {

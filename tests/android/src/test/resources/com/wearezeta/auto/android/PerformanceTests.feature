@@ -28,7 +28,7 @@ Feature: Performance Tests
     Given I see Contact list with contacts
     And <Contact> calls me using <CallBackend>
     And I answer the call from the overlay bar
-    Then I see calling overlay Big bar
+    Then I see ongoing call
     When I lock the device
     When I initialize battery performance report
     And I verify the call from <Contact> is in progress for <Time> minutes
