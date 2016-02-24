@@ -157,7 +157,7 @@ Feature: People View
     And I tap the Search input
     And I keep on reopening People Picker until I see Top People
     And I tap <Contact1> avatar in Top People
-    When I tap Open Conversation button on People Picker page
+    When I tap Open Conversation action button on People Picker page
     Then I see the conversation view
 
     Examples:
@@ -175,9 +175,9 @@ Feature: People View
     And I tap the Search input
     And I keep on reopening People Picker until I see Top People
     And I tap <Contact1> avatar in Top People
-    When I tap Open Conversation button on People Picker page
+    When I tap Open Conversation action button on People Picker page
     Then I see the conversation view
-    And I do not see the Open Conversation button on People Picker page
+    And I do not see Open Conversation action button on People Picker page
     And I see the conversation <Contact1> in my conversations list
 
     Examples:

@@ -100,3 +100,29 @@ Feature: VideoCalling
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
+
+  @C36363 @staging
+  Scenario Outline: (AN-3536) Verify I can start Video call from Start UI
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts waiting instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I open search by tap
+    And I tap on Search input on People picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap on user name found on People picker page <Contact>
+    And I tap Video Call action button on People Picker page
+    Then I see outgoing call
+    When <Contact> accepts next incoming video call automatically
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see ongoing video call
+    And I tap on ongoing video
+    When I hang up ongoing video call
+    Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing video call
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |

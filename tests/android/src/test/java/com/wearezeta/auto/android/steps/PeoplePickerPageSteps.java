@@ -12,8 +12,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private PeoplePickerPage getPeoplePickerPage() throws Exception {
@@ -302,7 +301,7 @@ public class PeoplePickerPageSteps {
      * Looks for a group chat in the people picker search view
      *
      * @param shouldNotSee equals to null if "do not" part does not exist
-     * @param name group name/alias
+     * @param name         group name/alias
      * @throws Exception
      * @step. ^I (do not )?see group (.*) in [Pp]eople [Pp]icker$
      */
@@ -351,143 +350,35 @@ public class PeoplePickerPageSteps {
                 getPeoplePickerPage().isTopPeopleHeaderVisible());
     }
 
-    /**
-     * Verify that Call action button is visible
+     /**
+     * Verify action button presence
      *
+     * @param shouldNotSee equals to null if the button should be visible
+     * @param buttonName   one of possible action button names
      * @throws Exception
-     * @step. ^I see call action button on People picker page$
+     * @step. ^I (do not )?see (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on People Picker page$
      */
-    @When("^I see call action button on People picker page$")
-    public void ISeeCallActionButtonOnPeoplePickerPage() throws Exception {
-        Assert.assertTrue("Call action button is not visible",
-                getPeoplePickerPage().isCallButtonVisible());
-    }
-
-    /**
-     * Verify that Send image action button is visible
-     *
-     * @throws Exception
-     * @step. ^I see Send image action button on People picker page$
-     */
-    @When("^I see Send image action button on People picker page$")
-    public void ISeeSendImageActionButtonOnPeoplePickerPage() throws Exception {
-        Assert.assertTrue("Send image action button is not visible",
-                getPeoplePickerPage().isSendImageButtonVisible());
-    }
-
-    /**
-     * Verify if Open conversation button is visible
-     *
-     * @throws Exception
-     * @step. ^I see open conversation action button on People picker page$
-     */
-    @When("^I see open conversation action button on People picker page$")
-    public void ISeeOpenConversationActionButton() throws Exception {
-        Assert.assertTrue("Open conversation button is not visible",
-                getPeoplePickerPage()
-                        .waitUntilOpenOrCreateConversationButtonIsVisible());
-    }
-
-    /**
-     * Verify whether Open/Create Conversation button is visible
-     *
-     * @param shouldBeVisible equals to null if the button should be visible
-     * @param expectedCaption either 'Open' or 'Create'
-     * @throws Exception
-     * @step. ^I (do not )?see (?:the |\\s*)(Open|Create) Conversation button on
-     * [Pp]eople [Pp]icker page$"
-     */
-    @Then("^I (do not )?see (?:the |\\s*)(Open|Create) Conversation button on [Pp]eople [Pp]icker page$")
-    public void ISeeOpenConversationButton(String shouldBeVisible,
-                                           String expectedCaption) throws Exception {
-        if (shouldBeVisible == null) {
-            Assert.assertTrue(
-                    String.format("%s Conversation button is not visible",
-                            expectedCaption),
-                    getPeoplePickerPage()
-                            .waitUntilOpenOrCreateConversationButtonIsVisible(
-                                    expectedCaption));
+    @Then("^I (do not )?see (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on People Picker page$")
+    public void ISeeActionButton(String shouldNotSee, String buttonName) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("'%s' action button is not visible", buttonName),
+                    getPeoplePickerPage().waitUntilActionButtonIsVisible(buttonName));
         } else {
-            Assert.assertTrue(
-                    String.format(
-                            "%s Conversation button is still visible, but should be hidden",
-                            expectedCaption),
-                    getPeoplePickerPage()
-                            .waitUntilOpenOrCreateConversationButtonIsInvisible());
+            Assert.assertTrue(String.format("'%s' action button is not visible", buttonName),
+                    getPeoplePickerPage().waitUntilActionButtonIsInvisible(buttonName));
         }
     }
 
     /**
-     * Verify if Open, Call and Send image action buttons are visible
+     * Tap the corresponding action button
      *
+     * @param buttonName   one of possible action button names
      * @throws Exception
-     * @step. ^I see action buttons appeared on People picker page
+     * @step. ^I tap (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on People Picker page$
      */
-    @When("^I see action buttons appeared on People picker page$")
-    public void ISeeActionButttonsAppearedOnPeoplePickerPage() throws Exception {
-        ISeeOpenConversationActionButton();
-        ISeeCallActionButtonOnPeoplePickerPage();
-        ISeeSendImageActionButtonOnPeoplePickerPage();
-    }
-
-    /**
-     * Opens the conversation by clicking the conversation action button
-     *
-     * @throws Throwable
-     * @step. ^I click on open conversation action button on People picker page$
-     */
-    @When("^I click on open conversation action button on People picker page$")
-    public void IClickOnOpenConversationActionButtonOnPeoplePickerPage()
-            throws Throwable {
-        getPeoplePickerPage().tapOpenConversationButton();
-    }
-
-    /**
-     * Tap the Create/Open Conversation button
-     *
-     * @throws Exception
-     * @step. ^I tap (?:Open|Create) Conversation button on [Pp]eople [Pp]icker
-     * page$
-     */
-    @When("^I tap (?:Open|Create) Conversation button on [Pp]eople [Pp]icker page$")
-    public void ITapConversationActionButton() throws Exception {
-        getPeoplePickerPage().tapOpenConversationButton();
-    }
-
-    /**
-     * Opens the picture gallery by clicking the send image action button
-     *
-     * @throws Throwable
-     * @step. ^I click Send image action button on People picker page$
-     */
-    @When("^I click Send image action button on People picker page$")
-    public void IClickSendImageActionButtonOnPeoplePickerPage()
-            throws Throwable {
-        getPeoplePickerPage().tapCameraButton();
-    }
-
-    /**
-     * Starts a call by clicking the call action button
-     *
-     * @throws Throwable
-     * @step. ^I click Call action button on People picker page$
-     */
-    @When("^I click Call action button on People picker page$")
-    public void IClickCallActionButtonOnPeoplePickerPage() throws Throwable {
-        getPeoplePickerPage().tapCallButton();
-    }
-
-    /**
-     * Action buttons disappear when contact gets unchecked from search
-     *
-     * @throws Exception
-     * @step. ^I see action buttons disappear from People Picker page$
-     */
-    @Then("^I see action buttons disappear from People Picker page$")
-    public void ISeeActionButtonsDisappearFromPeoplePickerPage()
-            throws Exception {
-        getPeoplePickerPage()
-                .waitUntilOpenOrCreateConversationButtonIsInvisible();
+    @When("^I tap (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on People Picker page$")
+    public void ITapActionButtons(String buttonName) throws Exception {
+        getPeoplePickerPage().tapActionButton(buttonName);
     }
 
     /**

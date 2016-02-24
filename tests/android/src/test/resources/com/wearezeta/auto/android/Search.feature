@@ -164,7 +164,7 @@ Feature: Search
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
-    Then I see action buttons appeared on People picker page
+    Then I see Open Conversation action button on People Picker page
 
     Examples:
       | Name      | Contact1  |
@@ -182,8 +182,7 @@ Feature: Search
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
-    And I see open conversation action button on People picker page
-    And I click on open conversation action button on People picker page
+    And I tap Open Conversation action button on People Picker page
     Then I see dialog page
 
     Examples:
@@ -202,8 +201,7 @@ Feature: Search
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
-    And I see Send image action button on People picker page
-    And I click Send image action button on People picker page
+    And I tap Send Image action button on People Picker page
     And I press "Gallery" button
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -224,8 +222,7 @@ Feature: Search
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
-    And I see call action button on People picker page
-    And I click Call action button on People picker page
+    And I tap Call action button on People Picker page
     Then I see outgoing call
 
     Examples:
@@ -247,8 +244,7 @@ Feature: Search
     And I tap on Search input on People picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact2>
-    And I see Send image action button on People picker page
-    And I click Send image action button on People picker page
+    And I tap Send Image action button on People Picker page
     And I press "Gallery" button
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -268,9 +264,9 @@ Feature: Search
     When I open search by tap
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
-    Then I see action buttons appeared on People picker page
+    Then I see Open Conversation action button on People Picker page
     When I tap on <Contact1> in Top People
-    Then I see action buttons disappear from People Picker page
+    Then I do not see Open Conversation action button on People Picker page
 
     Examples:
       | Name      | Contact1  |
@@ -289,13 +285,13 @@ Feature: Search
     And I wait until Top People list appears
     And I see TOP PEOPLE
     And I tap on <Contact1> in Top People
-    And I see Open Conversation button on People picker page
+    And I see Open Conversation action button on People Picker page
     And I tap on <Contact2> in Top People
-    And I see Create Conversation button on people picker page
+    And I see Create Conversation action button on People Picker page
     And I tap on <Contact2> in Top People
-    And I see Open Conversation button on People picker page
+    And I see Open Conversation action button on People Picker page
     And I tap on <Contact1> in Top People
-    Then I see action buttons disappear from People Picker page
+    Then I do not see Open Conversation action button on People Picker page
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -316,8 +312,8 @@ Feature: Search
     And I tap on Search input on People picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact2>
-    And I see Create Conversation button on people picker page
-    And I tap Create Conversation button on People picker page
+    And I see Create Conversation action button on People Picker page
+    And I tap Create Conversation action button on People Picker page
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
@@ -339,8 +335,7 @@ Feature: Search
     And I tap on Search input on People picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact2>
-    And I see call action button on People picker page
-    And I click Call action button on People picker page
+    And I tap Call action button on People Picker page
     Then I see outgoing call
 #    When I tap conversation details button
 #    Then I see the correct number of participants in the title 2
