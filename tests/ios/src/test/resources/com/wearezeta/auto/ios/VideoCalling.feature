@@ -180,3 +180,23 @@ Feature: Video Calling
     Examples:
       | Name      | Contact    | Contact2 | VideoCallBackend | Timeout |
       | user1Name | user2Name  | user3Name| chrome           | 60      |
+
+  @C12106 @staging
+  Scenario Outline: Verify muting ongoing Video call
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When <Contact> starts a video call to <Name> using <CallBackend>
+    And I see call status message contains "<Contact> CALLING"
+    And I tap Accept Video button on Calling overlay
+    And I see Mute button on Calling overlay
+    And I see Mute button is not selected on calling overlay
+    And I remember Mute button state on calling overlay
+    And I tap Mute button on Calling overlay
+    Then I see Mute button is selected on calling overlay
+    And I see state of Mute button has changed on Calling overlay page
+
+    Examples:
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |
