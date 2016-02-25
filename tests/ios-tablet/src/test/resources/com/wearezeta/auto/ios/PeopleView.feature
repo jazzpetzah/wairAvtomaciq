@@ -210,7 +210,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    Then I can read the group name <GroupChatName> on the iPad popover
+    Then I see correct conversation name <GroupChatName>
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
 
     Examples:
@@ -227,7 +227,7 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    Then I can read the group name <GroupChatName> on the iPad popover
+    Then I see correct conversation name <GroupChatName>
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
 
     Examples:
@@ -824,7 +824,7 @@ Feature: People View
     And I open archived conversations on iPad
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
-    Then I see 4 conversation entries
+    Then I see dialog page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
@@ -850,7 +850,7 @@ Feature: People View
     And I open archived conversations on iPad
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
-    Then I see 4 conversation entries
+    Then I see dialog page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
