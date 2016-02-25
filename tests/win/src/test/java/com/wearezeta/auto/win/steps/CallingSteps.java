@@ -54,9 +54,7 @@ public class CallingSteps {
 	@When("(.*) stops? all calls to (.*)")
 	public void UsersStopCallsToUserY(String callers, String conversationName)
 			throws Exception {
-		for (String caller : splitAliases(callers)) {
-			commonCallingSteps.stopOutgoingCall(caller, conversationName);
-		}
+                commonCallingSteps.stopOutgoingCall(splitAliases(callers), conversationName);
 	}
 
 	/**
@@ -82,10 +80,8 @@ public class CallingSteps {
 	public void UsersVerifyCallStatusToUserY(String callers,
 			String conversationName, String expectedStatuses, int timeoutSeconds)
 			throws Exception {
-		for (String caller : splitAliases(callers)) {
-			commonCallingSteps.verifyCallingStatus(caller, conversationName,
+			commonCallingSteps.verifyCallingStatus(splitAliases(callers), conversationName,
 					expectedStatuses, timeoutSeconds);
-		}
 	}
 
 	/**

@@ -213,20 +213,22 @@ public final class CommonCallingSteps2 {
      * Verifies the status of a call from a calling instance in a given conversation from the view of a given user.
      * <p>
      *
-     * @param callerName the name of the caller
+     * @param callerNames the names of the callers
      * @param conversationName the name of the conversation to check
      * @param expectedStatuses the expected status
      * @param secondsTimeout timeout for checking the status
      * @throws Exception
      * @see com.wearezeta.auto.common.calling2.v1.model.CallStatus
      */
-    public void verifyCallingStatus(String callerName, String conversationName,
+    public void verifyCallingStatus(List<String> callerNames, String conversationName,
             String expectedStatuses, int secondsTimeout) throws Exception {
+        for (String callerName : callerNames) {
         ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
         final String convId = getConversationId(userAs, conversationName);
         waitForExpectedCallStatuses(getInstance(userAs),
                 getOutgoingCall(userAs, convId),
                 callStatusesListToObject(expectedStatuses), secondsTimeout);
+        }
     }
 
     /**

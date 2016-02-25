@@ -70,7 +70,7 @@ public class CallingSteps {
      *
      * @step. (.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$
      *
-     * @param caller caller name/alias
+     * @param caller callers names/aliases
      * @param conversationName destination conversation
      * @param expectedStatuses comma-separated list of expected call statuses. See
      * com.wearezeta.auto.common.calling2.v1.model.CallStatus for more details
@@ -78,10 +78,10 @@ public class CallingSteps {
      * @throws Exception
      */
     @Then("(.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
-    public void UserXVerifesCallStatusToUserY(String caller,
+    public void UserXVerifesCallStatusToUserY(String callers,
             String conversationName, String expectedStatuses, int timeoutSeconds)
             throws Exception {
-        commonCallingSteps.verifyCallingStatus(caller, conversationName,
+        commonCallingSteps.verifyCallingStatus(splitAliases(callers), conversationName,
                 expectedStatuses, timeoutSeconds);
     }
 
