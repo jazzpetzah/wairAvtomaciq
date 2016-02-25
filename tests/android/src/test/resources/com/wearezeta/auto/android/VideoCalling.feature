@@ -138,7 +138,6 @@ Feature: VideoCalling
     And I see incoming call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
     And <Contact> stops all calls to me
-    Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
     And I do not see incoming call
     When I tap on contact name <Contact>
     Then I see dialog with missed call from <Contact>
