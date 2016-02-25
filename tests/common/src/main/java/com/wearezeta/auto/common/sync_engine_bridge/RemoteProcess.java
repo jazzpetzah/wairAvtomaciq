@@ -1,7 +1,6 @@
 package com.wearezeta.auto.common.sync_engine_bridge;
 
 import akka.actor.ActorRef;
-import akka.actor.PoisonPill;
 import akka.serialization.Serialization;
 
 import com.google.common.base.Throwables;

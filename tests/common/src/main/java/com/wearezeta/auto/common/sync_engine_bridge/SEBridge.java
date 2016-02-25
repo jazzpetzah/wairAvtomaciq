@@ -9,13 +9,11 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.*;
 
 import org.apache.log4j.Logger;
 
 public class SEBridge {
-    private static final long DEVICE_POOL_INIT_TIMEOUT_SECONDS = 600;
-    private volatile Future<UserDevicePool> devicePool;
+    private volatile UserDevicePool devicePool;
     private static SEBridge instance = null;
 
     private static final Logger LOG = ZetaLogger.getLog(SEBridge.class.getSimpleName());
@@ -30,10 +28,8 @@ public class SEBridge {
     }
 
     private SEBridge() throws Exception {
-        this.devicePool = Executors.newSingleThreadExecutor().submit(
-                () -> new UserDevicePool(CommonUtils.getBackendType(CommonUtils.class),
-                        CommonUtils.getOtrOnly(CommonUtils.class))
-        );
+        this.devicePool = new UserDevicePool(CommonUtils.getBackendType(CommonUtils.class),
+                CommonUtils.getOtrOnly(CommonUtils.class));
     }
 
     public static synchronized SEBridge getInstance() {
@@ -48,7 +44,7 @@ public class SEBridge {
     }
 
     private UserDevicePool getDevicePool() throws Exception {
-        return this.devicePool.get(DEVICE_POOL_INIT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        return this.devicePool;
     }
 
     private void login(ClientUser user, IDevice dstDevice) throws Exception {
@@ -143,8 +139,6 @@ public class SEBridge {
     }
 
     public void reset() throws Exception {
-        if (this.devicePool.isDone()) {
-            this.getDevicePool().reset();
-        }
+        this.getDevicePool().reset();
     }
 }

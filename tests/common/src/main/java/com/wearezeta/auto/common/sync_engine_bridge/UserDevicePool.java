@@ -38,10 +38,12 @@ public class UserDevicePool {
 
     private static final int MAX_POOL_SIZE = 10;
 
+    private static final int PROCESS_CREATION_TIMEOUT = 90; // seconds
+
     private Map<Future<IRemoteProcess>, Optional<Future<IDevice>>> cachedDevices = new ConcurrentHashMap<>();
     private Semaphore cachedDevicesGuard = new Semaphore(1);
 
-    private void prefillCache() throws Exception {
+    private void prefillCache() {
         int threadsCount = 2;
         final int cpuCount = Runtime.getRuntime().availableProcessors();
         if (cpuCount > 3) {
@@ -55,18 +57,12 @@ public class UserDevicePool {
                             new RemoteProcess(CommonUtils.generateGUID().substring(0, 8),
                                     this.coordinatorActorRef, this.backendType, this.otrOnly));
                     cachedDevices.put(p, Optional.empty());
-                    p.get();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
         }
         pool.shutdown();
-        final int secondsTimeout = (INITIAL_CACHE_SIZE / threadsCount + 1) * 60;
-        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS)) {
-            throw new IllegalStateException(String.format(
-                    "Devices cache has not been prefilled within %s seconds timeout", secondsTimeout));
-        }
     }
 
     private void resetCache() throws Exception {
@@ -109,7 +105,8 @@ public class UserDevicePool {
             }
             final Future<IRemoteProcess> keyProcess = targetProcess;
             targetDevice = Executors.newSingleThreadExecutor().submit(() ->
-                    new Device(keyProcess.get(), deviceName, this.coordinatorActorRef, ACTOR_DURATION));
+                    new Device(keyProcess.get(PROCESS_CREATION_TIMEOUT, TimeUnit.SECONDS),
+                            deviceName, this.coordinatorActorRef, ACTOR_DURATION));
             cachedDevices.put(targetProcess, Optional.of(targetDevice));
         } finally {
             cachedDevicesGuard.release();
@@ -139,11 +136,7 @@ public class UserDevicePool {
         this.coordinatorActorRef = system.actorOf(Props.create(CoordinatorActor.class), "coordinatorActor");
         this.backendType = backendType;
         this.otrOnly = otrOnly;
-        try {
-            prefillCache();
-        } catch (Exception e) {
-            Throwables.propagate(e);
-        }
+        prefillCache();
     }
 
     public IDevice addDevice(ClientUser user) {
