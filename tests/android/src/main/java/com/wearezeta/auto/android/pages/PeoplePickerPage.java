@@ -207,7 +207,7 @@ public class PeoplePickerPage extends AndroidPage {
         switch (name.toLowerCase()) {
             case "open conversation":
             case "create conversation":
-                return By.xpath(xpathStrCreateOrOpenConversationButtonByCaption.apply(name));
+                return By.xpath(xpathStrCreateOrOpenConversationButtonByCaption.apply(name.split("\\s+")[0]));
             case "send image":
                 return idQuickMenuCameraButton;
             case "call":
