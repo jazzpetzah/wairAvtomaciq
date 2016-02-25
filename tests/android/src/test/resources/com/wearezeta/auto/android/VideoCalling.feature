@@ -159,7 +159,7 @@ Feature: VideoCalling
     When <Contact> starts a video call to me
     And I see incoming call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
-    And <Contact> stops all calls to me
+    And <Contact> stops calling me
     And I do not see incoming call
     When I tap on contact name <Contact>
     Then I see dialog with missed call from <Contact>

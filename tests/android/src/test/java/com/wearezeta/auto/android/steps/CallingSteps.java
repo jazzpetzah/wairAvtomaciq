@@ -21,19 +21,29 @@ public class CallingSteps {
     /**
      * Make audio or video call(s) to one specific conversation.
      *
-     * @step. ^(.*)( start(s|ing) a video) calls? to conversation (.*)$
+     * @step. ^(.*) start(?:s|ing) a video call to (.*)$
      *
      * @param callerNames caller names/aliases
      * @param conversationName destination conversation name
      * @throws Exception
      */
-    @When("^(.*)( start(s|ing) a video) calls? to conversation (.*)$")
-    public void UserXCallsToConversationY(String callerNames, String video, String conversationName) throws Exception {
-        if (video == null) {
-            commonCallingSteps.startVideoCallToConversation(splitAliases(callerNames), conversationName);
-        } else {
-            commonCallingSteps.callToConversation(splitAliases(callerNames), conversationName);
-        }
+    @When("^(.*) start(?:s|ing) a video call to (.*)$")
+    public void UserXCallsWithVideoToConversationY(String callerNames, String conversationName) throws Exception {
+        commonCallingSteps.startVideoCallToConversation(splitAliases(callerNames), conversationName);
+    }
+
+    /**
+     * Make calls to one specific conversation.
+     *
+     * @step. ^(.*) calls (.*)$
+     *
+     * @param callerNames caller names/aliases
+     * @param conversationName destination conversation name
+     * @throws Exception
+     */
+    @When("^(.*) calls (.*)$")
+    public void UserXCallsToConversationY(String callerNames, String conversationName) throws Exception {
+        commonCallingSteps.callToConversation(splitAliases(callerNames), conversationName);
     }
 
     /**
@@ -45,7 +55,7 @@ public class CallingSteps {
      * @param conversationName destination conversation name
      * @throws Exception
      */
-    @When("^(.*) stops? calls( to (.*))$")
+    @When("^(.*) stops? calling( (.*))?$")
     public void UserXStopsCallsToUserY(String instanceUsers, String outgoingCall, String conversationName)
             throws Exception {
         if (outgoingCall == null) {

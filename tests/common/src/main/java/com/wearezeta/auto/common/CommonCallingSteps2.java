@@ -133,7 +133,7 @@ public final class CommonCallingSteps2 {
             final String convId = getConversationId(callerUser, conversationName);
             final Instance instance = getInstance(callerUser);
             final Call call = client.callToUser(instance, convId);
-            addCall(call, callerUser);
+            addCall(call, callerUser, convId);
         }
     }
 
@@ -179,7 +179,7 @@ public final class CommonCallingSteps2 {
             final String convId = getConversationId(callerUser, conversationName);
             final Instance instance = getInstance(callerUser);
             final Call call = client.videoCallToUser(instance, convId);
-            addCall(call, callerUser);
+            addCall(call, callerUser, convId);
         }
     }
 

@@ -11,7 +11,7 @@ Feature: Calling
     When <Contact> calls me
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see incoming call
-    And <Contact> stops all calls to me
+    And <Contact> stops calling me
     Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
     And I do not see incoming call
     When I tap on contact name <Contact>
@@ -78,7 +78,7 @@ Feature: Calling
     When I swipe to accept the call
     Then <Contact1> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see ongoing call
-    When <Contact1> stops all calls to me
+    When <Contact1> stops calling me
     Then <Contact1> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
     And I do not see ongoing call
 #TODO check for system messages
@@ -102,7 +102,7 @@ Feature: Calling
     When I swipe to accept the call
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see ongoing call
-    When <Contact> stops all calls to me
+    When <Contact> stops calling me
     Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
     And I do not see ongoing call
 #TODO check for system messages
@@ -126,7 +126,7 @@ Feature: Calling
     When I swipe to accept the call
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see ongoing call
-    When <Contact> stops all calls to me
+    When <Contact> stops calling me
     Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
     And I do not see ongoing call
 #TODO check for system messages
@@ -284,7 +284,7 @@ Feature: Calling
     When I swipe on text input
     And I press Call button
     Then I see ongoing call
-    And <Contact1>,<Contact2> stops all calls to <GroupChatName>
+    And <Contact1>,<Contact2> stops calling <GroupChatName>
     Then I do not see ongoing call
 
     Examples:
@@ -306,7 +306,7 @@ Feature: Calling
     When I swipe to accept the call
     Then I see ongoing call
     And I see 4 users take part in call
-    And <Contact1>,<Contact2>,<Contact3>,<Contact4> stops all calls to <GroupChatName>
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> stops calling <GroupChatName>
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
@@ -332,7 +332,7 @@ Feature: Calling
 #    And I press Call button
 #    Then I see group call is full alert
 #    And I close group call is full alert
-    And <Contact1>,<Contact2>,<Contact3>,<Contact4> stops all calls to <GroupChatName>
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> stops calling <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName       | CallBackend |
@@ -357,7 +357,7 @@ Feature: Calling
     And I see incoming call from <Contact3>
     When I swipe to accept the call
     Then I see ongoing call
-    And <Contact1>,<Contact2> stops all calls to <GroupChatName>
+    And <Contact1>,<Contact2> stops calling <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -383,7 +383,7 @@ Feature: Calling
     When I swipe to accept the call
     Then I see ongoing call
     And I see 2 users take part in call
-    And <Contact1>,<Contact2> stops all calls to <GroupChatName>
+    And <Contact1>,<Contact2> stops calling <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -412,7 +412,7 @@ Feature: Calling
     When I swipe to ignore the call
     Then I see ongoing call
     And I see 2 users take part in call
-    And <Contact1>,<Contact2> stops all calls to <GroupChatName>
+    And <Contact1>,<Contact2> stops calling <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -434,7 +434,7 @@ Feature: Calling
     And I swipe to accept the call
     And I see ongoing call
     And I see 2 users take part in call
-    And <Contact1>,<Contact2> stops all calls to <GroupChatName>
+    And <Contact1>,<Contact2> stops calling <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
@@ -476,7 +476,7 @@ Feature: Calling
     And I wait for 10 seconds
     And I restore the application
     Then I see ongoing call
-    And <Contact> stops all calls to me
+    And <Contact> stops calling me
 
     Examples:
       | Name      | Contact   | CallBackend |
@@ -498,7 +498,7 @@ Feature: Calling
     When <Contact2> calls me
     Then I see incoming call
 #TODO alerts
-    And <Contact2> stop all calls to me
+    And <Contact2> stop calling me
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
