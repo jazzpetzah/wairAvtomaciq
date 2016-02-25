@@ -55,7 +55,7 @@ public class CallingSteps {
 	public void UsersStopCallsToUserY(String callers, String conversationName)
 			throws Exception {
 		for (String caller : splitAliases(callers)) {
-			commonCallingSteps.stopCall(caller, conversationName);
+			commonCallingSteps.stopOutgoingCall(caller, conversationName);
 		}
 	}
 

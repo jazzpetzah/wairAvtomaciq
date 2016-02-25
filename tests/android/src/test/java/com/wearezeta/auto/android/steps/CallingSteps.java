@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
-import static org.junit.Assert.assertThat;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
@@ -9,12 +8,32 @@ import static org.hamcrest.Matchers.*;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import static org.junit.Assert.assertThat;
 
 public class CallingSteps {
+
     private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2.getInstance();
 
     {
         commonCallingSteps.setAutocallVersion("2.1");
+    }
+
+    /**
+     * Make audio or video call(s) to one specific conversation.
+     *
+     * @step. ^(.*)( start(s|ing) a video) calls? to conversation (.*)$
+     *
+     * @param callerNames caller names/aliases
+     * @param conversationName destination conversation name
+     * @throws Exception
+     */
+    @When("^(.*)( start(s|ing) a video) calls? to conversation (.*)$")
+    public void UserXCallsToConversationY(String callerNames, String video, String conversationName) throws Exception {
+        if (video == null) {
+            commonCallingSteps.startVideoCallToConversation(splitAliases(callerNames), conversationName);
+        } else {
+            commonCallingSteps.callToConversation(splitAliases(callerNames), conversationName);
+        }
     }
 
     /**
@@ -28,6 +47,7 @@ public class CallingSteps {
      * @param callBackend call backend. Available values: 'autocall', 'chrome', 'firefox'
      * @throws Exception
      */
+    @Deprecated
     @When("^(.*) calls (.*) using (.*)$")
     public void UserXCallsToUserYUsingCallBackend(String caller,
             String conversationName, String callBackend) throws Exception {
@@ -45,6 +65,7 @@ public class CallingSteps {
      * @param callBackend call backend. Available values: 'autocall', 'chrome', 'firefox'
      * @throws Exception
      */
+    @Deprecated
     @When("(.*) starts a video call to (.*) using (.*)$")
     public void UserXStartVideoCallsToUserYUsingCallBackend(String caller,
             String conversationName, String callBackend) throws Exception {
@@ -64,9 +85,7 @@ public class CallingSteps {
     @When("(.*) stops? all calls to (.*)")
     public void UserXStopsCallsToUserY(String callers, String conversationName)
             throws Exception {
-        for (String caller : splitAliases(callers)) {
-            commonCallingSteps.stopCall(caller, conversationName);
-        }
+        commonCallingSteps.stopOutgoingCall(splitAliases(callers), conversationName);
     }
 
     /**
@@ -116,6 +135,7 @@ public class CallingSteps {
      * @param callingServiceBackend available values: 'blender', 'chrome', * 'firefox'
      * @throws Exception
      */
+    @Deprecated
     @When("(.*) starts? waiting instance using (\\w+)$")
     public void UserXStartsWaitingInstance(String callee,
             String callingServiceBackend) throws Exception {
@@ -124,33 +144,39 @@ public class CallingSteps {
     }
 
     /**
-     * Automatically accept the next incoming call for the particular user as soon as it appears in UI. Waiting instance should
-     * be already created for this particular user
+     * Execute instance as 'userAsNameAlias' user on calling server using 'callingServiceBackend' tool
+     *
+     * @step. (.*) starts? waiting instance using (\\w+)$
+     *
+     * @param callees callee name/alias
+     * @param callingServiceBackend available values: 'autocall', 'chrome', 'firefox', 'zcall'
+     * @throws Exception
+     */
+    @When("(.*) starts? instances? using (\\w+)$")
+    public void UserXStartsInstance(String callees,
+            String callingServiceBackend) throws Exception {
+        commonCallingSteps.startInstances(splitAliases(callees),
+                callingServiceBackend);
+    }
+
+    /**
+     * Automatically accept the next incoming audio call or for the particular user as soon as it appears in UI. Waiting
+     * instance should be already created for this particular user
      *
      * @step. (.*) accepts? next incoming call automatically$
      *
      * @param callees callee names/aliases
      * @throws Exception
      */
-    @When("(.*) accepts? next incoming call automatically$")
-    public void UserXAcceptsNextIncomingCallAutomatically(String callees)
+    @When("(.*) accepts? next incoming( video)? call automatically$")
+    public void UserXAcceptsNextIncomingCallAutomatically(String callees, String video)
             throws Exception {
-        commonCallingSteps.acceptNextCall(splitAliases(callees));
-    }
+        if (video == null) {
+            commonCallingSteps.acceptNextCall(splitAliases(callees));
+        } else {
+            commonCallingSteps.acceptNextVideoCall(splitAliases(callees));
+        }
 
-    /**
-     * Automatically accept the next incoming video call for the particular user as soon as it appears in UI. Waiting instance
-     * should be already created for this particular user
-     *
-     * @step. (.*) accepts? next incoming video call automatically$
-     *
-     * @param callees comma separated list of callee names/aliases
-     * @throws Exception
-     */
-    @When("(.*) accepts? next incoming video call automatically$")
-    public void UserXAcceptsNextIncomingVideoCallAutomatically(String callees)
-            throws Exception {
-        commonCallingSteps.acceptNextVideoCall(splitAliases(callees));
     }
 
     /**
@@ -158,12 +184,12 @@ public class CallingSteps {
      *
      * @step. (.*) stops? all waiting instances$
      *
-     * @param callee callee name/alias
+     * @param callees callee names/aliases
      * @throws Exception
      */
     @When("(.*) stops? all waiting instances$")
-    public void UserXStopsIncomingCalls(String callee) throws Exception {
-        commonCallingSteps.stopWaitingCall(callee);
+    public void UserXStopsIncomingCalls(String callees) throws Exception {
+        commonCallingSteps.stopIncomingCall(splitAliases(callees));
     }
 
     /**

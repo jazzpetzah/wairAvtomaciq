@@ -4,10 +4,11 @@ Feature: Calling
   Scenario Outline: Verify missed call indicator in conversations list and system message inside conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When <Contact> calls me using <CallBackend>
+    When <Contact> calls me
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see incoming call
     And <Contact> stops all calls to me
@@ -24,10 +25,11 @@ Feature: Calling
   Scenario Outline: Silence an incoming call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When <Contact> calls me using <CallBackend>
+    When <Contact> calls me
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see incoming call
     And I see incoming call from <Contact>
@@ -42,7 +44,7 @@ Feature: Calling
   Scenario Outline: I can start 1:1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
@@ -66,10 +68,11 @@ Feature: Calling
   Scenario Outline: I can accept incoming 1:1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When <Contact1> calls me using <CallBackend>
+    When <Contact1> calls me
     Then I see incoming call
     And I see incoming call from <Contact1>
     When I swipe to accept the call
@@ -88,11 +91,12 @@ Feature: Calling
   Scenario Outline: Receive call while Wire is running in the background
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I minimize the application
-    And <Contact> calls me using <CallBackend>
+    And <Contact> calls me
     Then I see incoming call
     And I see incoming call from <Contact>
     When I swipe to accept the call
@@ -111,11 +115,12 @@ Feature: Calling
   Scenario Outline: Receive call while mobile in sleeping mode(screen locked)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I lock the device
-    And <Contact> calls me using <CallBackend>
+    And <Contact> calls me
     Then I see incoming call
     And I see incoming call from <Contact>
     When I swipe to accept the call
@@ -134,11 +139,12 @@ Feature: Calling
   Scenario Outline: Calling bar buttons are clickable and change their states
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And <Contact> calls me using <CallBackend>
+    And <Contact> calls me
     Then I see incoming call
     And I see incoming call from <Contact>
     When I swipe to accept the call
@@ -161,12 +167,13 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> start instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
+    And <Contact1> calls <GroupChatName>
+    And <Contact2> calls <GroupChatName>
     Then I see incoming call
     When I swipe to accept the call
     Then I see ongoing call
@@ -187,7 +194,7 @@ Feature: Calling
   Scenario Outline: I can start group call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> start waiting instance using <CallBackend>
+    Given <Contact1>,<Contact2> start instance using <CallBackend>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -211,13 +218,14 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact2>,<Contact3>,<Contact4> start waiting instance using <CallBackend>
+    Given <Contact1> starts instance using <CallBackend2>
+    Given <Contact2>,<Contact3>,<Contact4> start instance using <CallBackend>
     Given <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend2>
+    And <Contact1> calls <GroupChatName>
 #TODO activity check
     Then I see incoming call
     When I swipe to accept the call
@@ -238,13 +246,14 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Contact2> starts waiting instance using chrome
+    Given <Contact1> starts instance using <CallBackend>
+    Given <Contact2> starts instance using chrome
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend>
+    And <Contact1> calls <GroupChatName>
     Then I see incoming call
     When I swipe to ignore the call
     And I swipe on text input
@@ -260,12 +269,12 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
+    And <Contact1>,<Contact2> calls <GroupChatName>
     Then I see incoming call
     When I swipe to accept the call
     Then I see ongoing call
@@ -275,8 +284,7 @@ Feature: Calling
     When I swipe on text input
     And I press Call button
     Then I see ongoing call
-    And <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
+    And <Contact1>,<Contact2> stops all calls to <GroupChatName>
     Then I do not see ongoing call
 
     Examples:
@@ -288,22 +296,17 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
-    And <Contact3> calls <GroupChatName> using <CallBackend>
-    And <Contact4> calls <GroupChatName> using <CallBackend>
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> calls <GroupChatName>
     Then I see incoming call
     When I swipe to accept the call
     Then I see ongoing call
     And I see 4 users take part in call
-    And <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
-    And <Contact3> stops all calls to <GroupChatName>
-    And <Contact4> stops all calls to <GroupChatName>
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> stops all calls to <GroupChatName>
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
@@ -314,15 +317,12 @@ Feature: Calling
     Given There are 6 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
-    And <Contact3> calls <GroupChatName> using <CallBackend>
-    And <Contact4> calls <GroupChatName> using <CallBackend>
-    And <Contact5> calls <GroupChatName> using <CallBackend>
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> calls <GroupChatName>
     When I swipe to accept the call
     Then I do not see ongoing call
 #TODO alerts
@@ -332,11 +332,7 @@ Feature: Calling
 #    And I press Call button
 #    Then I see group call is full alert
 #    And I close group call is full alert
-    And <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
-    And <Contact3> stops all calls to <GroupChatName>
-    And <Contact4> stops all calls to <GroupChatName>
-    And <Contact5> stops all calls to <GroupChatName>
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> stops all calls to <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName       | CallBackend |
@@ -347,12 +343,12 @@ Feature: Calling
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
+    Given <Contact1>,<Contact2> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
+    And <Contact1>,<Contact2> calls <GroupChatName>
     And I see incoming call
     When I swipe to accept the call
     And I see ongoing call
@@ -361,8 +357,7 @@ Feature: Calling
     And I see incoming call from <Contact3>
     When I swipe to accept the call
     Then I see ongoing call
-    And <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
+    And <Contact1>,<Contact2> stops all calls to <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -373,23 +368,22 @@ Feature: Calling
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
+    Given <Contact1>,<Contact2>,<Contact3> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact3>
-    And <Contact3> calls <Name> using <CallBackend>
+    And <Contact3> calls <Name>
     Then I see incoming call
     When I swipe to accept the call
     Then I see ongoing call
-    When <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
+    When <Contact1>,<Contact2> calls <GroupChatName>
     Then I see incoming call
     And I see incoming call from <GroupChatName>
     When I swipe to accept the call
     Then I see ongoing call
     And I see 2 users take part in call
-    And <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
+    And <Contact1>,<Contact2> stops all calls to <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -400,16 +394,16 @@ Feature: Calling
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
+    Given <Contact1>,<Contact2>,<Contact3> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
+    And <Contact1>,<Contact2> calls <GroupChatName>
     And I see incoming call
     When I swipe to accept the call
     Then I see ongoing call
-    When <Contact3> calls <Name> using <CallBackend>
+    When <Contact3> calls <Name>
     And I see incoming call
 #TODO alerts
 #    And I swipe to accept the call
@@ -418,8 +412,7 @@ Feature: Calling
     When I swipe to ignore the call
     Then I see ongoing call
     And I see 2 users take part in call
-    And <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
+    And <Contact1>,<Contact2> stops all calls to <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -430,19 +423,18 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts instance using <CallBackend>
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I minimize the application
-    And <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
+    And <Contact1>,<Contact2> calls <GroupChatName>
     Then I see incoming call
     Then I see incoming call from <GroupChatName>
     And I swipe to accept the call
     And I see ongoing call
     And I see 2 users take part in call
-    And <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
+    And <Contact1>,<Contact2> stops all calls to <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
@@ -472,10 +464,11 @@ Feature: Calling
   Scenario Outline: Put client into background when in the call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When <Contact> calls me using <CallBackend>
+    When <Contact> calls me
     And I see incoming call
     And I swipe to accept the call
     Then I see ongoing call
@@ -493,15 +486,16 @@ Feature: Calling
   Scenario Outline: (AN-3510) Other user trying to call me while I'm already in zeta call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact1>
-    And <Contact1> calls me using <CallBackend>
+    And <Contact1> calls me
     And I see incoming call from <Contact1>
     And I swipe to accept the call
     And I see ongoing call
-    When <Contact2> calls me using <CallBackend>
+    When <Contact2> calls me
     Then I see incoming call
 #TODO alerts
     And <Contact2> stop all calls to me

@@ -13,6 +13,9 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertThat;
 
 public class CallingSteps {
 
@@ -80,7 +83,7 @@ public class CallingSteps {
 	@When("(.*) stops? all calls to (.*)")
 	public void UserXStopsCallsToUserY(String caller, String conversationName)
 			throws Exception {
-		commonCallingSteps.stopCall(caller, conversationName);
+		commonCallingSteps.stopOutgoingCall(caller, conversationName);
 	}
 
 	/**

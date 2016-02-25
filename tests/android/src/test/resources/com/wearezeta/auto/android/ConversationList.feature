@@ -116,6 +116,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
@@ -135,7 +136,7 @@ Feature: Conversation List
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
     Then I do not see contact list with name <GroupChatName>
-    When <Contact1> calls <GroupChatName> using <CallBackend>
+    When <Contact1> calls <GroupChatName>
     Then I see contact list with name <GroupChatName>
 
     Examples:

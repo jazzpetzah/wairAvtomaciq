@@ -9,6 +9,9 @@ import com.wearezeta.auto.common.calling2.v1.model.Flow;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertThat;
 
 public class CallingSteps {
 
@@ -49,7 +52,7 @@ public class CallingSteps {
     public void UsersStopCallsToUserY(String callers, String conversationName)
             throws Exception {
         for (String caller : splitAliases(callers)) {
-            commonCallingSteps.stopCall(caller, conversationName);
+            commonCallingSteps.stopOutgoingCall(caller, conversationName);
         }
     }
 
