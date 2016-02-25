@@ -38,7 +38,6 @@ Feature: Utility
   @C3283 @utility
   Scenario Outline: Verify that there are no dead links on start page for <Agent>
     When I navigate to start page for <Agent>
-    When I navigate to start page for <Agent>
     Then I can see no dead links
 
     Examples: 
@@ -51,7 +50,6 @@ Feature: Utility
   @C12086 @utility
   Scenario Outline: Verify that there are no dead links on german start page for <Agent>
     When I navigate to german start page for <Agent>
-    When I navigate to german start page for <Agent>
     Then I can see no dead links
 
     Examples: 
@@ -63,6 +61,7 @@ Feature: Utility
         
   @C5232 @utility
   Scenario Outline: Check password reset utility page for all agents
+  #All mails not in use? WIP
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
     When I click Change Password button
@@ -97,12 +96,10 @@ Feature: Utility
   @C5233 @utility
   Scenario Outline: Check password reset with unregistered email for all agents
     When I navigate to Password Change Reset page for <Agent>
-    #Workaround fix below
-    And I navigate to Password Change Reset page for <Agent>
     Then I see Password Change Request page
     And I enter unregistered email <UnregisteredMail>
     And I click Change Password button on Password Change Request page
-    Then I dont see Password Change Request Succeeded page
+    Then I see unused mail message
 
     Examples: 
       | UnregisteredMail                 | Agent   |
@@ -113,6 +110,7 @@ Feature: Utility
 
   @C5234 @utility
   Scenario Outline: Check password reset with wrong checksum for all agents
+  #All mails not in use? WIP
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
     When I click Change Password button
@@ -148,23 +146,20 @@ Feature: Utility
   @C3277 @Utility
   Scenario: Verify buttons from verification link for osx
   When I navigate to verify page for osx
-  When I navigate to verify page for osx
   Then I see download button for osx
   And I see webapp button
 
   @C3278 @Utility
   Scenario: Verify buttons from verification link for windows
   When I navigate to verify page for windows
-  When I navigate to verify page for windows
   Then I see download button for windows
 
   @C5236 @Utility
   Scenario Outline: Verify error message by broken verification link for <Agent>
   When I navigate to broken verify page for <Agent>
-  When I navigate to broken verify page for <Agent>
   Then I see error message
 
-      Examples: 
+  Examples: 
       | Agent   |
       | iphone  |
       | android |

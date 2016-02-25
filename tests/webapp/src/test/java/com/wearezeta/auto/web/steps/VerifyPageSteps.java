@@ -49,7 +49,7 @@ public class VerifyPageSteps {
 				downloadLink = "https://itunes.apple.com/app/wire/id931134707?mt=12";
 				break;
 			case "windows":
-				downloadLink = "https://staging-website.zinfra.io/download/";
+				downloadLink = "https://h1.wire.com/download/";
 				break;
 			default: break;
 		}
@@ -58,7 +58,7 @@ public class VerifyPageSteps {
 	
 	@Then("^I see webapp button$")
 	public void ISeeWebappButton() throws Exception{
-		assertThat(webappPagesCollection.getPage(VerifyPage.class).getWebappUrl(), equalTo("https://wire-webapp-staging.zinfra.io/"));
+		assertThat(webappPagesCollection.getPage(VerifyPage.class).getWebappUrl(), equalTo("https://app.wire.com/"));
 	}
 	
 	@Then("^I see error message$")

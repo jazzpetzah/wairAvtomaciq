@@ -53,7 +53,7 @@ public final class ExternalLocators {
 		public final static String cssDownloadAndroid = "[data-ga-category='verify'][data-ga-action='download'][data-ga-value='android']";
 		public final static String cssDownloadOSX = "a[href*='mt=12']";
 		public final static String cssDownloadWindows = "a[href*='download']";
-		public final static String cssWebappButton = "a[href*='webapp']";
+		public final static String cssWebappButton = "[href='https://app.wire.com']";
 		
 		public final static Function<String, String> xpathLabelByText = txt -> String
 				.format("//*[contains(text(),'%s')]", txt);

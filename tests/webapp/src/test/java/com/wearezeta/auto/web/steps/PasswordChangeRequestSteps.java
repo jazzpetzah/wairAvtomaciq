@@ -138,12 +138,12 @@ public class PasswordChangeRequestSteps {
 						.isConfirmationTextVisible(), is(true));
 	}
 
-	@Then("^I dont see Password Change Request Succeeded page$")
-	public void IDontSeeRequestSucceededPage() throws Exception {
+	@Then("^ I see unused mail message$")
+	public void ISeeUnusedMailMessage() throws Exception {
 		assertThat(
 				webappPagesCollection.getPage(
 						PasswordChangeRequestSuccessfullPage.class)
-						.isConfirmationTextVisible(), is(false));
+						.isUnusedTextVisible(), is(false));
 	}
 	
 	/**
