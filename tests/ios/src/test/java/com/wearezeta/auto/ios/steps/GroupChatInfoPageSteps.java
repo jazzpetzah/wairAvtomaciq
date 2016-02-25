@@ -65,9 +65,10 @@ public class GroupChatInfoPageSteps {
         Assert.assertTrue(getGroupChatInfoPage().isCorrectConversationName(expectedNames));
     }
 
-    @When("I see correct conversation name (.*)")
-    public void ISeeCorrectConversationName(String name) throws Exception {
-        Assert.assertEquals(getGroupChatInfoPage().getGroupChatName(), name);
+    @Then("I see correct conversation name (.*)")
+    public void ISeeCorrectConversationName(String expectedName) throws Exception {
+        Assert.assertTrue(String.format("Group conversation name is not equal to '%s'", expectedName),
+                getGroupChatInfoPage().isGroupNameEqualTo(expectedName));
     }
 
     @When("^I close group info page$")

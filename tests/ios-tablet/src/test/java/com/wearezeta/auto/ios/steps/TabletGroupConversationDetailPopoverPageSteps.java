@@ -91,19 +91,6 @@ public class TabletGroupConversationDetailPopoverPageSteps {
     }
 
     /**
-     * Checks that it can read the correct group name
-     *
-     * @throws Throwable
-     * @step. ^I can read the group name (.*) on the iPad popover$
-     */
-    @Then("^I can read the group name (.*) on the iPad popover$")
-    public void ICanReadTheGroupNameOnTheiPadPopover(String groupname)
-            throws Throwable {
-        Assert.assertEquals(getTabletGroupConversationDetailPopoverPage()
-                .getGroupChatName(), groupname);
-    }
-
-    /**
      * Checks that the number of participants in a group is correct on the
      * popover
      *
