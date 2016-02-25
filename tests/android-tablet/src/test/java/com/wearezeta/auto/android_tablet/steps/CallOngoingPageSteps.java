@@ -132,4 +132,31 @@ public class CallOngoingPageSteps {
         }
         Assert.assertTrue(String.format("The sate of '%s' button is not changed", btnName), isChanged);
     }
+
+    /**
+     * Verify whether the particular button is viisile
+     *
+     * @param shouldNotSee equals to null is the button should be visible
+     * @param btnName      button name
+     * @throws Exception
+     * @step. ^I (do not )?see (speaker|mute) button for ongoing call$
+     */
+    @Then("^I (do not )?see (speaker|mute) button for ongoing call$")
+    public void ISeeButton(String shouldNotSee, String btnName) throws Exception {
+        boolean condition;
+        switch (btnName) {
+            case "mute":
+                condition = (shouldNotSee == null) ?
+                        getPage().toggleMuteIsVisible() : getPage().toggleMuteIsNotVisible();
+                break;
+            case "speaker":
+                condition = (shouldNotSee == null) ?
+                        getPage().toggleSpeakerIsVisible() : getPage().toggleSpeakerIsNotVisible();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
+        }
+        Assert.assertTrue(String.format((shouldNotSee == null) ?
+                "'%s' button is not visible" : "'%s' button is not visible, but should be hidden", btnName), condition);
+    }
 }

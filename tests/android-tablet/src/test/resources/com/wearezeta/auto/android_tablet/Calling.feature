@@ -41,6 +41,7 @@ Feature: Calling
     When I remember state of mute button for ongoing call
     And I tap mute button for ongoing call
     Then I see state of mute button has changed for ongoing call
+    And I do not see speaker button for ongoing call
     When I hang up ongoing call
     Then I do not see ongoing call
 
@@ -95,6 +96,7 @@ Feature: Calling
     When I remember state of mute button for ongoing call
     And I tap mute button for ongoing call
     Then I see state of mute button has changed for ongoing call
+    And I do not see speaker button for ongoing call
     When I hang up ongoing call
     Then I do not see ongoing call
 

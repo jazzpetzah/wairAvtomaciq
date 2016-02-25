@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 
 public class TabletCallOngoingPage extends AndroidTabletPage {
 
@@ -26,14 +25,6 @@ public class TabletCallOngoingPage extends AndroidTabletPage {
         return getPage().waitUntilNotVisible();
     }
 
-    public boolean waitUntilNameAppearsOnCallingBarCaption(String name) throws Exception {
-        return getPage().waitUntilNameAppearsOnCallingBarCaption(name);
-    }
-
-    public boolean hangupIsVisible() throws Exception {
-        return getPage().hangupIsVisible();
-    }
-
     public boolean toggleMuteIsVisible() throws Exception {
         return getPage().toggleMuteIsVisible();
     }
@@ -42,20 +33,12 @@ public class TabletCallOngoingPage extends AndroidTabletPage {
         return getPage().toggleSpeakerIsVisible();
     }
 
-    public boolean toggleVideoIsVisible() throws Exception {
-        return getPage().toggleVideoIsVisible();
-    }
-
     public void toggleMute() throws Exception {
         getPage().toggleMute();
     }
 
     public void hangup() throws Exception {
         getPage().hangup();
-    }
-
-    public void toggleSpeaker() throws Exception {
-        getPage().toggleSpeaker();
     }
 
     public void toggleVideo() throws Exception {
@@ -72,5 +55,13 @@ public class TabletCallOngoingPage extends AndroidTabletPage {
 
     public BufferedImage getSpecialButtonScreenshot() throws Exception {
         return getPage().getMuteButtonScreenshot();
+    }
+
+    public boolean toggleMuteIsNotVisible() throws Exception {
+        return getPage().toggleMuteIsNotVisible();
+    }
+
+    public boolean toggleSpeakerIsNotVisible() throws Exception {
+        return getPage().toggleSpeakerIsNotVisible();
     }
 }

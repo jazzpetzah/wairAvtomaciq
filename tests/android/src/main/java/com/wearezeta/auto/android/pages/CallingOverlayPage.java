@@ -2,7 +2,6 @@ package com.wearezeta.auto.android.pages;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.openqa.selenium.By;
 
 import java.awt.image.BufferedImage;
@@ -41,6 +40,9 @@ public abstract class CallingOverlayPage extends AndroidPage {
     private boolean specialActionIsVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idRight);
     }
+    private boolean specialActionIsNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idRight);
+    }
 
     public void toggleMute() throws Exception {
         getElement(idMute).click();
@@ -68,5 +70,13 @@ public abstract class CallingOverlayPage extends AndroidPage {
 
     public void toggleVideo() throws Exception {
         specialAction();
+    }
+
+    public boolean toggleMuteIsNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idMute);
+    }
+
+    public boolean toggleSpeakerIsNotVisible() throws Exception {
+        return specialActionIsNotVisible();
     }
 }
