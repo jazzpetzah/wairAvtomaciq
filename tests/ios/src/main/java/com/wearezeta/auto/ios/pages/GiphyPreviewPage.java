@@ -19,7 +19,7 @@ public class GiphyPreviewPage extends IOSPage {
 
     private static final By nameGiphyCancelRequestButton = By.name("rejectButton");
 
-    public static final By nameGiphySendButton = By.name("acceptButton");
+    public static final By xpathGiphySendButton = By.xpath("//UIAButton[@label='SEND']");
 
     private static final By nameGiphyGrid = By.name("giphyCollectionView");
 
@@ -28,7 +28,7 @@ public class GiphyPreviewPage extends IOSPage {
     }
 
     public void tapSendGiphyButton() throws Exception {
-        getElement(nameGiphySendButton).click();
+        getElement(xpathGiphySendButton).click();
     }
 
     public boolean isGiphyRefreshButtonVisible() throws Exception {
@@ -52,7 +52,7 @@ public class GiphyPreviewPage extends IOSPage {
     }
 
     public boolean isGiphySendButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameGiphySendButton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGiphySendButton);
     }
 
     public void clickGiphyMoreButton() throws Exception {
