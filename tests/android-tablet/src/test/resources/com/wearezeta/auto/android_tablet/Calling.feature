@@ -36,18 +36,17 @@ Feature: Calling
     When I swipe to accept the call
     Then I see ongoing call
     When I remember state of mute button for ongoing call
-    And I press mute button for ongoing call
+    And I tap mute button for ongoing call
     Then I see state of mute button has changed for ongoing call
     When I remember state of mute button for ongoing call
-    And I press mute button for ongoing call
+    And I tap mute button for ongoing call
     Then I see state of mute button has changed for ongoing call
-    And I do not see speaker button for ongoing call
     When I hang up ongoing call
     Then I do not see ongoing call
 
     Examples:
-      | Name      | Contact   | CallBackend | SpeakerBtnName |
-      | user1Name | user2Name | autocall    | Speaker        |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
 
   @C821 @id4009 @regression @rc @rc44
   Scenario Outline: I can join group call in foreground (landscape)
@@ -91,12 +90,11 @@ Feature: Calling
     When I swipe to accept the call
     Then I see ongoing call
     When I remember state of mute button for ongoing call
-    And I press mute button for ongoing call
+    And I tap mute button for ongoing call
     Then I see state of mute button has changed for ongoing call
     When I remember state of mute button for ongoing call
-    And I press mute button for ongoing call
+    And I tap mute button for ongoing call
     Then I see state of mute button has changed for ongoing call
-    And I do not see speaker button for ongoing call
     When I hang up ongoing call
     Then I do not see ongoing call
 

@@ -1,6 +1,8 @@
 package com.wearezeta.auto.android_tablet.pages;
 
 import com.wearezeta.auto.android.pages.CallOngoingPage;
+
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -64,11 +66,11 @@ public class TabletCallOngoingPage extends AndroidTabletPage {
         return getPage().getNumberOfParticipants();
     }
 
-    public FunctionalInterfaces.StateGetter getMuteButtonStateFunction() throws Exception {
-        return getPage().getMuteButtonStateFunction();
+    public BufferedImage getMuteButtonScreenshot() throws Exception {
+        return getPage().getMuteButtonScreenshot();
     }
 
-    public FunctionalInterfaces.StateGetter getSpecialButtonStateFunction() throws Exception {
-        return getPage().getSpecialButtonStateFunction();
+    public BufferedImage getSpecialButtonScreenshot() throws Exception {
+        return getPage().getMuteButtonScreenshot();
     }
 }

@@ -5,6 +5,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.openqa.selenium.By;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 
 public abstract class CallingOverlayPage extends AndroidPage {
@@ -13,20 +14,16 @@ public abstract class CallingOverlayPage extends AndroidPage {
     //Could be VideoOnOff or SpeakOnOff
     protected static final By idRight = By.id("ccbv__calling_controls__right_button");
 
-    private FunctionalInterfaces.StateGetter specialButtonStateFunction = ()  -> this.getElementScreenshot(getElement(idRight)).orElseThrow(
-                    () -> new IllegalStateException("Cannot get a screenshot of special button state")
-            );
-    private FunctionalInterfaces.StateGetter muteButtonStateFunction = ()  -> this.getElementScreenshot(getElement(idMute)).orElseThrow(
-                    () -> new IllegalStateException("Cannot get a screenshot of mute button state")
-            );
-    
-
-    public FunctionalInterfaces.StateGetter getSpecialButtonStateFunction() {
-        return specialButtonStateFunction;
+    public BufferedImage getSpecialButtonScreenshot() throws Exception {
+        return this.getElementScreenshot(getElement(idRight)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot of special button state")
+        );
     }
 
-    public FunctionalInterfaces.StateGetter getMuteButtonStateFunction() {
-        return muteButtonStateFunction;
+    public BufferedImage getMuteButtonScreenshot() throws Exception {
+        return this.getElementScreenshot(getElement(idMute)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot of mute button state")
+        );
     }
 
     public CallingOverlayPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
