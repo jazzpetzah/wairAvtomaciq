@@ -559,7 +559,7 @@ public final class WebAppLocators {
 		public static String cssDropZone = "#self-upload .self-upload-center";
 	}
 	public static final class VideoCallPage {
-		public static final String cssEndVideoCallButton = "[data-uie-name='do-call-controls-call-cancel']";
+		public static final String cssEndVideoCallButton = "[data-uie-name='do-call-controls-video-call-cancel']";
 	}
 
 	public static final class WarningPage {
