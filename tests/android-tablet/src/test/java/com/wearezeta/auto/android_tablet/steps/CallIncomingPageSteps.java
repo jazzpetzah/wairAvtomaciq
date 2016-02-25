@@ -45,12 +45,11 @@ public class CallIncomingPageSteps {
      */
     @When("^I swipe to ignore the call$")
     public void ISwipeToIgnoreCall() throws Exception {
-        ScreenOrientation currentOrientation = screenOrientationHelper.getOrientation().get();
+        ScreenOrientation currentOrientation = screenOrientationHelper.getOrientation()
+                .orElseThrow(()->new IllegalStateException("Could not get device orientation"));
         if (currentOrientation == LANDSCAPE) {
-            System.out.println("Device is in landscape mode");
             getPage().ignoreCallLandscape();
         }else if (currentOrientation == ScreenOrientation.PORTRAIT) {
-            System.out.println("Device is in portrait mode");
             getPage().ignoreCallPortrait();
         }
     }
@@ -66,11 +65,9 @@ public class CallIncomingPageSteps {
         ScreenOrientation currentOrientation = screenOrientationHelper.getOrientation()
                 .orElseThrow(()->new IllegalStateException("Could not get device orientation"));
         if (currentOrientation == LANDSCAPE) {
-            System.out.println("Device is in landscape mode");
             getPage().acceptCallLandscape();
         }else if (currentOrientation == ScreenOrientation.PORTRAIT) {
-            System.out.println("Device is in portrait mode");
-            getPage().ignoreCallPortrait();
+            getPage().acceptCallPortrait();
         }
     }
     
