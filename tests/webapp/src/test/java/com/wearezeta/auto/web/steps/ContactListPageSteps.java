@@ -973,7 +973,7 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Clicks end video button for conversation
+	 * Clicks end call button for conversation
 	 *
 	 * @throws Exception
 	 * @step. ^I click end call button from conversation list$
@@ -1007,9 +1007,9 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Checks if the avatar of user you’re calling is visible
+	 * Checks if the name of user you’re calling is visible
 	 *
-	 * @step. ^I see avatar of user (.*) in calling banner in conversation list$
+	 * @step. ^I see name of user (.*) in calling banner in conversation list$
 	 * @param nameAlias
 	 *            name of user whom you’re calling
 	 * @throws Exception
