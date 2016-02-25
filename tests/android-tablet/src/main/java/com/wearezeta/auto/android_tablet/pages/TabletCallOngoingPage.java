@@ -25,24 +25,12 @@ public class TabletCallOngoingPage extends AndroidTabletPage {
         return getPage().waitUntilNotVisible();
     }
 
-    public boolean waitUntilNameAppearsOnCallingBarCaption(String name) throws Exception {
-        return getPage().waitUntilNameAppearsOnCallingBarCaption(name);
-    }
-
-    public boolean hangupIsVisible() throws Exception {
-        return getPage().hangupIsVisible();
-    }
-
     public boolean toggleMuteIsVisible() throws Exception {
         return getPage().toggleMuteIsVisible();
     }
 
     public boolean toggleSpeakerIsVisible() throws Exception {
         return getPage().toggleSpeakerIsVisible();
-    }
-
-    public boolean toggleVideoIsVisible() throws Exception {
-        return getPage().toggleVideoIsVisible();
     }
 
     public void toggleMute() throws Exception {
@@ -63,5 +51,13 @@ public class TabletCallOngoingPage extends AndroidTabletPage {
 
     public BufferedImage getSpecialButtonScreenshot() throws Exception {
         return getPage().getMuteButtonScreenshot();
+    }
+
+    public boolean toggleMuteIsNotVisible() throws Exception {
+        return getPage().toggleMuteIsNotVisible();
+    }
+
+    public boolean toggleSpeakerIsNotVisible() throws Exception {
+        return getPage().toggleSpeakerIsNotVisible();
     }
 }
