@@ -403,7 +403,7 @@ Feature: E2EE
     And I am signed in properly
     When I open conversation with <Contact>
     And user <Name> adds a new device Device2 with label Label2
-    Then I see <NEW_DEVICE> action in conversation
+    #Then I see <NEW_DEVICE> action in conversation
     And I verify a badge is shown on my avatar
     And I open self profile
     And I see connected devices dialog
