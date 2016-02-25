@@ -31,9 +31,8 @@ Feature: VideoCalling
     Given I Sign in using login <Login> and password <Password>
     Given <Contact> starts a video call to <Name> using <CallBackend>
     When I see my avatar on top of Contact list
-    And I open conversation with <Contact>
-    And I see the calling bar
-    And I accept the incoming video call
+    And I see the calling bar from <Contact> in conversation list
+    And I accept the incoming call from conversation list
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
@@ -52,10 +51,9 @@ Feature: VideoCalling
     Given I Sign in using login <Login> and password <Password>
     Given <Contact> starts a video call to me using <CallBackend>
     When I see my avatar on top of Contact list
-    And I open conversation with <Contact>
-    And I see the calling bar
-    And I silence the incoming call
-    And I do not see the calling bar
+    And I see the calling bar from <Contact> in conversation list
+    And I decline the incoming call from conversation list
+    And I do not see incoming call in conversation list
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend         |
