@@ -172,7 +172,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can have video call more than 15 mins
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts

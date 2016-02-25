@@ -37,55 +37,22 @@ public class CallingSteps {
     }
 
     /**
-     * Make call to a specific user. You may instantiate more than one incoming call from single caller by calling this step
-     * multiple times
+     * Stop call on the other side
      *
-     * @step. (.*) calls (.*) using (\\w+)$
+     * @step. ^(.*) stops? calls( to (.*))$
      *
-     * @param caller caller name/alias
-     * @param conversationName destination conversation name
-     * @param callBackend call backend. Available values: 'autocall', 'chrome', 'firefox'
-     * @throws Exception
-     */
-    @Deprecated
-    @When("^(.*) calls (.*) using (.*)$")
-    public void UserXCallsToUserYUsingCallBackend(String caller,
-            String conversationName, String callBackend) throws Exception {
-        commonCallingSteps.callToConversation(caller, conversationName,
-                callBackend);
-    }
-
-    /**
-     * Make a video call to a specific user.
-     *
-     * @step. (.*) starts a video call to (.*) using (.*)$
-     *
-     * @param caller caller name/alias
-     * @param conversationName destination conversation name
-     * @param callBackend call backend. Available values: 'autocall', 'chrome', 'firefox'
-     * @throws Exception
-     */
-    @Deprecated
-    @When("(.*) starts a video call to (.*) using (.*)$")
-    public void UserXStartVideoCallsToUserYUsingCallBackend(String caller,
-            String conversationName, String callBackend) throws Exception {
-        commonCallingSteps.startVideoCallToConversation(caller, conversationName,
-                callBackend);
-    }
-
-    /**
-     * Stop call on the caller side
-     *
-     * @step. (.*) stops? all calls to (.*)
-     *
-     * @param callers comma separated list of caller names/aliases
+     * @param instanceUsers comma separated list of user names/aliases
      * @param conversationName destination conversation name
      * @throws Exception
      */
-    @When("(.*) stops? all calls to (.*)")
-    public void UserXStopsCallsToUserY(String callers, String conversationName)
+    @When("^(.*) stops? calls( to (.*))$")
+    public void UserXStopsCallsToUserY(String instanceUsers, String outgoingCall, String conversationName)
             throws Exception {
-        commonCallingSteps.stopOutgoingCall(splitAliases(callers), conversationName);
+        if (outgoingCall == null) {
+            commonCallingSteps.stopIncomingCall(splitAliases(instanceUsers));
+        } else {
+            commonCallingSteps.stopOutgoingCall(splitAliases(instanceUsers), conversationName);
+        }
     }
 
     /**
@@ -127,26 +94,9 @@ public class CallingSteps {
     }
 
     /**
-     * Execute waiting instance as 'userAsNameAlias' user on calling server using 'callingServiceBackend' tool
-     *
-     * @step. (.*) starts? waiting instance using (\\w+)$
-     *
-     * @param callee callee name/alias
-     * @param callingServiceBackend available values: 'blender', 'chrome', * 'firefox'
-     * @throws Exception
-     */
-    @Deprecated
-    @When("(.*) starts? waiting instance using (\\w+)$")
-    public void UserXStartsWaitingInstance(String callee,
-            String callingServiceBackend) throws Exception {
-        commonCallingSteps.startWaitingInstances(splitAliases(callee),
-                callingServiceBackend);
-    }
-
-    /**
      * Execute instance as 'userAsNameAlias' user on calling server using 'callingServiceBackend' tool
      *
-     * @step. (.*) starts? waiting instance using (\\w+)$
+     * @step. (.*) starts? instances? using (\\w+)$
      *
      * @param callees callee name/alias
      * @param callingServiceBackend available values: 'autocall', 'chrome', 'firefox', 'zcall'
@@ -177,19 +127,6 @@ public class CallingSteps {
             commonCallingSteps.acceptNextVideoCall(splitAliases(callees));
         }
 
-    }
-
-    /**
-     * Close all waiting instances (and incoming calls) for the particular user
-     *
-     * @step. (.*) stops? all waiting instances$
-     *
-     * @param callees callee names/aliases
-     * @throws Exception
-     */
-    @When("(.*) stops? all waiting instances$")
-    public void UserXStopsIncomingCalls(String callees) throws Exception {
-        commonCallingSteps.stopIncomingCall(splitAliases(callees));
     }
 
     /**
