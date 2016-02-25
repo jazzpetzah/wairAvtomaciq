@@ -70,8 +70,13 @@ public class UserDevicePool {
         try {
             for (Future<IRemoteProcess> p : cachedDevices.keySet()) {
                 if (cachedDevices.get(p).isPresent()) {
-                    cachedDevices.get(p).get().get().destroy();
-                    cachedDevices.put(p, Optional.empty());
+                    try {
+                        cachedDevices.get(p).get().get().destroy();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        cachedDevices.put(p, Optional.empty());
+                    }
                 }
             }
         } finally {
