@@ -126,3 +126,23 @@ Feature: VideoCalling
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
+
+  @C36367 @calling_basic @staging
+  Scenario Outline: Verify I get missed call indication when someone called
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When <Contact> starts a video call to me using <CallBackend>
+    And I see incoming call
+    Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
+    And <Contact> stops all calls to me
+    Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
+    And I do not see incoming call
+    When I tap on contact name <Contact>
+    Then I see dialog with missed call from <Contact>
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
