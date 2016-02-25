@@ -57,7 +57,7 @@ public class TabletContactListPageSteps {
                     "Please take a screenshot of '%s' conversation entry first", name));
         }
         final double minScore = 0.999;
-        final int timeoutSeconds = 10;
+        final int timeoutSeconds = 35;
         if (shouldNotBeChanged == null) {
             Assert.assertTrue(String.format("The state of '%s' conversation item seems to be the same", name),
                     this.savedConvoItemStates.get(name).isChanged(timeoutSeconds, minScore));
