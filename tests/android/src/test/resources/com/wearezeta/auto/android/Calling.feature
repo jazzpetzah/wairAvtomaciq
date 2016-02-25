@@ -68,7 +68,7 @@ Feature: Calling
   Scenario Outline: I can accept incoming 1:1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given <Contact> starts instance using <CallBackend>
+    Given <Contact1> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
