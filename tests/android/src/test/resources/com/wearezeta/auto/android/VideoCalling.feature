@@ -101,6 +101,22 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
+  @C36369 @staging
+  Scenario Outline: Verify I cannot see blocked contact trying to make a video call to me
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User Myself blocks user <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with no contacts
+    When <Contact> starts a video call to me using <CallBackend>
+    Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
+    And I do not see incoming call
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+
   @C36363 @staging
   Scenario Outline: (AN-3536) Verify I can start Video call from Start UI
     Given There are 2 users where <Name> is me
