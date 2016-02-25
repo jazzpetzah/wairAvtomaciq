@@ -1,6 +1,6 @@
 Feature: VideoCalling
 
-  @C36388 @calling_basic @staging
+  @torun @C36388 @calling_basic @staging
   Scenario Outline: Verify I can accept Video call with the app in the foreground
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
