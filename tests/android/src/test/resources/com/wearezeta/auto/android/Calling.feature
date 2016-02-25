@@ -151,7 +151,6 @@ Feature: Calling
     Then I see state of speaker button has changed for ongoing call
     When I hang up ongoing call
     And I do not see ongoing call
-    And <Contact> stops all calls to me
 
     Examples:
       | Name      | Contact   | CallBackend |

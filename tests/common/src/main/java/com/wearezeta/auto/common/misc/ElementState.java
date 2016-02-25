@@ -3,6 +3,7 @@ package com.wearezeta.auto.common.misc;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.StaleElementReferenceException;
 
 import java.awt.image.BufferedImage;
 import java.util.Optional;
@@ -22,8 +23,20 @@ public class ElementState {
     }
 
     public ElementState remember() throws Exception {
-        this.previousScreenshot = Optional.of(stateGetter.getState());
-        return this;
+        final int maxRetries = 3;
+        int nTry = 0;
+        Exception savedException;
+        do {
+            try {
+                this.previousScreenshot = Optional.of(stateGetter.getState());
+                return this;
+            } catch (StaleElementReferenceException e) {
+                savedException = e;
+                nTry++;
+                Thread.sleep(MS_INTERVAL);
+            }
+        } while (nTry < maxRetries);
+        throw savedException;
     }
 
     private boolean checkState(Function<Double, Boolean> checkerFunc, int timeoutSeconds) throws Exception {
