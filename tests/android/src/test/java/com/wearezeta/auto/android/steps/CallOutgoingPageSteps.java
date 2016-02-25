@@ -14,7 +14,8 @@ public class CallOutgoingPageSteps {
 
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
-    private final ElementState specialButtonState = new ElementState(() -> getPage().getSpecialButtonScreenshot());
+    private final ElementState videoButtonState = new ElementState(() -> getPage().getSpecialButtonScreenshot());
+    private final ElementState speakerButtonState = new ElementState(() -> getPage().getSpecialButtonScreenshot());
     private final ElementState muteButtonState = new ElementState(() -> getPage().getMuteButtonScreenshot());
 
     private CallOutgoingPage getPage() throws Exception {
@@ -86,8 +87,10 @@ public class CallOutgoingPageSteps {
                 muteButtonState.remember();
                 break;
             case "speaker":
+                speakerButtonState.remember();
+                break;
             case "video":
-                specialButtonState.remember();
+                videoButtonState.remember();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
@@ -112,8 +115,10 @@ public class CallOutgoingPageSteps {
                 isChanged = muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
                 break;
             case "speaker":
+                isChanged = speakerButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
+                break;
             case "video":
-                isChanged = specialButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
+                isChanged = videoButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
