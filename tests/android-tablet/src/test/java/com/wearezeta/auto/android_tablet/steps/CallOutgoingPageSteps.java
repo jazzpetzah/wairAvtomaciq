@@ -53,9 +53,9 @@ public class CallOutgoingPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. I tap (speaker|mute) button for outgoing call
+     * @step. I tap (speaker|video|mute) button for outgoing call
      */
-    @When("^I tap (speaker|mute) button for outgoing call$")
+    @When("^I tap (speaker|video|mute) button for outgoing call$")
     public void WhenITapButton(String btnName) throws Exception {
         switch (btnName) {
             case "mute":
@@ -63,6 +63,9 @@ public class CallOutgoingPageSteps {
                 break;
             case "speaker":
                 getPage().toggleSpeaker();
+                break;
+            case "video":
+                getPage().toggleVideo();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
@@ -74,15 +77,16 @@ public class CallOutgoingPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I remember state of (speaker|mute) button for outgoing call$
+     * @step. ^I remember state of (speaker|video|mute) button for outgoing call$
      */
-    @When("^I remember state of (speaker|mute) button for outgoing call$")
+    @When("^I remember state of (speaker|video|mute) button for outgoing call$")
     public void IRememberStateOfButton(String btnName) throws Exception {
         switch (btnName) {
             case "mute":
                 muteButtonState.remember();
                 break;
             case "speaker":
+            case "video":
                 specialButtonState.remember();
                 break;
             default:
@@ -108,6 +112,7 @@ public class CallOutgoingPageSteps {
                 isChanged = muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
                 break;
             case "speaker":
+            case "video":
                 isChanged = specialButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
                 break;
             default:
