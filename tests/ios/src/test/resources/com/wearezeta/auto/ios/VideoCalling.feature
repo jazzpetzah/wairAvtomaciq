@@ -179,7 +179,7 @@ Feature: Video Calling
 
     Examples:
       | Name      | Contact    | Contact2 | VideoCallBackend | Timeout |
-      | user1Name | user2Name  | user3Name| chrome           | 60      |      | user1Name | user2Name | chrome      |
+      | user1Name | user2Name  | user3Name| chrome           | 60      |
 
   @C12106 @staging
   Scenario Outline: Verify muting ongoing Video call
