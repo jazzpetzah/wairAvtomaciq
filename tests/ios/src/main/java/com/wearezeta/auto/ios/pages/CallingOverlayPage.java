@@ -1,10 +1,12 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.openqa.selenium.By;
 
 public class CallingOverlayPage extends IOSPage {
@@ -36,20 +38,33 @@ public class CallingOverlayPage extends IOSPage {
     private static final By xpathGroupCallAvatars = By.xpath(
             "//UIAWindow[@name='ZClientNotificationWindow']//UIACollectionCell");
 
+    private static final By xpathMuteButtonSelected = By.xpath("//UIAButton[@name='CallMuteButton' and @value='1']");
+
+    private static final By xpathMuteButtonNotSelected = By.xpath("//UIAButton[@name='CallMuteButton' and @value='']");
+
     private static final By xpathGroupCallFullMessage = By.xpath("//UIAAlert[@name='The call is full']");
 
 
-	public CallingOverlayPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
-	}
 
-	public boolean isCallStatusLabelVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCallStatusLabel);
-	}
+    private FunctionalInterfaces.StateGetter muteButtonStateFunction = () -> this.getElementScreenshot(getElement(nameMuteCallButton)).orElseThrow(
+            () -> new IllegalStateException("Cannot get a screenshot of mute button state")
+    );
 
-	public boolean isCallStatusLabelInvisible() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCallStatusLabel);
-	}
+    public FunctionalInterfaces.StateGetter getMuteButtonStateFunction() {
+        return muteButtonStateFunction;
+    }
+
+    public CallingOverlayPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
+    }
+
+    public boolean isCallStatusLabelVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCallStatusLabel);
+    }
+
+    public boolean isCallStatusLabelInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCallStatusLabel);
+    }
 
     public boolean isSecondCallAlertVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSecondCallAlert);
@@ -105,5 +120,19 @@ public class CallingOverlayPage extends IOSPage {
 
     public boolean isButtonInvisible(String name) throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), getButtonLocatorByName(name));
+    }
+
+    public boolean isMuteButtonSelected() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMuteButtonSelected);
+    }
+
+    public boolean isMuteButtonNotSelected() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMuteButtonNotSelected);
+    }
+
+    public BufferedImage getMuteButtonScrenshot() throws Exception {
+        return this.getElementScreenshot(getElement(nameMuteCallButton)).orElseThrow(
+                () -> new IllegalStateException("Cannot take a screenshot of Mute button")
+        );
     }
 }

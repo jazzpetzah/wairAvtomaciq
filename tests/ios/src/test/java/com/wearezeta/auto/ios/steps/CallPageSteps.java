@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.ios.pages.CallingOverlayPage;
 import org.junit.Assert;
 
@@ -11,6 +12,10 @@ import cucumber.api.java.en.When;
 public class CallPageSteps {
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    private final ElementState muteButtonState = new ElementState(() -> getCallingOverlayPage().getMuteButtonScrenshot());
+
+    private static final int STATE_CHANGE_TIMEOUT = 15;
+    private static final double MIN_BUTTON_SIMILARITY_SCORE = 0.4;
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
@@ -45,6 +50,44 @@ public class CallPageSteps {
     @When("^I tap (Ignore|Mute|Leave|Accept|Accept Video|Call Video|Call Speaker|Switch Camera) button on (?:the |\\s*)Calling overlay$")
     public void ITapButton(String name) throws Exception {
         getCallingOverlayPage().tapButtonByName(name);
+    }
+
+    /**
+     * Verifies Mute button on calling overlay is selected or not
+     *
+     * @param shouldBeSelected empty if selected
+     * @throws Exception
+     * @step. ^I see Mute button is (not )?selected on calling overlay$
+     */
+    @When("^I see Mute button is (not )?selected on calling overlay$")
+    public void ISeeButtonSelected(String shouldBeSelected) throws Exception {
+        if (shouldBeSelected == null) {
+            Assert.assertTrue("Mute button is not selected but should be", getCallingOverlayPage().isMuteButtonSelected());
+        } else {
+            Assert.assertFalse("Mute button is selected but shouldn't be", getCallingOverlayPage().isMuteButtonNotSelected());
+        }
+    }
+
+    /**
+     * Remember the state of Mute button on calling overlay
+     *
+     * @throws Exception
+     * @step. ^I remember Mute button state on calling overlay$
+     */
+    @When("^I remember Mute button state on calling overlay$")
+    public void IRememberMuteButtonStateOnCalling() throws Exception {
+        muteButtonState.remember();
+    }
+
+    /**
+     * Verifies if Mute button state was changed
+     *
+     * @throws Exception
+     * @step. ^I see state of Mute button has changed on Calling overlay page$
+     */
+    @When("^I see state of Mute button has changed on Calling overlay page$")
+    public void VerifyStateOfMuteButtonHasChanged() throws Exception {
+        Assert.assertTrue("State of the Mute button has not been changed", muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE));
     }
 
     /**
