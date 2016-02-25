@@ -25,5 +25,5 @@ public interface IDevice extends IRemoteEntity {
 
     String getFingerprint() throws Exception;
 
-	void destroy() throws Exception;
+	void destroy();
 }
