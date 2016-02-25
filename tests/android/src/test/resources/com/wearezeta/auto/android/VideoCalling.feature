@@ -101,7 +101,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C36369 @calling_basic @staging
+  @C36369 @staging
   Scenario Outline: Verify I cannot see blocked contact trying to make a video call to me
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
