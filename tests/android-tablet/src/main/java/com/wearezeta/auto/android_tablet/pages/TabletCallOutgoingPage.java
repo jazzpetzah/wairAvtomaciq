@@ -34,10 +34,6 @@ public class TabletCallOutgoingPage extends AndroidTabletPage {
         getPage().hangup();
     }
     
-    public void toggleSpeaker() throws Exception {
-        getPage().toggleSpeaker();
-    }
-    
     public void toggleVideo() throws Exception {
         getPage().toggleVideo();
     }
