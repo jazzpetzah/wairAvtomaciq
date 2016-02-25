@@ -202,7 +202,7 @@ Feature: Video Calling
       | user1Name | user2Name | chrome      |
 
   @C28861 @staging
-  Scenario Outline: Verify video call continues after rejecting 2nd incoming video/audio call
+  Scenario Outline: Verify video call continues after rejecting 2nd incoming video call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
     Given I sign in using my email or phone number
