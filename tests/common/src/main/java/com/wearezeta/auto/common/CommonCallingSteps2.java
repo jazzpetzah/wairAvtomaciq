@@ -317,7 +317,6 @@ public final class CommonCallingSteps2 {
                             convertTypeStringToTypeObject(instanceType),
                             ZetaFormatter.getScenario());
                     addInstance(instance, userAs);
-                    addInstance(instance, userAs);
                     return instance;
                 } catch (CallingServiceInstanceException ex) {
                     LOG.error(String.format(
@@ -335,7 +334,7 @@ public final class CommonCallingSteps2 {
             return Collections.EMPTY_LIST;
         } catch (TimeoutException e) {
             LOG.error(String.format(
-                    "Could not start all waiting instances in '%d' seconds",
+                    "Could not start all instances in '%d' seconds",
                     INSTANCE_START_TIMEOUT_SECONDS), e);
             List<String> calleesForRetry = new ArrayList<>();
             Instance instance;

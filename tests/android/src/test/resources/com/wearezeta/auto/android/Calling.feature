@@ -220,11 +220,11 @@ Feature: Calling
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Contact1> starts instance using <CallBackend2>
     Given <Contact2>,<Contact3>,<Contact4> start instance using <CallBackend>
-    Given <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
+    And <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     And <Contact1> calls <GroupChatName>
 #TODO activity check
     Then I see incoming call
@@ -248,11 +248,11 @@ Feature: Calling
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact1> starts instance using <CallBackend>
     Given <Contact2> starts instance using chrome
-    Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
+    And <Contact2> accepts next incoming call automatically
     And <Contact1> calls <GroupChatName>
     Then I see incoming call
     When I swipe to ignore the call
@@ -343,7 +343,7 @@ Feature: Calling
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
-    Given <Contact1>,<Contact2> starts instance using <CallBackend>
+    Given <Contact1>,<Contact2>,<Contact3> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
@@ -352,12 +352,12 @@ Feature: Calling
     And I see incoming call
     When I swipe to accept the call
     And I see ongoing call
-    And <Contact3> calls <Name> using <CallBackend>
+    And <Contact3> calls me
     Then I see incoming call
     And I see incoming call from <Contact3>
     When I swipe to accept the call
     Then I see ongoing call
-    And <Contact1>,<Contact2> stops calling <GroupChatName>
+    And <Contact1>,<Contact2>,<Contact3> stops calling <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -383,7 +383,7 @@ Feature: Calling
     When I swipe to accept the call
     Then I see ongoing call
     And I see 2 users take part in call
-    And <Contact1>,<Contact2> stops calling <GroupChatName>
+    And <Contact1>,<Contact2>,<Contact3> stops calling <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -412,7 +412,7 @@ Feature: Calling
     When I swipe to ignore the call
     Then I see ongoing call
     And I see 2 users take part in call
-    And <Contact1>,<Contact2> stops calling <GroupChatName>
+    And <Contact1>,<Contact2>,<Contact3> stops calling <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -498,7 +498,7 @@ Feature: Calling
     When <Contact2> calls me
     Then I see incoming call
 #TODO alerts
-    And <Contact2> stop calling me
+    And <Contact1>,<Contact2> stop calling me
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
