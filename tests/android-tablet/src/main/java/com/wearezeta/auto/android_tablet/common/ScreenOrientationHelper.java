@@ -32,6 +32,10 @@ public final class ScreenOrientationHelper {
     public void setOrientation(ScreenOrientation orientation) {
         this.orientation = Optional.of(orientation);
     }
+    
+    public Optional<ScreenOrientation> getOrientation() {
+        return orientation;
+    }
 
     public void resetOrientation() {
         this.orientation = Optional.empty();

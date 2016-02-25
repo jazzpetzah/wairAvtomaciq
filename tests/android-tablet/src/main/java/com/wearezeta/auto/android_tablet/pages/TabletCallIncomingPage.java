@@ -1,12 +1,14 @@
 package com.wearezeta.auto.android_tablet.pages;
 
 import com.wearezeta.auto.android.pages.CallIncomingPage;
+import static com.wearezeta.auto.android.pages.CallIncomingPage.idMainContent;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletCallIncomingPage extends AndroidTabletPage {
-
+    
     public TabletCallIncomingPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -27,12 +29,20 @@ public class TabletCallIncomingPage extends AndroidTabletPage {
         return getPage().waitUntilNameAppearsOnCallingBarCaption(name);
     }
 
-    public void ignoreCall() throws Exception {
-        getPage().ignoreCall();
+    public void ignoreCallLandscape() throws Exception {
+        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 85, 40, 85);
     }
 
-    public void acceptCall() throws Exception {
-        getPage().acceptCall();
+    public void acceptCallLandscape() throws Exception {
+        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 85, 60, 85);
+    }
+    
+    public void ignoreCallPortrait() throws Exception {
+        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 90, 30, 90);
+    }
+
+    public void acceptCallPortrait() throws Exception {
+        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 90, 70, 90);
     }
 
 }
