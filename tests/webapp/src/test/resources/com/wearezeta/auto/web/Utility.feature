@@ -61,7 +61,7 @@ Feature: Utility
         
   @C5232 @utility
   Scenario Outline: Check password reset utility page for all agents
-  #All mails not in use? WIP
+  #All mails not in use? WIP -> Directs not to staging
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
     When I click Change Password button
@@ -110,7 +110,7 @@ Feature: Utility
 
   @C5234 @utility
   Scenario Outline: Check password reset with wrong checksum for all agents
-  #All mails not in use? WIP
+  #All mails not in use? WIP -> Directs not to staging
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
     When I click Change Password button
@@ -261,4 +261,41 @@ Feature: Utility
       | user1Email | user1Password | user1Name | android |
       | user1Email | user1Password | user1Name | osx     |
       | user1Email | user1Password | user1Name | windows |  
-      
+
+  @C49970 @utility
+    Scenario Outline: Verify that language switch works for <Agent>
+    When I navigate to <Page> page for <Agent>
+    And I can see language switch button for english
+    Then I change language to german
+    And Page is german 
+    And I can see language switch button for german
+    Then I change language to english
+    Then Page is english
+    
+    Examples:
+      | Agent   | Page     |
+      | iphone  | start    |
+      | iphone  | privacy  |
+      | iphone  | legal    |
+      | iphone  | job      |
+      | iphone  | download |
+      | iphone  | forgot   |     
+      | android | start    |
+      | android | privacy  |
+      | android | legal    |
+      | android | job      |
+      | android | download |
+      | android | forgot   |     
+      | osx     | start    |
+      | osx     | privacy  |
+      | osx     | legal    |
+      | osx     | job      |
+      | osx     | download |
+      | osx     | forgot   |     
+      | windows | start    |
+      | windows | privacy  |
+      | windows | legal    |
+      | windows | job      |
+      | windows | download |
+      | windows | forgot   |     
+    

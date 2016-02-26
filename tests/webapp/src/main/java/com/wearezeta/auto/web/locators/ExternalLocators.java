@@ -58,5 +58,12 @@ public final class ExternalLocators {
 		public final static Function<String, String> xpathLabelByText = txt -> String
 				.format("//*[contains(text(),'%s')]", txt);
 	}
-
+	
+	public static final class StartPage {
+		public static final String cssGermanButton = "option[value='/l/de/']";
+		public static final String cssEnglishButton = "option[value='/l/en/']";
+		
+		public static final String cssEnglishSite = "[class='locale en']"; 
+		public static final String cssGermanSite = "[class='locale de']"; 
+	}
 }
