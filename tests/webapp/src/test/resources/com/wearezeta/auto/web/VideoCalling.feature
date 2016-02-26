@@ -17,6 +17,7 @@ Feature: VideoCalling
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     And I end the video call
+    And I do not see my self video view
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
@@ -31,13 +32,17 @@ Feature: VideoCalling
     Given I Sign in using login <Login> and password <Password>
     Given <Contact> starts a video call to <Name> using <CallBackend>
     When I see my avatar on top of Contact list
-    And I open conversation with <Contact>
-    And I see the calling bar
-    And I accept the incoming video call
+    And I see the name of user <Contact> in calling banner in conversation list
+    And I see accept video call button for conversation <Contact>
+    And I see decline call button for conversation <Contact>
+    And I click the accept call button in conversation list
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     And I end the video call
+    And I do not see accept video call button for conversation <Contact>
+    And I do not see decline call button for conversation <Contact>
+    And I do not see my self video view
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
@@ -52,10 +57,13 @@ Feature: VideoCalling
     Given I Sign in using login <Login> and password <Password>
     Given <Contact> starts a video call to me using <CallBackend>
     When I see my avatar on top of Contact list
-    And I open conversation with <Contact>
-    And I see the calling bar
-    And I silence the incoming call
-    And I do not see the calling bar
+    Then I see the name of user <Contact> in calling banner in conversation list
+    And I see accept video call button for conversation <Contact>
+    And I see decline call button for conversation <Contact>
+    When I click the decline call button in conversation list
+    Then I do not see accept video call button for conversation <Contact>
+    And I do not see decline call button for conversation <Contact>
+    And I do not see my self video view
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend         |
@@ -72,7 +80,9 @@ Feature: VideoCalling
     Given I Sign in using login <Login> and password <Password>
     When <Contact> starts a video call to me using <CallBackend>
     Then <Contact> verifies that call status to Myself is changed to connecting in <Timeout> seconds
-    And I do not see the calling bar
+    And I do not see accept video call button for conversation <Contact>
+    And I do not see decline call button for conversation <Contact>
+    And I do not see my self video view
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout | OtherContact |

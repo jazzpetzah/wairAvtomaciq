@@ -3,6 +3,7 @@ package com.wearezeta.auto.web.steps;
 import java.util.List;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import cucumber.api.java.en.And;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -907,6 +908,31 @@ public class ContactListPageSteps {
 	}
 
 	/**
+	 * Click the accept call button in conversation list
+	 *
+	 * @step. ^I click the accept call button in conversation list$
+	 * @throws Throwable
+	 */
+	@And("^I click the accept call button in conversation list$")
+	public void IClickAcceptCallButtonInConversationView() throws Throwable {
+		webappPagesCollection.getPage(ContactListPage.class)
+				.clickAcceptVideoCallButton();
+	}
+
+	/**
+	 * Click the decline call button in conversation list
+	 *
+	 * @step. ^I click the decline call button in conversation list$
+	 * @throws Throwable
+	 */
+	@And("^I click the decline call button in conversation list$")
+	public void IClickDeclineCallButtonInConversationView() throws Throwable {
+		webappPagesCollection.getPage(ContactListPage.class)
+				.clickDeclineCallButton();
+	}
+
+
+	/**
 	 * Verifies if mute call button is visible for conversation
 	 *
 	 * @param doNot is set to null if "do not" part does not exist
@@ -973,7 +999,7 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Clicks end video button for conversation
+	 * Clicks end call button for conversation
 	 *
 	 * @throws Exception
 	 * @step. ^I click end call button from conversation list$
@@ -1007,9 +1033,9 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Checks if the avatar of user you’re calling is visible
+	 * Checks if the name of user you’re calling is visible
 	 *
-	 * @step. ^I see avatar of user (.*) in calling banner in conversation list$
+	 * @step. ^I see name of user (.*) in calling banner in conversation list$
 	 * @param nameAlias
 	 *            name of user whom you’re calling
 	 * @throws Exception
@@ -1019,5 +1045,49 @@ public class ContactListPageSteps {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(nameAlias);
 		Assert.assertTrue(webappPagesCollection.getPage(
 				ContactListPage.class).isUserNameVisibleInCallingBanner(user.getName()));
+	}
+
+	/**
+	 * Verifies if accept video call button is visible for conversation
+	 *
+	 * @param doNot is set to null if "do not" part does not exist
+	 * @param contact conversation name string
+	 * @throws Exception
+	 * @step. ^I( do not)? see accept video call button for conversation (.*)
+	 */
+	@When("^I( do not)? see accept video call button for conversation (.*)")
+	public void ISeeAcceptVideoCallButton(String doNot, String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
+		if (doNot == null) {
+			contactListPage.isAcceptVideoCallButtonVisibleForConversation(contact);
+		}
+		else
+		{
+			contactListPage.isAcceptVideoCallButtonNotVisibleForConversation(contact);
+		}
+	}
+
+	/**
+	 * Verifies if decline call button is visible for conversation
+	 *
+	 * @param doNot is set to null if "do not" part does not exist
+	 * @param contact conversation name string
+	 * @throws Exception
+	 * @step. ^I( do not)? see decline call button for conversation (.*)
+	 */
+	@When("^I( do not)? see decline call button for conversation (.*)")
+	public void ISeeDeclineCallButton(String doNot, String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		ContactListPage contactListPage = webappPagesCollection
+				.getPage(ContactListPage.class);
+		if (doNot == null) {
+			contactListPage.isDeclineCallButtonVisibleForConversation(contact);
+		}
+		else
+		{
+			contactListPage.isDeclineCallButtonNotVisibleForConversation(contact);
+		}
 	}
 }

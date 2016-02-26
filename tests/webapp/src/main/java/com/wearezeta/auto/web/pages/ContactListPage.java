@@ -795,4 +795,52 @@ public class ContactListPage extends WebPage {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.xpath(locator));
 	}
+
+	public boolean isAcceptVideoCallButtonVisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathAcceptVideoCallButtonByContactName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(locator));
+	}
+	public boolean isAcceptVideoCallButtonNotVisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathAcceptVideoCallButtonByContactName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(locator));
+	}
+
+	public boolean isDeclineCallButtonVisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathDeclineCallButtonByContactName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(locator));
+	}
+
+	public boolean isDeclineCallButtonNotVisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathDeclineCallButtonByContactName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(locator));
+	}
+
+	public void clickDeclineCallButton() throws Exception{
+		final String locator = WebAppLocators.ContactListPage.cssDeclineCallButton;
+		WebElement declineCallButton = getDriver().findElementByCssSelector(locator);
+		declineCallButton.click();
+	}
+
+	public void clickAcceptVideoCallButton() throws Exception{
+		final String locator = WebAppLocators.ContactListPage.cssAcceptVideoCallButton;
+		WebElement acceptVideoCallButton = getDriver().findElementByCssSelector(locator);
+		acceptVideoCallButton.click();
+	}
+
 }

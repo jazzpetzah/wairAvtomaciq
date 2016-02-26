@@ -100,6 +100,27 @@ public final class WebAppLocators {
 				name) -> String.format(
 				"//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following::"
 						+ "*[@data-uie-name='status-silence']", name);
+		public static final String idSelfVideoPreview = "video-element-local";
+
+		public static final Function<String, String> xpathUserNameByUserNameInCallingBanner = user -> String
+				.format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']",
+						user);
+
+		public static final Function<String, String> xpathAcceptVideoCallButtonByContactName = (
+				name) -> String
+				.format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
+								+ "*//*[@data-uie-name='do-call-controls-call-accept']",
+						name);
+
+		public static final Function<String, String> xpathDeclineCallButtonByContactName = (
+				name) -> String
+				.format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
+								+ "*//*[@data-uie-name='do-call-controls-call-decline']",
+						name);
+
+		public static final String cssAcceptVideoCallButton = "[data-uie-name='do-call-controls-call-accept']";
+
+		public static final String cssDeclineCallButton = "[data-uie-name='do-call-controls-call-decline']";
 
 		public static final Function<String, String> cssContactListEntryByName = (
 				name) -> String
@@ -178,12 +199,6 @@ public final class WebAppLocators {
 				.format("//*[@data-uie-name='item-conversation' and " +
 								"@data-uie-value='%s']/..//*[@data-uie-name='status-unread']",
 						name);
-
-		public static final String idSelfVideoPreview = "video-element-local";
-
-		public static final Function<String, String> xpathUserNameByUserNameInCallingBanner = user -> String
-				.format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']",
-						user);
 
 		// leave warning
 		public static final String cssLeaveModal = ".modal-leave";
