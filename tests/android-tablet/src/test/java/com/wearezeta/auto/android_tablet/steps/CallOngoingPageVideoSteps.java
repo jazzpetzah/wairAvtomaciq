@@ -1,8 +1,8 @@
 package com.wearezeta.auto.android_tablet.steps;
 
-
-import com.wearezeta.auto.android_tablet.pages.TabletCallOutgoingPage;
+import com.wearezeta.auto.android_tablet.pages.TabletCallOngoingVideoPage;
 import com.wearezeta.auto.common.misc.ElementState;
+
 import cucumber.api.java.en.Then;
 
 import cucumber.api.java.en.When;
@@ -10,52 +10,52 @@ import org.junit.Assert;
 
 import static org.junit.Assert.assertTrue;
 
-public class CallOutgoingPageSteps {
+public class CallOngoingPageVideoSteps {
 
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
-            .getInstance();
+    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
 
-    private final ElementState videoButtonState = new ElementState(() -> getPage().getSpecialButtonScreenshot());
+    private final ElementState specialButtonState = new ElementState(() -> getPage().getSpecialButtonScreenshot());
     private final ElementState muteButtonState = new ElementState(() -> getPage().getMuteButtonScreenshot());
 
-    private TabletCallOutgoingPage getPage() throws Exception {
-        return pagesCollection.getPage(TabletCallOutgoingPage.class);
+    private TabletCallOngoingVideoPage getPage() throws Exception {
+        return pagesCollection.getPage(TabletCallOngoingVideoPage.class);
     }
 
     /**
-     * Hangs up the current call
+     * Hangs up the current video call
      *
      * @throws Exception
-     * @step. ^I hang up$
+     * @step. ^I hang up ongoing video call$
      */
-    @When("^I hang up outgoing call$")
+    @When("^I hang up ongoing video call$")
     public void IHangUp()
             throws Exception {
         getPage().hangup();
     }
 
     /**
-     * Verifies presence of outgoing call
+     * Verifies presence of ongoing call
      *
      * @throws Exception
-     * @step. ^I (do not )?see outgoing call$
+     * @step. ^I (do not )?see ongoing video call$
      */
-    @When("^I (do not )?see outgoing call$")
+    @When("^I (do not )?see ongoing video call$")
     public void ISeeOutgoingCall(String not) throws Exception {
         if (not == null) {
-            assertTrue("Outgoing call not visible", getPage().waitUntilVisible());
+            assertTrue("Ongoing video call not visible", getPage().waitUntilVisible());
         } else {
-            assertTrue("Outgoing call should not be visible", getPage().waitUntilNotVisible());
+            assertTrue("Ongoing video call should not be visible", getPage().waitUntilNotVisible());
         }
     }
+
     /**
-     * Tap the corresponding button onm video overlay
+     * Tap the corresponding button on video overlay
      *
      * @param btnName button name
      * @throws Exception
-     * @step. I tap (video|mute) button for outgoing call
+     * @step. ^I tap (mute|video) button for ongoing video call$
      */
-    @When("^I tap (video|mute) button for outgoing call$")
+    @When("^I tap (mute|video) button for ongoing video call$")
     public void WhenITapButton(String btnName) throws Exception {
         switch (btnName) {
             case "mute":
@@ -74,16 +74,16 @@ public class CallOutgoingPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I remember state of (video|mute) button for outgoing call$
+     * @step. ^I remember state of (video|mute) button for ongoing call$
      */
-    @When("^I remember state of (video|mute) button for outgoing call$")
+    @When("^I remember state of (video|mute) button for ongoing video call$")
     public void IRememberStateOfButton(String btnName) throws Exception {
         switch (btnName) {
             case "mute":
                 muteButtonState.remember();
                 break;
             case "video":
-                videoButtonState.remember();
+                specialButtonState.remember();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
@@ -98,9 +98,9 @@ public class CallOutgoingPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I see state of (video|mute) button has changed for outgoing call$
+     * @step. ^I see state of (video|mute) button has changed for ongoing call$
      */
-    @Then("^I see state of (video|mute) button has changed for outgoing call$")
+    @Then("^I see state of (video|mute) button has changed for ongoing video call$")
     public void VerifyStateOfSpacialVideoHasChanged(String btnName) throws Exception {
         boolean isChanged;
         switch (btnName) {
@@ -108,7 +108,7 @@ public class CallOutgoingPageSteps {
                 isChanged = muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
                 break;
             case "video":
-                isChanged = videoButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
+                isChanged = specialButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));

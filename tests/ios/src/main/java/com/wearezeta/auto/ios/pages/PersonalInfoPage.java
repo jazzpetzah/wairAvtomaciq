@@ -97,6 +97,8 @@ public class PersonalInfoPage extends IOSPage {
 
     public void clickOnSettingsButton() throws Exception {
         getElement(nameProfileSettingsButton).click();
+        // Wait for animation
+        Thread.sleep(2000);
     }
 
     public void clickOnAboutButton() throws Exception {

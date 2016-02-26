@@ -824,7 +824,7 @@ Feature: People View
     And I open archived conversations on iPad
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
-    Then I see dialog page
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
@@ -850,7 +850,7 @@ Feature: People View
     And I open archived conversations on iPad
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
-    Then I see dialog page
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |

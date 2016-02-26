@@ -10,6 +10,7 @@ import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 public class GroupChatInfoPage extends IOSPage {
@@ -60,7 +61,11 @@ public class GroupChatInfoPage extends IOSPage {
     public void setGroupChatName(String name) throws Exception {
         final WebElement nameInputField = getElement(nameConversationNameTextField);
         nameInputField.click();
-        ((IOSElement) nameInputField).setValue(name);
+        try {
+            ((IOSElement) nameInputField).setValue(name);
+        } catch (WebDriverException e) {
+            nameInputField.sendKeys(name);
+        }
         clickKeyboardCommitButton();
     }
 
