@@ -144,10 +144,10 @@ Feature: Calling
     When I swipe to accept the call
     Then I see ongoing call
     When I remember state of mute button for ongoing call
-    And I press mute button for ongoing call
+    And I tap mute button for ongoing call
     Then I see state of mute button has changed for ongoing call
     When I remember state of speaker button for ongoing call
-    And I press speaker button for ongoing call
+    And I tap speaker button for ongoing call
     Then I see state of speaker button has changed for ongoing call
     When I hang up ongoing call
     And I do not see ongoing call
@@ -171,10 +171,10 @@ Feature: Calling
     When I swipe to accept the call
     Then I see ongoing call
     When I remember state of mute button for ongoing call
-    And I press mute button for ongoing call
+    And I tap mute button for ongoing call
     Then I see state of mute button has changed for ongoing call
     When I remember state of speaker button for ongoing call
-    And I press speaker button for ongoing call
+    And I tap speaker button for ongoing call
     Then I see state of speaker button has changed for ongoing call
     When I hang up ongoing call
     Then I do not see ongoing call
