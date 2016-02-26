@@ -182,3 +182,24 @@ Feature: VideoCalling
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
+
+  @C49973 @staging @torun
+  Scenario Outline: Verify you cannot make audio call to user A while he makes video call
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When <Contact> starts a video call to me using <CallBackend>
+    And I see incoming call
+    And I swipe to ignore the call
+    Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
+    When I swipe on text input
+    And I press Call button
+    Then I see alert message containing "<ExpectedMsg>"
+    And <Contact> verifies that call status to me is changed to connecting in 3 seconds
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout | ExpectedMsg     |
+      | user1Name | user2Name | chrome      | 30      | Try again later |

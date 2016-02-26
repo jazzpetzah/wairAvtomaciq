@@ -792,4 +792,18 @@ public class CommonAndroidTabletSteps {
             throw new IllegalArgumentException(String.format("Cannot parse what to exclude from '%s'", whatToExclude));
         }
     }
+
+    /**
+     * Checks to see that an alert message contains the correct text
+     *
+     * @param expectedMsg the expected error message
+     * @throws Exception
+     * @step. ^I see alert message containing \"(.*)\"$
+     */
+    @Then("^I see alert message containing \"(.*)\"$")
+    public void ISeeAlertMessage(String expectedMsg) throws Exception {
+        expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, ClientUsersManager.FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("An alert containing text '%s' is not visible", expectedMsg),
+                pagesCollection.getCommonPage().isAlertMessageVisible(expectedMsg));
+    }
 }

@@ -44,7 +44,7 @@ Feature: Log In
     And I enter login "<Login>"
     And I enter password "<Password>"
     And I tap Sign In button
-    Then I see error message "<ErrMessage>"
+    Then I see alert message containing "<ErrMessage>"
 
     Examples:
       | Login | Password  | ErrMessage                          |
@@ -58,7 +58,7 @@ Feature: Log In
     And I enter login "<Login>"
     And I enter password "<Password>"
     And I tap Sign In button
-    Then I see error message "<ErrMessage>"
+    Then I see alert message containing "<ErrMessage>"
 
     Examples:
       | Login | Password  | ErrMessage                          |

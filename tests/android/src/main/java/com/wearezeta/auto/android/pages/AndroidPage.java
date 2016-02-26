@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.pages;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -11,8 +12,11 @@ import org.openqa.selenium.*;
 
 import java.util.Optional;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 public abstract class AndroidPage extends BasePage {
+    private static final Function<String, String> xpathStrAlertMessageByText = text -> String
+            .format("//*[@id='message' and contains(@value, '%s')", text);
 
     protected static final By idGiphyPreviewButton = By.id("cursor_button_giphy");
 
@@ -225,5 +229,10 @@ public abstract class AndroidPage extends BasePage {
             }
         }
         return false;
+    }
+
+    public boolean isAlertMessageVisible(String expectedMsg) throws Exception {
+        final By locator = By.xpath(xpathStrAlertMessageByText.apply(expectedMsg));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 15);
     }
 }

@@ -18,9 +18,6 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
  * @author deancook
  */
 public class EmailSignInPage extends AndroidPage {
-    private static final Function<String, String> xpathStrLoginMessageByText = text -> String
-            .format("//*[@id='message' and @value='%s']", text);
-
     private static final By xpathAlertOKButton = By.xpath("//*[starts-with(@id, 'button') and @value='OK']");
 
     public static final By idLoginInput = By.id("get__sign_in__email");
@@ -84,11 +81,6 @@ public class EmailSignInPage extends AndroidPage {
         throw new IllegalStateException(String.format(
                 "Login screen is still visible after %s seconds timeout", timeoutSeconds));
 
-    }
-
-    public void verifyErrorMessageText(String expectedMsg) throws Exception {
-        getElement(By.xpath(xpathStrLoginMessageByText.apply(expectedMsg)),
-                String.format("Error message '%s' is not visible on the screen", expectedMsg), 15);
     }
 
     public void acceptErrorMessage() throws Exception {

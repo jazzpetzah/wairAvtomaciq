@@ -117,36 +117,32 @@ public class DialogPageSteps {
     }
 
     /**
-     * Presses the image input button to open the camera or gallery
+     * Press the corresponding button in the input controls
      *
      * @throws Exception
-     * @step. ^I press Add Picture button$
+     * @param btnName button name
+     * @step. ^I press (Call|Ping|Add Picture|Video Call) button$
      */
-    @When("^I press Add Picture button$")
-    public void WhenIPressAddPictureButton() throws Exception {
-        getDialogPage().tapAddPictureBtn();
-    }
+    @When("^I press (Call|Ping|Add Picture|Video Call) button$")
+    public void WhenIPressCallButton(String btnName) throws Exception {
+        switch(btnName.toLowerCase()) {
+            case "call":
+            getDialogPage().tapCallBtn();
+                break;
+            case "ping":
+                getDialogPage().tapPingBtn();
+                break;
+            case "add picture":
+                getDialogPage().tapAddPictureBtn();
+                break;
+            case "video call":
+                getDialogPage().tapVideoCallBtn();
+                break;
+            case "sketch":
 
-    /**
-     * Press on the ping button in the input controls
-     *
-     * @throws Exception
-     * @step. ^I press Ping button$
-     */
-    @When("^I press Ping button$")
-    public void WhenIPressPButton() throws Exception {
-        getDialogPage().tapPingBtn();
-    }
-
-    /**
-     * Press on the call button in the input controls
-     *
-     * @throws Exception
-     * @step. ^I press Call button$
-     */
-    @When("^I press Call button$")
-    public void WhenIPressCallButton() throws Exception {
-        getDialogPage().tapCallBtn();
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
+        }
     }
 
     /**
@@ -628,16 +624,5 @@ public class DialogPageSteps {
         if (!getDialogPage().verifiedConversationShieldStateHasChanged()) {
             throw new AssertionError("State of verified conversation shield has not changed");
         }
-    }
-
-    /**
-     * Press on the video call button in the input controls
-     *
-     * @throws Exception
-     * @step. ^I press Video Call button$
-     */
-    @When("^I press Video Call button$")
-    public void IPressVideoCallButton() throws Exception {
-        getDialogPage().tapVideoCallBtn();
     }
 }
