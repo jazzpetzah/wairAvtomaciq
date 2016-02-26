@@ -209,14 +209,15 @@ Feature: Video Calling
     And <Contact> starts a video call to me using <VideoCallBackend>
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept Video button on Calling overlay
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     Then I see Switch Camera button on Calling overlay
-    And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     When <Contact2> starts a video call to me using <VideoCallBackend>
     And I see call status message contains "<Contact2> CALLING"
     And I tap Ignore button on the Calling overlay
     Then I see Mute button on Calling overlay
-    And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And <Contact> verifies that call status to me is changed to active in <TimeoutAlreadyInCall> seconds
+    And <Contact2> verifies that call status to me is changed to connecting in <Timeout> seconds
 
     Examples:
-      | Name      | Contact    | Contact2 | VideoCallBackend | Timeout |
-      | user1Name | user2Name  | user3Name| chrome           | 60      |
+      | Name      | Contact    | Contact2 | VideoCallBackend | Timeout | TimeoutAlreadyInCall |
+      | user1Name | user2Name  | user3Name| chrome           | 60      | 4                    |
