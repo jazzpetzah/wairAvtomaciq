@@ -119,15 +119,15 @@ public class DialogPageSteps {
     /**
      * Press the corresponding button in the input controls
      *
-     * @throws Exception
      * @param btnName button name
+     * @throws Exception
      * @step. ^I tap (Call|Ping|Add Picture|Video Call) button$ from input tools$
      */
     @When("^I tap (Call|Ping|Add Picture|Video Call) button from input tools$")
     public void WhenITapInputToolButton(String btnName) throws Exception {
-        switch(btnName.toLowerCase()) {
+        switch (btnName.toLowerCase()) {
             case "call":
-            getDialogPage().tapCallBtn();
+                getDialogPage().tapCallBtn();
                 break;
             case "ping":
                 getDialogPage().tapPingBtn();
