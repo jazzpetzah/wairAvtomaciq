@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.android_tablet.pages.TabletCallIncomingPage;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -7,6 +8,8 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
+import org.openqa.selenium.ScreenOrientation;
+import static org.openqa.selenium.ScreenOrientation.LANDSCAPE;
 
 public class CallIncomingPageSteps {
     private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
@@ -17,7 +20,8 @@ public class CallIncomingPageSteps {
     }
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
+    
+    private final ScreenOrientationHelper screenOrientationHelper = ScreenOrientationHelper.getInstance();
     
      /**
      * Verifies presence of incoming call
@@ -41,7 +45,13 @@ public class CallIncomingPageSteps {
      */
     @When("^I swipe to ignore the call$")
     public void ISwipeToIgnoreCall() throws Exception {
-        getPage().ignoreCall();
+        ScreenOrientation currentOrientation = screenOrientationHelper.getOrientation()
+                .orElseThrow(()->new IllegalStateException("Could not get device orientation"));
+        if (currentOrientation == LANDSCAPE) {
+            getPage().ignoreCallLandscape();
+        }else if (currentOrientation == ScreenOrientation.PORTRAIT) {
+            getPage().ignoreCallPortrait();
+        }
     }
     
     /**
@@ -52,7 +62,13 @@ public class CallIncomingPageSteps {
      */
     @When("^I swipe to accept the call$")
     public void ISwipeToAcceptCall() throws Exception {
-        getPage().acceptCall();
+        ScreenOrientation currentOrientation = screenOrientationHelper.getOrientation()
+                .orElseThrow(()->new IllegalStateException("Could not get device orientation"));
+        if (currentOrientation == LANDSCAPE) {
+            getPage().acceptCallLandscape();
+        }else if (currentOrientation == ScreenOrientation.PORTRAIT) {
+            getPage().acceptCallPortrait();
+        }
     }
     
     /**

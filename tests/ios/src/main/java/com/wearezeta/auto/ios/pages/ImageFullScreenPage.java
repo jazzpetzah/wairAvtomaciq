@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import org.openqa.selenium.WebElement;
 
 public class ImageFullScreenPage extends IOSPage {
     private static final By nameImageFullScreenPage = By.name("fullScreenPage");
@@ -32,7 +33,11 @@ public class ImageFullScreenPage extends IOSPage {
     }
 
     public void clickCloseButton() throws Exception {
-        getElement(nameFullScreenCloseButton, "Close button is not present in the view").click();
+        final WebElement closeBtn = getElement(nameFullScreenCloseButton);
+        closeBtn.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameFullScreenCloseButton)) {
+            closeBtn.click();
+        }
     }
 
     public boolean isDownloadButtonVisible() throws Exception {

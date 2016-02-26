@@ -200,3 +200,24 @@ Feature: Video Calling
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
+
+  @C28861 @staging
+  Scenario Outline: Verify video call continues after rejecting 2nd incoming video call
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
+    Given I sign in using my email or phone number
+    And <Contact> starts a video call to me using <VideoCallBackend>
+    And I see call status message contains "<Contact> CALLING"
+    And I tap Accept Video button on Calling overlay
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    Then I see Switch Camera button on Calling overlay
+    When <Contact2> starts a video call to me using <VideoCallBackend>
+    And I see call status message contains "<Contact2> CALLING"
+    And I tap Ignore button on the Calling overlay
+    Then I see Mute button on Calling overlay
+    And <Contact> verifies that call status to me is changed to active in <TimeoutAlreadyInCall> seconds
+    And <Contact2> verifies that call status to me is changed to connecting in <Timeout> seconds
+
+    Examples:
+      | Name      | Contact    | Contact2 | VideoCallBackend | Timeout | TimeoutAlreadyInCall |
+      | user1Name | user2Name  | user3Name| chrome           | 60      | 4                    |

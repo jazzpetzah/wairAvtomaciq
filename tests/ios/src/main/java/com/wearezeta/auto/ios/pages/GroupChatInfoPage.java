@@ -20,13 +20,15 @@ public class GroupChatInfoPage extends IOSPage {
 
     private static final By nameConversationNameTextField = By.name("ParticipantsView_GroupName");
 
+    private static final Function<String, String> xpathStrConversationNameByText = text ->
+            String.format("//*[@name='ParticipantsView_GroupName' and @value='%s']", text);
+
     private static final Function<String, String> xpathStrConversationNameByExpr = expr ->
             String.format("//*[@name='ParticipantsView_GroupName' and %s]", expr);
 
     private static final By nameExitParticipantInfoPageButton = By.name("OtherUserProfileCloseButton");
 
     private static final By nameExitGroupInfoPageButton = By.name("metaControllerCancelButton");
-
 
     private static final By namLeftActionButton = By.name("metaControllerLeftButton");
 
@@ -51,17 +53,20 @@ public class GroupChatInfoPage extends IOSPage {
         super(lazyDriver);
     }
 
-    public String getGroupChatName() throws Exception {
-        return getElement(nameConversationNameTextField).getText();
+    public boolean isGroupNameEqualTo(String expectedName) throws Exception {
+        final By locator = By.xpath(xpathStrConversationNameByText.apply(expectedName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public void setGroupChatName(String name) throws Exception {
-        ((IOSElement) getElement(nameConversationNameTextField)).setValue(name);
+        final WebElement nameInputField = getElement(nameConversationNameTextField);
+        nameInputField.click();
         try {
-            clickKeyboardCommitButton();
-        } catch (IllegalStateException e) {
-            // ignore silently
+            ((IOSElement) nameInputField).setValue(name);
+        } catch (WebDriverException e) {
+            nameInputField.sendKeys(name);
         }
+        clickKeyboardCommitButton();
     }
 
     public boolean isCorrectConversationName(List<String> expectedNames) throws Exception {

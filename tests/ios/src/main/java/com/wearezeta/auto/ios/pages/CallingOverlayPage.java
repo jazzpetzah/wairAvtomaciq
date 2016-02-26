@@ -115,7 +115,7 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isButtonVisible(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getButtonLocatorByName(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getButtonLocatorByName(name), 20);
     }
 
     public boolean isButtonInvisible(String name) throws Exception {

@@ -114,8 +114,8 @@ Feature: VideoCalling
     And I do not see incoming call
 
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+       | Name      | Contact   | CallBackend | Timeout |
+       | user1Name | user2Name | chrome      | 60      |
 
   @C36370 @staging
   Scenario Outline: Verify I can make a Video call one after another
@@ -164,7 +164,6 @@ Feature: VideoCalling
     When <Contact> accepts next incoming video call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see ongoing video call
-    And I tap on ongoing video
     When I hang up ongoing video call
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
@@ -187,6 +186,28 @@ Feature: VideoCalling
     And I do not see incoming call
     When I tap on contact name <Contact>
     Then I see dialog with missed call from <Contact>
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
+
+  @C36366 @staging
+  Scenario Outline: Verify I can mute Video call
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When <Contact> starts a video call to me using <CallBackend>
+    And I swipe to accept the call
+    Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    And I see ongoing video call
+    When I remember state of mute button for ongoing video call
+    And I tap mute button for ongoing video call
+    Then I see state of mute button has changed for ongoing video call
+    When I remember state of mute button for ongoing video call
+    And I tap mute button for ongoing video call
+    Then I see state of mute button has changed for ongoing video call
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
