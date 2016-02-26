@@ -357,12 +357,13 @@ Feature: Calling
     When I swipe to accept the call
     And I see ongoing call
     And <Contact3> calls <Name> using <CallBackend>
-    Then I see incoming call
-    And I see incoming call from <Contact3>
-    When I swipe to accept the call
-    Then I see ongoing call
-    And <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
+    Then I do not see incoming call
+#    Then I see incoming call
+#    And I see incoming call from <Contact3>
+#    When I swipe to accept the call
+#    Then I see ongoing call
+#    And <Contact1> stops all calls to <GroupChatName>
+#    And <Contact2> stops all calls to <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -383,13 +384,12 @@ Feature: Calling
     Then I see ongoing call
     When <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    Then I see incoming call
-    And I see incoming call from <GroupChatName>
-    When I swipe to accept the call
-    Then I see ongoing call
-    And I see 2 users take part in call
-    And <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
+    Then I do not see incoming call
+#    Then I see incoming call
+#    And I see incoming call from <GroupChatName>
+#    When I swipe to accept the call
+#    Then I see ongoing call
+#    And I see 2 users take part in call
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -410,16 +410,11 @@ Feature: Calling
     When I swipe to accept the call
     Then I see ongoing call
     When <Contact3> calls <Name> using <CallBackend>
-    And I see incoming call
-#TODO alerts
-#    And I swipe to accept the call
-#    Then I see end current call alert
-#    And I cancel new call from end current call alert
-    When I swipe to ignore the call
-    Then I see ongoing call
-    And I see 2 users take part in call
-    And <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
+    Then I do not see incoming call
+#    Then I see incoming call
+#    When I swipe to ignore the call
+#    Then I see ongoing call
+#    And I see 2 users take part in call
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -502,9 +497,8 @@ Feature: Calling
     And I swipe to accept the call
     And I see ongoing call
     When <Contact2> calls me using <CallBackend>
-    Then I see incoming call
-#TODO alerts
-    And <Contact2> stop all calls to me
+    Then I do not see incoming call
+#    Then I see incoming call
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend |

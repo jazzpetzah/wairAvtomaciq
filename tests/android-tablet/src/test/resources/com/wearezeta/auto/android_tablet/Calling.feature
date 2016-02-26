@@ -209,13 +209,14 @@ Feature: Calling
     And I see the conversation <Contact1> in my conversations list
     And I see the conversation <Contact2> in my conversations list
     When <Contact1> calls me using <CallBackend>
-    Then I see incoming call
-    Then I see incoming call from <Contact1>
-    When I swipe to accept the call
-    Then I see ongoing call
-    And <Contact2> calls me using <CallBackend>
-    Then I see incoming call
-    Then I see incoming call from <Contact1>
+    Then I do not see incoming call
+#    Then I see incoming call
+#    Then I see incoming call from <Contact1>
+#    When I swipe to accept the call
+#    Then I see ongoing call
+#    And <Contact2> calls me using <CallBackend>
+#    Then I see incoming call
+#    Then I see incoming call from <Contact1>
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
