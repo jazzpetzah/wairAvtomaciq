@@ -51,10 +51,12 @@ Feature: VideoCalling
     Given I Sign in using login <Login> and password <Password>
     Given <Contact> starts a video call to me using <CallBackend>
     When I see my avatar on top of Contact list
-    And I see the name of user <Contact> in calling banner in conversation list
-    And I click end call button from conversation list
-    And I do not see end call button for conversation <Contact>
-    And I do not see the name of user <Contact> in calling banner in conversation list
+    Then I see the name of user <Contact> in calling banner in conversation list
+    And I see mute call button for conversation <Contact>
+    And I see end call button for conversation <Contact>
+    And I see video call button for conversation <Contact>
+    When I click end call button from conversation list
+    Then I do not see end call button for conversation <Contact>
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend         |
