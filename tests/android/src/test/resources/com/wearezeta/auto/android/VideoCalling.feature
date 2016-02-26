@@ -131,7 +131,6 @@ Feature: VideoCalling
     And I see ongoing video call
     And <Contact> stops all calls to me
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
-    And I wait for 10 seconds
     And I do not see ongoing video call
     When <Contact> starts a video call to me using <CallBackend>
     And I see incoming call
