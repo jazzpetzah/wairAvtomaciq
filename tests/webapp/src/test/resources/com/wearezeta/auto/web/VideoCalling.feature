@@ -32,11 +32,15 @@ Feature: VideoCalling
     Given <Contact> starts a video call to <Name> using <CallBackend>
     When I see my avatar on top of Contact list
     And I see the name of user <Contact> in calling banner in conversation list
-    And I accept the incoming call from conversation list
+    And I see accept video call button for conversation <Contact>
+    And I see decline call button for conversation <Contact>
+    And I click the accept call button in conversation list
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     And I end the video call
+    And I do not see accept video call button for conversation <Contact>
+    And I do not see decline call button for conversation <Contact>
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
@@ -52,11 +56,11 @@ Feature: VideoCalling
     Given <Contact> starts a video call to me using <CallBackend>
     When I see my avatar on top of Contact list
     Then I see the name of user <Contact> in calling banner in conversation list
-    And I see mute call button for conversation <Contact>
-    And I see end call button for conversation <Contact>
-    And I see video call button for conversation <Contact>
-    When I click end call button from conversation list
-    Then I do not see end call button for conversation <Contact>
+    And I see accept video call button for conversation <Contact>
+    And I see decline call button for conversation <Contact>
+    When I click the decline call button in conversation list
+    And I do not see accept video call button for conversation <Contact>
+    And I do not see decline call button for conversation <Contact>
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend         |
