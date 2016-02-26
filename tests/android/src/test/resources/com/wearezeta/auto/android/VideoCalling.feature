@@ -117,6 +117,34 @@ Feature: VideoCalling
        | Name      | Contact   | CallBackend | Timeout |
        | user1Name | user2Name | chrome      | 60      |
 
+  @C36370 @staging
+  Scenario Outline: Verify I can make a Video call one after another
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When <Contact> starts a video call to me using <CallBackend>
+    And I see incoming call
+    And I swipe to accept the call
+    Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    And I see ongoing video call
+    And <Contact> stops all calls to me
+    Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing video call
+    When <Contact> starts a video call to me using <CallBackend>
+    And I see incoming call
+    And I swipe to accept the call
+    Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    And I see ongoing video call
+    And <Contact> stops all calls to me
+    Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing video call
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
+
   @C36363 @staging
   Scenario Outline: (AN-3536) Verify I can start Video call from Start UI
     Given There are 2 users where <Name> is me

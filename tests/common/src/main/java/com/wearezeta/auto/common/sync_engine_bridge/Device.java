@@ -51,7 +51,8 @@ class Device extends RemoteEntity implements IDevice {
     private void respawn() {
         if (this.ref() != null) {
             try {
-                Future<Boolean> stopped = gracefulStop(this.ref(), Duration.create(5, TimeUnit.SECONDS), null);
+                Future<Boolean> stopped = gracefulStop(this.ref(), Duration.create(5, TimeUnit.SECONDS),
+                        PoisonPill.getInstance());
                 Await.result(stopped, Duration.create(6, TimeUnit.SECONDS));
                 // the actor has been stopped
             } catch (Exception e) {
