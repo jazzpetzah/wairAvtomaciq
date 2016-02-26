@@ -65,7 +65,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I swipe on text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press "Take Photo" button
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -188,7 +188,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I swipe on text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press "Gallery" button
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -206,7 +206,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I swipe on text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press "Gallery" button
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -252,7 +252,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I swipe on text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press "Gallery" button
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
@@ -272,7 +272,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I swipe on text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press "Take Photo" button
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
@@ -331,7 +331,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I swipe on text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press "Switch Camera" button
     And I press "Take Photo" button
     And I press "Confirm" button

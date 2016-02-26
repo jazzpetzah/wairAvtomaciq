@@ -121,10 +121,10 @@ public class DialogPageSteps {
      *
      * @throws Exception
      * @param btnName button name
-     * @step. ^I press (Call|Ping|Add Picture|Video Call) button$
+     * @step. ^I tap (Call|Ping|Add Picture|Video Call) button$ from input tools$
      */
-    @When("^I press (Call|Ping|Add Picture|Video Call) button$")
-    public void WhenIPressCallButton(String btnName) throws Exception {
+    @When("^I tap (Call|Ping|Add Picture|Video Call) button from input tools$")
+    public void WhenITapInputToolButton(String btnName) throws Exception {
         switch(btnName.toLowerCase()) {
             case "call":
             getDialogPage().tapCallBtn();
@@ -139,7 +139,8 @@ public class DialogPageSteps {
                 getDialogPage().tapVideoCallBtn();
                 break;
             case "sketch":
-
+                getDialogPage().tapSketchBtn();
+                break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
         }
@@ -154,17 +155,6 @@ public class DialogPageSteps {
     @When("^I close input options$")
     public void ICloseInputOptions() throws Exception {
         getDialogPage().closeInputOptions();
-    }
-
-    /**
-     * Press on the sketch button in the input controls
-     *
-     * @throws Exception
-     * @step. ^I press Sketch button$
-     */
-    @When("^I press Sketch button$")
-    public void WhenIPressOnSketchButton() throws Exception {
-        getDialogPage().tapSketchBtn();
     }
 
     /**

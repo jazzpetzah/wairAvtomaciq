@@ -48,7 +48,7 @@ Feature: Calling
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I swipe on text input
-    And I press Call button
+    And I tap Call button from input tools
     Then I see outgoing call
     When <Contact> accepts next incoming call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -194,7 +194,7 @@ Feature: Calling
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And I swipe on text input
-    And I press Call button
+    And I tap Call button from input tools
     Then I see outgoing call
     When <Contact1>,<Contact2> accept next incoming call automatically
     # Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
@@ -248,7 +248,7 @@ Feature: Calling
     Then I see incoming call
     When I swipe to ignore the call
     And I swipe on text input
-    And I press Call button
+    And I tap Call button from input tools
     Then I see ongoing call
 
     Examples:
@@ -273,7 +273,7 @@ Feature: Calling
     Then I do not see incoming call
     And I wait for 20 seconds
     When I swipe on text input
-    And I press Call button
+    And I tap Call button from input tools
     Then I see ongoing call
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
@@ -452,7 +452,7 @@ Feature: Calling
     Given I see Contact list with contacts
     And I tap on contact name <Contact>
     And I swipe on text input
-    And I press Call button
+    And I tap Call button from input tools
     And I see outgoing call
     When I lock the device
     And I wait for 2 seconds

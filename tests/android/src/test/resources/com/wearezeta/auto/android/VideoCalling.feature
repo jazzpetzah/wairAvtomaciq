@@ -88,7 +88,7 @@ Feature: VideoCalling
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I swipe on text input
-    And I press Video Call button
+    And I tap Video Call button from input tools
     Then I see outgoing call
     When <Contact> accepts next incoming video call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -196,7 +196,7 @@ Feature: VideoCalling
     And I swipe to ignore the call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
     When I swipe on text input
-    And I press Call button
+    And I tap Call button from input tools
     Then I see alert message containing "<ExpectedMsg>"
     And <Contact> verifies that call status to me is changed to connecting in 3 seconds
 
