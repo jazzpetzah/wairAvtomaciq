@@ -72,7 +72,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
             return true;
         } else {
             tapOngoingVideo();
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idHangup);
+            return super.hangupIsVisible();
         }
     }
 
@@ -83,7 +83,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
             return true;
         } else {
             tapOngoingVideo();
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMute);
+            return super.toggleMuteIsVisible();
         }
     }
 
@@ -94,7 +94,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
             return true;
         } else {
             tapOngoingVideo();
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idRight);
+            return super.specialActionIsVisible();
         }
     }
 }
