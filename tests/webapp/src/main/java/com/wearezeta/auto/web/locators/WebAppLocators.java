@@ -575,7 +575,10 @@ public final class WebAppLocators {
     }
 
     public static final class VideoCallPage {
+
         public static final String cssEndVideoCallButton = "[data-uie-name='do-call-controls-video-call-cancel']";
+
+        public static final String cssMuteCallButton = "[data-uie-name='do-call-controls-video-call-mute']";
     }
 
     public static final class WarningPage {

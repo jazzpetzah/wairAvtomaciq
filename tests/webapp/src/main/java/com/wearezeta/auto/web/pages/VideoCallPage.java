@@ -35,4 +35,26 @@ public class VideoCallPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.cssSelector(WebAppLocators.VideoCallPage.cssEndVideoCallButton));
     }
+
+    public boolean isMuteCallButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.cssSelector(WebAppLocators.VideoCallPage.cssMuteCallButton));
+    }
+
+    public void clickMuteCallButton() throws Exception {
+        this.getDriver()
+                .executeScript(
+                        String.format("$(document).find(\"%s\").click();",
+                                WebAppLocators.VideoCallPage.cssMuteCallButton));
+    }
+
+    public boolean isMuteCallButtonPressed() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.cssSelector(WebAppLocators.VideoCallPage.cssMuteCallButton));
+    }
+
+    public boolean isMuteCallButtonNotPressed() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.cssSelector(WebAppLocators.VideoCallPage.cssMuteCallButton));
+    }
 }

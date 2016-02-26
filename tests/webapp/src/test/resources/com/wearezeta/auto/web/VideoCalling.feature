@@ -216,3 +216,32 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @C12073 @videocalling @torun
+  Scenario Outline: Verify I can mute Video call after the call is established
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> accepts next incoming video call automatically
+    Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    When I start a video call
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact> verify to have 1 flows
+    And <Contact> verify that all flows have greater than 0 bytes
+    #And I see my self video view on video call page
+    When I see mute button on video call page is not pressed
+    And I click mute button on video call page
+    Then I see mute button on video call page is pressed
+    When I click mute button on video call page
+    Then I see mute button on video call page is not pressed
+    When I end the video call
+    Then I do not see my self video view
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
