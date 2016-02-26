@@ -265,12 +265,12 @@ Feature: Utility
   @C49970 @utility
     Scenario Outline: Verify that language switch works for <Agent>
     When I navigate to <Page> page for <Agent>
-    And I can see language switch button for english
+    And I can see language switch button for english on <Page> for <Agent>
     Then I change language to german
-    And Page is german 
-    And I can see language switch button for german
+    And <Page> page for <Agent> is german 
+    And I can see language switch button for german on <Page> for <Agent>
     Then I change language to english
-    Then Page is english
+    Then <Page> page for <Agent> is english
     
     Examples:
       | Agent   | Page     |

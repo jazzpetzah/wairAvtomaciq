@@ -93,37 +93,39 @@ public class StartPageSteps {
         }
 	}
 	
-	@Then("^I can see language switch button for (.*)$")
-	public void ICanSeeLanguageSwitchButton(String language) throws Exception {
+	@Then("^I can see language switch button for (.*) on (.*) for (.*)$")
+	public void ICanSeeLanguageSwitchButton(String language, String page, String agent) throws Exception {
 		String url = "";
 		switch (language) {
 			case "german":
 				url = "/l/de/";
-				assertThat(webappPagesCollection.getPage(StartPage.class).getGermanValue(), equalTo(url));
+				assertThat("German language button is not visible on " + page + " page for " + agent, 
+						webappPagesCollection.getPage(StartPage.class).getGermanValue(), equalTo(url));
 				break;
 			case "english":
 				url = "/l/en/";
-				assertThat(webappPagesCollection.getPage(StartPage.class).getEnglishValue(), equalTo(url));
+				assertThat("English language button is not visible on " + page + " page for " + agent,
+						webappPagesCollection.getPage(StartPage.class).getEnglishValue(), equalTo(url));
 				break;
 			default: break;
 		}
 	}
 	
 	@Then("^I change language to (.*)$")
-	public void IChangeLanguage(String language) throws Exception {
-		webappPagesCollection.getPage(StartPage.class).changeLanguage(language);
+	public void IChangeLanguageTo(String language) throws Exception {
+		webappPagesCollection.getPage(StartPage.class).changeLanguageTo(language);
 	}
 	
-	@Then("^Page is (.*)$")
-	public void StartPageIs(String language) throws Exception {
+	@Then("^(.*) page for (.*) is (.*)$")
+	public void StartPageIs(String page, String agent, String language) throws Exception {
 		StartPage startPage = WebappPagesCollection.getInstance()
 				.getPage(StartPage.class);
 		switch (language) {
 			case "english":
-				assertTrue("Page is not in " + language, startPage.isEnglish());
+				assertTrue(page + "Page for " + agent + " is not in " + language, startPage.isEnglish());
 				break;
 			case "german":
-				assertTrue("Page is not in " + language, startPage.isGerman());
+				assertTrue(page + "Page for " + agent + " is not in " + language, startPage.isGerman());
 				break;
 			default: break;
 		}

@@ -59,7 +59,7 @@ public class StartPage extends WebPage {
 	}
 		
 	public List<WebElement> getAllElements() throws Exception{
-		List<WebElement> list = getDriver().findElements(By.cssSelector("a"));	//By.tagName("a") also works
+		List<WebElement> list = getDriver().findElements(By.cssSelector("a"));
 		return list;
 	}
 	
@@ -88,7 +88,7 @@ public class StartPage extends WebPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.StartPage.cssGermanSite));
     }
     
-    public void changeLanguage(String language) throws Exception {
+    public void changeLanguageTo(String language) throws Exception {
     	if (language.equals("german")) {
        		WebElement select = getDriver().findElement(By.cssSelector(ExternalLocators.StartPage.cssEnglishSite));
     		Select dropdown = new Select(select);
