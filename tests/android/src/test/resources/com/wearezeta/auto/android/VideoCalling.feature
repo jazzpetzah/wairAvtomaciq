@@ -183,7 +183,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C49973 @staging @torun
+  @C49973 @staging
   Scenario Outline: Verify you cannot make audio call to user A while he makes video call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
