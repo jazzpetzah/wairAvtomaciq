@@ -129,7 +129,6 @@ Feature: VideoCalling
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
-#TODO bug in callingservice: when call is established u can not hang up
     And <Contact> stops all calls to me
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
     And I wait for 10 seconds
