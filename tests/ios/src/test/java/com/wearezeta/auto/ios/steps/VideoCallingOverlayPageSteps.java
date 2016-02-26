@@ -62,7 +62,7 @@ public class VideoCallingOverlayPageSteps {
      * @step. ^I see state of (Mute|Video) button has changed on Video Calling overlay$
      */
     @Then("^I see state of (Mute|Video) button has changed on Video Calling overlay$")
-    public void VerifyStateOfSpacialVideoHasChanged(String btnName) throws Exception {
+    public void VerifyStateOfButtonHasChanged(String btnName) throws Exception {
         boolean isChanged;
         switch (btnName) {
             case "Mute":

@@ -70,6 +70,11 @@ public class CallPageSteps {
                 }
                 break;
             case "Video":
+                if (shouldBeSelected == null) {
+                    Assert.assertTrue("Video button is not selected but should be", getCallingOverlayPage().isVideoButtonSelected());
+                } else {
+                    Assert.assertTrue("Video button is selected but shouldn't be", getCallingOverlayPage().isVideoButtonNotSelected());
+                }
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));

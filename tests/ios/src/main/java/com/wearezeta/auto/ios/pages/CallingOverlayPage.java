@@ -42,6 +42,10 @@ public class CallingOverlayPage extends IOSPage {
 
     private static final By xpathMuteButtonNotSelected = By.xpath("//UIAButton[@name='CallMuteButton' and @value='']");
 
+    private static final By xpathVideoButtonSelected = By.xpath("//UIAButton[@name='CallVideoButton' and @value='1']");
+
+    private static final By xpathVideoButtonNotSelected = By.xpath("//UIAButton[@name='CallVideoButton' and @value='']");
+
     private static final By xpathGroupCallFullMessage = By.xpath("//UIAAlert[@name='The call is full']");
 
 
@@ -127,6 +131,14 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isMuteButtonNotSelected() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMuteButtonNotSelected);
+    }
+
+    public boolean isVideoButtonSelected() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMuteButtonSelected);
+    }
+
+    public boolean isVideoButtonNotSelected() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMuteButtonNotSelected);
     }
 
