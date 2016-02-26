@@ -1,10 +1,11 @@
 package com.wearezeta.auto.android_tablet.pages;
 
 import com.wearezeta.auto.android.pages.CallOutgoingPage;
+
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 
 public class TabletCallOutgoingPage extends AndroidTabletPage {
 
@@ -33,20 +34,15 @@ public class TabletCallOutgoingPage extends AndroidTabletPage {
         getPage().hangup();
     }
     
-    public void toggleSpeaker() throws Exception {
-        getPage().toggleSpeaker();
-    }
-    
     public void toggleVideo() throws Exception {
         getPage().toggleVideo();
     }
-    
-    public FunctionalInterfaces.StateGetter getMuteButtonStateFunction() throws Exception {
-        return getPage().getMuteButtonStateFunction();
+
+    public BufferedImage getMuteButtonScreenshot() throws Exception {
+        return getPage().getMuteButtonScreenshot();
     }
 
-    public FunctionalInterfaces.StateGetter getSpecialButtonStateFunction() throws Exception {
-        return getPage().getSpecialButtonStateFunction();
+    public BufferedImage getSpecialButtonScreenshot() throws Exception {
+        return getPage().getSpecialButtonScreenshot();
     }
-    
 }

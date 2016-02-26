@@ -114,8 +114,8 @@ Feature: VideoCalling
     And I do not see incoming call
 
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+       | Name      | Contact   | CallBackend | Timeout |
+       | user1Name | user2Name | chrome      | 60      |
 
   @C36363 @staging
   Scenario Outline: (AN-3536) Verify I can start Video call from Start UI
@@ -134,7 +134,6 @@ Feature: VideoCalling
     When <Contact> accepts next incoming video call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see ongoing video call
-    And I tap on ongoing video
     When I hang up ongoing video call
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
@@ -162,77 +161,24 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C36380 @staging
-  Scenario Outline: Verify I can have video call more than 15 mins
+  @C36366 @staging
+  Scenario Outline: Verify I can mute Video call
     Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I swipe on text input
-    And I press Video Call button
-    Then I see outgoing call
-    When <Contact> accepts next incoming video call automatically
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    When <Contact> starts a video call to me using <CallBackend>
+    And I swipe to accept the call
+    Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
-    And <Contact> verifies to have 1 flows
-    And <Contact> verifies that all flows have greater than 0 bytes
-    When I wait for 60 seconds
-    Then I see ongoing video call
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I wait for 60 seconds
-    Then I see ongoing video call
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I wait for 60 seconds
-    Then I see ongoing video call
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I wait for 60 seconds
-    Then I see ongoing video call
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I wait for 60 seconds
-    Then I see ongoing video call
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I wait for 60 seconds
-    Then I see ongoing video call
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I wait for 60 seconds
-    Then I see ongoing video call
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I wait for 60 seconds
-    Then I see ongoing video call
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I wait for 60 seconds
-    Then I see ongoing video call
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I wait for 60 seconds
-    Then I see ongoing video call
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I wait for 60 seconds
-    Then I see ongoing video call
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I wait for 60 seconds
-    Then I see ongoing video call
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I wait for 60 seconds
-    Then I see ongoing video call
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I wait for 60 seconds
-    Then I see ongoing video call
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I wait for 60 seconds
-    Then I see ongoing video call
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I wait for 60 seconds
-    Then I see ongoing video call
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact> verifies to have 1 flows
-    And <Contact> verifies that all flows have greater than 0 bytes
-    When I hang up ongoing video call
-    Then I do not see ongoing video call
-    Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+    When I remember state of mute button for ongoing video call
+    And I tap mute button for ongoing video call
+    Then I see state of mute button has changed for ongoing video call
+    When I remember state of mute button for ongoing video call
+    And I tap mute button for ongoing video call
+    Then I see state of mute button has changed for ongoing video call
 
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |

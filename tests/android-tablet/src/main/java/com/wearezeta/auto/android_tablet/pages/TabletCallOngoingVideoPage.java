@@ -1,20 +1,20 @@
 package com.wearezeta.auto.android_tablet.pages;
 
-import com.wearezeta.auto.android.pages.CallOngoingPage;
+import com.wearezeta.auto.android.pages.CallOngoingVideoPage;
 
 import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class TabletCallOngoingPage extends AndroidTabletPage {
+public class TabletCallOngoingVideoPage extends AndroidTabletPage {
 
-    public TabletCallOngoingPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+    public TabletCallOngoingVideoPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
-    private CallOngoingPage getPage() throws Exception {
-        return this.getAndroidPageInstance(CallOngoingPage.class);
+    private CallOngoingVideoPage getPage() throws Exception {
+        return this.getAndroidPageInstance(CallOngoingVideoPage.class);
     }
 
     public boolean waitUntilVisible() throws Exception {
@@ -25,12 +25,20 @@ public class TabletCallOngoingPage extends AndroidTabletPage {
         return getPage().waitUntilNotVisible();
     }
 
+    public boolean hangupIsVisible() throws Exception {
+        return getPage().hangupIsVisible();
+    }
+
     public boolean toggleMuteIsVisible() throws Exception {
         return getPage().toggleMuteIsVisible();
     }
 
     public boolean toggleSpeakerIsVisible() throws Exception {
         return getPage().toggleSpeakerIsVisible();
+    }
+
+    public boolean toggleVideoIsVisible() throws Exception {
+        return getPage().toggleVideoIsVisible();
     }
 
     public void toggleMute() throws Exception {
@@ -41,8 +49,8 @@ public class TabletCallOngoingPage extends AndroidTabletPage {
         getPage().hangup();
     }
 
-    public int getNumberOfParticipants() throws Exception {
-        return getPage().getNumberOfParticipants();
+    public void toggleVideo() throws Exception {
+        getPage().toggleVideo();
     }
 
     public BufferedImage getMuteButtonScreenshot() throws Exception {
@@ -50,14 +58,6 @@ public class TabletCallOngoingPage extends AndroidTabletPage {
     }
 
     public BufferedImage getSpecialButtonScreenshot() throws Exception {
-        return getPage().getMuteButtonScreenshot();
-    }
-
-    public boolean toggleMuteIsNotVisible() throws Exception {
-        return getPage().toggleMuteIsNotVisible();
-    }
-
-    public boolean toggleSpeakerIsNotVisible() throws Exception {
-        return getPage().toggleSpeakerIsNotVisible();
+        return getPage().getSpecialButtonScreenshot();
     }
 }
