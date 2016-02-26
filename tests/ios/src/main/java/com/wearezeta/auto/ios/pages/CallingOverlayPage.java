@@ -20,9 +20,9 @@ public class CallingOverlayPage extends IOSPage {
 
     private static final By nameAcceptVideoCallButton = By.name("AcceptVideoButton");
 
-    private static final By nameMuteCallButton = By.name("CallMuteButton");
+    protected static final By nameMuteCallButton = By.name("CallMuteButton");
 
-    private static final By nameCallVideoButton = By.name("CallVideoButton");
+    protected static final By nameCallVideoButton = By.name("CallVideoButton");
 
     private static final By nameSwitchCameraButton = By.name("SwitchCameraButton");
 
@@ -82,7 +82,7 @@ public class CallingOverlayPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGroupCallFullMessage);
     }
 
-    private By getButtonLocatorByName(final String name) {
+    protected By getButtonLocatorByName(final String name) {
         switch (name) {
             case "Ignore":
                 return nameIgnoreCallButton;
