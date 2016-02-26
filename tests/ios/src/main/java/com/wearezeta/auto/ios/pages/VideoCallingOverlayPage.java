@@ -49,7 +49,7 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
                     () -> new IllegalStateException("Cannot take a screenshot of Mute button"));
         } else {
             tapOnScreenToRevealButton();
-            return this.getElementScreenshot(videoButton.get()).orElseThrow(
+            return this.getElementScreenshot(getElement(nameCallVideoButton)).orElseThrow(
                     () -> new IllegalStateException("Cannot take a screenshot of Video button"));
         }
     }
