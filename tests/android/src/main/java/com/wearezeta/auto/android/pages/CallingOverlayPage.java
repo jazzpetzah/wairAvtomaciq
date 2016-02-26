@@ -37,7 +37,7 @@ public abstract class CallingOverlayPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMute);
     }
 
-    private boolean specialActionIsVisible() throws Exception {
+    protected boolean specialActionIsVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idRight);
     }
     private boolean specialActionIsNotVisible() throws Exception {
@@ -52,7 +52,7 @@ public abstract class CallingOverlayPage extends AndroidPage {
         getElement(idHangup).click();
     }
 
-    private void specialAction() throws Exception{
+    protected void tapSpecialAction() throws Exception {
         getElement(idRight).click();
     }
 
@@ -65,11 +65,11 @@ public abstract class CallingOverlayPage extends AndroidPage {
     }
 
     public void toggleSpeaker() throws Exception {
-        specialAction();
+        tapSpecialAction();
     }
 
     public void toggleVideo() throws Exception {
-        specialAction();
+        tapSpecialAction();
     }
 
     public boolean toggleMuteIsNotVisible() throws Exception {
