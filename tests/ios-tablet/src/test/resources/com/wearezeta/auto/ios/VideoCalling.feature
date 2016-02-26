@@ -12,6 +12,7 @@ Feature: Video Calling
     And I click Video Call button
     Then I see call status message contains "<Contact> RINGING"
     And I see Leave button on Calling overlay
+    And I do not see Calling overlay
 
     Examples:
       | Name      | Contact   |
@@ -29,6 +30,7 @@ Feature: Video Calling
     And I click Video Call button
     Then I see call status message contains "<Contact> RINGING"
     When I tap Leave button on Calling overlay
+    And I do not see Calling overlay
     Then I see missed call from contact YOU
 
     Examples:
@@ -48,10 +50,9 @@ Feature: Video Calling
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
-    Then I see Mute button on Calling overlay
-    And I see Leave button on Calling overlay
-    And I see Call Video button on Calling overlay
     And I tap Leave button on Calling overlay
+    And I do not see Calling overlay
+    Then I see dialog page
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
@@ -70,10 +71,8 @@ Feature: Video Calling
     And I click plus button next to text input
     And I click Video Call button
     And I see Calling overlay
-    And I see Mute button on Calling overlay
-    And I see Leave button on Calling overlay
-    And I see Call Video button on Calling overlay
     And I tap Leave button on Calling overlay
+    And I do not see Calling overlay
     Then I see dialog page
 
     Examples:
