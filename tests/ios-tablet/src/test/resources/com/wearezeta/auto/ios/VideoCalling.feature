@@ -76,8 +76,8 @@ Feature: Video Calling
     Then I see dialog page
 
     Examples:
-      | Name      | Contact   | CallBackend  | Timeout |
-      | user1Name | user2Name | chrome		 | 60      |
+      | Name      | Contact   | CallBackend  |
+      | user1Name | user2Name | chrome		 |
 
   @C28855 @staging
   Scenario Outline: Verify ignoring Video call [LANDSCAPE]
