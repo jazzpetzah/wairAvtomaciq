@@ -66,7 +66,7 @@ public class CallPageSteps {
                 if (shouldBeSelected == null) {
                     Assert.assertTrue("Mute button is not selected but should be", getCallingOverlayPage().isMuteButtonSelected());
                 } else {
-                    Assert.assertFalse("Mute button is selected but shouldn't be", getCallingOverlayPage().isMuteButtonNotSelected());
+                    Assert.assertTrue("Mute button is selected but shouldn't be", getCallingOverlayPage().isMuteButtonNotSelected());
                 }
                 break;
             case "Video":
