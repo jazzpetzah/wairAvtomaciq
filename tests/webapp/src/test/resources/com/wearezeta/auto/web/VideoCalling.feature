@@ -217,7 +217,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C12073 @videocalling @torun
+  @C12073 @videocalling
   Scenario Outline: Verify I can mute Video call after the call is established
     Given My browser supports calling
     Given There are 2 users where <Name> is me

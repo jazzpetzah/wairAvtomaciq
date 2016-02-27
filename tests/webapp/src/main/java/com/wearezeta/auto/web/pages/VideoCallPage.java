@@ -50,11 +50,11 @@ public class VideoCallPage extends WebPage {
 
     public boolean isMuteCallButtonPressed() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.cssSelector(WebAppLocators.VideoCallPage.cssMuteCallButton));
+                By.xpath(WebAppLocators.VideoCallPage.xpathMuteCallButtonPressed));
     }
 
     public boolean isMuteCallButtonNotPressed() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.cssSelector(WebAppLocators.VideoCallPage.cssMuteCallButton));
+                By.xpath(WebAppLocators.VideoCallPage.xpathMuteCallButtonNotPressed));
     }
 }

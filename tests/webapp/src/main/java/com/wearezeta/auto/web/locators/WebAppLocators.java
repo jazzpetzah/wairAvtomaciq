@@ -579,6 +579,12 @@ public final class WebAppLocators {
         public static final String cssEndVideoCallButton = "[data-uie-name='do-call-controls-video-call-cancel']";
 
         public static final String cssMuteCallButton = "[data-uie-name='do-call-controls-video-call-mute']";
+
+        public static final String xpathMuteCallButtonPressed = "//div[@data-uie-name='do-call-controls-video-call-mute'" +
+                " and contains(@class, 'toggled')]";
+
+        public static final String xpathMuteCallButtonNotPressed = "//div[@data-uie-name='do-call-controls-video-call-mute'" +
+                " and not(contains(@class, 'toggled'))]";
     }
 
     public static final class WarningPage {
