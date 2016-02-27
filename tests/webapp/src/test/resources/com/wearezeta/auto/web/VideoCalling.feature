@@ -233,7 +233,6 @@ Feature: VideoCalling
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
-    #And I see my self video view on video call page
     When I see mute button on video call page is not pressed
     And I click mute button on video call page
     Then I see mute button on video call page is pressed
