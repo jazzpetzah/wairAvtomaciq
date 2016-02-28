@@ -94,7 +94,7 @@ public final class WebAppLocators {
                                 + "*//*[@data-uie-name='do-call-controls-call-ignore']",
                         name);
 
-        public static final String cssEndVideoCallButton = "[data-uie-name='do-call-controls-call-ignore']";
+        public static final String cssEndCallButton = "[data-uie-name='do-call-controls-call-ignore']";
 
         public static final Function<String, String> xpathMuteIconByContactName = (
                 name) -> String.format(
@@ -121,6 +121,8 @@ public final class WebAppLocators {
         public static final String cssAcceptVideoCallButton = "[data-uie-name='do-call-controls-call-accept']";
 
         public static final String cssDeclineCallButton = "[data-uie-name='do-call-controls-call-decline']";
+
+        public static final String cssMuteCallButton = "[data-uie-name='do-call-mute']";
 
         public static final Function<String, String> cssContactListEntryByName = (
                 name) -> String
