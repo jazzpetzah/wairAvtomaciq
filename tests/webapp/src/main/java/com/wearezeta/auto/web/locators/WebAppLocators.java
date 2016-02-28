@@ -124,6 +124,14 @@ public final class WebAppLocators {
 
         public static final String cssMuteCallButton = "[data-uie-name='do-call-mute']";
 
+        public static final String xpathMuteCallButtonPressed = "//div[@data-uie-name='do-call-mute'" +
+                " and contains(@class, 'toggled')]";
+
+        public static final String xpathMuteCallButtonNotPressed = "//div[@data-uie-name='do-call-mute'" +
+                " and not(contains(@class, 'toggled'))]";
+
+        // end calling locators
+
         public static final Function<String, String> cssContactListEntryByName = (
                 name) -> String
                 .format("%s div[data-uie-name='item-conversation'][data-uie-value='%s'], %s " +
