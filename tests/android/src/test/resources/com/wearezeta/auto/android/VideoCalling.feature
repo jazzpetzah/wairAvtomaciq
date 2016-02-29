@@ -119,8 +119,8 @@ Feature: VideoCalling
     And I do not see incoming call
 
     Examples:
-       | Name      | Contact   | CallBackend | Timeout |
-       | user1Name | user2Name | chrome      | 60      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
 
   @C36370 @staging
   Scenario Outline: Verify I can make a Video call one after another
@@ -239,3 +239,46 @@ Feature: VideoCalling
     Examples:
       | Name      | Contact   | CallBackend | Timeout | ExpectedMsg     |
       | user1Name | user2Name | chrome      | 30      | Try again later |
+
+  @C48236 @staging
+  Scenario Outline: Verify I can start video call after another my call
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> start instances using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    And I tap on contact name <Contact1>
+    And I swipe on text input
+    When I tap Video Call button from input tools
+    And I see outgoing call
+    And <Contact1> accepts next incoming video call automatically
+    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see ongoing video call
+    Then I hang up ongoing video call
+    And <Contact1> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing video call
+    And I swipe on text input
+    When I tap Video Call button from input tools
+    And I see outgoing call
+    And <Contact1> accepts next incoming video call automatically
+    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see ongoing video call
+    Then I hang up ongoing video call
+    And <Contact1> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing video call
+    When I navigate back from dialog page
+    And I tap on contact name <Contact2>
+    And I swipe on text input
+    And I tap Video Call button from input tools
+    And I see outgoing call
+    And <Contact2> accepts next incoming video call automatically
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see ongoing video call
+    Then I hang up ongoing video call
+    And <Contact2> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing video call
+
+    Examples:
+      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
+      | user1Name | user2Name | user3Name | chrome      | 30      |
