@@ -744,9 +744,9 @@ public class ContactListPage extends WebPage {
     }
 
     public void clickEndCallButton() throws Exception {
-        final String locator = WebAppLocators.ContactListPage.cssEndVideoCallButton;
-        WebElement endVideoCallButton = getDriver().findElementByCssSelector(locator);
-        endVideoCallButton.click();
+        final String locator = WebAppLocators.ContactListPage.cssEndCallButton;
+        WebElement endCallButton = getDriver().findElementByCssSelector(locator);
+        endCallButton.click();
     }
 
     public boolean isSelfVideoVisible() throws Exception {
@@ -843,4 +843,19 @@ public class ContactListPage extends WebPage {
         acceptVideoCallButton.click();
     }
 
+    public void clickMuteCallButton() throws Exception {
+        final String locator = WebAppLocators.ContactListPage.cssMuteCallButton;
+        WebElement muteCallButton = getDriver().findElementByCssSelector(locator);
+        muteCallButton.click();
+    }
+
+    public boolean isMuteCallButtonPressed() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(WebAppLocators.ContactListPage.xpathMuteCallButtonPressed));
+    }
+
+    public boolean isMuteCallButtonNotPressed() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(WebAppLocators.ContactListPage.xpathMuteCallButtonNotPressed));
+    }
 }

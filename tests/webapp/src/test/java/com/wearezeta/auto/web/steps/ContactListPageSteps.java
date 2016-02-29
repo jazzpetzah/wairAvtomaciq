@@ -1021,4 +1021,37 @@ public class ContactListPageSteps {
             contactListPage.isDeclineCallButtonNotVisibleForConversation(contact);
         }
     }
+
+    /**
+     * Clicks mute call button in conversation list
+     *
+     * @throws Exception
+     * @step. ^I click mute call button in conversation list$
+     */
+    @When("^I click mute call button in conversation list$")
+    public void IClickMuteCallButton() throws Exception {
+
+        ContactListPage contactListPage = webappPagesCollection
+                .getPage(ContactListPage.class);
+        contactListPage.clickMuteCallButton();
+    }
+
+    /**
+     * Checks if mute button in conversation list pressed
+     *
+     * @param doNot is set to null if "do not" part does not exist
+     * @throws Exception
+     * @step. ^I see mute button in conversation list is( not)? pressed$
+     */
+    @When("^I see mute button in conversation list is( not)? pressed$")
+    public void ISeeMuteButtonNotPressed(String doNot)
+            throws Exception {
+        ContactListPage contactListPage = webappPagesCollection
+                .getPage(ContactListPage.class);
+        if (doNot == null) {
+            contactListPage.isMuteCallButtonPressed();
+        } else {
+            contactListPage.isMuteCallButtonNotPressed();
+        }
+    }
 }

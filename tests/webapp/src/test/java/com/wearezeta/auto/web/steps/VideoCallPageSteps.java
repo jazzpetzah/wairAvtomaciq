@@ -61,10 +61,8 @@ public class VideoCallPageSteps {
      * @step. ^I see mute button on video call page is( not)? pressed$
      */
     @When("^I see mute button on video call page is( not)? pressed$")
-    public void ISeeMuteButtonNotPressed(String doNot)
-            throws Exception {
-        VideoCallPage videoCallPage = webappPagesCollection
-                .getPage(VideoCallPage.class);
+    public void ISeeMuteButtonNotPressed(String doNot) throws Exception {
+        VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
         if (doNot == null) {
             Assert.assertTrue("Mute call button is not pressed", videoCallPage.isMuteCallButtonPressed());
         } else {
