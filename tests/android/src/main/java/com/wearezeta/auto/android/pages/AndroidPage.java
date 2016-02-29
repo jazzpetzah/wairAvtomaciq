@@ -15,8 +15,8 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 public abstract class AndroidPage extends BasePage {
-    private static final Function<String, String> xpathStrAlertMessageByText = text -> String
-            .format("//*[@id='message' and contains(@value, '%s')", text);
+    private static final Function<String, String> xpathStrAlertMessageByText =
+            text -> String.format("//*[@id='message' and contains(@value, '%s')]", text);
 
     protected static final By idGiphyPreviewButton = By.id("cursor_button_giphy");
 
