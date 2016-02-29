@@ -299,7 +299,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C2865 @regression @noAcceptAlert @id3861
+  @C2865 @regression @noAcceptAlert @id3861 @ZIOS-5836
   Scenario Outline: Verify error message appears in case of registering already taken phone number [PORTRAIT]
     Given There is 1 users where <Name> is me with email only
     Given I Sign in on tablet using my email
@@ -320,7 +320,7 @@ Feature: Self Profile
       | Name      | Number        | Code |
       | user1Name | 8301652248706 | +0   |
 
-  @C2866 @regression @noAcceptAlert @id3862
+  @C2866 @regression @noAcceptAlert @id3862 @ZIOS-5836
   Scenario Outline: Verify error message appears in case of registering already taken phone number [LANDSCAPE]
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape
