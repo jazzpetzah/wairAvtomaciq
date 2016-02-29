@@ -281,7 +281,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1                           | Message2                                     |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | is not using the encrypted version | Wire gives every device a unique fingerprint |
 
-  @C12053 @e2ee
+  @C12053 @mute
   Scenario Outline: Verify it is possible to verify 1:1 conversation participants
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
