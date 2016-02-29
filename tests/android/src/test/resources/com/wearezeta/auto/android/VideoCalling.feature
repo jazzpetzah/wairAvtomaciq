@@ -119,8 +119,8 @@ Feature: VideoCalling
     And I do not see incoming call
 
     Examples:
-       | Name      | Contact   | CallBackend | Timeout |
-       | user1Name | user2Name | chrome      | 60      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
 
   @C36370 @staging
   Scenario Outline: Verify I can make a Video call one after another
@@ -233,6 +233,28 @@ Feature: VideoCalling
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
     When I swipe on text input
     And I tap Call button from input tools
+    Then I see alert message containing "<ExpectedMsg>"
+    And <Contact> verifies that call status to me is changed to connecting in 3 seconds
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout | ExpectedMsg     |
+      | user1Name | user2Name | chrome      | 30      | Try again later |
+
+  @C49972 @staging
+  Scenario Outline: Verify you cannot make video call to user A while he makes audio call
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When <Contact> calls me
+    And I see incoming call
+    And I swipe to ignore the call
+    Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
+    When I swipe on text input
+    And I tap Video Call button from input tools
     Then I see alert message containing "<ExpectedMsg>"
     And <Contact> verifies that call status to me is changed to connecting in 3 seconds
 
