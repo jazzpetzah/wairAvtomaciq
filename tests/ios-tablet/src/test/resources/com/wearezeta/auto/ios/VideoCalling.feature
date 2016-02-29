@@ -1,23 +1,5 @@
 Feature: Video Calling
 
-  @C28848 @calling_basic
-  Scenario Outline: Verify initiating Video call [LANDSCAPE]
-    Given There are 2 user where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I click Video Call button
-    Then I see call status message contains "<Contact> RINGING"
-    And I see Leave button on Calling overlay
-    And I do not see Calling overlay
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @C28850 @rc @calling_basic
   Scenario Outline: Verify cancelling Video call [LANDSCAPE]
     Given There are 2 user where <Name> is me
