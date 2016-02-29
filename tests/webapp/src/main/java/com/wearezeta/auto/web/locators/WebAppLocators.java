@@ -94,7 +94,7 @@ public final class WebAppLocators {
                                 + "*//*[@data-uie-name='do-call-controls-call-ignore']",
                         name);
 
-        public static final String cssEndVideoCallButton = "[data-uie-name='do-call-controls-call-ignore']";
+        public static final String cssEndCallButton = "[data-uie-name='do-call-controls-call-ignore']";
 
         public static final Function<String, String> xpathMuteIconByContactName = (
                 name) -> String.format(
@@ -121,6 +121,16 @@ public final class WebAppLocators {
         public static final String cssAcceptVideoCallButton = "[data-uie-name='do-call-controls-call-accept']";
 
         public static final String cssDeclineCallButton = "[data-uie-name='do-call-controls-call-decline']";
+
+        public static final String cssMuteCallButton = "[data-uie-name='do-call-mute']";
+
+        public static final String xpathMuteCallButtonPressed = "//div[@data-uie-name='do-call-mute'" +
+                " and contains(@class, 'toggled')]";
+
+        public static final String xpathMuteCallButtonNotPressed = "//div[@data-uie-name='do-call-mute'" +
+                " and not(contains(@class, 'toggled'))]";
+
+        // end calling locators
 
         public static final Function<String, String> cssContactListEntryByName = (
                 name) -> String
@@ -575,7 +585,16 @@ public final class WebAppLocators {
     }
 
     public static final class VideoCallPage {
+
         public static final String cssEndVideoCallButton = "[data-uie-name='do-call-controls-video-call-cancel']";
+
+        public static final String cssMuteCallButton = "[data-uie-name='do-call-controls-video-call-mute']";
+
+        public static final String xpathMuteCallButtonPressed = "//div[@data-uie-name='do-call-controls-video-call-mute'" +
+                " and contains(@class, 'toggled')]";
+
+        public static final String xpathMuteCallButtonNotPressed = "//div[@data-uie-name='do-call-controls-video-call-mute'" +
+                " and not(contains(@class, 'toggled'))]";
     }
 
     public static final class WarningPage {
