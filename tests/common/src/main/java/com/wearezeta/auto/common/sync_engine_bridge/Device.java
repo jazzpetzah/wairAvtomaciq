@@ -182,7 +182,8 @@ class Device extends RemoteEntity implements IDevice {
                 resp = askActor(this.ref(), new ActorMessage.GetDeviceId());
             }
             if (resp instanceof ActorMessage.Successful) {
-                id = Optional.of(((ActorMessage.Successful) resp).response());
+                // FIXME: This padding should happen on SE side. Please remove this workaround when it's fixed
+                id = Optional.of(String.format("%016d", Long.parseLong(((ActorMessage.Successful) resp).response())));
                 return id.get();
             } else {
                 throw new RuntimeException(String.format(
