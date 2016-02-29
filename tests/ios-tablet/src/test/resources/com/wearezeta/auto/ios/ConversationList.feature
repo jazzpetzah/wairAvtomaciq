@@ -64,7 +64,7 @@ Feature: Conversation List
       | Name      |
       | user1Name |
 
-  @C2533 @regression @rc @id2369
+  @C2533 @regression @id2369
   Scenario Outline: Verify Ping animation in the conversations list [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -114,7 +114,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2532 @regression @rc @id2368
+  @C2532 @regression @id2368
   Scenario Outline: Verify missed call indicator appearance in conversation list [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -133,7 +133,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Number | CallBackend |
       | user1Name | user2Name | user3Name | 2      | autocall    |
 
-  @C2535 @regression @rc @id2371
+  @C2535 @regression @id2371
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
