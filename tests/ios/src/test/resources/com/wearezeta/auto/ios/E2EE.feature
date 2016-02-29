@@ -116,7 +116,8 @@ Feature: E2EE
     And I close group info page
     And I click Close input options button
     Then I see shield icon next to conversation input field
-    And I see last message in dialog is expected message <VerificationMsg>
+    # FIXME: Make it possible in the app to detect labels text with Appium
+    # And I see last message in dialog is expected message <VerificationMsg>
 
     Examples:
       | Name      | Contact1  | Contact2  | DeviceName1 | DeviceLabel1 | DeviceName2 | DeviceLabel2 | GroupChatName | VerificationMsg               |
@@ -138,8 +139,11 @@ Feature: E2EE
     And I click close user profile page button
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And User <Contact1> sends 1 encrypted message using device <DeviceName2> to user Myself
+    And I click Close input options button
+    Then I do not see shield icon next to conversation input field
     # TODO: Check the device label in the system message
-    Then I see the conversation view contains message <ExpectedMsg>
+    # FIXME: Make it possible in the app to detect labels text with Appium
+    # Then I see the conversation view contains message <ExpectedMsg>
 
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                |
@@ -236,7 +240,8 @@ Feature: E2EE
     Given I sign in using my email
     Given I see conversations list
     And I tap on contact name <Contact1>
-    And I see the conversation view contains message <ExpectedMsg>
+    # FIXME: Make it possible in the app to detect labels text with Appium
+    # And I see the conversation view contains message <ExpectedMsg>
     And I tap on THIS DEVICE link
     And I open details page of device number 1
     Then I see fingerprint is not empty
@@ -284,8 +289,11 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
+    And I click Close input options button
     When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>
-    Then I see the conversation view contains message <ExpectedMsg>
+    Then I do not see shield icon next to conversation input field
+    # FIXME: Make it possible in the app to detect labels text with Appium
+    # Then I see the conversation view contains message <ExpectedMsg>
 
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                    |
@@ -311,7 +319,8 @@ Feature: E2EE
     And I click close user profile page button
     And I click Close input options button
     Then I see shield icon next to conversation input field
-    And I see last message in dialog is expected message <VerificationMsg>
+    # FIXME: Make it possible in the app to detect labels text with Appium
+    # And I see last message in dialog is expected message <VerificationMsg>
 
     Examples:
       | Name      | Contact1  | DeviceName1 | DeviceName2 | VerificationMsg               |
@@ -473,7 +482,8 @@ Feature: E2EE
     And I click close user profile page button
     And I click Close input options button
     And I do not see shield icon next to conversation input field
-    Then I do not see the conversation view contains message <ExpectedMessage>
+    # FIXME: Make it possible in the app to detect labels text with Appium
+    # Then I do not see the conversation view contains message <ExpectedMessage>
 
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceName1 | ExpectedMessage               |
@@ -517,14 +527,20 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
-    Then I see last message in dialog is expected message <VerificationMsg>
+    And I click Close input options button
+    Then I see shield icon next to conversation input field
+    # FIXME: Make it possible in the app to detect labels text with Appium
+    # Then I see last message in dialog is expected message <VerificationMsg>
     When I open conversation details
     And I switch to Devices tab
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
-    Then I see last message in dialog contains expected message <UnverificationMsg>
+    And I click Close input options button
+    Then I do not see shield icon next to conversation input field
+    # FIXME: Make it possible in the app to detect labels text with Appium
+    # Then I see last message in dialog contains expected message <UnverificationMsg>
 
     Examples:
       | Name      | Contact1  | VerificationMsg               | UnverificationMsg     |
