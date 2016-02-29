@@ -416,8 +416,7 @@ public class ConversationPageSteps {
      */
     @Then("^I verify the last text message equals to (.*)")
     public void IVerifyLastTextMessage(String expectedMessage) throws Exception {
-        // TODO: the space is a workaround for E2EE testing (lock symbol)
-        Assert.assertEquals(expandPattern(expectedMessage) + " ", webappPagesCollection.getPage(ConversationPage.class)
+        Assert.assertEquals(expandPattern(expectedMessage), webappPagesCollection.getPage(ConversationPage.class)
                 .getLastTextMessage());
     }
 
@@ -431,9 +430,7 @@ public class ConversationPageSteps {
      */
     @Then("^I verify the second last text message equals to (.*)")
     public void IVerifySecondLastTextMessage(String expectedMessage) throws Exception {
-        // TODO: remove this workaround for E2EE lock symbol later
-        assertThat(webappPagesCollection.getPage(ConversationPage.class).getSecondLastTextMessage(), equalTo(expectedMessage
-                + " "));
+        assertThat(webappPagesCollection.getPage(ConversationPage.class).getSecondLastTextMessage(), equalTo(expectedMessage));
     }
 
     /**
