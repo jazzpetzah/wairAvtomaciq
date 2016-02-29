@@ -101,7 +101,7 @@ Feature: Conversation List
     And I tap on Search input on People picker page
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I do not see group <GroupChatName> in People picker
-    And I navigate back to Conversations List
+    And I press Clear button
     And User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
     Then I do not see contact list with name <GroupChatName>
     And I swipe up contact list

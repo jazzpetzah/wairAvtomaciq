@@ -260,17 +260,6 @@ public class PeoplePickerPageSteps {
     }
 
     /**
-     * Navigates back to the conversation list by swiping down
-     *
-     * @throws Exception
-     * @step. ^I navigate back to Conversations List$
-     */
-    @When("^I navigate back to Conversations List$")
-    public void WhenINavigateBackToConversationsList() throws Exception {
-        getPeoplePickerPage().navigateBack();
-    }
-
-    /**
      * Check that user exists in People picker
      *
      * @param contact user name/alias

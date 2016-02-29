@@ -103,7 +103,7 @@ Feature: Search
     And I do not see TOP PEOPLE
     When I swipe down contact list
     And I see People picker page
-    And I navigate back to Conversations List
+    And I press Clear button
     Then I see Contact list with contacts
     And I do not see TOP PEOPLE
 
