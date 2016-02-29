@@ -185,7 +185,11 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void tapSendInviteCopyButton() throws Exception {
-        getElement(xpathInviteCopyButton).click();
+        final WebElement copyButton = getElement(xpathInviteCopyButton);
+        copyButton.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathInviteCopyButton)) {
+            copyButton.click();
+        }
     }
 
     public void pressInstantConnectButton(String forName) throws Exception {
