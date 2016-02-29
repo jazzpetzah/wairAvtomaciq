@@ -67,13 +67,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean waitForChatHeaderMessageContains(String expectedMessage)
-            throws Exception {
-        final By locator = By.xpath(xpathStrChatHeaderMessageByContent
-                .apply(expectedMessage));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
     public void tapTextInput() throws Exception {
         // FIXME: Scroll to the bottom if cursor input is not visible
         this.scrollToTheBottom();
@@ -241,38 +234,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     public void tapSketchButtonOnPicturePreview() throws Exception {
         getDialogPage().tapSketchOnImageButton();
-    }
-
-    public void rememberMediaControlButtonState() throws Exception {
-        getDialogPage().rememberMediaControlButtonState();
-    }
-
-    public void rememberConversationView() throws Exception {
-        getDialogPage().rememberConversationView();
-    }
-
-    public void rememberVerifiedConversationShield() throws Exception {
-        getDialogPage().rememberVerifiedConversationShield();
-    }
-
-    public boolean mediaControlButtonStateHasChanged() throws Exception {
-        return getDialogPage().mediaControlButtonStateHasChanged();
-    }
-    
-    public boolean mediaControlButtonStateHasNotChanged() throws Exception {
-        return getDialogPage().mediaControlButtonStateHasNotChanged();
-    }
-
-    public boolean verifiedConversationShieldStateHasChanged() throws Exception {
-        return getDialogPage().verifiedConversationShieldStateHasChanged();
-    }
-
-    public boolean conversationViewStateHasChanged() throws Exception {
-        return getDialogPage().conversationViewStateHasChanged();
-    }
-
-    public boolean conversationViewStateHasNotChanged() throws Exception {
-        return getDialogPage().conversationViewStateHasNotChanged();
     }
 
     public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries)
