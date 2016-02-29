@@ -11,7 +11,6 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.log4j.Logger;
@@ -167,7 +166,7 @@ public class CommonUtils {
             return value.get();
         } else {
             throw new RuntimeException(
-                String.format("There is no '%s' property in the '%s' configuration file", key, PROJECT_CONFIG));
+                    String.format("There is no '%s' property in the '%s' configuration file", key, PROJECT_CONFIG));
         }
     }
 
@@ -183,7 +182,7 @@ public class CommonUtils {
             return value.get();
         } else {
             throw new RuntimeException(
-                String.format("There is no '%s' property in the '%s' common configuration file", key, COMMON_CONFIG));
+                    String.format("There is no '%s' property in the '%s' common configuration file", key, COMMON_CONFIG));
         }
     }
 
@@ -424,46 +423,46 @@ public class CommonUtils {
 
     public static final int SCREENSHOT_TIMEOUT_SECONDS = 5;
 
-    public static void takeIOSSimulatorScreenshot(String screenshotPath) throws Exception {
-        executeUIShellScript(new String[] { String.format("mkdir -p $(dirname \"%s\")", screenshotPath),
-                String.format("%s/simshot \"%s\"", getIOSToolsRoot(CommonUtils.class), screenshotPath) })
-                    .get(SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    public static void takeIOSSimulatorScreenshot(File output) throws Exception {
+        executeUIShellScript(new String[]{String.format("mkdir -p $(dirname \"%s\")", output.getCanonicalPath()),
+                String.format("%s/simshot \"%s\"", getIOSToolsRoot(CommonUtils.class), output.getCanonicalPath())})
+                .get(SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
     }
 
-    private static byte[] fixScreenshotOrientation(final byte[] initialScreenshot, SurfaceOrientation currentOrientation)
-        throws IOException {
+    private static BufferedImage fixScreenshotOrientation(final BufferedImage initialScreenshot,
+                                                          SurfaceOrientation currentOrientation) throws IOException {
         if (currentOrientation != SurfaceOrientation.ROTATION_0) {
-            BufferedImage screenshotImage = ImageIO.read(new ByteArrayInputStream(initialScreenshot));
-            screenshotImage = ImageUtil.tilt(screenshotImage, -currentOrientation.getCode() * Math.PI / 2);
-            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(screenshotImage, "png", baos);
-            return baos.toByteArray();
-        } else {
-            return initialScreenshot;
+            return ImageUtil.tilt(initialScreenshot, -currentOrientation.getCode() * Math.PI / 2);
         }
+        return initialScreenshot;
     }
 
-    public static void takeAndroidScreenshot(ZetaAndroidDriver driver, File resultScreenShot) throws Exception {
+    private static final int MAX_PHONESCREENSHOT_WIDTH = 480;
+    private static final int MAX_PHONESCREENSHOT_HEIGHT = 800;
+
+    public static void takeAndroidScreenshot(ZetaAndroidDriver driver, File resultScreenshot) throws Exception {
         final String pathOnPhone = String.format("/sdcard/%s.png", generateGUID().replace("-", "").substring(0, 8));
         final String adbCommandsChain = String.format(ADB_PREFIX + "adb shell screencap -p %1$s; " + ADB_PREFIX
-            + "adb pull %1$s %2$s; " + ADB_PREFIX + "adb shell rm %1$s", pathOnPhone, resultScreenShot.getCanonicalPath());
-        Runtime.getRuntime().exec(new String[] { "/bin/bash", "-c", adbCommandsChain }).waitFor();
-        byte[] output = FileUtils.readFileToByteArray(resultScreenShot);
-        if (getIsTabletFromConfig(CommonUtils.class)) {
-            SurfaceOrientation currentOrientation;
+                        + "adb pull %1$s %2$s; " + ADB_PREFIX + "adb shell rm %1$s", pathOnPhone,
+                resultScreenshot.getCanonicalPath());
+        Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", adbCommandsChain}).waitFor();
+        byte[] output = FileUtils.readFileToByteArray(resultScreenshot);
+        final boolean isTablet = getIsTabletFromConfig(CommonUtils.class);
+        BufferedImage resultImg = ImageIO.read(new ByteArrayInputStream(output));
+        if (isTablet) {
+            SurfaceOrientation currentOrientation = SurfaceOrientation.ROTATION_0;
             try {
                 currentOrientation = driver.getSurfaceOrientation();
             } catch (Exception e) {
                 e.printStackTrace();
-                // Use the default value if command failed
-                currentOrientation = SurfaceOrientation.ROTATION_0;
             }
             log.debug(String.format("Current screen orientation value -> %s", currentOrientation.getCode()));
-            output = fixScreenshotOrientation(output, currentOrientation);
-            IOUtils.write(output, new FileOutputStream(resultScreenShot));
-            ImageUtil.adjustScreenshotSize(resultScreenShot, false);
-        } else
-            ImageUtil.adjustScreenshotSize(resultScreenShot, true);
+            resultImg = fixScreenshotOrientation(resultImg, currentOrientation);
+            ImageUtil.storeScreenshot(resultImg, resultScreenshot);
+        } else {
+            ImageUtil.storeScreenshot(resultImg, MAX_PHONESCREENSHOT_WIDTH, MAX_PHONESCREENSHOT_HEIGHT,
+                    resultScreenshot);
+        }
     }
 
     private static class UIScriptExecutionMonitor implements Callable<Void> {
@@ -509,9 +508,9 @@ public class CommonUtils {
         try (Writer output = new BufferedWriter(new FileWriter(result))) {
             output.write(String.join("\n", scriptContent));
         }
-        Runtime.getRuntime().exec(new String[] { "chmod", "u+x", result.getCanonicalPath() }).waitFor();
-        Runtime.getRuntime().exec(new String[] { "/usr/bin/open", "-a", "Terminal", result.getCanonicalPath(), "-g" })
-            .waitFor();
+        Runtime.getRuntime().exec(new String[]{"chmod", "u+x", result.getCanonicalPath()}).waitFor();
+        Runtime.getRuntime().exec(new String[]{"/usr/bin/open", "-a", "Terminal", result.getCanonicalPath(), "-g"})
+                .waitFor();
         return Executors.newSingleThreadExecutor().submit(new UIScriptExecutionMonitor(executionFlag, result));
     }
 
