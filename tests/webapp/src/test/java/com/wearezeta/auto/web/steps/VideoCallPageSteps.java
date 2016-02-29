@@ -71,9 +71,9 @@ public class VideoCallPageSteps {
         VideoCallPage videoCallPage = webappPagesCollection
                 .getPage(VideoCallPage.class);
         if (doNot == null) {
-            videoCallPage.isMuteCallButtonPressed();
+            Assert.assertTrue("Mute call button is not pressed", videoCallPage.isMuteCallButtonPressed());
         } else {
-            videoCallPage.isMuteCallButtonNotPressed();
+            Assert.assertTrue("Mute call button is pressed", videoCallPage.isMuteCallButtonNotPressed());
         }
     }
 }
