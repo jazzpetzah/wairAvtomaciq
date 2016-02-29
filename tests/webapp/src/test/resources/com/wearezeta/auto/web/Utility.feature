@@ -1,6 +1,7 @@
 Feature: Utility
 
   @C3262
+  # Blocked due to limitation of Selenium
   Scenario: Verify buttons on invitation page for iphone
     When I use generic invitation link for invitation for iphone
     And I see You are invited page with agent
@@ -8,6 +9,7 @@ Feature: Utility
     And I see button to connect for iphone including invitation code
 
   @C3263
+  # Blocked due to limitation of Selenium
   Scenario: Verify buttons on invitation page for android
     When I use generic invitation link for invitation for android
     And I see You are invited page with agent
@@ -49,7 +51,8 @@ Feature: Utility
   
   @C12086 @utility
   Scenario Outline: Verify that there are no dead links on german start page for <Agent>
-    When I navigate to german start page for <Agent>
+    When I open german start page for <Agent>
+    And Start page for <Agent> is german 
     Then I can see no dead links
 
     Examples: 
@@ -133,6 +136,7 @@ Feature: Utility
       | user1Email | user1Password | user1Name | aqa654321#  | windows |
 
   @C3275 @C3276
+  # Blocked due to limitation of Selenium
   Scenario Outline: Verify buttons from verication link for <Agent>
     When I navigate to verify page for <Agent>
     When I navigate to verify page for <Agent>

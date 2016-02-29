@@ -63,14 +63,12 @@ public class StartPageSteps {
 		}
 	}
 	
-	@When("^I navigate to german start page for (.*)$")
-	public void INavigateToGermanStartPage(String agent) throws Exception {
-		webappPagesCollection.getPage(StartPage.class).setUrl(
-				WebAppConstants.STAGING_SITE_ROOT + "/l/de/");
-		webappPagesCollection.getPage(StartPage.class).navigateTo();
+	@When("^I open german start page for (.*)$")
+	public void IOpenGermanStartPage(String agent) throws Exception {
 		webappPagesCollection.getPage(StartPage.class).setUrl(
 				WebAppConstants.STAGING_SITE_ROOT + "/%3Fagent=" + agent);
 		webappPagesCollection.getPage(StartPage.class).navigateTo();
+		webappPagesCollection.getPage(StartPage.class).changeLanguageTo("german");
 	}
 	
 	/**
