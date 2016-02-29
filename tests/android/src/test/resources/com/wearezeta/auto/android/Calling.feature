@@ -323,7 +323,8 @@ Feature: Calling
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And <Contact1>,<Contact2>,<Contact3>,<Contact4> calls <GroupChatName>
-    When I swipe to accept the call
+    And I wait for 10 seconds
+    And I swipe to accept the call
     Then I do not see ongoing call
     And <Contact1>,<Contact2>,<Contact3>,<Contact4> stops calling <GroupChatName>
 
