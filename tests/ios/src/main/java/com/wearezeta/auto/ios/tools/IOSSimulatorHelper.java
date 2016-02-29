@@ -220,13 +220,14 @@ public class IOSSimulatorHelper {
         return result.toString();
     }
 
-    public static String getLogsAndCrashes() throws Exception {
+    public static String getLogsOrCrashes() throws Exception {
         final String simId = getId();
         final File logFile = new File(String.format("%s/Library/Logs/CoreSimulator/%s/system.log",
                 System.getProperty("user.home"), simId));
         if (logFile.exists()) {
             return new String(Files.readAllBytes(logFile.toPath()), Charset.forName("UTF-8"));
         } else {
+            // Missing logs usually means that Simulator was already killed because of a crash
             return getRecentWireCrashReports();
         }
     }
