@@ -21,7 +21,7 @@ Feature: Calling
     Then I see random message in conversation
     And I see <PING> action in conversation
     And I see sent picture <PictureName> in the conversation view
-    And I click end call button in the conversation list
+    And I click end call button from conversation list
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING       | PictureName               | CallBackend | Timeout |
@@ -45,7 +45,7 @@ Feature: Calling
     And I see <PING> action in conversation
     And User <Contact> pinged twice in the conversation with <Contact>
     And I see <HOTPING> action in conversation
-    And I click end call button in the conversation list
+    And I click end call button from conversation list
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | HOTPING      | CallBackend | Timeout |
@@ -70,7 +70,7 @@ Feature: Calling
     And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact1> is on the top
-    And I click end call button in the conversation list
+    And I click end call button from conversation list
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
 
@@ -97,7 +97,7 @@ Feature: Calling
     #And I see conversation <Contact1> is on the top
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact1> is on the top
-    And I click end call button in the conversation list
+    And I click end call button from conversation list
     When User <Contact2> pinged in the conversation with <Contact2>
     #And I see conversation <Contact2> is on the top
 
@@ -191,7 +191,7 @@ Feature: Calling
     And I wait for 60 seconds
     And I see the ongoing calling bar with <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I click end call button in the conversation list
+    And I click end call button from conversation list
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
@@ -234,7 +234,7 @@ Feature: Calling
     Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing calling bar with <Contact2>
-    And I click end call button in the conversation list
+    And I click end call button from conversation list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
@@ -279,7 +279,7 @@ Feature: Calling
     Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I see the ongoing calling bar with <Contact2>
-    And I click end call button in the conversation list
+    And I click end call button from conversation list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | WaitBackend | Timeout |
@@ -305,21 +305,21 @@ Feature: Calling
     And I see joined group call notification for conversation <ChatName1>
     When <Contact4> calls <ChatName2> using <CallBackend>
     Then I see the incoming calling bar with <Contact4>
-    When I click on decline button in the conversation list with <Contact4>
+    When I click the decline call button in conversation list with <Contact4>
     And I open conversation with <ChatName1>
-    Then  I see the outgoing calling bar with <Contact1>,<Contact2>
+    Then I see the outgoing calling bar with <Contact1>,<Contact2>
     Then I do not see the incoming calling bar with <Contact4>
     When <Contact4> stops all calls to <ChatName2>
     And <Contact4> calls <ChatName2> using <CallBackend>
     Then I see the incoming calling bar with <Contact4>
-    When I click on accept call button in the conversation list with <Contact4>
+    When I click the accept call button in conversation list with <Contact4>
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     When <Contact4> stops all calls to <ChatName2>
     And <Contact4> calls <ChatName2> using <CallBackend>
     Then I see the incoming calling bar with <Contact4>
-    When I click on accept call button in the conversation list with <Contact4>
+    When I click the accept call button in the conversation list with <Contact4>
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
@@ -327,11 +327,11 @@ Feature: Calling
     And <Contact3> accepts next incoming call automatically
     And <Contact4> calls <ChatName2> using <CallBackend>
     Then <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I accept the incoming call
+    When I click the accept call button in conversation list
     Then I see another call warning modal
     When I click on "Answer" button in another call warning modal
     Then I do not see another call warning modal
-    And I see the calling bar from users <Contact3>,<Contact4>
+    And I see the ongoing calling bar with <Contact3>,<Contact4>
     And I see joined group call notification for conversation <ChatName2>
     And I do not see joined group call notification for conversation <ChatName1>
     And I see unjoined group call notification for conversation <ChatName1>
@@ -351,7 +351,7 @@ Feature: Calling
     When I open conversation with <Contact>
     And I call
     Then I wait for 2 seconds
-    And I click end call button in the conversation list
+    And I click end call button from conversation list
     #When I open conversation with <Contact>
     Then I see <Message> action in conversation
 
