@@ -363,7 +363,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C49974 @staging
+  @C49974 @regression
   Scenario Outline: Verify video call button is only available for single conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
