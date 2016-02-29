@@ -184,16 +184,12 @@ Feature: Conversation View
     And I click People button in group conversation
     And I see Group Participants popover
     When I click Add People button on Group Participants popover
-    And I see Add People message on Group Participants popover
-    And I confirm add to chat on Group Participants popover
     And I select the first 125 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
     When I click People button in group conversation
     And I see Group Participants popover
     Then I see 127 participants in the Group Participants popover
     When I click Add People button on Group Participants popover
-    And I see Add People message on Group Participants popover
-    And I confirm add to chat on Group Participants popover
     And I select the first 1 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
     When I click People button in group conversation
