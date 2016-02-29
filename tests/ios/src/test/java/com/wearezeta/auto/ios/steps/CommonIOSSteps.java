@@ -101,7 +101,7 @@ public class CommonIOSSteps {
                         "-TutorialOverlaysEnabled", "0",
                         "-SkipFirstTimeUseChecks", "1",
                         "-DisableHockeyUpdates", "1",
-                        "-UseHockey", "1",
+                        "-UseHockey", "0",
                         "-ZMBackendEnvironmentType", backendType,
                         // "--debug-log-network"
                 })

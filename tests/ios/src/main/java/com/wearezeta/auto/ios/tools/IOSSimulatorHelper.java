@@ -194,7 +194,7 @@ public class IOSSimulatorHelper {
                         + " (' | tail -n 1 | cut -d '(' -f2 | cut -d ')' -f1"}).trim();
     }
 
-    private final static String APP_CRASHES_MARKER = "Wire";
+    private final static String APP_CRASHES_MARKER = "Wire_";
     private final static String USED_APP_CRASHES_MARKER = "_";
 
     private static String getRecentWireCrashReports() throws Exception {
