@@ -211,30 +211,30 @@ Feature: Calling
     And I open conversation with <Contact1>
     And I call
     Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the ongoing calling bar with <Contact>
+    And I see the ongoing calling bar with <Contact1>
     And I open conversation with <Contact2>
     When I call
     Then I see another call warning modal
     And I close the another call warning modal
     And I do not see another call warning modal
-    #Then I see the calling bar from user <Contact1>
+    And I see the ongoing calling bar with <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    #Then I see the calling bar from user <Contact1>
+    And I see the ongoing calling bar with <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    #Then I see the calling bar from user <Contact1>
+    And I see the ongoing calling bar with <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Hang Up" button in another call warning modal
     Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    #Then I see the calling bar from user <Contact2>
-    #And I end the call
+    And I see the ongoing calling bar with <Contact2>
+    And I click end call button in the conversation list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
@@ -253,32 +253,33 @@ Feature: Calling
     And I see my avatar on top of Contact list
     And I open conversation with <Contact1>
     And <Contact1> calls me using <CallBackend>
-    And I accept the incoming call
+    And I see the incoming audio call with <Contact1>
+    When I click accept call button in the conversation list
     Then <Contact1> verifies that call status to Myself is changed to active in <Timeout> seconds
-    Then I see the calling bar from user <Contact1>
+    Then I see the ongoing calling bar with <Contact1>
     And I open conversation with <Contact2>
     When I call
     Then I see another call warning modal
     And I close the another call warning modal
     And I do not see another call warning modal
-    Then I see the calling bar from user <Contact1>
+    Then I see the ongoing calling bar with <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    Then I see the calling bar from user <Contact1>
+    Then I see the ongoing calling bar with <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    Then I see the calling bar from user <Contact1>
+    Then I see the ongoing calling bar with <Contact1>
     When I call
     Then I see another call warning modal
     Then I click on "Hang Up" button in another call warning modal
     Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    Then I see the calling bar from user <Contact2>
-    And I end the call
+    Then I see the ongoing calling bar with <Contact2>
+    And I click end call button in the conversation list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | WaitBackend | Timeout |
@@ -300,26 +301,25 @@ Feature: Calling
     When I open conversation with <ChatName1>
     And I call
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar from users <Contact1>,<Contact2>
+    And I see the outgoing calling bar with <Contact1>,<Contact2>
     And I see joined group call notification for conversation <ChatName1>
     When <Contact4> calls <ChatName2> using <CallBackend>
-    Then I see the calling bar
-    When I silence the incoming call
+    Then I see the incoming calling bar with <Contact4>
+    When I click on decline button in the conversation list with <Contact4>
     And I open conversation with <ChatName1>
-    Then I see the calling bar from users <Contact1>,<Contact2>
-    When I open conversation with <ChatName2>
-    Then I do not see the calling bar
+    Then  I see the outgoing calling bar with <Contact1>,<Contact2>
+    Then I do not see the incoming calling bar with <Contact4>
     When <Contact4> stops all calls to <ChatName2>
     And <Contact4> calls <ChatName2> using <CallBackend>
-    Then I see the calling bar
-    When I accept the incoming call
+    Then I see the incoming calling bar with <Contact4>
+    When I click on accept call button in the conversation list with <Contact4>
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     When <Contact4> stops all calls to <ChatName2>
     And <Contact4> calls <ChatName2> using <CallBackend>
-    Then I see the calling bar
-    When I accept the incoming call
+    Then I see the incoming calling bar with <Contact4>
+    When I click on accept call button in the conversation list with <Contact4>
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
@@ -351,15 +351,14 @@ Feature: Calling
     When I open conversation with <Contact>
     And I call
     Then I wait for 2 seconds
-    And I end the call
-    When I open conversation with <Contact>
+    And I click end call button in the conversation list
+    #When I open conversation with <Contact>
     Then I see <Message> action in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Message    |
       | user1Email | user1Password | user1Name | user2Name | you called |
 
-  # This has to work even in browsers, which don't support calling
   @C1766 @regression @calling @calling_debug
   Scenario Outline: Verify I get missed call notification when someone calls me
     Given There are 3 users where <Name> is me
