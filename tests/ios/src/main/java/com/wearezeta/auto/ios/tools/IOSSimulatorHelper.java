@@ -1,9 +1,13 @@
 package com.wearezeta.auto.ios.tools;
 
+import java.io.File;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
 
 import com.wearezeta.auto.common.CommonUtils;
 
+import static com.wearezeta.auto.common.CommonUtils.getDeviceName;
 import static com.wearezeta.auto.common.CommonUtils.getIOSToolsRoot;
 
 public class IOSSimulatorHelper {
@@ -179,5 +183,51 @@ public class IOSSimulatorHelper {
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke \"k\" using {command down}"
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+    }
+
+    public static String getId() throws Exception {
+        return CommonUtils.executeOsXCommandWithOutput(new String[]{
+                "/bin/bash",
+                "-c",
+                "xcrun simctl list devices | grep -v 'unavailable' | grep -i '"
+                        + getDeviceName(IOSSimulatorHelper.class)
+                        + " (' | tail -n 1 | cut -d '(' -f2 | cut -d ')' -f1"}).trim();
+    }
+
+    private final static String APP_CRASHES_MARKER = "Wire";
+    private final static String USED_APP_CRASHES_MARKER = "_";
+
+    private static String getRecentWireCrashReports() throws Exception {
+        final StringBuilder result = new StringBuilder();
+        final File reportsRoot = new File(String.format("%s/Library/Logs/DiagnosticReports",
+                System.getProperty("user.home")));
+        if (reportsRoot.exists() && reportsRoot.isDirectory()) {
+            final File[] allFiles = reportsRoot.listFiles();
+            for (File f : allFiles) {
+                if (f.isFile() && f.getName().endsWith(".crash") && f.getName().startsWith(APP_CRASHES_MARKER)) {
+                    result.append(new String(Files.readAllBytes(f.toPath()), Charset.forName("UTF-8"))).append("\n\n");
+                    final File newPath = new File(
+                            String.format("%s/%s%s", f.getParent(), USED_APP_CRASHES_MARKER, f.getName()));
+                    if (newPath.exists()) {
+                        newPath.delete();
+                    }
+                    if (!f.renameTo(newPath)) {
+                        f.delete();
+                    }
+                }
+            }
+        }
+        return result.toString();
+    }
+
+    public static String getLogsAndCrashes() throws Exception {
+        final String simId = getId();
+        final File logFile = new File(String.format("%s/Library/Logs/CoreSimulator/%s/system.log",
+                System.getProperty("user.home"), simId));
+        if (logFile.exists()) {
+            return new String(Files.readAllBytes(logFile.toPath()), Charset.forName("UTF-8"));
+        } else {
+            return getRecentWireCrashReports();
+        }
     }
 }

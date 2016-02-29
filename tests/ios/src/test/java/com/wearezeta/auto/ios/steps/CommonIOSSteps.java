@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
@@ -15,6 +16,7 @@ import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -25,7 +27,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
-import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -39,6 +40,8 @@ public class CommonIOSSteps {
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
+    private static Logger log = ZetaLogger.getLog(CommonIOSSteps.class.getSimpleName());
+
 
     // We keep this short and compatible with spell checker
     public static final String DEFAULT_AUTOMATION_MESSAGE = "1 message";
@@ -153,7 +156,11 @@ public class CommonIOSSteps {
 
         try {
             if (!scenario.getStatus().equals(Result.PASSED) && getIsSimulatorFromConfig(getClass())) {
-                IOSCommonUtils.collectSimulatorLogs(getDeviceName(getClass()));
+                try {
+                    log.debug(IOSSimulatorHelper.getLogsAndCrashes() + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else if (scenario.getSourceTagNames().contains("@performance")) {
                 IOSLogListener.forceStopAll();
                 IOSLogListener.writeDeviceLogsToConsole(IOSLogListener.getInstance());
