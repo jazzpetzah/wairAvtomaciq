@@ -13,7 +13,7 @@ Feature: Calling
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar
+    And I see the outgoing calling bar for <Contact>
     And I write random message
     And I send message
     And I click ping button
@@ -21,7 +21,7 @@ Feature: Calling
     Then I see random message in conversation
     And I see <PING> action in conversation
     And I see sent picture <PictureName> in the conversation view
-    And I end the call
+    And I click end call button in the conversation list
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING       | PictureName               | CallBackend | Timeout |
@@ -40,12 +40,12 @@ Feature: Calling
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar
+    And I see the outgoing calling bar for <Contact>
     And User <Contact> pinged in the conversation with <Contact>
     And I see <PING> action in conversation
     And User <Contact> pinged twice in the conversation with <Contact>
     And I see <HOTPING> action in conversation
-    And I end the call
+    And I click end call button in the conversation list
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | HOTPING      | CallBackend | Timeout |
@@ -64,14 +64,13 @@ Feature: Calling
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
     And I call
-    And I see the calling bar
+    And I see the outgoing calling bar for <Contact>
     And I see conversation <Contact1> is on the top
     Then <Contact1> accepts next incoming call automatically
     And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    Then I see the calling bar from user <Contact1>
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact1> is on the top
-    And I end the call
+    And I click end call button in the conversation list
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
 
@@ -91,16 +90,16 @@ Feature: Calling
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
     And <Contact1> calls me using <CallBackend>
-    And I see the calling bar
-    And I see conversation <Contact1> is on the top
-    When I accept the incoming call
-    Then I see the calling bar from user <Contact1>
-    And I see conversation <Contact1> is on the top
+    And I see the incoming audio call from <Contact2>
+    #And I see conversation <Contact1> is on the top
+    When I click accept call button in the conversation list
+    Then I see the ongoing calling bar from user <Contact1>
+    #And I see conversation <Contact1> is on the top
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact1> is on the top
-    And I end the call
+    And I click end call button in the conversation list
     When User <Contact2> pinged in the conversation with <Contact2>
-    And I see conversation <Contact2> is on the top
+    #And I see conversation <Contact2> is on the top
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
@@ -119,14 +118,14 @@ Feature: Calling
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar
-    And I end the call
+    And I see the outgoing calling bar for <Contact>
+    And I click end call button in the conversation list
     Then <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
     Then <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar
+    #And I see the calling bar
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
@@ -148,28 +147,28 @@ Feature: Calling
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the calling bar
+    #And I see the calling bar
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the calling bar
+    #And I see the calling bar
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the calling bar
+    #And I see the calling bar
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the calling bar
+    #And I see the calling bar
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the calling bar
+    #And I see the calling bar
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the calling bar
+    #And I see the calling bar
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the calling bar
+    #And I see the calling bar
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
@@ -212,60 +211,34 @@ Feature: Calling
     And I open conversation with <Contact1>
     And I call
     Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    Then I see the calling bar from user <Contact1>
+    #Then I see the calling bar from user <Contact1>
     And I open conversation with <Contact2>
     When I call
     Then I see another call warning modal
     And I close the another call warning modal
     And I do not see another call warning modal
-    Then I see the calling bar from user <Contact1>
+    #Then I see the calling bar from user <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    Then I see the calling bar from user <Contact1>
+    #Then I see the calling bar from user <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    Then I see the calling bar from user <Contact1>
+    #Then I see the calling bar from user <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Hang Up" button in another call warning modal
     Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    Then I see the calling bar from user <Contact2>
-    And I end the call
+    #Then I see the calling bar from user <Contact2>
+    #And I end the call
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 60      |
-
-  @C1744 @smoke @calling @calling_debug
-  Scenario Outline: Verify I can not call in browsers without WebRTC
-    Given My browser does not support calling
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    When I see my avatar on top of Contact list
-    And I open conversation with <Contact>
-    And <Contact> calls me using <CallBackend>
-    Then I do not see the calling bar
-    And I wait for 3 seconds
-    And I see a warning
-    And I see "Learn more" link in warning
-    When I close the warning
-    Then I do not see a warning
-    And I see calling button
-    When I call
-    Then I see a warning
-    And I see "Learn more" link in warning
-    And I verify browser log is empty
-
-    Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | autocall    | 60      |
 
   @C1801 @regression @calling @calling_debug
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as callee)
