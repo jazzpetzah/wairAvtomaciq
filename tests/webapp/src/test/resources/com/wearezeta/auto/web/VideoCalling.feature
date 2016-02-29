@@ -20,8 +20,8 @@ Feature: VideoCalling
     And I do not see my self video view
 
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
   @C12070 @videocalling
   Scenario Outline: Verify I can accept Video call
@@ -45,8 +45,8 @@ Feature: VideoCalling
     And I do not see my self video view
 
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
   @C12072 @videocalling
   Scenario Outline: Verify I can decline Video call
@@ -85,8 +85,8 @@ Feature: VideoCalling
     And I do not see my self video view
 
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend         | Timeout | OtherContact |
-      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      | user3Name    |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout | OtherContact |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      | user3Name    |
 
   @C12079 @videocalling
   Scenario Outline: Verify I can make a Video call one after another
@@ -115,8 +115,8 @@ Feature: VideoCalling
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
 
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
   @C12097 @videocalling
   Scenario Outline: Verify I can have video call more than 15 mins
@@ -188,8 +188,8 @@ Feature: VideoCalling
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
 
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
   @C12075 @videocalling
   Scenario Outline: Verify I can cancel the outgoing video call (as a caller)
@@ -242,8 +242,8 @@ Feature: VideoCalling
     Then I do not see my self video view
 
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
   @C49971 @videocalling
   Scenario Outline: Verify I can mute Video call before the call is established
@@ -270,5 +270,5 @@ Feature: VideoCalling
     Then I do not see my self video view
 
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
