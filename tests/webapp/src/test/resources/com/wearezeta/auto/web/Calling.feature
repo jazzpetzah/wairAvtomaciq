@@ -92,7 +92,7 @@ Feature: Calling
     And <Contact1> calls me using <CallBackend>
     And I see the incoming audio call with <Contact2>
     #And I see conversation <Contact1> is on the top
-    When I click accept call button in the conversation list
+    When I click the accept call button in conversation list
     Then I see the ongoing calling bar with <Contact1>
     #And I see conversation <Contact1> is on the top
     When User <Contact2> pinged in the conversation with <Contact2>
@@ -119,7 +119,7 @@ Feature: Calling
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the outgoing calling bar with <Contact>
-    And I click end call button in the conversation list
+    And I click end call button from conversation list
     Then <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
     Then <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
@@ -254,7 +254,7 @@ Feature: Calling
     And I open conversation with <Contact1>
     And <Contact1> calls me using <CallBackend>
     And I see the incoming audio call with <Contact1>
-    When I click accept call button in the conversation list
+    When I click the accept call button in conversation list
     Then <Contact1> verifies that call status to Myself is changed to active in <Timeout> seconds
     Then I see the ongoing calling bar with <Contact1>
     And I open conversation with <Contact2>
@@ -352,7 +352,6 @@ Feature: Calling
     And I call
     Then I wait for 2 seconds
     And I click end call button from conversation list
-    #When I open conversation with <Contact>
     Then I see <Message> action in conversation
 
     Examples: 
@@ -390,17 +389,16 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I refresh page
-    And I open conversation with <Contact2>
-    Then I see the calling bar from user <Contact1>
+    Then I see the incoming calling bar with <Contact1>
     And <Contact1> stops all calls to me
-    Then I do not see the calling bar
+    Then I do not see the incoming calling bar with <Contact1>
     And I see missed call notification for conversation <Contact1>
     When I open conversation with <Contact1>
     Then I do not see missed call notification for conversation <Contact1>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    | 60      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    |
 
   @C1755 @regression @calling @calling_debug
   Scenario Outline: Verify I can make another call while current one is ignored
@@ -412,18 +410,16 @@ Feature: Calling
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    And I open conversation with <Contact1>
     When <Contact1> calls me using <CallBackend>
-    And I see the calling bar
-    When I silence the incoming call
-    When I open conversation with <Contact2>
-    Then I do not see the calling bar
+    And I see the incoming calling bar with <Contact1>
+    When I click the decline call button in conversation list
+    Then I do not see the incoming calling bar with <Contact2>
     When I call
-    And I see the calling bar
+    And I see the outgoing calling bar with <Contact2>
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar from user <Contact2>
-    When I end the call
-    Then I do not see the calling bar
+    And I see the ongoing calling bar with <Contact2>
+    When I click end call button from conversation list
+    Then I do not see the ongoing calling bar with <Contact2>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | CallWaitBackend | Timeout |
@@ -441,7 +437,7 @@ Feature: Calling
     And I see my avatar on top of Contact list
     When <Contact> calls me using <CallBackend>
     Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
-    And I do not see the calling bar
+    And I do not see the incoming calling bar with <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
@@ -458,7 +454,7 @@ Feature: Calling
     Given I muted conversation with <Contact>
     When <Contact> calls me using <CallBackend>
     Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
-    And I see the calling bar
+    And I see the incoming calling bar with <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
