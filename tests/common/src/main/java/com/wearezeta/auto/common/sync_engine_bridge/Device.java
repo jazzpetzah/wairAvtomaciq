@@ -11,6 +11,7 @@ import com.waz.model.RConvId;
 import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
+import org.apache.commons.lang3.StringUtils;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
@@ -183,7 +184,9 @@ class Device extends RemoteEntity implements IDevice {
             }
             if (resp instanceof ActorMessage.Successful) {
                 // FIXME: This padding should happen on SE side. Please remove this workaround when it's fixed
-                id = Optional.of(String.format("%016d", Long.parseLong(((ActorMessage.Successful) resp).response())));
+                id = Optional.of(
+                        StringUtils.leftPad(((ActorMessage.Successful) resp).response(), 16, "0")
+                );
                 return id.get();
             } else {
                 throw new RuntimeException(String.format(
