@@ -2,6 +2,7 @@ package com.wearezeta.auto.common;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -130,26 +131,6 @@ public class ZetaFormatter implements Formatter, Reporter {
         stepStartedTimestamp = System.currentTimeMillis();
     }
 
-    private static final int MAX_SCREENSHOT_WIDTH = 1600;
-    private static final int MAX_SCREENSHOT_HEIGHT = 900;
-
-    private static BufferedImage adjustScreenshotSize(BufferedImage originalImage) {
-        int height = originalImage.getHeight();
-        int width = originalImage.getWidth();
-        float resizeRatio = 1;
-        if (width > MAX_SCREENSHOT_WIDTH || height > MAX_SCREENSHOT_HEIGHT) {
-            float resizeRatioW = (float) MAX_SCREENSHOT_WIDTH / width;
-            float resizeRatioH = (float) MAX_SCREENSHOT_HEIGHT / height;
-            resizeRatio = (resizeRatioH > resizeRatioW) ? resizeRatioW : resizeRatioH;
-        }
-        try {
-            return ImageUtil.resizeImage(originalImage, resizeRatio);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return originalImage;
-        }
-    }
-
     private void takeStepScreenshot(final Result stepResult, final String stepName) throws Exception {
         final ZetaDriver driver = getDriver().orElse(null);
         if (driver != null) {
@@ -191,7 +172,7 @@ public class ZetaFormatter implements Formatter, Reporter {
                 if (!screenshot.isPresent()) {
                     return;
                 }
-                screenshotSavers.execute(() -> storeScreenshot(screenshot.get(), screenshotPath));
+                screenshotSavers.execute(() -> ImageUtil.storeScreenshot(screenshot.get(), screenshotPath));
             }
         } else {
             log.debug(String.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'", stepName));
@@ -247,18 +228,7 @@ public class ZetaFormatter implements Formatter, Reporter {
         }
     }
 
-    private void storeScreenshot(final BufferedImage screenshot, final String path) {
-        try {
-            final File outputFile = new File(path);
-            if (!outputFile.getParentFile().exists()) {
-                // noinspection ResultOfMethodCallIgnored
-                outputFile.getParentFile().mkdirs();
-            }
-            ImageIO.write(adjustScreenshotSize(screenshot), "png", outputFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 
     @Override
     public void write(String arg0) {
