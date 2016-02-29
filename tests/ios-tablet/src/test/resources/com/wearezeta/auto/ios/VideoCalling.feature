@@ -18,7 +18,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C28850 @calling_basic
+  @C28850 @rc @calling_basic
   Scenario Outline: Verify cancelling Video call [LANDSCAPE]
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
