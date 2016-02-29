@@ -4,10 +4,11 @@ Feature: VideoCalling
   Scenario Outline: Verify I can accept Video call with the app in the foreground
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When <Contact> starts a video call to me using <CallBackend>
+    When <Contact> starts a video call to me
     And I see incoming call
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
@@ -25,10 +26,11 @@ Feature: VideoCalling
   Scenario Outline: Verify I can decline Video call with the app in the foreground
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When <Contact> starts a video call to me using <CallBackend>
+    When <Contact> starts a video call to me
     And I see incoming call
     And I swipe to ignore the call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
@@ -43,11 +45,12 @@ Feature: VideoCalling
   Scenario Outline: Verify I can accept Video call from locked device
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I minimize the application
-    And <Contact> starts a video call to me using <CallBackend>
+    And <Contact> starts a video call to me
     Then I see incoming call
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
@@ -64,11 +67,12 @@ Feature: VideoCalling
   Scenario Outline: Verify I can decline Video call from the locked device
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I minimize the application
-    And <Contact> starts a video call to me using <CallBackend>
+    And <Contact> starts a video call to me
     And I see incoming call
     And I swipe to ignore the call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
@@ -82,7 +86,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can start Video call from the conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
@@ -106,10 +110,11 @@ Feature: VideoCalling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User Myself blocks user <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
-    When <Contact> starts a video call to me using <CallBackend>
+    When <Contact> starts a video call to me
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
     And I do not see incoming call
 
@@ -121,10 +126,11 @@ Feature: VideoCalling
   Scenario Outline: Verify I can make a Video call one after another
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When <Contact> starts a video call to me using <CallBackend>
+    When <Contact> starts a video call to me
     And I see incoming call
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
@@ -132,7 +138,7 @@ Feature: VideoCalling
     And <Contact> stops all calls to me
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
-    When <Contact> starts a video call to me using <CallBackend>
+    When <Contact> starts a video call to me
     And I see incoming call
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
@@ -149,7 +155,7 @@ Feature: VideoCalling
   Scenario Outline: (AN-3536) Verify I can start Video call from Start UI
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
@@ -174,13 +180,14 @@ Feature: VideoCalling
   Scenario Outline: Verify I get missed call indication when someone called
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When <Contact> starts a video call to me using <CallBackend>
+    When <Contact> starts a video call to me
     And I see incoming call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
-    And <Contact> stops all calls to me
+    And <Contact> stops calling me
     And I do not see incoming call
     When I tap on contact name <Contact>
     Then I see dialog with missed call from <Contact>
@@ -193,6 +200,7 @@ Feature: VideoCalling
   Scenario Outline: Verify I can mute Video call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
