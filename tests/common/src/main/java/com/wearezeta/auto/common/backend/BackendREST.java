@@ -58,15 +58,13 @@ final class BackendREST {
     private static Client client;
 
     static {
+        java.security.Security.setProperty("networkaddress.cache.ttl" , "10800");
+        log.setLevel(Level.DEBUG);
+        System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
         ClientConfig config = new ClientConfig();
         config.property(ClientProperties.SUPPRESS_HTTP_COMPLIANCE_VALIDATION,
                 true);
         client = initClient(config);
-    }
-
-    static {
-        log.setLevel(Level.DEBUG);
-        System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
     }
 
     private static Client initClient(Configuration config) {
