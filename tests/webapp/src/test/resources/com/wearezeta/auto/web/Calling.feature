@@ -470,9 +470,9 @@ Feature: Calling
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I call
-    And I see the calling bar
+    And I see the outgoing calling bar with <Contact>
     And I wait for 60 seconds
-    Then I do not see the calling bar
+    Then I do not see the outgoing calling bar with <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -492,9 +492,9 @@ Feature: Calling
     And I open conversation with <ChatName>
     When I call
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar from users <Contact1>,<Contact2>
-    When I end the call
-    Then I do not see the calling bar
+    And I see the outgoing calling bar with <Contact1>,<Contact2>
+    When I click end call button from conversation list
+    Then I do not see the outgoing calling bar with <Contact1>,<Contact2>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
 
     Examples: 
@@ -516,14 +516,14 @@ Feature: Calling
     When <Contact1> calls <ChatName> using <CallBackend>
     And <Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    And I see the calling bar
-    When I accept the incoming call
-    Then I see the calling bar from users <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    And I see the incoming calling bar with <Chatname>
+    When I click the accept call button in conversation list
+    Then I see the ongoing calling bar with <Contact1>,<Contact2>,<Contact3>,<Contact4>
     And I wait for 10 seconds
     And <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
     And <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
-    When I end the call
-    Then I do not see the calling bar
+    When I click end call button from conversation list
+    Then I do not see the ongoing calling bar with <Contact1>,<Contact2>,<Contact3>,<Contact4>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | CallBackend | WaitBackend | Timeout |
@@ -545,8 +545,8 @@ Feature: Calling
     When <Contact1> calls <ChatName> using <CallBackend>
     And <Contact2>,<Contact3>,<Contact4>,<Contact5> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    And I see the calling bar
-    When I accept the incoming call
+    And I see the incoming calling bar with <Chatname>
+    When I click the accept call button in conversation list
     And I wait for 1 seconds
     Then I see full call warning modal
     And I close the full call warning modal
@@ -573,9 +573,9 @@ Feature: Calling
     And I open conversation with <ChatName>
     When I call
     And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar from users <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    When I end the call
-    Then I do not see the calling bar
+    And I see the ongoing calling bar with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    When I click end call button from conversation list
+    Then I do not see the ongoing calling bar with <Contact1>,<Contact2>,<Contact3>,<Contact4>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
@@ -593,14 +593,13 @@ Feature: Calling
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    And I open conversation with <ChatName>
     When <Contact1> calls <ChatName> using <CallBackend>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    When I silence the incoming call
+    When I click the decline call button in conversation list
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    Then I do not see the calling bar
+    Then I do not see the incoming calling bar with <Chatname>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
@@ -620,13 +619,13 @@ Feature: Calling
     And I open conversation with <ChatName>
     When I call
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    Then I see the calling bar
-    When I end the call
-    Then I do not see the calling bar
+    Then I see the outgoing calling bar with <ChatName>
+    When I click end call button from conversation list
+    Then I do not see the outgoing calling bar with <ChatName>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     When I join call
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    Then I see the calling bar
+    Then I see the ongoing calling bar with <ChatName>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend | Timeout |
@@ -643,18 +642,17 @@ Feature: Calling
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    And I open conversation with <ChatName>
     When <Contact1> calls <ChatName> using <CallBackend>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    And I see the calling bar
+    And I see the incoming calling bar with <ChatName>
     And I wait for 60 seconds
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     Then I join call
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    And I see the calling bar
+    And I see the ongoing calling bar with <ChatName>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
@@ -710,36 +708,34 @@ Feature: Calling
     When I open conversation with <ChatName1>
     And I call
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar from users <Contact1>,<Contact2>
+    And I see the outgoing calling bar with <Contact1>,<Contact2>
     And I see joined group call notification for conversation <ChatName1>
     When <Contact3> calls me using <CallBackend>
-    Then I see the calling bar from user <Contact3>
-    When I silence the incoming call
-    And I open conversation with <ChatName1>
-    Then I see the calling bar from users <Contact1>,<Contact2>
-    When I open conversation with <Contact3>
-    Then I do not see the calling bar
+    Then I see the incoming calling bar with <Contact3>
+    When I click the decline call button in conversation list with <Contact3>
+    Then I see the outgoing calling bar with <Contact1>,<Contact2> or <ChatName1>
+    Then I do not see the incoming calling bar with <Contact3>
     When <Contact3> stops all calls to me
     And <Contact3> calls me using <CallBackend>
-    Then I see the calling bar
-    When I accept the incoming call
+    Then I see the incoming calling bar with <Contact3>
+    When I click the accept call button in conversation list
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     When <Contact3> stops all calls to me
     And <Contact3> calls me using <CallBackend>
-    Then I see the calling bar
-    When I accept the incoming call
+    Then I see the incoming calling bar with <Contact3>
+    When I click the accept call button in conversation list
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     When <Contact3> stops all calls to me
     And <Contact3> calls me using <CallBackend>
-    When I accept the incoming call
+    When I click the accept call button in conversation list
     Then I see another call warning modal
     When I click on "Answer" button in another call warning modal
     Then I do not see another call warning modal
-    And I see the calling bar from user <Contact3>
+    And I see the incoming calling bar with <Contact3>
     And I see joined group call notification for conversation <Contact3>
     And I do not see joined group call notification for conversation <ChatName1>
     And I see unjoined group call notification for conversation <ChatName1>
