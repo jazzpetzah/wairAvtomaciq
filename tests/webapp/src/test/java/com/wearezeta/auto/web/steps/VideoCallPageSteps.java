@@ -50,12 +50,7 @@ public class VideoCallPageSteps {
      */
     @When("^I click mute button on video call page$")
     public void IClickMuteButton() throws Exception {
-
-        Assert.assertTrue("Mute button is not visible on video call page",
-                webappPagesCollection.getPage(VideoCallPage.class).isMuteCallButtonVisible());
-
         webappPagesCollection.getPage(VideoCallPage.class).clickMuteCallButton();
-
     }
 
     /**
