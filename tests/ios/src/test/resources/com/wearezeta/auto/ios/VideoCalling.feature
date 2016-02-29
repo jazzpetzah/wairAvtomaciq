@@ -192,10 +192,10 @@ Feature: Video Calling
     And I tap Accept Video button on Calling overlay
     And I see Mute button on Calling overlay
     And I see Mute button is not selected on calling overlay
-    And I remember Mute button state on calling overlay
-    And I tap Mute button on Calling overlay
+    And I remember state of Mute button on Video Calling overlay
+    And I tap Mute button on Video Calling overlay
     Then I see Mute button is selected on calling overlay
-    And I see state of Mute button has changed on Calling overlay page
+    And I see state of Mute button has changed on Video Calling overlay
 
     Examples:
       | Name      | Contact   | CallBackend |

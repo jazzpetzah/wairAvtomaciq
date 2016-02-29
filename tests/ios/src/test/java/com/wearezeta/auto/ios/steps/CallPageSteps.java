@@ -59,13 +59,27 @@ public class CallPageSteps {
      * @throws Exception
      * @step. ^I see Mute button is (not )?selected on calling overlay$
      */
-    @When("^I see Mute button is (not )?selected on calling overlay$")
-    public void ISeeButtonSelected(String shouldBeSelected) throws Exception {
-        if (shouldBeSelected == null) {
-            Assert.assertTrue("Mute button is not selected but should be", getCallingOverlayPage().isMuteButtonSelected());
-        } else {
-            Assert.assertFalse("Mute button is selected but shouldn't be", getCallingOverlayPage().isMuteButtonNotSelected());
+    @When("^I see (Mute|Video) button is (not )?selected on calling overlay$")
+    public void ISeeButtonSelected(String btnName, String shouldBeSelected) throws Exception {
+        switch (btnName) {
+            case "Mute":
+                if (shouldBeSelected == null) {
+                    Assert.assertTrue("Mute button is not selected but should be", getCallingOverlayPage().isMuteButtonSelected());
+                } else {
+                    Assert.assertTrue("Mute button is selected but shouldn't be", getCallingOverlayPage().isMuteButtonNotSelected());
+                }
+                break;
+            case "Video":
+                if (shouldBeSelected == null) {
+                    Assert.assertTrue("Video button is not selected but should be", getCallingOverlayPage().isVideoButtonSelected());
+                } else {
+                    Assert.assertTrue("Video button is selected but shouldn't be", getCallingOverlayPage().isVideoButtonNotSelected());
+                }
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
         }
+
     }
 
     /**
