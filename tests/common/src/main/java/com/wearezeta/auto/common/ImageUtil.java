@@ -1,6 +1,8 @@
 package com.wearezeta.auto.common;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
@@ -11,9 +13,9 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import org.opencv.core.Core;
+import org.opencv.core.Core.MinMaxLocResult;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.Core.MinMaxLocResult;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
@@ -229,5 +231,87 @@ public class ImageUtil {
 
     public static boolean isLandscape(BufferedImage bi) {
         return (bi.getWidth() > bi.getHeight());
+    }
+
+    private static final int MAX_SCREENSHOT_WIDTH = 1600;
+    private static final int MAX_SCREENSHOT_HEIGHT = 900;
+    private static final int MAX_PHONESCREENSHOT_WIDTH = 480;
+    private static final int MAX_PHONESCREENSHOT_HEIGHT = 800;
+
+    private static BufferedImage adjustScreenshotSize(BufferedImage originalImage) {
+        return adjustScreenshotSize(originalImage, MAX_SCREENSHOT_HEIGHT, MAX_SCREENSHOT_WIDTH);
+    }
+
+    private static BufferedImage adjustScreenshotSize(BufferedImage originalImage, boolean isPhone) {
+        return (isPhone) ? adjustScreenshotSize(originalImage, MAX_PHONESCREENSHOT_HEIGHT, MAX_PHONESCREENSHOT_WIDTH)
+            : adjustScreenshotSize(originalImage);
+    }
+
+    public static void adjustScreenshotSize(File resultScreenShot) {
+        storeScreenshot(adjustScreenshotSize(readScreenshot(resultScreenShot)), resultScreenShot);
+    }
+
+    public static void adjustScreenshotSize(File resultScreenShot, boolean isPhone) {
+        storeScreenshot(adjustScreenshotSize(readScreenshot(resultScreenShot), isPhone), resultScreenShot);
+    }
+
+    private static BufferedImage adjustScreenshotSize(BufferedImage originalImage, int MAX_SCREENSHOT_HEIGHT,
+        int MAX_SCREENSHOT_WIDTH) {
+        int height = originalImage.getHeight();
+        int width = originalImage.getWidth();
+        float resizeRatio = 1;
+        if (width > MAX_SCREENSHOT_WIDTH || height > MAX_SCREENSHOT_HEIGHT) {
+            float resizeRatioW1 = (float) MAX_SCREENSHOT_WIDTH / width;
+            float resizeRatioW2 = (float) MAX_SCREENSHOT_WIDTH / height;
+            float resizeRatioH1 = (float) MAX_SCREENSHOT_HEIGHT / width;
+            float resizeRatioH2 = (float) MAX_SCREENSHOT_HEIGHT / height;
+            float resizeRatioH = (resizeRatioH1 > resizeRatioH2) ? resizeRatioH1 : resizeRatioH2;
+            float resizeRatioW = (resizeRatioW1 > resizeRatioW2) ? resizeRatioW1 : resizeRatioW2;
+            resizeRatio = (resizeRatioH > resizeRatioW) ? resizeRatioW : resizeRatioH;
+        }
+        try {
+            return ImageUtil.resizeImage(originalImage, resizeRatio);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return originalImage;
+        }
+    }
+
+    static void storeScreenshot(final BufferedImage screenshot, final String path) {
+        try {
+            final File outputFile = new File(path);
+            if (!outputFile.getParentFile().exists()) {
+                // noinspection ResultOfMethodCallIgnored
+                outputFile.getParentFile().mkdirs();
+            }
+            ImageIO.write(adjustScreenshotSize(screenshot), "png", outputFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void storeScreenshot(final BufferedImage screenshot, final File outputFile) {
+        try {
+            if (!outputFile.getParentFile().exists()) {
+                // noinspection ResultOfMethodCallIgnored
+                outputFile.getParentFile().mkdirs();
+            }
+            ImageIO.write(adjustScreenshotSize(screenshot), "png", outputFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static BufferedImage readScreenshot(final File screenshotFile) {
+        BufferedImage screenshot = null;
+        if (!screenshotFile.getParentFile().exists()) {
+            new java.io.FileNotFoundException();
+        }
+        try {
+            screenshot = ImageIO.read(screenshotFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return screenshot;
     }
 }

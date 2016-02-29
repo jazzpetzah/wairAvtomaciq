@@ -461,9 +461,9 @@ public class CommonUtils {
             log.debug(String.format("Current screen orientation value -> %s", currentOrientation.getCode()));
             output = fixScreenshotOrientation(output, currentOrientation);
             IOUtils.write(output, new FileOutputStream(resultScreenShot));
-            ZetaFormatter.adjustScreenshotSize(resultScreenShot, false);
+            ImageUtil.adjustScreenshotSize(resultScreenShot, false);
         } else
-            ZetaFormatter.adjustScreenshotSize(resultScreenShot, true);
+            ImageUtil.adjustScreenshotSize(resultScreenShot, true);
     }
 
     private static class UIScriptExecutionMonitor implements Callable<Void> {
