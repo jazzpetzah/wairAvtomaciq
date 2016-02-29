@@ -45,10 +45,9 @@ Feature: Video Calling
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
-    Then I see Mute button on Calling overlay
-    And I see Leave button on Calling overlay
-    And I see Call Video button on Calling overlay
-    And I tap Leave button on Calling overlay
+    Then I see Mute button on Video Calling overlay
+    And I see Switch Camera button on Video Calling overlay
+    And I see Leave button on Video Calling overlay
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
@@ -66,10 +65,8 @@ Feature: Video Calling
     And I click plus button next to text input
     And I click Video Call button
     And I see Calling overlay
-    And I see Mute button on Calling overlay
-    And I see Leave button on Calling overlay
-    And I see Call Video button on Calling overlay
-    And I tap Leave button on Calling overlay
+    And I see Mute button on Video Calling overlay
+    And I tap Leave button on Video Calling overlay
     Then I see dialog page
 
     Examples:
@@ -156,7 +153,7 @@ Feature: Video Calling
     And I tap on conversation <Contact> in search result
     And I tap Video call action button on People picker page
     Then I see call status message contains "<Contact> RINGING"
-    And I see Leave button on Calling overlay
+    And I see Leave button on Video Calling overlay
 
     Examples:
       | Name      | Contact   |
@@ -170,10 +167,10 @@ Feature: Video Calling
     And <Contact> starts a video call to me using <VideoCallBackend>
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept Video button on Calling overlay
-    Then I see Switch Camera button on Calling overlay
+    Then I see Switch Camera button on Video Calling overlay
     When <Contact2> starts a video call to me using <VideoCallBackend>
     And I tap Accept Video button on Calling overlay
-    Then I see Mute button on Calling overlay
+    Then I see Mute button on Video Calling overlay
     And <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
     And <Contact2> verifies that call status to <Name> is changed to active in <Timeout> seconds
 
@@ -190,12 +187,10 @@ Feature: Video Calling
     When <Contact> starts a video call to <Name> using <CallBackend>
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept Video button on Calling overlay
-    And I see Mute button on Calling overlay
-    And I see Mute button is not selected on calling overlay
+    And I see Mute button on Video Calling overlay
     And I remember state of Mute button on Video Calling overlay
     And I tap Mute button on Video Calling overlay
-    Then I see Mute button is selected on calling overlay
-    And I see state of Mute button has changed on Video Calling overlay
+    Then I see state of Mute button has changed on Video Calling overlay
 
     Examples:
       | Name      | Contact   | CallBackend |
@@ -210,11 +205,11 @@ Feature: Video Calling
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
-    Then I see Switch Camera button on Calling overlay
+    Then I see Switch Camera button on Video Calling overlay
     When <Contact2> starts a video call to me using <VideoCallBackend>
     And I see call status message contains "<Contact2> CALLING"
     And I tap Ignore button on the Calling overlay
-    Then I see Mute button on Calling overlay
+    Then I see Mute button on Video Calling overlay
     And <Contact> verifies that call status to me is changed to active in <TimeoutAlreadyInCall> seconds
     And <Contact2> verifies that call status to me is changed to connecting in <Timeout> seconds
 

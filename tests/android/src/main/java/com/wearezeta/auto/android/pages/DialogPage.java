@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import com.wearezeta.auto.common.misc.ElementState;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
@@ -101,24 +100,27 @@ public class DialogPage extends AndroidPage {
     private static final int MAX_SWIPE_RETRIES = 5;
     private static final int MAX_CLICK_RETRIES = 5;
     
-    private ElementState mediaButtonState = new ElementState(
-            () -> this.getElementScreenshot(getElement(idPlayPauseMedia)).orElseThrow(
-                    () -> new IllegalStateException("Cannot get a screenshot of Play/Pause button")
-            )
-    );
-    private ElementState conversationViewState = new ElementState(
-            () -> this.getElementScreenshot(getElement(idDialogRoot)).orElseThrow(
-                    () -> new IllegalStateException("Cannot get a screenshot of conversation view")
-            )
-    );
-    private ElementState verifiedConversationShieldState =new ElementState(
-            () -> this.getElementScreenshot(getElement(idVerifiedConversationShield)).orElseThrow(
-                    () -> new IllegalStateException("Cannot get a screenshot of verification shield")
-            )
-    );
-
     public DialogPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
+    }
+
+    public BufferedImage getConvoViewStateScreenshot() throws Exception {
+        return this.getElementScreenshot(getElement(idDialogRoot)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot of conversation view")
+        );
+    }
+
+
+    public BufferedImage getShieldStateScreenshot() throws Exception {
+        return this.getElementScreenshot(getElement(idVerifiedConversationShield)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot of verification shield")
+        );
+    }
+
+    public BufferedImage getMediaButtonState() throws Exception {
+        return this.getElementScreenshot(getElement(idPlayPauseMedia)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot of Play/Pause button")
+        );
     }
 
     public boolean waitForCursorInputVisible() throws Exception {
@@ -411,21 +413,6 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idYoutubePlayButton);
     }
 
-    private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
-    private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
-
-    public void rememberMediaControlButtonState() throws Exception {
-        mediaButtonState.remember();
-    }
-    
-    public boolean mediaControlButtonStateHasChanged() throws Exception {
-        return mediaButtonState.isChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE);
-    }
-    
-    public boolean mediaControlButtonStateHasNotChanged() throws Exception {
-        return mediaButtonState.isNotChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE);
-    }
-
     public void tapPlayPauseMediaBarBtn() throws Exception {
         getElement(idMediaBarControl, "Media barr PlayPause button is not visible").click();
     }
@@ -487,32 +474,6 @@ public class DialogPage extends AndroidPage {
 
     public int getCurrentNumberOfItemsInDialog() throws Exception {
         return selectVisibleElements(xpathDialogContent).size();
-    }
-
-    private static final int CONVO_VIEW_STATE_CHANGE_TIMEOUT = 15;
-    private static final double CONVO_VIEW_MIN_SIMILARITY_SCORE = 0.5;
-
-    public void rememberConversationView() throws Exception {
-        conversationViewState.remember();
-    }
-
-    private static final int SHIELD_STATE_CHANGE_TIMEOUT = 15;
-    private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
-
-    public void rememberVerifiedConversationShield() throws Exception {
-        verifiedConversationShieldState.remember();
-    }
-    
-    public boolean verifiedConversationShieldStateHasChanged() throws Exception {
-        return verifiedConversationShieldState.isChanged(SHIELD_STATE_CHANGE_TIMEOUT, SHIELD_MIN_SIMILARITY_SCORE);
-    }
-    
-    public boolean conversationViewStateHasChanged() throws Exception {
-        return conversationViewState.isChanged(CONVO_VIEW_STATE_CHANGE_TIMEOUT, CONVO_VIEW_MIN_SIMILARITY_SCORE);
-    }
-    
-    public boolean conversationViewStateHasNotChanged() throws Exception {
-        return conversationViewState.isNotChanged(CONVO_VIEW_STATE_CHANGE_TIMEOUT, CONVO_VIEW_MIN_SIMILARITY_SCORE);
     }
 
     /**

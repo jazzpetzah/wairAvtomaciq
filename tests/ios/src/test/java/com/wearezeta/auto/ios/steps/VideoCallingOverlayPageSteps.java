@@ -34,6 +34,25 @@ public class VideoCallingOverlayPageSteps {
     }
 
     /**
+     * Tap the corresponding button on video calling overlay
+     *
+     * @param shouldNotBeVisible equals to null if the button should be visible
+     * @param name               one of possible button names
+     * @throws Exception
+     * @step. ^I (do not )?see (Mute|Leave|Call Video|Call Speaker|Switch Camera) button on (?:the |\s*)Video Calling overlay$
+     */
+    @When("^I (do not )?see (Mute|Leave|Call Video|Call Speaker|Switch Camera) button on (?:the |\\s*)Video Calling overlay$")
+    public void ISeeButton(String shouldNotBeVisible, String name) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue(String.format("The '%s' button is not visible on video calling overlay", name),
+                    getVideoCallingOverlayPage().isButtonVisible(name));
+        } else {
+            Assert.assertTrue(String.format("The '%s' button is visible on video calling overlay, but should be shown",
+                    name), getVideoCallingOverlayPage().isButtonInvisible(name));
+        }
+    }
+
+    /**
      * Remembers the state of the certain button in calling page
      *
      * @param btnName button name

@@ -37,7 +37,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C28852 @staging
+  @C28852 @calling_basic
   Scenario Outline: Verify accepting video call [LANDSCAPE]
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -58,7 +58,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @28856 @staging
+  @28856 @calling_basic
   Scenario Outline: Verify finishing video call [LANDSCAPE]
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -79,7 +79,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend  |
       | user1Name | user2Name | chrome		 |
 
-  @C28855 @staging
+  @C28855 @calling_basic
   Scenario Outline: Verify ignoring Video call [LANDSCAPE]
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

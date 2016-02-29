@@ -1,7 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.awt.image.BufferedImage;
@@ -27,6 +27,16 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
         } else {
             tapOnScreenToRevealButton();
             super.tapButtonByName(buttonName);
+        }
+    }
+
+    @Override
+    public boolean isButtonVisible(String buttonName) throws Exception {
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getButtonLocatorByName(buttonName), 5)) {
+            return true;
+        } else {
+            tapOnScreenToRevealButton();
+            return super.isButtonVisible(buttonName);
         }
     }
 
