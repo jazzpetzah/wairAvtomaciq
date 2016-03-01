@@ -232,11 +232,7 @@ public class ImageUtil {
         return (bi.getWidth() > bi.getHeight());
     }
 
-    public static final int MAX_SCREENSHOT_WIDTH = 1600;
-    public static final int MAX_SCREENSHOT_HEIGHT = 900;
-
-    private static BufferedImage adjustScreenshotSize(BufferedImage originalImage, final int maxWidth,
-                                                      final int maxHeight) {
+    public static BufferedImage scaleTo(BufferedImage originalImage, final int maxWidth, final int maxHeight) {
         int height = originalImage.getHeight();
         int width = originalImage.getWidth();
         float resizeRatio = 1;
@@ -257,18 +253,13 @@ public class ImageUtil {
         }
     }
 
-    public static void storeScreenshot(final BufferedImage screenshot, final File outputFile) {
-        storeScreenshot(screenshot, MAX_SCREENSHOT_WIDTH, MAX_SCREENSHOT_HEIGHT, outputFile);
-    }
-
-    public static void storeScreenshot(final BufferedImage screenshot,
-                                       final int maxWidth, final int maxHeight, final File outputFile) {
+    public static void storeImage(final BufferedImage screenshot, final File outputFile) {
         try {
             if (!outputFile.getParentFile().exists()) {
                 // noinspection ResultOfMethodCallIgnored
                 outputFile.getParentFile().mkdirs();
             }
-            ImageIO.write(adjustScreenshotSize(screenshot, maxWidth, maxHeight), "png", outputFile);
+            ImageIO.write(screenshot, "png", outputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

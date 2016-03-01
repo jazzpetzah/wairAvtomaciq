@@ -341,8 +341,7 @@ public class ContactListPageSteps {
     public void IRememberUnreadIndicatorState(String name) throws Exception {
         final String convoName = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         this.previousUnreadIndicatorState.put(convoName,
-                new ElementState(() -> getContactListPage().getMessageIndicatorScreenshot(convoName)
-                        .orElseThrow(IllegalStateException::new)).remember()
+                new ElementState(() -> getContactListPage().getMessageIndicatorScreenshot(convoName)).remember()
         );
     }
 

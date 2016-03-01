@@ -215,7 +215,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
             throw new WebDriverException(e);
         }
         try {
-            CommonUtils.takeAndroidScreenshot(this, tmpScreenshot);
+            CommonUtils.takeAndroidScreenshot(this, tmpScreenshot, false);
             result.setSessionId(this.getSessionId().toString());
             result.setStatus(HttpStatus.SC_OK);
             result.setValue(Base64.encodeBase64(IOUtils.toByteArray(new FileInputStream(tmpScreenshot))));
@@ -396,7 +396,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
      */
     public void tapSendButton() throws Exception {
         final File screenshot = File.createTempFile("tmp", ".png");
-        CommonUtils.takeAndroidScreenshot(this, screenshot);
+        CommonUtils.takeAndroidScreenshot(this, screenshot, false);
         try {
             final List<List<Rect>> keyboardButtons = new OnScreenKeyboardScanner()
                     .getButtonCoordinates(screenshot.getCanonicalPath());
