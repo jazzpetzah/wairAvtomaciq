@@ -40,7 +40,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @28856 @calling_basic
+  @C28856 @calling_basic
   Scenario Outline: Verify finishing video call [LANDSCAPE]
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
