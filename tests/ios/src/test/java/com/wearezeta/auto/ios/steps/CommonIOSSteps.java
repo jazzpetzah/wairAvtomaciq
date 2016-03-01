@@ -156,7 +156,7 @@ public class CommonIOSSteps {
 
         try {
             if (!scenario.getStatus().equals(Result.PASSED) && getIsSimulatorFromConfig(getClass())) {
-                log.debug(IOSSimulatorHelper.getLogsOrCrashes() + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                log.debug(IOSSimulatorHelper.getLogsAndCrashes() + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
             } else if (scenario.getSourceTagNames().contains("@performance")) {
                 IOSLogListener.forceStopAll();
                 IOSLogListener.writeDeviceLogsToConsole(IOSLogListener.getInstance());
