@@ -1,6 +1,6 @@
 Feature: Video Calling
 
-  @C12102 @calling_basic
+  @C12102 @calling_basic @video_calling
   Scenario Outline: Verify initiating Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -16,7 +16,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C12105 @calling_basic
+  @C12105 @calling_basic @video_calling
   Scenario Outline: Verify cancelling Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -33,7 +33,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C12101 @staging
+  @C12101 @staging @video_calling
   Scenario Outline: Verify accepting video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -53,7 +53,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C12103 @staging
+  @C12103 @staging @video_calling
   Scenario Outline: Verify finishing video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -73,7 +73,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C12104 @staging
+  @C12104 @staging @video_calling
   Scenario Outline: Verify ignoring Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -88,7 +88,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C12107 @staging
+  @C12107 @staging @video_calling
   Scenario Outline: Verify getting missed call indication when someone called
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -107,7 +107,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C12114 @staging
+  @C12114 @staging @video_calling
   Scenario Outline: (AUDIO-830) Verify I can switch to another incoming audio call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -128,7 +128,7 @@ Feature: Video Calling
       | Name      | Contact1  | Contact2  | VideoCallBackend | AudioCallBackend | Timeout |
       | user1Name | user2Name | user3Name | chrome           | autocall         | 60      |
 
-  @C12110 @staging
+  @C12110 @staging @video_calling
   Scenario Outline: Verify blocked contact could not get through with a Video call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -142,7 +142,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C28851 @staging
+  @C28851 @staging @video_calling
   Scenario Outline: Verify starting video call with action button in Search
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -159,7 +159,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C12115 @staging
+  @C12115 @staging @video_calling
   Scenario Outline: Verify I can switch to another video call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -178,7 +178,7 @@ Feature: Video Calling
       | Name      | Contact    | Contact2 | VideoCallBackend | Timeout |
       | user1Name | user2Name  | user3Name| chrome           | 60      |
 
-  @C12106 @staging
+  @C12106 @staging @video_calling
   Scenario Outline: Verify muting ongoing Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -196,7 +196,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C28861 @staging
+  @C28861 @staging @video_calling
   Scenario Outline: Verify video call continues after rejecting 2nd incoming video call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
