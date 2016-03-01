@@ -1,7 +1,7 @@
 Feature: VideoCalling
 
   @C12071 @videocalling
-  Scenario Outline: Verify I can start a Video call
+  Scenario Outline: Verify I can start Video call from conversation view
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
