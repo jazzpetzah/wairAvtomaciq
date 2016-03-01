@@ -437,10 +437,14 @@ public class CommonUtils {
         return initialScreenshot;
     }
 
-    private static final int MAX_PHONESCREENSHOT_WIDTH = 480;
-    private static final int MAX_PHONESCREENSHOT_HEIGHT = 800;
+    private static final int MAX_PHONE_SCREENSHOT_WIDTH = 480;
+    private static final int MAX_PHONE_SCREENSHOT_HEIGHT = 800;
+    private static final int MAX_TABLET_SCREENSHOT_WIDTH = 1600;
+    private static final int MAX_TABLET_SCREENSHOT_HEIGHT = 900;
 
-    public static void takeAndroidScreenshot(ZetaAndroidDriver driver, File resultScreenshot) throws Exception {
+
+    public static void takeAndroidScreenshot(ZetaAndroidDriver driver, File resultScreenshot, boolean shouldApplyScale)
+            throws Exception {
         final String pathOnPhone = String.format("/sdcard/%s.png", generateGUID().replace("-", "").substring(0, 8));
         final String adbCommandsChain = String.format(ADB_PREFIX + "adb shell screencap -p %1$s; " + ADB_PREFIX
                         + "adb pull %1$s %2$s; " + ADB_PREFIX + "adb shell rm %1$s", pathOnPhone,
@@ -458,11 +462,17 @@ public class CommonUtils {
             }
             log.debug(String.format("Current screen orientation value -> %s", currentOrientation.getCode()));
             resultImg = fixScreenshotOrientation(resultImg, currentOrientation);
-            ImageUtil.storeScreenshot(resultImg, resultScreenshot);
+            if (shouldApplyScale) {
+                resultImg = ImageUtil.scaleTo(resultImg,
+                        MAX_TABLET_SCREENSHOT_WIDTH, MAX_TABLET_SCREENSHOT_HEIGHT);
+            }
         } else {
-            ImageUtil.storeScreenshot(resultImg, MAX_PHONESCREENSHOT_WIDTH, MAX_PHONESCREENSHOT_HEIGHT,
-                    resultScreenshot);
+            if (shouldApplyScale) {
+                resultImg = ImageUtil.scaleTo(resultImg,
+                        MAX_PHONE_SCREENSHOT_WIDTH, MAX_PHONE_SCREENSHOT_HEIGHT);
+            }
         }
+        ImageUtil.storeImage(resultImg, resultScreenshot);
     }
 
     private static class UIScriptExecutionMonitor implements Callable<Void> {

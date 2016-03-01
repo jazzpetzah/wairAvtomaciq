@@ -43,15 +43,20 @@ public class ElementState {
         final long msTimeout = timeoutSeconds * 1000;
         final long msStarted = System.currentTimeMillis();
         do {
-            final BufferedImage currentState = stateGetter.getState();
-            final double score = ImageUtil.getOverlapScore(
-                    this.previousScreenshot.orElseThrow(
-                            () -> new IllegalStateException("Please remember the previous element state first")),
-                    currentState, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-            log.debug(String.format("Actual score: %.4f; Time left: %s ms", score,
-                    msTimeout + msStarted - System.currentTimeMillis()));
-            if (checkerFunc.apply(score)) {
-                return true;
+            try {
+                final BufferedImage currentState = stateGetter.getState();
+                final double score = ImageUtil.getOverlapScore(
+                        this.previousScreenshot.orElseThrow(
+                                () -> new IllegalStateException("Please remember the previous element state first")),
+                        currentState, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+                log.debug(String.format("Actual score: %.4f; Time left: %s ms", score,
+                        msTimeout + msStarted - System.currentTimeMillis()));
+                if (checkerFunc.apply(score)) {
+                    return true;
+                }
+            } catch (StaleElementReferenceException e) {
+                log.debug(String.format("Actual score: <calculation error>; Time left: %s ms",
+                        msTimeout + msStarted - System.currentTimeMillis()));
             }
             Thread.sleep(MS_INTERVAL);
         } while (System.currentTimeMillis() - msStarted <= msTimeout);

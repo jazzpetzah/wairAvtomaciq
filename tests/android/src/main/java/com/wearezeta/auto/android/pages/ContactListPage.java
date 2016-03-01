@@ -23,11 +23,11 @@ public class ContactListPage extends AndroidPage {
     private static final By xpathLoadingContactListItem =
             By.xpath(String.format("%s[contains(@value, '%s')]", xpathStrConvoListNames, LOADING_CONVERSATION_NAME));
 
-    public static final Function<String, String> xpathStrContactByName = name -> String
-            .format("%s[@value='%s' and @shown='true']", xpathStrConvoListNames, name);
+    public static final Function<String, String> xpathStrContactByName = name ->
+            String.format("%s[@value='%s' and @shown='true']", xpathStrConvoListNames, name);
 
-    private static final Function<Integer, String> xpathStrContactByIndex = index -> String
-            .format("(%s)[%s]", xpathStrConvoListNames, index);
+    private static final Function<Integer, String> xpathStrContactByIndex = index ->
+            String.format("(%s)[%s]", xpathStrConvoListNames, index);
 
     private static final By xpathLastContact = By.xpath(String.format("(%s)[last()]", xpathStrConvoListNames));
 
@@ -65,9 +65,6 @@ public class ContactListPage extends AndroidPage {
 
     private static final String xpathSpinnerConversationsListLoadingIndicator =
             "//*[@id='liv__conversations__loading_indicator']/*";
-
-    private static final Function<String, String> xpathConversationListEntry = name -> String
-            .format("%s/parent::*//*[@id='civ__list_row']", xpathStrContactByName.apply(name));
 
     private static final By idInviteButton = By.id("zb__conversationlist__show_contacts");
 
@@ -200,8 +197,8 @@ public class ContactListPage extends AndroidPage {
 
         if (!this.waitUntilConversationsInfoIsLoaded()) {
             throw new IllegalStateException(String.format(
-                            "Not all conversations list items were loaded within %s seconds",
-                            CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS));
+                    "Not all conversations list items were loaded within %s seconds",
+                    CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS));
         }
     }
 
@@ -278,9 +275,19 @@ public class ContactListPage extends AndroidPage {
                 .format("PlayPause button is not visible next to the '%s' conversation item", convoName)).click();
     }
 
-    public Optional<BufferedImage> getMessageIndicatorScreenshot(String name) throws Exception {
-        final By locator = By.xpath(xpathConversationListEntry.apply(name));
-        return this.getElementScreenshot(this.getDriver().findElement(locator));
+    public BufferedImage getMessageIndicatorScreenshot(String name) throws Exception {
+        final BufferedImage fullScreen = this.takeScreenshot().orElseThrow(
+                () -> new IllegalStateException("Cannot take a screenshot")
+        );
+        final By locator = By.xpath(xpathStrContactByName.apply(name));
+        final WebElement el = getElement(locator);
+        final Point elLocation = el.getLocation();
+        final Dimension elSize = el.getSize();
+        final int x = elLocation.x >= 0 ? elLocation.x : 0;
+        final int y = elLocation.y >= 0 ? elLocation.y : 0;
+        final int w = elSize.width <= fullScreen.getWidth() ? elSize.width / 6 : fullScreen.getWidth() / 6;
+        final int h = elSize.height;
+        return fullScreen.getSubimage(x, y, w, h);
     }
 
     public void confirmDeleteConversationAlert() throws Exception {

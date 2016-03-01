@@ -127,6 +127,9 @@ public class ZetaFormatter implements Formatter, Reporter {
         stepStartedTimestamp = System.currentTimeMillis();
     }
 
+    private static final int MAX_SCREENSHOT_WIDTH = 1600;
+    private static final int MAX_SCREENSHOT_HEIGHT = 900;
+
     private void takeStepScreenshot(final Result stepResult, final String stepName) throws Exception {
         final ZetaDriver driver = getDriver().orElse(null);
         if (driver != null) {
@@ -155,7 +158,7 @@ public class ZetaFormatter implements Formatter, Reporter {
                 }
             } else if (driver instanceof ZetaAndroidDriver) {
                 try {
-                    CommonUtils.takeAndroidScreenshot((ZetaAndroidDriver) driver, resultScreenshot);
+                    CommonUtils.takeAndroidScreenshot((ZetaAndroidDriver) driver, resultScreenshot, true);
                 } catch (Exception e) {
                     log.error("Failed to take Android screenshot:");
                     e.printStackTrace();
@@ -165,7 +168,9 @@ public class ZetaFormatter implements Formatter, Reporter {
                 if (!screenshot.isPresent()) {
                     return;
                 }
-                screenshotSavers.execute(() -> ImageUtil.storeScreenshot(screenshot.get(), resultScreenshot));
+                screenshotSavers.execute(() ->
+                        ImageUtil.storeImage(ImageUtil.scaleTo(screenshot.get(),
+                                MAX_SCREENSHOT_WIDTH, MAX_SCREENSHOT_HEIGHT), resultScreenshot));
             }
         } else {
             log.debug(String.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'", stepName));
