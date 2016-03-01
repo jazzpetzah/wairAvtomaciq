@@ -122,9 +122,9 @@ public class DialogPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Call|Ping|Add Picture|Video Call) button$ from input tools$
+     * @step. ^I tap (Call|Ping|Add Picture|Video Call|Sketch) button$ from input tools$
      */
-    @When("^I tap (Call|Ping|Add Picture|Video Call) button from input tools$")
+    @When("^I tap (Call|Ping|Add Picture|Video Call|Sketch) button from input tools$")
     public void WhenITapInputToolButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "call":

@@ -18,6 +18,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
@@ -91,6 +92,21 @@ public class ConversationPageSteps {
      */
     @When("^I write message (.*)$")
     public void IWriteMessage(String message) throws Exception {
+        webappPagesCollection.getPage(ConversationPage.class).writeNewMessage(message);
+    }
+
+    @When("^I paste message from file (.*)$")
+    public void IPasteMessageFromFile(String file) throws Exception {
+        String s = WebCommonUtils.getTextFromFile(file);
+        String message = "";
+        for (int i = 0; i < s.length(); i++){
+            char c = s.charAt(i);
+            if(c == '\n') {
+                message = message + Keys.chord(Keys.SHIFT, Keys.ENTER);
+            } else {
+                message = message + c;
+            }
+        }
         webappPagesCollection.getPage(ConversationPage.class).writeNewMessage(message);
     }
 
@@ -416,6 +432,13 @@ public class ConversationPageSteps {
      */
     @Then("^I verify the last text message equals to (.*)")
     public void IVerifyLastTextMessage(String expectedMessage) throws Exception {
+        Assert.assertEquals(expandPattern(expectedMessage), webappPagesCollection.getPage(ConversationPage.class)
+                .getLastTextMessage());
+    }
+
+    @Then("^I verify the last text message equals file (.*)")
+    public void IVerifyLastTextMessageEqualsFile(String file) throws Exception {
+        String expectedMessage = WebCommonUtils.getTextFromFile(file);
         Assert.assertEquals(expandPattern(expectedMessage), webappPagesCollection.getPage(ConversationPage.class)
                 .getLastTextMessage());
     }
