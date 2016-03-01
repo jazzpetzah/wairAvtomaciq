@@ -184,39 +184,39 @@ public final class WebAppLocators {
     }
     
     public static final class CallPage {
-        public static final Function<String, String> xpathMuteCallButtonByContactName = (
+        public static final Function<String, String> xpathMuteCallButtonByConversationName = (
                 name) -> String
                 .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
                                 + "*//*[@data-uie-name='do-call-mute']",
                         name);
 
-        public static final Function<String, String> xpathVideoButtonByContactName = (
+        public static final Function<String, String> xpathVideoButtonByConversationName = (
                 name) -> String
                 .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
                                 + "*//*[@data-uie-name='do-video-call']",
                         name);
 
-        public static final Function<String, String> xpathEndCallButtonByContactName = (
+        public static final Function<String, String> xpathEndCallButtonByConversationName = (
                 name) -> String
                 .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
-                                + "*//*[@data-uie-name='do-call-controls-call-ignore']",
+                                + "*/parent::*//*[@data-uie-name='do-call-controls-call-ignore']",
                         name);
 
         public static final String cssEndCallButton = "[data-uie-name='do-call-controls-call-ignore']";
 
         public static final String idSelfVideoPreview = "video-element-local";
 
-        public static final Function<String, String> xpathUserNameByUserNameInCallingBanner = user -> String
+        public static final Function<String, String> xpathUserNameByConversationName = user -> String
                 .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']",
                         user);
 
-        public static final Function<String, String> xpathAcceptVideoCallButtonByContactName = (
+        public static final Function<String, String> xpathAcceptVideoCallButtonByConversationName = (
                 name) -> String
                 .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
                                 + "*//*[@data-uie-name='do-call-controls-call-accept']",
                         name);
 
-        public static final Function<String, String> xpathDeclineCallButtonByContactName = (
+        public static final Function<String, String> xpathDeclineCallButtonByConversationName = (
                 name) -> String
                 .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
                                 + "*//*[@data-uie-name='do-call-controls-call-decline']",

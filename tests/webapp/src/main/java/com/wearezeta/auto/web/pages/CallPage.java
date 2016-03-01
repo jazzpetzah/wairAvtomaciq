@@ -13,11 +13,28 @@ public class CallPage extends ContactListPage {
         super(lazyDriver);
     }
     
+    public boolean isVisibleForConversation(
+            String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        final String locator = WebAppLocators.CallPage.xpathUserNameByConversationName
+                .apply(conversationName);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(locator));
+    }
+    
+    public boolean isNotVisibleForConversation(
+            String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        final String locator = WebAppLocators.CallPage.xpathUserNameByConversationName
+                .apply(conversationName);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.xpath(locator));
+    }
     
     public boolean isMuteCallButtonVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathMuteCallButtonByContactName
+        final String locator = WebAppLocators.CallPage.xpathMuteCallButtonByConversationName
                 .apply(conversationName);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(locator));
@@ -26,7 +43,7 @@ public class CallPage extends ContactListPage {
     public boolean isVideoButtonVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathVideoButtonByContactName
+        final String locator = WebAppLocators.CallPage.xpathVideoButtonByConversationName
                 .apply(conversationName);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(locator));
@@ -35,15 +52,17 @@ public class CallPage extends ContactListPage {
     public boolean isEndCallButtonVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathEndCallButtonByContactName
+        final String locator = WebAppLocators.CallPage.xpathEndCallButtonByConversationName
                 .apply(conversationName);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(locator));
     }
 
-    public void clickEndCallButton() throws Exception {
-        final String locator = WebAppLocators.CallPage.cssEndCallButton;
-        WebElement endCallButton = getDriver().findElementByCssSelector(locator);
+    public void clickEndCallButton(String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        final String locator = WebAppLocators.CallPage.xpathEndCallButtonByConversationName
+                .apply(conversationName);
+        WebElement endCallButton = getDriver().findElementByXPath(locator);
         endCallButton.click();
     }
 
@@ -60,7 +79,7 @@ public class CallPage extends ContactListPage {
     }
 
     public boolean isUserNameVisibleInCallingBanner(String user) throws Exception {
-        String locator = WebAppLocators.CallPage.xpathUserNameByUserNameInCallingBanner
+        String locator = WebAppLocators.CallPage.xpathUserNameByConversationName
                 .apply(user);
         return DriverUtils
                 .waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(locator));
@@ -69,7 +88,7 @@ public class CallPage extends ContactListPage {
     public boolean isVideoButtonNotVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathVideoButtonByContactName
+        final String locator = WebAppLocators.CallPage.xpathVideoButtonByConversationName
                 .apply(conversationName);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.xpath(locator));
@@ -78,7 +97,7 @@ public class CallPage extends ContactListPage {
     public boolean isEndCallButtonNotVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathEndCallButtonByContactName
+        final String locator = WebAppLocators.CallPage.xpathEndCallButtonByConversationName
                 .apply(conversationName);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.xpath(locator));
@@ -87,7 +106,7 @@ public class CallPage extends ContactListPage {
     public boolean isMuteCallButtonNotVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathMuteCallButtonByContactName
+        final String locator = WebAppLocators.CallPage.xpathMuteCallButtonByConversationName
                 .apply(conversationName);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.xpath(locator));
@@ -96,7 +115,7 @@ public class CallPage extends ContactListPage {
     public boolean isAcceptVideoCallButtonVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathAcceptVideoCallButtonByContactName
+        final String locator = WebAppLocators.CallPage.xpathAcceptVideoCallButtonByConversationName
                 .apply(conversationName);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(locator));
@@ -105,7 +124,7 @@ public class CallPage extends ContactListPage {
     public boolean isAcceptVideoCallButtonNotVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathAcceptVideoCallButtonByContactName
+        final String locator = WebAppLocators.CallPage.xpathAcceptVideoCallButtonByConversationName
                 .apply(conversationName);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.xpath(locator));
@@ -114,7 +133,7 @@ public class CallPage extends ContactListPage {
     public boolean isDeclineCallButtonVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathDeclineCallButtonByContactName
+        final String locator = WebAppLocators.CallPage.xpathDeclineCallButtonByConversationName
                 .apply(conversationName);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(locator));
@@ -123,26 +142,29 @@ public class CallPage extends ContactListPage {
     public boolean isDeclineCallButtonNotVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathDeclineCallButtonByContactName
+        final String locator = WebAppLocators.CallPage.xpathDeclineCallButtonByConversationName
                 .apply(conversationName);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.xpath(locator));
     }
 
-    public void clickDeclineCallButton() throws Exception {
-        final String locator = WebAppLocators.CallPage.cssDeclineCallButton;
+    public void clickDeclineCallButton(String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        final String locator = WebAppLocators.CallPage.xpathDeclineCallButtonByConversationName.apply(conversationName);
         WebElement declineCallButton = getDriver().findElementByCssSelector(locator);
         declineCallButton.click();
     }
 
-    public void clickAcceptVideoCallButton() throws Exception {
-        final String locator = WebAppLocators.CallPage.cssAcceptVideoCallButton;
-        WebElement acceptVideoCallButton = getDriver().findElementByCssSelector(locator);
+    public void clickAcceptVideoCallButton(String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        final String locator = WebAppLocators.CallPage.xpathAcceptVideoCallButtonByConversationName.apply(conversationName);
+        WebElement acceptVideoCallButton = getDriver().findElementByXPath(locator);
         acceptVideoCallButton.click();
     }
 
-    public void clickMuteCallButton() throws Exception {
-        final String locator = WebAppLocators.CallPage.cssMuteCallButton;
+    public void clickMuteCallButton(String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        final String locator = WebAppLocators.CallPage.xpathMuteCallButtonByConversationName.apply(conversationName);
         WebElement muteCallButton = getDriver().findElementByCssSelector(locator);
         muteCallButton.click();
     }

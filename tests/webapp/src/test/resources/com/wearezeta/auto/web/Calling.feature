@@ -13,7 +13,7 @@ Feature: Calling
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the outgoing calling bar with <Contact>
+    And I see the call controls for conversation <Contact>
     And I write random message
     And I send message
     And I click ping button
@@ -21,7 +21,7 @@ Feature: Calling
     Then I see random message in conversation
     And I see <PING> action in conversation
     And I see sent picture <PictureName> in the conversation view
-    And I click end call button from conversation list
+    And I hang up call with conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING       | PictureName               | CallBackend | Timeout |
