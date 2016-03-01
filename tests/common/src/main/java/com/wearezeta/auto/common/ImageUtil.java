@@ -78,8 +78,7 @@ public class ImageUtil {
     public static Mat resizeFirstMatrixToSecondMatrixResolution(Mat first,
                                                                 Mat second) {
         Mat result;
-        if (first.width() != second.width()
-                || first.height() != second.height()) {
+        if (first.width() != second.width() || first.height() != second.height()) {
             result = new Mat();
             Size sz = new Size(second.width(), second.height());
             Imgproc.resize(first, result, sz);
@@ -259,16 +258,7 @@ public class ImageUtil {
     }
 
     public static void storeScreenshot(final BufferedImage screenshot, final File outputFile) {
-        try {
-            if (!outputFile.getParentFile().exists()) {
-                // noinspection ResultOfMethodCallIgnored
-                outputFile.getParentFile().mkdirs();
-            }
-            ImageIO.write(adjustScreenshotSize(screenshot, MAX_SCREENSHOT_WIDTH, MAX_SCREENSHOT_HEIGHT),
-                    "png", outputFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        storeScreenshot(screenshot, MAX_SCREENSHOT_WIDTH, MAX_SCREENSHOT_HEIGHT, outputFile);
     }
 
     public static void storeScreenshot(final BufferedImage screenshot,

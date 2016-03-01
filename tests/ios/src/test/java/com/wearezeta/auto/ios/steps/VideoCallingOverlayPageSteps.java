@@ -22,6 +22,25 @@ public class VideoCallingOverlayPageSteps {
     }
 
     /**
+     * Verify whether video calling overlay is visible or not
+     *
+     * @param shouldNotBeVisible equals to null if the overlay should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see Video Calling overlay$
+     */
+    @Then("^I (do not )?see Video Calling overlay$")
+    public void ISeeCallingOverlay(String shouldNotBeVisible) throws Exception {
+        final String switchCameraBtnName = "Switch Camera";
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("Video calling overlay is not visible",
+                    getVideoCallingOverlayPage().isButtonVisible(switchCameraBtnName));
+        } else {
+            Assert.assertTrue("Video calling overlay is visible, but should be hidden",
+                    getVideoCallingOverlayPage().isButtonInvisible(switchCameraBtnName));
+        }
+    }
+
+    /**
      * Tap the corresponding button on video calling overlay
      *
      * @param name one of possible button names

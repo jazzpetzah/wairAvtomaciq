@@ -64,7 +64,7 @@ Feature: Video Calling
     When I tap on contact name <Contact>
     And I click plus button next to text input
     And I click Video Call button
-    And I see Calling overlay
+    And I see Video Calling overlay
     And I see Mute button on Video Calling overlay
     And I tap Leave button on Video Calling overlay
     Then I see dialog page
