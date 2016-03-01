@@ -204,6 +204,8 @@ public class PersonalInfoPage extends IOSPage {
 
     public void tapOnSettingsButton() throws Exception {
         getElement(xpathOptionsSettingsButton).click();
+        // Wait for settings page to be shown
+        Thread.sleep(2000);
     }
 
     public void clickOnHelpButton() throws Exception {
