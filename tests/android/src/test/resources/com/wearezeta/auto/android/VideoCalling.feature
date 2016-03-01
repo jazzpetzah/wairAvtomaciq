@@ -1,6 +1,6 @@
 Feature: VideoCalling
 
-  @C36388 @calling_basic @staging
+  @C36388 @calling_basic @regression @rc
   Scenario Outline: Verify I can accept Video call with the app in the foreground
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -41,7 +41,7 @@ Feature: VideoCalling
       | user1Name | user2Name | chrome      | 60      |
 
 
-  @C36362 @calling_basic @staging
+  @C36362 @calling_basic @regression @rc
   Scenario Outline: Verify I can accept Video call from locked device
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -82,7 +82,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C36389 @calling_basic @staging
+  @C36389 @calling_basic @regression @rc
   Scenario Outline: Verify I can start Video call from the conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -105,7 +105,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C36369 @staging
+  @C36369 @regression
   Scenario Outline: Verify I cannot see blocked contact trying to make a video call to me
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -176,7 +176,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C36367 @calling_basic @staging
+  @C36367 @calling_basic @regression
   Scenario Outline: Verify I get missed call indication when someone called
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -196,7 +196,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C36366 @staging
+  @C36366 @regression
   Scenario Outline: Verify I can mute Video call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
