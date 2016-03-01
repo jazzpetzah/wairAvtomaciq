@@ -76,3 +76,22 @@ Feature: Video Calling
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
+
+  @C28864 @staging
+  Scenario Outline: Verify muting ongoing Video call [LANDSCAPE]
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    When <Contact> starts a video call to <Name> using <CallBackend>
+    And I see call status message contains "<Contact> CALLING"
+    And I tap Accept Video button on Calling overlay
+    And I see Mute button on Video Calling overlay
+    And I remember state of Mute button on Video Calling overlay
+    And I tap Mute button on Video Calling overlay
+    Then I see state of Mute button has changed on Video Calling overlay
+
+    Examples:
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |
