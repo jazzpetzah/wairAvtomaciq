@@ -25,7 +25,7 @@ Feature: Calling
     When I hang up call with conversation <Contact>
     And I see the ongoing call controls for conversation <Contact>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact   | PING       | PictureName               | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | you pinged | userpicture_landscape.jpg | chrome      | 60      |
 
@@ -49,7 +49,7 @@ Feature: Calling
     And I see <HOTPING> action in conversation
     And I hang up call with conversation <Contact>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact   | PING   | HOTPING      | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again | chrome      | 60      |
 
@@ -72,11 +72,11 @@ Feature: Calling
     And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact1> is on the top
-    And I click end call button from conversation list
+    And I hang up call with conversation <Contact2>
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 60      |
 
@@ -92,20 +92,20 @@ Feature: Calling
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
     And <Contact1> calls me using <CallBackend>
-    And I see the incoming audio call with <Contact2>
+    And I see the incoming call controls for conversation <Contact2>
     #And I see conversation <Contact1> is on the top
-    When I click the accept call button in conversation list
-    Then I see the ongoing calling bar with <Contact1>
+    When I accept the call from conversation <Contact2>
+    Then I see the ongoing call controls for conversation <Contact1>
     #And I see conversation <Contact1> is on the top
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact1> is on the top
-    And I click end call button from conversation list
+    And I hang up call with conversation <Contact1>
     When User <Contact2> pinged in the conversation with <Contact2>
     #And I see conversation <Contact2> is on the top
 
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    | 60      |
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    |
 
   @C1776 @smoke @calling @calling_debug
   Scenario Outline: Verify I can call a user twice in a row
@@ -121,15 +121,15 @@ Feature: Calling
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
-    And I click end call button from conversation list
+    And I hang up call with conversation <Contact>
     Then <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
     Then <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the ongoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox     | 60      |
@@ -149,53 +149,53 @@ Feature: Calling
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the ongoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the calling bar
+    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the ongoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the ongoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the ongoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the ongoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the ongoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the ongoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the ongoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the ongoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the ongoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the ongoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the ongoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the ongoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
-    And I see the ongoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I click end call button from conversation list
+    And I hang up call with conversation <Contact>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
@@ -213,32 +213,32 @@ Feature: Calling
     And I open conversation with <Contact1>
     And I call
     Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the ongoing calling bar with <Contact1>
+    And I see the ongoing call controls for conversation <Contact1>
     And I open conversation with <Contact2>
     When I call
     Then I see another call warning modal
     And I close the another call warning modal
     And I do not see another call warning modal
-    And I see the ongoing calling bar with <Contact1>
+    And I see the ongoing call controls for conversation <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    And I see the ongoing calling bar with <Contact1>
+    And I see the ongoing call controls for conversation <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    And I see the ongoing calling bar with <Contact1>
+    And I see the ongoing call controls for conversation <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Hang Up" button in another call warning modal
     Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the ongoing calling bar with <Contact2>
-    And I click end call button from conversation list
+    And I see the ongoing call controls for conversation <Contact2>
+    And I hang up call with conversation <Contact2>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 60      |
 
@@ -255,35 +255,35 @@ Feature: Calling
     And I see my avatar on top of Contact list
     And I open conversation with <Contact1>
     And <Contact1> calls me using <CallBackend>
-    And I see the incoming audio call with <Contact1>
-    When I click the accept call button in conversation list
+    And I see the incoming call controls for conversation <Contact1>
+    When I accept the call from conversation <Contact1>
     Then <Contact1> verifies that call status to Myself is changed to active in <Timeout> seconds
-    Then I see the ongoing calling bar with <Contact1>
+    Then I see the ongoing call controls for conversation <Contact1>
     And I open conversation with <Contact2>
     When I call
     Then I see another call warning modal
     And I close the another call warning modal
     And I do not see another call warning modal
-    Then I see the ongoing calling bar with <Contact1>
+    Then I see the ongoing call controls for conversation <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    Then I see the ongoing calling bar with <Contact1>
+    Then I see the ongoing call controls for conversation <Contact1>
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    Then I see the ongoing calling bar with <Contact1>
+    Then I see the ongoing call controls for conversation <Contact1>
     When I call
     Then I see another call warning modal
     Then I click on "Hang Up" button in another call warning modal
     Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    Then I see the ongoing calling bar with <Contact2>
-    And I click end call button from conversation list
+    Then I see the ongoing call controls for conversation <Contact2>
+    And I hang up call with conversation <Contact2>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    | chrome      | 60      |
 
@@ -306,22 +306,22 @@ Feature: Calling
     And I see the outgoing call controls for conversation <ChatName1>
     And I see joined group call notification for conversation <ChatName1>
     When <Contact4> calls <ChatName2> using <CallBackend>
-    Then I see the incoming calling bar with <Contact4>
-    When I click the decline call button in conversation list with <Contact4>
+    Then I see the incoming call controls for conversation <Contact4>
+    When I ignore the call from conversation <Contact4>
     And I open conversation with <ChatName1>
     And I see the outgoing call controls for conversation <ChatName1>
-    Then I do not see the incoming calling bar with <Contact4>
+    Then I do not see the incoming call controls for conversation  <Contact4>
     When <Contact4> stops all calls to <ChatName2>
     And <Contact4> calls <ChatName2> using <CallBackend>
-    Then I see the incoming calling bar with <Contact4>
-    When I click the accept call button in conversation list with <Contact4>
+    Then I see the incoming call controls for conversation  <Contact4>
+    When I accept the call from conversation <Contact4>
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     When <Contact4> stops all calls to <ChatName2>
     And <Contact4> calls <ChatName2> using <CallBackend>
-    Then I see the incoming calling bar with <Contact4>
-    When I click the accept call button in the conversation list with <Contact4>
+    Then I see the incoming call controls for conversation <Contact4>
+    When I accept the call from conversation <Contact4>
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
@@ -329,16 +329,16 @@ Feature: Calling
     And <Contact3> accepts next incoming call automatically
     And <Contact4> calls <ChatName2> using <CallBackend>
     Then <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I click the accept call button in conversation list
+    When I accept the call from conversation <Contact4>
     Then I see another call warning modal
     When I click on "Answer" button in another call warning modal
     Then I do not see another call warning modal
-    And I see the ongoing calling bar with <Contact3>,<Contact4>
+    And I see the ongoing call controls for conversation <Contact3>,<Contact4>
     And I see joined group call notification for conversation <ChatName2>
     And I do not see joined group call notification for conversation <ChatName1>
     And I see unjoined group call notification for conversation <ChatName1>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | ChatName2 | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GC1       | GC2       | autocall    | chrome      | 60      |
 
@@ -353,10 +353,10 @@ Feature: Calling
     When I open conversation with <Contact>
     And I call
     Then I wait for 2 seconds
-    And I click end call button from conversation list
+    And I hang up call with conversation <Contact>
     Then I see <Message> action in conversation
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact   | Message    |
       | user1Email | user1Password | user1Name | user2Name | you called |
 
@@ -377,7 +377,7 @@ Feature: Calling
     Then I do not see missed call notification for conversation <Contact1>
     Then I see <MISSED> action for <Contact1> in conversation
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | MISSED | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | called | autocall    |
 
@@ -391,14 +391,14 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I refresh page
-    Then I see the incoming calling bar with <Contact1>
+    Then I see the incoming call controls for conversation <Contact1>
     And <Contact1> stops all calls to me
-    Then I do not see the incoming calling bar with <Contact1>
+    Then I do not see the incoming call controls for conversation <Contact1>
     And I see missed call notification for conversation <Contact1>
     When I open conversation with <Contact1>
     Then I do not see missed call notification for conversation <Contact1>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    |
 
@@ -412,18 +412,18 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When <Contact1> calls me using <CallBackend>
-    And I see the incoming calling bar with <Contact1>
-    When I click the decline call button in conversation list
-    Then I do not see the incoming calling bar with <Contact2>
+    And I see the incoming call controls for conversation  <Contact1>
+    When I ignore the call from conversation <Contact1>
+    Then I do not see the incoming call controls for conversation <Contact2>
     When I call
     And I see the outgoing call controls for conversation <Contact2>
     When <Contact2> accepts next incoming call automatically
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the ongoing calling bar with <Contact2>
-    When I click end call button from conversation list
-    Then I do not see the ongoing calling bar with <Contact2>
+    And I see the ongoing call controls for conversation <Contact2>
+    When I hang up call with conversation <Contact2>
+    Then I do not see the ongoing call controls for conversation <Contact2>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | CallWaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    | chrome          | 60      |
 
@@ -439,9 +439,9 @@ Feature: Calling
     And I see my avatar on top of Contact list
     When <Contact> calls me using <CallBackend>
     Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
-    And I do not see the incoming calling bar with <Contact>
+    And I do not see the incoming call controls for conversation <Contact>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 60      |
 
@@ -456,9 +456,9 @@ Feature: Calling
     Given I muted conversation with <Contact>
     When <Contact> calls me using <CallBackend>
     Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
-    And I see the incoming calling bar with <Contact>
+    And I see the incoming call controls for conversation <Contact>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall    | 60      |
 
@@ -472,11 +472,11 @@ Feature: Calling
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I call
-    And I see outgoing the call controls for conversation <Contact>
+    And I see the outgoing call controls for conversation <Contact>
     And I wait for 60 seconds
     And I do not see the outgoing call controls for conversation <Contact>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
@@ -495,11 +495,11 @@ Feature: Calling
     When I call
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
-    When I click end call button from conversation list
+    When I hang up call with conversation <ChatName>
     And I do not see the ongoing call controls for conversation <ChatName>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 60      |
 
@@ -518,16 +518,16 @@ Feature: Calling
     When <Contact1> calls <ChatName> using <CallBackend>
     And <Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    And I see the incoming calling bar with <Chatname>
-    When I click the accept call button in conversation list
-    Then I see the ongoing calling bar with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    And I see the incoming call controls for conversation <ChatName>
+    When I accept the call from conversation <ChatName>
+    Then I see the ongoing call controls for conversation <ChatName>
     And I wait for 10 seconds
     And <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
     And <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
-    When I click end call button from conversation list
-    Then I do not see the ongoing calling bar with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    When I hang up call with conversation <ChatName>
+    Then I do not see the ongoing call controls for conversation <ChatName>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | autocall    | chrome      | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | autocall    | firefox     | 60      |
@@ -547,8 +547,8 @@ Feature: Calling
     When <Contact1> calls <ChatName> using <CallBackend>
     And <Contact2>,<Contact3>,<Contact4>,<Contact5> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    And I see the incoming calling bar with <Chatname>
-    When I click the accept call button in conversation list
+    And I see the incoming call controls for conversation <ChatName>
+    When I accept the call from conversation <ChatName>
     And I wait for 1 seconds
     Then I see full call warning modal
     And I close the full call warning modal
@@ -557,7 +557,7 @@ Feature: Calling
     Then I see full call warning modal
     And I click on "Ok" button in full call warning modal
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GroupCallConversation | autocall    | chrome      | 60      |
 
@@ -575,11 +575,11 @@ Feature: Calling
     And I open conversation with <ChatName>
     When I call
     And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
-    And I see the ongoing calling bar with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    When I click end call button from conversation list
-    Then I do not see the ongoing calling bar with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    And I see the ongoing call controls for conversation <ChatName>
+    When I hang up call with conversation <ChatName>
+    Then I do not see the ongoing call controls for conversation <ChatName>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | firefox     | 60      |
@@ -598,12 +598,12 @@ Feature: Calling
     When <Contact1> calls <ChatName> using <CallBackend>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    When I click the decline call button in conversation list
+    When I ignore the call from conversation <Contact1>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    Then I do not see the incoming calling bar with <Chatname>
+    Then I do not see the incoming call controls for conversation <ChatName>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | autocall    | chrome      | 60      |
 
@@ -622,14 +622,14 @@ Feature: Calling
     When I call
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
-    When I click end call button from conversation list
+    When I hang up call with conversation <ChatName>
     And I do not see the ongoing call controls for conversation <ChatName>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     When I join call
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 60      |
 
@@ -647,16 +647,16 @@ Feature: Calling
     When <Contact1> calls <ChatName> using <CallBackend>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    And I see the incoming calling bar with <ChatName>
+    And I see the incoming call controls for conversation <ChatName>
     And I wait for 60 seconds
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     Then I join call
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    And I see the ongoing calling bar with <ChatName>
+    And I see the ongoing call controls for conversation <ChatName>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | autocall    | chrome      | 60      |
 
@@ -672,10 +672,10 @@ Feature: Calling
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     Then I call 100 times for 1 minutes with <Contact1>,<Contact2>,<Contact3>,<Contact4>
- 
-    Examples: 
-      | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 60      |
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 60      |
 
   @calling @group @durational2
   Scenario Outline: Verify 5 min group call several times
@@ -689,10 +689,10 @@ Feature: Calling
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     Then I call 10 times for 5 minutes with <Contact1>,<Contact2>
- 
-    Examples: 
-      | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 60      |
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 60      |
 
 
   @staging @calling @group @debug @id3073
@@ -710,38 +710,38 @@ Feature: Calling
     When I open conversation with <ChatName1>
     And I call
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    And I see the outgoing calling bar with <Contact1>,<Contact2>
+    And I see the outgoing call controls for conversation <ChatName1>
     And I see joined group call notification for conversation <ChatName1>
     When <Contact3> calls me using <CallBackend>
-    Then I see the incoming calling bar with <Contact3>
-    When I click the decline call button in conversation list with <Contact3>
-    Then I see the outgoing calling bar with <Contact1>,<Contact2> or <ChatName1>
-    Then I do not see the incoming calling bar with <Contact3>
+    Then I see the incoming call controls for conversation <Contact3>
+    When I ignore the call from conversation <Contact3>
+    Then I see the outgoing call controls for conversation <ChatName1>
+    Then I do not see the incoming call controls for conversation <Contact3>
     When <Contact3> stops all calls to me
     And <Contact3> calls me using <CallBackend>
-    Then I see the incoming calling bar with <Contact3>
-    When I click the accept call button in conversation list
+    Then I see the incoming call controls for conversation <Contact3>
+    When I accept the call from conversation <Contact3>
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     When <Contact3> stops all calls to me
     And <Contact3> calls me using <CallBackend>
-    Then I see the incoming calling bar with <Contact3>
-    When I click the accept call button in conversation list
+    Then I see the incoming call controls for conversation <Contact3>
+    When I accept the call from conversation <Contact3>
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     When <Contact3> stops all calls to me
     And <Contact3> calls me using <CallBackend>
-    When I click the accept call button in conversation list
+    When I accept the call from conversation <Contact3>
     Then I see another call warning modal
     When I click on "Answer" button in another call warning modal
     Then I do not see another call warning modal
-    And I see the incoming calling bar with <Contact3>
+    And I see the incoming call controls for conversation <ChatName1>
     And I see joined group call notification for conversation <Contact3>
     And I do not see joined group call notification for conversation <ChatName1>
     And I see unjoined group call notification for conversation <ChatName1>
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName1 | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GC1       | autocall    | chrome      | 60      |
