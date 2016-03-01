@@ -525,7 +525,7 @@ Feature: Calling
     And <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
     And <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
     When I hang up call with conversation <ChatName>
-    Then I do not see the ongoing call controls for conversation <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Then I do not see the ongoing call controls for conversation <ChatName>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | CallBackend | WaitBackend | Timeout |
