@@ -61,9 +61,11 @@ public class GroupChatInfoPage extends IOSPage {
     public void setGroupChatName(String name) throws Exception {
         final WebElement nameInputField = getElement(nameConversationNameTextField);
         nameInputField.click();
+        nameInputField.clear();
         try {
             ((IOSElement) nameInputField).setValue(name);
         } catch (WebDriverException e) {
+            nameInputField.clear();
             nameInputField.sendKeys(name);
         }
         clickKeyboardCommitButton();
