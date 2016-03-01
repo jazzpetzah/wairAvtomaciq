@@ -27,6 +27,8 @@ public class IOSKeyboard extends BasePage {
 
     private static final By nameKeyboardDeleteButton = By.name("delete");
 
+    private static final int DEFAULT_VISIBILITY_TIMEOUT = 5; //seconds
+
     private KeyboardState getFinalState(List<KeyboardState> statesList, char c) throws Exception {
         String messageChar = "" + c;
 
@@ -52,7 +54,7 @@ public class IOSKeyboard extends BasePage {
     }
 
     public boolean isVisible() throws Exception {
-        return isVisible(3);
+        return isVisible(DEFAULT_VISIBILITY_TIMEOUT);
     }
 
     public void pressSpaceButton() throws Exception {
