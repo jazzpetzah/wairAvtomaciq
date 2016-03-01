@@ -1,18 +1,5 @@
 Feature: Search
 
-  @C2783 @regression @id2147
-  Scenario Outline: Verify search by email [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I open search by taping on it
-    And I input in People picker search field user email <ContactEmail>
-    Then I see the conversation "<ContactName>" exists in Search results
-
-    Examples: 
-      | Name      | ContactEmail | ContactName |
-      | user1Name | user2Email   | user2Name   |
-
   @C2788 @rc @regression @id2926
   Scenario Outline: Verify search by email [LANDSCAPE]
     Given There are 2 users where <Name> is me
@@ -26,19 +13,6 @@ Feature: Search
     Examples: 
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
-
-  @C2784 @regression @id2148
-  Scenario Outline: Verify search by name [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I open search by taping on it
-    And I input in People picker search field user name <Contact>
-    Then I see the conversation "<Contact>" exists in Search results
-
-    Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
 
   @C2789 @rc @regression @id2927
   Scenario Outline: Verify search by name [LANDSCAPE]
@@ -180,22 +154,6 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2785 @regression @id2149
-  Scenario Outline: Verify search by second name (something after space) [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I open search by taping on it
-    And I wait until <LastName> exists in backend search results
-    And I input in People picker search field user name <LastName>
-    Then I see the conversation "<NewName>" exists in Search results
-
-    Examples: 
-      | Name      | Contact   | NewName  | LastName |
-      | user1Name | user2Name | NEW NAME | NAME     |
-
   @C2792 @rc @regression @id2935
   Scenario Outline: Verify search by second name (something after space) [LANDSAPE]
     Given There are 2 users where <Name> is me
@@ -213,21 +171,6 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
-  @C2777 @regression @id2150
-  Scenario Outline: Verify search by part of the name [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I open search by taping on it
-    And I wait until <Contact> exists in backend search results
-    And I input in People picker search field first 5 letters of user name <Contact>
-    Then I see the conversation "<Contact>" exists in Search results
-
-    Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @C2795 @rc @regression @id2945
   Scenario Outline: Verify search by part of the name [LANDSAPE]
     Given There are 2 users where <Name> is me
@@ -243,26 +186,6 @@ Feature: Search
     Examples: 
       | Name      | Contact   | 
       | user1Name | user2Name |
-
-  @C2787 @regression @id2703
-  Scenario Outline: Verify search is possible after selection users from Top People [PORTRAIT]
-    Given There are <UserCount> users where <Name> is me
-    Given Myself is connected to all other users
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
-    And I see top people list on People picker page
-    And I tap on 3 top connections but not <Contact>
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
-    And I tap on conversation <Contact> in search result
-    And I click space keyboard button
-    Then I see that <Number> contacts are selected
-
-    Examples: 
-      | Name      | UserCount | Contact   | Number |
-      | user1Name | 7         | user2Name | 4      |
 
   @C2793 @regression @id2936
   Scenario Outline: Verify search is possible after selection users from Top People [LANDSAPE]

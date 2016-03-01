@@ -191,9 +191,10 @@ Feature: Self Profile
       | Name      | Number        | Code |
       | user1Name | 8301652248706 | +0   |
 
-  @C2854 @regression @id3986
-  Scenario Outline: Verify theme switcher is not shown on the self profile [PORTRAIT]
+  @C2855 @rc @regression @id3986
+  Scenario Outline: Verify theme switcher is not shown on the self profile [LANDSCAPE]
     Given There is 1 user where <Name> is me
+    Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap my avatar
