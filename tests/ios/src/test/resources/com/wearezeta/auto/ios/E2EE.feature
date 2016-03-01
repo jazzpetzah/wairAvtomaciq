@@ -36,7 +36,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName1 | DeviceName2 | DeviceName3 |
       | user1Name | user2Name | Device1     | Device2     | Device3     |
 
-  @C3290 @noAcceptAlert @regression
+  @C3290 @noAcceptAlert @rc @regression
   Scenario Outline: (ZIOS-5741) Verify new device is added to device management after sign in
     Given There is 1 user where <Name> is me
     Given User Myself removes his avatar picture
@@ -123,7 +123,7 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | DeviceName1 | DeviceLabel1 | DeviceName2 | DeviceLabel2 | GroupChatName | VerificationMsg               |
       | user1Name | user2Name | user3Name | Device1     | Label1       | Device2     | Label2       | VerifiedGroup | ALL FINGERPRINTS ARE VERIFIED |
 
-  @C3294 @regression
+  @C3294 @rc @regression
   Scenario Outline: (ZIOS-5787) Verify system message appearance in case of using a new device by friend
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -149,7 +149,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                |
       | user1Name | user2Name | Device2     | Label2       | STARTED USING A NEW DEVICE |
 
-  @C3293 @regression
+  @C3293 @rc @regression
   Scenario Outline: Verify system message appearance in case of using a new device by you
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -250,7 +250,7 @@ Feature: E2EE
       | Name      | Contact1  | ExpectedMsg               |
       | user1Name | user2Name | STARTED USING THIS DEVICE |
 
-  @C14317 @regression
+  @C14317 @rc @regression
   Scenario Outline: First time when 1:1 conversation is degraded - I can ignore alert screen and send messages with resend button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -326,7 +326,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName1 | DeviceName2 | VerificationMsg               |
       | user1Name | user2Name | Device1     | Device2     | ALL FINGERPRINTS ARE VERIFIED |
 
-  @C3291 @regression
+  @C3291 @rc @regression
   Scenario Outline: Verify device management appearance after 7 sign ins
     Given There is 1 user where <Name> is me
     Given User Myself adds new devices <DeviceName1>,<DeviceName2>,<DeviceName3>,<DeviceName4>,<DeviceName5>,<DeviceName6>,<DeviceName7>
@@ -489,7 +489,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName2 | DeviceName1 | ExpectedMessage               |
       | user1Name | user2Name | Device2     | Device1     | ALL FINGERPRINTS ARE VERIFIED |
 
-  @C3498 @regression
+  @C3498 @rc @regression
   Scenario Outline: Verify "learn more" leads to the proper page
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
