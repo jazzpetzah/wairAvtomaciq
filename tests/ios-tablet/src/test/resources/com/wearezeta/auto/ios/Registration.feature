@@ -1,7 +1,8 @@
 Feature: Registration
 
-  @C2761 @regression @id1392
-  Scenario Outline: Automatic email verification [PORTRAIT]
+  @C2768 @rc @regression @id1392
+  Scenario Outline: Automatic email verification [LANDSCAPE]
+    Given I rotate UI to landscape
     Given I see sign in screen
     When I enter name <Name>
     And I enter email <Email>
