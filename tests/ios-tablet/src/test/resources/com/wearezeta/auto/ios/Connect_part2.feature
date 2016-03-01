@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @C2461 @rc @regression @id3223
+  @C2461 @regression @id3223
   Scenario Outline: Verify possibility of disconnecting from conversation list  [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -21,7 +21,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2465 @regression @id3268
+  @C2465 @rc @regression @id3268
   Scenario Outline: Verify possibility of disconnecting from conversation list  [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -41,7 +41,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2462 @regression @rc @id3228
+  @C2462 @regression @id3228
   Scenario Outline: Verify sending connection request after disconnecting [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -67,7 +67,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2466 @regression @id3273
+  @C2466 @rc @regression @id3273
   Scenario Outline: Verify sending connection request after disconnecting [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -130,7 +130,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2437 @rc @regression @id2332 @ZIOS-4985
+  @C2437 @regression @id2332 @ZIOS-4985
   Scenario Outline: Verify ignoring a connection request from another person (People view) [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -154,7 +154,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
-  @C2442 @regression @id3305 @ZIOS-4985
+  @C2442 @rc @regression @id3305 @ZIOS-4985
   Scenario Outline: Verify ignoring a connection request from another person (People view) [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -233,7 +233,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C2513 @regression @id3904
+  @C2513 @rc @regression @id3904
   Scenario Outline: Verify inbox is highlighted and opened in the list [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact3>

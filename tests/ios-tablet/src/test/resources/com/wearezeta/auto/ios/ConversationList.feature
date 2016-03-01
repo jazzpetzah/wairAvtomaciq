@@ -101,7 +101,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
       | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
 
-  @C2502 @regression @rc @id2360
+  @C2502 @regression @id2360
   Scenario Outline: Get invitation message from user [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -254,7 +254,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2553 @regression @id3970
+  @C2553 @rc @regression @id3970
   Scenario Outline: Verify posting in a group conversation without content [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

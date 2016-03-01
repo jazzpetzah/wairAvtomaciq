@@ -1,6 +1,6 @@
 Feature: Search
 
-  @C2783 @regression @rc @id2147
+  @C2783 @regression @id2147
   Scenario Outline: Verify search by email [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given I Sign in on tablet using my email
@@ -13,7 +13,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @C2788 @regression @id2926
+  @C2788 @rc @regression @id2926
   Scenario Outline: Verify search by email [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -27,7 +27,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @C2784 @regression @rc @id2148
+  @C2784 @regression @id2148
   Scenario Outline: Verify search by name [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given I Sign in on tablet using my email
@@ -40,7 +40,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2789 @regression @id2927
+  @C2789 @rc @regression @id2927
   Scenario Outline: Verify search by name [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -93,7 +93,7 @@ Feature: Search
       | Name      | UserCount |
       | user1Name | 2         |
 
-  @C2835 @regression @rc @id2550
+  @C2835 @regression @id2550
   Scenario Outline: Start group chat with users from Top Connections [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -115,7 +115,7 @@ Feature: Search
       | Name      | ConvoName    | UserCount |
       | user1Name | TopGroupTest | 3         |
 
-  @C2840 @regression @id2930
+  @C2840 @rc @regression @id2930
   Scenario Outline: Start group chat with users from Top Connections [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -138,7 +138,7 @@ Feature: Search
       | Name      | ConvoName    |
       | user1Name | TopGroupTest |
 
-  @C2456 @C2778 @regression @rc @id2342 @id1456
+  @C2456 @C2778 @regression @id2342 @id1456
   Scenario Outline: Verify you can unblock someone from search list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -158,7 +158,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2790 @regression @id2931
+  @C2790 @rc @regression @id2931
   Scenario Outline: Verify you can unblock someone from search list [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -180,7 +180,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2785 @regression @rc @id2149
+  @C2785 @regression @id2149
   Scenario Outline: Verify search by second name (something after space) [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -196,7 +196,7 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
-  @C2792 @regression @id2935
+  @C2792 @rc @regression @id2935
   Scenario Outline: Verify search by second name (something after space) [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -213,7 +213,7 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
-  @C2777 @regression @rc @id2150
+  @C2777 @regression @id2150
   Scenario Outline: Verify search by part of the name [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -228,7 +228,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2795 @regression @id2945
+  @C2795 @rc @regression @id2945
   Scenario Outline: Verify search by part of the name [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>

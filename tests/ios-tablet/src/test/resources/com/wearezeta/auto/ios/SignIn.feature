@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @C3119 @regression @rc @id2607
+  @C3119 @regression @id2607
   Scenario Outline: Sign in to ZClient [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I see sign in screen
