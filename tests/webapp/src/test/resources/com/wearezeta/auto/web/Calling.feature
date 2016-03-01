@@ -10,18 +10,20 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
-    And I call
-    And <Contact> accepts next incoming call automatically
+    When I call
+    Then I see the outgoing call controls for conversation <Contact>
+    When <Contact> accepts next incoming call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
-    And I write random message
+    When I write random message
     And I send message
     And I click ping button
     And I send picture <PictureName> to the current conversation
     Then I see random message in conversation
     And I see <PING> action in conversation
     And I see sent picture <PictureName> in the conversation view
-    And I hang up call with conversation <Contact>
+    When I hang up call with conversation <Contact>
+    And I see the ongoing call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING       | PictureName               | CallBackend | Timeout |
@@ -51,7 +53,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | PING   | HOTPING      | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again | chrome      | 60      |
 
-  @C1753 @regression @calling @calling_debug @torun
+  @C1753 @regression @calling @calling_debug
   Scenario Outline: Verify the corresponding conversations list item gets sticky on outgoing call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
