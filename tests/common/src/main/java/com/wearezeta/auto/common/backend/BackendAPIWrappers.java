@@ -25,7 +25,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 // Almost all methods of this class mutate ClientUser
 // argument by performing automatic login (set id and session token attributes)
@@ -678,38 +677,44 @@ public final class BackendAPIWrappers {
     public static void updateConvMutedState(ClientUser user,
                                             ClientUser mutedUser, boolean muted) throws Exception {
         final String convId = getConversationWithSingleUser(user, mutedUser);
-        BackendREST.updateConvSelfInfo(receiveAuthToken(user), convId, null, muted, null);
+        BackendREST.updateConvSelfInfo(receiveAuthToken(user), convId,
+                Optional.of(muted), Optional.empty());
     }
 
     public static void updateGroupConvMutedState(ClientUser user,
                                                  String groupConvName, boolean muted) throws Exception {
-        BackendREST.updateConvSelfInfo(receiveAuthToken(user), getConversationIdByName(user, groupConvName), null,
-                muted, null);
+        BackendREST.updateConvSelfInfo(receiveAuthToken(user), getConversationIdByName(user, groupConvName),
+                Optional.of(muted), Optional.empty());
     }
 
     public static void archiveUserConv(ClientUser ownerUser, ClientUser archivedUser) throws Exception {
         final String convId = getConversationWithSingleUser(ownerUser, archivedUser);
-        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), convId, null, null, true);
+        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), convId,
+                Optional.empty(), Optional.of(true));
     }
 
     public static void archiveGroupConv(ClientUser selfUser, String conversationToArchive) throws Exception {
-        BackendREST.updateConvSelfInfo(receiveAuthToken(selfUser), conversationToArchive, null, null, true);
+        BackendREST.updateConvSelfInfo(receiveAuthToken(selfUser), conversationToArchive,
+                Optional.empty(), Optional.of(true));
     }
 
     public static void unarchiveUserConv(ClientUser ownerUser,
                                          ClientUser archivedUser) throws Exception {
         final String convId = getConversationWithSingleUser(ownerUser, archivedUser);
-        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), convId, null, null, false);
+        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), convId,
+                Optional.empty(), Optional.of(false));
     }
 
     public static void unarchiveGroupConv(ClientUser ownerUser,
                                           String conversationToUnarchive) throws Exception {
         tryLoginByUser(ownerUser);
-        BackendREST.updateConvSelfInfo(generateAuthToken(ownerUser), conversationToUnarchive, null, null, false);
+        BackendREST.updateConvSelfInfo(generateAuthToken(ownerUser), conversationToUnarchive,
+                Optional.empty(), Optional.of(false));
     }
 
     public static class NoContactsFoundException extends Exception {
         private static final long serialVersionUID = -7682778364420522320L;
+
         public NoContactsFoundException(String msg) {
             super(msg);
         }
@@ -733,8 +738,8 @@ public final class BackendAPIWrappers {
             Thread.sleep(1000);
         }
         throw new NoContactsFoundException(String.format(
-                        "%s contact(s) '%s' were not found within %s second(s) timeout",
-                        expectedCount, query, timeoutSeconds));
+                "%s contact(s) '%s' were not found within %s second(s) timeout",
+                expectedCount, query, timeoutSeconds));
     }
 
     public static void waitUntilTopPeopleContactsFound(ClientUser searchByUser,
@@ -744,7 +749,7 @@ public final class BackendAPIWrappers {
         int currentCount;
         while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
             final JSONObject searchResult = BackendREST.searchForTopPeopleContacts(receiveAuthToken(searchByUser),
-                            size);
+                    size);
             if (searchResult.has("documents") && (searchResult.get("documents") instanceof JSONArray)) {
                 currentCount = searchResult.getJSONArray("documents").length();
             } else {
@@ -756,8 +761,8 @@ public final class BackendAPIWrappers {
             Thread.sleep(1000);
         }
         throw new NoContactsFoundException(String.format(
-                        "%s contact(s) '%s' were not found within %s second(s) timeout",
-                        expectedCount, size, timeoutSeconds));
+                "%s contact(s) '%s' were not found within %s second(s) timeout",
+                expectedCount, size, timeoutSeconds));
     }
 
     public static void waitUntilContactNotFound(ClientUser searchByUser,
@@ -775,8 +780,8 @@ public final class BackendAPIWrappers {
             Thread.sleep(1000);
         } while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000);
         throw new AssertionError(String.format(
-                        "%s contact(s) '%s' are still found after %s second(s) timeout",
-                        currentCount, query, timeoutSeconds));
+                "%s contact(s) '%s' are still found after %s second(s) timeout",
+                currentCount, query, timeoutSeconds));
     }
 
     public static void sendPersonalInvitation(ClientUser ownerUser,

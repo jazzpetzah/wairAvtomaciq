@@ -3,6 +3,8 @@ package com.wearezeta.auto.common.backend;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.ws.rs.core.GenericType;
@@ -585,24 +587,35 @@ final class BackendREST {
         restHandlers.httpPut(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK});
     }
 
-    public static void updateConvSelfInfo(AuthToken token, String convId,
-                                          String lastRead, Boolean muted, Boolean archived) throws Exception {
-        Builder webResource = buildDefaultRequestWithAuth(
-                String.format("conversations/%s/self", convId),
+    private static String getCurrentISO8601Time() {
+        final TimeZone tz = TimeZone.getTimeZone("UTC");
+        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        df.setTimeZone(tz);
+        return df.format(new Date());
+    }
+
+    public static void updateConvSelfInfo(AuthToken token, String convId, Optional<Boolean> muted,
+                                          Optional<Boolean> archived) throws Exception {
+        Builder webResource = buildDefaultRequestWithAuth(String.format("conversations/%s/self", convId),
                 MediaType.APPLICATION_JSON, token);
         JSONObject requestBody = new JSONObject();
-        if (lastRead != null) {
-            requestBody.put("last_read", lastRead);
+        if (muted.isPresent()) {
+            // TODO: remove deprecated
+            requestBody.put("muted", muted.get());
+
+            requestBody.put("otr_muted", muted.get());
+            requestBody.put("otr_muted_ref", getCurrentISO8601Time());
         }
-        if (muted != null) {
-            requestBody.put("muted", (boolean) muted);
-        }
-        if (archived != null) {
-            if (archived) {
+        if (archived.isPresent()) {
+            // TODO: remove deprecated
+            if (archived.get()) {
                 requestBody.put("archived", BackendREST.getLastEventFromConversation(token, convId));
             } else {
                 requestBody.put("archived", "false");
             }
+
+            requestBody.put("otr_archived", archived.get());
+            requestBody.put("otr_archived_ref", getCurrentISO8601Time());
         }
         restHandlers.httpPut(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK, HttpStatus.SC_CREATED});
     }
