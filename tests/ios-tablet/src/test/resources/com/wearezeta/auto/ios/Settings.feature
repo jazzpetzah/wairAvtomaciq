@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @C2889 @regression @rc @id2587
+  @C2889 @regression @id2587
   Scenario Outline: Verify user can access settings [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -29,7 +29,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C2890 @regression @id2588
+  @C2890 @rc @regression @id2588
   Scenario Outline: Attempt to open About screen in settings [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email

@@ -1,6 +1,6 @@
 Feature: Search
 
-  @C2803 @rc @regression @id3289
+  @C2803 @regression @id3289
   Scenario Outline: Verify starting a call with action button [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -16,7 +16,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2804 @regression @id3290
+  @C2804 @rc @regression @id3290
   Scenario Outline: Verify starting a call with action button [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

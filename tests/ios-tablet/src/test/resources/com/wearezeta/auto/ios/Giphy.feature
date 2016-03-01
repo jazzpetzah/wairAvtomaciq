@@ -1,6 +1,6 @@
 Feature: Giphy
 
-  @C2686 @rc @regression @id2961
+  @C2686 @regression @id2961
   Scenario Outline: Verify preview is opened after tapping on GIF button [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -14,7 +14,7 @@ Feature: Giphy
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Wow      |
 
-  @C2696 @regression @id3249
+  @C2696 @rc @regression @id3249
   Scenario Outline: Verify preview is opened after tapping on GIF button [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

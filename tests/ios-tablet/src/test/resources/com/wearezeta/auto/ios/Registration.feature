@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @C2761 @regression @rc @id1392
+  @C2761 @regression @id1392
   Scenario Outline: Automatic email verification [PORTRAIT]
     Given I see sign in screen
     When I enter name <Name>

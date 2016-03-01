@@ -20,7 +20,7 @@ Feature: Self Profile
       | Name      | NewUsername                                                          | NewUsername1                                                     |
       | user1Name | mynewusernamewithmorethan64characters3424245345345354353452345234535 | mynewusernamewithmorethan64characters342424534534535435345234523 |
 
-  @C2869 @regression @rc @id2574
+  @C2869 @regression @id2574
   Scenario Outline: Change your profile picture [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -39,7 +39,7 @@ Feature: Self Profile
       | Name      | Timeout |
       | user1Name | 60      |
 
-  @C2875 @regression @id3159
+  @C2875 @rc @regression @id3159
   Scenario Outline: Change your profile picture [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -59,7 +59,7 @@ Feature: Self Profile
       | Name      | Timeout |
       | user1Name | 60      |
 
-  @C2878 @regression @rc @id2582
+  @C2878 @regression @id2582
   Scenario Outline: Attempt to enter a name with 0 chars [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -94,7 +94,7 @@ Feature: Self Profile
       | Name      | username1char | username2chars |
       | user1Name | c             | AB             |
 
-  @C2888 @regression @id3163
+  @C2888 @rc @regression @id3163
   Scenario Outline: Verify name change [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -114,7 +114,7 @@ Feature: Self Profile
       | Name      | NewUsername | Contact   |
       | user1Name | NewName     | user2Name |
 
-  @C2856 @regression @rc @id2571
+  @C2856 @regression @id2571
   Scenario Outline: Verify changing and applying accent color [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -129,7 +129,7 @@ Feature: Self Profile
       | Name      | Color1 | Color2          | Contact   |
       | user1Name | Violet | StrongLimeGreen | user2Name |
 
-  @C2860 @rc @regression @id3850
+  @C2860 @regression @id3850
   Scenario Outline: Verify adding phone number to the contact signed up with email [PORTRAIT]
     Given There is 1 users where <Name> is me with email only
     Given I Sign in on tablet using my email
@@ -191,7 +191,7 @@ Feature: Self Profile
       | Name      | Number        | Code |
       | user1Name | 8301652248706 | +0   |
 
-  @C2854 @regression @rc @id3986
+  @C2854 @regression @id3986
   Scenario Outline: Verify theme switcher is not shown on the self profile [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
