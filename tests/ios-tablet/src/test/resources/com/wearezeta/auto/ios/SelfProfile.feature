@@ -1,25 +1,5 @@
 Feature: Self Profile
 
-  @C2882 @regression @id2586
-  Scenario Outline: Self profile. Verify max limit in 64 chars [PORTRAIT]
-    Given There is 1 user where <Name> is me
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap my avatar
-    And I tap to edit my name
-    And I change my name to <NewUsername>
-    Then I see my new name <NewUsername1>
-    When I close self profile
-    When I see conversations list
-    And I tap my avatar
-    And I tap to edit my name
-    And I change my name to <NewUsername>
-    Then I see my new name <NewUsername1>
-
-    Examples:
-      | Name      | NewUsername                                                          | NewUsername1                                                     |
-      | user1Name | mynewusernamewithmorethan64characters3424245345345354353452345234535 | mynewusernamewithmorethan64characters342424534534535435345234523 |
-
   @C2883 @regression @id3157
   Scenario Outline: Self profile. Verify max limit in 64 chars [LANDSCAPE]
     Given There is 1 user where <Name> is me
@@ -95,41 +75,6 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C2885 @regression @id3160
-  Scenario Outline: Attempt to enter a name with 0 chars [LANDSCAPE]
-    Given There is 1 user where <Name> is me
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap my avatar
-    And I tap to edit my name
-    And I attempt to input an empty name and press return
-    And I see error message asking for more characters
-    And I attempt to input an empty name and tap the screen
-    And I see error message asking for more characters
-
-    Examples:
-      | Name      |
-      | user1Name |
-
-  @C2879 @regression @id2583
-  Scenario Outline: Verify 2 chars limit [PORTRAIT]
-    Given There is 1 user where <Name> is me
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap my avatar
-    And I tap to edit my name
-    And I attempt to enter <username1char> and press return
-    Then I see error message asking for more characters
-    And I attempt to enter <username1char> and tap the screen
-    And I see error message asking for more characters
-    And I attempt to enter <username2chars> and press return
-    Then I see my new name <username2chars>
-
-    Examples:
-      | Name      | username1char | username2chars |
-      | user1Name | c             | AB             |
-
   @C2886 @regression @id3161
   Scenario Outline: Verify 2 chars limit [LANDSCAPE]
     Given There is 1 user where <Name> is me
@@ -148,25 +93,6 @@ Feature: Self Profile
     Examples:
       | Name      | username1char | username2chars |
       | user1Name | c             | AB             |
-
-  @C2887 @regression @id3162
-  Scenario Outline: Verify name change [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User <Name> sends 1 encrypted message to user <Contact>
-    When I tap my avatar
-    And I tap to edit my name
-    And I change my name to <NewUsername>
-    And I close self profile
-    And I see conversations list
-    And I tap on contact name <Contact>
-    Then I see my user name <NewUsername> in conversation
-
-    Examples:
-      | Name      | NewUsername | Contact   |
-      | user1Name | NewName     | user2Name |
 
   @C2888 @regression @id3163
   Scenario Outline: Verify name change [LANDSCAPE]
@@ -203,22 +129,6 @@ Feature: Self Profile
       | Name      | Color1 | Color2          | Contact   |
       | user1Name | Violet | StrongLimeGreen | user2Name |
 
-  @C2858 @regression @id3191
-  Scenario Outline: Verify changing and applying accent color [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given User <Name> change accent color to <Color1>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap my avatar
-    And I slide my accent color via the colorpicker from <Color1> to <Color2>
-    And I close self profile
-
-    Examples:
-      | Name      | Color1 | Color2          | Contact   |
-      | user1Name | Violet | StrongLimeGreen | user2Name |
-
   @C2860 @rc @regression @id3850
   Scenario Outline: Verify adding phone number to the contact signed up with email [PORTRAIT]
     Given There is 1 users where <Name> is me with email only
@@ -232,46 +142,6 @@ Feature: Self Profile
     And I see country picker button on Sign in screen
     And I enter phone number and verification code
     Then I see phone number attached to profile
-
-    Examples:
-      | Name      |
-      | user1Name |
-
-  @C2859 @regression @id3848
-  Scenario Outline: Verify adding phone number to the contact signed up with email [LANDSCAPE]
-    Given There is 1 users where <Name> is me with email only
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I click Not Now to not add phone number
-    Given I accept First Time overlay if it is visible
-    Given I dismiss settings warning
-    Given I see conversations list
-    When I tap my avatar
-    And I tap to add my phone number
-    And I see country picker button on Sign in screen
-    And I enter phone number and verification code
-    Then I see phone number attached to profile
-
-    Examples:
-      | Name      |
-      | user1Name |
-
-  @C2863 @regression @noAcceptAlert @id3855
-  Scenario Outline: Verify error message appears in case of entering a not valid phone number [PORTRAIT]
-    Given There is 1 users where <Name> is me with email only
-    Given I Sign in on tablet using my email
-    Given I accept alert
-    Given I click Not Now to not add phone number
-    Given I accept alert
-    Given I accept First Time overlay if it is visible
-    Given I accept alert
-    Given I dismiss settings warning
-    Given I see conversations list
-    When I tap my avatar
-    And I tap to add my phone number
-    And I see country picker button on Sign in screen
-    And I enter invalid phone number
-    Then I see invalid phone number alert
 
     Examples:
       | Name      |
@@ -299,27 +169,6 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C2865 @regression @noAcceptAlert @id3861 @ZIOS-5836
-  Scenario Outline: Verify error message appears in case of registering already taken phone number [PORTRAIT]
-    Given There is 1 users where <Name> is me with email only
-    Given I Sign in on tablet using my email
-    Given I accept alert
-    Given I click Not Now to not add phone number
-    Given I accept alert
-    Given I accept First Time overlay if it is visible
-    Given I accept alert
-    Given I dismiss settings warning
-    Given I see conversations list
-    When I tap my avatar
-    And I tap to add my phone number
-    And I see country picker button on Sign in screen
-    And I input phone number <Number> with code <Code>
-    Then I see already registered phone number alert
-
-    Examples:
-      | Name      | Number        | Code |
-      | user1Name | 8301652248706 | +0   |
-
   @C2866 @regression @noAcceptAlert @id3862 @ZIOS-5836
   Scenario Outline: Verify error message appears in case of registering already taken phone number [LANDSCAPE]
     Given There is 1 users where <Name> is me with email only
@@ -345,19 +194,6 @@ Feature: Self Profile
   @C2854 @regression @rc @id3986
   Scenario Outline: Verify theme switcher is not shown on the self profile [PORTRAIT]
     Given There is 1 user where <Name> is me
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap my avatar
-    Then I dont see theme switcher button on self profile page
-
-    Examples:
-      | Name      |
-      | user1Name |
-
-  @C2855 @regression @id3989
-  Scenario Outline: Verify theme switcher is not shown on the self profile [LANDSCAPE]
-    Given There is 1 user where <Name> is me
-    Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap my avatar

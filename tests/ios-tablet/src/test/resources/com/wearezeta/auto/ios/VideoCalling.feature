@@ -61,7 +61,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend  |
       | user1Name | user2Name | chrome		 |
 
-  @C28855 @calling_basic
+  @C28855 @rc @calling_basic
   Scenario Outline: Verify ignoring Video call [LANDSCAPE]
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

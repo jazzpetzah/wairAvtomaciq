@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @C2461 @regression @id3223
+  @C2461 @rc @regression @id3223
   Scenario Outline: Verify possibility of disconnecting from conversation list  [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -130,7 +130,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2437 @regression @id2332 @ZIOS-4985
+  @C2437 @rc @regression @id2332 @ZIOS-4985
   Scenario Outline: Verify ignoring a connection request from another person (People view) [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>

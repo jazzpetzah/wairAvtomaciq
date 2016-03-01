@@ -185,7 +185,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2729 @regression @id2451
+  @C2729 @rc @regression @id2451
   Scenario Outline: Verify archiving conversation from ellipsis menu [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
