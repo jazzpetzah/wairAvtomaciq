@@ -142,7 +142,7 @@ public class CallingOverlayPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMuteButtonNotSelected);
     }
 
-    public BufferedImage getMuteButtonScrenshot() throws Exception {
+    public BufferedImage getMuteButtonScreenshot() throws Exception {
         return this.getElementScreenshot(getElement(nameMuteCallButton)).orElseThrow(
                 () -> new IllegalStateException("Cannot take a screenshot of Mute button")
         );
