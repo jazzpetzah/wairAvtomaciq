@@ -13,19 +13,55 @@ public class CallPage extends ContactListPage {
         super(lazyDriver);
     }
     
-    public boolean isVisibleForConversation(
+    public boolean isIncomingCallVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathUserNameByConversationName
+        final String locator = WebAppLocators.CallPage.xpathIncomingCallByConversationName
                 .apply(conversationName);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(locator));
     }
     
-    public boolean isNotVisibleForConversation(
+    public boolean isIncomingCallNotVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathUserNameByConversationName
+        final String locator = WebAppLocators.CallPage.xpathIncomingCallByConversationName
+                .apply(conversationName);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.xpath(locator));
+    }
+    
+    public boolean isOutgoingCallVisibleForConversation(
+            String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        final String locator = WebAppLocators.CallPage.xpathOutgoingCallByConversationName
+                .apply(conversationName);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(locator));
+    }
+    
+    public boolean isOutgoingCallNotVisibleForConversation(
+            String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        final String locator = WebAppLocators.CallPage.xpathOutgoingCallByConversationName
+                .apply(conversationName);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.xpath(locator));
+    }
+    
+    public boolean isOngoingCallVisibleForConversation(
+            String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        final String locator = WebAppLocators.CallPage.xpathOngoingCallByConversationName
+                .apply(conversationName);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(locator));
+    }
+    
+    public boolean isOngoingCallNotVisibleForConversation(
+            String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        final String locator = WebAppLocators.CallPage.xpathOngoingCallByConversationName
                 .apply(conversationName);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.xpath(locator));
@@ -151,7 +187,7 @@ public class CallPage extends ContactListPage {
     public void clickDeclineCallButton(String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         final String locator = WebAppLocators.CallPage.xpathDeclineCallButtonByConversationName.apply(conversationName);
-        WebElement declineCallButton = getDriver().findElementByCssSelector(locator);
+        WebElement declineCallButton = getDriver().findElementByXPath(locator);
         declineCallButton.click();
     }
 
@@ -165,7 +201,7 @@ public class CallPage extends ContactListPage {
     public void clickMuteCallButton(String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         final String locator = WebAppLocators.CallPage.xpathMuteCallButtonByConversationName.apply(conversationName);
-        WebElement muteCallButton = getDriver().findElementByCssSelector(locator);
+        WebElement muteCallButton = getDriver().findElementByXPath(locator);
         muteCallButton.click();
     }
 

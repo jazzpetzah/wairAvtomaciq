@@ -15,33 +15,48 @@ public class CallPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
             .getInstance();
-    
+
     /**
      * Verifies visibility of call controls for the given conversation
      *
-     * @throws Throwable
-     * @step. ^I( do not)? see the call controls for conversation (.*)$
+     * @throws Exception
+     * @step. ^I( do not)? see the (incoming|outgoing|ongoing) call controls for conversation (.*)$
      */
-    @And("^I( do not)? see the call controls for conversation (.*)$")
-    public void IClickAcceptCallButtonInConversationView(String doNot, String conversation) throws Throwable {
+    @And("^I( do not)? see the (incoming|outgoing|ongoing) call controls for conversation (.*)$")
+    public void IClickAcceptCallButtonInConversationView(String doNot, String direction, String conversation) throws Exception {
         conversation = usrMgr.replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         CallPage page = webappPagesCollection.getPage(CallPage.class);
-        if (doNot == null) {
-            page.isVisibleForConversation(conversation);
-        } else {
-            page.isNotVisibleForConversation(conversation);
+        if (direction.equals("incoming")) {
+            if (doNot == null) {
+                page.isIncomingCallVisibleForConversation(conversation);
+            } else {
+                page.isIncomingCallNotVisibleForConversation(conversation);
+            }
+        } else if (direction.equals("incoming")) {
+            if (doNot == null) {
+                page.isOutgoingCallVisibleForConversation(conversation);
+            } else {
+                page.isOutgoingCallNotVisibleForConversation(conversation);
+            }
+        } else if (direction.equals("ongoing")) {
+            if (doNot == null) {
+                page.isOngoingCallVisibleForConversation(conversation);
+            } else {
+                page.isOngoingCallNotVisibleForConversation(conversation);
+            }
         }
+
     }
 
     /**
      * Click the accept call button in conversation list
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I click the accept call button in conversation list$
      * @step. ^I accept the call from conversation (.*)$
      */
     @And("^I accept the call from conversation (.*)$")
-    public void IClickAcceptCallButtonInConversationView(String conversation) throws Throwable {
+    public void IClickAcceptCallButtonInConversationView(String conversation) throws Exception {
         conversation = usrMgr.replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         webappPagesCollection.getPage(CallPage.class)
                 .clickAcceptVideoCallButton(conversation);
@@ -50,12 +65,12 @@ public class CallPageSteps {
     /**
      * Click the decline call button in conversation list
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I click the decline call button in conversation list$
      * @step. ^I ignore the call from conversation (.*)$
      */
     @And("^I ignore the call from conversation (.*)$")
-    public void IClickDeclineCallButtonInConversationView(String conversation) throws Throwable {
+    public void IClickDeclineCallButtonInConversationView(String conversation) throws Exception {
         conversation = usrMgr.replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         webappPagesCollection.getPage(CallPage.class)
                 .clickDeclineCallButton(conversation);

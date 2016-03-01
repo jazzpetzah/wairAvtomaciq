@@ -6,14 +6,14 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
-    Given <Contact> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I call
+    And <Contact> accepts next incoming call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the call controls for conversation <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And I write random message
     And I send message
     And I click ping button
@@ -33,25 +33,25 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
-    Given <Contact> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I call
+    And <Contact> accepts next incoming call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the outgoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And User <Contact> pinged in the conversation with <Contact>
     And I see <PING> action in conversation
     And User <Contact> pinged twice in the conversation with <Contact>
     And I see <HOTPING> action in conversation
-    And I click end call button from conversation list
+    And I hang up call with conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | HOTPING      | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again | chrome      | 60      |
 
-  @C1753 @regression @calling @calling_debug
+  @C1753 @regression @calling @calling_debug @torun
   Scenario Outline: Verify the corresponding conversations list item gets sticky on outgoing call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -64,7 +64,7 @@ Feature: Calling
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
     And I call
-    And I see the outgoing calling bar with <Contact>
+    And I see the outgoing call controls for conversation <Contact>
     And I see conversation <Contact1> is on the top
     Then <Contact1> accepts next incoming call automatically
     And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -118,7 +118,7 @@ Feature: Calling
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the outgoing calling bar with <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And I click end call button from conversation list
     Then <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
@@ -301,13 +301,13 @@ Feature: Calling
     When I open conversation with <ChatName1>
     And I call
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    And I see the outgoing calling bar with <Contact1>,<Contact2>
+    And I see the outgoing call controls for conversation <ChatName1>
     And I see joined group call notification for conversation <ChatName1>
     When <Contact4> calls <ChatName2> using <CallBackend>
     Then I see the incoming calling bar with <Contact4>
     When I click the decline call button in conversation list with <Contact4>
     And I open conversation with <ChatName1>
-    Then I see the outgoing calling bar with <Contact1>,<Contact2>
+    And I see the outgoing call controls for conversation <ChatName1>
     Then I do not see the incoming calling bar with <Contact4>
     When <Contact4> stops all calls to <ChatName2>
     And <Contact4> calls <ChatName2> using <CallBackend>
@@ -406,7 +406,6 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact2> starts waiting instance using <CallWaitBackend>
-    Given <Contact2> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -415,7 +414,8 @@ Feature: Calling
     When I click the decline call button in conversation list
     Then I do not see the incoming calling bar with <Contact2>
     When I call
-    And I see the outgoing calling bar with <Contact2>
+    And I see the outgoing call controls for conversation <Contact2>
+    When <Contact2> accepts next incoming call automatically
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing calling bar with <Contact2>
     When I click end call button from conversation list
@@ -470,9 +470,9 @@ Feature: Calling
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I call
-    And I see the outgoing calling bar with <Contact>
+    And I see outgoing the call controls for conversation <Contact>
     And I wait for 60 seconds
-    Then I do not see the outgoing calling bar with <Contact>
+    And I do not see the outgoing call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -492,9 +492,9 @@ Feature: Calling
     And I open conversation with <ChatName>
     When I call
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    And I see the outgoing calling bar with <Contact1>,<Contact2>
+    And I see the ongoing call controls for conversation <ChatName>
     When I click end call button from conversation list
-    Then I do not see the outgoing calling bar with <Contact1>,<Contact2>
+    And I do not see the ongoing call controls for conversation <ChatName>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
 
     Examples: 
@@ -619,13 +619,13 @@ Feature: Calling
     And I open conversation with <ChatName>
     When I call
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    Then I see the outgoing calling bar with <ChatName>
+    And I see the ongoing call controls for conversation <ChatName>
     When I click end call button from conversation list
-    Then I do not see the outgoing calling bar with <ChatName>
+    And I do not see the ongoing call controls for conversation <ChatName>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     When I join call
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    Then I see the ongoing calling bar with <ChatName>
+    And I see the ongoing call controls for conversation <ChatName>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend | Timeout |
