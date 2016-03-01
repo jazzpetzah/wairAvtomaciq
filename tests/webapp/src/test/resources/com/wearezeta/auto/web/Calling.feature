@@ -518,13 +518,13 @@ Feature: Calling
     When <Contact1> calls <ChatName> using <CallBackend>
     And <Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    And I see the incoming call controls for conversation <Chatname>
-    When I accept the call from conversation <Contact1>
-    Then I see the ongoing call controls for conversation <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    And I see the incoming call controls for conversation <ChatName>
+    When I accept the call from conversation <ChatName>
+    Then I see the ongoing call controls for conversation <ChatName>
     And I wait for 10 seconds
     And <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
     And <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
-    When I hang up call with conversation <Chatname>
+    When I hang up call with conversation <ChatName>
     Then I do not see the ongoing call controls for conversation <Contact1>,<Contact2>,<Contact3>,<Contact4>
 
     Examples:
@@ -575,9 +575,9 @@ Feature: Calling
     And I open conversation with <ChatName>
     When I call
     And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
-    And I see the ongoing call controls for conversation <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    And I see the ongoing call controls for conversation <ChatName>
     When I hang up call with conversation <ChatName>
-    Then I do not see the ongoing call controls for conversation Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Then I do not see the ongoing call controls for conversation <ChatName>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
@@ -601,7 +601,7 @@ Feature: Calling
     When I ignore the call from conversation <Contact1>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    Then I do not see the incoming call controls for conversation <Chatname>
+    Then I do not see the incoming call controls for conversation <ChatName>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
@@ -710,12 +710,12 @@ Feature: Calling
     When I open conversation with <ChatName1>
     And I call
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    And I see the outgoing call controls for conversation <Contact1>,<Contact2>
+    And I see the outgoing call controls for conversation <ChatName1>
     And I see joined group call notification for conversation <ChatName1>
     When <Contact3> calls me using <CallBackend>
     Then I see the incoming call controls for conversation <Contact3>
     When I ignore the call from conversation <Contact3>
-    Then I see the outgoing call controls for conversation <Contact1>,<Contact2> or <ChatName1>
+    Then I see the outgoing call controls for conversation <ChatName1>
     Then I do not see the incoming call controls for conversation <Contact3>
     When <Contact3> stops all calls to me
     And <Contact3> calls me using <CallBackend>
@@ -737,7 +737,7 @@ Feature: Calling
     Then I see another call warning modal
     When I click on "Answer" button in another call warning modal
     Then I do not see another call warning modal
-    And I see the incoming call controls for conversation <Contact3>
+    And I see the incoming call controls for conversation <ChatName1>
     And I see joined group call notification for conversation <Contact3>
     And I do not see joined group call notification for conversation <ChatName1>
     And I see unjoined group call notification for conversation <ChatName1>
