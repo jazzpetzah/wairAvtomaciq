@@ -66,13 +66,13 @@ Feature: Calling
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
     And I call
-    And I see the outgoing call controls for conversation <Contact>
+    And I see the outgoing call controls for conversation <Contact1>
     And I see conversation <Contact1> is on the top
     Then <Contact1> accepts next incoming call automatically
     And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact1> is on the top
-    And I hang up call with conversation <Contact2>
+    And I hang up call with conversation <Contact1>
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
 
@@ -92,9 +92,9 @@ Feature: Calling
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
     And <Contact1> calls me using <CallBackend>
-    And I see the incoming call controls for conversation <Contact2>
-    #And I see conversation <Contact1> is on the top
-    When I accept the call from conversation <Contact2>
+    And I see the incoming call controls for conversation <Contact1>
+    And I see conversation <Contact1> is on the top
+    When I accept the call from conversation <Contact1>
     Then I see the ongoing call controls for conversation <Contact1>
     #And I see conversation <Contact1> is on the top
     When User <Contact2> pinged in the conversation with <Contact2>

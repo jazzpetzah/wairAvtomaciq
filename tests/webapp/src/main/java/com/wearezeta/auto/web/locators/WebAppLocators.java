@@ -95,13 +95,6 @@ public final class WebAppLocators {
 
         public static final String cssSelfProfileAvatar = "[data-uie-name='go-self-profile'] :first-child";
 
-        public static final String xpathOngoingCallListItem = "//div[@data-uie-name='item-call']";
-
-        public static final Function<String, String> xpathOngoingCallListItemWithConvName = (
-                name) -> String.format(
-                "//div[@data-uie-name='item-call' and @data-uie-value='%s']",
-                name);
-
         public static final String xpathContactListEntries = xpathParentContactListItem
                 + "//*[@data-uie-name='item-conversation' or @data-uie-name='item-call']";
 
@@ -223,13 +216,13 @@ public final class WebAppLocators {
         public static final Function<String, String> xpathAcceptVideoCallButtonByConversationName = (
                 name) -> String
                 .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
-                                + "*//*[@data-uie-name='do-call-controls-call-accept']",
+                                + "*/parent::*//*[@data-uie-name='do-call-controls-call-accept']",
                         name);
 
         public static final Function<String, String> xpathDeclineCallButtonByConversationName = (
                 name) -> String
                 .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
-                                + "*//*[@data-uie-name='do-call-controls-call-decline']",
+                                + "*/parent::*//*[@data-uie-name='do-call-controls-call-decline']",
                         name);
         
         public static final String xpathMuteCallButtonPressed = "//div[@data-uie-name='do-call-mute'" +
