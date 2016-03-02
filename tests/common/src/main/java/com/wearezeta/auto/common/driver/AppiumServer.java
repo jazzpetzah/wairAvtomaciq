@@ -8,8 +8,8 @@ import java.io.File;
 import java.net.InetAddress;
 import java.util.concurrent.TimeUnit;
 
-public class AppiumServerTools {
-    private static final Logger log = ZetaLogger.getLog(AppiumServerTools.class.getSimpleName());
+public class AppiumServer {
+    private static final Logger log = ZetaLogger.getLog(AppiumServer.class.getSimpleName());
 
     private static final int PORT = 4723;
     private static final int RESTART_TIMEOUT = 30000; // milliseconds
@@ -51,7 +51,7 @@ public class AppiumServerTools {
     private static final String COMMAND_TIMEOUT = "500"; // in seconds
     private static final String LOG_PATH = "/usr/local/var/log/appium/appium.log";
 
-    private static final String[] CMDLINE_IOS = new String[]{
+    private static final String[] DEFAULT_CMDLINE = new String[]{
             MAIN_EXECUTABLE_PATH,
             "--command-timeout", COMMAND_TIMEOUT,
             "--port", Integer.toString(PORT),
@@ -81,15 +81,19 @@ public class AppiumServerTools {
     public static synchronized void resetIOSSimulator() throws Exception {
         Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9",
                 "Simulator", "configd_sim", "ids_simd", "launchd_sim", "instruments"}).waitFor(2, TimeUnit.SECONDS);
-        restartAppium(CMDLINE_IOS);
+        restart();
     }
 
     public static synchronized void resetIOSRealDevice() throws Exception {
         Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "instruments"}).waitFor(2, TimeUnit.SECONDS);
-        restartAppium(CMDLINE_IOS);
+        restart();
     }
 
-    private static void restartAppium(String[] cmdLine) throws Exception {
+    public static void restart() throws Exception {
+        restart(DEFAULT_CMDLINE);
+    }
+
+    private static void restart(String[] cmdLine) throws Exception {
         final String hostname = InetAddress.getLocalHost().getHostName();
         log.warn(String.format("Trying to restart Appium server on %s:%s...", hostname, PORT));
 
@@ -112,5 +116,9 @@ public class AppiumServerTools {
 
         log.info(String.format("Appium server has been successfully restarted after %.1f seconds " +
                 "and now is listening on %s:%s", (System.currentTimeMillis() - msStarted) / 1000.0, hostname, PORT));
+    }
+
+    public static boolean isRunning() throws Exception {
+        return waitUnlessIsRunning(5);
     }
 }

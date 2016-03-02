@@ -135,7 +135,7 @@ Feature: VideoCalling
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
-    And <Contact> stops all calls to me
+    And <Contact> stops calling me
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
     When <Contact> starts a video call to me
@@ -143,7 +143,7 @@ Feature: VideoCalling
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
-    And <Contact> stops all calls to me
+    And <Contact> stops calling me
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
 
@@ -159,8 +159,7 @@ Feature: VideoCalling
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When I open search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I tap Video Call action button on People Picker page
@@ -204,7 +203,7 @@ Feature: VideoCalling
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When <Contact> starts a video call to me using <CallBackend>
+    When <Contact> starts a video call to me
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
@@ -227,7 +226,7 @@ Feature: VideoCalling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
-    When <Contact> starts a video call to me using <CallBackend>
+    When <Contact> starts a video call to me
     And I see incoming call
     And I swipe to ignore the call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
@@ -240,7 +239,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout | ExpectedMsg     |
       | user1Name | user2Name | chrome      | 30      | Try again later |
 
-  @C48236 @staging
+  @C48236 @calling_advanced
   Scenario Outline: Verify I can start video call after another my call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -283,7 +282,7 @@ Feature: VideoCalling
       | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Name | user2Name | user3Name | chrome      | 30      |
 
-  @C49972 @staging
+  @C49972 @calling_advanced
   Scenario Outline: Verify you cannot make video call to user A while he makes audio call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

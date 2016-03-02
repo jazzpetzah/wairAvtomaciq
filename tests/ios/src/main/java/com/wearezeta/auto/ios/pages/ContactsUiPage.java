@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -13,7 +14,7 @@ public class ContactsUiPage extends IOSPage {
 
     private static final By xpathSearchInput = By.xpath("//UIATextView[UIAStaticText[@name='SEARCH BY NAME']]");
 
-    private static final By nameInviteOthersButton = By.name("INVITE OTHERS");
+    private static final By nameInviteOthersButton = MobileBy.AccessibilityId("INVITE OTHERS");
 
     private static final Function<String, String> xpathStrConvoCellByName = name ->
             String.format("//UIATableCell[@name='%s'][preceding::UIAButton[@name='ContactsViewCloseButton']]", name);

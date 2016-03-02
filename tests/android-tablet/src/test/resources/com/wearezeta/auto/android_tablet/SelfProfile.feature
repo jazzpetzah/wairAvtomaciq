@@ -7,7 +7,7 @@ Feature: Self Profile
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
-    When I tap my avatar on top of conversations list
+    When I tap conversations list settings gear
     And I see my name on Self Profile page
     And I tap my name field on Self Profile page
     And I change my name to <NewName> on Self Profile page
@@ -40,7 +40,7 @@ Feature: Self Profile
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
-    When I tap my avatar on top of conversations list
+    When I tap conversations list settings gear
     And I see my name on Self Profile page
     And I tap in the center of Self Profile page
     And I remember my current profile picture on Self Profile page
@@ -81,7 +81,7 @@ Feature: Self Profile
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
-    When I tap my avatar on top of conversations list
+    When I tap conversations list settings gear
     And I see my name on Self Profile page
     And I tap in the center of Self Profile page
     And I remember my current profile picture on Self Profile page

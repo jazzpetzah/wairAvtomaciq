@@ -82,18 +82,6 @@ public class PeoplePickerPageSteps {
     }
 
     /**
-     * Swipe down people picker
-     *
-     * @throws Exception
-     * @step. ^I swipe down people picker$
-     */
-    @When("^I swipe down people picker$")
-    public void ISwipeDownContactList() throws Exception {
-        getPeoplePickerPage().hideKeyboard();
-        getPeoplePickerPage().swipeDown(500);
-    }
-
-    /**
      * Types a user name into the people picker search field.
      *
      * @param contact user name/alias

@@ -3,13 +3,14 @@ package com.wearezeta.auto.ios.pages;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class CameraRollPage extends IOSPage {
 
-    private static final By nameCameraLibraryButton = By.name("cameraLibraryButton");
+    private static final By nameCameraLibraryButton = MobileBy.AccessibilityId("cameraLibraryButton");
 
     private static final By xpathCameraLibraryFirstFolder = By.xpath("//UIATableCell[@name='Moments']");
 
@@ -19,7 +20,7 @@ public class CameraRollPage extends IOSPage {
 
     private static final By xpathConfirmPictureButton = By.xpath("//UIAButton[@name='OK' and @visible='true']");
 
-    private static final By nameCameraRollSketchButton = By.name("editNotConfirmedImageButton");
+    private static final By nameCameraRollSketchButton = MobileBy.AccessibilityId("editNotConfirmedImageButton");
 
 	public CameraRollPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);

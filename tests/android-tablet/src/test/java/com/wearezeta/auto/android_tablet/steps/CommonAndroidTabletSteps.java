@@ -88,11 +88,13 @@ public class CommonAndroidTabletSteps {
         // To init the first available device
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
-        capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(this.getClass()));
-        capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(this.getClass()));
-        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(this.getClass()));
-        capabilities.setCapability("applicationName", "selendroid");
-        capabilities.setCapability("automationName", "selendroid");
+        capabilities.setCapability("newCommandTimeout", 500);
+        capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(getClass()));
+        capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(getClass()));
+        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(getClass()));
+        capabilities.setCapability("automationName", "Selendroid");
+        capabilities.setCapability("selendroidPort", 4444);
+        capabilities.setCapability("sessionOverride", true);
 
         try {
             return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
