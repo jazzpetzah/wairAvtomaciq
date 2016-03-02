@@ -217,7 +217,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2512 @regression @id3903
+  @C2512 @regression @id3903 @rc
   Scenario Outline: Verify inbox is highlighted and opened in the list [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact3>
