@@ -56,7 +56,7 @@ public class AppiumServer {
             MAIN_EXECUTABLE_PATH,
             "--command-timeout", Integer.toString(COMMAND_TIMEOUT),
             "--port", Integer.toString(PORT),
-            "--session-override", "true",
+            "--session-override",
             "--selendroid-port", Integer.toString(SELENDROID_PORT),
             "--log", LOG_PATH
     };
