@@ -135,7 +135,7 @@ Feature: VideoCalling
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
-    And <Contact> stops all calls to me
+    And <Contact> stops calling me
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
     When <Contact> starts a video call to me
@@ -143,7 +143,7 @@ Feature: VideoCalling
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
-    And <Contact> stops all calls to me
+    And <Contact> stops calling me
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
 

@@ -33,7 +33,7 @@ public class CallingSteps {
     }
 
     /**
-     * Make calls to one specific conversation.
+     * Make voice calls to one specific conversation.
      *
      * @step. ^(.*) calls (.*)$
      *
