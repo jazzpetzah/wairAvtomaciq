@@ -204,7 +204,7 @@ Feature: VideoCalling
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When <Contact> starts a video call to me using <CallBackend>
+    When <Contact> starts a video call to me
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
@@ -227,7 +227,7 @@ Feature: VideoCalling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
-    When <Contact> starts a video call to me using <CallBackend>
+    When <Contact> starts a video call to me
     And I see incoming call
     And I swipe to ignore the call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
