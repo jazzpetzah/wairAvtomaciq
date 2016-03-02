@@ -238,7 +238,11 @@ public class ContactListPageSteps {
         // This is to make sure that we are not in some transition state from the previous step
         Thread.sleep(3000);
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            IOSSimulatorHelper.swipe(0.2, 0.7, 0.2, 0.1);
+            if (CommonUtils.getDeviceName(this.getClass()).equals("iPhone 4s")) {
+                IOSSimulatorHelper.swipe(0.2, 0.6, 0.2, 0.1);
+            } else {
+                IOSSimulatorHelper.swipe(0.2, 0.7, 0.2, 0.1);
+            }
         } else {
             getContactListPage().swipeUp(1000);
         }
