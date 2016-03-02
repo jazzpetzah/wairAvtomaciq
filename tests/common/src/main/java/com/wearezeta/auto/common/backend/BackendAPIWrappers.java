@@ -712,6 +712,7 @@ public final class BackendAPIWrappers {
     public static void waitUntilContactsFound(ClientUser searchByUser,
                                               String query, int expectedCount, boolean orMore, int timeoutSeconds)
             throws Exception {
+        searchByUser = tryLoginByUser(searchByUser);
         final long startTimestamp = System.currentTimeMillis();
         int currentCount;
         while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
@@ -726,8 +727,7 @@ public final class BackendAPIWrappers {
             }
             Thread.sleep(1000);
         }
-        throw new NoContactsFoundException(String.format(
-                "%s contact(s) '%s' were not found within %s second(s) timeout",
+        throw new NoContactsFoundException(String.format("%s contact(s) '%s' were not found within %s second(s) timeout",
                 expectedCount, query, timeoutSeconds));
     }
 
