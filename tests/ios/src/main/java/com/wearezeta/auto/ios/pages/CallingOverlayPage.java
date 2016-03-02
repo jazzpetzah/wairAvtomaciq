@@ -115,7 +115,7 @@ public class CallingOverlayPage extends IOSPage {
 
     public boolean isCallingMessageContainingVisible(String text) throws Exception {
         final By locator = By.xpath(xpathStrCallingMessageByText.apply(text));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 20);
     }
 
     public boolean isButtonVisible(String name) throws Exception {
