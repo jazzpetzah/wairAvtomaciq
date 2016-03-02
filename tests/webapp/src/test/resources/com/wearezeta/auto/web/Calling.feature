@@ -408,28 +408,6 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | MISSED | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | called | autocall    |
 
-  @C1749 @regression @calling @calling_debug
-  Scenario Outline: People trying to call me while I'm not signed in
-    Given My browser supports calling
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    When <Contact1> calls me using <CallBackend>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
-    And I refresh page
-    And I open conversation with <Contact2>
-    Then I see the calling bar from user <Contact1>
-    And <Contact1> stops all calls to me
-    Then I do not see the calling bar
-    And I see missed call notification for conversation <Contact1>
-    When I open conversation with <Contact1>
-    Then I do not see missed call notification for conversation <Contact1>
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    | 60      |
-
   @C1755 @regression @calling @calling_debug
   Scenario Outline: Verify I can make another call while current one is ignored
     Given My browser supports calling
