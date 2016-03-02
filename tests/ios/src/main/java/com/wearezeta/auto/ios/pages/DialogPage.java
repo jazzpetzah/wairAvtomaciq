@@ -34,7 +34,6 @@ public class DialogPage extends IOSPage {
     protected static final By nameYouRenamedConversation = MobileBy.AccessibilityId("YOU RENAMED THE CONVERSATION");
 
     private static final By xpathMessageEntries = By.xpath(xpathStrMainWindow + "/UIATableView/UIATableCell");
-    private static final By xpathFirstMessageEntrie = By.xpath(xpathStrMainWindow + "/UIATableView/UIATableCell[1]");
 
     private static final String xpathStrImageCells = "//UIATableCell[@name='ImageCell']";
     private static final By xpathImageCell = By.xpath(xpathStrImageCells);
@@ -531,7 +530,7 @@ public class DialogPage extends IOSPage {
 
     public void clickThisDeviceLink() throws Exception {
         DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(),
-                getElement(xpathFirstMessageEntrie), 90, 50);
+                getElement(xpathYouStartedUsingThisDeviceSystemMesssage), 90, 50);
     }
 
     public void resendLastMessageInDialogToUser() throws Exception {

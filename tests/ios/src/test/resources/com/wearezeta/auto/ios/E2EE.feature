@@ -246,8 +246,7 @@ Feature: E2EE
     #And I see the conversation view contains message <ExpectedMsg>
     And I see 1 conversation entries
     #BUG link can not be located
-    #Step 2 times fixes the pressing on the Link in system message
-    And I open details page of device number 1
+    And I tap on THIS DEVICE link
     And I open details page of device number 1
     Then I see fingerprint is not empty
 
@@ -492,7 +491,7 @@ Feature: E2EE
     And I do not see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
     # Then I do not see the conversation view contains message <ExpectedMessage>
-    Then I see 1 conversation entries
+    Then I see 1 conversation entry
 
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceName1 | ExpectedMessage               |

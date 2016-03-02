@@ -4,8 +4,8 @@ import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
-import cucumber.api.PendingException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -29,6 +29,10 @@ public class DialogPageSteps {
 
     private ContactListPage getContactListPage() throws Exception {
         return pagesCollection.getPage(ContactListPage.class);
+    }
+
+    private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage() throws Exception {
+        return pagesCollection.getPage(OtherUserPersonalInfoPage.class);
     }
 
     @When("^I see dialog page$")
@@ -903,7 +907,9 @@ public class DialogPageSteps {
      */
     @When("^I tap on THIS DEVICE link$")
     public void ITapThisDeviceLink() throws Exception {
-        getDialogPage().clickThisDeviceLink();
+        //getDialogPage().clickThisDeviceLink();
+        //this is the fix because it can not locate system message label
+       getOtherUserPersonalInfoPage().openDeviceDetailsPage(1);
     }
 
     /**
