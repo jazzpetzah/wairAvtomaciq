@@ -240,7 +240,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout | ExpectedMsg     |
       | user1Name | user2Name | chrome      | 30      | Try again later |
 
-  @C48236 @staging
+  @C48236 @calling_advanced
   Scenario Outline: Verify I can start video call after another my call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -283,7 +283,7 @@ Feature: VideoCalling
       | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Name | user2Name | user3Name | chrome      | 30      |
 
-  @C49972 @staging
+  @C49972 @calling_advanced
   Scenario Outline: Verify you cannot make video call to user A while he makes audio call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
