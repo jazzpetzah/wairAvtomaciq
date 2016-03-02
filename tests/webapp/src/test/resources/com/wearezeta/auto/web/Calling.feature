@@ -241,32 +241,6 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 60      |
 
-  @C1744 @smoke @calling @calling_debug
-  Scenario Outline: Verify I can not call in browsers without WebRTC
-    Given My browser does not support calling
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    When I see my avatar on top of Contact list
-    And I open conversation with <Contact>
-    And <Contact> calls me using <CallBackend>
-    Then I do not see the calling bar
-    And I wait for 3 seconds
-    And I see a warning
-    And I see "Learn more" link in warning
-    When I close the warning
-    Then I do not see a warning
-    And I see calling button
-    When I call
-    Then I see a warning
-    And I see "Learn more" link in warning
-    And I verify browser log is empty
-
-    Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | autocall    | 60      |
-
   @C1801 @regression @calling @calling_debug
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as callee)
     Given My browser supports calling
