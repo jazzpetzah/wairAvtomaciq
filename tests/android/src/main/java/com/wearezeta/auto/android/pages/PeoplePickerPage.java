@@ -140,10 +140,6 @@ public class PeoplePickerPage extends AndroidPage {
         }
     }
 
-    public void navigateBack() throws Exception {
-        getElement(idPeoplePickerClearbtn).click();
-    }
-
     public boolean isAddToConversationBtnVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idPickerBtnDone);
     }

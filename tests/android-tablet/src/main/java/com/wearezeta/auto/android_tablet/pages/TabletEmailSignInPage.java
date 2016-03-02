@@ -38,10 +38,6 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 				VISIBILITY_TIMEOUT_SECONDS);
 	}
 
-	public void verifyErrorMessageText(String expectedMsg) throws Exception {
-		getEmailSignInPage().verifyErrorMessageText(expectedMsg);
-	}
-
 	public void acceptErrorMessage() throws Exception {
 		getEmailSignInPage().acceptErrorMessage();
 	}

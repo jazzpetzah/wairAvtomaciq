@@ -61,7 +61,6 @@ import java.util.logging.Level;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
-import static org.junit.Assert.assertEquals;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -70,6 +69,7 @@ import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import static org.junit.Assert.assertEquals;
 
 public class CommonOSXSteps {
 

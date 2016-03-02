@@ -38,7 +38,7 @@ Feature: Offline
     Then I see unsent indicator next to "<Message>" message
     When I hide keyboard
     And I swipe on text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press "Take Photo" button
     And I press "Confirm" button
     Then I see unsent indicator next to new picture in the dialog

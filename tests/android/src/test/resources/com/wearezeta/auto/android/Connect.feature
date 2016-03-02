@@ -14,7 +14,7 @@ Feature: Connect
     And I see connect to <Contact> dialog
     And I click Connect button on connect to page
     And I see People picker page
-    And I navigate back to Conversations List
+    And I press Clear button
     Then I see contact list with name <Contact>
 
     Examples:

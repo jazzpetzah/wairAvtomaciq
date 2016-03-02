@@ -1,6 +1,6 @@
 Feature: Video Calling
 
-  @C12102 @calling_basic
+  @C12102 @calling_basic @video_calling
   Scenario Outline: Verify initiating Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -16,7 +16,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C12105 @calling_basic
+  @C12105 @calling_basic @video_calling
   Scenario Outline: Verify cancelling Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -33,7 +33,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C12101 @staging
+  @C12101 @staging @video_calling
   Scenario Outline: Verify accepting video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -45,16 +45,15 @@ Feature: Video Calling
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
-    Then I see Mute button on Calling overlay
-    And I see Leave button on Calling overlay
-    And I see Call Video button on Calling overlay
-    And I tap Leave button on Calling overlay
+    Then I see Mute button on Video Calling overlay
+    And I see Switch Camera button on Video Calling overlay
+    And I see Leave button on Video Calling overlay
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C12103 @staging
+  @C12103 @staging @video_calling
   Scenario Outline: Verify finishing video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -65,18 +64,16 @@ Feature: Video Calling
     When I tap on contact name <Contact>
     And I click plus button next to text input
     And I click Video Call button
-    And I see Calling overlay
-    And I see Mute button on Calling overlay
-    And I see Leave button on Calling overlay
-    And I see Call Video button on Calling overlay
-    And I tap Leave button on Calling overlay
+    And I see Video Calling overlay
+    And I see Mute button on Video Calling overlay
+    And I tap Leave button on Video Calling overlay
     Then I see dialog page
 
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C12104 @staging
+  @C12104 @staging @video_calling
   Scenario Outline: Verify ignoring Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -91,7 +88,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C12107 @staging
+  @C12107 @staging @video_calling
   Scenario Outline: Verify getting missed call indication when someone called
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -110,7 +107,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C12114 @staging
+  @C12114 @staging @video_calling
   Scenario Outline: (AUDIO-830) Verify I can switch to another incoming audio call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -131,7 +128,7 @@ Feature: Video Calling
       | Name      | Contact1  | Contact2  | VideoCallBackend | AudioCallBackend | Timeout |
       | user1Name | user2Name | user3Name | chrome           | autocall         | 60      |
 
-  @C12110 @staging
+  @C12110 @staging @video_calling
   Scenario Outline: Verify blocked contact could not get through with a Video call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -145,7 +142,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C28851 @staging
+  @C28851 @staging @video_calling
   Scenario Outline: Verify starting video call with action button in Search
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -156,13 +153,13 @@ Feature: Video Calling
     And I tap on conversation <Contact> in search result
     And I tap Video call action button on People picker page
     Then I see call status message contains "<Contact> RINGING"
-    And I see Leave button on Calling overlay
+    And I see Leave button on Video Calling overlay
 
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C12115 @staging
+  @C12115 @staging @video_calling
   Scenario Outline: Verify I can switch to another video call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -170,10 +167,10 @@ Feature: Video Calling
     And <Contact> starts a video call to me using <VideoCallBackend>
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept Video button on Calling overlay
-    Then I see Switch Camera button on Calling overlay
+    Then I see Switch Camera button on Video Calling overlay
     When <Contact2> starts a video call to me using <VideoCallBackend>
     And I tap Accept Video button on Calling overlay
-    Then I see Mute button on Calling overlay
+    Then I see Mute button on Video Calling overlay
     And <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
     And <Contact2> verifies that call status to <Name> is changed to active in <Timeout> seconds
 
@@ -181,7 +178,7 @@ Feature: Video Calling
       | Name      | Contact    | Contact2 | VideoCallBackend | Timeout |
       | user1Name | user2Name  | user3Name| chrome           | 60      |
 
-  @C12106 @staging
+  @C12106 @staging @video_calling
   Scenario Outline: Verify muting ongoing Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -190,13 +187,32 @@ Feature: Video Calling
     When <Contact> starts a video call to <Name> using <CallBackend>
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept Video button on Calling overlay
-    And I see Mute button on Calling overlay
-    And I see Mute button is not selected on calling overlay
-    And I remember Mute button state on calling overlay
-    And I tap Mute button on Calling overlay
-    Then I see Mute button is selected on calling overlay
-    And I see state of Mute button has changed on Calling overlay page
+    And I see Mute button on Video Calling overlay
+    And I remember state of Mute button on Video Calling overlay
+    And I tap Mute button on Video Calling overlay
+    Then I see state of Mute button has changed on Video Calling overlay
 
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
+
+  @C28861 @staging @video_calling
+  Scenario Outline: Verify video call continues after rejecting 2nd incoming video call
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
+    Given I sign in using my email or phone number
+    And <Contact> starts a video call to me using <VideoCallBackend>
+    And I see call status message contains "<Contact> CALLING"
+    And I tap Accept Video button on Calling overlay
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    Then I see Switch Camera button on Video Calling overlay
+    When <Contact2> starts a video call to me using <VideoCallBackend>
+    And I see call status message contains "<Contact2> CALLING"
+    And I tap Ignore button on the Calling overlay
+    Then I see Mute button on Video Calling overlay
+    And <Contact> verifies that call status to me is changed to active in <TimeoutAlreadyInCall> seconds
+    And <Contact2> verifies that call status to me is changed to connecting in <Timeout> seconds
+
+    Examples:
+      | Name      | Contact    | Contact2 | VideoCallBackend | Timeout | TimeoutAlreadyInCall |
+      | user1Name | user2Name  | user3Name| chrome           | 60      | 4                    |

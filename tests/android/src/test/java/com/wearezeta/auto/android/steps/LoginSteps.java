@@ -149,19 +149,6 @@ public class LoginSteps {
     }
 
     /**
-     * Checks to see that the login error message contains the correct text
-     * After providing a false email address or password
-     *
-     * @param expectedMsg the expected error message
-     * @throws Exception
-     * @step. ^I see error message \"(.*)\"$
-     */
-    @Then("^I see error message \"(.*)\"$")
-    public void ISeeErrorMessage(String expectedMsg) throws Exception {
-        getEmailSignInPage().verifyErrorMessageText(expectedMsg);
-    }
-
-    /**
      * Accept an error message by clicking OK button
      *
      * @throws Exception

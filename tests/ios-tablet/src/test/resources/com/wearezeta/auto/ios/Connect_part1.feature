@@ -39,7 +39,7 @@ Feature: Connect
       | Name      | UnconnectedUser |
       | user1Name | user2Name       |
 
-  @C2486 @regression @rc @id2119
+  @C2486 @regression @id2119
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -61,7 +61,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @C2489 @regression @id3009
+  @C2489 @rc @regression @id3009
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -84,7 +84,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @C2483 @regression @rc @id2354 @id2610
+  @C2483 @regression @id2354 @id2610
   Scenario Outline: Send connection request to unconnected participant in a group chat [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -104,7 +104,7 @@ Feature: Connect
       | Name      | GroupCreator | GroupChatName | UnconnectedUser |
       | user1Name | user2Name    | TESTCHAT      | user3Name       |
 
-  @C2490 @regression @id3011
+  @C2490 @rc @regression @id3011
   Scenario Outline: Send connection request to unconnected participant in a group chat [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -254,7 +254,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2455 @regression @rc @id2341
+  @C2455 @regression @id2341
   Scenario Outline: Verify you don't receive any messages from blocked person in 1to1 chat [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -278,7 +278,7 @@ Feature: Connect
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C2457 @regression @id3015
+  @C2457 @rc @regression @id3015
   Scenario Outline: Verify you don't receive any messages from blocked person in 1to1 chat [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -352,7 +352,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @C2780 @regression @rc @id1492
+  @C2780 @regression @id1492
   Scenario Outline: Verify you can send an invitation via mail [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -374,7 +374,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2796 @regression @id3017
+  @C2796 @rc @regression @id3017
   Scenario Outline: Verify you can send an invitation via mail [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

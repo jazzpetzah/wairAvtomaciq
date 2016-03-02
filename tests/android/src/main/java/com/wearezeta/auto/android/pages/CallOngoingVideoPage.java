@@ -1,10 +1,12 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 public class CallOngoingVideoPage extends CallingOverlayPage {
 
@@ -17,6 +19,8 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
 
     private static final int VISIBILITY_TIMEOUT_SECONDS = 20;
 
+    private static final int ELEMENT_VISIBILITY_TIMEOUT_SECONDS = 3;
+
     public boolean waitUntilVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOngoingCallContainer,
                 VISIBILITY_TIMEOUT_SECONDS);
@@ -26,25 +30,71 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOngoingCallContainer);
     }
 
-    public void tapOngoingVideo() throws Exception {
+    private void tapOngoingVideo() throws Exception {
         getElement(xpathOngoingCallContainer).click();
     }
 
     @Override
-    public void toggleVideo() throws Exception {
-        tapOngoingVideo();
-        super.toggleVideo();
+    protected void tapSpecialAction() throws Exception {
+        final Optional<WebElement> specialActionBtn = getElementIfDisplayed(idRight,
+                ELEMENT_VISIBILITY_TIMEOUT_SECONDS);
+        if (specialActionBtn.isPresent()) {
+            specialActionBtn.get().click();
+        } else {
+            tapOngoingVideo();
+            super.tapSpecialAction();
+        }
     }
 
     @Override
     public void hangup() throws Exception {
-        tapOngoingVideo();
-        super.hangup();
+        final Optional<WebElement> hangUpBtn = getElementIfDisplayed(idHangup, ELEMENT_VISIBILITY_TIMEOUT_SECONDS);
+        if (hangUpBtn.isPresent()) {
+            hangUpBtn.get().click();
+        } else {
+            tapOngoingVideo();
+            super.hangup();
+        }
     }
 
     @Override
     public void toggleMute() throws Exception {
-        tapOngoingVideo();
-        super.toggleMute();
+        final Optional<WebElement> muteBtn = getElementIfDisplayed(idMute, ELEMENT_VISIBILITY_TIMEOUT_SECONDS);
+        if (muteBtn.isPresent()) {
+            muteBtn.get().click();
+        } else {
+            tapOngoingVideo();
+            super.toggleMute();
+        }
+    }
+
+    @Override
+    public boolean hangupIsVisible() throws Exception {
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idHangup, ELEMENT_VISIBILITY_TIMEOUT_SECONDS)) {
+            return true;
+        } else {
+            tapOngoingVideo();
+            return super.hangupIsVisible();
+        }
+    }
+
+    @Override
+    public boolean toggleMuteIsVisible() throws Exception {
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMute, ELEMENT_VISIBILITY_TIMEOUT_SECONDS)) {
+            return true;
+        } else {
+            tapOngoingVideo();
+            return super.toggleMuteIsVisible();
+        }
+    }
+
+    @Override
+    protected boolean specialActionIsVisible() throws Exception {
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idRight, ELEMENT_VISIBILITY_TIMEOUT_SECONDS)) {
+            return true;
+        } else {
+            tapOngoingVideo();
+            return super.specialActionIsVisible();
+        }
     }
 }

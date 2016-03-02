@@ -111,7 +111,7 @@ Feature: Registration
     And I enter password "<Password>"
     When I enable Airplane mode on the device
     And I tap Sign In button
-    Then I see error message "<ErrMessage>"
+    Then I see alert message containing "<ErrMessage>"
     When I tap OK button on the error message
     And I disable Airplane mode on the device
     And I tap Sign In button

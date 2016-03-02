@@ -103,7 +103,7 @@ Feature: Search
     And I do not see TOP PEOPLE
     When I swipe down contact list
     And I see People picker page
-    And I navigate back to Conversations List
+    And I press Clear button
     Then I see Contact list with contacts
     And I do not see TOP PEOPLE
 
@@ -362,3 +362,26 @@ Feature: Search
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C49974 @regression
+  Scenario Outline: Verify video call button is only available for single conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I open search by tap
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap on user name found on People picker page <Contact1>
+    Then I see Video Call action button on People Picker page
+    When I add in search field user name to connect to <Contact2>
+    And I tap on user name found on People picker page <Contact2>
+    Then I do not see Video Call action button on People Picker page
+    When I tap on user name found on People picker page <Contact2>
+    Then I see Video Call action button on People Picker page
+    When I tap on user name found on People picker page <Contact1>
+    Then I do not see Video Call action button on People Picker page
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |

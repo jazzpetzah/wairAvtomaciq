@@ -36,7 +36,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName1 | DeviceName2 | DeviceName3 |
       | user1Name | user2Name | Device1     | Device2     | Device3     |
 
-  @C3290 @noAcceptAlert @regression
+  @C3290 @noAcceptAlert @rc @regression
   Scenario Outline: (ZIOS-5741) Verify new device is added to device management after sign in
     Given There is 1 user where <Name> is me
     Given User Myself removes his avatar picture
@@ -116,13 +116,14 @@ Feature: E2EE
     And I close group info page
     And I click Close input options button
     Then I see shield icon next to conversation input field
-    And I see last message in dialog is expected message <VerificationMsg>
+    # FIXME: Make it possible in the app to detect labels text with Appium
+    # And I see last message in dialog is expected message <VerificationMsg>
 
     Examples:
       | Name      | Contact1  | Contact2  | DeviceName1 | DeviceLabel1 | DeviceName2 | DeviceLabel2 | GroupChatName | VerificationMsg               |
       | user1Name | user2Name | user3Name | Device1     | Label1       | Device2     | Label2       | VerifiedGroup | ALL FINGERPRINTS ARE VERIFIED |
 
-  @C3294 @regression
+  @C3294 @rc @regression
   Scenario Outline: (ZIOS-5787) Verify system message appearance in case of using a new device by friend
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -138,14 +139,17 @@ Feature: E2EE
     And I click close user profile page button
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And User <Contact1> sends 1 encrypted message using device <DeviceName2> to user Myself
+    And I click Close input options button
+    Then I do not see shield icon next to conversation input field
     # TODO: Check the device label in the system message
-    Then I see the conversation view contains message <ExpectedMsg>
+    # FIXME: Make it possible in the app to detect labels text with Appium
+    # Then I see the conversation view contains message <ExpectedMsg>
 
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                |
       | user1Name | user2Name | Device2     | Label2       | STARTED USING A NEW DEVICE |
 
-  @C3293 @regression
+  @C3293 @rc @regression
   Scenario Outline: Verify system message appearance in case of using a new device by you
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -236,7 +240,8 @@ Feature: E2EE
     Given I sign in using my email
     Given I see conversations list
     And I tap on contact name <Contact1>
-    And I see the conversation view contains message <ExpectedMsg>
+    # FIXME: Make it possible in the app to detect labels text with Appium
+    # And I see the conversation view contains message <ExpectedMsg>
     And I tap on THIS DEVICE link
     And I open details page of device number 1
     Then I see fingerprint is not empty
@@ -245,7 +250,7 @@ Feature: E2EE
       | Name      | Contact1  | ExpectedMsg               |
       | user1Name | user2Name | STARTED USING THIS DEVICE |
 
-  @C14317 @regression
+  @C14317 @rc @regression
   Scenario Outline: First time when 1:1 conversation is degraded - I can ignore alert screen and send messages with resend button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -284,8 +289,11 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
+    And I click Close input options button
     When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>
-    Then I see the conversation view contains message <ExpectedMsg>
+    Then I do not see shield icon next to conversation input field
+    # FIXME: Make it possible in the app to detect labels text with Appium
+    # Then I see the conversation view contains message <ExpectedMsg>
 
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                    |
@@ -311,13 +319,14 @@ Feature: E2EE
     And I click close user profile page button
     And I click Close input options button
     Then I see shield icon next to conversation input field
-    And I see last message in dialog is expected message <VerificationMsg>
+    # FIXME: Make it possible in the app to detect labels text with Appium
+    # And I see last message in dialog is expected message <VerificationMsg>
 
     Examples:
       | Name      | Contact1  | DeviceName1 | DeviceName2 | VerificationMsg               |
       | user1Name | user2Name | Device1     | Device2     | ALL FINGERPRINTS ARE VERIFIED |
 
-  @C3291 @regression
+  @C3291 @rc @regression
   Scenario Outline: Verify device management appearance after 7 sign ins
     Given There is 1 user where <Name> is me
     Given User Myself adds new devices <DeviceName1>,<DeviceName2>,<DeviceName3>,<DeviceName4>,<DeviceName5>,<DeviceName6>,<DeviceName7>
@@ -473,13 +482,14 @@ Feature: E2EE
     And I click close user profile page button
     And I click Close input options button
     And I do not see shield icon next to conversation input field
-    Then I do not see the conversation view contains message <ExpectedMessage>
+    # FIXME: Make it possible in the app to detect labels text with Appium
+    # Then I do not see the conversation view contains message <ExpectedMessage>
 
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceName1 | ExpectedMessage               |
       | user1Name | user2Name | Device2     | Device1     | ALL FINGERPRINTS ARE VERIFIED |
 
-  @C3498 @regression
+  @C3498 @rc @regression
   Scenario Outline: Verify "learn more" leads to the proper page
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -491,13 +501,13 @@ Feature: E2EE
     And I switch to Devices tab
     When I tap "Why verify conversations?" link in user details
     And I wait for 3 seconds
-    Then I see "https://wire.com/privacy/why" web page opened
+    Then I see "https://support.wire.com/" web page opened
     When I tap Back To Wire button
     And I wait for 3 seconds
     And I open details page of device number 1
     And I tap "How do I do that?" link in user details
     And I wait for 3 seconds
-    Then I see "https://wire.com/privacy/how" web page opened
+    Then I see "https://support.wire.com/" web page opened
 
     Examples:
       | Name      | Contact1  |
@@ -517,14 +527,20 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
-    Then I see last message in dialog is expected message <VerificationMsg>
+    And I click Close input options button
+    Then I see shield icon next to conversation input field
+    # FIXME: Make it possible in the app to detect labels text with Appium
+    # Then I see last message in dialog is expected message <VerificationMsg>
     When I open conversation details
     And I switch to Devices tab
     And I open details page of device number 1
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
-    Then I see last message in dialog contains expected message <UnverificationMsg>
+    And I click Close input options button
+    Then I do not see shield icon next to conversation input field
+    # FIXME: Make it possible in the app to detect labels text with Appium
+    # Then I see last message in dialog contains expected message <UnverificationMsg>
 
     Examples:
       | Name      | Contact1  | VerificationMsg               | UnverificationMsg     |

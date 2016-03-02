@@ -103,7 +103,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C2411 @calling_basic @id2713
+  @C49978 @calling_basic @id2713
   Scenario Outline: Verify accepting incoming call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -119,7 +119,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C2411 @calling_basic @id2713
+  @C2411 @rc @calling_basic @id2713
   Scenario Outline: Verify accepting incoming call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -55,7 +55,7 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Log in button
-    Then I see error message "<ErrMessage>"
+    Then I see alert message containing "<ErrMessage>"
 
     Examples:
       | Login | Password  | ErrMessage                          |
@@ -71,7 +71,7 @@ Feature: Sign In
     And I have entered login <Email>
     And I have entered password <Password>
     And I press Log in button
-    Then I see error message "<ErrMessage>"
+    Then I see alert message containing "<ErrMessage>"
     When I disable Airplane mode on the device
     And I accept the error message
     And I press Log in button
