@@ -86,7 +86,7 @@ public class CommonIOSSteps {
                                                 boolean overrideWaitForAppScript) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("nativeInstrumentsLib", isUseNativeInstrumentsEnabled());
-        capabilities.setCapability("newCommandTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT / 1000);
+        capabilities.setCapability("newCommandTimeout", 500);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
         capabilities.setCapability("app", getPath());
         capabilities.setCapability("appName", getAppName());

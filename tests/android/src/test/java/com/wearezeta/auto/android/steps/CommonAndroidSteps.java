@@ -85,7 +85,7 @@ public class CommonAndroidSteps {
         // To init the first available device
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
-        capabilities.setCapability("newCommandTimeout", AndroidPage.DRIVER_INIT_TIMEOUT * 2 / 1000);
+        capabilities.setCapability("newCommandTimeout", 500);
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(cls));
         capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(cls));
         capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(cls));
