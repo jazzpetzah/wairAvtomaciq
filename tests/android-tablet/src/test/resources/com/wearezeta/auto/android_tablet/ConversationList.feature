@@ -184,7 +184,7 @@ Feature: Conversation List
     And I confirm conversation deletion on Conversation Actions overlay
     Then I do not see Conversation Actions overlay
     And I do not see conversation <Contact1> in my conversations list
-    When I tap Search input
+    When I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     Then I see "<Contact1>" avatar on People Picker page
     And I close People Picker
@@ -216,7 +216,7 @@ Feature: Conversation List
     And I confirm conversation deletion on Conversation Actions overlay
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
-    When I tap Search input
+    When I open Search UI
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
@@ -249,7 +249,7 @@ Feature: Conversation List
     And I swipe right to show the conversations list
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
-    When I tap Search input
+    When I open Search UI
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
@@ -281,7 +281,7 @@ Feature: Conversation List
     And I confirm conversation deletion on Conversation Actions overlay
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
-    When I tap Search input
+    When I open Search UI
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I do not see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
@@ -312,7 +312,7 @@ Feature: Conversation List
     And I swipe right to show the conversations list
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
-    When I tap Search input
+    When I open Search UI
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I do not see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
@@ -342,7 +342,7 @@ Feature: Conversation List
     And I swipe right to show the conversations list
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
-    When I tap Search input
+    When I open Search UI
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
@@ -383,7 +383,7 @@ Feature: Conversation List
     And I confirm conversation deletion on Conversation Actions overlay
     Then I do not see Conversation Actions overlay
     And I do not see conversation <GroupChatName> in my conversations list
-    When I tap Search input
+    When I open Search UI
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker

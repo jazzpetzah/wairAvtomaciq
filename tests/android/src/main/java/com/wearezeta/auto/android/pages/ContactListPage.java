@@ -51,7 +51,9 @@ public class ContactListPage extends AndroidPage {
     private static final Function<Integer, String> xpathStrNonEmptyContactByIdx = idx -> String
             .format("(%s)[%d]", xpathStrNonEmptyContacts, idx);
 
-    public static final By idSelfUserAvatar = By.id("civ__searchbox__self_user_avatar");
+    private static final By idListSettingsGear = By.id("gtv__list_actions__settings");
+
+    private static final By idListActionsAvatar = By.id("gtv__list_actions__avatar");
 
     private static final By xpathConfirmDeleteConversationButton = By.xpath("//*[@id='positive' and @value='DELETE']");
 
@@ -150,8 +152,8 @@ public class ContactListPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
     }
 
-    public void tapOnSearchBox() throws Exception {
-        getElement(PeoplePickerPage.xpathMainSearchField).click();
+    public void tapListActionsAvatar() throws Exception {
+        getElement(idListActionsAvatar).click();
     }
 
     public boolean isContactExists(String name) throws Exception {
@@ -182,8 +184,8 @@ public class ContactListPage extends AndroidPage {
                             CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
         }
 
-        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idSelfUserAvatar, 5)) {
-            log.warn("Self avatar is not detected on top of conversations list");
+        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idListSettingsGear, 5)) {
+            log.warn("List actions gear is not detected on top of conversations list");
         }
 
         final By spinnerConvoListLoadingProgressLocator = By.xpath(xpathSpinnerConversationsListLoadingIndicator);
@@ -207,8 +209,8 @@ public class ContactListPage extends AndroidPage {
                 xpathLoadingContactListItem, CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS);
     }
 
-    public void tapOnMyAvatar() throws Exception {
-        getElement(idSelfUserAvatar, "Self avatar icon is not visible").click();
+    public void tapListSettingsGear() throws Exception {
+        getElement(idListSettingsGear, "List action gear icon is not visible").click();
     }
 
     public void tapOnSearchButton() throws Exception {
@@ -253,14 +255,6 @@ public class ContactListPage extends AndroidPage {
     public boolean waitUntilMissedCallNotificationInvisible(String convoName) throws Exception {
         final By locator = By.xpath(xpathStrMissedCallNotificationByConvoName.apply(convoName));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
-    }
-
-    public void doShortSwipeDown() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idConversationListFrame), 500, 15, 15, 15, 20);
-    }
-
-    public void doLongSwipeDown() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idConversationListFrame), 1000, 15, 15, 15, 180);
     }
 
     public Optional<BufferedImage> getScreenshotOfPlayPauseButtonNextTo(String convoName) throws Exception {

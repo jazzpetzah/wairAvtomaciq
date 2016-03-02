@@ -67,8 +67,7 @@ public class ContactListPageSteps {
     @When("^I tap on contact name (.*)$")
     public void WhenITapOnContactName(String contactName) throws Exception {
         try {
-            contactName = usrMgr.findUserByNameOrNameAlias(contactName)
-                    .getName();
+            contactName = usrMgr.findUserByNameOrNameAlias(contactName).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -76,25 +75,14 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Taps on the currently logged-in user's avatar
+     * Taps on the gear icon at the bottom of convo list
      *
      * @throws Exception
-     * @step. ^I tap on my avatar$
+     * @step. ^I tap conversations list settings gear$
      */
-    @When("^I tap on my avatar$")
-    public void WhenITapOnMyAvatar() throws Exception {
-        getContactListPage().tapOnMyAvatar();
-    }
-
-    /**
-     * Swipes down on the contact list to return the search list page
-     *
-     * @throws Exception
-     * @step. ^I swipe down contact list$
-     */
-    @When("^I swipe down contact list$")
-    public void ISwipeDownContactList() throws Exception {
-        getContactListPage().doLongSwipeDown();
+    @When("^I tap conversations list settings gear$")
+    public void WhenITapSettingsGear() throws Exception {
+        getContactListPage().tapListSettingsGear();
     }
 
     /**
@@ -131,15 +119,14 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Presses on search bar in the conversation List to open search (people
-     * picker)
+     * Tap the corresponding button to open Search UI
      *
      * @throws Exception
-     * @step. ^I open [Ss]earch by tap$
+     * @step. I open [Ss]earch UI$
      */
-    @When("^I open [Ss]earch by tap")
-    public void WhenITapOnSearchBox() throws Exception {
-        getContactListPage().tapOnSearchBox();
+    @When("^I open [Ss]earch UI$")
+    public void IOpenSearchUI() throws Exception {
+        getContactListPage().tapListActionsAvatar();
     }
 
     /**
@@ -204,7 +191,7 @@ public class ContactListPageSteps {
     /**
      * Checks to see that the muted symbol appears or not for the given contact.
      *
-     * @param contact
+     * @param contact user name/alias
      * @param shouldNotBeMuted is set to null if 'not' part does not exist
      * @throws Exception
      * @step. "^Contact (.*) is (not )?muted$

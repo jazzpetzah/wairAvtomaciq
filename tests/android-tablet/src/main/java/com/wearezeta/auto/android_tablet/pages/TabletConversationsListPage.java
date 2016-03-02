@@ -7,20 +7,20 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.InvalidElementStateException;
-import org.openqa.selenium.ScreenOrientation;
+//import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
-import com.wearezeta.auto.android.pages.PeoplePickerPage;
-import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
+//import com.wearezeta.auto.android.pages.PeoplePickerPage;
+//import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletConversationsListPage extends AndroidTabletPage {
     private static final int PLAY_PAUSE_BUTTON_WIDTH_PERCENTAGE = 15;
 
-    private static final By xpathStrConvoViewOrSelfProfile = By.xpath(String.format("//*[@id='%s' or @id='%s']",
-            TabletSelfProfilePage.idStrSelfProfileView, TabletConversationViewPage.idStrRootLocator));
+//    private static final By xpathStrConvoViewOrSelfProfile = By.xpath(String.format("//*[@id='%s' or @id='%s']",
+//            TabletSelfProfilePage.idStrSelfProfileView, TabletConversationViewPage.idStrRootLocator));
 
     public TabletConversationsListPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
@@ -31,59 +31,49 @@ public class TabletConversationsListPage extends AndroidTabletPage {
         return this.getAndroidPageInstance(ContactListPage.class);
     }
 
-    private PeoplePickerPage getPeoplePickerPage() throws Exception {
-        return this.getAndroidPageInstance(PeoplePickerPage.class);
-    }
+//    private PeoplePickerPage getPeoplePickerPage() throws Exception {
+//        return this.getAndroidPageInstance(PeoplePickerPage.class);
+//    }
 
-    private static final int LOAD_TIMEOUT = 15; // seconds
+//    private static final int LOAD_TIMEOUT = 15; // seconds
 
     public void verifyConversationsListIsLoaded() throws Exception {
-        if (ScreenOrientationHelper.getInstance().fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrConvoViewOrSelfProfile, LOAD_TIMEOUT)) {
-                // FIXME: Workaround for self profile as start page issue
-                int ntry = 1;
-                final int maxRetries = 3;
-                final int leftBorderWidth = getDriver().manage().window().getSize().width / 4;
-                final Optional<WebElement> selfProfileEl =
-                        getElementIfDisplayed(TabletSelfProfilePage.idSelfProfileView, 1);
-                do {
-                    if (DriverUtils.waitUntilLocatorDissapears(getDriver(), ContactListPage.idSelfUserAvatar, 2)
-                            || (selfProfileEl.isPresent() && selfProfileEl.get().getLocation().getX() < leftBorderWidth)) {
-                        DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90, 50);
-                        // FIXME: Self profile could switch to full colour instead of being swiped
-                        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ContactListPage.idSelfUserAvatar, 1)
-                                && (selfProfileEl.isPresent()
-                                && selfProfileEl.get().getLocation().getX() > leftBorderWidth)) {
-                            break;
-                        } else {
-                            this.tapOnCenterOfScreen();
-                            DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90, 50);
-                        }
-                    } else {
-                        break;
-                    }
-                    ntry++;
-                } while (ntry <= maxRetries);
-                if (ntry > maxRetries) {
-                    throw new IllegalStateException(
-                            String.format("Conversations list was not shown after %d retries", maxRetries));
-                }
-            } else {
-                throw new IllegalStateException(String.format(
-                        "The initial view has not been loaded within %s seconds", LOAD_TIMEOUT));
-            }
-        }
+//        if (ScreenOrientationHelper.getInstance().fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
+//            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrConvoViewOrSelfProfile, LOAD_TIMEOUT)) {
+//                // FIXME: Workaround for self profile as start page issue
+//                int ntry = 1;
+//                final int maxRetries = 3;
+//                final int leftBorderWidth = getDriver().manage().window().getSize().width / 4;
+//                final Optional<WebElement> selfProfileEl =
+//                        getElementIfDisplayed(TabletSelfProfilePage.idSelfProfileView, 1);
+//                do {
+//                    if (DriverUtils.waitUntilLocatorDissapears(getDriver(), ContactListPage.idListActionsSettings, 2)
+//                            || (selfProfileEl.isPresent() && selfProfileEl.get().getLocation().getX() < leftBorderWidth)) {
+//                        DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90, 50);
+//                        // FIXME: Self profile could switch to full colour instead of being swiped
+//                        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ContactListPage.idListActionsSettings, 1)
+//                                && (selfProfileEl.isPresent()
+//                                && selfProfileEl.get().getLocation().getX() > leftBorderWidth)) {
+//                            break;
+//                        } else {
+//                            this.tapOnCenterOfScreen();
+//                            DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90, 50);
+//                        }
+//                    } else {
+//                        break;
+//                    }
+//                    ntry++;
+//                } while (ntry <= maxRetries);
+//                if (ntry > maxRetries) {
+//                    throw new IllegalStateException(
+//                            String.format("Conversations list was not shown after %d retries", maxRetries));
+//                }
+//            } else {
+//                throw new IllegalStateException(String.format(
+//                        "The initial view has not been loaded within %s seconds", LOAD_TIMEOUT));
+//            }
+//        }
         getContactListPage().verifyContactListIsFullyLoaded();
-    }
-
-    public void tapMyAvatar() throws Exception {
-        getContactListPage().tapOnMyAvatar();
-        // Wait for transition animation
-        Thread.sleep(1000);
-    }
-
-    public void tapSearchInput() throws Exception {
-        getPeoplePickerPage().tapPeopleSearch();
     }
 
     public boolean waitUntilConversationIsVisible(String name) throws Exception {
@@ -126,14 +116,6 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 
     public boolean waitUntilMissedCallNotificationInvisible(String convoName) throws Exception {
         return getContactListPage().waitUntilMissedCallNotificationInvisible(convoName);
-    }
-
-    public void doShortSwipeDown() throws Exception {
-        getContactListPage().doShortSwipeDown();
-    }
-
-    public void doLongSwipeDown() throws Exception {
-        getContactListPage().doLongSwipeDown();
     }
 
     public void doSwipeLeft() throws Exception {
@@ -181,5 +163,13 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 
     public void tapInviteButton() throws Exception {
         getContactListPage().tapInviteButton();
+    }
+
+    public void tapListActionsAvatar() throws Exception {
+        getContactListPage().tapListActionsAvatar();
+    }
+
+    public void tapListActionsGear() throws Exception {
+        getContactListPage().tapListSettingsGear();
     }
 }

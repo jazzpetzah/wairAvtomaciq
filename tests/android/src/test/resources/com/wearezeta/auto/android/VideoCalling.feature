@@ -159,8 +159,7 @@ Feature: VideoCalling
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When I open search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I tap Video Call action button on People Picker page

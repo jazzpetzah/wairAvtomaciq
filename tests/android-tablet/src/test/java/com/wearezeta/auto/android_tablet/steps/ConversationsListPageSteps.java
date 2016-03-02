@@ -18,11 +18,9 @@ import cucumber.api.java.en.When;
 public class ConversationsListPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
-            .getInstance();
+    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
 
-    private TabletConversationsListPage getConversationsListPage()
-            throws Exception {
+    private TabletConversationsListPage getConversationsListPage() throws Exception {
         return pagesCollection.getPage(TabletConversationsListPage.class);
     }
 
@@ -62,25 +60,25 @@ public class ConversationsListPageSteps {
     }
 
     /**
-     * Tap my own avatar on top of conversations list
+     * Taps on the gear icon at the bottom of convo list
      *
      * @throws Exception
-     * @step. ^I tap my avatar on top of (?:the |\\s*)[Cc]onversations list$
+     * @step. ^I tap conversations list settings gear$
      */
-    @When("^I tap my avatar on top of (?:the |\\s*)[Cc]onversations list$")
-    public void ITapMyAvatar() throws Exception {
-        getConversationsListPage().tapMyAvatar();
+    @When("^I tap conversations list settings gear$")
+    public void WhenITapSettingsGear() throws Exception {
+        getConversationsListPage().tapListActionsGear();
     }
 
     /**
-     * Tap Search input field on top of Conversations list
+     * Tap the corresponding button in convo list to open Search UI
      *
      * @throws Exception
-     * @step. ^I tap (?:the |\\s*)Search input$
+     * @step. ^I open Search UI$
      */
-    @When("^I tap (?:the |\\s*)Search input$")
-    public void ITapSearchInput() throws Exception {
-        getConversationsListPage().tapSearchInput();
+    @When("^I open Search UI$")
+    public void IOpenSearchUI() throws Exception {
+        getConversationsListPage().tapListActionsAvatar();
     }
 
     /**
@@ -182,37 +180,21 @@ public class ConversationsListPageSteps {
     }
 
     /**
-     * Perform long/short swipe down on conversations list
+     * Perform long/short swipe on conversations list
      *
      * @param swipeTypeShortLong either short or long
-     * @param swipeTypeUpDown    either up or down
      * @throws Exception
-     * @step. ^I do (long|short) swipe (down|up) on conversations list$
+     * @step. ^I do (long|short) swipe up on conversations list$
      */
-    @When("^I do (long|short) swipe (down|up) on conversations list$")
-    public void IDoSwipeDown(String swipeTypeShortLong, String swipeTypeUpDown)
-            throws Exception {
-        if (swipeTypeUpDown.equals("down")) {
-            switch (swipeTypeShortLong) {
-                case "short":
-                    getConversationsListPage().doShortSwipeDown();
-                    break;
-                case "long":
-                    getConversationsListPage().doLongSwipeDown();
-                    break;
-                default:
-                    throw new IllegalStateException(String.format(
-                            "Swipe type '%s' is not supported", swipeTypeShortLong));
-            }
-        } else {
-            switch (swipeTypeShortLong) {
-                case "long":
-                    getConversationsListPage().doLongSwipeUp();
-                    break;
-                default:
-                    throw new IllegalStateException(String.format(
-                            "Swipe type '%s' is not supported", swipeTypeShortLong));
-            }
+    @When("^I do (long|short) swipe up on conversations list$")
+    public void IDoSwipe(String swipeTypeShortLong) throws Exception {
+        switch (swipeTypeShortLong) {
+            case "long":
+                getConversationsListPage().doLongSwipeUp();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format(
+                        "Swipe type '%s' is not supported", swipeTypeShortLong));
         }
     }
 

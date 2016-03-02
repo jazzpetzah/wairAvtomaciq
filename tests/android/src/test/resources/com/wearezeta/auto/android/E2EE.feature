@@ -198,7 +198,7 @@ Feature: E2EE
     And I tap on contact name <Contact1>
     Then I see message <EncMessage> 1 times in the conversation view
     When I press back button
-    And I tap on my avatar
+    And I tap onversations list settings gear
     And I tap options button
     And I tap settings button
     When I select "Privacy & Security" settings menu item
@@ -217,7 +217,7 @@ Feature: E2EE
     When I tap on contact name <Contact1>
     Then I see message <EncMessage> 1 times in the conversation view
     When I press back button
-    And I tap on my avatar
+    And I tap conversations list settings gear
     And I tap options button
     And I tap settings button
     When I select "Privacy & Security" settings menu item

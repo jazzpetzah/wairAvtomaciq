@@ -94,6 +94,7 @@ public class CommonIOSSteps {
         capabilities.setCapability("deviceName", deviceName);
         capabilities.setCapability("platformVersion", getPlatformVersion());
         capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT);
+        capabilities.setCapability("sessionOverride", true);
         final String backendType = getBackendType(this.getClass());
         capabilities.setCapability("processArguments",
                 String.join(" ", new String[]{
