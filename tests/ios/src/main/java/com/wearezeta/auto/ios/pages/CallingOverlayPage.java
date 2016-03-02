@@ -7,33 +7,34 @@ import java.util.function.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 public class CallingOverlayPage extends IOSPage {
-    private static final By nameCallStatusLabel = By.name("CallStatusLabel");
+    private static final By nameCallStatusLabel = MobileBy.AccessibilityId("CallStatusLabel");
 
-    private static final By nameEndCallButton = By.name("LeaveCallButton");
+    private static final By nameEndCallButton = MobileBy.AccessibilityId("LeaveCallButton");
 
-    private static final By nameSpeakersButton = By.name("CallSpeakerButton");
+    private static final By nameSpeakersButton = MobileBy.AccessibilityId("CallSpeakerButton");
 
-    private static final By nameIgnoreCallButton = By.name("IgnoreButton");
+    private static final By nameIgnoreCallButton = MobileBy.AccessibilityId("IgnoreButton");
 
-    private static final By nameAcceptVideoCallButton = By.name("AcceptVideoButton");
+    private static final By nameAcceptVideoCallButton = MobileBy.AccessibilityId("AcceptVideoButton");
 
-    protected static final By nameMuteCallButton = By.name("CallMuteButton");
+    protected static final By nameMuteCallButton = MobileBy.AccessibilityId("CallMuteButton");
 
-    protected static final By nameCallVideoButton = By.name("CallVideoButton");
+    protected static final By nameCallVideoButton = MobileBy.AccessibilityId("CallVideoButton");
 
-    private static final By nameSwitchCameraButton = By.name("SwitchCameraButton");
+    private static final By nameSwitchCameraButton = MobileBy.AccessibilityId("SwitchCameraButton");
 
-    private static final By nameAcceptCallButton = By.name("AcceptButton");
+    private static final By nameAcceptCallButton = MobileBy.AccessibilityId("AcceptButton");
 
     private static final Function<String, String> xpathStrCallingMessageByText = text ->
             String.format("//*[@name='CallStatusLabel' and contains(@value, '%s')]", text);
 
-    private static final By nameSecondCallAlert = By.name("Answer call?");
+    private static final By nameSecondCallAlert = MobileBy.AccessibilityId("Answer call?");
 
-    private static final By nameAnswerCallAlertButton = By.name("Answer");
+    private static final By nameAnswerCallAlertButton = MobileBy.AccessibilityId("Answer");
 
     private static final By xpathGroupCallAvatars = By.xpath(
             "//UIAWindow[@name='ZClientNotificationWindow']//UIACollectionCell");

@@ -7,7 +7,7 @@ Feature: Sign Out
     Given I see First Time overlay
     Given I tap Got It button on First Time overlay
     Given I see Contact list with no contacts
-    When I tap on my avatar
+    When I tap conversations list settings gear
     And I tap options button
     And I tap settings button
     And I select "Account" settings menu item

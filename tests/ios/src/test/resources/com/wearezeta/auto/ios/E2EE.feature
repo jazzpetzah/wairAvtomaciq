@@ -116,8 +116,9 @@ Feature: E2EE
     And I close group info page
     And I click Close input options button
     Then I see shield icon next to conversation input field
-    # FIXME: Make it possible in the app to detect labels text with Appium
-    # And I see last message in dialog is expected message <VerificationMsg>
+    #BUG Labels can not be located right now in appium
+    #And I see last message in dialog is expected message <VerificationMsg>
+    Then I see 2 conversation entries
 
     Examples:
       | Name      | Contact1  | Contact2  | DeviceName1 | DeviceLabel1 | DeviceName2 | DeviceLabel2 | GroupChatName | VerificationMsg               |
@@ -142,8 +143,9 @@ Feature: E2EE
     And I click Close input options button
     Then I do not see shield icon next to conversation input field
     # TODO: Check the device label in the system message
-    # FIXME: Make it possible in the app to detect labels text with Appium
-    # Then I see the conversation view contains message <ExpectedMsg>
+    #BUG system message labels can not be located on appium
+    #Then I see the conversation view contains message <ExpectedMsg>
+    Then I see 5 conversation entries
 
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                |
@@ -233,15 +235,17 @@ Feature: E2EE
       | Name      | DeviceName | DeviceLabel  |
       | user1Name | Device1    | Device1Label |
 
-  @C3293 @regression
+  @C3492 @regression
   Scenario Outline: Verify link is active for your own device and leads you to device's fingerprint
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email
     Given I see conversations list
     And I tap on contact name <Contact1>
-    # FIXME: Make it possible in the app to detect labels text with Appium
-    # And I see the conversation view contains message <ExpectedMsg>
+    #BUG system msg e2ee labels not be located by appium
+    #And I see the conversation view contains message <ExpectedMsg>
+    And I see 1 conversation entries
+    #BUG link can not be located
     And I tap on THIS DEVICE link
     And I open details page of device number 1
     Then I see fingerprint is not empty
@@ -294,6 +298,8 @@ Feature: E2EE
     Then I do not see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
     # Then I see the conversation view contains message <ExpectedMsg>
+    #At least checking that all system messages are there, check all conv entries
+    Then I see 4 conversation entries
 
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceLabel2 | ExpectedMsg                    |
@@ -321,6 +327,7 @@ Feature: E2EE
     Then I see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
     # And I see last message in dialog is expected message <VerificationMsg>
+    Then I see 2 conversation entries
 
     Examples:
       | Name      | Contact1  | DeviceName1 | DeviceName2 | VerificationMsg               |
@@ -484,6 +491,7 @@ Feature: E2EE
     And I do not see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
     # Then I do not see the conversation view contains message <ExpectedMessage>
+    Then I see 1 conversation entry
 
     Examples:
       | Name      | Contact1  | DeviceName2 | DeviceName1 | ExpectedMessage               |
@@ -531,6 +539,7 @@ Feature: E2EE
     Then I see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
     # Then I see last message in dialog is expected message <VerificationMsg>
+    Then I see 2 conversation entries
     When I open conversation details
     And I switch to Devices tab
     And I open details page of device number 1
@@ -541,6 +550,7 @@ Feature: E2EE
     Then I do not see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
     # Then I see last message in dialog contains expected message <UnverificationMsg>
+    Then I see 3 conversation entries
 
     Examples:
       | Name      | Contact1  | VerificationMsg               | UnverificationMsg     |

@@ -15,7 +15,7 @@ public class PeoplePickerPage extends AndroidPage {
     public static final By idParticipantsClose = By.id("gtv__participants__close");
 
     public static final By xpathMainSearchField =
-            By.xpath("//*[@id='fl__search_box_container']//*[@id='puet_pickuser__searchbox']");
+            By.xpath("//*[@id='fl__conversation_list_main']//*[@id='sbv__search_box']");
 
     public static final By xpathAddPeopleSearchField =
             By.xpath("//*[@id='fl__add_to_conversation__searchbox__container']//*[@id='puet_pickuser__searchbox']");
@@ -175,18 +175,6 @@ public class PeoplePickerPage extends AndroidPage {
     public boolean isGroupInvisible(String name) throws Exception {
         return !DriverUtils.waitUntilLocatorAppears(this.getDriver(),
                 By.xpath(xpathStrPeoplePickerGroupByName.apply(name)), 2);
-    }
-
-    public void doShortSwipeDown() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idPickerListContainer), 500, 15, 20, 15, 30);
-    }
-
-    public void doLongSwipeDown() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idPickerListContainer), 1000, 15, 15, 15, 180);
-    }
-
-    public void swipeDown(int durationMilliseconds) throws Exception {
-        DriverUtils.swipeByCoordinates(getDriver(), durationMilliseconds, 50, 20, 50, 90);
     }
 
     public void swipeRightOnContactAvatar(String name) throws Exception {

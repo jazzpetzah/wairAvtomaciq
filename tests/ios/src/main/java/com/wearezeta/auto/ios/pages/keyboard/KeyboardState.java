@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -23,7 +24,7 @@ abstract class KeyboardState {
 
     protected void tapSpecialKey(String keyName) throws InterruptedException {
         if (keyName.equals(SHIFT) || keyName.equals(MORE_LETTERS) || keyName.equals(MORE_NUMBERS)) {
-            final WebElement el = keyboard.findElement(By.name(keyName));
+            final WebElement el = keyboard.findElement(MobileBy.AccessibilityId(keyName));
             // el.click freezes here
             DriverUtils.tapByCoordinates(driver, el);
             Thread.sleep(1500);

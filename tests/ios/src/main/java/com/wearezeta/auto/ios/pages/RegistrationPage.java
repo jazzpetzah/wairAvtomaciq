@@ -7,6 +7,7 @@ import java.util.function.Function;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 
+import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSElement;
 
 import org.openqa.selenium.By;
@@ -20,9 +21,9 @@ public class RegistrationPage extends IOSPage {
 
     private static final By xpathYourName = By.xpath(xpathStrMainWindow + "/UIATextField[@value='YOUR FULL NAME']");
 
-    private static final By nameYourEmail = By.name("EmailField");
+    private static final By nameYourEmail = MobileBy.AccessibilityId("EmailField");
 
-    private static final By nameYourPassword = By.name("PasswordField");
+    private static final By nameYourPassword = MobileBy.AccessibilityId("PasswordField");
 
     private static final By xpathCreateAccountButton = By
             .xpath("//UIASecureTextField[contains(@name, 'PasswordField')]/UIAButton");
@@ -33,30 +34,30 @@ public class RegistrationPage extends IOSPage {
     private static final By xpathEmailVerifPrompt =
             By.xpath("//UIAStaticText[contains(@name, 'We sent an email to ')]");
 
-    private static final By namePhoneNumberField = By.name("PhoneNumberField");
+    private static final By namePhoneNumberField = MobileBy.AccessibilityId("PhoneNumberField");
 
     private static final By xpathActivationCode = By.xpath(xpathStrMainWindow + "//UIATextField");
 
-    private static final By nameCountryPickerButton = By.name("CountryPickerButton");
+    private static final By nameCountryPickerButton = MobileBy.AccessibilityId("CountryPickerButton");
 
     public static final By xpathCountryList = By.xpath(xpathStrMainWindow + "/UIATableView[1]");
 
-    private static final By nameConfirmButton = By.name("RegistrationConfirmButton");
+    private static final By nameConfirmButton = MobileBy.AccessibilityId("RegistrationConfirmButton");
 
-    private static final By nameAgreeButton = By.name("I AGREE");
+    private static final By nameAgreeButton = MobileBy.AccessibilityId("I AGREE");
 
     private static final By xpathVerificationPage = By
             .xpath("//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]");
 
-    private static final By nameResendCodeButton = By.name("RESEND");
+    private static final By nameResendCodeButton = MobileBy.AccessibilityId("RESEND");
 
-    private static final By nameInvalidCode = By.name("Please enter a valid code");
+    private static final By nameInvalidCode = MobileBy.AccessibilityId("Please enter a valid code");
 
-    private static final By nameChooseOwnPictureButton = By.name("ChooseOwnPictureButton");
+    private static final By nameChooseOwnPictureButton = MobileBy.AccessibilityId("ChooseOwnPictureButton");
 
-    private static final By nameChoosePhotoButton = By.name("Choose Photo");
+    private static final By nameChoosePhotoButton = MobileBy.AccessibilityId("Choose Photo");
 
-    private static final By nameKeepThisOneButton = By.name("KeepDefaultPictureButton");
+    private static final By nameKeepThisOneButton = MobileBy.AccessibilityId("KeepDefaultPictureButton");
 
     private String name;
     private String email;

@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -13,7 +14,7 @@ public class TabletPeoplePickerPage extends PeoplePickerPage {
     public static final By xpathSearchField = By.xpath(xpathStrMainWindow +
             "/UIAPopover[1]/UIATextView[@name='textViewSearch']");
 
-    public static final By namePeoplePickerAddToConversationButton = By.name("ADD TO CONVERSATION");
+    public static final By namePeoplePickerAddToConversationButton = MobileBy.AccessibilityId("ADD TO CONVERSATION");
 
     public static final Function<String,String> xpathStrIPADPeoplePickerResultUserName = name ->
             String.format("//UIAPopover//UIAStaticText[@name='%s']", name);

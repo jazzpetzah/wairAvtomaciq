@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -14,37 +15,37 @@ public class PersonalInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrEmailFieldByValue = value ->
             String.format("//*UIAStaticText[contains(@name, '%s')]", value);
 
-    private static final By nameProfileSettingsButton = By.name("SettingsButton");
+    private static final By nameProfileSettingsButton = MobileBy.AccessibilityId("SettingsButton");
 
     private static final By xpathSettingsAboutButton = By.xpath("//UIAButton[@name='ABOUT' or @name='About']");
 
-    private static final By nameTermsOfUseButton = By.name("Terms of Use");
+    private static final By nameTermsOfUseButton = MobileBy.AccessibilityId("Terms of Use");
 
-    private static final By namePictureButton = By.name("CameraLibraryButton");
+    private static final By namePictureButton = MobileBy.AccessibilityId("CameraLibraryButton");
 
     private static final By xpathProfileNameEditField =
             By.xpath("//UIAElement[@name='ProfileSelfNameField']/UIATextView");
 
-    private static final By nameSelfNameTooShortError = By.name("AT LEAST 2 CHARACTERS ");
+    private static final By nameSelfNameTooShortError = MobileBy.AccessibilityId("AT LEAST 2 CHARACTERS ");
 
     private static final By xpathOptionsSettingsButton = By.xpath("//UIAButton[@name='SETTINGS' or @name='Settings']");
 
-    private static final By nameOptionsHelpButton = By.name("HELP");
+    private static final By nameOptionsHelpButton = MobileBy.AccessibilityId("HELP");
 
     private static final By xpathSettingsHelpHeader = By.xpath("//UIAWebView/UIAStaticText[@name='Support']");
 
-    private static final By nameAccentColorPicker = By.name("AccentColorPickerView");
+    private static final By nameAccentColorPicker = MobileBy.AccessibilityId("AccentColorPickerView");
 
-    private static final By nameCloseButton = By.name("CloseButton");
+    private static final By nameCloseButton = MobileBy.AccessibilityId("CloseButton");
 
-    private static final By nameWireWebsiteButton = By.name("wire.com");
+    private static final By nameWireWebsiteButton = MobileBy.AccessibilityId("wire.com");
 
-    public static final By namePrivacyPolicyButton = By.name("Privacy Policy");
+    public static final By namePrivacyPolicyButton = MobileBy.AccessibilityId("Privacy Policy");
 
     private static final By xpathBuildNumberText = By.xpath(
             "//UIAApplication/UIAWindow/UIAStaticText[contains(@name, 'Wire Swiss GmbH • version')]");
 
-    private static final By nameCloseLegalPageButton = By.name("WebViewCloseButton");
+    private static final By nameCloseLegalPageButton = MobileBy.AccessibilityId("WebViewCloseButton");
 
     private static final Function<String, String> xpathStrTermsOfUseByText = text ->
             String.format("//UIAStaticText[@name='%s']", text);
@@ -53,18 +54,18 @@ public class PersonalInfoPage extends IOSPage {
             String.format("//UIAStaticText[@name='%s']", text);
 
     // TODO: this locator has to be more precise
-    private static final By xpathWireWebsiteUrl = By.name("URL");
+    private static final By xpathWireWebsiteUrl = MobileBy.AccessibilityId("URL");
 
-    private static final By nameAboutCloseButton = By.name("aboutCloseButton");
+    private static final By nameAboutCloseButton = MobileBy.AccessibilityId("aboutCloseButton");
 
-    private static final By nameAddPhoneNumberButton = By.name("ADD PHONE NUMBER");
+    private static final By nameAddPhoneNumberButton = MobileBy.AccessibilityId("ADD PHONE NUMBER");
 
-    private static final By nameThemeSwitcherButton = By.name("ThemeButton");
+    private static final By nameThemeSwitcherButton = MobileBy.AccessibilityId("ThemeButton");
 
     private static final Function<String, String> xpathStrPhoneEmailFieldByValue =
             value -> String.format("//UIAStaticText[contains(@name, '%s')]", value);
 
-    private static final By nameProfileName = By.name("ProfileSelfNameField");
+    private static final By nameProfileName = MobileBy.AccessibilityId("ProfileSelfNameField");
 
     private static final By xpathChangePasswordPageChangePasswordButton =
             By.xpath("//UIAButton[@name='RESET PASSWORD']");
