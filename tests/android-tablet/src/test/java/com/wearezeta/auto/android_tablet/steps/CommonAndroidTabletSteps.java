@@ -3,7 +3,6 @@ package com.wearezeta.auto.android_tablet.steps;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
 
 import com.wearezeta.auto.android.common.logging.LoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
@@ -18,8 +17,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -81,20 +78,14 @@ public class CommonAndroidTabletSteps {
     @SuppressWarnings("unchecked")
     public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
-        LoggingPreferences object = new LoggingPreferences();
-        object.enable("logcat", Level.ALL);
-        capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
         // To init the first available device
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
-        capabilities.setCapability("newCommandTimeout", 500);
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(getClass()));
         capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(getClass()));
         capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(getClass()));
         capabilities.setCapability("automationName", "Selendroid");
-        capabilities.setCapability("selendroidPort", 4444);
-        capabilities.setCapability("sessionOverride", true);
 
         try {
             return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()

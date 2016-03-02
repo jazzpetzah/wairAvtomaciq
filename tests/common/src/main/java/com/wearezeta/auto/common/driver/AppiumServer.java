@@ -12,6 +12,7 @@ public class AppiumServer {
     private static final Logger log = ZetaLogger.getLog(AppiumServer.class.getSimpleName());
 
     private static final int PORT = 4723;
+    private static final int SELENDROID_PORT = 4444;
     private static final int RESTART_TIMEOUT = 30000; // milliseconds
     private static final int IS_RUNNING_RETCODE = 22;
     private static final String[] PING_CMD = new String[]{
@@ -48,13 +49,15 @@ public class AppiumServer {
     }
 
     private static final String MAIN_EXECUTABLE_PATH = "/usr/local/bin/appium";
-    private static final String COMMAND_TIMEOUT = "500"; // in seconds
+    private static final int COMMAND_TIMEOUT = 500; // in seconds
     private static final String LOG_PATH = "/usr/local/var/log/appium/appium.log";
 
     private static final String[] DEFAULT_CMDLINE = new String[]{
             MAIN_EXECUTABLE_PATH,
-            "--command-timeout", COMMAND_TIMEOUT,
+            "--command-timeout", Integer.toString(COMMAND_TIMEOUT),
             "--port", Integer.toString(PORT),
+            "--session-override", "true",
+            "--selendroid-port", Integer.toString(SELENDROID_PORT),
             "--log", LOG_PATH
     };
 
@@ -95,7 +98,7 @@ public class AppiumServer {
 
     private static void restart(String[] cmdLine) throws Exception {
         final String hostname = InetAddress.getLocalHost().getHostName();
-        log.warn(String.format("Trying to restart Appium server on %s:%s...", hostname, PORT));
+        log.warn(String.format("Trying to (re)start Appium server on %s:%s...", hostname, PORT));
 
         Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "node"}).waitFor(2, TimeUnit.SECONDS);
         waitUnlessIsStopped(RESTART_TIMEOUT / 2);
@@ -104,7 +107,7 @@ public class AppiumServer {
         ensureParentDirExistence(LOG_PATH);
 
         final AsyncProcess appiumProcess = new AsyncProcess(cmdLine, false, false).start();
-        log.info(String.format("Waiting for Appium to be restarted on %s:%s...", hostname, PORT));
+        log.info(String.format("Waiting for Appium to be (re)started on %s:%s...", hostname, PORT));
         final long msStarted = System.currentTimeMillis();
         if (!waitUnlessIsRunning(RESTART_TIMEOUT)) {
             throw new IllegalStateException(String.format(
@@ -114,7 +117,7 @@ public class AppiumServer {
                     RESTART_TIMEOUT / 1000, hostname, appiumProcess.getStderr(), appiumProcess.getStdout()));
         }
 
-        log.info(String.format("Appium server has been successfully restarted after %.1f seconds " +
+        log.info(String.format("Appium server has been successfully (re)started after %.1f seconds " +
                 "and now is listening on %s:%s", (System.currentTimeMillis() - msStarted) / 1000.0, hostname, PORT));
     }
 

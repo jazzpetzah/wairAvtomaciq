@@ -41,7 +41,6 @@ Feature: Self Profile
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I tap conversations list settings gear
-    And I see personal info page
     And I tap on my name
     Then I see edit name field with my name
     When I clear name field
@@ -60,7 +59,7 @@ Feature: Self Profile
     Given I see Contact list with no contacts
     When I tap conversations list settings gear
     # Wait until self profile image is loaded into UI
-    And I wait for 20 seconds
+    And I wait for 10 seconds
     And I tap on personal info screen
     And I remember my current profile picture
     And I tap change photo button
@@ -85,7 +84,6 @@ Feature: Self Profile
     Then I remember the conversation view
     When I navigate back from dialog page
     And I tap conversations list settings gear
-    And I see personal info page
     And I tap Light Bulb button
     And I close Personal Info Page
     When I tap on contact name <Contact>
@@ -94,7 +92,6 @@ Feature: Self Profile
     Then I see the conversation view is changed
     When I navigate back from dialog page
     And I tap conversations list settings gear
-    And I see personal info page
     And I tap Light Bulb button
     And I close Personal Info Page
     When I tap on contact name <Contact>

@@ -35,14 +35,11 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.logging.Level;
 
 public class CommonAndroidSteps {
     static {
@@ -78,20 +75,14 @@ public class CommonAndroidSteps {
     @SuppressWarnings("unchecked")
     public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path, Class<?> cls) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
-        LoggingPreferences object = new LoggingPreferences();
-        object.enable("logcat", Level.ALL);
-        capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
         // To init the first available device
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
-        capabilities.setCapability("newCommandTimeout", 500);
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(cls));
         capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(cls));
         capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(cls));
         capabilities.setCapability("automationName", "Selendroid");
-        capabilities.setCapability("selendroidPort", 4444);
-        capabilities.setCapability("sessionOverride", true);
 
         try {
             return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities, 1,
