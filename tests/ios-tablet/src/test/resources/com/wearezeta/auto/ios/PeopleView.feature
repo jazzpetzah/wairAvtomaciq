@@ -217,7 +217,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | ParticipantsNumber |
       | user1Name | user2Name | user3Name | GroupInfo     | 2                  |
 
-  @C2717 @regression @id2989
+  @C2717 @rc @regression @id2989
   Scenario Outline: Verify correct group info page information [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -323,7 +323,7 @@ Feature: People View
       | Name      | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | 1on1FromGroup |
 
-  @C2721 @regression @id3087
+  @C2721 @rc @regression @id3087
   Scenario Outline: Verify opening 1-to-1 conversation from group conversation details [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
