@@ -284,8 +284,6 @@ Feature: Calling
     When I swipe on text input
     And I tap Call button from input tools
     Then I see ongoing call
-    And <Contact1>,<Contact2> stops calling <GroupChatName>
-    Then I do not see ongoing call
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
@@ -306,7 +304,6 @@ Feature: Calling
     When I swipe to accept the call
     Then I see ongoing call
     And I see 4 users take part in call
-    And <Contact1>,<Contact2>,<Contact3>,<Contact4> stops calling <GroupChatName>
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
@@ -326,7 +323,6 @@ Feature: Calling
     And I wait for 10 seconds
     And I swipe to accept the call
     Then I do not see ongoing call
-    And <Contact1>,<Contact2>,<Contact3>,<Contact4> stops calling <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName       | CallBackend |
@@ -352,7 +348,6 @@ Then I do not see incoming call
 #    And I see incoming call from <Contact3>
 #    When I swipe to accept the call
 #    Then I see ongoing call
-    And <Contact1>,<Contact2>,<Contact3> stops calling <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -379,7 +374,6 @@ Then I do not see incoming call
 #    When I swipe to accept the call
 #    Then I see ongoing call
 #    And I see 2 users take part in call
-    And <Contact1>,<Contact2>,<Contact3> stops calling <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -405,7 +399,6 @@ Then I do not see incoming call
 #    When I swipe to ignore the call
 #    Then I see ongoing call
 #    And I see 2 users take part in call
-    And <Contact1>,<Contact2>,<Contact3> stops calling <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
@@ -427,7 +420,6 @@ Then I do not see incoming call
     And I swipe to accept the call
     And I see ongoing call
     And I see 2 users take part in call
-    And <Contact1>,<Contact2> stops calling <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
@@ -469,7 +461,6 @@ Then I do not see incoming call
     And I wait for 10 seconds
     And I restore the application
     Then I see ongoing call
-    And <Contact> stops calling me
 
     Examples:
       | Name      | Contact   | CallBackend |
