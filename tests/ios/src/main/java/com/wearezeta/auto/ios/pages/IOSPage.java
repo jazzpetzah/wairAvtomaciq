@@ -396,12 +396,13 @@ public abstract class IOSPage extends BasePage {
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
             final Dimension elSize = urlBar.getSize();
             final Point elLocation = urlBar.getLocation();
-            clickAtSimulator(elLocation.x + (elSize.width / 6) / 100, elLocation.y + (elSize.height / 2) / 100);
+            clickAtSimulator(elLocation.x + elSize.width / 6, elLocation.y + elSize.height / 2);
             Thread.sleep(1000);
         } else {
             urlBar.click();
         }
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(expectedUrl));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(),
+                By.xpath(String.format("//*[starts-with(@name, '%s')]", expectedUrl)));
     }
 
     public void tapBackToWire() throws Exception {
@@ -409,7 +410,7 @@ public abstract class IOSPage extends BasePage {
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
             final Dimension elSize = backToWireButton.getSize();
             final Point elLocation = backToWireButton.getLocation();
-            clickAtSimulator(elLocation.x + (elSize.width / 2) / 100, elLocation.y + (elSize.height / 2) / 100);
+            clickAtSimulator(elLocation.x + elSize.width / 2, elLocation.y + elSize.height / 2);
             Thread.sleep(1000);
         } else {
             backToWireButton.click();

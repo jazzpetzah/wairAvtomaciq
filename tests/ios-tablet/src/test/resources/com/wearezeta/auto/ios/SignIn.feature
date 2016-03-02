@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @C3119 @regression @rc @id2607
+  @C3119 @regression @id2607
   Scenario Outline: Sign in to ZClient [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -33,19 +33,6 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C3130 @regression @id2749 @noAcceptAlert
-  Scenario Outline: Notification if SignIn credentials are wrong [PORTRAIT]
-    Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
-    And I enter wrong email <WrongMail>
-    And I enter wrong password <WrongPassword>
-    And I attempt to press Login button
-    Then I see wrong credentials notification
-
-    Examples:
-      | WrongMail  | WrongPassword |
-      | wrongwrong | wrong         |
-
   @C3132 @regression @id2924 @noAcceptAlert
   Scenario Outline: Notification if SignIn credentials are wrong [LANDSCAPE]
     Given I see sign in screen
@@ -59,24 +46,6 @@ Feature: Sign In
     Examples:
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
-
-  @C3135 @regression @id3817
-  Scenario Outline: Verify phone sign in when email is assigned [PORTRAIT]
-    Given There is 1 user where <Name> is me
-    Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
-    Then I see PHONE SIGN IN button
-    When I tap on PHONE SIGN IN button
-    Then I see country picker button on Sign in screen
-    When I enter phone number for user <Name>
-    Then I see verification code page
-    When I enter verification code for user <Name>
-    And I dismiss settings warning
-    Then I see conversations list
-
-    Examples:
-      | Name      |
-      | user1Name |
 
   @C3136 @regression @id3818
   Scenario Outline: Verify phone sign in when email is assigned [LANDSCAPE]
@@ -96,31 +65,6 @@ Feature: Sign In
     Examples:
       | Name      |
       | user1Name |
-
-  @C3121 @regression @id2726
-  Scenario Outline: Verify first time phone sign in when email is not assigned [PORTRAIT]
-    Given There is 1 user where <Name> is me with phone number only
-    Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
-    Then I see PHONE SIGN IN button
-    When I tap on PHONE SIGN IN button
-    Then I see country picker button on Sign in screen
-    When I enter phone number for user <Name>
-    Then I see verification code page
-    When I enter verification code for user <Name>
-    Then I see set email/password suggesstion page
-    When I have entered login <Email>
-    And I start activation email monitoring
-    And I have entered password <Password>
-    When I click DONE keyboard button
-    Then I see email verification reminder
-    When I verify registration address
-    And I dismiss settings warning
-    Then I see conversations list
-
-    Examples:
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
 
   @C3134 @regression @id3787
   Scenario Outline: Verify first time phone sign in when email is not assigned [LANDSCAPE]
@@ -148,23 +92,6 @@ Feature: Sign In
       | user1Email | user1Password | user1Name |
 
   @C3137 @regression @id3836 @noAcceptAlert
-  Scenario Outline: Verify impossibility to login with the wrong code [PORTRAIT]
-    Given There is 1 user where <Name> is me
-    Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
-    Then I see PHONE SIGN IN button
-    And I tap on PHONE SIGN IN button
-    And I see country picker button on Sign in screen
-    And I enter phone number for user <Name>
-    And I see verification code page
-    When I enter random verification code
-    Then I see wrong credentials notification
-
-    Examples:
-      | Name      |
-      | user1Name |
-
-  @C3137 @regression @id3836 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with the wrong code [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -177,23 +104,6 @@ Feature: Sign In
     And I see verification code page
     When I enter random verification code
     Then I see wrong credentials notification
-
-    Examples:
-      | Name      |
-      | user1Name |
-
-  @C3139 @regression @id3839 @noAcceptAlert
-  Scenario Outline: Verify impossibility to resend code within 10 min [PORTRAIT]
-    Given There is 1 user where <Name> is me
-    Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
-    Then I see PHONE SIGN IN button
-    And I tap on PHONE SIGN IN button
-    And I see country picker button on Sign in screen
-    And I enter phone number for user <Name>
-    And I see verification code page
-    When I tap RESEND code button
-    Then I see Resend will be possible after 10 min alert
 
     Examples:
       | Name      |
@@ -217,21 +127,6 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @C3128 @regression @id2733 @noAcceptAlert
-  Scenario Outline: Verify impossibility to login with unregistered phone number [PORTRAIT]
-    Given There is 1 user where <Name> is me
-    Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
-    And I see PHONE SIGN IN button
-    And I tap on PHONE SIGN IN button
-    And I see country picker button on Sign in screen
-    And I enter random phone number
-    Then I see invalid phone number alert
-
-    Examples:
-      | Name      |
-      | user1Name |
-
   @C3141 @regression @id3843 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with unregistered phone number [LANDSCAPE]
     Given There is 1 user where <Name> is me
@@ -247,33 +142,6 @@ Feature: Sign In
     Examples:
       | Name      |
       | user1Name |
-
-  @C2861 @regression @id3852
-  Scenario Outline: Verify adding email to the contact signed up with phone number [PORTRAIT]
-    Given There is 1 user where <Name> is me with phone number only
-    Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
-    And I see PHONE SIGN IN button
-    And I tap on PHONE SIGN IN button
-    And I see country picker button on Sign in screen
-    And I enter phone number for user <Name>
-    And I see verification code page
-    And I enter verification code for user <Name>
-    And I see set email/password suggesstion page
-    And I have entered login <Email>
-    And I start activation email monitoring
-    And I have entered password <Password>
-    And I click DONE keyboard button
-    And I see email verification reminder
-    And I verify registration address
-    And I dismiss settings warning
-    Then I see conversations list
-    When I tap my avatar
-    Then I see email <Email> on Personal page
-
-    Examples:
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
 
   @C2862 @regression @id3853
   Scenario Outline: Verify adding email to the contact signed up with phone number [LANDSCAPE]
@@ -303,27 +171,6 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C2867 @regression @id3864 @noAcceptAlert
-  Scenario Outline: Verify error message appears in case of registering already taken email [PORTRAIT]
-    Given There is 1 user where <Name> is me with phone number only
-    Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
-    And I tap on PHONE SIGN IN button
-    Then I see country picker button on Sign in screen
-    When I enter phone number for user <Name>
-    Then I see verification code page
-    When I enter verification code for user <Name>
-    And I accept alert
-    And I see set email/password suggesstion page
-    When I have entered login <Email>
-    And I have entered password <Password>
-    When I click DONE keyboard button
-    Then I see already registered email alert
-
-    Examples:
-      | Email                     | Password      | Name      |
-      | smoketester@wearezeta.com | user1Password | user1Name |
-
   @C2868 @regression @id3865 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email [LANDSCAPE]
     Given There is 1 user where <Name> is me with phone number only
@@ -345,46 +192,3 @@ Feature: Sign In
     Examples:
       | Email                     | Password      | Name      |
       | smoketester@wearezeta.com | user1Password | user1Name |
-
-  @C3142 @regression @id3858 @noAcceptAlert
-  Scenario Outline: Verify error message appears in case of registering already taken email [PORTRAIT]
-    Given There is 1 user where <Name> is me with phone number only
-    Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
-    And I tap on PHONE SIGN IN button
-    Then I see country picker button on Sign in screen
-    When I enter phone number for user <Name>
-    Then I see verification code page
-    When I enter verification code for user <Name>
-    And I accept alert
-    And I see set email/password suggesstion page
-    When I have entered login <Email>
-    And I have entered password <Password>
-    When I click DONE keyboard button
-    Then I see invalid email alert
-
-    Examples:
-      | Email        | Password      | Name      |
-      | invalidemail | user1Password | user1Name |
-
-  @C3143 @regression @id3859 @noAcceptAlert
-  Scenario Outline: Verify error message appears in case of registering already taken email [LANDSCAPE]
-    Given There is 1 user where <Name> is me with phone number only
-    Given I rotate UI to landscape
-    Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
-    And I tap on PHONE SIGN IN button
-    Then I see country picker button on Sign in screen
-    When I enter phone number for user <Name>
-    Then I see verification code page
-    When I enter verification code for user <Name>
-    And I accept alert
-    And I see set email/password suggesstion page
-    When I have entered login <Email>
-    And I have entered password <Password>
-    When I click DONE keyboard button
-    Then I see invalid email alert
-
-    Examples:
-      | Email        | Password      | Name      |
-      | invalidemail | user1Password | user1Name |

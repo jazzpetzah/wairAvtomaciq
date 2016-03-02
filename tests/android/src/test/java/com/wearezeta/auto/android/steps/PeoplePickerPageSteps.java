@@ -34,17 +34,18 @@ public class PeoplePickerPageSteps {
     /**
      * Taps on the search bar in the people picker page
      *
+     * @throws Exception
      * @step. ^I tap on Search input on People picker page$
      */
     @When("^I tap on Search input on People picker page$")
-    public void WhenITapOnSearchInputOnPeoplePickerPage() throws Throwable {
+    public void WhenITapOnSearchInputOnPeoplePickerPage() throws Exception {
         getPeoplePickerPage().tapPeopleSearch();
     }
 
     /**
      * Selects a contact from the top people section in the people picker page
      *
-     * @param contact
+     * @param contact user name/alias
      * @throws Exception
      * @step. ^I tap on (.*) in Top People$
      */
@@ -61,22 +62,22 @@ public class PeoplePickerPageSteps {
     /**
      * Creates a conversation from any selected users
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I tap on create conversation$
      */
     @When("^I tap on create conversation$")
-    public void WhenITapOnCreateConversation() throws Throwable {
+    public void WhenITapOnCreateConversation() throws Exception {
         getPeoplePickerPage().tapCreateConversation();
     }
 
     /**
      * Presses the close button in the people picker page
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I press Clear button$
      */
     @When("^I press Clear button$")
-    public void WhenIPressClearButton() throws Throwable {
+    public void WhenIPressClearButton() throws Exception {
         getPeoplePickerPage().tapClearButton();
     }
 
@@ -95,7 +96,7 @@ public class PeoplePickerPageSteps {
     /**
      * Types a user name into the people picker search field.
      *
-     * @param contact
+     * @param contact user name/alias
      * @throws Exception
      * @step. ^I input in People picker search field user name (.*)$
      */
@@ -113,13 +114,12 @@ public class PeoplePickerPageSteps {
     /**
      * Types a user email address into the people picker search field
      *
-     * @param email
+     * @param email user email/alias
      * @throws Exception
      * @step. ^I input in People picker search field user email (.*)$
      */
     @When("^I input in People picker search field user email (.*)$")
-    public void WhenIInputInPeoplePickerSearchFieldUserEmail(String email)
-            throws Exception {
+    public void WhenIInputInPeoplePickerSearchFieldUserEmail(String email) throws Exception {
         try {
             email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
         } catch (NoSuchUserException e) {
@@ -131,15 +131,15 @@ public class PeoplePickerPageSteps {
     /**
      * Inputs a part of a username into the search field.
      *
-     * @param part
-     * @param contact
-     * @throws Throwable
+     * @param part    a part of user name
+     * @param contact user name/alias
+     * @throws Exception
      * @step. ^I input in search field part (.*) of user name to connect to
      * (.*)$
      */
     @When("^I input in search field part (.*) of user name to connect to (.*)$")
     public void WhenIInputInPeoplePickerSearchFieldPartOfUserName(String part,
-                                                                  String contact) throws Throwable {
+                                                                  String contact) throws Exception {
         try {
             contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         } catch (NoSuchUserException e) {
@@ -157,14 +157,10 @@ public class PeoplePickerPageSteps {
      * @step. ^I enter \"(.*)\" into Search input on People [Pp]icker page$
      */
     @When("^I enter \"(.*)\" into Search input on People [Pp]icker page")
-    public void IEnterStringIntoSearchField(String searchCriteria)
-            throws Exception {
-        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
-                FindBy.EMAIL_ALIAS);
-        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
-                FindBy.NAME_ALIAS);
-        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
-                FindBy.PHONENUMBER_ALIAS);
+    public void IEnterStringIntoSearchField(String searchCriteria) throws Exception {
+        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.EMAIL_ALIAS);
+        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.NAME_ALIAS);
+        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.PHONENUMBER_ALIAS);
         getPeoplePickerPage().typeTextInPeopleSearch(searchCriteria);
         CommonSteps.getInstance().WaitForTime(2);
     }
@@ -172,13 +168,12 @@ public class PeoplePickerPageSteps {
     /**
      * Adds user name to search field (existing content is not cleaned)
      *
-     * @param contact
-     * @throws Throwable
+     * @param contact user name/alias
+     * @throws Exception
      * @step. ^I add in search field user name to connect to (.*)$
      */
     @When("^I add in search field user name to connect to (.*)$")
-    public void WhenIAddInSearchFieldUserNameToConnectTo(String contact)
-            throws Throwable {
+    public void WhenIAddInSearchFieldUserNameToConnectTo(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getPeoplePickerPage().addTextToPeopleSearch(contact);
     }
@@ -186,17 +181,13 @@ public class PeoplePickerPageSteps {
     /**
      * Wait for a user in the people picker search list
      *
-     * @param contact
+     * @param contact user name/alias
      * @throws Exception
      * @step. ^I see user (.*) found on People picker page$
      */
     @When("^I see user (.*) found on People picker page$")
-    public void WhenISeeUserFoundOnPeoplePickerPage(String contact)
-            throws Exception {
-        try {
-            contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        } catch (NoSuchUserException e) {
-        }
+    public void WhenISeeUserFoundOnPeoplePickerPage(String contact) throws Exception {
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("User '%s' is not visible on People Picker page", contact),
                 getPeoplePickerPage().isUserVisible(contact));
     }
@@ -216,7 +207,7 @@ public class PeoplePickerPageSteps {
     /**
      * Taps on a name found in the people picker page
      *
-     * @param contact
+     * @param contact user name/alias
      * @throws Exception
      * @step. ^I tap on user name found on People picker page (.*)$
      */
@@ -234,7 +225,7 @@ public class PeoplePickerPageSteps {
     /**
      * Taps on a group found in the people picker page
      *
-     * @param contact
+     * @param contact user name/alias
      * @throws Exception
      * @step. ^I tap on group found on People picker page (.*)$
      */
@@ -269,31 +260,16 @@ public class PeoplePickerPageSteps {
     }
 
     /**
-     * Navigates back to the conversation list by swiping down
-     *
-     * @throws Exception
-     * @step. ^I navigate back to Conversations List$
-     */
-    @When("^I navigate back to Conversations List$")
-    public void WhenINavigateBackToConversationsList() throws Exception {
-        getPeoplePickerPage().navigateBack();
-    }
-
-    /**
      * Check that user exists in People picker
      *
-     * @param contact
-     * @throws Throwable
+     * @param contact user name/alias
+     * @throws Exception
      * @step. ^I see user (.*) in [Pp]eople [Pp]icker$
      */
     @Then("^I see user (.*) in [Pp]eople [Pp]icker$")
-    public void ThenISeeUserInPeoplePicker(String contact) throws Throwable {
-        try {
-            contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        } catch (NoSuchUserException e) {
-        }
-        Assert.assertTrue(String.format(
-                "User '%s' is not visible in People Picker", contact),
+    public void ThenISeeUserInPeoplePicker(String contact) throws Exception {
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("User '%s' is not visible in People Picker", contact),
                 getPeoplePickerPage().isUserVisible(contact));
     }
 
@@ -350,7 +326,7 @@ public class PeoplePickerPageSteps {
                 getPeoplePickerPage().isTopPeopleHeaderVisible());
     }
 
-     /**
+    /**
      * Verify action button presence
      *
      * @param shouldNotSee equals to null if the button should be visible
@@ -372,7 +348,7 @@ public class PeoplePickerPageSteps {
     /**
      * Tap the corresponding action button
      *
-     * @param buttonName   one of possible action button names
+     * @param buttonName one of possible action button names
      * @throws Exception
      * @step. ^I tap (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on People Picker page$
      */

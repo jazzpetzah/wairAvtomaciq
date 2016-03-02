@@ -33,20 +33,22 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
     }
 
     public boolean waitConversationInfoPopoverToClose() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), xpathPopover, 10);
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), xpathPopover);
     }
 
     public void dismissPopover() throws Exception {
         for (int i = 0; i < 3; i++) {
-            tapOnTopLeftScreen();
+            DriverUtils.tapOutsideOfTheElement(getDriver(), getElement(xpathPopover), 100, 0);
             if (waitConversationInfoPopoverToClose()) {
-                break;
+                // Wait for animation
+                Thread.sleep(1000);
+                return;
             }
         }
     }
 
     public void selectUserByNameOniPadPopover(String name) throws Exception {
-        DriverUtils.tapByCoordinates(this.getDriver(), getDriver().findElementByName(name.toUpperCase()));
+        DriverUtils.tapByCoordinates(this.getDriver(), getElement(By.name(name.toUpperCase())));
     }
 
     public void pressRenameEllipsesButton() throws Exception {

@@ -1,9 +1,6 @@
 package com.wearezeta.auto.ios.tools;
 
 import java.io.File;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-
 
 import org.apache.log4j.Logger;
 
@@ -62,7 +59,7 @@ public class IOSCommonUtils {
      * @return UDID number of connected iDevice
      * @throws Exception
      */
-    private static String getConnectediOSDeviceUDID(String deviceName,
+    private static String getConnectedIOSDeviceUDID(String deviceName,
                                                     boolean shouldThrowException) throws Exception {
         final String result = CommonUtils.executeOsXCommandWithOutput(new String[]{
                 "/bin/bash",
@@ -81,35 +78,8 @@ public class IOSCommonUtils {
         }
     }
 
-    public static String getConnectediPhoneUDID(boolean shouldThrowException)
-            throws Exception {
-        return getConnectediOSDeviceUDID("iPhone", shouldThrowException);
-    }
-
-    private static String getIOSSimulatorIdByDeviceName(String deviceName) throws Exception {
-        return CommonUtils
-                .executeOsXCommandWithOutput(
-                        new String[]{
-                                "/bin/bash",
-                                "-c",
-                                "xcrun simctl list devices | grep -v 'unavailable' | grep -i '"
-                                        + deviceName
-                                        + " (' | tail -n 1 | cut -d '(' -f2 | cut -d ')' -f1"})
-                .trim();
-    }
-
-    public static void collectSimulatorLogs(String deviceName) throws Exception {
-        log.debug("iOS Simulator Logs:");
-        final String simId = getIOSSimulatorIdByDeviceName(deviceName);
-        final File logFile = new File(String.format("%s/Library/Logs/CoreSimulator/%s/system.log",
-                System.getProperty("user.home"), simId));
-        if (logFile.exists()) {
-            log.debug(new String(Files.readAllBytes(logFile.toPath()), Charset.forName("UTF-8")) +
-                    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        } else {
-            log.error(String.format("There is no log file at the expected path %s\n\n\n\n\n",
-                    logFile.getCanonicalPath()));
-        }
+    public static String getConnectediPhoneUDID(boolean shouldThrowException) throws Exception {
+        return getConnectedIOSDeviceUDID("iPhone", shouldThrowException);
     }
 
     public static String getPerfReportPathFromConfig(Class<?> c) throws Exception {

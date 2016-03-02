@@ -4,6 +4,7 @@ import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
@@ -117,36 +118,33 @@ public class DialogPageSteps {
     }
 
     /**
-     * Presses the image input button to open the camera or gallery
+     * Press the corresponding button in the input controls
      *
+     * @param btnName button name
      * @throws Exception
-     * @step. ^I press Add Picture button$
+     * @step. ^I tap (Call|Ping|Add Picture|Video Call|Sketch) button$ from input tools$
      */
-    @When("^I press Add Picture button$")
-    public void WhenIPressAddPictureButton() throws Exception {
-        getDialogPage().tapAddPictureBtn();
-    }
-
-    /**
-     * Press on the ping button in the input controls
-     *
-     * @throws Exception
-     * @step. ^I press Ping button$
-     */
-    @When("^I press Ping button$")
-    public void WhenIPressPButton() throws Exception {
-        getDialogPage().tapPingBtn();
-    }
-
-    /**
-     * Press on the call button in the input controls
-     *
-     * @throws Exception
-     * @step. ^I press Call button$
-     */
-    @When("^I press Call button$")
-    public void WhenIPressCallButton() throws Exception {
-        getDialogPage().tapCallBtn();
+    @When("^I tap (Call|Ping|Add Picture|Video Call|Sketch) button from input tools$")
+    public void WhenITapInputToolButton(String btnName) throws Exception {
+        switch (btnName.toLowerCase()) {
+            case "call":
+                getDialogPage().tapCallBtn();
+                break;
+            case "ping":
+                getDialogPage().tapPingBtn();
+                break;
+            case "add picture":
+                getDialogPage().tapAddPictureBtn();
+                break;
+            case "video call":
+                getDialogPage().tapVideoCallBtn();
+                break;
+            case "sketch":
+                getDialogPage().tapSketchBtn();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
+        }
     }
 
     /**
@@ -158,17 +156,6 @@ public class DialogPageSteps {
     @When("^I close input options$")
     public void ICloseInputOptions() throws Exception {
         getDialogPage().closeInputOptions();
-    }
-
-    /**
-     * Press on the sketch button in the input controls
-     *
-     * @throws Exception
-     * @step. ^I press Sketch button$
-     */
-    @When("^I press Sketch button$")
-    public void WhenIPressOnSketchButton() throws Exception {
-        getDialogPage().tapSketchBtn();
     }
 
     /**
@@ -267,7 +254,7 @@ public class DialogPageSteps {
     /**
      * Used to check that a ping has been sent Not very clear what this step does
      *
-     * @param message
+     * @param message message text
      * @throws Exception
      * @step. ^I see Ping message (.*) in the dialog$
      */
@@ -367,7 +354,7 @@ public class DialogPageSteps {
     /**
      * Checks to see that a group chat exists, where the name of the group chat is the list of users
      *
-     * @param participantNameAliases
+     * @param participantNameAliases one or more comma-separated user names/aliases
      * @throws Exception
      * @step. ^I see group chat page with users (.*)$
      */
@@ -384,8 +371,8 @@ public class DialogPageSteps {
     /**
      * Used to check that the message "YOU REMOVED XYZ" from group chat appears
      *
-     * @param message
-     * @param contact
+     * @param message the text of the message
+     * @param contact user name/alias
      * @throws Exception
      * @step. ^I see message (.*) contact (.*) on group page$
      */
@@ -439,7 +426,7 @@ public class DialogPageSteps {
     /**
      * Used once to check that the last message sent is the same as what is expected
      *
-     * @param message
+     * @param message the text of convo message
      * @throws Exception
      * @step. ^Last message is (.*)$
      */
@@ -449,6 +436,13 @@ public class DialogPageSteps {
                 getDialogPage().isLastMessageEqualTo(message, 30));
     }
 
+    private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
+    private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
+
+    private final ElementState mediaButtonState = new ElementState(
+            () -> getDialogPage().getMediaButtonState()
+    );
+
     /**
      * Store the screenshot of current media control button state
      *
@@ -457,7 +451,7 @@ public class DialogPageSteps {
      */
     @When("^I remember the state of PlayPause media item button$")
     public void IRememeberMediaItemButtonState() throws Exception {
-        getDialogPage().rememberMediaControlButtonState();
+        mediaButtonState.remember();
     }
 
     /**
@@ -468,9 +462,8 @@ public class DialogPageSteps {
      */
     @Then("^I verify the state of PlayPause media item button is changed$")
     public void IVerifyStateOfMediaControlButtonIsChanged() throws Exception {
-        if (!getDialogPage().mediaControlButtonStateHasChanged()) {
-            throw new AssertionError("State of PlayPause media item button has not changed");
-        }
+        Assert.assertTrue("State of PlayPause media item button has not changed",
+                mediaButtonState.isChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE));
     }
 
     /**
@@ -491,8 +484,7 @@ public class DialogPageSteps {
     private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
 
     private enum PictureDestination {
-        DIALOG,
-        PREVIEW;
+        DIALOG, PREVIEW
     }
 
     /**
@@ -549,6 +541,14 @@ public class DialogPageSteps {
         Assert.assertEquals("It looks like the conversation has some content", actualValue, 0);
     }
 
+
+    private static final int CONVO_VIEW_STATE_CHANGE_TIMEOUT = 15;
+    private static final double CONVO_VIEW_MIN_SIMILARITY_SCORE = 0.5;
+
+    private final ElementState conversationViewState = new ElementState(
+            () -> getDialogPage().getConvoViewStateScreenshot()
+    );
+
     /**
      * Store the screenshot of current convo view into internal variable
      *
@@ -557,7 +557,7 @@ public class DialogPageSteps {
      */
     @And("^I remember the conversation view$")
     public void IRememberConvoViewState() throws Exception {
-        getDialogPage().rememberConversationView();
+        conversationViewState.remember();
     }
 
     /**
@@ -570,11 +570,11 @@ public class DialogPageSteps {
     @Then("^I see the conversation view is (not )?changed$")
     public void ISeeTheConvoViewISChanged(String shouldNotBeChanged) throws Exception {
         if (shouldNotBeChanged == null) {
-            if (!getDialogPage().conversationViewStateHasChanged()) {
-                throw new AssertionError("State of PlayPause media item button has not changed");
-            }
-        } else if (!getDialogPage().conversationViewStateHasNotChanged()) {
-            throw new AssertionError("State of PlayPause media item button has changed");
+            Assert.assertTrue("State of conversation view has not been changed",
+                    conversationViewState.isChanged(CONVO_VIEW_STATE_CHANGE_TIMEOUT, CONVO_VIEW_MIN_SIMILARITY_SCORE));
+        } else {
+            Assert.assertTrue("State of conversation view has been changed",
+                    conversationViewState.isNotChanged(CONVO_VIEW_STATE_CHANGE_TIMEOUT, CONVO_VIEW_MIN_SIMILARITY_SCORE));
         }
     }
 
@@ -606,6 +606,16 @@ public class DialogPageSteps {
                 getDialogPage().waitForXImages(expectedCount));
     }
 
+
+    private static final int SHIELD_STATE_CHANGE_TIMEOUT = 15;
+    private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
+
+    private final ElementState verifiedConversationShieldState = new ElementState(
+            () -> getDialogPage().getShieldStateScreenshot()
+    );
+
+    private Boolean wasShieldVisible = null;
+
     /**
      * Save the state of verified conversation shield into the internal field for the future comparison
      *
@@ -614,7 +624,12 @@ public class DialogPageSteps {
      */
     @And("^I remember verified conversation shield state$")
     public void IRememberVerifiedConversationShieldState() throws Exception {
-        getDialogPage().rememberVerifiedConversationShield();
+        try {
+            verifiedConversationShieldState.remember();
+            wasShieldVisible = true;
+        } catch (IllegalStateException e) {
+            wasShieldVisible = false;
+        }
     }
 
     /**
@@ -625,19 +640,14 @@ public class DialogPageSteps {
      */
     @Then("^I see verified conversation shield state has changed$")
     public void ISeeVerifiedConversationShieldStateHasChanged() throws Exception {
-        if (!getDialogPage().verifiedConversationShieldStateHasChanged()) {
-            throw new AssertionError("State of verified conversation shield has not changed");
+        try {
+            Assert.assertTrue("State of verified conversation shield has not changed",
+                    verifiedConversationShieldState.isChanged(SHIELD_STATE_CHANGE_TIMEOUT,
+                            SHIELD_MIN_SIMILARITY_SCORE));
+        } catch (IllegalStateException e) {
+            if (wasShieldVisible == null || wasShieldVisible) {
+                throw e;
+            }
         }
-    }
-
-    /**
-     * Press on the video call button in the input controls
-     *
-     * @throws Exception
-     * @step. ^I press Video Call button$
-     */
-    @When("^I press Video Call button$")
-    public void IPressVideoCallButton() throws Exception {
-        getDialogPage().tapVideoCallBtn();
     }
 }

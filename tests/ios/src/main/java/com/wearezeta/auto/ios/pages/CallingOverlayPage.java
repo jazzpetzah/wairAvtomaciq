@@ -20,9 +20,9 @@ public class CallingOverlayPage extends IOSPage {
 
     private static final By nameAcceptVideoCallButton = By.name("AcceptVideoButton");
 
-    private static final By nameMuteCallButton = By.name("CallMuteButton");
+    protected static final By nameMuteCallButton = By.name("CallMuteButton");
 
-    private static final By nameCallVideoButton = By.name("CallVideoButton");
+    protected static final By nameCallVideoButton = By.name("CallVideoButton");
 
     private static final By nameSwitchCameraButton = By.name("SwitchCameraButton");
 
@@ -41,6 +41,10 @@ public class CallingOverlayPage extends IOSPage {
     private static final By xpathMuteButtonSelected = By.xpath("//UIAButton[@name='CallMuteButton' and @value='1']");
 
     private static final By xpathMuteButtonNotSelected = By.xpath("//UIAButton[@name='CallMuteButton' and @value='']");
+
+    private static final By xpathVideoButtonSelected = By.xpath("//UIAButton[@name='CallVideoButton' and @value='1']");
+
+    private static final By xpathVideoButtonNotSelected = By.xpath("//UIAButton[@name='CallVideoButton' and @value='']");
 
     private static final By xpathGroupCallFullMessage = By.xpath("//UIAAlert[@name='The call is full']");
 
@@ -82,7 +86,7 @@ public class CallingOverlayPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGroupCallFullMessage);
     }
 
-    private By getButtonLocatorByName(final String name) {
+    protected By getButtonLocatorByName(final String name) {
         switch (name) {
             case "Ignore":
                 return nameIgnoreCallButton;
@@ -130,7 +134,15 @@ public class CallingOverlayPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMuteButtonNotSelected);
     }
 
-    public BufferedImage getMuteButtonScrenshot() throws Exception {
+    public boolean isVideoButtonSelected() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMuteButtonSelected);
+    }
+
+    public boolean isVideoButtonNotSelected() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMuteButtonNotSelected);
+    }
+
+    public BufferedImage getMuteButtonScreenshot() throws Exception {
         return this.getElementScreenshot(getElement(nameMuteCallButton)).orElseThrow(
                 () -> new IllegalStateException("Cannot take a screenshot of Mute button")
         );

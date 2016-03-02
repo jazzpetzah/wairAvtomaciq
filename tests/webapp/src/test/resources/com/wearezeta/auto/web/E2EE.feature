@@ -104,7 +104,7 @@ Feature: E2EE
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C12068 @e2ee
+  @C12068 @e2ee @regression
   Scenario Outline: Verify you can receive encrypted messages in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
@@ -118,7 +118,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | EncryptedMessage |
       | user1Email | user1Password | user1Name | user2Name | EncryptedYo      |
 
-  @C12069 @e2ee
+  @C12069 @e2ee @regression
   Scenario Outline: Verify you can receive encrypted and non-encrypted images in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
@@ -132,7 +132,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | ImageName                |
       | user1Email | user1Password | user1Name | user2Name | userpicture_portrait.jpg |
 
-  @C12043 @e2ee
+  @C12043 @e2ee @regression
   Scenario Outline: Verify you can receive encrypted messages in group chat
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
@@ -150,7 +150,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1   | Contact2  | EncryptedMessage | GroupChatName |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | EncryptedYo      | HybridGroup   |
 
-  @C12044 @e2ee
+  @C12044 @e2ee @regression
   Scenario Outline: Verify you can receive encrypted images in group chat
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
@@ -168,7 +168,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1   | Contact2  | ImageName                | GroupChatName |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | userpicture_portrait.jpg | HybridGroup   |
 
-  @C12050 @e2ee
+  @C12050 @e2ee @regression
   Scenario Outline: Verify you receive encrypted content in 1:1 conversation after switching online
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -196,7 +196,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | OnlineMessage | OfflineMessage | ImageName                |
       | user1Email | user1Password | user1Name | user2Name | Hello         | Are you online | userpicture_portrait.jpg |
 
-  @C12051 @e2ee
+  @C12051 @e2ee @regression
   Scenario Outline: Verify you receive encrypted content in group conversation after switching online
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
@@ -229,7 +229,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | OnlineMessage | OfflineMessage | ImageName                |
       | user1Email | user1Password | user1Name | user2Name | user3name | GroupChat     | Hello         | Are you online | userpicture_portrait.jpg |
 
-  @C12045 @e2ee
+  @C12045 @e2ee @regression
   Scenario Outline: Verify you can see device ids of the other conversation participant in 1:1 conversation details
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
@@ -254,7 +254,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | Message1                           | Message2                                     |
       | user1Email | user1Password | user1Name | user2Name | is not using the encrypted version | Wire gives every device a unique fingerprint |
 
-  @C12046 @e2ee
+  @C12046 @e2ee @regression
   Scenario Outline: Verify you can see device ids of the other conversation participant in group conversation details
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -281,7 +281,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1                           | Message2                                     |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | is not using the encrypted version | Wire gives every device a unique fingerprint |
 
-  @C12053 @e2ee
+  @C12053 @mute
   Scenario Outline: Verify it is possible to verify 1:1 conversation participants
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -394,7 +394,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | ALL_VERIFIED                  | NEW_DEVICE                 | Message    |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | All fingerprints are verified | started using a new device | Unverified |
 
-  @C12057 @e2ee
+  @C12057 @e2ee @regression
   Scenario Outline: My other clients should be notified when I'm login on a new device (pending connections inbox)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

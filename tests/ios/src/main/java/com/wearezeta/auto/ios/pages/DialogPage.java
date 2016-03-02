@@ -9,7 +9,9 @@ import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DummyElement;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -118,6 +120,8 @@ public class DialogPage extends IOSPage {
 
     private final By[] inputTools = new By[]{nameCallButton, nameCursorSketchButton, nameAddPictureButton};
 
+    private static final Logger log = ZetaLogger.getLog(DialogPage.class.getSimpleName());
+
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -140,8 +144,13 @@ public class DialogPage extends IOSPage {
         getElement(nameVideoCallButton).click();
     }
 
-    public void returnToContactList() throws Exception {
-        getElement(nameConversationBackButton, "Back to list button is not visible").click();
+    public void returnToConversationsList() throws Exception {
+        final Optional<WebElement> backBtn = getElementIfDisplayed(nameConversationBackButton);
+        if (backBtn.isPresent()) {
+            backBtn.get().click();
+        } else {
+            log.warn("Back button is not visible. Probably, the conversations list is already visible");
+        }
     }
 
     public void pressCallButton() throws Exception {

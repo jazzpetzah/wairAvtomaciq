@@ -59,8 +59,8 @@ public class CallingSteps {
 	 * @throws Exception
 	 */
 	@When("(.*) starts a video call to (.*) using (.*)$")
-	public void UserXStartVideoCallsToUserYUsingCallBackend(String caller,
-															String conversationName, String callBackend) throws Exception {
+	public void UserXStartVideoCallsToUserYUsingCallBackend(String caller, String conversationName, String callBackend) 
+                throws Exception {
 		commonCallingSteps.startVideoCallToConversation(caller, conversationName,
 				callBackend);
 	}
@@ -78,9 +78,9 @@ public class CallingSteps {
 	 * @throws Exception
 	 */
 	@When("(.*) stops? all calls to (.*)")
-	public void UserXStopsCallsToUserY(String caller, String conversationName)
+	public void UserXStopsCallsToUserY(String callers, String conversationName)
 			throws Exception {
-		commonCallingSteps.stopCall(caller, conversationName);
+		commonCallingSteps.stopOutgoingCall(splitAliases(callers), conversationName);
 	}
 
 	/**
@@ -90,8 +90,8 @@ public class CallingSteps {
 	 * @step. (.*) verif(?:ies|y) that call status to (.*) is changed to (.*) in
 	 *        (\\d+) seconds?$
 	 *
-	 * @param caller
-	 *            caller name/alias
+	 * @param callers
+	 *            caller names/aliases
 	 * @param conversationName
 	 *            destination conversation
 	 * @param expectedStatuses
@@ -103,10 +103,10 @@ public class CallingSteps {
 	 * @throws Exception
 	 */
 	@Then("(.*) verif(?:ies|y) that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
-	public void UserXVerifesCallStatusToUserY(String caller,
+	public void UserXVerifesCallStatusToUserY(String callers,
 			String conversationName, String expectedStatuses, int timeoutSeconds)
 			throws Exception {
-		commonCallingSteps.verifyCallingStatus(caller, conversationName,
+		commonCallingSteps.verifyCallingStatus(splitAliases(callers), conversationName,
 				expectedStatuses, timeoutSeconds);
 	}
 

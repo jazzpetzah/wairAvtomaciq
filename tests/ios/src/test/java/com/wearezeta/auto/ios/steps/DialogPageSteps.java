@@ -441,7 +441,7 @@ public class DialogPageSteps {
 
     @Then("^I navigate back to conversations list")
     public void INavigateToConversationsList() throws Exception {
-        getDialogPage().returnToContactList();
+        getDialogPage().returnToConversationsList();
     }
 
     @When("I tap and hold on message input")

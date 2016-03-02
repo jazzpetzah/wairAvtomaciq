@@ -215,16 +215,12 @@ public class ContactListPageSteps {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         if (shouldNotBeMuted == null) {
             Assert.assertTrue(
-                    String.format(
-                            "The conversation '%s' is supposed to be muted, but it is not",
-                            contact),
+                    String.format("The conversation '%s' is supposed to be muted, but it is not", contact),
                     getContactListPage().isContactMuted(contact));
         } else {
-            Assert.assertTrue(
-                    String.format(
-                            "The conversation '%s' is supposed to be not muted, but it is",
-                            contact), getContactListPage()
-                            .waitUntilContactNotMuted(contact));
+            Assert.assertTrue(String.format(
+                    "The conversation '%s' is supposed to be not muted, but it is", contact),
+                    getContactListPage().waitUntilContactNotMuted(contact));
         }
     }
 
@@ -341,8 +337,7 @@ public class ContactListPageSteps {
     public void IRememberUnreadIndicatorState(String name) throws Exception {
         final String convoName = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         this.previousUnreadIndicatorState.put(convoName,
-                new ElementState(() -> getContactListPage().getMessageIndicatorScreenshot(convoName)
-                        .orElseThrow(IllegalStateException::new)).remember()
+                new ElementState(() -> getContactListPage().getMessageIndicatorScreenshot(convoName)).remember()
         );
     }
 
@@ -367,8 +362,8 @@ public class ContactListPageSteps {
                             name));
         }
         Assert.assertTrue(String.format(
-                        "The current and previous states of Unread Dot for conversation '%s' seems to be very similar",
-                        name),
+                "The current and previous states of Unread Dot for conversation '%s' seems to be very similar",
+                name),
                 this.previousUnreadIndicatorState.get(name).isChanged(10, MAX_UNREAD_DOT_SIMILARITY_THRESHOLD));
     }
 

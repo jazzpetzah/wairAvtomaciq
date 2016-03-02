@@ -348,8 +348,7 @@ public class CommonWinSteps {
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
 	public void ThereAreNUsersWhereXIsMeWithoutEmail(int count,
 			String myNameAlias) throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
-				WinExecutionContext.CURRENT_PLATFORM, count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
 	}
 
 	/**

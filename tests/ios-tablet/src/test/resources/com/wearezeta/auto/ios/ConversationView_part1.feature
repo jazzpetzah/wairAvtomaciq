@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @C2632 @regression @rc @id2419
+  @C2632 @regression @id2419
   Scenario Outline: Verify sending message [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -14,7 +14,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2645 @regression @id2375
+  @C2645 @rc @regression @id2375
   Scenario Outline: Verify sending message [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -58,7 +58,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2621 @regression @rc @id2413
+  @C2621 @regression @id2413
   Scenario Outline: Verify sending image [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

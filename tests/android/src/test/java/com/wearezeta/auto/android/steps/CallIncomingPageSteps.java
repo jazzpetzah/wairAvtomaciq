@@ -35,24 +35,23 @@ public class CallIncomingPageSteps {
      * Ignores an incoming call
      *
      * @throws Exception
-     * @step. ^I swipe to ignore the call$
+     * @param action either 'accept' or 'ignore'
+     * @step. ^I swipe to (ignore|accept) the call$
      */
-    @When("^I swipe to ignore the call$")
-    public void ISwipeToIgnoreCall() throws Exception {
-        getPage().ignoreCall();
+    @When("^I swipe to (ignore|accept) the call$")
+    public void ISwipeTo(String action) throws Exception {
+        switch (action) {
+            case "accept":
+                getPage().acceptCall();
+                break;
+            case "ignore":
+                getPage().ignoreCall();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown action name '%s'", action));
+        }
     }
-    
-    /**
-     * Accepts an incoming call
-     *
-     * @throws Exception
-     * @step. ^I swipe to accept the call$
-     */
-    @When("^I swipe to accept the call$")
-    public void ISwipeToAcceptCall() throws Exception {
-        getPage().acceptCall();
-    }
-    
+
     /**
      * Verify that incoming calling UI is visible and that the correct caller
      * name is shown
