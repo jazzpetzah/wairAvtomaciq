@@ -5,6 +5,7 @@ import java.text.Normalizer.Form;
 
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import cucumber.api.PendingException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
