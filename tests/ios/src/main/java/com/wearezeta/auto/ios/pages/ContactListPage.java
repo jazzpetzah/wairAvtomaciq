@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.*;
 
@@ -15,7 +16,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class ContactListPage extends IOSPage {
     private static final int CONV_SWIPE_TIME = 500;
 
-    private static final By nameSelfButton = By.name("SelfButton");
+    private static final By nameSelfButton = MobileBy.AccessibilityId("SelfButton");
 
     private static final String xpathStrContactListRoot = xpathStrMainWindow + "/UIACollectionView[1]";
     private static final By xpathContactListRoot = By.xpath(xpathStrContactListRoot);
@@ -30,20 +31,20 @@ public class ContactListPage extends IOSPage {
     private static final Function<String, String> xpathStrFirstConversationEntryByName = name ->
             String.format("%s[1]/UIAStaticText[@value='%s']", xpathStrContactListItems, name);
 
-    private static final By nameOpenStartUI = By.name("START A CONVERSATION");
+    private static final By nameOpenStartUI = MobileBy.AccessibilityId("START A CONVERSATION");
 
-    private static final By nameMediaCellPlayButton = By.name("mediaCellButton");
+    private static final By nameMediaCellPlayButton = MobileBy.AccessibilityId("mediaCellButton");
 
     private static final By xpathPendingRequest =
             By.xpath("//UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]");
 
-    private static final By nameMuteCallButton = By.name("MuteVoiceButton");
+    private static final By nameMuteCallButton = MobileBy.AccessibilityId("MuteVoiceButton");
 
-    private static final By nameLeaveConversationButton = By.name("LEAVE");
+    private static final By nameLeaveConversationButton = MobileBy.AccessibilityId("LEAVE");
 
-    public static final By nameCancelButton = By.name("CANCEL");
+    public static final By nameCancelButton = MobileBy.AccessibilityId("CANCEL");
 
-    private static final By nameSendAnInviteButton = By.name("INVITE MORE PEOPLE");
+    private static final By nameSendAnInviteButton = MobileBy.AccessibilityId("INVITE MORE PEOPLE");
 
     private static final Function<String, String> xpathStrContactListPlayPauseButtonByConvoName = name ->
             String.format("//UIACollectionCell[@name='%s']/UIAButton[@name='mediaCellButton']", name);
@@ -143,7 +144,7 @@ public class ContactListPage extends IOSPage {
     }
 
     public boolean contactIsNotDisplayed(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(name), 5);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), MobileBy.AccessibilityId(name), 5);
     }
 
     @Override
@@ -261,7 +262,7 @@ public class ContactListPage extends IOSPage {
     }
 
     private Optional<WebElement> findNameIamCallingInContactList(String name) throws Exception {
-        return getElementIfDisplayed(By.name(name));
+        return getElementIfDisplayed(MobileBy.AccessibilityId(name));
     }
 
     public boolean isFirstConversationName(String convoName) throws Exception {

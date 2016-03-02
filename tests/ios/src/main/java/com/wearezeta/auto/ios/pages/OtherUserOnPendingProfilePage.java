@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -19,13 +20,13 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
     private static final By xpathCancelRequestYesButton = By.xpath(
             "//UIAStaticText[@name='Cancel Request?']/following-sibling::UIAButton[@name='YES']");
 
-    private static final By nameRightActionButton = By.name("OtherUserMetaControllerRightButton");
+    private static final By nameRightActionButton = MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
 
-    private static final By nameLeftActionButton = By.name("OtherUserMetaControllerLeftButton");
+    private static final By nameLeftActionButton = MobileBy.AccessibilityId("OtherUserMetaControllerLeftButton");
 
-    private static final By nameOtherProfilePageCloseButton = By.name("OtherUserProfileCloseButton");
+    private static final By nameOtherProfilePageCloseButton = MobileBy.AccessibilityId("OtherUserProfileCloseButton");
 
-    private static final By nameCancelRequestConfirmationLabel = By.name("Cancel Request?");
+    private static final By nameCancelRequestConfirmationLabel = MobileBy.AccessibilityId("Cancel Request?");
 
     public OtherUserOnPendingProfilePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -60,7 +61,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
     }
 
     public boolean isUserNameDisplayed(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(name), 10);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), MobileBy.AccessibilityId(name), 10);
     }
 
     public boolean isRemoveFromGroupConversationVisible() throws Exception {

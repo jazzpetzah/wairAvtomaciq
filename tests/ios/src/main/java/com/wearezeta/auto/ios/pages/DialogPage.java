@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DummyElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import io.appium.java_client.MobileBy;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -22,15 +23,15 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 
 public class DialogPage extends IOSPage {
-    private static final By nameConversationBackButton = By.name("ConversationBackButton");
+    private static final By nameConversationBackButton = MobileBy.AccessibilityId("ConversationBackButton");
 
-    private static final By nameConversationCursorInput = By.name("ConversationTextInputField");
+    private static final By nameConversationCursorInput = MobileBy.AccessibilityId("ConversationTextInputField");
 
-    private static final By namePlusButton = By.name("plusButton");
+    private static final By namePlusButton = MobileBy.AccessibilityId("plusButton");
 
-    private static final By nameOpenConversationDetails = By.name("ComposeControllerConversationDetailButton");
+    private static final By nameOpenConversationDetails = MobileBy.AccessibilityId("ComposeControllerConversationDetailButton");
 
-    protected static final By nameYouRenamedConversation = By.name("YOU RENAMED THE CONVERSATION");
+    protected static final By nameYouRenamedConversation = MobileBy.AccessibilityId("YOU RENAMED THE CONVERSATION");
 
     private static final By xpathMessageEntries = By.xpath(xpathStrMainWindow + "/UIATableView/UIATableCell");
 
@@ -41,27 +42,27 @@ public class DialogPage extends IOSPage {
     private static final By xpathMediaContainerCell =
             By.xpath("//UIATextView[contains(@value, '://')]/following-sibling::UIAButton");
 
-    private static final By namePlayButton = By.name("mediaBarPlayButton");
+    private static final By namePlayButton = MobileBy.AccessibilityId("mediaBarPlayButton");
 
-    private static final By namePauseButton = By.name("mediaBarPauseButton");
+    private static final By namePauseButton = MobileBy.AccessibilityId("mediaBarPauseButton");
 
     private static final By xpathConversationPage = By.xpath(xpathStrMainWindow + "/UIATableView[1]");
 
-    private static final By nameMediaBarCloseButton = By.name("mediabarCloseButton");
+    private static final By nameMediaBarCloseButton = MobileBy.AccessibilityId("mediabarCloseButton");
 
-    private static final By nameInputOptionsCloseButton = By.name("closeButton");
+    private static final By nameInputOptionsCloseButton = MobileBy.AccessibilityId("closeButton");
 
-    private static final By nameTitle = By.name("playingMediaTitle");
+    private static final By nameTitle = MobileBy.AccessibilityId("playingMediaTitle");
 
     private static final Function<String, String> xpathStrDialogTitleBar = title -> String.format(
             "//UIAStaticText[@name='%s']", title);
 
-    private static final By nameGifButton = By.name("rightMenuButton");
+    private static final By nameGifButton = MobileBy.AccessibilityId("rightMenuButton");
 
     private static final By xpathGiphyImage = By
             .xpath("//UIATextView[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']");
 
-    private static final By nameSoundCloudButton = By.name("soundcloud");
+    private static final By nameSoundCloudButton = MobileBy.AccessibilityId("soundcloud");
 
     private static final By xpathUserAvatarNextToInput = By
             .xpath("//UIAImage[following-sibling::UIATextView[@name='ConversationTextInputField'] and @visible='true']");
@@ -82,7 +83,7 @@ public class DialogPage extends IOSPage {
     public static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
             "//UIAStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
 
-    protected static final By nameCameraLibraryButton = By.name("cameraLibraryButton");
+    protected static final By nameCameraLibraryButton = MobileBy.AccessibilityId("cameraLibraryButton");
 
     private static final Function<String, String> xpathStrMessageViewByText = text -> String.format(
             "//UIATextView[contains(@value, '%s')]", text);
@@ -96,7 +97,7 @@ public class DialogPage extends IOSPage {
     private static final Function<String, String> xpathStartConversationEntryTemplate = xpathExpr -> String.format(
             "//UIAStaticText[%s]", xpathExpr);
 
-    private static final By nameShieldIconNextToInput = By.name("verifiedConversationIndicator");
+    private static final By nameShieldIconNextToInput = MobileBy.AccessibilityId("verifiedConversationIndicator");
 
     private static final Function<String, String> xpathStrConvoMessageByText = text -> String.format(
             "%s//UIATableView//*[contains(@name, '%s')]", xpathStrMainWindow, text);
@@ -112,10 +113,10 @@ public class DialogPage extends IOSPage {
 
     public static final String MEDIA_STATE_STOPPED = "ended";
 
-    private static final By nameCursorSketchButton = By.name("ComposeControllerSketchButton");
-    protected static final By nameAddPictureButton = By.name("ComposeControllerPictureButton");
-    private static final By nameVideoCallButton = By.name("ComposeControllerVideoButton");
-    private static final By nameCallButton = By.name("ComposeControllerVoiceButton");
+    private static final By nameCursorSketchButton = MobileBy.AccessibilityId("ComposeControllerSketchButton");
+    protected static final By nameAddPictureButton = MobileBy.AccessibilityId("ComposeControllerPictureButton");
+    private static final By nameVideoCallButton = MobileBy.AccessibilityId("ComposeControllerVideoButton");
+    private static final By nameCallButton = MobileBy.AccessibilityId("ComposeControllerVoiceButton");
 
     private final By[] inputTools = new By[]{nameCallButton, nameCursorSketchButton, nameAddPictureButton};
 
@@ -424,7 +425,7 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean isTypeOrSlideExists(String msg) throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(msg), 5);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), MobileBy.AccessibilityId(msg), 5);
     }
 
     public void clickOnPlayVideoButton() throws Exception {
