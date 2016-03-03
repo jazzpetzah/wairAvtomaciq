@@ -59,7 +59,7 @@ public class ContactListPage extends AndroidPage {
 
     private static final By idSearchButton = By.id("gtv_pickuser__searchbutton");
 
-    private static final By idLeaveCheckbox = By.id("gtv__checkbox_icon");
+    private static final By xpathLeaveCheckbox = By.xpath("(//*[@id='gtv__checkbox_icon'])[1]");
 
     private static final Function<String, String> xpathStrConvoSettingsMenuItemByName = name -> String
             .format("//*[@id='ttv__settings_box__item' and @value='%s']" +
@@ -289,7 +289,7 @@ public class ContactListPage extends AndroidPage {
     }
 
     public void checkLeaveWhileDeleteCheckbox() throws Exception {
-        getElement(idLeaveCheckbox).click();
+        getElement(xpathLeaveCheckbox).click();
     }
 
     public boolean isConvSettingsMenuItemVisible(String name) throws Exception {
@@ -302,7 +302,7 @@ public class ContactListPage extends AndroidPage {
     }
 
     public boolean isLeaveCheckBoxVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idLeaveCheckbox);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathLeaveCheckbox);
     }
 
     public boolean isThreeDotButtonVisible() throws Exception {
