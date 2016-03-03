@@ -390,11 +390,11 @@ Feature: Calling
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given <Contact2> starts instance using <CallWaitBackend>
+    Given <Contact1>,<Contact2> starts instance using <CallWaitBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    When <Contact1> calls me using <CallBackend>
+    When <Contact1> calls me
     And I see the incoming call controls for conversation  <Contact1>
     When I ignore the call from conversation <Contact1>
     Then I do not see the incoming call controls for conversation <Contact2>
@@ -408,7 +408,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | CallWaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    | chrome          | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome    | chrome          | 60      |
 
   @C1750 @regression @calling @calling_debug
   Scenario Outline: Verify I can not see blocked contact trying to call me
@@ -437,7 +437,7 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     Given I muted conversation with <Contact>
-    When <Contact> calls me using <CallBackend>
+    #When <Contact> calls me using <CallBackend>
     Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see the incoming call controls for conversation <Contact>
 
@@ -492,7 +492,7 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
     Given <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
