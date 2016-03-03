@@ -74,7 +74,7 @@ Feature: Application
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    When I click menu bar item "Wire" and menu item "Sign Out"
+    When I click menu bar item "Wire" and menu item "Log Out"
     Then I see Sign In page
 
     Examples: 

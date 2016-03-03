@@ -240,6 +240,12 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
 
     private static final long DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS = 2000;
     private static final String SERVER_SIDE_ERROR_SIGNATURE = "unknown server-side error";
+    private static final String NO_OPEN_WINDOWS_ERROR_SIGNATURE = "No open windows";
+
+    private static boolean shouldRetryServerError(Throwable e) {
+        return e.getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE) ||
+                e.getMessage().contains(NO_OPEN_WINDOWS_ERROR_SIGNATURE);
+    }
 
     private ExecutorService pool;
 
@@ -280,7 +286,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
                     response.setStatus(HttpStatus.SC_OK);
                     return response;
                 }
-                if (e.getCause().getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
+                if (shouldRetryServerError(e.getCause())) {
                     final long millisecondsStarted = System.currentTimeMillis();
                     while (System.currentTimeMillis() - millisecondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
                         try {
@@ -294,7 +300,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
                             if (isSessionLostBecause(e1)) {
                                 setSessionLost(true);
                             }
-                            if (!e1.getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
+                            if (!shouldRetryServerError(e1)) {
                                 throw e1;
                             }
                         }

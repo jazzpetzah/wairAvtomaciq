@@ -522,6 +522,7 @@ public final class BackendAPIWrappers {
     public static void addContactsToGroupConversation(ClientUser asUser,
                                                       List<ClientUser> contacts, String conversationName)
             throws Exception {
+        asUser = tryLoginByUser(asUser);
         List<String> ids = new ArrayList<>();
         for (ClientUser contact : contacts) {
             tryLoginByUser(contact);
