@@ -8,6 +8,8 @@ import org.openqa.selenium.StaleElementReferenceException;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -47,8 +49,10 @@ public class ElementState {
         do {
             try {
                 final BufferedImage currentState = stateGetter.getState();
+                Date date = new Date() ;
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
                 String userHomeFolder = System.getProperty("user.home");
-                File outputfile = new File(userHomeFolder, msStarted+".png");
+                File outputfile = new File(userHomeFolder + "/" + dateFormat.format(date)+".png");
                 ImageIO.write(currentState, "png", outputfile);
                 final double score = ImageUtil.getOverlapScore(
                         this.previousScreenshot.orElseThrow(
