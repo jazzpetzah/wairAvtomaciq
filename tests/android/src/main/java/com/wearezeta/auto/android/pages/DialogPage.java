@@ -29,7 +29,8 @@ public class DialogPage extends AndroidPage {
         .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
 
     private static final Function<String, String> xpathStrUnsentIndicatorByText = text -> String
-        .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']", xpathStrConversationMessageByText.apply(text));
+        .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']",
+                xpathStrConversationMessageByText.apply(text));
 
     private static final By xpathUnsentIndicatorForImage = By
         .xpath("//*[@id='" + idStrDialogImages + "']/parent::*/parent::*//*[@id='v__row_conversation__error']");
@@ -503,4 +504,10 @@ public class DialogPage extends AndroidPage {
         } while (System.currentTimeMillis() - msStarted <= IMAGES_VISIBILITY_TIMEOUT);
         return false;
     }
+
+    public boolean waitForUnsentIndicator(String text) throws Exception {
+        final By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(text));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
 }
