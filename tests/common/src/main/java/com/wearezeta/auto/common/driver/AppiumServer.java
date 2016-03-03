@@ -49,12 +49,11 @@ public class AppiumServer {
     }
 
     private static final String MAIN_EXECUTABLE_PATH = "/usr/local/bin/appium";
-    private static final int COMMAND_TIMEOUT = 500; // in seconds
+    public static final int DEFAULT_COMMAND_TIMEOUT = 500; // in seconds
     private static final String LOG_PATH = "/usr/local/var/log/appium/appium.log";
 
     private static final String[] DEFAULT_CMDLINE = new String[]{
             MAIN_EXECUTABLE_PATH,
-            "--command-timeout", Integer.toString(COMMAND_TIMEOUT),
             "--port", Integer.toString(PORT),
             "--session-override",
             "--selendroid-port", Integer.toString(SELENDROID_PORT),

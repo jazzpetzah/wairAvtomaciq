@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 import com.wearezeta.auto.android.common.logging.LoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
+import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.Scenario;
@@ -79,6 +80,7 @@ public class CommonAndroidTabletSteps {
     public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
+        capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         // To init the first available device
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);

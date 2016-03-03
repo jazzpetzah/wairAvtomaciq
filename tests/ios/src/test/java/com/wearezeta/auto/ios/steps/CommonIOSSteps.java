@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
@@ -42,7 +43,6 @@ public class CommonIOSSteps {
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
     private static Logger log = ZetaLogger.getLog(CommonIOSSteps.class.getSimpleName());
 
-
     // We keep this short and compatible with spell checker
     public static final String DEFAULT_AUTOMATION_MESSAGE = "1 message";
 
@@ -74,8 +74,7 @@ public class CommonIOSSteps {
         return getIOSAppName(CommonIOSSteps.class);
     }
 
-    public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts)
-            throws Exception {
+    public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts) throws Exception {
         return resetIOSDriver(enableAutoAcceptAlerts, false);
     }
 
@@ -86,6 +85,7 @@ public class CommonIOSSteps {
                                                 boolean overrideWaitForAppScript) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("nativeInstrumentsLib", isUseNativeInstrumentsEnabled());
+        capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
         capabilities.setCapability("app", getPath());
         capabilities.setCapability("appName", getAppName());

@@ -10,6 +10,7 @@ import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -76,6 +77,7 @@ public class CommonAndroidSteps {
     public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path, Class<?> cls) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
+        capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         // To init the first available device
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
