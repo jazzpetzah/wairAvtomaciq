@@ -5,7 +5,7 @@ Feature: Calling
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -34,7 +34,7 @@ Feature: Calling
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -58,7 +58,7 @@ Feature: Calling
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given <Contact1> starts waiting instance using <CallBackend>
+    Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -85,13 +85,14 @@ Feature: Calling
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact1>
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
-    And <Contact1> calls me using <CallBackend>
+    And <Contact1> calls me
     And I see the incoming call controls for conversation <Contact1>
     And I see conversation <Contact1> is on the top
     When I accept the call from conversation <Contact1>
@@ -112,14 +113,14 @@ Feature: Calling
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
-    Given <Contact> accepts next incoming call automatically
+    Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I call
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then <Contact> accepts next incoming call automatically
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
     And I hang up call with conversation <Contact>
     Then <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
@@ -139,7 +140,7 @@ Feature: Calling
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
@@ -204,15 +205,16 @@ Feature: Calling
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts waiting instance using <CallBackend>
-    Given <Contact1>,<Contact2> accept next incoming call automatically
-    Given <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
+    Given <Contact1>,<Contact2> starts instance using <CallBackend>
+    
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact1>
-    And I call
-    Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then <Contact1>,<Contact2> accept next incoming call automatically
+    And <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
+    When I call
+    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact1>
     And I open conversation with <Contact2>
     When I call
@@ -247,17 +249,18 @@ Feature: Calling
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given <Contact2> starts waiting instance using <WaitBackend>
-    Given <Contact2> accepts next incoming call automatically
-    Given <Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    Given <Contact2> starts instance using <WaitBackend>
+    Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact1>
-    And <Contact1> calls me using <CallBackend>
+    When <Contact2> accepts next incoming call automatically
+    Then <Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    When <Contact1> calls me
     And I see the incoming call controls for conversation <Contact1>
     When I accept the call from conversation <Contact1>
-    Then <Contact1> verifies that call status to Myself is changed to active in <Timeout> seconds
+    Then <Contact1> verifies that call status to me is changed to active in <Timeout> seconds
     Then I see the ongoing call controls for conversation <Contact1>
     And I open conversation with <Contact2>
     When I call
@@ -294,46 +297,47 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
     Given Myself has group chat <ChatName2> with <Contact3>,<Contact4>
-    Given <Contact1>,<Contact2>,<Contact3> starts waiting instance using <WaitBackend>
-    Given <Contact1>,<Contact2> accept next incoming call automatically
-    Given <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
+    Given <Contact1>,<Contact2>,<Contact3> starts instance using <WaitBackend>
+    Given <Contact4> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName1>
+    And <Contact1>,<Contact2> accept next incoming call automatically
+    Then <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
     And I call
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the outgoing call controls for conversation <ChatName1>
     And I see joined group call notification for conversation <ChatName1>
-    When <Contact4> calls <ChatName2> using <CallBackend>
-    Then I see the incoming call controls for conversation <Contact4>
-    When I ignore the call from conversation <Contact4>
+    When <Contact4> calls <ChatName2>
+    Then I see the incoming call controls for conversation <ChatName2>
+    When I ignore the call from conversation <ChatName2>
     And I open conversation with <ChatName1>
     And I see the outgoing call controls for conversation <ChatName1>
-    Then I do not see the incoming call controls for conversation  <Contact4>
-    When <Contact4> stops all calls to <ChatName2>
-    And <Contact4> calls <ChatName2> using <CallBackend>
-    Then I see the incoming call controls for conversation  <Contact4>
-    When I accept the call from conversation <Contact4>
+    Then I do not see the incoming call controls for conversation  <ChatName2>
+    When <Contact4> stops calling <ChatName2>
+    And <Contact4> calls <ChatName2>
+    Then I see the incoming call controls for conversation <ChatName2>
+    When I accept the call from conversation <ChatName2>
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    When <Contact4> stops all calls to <ChatName2>
-    And <Contact4> calls <ChatName2> using <CallBackend>
+    When <Contact4> stops calling <ChatName2>
+    And <Contact4> calls <ChatName2>
     Then I see the incoming call controls for conversation <Contact4>
-    When I accept the call from conversation <Contact4>
+    When I accept the call from conversation <ChatName2>
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    When <Contact4> stops all calls to <ChatName2>
+    When <Contact4> stops calling <ChatName2>
     And <Contact3> accepts next incoming call automatically
-    And <Contact4> calls <ChatName2> using <CallBackend>
+    And <Contact4> calls <ChatName2>
     Then <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
-    When I accept the call from conversation <Contact4>
+    When I accept the call from conversation <ChatName2>
     Then I see another call warning modal
     When I click on "Answer" button in another call warning modal
     Then I do not see another call warning modal
-    And I see the ongoing call controls for conversation <Contact3>,<Contact4>
+    And I see the ongoing call controls for conversation <ChatName2>
     And I see joined group call notification for conversation <ChatName2>
     And I do not see joined group call notification for conversation <ChatName1>
     And I see unjoined group call notification for conversation <ChatName1>
@@ -352,7 +356,7 @@ Feature: Calling
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And I call
-    Then I wait for 2 seconds
+    Then I wait for 5 seconds
     And I hang up call with conversation <Contact>
     Then I see <Message> action in conversation
 
@@ -407,7 +411,7 @@ Feature: Calling
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given <Contact2> starts waiting instance using <CallWaitBackend>
+    Given <Contact2> starts instance using <CallWaitBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -486,7 +490,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts waiting instance using <CallBackend>
+    Given <Contact1>,<Contact2> starts instance using <CallBackend>
     Given <Contact1>,<Contact2> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -509,7 +513,7 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact2>,<Contact3>,<Contact4> starts waiting instance using <WaitBackend>
+    Given <Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
     Given <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -538,7 +542,7 @@ Feature: Calling
     Given There are 6 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
-    Given <Contact2>,<Contact3>,<Contact4>,<Contact5> starts waiting instance using <WaitBackend>
+    Given <Contact2>,<Contact3>,<Contact4>,<Contact5> starts instance using <WaitBackend>
     Given <Contact2>,<Contact3>,<Contact4>,<Contact5> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -567,7 +571,7 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts waiting instance using <WaitBackend>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
     Given <Contact1>,<Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -590,7 +594,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given <Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact2> starts instance using <WaitBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -613,7 +617,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact1>,<Contact2> starts instance using <WaitBackend>
     Given <Contact1>,<Contact2> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -639,7 +643,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given <Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact2> starts instance using <WaitBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -666,7 +670,7 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts waiting instance using <WaitBackend>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -683,7 +687,7 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact1>,<Contact2> starts instance using <WaitBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -701,7 +705,7 @@ Feature: Calling
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact1>,<Contact2> starts instance using <WaitBackend>
     Given <Contact1>,<Contact2> accept next incoming call automatically
     Given <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page

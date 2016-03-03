@@ -151,7 +151,7 @@ public class CallPage extends ContactListPage {
     public boolean isAcceptVideoCallButtonVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathAcceptVideoCallButtonByConversationName
+        final String locator = WebAppLocators.CallPage.xpathAcceptCallButtonByConversationName
                 .apply(conversationName);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(locator));
@@ -160,7 +160,7 @@ public class CallPage extends ContactListPage {
     public boolean isAcceptVideoCallButtonNotVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathAcceptVideoCallButtonByConversationName
+        final String locator = WebAppLocators.CallPage.xpathAcceptCallButtonByConversationName
                 .apply(conversationName);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.xpath(locator));
@@ -191,11 +191,11 @@ public class CallPage extends ContactListPage {
         declineCallButton.click();
     }
 
-    public void clickAcceptVideoCallButton(String conversationName) throws Exception {
+    public void clickAcceptCallButton(String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathAcceptVideoCallButtonByConversationName.apply(conversationName);
-        WebElement acceptVideoCallButton = getDriver().findElementByXPath(locator);
-        acceptVideoCallButton.click();
+        final String locator = WebAppLocators.CallPage.xpathAcceptCallButtonByConversationName.apply(conversationName);
+        WebElement acceptCallButton = getDriver().findElementByXPath(locator);
+        acceptCallButton.click();
     }
 
     public void clickMuteCallButton(String conversationName) throws Exception {

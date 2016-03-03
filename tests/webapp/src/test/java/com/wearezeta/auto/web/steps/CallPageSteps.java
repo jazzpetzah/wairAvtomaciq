@@ -59,7 +59,7 @@ public class CallPageSteps {
     public void IClickAcceptCallButtonInConversationView(String conversation) throws Exception {
         conversation = usrMgr.replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         webappPagesCollection.getPage(CallPage.class)
-                .clickAcceptVideoCallButton(conversation);
+                .clickAcceptCallButton(conversation);
     }
 
     /**

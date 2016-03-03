@@ -213,7 +213,7 @@ public final class WebAppLocators {
                 .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']/following-sibling::span[contains(text(),':')]",
                         user);
 
-        public static final Function<String, String> xpathAcceptVideoCallButtonByConversationName = (
+        public static final Function<String, String> xpathAcceptCallButtonByConversationName = (
                 name) -> String
                 .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
                                 + "*/parent::*//*[@data-uie-name='do-call-controls-call-accept']",
