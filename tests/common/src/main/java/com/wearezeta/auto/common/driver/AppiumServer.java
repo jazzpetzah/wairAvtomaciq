@@ -24,7 +24,7 @@ public class AppiumServer {
             String.format("http://127.0.0.1:%s/wd/hub", PORT)
     };
 
-    private static boolean waitUnlessIsStopped(long millisecondsTimeout) throws Exception {
+    private static boolean waitUntilIsStopped(long millisecondsTimeout) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         while (System.currentTimeMillis() - millisecondsStarted <= millisecondsTimeout) {
             final int exitCode = Runtime.getRuntime().exec(PING_CMD).waitFor();
@@ -36,7 +36,7 @@ public class AppiumServer {
         return false;
     }
 
-    private static boolean waitUnlessIsRunning(long millisecondsTimeout) throws Exception {
+    private static boolean waitUntilIsRunning(long millisecondsTimeout) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         while (System.currentTimeMillis() - millisecondsStarted <= millisecondsTimeout) {
             final int exitCode = Runtime.getRuntime().exec(PING_CMD).waitFor();
@@ -100,7 +100,7 @@ public class AppiumServer {
         log.warn(String.format("Trying to (re)start Appium server on %s:%s...", hostname, PORT));
 
         Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "node"}).waitFor(2, TimeUnit.SECONDS);
-        waitUnlessIsStopped(RESTART_TIMEOUT / 2);
+        waitUntilIsStopped(RESTART_TIMEOUT / 2);
 
         ensureAppiumExecutableExistence();
         ensureParentDirExistence(LOG_PATH);
@@ -108,7 +108,7 @@ public class AppiumServer {
         final AsyncProcess appiumProcess = new AsyncProcess(cmdLine, false, false).start();
         log.info(String.format("Waiting for Appium to be (re)started on %s:%s...", hostname, PORT));
         final long msStarted = System.currentTimeMillis();
-        if (!waitUnlessIsRunning(RESTART_TIMEOUT)) {
+        if (!waitUntilIsRunning(RESTART_TIMEOUT)) {
             throw new IllegalStateException(String.format(
                     "Appium server has failed to start after %s seconds timeout on server '%s'.\n" +
                             "Please make sure that NodeJS and Appium packages are installed properly on this machine.\n" +
@@ -121,6 +121,6 @@ public class AppiumServer {
     }
 
     public static boolean isRunning() throws Exception {
-        return waitUnlessIsRunning(5);
+        return waitUntilIsRunning(1);
     }
 }

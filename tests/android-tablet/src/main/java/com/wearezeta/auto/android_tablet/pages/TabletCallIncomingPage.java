@@ -30,19 +30,23 @@ public class TabletCallIncomingPage extends AndroidTabletPage {
     }
 
     public void ignoreCallLandscape() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 85, 40, 85);
+        // !!! Only portrait mode is supported for calls
+        // DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 85, 40, 85);
+        ignoreCallPortrait();
     }
 
     public void acceptCallLandscape() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 85, 60, 85);
+        // !!! Only portrait mode is supported for calls
+        // DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 85, 60, 85);
+        acceptCallPortrait();
     }
     
     public void ignoreCallPortrait() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 90, 30, 90);
+        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 92, 30, 92);
     }
 
     public void acceptCallPortrait() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 90, 70, 90);
+        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idMainContent), 1500, 50, 92, 70, 92);
     }
 
 }
