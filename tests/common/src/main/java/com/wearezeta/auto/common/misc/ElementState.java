@@ -49,11 +49,6 @@ public class ElementState {
         do {
             try {
                 final BufferedImage currentState = stateGetter.getState();
-                Date date = new Date() ;
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
-                String userHomeFolder = System.getProperty("user.home");
-                File outputfile = new File(userHomeFolder + "/" + dateFormat.format(date)+".png");
-                ImageIO.write(currentState, "png", outputfile);
                 final double score = ImageUtil.getOverlapScore(
                         this.previousScreenshot.orElseThrow(
                                 () -> new IllegalStateException("Please remember the previous element state first")),

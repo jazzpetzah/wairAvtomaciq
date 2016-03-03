@@ -55,19 +55,6 @@ public class TabletContactListPage extends ContactListPage {
         final Dimension entryDimension = entryElement.getSize();
         final BufferedImage entryScreenshot =
                 this.getElementScreenshot(entryElement).orElseThrow(IllegalStateException::new);
-
-        Date date = new Date() ;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
-        String userHomeFolder = System.getProperty("user.home");
-
-        File outputfile = new File(userHomeFolder + "/" + dateFormat.format(date)+"entry.png");
-        ImageIO.write(entryScreenshot, "png", outputfile);
-//
-//        String pageSource = this.getDriver().getPageSource();
-//        File file = new File(userHomeFolder + "/" + dateFormat.format(date)+"pagesource.txt");
-//        FileWriter fileWriter = new FileWriter(file);
-//        fileWriter.write(pageSource);
-
         final By titleLocator = By.xpath(xpathStrConvoListTitleByName.apply(name));
         final WebElement titleElement = getElement(titleLocator);
         final Point titleLocation = titleElement.getLocation();
