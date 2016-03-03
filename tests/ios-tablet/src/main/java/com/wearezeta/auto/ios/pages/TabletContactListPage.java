@@ -1,7 +1,12 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
@@ -11,6 +16,8 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
+
+import javax.imageio.ImageIO;
 
 public class TabletContactListPage extends ContactListPage {
     private static final By xpathConversationListPage =
@@ -48,6 +55,19 @@ public class TabletContactListPage extends ContactListPage {
         final Dimension entryDimension = entryElement.getSize();
         final BufferedImage entryScreenshot =
                 this.getElementScreenshot(entryElement).orElseThrow(IllegalStateException::new);
+
+        Date date = new Date() ;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
+        String userHomeFolder = System.getProperty("user.home");
+
+        File outputfile = new File(userHomeFolder + "/" + dateFormat.format(date)+".png");
+        ImageIO.write(entryScreenshot, "png", outputfile);
+
+        String pageSource = this.getDriver().getPageSource();
+        File file = new File(userHomeFolder + "/" + dateFormat.format(date)+"pagesource.txt");
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write(pageSource);
+
         final By titleLocator = By.xpath(xpathStrConvoListTitleByName.apply(name));
         final WebElement titleElement = getElement(titleLocator);
         final Point titleLocation = titleElement.getLocation();
