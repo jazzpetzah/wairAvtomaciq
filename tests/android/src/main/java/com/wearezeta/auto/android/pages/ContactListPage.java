@@ -51,7 +51,7 @@ public class ContactListPage extends AndroidPage {
     private static final Function<Integer, String> xpathStrNonEmptyContactByIdx = idx -> String
             .format("(%s)[%d]", xpathStrNonEmptyContacts, idx);
 
-    private static final By idListSettingsGear = By.id("gtv__list_actions__settings");
+    private static final By idListSettingsButton = By.id("gtv__list_actions__settings");
 
     public static final By idListActionsAvatar = By.id("gtv__list_actions__avatar");
 
@@ -184,7 +184,7 @@ public class ContactListPage extends AndroidPage {
                             CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
         }
 
-        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idListSettingsGear, 5)) {
+        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idListSettingsButton, 5)) {
             log.warn("List actions gear is not detected on top of conversations list");
         }
 
@@ -209,8 +209,8 @@ public class ContactListPage extends AndroidPage {
                 xpathLoadingContactListItem, CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS);
     }
 
-    public void tapListSettingsGear() throws Exception {
-        getElement(idListSettingsGear, "List action gear icon is not visible").click();
+    public void tapListSettingsButton() throws Exception {
+        getElement(idListSettingsButton).click();
     }
 
     public void tapOnSearchButton() throws Exception {

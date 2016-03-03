@@ -7,7 +7,7 @@ Feature: Rotations
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
-    When I tap conversations list settings gear
+    When I tap conversations list settings button
     And I see my name on Self Profile page
     # We try to set the self name to make sure this action is really visible and available
     And I tap my name field on Self Profile page

@@ -164,7 +164,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
         getContactListPage().tapListActionsAvatar();
     }
 
-    public void tapListActionsGear() throws Exception {
-        getContactListPage().tapListSettingsGear();
+    public void tapListSettingsButton() throws Exception {
+        getContactListPage().tapListSettingsButton();
     }
 }
