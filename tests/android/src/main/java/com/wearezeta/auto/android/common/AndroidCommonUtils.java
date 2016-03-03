@@ -195,10 +195,8 @@ public class AndroidCommonUtils extends CommonUtils {
      * @param mainActivity
      * @throws Exception
      */
-    public static void switchToApplication(String packageId, String mainActivity)
-            throws Exception {
-        executeAdb(String.format("shell am start -n %s/%s", packageId,
-                mainActivity));
+    public static void switchToApplication(String packageId, String mainActivity) throws Exception {
+        executeAdb(String.format("shell am start -n %s/%s", packageId, mainActivity));
     }
 
     /**

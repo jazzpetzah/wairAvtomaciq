@@ -1,21 +1,5 @@
 Feature: Conversation View
 
-  @C2588 @regression @id2380
-  Scenario Outline: Tap the cursor to get to the end of the conversation [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User <Contact> sends 50 encrypted messages to user Myself
-    When I tap on contact name <Contact>
-    And I see plus button is not shown
-    And I tap on text input to scroll to the end
-    Then I see conversation is scrolled to the end
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @C2598 @regression @id3200
   Scenario Outline: Tap the cursor to get to the end of the conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
@@ -140,28 +124,6 @@ Feature: Conversation View
       | Name      | Contact   | CloseAppTime |
       | user1Name | user2Name | 2            |
 
-  @C2626 @regression @id2418
-  Scenario Outline: Rotate image in fullscreen mode [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    And I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I press Add Picture button
-    And I press Camera Roll button
-    And I choose a picture from camera roll
-    And I press Confirm button
-    And I see 1 photo in the dialog
-    And I tap and hold image to open full screen
-    And I see Full Screen Page opened
-    When I rotate UI to landscape
-    Then I see Full Screen Page opened
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @C2630 @regression @id3206
   Scenario Outline: Rotate image in fullscreen mode [LANDSCAPE]
     Given There are 2 users where <Name> is me
@@ -220,29 +182,6 @@ Feature: Conversation View
 
     Examples:
       | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C2594 @regression @id3097 @id3098
-  Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap on contact name <Contact1>
-    And I click plus button next to text input
-    Then I see conversation tools buttons
-    And I see plus button is not shown
-    And I swipe left on options buttons
-    And I see Close input options button is not visible
-    And I see plus button next to text input
-    And I click plus button next to text input
-    Then I see conversation tools buttons
-    And I click Close input options button
-    And I see Close input options button is not visible
-    And I see plus button next to text input
-
-    Examples:
-      | Name      | Contact1  |
       | user1Name | user2Name |
 
   @C2599 @rc @regression @id3237 @id3238
@@ -344,20 +283,6 @@ Feature: Conversation View
       | Name      | Contact1  | VimeoLink                   |
       | user1Name | user2Name | https://vimeo.com/129426512 |
 
-  @C2566 @regression @id3308
-  Scenario Outline: Verify player isn't displayed for vimeo links without video IDs [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User Myself sends encrypted message "<VimeoLink>" to user <Contact>
-    When I tap on contact name <Contact>
-    Then I see vimeo link <VimeoLink> but NO media player
-
-    Examples:
-      | Name      | Contact   | VimeoLink                    |
-      | user1Name | user2Name | https://vimeo.com/categories |
-
   @C2567 @regression @id3309
   Scenario Outline: Verify player isn't displayed for vimeo links without video IDs [LANDSCAPE]
     Given There are 2 users where <Name> is me
@@ -373,20 +298,6 @@ Feature: Conversation View
       | Name      | Contact   | VimeoLink                    |
       | user1Name | user2Name | https://vimeo.com/categories |
 
-  @C2665 @regression @id3792
-  Scenario Outline: Verify sending link and text in one message and opening the link [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User Myself sends encrypted message "<MessageAndLink>" to user <Contact1>
-    When I tap on contact name <Contact1>
-    And I tap on message "<MessageAndLink>"
-    Then I see WireWebsitePage
-
-    Examples:
-      | Name      | Contact1  | MessageAndLink                                |
-      | user1Name | user2Name | https://www.wire.com/ is the best of the best |
 
   @C2666 @regression @id3793
   Scenario Outline: Verify sending link and text in one message and opening the link [LANDSCAPE]
@@ -404,21 +315,6 @@ Feature: Conversation View
       | Name      | Contact1  | MessageAndLink                                |
       | user1Name | user2Name | https://www.wire.com/ is the best of the best |
 
-  @C2663 @regression @id3790
-  Scenario Outline: Verify sending link and opening it [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User Myself sends encrypted message "<Link>" to user <Contact1>
-    When I tap on contact name <Contact1>
-    And I tap on message "<Link>"
-    Then I see WireWebsitePage
-
-    Examples:
-      | Name      | Contact1  | Link                  |
-      | user1Name | user2Name | https://www.wire.com/ |
-
   @C2664 @regression @id3791
   Scenario Outline: Verify sending link and opening it [LANDSCAPE]
     Given There are 2 users where <Name> is me
@@ -434,25 +330,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Link                  |
       | user1Name | user2Name | https://www.wire.com/ |
-
-  @C2667 @regression @id3799
-  Scenario Outline: Verify input field and action buttons are not shown simultaniously [PORTRAIT]
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>, <Contact2>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap on contact name <Contact1>
-    And I type the default message
-    And I navigate back to conversations list
-    When I tap on contact name <Contact2>
-    And I navigate back to conversations list
-    And I tap on contact name <Contact1>
-    Then I see Close input options button is not visible
-    And I see the default message in input field
-
-    Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
 
   @C2668 @regression @id3800
   Scenario Outline: Verify input field and action buttons are not shown simultaniously [LANDSCAPE]
@@ -514,27 +391,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
-
-  @C2548 @regression @id3964 @ZIOS-5063
-  Scenario Outline: Verify posting in a 1-to-1 conversation without content [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User Myself sends 1 encrypted message to user <Contact1>
-    When I swipe right on a <Contact1>
-    And I click delete menu button
-    And I confirm delete conversation content
-    Then I dont see conversation <GroupChatName> in contact list
-    And I open search by taping on it
-    And I search for user name <Contact1> and tap on it on People picker page
-    And I tap Open conversation action button on People picker page
-    When I type the default message and send it
-    Then I see 1 default message in the dialog
-
-    Examples:
-      | Name      | Contact1  |
-      | user1Name | user2Name |
 
   @C2549 @regression @id3965 @ZIOS-5063
   Scenario Outline: Verify posting in a 1-to-1 conversation without content [LANDSCAPE]
@@ -609,23 +465,6 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C2448 @regression @id2334
-  Scenario Outline: Verify you still receive messages from blocked person in a group chat [PORTRAIT]
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>, <Contact2>
-    Given Myself has group chat <GroupChatName> with <Contact1>, <Contact2>
-    Given User <Name> blocks user <Contact1>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
-    Given User <Contact1> sends image <Picture> to group conversation <GroupChatName>
-    When I tap on group chat with name <GroupChatName>
-    Then I see 3 conversation entries
-
-    Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
-      | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
-
   @C2460 @regression @id4085
   Scenario Outline: Verify you still receive messages from blocked person in a group chat [LANDSCAPE]
     Given There are 3 users where <Name> is me
@@ -644,23 +483,6 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
 
-  @C2589 @regression @id2381
-  Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User Myself sends 40 encrypted messages to user <Contact>
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    When I tap on contact name <Contact>
-    And I tap on text input to scroll to the end
-    When I scroll to the beginning of the conversation
-    Then I see plus button is not shown
-
-    Examples:
-      | Name      | Contact   | Picture     |
-      | user1Name | user2Name | testing.jpg |
-
   @C2602 @regression @id4086
   Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
@@ -678,23 +500,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
-
-  @C2591 @regression @id2383
-  Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I see plus button next to text input
-    And I type the default message
-    And I see plus icon is changed to user avatar icon
-    And I clear conversation text input
-    Then I see plus button next to text input
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
 
   @C2603 @regression @id4087
   Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back [LANDSCAPE]

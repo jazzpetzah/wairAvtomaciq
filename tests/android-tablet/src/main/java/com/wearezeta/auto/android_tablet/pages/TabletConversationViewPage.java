@@ -244,4 +244,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     public void tapMediaBarControlButton() throws Exception {
         getDialogPage().tapPlayPauseMediaBarBtn();
     }
+
+    public BufferedImage getMediaControlButtonState() throws Exception {
+        return getDialogPage().getMediaButtonState();
+    }
 }

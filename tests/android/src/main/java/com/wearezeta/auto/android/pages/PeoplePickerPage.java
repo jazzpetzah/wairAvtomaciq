@@ -18,7 +18,7 @@ public class PeoplePickerPage extends AndroidPage {
             By.xpath("//*[@id='fl__conversation_list_main']//*[@id='sbv__search_box']");
 
     public static final By xpathAddPeopleSearchField =
-            By.xpath("//*[@id='fl__add_to_conversation__searchbox__container']//*[@id='puet_pickuser__searchbox']");
+            By.xpath("//*[@id='fl__add_to_conversation__pickuser__container']//*[@id='sbv__search_box']");
 
     public static final By idSingleParticipantClose = By.id("gtv__single_participants__close");
 
