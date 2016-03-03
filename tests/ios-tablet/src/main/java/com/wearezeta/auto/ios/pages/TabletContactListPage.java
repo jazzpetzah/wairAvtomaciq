@@ -62,11 +62,11 @@ public class TabletContactListPage extends ContactListPage {
 
         File outputfile = new File(userHomeFolder + "/" + dateFormat.format(date)+"entry.png");
         ImageIO.write(entryScreenshot, "png", outputfile);
-
-        String pageSource = this.getDriver().getPageSource();
-        File file = new File(userHomeFolder + "/" + dateFormat.format(date)+"pagesource.txt");
-        FileWriter fileWriter = new FileWriter(file);
-        fileWriter.write(pageSource);
+//
+//        String pageSource = this.getDriver().getPageSource();
+//        File file = new File(userHomeFolder + "/" + dateFormat.format(date)+"pagesource.txt");
+//        FileWriter fileWriter = new FileWriter(file);
+//        fileWriter.write(pageSource);
 
         final By titleLocator = By.xpath(xpathStrConvoListTitleByName.apply(name));
         final WebElement titleElement = getElement(titleLocator);
@@ -79,8 +79,8 @@ public class TabletContactListPage extends ContactListPage {
                         entryDimension.width / 4, titleDimension.height);
             case RIGHT:
                 return entryScreenshot.getSubimage(
-                        entryDimension.width * 3 / 4, titleLocation.y - entryLocation.y,
-                        entryDimension.width - entryDimension.width * 3 / 4, titleDimension.height);
+                        entryDimension.width /2, titleLocation.y - entryLocation.y,
+                        entryDimension.width - entryDimension.width / 2, titleDimension.height);
             default:
                 throw new IllegalArgumentException(String.format("Unsupported side value '%s'", side.name()));
         }
