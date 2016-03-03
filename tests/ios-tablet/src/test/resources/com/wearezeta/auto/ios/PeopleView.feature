@@ -365,7 +365,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SILENCE       |
 
-  @C2747 @rc @regression @id3208
+  @torun @C2747 @rc @regression @id3208
   Scenario Outline: Verify unsilince the conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -408,7 +408,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SILENCE       |
 
-  @C2748 @rc @regression @id3209
+  @torun @C2748 @rc @regression @id3209
   Scenario Outline: Verify silence the conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
