@@ -82,6 +82,7 @@ public class CallOngoingVideoPageSteps {
                 muteButtonState.remember();
                 break;
             case "video":
+                getPage().tapOnCenterOfScreen();
                 specialButtonState.remember();
                 break;
             default:
@@ -107,11 +108,27 @@ public class CallOngoingVideoPageSteps {
                 isChanged = muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
                 break;
             case "video":
+                getPage().tapOnCenterOfScreen();
                 isChanged = specialButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
         }
         Assert.assertTrue(String.format("The sate of '%s' button is not changed", btnName), isChanged);
+    }
+
+    /**
+     * Verifies whether video self preview is visible or not
+     * @step. I (do not )?see video self preview$
+     * @param not
+     * @throws Throwable
+     */
+    @When("^I (do not )?see video self preview$")
+    public void ISeeVideoSelfPreview(String not) throws Throwable {
+        if (not == null) {
+            assertTrue("Video self preview not visible", getPage().isVideoSelfPreviewVisible());
+        } else {
+            assertTrue("Video self preview should not be visible", getPage().isVideoSelfPreviewInvisible());
+        }
     }
 }

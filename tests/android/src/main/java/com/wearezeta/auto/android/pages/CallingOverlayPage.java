@@ -12,6 +12,7 @@ public abstract class CallingOverlayPage extends AndroidPage {
     protected static final By idHangup = By.id("ccbv__calling_controls__hangup");
     //Could be VideoOnOff or SpeakOnOff
     protected static final By idRight = By.id("ccbv__calling_controls__right_button");
+    protected static final By idVideoSelfPreview = By.id("spv__self_preview");
 
     public BufferedImage getSpecialButtonScreenshot() throws Exception {
         return this.getElementScreenshot(getElement(idRight)).orElseThrow(
@@ -78,5 +79,13 @@ public abstract class CallingOverlayPage extends AndroidPage {
 
     public boolean toggleSpeakerIsNotVisible() throws Exception {
         return specialActionIsNotVisible();
+    }
+
+    public boolean isVideoSelfPreviewVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(getDriver(),idVideoSelfPreview);
+    }
+
+    public boolean isVideoSelfPreviewInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),idVideoSelfPreview);
     }
 }

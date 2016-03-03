@@ -1,6 +1,6 @@
 Feature: VideoCalling
 
-  @C36388 @calling_basic  @staging
+  @C36388 @calling_basic @rc
   Scenario Outline: Verify I can accept Video call with the app in the foreground
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -318,9 +318,11 @@ Feature: VideoCalling
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
     And I remember state of video button for ongoing video call
+    And I see video self preview
     When I tap video button for ongoing video call
     Then I see state of video button has changed for ongoing video call
     And I remember state of video button for ongoing video call
+    And I do not see video self preview
     When I tap video button for ongoing video call
     Then I see state of video button has changed for ongoing video call
 
