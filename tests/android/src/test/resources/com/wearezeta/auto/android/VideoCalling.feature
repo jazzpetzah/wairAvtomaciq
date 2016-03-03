@@ -303,3 +303,27 @@ Feature: VideoCalling
     Examples:
       | Name      | Contact   | CallBackend | Timeout | ExpectedMsg     |
       | user1Name | user2Name | chrome      | 30      | Try again later |
+
+  @torun @C36368 @staging
+  Scenario Outline: Verify I can disable video in Video call and enable it back
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When <Contact> starts a video call to me
+    And I see incoming call
+    And I swipe to accept the call
+    Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    And I see ongoing video call
+    And I remember state of video button for ongoing video call
+    When I tap video button for ongoing video call
+    Then I see state of video button has changed for ongoing video call
+    And I remember state of video button for ongoing video call
+    When I tap video button for ongoing video call
+    Then I see state of video button has changed for ongoing video call
+
+    Examples:
+      | Name      | Contact  | CallBackend | Timeout |
+      | user1Name | user2Name| chrome      | 30      |
