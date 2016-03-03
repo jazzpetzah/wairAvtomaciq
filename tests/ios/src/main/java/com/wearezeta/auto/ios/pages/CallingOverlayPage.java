@@ -6,7 +6,6 @@ import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
@@ -43,21 +42,7 @@ public class CallingOverlayPage extends IOSPage {
 
     private static final By xpathMuteButtonNotSelected = By.xpath("//UIAButton[@name='CallMuteButton' and @value='']");
 
-    private static final By xpathVideoButtonSelected = By.xpath("//UIAButton[@name='CallVideoButton' and @value='1']");
-
-    private static final By xpathVideoButtonNotSelected = By.xpath("//UIAButton[@name='CallVideoButton' and @value='']");
-
     private static final By xpathGroupCallFullMessage = By.xpath("//UIAAlert[@name='The call is full']");
-
-
-
-    private FunctionalInterfaces.StateGetter muteButtonStateFunction = () -> this.getElementScreenshot(getElement(nameMuteCallButton)).orElseThrow(
-            () -> new IllegalStateException("Cannot get a screenshot of mute button state")
-    );
-
-    public FunctionalInterfaces.StateGetter getMuteButtonStateFunction() {
-        return muteButtonStateFunction;
-    }
 
     public CallingOverlayPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
