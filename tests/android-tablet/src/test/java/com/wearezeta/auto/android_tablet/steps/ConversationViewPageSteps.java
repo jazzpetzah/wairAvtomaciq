@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.common.misc.ElementState;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletConversationViewPage;
@@ -656,4 +657,49 @@ public class ConversationViewPageSteps {
 		Assert.assertTrue("Media Bar is not visible", getConversationViewPage()
 				.scrollUpUntilMediaBarVisible(MAX_SWIPES));
 	}
-}
+
+    private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
+    private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
+
+	private ElementState mediaButtonState = new ElementState(
+			() -> getConversationViewPage().getMediaControlButtonState()
+	);
+
+	/**
+	 * Store the screenshot of current media button state in the internal
+	 * variable for further comparison
+	 *
+	 * @step. ^I remember the state of media button in (?:the
+	 *        |\\s*)[Cc]onversation view$
+	 *
+	 * @throws Exception
+	 */
+	@And("^I remember the state of media button in (?:the |\\s*)[Cc]onversation view$")
+	public void IRememberMediaButtonState() throws Exception {
+		mediaButtonState.remember();
+	}
+
+	/**
+	 * Verify whether the current state of media control button is changed in
+	 * comparison to the previously screenshoted one
+	 *
+	 * @step. ^I see the state of media button in (?:the |\\s*)[Cc]onversation
+	 *        view is changed$
+	 *
+	 * @param shouldNotBeChanged
+	 *            equals to null if "not " part does not exist in step signature
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see the state of media button in (?:the |\\s*)[Cc]onversation view is (not )?changed$")
+	public void ISeeMediaButtonStateIsChanged(String shouldNotBeChanged)
+			throws Exception {
+		if (shouldNotBeChanged == null) {
+			Assert.assertTrue("Media control button state has not changed",
+					mediaButtonState.isChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE));
+		} else {
+			Assert.assertTrue("Media control button state has changed",
+					mediaButtonState.isNotChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE));
+		}
+	}
+ }
