@@ -355,42 +355,34 @@ final class BackendREST {
         return new JSONObject(output);
     }
 
-    public static void activateNewUser(PhoneNumber phoneNumber, String code,
-                                       boolean isDryRun) throws Exception {
-        Builder webResource = buildDefaultRequest("activate",
-                MediaType.APPLICATION_JSON);
+    public static void activateNewUser(PhoneNumber phoneNumber, String code, boolean isDryRun) throws Exception {
+        Builder webResource = buildDefaultRequest("activate", MediaType.APPLICATION_JSON);
         JSONObject requestBody = new JSONObject();
         requestBody.put("phone", phoneNumber.toString());
         requestBody.put("code", code);
         requestBody.put("dryrun", isDryRun);
-        restHandlers.httpPost(webResource, requestBody.toString(),
-                new int[]{HttpStatus.SC_OK});
+        restHandlers.httpPost(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK,
+                HttpStatus.SC_NO_CONTENT});
     }
 
-    public static void activateNewUser(String email, String code,
-                                       boolean isDryRun) throws Exception {
-        Builder webResource = buildDefaultRequest("activate",
-                MediaType.APPLICATION_JSON);
+    public static void activateNewUser(String email, String code, boolean isDryRun) throws Exception {
+        Builder webResource = buildDefaultRequest("activate", MediaType.APPLICATION_JSON);
         JSONObject requestBody = new JSONObject();
         requestBody.put("email", email);
         requestBody.put("code", code);
         requestBody.put("dryrun", isDryRun);
-        restHandlers.httpPost(webResource, requestBody.toString(),
-                new int[]{HttpStatus.SC_OK});
+        restHandlers.httpPost(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK,
+                HttpStatus.SC_NO_CONTENT});
     }
 
-    public static void generateLoginCode(PhoneNumber phoneNumber)
-            throws Exception {
-        Builder webResource = buildDefaultRequest("login/send",
-                MediaType.APPLICATION_JSON);
+    public static void generateLoginCode(PhoneNumber phoneNumber) throws Exception {
+        Builder webResource = buildDefaultRequest("login/send", MediaType.APPLICATION_JSON);
         JSONObject requestBody = new JSONObject();
         requestBody.put("phone", phoneNumber.toString());
-        restHandlers.httpPost(webResource, requestBody.toString(),
-                new int[]{HttpStatus.SC_OK});
+        restHandlers.httpPost(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK});
     }
 
-    public static JSONObject getLoginCodeViaBackdoor(PhoneNumber phoneNumber)
-            throws Exception {
+    public static JSONObject getLoginCodeViaBackdoor(PhoneNumber phoneNumber) throws Exception {
         Builder webResource = buildDefaultRequest(
                 String.format("i/users/login-code?phone=%s",
                         URLEncoder.encode(phoneNumber.toString(), "utf-8")),
