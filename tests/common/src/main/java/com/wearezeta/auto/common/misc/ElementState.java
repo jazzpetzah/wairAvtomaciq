@@ -47,8 +47,8 @@ public class ElementState {
         do {
             try {
                 final BufferedImage currentState = stateGetter.getState();
-                String desktop = System.getProperty ("user.home") + "/Desktop/";
-                File outputfile = new File(desktop + msStarted+".png");
+                String userHomeFolder = System.getProperty("user.home");
+                File outputfile = new File(userHomeFolder, msStarted+".png");
                 ImageIO.write(currentState, "png", outputfile);
                 final double score = ImageUtil.getOverlapScore(
                         this.previousScreenshot.orElseThrow(
