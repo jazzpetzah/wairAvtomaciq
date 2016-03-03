@@ -82,7 +82,6 @@ public class CallOngoingVideoPageSteps {
                 muteButtonState.remember();
                 break;
             case "video":
-                getPage().tapOnCenterOfScreen();
                 specialButtonState.remember();
                 break;
             default:
@@ -108,7 +107,6 @@ public class CallOngoingVideoPageSteps {
                 isChanged = muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
                 break;
             case "video":
-                getPage().tapOnCenterOfScreen();
                 isChanged = specialButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
                 break;
             default:

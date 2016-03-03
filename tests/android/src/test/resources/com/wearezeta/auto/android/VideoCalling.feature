@@ -304,7 +304,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout | ExpectedMsg     |
       | user1Name | user2Name | chrome      | 30      | Try again later |
 
-  @C36368 @staging
+  @torun @C36368 @staging
   Scenario Outline: Verify I can disable video in Video call and enable it back
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
