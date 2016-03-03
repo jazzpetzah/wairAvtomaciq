@@ -1,19 +1,5 @@
 Feature: Conversation View
 
-  @C2632 @regression @id2419
-  Scenario Outline: Verify sending message [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    When I tap on contact name <Contact>
-    And I type the default message and send it
-    Then I see 1 default message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @C2645 @rc @regression @id2375
   Scenario Outline: Verify sending message [LANDSCAPE]
     Given There are 2 users where <Name> is me
@@ -23,20 +9,6 @@ Feature: Conversation View
     And I see conversations list
     When I tap on contact name <Contact>
     And I type the default message and send it
-    Then I see 1 default message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C2644 @regression @id2695
-  Scenario Outline: Receive message from contact [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User <Contact> sends 1 encrypted message to user Myself
-    And I tap on contact name <Contact>
     Then I see 1 default message in the dialog
 
     Examples:
@@ -95,22 +67,6 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2642 @regression @id2429
-  Scenario Outline: Verify you can see Ping on the other side - 1:1 conversation [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given User <Contact1> change name to <ContactName>
-    Given Myself is connected to <Contact1>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given I tap on contact name <Contact1>
-    Given User <Contact1> securely pings conversation <Name>
-    When I wait for 3 seconds
-    Then I see User <Contact1> Pinged message in the conversation
-
-    Examples:
-      | Name      | Contact1  | ContactName |
-      | user1Name | user2Name | OtherUser   |
-
   @C2642 @regression @id2429 @C3222
   Scenario Outline: Verify you can see Ping on the other side - 1:1 conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
@@ -127,22 +83,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | ContactName |
       | user1Name | user2Name | OtherUser   |
-
-  @C2640 @regression @id2427 @C3223
-  Scenario Outline: Verify you can see Ping on the other side - group conversation [PORTRAIT]
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given I tap on group chat with name <GroupChatName>
-    Given User <Contact1> securely pings conversation <GroupChatName>
-    When I wait for 3 seconds
-    Then I see User <Contact1> Pinged message in the conversation
-
-    Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName        |
-      | user1Name | user2Name | user3Name | ReceivePingGroupChat |
 
   @C2640 @regression @id2427 @C3224
   Scenario Outline: Verify you can see Ping on the other side - group conversation [LANDSCAPE]
@@ -190,25 +130,6 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C2646 @regression @id2736
-  Scenario Outline: Send Message to contact after navigating away from chat page [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    When I tap on contact name <Contact>
-    And I type the default message
-    And I navigate back to conversations list
-    When I tap my avatar
-    And I close self profile
-    And I tap on text input
-    And I press Enter key in Simulator window
-    Then I see 1 default message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @C2647 @regression @id2737
   Scenario Outline: Send Message to contact after navigating away from chat page [LANDSCAPE]
     Given There are 2 users where <Name> is me
@@ -228,32 +149,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @C2654 @regression @id2744
-  Scenario Outline: Copy and paste to send the message [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
-    And I have entered login <Text>
-    And I tap and hold on Email input
-    And I click on popup SelectAll item
-    And I click on popup Copy item
-    And I have entered login <Login>
-    And I have entered password <Password>
-    And I press Login button
-    And I accept First Time overlay if it is visible
-    And I dismiss settings warning
-    And I see conversations list
-    And I tap on contact name <Contact>
-    And I tap on text input
-    And I tap and hold on message input
-    And I paste and commit the text
-    Then I see last message in dialog is expected message <Text>
-
-    Examples:
-      | Login      | Password      | Name      | Contact   | Text       |
-      | user1Email | user1Password | user1Name | user2Name | TextToCopy |
 
   @C2655 @regression @id2745
   Scenario Outline: Copy and paste to send the message [LANDSCAPE]
@@ -281,23 +176,6 @@ Feature: Conversation View
     Examples:
       | Login      | Password      | Name      | Contact   | Text       |
       | user1Email | user1Password | user1Name | user2Name | TextToCopy |
-
-  @C2656 @regression @id2746
-  Scenario Outline: Send a text containing spaces on either end of message [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I type the "   " message and send it
-    Then I see 0 default messages in the dialog
-    When I type the default message
-    And I type the "   " message and send it
-    Then I see 1 default message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
 
   @C2657 @regression @id2747
   Scenario Outline: Send a text containing spaces on either end of message [LANDSCAPE]
@@ -352,21 +230,6 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2633 @regression @id2420
-  Scenario Outline: Verify sending ping in 1-to-1 conversation [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I click Ping button
-    Then I see You Pinged message in the dialog
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @C2658 @regression @id3193
   Scenario Outline: Verify sending ping in 1-to-1 conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
@@ -382,21 +245,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @C2659 @regression @id3194
-  Scenario Outline: Send message to group chat [PORTRAIT]
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in on tablet using my email
-    And I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    And I type the default message and send it
-    Then I see 1 default message in the dialog
-
-    Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | SimpleGroup   |
 
   @C2660 @regression @id3195
   Scenario Outline: Send message to group chat [LANDSCAPE]
