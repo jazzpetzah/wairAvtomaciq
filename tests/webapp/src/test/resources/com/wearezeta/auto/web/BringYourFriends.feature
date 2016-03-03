@@ -5,6 +5,7 @@ Feature: Bring Your Friends
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    When I see my avatar on top of Contact list
     When I see Bring Your Friends or Invite People button
     And I click Bring Your Friends or Invite People button
     Then I see Invite People popover
