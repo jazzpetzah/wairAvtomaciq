@@ -208,24 +208,32 @@ public class ConversationPageSteps {
 	/**
 	 * Checks action message (e.g. you left, etc.) appear in conversation
 	 *
-	 * @step. ^I see (.*) action in conversation$
+	 * @param message  constant part of the system message
 	 * @throws Exception
-	 *
-	 * @throws AssertionError
-	 *             if action message did not appear in conversation
+	 * @throws AssertionError if action message did not appear in conversation
+	 * @step. ^I see (.*) action in conversation$
 	 */
 	@Then("^I( do not)? see (.*) action in conversation$")
-	public void ThenISeeActionInConversation(String doNot, String message)
-			throws Exception {
-		if (doNot == null) {
-			Assert.assertTrue(WebappPagesCollection.getInstance()
-					.getPage(ConversationPage.class)
-					.isActionMessageSent(message));
-		} else {
-			Assert.assertTrue(WebappPagesCollection.getInstance()
-					.getPage(ConversationPage.class)
-					.isActionMessageNotSent(message));
+	public void ThenISeeActionInConversation(String doNot, String message) throws Exception {
+		ThenISeeActionInConversation(doNot, message, 1);
+	}
 
+	/**
+	 * Checks action message (e.g. you left, etc.) appear in conversation
+	 *
+	 * @param message  constant part of the system message
+	 * @param times  number of times the message appears
+	 * @throws Exception
+	 * @throws AssertionError if action message did not appear in conversation
+	 * @step. ^I see (.*) action in conversation$
+	 */
+	@Then("^I( do not)? see (.*) action (\\d+) times in conversation$")
+	public void ThenISeeActionInConversation(String doNot, String message, int times) throws Exception {
+		if (doNot == null) {
+			assertThat(message + " action", WebappPagesCollection.getInstance().getPage(ConversationPage.class)
+					.waitForNumberOfMessageHeadersContain(message), equalTo(times));
+		} else {
+			Assert.assertTrue(WebappPagesCollection.getInstance().getPage(ConversationPage.class).isActionMessageNotSent(message));
 		}
 	}
 
