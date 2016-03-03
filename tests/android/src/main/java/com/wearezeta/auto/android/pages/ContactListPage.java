@@ -18,7 +18,11 @@ public class ContactListPage extends AndroidPage {
 
     private static final String LOADING_CONVERSATION_NAME = "…";
 
-    private static final String xpathStrConvoListNames = "//ConversationListRow//AppCompatTextView";
+    private static final String idStrConversationListFrame = "pfac__conversation_list";
+
+    private static final String xpathStrConvoListNames =
+            String.format("//*[@id='%s']/*/*/*[boolean(string(@value))]", idStrConversationListFrame);
+    private static final By xpathContactListNames = By.xpath(xpathStrConvoListNames);
 
     private static final By xpathLoadingContactListItem =
             By.xpath(String.format("%s[contains(@value, '%s')]", xpathStrConvoListNames, LOADING_CONVERSATION_NAME));
@@ -40,9 +44,7 @@ public class ContactListPage extends AndroidPage {
     private static final Function<String, String> xpathStrMissedCallNotificationByConvoName = convoName -> String
             .format("%s/parent::*//*[@id='sci__list__missed_call']", xpathStrContactByName.apply(convoName));
 
-    private static final By idConversationListFrame = By.id("pfac__conversation_list");
-
-    private static final By xpathContactListNames = By.xpath(xpathStrConvoListNames);
+    private static final By idConversationListFrame = By.id(idStrConversationListFrame);
 
     private static final String xpathStrNonEmptyContacts =
             String.format("%s[@value and string-length(@value) > 0 and not(starts-with(@value, '%s'))]",
