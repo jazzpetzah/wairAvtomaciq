@@ -1,14 +1,8 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
-
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -17,7 +11,6 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
-import javax.imageio.ImageIO;
 
 public class TabletContactListPage extends ContactListPage {
     private static final By xpathConversationListPage =

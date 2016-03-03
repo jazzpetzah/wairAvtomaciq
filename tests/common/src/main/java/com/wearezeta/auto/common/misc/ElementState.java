@@ -5,11 +5,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.StaleElementReferenceException;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Optional;
 import java.util.function.Function;
 
