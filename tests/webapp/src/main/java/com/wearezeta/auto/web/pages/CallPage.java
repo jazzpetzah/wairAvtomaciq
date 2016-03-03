@@ -205,13 +205,15 @@ public class CallPage extends ContactListPage {
         muteCallButton.click();
     }
 
-    public boolean isMuteCallButtonPressed() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(WebAppLocators.CallPage.xpathMuteCallButtonPressed));
+    public boolean isMuteCallButtonPressed(String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        final String locator = WebAppLocators.CallPage.xpathMuteCallButtonPressed.apply(conversationName);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(locator));
     }
 
-    public boolean isMuteCallButtonNotPressed() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(WebAppLocators.CallPage.xpathMuteCallButtonNotPressed));
+    public boolean isMuteCallButtonNotPressed(String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        final String locator = WebAppLocators.CallPage.xpathMuteCallButtonNotPressed.apply(conversationName);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(locator));
     }
 }

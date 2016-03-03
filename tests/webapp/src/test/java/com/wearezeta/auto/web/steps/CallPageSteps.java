@@ -241,7 +241,6 @@ public class CallPageSteps {
     }
 
     /**
-     * TODO: Checks if mute button in conversation list pressed
      *
      * @param doNot is set to null if "do not" part does not exist
      * @throws Exception
@@ -251,12 +250,13 @@ public class CallPageSteps {
     @When("^I see mute button for conversation (.*) is( not)? pressed$")
     public void ISeeMuteButtonNotPressed(String conversation, String doNot)
             throws Exception {
+        conversation = usrMgr.replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         CallPage contactListPage = webappPagesCollection
                 .getPage(CallPage.class);
         if (doNot == null) {
-            contactListPage.isMuteCallButtonPressed();
+            contactListPage.isMuteCallButtonPressed(conversation);
         } else {
-            contactListPage.isMuteCallButtonNotPressed();
+            contactListPage.isMuteCallButtonNotPressed(conversation);
         }
     }
 }

@@ -225,11 +225,11 @@ public final class WebAppLocators {
                                 "*/parent::*//*[@data-uie-name='do-call-controls-call-decline']",
                         name);
 
-        public static final String xpathMuteCallButtonPressed = "//div[@data-uie-name='do-call-mute'" +
-                " and contains(@class, 'toggled')]";
+        public static final Function<String, String> xpathMuteCallButtonPressed = (name) -> String.format("//div[@data-uie-name='do-call-mute'" +
+                " and contains(@class, 'toggled')]", name);
 
-        public static final String xpathMuteCallButtonNotPressed = "//div[@data-uie-name='do-call-mute'" +
-                " and not(contains(@class, 'toggled'))]";
+        public static final Function<String, String> xpathMuteCallButtonNotPressed = (name) -> String.format("//div[@data-uie-name='do-call-mute'" +
+                " and not(contains(@class, 'toggled'))]", name);
 
     }
 

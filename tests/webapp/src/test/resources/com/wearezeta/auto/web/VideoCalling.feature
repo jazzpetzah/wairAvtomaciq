@@ -256,9 +256,9 @@ Feature: VideoCalling
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I start a video call
-    And I see mute button in conversation list is not pressed
+    And I see mute button for conversation <Contact> is not pressed
     Then I click mute call button for conversation <Contact>
-    And I see mute button in conversation list is pressed
+    And I see mute button for conversation <Contact> is pressed
     And <Contact> accepts next incoming video call automatically
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
