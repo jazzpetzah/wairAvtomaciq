@@ -5,7 +5,9 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.StaleElementReferenceException;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -45,6 +47,9 @@ public class ElementState {
         do {
             try {
                 final BufferedImage currentState = stateGetter.getState();
+                String desktop = System.getProperty ("user.home") + "/Desktop/";
+                File outputfile = new File(desktop + msStarted+".png");
+                ImageIO.write(currentState, "png", outputfile);
                 final double score = ImageUtil.getOverlapScore(
                         this.previousScreenshot.orElseThrow(
                                 () -> new IllegalStateException("Please remember the previous element state first")),
