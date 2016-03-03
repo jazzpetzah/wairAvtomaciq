@@ -28,14 +28,14 @@ Feature: Conversation View
     When I open conversation with <Contact>
     And I type shortcut combination to ping
     And I wait for 1 seconds
-    Then I see ping message <PING>
+    Then I see <PING> action in conversation
     When I type shortcut combination to ping
     And I wait for 1 seconds
-    Then I see ping message <PING_AGAIN>
+    Then I see <PING> action 2 times in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
-      | user1Email | user1Password | user1Name | user2Name | pinged | pinged again |
+      | Login      | Password      | Name      | Contact   | PING       |
+      | user1Email | user1Password | user1Name | user2Name | you pinged |
 
    @C2334 @smoke @id3782
    Scenario Outline: Verify you start a call in a conversation when you press Ctrl + T
