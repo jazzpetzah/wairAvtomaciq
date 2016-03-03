@@ -18,6 +18,7 @@
         <appPath>/Project/zclient.apk</appPath>
         <package>com.waz.zclient.dev</package>
         <activity>com.waz.zclient.AppEntryActivity</activity>
+        <launchActivity>com.waz.zclient.LaunchActivity</launchActivity>
         <waitActivities>com.waz.zclient.AppEntryActivity</waitActivities>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
         <defaultEmail>smoketester@wire.com</defaultEmail>

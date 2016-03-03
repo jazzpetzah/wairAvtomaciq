@@ -650,4 +650,18 @@ public class DialogPageSteps {
             }
         }
     }
+
+    /**
+     * Checks to see that an unsent indicator is present next to the particular message in the chat history
+     *
+     * @throws Exception
+     * @param msg the expected conversation message
+     * @step. ^I see unsent indicator next to \"(.*)\" in the conversation view$
+     */
+    @Then("^I see unsent indicator next to \"(.*)\" in the conversation view$")
+    public void ThenISeeUnsentIndicatorNextToTheMessage(String msg) throws Exception {
+        Assert.assertTrue(String.format(
+                "Unsent indicator has not been shown next to the '%s' message in the conversation view", msg),
+                getDialogPage().waitForUnsentIndicator(msg));
+    }
 }

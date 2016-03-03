@@ -85,7 +85,7 @@ public class CommonAndroidTabletSteps {
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(getClass()));
-        capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(getClass()));
+        capabilities.setCapability("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
         capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(getClass()));
         capabilities.setCapability("automationName", "Selendroid");
 
@@ -284,7 +284,7 @@ public class CommonAndroidTabletSteps {
             case "restore":
                 AndroidCommonUtils.switchToApplication(
                         CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-                        CommonUtils.getAndroidActivityFromConfig(this.getClass()));
+                        CommonUtils.getAndroidLaunchActivityFromConfig(this.getClass()));
                 break;
         }
     }
@@ -305,7 +305,7 @@ public class CommonAndroidTabletSteps {
             // FIXME: Unlock selendroid app does not restore the previously active application
             AndroidCommonUtils.switchToApplication(
                     CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-                    CommonUtils.getAndroidActivityFromConfig(this.getClass()));
+                    CommonUtils.getAndroidLaunchActivityFromConfig(this.getClass()));
         }
     }
 

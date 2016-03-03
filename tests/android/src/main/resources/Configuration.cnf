@@ -2,6 +2,7 @@ androidAppiumUrl=${url}
 androidApplicationPath=${appPath}
 package=${package}
 activity=${activity}
+launchActivity=${launchActivity}
 waitActivities=${waitActivities}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 resultImage=${resultImage}

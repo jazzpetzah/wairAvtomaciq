@@ -244,7 +244,7 @@ public class PeoplePickerPageSteps {
      */
     @When("^I click on Add to conversation button$")
     public void WhenIClickOnAddToConversationButton() throws Exception {
-        getPeoplePickerPage().clickOnAddToCoversationButton();
+        getPeoplePickerPage().clickOnAddToConversationButton();
     }
 
     /**

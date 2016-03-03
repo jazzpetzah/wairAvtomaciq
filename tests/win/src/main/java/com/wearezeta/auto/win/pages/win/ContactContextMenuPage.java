@@ -9,8 +9,8 @@ import java.awt.event.KeyEvent;
 
 public class ContactContextMenuPage extends WinPage {
 
-	private static final int CONTEXT_ARCHIVE_INDEX = 1;
-	private static final int CONTEXT_SILENCE_INDEX = 2;
+	private static final int CONTEXT_SILENCE_INDEX = 1;
+	private static final int CONTEXT_ARCHIVE_INDEX = 2;
 	private static final int CONTEXT_DELETE_INDEX = 3;
 	private static final int CONTEXT_BLOCK_INDEX = 4;
 	private static final int CONTEXT_LEAVE_INDEX = 4;

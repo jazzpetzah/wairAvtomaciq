@@ -274,8 +274,12 @@ public class CommonUtils {
         return getValueFromConfig(c, "iosApplicationPath");
     }
 
-    public static String getAndroidActivityFromConfig(Class<?> c) throws Exception {
+    public static String getAndroidMainActivityFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "activity");
+    }
+
+    public static String getAndroidLaunchActivityFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "launchActivity");
     }
 
     public static String getAndroidWaitActivitiesFromConfig(Class<?> c) throws Exception {

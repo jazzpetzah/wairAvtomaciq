@@ -10,7 +10,7 @@ Feature: Notifications
     Given I see the conversations list with conversations
     Given I tap the conversation <Contact2>
     Given I swipe right to show the conversations list
-    When I tap conversations list settings gear
+    When I tap conversations list settings button
     And User <Contact1> sends encrypted message <Message> to user Myself
     And I tap the chathead notification
     Then I see the conversation view

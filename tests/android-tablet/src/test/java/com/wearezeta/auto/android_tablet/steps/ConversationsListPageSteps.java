@@ -60,14 +60,14 @@ public class ConversationsListPageSteps {
     }
 
     /**
-     * Taps on the gear icon at the bottom of convo list
+     * Taps on the button at the bottom right corner of convo list
      *
      * @throws Exception
-     * @step. ^I tap conversations list settings gear$
+     * @step. ^I tap conversations list settings button$
      */
-    @When("^I tap conversations list settings gear$")
-    public void WhenITapSettingsGear() throws Exception {
-        getConversationsListPage().tapListActionsGear();
+    @When("^I tap conversations list settings button$")
+    public void ITapSettingsButton() throws Exception {
+        getConversationsListPage().tapListSettingsButton();
     }
 
     /**

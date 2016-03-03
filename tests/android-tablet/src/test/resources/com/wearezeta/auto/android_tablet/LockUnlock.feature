@@ -19,7 +19,7 @@ Feature: Lock/Unlock
     And I unlock the device
     Then I see People Picker page
     When I close People Picker
-    And I tap conversations list settings gear
+    And I tap conversations list settings button
     And I see my name on Self Profile page
     And I lock the device
     And I unlock the device
