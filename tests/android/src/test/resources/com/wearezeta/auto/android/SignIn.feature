@@ -31,7 +31,7 @@ Feature: Sign In
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
-    When I tap on my avatar
+    When I tap conversations list settings gear
     When I tap options button
     And I tap settings button
     And I select "Account" settings menu item
@@ -41,7 +41,7 @@ Feature: Sign In
     And I sign in using my email or phone number
     And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
-    When I tap on my avatar
+    When I tap conversations list settings gear
     Then I see personal info page
 
     Examples:

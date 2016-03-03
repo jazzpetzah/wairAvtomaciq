@@ -184,16 +184,12 @@ Feature: Conversation View
     And I click People button in group conversation
     And I see Group Participants popover
     When I click Add People button on Group Participants popover
-    And I see Add People message on Group Participants popover
-    And I confirm add to chat on Group Participants popover
     And I select the first 125 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
     When I click People button in group conversation
     And I see Group Participants popover
     Then I see 127 participants in the Group Participants popover
     When I click Add People button on Group Participants popover
-    And I see Add People message on Group Participants popover
-    And I confirm add to chat on Group Participants popover
     And I select the first 1 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
     When I click People button in group conversation
@@ -224,6 +220,22 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   | ExpectedMessage                   |
       | user1Email | user1Password | user1Name | user2Name | ('a' * 100)('LF' * 10)('b' * 100) |
+
+  @C49977 @regression
+  Scenario Outline: Send a really long message to group conversation
+    Given I switch to Sign In page
+    Given I Sign in temporary using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I see my avatar on top of Contact list
+    When I open conversation with <ChatName>
+    And I paste message from file <File>
+    And I send message
+    Then I verify the last text message equals file <File>
+
+    Examples:
+      | Login                         | Password   | ChatName    | File           |
+      | smoketester+68b16b1c@wire.com | aqa123456! | Lorem ipsum | loremipsum.txt |
 
   @C1702 @regression
   Scenario Outline: Verify you can see conversation images in fullscreen

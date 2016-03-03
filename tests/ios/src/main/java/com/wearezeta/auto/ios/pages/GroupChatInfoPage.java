@@ -5,6 +5,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 
@@ -14,11 +15,11 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 public class GroupChatInfoPage extends IOSPage {
-    private static final By nameRightActionButton = By.name("metaControllerRightButton");
+    private static final By nameRightActionButton = MobileBy.AccessibilityId("metaControllerRightButton");
 
-    private static final By nameLeaveConversationButton = By.name("LEAVE");
+    private static final By nameLeaveConversationButton = MobileBy.AccessibilityId("LEAVE");
 
-    private static final By nameConversationNameTextField = By.name("ParticipantsView_GroupName");
+    private static final By nameConversationNameTextField = MobileBy.AccessibilityId("ParticipantsView_GroupName");
 
     private static final Function<String, String> xpathStrConversationNameByText = text ->
             String.format("//*[@name='ParticipantsView_GroupName' and @value='%s']", text);
@@ -26,15 +27,15 @@ public class GroupChatInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrConversationNameByExpr = expr ->
             String.format("//*[@name='ParticipantsView_GroupName' and %s]", expr);
 
-    private static final By nameExitParticipantInfoPageButton = By.name("OtherUserProfileCloseButton");
+    private static final By nameExitParticipantInfoPageButton = MobileBy.AccessibilityId("OtherUserProfileCloseButton");
 
-    private static final By nameExitGroupInfoPageButton = By.name("metaControllerCancelButton");
+    private static final By nameExitGroupInfoPageButton = MobileBy.AccessibilityId("metaControllerCancelButton");
 
-    private static final By namLeftActionButton = By.name("metaControllerLeftButton");
+    private static final By namLeftActionButton = MobileBy.AccessibilityId("metaControllerLeftButton");
 
-    private static final By nameAddPeopleContinueButton = By.name("CONTINUE");
+    private static final By nameAddPeopleContinueButton = MobileBy.AccessibilityId("CONTINUE");
 
-    private static final By nameLeaveConversationAlert = By.name("Leave conversation?");
+    private static final By nameLeaveConversationAlert = MobileBy.AccessibilityId("Leave conversation?");
 
     private static final Function<String, String> xpathStrUserNameLabelByText = text ->
             String.format("//UIACollectionView[preceding-sibling::UIATextView[@name='ParticipantsView_GroupName']]" +
@@ -61,9 +62,11 @@ public class GroupChatInfoPage extends IOSPage {
     public void setGroupChatName(String name) throws Exception {
         final WebElement nameInputField = getElement(nameConversationNameTextField);
         nameInputField.click();
+        this.isKeyboardVisible();
         try {
             ((IOSElement) nameInputField).setValue(name);
         } catch (WebDriverException e) {
+            nameInputField.clear();
             nameInputField.sendKeys(name);
         }
         clickKeyboardCommitButton();
@@ -78,7 +81,7 @@ public class GroupChatInfoPage extends IOSPage {
     }
 
     public boolean isNumberOfPeopleEquals(int expectedNumber) throws Exception {
-        final By locator = By.name(nameStrNumberPeopleByCount.apply(expectedNumber));
+        final By locator = MobileBy.AccessibilityId(nameStrNumberPeopleByCount.apply(expectedNumber));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 

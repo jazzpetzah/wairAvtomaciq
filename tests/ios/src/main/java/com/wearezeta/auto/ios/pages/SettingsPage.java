@@ -4,6 +4,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
+import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.*;
 
@@ -17,13 +18,13 @@ public class SettingsPage extends IOSPage {
 
     public static final By xpathSettingsPage = By.xpath("//UIANavigationBar[@name='Settings']");
 
-    private static final By nameBackButton = By.name("Back");
+    private static final By nameBackButton = MobileBy.AccessibilityId("Back");
 
-    private static final By nameDoneButton = By.name("Done");
+    private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
 
     private static final By xpathAllSoundAlertsButton = By.xpath("//UIATableCell[@name='All']");
 
-    private static final By nameEditButton = By.name("Edit");
+    private static final By nameEditButton = MobileBy.AccessibilityId("Edit");
 
     private static final Function<String, String> xpathDeleteDeviceButtonByName = devicename ->
             String.format("//UIAButton[contains(@name,'Delete %s')]", devicename);
@@ -31,7 +32,7 @@ public class SettingsPage extends IOSPage {
     private static final Function<String, String> xpathDeviceListEntry = device ->
             String.format("//UIATableCell[contains(@name,'%s')]", device);
 
-    private static final By nameDeleteButton = By.name("Delete");
+    private static final By nameDeleteButton = MobileBy.AccessibilityId("Delete");
 
     private static final By xpathDeleteDevicePasswordField =
             By.xpath("//UIASecureTextField[contains(@value,'Password')]");
@@ -71,7 +72,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isItemVisible(String itemName) throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(itemName));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), MobileBy.AccessibilityId(itemName));
     }
 
     public void pressEditButton() throws Exception {
@@ -120,7 +121,7 @@ public class SettingsPage extends IOSPage {
     }
 
     public boolean isItemInvisible(String itemName) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(itemName));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), MobileBy.AccessibilityId(itemName));
     }
 
     public void swipeLeftOnDevice(int deviceIndex) throws Exception {

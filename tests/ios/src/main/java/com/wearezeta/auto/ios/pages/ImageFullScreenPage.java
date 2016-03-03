@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -10,18 +11,18 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import org.openqa.selenium.WebElement;
 
 public class ImageFullScreenPage extends IOSPage {
-    private static final By nameImageFullScreenPage = By.name("fullScreenPage");
+    private static final By nameImageFullScreenPage = MobileBy.AccessibilityId("fullScreenPage");
 
-    private static final By nameFullScreenCloseButton = By.name("fullScreenCloseButton");
+    private static final By nameFullScreenCloseButton = MobileBy.AccessibilityId("fullScreenCloseButton");
 
-    private static final By nameFullScreenDownloadButton = By.name("fullScreenDownloadButton");
+    private static final By nameFullScreenDownloadButton = MobileBy.AccessibilityId("fullScreenDownloadButton");
 
     private static final Function<String, String> xpathStrFullScreenSenderByName = name ->
             String.format("//*[@name='fullScreenSenderName' and contains(@value, '%s')]", name);
 
-    private static final By nameFullScreenTimeStamp = By.name("fullScreenTimeStamp");
+    private static final By nameFullScreenTimeStamp = MobileBy.AccessibilityId("fullScreenTimeStamp");
 
-    private static final By nameFullScreenSketchButton = By.name("sketchButton");
+    private static final By nameFullScreenSketchButton = MobileBy.AccessibilityId("sketchButton");
 
     public ImageFullScreenPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {

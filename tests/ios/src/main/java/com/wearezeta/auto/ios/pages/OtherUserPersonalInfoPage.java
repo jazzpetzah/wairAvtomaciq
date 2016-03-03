@@ -6,6 +6,7 @@ import java.util.function.Function;
 
 import com.wearezeta.auto.common.driver.DummyElement;
 
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -14,15 +15,15 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class OtherUserPersonalInfoPage extends IOSPage {
 
-    private static final By nameRemoveFromConversation = By.name("OtherUserMetaControllerRightButton");
+    private static final By nameRemoveFromConversation = MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
 
-    private static final By nameConfirmRemoveButton = By.name("REMOVE");
+    private static final By nameConfirmRemoveButton = MobileBy.AccessibilityId("REMOVE");
 
-    private static final By nameOtherUserAddContactToChatButton = By.name("OtherUserMetaControllerLeftButton");
+    private static final By nameOtherUserAddContactToChatButton = MobileBy.AccessibilityId("OtherUserMetaControllerLeftButton");
 
-    private static final By nameContinueButton = By.name("CONTINUE");
+    private static final By nameContinueButton = MobileBy.AccessibilityId("CONTINUE");
 
-    private static final By nameExitOtherUserPersonalInfoPageButton = By.name("OtherUserProfileCloseButton");
+    private static final By nameExitOtherUserPersonalInfoPageButton = MobileBy.AccessibilityId("OtherUserProfileCloseButton");
 
     private static final By xpathArchiveButton = By.xpath("//UIAButton[@name='ARCHIVE']");
 
@@ -31,7 +32,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final By xpathConfirmDeleteButton = By
         .xpath("//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']");
 
-    private static final By nameAlsoLeaveCheckerButton = By.name("ALSO LEAVE THE CONVERSATION");
+    private static final By nameAlsoLeaveCheckerButton = MobileBy.AccessibilityId("ALSO LEAVE THE CONVERSATION");
 
     private static final Function<String, String> xpathStrOtherPersonalInfoPageNameFieldByName = name -> String.format(
         "%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
@@ -42,19 +43,19 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     protected static final By xpathOtherPersonalInfoPageEmailField = By
         .xpath("//UIAButton[@name='OtherUserProfileCloseButton']/following-sibling:: UIATextView");
 
-    private static final By nameAddContactToChatButton = By.name("metaControllerLeftButton");
+    private static final By nameAddContactToChatButton = MobileBy.AccessibilityId("metaControllerLeftButton");
 
-    protected static final By nameOtherUserConversationMenu = By.name("OtherUserMetaControllerRightButton");
+    protected static final By nameOtherUserConversationMenu = MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
 
-    private static final By nameConversationMenu = By.name("metaControllerRightButton");
+    private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
 
     private static final By xpathSilenceConversationButton = By.xpath(xpathStrMainWindow + "/UIAButton[@name='SILENCE']");
 
-    private static final By nameUnsilenceConversationButton = By.name("NOTIFY");
+    private static final By nameUnsilenceConversationButton = MobileBy.AccessibilityId("NOTIFY");
 
-    private static final By nameBlockMenuButton = By.name("BLOCK");
+    private static final By nameBlockMenuButton = MobileBy.AccessibilityId("BLOCK");
 
-    private static final By nameCancelButton = By.name("CANCEL");
+    private static final By nameCancelButton = MobileBy.AccessibilityId("CANCEL");
 
     private static final By xpathActionMenu = By
         .xpath("//UIAStaticText[following-sibling::UIAButton[@name='CANCEL'] and @visible='true']");
@@ -67,7 +68,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrUserProfileNameByValue = value -> String.format(
         "//*[@name='%s' and @visible='true']", value);
 
-    // FIXME: replace this with By.name("VerifiedShield") when available
+    // FIXME: replace this with MobileBy.AccessibilityId("VerifiedShield") when available
     private static final By xpathVerifiedShield = By.xpath(xpathStrMainWindow + "/UIAImage[@width='16' and @height='16']");
 
     private static final Function<String, String> xpathStrDeviceId = id -> String.format(
@@ -206,7 +207,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     }
 
     public void switchToTab(String tabName) throws Exception {
-        getElement(By.name(tabName.toUpperCase())).click();
+        getElement(MobileBy.AccessibilityId(tabName.toUpperCase())).click();
     }
 
     private String convertStringIDtoLocatorTypeID(String id) {

@@ -4,6 +4,7 @@ import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.junit.Assert;
 
@@ -28,6 +29,10 @@ public class DialogPageSteps {
 
     private ContactListPage getContactListPage() throws Exception {
         return pagesCollection.getPage(ContactListPage.class);
+    }
+
+    private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage() throws Exception {
+        return pagesCollection.getPage(OtherUserPersonalInfoPage.class);
     }
 
     @When("^I see dialog page$")
@@ -440,7 +445,7 @@ public class DialogPageSteps {
 
     @Then("^I navigate back to conversations list")
     public void INavigateToConversationsList() throws Exception {
-        getDialogPage().returnToContactList();
+        getDialogPage().returnToConversationsList();
     }
 
     @When("I tap and hold on message input")
@@ -902,7 +907,9 @@ public class DialogPageSteps {
      */
     @When("^I tap on THIS DEVICE link$")
     public void ITapThisDeviceLink() throws Exception {
-        getDialogPage().clickThisDeviceLink();
+        //getDialogPage().clickThisDeviceLink();
+        //this is the fix because it can not locate system message label
+       getOtherUserPersonalInfoPage().openDeviceDetailsPage(1);
     }
 
     /**

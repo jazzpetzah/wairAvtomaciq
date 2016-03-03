@@ -96,9 +96,9 @@ public class CallOngoingPageSteps {
      * @step. ^I see state of mute button has changed for ongoing call$
      */
     @Then("^I see state of mute button has changed for ongoing call$")
-    public void VerifyStateOfSpacialVideoHasChanged(String btnName) throws Exception {
-        final boolean isChanged = muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
-        Assert.assertTrue(String.format("The sate of '%s' button is not changed", btnName), isChanged);
+    public void VerifyStateOfSpacialVideoHasChanged() throws Exception {
+        Assert.assertTrue("The sate of mute button is not changed",
+                muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE));
     }
 
     /**

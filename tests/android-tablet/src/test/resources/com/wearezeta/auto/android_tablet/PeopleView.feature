@@ -154,8 +154,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the Search input
-    And I keep on reopening People Picker until I see Top People
+    And I open Search UI
     And I tap <Contact1> avatar in Top People
     When I tap Open Conversation action button on People Picker page
     Then I see the conversation view
@@ -172,8 +171,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the Search input
-    And I keep on reopening People Picker until I see Top People
+    And I open Search UI
     And I tap <Contact1> avatar in Top People
     When I tap Open Conversation action button on People Picker page
     Then I see the conversation view
