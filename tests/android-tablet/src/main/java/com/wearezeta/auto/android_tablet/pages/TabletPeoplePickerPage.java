@@ -21,11 +21,11 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.idPickerListContainer);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.xpathMainSearchField);
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), PeoplePickerPage.idPickerListContainer);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), PeoplePickerPage.xpathMainSearchField);
     }
 
     public void tapCloseButton() throws Exception {
@@ -42,10 +42,6 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
         getElement(locator,
                 String.format("The item '%s' is not visible in People Picker search list after the defualt timeout expired",
                         item)).click();
-    }
-
-    public boolean waitUntilTopPeopleIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.xpathTopPeopleAvatars);
     }
 
     public void tapTopPeopleAvatar(String name) throws Exception {

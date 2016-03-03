@@ -56,7 +56,7 @@ public class PeoplePickerPage extends AndroidPage {
 
     private static final By idNoResultsFound = By.id("ttv_pickuser__error_header");
 
-    public static final By idPickerListContainer = By.id("pfac__pickuser__header_list_view");
+    private static final By idPickerListContainer = By.id("rv__pickuser__header_list_view");
 
     public PeoplePickerPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -132,19 +132,14 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public boolean isPeoplePickerPageVisible() throws Exception {
-        try {
-            getPickerEdit();
-            return true;
-        } catch (IllegalStateException e) {
-            return false;
-        }
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMainSearchField);
     }
 
     public boolean isAddToConversationBtnVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idPickerBtnDone);
     }
 
-    public void clickOnAddToCoversationButton() throws Exception {
+    public void clickOnAddToConversationButton() throws Exception {
         getElement(idPickerBtnDone).click();
     }
 
