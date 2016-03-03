@@ -32,10 +32,10 @@ Feature: VideoCalling
     Given I Sign in using login <Login> and password <Password>
     Given <Contact> starts a video call to <Name> using <CallBackend>
     When I see my avatar on top of Contact list
-    And I see the name of user <Contact> in calling banner in conversation list
+    And I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>
     And I see decline call button for conversation <Contact>
-    And I click the accept call button in conversation list
+    And I accept the call from conversation <Contact>
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
@@ -57,10 +57,10 @@ Feature: VideoCalling
     Given I Sign in using login <Login> and password <Password>
     Given <Contact> starts a video call to me using <CallBackend>
     When I see my avatar on top of Contact list
-    Then I see the name of user <Contact> in calling banner in conversation list
+    Then I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>
     And I see decline call button for conversation <Contact>
-    When I click the decline call button in conversation list
+    When I ignore the call from conversation <Contact>
     Then I do not see accept video call button for conversation <Contact>
     And I do not see decline call button for conversation <Contact>
     And I do not see my self video view
@@ -202,7 +202,7 @@ Feature: VideoCalling
     And I open conversation with <Contact>
     When I start a video call
     And I see my self video view
-    And I see the name of user <Contact> in calling banner in conversation list
+    And I see the outgoing call controls for conversation <Contact>
     And I see mute call button for conversation <Contact>
     And I see video button for conversation <Contact>
     And I see end call button for conversation <Contact>
@@ -257,7 +257,7 @@ Feature: VideoCalling
     And I open conversation with <Contact>
     When I start a video call
     And I see mute button in conversation list is not pressed
-    Then I click mute call button in conversation list
+    Then I click mute call button for conversation <Contact>
     And I see mute button in conversation list is pressed
     And <Contact> accepts next incoming video call automatically
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds

@@ -395,7 +395,7 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When <Contact1> calls me
-    And I see the incoming call controls for conversation  <Contact1>
+    And I see the incoming call controls for conversation <Contact1>
     When I ignore the call from conversation <Contact1>
     Then I do not see the incoming call controls for conversation <Contact2>
     When I call
