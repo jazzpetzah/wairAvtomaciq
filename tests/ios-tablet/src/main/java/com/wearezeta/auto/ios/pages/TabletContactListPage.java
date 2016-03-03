@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios.pages;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 import java.util.function.Function;
-
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -11,6 +10,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
+
 
 public class TabletContactListPage extends ContactListPage {
     private static final By xpathConversationListPage =
@@ -59,8 +59,8 @@ public class TabletContactListPage extends ContactListPage {
                         entryDimension.width / 4, titleDimension.height);
             case RIGHT:
                 return entryScreenshot.getSubimage(
-                        entryDimension.width * 3 / 4, titleLocation.y - entryLocation.y,
-                        entryDimension.width - entryDimension.width * 3 / 4, titleDimension.height);
+                        entryDimension.width /2, titleLocation.y - entryLocation.y,
+                        entryDimension.width - entryDimension.width / 2, titleDimension.height);
             default:
                 throw new IllegalArgumentException(String.format("Unsupported side value '%s'", side.name()));
         }
