@@ -53,7 +53,7 @@ public class ContactListPage extends AndroidPage {
 
     private static final By idListSettingsGear = By.id("gtv__list_actions__settings");
 
-    private static final By idListActionsAvatar = By.id("gtv__list_actions__avatar");
+    public static final By idListActionsAvatar = By.id("gtv__list_actions__avatar");
 
     private static final By xpathConfirmDeleteConversationButton = By.xpath("//*[@id='positive' and @value='DELETE']");
 
