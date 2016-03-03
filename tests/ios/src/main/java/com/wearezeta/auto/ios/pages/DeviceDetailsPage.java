@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
@@ -13,7 +14,7 @@ public class DeviceDetailsPage extends IOSPage {
     
     private static final By xpathKeyFingerprintValue = By.xpath("//UIATableCell[@name='Key Fingerprint']/UIAStaticText[2]");
 
-    private static final By nameRemoveDevice = By.name("Remove Device");
+    private static final By nameRemoveDevice = MobileBy.AccessibilityId("Remove Device");
 
     public DeviceDetailsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);

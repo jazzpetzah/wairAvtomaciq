@@ -6,6 +6,7 @@ import java.util.function.Function;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DummyElement;
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -17,37 +18,37 @@ public class PeoplePickerPage extends IOSPage {
     private static final By xpathPickerClearButton =
             By.xpath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
 
-    private static final By nameKeyboardEnterButton = By.name("Return");
+    private static final By nameKeyboardEnterButton = MobileBy.AccessibilityId("Return");
 
-    private static final By nameCreateConversationButton = By.name("CREATE");
+    private static final By nameCreateConversationButton = MobileBy.AccessibilityId("CREATE");
 
-    private static final By namePeoplePickerTopPeopleLabel = By.name("TOP PEOPLE");
+    private static final By namePeoplePickerTopPeopleLabel = MobileBy.AccessibilityId("TOP PEOPLE");
 
-    private static final By namePeoplePickerAddToConversationButton = By.name("ADD TO CONVERSATION");
+    private static final By namePeoplePickerAddToConversationButton = MobileBy.AccessibilityId("ADD TO CONVERSATION");
 
-    private static final By nameContinueUploadButton = By.name("SHARE CONTACTS");
+    private static final By nameContinueUploadButton = MobileBy.AccessibilityId("SHARE CONTACTS");
 
-    private static final By namePeopleYouMayKnowLabel = By.name("CONNECT");
+    private static final By namePeopleYouMayKnowLabel = MobileBy.AccessibilityId("CONNECT");
 
-    private static final By nameUnblockButton = By.name("UNBLOCK");
+    private static final By nameUnblockButton = MobileBy.AccessibilityId("UNBLOCK");
 
     private static final By xpathSelectedTopPeople =
             By.xpath("//UIACollectionCell/UIACollectionView/UIACollectionCell[@value='1']");
 
     public static final By xpathInviteCopyButton = By.xpath("//UIACollectionCell[@name='Copy']");
 
-    private static final By nameSendAnInviteButton = By.name("INVITE MORE PEOPLE");
+    private static final By nameSendAnInviteButton = MobileBy.AccessibilityId("INVITE MORE PEOPLE");
 
     private static final Function<String, String> xpathStrInstantConnectButtonByUserName = name -> String.format(
             "//UIACollectionCell[ ./UIAStaticText[@name='%s'] ]/UIAButton[@name='instantPlusConnectButton']", name);
 
-    private static final By nameLaterButton = By.name("MAYBE LATER");
+    private static final By nameLaterButton = MobileBy.AccessibilityId("MAYBE LATER");
 
-    private static final By nameOpenConversationButton = By.name("OPEN");
+    private static final By nameOpenConversationButton = MobileBy.AccessibilityId("OPEN");
 
-    private static final By nameCallButton = By.name("actionBarCallButton");
+    private static final By nameCallButton = MobileBy.AccessibilityId("actionBarCallButton");
 
-    private static final By nameSendImageButton = By.name("actionBarCameraButton");
+    private static final By nameSendImageButton = MobileBy.AccessibilityId("actionBarCameraButton");
 
     private static final By xpathContactViewCloseButton =
             By.xpath("//*[@name='ContactsViewCloseButton' and @visible='true']");
@@ -67,9 +68,9 @@ public class PeoplePickerPage extends IOSPage {
                     "%s/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]/UIAStaticText[last()]",
                     xpathStrMainWindow, idx);
 
-    private static final By nameNoResults = By.name("No results.");
+    private static final By nameNoResults = MobileBy.AccessibilityId("No results.");
 
-    private static final By nameVideoCallButton = By.name("actionBarVideoCallButton");
+    private static final By nameVideoCallButton = MobileBy.AccessibilityId("actionBarVideoCallButton");
 
     public PeoplePickerPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -185,7 +186,11 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void tapSendInviteCopyButton() throws Exception {
-        getElement(xpathInviteCopyButton).click();
+        final WebElement copyButton = getElement(xpathInviteCopyButton);
+        copyButton.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathInviteCopyButton)) {
+            copyButton.click();
+        }
     }
 
     public void pressInstantConnectButton(String forName) throws Exception {

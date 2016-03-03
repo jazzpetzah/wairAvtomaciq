@@ -25,7 +25,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 // Almost all methods of this class mutate ClientUser
 // argument by performing automatic login (set id and session token attributes)
@@ -120,8 +119,7 @@ public final class BackendAPIWrappers {
                 }
                 break;
             default:
-                throw new RuntimeException(String.format(
-                        "Unknown registration strategy '%s'", strategy.name()));
+                throw new RuntimeException(String.format("Unknown registration strategy '%s'", strategy.name()));
         }
         user.setUserState(UserState.Created);
         return user;
@@ -137,8 +135,7 @@ public final class BackendAPIWrappers {
                 .format("Received activation email message with key: %s, code: %s. Proceeding with activation...",
                         key, code));
         BackendREST.activateNewUser(key, code);
-        log.debug(String.format("User '%s' is successfully activated",
-                registrationInfo.getDeliveredToEmail()));
+        log.debug(String.format("User '%s' is successfully activated", registrationInfo.getDeliveredToEmail()));
     }
 
     private static void activateRegisteredEmailByBackdoorCade(String email,
@@ -148,20 +145,17 @@ public final class BackendAPIWrappers {
     }
 
     private static String getActivationCodeForRegisteredEmail(String email) throws Exception {
-        return BackendREST.getActivationDataViaBackdoor(email)
-                .getString("code");
+        return BackendREST.getActivationDataViaBackdoor(email).getString("code");
     }
 
     private static String getActivationCodeForBookedPhoneNumber(PhoneNumber phoneNumber) throws Exception {
-        return BackendREST.getActivationDataViaBackdoor(phoneNumber).getString(
-                "code");
+        return BackendREST.getActivationDataViaBackdoor(phoneNumber).getString("code");
     }
 
     public static void activateRegisteredUserByPhoneNumber(
             PhoneNumber phoneNumber, String activationCode, boolean isDryRun) throws Exception {
         BackendREST.activateNewUser(phoneNumber, activationCode, isDryRun);
-        log.debug(String.format("User '%s' is successfully activated",
-                phoneNumber.toString()));
+        log.debug(String.format("User '%s' is successfully activated", phoneNumber.toString()));
     }
 
     private final static int MAX_ACTIVATION_CODE_GET_RETRIES = 6;
@@ -311,8 +305,7 @@ public final class BackendAPIWrappers {
         }
     }
 
-    public static void sendPictureToChatByName(ClientUser userFrom,
-                                               String chatName, String path) throws Exception {
+    public static void sendPictureToChatByName(ClientUser userFrom, String chatName, String path) throws Exception {
         final byte[] srcImageAsByteArray = Files.readAllBytes(Paths.get(path));
         BackendREST.sendPicture(receiveAuthToken(userFrom),
                 getConversationIdByName(userFrom, chatName),
@@ -325,8 +318,7 @@ public final class BackendAPIWrappers {
         SEBridge.getInstance().sendImage(userFrom, convId, path);
     }
 
-    public static String getConversationIdByName(ClientUser ownerUser,
-                                                 String conversationName) throws Exception {
+    public static String getConversationIdByName(ClientUser ownerUser, String conversationName) throws Exception {
         JSONArray jsonArray = getConversations(ownerUser);
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject conversation = (JSONObject) jsonArray.get(i);
@@ -357,8 +349,7 @@ public final class BackendAPIWrappers {
                 conversationName, ownerUser.getName()));
     }
 
-    private static String getConversationWithSingleUser(ClientUser fromUser,
-                                                        ClientUser toUser) throws Exception {
+    private static String getConversationWithSingleUser(ClientUser fromUser, ClientUser toUser) throws Exception {
         toUser = tryLoginByUser(toUser);
         String conversationId;
         JSONArray jsonArray = getConversations(fromUser);
@@ -515,8 +506,7 @@ public final class BackendAPIWrappers {
 
     public static void changeConnectRequestStatus(ClientUser user,
                                                   String connectionId, ConnectionStatus newStatus) throws Exception {
-        BackendREST.changeConnectRequestStatus(receiveAuthToken(user),
-                connectionId, newStatus);
+        BackendREST.changeConnectRequestStatus(receiveAuthToken(user), connectionId, newStatus);
     }
 
     public static void createGroupConversation(ClientUser user,
@@ -549,8 +539,7 @@ public final class BackendAPIWrappers {
                 contactId, getConversationIdByName(asUser, conversationName));
     }
 
-    public static void sendConversationMessage(ClientUser userFrom,
-                                               String convId, String message) throws Exception {
+    public static void sendConversationMessage(ClientUser userFrom, String convId, String message) throws Exception {
         BackendREST.sendConversationMessage(receiveAuthToken(userFrom), convId, message);
     }
 
@@ -561,8 +550,7 @@ public final class BackendAPIWrappers {
         }
     }
 
-    public static void uploadAddressBookWithContacts(ClientUser user,
-                                                     List<String> emailsToAdd) throws Exception {
+    public static void uploadAddressBookWithContacts(ClientUser user, List<String> emailsToAdd) throws Exception {
         AddressBook addressBook = new AddressBook();
         for (String email : emailsToAdd) {
             Card card = new Card();
@@ -588,8 +576,7 @@ public final class BackendAPIWrappers {
                 userFrom.getName(), timeout));
     }
 
-    public static String sendConversationPing(ClientUser userFrom, String convId)
-            throws Exception {
+    public static String sendConversationPing(ClientUser userFrom, String convId) throws Exception {
         JSONObject response = BackendREST.sendConversationPing(receiveAuthToken(userFrom), convId);
         return response.getString("id");
     }
@@ -600,6 +587,7 @@ public final class BackendAPIWrappers {
     }
 
     public static JSONArray getConversations(ClientUser user) throws Exception {
+        user = tryLoginByUser(user);
         final JSONArray result = new JSONArray();
         String startId = null;
         JSONObject conversationsInfo = null;
@@ -678,38 +666,44 @@ public final class BackendAPIWrappers {
     public static void updateConvMutedState(ClientUser user,
                                             ClientUser mutedUser, boolean muted) throws Exception {
         final String convId = getConversationWithSingleUser(user, mutedUser);
-        BackendREST.updateConvSelfInfo(receiveAuthToken(user), convId, null, muted, null);
+        BackendREST.updateConvSelfInfo(receiveAuthToken(user), convId,
+                Optional.of(muted), Optional.empty());
     }
 
     public static void updateGroupConvMutedState(ClientUser user,
                                                  String groupConvName, boolean muted) throws Exception {
-        BackendREST.updateConvSelfInfo(receiveAuthToken(user), getConversationIdByName(user, groupConvName), null,
-                muted, null);
+        BackendREST.updateConvSelfInfo(receiveAuthToken(user), getConversationIdByName(user, groupConvName),
+                Optional.of(muted), Optional.empty());
     }
 
     public static void archiveUserConv(ClientUser ownerUser, ClientUser archivedUser) throws Exception {
         final String convId = getConversationWithSingleUser(ownerUser, archivedUser);
-        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), convId, null, null, true);
+        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), convId,
+                Optional.empty(), Optional.of(true));
     }
 
     public static void archiveGroupConv(ClientUser selfUser, String conversationToArchive) throws Exception {
-        BackendREST.updateConvSelfInfo(receiveAuthToken(selfUser), conversationToArchive, null, null, true);
+        BackendREST.updateConvSelfInfo(receiveAuthToken(selfUser), conversationToArchive,
+                Optional.empty(), Optional.of(true));
     }
 
     public static void unarchiveUserConv(ClientUser ownerUser,
                                          ClientUser archivedUser) throws Exception {
         final String convId = getConversationWithSingleUser(ownerUser, archivedUser);
-        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), convId, null, null, false);
+        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), convId,
+                Optional.empty(), Optional.of(false));
     }
 
     public static void unarchiveGroupConv(ClientUser ownerUser,
                                           String conversationToUnarchive) throws Exception {
         tryLoginByUser(ownerUser);
-        BackendREST.updateConvSelfInfo(generateAuthToken(ownerUser), conversationToUnarchive, null, null, false);
+        BackendREST.updateConvSelfInfo(generateAuthToken(ownerUser), conversationToUnarchive,
+                Optional.empty(), Optional.of(false));
     }
 
     public static class NoContactsFoundException extends Exception {
         private static final long serialVersionUID = -7682778364420522320L;
+
         public NoContactsFoundException(String msg) {
             super(msg);
         }
@@ -718,6 +712,7 @@ public final class BackendAPIWrappers {
     public static void waitUntilContactsFound(ClientUser searchByUser,
                                               String query, int expectedCount, boolean orMore, int timeoutSeconds)
             throws Exception {
+        searchByUser = tryLoginByUser(searchByUser);
         final long startTimestamp = System.currentTimeMillis();
         int currentCount;
         while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
@@ -732,9 +727,8 @@ public final class BackendAPIWrappers {
             }
             Thread.sleep(1000);
         }
-        throw new NoContactsFoundException(String.format(
-                        "%s contact(s) '%s' were not found within %s second(s) timeout",
-                        expectedCount, query, timeoutSeconds));
+        throw new NoContactsFoundException(String.format("%s contact(s) '%s' were not found within %s second(s) timeout",
+                expectedCount, query, timeoutSeconds));
     }
 
     public static void waitUntilTopPeopleContactsFound(ClientUser searchByUser,
@@ -744,7 +738,7 @@ public final class BackendAPIWrappers {
         int currentCount;
         while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
             final JSONObject searchResult = BackendREST.searchForTopPeopleContacts(receiveAuthToken(searchByUser),
-                            size);
+                    size);
             if (searchResult.has("documents") && (searchResult.get("documents") instanceof JSONArray)) {
                 currentCount = searchResult.getJSONArray("documents").length();
             } else {
@@ -756,8 +750,8 @@ public final class BackendAPIWrappers {
             Thread.sleep(1000);
         }
         throw new NoContactsFoundException(String.format(
-                        "%s contact(s) '%s' were not found within %s second(s) timeout",
-                        expectedCount, size, timeoutSeconds));
+                "%s contact(s) '%s' were not found within %s second(s) timeout",
+                expectedCount, size, timeoutSeconds));
     }
 
     public static void waitUntilContactNotFound(ClientUser searchByUser,
@@ -775,8 +769,8 @@ public final class BackendAPIWrappers {
             Thread.sleep(1000);
         } while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000);
         throw new AssertionError(String.format(
-                        "%s contact(s) '%s' are still found after %s second(s) timeout",
-                        currentCount, query, timeoutSeconds));
+                "%s contact(s) '%s' are still found after %s second(s) timeout",
+                currentCount, query, timeoutSeconds));
     }
 
     public static void sendPersonalInvitation(ClientUser ownerUser,

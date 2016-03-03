@@ -234,7 +234,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I swipe on text input
-    And I press Sketch button
+    And I tap Sketch button from input tools
     And I draw a sketch with <NumColors> colors
     And I send my sketch
     And I select last photo in dialog

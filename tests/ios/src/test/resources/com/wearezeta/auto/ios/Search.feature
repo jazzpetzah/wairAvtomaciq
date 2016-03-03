@@ -159,7 +159,7 @@ Feature: Search
     And I see top people list on People picker page
     Then I tap on first 3 top connections
     When I see Send image action button on People picker page
-    And I click Send image action button on People picker page
+    And I tap Send image action button on People picker page
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I press Confirm button

@@ -460,8 +460,7 @@ public class DriverUtils {
     }
 
     public static void tapOnPercentOfElement(
-            AppiumDriver<? extends WebElement> driver, WebElement element,
-            int percentX, int percentY) {
+            AppiumDriver<? extends WebElement> driver, WebElement element, int percentX, int percentY) {
         final Point coords = element.getLocation();
         final Dimension size = element.getSize();
         final int x = coords.x + size.getWidth() * percentX / 100;
@@ -471,8 +470,7 @@ public class DriverUtils {
     }
 
     public static void tapOutsideOfTheElement(
-            AppiumDriver<? extends WebElement> driver, WebElement element,
-            int xOffset, int yOffset) {
+            AppiumDriver<? extends WebElement> driver, WebElement element, int xOffset, int yOffset) {
         assert xOffset != 0 && yOffset != 0;
         final Point coords = element.getLocation();
         final Dimension size = element.getSize();

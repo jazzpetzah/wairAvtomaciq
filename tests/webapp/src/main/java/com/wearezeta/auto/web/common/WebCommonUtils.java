@@ -9,6 +9,9 @@ import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -64,6 +67,25 @@ public class WebCommonUtils extends CommonUtils {
 		}
 		log.debug("Full picture path: " + path);
 		return path;
+	}
+
+	public static String getFullFilePath(String fileName)
+			throws URISyntaxException {
+		String path = null;
+		URL url = WebCommonUtils.class.getResource("/" + fileName);
+		if (url != null) {
+			URI uri = new URI(url.toString());
+			path = uri.getPath();
+		}
+		log.debug("Full file path: " + path);
+		return path;
+	}
+
+	public static String getTextFromFile(String fileName)
+			throws URISyntaxException, IOException {
+		String path = getFullFilePath(fileName);
+		byte[] encoded = Files.readAllBytes(Paths.get(path));
+		return new String(encoded, Charset.defaultCharset());
 	}
 
 	public static void putFileOnExecutionNode(String node, File srcFile,

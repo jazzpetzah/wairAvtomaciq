@@ -12,7 +12,7 @@ import cucumber.api.java.en.When;
 public class CallPageSteps {
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final ElementState muteButtonState = new ElementState(() -> getCallingOverlayPage().getMuteButtonScrenshot());
+    private final ElementState muteButtonState = new ElementState(() -> getCallingOverlayPage().getMuteButtonScreenshot());
 
     private static final int STATE_CHANGE_TIMEOUT = 15;
     private static final double MIN_BUTTON_SIMILARITY_SCORE = 0.4;

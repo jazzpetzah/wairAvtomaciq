@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import io.appium.java_client.MobileBy;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.openqa.selenium.By;
 
@@ -21,11 +22,13 @@ public class IOSKeyboard extends BasePage {
     private static final By xpathCommitKey = By.xpath(xpathStrKeyboard +
                     "//*[@name='Go' or @name='Send' or @name='Done' or @name='return' or @name='Return']");
 
-    private static final By nameSpaceButton = By.name("space");
+    private static final By nameSpaceButton = MobileBy.AccessibilityId("space");
 
-    private static final By nameHideKeyboardButton = By.name("Hide keyboard");
+    private static final By nameHideKeyboardButton = MobileBy.AccessibilityId("Hide keyboard");
 
-    private static final By nameKeyboardDeleteButton = By.name("delete");
+    private static final By nameKeyboardDeleteButton = MobileBy.AccessibilityId("delete");
+
+    private static final int DEFAULT_VISIBILITY_TIMEOUT = 5; //seconds
 
     private KeyboardState getFinalState(List<KeyboardState> statesList, char c) throws Exception {
         String messageChar = "" + c;
@@ -52,7 +55,7 @@ public class IOSKeyboard extends BasePage {
     }
 
     public boolean isVisible() throws Exception {
-        return isVisible(3);
+        return isVisible(DEFAULT_VISIBILITY_TIMEOUT);
     }
 
     public void pressSpaceButton() throws Exception {
@@ -118,13 +121,13 @@ public class IOSKeyboard extends BasePage {
                     keyLocator = xpathCommitKey;
                     break;
                 case " ":
-                    keyLocator = By.name("space");
+                    keyLocator = MobileBy.AccessibilityId("space");
                     break;
                 case "&":
-                    keyLocator = By.name("ampersand");
+                    keyLocator = MobileBy.AccessibilityId("ampersand");
                     break;
                 default:
-                    keyLocator = By.name(StringEscapeUtils.escapeXml11(messageChar));
+                    keyLocator = MobileBy.AccessibilityId(StringEscapeUtils.escapeXml11(messageChar));
                     break;
             }
             keyboard.findElement(keyLocator).click();

@@ -82,18 +82,6 @@ public class PeoplePickerPageSteps {
     }
 
     /**
-     * Swipe down people picker
-     *
-     * @throws Exception
-     * @step. ^I swipe down people picker$
-     */
-    @When("^I swipe down people picker$")
-    public void ISwipeDownContactList() throws Exception {
-        getPeoplePickerPage().hideKeyboard();
-        getPeoplePickerPage().swipeDown(500);
-    }
-
-    /**
      * Types a user name into the people picker search field.
      *
      * @param contact user name/alias
@@ -257,17 +245,6 @@ public class PeoplePickerPageSteps {
     @When("^I click on Add to conversation button$")
     public void WhenIClickOnAddToConversationButton() throws Exception {
         getPeoplePickerPage().clickOnAddToCoversationButton();
-    }
-
-    /**
-     * Navigates back to the conversation list by swiping down
-     *
-     * @throws Exception
-     * @step. ^I navigate back to Conversations List$
-     */
-    @When("^I navigate back to Conversations List$")
-    public void WhenINavigateBackToConversationsList() throws Exception {
-        getPeoplePickerPage().navigateBack();
     }
 
     /**

@@ -10,7 +10,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class PersonalInfoPage extends AndroidPage {
-    private static final String xpathStrParentSelfProfileOverlay = "//*[@id='fl__conversation_list__profile_overlay']";
+    private static final String xpathStrParentSelfProfileOverlay = "//*[@id='fl__profile__main_container']";
 
     private static final By idTakePhotoButton = By.id("gtv__camera_control__take_a_picture");
 
@@ -32,8 +32,7 @@ public class PersonalInfoPage extends AndroidPage {
 
     private static final By idChangePhotoBtn = By.id("gtv__camera_control__change_image_source");
 
-    private static final By xpathProfileOptionsButton = By.xpath(xpathStrParentSelfProfileOverlay
-            + "//*[@id='gtv__profile__settings_button']");
+    private static final By idProfileOptionsButton = By.id("gtv__profile__settings_button");
 
     private static final Function<String, String> xpathStrProfileMenuItem = name ->
             String.format("//*[@id='ttv__settings_box__item' and @value='%s']" +
@@ -74,13 +73,7 @@ public class PersonalInfoPage extends AndroidPage {
     }
 
     public void tapEllipsisButton() throws Exception {
-        try {
-            getElement(xpathProfileOptionsButton, "Ellipsis button is not visible").click();
-        } catch (Exception e) {
-            e.printStackTrace();
-            // pass silently, this throws exception due to some internal
-            // Selendroid (or AUT %) ) issue
-        }
+        getElement(idProfileOptionsButton, "Ellipsis button is not visible").click();
     }
 
     public boolean isProfileMenuItemInvisible(String itemName) throws Exception {
@@ -117,7 +110,7 @@ public class PersonalInfoPage extends AndroidPage {
 
     public boolean waitUntilNameIsVisible(String expectedName) throws Exception {
         final By locator = By.xpath(xpathStrNameFieldByValue.apply(expectedName));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isSettingsVisible() throws Exception {

@@ -203,7 +203,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2733 @regression @id3192
+  @C2733 @rc @regression @id3192
   Scenario Outline: Verify archiving conversation from ellipsis menu [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -222,7 +222,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2594 @regression @rc @id3097 @id3098
+  @C2594 @regression @id3097 @id3098
   Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -245,8 +245,8 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2599 @C2600 @regression @id3237 @id3238
-  Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left [LANDSCAPE]
+  @C2599 @rc @regression @id3237 @id3238
+  Scenario Outline: Verify opening and closing the cursor by clicking plus/cancel and swiping right/left [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
@@ -269,7 +269,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2596 @regression @rc @id3100
+  @C2596 @regressionF2601 @id3100
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -292,7 +292,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
 
-  @C2601 @regression @id3267
+  @C2601 @rc @regression @id3267
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>

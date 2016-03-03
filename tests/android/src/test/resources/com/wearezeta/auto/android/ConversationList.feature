@@ -44,8 +44,7 @@ Feature: Conversation List
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
     Then I see Contact list with no contacts
-    And I open search by tap
-    And I tap on Search input on People picker page
+    And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I tap Open Conversation action button on People Picker page
@@ -74,8 +73,7 @@ Feature: Conversation List
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
     Then I do not see contact list with name <GroupChatName>
-    And I open search by tap
-    And I tap on Search input on People picker page
+    And I open Search UI
     And I enter "<GroupChatName>" into Search input on People Picker page
     And I tap on group found on People picker page <GroupChatName>
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -97,11 +95,10 @@ Feature: Conversation List
     And I click the Leave check box
     And I press DELETE on the confirm alert
     Then I do not see contact list with name <GroupChatName>
-    And I open search by tap
-    And I tap on Search input on People picker page
+    And I open Search UI
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I do not see group <GroupChatName> in People picker
-    And I navigate back to Conversations List
+    And I press Clear button
     And User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
     Then I do not see contact list with name <GroupChatName>
     And I swipe up contact list
@@ -159,7 +156,7 @@ Feature: Conversation List
       | user1Name | user2Name |
 
   @C452 @id4073 @regression
-  Scenario Outline: I can unmute 1:1 conversation from the conversation list
+  Scenario Outline: (CM-858) I can unmute 1:1 conversation from the conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is silenced to user <Name>
@@ -176,7 +173,7 @@ Feature: Conversation List
       | user1Name | user2Name |
 
   @C453 @id4078 @regression
-  Scenario Outline: I can mute group conversation from the conversation list
+  Scenario Outline: (CM-858) I can mute group conversation from the conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>

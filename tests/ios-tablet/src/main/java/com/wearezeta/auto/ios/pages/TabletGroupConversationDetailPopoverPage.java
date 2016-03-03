@@ -3,15 +3,16 @@ package com.wearezeta.auto.ios.pages;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage {
-    private static final By nameConversationMenu = By.name("metaControllerRightButton");
+    private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
 
-    private static final By nameRenameButtonEllipsisMenu = By.name("RENAME");
+    private static final By nameRenameButtonEllipsisMenu = MobileBy.AccessibilityId("RENAME");
 
     private static final By xpathSilenceButtonEllipsisMenu = By.xpath(xpathStrMainWindow +
             "/UIAPopover[1]/UIAButton[@name='SILENCE']");
@@ -33,20 +34,22 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
     }
 
     public boolean waitConversationInfoPopoverToClose() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), xpathPopover, 10);
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), xpathPopover);
     }
 
     public void dismissPopover() throws Exception {
         for (int i = 0; i < 3; i++) {
-            tapOnTopLeftScreen();
+            DriverUtils.tapOutsideOfTheElement(getDriver(), getElement(xpathPopover), 100, 0);
             if (waitConversationInfoPopoverToClose()) {
-                break;
+                // Wait for animation
+                Thread.sleep(1000);
+                return;
             }
         }
     }
 
     public void selectUserByNameOniPadPopover(String name) throws Exception {
-        DriverUtils.tapByCoordinates(this.getDriver(), getDriver().findElementByName(name.toUpperCase()));
+        DriverUtils.tapByCoordinates(this.getDriver(), getElement(MobileBy.AccessibilityId(name.toUpperCase())));
     }
 
     public void pressRenameEllipsesButton() throws Exception {

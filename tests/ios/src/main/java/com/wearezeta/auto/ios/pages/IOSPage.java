@@ -8,6 +8,7 @@ import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import io.appium.java_client.MobileBy;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 
@@ -25,23 +26,23 @@ public abstract class IOSPage extends BasePage {
     private static final int DEFAULT_RETRY_COUNT = 2;
 
     protected static final String nameStrMainWindow = "ZClientMainWindow";
-    protected static final By nameMainWindow = By.name(nameStrMainWindow);
+    protected static final By nameMainWindow = MobileBy.AccessibilityId(nameStrMainWindow);
 
     protected static final String xpathStrMainWindow =
             "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']";
 
-    protected static final By nameEditingItemSelectAll = By.name("Select All");
+    protected static final By nameEditingItemSelectAll = MobileBy.AccessibilityId("Select All");
 
-    protected static final By nameEditingItemCopy = By.name("Copy");
+    protected static final By nameEditingItemCopy = MobileBy.AccessibilityId("Copy");
 
-    protected static final By nameEditingItemPaste = By.name("Paste");
+    protected static final By nameEditingItemPaste = MobileBy.AccessibilityId("Paste");
 
     private static final Function<String, String> xpathStrAlertByText = text ->
             String.format("//UIAAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
 
     protected static final By xpathBrowserURLButton = By.xpath("//UIAButton[@name='URL']");
 
-    protected static final By nameBackToWireBrowserButton = By.name("Back to Wire");
+    protected static final By nameBackToWireBrowserButton = MobileBy.AccessibilityId("Back to Wire");
 
     private IOSKeyboard onScreenKeyboard;
 
@@ -63,22 +64,22 @@ public abstract class IOSPage extends BasePage {
      * @throws Exception
      */
     private static ZetaIOSDriver fixUITreeIfBroken(final ZetaIOSDriver drv) throws Exception {
-        if (drv.findElements(By.className("UIAWindow")).size() > 0) {
-            return drv;
-        }
-        log.warn("Detected Appium UI tree corruption. Trying to fix...");
-        try {
-            if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
-                drv.rotate(ScreenOrientation.LANDSCAPE);
-                drv.rotate(ScreenOrientation.PORTRAIT);
-            } else {
-                drv.rotate(ScreenOrientation.PORTRAIT);
-                drv.rotate(ScreenOrientation.LANDSCAPE);
-            }
-            Thread.sleep(500);
-        } catch (WebDriverException e) {
-            // pass silently
-        }
+//        if (drv.findElements(By.className("UIAWindow")).size() > 0) {
+//            return drv;
+//        }
+//        log.warn("Detected Appium UI tree corruption. Trying to fix...");
+//        try {
+//            if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
+//                drv.rotate(ScreenOrientation.LANDSCAPE);
+//                drv.rotate(ScreenOrientation.PORTRAIT);
+//            } else {
+//                drv.rotate(ScreenOrientation.PORTRAIT);
+//                drv.rotate(ScreenOrientation.LANDSCAPE);
+//            }
+//            Thread.sleep(500);
+//        } catch (WebDriverException e) {
+//            // pass silently
+//        }
         return drv;
     }
 
@@ -396,12 +397,13 @@ public abstract class IOSPage extends BasePage {
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
             final Dimension elSize = urlBar.getSize();
             final Point elLocation = urlBar.getLocation();
-            clickAtSimulator(elLocation.x + (elSize.width / 6) / 100, elLocation.y + (elSize.height / 2) / 100);
+            clickAtSimulator(elLocation.x + elSize.width / 6, elLocation.y + elSize.height / 2);
             Thread.sleep(1000);
         } else {
             urlBar.click();
         }
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(expectedUrl));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(),
+                By.xpath(String.format("//*[starts-with(@name, '%s')]", expectedUrl)));
     }
 
     public void tapBackToWire() throws Exception {
@@ -409,7 +411,7 @@ public abstract class IOSPage extends BasePage {
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
             final Dimension elSize = backToWireButton.getSize();
             final Point elLocation = backToWireButton.getLocation();
-            clickAtSimulator(elLocation.x + (elSize.width / 2) / 100, elLocation.y + (elSize.height / 2) / 100);
+            clickAtSimulator(elLocation.x + elSize.width / 2, elLocation.y + elSize.height / 2);
             Thread.sleep(1000);
         } else {
             backToWireButton.click();

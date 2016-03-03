@@ -12,13 +12,32 @@ public class VideoCallingOverlayPageSteps {
     private static final int STATE_CHANGE_TIMEOUT = 15;
     private static final double MIN_BUTTON_SIMILARITY_SCORE = 0.4;
 
-    private final ElementState muteButtonState = new ElementState(() -> getVideoCallingOverlayPage().getMuteButtonScrenshot());
-    private final ElementState videoButtonState = new ElementState(() -> getVideoCallingOverlayPage().getVideoButtonScrenshot());
+    private final ElementState muteButtonState = new ElementState(() -> getVideoCallingOverlayPage().getMuteButtonScreenshot());
+    private final ElementState videoButtonState = new ElementState(() -> getVideoCallingOverlayPage().getVideoButtonScreenshot());
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     public VideoCallingOverlayPage getVideoCallingOverlayPage() throws Exception {
         return pagesCollection.getPage(VideoCallingOverlayPage.class);
+    }
+
+    /**
+     * Verify whether video calling overlay is visible or not
+     *
+     * @param shouldNotBeVisible equals to null if the overlay should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see Video Calling overlay$
+     */
+    @Then("^I (do not )?see Video Calling overlay$")
+    public void ISeeCallingOverlay(String shouldNotBeVisible) throws Exception {
+        final String switchCameraBtnName = "Switch Camera";
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("Video calling overlay is not visible",
+                    getVideoCallingOverlayPage().isButtonVisible(switchCameraBtnName));
+        } else {
+            Assert.assertTrue("Video calling overlay is visible, but should be hidden",
+                    getVideoCallingOverlayPage().isButtonInvisible(switchCameraBtnName));
+        }
     }
 
     /**
@@ -31,6 +50,25 @@ public class VideoCallingOverlayPageSteps {
     @When("^I tap (Mute|Leave|Call Video|Call Speaker|Switch Camera) button on (?:the |\\s*)Video Calling overlay$")
     public void ITapButton(String name) throws Exception {
         getVideoCallingOverlayPage().tapButtonByName(name);
+    }
+
+    /**
+     * Tap the corresponding button on video calling overlay
+     *
+     * @param shouldNotBeVisible equals to null if the button should be visible
+     * @param name               one of possible button names
+     * @throws Exception
+     * @step. ^I (do not )?see (Mute|Leave|Call Video|Call Speaker|Switch Camera) button on (?:the |\s*)Video Calling overlay$
+     */
+    @When("^I (do not )?see (Mute|Leave|Call Video|Call Speaker|Switch Camera) button on (?:the |\\s*)Video Calling overlay$")
+    public void ISeeButton(String shouldNotBeVisible, String name) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue(String.format("The '%s' button is not visible on video calling overlay", name),
+                    getVideoCallingOverlayPage().isButtonVisible(name));
+        } else {
+            Assert.assertTrue(String.format("The '%s' button is visible on video calling overlay, but should be shown",
+                    name), getVideoCallingOverlayPage().isButtonInvisible(name));
+        }
     }
 
     /**

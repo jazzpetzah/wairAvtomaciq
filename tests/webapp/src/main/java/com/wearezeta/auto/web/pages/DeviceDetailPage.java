@@ -9,19 +9,19 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 
 public class DeviceDetailPage extends WebPage {
 
-	@FindBy(css = ".self-settings-device-details header div")
+	@FindBy(css = ".self-settings-section header div")
 	WebElement deviceName;
 
-	@FindBy(css = ".self-settings-device-details .device-info .label-xs")
+	@FindBy(css = ".self-settings-section .device-info .label-xs")
 	WebElement deviceLabel;
 
-	@FindBy(css = ".self-settings-device-details [data-uie-name='go-remove-device']")
+	@FindBy(css = ".self-settings-section [data-uie-name='go-remove-device']")
 	WebElement removeDeviceLink;
 
-	@FindBy(css = ".self-settings-device-details [data-uie-name='remove-device-password']")
+	@FindBy(css = ".self-settings-section [data-uie-name='remove-device-password']")
 	WebElement passwordInput;
 
-	@FindBy(css = ".self-settings-device-details [data-uie-name='do-remove-device']")
+	@FindBy(css = ".self-settings-section [data-uie-name='do-remove-device']")
 	WebElement removeButton;
 
 	public DeviceDetailPage(Future<ZetaWebAppDriver> lazyDriver)

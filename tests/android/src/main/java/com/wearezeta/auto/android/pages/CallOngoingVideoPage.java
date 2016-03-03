@@ -19,6 +19,8 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
 
     private static final int VISIBILITY_TIMEOUT_SECONDS = 20;
 
+    private static final int ELEMENT_VISIBILITY_TIMEOUT_SECONDS = 3;
+
     public boolean waitUntilVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOngoingCallContainer,
                 VISIBILITY_TIMEOUT_SECONDS);
@@ -34,7 +36,8 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
 
     @Override
     protected void tapSpecialAction() throws Exception {
-        final Optional<WebElement> specialActionBtn = getElementIfDisplayed(idRight);
+        final Optional<WebElement> specialActionBtn = getElementIfDisplayed(idRight,
+                ELEMENT_VISIBILITY_TIMEOUT_SECONDS);
         if (specialActionBtn.isPresent()) {
             specialActionBtn.get().click();
         } else {
@@ -45,7 +48,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
 
     @Override
     public void hangup() throws Exception {
-        final Optional<WebElement> hangUpBtn = getElementIfDisplayed(idHangup);
+        final Optional<WebElement> hangUpBtn = getElementIfDisplayed(idHangup, ELEMENT_VISIBILITY_TIMEOUT_SECONDS);
         if (hangUpBtn.isPresent()) {
             hangUpBtn.get().click();
         } else {
@@ -56,7 +59,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
 
     @Override
     public void toggleMute() throws Exception {
-        final Optional<WebElement> muteBtn = getElementIfDisplayed(idMute);
+        final Optional<WebElement> muteBtn = getElementIfDisplayed(idMute, ELEMENT_VISIBILITY_TIMEOUT_SECONDS);
         if (muteBtn.isPresent()) {
             muteBtn.get().click();
         } else {
@@ -67,8 +70,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
 
     @Override
     public boolean hangupIsVisible() throws Exception {
-        final Optional<WebElement> hangUpBtn = getElementIfDisplayed(idHangup);
-        if (hangUpBtn.isPresent()) {
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idHangup, ELEMENT_VISIBILITY_TIMEOUT_SECONDS)) {
             return true;
         } else {
             tapOngoingVideo();
@@ -78,8 +80,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
 
     @Override
     public boolean toggleMuteIsVisible() throws Exception {
-        final Optional<WebElement> muteBtn = getElementIfDisplayed(idMute);
-        if (muteBtn.isPresent()) {
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMute, ELEMENT_VISIBILITY_TIMEOUT_SECONDS)) {
             return true;
         } else {
             tapOngoingVideo();
@@ -89,8 +90,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
 
     @Override
     protected boolean specialActionIsVisible() throws Exception {
-        final Optional<WebElement> toggleVideoBtn = getElementIfDisplayed(idRight);
-        if (toggleVideoBtn.isPresent()) {
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idRight, ELEMENT_VISIBILITY_TIMEOUT_SECONDS)) {
             return true;
         } else {
             tapOngoingVideo();

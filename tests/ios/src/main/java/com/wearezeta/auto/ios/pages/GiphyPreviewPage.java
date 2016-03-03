@@ -2,26 +2,27 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class GiphyPreviewPage extends IOSPage {
-    private static final By nameGiphyRefreshButton = By.name("leftButton");
+    private static final By nameGiphyRefreshButton = MobileBy.AccessibilityId("leftButton");
 
-    private static final By nameGiphyLinkButton = By.name("rightButton");
+    private static final By nameGiphyLinkButton = MobileBy.AccessibilityId("rightButton");
 
-    private static final By nameGiphyTitleButton = By.name("centerButton");
+    private static final By nameGiphyTitleButton = MobileBy.AccessibilityId("centerButton");
 
     // TODO: assign a name to Giphy image element
     private static final By xpathGiphyImage = By.xpath("//UIAImage[@visible='true']");
 
-    private static final By nameGiphyCancelRequestButton = By.name("rejectButton");
+    private static final By nameGiphyCancelRequestButton = MobileBy.AccessibilityId("rejectButton");
 
     public static final By xpathGiphySendButton = By.xpath("//UIAButton[@label='SEND']");
 
-    private static final By nameGiphyGrid = By.name("giphyCollectionView");
+    private static final By nameGiphyGrid = MobileBy.AccessibilityId("giphyCollectionView");
 
     public GiphyPreviewPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);

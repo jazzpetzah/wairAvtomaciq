@@ -3,13 +3,14 @@ package com.wearezeta.auto.ios.pages;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     private static final By nameOtherUserMetaControllerRightButtoniPadPopover =
-            By.name("OtherUserMetaControllerRightButton");
+            MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
 
     private static final Function<String, String> xpathStrOtherUserNameField = name ->
             String.format("%s/UIAPopover[1]/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
@@ -22,7 +23,7 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     private static final By xpathOtherUserConnectButton = By.xpath(
             "//UIAStaticText[@name='CONNECT']/preceding-sibling::UIAButton[@name='OtherUserMetaControllerLeftButton']");
 
-    private static final By nameOtherUserProfilePageCloseButton = By.name("OtherUserProfileCloseButton");
+    private static final By nameOtherUserProfilePageCloseButton = MobileBy.AccessibilityId("OtherUserProfileCloseButton");
 
     public TabletOtherUserInfoPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {

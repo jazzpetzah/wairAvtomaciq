@@ -14,12 +14,12 @@ Feature: Lock/Unlock
     When I lock the device
     And I unlock the device
     Then I see the conversation <Contact1> in my conversations list
-    When I tap the Search input
+    When I open Search UI
     When I lock the device
     And I unlock the device
     Then I see People Picker page
     When I close People Picker
-    And I tap my avatar on top of conversations list
+    And I tap conversations list settings gear
     And I see my name on Self Profile page
     And I lock the device
     And I unlock the device

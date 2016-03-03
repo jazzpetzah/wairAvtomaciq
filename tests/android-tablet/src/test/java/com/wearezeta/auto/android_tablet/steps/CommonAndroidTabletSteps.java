@@ -3,11 +3,11 @@ package com.wearezeta.auto.android_tablet.steps;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
 
 import com.wearezeta.auto.android.common.logging.LoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
+import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.Scenario;
@@ -18,8 +18,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -81,18 +79,15 @@ public class CommonAndroidTabletSteps {
     @SuppressWarnings("unchecked")
     public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
-        LoggingPreferences object = new LoggingPreferences();
-        object.enable("logcat", Level.ALL);
-        capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
+        capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         // To init the first available device
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
-        capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(this.getClass()));
-        capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(this.getClass()));
-        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(this.getClass()));
-        capabilities.setCapability("applicationName", "selendroid");
-        capabilities.setCapability("automationName", "selendroid");
+        capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(getClass()));
+        capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(getClass()));
+        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(getClass()));
+        capabilities.setCapability("automationName", "Selendroid");
 
         try {
             return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()

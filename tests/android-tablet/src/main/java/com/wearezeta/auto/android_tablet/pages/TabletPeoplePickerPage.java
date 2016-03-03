@@ -74,14 +74,6 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
         return this.getAndroidPeoplePickerPage().isGroupInvisible(name);
     }
 
-    public void doShortSwipeDown() throws Exception {
-        getAndroidPeoplePickerPage().doShortSwipeDown();
-    }
-
-    public void doLongSwipeDown() throws Exception {
-        getAndroidPeoplePickerPage().doLongSwipeDown();
-    }
-
     public void tapActionButton(String name) throws Exception {
         getAndroidPeoplePickerPage().tapActionButton(name);
     }
