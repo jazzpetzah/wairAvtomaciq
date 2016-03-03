@@ -431,8 +431,7 @@ public final class BackendAPIWrappers {
 
         user.setAccessToken(loggedUserInfo.getString("access_token"));
         user.setTokenType(loggedUserInfo.getString("token_type"));
-        final JSONObject additionalUserInfo = BackendREST
-                .getUserInfo(generateAuthToken(user));
+        final JSONObject additionalUserInfo = BackendREST.getUserInfo(generateAuthToken(user));
         user.setId(additionalUserInfo.getString("id"));
         return user;
     }
@@ -450,7 +449,8 @@ public final class BackendAPIWrappers {
 
     public static void sendConnectRequest(ClientUser user, ClientUser contact,
                                           String connectName, String message) throws Exception {
-        tryLoginByUser(contact);
+        user = tryLoginByUser(user);
+        contact = tryLoginByUser(contact);
         BackendREST.sendConnectRequest(receiveAuthToken(user), contact.getId(), connectName, message);
     }
 

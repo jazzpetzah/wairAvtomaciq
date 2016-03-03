@@ -82,7 +82,7 @@ public class CommonAndroidSteps {
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(cls));
-        capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(cls));
+        capabilities.setCapability("appActivity", CommonUtils.getAndroidMainActivityFromConfig(cls));
         capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(cls));
         capabilities.setCapability("automationName", "Selendroid");
 
@@ -269,7 +269,7 @@ public class CommonAndroidSteps {
             // FIXME: Unlock selendroid app does not restore the previously active application
             AndroidCommonUtils.switchToApplication(
                     CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-                    CommonUtils.getAndroidActivityFromConfig(this.getClass()));
+                    CommonUtils.getAndroidLaunchActivityFromConfig(this.getClass()));
         }
     }
 
@@ -339,9 +339,10 @@ public class CommonAndroidSteps {
      * @step. ^I restore the application$
      */
     @When("^I restore the application$")
-    public void IRestoreApllication() throws Exception {
-        AndroidCommonUtils.switchToApplication(CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-                CommonUtils.getAndroidActivityFromConfig(this.getClass()));
+    public void IRestoreApplication() throws Exception {
+        AndroidCommonUtils.switchToApplication(
+                CommonUtils.getAndroidPackageFromConfig(this.getClass()),
+                CommonUtils.getAndroidLaunchActivityFromConfig(this.getClass()));
     }
 
     /**
