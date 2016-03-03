@@ -205,10 +205,10 @@ Feature: VideoCalling
     And I see the outgoing call controls for conversation <Contact>
     And I see mute call button for conversation <Contact>
     And I see video button for conversation <Contact>
-    And I see end call button for conversation <Contact>
-    Then I click end call button from conversation list
+    And I see hang up button for conversation <Contact>
+    Then I hang up call with conversation <Contact>
     And I do not see my self video view
-    And I do not see end call button for conversation <Contact>
+    And I do not see hang up button for conversation  <Contact>
     And I do not see mute call button for conversation <Contact>
     And I do not see video button for conversation <Contact>
 
