@@ -60,7 +60,7 @@ public class TabletContactListPage extends ContactListPage {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss") ;
         String userHomeFolder = System.getProperty("user.home");
 
-        File outputfile = new File(userHomeFolder + "/" + dateFormat.format(date)+".png");
+        File outputfile = new File(userHomeFolder + "/" + dateFormat.format(date)+"entry.png");
         ImageIO.write(entryScreenshot, "png", outputfile);
 
         String pageSource = this.getDriver().getPageSource();
