@@ -455,6 +455,7 @@ public final class BackendAPIWrappers {
     }
 
     private static JSONArray getAllConnections(ClientUser user) throws Exception {
+        user = tryLoginByUser(user);
         String startId = null;
         JSONObject connectionsInfo;
         final JSONArray result = new JSONArray();
