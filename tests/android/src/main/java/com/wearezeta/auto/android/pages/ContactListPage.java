@@ -68,8 +68,6 @@ public class ContactListPage extends AndroidPage {
     private static final String xpathSpinnerConversationsListLoadingIndicator =
             "//*[@id='liv__conversations__loading_indicator']/*";
 
-    private static final By idInviteButton = By.id("zb__conversationlist__show_contacts");
-
     private static final By idThreeDotsOptionMenuButton = By.id("v__row_conversation__menu_indicator__second_dot");
 
     private static final Logger log = ZetaLogger.getLog(ContactListPage.class.getSimpleName());
@@ -291,10 +289,6 @@ public class ContactListPage extends AndroidPage {
     public boolean isConvSettingsMenuItemVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrConvoSettingsMenuItemByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public void tapInviteButton() throws Exception {
-        getElement(idInviteButton).click();
     }
 
     public boolean isLeaveCheckBoxVisible() throws Exception {
