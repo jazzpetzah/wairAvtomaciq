@@ -252,6 +252,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
@@ -291,7 +292,7 @@ Feature: Conversation List
     And I see a delete warning modal for group conversations
     And I click delete button in the delete warning for group conversations
     And I do not see Contact list with name <ChatName>
-    And <Contact1> calls <ChatName> using <CallBackend>
+    And <Contact1> calls <ChatName>
     And I open conversation with <ChatName>
     Then I see <Action> action for <Contact1> in conversation
     And I see <Action> action for <Contact2> in conversation
