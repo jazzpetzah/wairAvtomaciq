@@ -173,7 +173,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     private static By[] getParticipantPageLocators() {
-        return new By[]{PeoplePickerPage.idParticipantsClose,
+        return new By[]{SearchPage.idParticipantsClose,
                 idParticipantsSubHeader, idParticipantsHeader};
     }
 
@@ -269,7 +269,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public void tapCloseButton() throws Exception {
-        final WebElement closeButton = getElement(PeoplePickerPage.idParticipantsClose,
+        final WebElement closeButton = getElement(SearchPage.idParticipantsClose,
                 "Close participants button is not visible");
         final int halfHeight = this.getDriver().manage().window().getSize().getHeight() / 2;
         int ntry = 1;
@@ -277,7 +277,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         do {
             closeButton.click();
             ntry++;
-        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.idParticipantsClose, 1)
+        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), SearchPage.idParticipantsClose, 1)
                 && closeButton.getLocation().getY() < halfHeight
                 && ntry <= maxRetries);
         if (ntry > maxRetries) {
@@ -287,7 +287,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public void tapSingleParticipantCloseButton() throws Exception {
-        final WebElement closeButton = getElement(PeoplePickerPage.idSingleParticipantClose,
+        final WebElement closeButton = getElement(SearchPage.idSingleParticipantClose,
                 "Close single participant button is not visible");
         final int halfHeight = this.getDriver().manage().window().getSize().getHeight() / 2;
         int ntry = 1;
@@ -295,7 +295,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         do {
             closeButton.click();
             ntry++;
-        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.idSingleParticipantClose, 1)
+        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), SearchPage.idSingleParticipantClose, 1)
                 && closeButton.getLocation().getY() < halfHeight
                 && ntry <= maxRetries);
         if (ntry > maxRetries) {

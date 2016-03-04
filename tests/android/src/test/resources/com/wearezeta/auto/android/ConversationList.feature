@@ -3,11 +3,11 @@ Feature: Conversation List
   @C56396 @torun
   Scenario Outline: (QA-1788) Verify contacts banner does not appear anymore after you opened contacts once
     Given There is 1 user where <Name> is me
-    And I sign in using my email or phone number
+    And I sign in using my email
     When I accept First Time overlay as soon as it is visible
     Then I see contact hint banner
     When I open Search UI
-    And I close Search UI
+    And I press Clear button
     Then I do not see contact hint banner
     When I tap conversations list settings button
     And I tap options button
@@ -15,8 +15,10 @@ Feature: Conversation List
     And I select "Account" settings menu item
     And I select "Log out" settings menu item
     And I confirm sign out
-    And I sign in using my email or phone number
-    Then I do not see contact hint banner
+    And I sign in using my email
+    Then I do not see First Time overlay
+    And I see Contact list
+    And I do not see contact hint banner
 
     Examples:
       | Name      |

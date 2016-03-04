@@ -130,17 +130,6 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Tap the corresponding button to close Search UI
-     *
-     * @throws Exception
-     * @step. ^I close [Ss]earch UI$
-     */
-    @When("^I close [Ss]earch UI$")
-    public void ICloseSearchUI() throws Exception {
-        getContactListPage().tapSearchClearButton();
-    }
-
-    /**
      * Swipes up on the contact list to reveal archived conversations
      *
      * @throws Exception
@@ -172,6 +161,12 @@ public class ContactListPageSteps {
                 contact2 + ", " + contact1));
     }
 
+    /**
+     * Check to see that the contact hint banner is visible in the bottom of contact list
+     *
+     * @param shouldNotSee equals to null if "do not" part does not exist
+     * @throws Exception
+     */
     @Then("^I( do not)? see contact hint banner$")
     public void ISeeContactsHintBanner(String shouldNotSee)
             throws Exception {

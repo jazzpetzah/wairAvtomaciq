@@ -76,8 +76,6 @@ public class ContactListPage extends AndroidPage {
 
     private static final By idThreeDotsOptionMenuButton = By.id("v__row_conversation__menu_indicator__second_dot");
 
-    private static final By idSearchClearButton = By.id("gtv_pickuser__clearbutton");
-
     private static final Logger log = ZetaLogger.getLog(ContactListPage.class.getSimpleName());
 
     public ContactListPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -311,9 +309,6 @@ public class ContactListPage extends AndroidPage {
         getElement(idInviteButton).click();
     }
 
-    public void tapSearchClearButton() throws Exception {
-        getElement(idSearchClearButton).click();
-    }
 
     public boolean isLeaveCheckBoxVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathLeaveCheckbox);

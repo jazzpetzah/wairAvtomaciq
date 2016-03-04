@@ -11,7 +11,7 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class PeoplePickerPage extends AndroidPage {
+public class SearchPage extends AndroidPage {
     public static final By idParticipantsClose = By.id("gtv__participants__close");
 
     public static final By xpathMainSearchField =
@@ -58,7 +58,7 @@ public class PeoplePickerPage extends AndroidPage {
 
     private static final By idPickerListContainer = By.id("rv__pickuser__header_list_view");
 
-    public PeoplePickerPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+    public SearchPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 

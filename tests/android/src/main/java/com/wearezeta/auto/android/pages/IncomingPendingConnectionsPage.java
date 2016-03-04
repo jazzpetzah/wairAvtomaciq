@@ -114,7 +114,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     }
 
     public void pressConnectButton() throws Exception {
-        getElement(PeoplePickerPage.idSendConnectionRequestButton, "Connect button is not visible").click();
+        getElement(SearchPage.idSendConnectionRequestButton, "Connect button is not visible").click();
     }
 
     public void waitUntilIgnoreButtonIsClickable() throws Exception {
@@ -124,7 +124,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     }
 
     public boolean getConnectButtonState() throws Exception {
-        String state = getElement(PeoplePickerPage.idSendConnectionRequestButton).getAttribute("enabled");
+        String state = getElement(SearchPage.idSendConnectionRequestButton).getAttribute("enabled");
         return Boolean.parseBoolean(state);
     }
 
