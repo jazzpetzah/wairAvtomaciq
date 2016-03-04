@@ -170,12 +170,11 @@ public class ContactListPageSteps {
     @Then("^I( do not)? see contact hint banner$")
     public void ISeeContactsHintBanner(String shouldNotSee)
             throws Exception {
-        boolean expectedContactHintBannerVisibility = shouldNotSee == null;
-        boolean actualContactHintBannerVisibility = getContactListPage().isContactsBannerVisible();
-
-        Assert.assertEquals(String.format("The visibility of contact hint banner should be '%s'"
-                , String.valueOf(expectedContactHintBannerVisibility))
-                , expectedContactHintBannerVisibility, actualContactHintBannerVisibility);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("The contact hint banner is not visible in the list"), getContactListPage().isContactsBannerVisible());
+        } else {
+            Assert.assertTrue(String.format("The contact hint banner is visible in the list, but should be hidden"), getContactListPage().isContactsBannerNotVisible());
+        }
     }
 
     /**

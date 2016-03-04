@@ -170,8 +170,12 @@ public class ContactListPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isContactsBannerVisible() throws Exception{
+    public boolean isContactsBannerVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idConversationListHintContainer);
+    }
+
+    public boolean isContactsBannerNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idConversationListHintContainer);
     }
 
     private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;

@@ -3,7 +3,7 @@ Feature: Conversation List
   @C56396 @torun
   Scenario Outline: (QA-1788) Verify contacts banner does not appear anymore after you opened contacts once
     Given There is 1 user where <Name> is me
-    And I sign in using my email
+    Given I sign in using my email
     When I accept First Time overlay as soon as it is visible
     Then I see contact hint banner
     When I open Search UI
