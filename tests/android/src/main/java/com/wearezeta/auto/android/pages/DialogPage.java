@@ -8,6 +8,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.ImageUtil;
@@ -259,7 +260,11 @@ public class DialogPage extends AndroidPage {
         final WebElement lastPicture =  getElement(xpathLastPicture);
         lastPicture.click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathLastPicture, 3)) {
-            lastPicture.click();
+            try {
+                lastPicture.click();
+            } catch (WebDriverException e) {
+                // silently ignore
+            }
         }
     }
 
