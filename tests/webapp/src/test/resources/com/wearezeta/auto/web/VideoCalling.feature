@@ -5,7 +5,7 @@ Feature: VideoCalling
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically
     Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
@@ -32,10 +32,10 @@ Feature: VideoCalling
     Given I Sign in using login <Login> and password <Password>
     Given <Contact> starts a video call to <Name> using <CallBackend>
     When I see my avatar on top of Contact list
-    And I see the name of user <Contact> in calling banner in conversation list
+    And I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>
     And I see decline call button for conversation <Contact>
-    And I click the accept call button in conversation list
+    And I accept the call from conversation <Contact>
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
@@ -57,10 +57,10 @@ Feature: VideoCalling
     Given I Sign in using login <Login> and password <Password>
     Given <Contact> starts a video call to me using <CallBackend>
     When I see my avatar on top of Contact list
-    Then I see the name of user <Contact> in calling banner in conversation list
+    Then I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>
     And I see decline call button for conversation <Contact>
-    When I click the decline call button in conversation list
+    When I ignore the call from conversation <Contact>
     Then I do not see accept video call button for conversation <Contact>
     And I do not see decline call button for conversation <Contact>
     And I do not see my self video view
@@ -93,7 +93,7 @@ Feature: VideoCalling
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically
     Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
@@ -123,7 +123,7 @@ Feature: VideoCalling
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically
     Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
@@ -202,13 +202,13 @@ Feature: VideoCalling
     And I open conversation with <Contact>
     When I start a video call
     And I see my self video view
-    And I see the name of user <Contact> in calling banner in conversation list
+    And I see the outgoing call controls for conversation <Contact>
     And I see mute call button for conversation <Contact>
     And I see video button for conversation <Contact>
-    And I see end call button for conversation <Contact>
-    Then I click end call button from conversation list
+    And I see hang up button for conversation <Contact>
+    Then I hang up call with conversation <Contact>
     And I do not see my self video view
-    And I do not see end call button for conversation <Contact>
+    And I do not see hang up button for conversation  <Contact>
     And I do not see mute call button for conversation <Contact>
     And I do not see video button for conversation <Contact>
 
@@ -222,7 +222,7 @@ Feature: VideoCalling
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically
     Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
@@ -250,15 +250,15 @@ Feature: VideoCalling
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I start a video call
-    And I see mute button in conversation list is not pressed
-    Then I click mute call button in conversation list
-    And I see mute button in conversation list is pressed
+    And I see mute button for conversation <Contact> is not pressed
+    Then I click mute call button for conversation <Contact>
+    And I see mute button for conversation <Contact> is pressed
     And <Contact> accepts next incoming video call automatically
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
