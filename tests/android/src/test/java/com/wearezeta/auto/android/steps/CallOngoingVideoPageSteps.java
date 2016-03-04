@@ -7,13 +7,14 @@ import cucumber.api.java.en.Then;
 
 import cucumber.api.java.en.When;
 import org.junit.Assert;
+
 import static org.junit.Assert.assertTrue;
 
 public class CallOngoingVideoPageSteps {
 
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
-    private final ElementState specialButtonState = new ElementState(() -> getPage().getSpecialButtonScreenshot());
+    private final ElementState videoButtonState = new ElementState(() -> getPage().getSpecialButtonScreenshot());
     private final ElementState muteButtonState = new ElementState(() -> getPage().getMuteButtonScreenshot());
 
     private CallOngoingVideoPage getPage() throws Exception {
@@ -60,7 +61,7 @@ public class CallOngoingVideoPageSteps {
                 getPage().toggleMute();
                 break;
             case "video":
-                getPage().tapSpecialAction();
+                getPage().toggleVideo();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
@@ -81,9 +82,7 @@ public class CallOngoingVideoPageSteps {
                 muteButtonState.remember();
                 break;
             case "video":
-                if(getPage().specialActionIsVisible()){
-                    specialButtonState.remember();
-                }
+                videoButtonState.remember();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
@@ -108,7 +107,7 @@ public class CallOngoingVideoPageSteps {
                 isChanged = muteButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
                 break;
             case "video":
-                isChanged = specialButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
+                isChanged = videoButtonState.isChanged(STATE_CHANGE_TIMEOUT, MIN_BUTTON_SIMILARITY_SCORE);
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
@@ -118,12 +117,13 @@ public class CallOngoingVideoPageSteps {
 
     /**
      * Verifies whether video self preview is visible or not
+     *
+     * @param not equals to null if self preview overlay on top of video screen should be visible
+     * @throws Exception
      * @step. I (do not )?see video self preview$
-     * @param not
-     * @throws Throwable
      */
     @When("^I (do not )?see video self preview$")
-    public void ISeeVideoSelfPreview(String not) throws Throwable {
+    public void ISeeVideoSelfPreview(String not) throws Exception {
         if (not == null) {
             assertTrue("Video self preview not visible", getPage().isVideoSelfPreviewVisible());
         } else {

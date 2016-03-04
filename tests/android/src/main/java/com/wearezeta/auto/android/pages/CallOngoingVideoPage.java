@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
+import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.concurrent.Future;
 
@@ -9,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class CallOngoingVideoPage extends CallingOverlayPage {
+    private static final By idVideoSelfPreview = By.id("spv__self_preview");
 
     private static final By xpathOngoingCallContainer =
             By.xpath("//*[@id='tcfl__calling__container' and //*[@id='spv__self_preview']]");
@@ -35,7 +37,24 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
     }
 
     @Override
-    public void tapSpecialAction() throws Exception {
+    public BufferedImage getSpecialButtonScreenshot() throws Exception {
+        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idRight, ELEMENT_VISIBILITY_TIMEOUT_SECONDS)) {
+            tapOngoingVideo();
+        }
+        return super.getSpecialButtonScreenshot();
+    }
+
+    @Override
+    public BufferedImage getMuteButtonScreenshot() throws Exception {
+        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMute, ELEMENT_VISIBILITY_TIMEOUT_SECONDS)) {
+            tapOngoingVideo();
+        }
+        return super.getMuteButtonScreenshot();
+    }
+
+
+    @Override
+    protected void tapSpecialAction() throws Exception {
         final Optional<WebElement> specialActionBtn = getElementIfDisplayed(idRight,
                 ELEMENT_VISIBILITY_TIMEOUT_SECONDS);
         if (specialActionBtn.isPresent()) {
@@ -89,12 +108,20 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
     }
 
     @Override
-    public boolean specialActionIsVisible() throws Exception {
+    protected boolean specialActionIsVisible() throws Exception {
         if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idRight, ELEMENT_VISIBILITY_TIMEOUT_SECONDS)) {
             return true;
         } else {
             tapOngoingVideo();
             return super.specialActionIsVisible();
         }
+    }
+
+    public boolean isVideoSelfPreviewVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(getDriver(),idVideoSelfPreview);
+    }
+
+    public boolean isVideoSelfPreviewInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),idVideoSelfPreview);
     }
 }
