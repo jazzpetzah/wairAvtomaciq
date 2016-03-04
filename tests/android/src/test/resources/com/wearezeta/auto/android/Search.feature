@@ -111,7 +111,7 @@ Feature: Search
     Given I see Contact list with contacts
     Given User <Contact1> sends encrypted message to user Myself
     Given User Me sends encrypted message to user <Contact1>
-    When I open Search by UI button
+    When I open Search UI
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
     And I tap on create conversation

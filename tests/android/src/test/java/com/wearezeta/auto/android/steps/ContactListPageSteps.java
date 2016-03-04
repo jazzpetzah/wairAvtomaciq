@@ -287,18 +287,6 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Open Search by clicking the Search button in the right top corner of
-     * convo list
-     *
-     * @throws Exception
-     * @step. ^I open Search by UI button$
-     */
-    @When("^I open Search by UI button$")
-    public void IOpenPeoplePicker() throws Exception {
-        getContactListPage().tapOnSearchButton();
-    }
-
-    /**
      * Tap the corresponding item in conversation settings menu
      *
      * @param itemName menu item name

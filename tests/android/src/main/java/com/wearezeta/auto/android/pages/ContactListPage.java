@@ -59,8 +59,6 @@ public class ContactListPage extends AndroidPage {
 
     private static final By xpathConfirmDeleteConversationButton = By.xpath("//*[@id='positive' and @value='DELETE']");
 
-    private static final By idSearchButton = By.id("gtv_pickuser__searchbutton");
-
     private static final By xpathLeaveCheckbox = By.xpath("(//*[@id='gtv__checkbox_icon'])[1]");
 
     private static final Function<String, String> xpathStrConvoSettingsMenuItemByName = name -> String
@@ -213,10 +211,6 @@ public class ContactListPage extends AndroidPage {
 
     public void tapListSettingsButton() throws Exception {
         getElement(idListSettingsButton).click();
-    }
-
-    public void tapOnSearchButton() throws Exception {
-        getElement(idSearchButton, "Search button is not visible").click();
     }
 
     public boolean isAnyConversationVisible() throws Exception {
