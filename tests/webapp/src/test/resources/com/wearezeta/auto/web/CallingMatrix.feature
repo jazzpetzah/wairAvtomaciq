@@ -233,13 +233,14 @@ Feature: Calling_Matrix
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
+    Given <Contact1> starts instance using <Backend>
     Given <Contact2> starts instance using <WaitBackend>
     Given <Contact2> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName1>
-    And <Contact1> calls <ChatName1> using <Backend>
+    And <Contact1> calls <ChatName1>
     When I accept the incoming call
     Then <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verify that call status to <ChatName1> is changed to active in <Timeout> seconds
