@@ -208,12 +208,13 @@ Feature: Calling_Matrix
     When I accept the call from conversation <ChatName1>
     Then <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verify that call status to <ChatName1> is changed to active in <Timeout> seconds
-    And I see the calling bar from users <Contact1>,<Contact2>
+    And I see the ongoing call controls for conversation <ChatName1>
+    And I see row of avatars on call controls with users <Contact1>,<Contact2>
     And I wait for 10 seconds
     And <Contact2> verify to have 2 flows
     And <Contact2> verify that all flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
-    And I do not see the calling bar
+    And I do not see the call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact2> verifies to have 1 flows
     And <Contact2> verifies that all flows have greater than 0 bytes
