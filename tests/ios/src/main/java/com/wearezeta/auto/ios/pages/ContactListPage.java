@@ -6,6 +6,8 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.*;
@@ -268,5 +270,19 @@ public class ContactListPage extends IOSPage {
     public boolean isFirstConversationName(String convoName) throws Exception {
         final By locator = By.xpath(xpathStrFirstConversationEntryByName.apply(convoName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public void openArchivedConversations() throws Exception {
+        // This is to make sure that we are not in some transition state from the previous step
+        Thread.sleep(3000);
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            if (CommonUtils.getDeviceName(this.getClass()).equals("iPhone 4s")) {
+                IOSSimulatorHelper.swipe(0.2, 0.6, 0.2, 0.1);
+            } else {
+                IOSSimulatorHelper.swipe(0.2, 0.7, 0.2, 0.1);
+            }
+        } else {
+            swipeUp(1000);
+        }
     }
 }

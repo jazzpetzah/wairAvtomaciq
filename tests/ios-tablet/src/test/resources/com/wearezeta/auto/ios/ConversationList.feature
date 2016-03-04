@@ -10,7 +10,7 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I click archive button for conversation
     Then I dont see conversation <Contact> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I see user <Contact> in contact list
 
     Examples:
@@ -28,7 +28,7 @@ Feature: Conversation List
     And I swipe right on a <GroupChatName>
     And I click archive button for conversation
     Then I dont see conversation <GroupChatName> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I see user <GroupChatName> in contact list
 
     Examples:
@@ -43,7 +43,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I open archived conversations on iPad
+    And I open archived conversations
     And I tap on contact name <ArchivedUser>
     Then I see first item in contact list named <ArchivedUser>
 
@@ -225,7 +225,7 @@ Feature: Conversation List
     And I click delete menu button
     And I confirm delete conversation content
     And I dont see conversation <Contact1> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I dont see conversation <Contact1> in contact list
 
     Examples:
@@ -242,12 +242,12 @@ Feature: Conversation List
     When I swipe right on a <Contact1>
     And I press Archive button in action menu in Contact List
     And I dont see conversation <Contact1> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     And I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
     Then I dont see conversation <Contact1> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I dont see conversation <Contact1> in contact list
 
     Examples:
@@ -313,7 +313,7 @@ Feature: Conversation List
     And I dont see conversation <Contact> in contact list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     Then I dont see conversation <Contact> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I see user <Contact> in contact list
     And I tap on contact name <Contact>
     And I see 1 photo in the dialog
@@ -340,7 +340,7 @@ Feature: Conversation List
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
     Examples:
@@ -363,7 +363,7 @@ Feature: Conversation List
     And I click delete menu button
     And I confirm delete conversation content
     Then I dont see conversation <GroupChatName> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
     Examples:
@@ -381,7 +381,7 @@ Feature: Conversation List
     And I press menu Block button
     And I confirm blocking alert
     Then I dont see conversation <Contact> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     And I dont see conversation <Contact> in contact list
     And I open search by taping on it
     And I input in People picker search field user name <Contact>

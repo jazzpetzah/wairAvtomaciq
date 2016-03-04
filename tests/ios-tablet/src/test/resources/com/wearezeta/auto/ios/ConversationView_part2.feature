@@ -158,7 +158,7 @@ Feature: Conversation View
     And I open ellipsis menu
     And I click archive menu button
     Then I dont see conversation <Contact> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I see user <Contact> in contact list
 
     Examples:
@@ -177,7 +177,7 @@ Feature: Conversation View
     And I open ellipsis menu
     And I click archive menu button
     Then I dont see conversation <Contact> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I see user <Contact> in contact list
 
     Examples:

@@ -235,17 +235,7 @@ public class ContactListPageSteps {
 
     @Then("^I open archived conversations$")
     public void IOpenArchivedConversations() throws Exception {
-        // This is to make sure that we are not in some transition state from the previous step
-        Thread.sleep(3000);
-        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            if (CommonUtils.getDeviceName(this.getClass()).equals("iPhone 4s")) {
-                IOSSimulatorHelper.swipe(0.2, 0.6, 0.2, 0.1);
-            } else {
-                IOSSimulatorHelper.swipe(0.2, 0.7, 0.2, 0.1);
-            }
-        } else {
-            getContactListPage().swipeUp(1000);
-        }
+        getContactListPage().openArchivedConversations();
     }
 
     @When("I see play/pause button next to username (.*) in contact list")

@@ -80,25 +80,13 @@ public class TabletContactListPageSteps {
     }
 
     /**
-     * Opens archived conversations on iPad
-     *
-     * @throws Exception
-     * @step ^I open archived conversations on iPad$
-     */
-    @When("^I open archived conversations on iPad$")
-    public void IOpenArchivedConvOnIpad() throws Exception {
-        getTabletContactListPage().swipeUp(1000);
-    }
-
-    /**
      * Verifies that mute a call button in landscape in conv list is not shown
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I dont see mute call button in conversation list on iPad$
      */
     @Then("^I dont see mute call button in conversation list on iPad$")
-    public void IDontSeeMuteCallButtonInConversationLisOniPad()
-            throws Throwable {
+    public void IDontSeeMuteCallButtonInConversationLisOniPad() throws Exception {
         Assert.assertFalse("Mute call button is still visible",
                 getTabletContactListPage().isMuteCallButtonVisible());
     }

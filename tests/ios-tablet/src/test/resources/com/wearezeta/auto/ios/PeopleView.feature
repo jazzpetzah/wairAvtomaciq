@@ -92,7 +92,7 @@ Feature: People View
     And I open group conversation details
     And I press leave converstation button on iPad
     Then I press leave on iPad
-    And I open archived conversations on iPad
+    And I open archived conversations
     And I tap on group chat with name <GroupChatName>
     Then I see You Left message in group chat
 
@@ -112,7 +112,7 @@ Feature: People View
     And I open group conversation details
     And I press leave converstation button on iPad
     Then I press leave on iPad
-    And I open archived conversations on iPad
+    And I open archived conversations
     And I tap on group chat with name <GroupChatName>
     Then I see You Left message in group chat
 
@@ -611,7 +611,7 @@ Feature: People View
     And I confirm delete conversation content
     And I wait until popover is closed
     And I dont see conversation <GroupChatName> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
     Examples:
@@ -635,7 +635,7 @@ Feature: People View
     And I confirm delete conversation content
     And I wait until popover is closed
     And I dont see conversation <GroupChatName> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
     Examples:
@@ -662,7 +662,7 @@ Feature: People View
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
     Examples:
@@ -690,7 +690,7 @@ Feature: People View
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
     Examples:
@@ -821,7 +821,7 @@ Feature: People View
     And I see leave conversation alert
     And I press leave
     And I wait until popover is closed
-    And I open archived conversations on iPad
+    And I open archived conversations
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
     Then I see 1 photo in the dialog
@@ -847,7 +847,7 @@ Feature: People View
     And I see leave conversation alert
     And I press leave
     And I wait until popover is closed
-    And I open archived conversations on iPad
+    And I open archived conversations
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
     Then I see 1 photo in the dialog
