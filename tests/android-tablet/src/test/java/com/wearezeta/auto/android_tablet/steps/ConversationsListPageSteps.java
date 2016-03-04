@@ -321,15 +321,4 @@ public class ConversationsListPageSteps {
         convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         playPauseButtonCoords.put(convoName, getConversationsListPage().calcPlayPauseButtonCoordinates(convoName));
     }
-
-    /**
-     * Tap the Invite button at the bottom of convo list
-     *
-     * @throws Exception
-     * @step. ^I tap Invite button at the bottom of conversations list$"
-     */
-    @When("^I tap Invite button at the bottom of conversations list$")
-    public void ITapInviteButton() throws Exception {
-        getConversationsListPage().tapInviteButton();
-    }
 }
