@@ -77,15 +77,15 @@ Feature: VideoCalling
     Given I see ongoing video call
     Given I hang up ongoing video call
     Given <Contact1> verifies that call status to me is changed to destroyed in <Timeout> seconds
-    Given <Contact1> starts a video call to me
-    When I see incoming call
+    When <Contact1> starts a video call to me
+    And I see incoming call
     And I swipe to accept the call
     Then <Contact1> verifies that call status to me is changed to active in <Timeout> seconds
     When I see ongoing video call
     And I hang up ongoing video call
     Then <Contact1> verifies that call status to me is changed to destroyed in <Timeout> seconds
-    Given <Contact2> starts a video call to me
-    When I see incoming call
+    When <Contact2> starts a video call to me
+    And I see incoming call
     And I swipe to accept the call
     Then <Contact2> verifies that call status to me is changed to active in <Timeout> seconds
     When I see ongoing video call
