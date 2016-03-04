@@ -46,7 +46,7 @@ Feature: Archive
     Given I Sign in using login <Email> and password <Password>
     And I see my avatar on top of Contact list
     When I archive conversation <Contact>
-    And User <Contact> pinged in the conversation with me 
+    And User <Contact> pinged in the conversation with me
     Then I do not see Contact list with name <Contact>
     And I see Archive button at the bottom of my Contact list
 
@@ -81,7 +81,7 @@ Feature: Archive
     Given I Sign in using login <Email> and password <Password>
     And I see my avatar on top of Contact list
     When I archive conversation <Contact>
-    And User <Contact> pinged in the conversation with me 
+    And User <Contact> pinged in the conversation with me
     Then I see Contact list with name <Contact>
     And I do not see Archive button at the bottom of my Contact list
 
@@ -104,6 +104,6 @@ Feature: Archive
     Then I see Contact list with name <Contact>
     And I do not see Archive button at the bottom of my Contact list
 
-    Examples: 
+    Examples:
       | Email      | Password      | Name      | Contact   | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | chrome    |
+      | user1Email | user1Password | user1Name | user2Name | autocall    |
