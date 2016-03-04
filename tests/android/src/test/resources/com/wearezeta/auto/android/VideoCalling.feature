@@ -63,7 +63,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C48237 @torun
+  @C48237 @staging
   Scenario Outline: Verify I can accept video call after another incoming call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
