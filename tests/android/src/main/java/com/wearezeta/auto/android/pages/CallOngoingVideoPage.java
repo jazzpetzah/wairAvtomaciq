@@ -35,7 +35,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
     }
 
     @Override
-    protected void tapSpecialAction() throws Exception {
+    public void tapSpecialAction() throws Exception {
         final Optional<WebElement> specialActionBtn = getElementIfDisplayed(idRight,
                 ELEMENT_VISIBILITY_TIMEOUT_SECONDS);
         if (specialActionBtn.isPresent()) {
@@ -89,7 +89,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
     }
 
     @Override
-    protected boolean specialActionIsVisible() throws Exception {
+    public boolean specialActionIsVisible() throws Exception {
         if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idRight, ELEMENT_VISIBILITY_TIMEOUT_SECONDS)) {
             return true;
         } else {

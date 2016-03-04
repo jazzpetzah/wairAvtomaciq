@@ -53,7 +53,7 @@ public abstract class CallingOverlayPage extends AndroidPage {
         getElement(idHangup).click();
     }
 
-    protected void tapSpecialAction() throws Exception {
+    public void tapSpecialAction() throws Exception {
         getElement(idRight).click();
     }
 

@@ -7,7 +7,6 @@ import cucumber.api.java.en.Then;
 
 import cucumber.api.java.en.When;
 import org.junit.Assert;
-
 import static org.junit.Assert.assertTrue;
 
 public class CallOngoingVideoPageSteps {
@@ -61,7 +60,7 @@ public class CallOngoingVideoPageSteps {
                 getPage().toggleMute();
                 break;
             case "video":
-                getPage().toggleVideo();
+                getPage().tapSpecialAction();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
@@ -82,7 +81,9 @@ public class CallOngoingVideoPageSteps {
                 muteButtonState.remember();
                 break;
             case "video":
-                specialButtonState.remember();
+                if(getPage().specialActionIsVisible()){
+                    specialButtonState.remember();
+                }
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
