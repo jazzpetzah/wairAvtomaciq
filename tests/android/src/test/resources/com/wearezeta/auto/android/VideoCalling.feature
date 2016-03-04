@@ -63,7 +63,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C48237 @staging
+  @C48237 @torun
   Scenario Outline: Verify I can accept video call after another incoming call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -84,6 +84,7 @@ Feature: VideoCalling
     When I see ongoing video call
     And I hang up ongoing video call
     Then <Contact1> verifies that call status to me is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing video call
     When <Contact2> starts a video call to me
     And I see incoming call
     And I swipe to accept the call
@@ -91,6 +92,7 @@ Feature: VideoCalling
     When I see ongoing video call
     And I hang up ongoing video call
     Then <Contact2> verifies that call status to me is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing video call
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend | Timeout |
