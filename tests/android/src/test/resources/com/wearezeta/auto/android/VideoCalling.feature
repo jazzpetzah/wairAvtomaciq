@@ -63,6 +63,40 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
+  @C48237 @torun
+  Scenario Outline: Verify I can accept video call after another incoming call
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> start instances using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given <Contact1> starts a video call to me
+    Given I see incoming call
+    Given I swipe to accept the call
+    Given <Contact1> verifies that call status to me is changed to active in <Timeout> seconds
+    Given I see ongoing video call
+    Given I hang up ongoing video call
+    Given <Contact1> verifies that call status to me is changed to destroyed in <Timeout> seconds
+    Given <Contact1> starts a video call to me
+    When I see incoming call
+    And I swipe to accept the call
+    Then <Contact1> verifies that call status to me is changed to active in <Timeout> seconds
+    When I see ongoing video call
+    And I hang up ongoing video call
+    Then <Contact1> verifies that call status to me is changed to destroyed in <Timeout> seconds
+    Given <Contact2> starts a video call to me
+    When I see incoming call
+    And I swipe to accept the call
+    Then <Contact2> verifies that call status to me is changed to active in <Timeout> seconds
+    When I see ongoing video call
+    And I hang up ongoing video call
+    Then <Contact2> verifies that call status to me is changed to destroyed in <Timeout> seconds
+
+    Examples:
+      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
+      | user1Name | user2Name | user3Name | chrome      | 60      |
+
+
   @C36364 @calling_basic @rc
   Scenario Outline: Verify I can decline Video call from the locked device
     Given There are 2 users where <Name> is me
@@ -328,5 +362,5 @@ Feature: VideoCalling
     Then I see state of video button has changed for ongoing video call
 
     Examples:
-      | Name      | Contact  | CallBackend | Timeout |
-      | user1Name | user2Name| chrome      | 30      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 30      |
