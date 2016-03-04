@@ -3,6 +3,7 @@ package com.wearezeta.auto.android_tablet.pages.popovers;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.android.pages.PeoplePickerPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -17,7 +18,7 @@ class SearchPage extends AbstractPopoverPage {
     }
 
     private WebElement getSearchInput() throws Exception {
-        return getElement(com.wearezeta.auto.android.pages.SearchPage.xpathAddPeopleSearchField);
+        return getElement(PeoplePickerPage.xpathAddPeopleSearchField);
     }
 
     public void enterSearchText(String text) throws Exception {
@@ -33,7 +34,7 @@ class SearchPage extends AbstractPopoverPage {
     }
 
     public void tapAddToConversationButton() throws Exception {
-        getElement(com.wearezeta.auto.android.pages.SearchPage.idPickerBtnDone).click();
+        getElement(PeoplePickerPage.idPickerBtnDone).click();
     }
 
 }

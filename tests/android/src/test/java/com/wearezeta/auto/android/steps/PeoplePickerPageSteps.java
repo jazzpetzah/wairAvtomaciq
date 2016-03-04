@@ -11,12 +11,12 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class SearchPageSteps {
+public class PeoplePickerPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private SearchPage getPeoplePickerPage() throws Exception {
-        return pagesCollection.getPage(SearchPage.class);
+    private PeoplePickerPage getPeoplePickerPage() throws Exception {
+        return pagesCollection.getPage(PeoplePickerPage.class);
     }
 
     /**

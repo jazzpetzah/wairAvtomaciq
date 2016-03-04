@@ -6,7 +6,7 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.android.pages.SearchPage;
+import com.wearezeta.auto.android.pages.PeoplePickerPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
@@ -16,20 +16,20 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
         super(lazyDriver);
     }
 
-    private SearchPage getAndroidPeoplePickerPage() throws Exception {
-        return this.getAndroidPageInstance(SearchPage.class);
+    private PeoplePickerPage getAndroidPeoplePickerPage() throws Exception {
+        return this.getAndroidPageInstance(PeoplePickerPage.class);
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), SearchPage.xpathMainSearchField);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.xpathMainSearchField);
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), SearchPage.xpathMainSearchField);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), PeoplePickerPage.xpathMainSearchField);
     }
 
     public void tapCloseButton() throws Exception {
-        getElement(SearchPage.idPeoplePickerClearbtn, "Close button is not visible").click();
+        getElement(PeoplePickerPage.idPeoplePickerClearbtn, "Close button is not visible").click();
     }
 
     public void typeTextInPeopleSearch(String searchCriteria) throws Exception {
@@ -38,19 +38,19 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 
     public void tapFoundItem(String item) throws Exception {
         this.hideKeyboard();
-        final By locator = By.xpath(SearchPage.xpathStrPeoplePickerContactByName.apply(item));
+        final By locator = By.xpath(PeoplePickerPage.xpathStrPeoplePickerContactByName.apply(item));
         getElement(locator,
                 String.format("The item '%s' is not visible in People Picker search list after the defualt timeout expired",
                         item)).click();
     }
 
     public void tapTopPeopleAvatar(String name) throws Exception {
-        final By locator = By.xpath(SearchPage.xpathStrTopPeopleAvatarByName.apply(name));
+        final By locator = By.xpath(PeoplePickerPage.xpathStrTopPeopleAvatarByName.apply(name));
         getElement(locator).click();
     }
 
     public Optional<BufferedImage> takeAvatarScreenshot(String name) throws Exception {
-        final By locator = By.xpath(SearchPage.xpathStrFoundAvatarByName.apply(name));
+        final By locator = By.xpath(PeoplePickerPage.xpathStrFoundAvatarByName.apply(name));
         return this.getElementScreenshot(getElement(locator, String.format("User avatar for '%s' is not visible", name)));
     }
 
