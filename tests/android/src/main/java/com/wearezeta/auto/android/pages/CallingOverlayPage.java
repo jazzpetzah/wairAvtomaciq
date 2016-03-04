@@ -79,4 +79,5 @@ public abstract class CallingOverlayPage extends AndroidPage {
     public boolean toggleSpeakerIsNotVisible() throws Exception {
         return specialActionIsNotVisible();
     }
+
 }
