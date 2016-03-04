@@ -130,6 +130,17 @@ public class ContactListPageSteps {
     }
 
     /**
+     * Tap the corresponding button to close Search UI
+     *
+     * @throws Exception
+     * @step. ^I close [Ss]earch UI$
+     */
+    @When("^I close [Ss]earch UI$")
+    public void ICloseSearchUI() throws Exception {
+        getContactListPage().tapSearchClearButton();
+    }
+
+    /**
      * Swipes up on the contact list to reveal archived conversations
      *
      * @throws Exception
@@ -159,6 +170,17 @@ public class ContactListPageSteps {
                 contact1 + ", " + contact2)
                 || getContactListPage().isContactExists(
                 contact2 + ", " + contact1));
+    }
+
+    @Then("^I( do not)? see contact hint banner$")
+    public void ISeeContactsHintBanner(String shouldNotSee)
+            throws Exception {
+        boolean expectedContactHintBannerVisibility = shouldNotSee == null;
+        boolean actualContactHintBannerVisibility = getContactListPage().isContactsBannerVisible();
+
+        Assert.assertEquals(String.format("The visibility of contact hint banner should be '%s'"
+                , String.valueOf(expectedContactHintBannerVisibility))
+                , expectedContactHintBannerVisibility, actualContactHintBannerVisibility);
     }
 
     /**

@@ -57,6 +57,8 @@ public class ContactListPage extends AndroidPage {
 
     public static final By idListActionsAvatar = By.id("gtv__list_actions__avatar");
 
+    private static final By idConversationListHintContainer = By.id("ll__conversation_list__hint_container");
+
     private static final By xpathConfirmDeleteConversationButton = By.xpath("//*[@id='positive' and @value='DELETE']");
 
     private static final By idSearchButton = By.id("gtv_pickuser__searchbutton");
@@ -73,6 +75,8 @@ public class ContactListPage extends AndroidPage {
     private static final By idInviteButton = By.id("zb__conversationlist__show_contacts");
 
     private static final By idThreeDotsOptionMenuButton = By.id("v__row_conversation__menu_indicator__second_dot");
+
+    private static final By idSearchClearButton = By.id("gtv_pickuser__clearbutton");
 
     private static final Logger log = ZetaLogger.getLog(ContactListPage.class.getSimpleName());
 
@@ -170,6 +174,10 @@ public class ContactListPage extends AndroidPage {
     public boolean isPlayPauseMediaButtonVisible(String convoName) throws Exception {
         final By locator = By.xpath(xpathStrPlayPauseButtonByConvoName.apply(convoName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isContactsBannerVisible() throws Exception{
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idConversationListHintContainer);
     }
 
     private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
@@ -301,6 +309,10 @@ public class ContactListPage extends AndroidPage {
 
     public void tapInviteButton() throws Exception {
         getElement(idInviteButton).click();
+    }
+
+    public void tapSearchClearButton() throws Exception {
+        getElement(idSearchClearButton).click();
     }
 
     public boolean isLeaveCheckBoxVisible() throws Exception {
