@@ -208,7 +208,7 @@ public class ContactListPageSteps {
     /**
      * Checks to see that the muted symbol appears or not for the given contact.
      *
-     * @param contact user name/alias
+     * @param contact          user name/alias
      * @param shouldNotBeMuted is set to null if 'not' part does not exist
      * @throws Exception
      * @step. "^Contact (.*) is (not )?muted$
@@ -304,18 +304,6 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Open Search by clicking the Search button in the right top corner of
-     * convo list
-     *
-     * @throws Exception
-     * @step. ^I open Search by UI button$
-     */
-    @When("^I open Search by UI button$")
-    public void IOpenPeoplePicker() throws Exception {
-        getContactListPage().tapOnSearchButton();
-    }
-
-    /**
      * Tap the corresponding item in conversation settings menu
      *
      * @param itemName menu item name
@@ -404,18 +392,6 @@ public class ContactListPageSteps {
     public void ISeeButtonInConversationSettingsMenuAtPosition(String name) throws Exception {
         Assert.assertTrue("The converastion settings menu item is not visible",
                 getContactListPage().isConvSettingsMenuItemVisible(name));
-    }
-
-
-    /**
-     * Tap the Invite Other People button at the bottom of conversations list
-     *
-     * @throws Exception
-     * @step. ^I tap Invite button at the bottom of conversations list$
-     */
-    @When("^I tap Invite button at the bottom of conversations list$")
-    public void ITapInviteButton() throws Exception {
-        getContactListPage().tapInviteButton();
     }
 
     /**

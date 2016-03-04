@@ -256,7 +256,11 @@ public class DialogPage extends AndroidPage {
     }
 
     public void clickLastImageFromDialog() throws Exception {
-        getElement(xpathLastPicture, "No pictures are visible in the conversation view").click();
+        final WebElement lastPicture =  getElement(xpathLastPicture);
+        lastPicture.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathLastPicture, 3)) {
+            lastPicture.click();
+        }
     }
 
     public boolean waitForConversationNameChangedMessage(String expectedName) throws Exception {

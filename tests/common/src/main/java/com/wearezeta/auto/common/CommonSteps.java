@@ -70,8 +70,7 @@ public final class CommonSteps {
         for (String participantNameAlias : splitAliases(otherParticipantsNameAlises)) {
             participants.add(usrMgr.findUserByNameOrNameAlias(participantNameAlias));
         }
-        BackendAPIWrappers.createGroupConversation(chatOwner, participants,
-                chatName);
+        BackendAPIWrappers.createGroupConversation(chatOwner, participants, chatName);
         // Set nameAlias for the group
         // Required for group calling tests
         ClientUser groupUser = new ClientUser();

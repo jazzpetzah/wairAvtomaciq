@@ -50,9 +50,11 @@ public class SearchPage extends AndroidPage {
     public static final By idPickerBtnDone = By.id("zb__pickuser__confirmation_button");
 
     private static final String idStrCreateOrOpenConversationButton = "zb__conversation_quick_menu__conversation_button";
+    private static final By xpathOpenConversationButton = By.xpath(String.format("//*[@id='%s' and @value='OPEN']",
+            idStrCreateOrOpenConversationButton));
+    private static final By xpathCreateConversationButton =
+            By.xpath(String.format("//*[@id='%s' and @value='CREATE GROUP']", idStrCreateOrOpenConversationButton));
     private static final By idCreateOrOpenConversationButton = By.id(idStrCreateOrOpenConversationButton);
-    private static final Function<String, String> xpathStrCreateOrOpenConversationButtonByCaption = caption -> String
-            .format("//*[@id='%s' and @value='%s']", idStrCreateOrOpenConversationButton, caption.toUpperCase());
 
     private static final By idNoResultsFound = By.id("ttv_pickuser__error_header");
 
@@ -185,8 +187,9 @@ public class SearchPage extends AndroidPage {
     private By getActionButtonLocatorByName(String name) {
         switch (name.toLowerCase()) {
             case "open conversation":
+                return xpathOpenConversationButton;
             case "create conversation":
-                return By.xpath(xpathStrCreateOrOpenConversationButtonByCaption.apply(name.split("\\s+")[0]));
+                return xpathCreateConversationButton;
             case "send image":
                 return idQuickMenuCameraButton;
             case "call":

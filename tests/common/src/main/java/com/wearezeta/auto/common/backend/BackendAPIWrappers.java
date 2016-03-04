@@ -455,6 +455,7 @@ public final class BackendAPIWrappers {
     }
 
     private static JSONArray getAllConnections(ClientUser user) throws Exception {
+        user = tryLoginByUser(user);
         String startId = null;
         JSONObject connectionsInfo;
         final JSONArray result = new JSONArray();
@@ -511,6 +512,7 @@ public final class BackendAPIWrappers {
 
     public static void createGroupConversation(ClientUser user,
                                                List<ClientUser> contacts, String conversationName) throws Exception {
+        user = tryLoginByUser(user);
         List<String> ids = new ArrayList<>();
         for (ClientUser contact : contacts) {
             tryLoginByUser(contact);

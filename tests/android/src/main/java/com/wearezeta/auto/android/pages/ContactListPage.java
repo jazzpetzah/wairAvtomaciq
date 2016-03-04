@@ -61,8 +61,6 @@ public class ContactListPage extends AndroidPage {
 
     private static final By xpathConfirmDeleteConversationButton = By.xpath("//*[@id='positive' and @value='DELETE']");
 
-    private static final By idSearchButton = By.id("gtv_pickuser__searchbutton");
-
     private static final By xpathLeaveCheckbox = By.xpath("(//*[@id='gtv__checkbox_icon'])[1]");
 
     private static final Function<String, String> xpathStrConvoSettingsMenuItemByName = name -> String
@@ -71,8 +69,6 @@ public class ContactListPage extends AndroidPage {
 
     private static final String xpathSpinnerConversationsListLoadingIndicator =
             "//*[@id='liv__conversations__loading_indicator']/*";
-
-    private static final By idInviteButton = By.id("zb__conversationlist__show_contacts");
 
     private static final By idThreeDotsOptionMenuButton = By.id("v__row_conversation__menu_indicator__second_dot");
 
@@ -221,10 +217,6 @@ public class ContactListPage extends AndroidPage {
         getElement(idListSettingsButton).click();
     }
 
-    public void tapOnSearchButton() throws Exception {
-        getElement(idSearchButton, "Search button is not visible").click();
-    }
-
     public boolean isAnyConversationVisible() throws Exception {
         for (int i = getElements(xpathContactListNames).size(); i >= 1; i--) {
             final By locator = By.xpath(xpathStrContactByIndex.apply(i));
@@ -304,11 +296,6 @@ public class ContactListPage extends AndroidPage {
         final By locator = By.xpath(xpathStrConvoSettingsMenuItemByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
-
-    public void tapInviteButton() throws Exception {
-        getElement(idInviteButton).click();
-    }
-
 
     public boolean isLeaveCheckBoxVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathLeaveCheckbox);
