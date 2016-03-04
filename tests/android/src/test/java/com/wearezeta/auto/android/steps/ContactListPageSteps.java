@@ -168,8 +168,7 @@ public class ContactListPageSteps {
      * @throws Exception
      */
     @Then("^I( do not)? see contact hint banner$")
-    public void ISeeContactsHintBanner(String shouldNotSee)
-            throws Exception {
+    public void ISeeContactsHintBanner(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The contact hint banner is not visible in the list"), getContactListPage().isContactsBannerVisible());
         } else {
