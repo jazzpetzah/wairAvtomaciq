@@ -90,7 +90,7 @@ Feature: Calling_Matrix
     And <Contact> calls me
     When I accept the call from conversation <Contact>
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
-    Then I see the incoming call controls for conversation <Contact>
+    Then I see the ongoing call controls for conversation <Contact>
     And I hang up call with conversation <Contact>
     And I do not see the call controls for conversation <Contact>
 
