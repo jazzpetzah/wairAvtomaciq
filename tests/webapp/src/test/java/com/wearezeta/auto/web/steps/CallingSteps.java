@@ -110,13 +110,13 @@ public class CallingSteps {
     /**
      * Execute instance as 'userAsNameAlias' user on calling server using 'callingServiceBackend' tool
      *
-     * @step. (.*) starts? instances? using (\\w+)$
+     * @step. (.*) starts? instances? using (.*)$
      *
      * @param callees callee name/alias
      * @param callingServiceBackend available values: 'autocall', 'chrome', 'firefox', 'zcall'
      * @throws Exception
      */
-    @When("(.*) starts? instances? using (\\w+)$")
+    @When("(.*) starts? instances? using (.*)$")
     public void UserXStartsInstance(String callees,
             String callingServiceBackend) throws Exception {
         commonCallingSteps.startInstances(splitAliases(callees),
