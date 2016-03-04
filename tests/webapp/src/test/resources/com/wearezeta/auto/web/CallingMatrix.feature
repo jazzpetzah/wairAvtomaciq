@@ -212,7 +212,7 @@ Feature: Calling_Matrix
     And I wait for 10 seconds
     And <Contact2> verify to have 2 flows
     And <Contact2> verify that all flows have greater than 0 bytes
-    And I hang up call with conversation <ContactXXX>
+    And I hang up call with conversation <ChatName1>
     And I do not see the calling bar
     And I wait for 10 seconds
     And <Contact2> verifies to have 1 flows
@@ -244,8 +244,8 @@ Feature: Calling_Matrix
     When I accept the incoming call
     Then <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verify that call status to <ChatName1> is changed to active in <Timeout> seconds
-    And I see the calling bar from users <Contact1>,<Contact2>
-    And I hang up call with conversation <ContactXXX>
+    And I see the ongoing call controls for conversation <ChatName1>
+    And I hang up call with conversation <ChatName1>
     And I do not see the calling bar
     # Stops all autocall instance calls
     And <Contact1> stops calling <ChatName1>
