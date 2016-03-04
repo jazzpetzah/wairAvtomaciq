@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @C56396 @torun
+  @C56396 @staging
   Scenario Outline: (QA-1788) Verify contacts banner does not appear anymore after you opened contacts once
     Given There is 1 user where <Name> is me
     Given I sign in using my email
