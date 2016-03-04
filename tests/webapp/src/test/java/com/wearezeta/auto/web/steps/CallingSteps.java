@@ -81,7 +81,7 @@ public class CallingSteps {
      * @param timeoutSeconds number of seconds to wait until call status is changed
      * @throws Exception
      */
-    @Then("(.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
+    @Then("(.*) verif(?:y|ies) that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
     public void UserXVerifesCallStatusToUserY(String callers,
             String conversationName, String expectedStatuses, int timeoutSeconds)
             throws Exception {
