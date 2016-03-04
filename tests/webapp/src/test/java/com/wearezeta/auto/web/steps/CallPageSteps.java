@@ -51,12 +51,12 @@ public class CallPageSteps {
      * @throws Exception
      * @step. ^I( do not)? see the (incoming|outgoing|ongoing) call controls for conversation (.*)$
      */
-    @And("^I see row of avatars on call controls with users (.*)$")
+    @And("^I see row of avatars on call controls with users? (.*)$")
     public void ISeeRowOfAvatarsOnCall(String participants) throws Exception {
         CallPage page = webappPagesCollection.getPage(CallPage.class);
         for (String alias : splitAliases(participants)) {
             String id = usrMgr.findUserByNameOrNameAlias(alias).getId();
-            assertThat(String.format("Avatar of user %s is visible", alias), page.isAvatarVisibleInCallControls(id));
+            assertThat(String.format("Avatar of user %s not visible", alias), page.isAvatarVisibleInCallControls(id));
         }
     }
 

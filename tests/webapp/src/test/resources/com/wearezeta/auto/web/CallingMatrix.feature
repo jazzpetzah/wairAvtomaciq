@@ -40,10 +40,11 @@ Feature: Calling_Matrix
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the outgoing call controls for conversation <Contact>
+    And I see the ongoing call controls for conversation <Contact>
+    #And I see row of avatars on call controls with user <Contact>
     And I wait for 10 seconds
     And I hang up call with conversation <Contact>
-    And I do not see the outgoing call controls for conversation <Contact>
+    And I do not see the call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
