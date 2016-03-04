@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import org.openqa.selenium.WebElement;
 
 public class TabletConversationViewPage extends AndroidTabletPage {
 
@@ -40,11 +41,9 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     private static final By idCloseToolsButton = By.id("cursor_button_close");
 
     public static final Function<String, String> xpathConversationMessageByValue = value -> String
-            .format("//*[@id='ltv__row_conversation__message' and @value='%s']",
-                    value);
+            .format("//*[@id='ltv__row_conversation__message' and @value='%s']", value);
 
-    public TabletConversationViewPage(Future<ZetaAndroidDriver> lazyDriver)
-            throws Exception {
+    public TabletConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -60,10 +59,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getElement(DialogPage.idParticipantsBtn).click();
     }
 
-    public boolean waitForSystemMessageContains(String expectedMessage)
-            throws Exception {
-        final By locator = By.xpath(xpathStrSystemMessageByContent
-                .apply(expectedMessage));
+    public boolean waitForSystemMessageContains(String expectedMessage) throws Exception {
+        final By locator = By.xpath(xpathStrSystemMessageByContent.apply(expectedMessage));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -82,10 +79,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getDriver().tapSendButton();
     }
 
-    public boolean waitUntilMessageIsVisible(String expectedMessage)
-            throws Exception {
-        final By locator = By.xpath(xpathConversationMessageByValue
-                .apply(expectedMessage));
+    public boolean waitUntilMessageIsVisible(String expectedMessage) throws Exception {
+        final By locator = By.xpath(xpathConversationMessageByValue.apply(expectedMessage));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -101,8 +96,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getDialogPage().tapPingButtonIfVisible();
     }
 
-    public boolean waitUntilPingMessageIsVisible(String expectedMessage)
-            throws Exception {
+    public boolean waitUntilPingMessageIsVisible(String expectedMessage) throws Exception {
         return getDialogPage().waitForPingMessageWithText(expectedMessage);
     }
 
@@ -111,10 +105,11 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public void tapShowInstrumentsButton() throws Exception {
-        // FIXME: Workaround for incorrectly positioned cursor
-        scrollToTheBottom();
-
-        getElement(idShowToolsButton).click();
+        final WebElement showToolsButton = getElement(idShowToolsButton);
+        showToolsButton.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), idShowToolsButton, 2)) {
+            showToolsButton.click();
+        }
     }
 
     public void tapCloseInstrumentsButton() throws Exception {
@@ -125,24 +120,18 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMissedCallImage);
     }
 
-    public boolean waitUntilMessageIsNotVisible(String expectedMessage)
-            throws Exception {
-        final By locator = By.xpath(xpathConversationMessageByValue
-                .apply(expectedMessage));
+    public boolean waitUntilMessageIsNotVisible(String expectedMessage) throws Exception {
+        final By locator = By.xpath(xpathConversationMessageByValue.apply(expectedMessage));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public boolean waitForOutgoingInvitationMessage(String expectedMessage)
-            throws Exception {
-        final By locator = By.xpath(xpathStrOutgoingInvitationMessageByContent
-                .apply(expectedMessage));
+    public boolean waitForOutgoingInvitationMessage(String expectedMessage) throws Exception {
+        final By locator = By.xpath(xpathStrOutgoingInvitationMessageByContent.apply(expectedMessage));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean waitUntilPingMessageIsInvisible(String expectedMessage)
-            throws Exception {
-        return getDialogPage().waitForPingMessageWithTextDisappears(
-                expectedMessage);
+    public boolean waitUntilPingMessageIsInvisible(String expectedMessage) throws Exception {
+        return getDialogPage().waitForPingMessageWithTextDisappears(expectedMessage);
     }
 
     public void doSwipeRight() throws Exception {
@@ -153,13 +142,11 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getDialogPage().scrollToTheBottom();
     }
 
-    public Optional<BufferedImage> getRecentPictureScreenshot()
-            throws Exception {
+    public Optional<BufferedImage> getRecentPictureScreenshot() throws Exception {
         return getDialogPage().getRecentPictureScreenshot();
     }
 
-    public Optional<BufferedImage> getPreviewPictureScreenshot()
-            throws Exception {
+    public Optional<BufferedImage> getPreviewPictureScreenshot() throws Exception {
         return getDialogPage().getPreviewPictureScreenshot();
     }
 
@@ -174,10 +161,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean waitForConversationNameSystemMessage(String expectedMessage)
-            throws Exception {
-        final By locator = By.xpath(xpathStrSystemConvoNameMessageByContent
-                .apply(expectedMessage));
+    public boolean waitForConversationNameSystemMessage(String expectedMessage) throws Exception {
+        final By locator = By.xpath(xpathStrSystemConvoNameMessageByContent.apply(expectedMessage));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -189,13 +174,11 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), DialogPage.idDialogImages);
     }
 
-    public boolean waitUntilUnsentIndicatorIsVisible(String msg)
-            throws Exception {
+    public boolean waitUntilUnsentIndicatorIsVisible(String msg) throws Exception {
         return getDialogPage().waitForUnsentIndicatorVisible(msg);
     }
 
-    public boolean waitUntilUnsentIndicatorIsVisibleForAPicture()
-            throws Exception {
+    public boolean waitUntilUnsentIndicatorIsVisibleForAPicture() throws Exception {
         return getDialogPage().waitForAPictureWithUnsentIndicator();
     }
 
@@ -236,8 +219,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getDialogPage().tapSketchOnImageButton();
     }
 
-    public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries)
-            throws Exception {
+    public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries) throws Exception {
         return getDialogPage().scrollUpUntilMediaBarVisible(maxScrollRetries);
     }
 
