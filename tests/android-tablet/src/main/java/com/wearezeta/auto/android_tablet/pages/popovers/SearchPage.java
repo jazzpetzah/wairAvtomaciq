@@ -3,10 +3,10 @@ package com.wearezeta.auto.android_tablet.pages.popovers;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import com.wearezeta.auto.android.pages.PeoplePickerPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import com.wearezeta.auto.android.pages.PeoplePickerPage;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 class SearchPage extends AbstractPopoverPage {
