@@ -267,9 +267,7 @@ public class CommonAndroidSteps {
         } else {
             AndroidCommonUtils.unlockDevice();
             // FIXME: Unlock selendroid app does not restore the previously active application
-            AndroidCommonUtils.switchToApplication(
-                    CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-                    CommonUtils.getAndroidLaunchActivityFromConfig(this.getClass()));
+            AndroidCommonUtils.switchToApplication(CommonUtils.getAndroidPackageFromConfig(this.getClass()));
         }
     }
 
@@ -340,9 +338,7 @@ public class CommonAndroidSteps {
      */
     @When("^I restore the application$")
     public void IRestoreApplication() throws Exception {
-        AndroidCommonUtils.switchToApplication(
-                CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-                CommonUtils.getAndroidLaunchActivityFromConfig(this.getClass()));
+        AndroidCommonUtils.switchToApplication(CommonUtils.getAndroidPackageFromConfig(this.getClass()));
     }
 
     /**

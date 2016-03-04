@@ -282,9 +282,7 @@ public class CommonAndroidTabletSteps {
                 AndroidCommonUtils.tapHomeButton();
                 break;
             case "restore":
-                AndroidCommonUtils.switchToApplication(
-                        CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-                        CommonUtils.getAndroidLaunchActivityFromConfig(this.getClass()));
+                AndroidCommonUtils.switchToApplication(CommonUtils.getAndroidPackageFromConfig(this.getClass()));
                 break;
         }
     }
@@ -303,9 +301,7 @@ public class CommonAndroidTabletSteps {
         } else {
             AndroidCommonUtils.unlockDevice();
             // FIXME: Unlock selendroid app does not restore the previously active application
-            AndroidCommonUtils.switchToApplication(
-                    CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-                    CommonUtils.getAndroidLaunchActivityFromConfig(this.getClass()));
+            AndroidCommonUtils.switchToApplication(CommonUtils.getAndroidPackageFromConfig(this.getClass()));
         }
     }
 
