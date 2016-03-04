@@ -75,63 +75,6 @@ public final class WebAppLocators {
 
         public static final String cssLeaveButton = "[data-uie-name='do-leave']";
 
-        //call
-        public static final Function<String, String> xpathMuteCallButtonByContactName = (
-                name) -> String
-                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
-                                + "*//*[@data-uie-name='do-call-mute']",
-                        name);
-
-        public static final Function<String, String> xpathVideoButtonByContactName = (
-                name) -> String
-                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
-                                + "*//*[@data-uie-name='do-video-call']",
-                        name);
-
-        public static final Function<String, String> xpathEndCallButtonByContactName = (
-                name) -> String
-                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
-                                + "*//*[@data-uie-name='do-call-controls-call-ignore']",
-                        name);
-
-        public static final String cssEndCallButton = "[data-uie-name='do-call-controls-call-ignore']";
-
-        public static final Function<String, String> xpathMuteIconByContactName = (
-                name) -> String.format(
-                "//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following::"
-                        + "*[@data-uie-name='status-silence']", name);
-        public static final String idSelfVideoPreview = "video-element-local";
-
-        public static final Function<String, String> xpathUserNameByUserNameInCallingBanner = user -> String
-                .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']",
-                        user);
-
-        public static final Function<String, String> xpathAcceptVideoCallButtonByContactName = (
-                name) -> String
-                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
-                                + "*//*[@data-uie-name='do-call-controls-call-accept']",
-                        name);
-
-        public static final Function<String, String> xpathDeclineCallButtonByContactName = (
-                name) -> String
-                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
-                                + "*//*[@data-uie-name='do-call-controls-call-decline']",
-                        name);
-
-        public static final String cssAcceptVideoCallButton = "[data-uie-name='do-call-controls-call-accept']";
-
-        public static final String cssDeclineCallButton = "[data-uie-name='do-call-controls-call-decline']";
-
-        public static final String cssMuteCallButton = "[data-uie-name='do-call-mute']";
-
-        public static final String xpathMuteCallButtonPressed = "//div[@data-uie-name='do-call-mute'" +
-                " and contains(@class, 'toggled')]";
-
-        public static final String xpathMuteCallButtonNotPressed = "//div[@data-uie-name='do-call-mute'" +
-                " and not(contains(@class, 'toggled'))]";
-
-        // end calling locators
-
         public static final Function<String, String> cssContactListEntryByName = (
                 name) -> String
                 .format("%s div[data-uie-name='item-conversation'][data-uie-value='%s'], %s " +
@@ -151,13 +94,6 @@ public final class WebAppLocators {
                         cssParentContactListItem, name);
 
         public static final String cssSelfProfileAvatar = "[data-uie-name='go-self-profile'] :first-child";
-
-        public static final String xpathOngoingCallListItem = "//div[@data-uie-name='item-call']";
-
-        public static final Function<String, String> xpathOngoingCallListItemWithConvName = (
-                name) -> String.format(
-                "//div[@data-uie-name='item-call' and @data-uie-value='%s']",
-                name);
 
         public static final String xpathContactListEntries = xpathParentContactListItem
                 + "//*[@data-uie-name='item-conversation' or @data-uie-name='item-call']";
@@ -210,6 +146,11 @@ public final class WebAppLocators {
                                 "@data-uie-value='%s']/..//*[@data-uie-name='status-unread']",
                         name);
 
+        public static final Function<String, String> xpathMuteIconByContactName = (
+                name) -> String.format(
+                "//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following::"
+                        + "*[@data-uie-name='status-silence']", name);
+
         // leave warning
         public static final String cssLeaveModal = ".modal-leave";
         public static final String cssLeaveModalCancelButton = ".modal-leave .modal-close";
@@ -233,6 +174,63 @@ public final class WebAppLocators {
 
         // little dot on avatar in accent color
         public static final String cssBadge = ".search-header-badge";
+    }
+
+    public static final class CallPage {
+        public static final String idSelfVideoPreview = "video-element-local";
+
+        public static final Function<String, String> xpathMuteCallButtonByConversationName = (
+                name) -> String
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
+                                + "*/parent::*//*[@data-uie-name='do-call-mute']",
+                        name);
+
+        public static final Function<String, String> xpathVideoButtonByConversationName = (
+                name) -> String
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
+                                + "*/parent::*//*[@data-uie-name='do-video-call']",
+                        name);
+
+        public static final Function<String, String> xpathEndCallButtonByConversationName = (
+                name) -> String
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
+                                + "*/parent::*//*[@data-uie-name='do-call-controls-call-ignore']",
+                        name);
+
+        public static final Function<String, String> xpathUserNameByConversationName = user -> String
+                .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']",
+                        user);
+
+        public static final Function<String, String> xpathOutgoingCallByConversationName = user -> String
+                .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']/following-sibling::span[contains(text(),'Ringing…')]",
+                        user);
+
+        public static final Function<String, String> xpathIncomingCallByConversationName = user -> String
+                .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']/following-sibling::span[contains(text(),'Calling…')]",
+                        user);
+
+        public static final Function<String, String> xpathOngoingCallByConversationName = user -> String
+                .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']/following-sibling::span[contains(text(),':')]",
+                        user);
+
+        public static final Function<String, String> xpathAcceptCallButtonByConversationName = (
+                name) -> String
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
+                                + "*/parent::*//*[@data-uie-name='do-call-controls-call-accept']",
+                        name);
+
+        public static final Function<String, String> xpathDeclineCallButtonByConversationName = (
+                name) -> String
+                .format("//*[@data-uie-name='item-call' and normalize-space()='%s']/parent::" +
+                                "*/parent::*//*[@data-uie-name='do-call-controls-call-decline']",
+                        name);
+
+        public static final Function<String, String> xpathMuteCallButtonPressed = (name) -> String.format("//div[@data-uie-name='do-call-mute'" +
+                " and contains(@class, 'toggled')]", name);
+
+        public static final Function<String, String> xpathMuteCallButtonNotPressed = (name) -> String.format("//div[@data-uie-name='do-call-mute'" +
+                " and not(contains(@class, 'toggled'))]", name);
+
     }
 
     public static final class SettingsPage {

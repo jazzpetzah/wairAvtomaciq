@@ -73,7 +73,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C12104 @staging @video_calling
+  @C12104 @calling_basic @video_calling
   Scenario Outline: Verify ignoring Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -88,7 +88,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C12107 @staging @video_calling
+  @C12107 @calling_basic @video_calling
   Scenario Outline: Verify getting missed call indication when someone called
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -128,7 +128,7 @@ Feature: Video Calling
       | Name      | Contact1  | Contact2  | VideoCallBackend | AudioCallBackend | Timeout |
       | user1Name | user2Name | user3Name | chrome           | autocall         | 60      |
 
-  @C12110 @staging @video_calling
+  @C12110 @calling_basic @video_calling
   Scenario Outline: Verify blocked contact could not get through with a Video call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -142,7 +142,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C28851 @staging @video_calling
+  @C28851 @calling_basic @video_calling
   Scenario Outline: Verify starting video call with action button in Search
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

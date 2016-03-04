@@ -345,7 +345,7 @@ Feature: Conversation View
     When I hover call button
     Then I see correct call button tooltip
     When I type shortcut combination to start a call
-    Then I see the calling bar
+    Then I see the outgoing call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
