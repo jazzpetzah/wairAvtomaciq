@@ -1,6 +1,6 @@
 Feature: Calling_Matrix
 
-  @C5359 @calling_matrix @calling
+  @C5359 @calling_matrix @calling @torun
   Scenario Outline: Verify I can make 1:1 call to <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -24,8 +24,8 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
       | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:44.0        | 60      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 60      |
+#      | user1Email | user1Password | user1Name | user2Name | firefox:44.0        | 60      |
+#      | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 60      |
 
   @C5360 @calling_matrix @calling
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
