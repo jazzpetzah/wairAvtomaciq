@@ -11,7 +11,6 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.log4j.Logger;
@@ -30,19 +29,22 @@ public class CommonUtils {
 
     private static final Random rand = new Random();
 
-    private static final Logger log = ZetaLogger.getLog(CommonUtils.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
 
-    private static final String TCPBLOCK_PREFIX_PATH = "/usr/local/bin/";
-
-    public static boolean executeOsCommandWithTimeout(String[] cmd,
-                                                      long timeoutSeconds) throws Exception {
+    public static boolean executeOsCommandWithTimeout(String[] cmd, long timeoutSeconds) throws Exception {
         Process process = Runtime.getRuntime().exec(cmd);
         log.debug("Process started for cmdline " + Arrays.toString(cmd));
         outputErrorStreamToLog(process.getErrorStream());
         return process.waitFor(timeoutSeconds, TimeUnit.SECONDS);
     }
 
+    /**
+     * Be careful when using this method - it will block forever if the commands stucks and fails to terminate
+     *
+     * @param cmd command arguments array
+     * @return command return code
+     * @throws Exception
+     */
     public static int executeOsXCommand(String[] cmd) throws Exception {
         Process process = Runtime.getRuntime().exec(cmd);
         log.debug("Process started for cmdline " + Arrays.toString(cmd));
@@ -50,14 +52,18 @@ public class CommonUtils {
         return process.waitFor();
     }
 
-    public static String executeOsXCommandWithOutput(String[] cmd)
-            throws Exception {
+    private static final int DEFAULT_COMMAND_TIMEOUT = 60; // seconds
+
+    public static String executeOsXCommandWithOutput(String[] cmd) throws Exception {
+        return executeOsXCommandWithOutput(cmd, DEFAULT_COMMAND_TIMEOUT);
+    }
+
+    public static String executeOsXCommandWithOutput(String[] cmd, int timeoutSeconds) throws Exception {
         Process process = Runtime.getRuntime().exec(cmd);
         log.debug("Process started for cmdline " + Arrays.toString(cmd));
         String output;
         try (InputStream stream = process.getInputStream()) {
-            BufferedReader br = new BufferedReader(
-                    new InputStreamReader(stream));
+            BufferedReader br = new BufferedReader(new InputStreamReader(stream));
             StringBuilder sb = new StringBuilder("\n");
             String s;
             while ((s = br.readLine()) != null) {
@@ -66,7 +72,7 @@ public class CommonUtils {
             output = sb.toString();
         }
         outputErrorStreamToLog(process.getErrorStream());
-        log.debug("Process exited with code " + process.waitFor());
+        process.waitFor(timeoutSeconds, TimeUnit.SECONDS);
         return output;
     }
 
@@ -104,16 +110,14 @@ public class CommonUtils {
         return getValueFromConfig(c, "defaultImagesPath");
     }
 
-    public static String getPictureResultsPathFromConfig(Class<?> c)
-            throws Exception {
+    public static String getPictureResultsPathFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "pictureResultsPath");
     }
 
     private final static Semaphore sem = new Semaphore(1);
     private final static Map<String, Optional<String>> cachedConfig = new HashMap<>();
 
-    private static Optional<String> getValueFromConfigFile(Class<?> c,
-                                                           String key, String resourcePath) throws Exception {
+    private static Optional<String> getValueFromConfigFile(Class<?> c, String key, String resourcePath) throws Exception {
         final String configKey = String.format("%s:%s", resourcePath, key);
         if (cachedConfig.containsKey(configKey)) {
             return cachedConfig.get(configKey);
@@ -127,13 +131,11 @@ public class CommonUtils {
             sem.acquire();
             try {
                 final ClassLoader classLoader = c.getClassLoader();
-                configFileStream = classLoader
-                        .getResourceAsStream(resourcePath);
+                configFileStream = classLoader.getResourceAsStream(resourcePath);
                 Properties p = new Properties();
                 p.load(configFileStream);
                 if (p.containsKey(key)) {
-                    cachedConfig.put(configKey,
-                            Optional.of((String) p.get(key)));
+                    cachedConfig.put(configKey, Optional.of((String) p.get(key)));
                 } else {
                     cachedConfig.put(configKey, Optional.empty());
                 }
@@ -154,41 +156,33 @@ public class CommonUtils {
 
     private static final String PROJECT_CONFIG = "Configuration.cnf";
 
-    public static Optional<String> getOptionalValueFromConfig(Class<?> c,
-                                                              String key) throws Exception {
+    public static Optional<String> getOptionalValueFromConfig(Class<?> c, String key) throws Exception {
         return getValueFromConfigFile(c, key, PROJECT_CONFIG);
     }
 
-    public static String getValueFromConfig(Class<?> c, String key)
-            throws Exception {
+    public static String getValueFromConfig(Class<?> c, String key) throws Exception {
         final Optional<String> value = getValueFromConfigFile(c, key, PROJECT_CONFIG);
         if (value.isPresent()) {
             return value.get();
         } else {
-            throw new RuntimeException(String.format(
-                    "There is no '%s' property in the '%s' configuration file",
-                    key, PROJECT_CONFIG));
+            throw new RuntimeException(
+                    String.format("There is no '%s' property in the '%s' configuration file", key, PROJECT_CONFIG));
         }
     }
 
     private static final String COMMON_CONFIG = "CommonConfiguration.cnf";
 
-    public static Optional<String> getOptionalValueFromCommonConfig(Class<?> c,
-                                                                    String key) throws Exception {
+    public static Optional<String> getOptionalValueFromCommonConfig(Class<?> c, String key) throws Exception {
         return getValueFromConfigFile(c, key, COMMON_CONFIG);
     }
 
-    public static String getValueFromCommonConfig(Class<?> c, String key)
-            throws Exception {
-        final Optional<String> value = getValueFromConfigFile(c, key,
-                COMMON_CONFIG);
+    public static String getValueFromCommonConfig(Class<?> c, String key) throws Exception {
+        final Optional<String> value = getValueFromConfigFile(c, key, COMMON_CONFIG);
         if (value.isPresent()) {
             return value.get();
         } else {
             throw new RuntimeException(
-                    String.format(
-                            "There is no '%s' property in the '%s' common configuration file",
-                            key, COMMON_CONFIG));
+                    String.format("There is no '%s' property in the '%s' common configuration file", key, COMMON_CONFIG));
         }
     }
 
@@ -196,23 +190,19 @@ public class CommonUtils {
         return getValueFromConfig(c, "defaultEmail");
     }
 
-    public static String getDefaultEmailServerFromConfig(Class<?> c)
-            throws Exception {
+    public static String getDefaultEmailServerFromConfig(Class<?> c) throws Exception {
         return getValueFromCommonConfig(c, "defaultEmailServer");
     }
 
-    public static String getDriverTimeoutFromConfig(Class<?> c)
-            throws Exception {
+    public static String getDriverTimeoutFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "driverTimeoutSeconds");
     }
 
-    public static String getDefaultPasswordFromConfig(Class<?> c)
-            throws Exception {
+    public static String getDefaultPasswordFromConfig(Class<?> c) throws Exception {
         return getValueFromCommonConfig(c, "defaultPassword");
     }
 
-    public static String getDefaultBackEndUrlFromConfig(Class<?> c)
-            throws Exception {
+    public static String getDefaultBackEndUrlFromConfig(Class<?> c) throws Exception {
         final String currentBackendType = getBackendType(c);
         switch (currentBackendType.toLowerCase()) {
             case "edge":
@@ -227,13 +217,11 @@ public class CommonUtils {
             case "production":
                 return getValueFromCommonConfig(c, "productionBackendUrl");
             default:
-                throw new RuntimeException(String.format(
-                        "Non supported backend type '%s'", currentBackendType));
+                throw new RuntimeException(String.format("Non supported backend type '%s'", currentBackendType));
         }
     }
 
-    public static String getAndroidAppiumUrlFromConfig(Class<?> c)
-            throws Exception {
+    public static String getAndroidAppiumUrlFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "androidAppiumUrl");
     }
 
@@ -249,8 +237,7 @@ public class CommonUtils {
         return getValueFromConfig(c, "iOSToolsRoot");
     }
 
-    public static String getWebAppApplicationPathFromConfig(Class<?> c)
-            throws Exception {
+    public static String getWebAppApplicationPathFromConfig(Class<?> c) throws Exception {
         String applicationPath = getValueFromConfig(c, "webappApplicationPath");
         if (!applicationPath.equals("")) {
             return applicationPath;
@@ -274,34 +261,32 @@ public class CommonUtils {
                 case "chris":
                     return getValueFromConfig(c, "webappChrisApplicationPath");
                 default:
-                    throw new RuntimeException(String.format(
-                            "Non supported backend type '%s'", currentBackendType));
+                    throw new RuntimeException(String.format("Non supported backend type '%s'", currentBackendType));
             }
         }
     }
 
-    public static String getAndroidApplicationPathFromConfig(Class<?> c)
-            throws Exception {
+    public static String getAndroidApplicationPathFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "androidApplicationPath");
     }
 
-    public static String getIosApplicationPathFromConfig(Class<?> c)
-            throws Exception {
+    public static String getIosApplicationPathFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "iosApplicationPath");
     }
 
-    public static String getAndroidActivityFromConfig(Class<?> c)
-            throws Exception {
+    public static String getAndroidMainActivityFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "activity");
     }
 
-    public static String getAndroidWaitActivitiesFromConfig(Class<?> c)
-            throws Exception {
+    public static String getAndroidLaunchActivityFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "launchActivity");
+    }
+
+    public static String getAndroidWaitActivitiesFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "waitActivities");
     }
 
-    public static String getSimulatorImagesPathFromConfig(Class<?> c)
-            throws Exception {
+    public static String getSimulatorImagesPathFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "iosImagesPath");
     }
 
@@ -335,49 +320,16 @@ public class CommonUtils {
         return getValueFromCommonConfig(c, "jenkinsSuLogin");
     }
 
-    public static Optional<String> getRCNotificationsRecepients(Class<?> c)
-            throws Exception {
+    public static Optional<String> getRCNotificationsRecepients(Class<?> c) throws Exception {
         return getOptionalValueFromConfig(c, "rcNotificationsRecepients");
     }
 
-    public static String getJenkinsSuperUserPassword(Class<?> c)
-            throws Exception {
+    public static String getJenkinsSuperUserPassword(Class<?> c) throws Exception {
         return getValueFromCommonConfig(c, "jenkinsSuPassword");
     }
 
-    public static String getDefaultCallingServiceUrlFromConfig(Class<?> c)
-            throws Exception {
+    public static String getDefaultCallingServiceUrlFromConfig(Class<?> c) throws Exception {
         return getValueFromCommonConfig(c, "defaultCallingServiceUrl");
-    }
-
-    public static void blockTcpForAppName(String appName) throws Exception {
-        final String blockTcpForAppCmd = "echo "
-                + getJenkinsSuperUserPassword(CommonUtils.class) + "| sudo -S "
-                + TCPBLOCK_PREFIX_PATH + "tcpblock -a " + appName;
-        try {
-            executeOsXCommand(new String[]{"/bin/bash", "-c",
-                    blockTcpForAppCmd});
-            log.debug(executeOsXCommandWithOutput(new String[]{"/bin/bash",
-                    "-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g"}));
-        } catch (Exception e) {
-            log.error("TCP connections for " + appName
-                    + " were not blocked. Make sure tcpblock is installed.");
-        }
-    }
-
-    public static void enableTcpForAppName(String appName) throws Exception {
-        final String enableTcpForAppCmd = "echo "
-                + getJenkinsSuperUserPassword(CommonUtils.class) + "| sudo -S "
-                + TCPBLOCK_PREFIX_PATH + "tcpblock -r " + appName;
-        try {
-            executeOsXCommand(new String[]{"/bin/bash", "-c",
-                    enableTcpForAppCmd});
-            log.debug(executeOsXCommandWithOutput(new String[]{"/bin/bash",
-                    "-c", TCPBLOCK_PREFIX_PATH + "tcpblock -g"}));
-        } catch (Exception e) {
-            log.error("TCP connections for " + appName
-                    + " were not enabled. Make sure tcpblock is installed.");
-        }
     }
 
     public static void defineNoHeadlessEnvironment() {
@@ -391,74 +343,60 @@ public class CommonUtils {
         return Base64.encodeBase64String(digest);
     }
 
-    public static String getDefaultEmailListenerServiceHostFromConfig(Class<?> c)
-            throws Exception {
+    public static String getDefaultEmailListenerServiceHostFromConfig(Class<?> c) throws Exception {
         return getValueFromCommonConfig(c, "defaultEmailListenerServiceHost");
     }
 
-    public static String getDefaultEmailListenerServicePortFromConfig(Class<?> c)
-            throws Exception {
+    public static String getDefaultEmailListenerServicePortFromConfig(Class<?> c) throws Exception {
         return getValueFromCommonConfig(c, "defaultEmailListenerServicePort");
     }
 
-    public static boolean getMakeScreenshotsFromConfig(Class<?> c)
-            throws Exception {
+    public static boolean getMakeScreenshotsFromConfig(Class<?> c) throws Exception {
         return Boolean.valueOf(getValueFromCommonConfig(c, "makeScreenshots"));
     }
 
-    public static boolean getMakeScreenshotOnPassedStepsFromConfig(Class<?> c)
-            throws Exception {
-        return Boolean.valueOf(getValueFromCommonConfig(c,
-                "makeScreenshotOnPassedSteps"));
+    public static boolean getMakeScreenshotOnPassedStepsFromConfig(Class<?> c) throws Exception {
+        return Boolean.valueOf(getValueFromCommonConfig(c, "makeScreenshotOnPassedSteps"));
     }
 
     public static boolean getInitNoteIpFromConfig(Class<?> c) throws Exception {
         return Boolean.valueOf(getValueFromCommonConfig(c, "initNodeIp"));
     }
 
-    public static String getTestrailServerUrlFromConfig(Class<?> c)
-            throws Exception {
+    public static String getTestrailServerUrlFromConfig(Class<?> c) throws Exception {
         return getValueFromCommonConfig(c, "testrailServerUrl");
     }
 
-    public static String getTestrailUsernameFromConfig(Class<?> c)
-            throws Exception {
+    public static String getTestrailUsernameFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "testrailUser");
     }
 
-    public static String getTestrailTokenFromConfig(Class<?> c)
-            throws Exception {
+    public static String getTestrailTokenFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "testrailToken");
     }
 
-    public static Optional<String> getTestrailProjectNameFromConfig(Class<?> c)
-            throws Exception {
+    public static Optional<String> getTestrailProjectNameFromConfig(Class<?> c) throws Exception {
         return getOptionalValueFromCommonConfig(c, "testrailProjectName");
     }
 
-    public static Optional<String> getTestrailPlanNameFromConfig(Class<?> c)
-            throws Exception {
+    public static Optional<String> getTestrailPlanNameFromConfig(Class<?> c) throws Exception {
         return getOptionalValueFromCommonConfig(c, "testrailPlanName");
     }
 
-    public static Optional<String> getTestrailRunNameFromConfig(Class<?> c)
-            throws Exception {
+    public static Optional<String> getTestrailRunNameFromConfig(Class<?> c) throws Exception {
         return getOptionalValueFromCommonConfig(c, "testrailRunName");
     }
 
-    public static Optional<String> getTestrailRunConfigNameFromConfig(Class<?> c)
-            throws Exception {
+    public static Optional<String> getTestrailRunConfigNameFromConfig(Class<?> c) throws Exception {
         return getOptionalValueFromCommonConfig(c, "testrailRunConfigName");
     }
 
     public static boolean getSyncIsAutomated(Class<?> c) throws Exception {
-        return getValueFromCommonConfig(c, "syncIsAutomated").toLowerCase()
-                .equals("true");
+        return getValueFromCommonConfig(c, "syncIsAutomated").toLowerCase().equals("true");
     }
 
     public static boolean getSyncIsMuted(Class<?> c) throws Exception {
-        return getValueFromCommonConfig(c, "syncIsMuted").toLowerCase().equals(
-                "true");
+        return getValueFromCommonConfig(c, "syncIsMuted").toLowerCase().equals("true");
     }
 
     public static Optional<String> getAdbPrefixFromConfig(Class<?> c) throws Exception {
@@ -467,18 +405,15 @@ public class CommonUtils {
 
     public static String generateRandomXdigits(int i) {
         Random rand = new Random();
-        long random = (long) (Math.pow(10, i - 1)) * (rand.nextInt(8) + 1)
-                + (long) rand.nextInt((int) (Math.pow(10, i - 1)));
+        long random = (long) (Math.pow(10, i - 1)) * (rand.nextInt(8) + 1) + (long) rand.nextInt((int) (Math.pow(10, i - 1)));
         return Long.toString(Math.abs(random));
     }
 
-    public static String getPlatformVersionFromConfig(Class<?> cls)
-            throws Exception {
+    public static String getPlatformVersionFromConfig(Class<?> cls) throws Exception {
         return getValueFromConfig(cls, "platformVersion");
     }
 
-    public static Optional<String> getIsUseNativeInstrumentsLibFromConfig(
-            Class<?> cls) throws Exception {
+    public static Optional<String> getIsUseNativeInstrumentsLibFromConfig(Class<?> cls) throws Exception {
         return getOptionalValueFromConfig(cls, "useNativeInstrumentsLib");
     }
 
@@ -486,54 +421,62 @@ public class CommonUtils {
         return getValueFromConfig(cls, "appName");
     }
 
+    public static int getCachedOtrDevicesCount(Class<?> cls) throws Exception {
+        return Integer.parseInt(getValueFromCommonConfig(cls, "cachedOtrDevicesCount"));
+    }
+
     public static final int SCREENSHOT_TIMEOUT_SECONDS = 5;
 
-    public static void takeIOSSimulatorScreenshot(String screenshotPath) throws Exception {
-        executeUIShellScript(
-                new String[]{
-                        String.format("mkdir -p $(dirname \"%s\")",
-                                screenshotPath),
-                        String.format("%s/simshot \"%s\"",
-                                getIOSToolsRoot(CommonUtils.class),
-                                screenshotPath)}).get(
-                SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    public static void takeIOSSimulatorScreenshot(File output) throws Exception {
+        executeUIShellScript(new String[]{String.format("mkdir -p $(dirname \"%s\")", output.getCanonicalPath()),
+                String.format("%s/simshot \"%s\"", getIOSToolsRoot(CommonUtils.class), output.getCanonicalPath())})
+                .get(SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
     }
 
-    private static byte[] fixScreenshotOrientation(final byte[] initialScreenshot, SurfaceOrientation currentOrientation)
-            throws IOException {
+    private static BufferedImage fixScreenshotOrientation(final BufferedImage initialScreenshot,
+                                                          SurfaceOrientation currentOrientation) throws IOException {
         if (currentOrientation != SurfaceOrientation.ROTATION_0) {
-            BufferedImage screenshotImage = ImageIO.read(new ByteArrayInputStream(initialScreenshot));
-            screenshotImage = ImageUtil.tilt(screenshotImage, -currentOrientation.getCode() * Math.PI / 2);
-            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(screenshotImage, "png", baos);
-            return baos.toByteArray();
-        } else {
-            return initialScreenshot;
+            return ImageUtil.tilt(initialScreenshot, -currentOrientation.getCode() * Math.PI / 2);
         }
+        return initialScreenshot;
     }
 
-    public static void takeAndroidScreenshot(ZetaAndroidDriver driver, File resultScreenShot) throws Exception {
+    private static final int MAX_PHONE_SCREENSHOT_WIDTH = 480;
+    private static final int MAX_PHONE_SCREENSHOT_HEIGHT = 800;
+    private static final int MAX_TABLET_SCREENSHOT_WIDTH = 1600;
+    private static final int MAX_TABLET_SCREENSHOT_HEIGHT = 900;
+
+
+    public static void takeAndroidScreenshot(ZetaAndroidDriver driver, File resultScreenshot, boolean shouldApplyScale)
+            throws Exception {
         final String pathOnPhone = String.format("/sdcard/%s.png", generateGUID().replace("-", "").substring(0, 8));
-        final String adbCommandsChain = String.format(
-                ADB_PREFIX + "adb shell screencap -p %1$s; " +
-                        ADB_PREFIX + "adb pull %1$s %2$s; " +
-                        ADB_PREFIX + "adb shell rm %1$s",
-                pathOnPhone, resultScreenShot.getCanonicalPath());
+        final String adbCommandsChain = String.format(ADB_PREFIX + "adb shell screencap -p %1$s; " + ADB_PREFIX
+                        + "adb pull %1$s %2$s; " + ADB_PREFIX + "adb shell rm %1$s", pathOnPhone,
+                resultScreenshot.getCanonicalPath());
         Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", adbCommandsChain}).waitFor();
-        byte[] output = FileUtils.readFileToByteArray(resultScreenShot);
-        if (getIsTabletFromConfig(CommonUtils.class)) {
-            SurfaceOrientation currentOrientation;
+        byte[] output = FileUtils.readFileToByteArray(resultScreenshot);
+        final boolean isTablet = getIsTabletFromConfig(CommonUtils.class);
+        BufferedImage resultImg = ImageIO.read(new ByteArrayInputStream(output));
+        if (isTablet) {
+            SurfaceOrientation currentOrientation = SurfaceOrientation.ROTATION_0;
             try {
                 currentOrientation = driver.getSurfaceOrientation();
             } catch (Exception e) {
                 e.printStackTrace();
-                // Use the default value if command failed
-                currentOrientation = SurfaceOrientation.ROTATION_0;
             }
             log.debug(String.format("Current screen orientation value -> %s", currentOrientation.getCode()));
-            output = fixScreenshotOrientation(output, currentOrientation);
-            IOUtils.write(output, new FileOutputStream(resultScreenShot));
+            resultImg = fixScreenshotOrientation(resultImg, currentOrientation);
+            if (shouldApplyScale) {
+                resultImg = ImageUtil.scaleTo(resultImg,
+                        MAX_TABLET_SCREENSHOT_WIDTH, MAX_TABLET_SCREENSHOT_HEIGHT);
+            }
+        } else {
+            if (shouldApplyScale) {
+                resultImg = ImageUtil.scaleTo(resultImg,
+                        MAX_PHONE_SCREENSHOT_WIDTH, MAX_PHONE_SCREENSHOT_HEIGHT);
+            }
         }
+        ImageUtil.storeImage(resultImg, resultScreenshot);
     }
 
     private static class UIScriptExecutionMonitor implements Callable<Void> {
@@ -574,20 +517,15 @@ public class CommonUtils {
         final List<String> scriptContent = new ArrayList<>();
         scriptContent.add("#!/bin/bash");
         Collections.addAll(scriptContent, content);
-        scriptContent.add(String.format("rm -f %s",
-                executionFlag.getCanonicalPath()));
+        scriptContent.add(String.format("rm -f %s", executionFlag.getCanonicalPath()));
 
         try (Writer output = new BufferedWriter(new FileWriter(result))) {
             output.write(String.join("\n", scriptContent));
         }
-        Runtime.getRuntime()
-                .exec(new String[]{"chmod", "u+x", result.getCanonicalPath()})
+        Runtime.getRuntime().exec(new String[]{"chmod", "u+x", result.getCanonicalPath()}).waitFor();
+        Runtime.getRuntime().exec(new String[]{"/usr/bin/open", "-a", "Terminal", result.getCanonicalPath(), "-g"})
                 .waitFor();
-        Runtime.getRuntime()
-                .exec(new String[]{"/usr/bin/open", "-a", "Terminal",
-                        result.getCanonicalPath(), "-g"}).waitFor();
-        return Executors.newSingleThreadExecutor().submit(
-                new UIScriptExecutionMonitor(executionFlag, result));
+        return Executors.newSingleThreadExecutor().submit(new UIScriptExecutionMonitor(executionFlag, result));
     }
 
     public static Future<Void> executeUIAppleScript(String[] content) throws Exception {
@@ -627,8 +565,7 @@ public class CommonUtils {
         final File allVersionsRoot = pluginJar.getParentFile().getParentFile();
         for (String versionRootName : allVersionsRoot.list()) {
             try {
-                final File versionRoot =
-                        new File(allVersionsRoot.getCanonicalPath() + File.separator + versionRootName);
+                final File versionRoot = new File(allVersionsRoot.getCanonicalPath() + File.separator + versionRootName);
                 if (versionRoot.isDirectory() && !versionRoot.getName().equals(pluginJar.getParentFile().getName())) {
                     FileUtils.deleteDirectory(versionRoot);
                 }

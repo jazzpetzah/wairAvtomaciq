@@ -5,6 +5,7 @@ Feature: Bring Your Friends
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    When I see my avatar on top of Contact list
     When I see Bring Your Friends or Invite People button
     And I click Bring Your Friends or Invite People button
     Then I see Invite People popover
@@ -45,11 +46,9 @@ Feature: Bring Your Friends
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
     Given I see Sign In page
-    When I enter email "<Email>"
-    And I enter password "<Password>"
-    And I press Sign In button
-    Then I am signed in properly
-    And I click button to bring friends from Gmail
+    Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
+    When I click button to bring friends from Gmail
     And I see Google login popup
     When I sign up at Google with email <Gmail> and password <GmailPassword>
     Then I see Search is opened

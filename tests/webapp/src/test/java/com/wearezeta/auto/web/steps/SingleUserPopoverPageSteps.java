@@ -2,9 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThan;
@@ -29,7 +27,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import org.apache.log4j.Logger;
-import org.hamcrest.Matcher;
 import org.junit.Assert;
 
 public class SingleUserPopoverPageSteps {
@@ -456,33 +453,40 @@ public class SingleUserPopoverPageSteps {
 				.clickUnblockButton();
 	}
 
+	@Then("^I( do not)? see user verified icon on Single User Profile popover$")
+	public void ISeeUserVerifiedIcon(String doNot) throws Exception {
+		if (doNot == null) {
+			assertThat("No blue shield found", webappPagesCollection.getPage(SingleUserPopoverContainer.class).isUserVerified
+					());
+		} else {
+			assertThat("Blue shield found :(", !webappPagesCollection.getPage(SingleUserPopoverContainer.class).isUserVerified
+					());
+		}
+	}
+
 	@Then("^I see all devices of user (.*) on Single User Profile popover$")
 	public void ISeeADeviceNamed(String userAlias) throws Exception {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
 		List<String> ids = SEBridge.getInstance().getDeviceIds(user);
-		webappPagesCollection.getPage(DeviceDetailPopoverPage.class).waitForDevices();
-		List<String> devices = webappPagesCollection.getPage(DeviceDetailPopoverPage.class).getDeviceIds();
+		webappPagesCollection.getPage(SingleUserPopoverContainer.class).waitForDevices();
+		List<String> devices = webappPagesCollection.getPage(SingleUserPopoverContainer.class).getDeviceIds();
 		assertThat("Device id in list", devices, is(ids));
+	}
+
+	@Then("^I see device (.*) of user (.*) is verified on Single User Profile popover$")
+	public void ISeeADeviceNamed(String deviceName, String userAlias) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
+		String id = SEBridge.getInstance().getDeviceId(user, deviceName);
+		webappPagesCollection.getPage(SingleUserPopoverContainer.class).waitForDevices();
+		List<String> devices = webappPagesCollection.getPage(SingleUserPopoverContainer.class).getVerifiedDeviceIds();
+		assertThat("Device id is in verified devices", devices, hasItem(id));
 	}
 
 	@When("^I click on device (.*) of user (.*) on Single User Profile popover$")
 	public void IClickOnDevice(String deviceName, String userAlias) throws Exception {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
 		String id = SEBridge.getInstance().getDeviceId(user, deviceName);
-		webappPagesCollection.getPage(DeviceDetailPopoverPage.class).clickDevice(id);
+		webappPagesCollection.getPage(SingleUserPopoverContainer.class).clickDevice(id);
 	}
 
-	@When("^I verify id of device (.*) of user (.*) on device detail page of Single User Profile popover$")
-	public void IVerifyDeviceId(String deviceName, String userAlias) throws Exception {
-		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
-		String id = SEBridge.getInstance().getDeviceId(user, deviceName);
-		assertThat(webappPagesCollection.getPage(DeviceDetailPopoverPage.class).getDeviceId(), equalTo(id));
-	}
-
-	@When("^I verify fingerprint of device (.*) of user (.*) on device detail page of Single User Profile popover$")
-	public void IVerifyFingerPrint(String deviceName, String userAlias) throws Exception {
-		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
-		String fingerprint = SEBridge.getInstance().getDeviceFingerprint(user, deviceName);
-		assertThat(webappPagesCollection.getPage(DeviceDetailPopoverPage.class).getFingerPrint(), equalTo(fingerprint));
-	}
 }

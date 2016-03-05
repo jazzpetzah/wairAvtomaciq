@@ -1,33 +1,31 @@
 package com.wearezeta.auto.android.steps;
 
-import com.wearezeta.auto.android.pages.CallingOverlayPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.junit.Assert;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Assert;
+
 public class DialogPageSteps {
+
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
     private DialogPage getDialogPage() throws Exception {
         return pagesCollection.getPage(DialogPage.class);
-    }
-
-    private CallingOverlayPage getCallingOverlayPage() throws Exception {
-        return pagesCollection.getPage(CallingOverlayPage.class);
     }
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -36,7 +34,7 @@ public class DialogPageSteps {
     private static final String LONG_MESSAGE_ALIAS = "LONG_MESSAGE";
 
     private static String expandMessage(String message) {
-        final Map<String, String> specialStrings = new HashMap<String, String>();
+        final Map<String, String> specialStrings = new HashMap<>();
         specialStrings.put(LONG_MESSAGE_ALIAS, ANDROID_LONG_MESSAGE);
         if (specialStrings.containsKey(message)) {
             return specialStrings.get(message);
@@ -46,8 +44,7 @@ public class DialogPageSteps {
     }
 
     /**
-     * Waits for the dialog page to appear This step makes no assertions and
-     * doesn't fail if the dialog page doesn't appear.
+     * Waits for the dialog page to appear This step makes no assertions and doesn't fail if the dialog page doesn't appear.
      *
      * @throws Exception
      * @step. ^I see dialog page$
@@ -56,10 +53,10 @@ public class DialogPageSteps {
     public void WhenISeeDialogPage(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue("The cursor is not visible in the conversation view",
-                getDialogPage().waitForCursorInputVisible());
+                    getDialogPage().waitForCursorInputVisible());
         } else {
             Assert.assertTrue("The cursor in the conversation view is still visible",
-                getDialogPage().waitForCursorInputNotVisible());
+                    getDialogPage().waitForCursorInputNotVisible());
         }
     }
 
@@ -77,8 +74,7 @@ public class DialogPageSteps {
     /**
      * Send message to the chat
      *
-     * @param msg message to type. There are several special shortcuts:
-     * LONG_MESSAGE - to type long message
+     * @param msg message to type. There are several special shortcuts: LONG_MESSAGE - to type long message
      * @throws Exception
      * @step. ^I type the message \"(.*)\" and send it$
      */
@@ -90,8 +86,7 @@ public class DialogPageSteps {
     /**
      * Inputs a custom message and does NOT send it
      *
-     * @param msg message to type. There are several special shortcuts:
-     * LONG_MESSAGE - to type long message
+     * @param msg message to type. There are several special shortcuts: LONG_MESSAGE - to type long message
      * @throws Exception
      * @step. ^I type the message \"(.*)\"$
      */
@@ -123,36 +118,33 @@ public class DialogPageSteps {
     }
 
     /**
-     * Presses the image input button to open the camera or gallery
+     * Press the corresponding button in the input controls
      *
+     * @param btnName button name
      * @throws Exception
-     * @step. ^I press Add Picture button$
+     * @step. ^I tap (Call|Ping|Add Picture|Video Call|Sketch) button$ from input tools$
      */
-    @When("^I press Add Picture button$")
-    public void WhenIPressAddPictureButton() throws Exception {
-        getDialogPage().tapAddPictureBtn();
-    }
-
-    /**
-     * Press on the ping button in the input controls
-     *
-     * @throws Exception
-     * @step. ^I press Ping button$
-     */
-    @When("^I press Ping button$")
-    public void WhenIPressPButton() throws Exception {
-        getDialogPage().tapPingBtn();
-    }
-
-    /**
-     * Press on the call button in the input controls
-     *
-     * @throws Exception
-     * @step. ^I press Call button$
-     */
-    @When("^I press Call button$")
-    public void WhenIPressCallButton() throws Exception {
-        getDialogPage().tapCallBtn();
+    @When("^I tap (Call|Ping|Add Picture|Video Call|Sketch) button from input tools$")
+    public void WhenITapInputToolButton(String btnName) throws Exception {
+        switch (btnName.toLowerCase()) {
+            case "call":
+                getDialogPage().tapCallBtn();
+                break;
+            case "ping":
+                getDialogPage().tapPingBtn();
+                break;
+            case "add picture":
+                getDialogPage().tapAddPictureBtn();
+                break;
+            case "video call":
+                getDialogPage().tapVideoCallBtn();
+                break;
+            case "sketch":
+                getDialogPage().tapSketchBtn();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
+        }
     }
 
     /**
@@ -164,118 +156,6 @@ public class DialogPageSteps {
     @When("^I close input options$")
     public void ICloseInputOptions() throws Exception {
         getDialogPage().closeInputOptions();
-    }
-
-    /**
-     * Press on the sketch button in the input controls
-     *
-     * @throws Exception
-     * @step. ^I press Sketch button$
-     */
-    @When("^I press Sketch button$")
-    public void WhenIPressOnSketchButton() throws Exception {
-        getDialogPage().tapSketchBtn();
-    }
-
-    /**
-     * Press on the mute button in the calling controls
-     *
-     * @throws Exception
-     * @step. ^I press Mute button$
-     */
-    @When("^I press Mute button$")
-    public void WhenIPressMuteButton() throws Exception {
-        getDialogPage().tapMuteBtn();
-    }
-
-    /**
-     * Press on the Speaker button in the calling controls
-     *
-     * @throws Exception
-     * @step. ^I press Speaker button$
-     */
-    @When("^I press Speaker button$")
-    public void WhenIPressSpeakerButton() throws Exception {
-        getDialogPage().tapSpeakerBtn();
-    }
-
-    /**
-     * Press on the Cancel call button in the Calling controls
-     *
-     * @throws Exception
-     * @step. ^I press Cancel call button$
-     */
-    @When("^I press Cancel call button$")
-    public void WhenIPressCancelCallButton() throws Exception {
-        getDialogPage().tapCancelCallBtn();
-    }
-
-    private final Map<String, BufferedImage> savedButtonStates = new HashMap<String, BufferedImage>();
-
-    /**
-     * Takes screenshot of current button state for the further comparison
-     *
-     * @param buttonName the name of the button to take screenshot. Available values:
-     * MUTE, SPEAKER
-     * @throws Exception
-     * @step. ^I remember the current state of (\\w+) button$
-     */
-    @When("^I remember the current state of (\\w+) button$")
-    public void IRememberButtonState(String buttonName) throws Exception {
-        savedButtonStates.put(buttonName, getDialogPage().getCurrentButtonStateScreenshot(buttonName));
-    }
-
-    private static final long BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS = 15000;
-    private static final double BUTTON_STATE_OVERLAP_MAX_SCORE = 0.4d;
-
-    /**
-     * Checks to see if a certain calling button state is changed. Make sure,
-     * that the screenshot of previous state is already taken for this
-     * particular button
-     *
-     * @param buttonName the name of the button to check. Available values: MUTE,
-     * SPEAKER
-     * @throws Exception
-     * @step. ^I see (\\w+) button state is changed$
-     */
-    @Then("^I see (\\w+) button state is changed$")
-    public void ICheckButtonStateIsChanged(String buttonName) throws Exception {
-        if (!savedButtonStates.containsKey(buttonName)) {
-            throw new IllegalStateException(String.format(
-                "Please call the corresponding step to take the screenshot of previous '%s' button state first", buttonName));
-        }
-        final BufferedImage previousStateScreenshot = savedButtonStates.get(buttonName);
-        final long millisecondsStarted = System.currentTimeMillis();
-        double overlapScore;
-        do {
-            final BufferedImage currentStateScreenshot = getDialogPage().getCurrentButtonStateScreenshot(buttonName);
-            overlapScore = ImageUtil.getOverlapScore(currentStateScreenshot, previousStateScreenshot,
-                ImageUtil.RESIZE_TO_MAX_SCORE);
-            if (overlapScore <= BUTTON_STATE_OVERLAP_MAX_SCORE) {
-                return;
-            }
-            Thread.sleep(500);
-        } while (System.currentTimeMillis() - millisecondsStarted <= BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS);
-        throw new AssertionError(String.format(
-            "Button state has not been changed within %s seconds timeout. Current overlap score: %.2f, expected overlap score: <= %.2f",
-            BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS / 1000, overlapScore, BUTTON_STATE_OVERLAP_MAX_SCORE));
-    }
-
-    /**
-     * Checks to see if call overlay is present or not
-     *
-     * @param shouldNotSee is set to null if " do not" part does not exist
-     * @throws Exception
-     * @step. ^I( do not)? see call overlay$
-     */
-    @Then("^I( do not)? see call overlay$")
-    public void WhenISeeCallOverlay(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue("Call overlay not visible", getCallingOverlayPage().waitUntilVisible());
-        } else {
-            Assert.assertTrue("Call overlay is visible, it should have been dismissed",
-                getCallingOverlayPage().waitUntilNotVisible());
-        }
     }
 
     /**
@@ -321,7 +201,7 @@ public class DialogPageSteps {
     @When("^I see Play button on [Yy]outube container$")
     public void ISeePlayButtonOnYoutubeContainer() throws Exception {
         Assert.assertTrue("Youtube Play button is not visible, but it should be",
-            getDialogPage().waitUntilYoutubePlayButtonVisible());
+                getDialogPage().waitUntilYoutubePlayButtonVisible());
     }
 
     /**
@@ -336,8 +216,7 @@ public class DialogPageSteps {
     }
 
     /**
-     * Presses a given button name Not clear which page is returned from a given
-     * action
+     * Presses a given button name Not clear which page is returned from a given action
      *
      * @param buttonName the button to press
      * @throws Exception
@@ -361,7 +240,7 @@ public class DialogPageSteps {
             case "switch camera":
                 if (!getDialogPage().tapSwitchCameraButton()) {
                     throw new PendingException(
-                        "Device under test does not have front camera. " + "Skipping all the further verification...");
+                            "Device under test does not have front camera. " + "Skipping all the further verification...");
                 }
                 break;
             case "sketch image paint":
@@ -373,10 +252,9 @@ public class DialogPageSteps {
     }
 
     /**
-     * Used to check that a ping has been sent Not very clear what this step
-     * does
+     * Used to check that a ping has been sent Not very clear what this step does
      *
-     * @param message
+     * @param message message text
      * @throws Exception
      * @step. ^I see Ping message (.*) in the dialog$
      */
@@ -384,12 +262,11 @@ public class DialogPageSteps {
     public void ThenISeePingMessageInTheDialog(String message) throws Exception {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Ping message '%s' is not visible after the timeout", message),
-            getDialogPage().waitForPingMessageWithText(message));
+                getDialogPage().waitForPingMessageWithText(message));
     }
 
     /**
-     * Checks to see that a message that has been sent appears in the chat
-     * history
+     * Checks to see that a message that has been sent appears in the chat history
      *
      * @throws Exception
      * @step. ^I see my message \"(.*)\" in the dialog$
@@ -397,27 +274,11 @@ public class DialogPageSteps {
     @Then("^I see my message \"(.*)\" in the dialog$")
     public void ThenISeeMyMessageInTheDialog(String msg) throws Exception {
         Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", msg),
-            getDialogPage().waitForMessage(expandMessage(msg)));
+                getDialogPage().waitForMessage(expandMessage(msg)));
     }
 
     /**
-     * Checks to see that an unsent indicator is present next to the particular
-     * message in the chat history
-     *
-     * @throws Exception
-     * @step. ^I see unsent indicator next to the message \"(.*)\" in the
-     * dialog$
-     */
-    @Then("^I see unsent indicator next to the message \"(.*)\" in the dialog$")
-    public void ThenISeeUnsentIndicatorNextToTheMessage(String msg) throws Exception {
-        Assert.assertTrue(
-            String.format("Unsent indicator has not been shown next to the '%s' message in the conversation view", msg),
-            getDialogPage().waitForUnsentIndicator(msg));
-    }
-
-    /**
-     * Checks to see that a photo exists in the chat history. Does not check
-     * which photo though
+     * Checks to see that a photo exists in the chat history. Does not check which photo though
      *
      * @param shouldNotSee equals to null if 'do not' part does not exist
      * @throws Throwable
@@ -429,7 +290,7 @@ public class DialogPageSteps {
             Assert.assertTrue("No new photo is present in the chat", getDialogPage().isImageExists());
         } else {
             Assert.assertTrue("A photo is present in the chat, but it should not be vivible",
-                getDialogPage().isImageInvisible());
+                    getDialogPage().isImageInvisible());
         }
     }
 
@@ -480,8 +341,7 @@ public class DialogPageSteps {
     }
 
     /**
-     * Navigates back to the contact list page using back button (disabled using
-     * a swipe right)
+     * Navigates back to the contact list page using back button (disabled using a swipe right)
      *
      * @throws Exception
      * @step. ^I navigate back from dialog page$
@@ -492,43 +352,27 @@ public class DialogPageSteps {
     }
 
     /**
-     * Checks to see that the "Connected To XYZ" appears at the start of a new
-     * dialog (Should changed step name to "Connected to")
+     * Checks to see that a group chat exists, where the name of the group chat is the list of users
      *
-     * @param contact
-     * @throws Exception
-     * @step. ^I see Connect to (.*) Dialog page$
-     */
-    @Then("^I see Connect to (.*) Dialog page$")
-    public void ThenISeeConnectToDialogPage(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(String.format("The name '%s' is not visible in start chat title", contact),
-            getDialogPage().waitUntilStartChatTitleContains(contact));
-    }
-
-    /**
-     * Checks to see that a group chat exists, where the name of the group chat
-     * is the list of users
-     *
-     * @param participantNameAliases
+     * @param participantNameAliases one or more comma-separated user names/aliases
      * @throws Exception
      * @step. ^I see group chat page with users (.*)$
      */
     @Then("^I see group chat page with users (.*)$")
     public void ThenISeeGroupChatPage(String participantNameAliases) throws Exception {
-        List<String> participantNames = new ArrayList<String>();
+        List<String> participantNames = new ArrayList<>();
         for (String nameAlias : CommonSteps.splitAliases(participantNameAliases)) {
             participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias).getName());
         }
         Assert.assertTrue(String.format("Group chat view with names %s is not visible", participantNames),
-            getDialogPage().isGroupChatDialogContainsNames(participantNames));
+                getDialogPage().isGroupChatDialogContainsNames(participantNames));
     }
 
     /**
      * Used to check that the message "YOU REMOVED XYZ" from group chat appears
      *
-     * @param message
-     * @param contact
+     * @param message the text of the message
+     * @param contact user name/alias
      * @throws Exception
      * @step. ^I see message (.*) contact (.*) on group page$
      */
@@ -537,71 +381,67 @@ public class DialogPageSteps {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         final String expectedMsg = message + " " + contact;
         Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", expectedMsg),
-            getDialogPage().waitForMessage(expectedMsg));
+                getDialogPage().waitForMessage(expectedMsg));
     }
 
     /**
-     * Checks to see that after the group was renamed, the user is informed of
-     * the change in the dialog page
+     * Checks to see that after the group was renamed, the user is informed of the change in the dialog page
      *
      * @param newConversationName the new conversation name to check for
      * @throws Exception
-     * @step. ^I see a message informing me that I renamed the conversation to
-     * (.*)$
+     * @step. ^I see a message informing me that I renamed the conversation to (.*)$
      */
     @Then("^I see a message informing me that I renamed the conversation to (.*)$")
     public void ThenISeeMessageInformingGroupRename(String newConversationName) throws Exception {
         Assert.assertTrue(
-            String.format("The new conversation name '%s' has not been shown in the conversation view", newConversationName),
-            getDialogPage().waitForConversationNameChangedMessage(newConversationName));
+                String.format("The new conversation name '%s' has not been shown in the conversation view", newConversationName),
+                getDialogPage().waitForConversationNameChangedMessage(newConversationName));
     }
 
     /**
      * Checks for verified or non-verified conversation message
      *
      * @param nonVerified weather the message should show verified or non verified conversation
-     * @param userName the user who caused the downgrade of the conversation
+     * @param userName    the user who caused the downgrade of the conversation
      * @throws Exception
      * @step. ^I see a message informing me conversation is (not )?verified(?: caused by user (.*))?$
      */
     @Then("^I see a message informing me conversation is (not )?verified(?: caused by user (.*))?$")
-    public void ThenISeeVerifiedConversationMessage(String nonVerified, String userName)
-            throws Exception {
+    public void ThenISeeVerifiedConversationMessage(String nonVerified, String userName) throws Exception {
         if (nonVerified == null) {
-            Assert.assertTrue(
-                    "The otr verified conversation message has not been shown in the conversation view",
+            Assert.assertTrue("The otr verified conversation message has not been shown in the conversation view",
                     getDialogPage().waitForOtrVerifiedMessage());
+        } else if (userName == null) {
+            Assert.assertTrue("The otr non verified conversation message has been shown in the conversation view",
+                    getDialogPage().waitForOtrNonVerifiedMessage());
         } else {
-            if (userName == null) {
-                Assert.assertTrue(
-                        "The otr non verified conversation message has been shown in the conversation view",
-                        getDialogPage().waitForOtrNonVerifiedMessage());
-            } else {
-                userName = usrMgr.findUserByNameOrNameAlias(userName).getName();
-                Assert.assertTrue(
-                        String.format("The otr non verified conversation message caused by user '%s' has been shown in the conversation view", userName),
-                        getDialogPage().waitForOtrNonVerifiedMessageCausedByUser(userName));
-            }
-            
+            userName = usrMgr.findUserByNameOrNameAlias(userName).getName();
+            Assert.assertTrue(String.format(
+                    "The otr non verified conversation message caused by user '%s' has been shown in the conversation view",
+                    userName), getDialogPage().waitForOtrNonVerifiedMessageCausedByUser(userName));
         }
 
     }
 
     /**
-     * Used once to check that the last message sent is the same as what is
-     * expected
+     * Used once to check that the last message sent is the same as what is expected
      *
-     * @param message
+     * @param message the text of convo message
      * @throws Exception
      * @step. ^Last message is (.*)$
      */
     @Then("^Last message is (.*)$")
     public void ThenLastMessageIs(String message) throws Exception {
         Assert.assertTrue(String.format("The last conversation message is not equal to '%s'", message),
-            getDialogPage().isLastMessageEqualTo(message, 30));
+                getDialogPage().isLastMessageEqualTo(message, 30));
     }
 
-    private BufferedImage previousMediaButtonState = null;
+    private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
+    private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
+
+    private final ElementState mediaButtonState = new ElementState(
+            () -> getDialogPage().getMediaButtonState()
+    );
 
     /**
      * Store the screenshot of current media control button state
@@ -611,38 +451,19 @@ public class DialogPageSteps {
      */
     @When("^I remember the state of PlayPause media item button$")
     public void IRememeberMediaItemButtonState() throws Exception {
-        previousMediaButtonState = getDialogPage().getMediaControlButtonScreenshot();
+        mediaButtonState.remember();
     }
 
-    final static double MAX_OVERLAP_SCORE = 0.97;
-
     /**
-     * Verify the current state of media control button has been changed since
-     * the last snapshot was made
+     * Verify the current state of media control button has been changed since the last snapshot was made
      *
      * @throws Exception
      * @step. ^I verify the state of PlayPause media item button is changed$
      */
     @Then("^I verify the state of PlayPause media item button is changed$")
     public void IVerifyStateOfMediaControlButtonIsChanged() throws Exception {
-        if (previousMediaButtonState == null) {
-            throw new IllegalStateException("Please take a screenshot of previous button state first");
-        }
-        int ntry = 1;
-        double overlapScore = 1.0;
-        do {
-            final BufferedImage currentMediaButtonState = getDialogPage().getMediaControlButtonScreenshot();
-            overlapScore = ImageUtil.getOverlapScore(previousMediaButtonState, currentMediaButtonState,
-                ImageUtil.RESIZE_NORESIZE);
-            if (overlapScore < MAX_OVERLAP_SCORE) {
-                return;
-            }
-            Thread.sleep(1500);
-            ntry++;
-        } while (ntry <= 3);
-        throw new AssertionError(
-            String.format("It seems like the state of media control button has not been changed (%.2f >= %.2f)", overlapScore,
-                MAX_OVERLAP_SCORE));
+        Assert.assertTrue("State of PlayPause media item button has not changed",
+                mediaButtonState.isChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE));
     }
 
     /**
@@ -657,49 +478,13 @@ public class DialogPageSteps {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         final String expectedMessage = contact + " CALLED";
         Assert.assertTrue(String.format("Missed call message '%s' is not visible in the conversation view", expectedMessage),
-            getDialogPage().waitUntilMissedCallMessageIsVisible(expectedMessage));
-    }
-
-    /**
-     * Checks to see if join group call overlay is present or not
-     *
-     * @param shouldNotSee is set to null if " do not" part does not exist
-     * @throws Exception
-     * @step. ^I( do not)? see join group call overlay$
-     */
-    @Then("^I( do not)? see join group call overlay$")
-    public void WhenISeeGroupCallJoinOverlay(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue("Join group call overlay not visible", getCallingOverlayPage().waitUntilGroupCallJoinVisible());
-        } else {
-            Assert.assertTrue("Join group call overlay is visible, it should have been dismissed",
-                getCallingOverlayPage().waitUntilGroupCallJoinNotVisible());
-        }
-    }
-
-    /**
-     * Checks to see if join group call overlay is present or not
-     *
-     * @param name text on the button
-     * @throws Exception
-     * @step. ^I see \"(.*)\" button$
-     */
-    @Then("^I( do not)? see \"(.*)\" button$")
-    public void WhenISeeGroupCallJoinButton(String shouldNotSee, String name) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue(name + " button with not visible in group call overlay",
-                getCallingOverlayPage().waitUntilJoinGroupCallButtonVisible(name));
-        } else {
-            Assert.assertTrue(name + " button with not visible in group call overlay",
-                getCallingOverlayPage().waitUntilJoinGroupCallButtonNotVisible(name));
-        }
+                getDialogPage().waitUntilMissedCallMessageIsVisible(expectedMessage));
     }
 
     private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
 
-    private static enum PictureDestination {
-        DIALOG,
-        PREVIEW;
+    private enum PictureDestination {
+        DIALOG, PREVIEW
     }
 
     /**
@@ -719,22 +504,21 @@ public class DialogPageSteps {
         switch (dst) {
             case DIALOG:
                 avgThreshold = ImageUtil.getAnimationThreshold(getDialogPage()::getRecentPictureScreenshot, maxFrames,
-                    screenshotingDelay);
+                        screenshotingDelay);
                 Assert.assertTrue(String.format("The picture in the conversation view seems to be static (%.2f >= %.2f)",
-                    avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
+                        avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
                 break;
             case PREVIEW:
                 avgThreshold = ImageUtil.getAnimationThreshold(getDialogPage()::getPreviewPictureScreenshot, maxFrames,
-                    screenshotingDelay);
+                        screenshotingDelay);
                 Assert.assertTrue(String.format("The picture in the image preview view seems to be static (%.2f >= %.2f)",
-                    avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
+                        avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
                 break;
         }
     }
 
     /**
-     * Check whether unsent indicator is shown next to a new picture in the
-     * convo view
+     * Check whether unsent indicator is shown next to a new picture in the convo view
      *
      * @throws Exception
      * @step. ^I see unsent indicator next to new picture in the dialog$
@@ -742,7 +526,7 @@ public class DialogPageSteps {
     @Then("^I see unsent indicator next to new picture in the dialog$")
     public void ISeeUnsentIndictatorNextToAPicture() throws Exception {
         Assert.assertTrue("There is no unsent indicator next to a picture in the conversation view",
-            getDialogPage().waitForAPictureWithUnsentIndicator());
+                getDialogPage().waitForAPictureWithUnsentIndicator());
     }
 
     /**
@@ -757,7 +541,13 @@ public class DialogPageSteps {
         Assert.assertEquals("It looks like the conversation has some content", actualValue, 0);
     }
 
-    private BufferedImage previousConvoViewScreenshot = null;
+
+    private static final int CONVO_VIEW_STATE_CHANGE_TIMEOUT = 15;
+    private static final double CONVO_VIEW_MIN_SIMILARITY_SCORE = 0.5;
+
+    private final ElementState conversationViewState = new ElementState(
+            () -> getDialogPage().getConvoViewStateScreenshot()
+    );
 
     /**
      * Store the screenshot of current convo view into internal variable
@@ -767,10 +557,8 @@ public class DialogPageSteps {
      */
     @And("^I remember the conversation view$")
     public void IRememberConvoViewState() throws Exception {
-        previousConvoViewScreenshot = getDialogPage().getConvoViewScreenshot();
+        conversationViewState.remember();
     }
-
-    private final static double MAX_CONVO_VIEW_SIMILARIITY = 0.50;
 
     /**
      * Verify that conversation view is different from what was remembered before
@@ -781,63 +569,99 @@ public class DialogPageSteps {
      */
     @Then("^I see the conversation view is (not )?changed$")
     public void ISeeTheConvoViewISChanged(String shouldNotBeChanged) throws Exception {
-        if (previousConvoViewScreenshot == null) {
-            throw new IllegalStateException("Please remember the previous state of conversation view first");
-        }
-        final BufferedImage currentConvoViewScreenshot = getDialogPage().getConvoViewScreenshot();
-        final double similarity = ImageUtil.getOverlapScore(previousConvoViewScreenshot, currentConvoViewScreenshot,
-            ImageUtil.RESIZE_TO_MAX_SCORE);
         if (shouldNotBeChanged == null) {
-            Assert.assertTrue(
-                String.format("Current state of conversation view is similar to what what was remembered before (%.2f >= %.2f)",
-                    similarity, MAX_CONVO_VIEW_SIMILARIITY),
-                similarity < MAX_CONVO_VIEW_SIMILARIITY);
+            Assert.assertTrue("State of conversation view has not been changed",
+                    conversationViewState.isChanged(CONVO_VIEW_STATE_CHANGE_TIMEOUT, CONVO_VIEW_MIN_SIMILARITY_SCORE));
         } else {
-            Assert.assertTrue(String.format(
-                "Current state of conversation view is different to what what was remembered before (%.2f < %.2f)", similarity,
-                MAX_CONVO_VIEW_SIMILARIITY), similarity >= MAX_CONVO_VIEW_SIMILARIITY);
+            Assert.assertTrue("State of conversation view has been changed",
+                    conversationViewState.isNotChanged(CONVO_VIEW_STATE_CHANGE_TIMEOUT, CONVO_VIEW_MIN_SIMILARITY_SCORE));
         }
     }
 
     /**
      * Verify whether the corresponding message is present in conversation view X times
      *
-     * @param isEncrypted whether the message should be encrypted or not
-     * @param msg the message to check
+     * @param msg   the message to check
      * @param times the expected count of message repetitions in the convo view
      * @throws Exception
-     * @step. ^I see (encrypted|non-encrypted) message (.*) (\d+) times? in the conversation view$
+     * @step. ^I see message (.*) (\\d+) times? in the conversation view$
      */
-    @Then("^I see (encrypted|non-encrypted) message (.*) (\\d+) times? in the conversation view$")
-    public void ISeeMessageXTimes(String isEncrypted, String msg, int times) throws Exception {
-        if (isEncrypted.equals("encrypted")) {
-            Assert.assertTrue(
-                String.format("Encrypted message '%s' is not present in the conversation view %s time(s)", msg, times),
-                getDialogPage().waitForXEncryptedMessages(msg, times));
-        } else {
-            Assert.assertTrue(
-                String.format("Non-encrypted message '%s' is not present in the conversation view %s time(s)", msg, times),
-                getDialogPage().waitForXNonEncryptedMessages(msg, times));
+    @Then("^I see message (.*) (\\d+) times? in the conversation view$")
+    public void ISeeMessageXTimes(String msg, int times) throws Exception {
+        Assert.assertTrue(
+                String.format("Message '%s' is not present in the conversation view %s time(s)", msg, times),
+                getDialogPage().waitForXMessages(msg, times));
+    }
+
+    /**
+     * Verify whether X images are present in conversation view
+     *
+     * @param expectedCount the expected count of images in the convo view
+     * @throws Exception
+     * @step. ^I see (\d+) images? in the conversation view$
+     */
+    @Then("^I see (\\d+) images? in the conversation view$")
+    public void ISeeXImages(int expectedCount) throws Exception {
+        Assert.assertTrue(String.format("There are less then %s images in the conversation view", expectedCount),
+                getDialogPage().waitForXImages(expectedCount));
+    }
+
+
+    private static final int SHIELD_STATE_CHANGE_TIMEOUT = 15;
+    private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
+
+    private final ElementState verifiedConversationShieldState = new ElementState(
+            () -> getDialogPage().getShieldStateScreenshot()
+    );
+
+    private Boolean wasShieldVisible = null;
+
+    /**
+     * Save the state of verified conversation shield into the internal field for the future comparison
+     *
+     * @throws Exception
+     * @step. ^I remember verified conversation shield state$
+     */
+    @And("^I remember verified conversation shield state$")
+    public void IRememberVerifiedConversationShieldState() throws Exception {
+        try {
+            verifiedConversationShieldState.remember();
+            wasShieldVisible = true;
+        } catch (IllegalStateException e) {
+            wasShieldVisible = false;
         }
     }
 
     /**
-     * Verify whether an image is present in conversation view X times
+     * Verify whether verified conversation shield has changed in comparison to the previous state
      *
-     * @param isEncrypted whether the message should be encrypted or not
-     * @param times the expected count of message repetitions in the convo view
      * @throws Exception
-     * @step. ^I see (encrypted|non-encrypted) image (\d+) times? in the conversation view$
+     * @step. ^I see verified conversation shield state has changed$
      */
-    @Then("^I see (encrypted|non-encrypted) image (\\d+) times? in the conversation view$")
-    public void ISeeImageXTimes(String isEncrypted, int times) throws Exception {
-        if (isEncrypted.equals("encrypted")) {
-            Assert.assertTrue(String.format("The encrypted image is not present in the conversation view %s time(s)", times),
-                getDialogPage().waitForXEncryptedImages(times));
-        } else {
-            Assert.assertTrue(
-                String.format("The non-encrypted image is not present in the conversation view %s time(s)", times),
-                getDialogPage().waitForXNonEncryptedImages(times));
+    @Then("^I see verified conversation shield state has changed$")
+    public void ISeeVerifiedConversationShieldStateHasChanged() throws Exception {
+        try {
+            Assert.assertTrue("State of verified conversation shield has not changed",
+                    verifiedConversationShieldState.isChanged(SHIELD_STATE_CHANGE_TIMEOUT,
+                            SHIELD_MIN_SIMILARITY_SCORE));
+        } catch (IllegalStateException e) {
+            if (wasShieldVisible == null || wasShieldVisible) {
+                throw e;
+            }
         }
-    } 
+    }
+
+    /**
+     * Checks to see that an unsent indicator is present next to the particular message in the chat history
+     *
+     * @throws Exception
+     * @param msg the expected conversation message
+     * @step. ^I see unsent indicator next to \"(.*)\" in the conversation view$
+     */
+    @Then("^I see unsent indicator next to \"(.*)\" in the conversation view$")
+    public void ThenISeeUnsentIndicatorNextToTheMessage(String msg) throws Exception {
+        Assert.assertTrue(String.format(
+                "Unsent indicator has not been shown next to the '%s' message in the conversation view", msg),
+                getDialogPage().waitForUnsentIndicator(msg));
+    }
 }

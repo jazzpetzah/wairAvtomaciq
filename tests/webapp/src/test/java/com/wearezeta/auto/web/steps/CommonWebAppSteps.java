@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.steps;
 
-import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
 import java.net.URL;
@@ -65,6 +64,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import org.openqa.selenium.WebDriverException;
+import static org.junit.Assert.assertTrue;
 
 public class CommonWebAppSteps {
 
@@ -160,6 +160,13 @@ public class CommonWebAppSteps {
 
 	@Before("~@performance")
 	public void setUp(Scenario scenario) throws Exception {
+
+        try {
+            SEBridge.getInstance().reset();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 		String platform = WebAppExecutionContext.getPlatform();
 		String osName = WebAppExecutionContext.getOsName();
 		String osVersion = WebAppExecutionContext.getOsVersion();
@@ -410,8 +417,7 @@ public class CommonWebAppSteps {
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
 	public void ThereAreNUsersWhereXIsMeWithoutEmail(int count,
 		String myNameAlias) throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
-			CURRENT_PLATFORM, count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
 	}
 
 	/**
@@ -639,24 +645,24 @@ public class CommonWebAppSteps {
      * @param isEncrypted          whether the message has to be encrypted
      * @param convoType            either 'user' or 'group conversation'
      * @throws Exception
-     * @step. ^Contact (.*) sends? (encrypted )?message (.*)to user (.*)$
+     * @step. ^Contact (.*) sends? (encrypted )?message "?(.*?)"?\s?(?:via device (.*)\s)?to (user|group conversation) (.*)$
      */
-    @When("^Contact (.*) sends? (encrypted )?message (.*)to (user|group conversation) (.*)$")
+    @When("^Contact (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
     public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
-                                              String msg, String convoType, String dstConvoName) throws Exception {
+                                              String msg, String deviceName, String convoType, String dstConvoName) throws Exception {
         final String msgToSend = (msg == null || msg.trim().length() == 0) ?
                 CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
             if (isEncrypted == null) {
                 commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
             } else {
-                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
+                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
             }
         } else {
             if (isEncrypted == null) {
                 commonSteps.UserSentMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
             } else {
-                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
+                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
             }
         }
     }
@@ -952,11 +958,6 @@ public class CommonWebAppSteps {
 
 	@After
 	public void tearDown(Scenario scenario) throws Exception {
-        try {
-            SEBridge.getInstance().reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
 		try {
 			// async calls/waiting instances cleanup

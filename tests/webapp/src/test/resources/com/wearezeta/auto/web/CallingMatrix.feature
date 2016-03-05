@@ -5,7 +5,7 @@ Feature: Calling_Matrix
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -13,13 +13,12 @@ Feature: Calling_Matrix
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar
-    Then I see the calling bar from user <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And I wait for 10 seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
-    And I end the call
-    And I do not see the calling bar
+    And I hang up call with conversation <Contact>
+    Then I do not see the call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
@@ -33,7 +32,7 @@ Feature: Calling_Matrix
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -41,11 +40,11 @@ Feature: Calling_Matrix
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar
+    And I see the ongoing call controls for conversation <Contact>
+    #And I see row of avatars on call controls with user <Contact>
     And I wait for 10 seconds
-    Then I see the calling bar from user <Contact>
-    And I end the call
-    And I do not see the calling bar
+    And I hang up call with conversation <Contact>
+    And I do not see the call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
@@ -56,20 +55,20 @@ Feature: Calling_Matrix
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
-    And <Contact> calls me using <CallBackend>
-    When I accept the incoming call
+    And <Contact> calls me
+    When I accept the call from conversation <Contact>
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
-    And I see the calling bar
-    Then I see the calling bar from user <Contact>
+    Then I see the ongoing call controls for conversation <Contact>
     And I wait for 10 seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
-    And I end the call
-    And I do not see the calling bar
+    And I hang up call with conversation <Contact>
+    And I do not see the call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
@@ -83,17 +82,17 @@ Feature: Calling_Matrix
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
-    And <Contact> calls me using <CallBackend>
-    When I accept the incoming call
+    And <Contact> calls me
+    When I accept the call from conversation <Contact>
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
-    And I see the calling bar
-    Then I see the calling bar from user <Contact>
-    And I end the call
-    And I do not see the calling bar
+    Then I see the ongoing call controls for conversation <Contact>
+    And I hang up call with conversation <Contact>
+    And I do not see the call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend   | Timeout |
@@ -105,7 +104,7 @@ Feature: Calling_Matrix
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact1>,<Contact2> starts instance using <WaitBackend>
     Given <Contact1>,<Contact2> accept next incoming call automatically
     Given <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
@@ -114,17 +113,17 @@ Feature: Calling_Matrix
     When I open conversation with <ChatName1>
     And I call
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar from users <Contact1>,<Contact2>
+    And I see the ongoing call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact1>,<Contact2> verifies to have 2 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
-    And I end the call
-    And I do not see the calling bar
+    And I hang up call with conversation <ChatName1>
+    And I do not see the call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact1>,<Contact2> verifies to have 1 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
     # Stops all waiting instance calls
-    And <Contact1> stops all waiting instances
+    And <Contact1> stops calling
 
 
     Examples: 
@@ -140,7 +139,7 @@ Feature: Calling_Matrix
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact1>,<Contact2> starts instance using <WaitBackend>
     Given <Contact1>,<Contact2> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -148,8 +147,9 @@ Feature: Calling_Matrix
     When I open conversation with <ChatName1>
     And I call
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar from users <Contact1>,<Contact2>
-    And I end the call
+    And I see the ongoing call controls for conversation <ChatName1>
+    When I hang up call with conversation <ChatName1>
+    Then I do not see the call controls for conversation <ChatName1>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend | Timeout |
@@ -161,28 +161,28 @@ Feature: Calling_Matrix
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
-    Given <Contact1> starts waiting instance using <Backend>
+    Given <Contact1>,<Contact2> starts instance using <Backend>
     Given <Contact1> accept next incoming call automatically
     Given <Contact1> verify that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName1>
-    And <Contact2> calls <ChatName1> using <Backend>
+    And <Contact2> calls <ChatName1>
     Then <Contact1> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact2> verify that call status to <ChatName1> is changed to active in <Timeout> seconds
-    When I accept the incoming call
-    And I see the calling bar from users <Contact1>,<Contact2>
+    When I accept the call from conversation <ChatName1>
+    And I see the ongoing call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact1>,<Contact2> verify to have 2 flows
     And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
-    And I end the call
-    And I do not see the calling bar
+    And I hang up call with conversation <ChatName1>
+    And I do not see the call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact1>,<Contact2> verifies to have 1 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
     # Stops all waiting instance calls
-    And <Contact1> stops all waiting instances
+    And <Contact1> stops calling
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend             | Timeout |
@@ -197,28 +197,30 @@ Feature: Calling_Matrix
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
-    Given <Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact2> starts instance using <WaitBackend>
+    Given <Contact1> starts instance using <Backend>
     Given <Contact2> accept next incoming call automatically
     Given <Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName1>
-    And <Contact1> calls <ChatName1> using <Backend>
-    When I accept the incoming call
+    And <Contact1> calls <ChatName1>
+    When I accept the call from conversation <ChatName1>
     Then <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verify that call status to <ChatName1> is changed to active in <Timeout> seconds
-    And I see the calling bar from users <Contact1>,<Contact2>
+    And I see the ongoing call controls for conversation <ChatName1>
+    And I see row of avatars on call controls with users <Contact1>,<Contact2>
     And I wait for 10 seconds
     And <Contact2> verify to have 2 flows
     And <Contact2> verify that all flows have greater than 0 bytes
-    And I end the call
-    And I do not see the calling bar
+    And I hang up call with conversation <ChatName1>
+    And I do not see the call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact2> verifies to have 1 flows
     And <Contact2> verifies that all flows have greater than 0 bytes
     # Stops all autocall instance calls
-    And <Contact1> stops all calls to <ChatName1>
+    And <Contact1> stops calling <ChatName1>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend         | Timeout |
@@ -233,21 +235,22 @@ Feature: Calling_Matrix
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
-    Given <Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact1> starts instance using <Backend>
+    Given <Contact2> starts instance using <WaitBackend>
     Given <Contact2> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName1>
-    And <Contact1> calls <ChatName1> using <Backend>
+    And <Contact1> calls <ChatName1>
     When I accept the incoming call
     Then <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verify that call status to <ChatName1> is changed to active in <Timeout> seconds
-    And I see the calling bar from users <Contact1>,<Contact2>
-    And I end the call
-    And I do not see the calling bar
+    And I see the ongoing call controls for conversation <ChatName1>
+    And I hang up call with conversation <ChatName1>
+    Then I do not see the call controls for conversation <ChatName1>
     # Stops all autocall instance calls
-    And <Contact1> stops all calls to <ChatName1>
+    And <Contact1> stops calling <ChatName1>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend | Timeout |

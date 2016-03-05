@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import io.appium.java_client.MobileBy;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.openqa.selenium.By;
 
@@ -16,17 +17,18 @@ import org.openqa.selenium.WebElement;
 
 public class IOSKeyboard extends BasePage {
     private static final KeyboardState UNKNOWN_STATE = new KeyboardStateUnknown();
-    private static final String xpathStrKeyboardLocator = "//UIAKeyboard";
-    private static By xpathKeyboardLocator = By.xpath(xpathStrKeyboardLocator);
-    private static final By xpathCommitKeyLocator =
-            By.xpath(xpathStrKeyboardLocator +
+    private static final String xpathStrKeyboard = "//UIAKeyboard";
+    private static By classNameKeyboard = By.className("UIAKeyboard");
+    private static final By xpathCommitKey = By.xpath(xpathStrKeyboard +
                     "//*[@name='Go' or @name='Send' or @name='Done' or @name='return' or @name='Return']");
 
-    private static final By nameSpaceButton = By.name("space");
+    private static final By nameSpaceButton = MobileBy.AccessibilityId("space");
 
-    private static final By nameHideKeyboardButton = By.name("Hide keyboard");
+    private static final By nameHideKeyboardButton = MobileBy.AccessibilityId("Hide keyboard");
 
-    private static final By nameKeyboardDeleteButton = By.name("delete");
+    private static final By nameKeyboardDeleteButton = MobileBy.AccessibilityId("delete");
+
+    private static final int DEFAULT_VISIBILITY_TIMEOUT = 5; //seconds
 
     private KeyboardState getFinalState(List<KeyboardState> statesList, char c) throws Exception {
         String messageChar = "" + c;
@@ -48,8 +50,12 @@ public class IOSKeyboard extends BasePage {
         return (ZetaIOSDriver) super.getDriver();
     }
 
+    public boolean isVisible(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classNameKeyboard, timeoutSeconds);
+    }
+
     public boolean isVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathKeyboardLocator, 3);
+        return isVisible(DEFAULT_VISIBILITY_TIMEOUT);
     }
 
     public void pressSpaceButton() throws Exception {
@@ -65,7 +71,7 @@ public class IOSKeyboard extends BasePage {
     }
 
     public void pressCommitButton() throws Exception {
-        getElement(xpathCommitKeyLocator).click();
+        getElement(xpathCommitKey, "Keyboard commit key is not visible", 15).click();
     }
 
     private KeyboardState getInitialState(List<KeyboardState> statesList) throws Exception {
@@ -87,7 +93,7 @@ public class IOSKeyboard extends BasePage {
     }
 
     public void typeString(String message) throws Exception {
-        final WebElement keyboard = DriverUtils.verifyPresence(getDriver(), xpathKeyboardLocator);
+        final WebElement keyboard = DriverUtils.verifyPresence(getDriver(), classNameKeyboard);
 
         final KeyboardStateAlpha keyboardStateAlpha = new KeyboardStateAlpha(getDriver(), keyboard);
         final KeyboardStateAlphaCaps keyboardStateAlphaCaps = new KeyboardStateAlphaCaps(getDriver(), keyboard);
@@ -112,16 +118,16 @@ public class IOSKeyboard extends BasePage {
             By keyLocator;
             switch (messageChar) {
                 case "\n":
-                    keyLocator = xpathCommitKeyLocator;
+                    keyLocator = xpathCommitKey;
                     break;
                 case " ":
-                    keyLocator = By.name("space");
+                    keyLocator = MobileBy.AccessibilityId("space");
                     break;
                 case "&":
-                    keyLocator = By.name("ampersand");
+                    keyLocator = MobileBy.AccessibilityId("ampersand");
                     break;
                 default:
-                    keyLocator = By.name(StringEscapeUtils.escapeXml11(messageChar));
+                    keyLocator = MobileBy.AccessibilityId(StringEscapeUtils.escapeXml11(messageChar));
                     break;
             }
             keyboard.findElement(keyLocator).click();

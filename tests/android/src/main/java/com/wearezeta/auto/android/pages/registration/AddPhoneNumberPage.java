@@ -24,7 +24,7 @@ public class AddPhoneNumberPage extends AndroidPage {
 		super(lazyDriver);
 	}
 	
-	public void notNowButtonClick() throws Exception {
+	public void tapNotNowButton() throws Exception {
 		getElement(idNotNowButton).click();
 	}
 

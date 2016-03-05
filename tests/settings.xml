@@ -1,32 +1,24 @@
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                       http://maven.apache.org/xsd/settings-1.0.0.xsd">
-  <localRepository/>
-  <interactiveMode/>
-  <usePluginRegistry/>
-  <offline/>
-  <pluginGroups/>
-  <servers/>
-  <mirrors/>
-  <proxies/>
+    <localRepository/>
+    <interactiveMode/>
+    <usePluginRegistry/>
+    <offline/>
+    <pluginGroups/>
+    <servers/>
+    <mirrors/>
+    <proxies/>
     <profiles>
-    <!-- Config for common -->
-        <profile>
-            <id>common</id>
-            <properties>
-                <!-- <defaultCallingServiceHost>192.168.10.44</defaultCallingServiceHost> -->
-            <defaultCallingServicePort>29443</defaultCallingServicePort>
-            </properties>
-        </profile>
-    <!-- Config for Webapp tests -->
+        <!-- Config for Webapp tests -->
         <profile>
             <id>WebApp</id>
             <properties>
                 <com.wire.os.name>mac</com.wire.os.name>
                 <com.wire.os.version></com.wire.os.version>
-                <com.wire.browser.name>firefox</com.wire.browser.name>
-                <com.wire.browser.version>43.0</com.wire.browser.version>
+                <com.wire.browser.name>chrome</com.wire.browser.name>
+                <com.wire.browser.version>48.0</com.wire.browser.version>
                 <backendType>gregor</backendType>
                 <hubHost>127.0.0.1</hubHost>
                 <hubPort>4444</hubPort>
@@ -36,87 +28,32 @@
                 <extendedLoggingLevel>ALL</extendedLoggingLevel>
             </properties>
         </profile>
-    <!-- Config for iOS tests -->
-    <profile>
-      <id>iOS</id>
-      <properties>
-        <Root>/Users/shiznyak/zautomation/tests/tools/</Root>
-        <Url>http://127.0.0.1:4723/wd/hub</Url>
-        <appPath>/Users/shiznyak/Downloads/ZClient.app</appPath>
-        <isSimulator>true</isSimulator>
-        <generateUsers>true</generateUsers>
-        <swipeScriptPath>swipeInWindow</swipeScriptPath> <!-- no need to change -->
-        <pathToUserpic>img/Media</pathToUserpic> <!-- no need to change -->
-        <driverTimeoutSeconds>10</driverTimeoutSeconds>
-        <pictureResultsPath>/Users/shiznyak/Downloads/</pictureResultsPath>
-        <iosImagesPath>img/</iosImagesPath> <!-- no need to change -->
-      </properties>
-    </profile>
-    <!-- Config for Android tests -->
-    <profile>
-      <id>Android</id>
-      <properties>
-        <Root>/Users/shiznyak/zautomation/tests/tools/</Root>
-        <Url>http://127.0.0.1:4723/wd/hub</Url>
-        <appPath>/Users/shiznyak/Downloads/zclient-release.apk</appPath>
-        <package>com.waz.zclient</package>
-        <generateUsers>true</generateUsers>
-        <activity>.MainActivity</activity>
-        <driverTimeoutSeconds>10</driverTimeoutSeconds>
-        <pictureResultsPath>/Users/shiznyak/Downloads/</pictureResultsPath>
-        <resultImage>img/userpicture_mobile_check.jpg</resultImage> <!-- no need to change -->
-      </properties>
-    </profile>
-    <!-- Config for OSX tests -->
-    <profile>
-      <id>OSX</id>
-      <properties>
-        <Url>http://127.0.0.1:4723/wd/hub</Url>
-        <appPath>ZClient</appPath>
-        <generateUsers>true</generateUsers>
-        <driverTimeoutSeconds>10</driverTimeoutSeconds>
-        <pictureResultsPath>/Users/kaleksandrov/ZETA_Run_Screens/</pictureResultsPath>
-      </properties>
-    </profile>
-    <!-- Config for Sync Engine tests -->
-    <profile>
-      <id>SyncEngine</id>
-      <properties>
-        <driverTimeoutSeconds>10</driverTimeoutSeconds>
-        <defaultEmail>smoketester@wearezeta.com</defaultEmail>
-        <pictureResultsPath>/Users/kaleksandrov/pictureResultsPath/</pictureResultsPath>
-        <!-- Acceptance Config -->
-        <acceptance.messages.count>2</acceptance.messages.count>
-        <acceptance.sending.timeout.sec>5</acceptance.sending.timeout.sec>
-        <acceptance.max.send.interval.sec>2</acceptance.max.send.interval.sec>
-        <!-- Common Config -->
-        <common.generate.users>true</common.generate.users>
-        <common.same.user>false</common.same.user>
-        <!-- OSX Config -->
-        <osx.client.enabled>true</osx.client.enabled>
-        <osx.backend.sender>true</osx.backend.sender>
-        <osxAppiumUrl>http://127.0.0.1:4622/wd/hub/</osxAppiumUrl>
-        <osxApplicationPath>ZClient+1086</osxApplicationPath>
-        <!-- Android Config -->
-        <android.client.enabled>true</android.client.enabled>
-        <android.backend.sender>true</android.backend.sender>
-        <androidAppiumUrl>http://127.0.0.1:4824/wd/hub</androidAppiumUrl>
-        <androidApplicationPath>/Users/kaleksandrov/ZClient+2308.apk</androidApplicationPath>
-        <package>com.waz.zclient.dev</package>
-        <activity>com.waz.zclient.MainActivity</activity>
-        <resultImage>/Users/kaleksandrov/results/</resultImage>
-        <defaultImagesPath>/Users/kaleksandrov/zautomation/tests/tools/img/</defaultImagesPath>
-        <!-- IOS Config -->
-        <ios.client.enabled>true</ios.client.enabled>
-        <ios.backend.sender>true</ios.backend.sender>
-        <iosAppiumUrl>http://127.0.0.1:4723/wd/hub</iosAppiumUrl>
-        <iosApplicationPath>/Users/kaleksandrov/ZClient+992.app</iosApplicationPath>
-        <isSimulator>true</isSimulator>
-        <swipeScriptPath>/Users/kaleksandrov/zautomation/tests/tools/./swipeInWindow</swipeScriptPath>
-        <pathToUserpic>/Users/kaleksandrov/zautomation/tests/tools/img/userpicture_portrait.jpg</pathToUserpic>
-        <iosImagesPath>/Users/kaleksandrov/Images/</iosImagesPath>
-      </properties>
-    </profile>
-   </profiles>
-  <activeProfiles/>
+        <!-- Config for iOS/Tablet tests -->
+        <profile>
+            <id>iOS</id>
+            <properties>
+                <appPath>/Users/elf/Downloads/Wire-development-simulator-3377.ipa</appPath>
+                <platformVersion>9.2</platformVersion>
+                <useNativeInstrumentsLib>false</useNativeInstrumentsLib>
+            </properties>
+        </profile>
+        <!-- Config for Android/Tablet tests -->
+        <profile>
+            <id>Android</id>
+            <properties>
+                <appPath>/Users/elf/Downloads/4164.apk</appPath>
+                <!--package>com.wire.candidate</package-->
+                <androidVersion>50</androidVersion>
+            </properties>
+        </profile>
+        <!-- Config for Common library -->
+        <profile>
+            <id>Common</id>
+            <properties>
+                <makeScreenshots>false</makeScreenshots>
+                <defaultCallingServicePort>29443</defaultCallingServicePort>
+            </properties>
+        </profile>
+    </profiles>
+    <activeProfiles/>
 </settings>

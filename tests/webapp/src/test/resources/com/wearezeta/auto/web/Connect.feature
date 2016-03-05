@@ -125,6 +125,8 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Name2> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -136,6 +138,8 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
@@ -166,6 +170,8 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Name2> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -177,6 +183,8 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
@@ -232,10 +240,23 @@ Feature: Connect
   @C1696 @regression
   Scenario Outline: Verify you still receive messages from blocked person in a group chat
     Given There are 3 users where <Name> is me
+    Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
+    Given I Sign in using login <Login2> and password <Password2>
+    Given I am signed in properly
+    Given I see Welcome page
+    Given I confirm keeping picture on Welcome page
+    Given I see Contact list with name <ChatName>
+    Given I open self profile
+    Given I click gear button on self profile page
+    Given I select Log out menu item on self profile page
+    Given I see the clear data dialog
+    Given I click Logout button on clear data dialog
+    Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
     And I see my avatar on top of Contact list
     When I open conversation with <Contact1>
     And I click People button in one to one conversation
@@ -249,10 +270,12 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     Then I see random message in conversation
     And I write random message
@@ -260,6 +283,8 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
     And User <Name> is me
@@ -274,20 +299,31 @@ Feature: Connect
   Scenario Outline: Verify you dont receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <User1> is me
     Given Myself is connected to <User2>
-    Given User <User2> sends message <Msg1> to conversation <User1>
+    Given User <User2> changes avatar picture to default
     Given I switch to Sign In page
+    Given I Sign in using login <User2Email> and password <User2Password>
+    Given I am signed in properly
+    Given I open self profile
+    Given I click gear button on self profile page
+    Given I select Log out menu item on self profile page
+    Given I see the clear data dialog
+    Given I click Logout button on clear data dialog
+    Given I see Sign In page
     Given I Sign in using login <User1> and password <User1Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <User2>
+    And Contact <User2> sends encrypted message <Msg1> to user <User1>
     Then I see text message <Msg1>
     And <User1> blocked <User2>
     And Contact <User2> sends image <Picture2> to single user conversation <User1>
     And User <User2> pinged in the conversation with <User1>
-    And User <User2> sends message <Msg2> to conversation <User1>
+    And Contact <User2> sends encrypted message <Msg2> to user <User1>
     And I do not see Contact list with name <Name>
     When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <User2> is me
     And I Sign in using login <User2Email> and password <User2Password>
     Then I see my avatar on top of Contact list
@@ -296,6 +332,8 @@ Feature: Connect
     When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And <User1> unblocks user <User2>
     And User <User1> is me
     And I Sign in using login <User1Email> and password <User1Password>
@@ -421,6 +459,8 @@ Feature: Connect
     When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Contact1> is me
     And I Sign in using login <Contact1Email> and password <Contact1Password>
     Then I see my avatar on top of Contact list

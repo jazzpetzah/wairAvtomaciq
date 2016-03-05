@@ -26,6 +26,8 @@ Feature: Menus
     And I click close settings page button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I click gear button on self profile page
@@ -37,6 +39,8 @@ Feature: Menus
     And I click close settings page button
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I click gear button on self profile page

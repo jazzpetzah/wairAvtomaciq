@@ -6,6 +6,7 @@ import java.util.function.Function;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DummyElement;
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -17,38 +18,37 @@ public class PeoplePickerPage extends IOSPage {
     private static final By xpathPickerClearButton =
             By.xpath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
 
-    private static final By nameKeyboardEnterButton = By.name("Return");
+    private static final By nameKeyboardEnterButton = MobileBy.AccessibilityId("Return");
 
-    private static final By nameCreateConversationButton = By.name("CREATE");
+    private static final By nameCreateConversationButton = MobileBy.AccessibilityId("CREATE");
 
-    private static final By namePeoplePickerTopPeopleLabel = By.name("TOP PEOPLE");
+    private static final By namePeoplePickerTopPeopleLabel = MobileBy.AccessibilityId("TOP PEOPLE");
 
-    private static final By namePeoplePickerAddToConversationButton = By.name("ADD TO CONVERSATION");
+    private static final By namePeoplePickerAddToConversationButton = MobileBy.AccessibilityId("ADD TO CONVERSATION");
 
-    private static final By nameShareButton = By.name("SHARE CONTACTS");
+    private static final By nameContinueUploadButton = MobileBy.AccessibilityId("SHARE CONTACTS");
 
-    private static final By nameContinueUploadButton = By.name("SHARE CONTACTS");
+    private static final By namePeopleYouMayKnowLabel = MobileBy.AccessibilityId("CONNECT");
 
-    private static final By namePeopleYouMayKnowLabel = By.name("CONNECT");
+    private static final By nameUnblockButton = MobileBy.AccessibilityId("UNBLOCK");
 
-    private static final By nameUnblockButton = By.name("UNBLOCK");
-
-    private static final By xpathPeoplePickerAllTopPeople = By.xpath(
-            xpathStrMainWindow + "/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell");
+    private static final By xpathSelectedTopPeople =
+            By.xpath("//UIACollectionCell/UIACollectionView/UIACollectionCell[@value='1']");
 
     public static final By xpathInviteCopyButton = By.xpath("//UIACollectionCell[@name='Copy']");
 
-    private static final By nameSendAnInviteButton = By.name("INVITE MORE PEOPLE");
+    private static final By nameSendAnInviteButton = MobileBy.AccessibilityId("INVITE MORE PEOPLE");
 
-    private static final By nameInstantConnectButton = By.name("instantPlusConnectButton");
+    private static final Function<String, String> xpathStrInstantConnectButtonByUserName = name -> String.format(
+            "//UIACollectionCell[ ./UIAStaticText[@name='%s'] ]/UIAButton[@name='instantPlusConnectButton']", name);
 
-    private static final By nameLaterButton = By.name("MAYBE LATER");
+    private static final By nameLaterButton = MobileBy.AccessibilityId("MAYBE LATER");
 
-    private static final By nameOpenConversationButton = By.name("OPEN");
+    private static final By nameOpenConversationButton = MobileBy.AccessibilityId("OPEN");
 
-    private static final By nameCallButton = By.name("actionBarCallButton");
+    private static final By nameCallButton = MobileBy.AccessibilityId("actionBarCallButton");
 
-    private static final By nameSendImageButton = By.name("actionBarCameraButton");
+    private static final By nameSendImageButton = MobileBy.AccessibilityId("actionBarCameraButton");
 
     private static final By xpathContactViewCloseButton =
             By.xpath("//*[@name='ContactsViewCloseButton' and @visible='true']");
@@ -68,6 +68,10 @@ public class PeoplePickerPage extends IOSPage {
                     "%s/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]/UIAStaticText[last()]",
                     xpathStrMainWindow, idx);
 
+    private static final By nameNoResults = MobileBy.AccessibilityId("No results.");
+
+    private static final By nameVideoCallButton = MobileBy.AccessibilityId("actionBarVideoCallButton");
+
     public PeoplePickerPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -81,8 +85,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void tapOnPeoplePickerSearch() throws Exception {
-        final Point location = getElement(xpathPickerSearch).getLocation();
-        this.getDriver().tap(1, location.x + 40, location.y + 30, DriverUtils.SINGLE_TAP_DURATION);
+        getElement(xpathPickerSearch).click();
     }
 
     public void tapOnPeoplePickerClearBtn() throws Exception {
@@ -92,7 +95,7 @@ public class PeoplePickerPage extends IOSPage {
     public void fillTextInPeoplePickerSearch(String text) throws Exception {
         final WebElement searchInput = getElement(xpathPickerSearch);
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass()) && text.matches(".*\\W+.*")) {
-            inputStringFromKeyboardAndCommit(searchInput, text, true);
+            inputStringFromKeyboard(searchInput, text + " ", true, true);
         } else {
             searchInput.sendKeys(text + " ");
         }
@@ -105,7 +108,7 @@ public class PeoplePickerPage extends IOSPage {
 
     public boolean isElementNotFoundInSearch(String name) throws Exception {
         final By locator = By.xpath(xpathStrFoundContactByName.apply(name));
-        return getElementIfDisplayed(locator, 2).isPresent();
+        return !DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 2);
     }
 
     public void selectElementInSearchResults(String name) throws Exception {
@@ -133,14 +136,6 @@ public class PeoplePickerPage extends IOSPage {
         }
     }
 
-    public boolean isCreateConversationButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameCreateConversationButton);
-    }
-
-    public void clickCreateConversationButton() throws Throwable {
-        getElement(nameCreateConversationButton).click();
-    }
-
     public boolean isTopPeopleLabelVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), namePeoplePickerTopPeopleLabel, 2);
     }
@@ -160,10 +155,6 @@ public class PeoplePickerPage extends IOSPage {
 
     public void clickAddToConversationButton() throws Exception {
         getElement(namePeoplePickerAddToConversationButton).click();
-    }
-
-    public boolean isUploadDialogShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameShareButton, 2);
     }
 
     public void clickContinueButton() throws Exception {
@@ -187,8 +178,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public int getNumberOfSelectedTopPeople() throws Exception {
-        return (int) getElements(xpathPeoplePickerAllTopPeople).stream().filter(
-                x -> x.getAttribute("value").equals("1")).count();
+        return getElements(xpathSelectedTopPeople).size();
     }
 
     public void tapSendInviteButton() throws Exception {
@@ -196,11 +186,16 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void tapSendInviteCopyButton() throws Exception {
-        getElement(xpathInviteCopyButton).click();
+        final WebElement copyButton = getElement(xpathInviteCopyButton);
+        copyButton.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathInviteCopyButton)) {
+            copyButton.click();
+        }
     }
 
-    public void pressInstantConnectButton() throws Exception {
-        getElement(nameInstantConnectButton).click();
+    public void pressInstantConnectButton(String forName) throws Exception {
+        final By locator = By.xpath(xpathStrInstantConnectButtonByUserName.apply(forName));
+        getElement(locator).click();
     }
 
     public void tapNumberOfTopConnectionsButNotUser(int numberToTap, String contact) throws Exception {
@@ -220,35 +215,44 @@ public class PeoplePickerPage extends IOSPage {
         getElement(locator).click();
     }
 
-    public boolean isOpenConversationButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameOpenConversationButton);
-    }
-
-    public void clickOpenConversationButton() throws Exception {
-        getElement(nameOpenConversationButton, "Open conversation button is not visible").click();
-    }
-
-    public boolean isCallButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCallButton);
-    }
-
-    public void clickCallButton() throws Exception {
-        getElement(nameCallButton, "Call button is not visible").click();
-    }
-
-    public boolean isSendImageButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSendImageButton);
-    }
-
-    public void clickSendImageButton() throws Exception {
-        getElement(nameSendImageButton, "Send image button is not visible").click();
-    }
-
     public void closeInviteList() throws Exception {
         getElement(xpathContactViewCloseButton).click();
     }
 
     public boolean isPeopleYouMayKnowLabelInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), namePeopleYouMayKnowLabel);
+    }
+
+    public boolean waitUntilNoResultsLabelIsVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameNoResults);
+    }
+
+    private By getActionButtonByName(String name) {
+        switch (name) {
+            case "Create conversation":
+                return nameCreateConversationButton;
+            case "Open conversation":
+                return nameOpenConversationButton;
+            case "Video call":
+                return nameVideoCallButton;
+            case "Call":
+                return nameCallButton;
+            case "Send image":
+                return nameSendImageButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown action button name: '%s'", name));
+        }
+    }
+
+    public void clickActionButton(String actionButtonName) throws Exception {
+        getElement(getActionButtonByName(actionButtonName)).click();
+    }
+
+    public boolean isActionButtonVisible(String actionButtonName) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getActionButtonByName(actionButtonName));
+    }
+
+    public boolean isActionButtonInvisible(String actionButtonName) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), getActionButtonByName(actionButtonName));
     }
 }

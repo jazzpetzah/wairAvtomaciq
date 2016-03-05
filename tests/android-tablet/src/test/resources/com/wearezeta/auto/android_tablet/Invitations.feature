@@ -9,7 +9,7 @@ Feature: Invitations
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
-    When I tap Invite button at the bottom of conversations list
+    When I open Search UI
     Then I do not see <Contact> in the invites list
 
     Examples:

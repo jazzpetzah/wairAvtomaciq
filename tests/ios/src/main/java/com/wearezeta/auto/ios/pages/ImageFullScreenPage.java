@@ -3,24 +3,26 @@ package com.wearezeta.auto.ios.pages;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import org.openqa.selenium.WebElement;
 
 public class ImageFullScreenPage extends IOSPage {
-    private static final By nameImageFullScreenPage = By.name("fullScreenPage");
+    private static final By nameImageFullScreenPage = MobileBy.AccessibilityId("fullScreenPage");
 
-    private static final By nameFullScreenCloseButton = By.name("fullScreenCloseButton");
+    private static final By nameFullScreenCloseButton = MobileBy.AccessibilityId("fullScreenCloseButton");
 
-    private static final By nameFullScreenDownloadButton = By.name("fullScreenDownloadButton");
+    private static final By nameFullScreenDownloadButton = MobileBy.AccessibilityId("fullScreenDownloadButton");
 
     private static final Function<String, String> xpathStrFullScreenSenderByName = name ->
             String.format("//*[@name='fullScreenSenderName' and contains(@value, '%s')]", name);
 
-    private static final By nameFullScreenTimeStamp = By.name("fullScreenTimeStamp");
+    private static final By nameFullScreenTimeStamp = MobileBy.AccessibilityId("fullScreenTimeStamp");
 
-    private static final By nameFullScreenSketchButton = By.name("sketchButton");
+    private static final By nameFullScreenSketchButton = MobileBy.AccessibilityId("sketchButton");
 
     public ImageFullScreenPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {
@@ -32,7 +34,11 @@ public class ImageFullScreenPage extends IOSPage {
     }
 
     public void clickCloseButton() throws Exception {
-        getElement(nameFullScreenCloseButton, "Close button is not present in the view").click();
+        final WebElement closeBtn = getElement(nameFullScreenCloseButton);
+        closeBtn.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameFullScreenCloseButton)) {
+            closeBtn.click();
+        }
     }
 
     public boolean isDownloadButtonVisible() throws Exception {
@@ -52,10 +58,6 @@ public class ImageFullScreenPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isSentTimeVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFullScreenTimeStamp);
-    }
-
     public String getTimeStamp() throws Exception {
         return getElement(nameFullScreenTimeStamp).getText();
     }
@@ -64,4 +66,11 @@ public class ImageFullScreenPage extends IOSPage {
         getElement(nameFullScreenSketchButton).click();
     }
 
+    public boolean isDownloadButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameFullScreenDownloadButton);
+    }
+
+    public boolean isSentTimeInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameFullScreenTimeStamp);
+    }
 }

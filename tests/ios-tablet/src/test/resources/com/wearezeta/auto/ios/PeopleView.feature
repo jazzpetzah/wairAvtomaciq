@@ -1,13 +1,12 @@
 Feature: People View
 
-  @C2779 @regression @rc @id600
+  @C2779 @regression @id600
   Scenario Outline: Start group chat with users from contact list [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
@@ -20,7 +19,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2896 @regression @id2594
+  @C2896 @rc @regression @id2594
   Scenario Outline: Start group chat with users from contact list [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -28,7 +27,6 @@ Feature: People View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
@@ -41,7 +39,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2704 @regression @rc @id2434
+  @C2704 @regression @id2434
   Scenario Outline: Start group chat from 1:1 conversation [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -51,7 +49,6 @@ Feature: People View
     And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I press Add button
-    And I see People picker page on iPad popover
     And I click on connected user <Contact2> on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
@@ -74,18 +71,17 @@ Feature: People View
     And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I press Add button
-    And I see People picker page on iPad popover
     And I click on connected user <Contact2> on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
-    Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+    Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C2743 @regression @rc @id2445
+  @C2743 @regression @id2445
   Scenario Outline: Verify leaving group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -96,7 +92,7 @@ Feature: People View
     And I open group conversation details
     And I press leave converstation button on iPad
     Then I press leave on iPad
-    And I open archived conversations on iPad
+    And I open archived conversations
     And I tap on group chat with name <GroupChatName>
     Then I see You Left message in group chat
 
@@ -104,7 +100,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveGroup    |
 
-  @C2744 @regression @regression @id2708
+  @C2744 @rc @regression @regression @id2708
   Scenario Outline: Verify leaving group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -116,7 +112,7 @@ Feature: People View
     And I open group conversation details
     And I press leave converstation button on iPad
     Then I press leave on iPad
-    And I open archived conversations on iPad
+    And I open archived conversations
     And I tap on group chat with name <GroupChatName>
     Then I see You Left message in group chat
 
@@ -124,7 +120,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveGroup    |
 
-  @C2710 @regression @rc @id2441
+  @C2710 @regression @id2441
   Scenario Outline: Verify removing from group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -143,7 +139,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | RemoveGroup   |
 
-  @C2670 @regression @id2981
+  @C2716 @rc @regression @id2981
   Scenario Outline: Verify removing from group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -163,7 +159,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | RemoveGroup   |
 
-  @C2727 @regression @rc @id2446
+  @C2727 @regression @id2446
   Scenario Outline: Verify editing the conversation name [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -184,7 +180,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | ChatName |
       | user1Name | user2Name | user3Name | RenameGroup   | NewName  |
 
-  @C2728 @regression @id2922
+  @C2728 @rc @regression @id2922
   Scenario Outline: Verify editing the conversation name [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -205,7 +201,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | ChatName |
       | user1Name | user2Name | user3Name | RenameGroup   | NewName  |
 
-  @C2711 @regression @rc @id2442
+  @C2711 @regression @id2442
   Scenario Outline: Verify correct group info page information [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -214,14 +210,14 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    Then I can read the group name <GroupChatName> on the iPad popover
+    Then I see correct conversation name <GroupChatName>
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ParticipantsNumber |
-      | user1Name | user2Name | user3Name | GroupInfo     | 3                  |
+      | user1Name | user2Name | user3Name | GroupInfo     | 2                  |
 
-  @C2717 @regression @id2989
+  @C2717 @rc @regression @id2989
   Scenario Outline: Verify correct group info page information [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -231,14 +227,14 @@ Feature: People View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    Then I can read the group name <GroupChatName> on the iPad popover
+    Then I see correct conversation name <GroupChatName>
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ParticipantsNumber |
-      | user1Name | user2Name | user3Name | GroupInfo     | 3                  |
+      | user1Name | user2Name | user3Name | GroupInfo     | 2                  |
 
-  @C2702 @regression @rc @id2432
+  @C2702 @regression @id2432
   Scenario Outline: Check any users personal info in group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<ConnectedContact>
@@ -254,7 +250,7 @@ Feature: People View
       | Name      | Contact2  | ConnectedContact | GroupChatName   |
       | user1Name | user2Name | user3Name        | SingleInfoGroup |
 
-  @C2718 @regression @id3007
+  @C2718 @rc @regression @id3007
   Scenario Outline: Check any users personal info in group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<ConnectedContact>
@@ -308,7 +304,7 @@ Feature: People View
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-  @C2714 @regression @rc @id2612
+  @C2714 @regression @id2612
   Scenario Outline: Verify opening 1-to-1 conversation from group conversation details [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -320,15 +316,14 @@ Feature: People View
     And I select user on iPad group popover <Contact2>
     And I tap on start dialog button on other user profile page
     #And I dismiss popover on iPad
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | 1on1FromGroup |
 
-  @C2721 @regression @id3087
+  @C2721 @rc @regression @id3087
   Scenario Outline: Verify opening 1-to-1 conversation from group conversation details [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -341,59 +336,58 @@ Feature: People View
     And I select user on iPad group popover <Contact2>
     And I tap on start dialog button on other user profile page
     #And I dismiss popover on iPad
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     Then I see 1 default message in the dialog
 
     Examples:
       | Name      | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | 1on1FromGroup |
 
-  @C2745 @regression @rc @id2455
+  @C2745 @regression @id2455
   Scenario Outline: Verify unsilince the conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Name> silenced group conversation with <GroupChatName>
+    Given Myself silenced group conversation with <GroupChatName>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I see conversation <GroupChatName> got silenced before
+    When I remember the right side state of <GroupChatName> conversation item on iPad
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click NOTIFY button on iPad ellipsis menu
     And I exit the group info iPad popover
     And I navigate back to conversations list
-    Then I see conversation <GroupChatName> is unsilenced
+    Then I see the state of <GroupChatName> conversation item is changed on iPad
 
     Examples:
-      | Name      | Contact1  | Contact2  | Color  | GroupChatName |
-      | user1Name | user2Name | user3Name | Violet | SILENCE       |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | SILENCE       |
 
-  @C2747 @regression @id3208
+  @C2747 @rc @regression @id3208
   Scenario Outline: Verify unsilince the conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
-    Given User <Name> change accent color to <Color>
+    Given User Myself removes his avatar picture
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Name> silenced group conversation with <GroupChatName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I see conversation <GroupChatName> got silenced before
+    When I remember the right side state of <GroupChatName> conversation item on iPad
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click NOTIFY button on iPad ellipsis menu
     And I exit the group info iPad popover
-    Then I see conversation <GroupChatName> is unsilenced
+    Then I see the state of <GroupChatName> conversation item is changed on iPad
 
     Examples:
-      | Name      | Contact1  | Contact2  | Color  | GroupChatName |
-      | user1Name | user2Name | user3Name | Violet | SILENCE       |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | SILENCE       |
 
-  @C2746 @regression @rc @id2456
+  @C2746 @regression @id2456
   Scenario Outline: Verify silence the conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -401,20 +395,20 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item
+    When I remember the right side state of <GroupChatName> conversation item on iPad
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click SILENCE button on iPad ellipsis menu
     And I exit the group info iPad popover
     And I navigate back to conversations list
-    Then I see the state of <GroupChatName> conversation item is changed
+    Then I see the state of <GroupChatName> conversation item is changed on iPad
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SILENCE       |
 
-  @C2748 @regression @id3209
+  @C2748 @rc @regression @id3209
   Scenario Outline: Verify silence the conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -423,13 +417,13 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I remember the state of <GroupChatName> conversation item
+    When I remember the right side state of <GroupChatName> conversation item on iPad
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click SILENCE button on iPad ellipsis menu
     And I exit the group info iPad popover
-    Then I see the state of <GroupChatName> conversation item is changed
+    Then I see the state of <GroupChatName> conversation item is changed on iPad
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -445,7 +439,6 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I see People picker page on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     And I open conversation details
@@ -453,7 +446,7 @@ Feature: People View
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
-      | user1Name | user2Name | user3Name | user4Name | AddContact    | 4                  |
+      | user1Name | user2Name | user3Name | user4Name | AddContact    | 3                  |
 
   @C2723 @regression @id3221
   Scenario Outline: Add someone to a group conversation [LANDSCAPE]
@@ -466,7 +459,6 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I see People picker page on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     And I open conversation details
@@ -474,7 +466,7 @@ Feature: People View
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
-      | user1Name | user2Name | user3Name | user4Name | AddContact    | 4                  |
+      | user1Name | user2Name | user3Name | user4Name | AddContact    | 3                  |
 
   @C2447 @regression @id2333
   Scenario Outline: Verify you can block a person from profile view [PORTRAIT]
@@ -559,48 +551,45 @@ Feature: People View
   Scenario Outline: Verify displaying only connected users in the search in group chat [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
-    And I see user <Contact3> found on People picker page
+    And I see the conversation "<Contact3>" exists in Search results
     And I click close button to dismiss people view
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I see People picker page on iPad popover
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
-    Then I see that user <Contact3> is NOT found on People picker page
+    Then I see No Results label in People picker search result
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
-  @C2724 @staging @id3949
+  @C2724 @regression @id3949
   Scenario Outline: Verify displaying only connected users in the search in group chat [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
-    And I see user <Contact3> found on People picker page
+    And I see the conversation "<Contact3>" exists in Search results
     And I click close button to dismiss people view
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I see People picker page on iPad popover
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
-    Then I see that user <Contact3> is NOT found on People picker page
+    Then I see No Results label in People picker search result
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
@@ -622,14 +611,14 @@ Feature: People View
     And I confirm delete conversation content
     And I wait until popover is closed
     And I dont see conversation <GroupChatName> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C2739 @regression @id3959
+  @C2739 @rc @regression @id3959
   Scenario Outline: Verify that deleted conversation via participant view isn't going to archive [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -646,7 +635,7 @@ Feature: People View
     And I confirm delete conversation content
     And I wait until popover is closed
     And I dont see conversation <GroupChatName> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
     Examples:
@@ -670,17 +659,17 @@ Feature: People View
     And I wait until popover is closed
     And I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    Then I see conversation <GroupChatName> is NOT presented in Search results
+    Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C2741 @regression @id3978 @ZIOS-5247
+  @C2741 @rc @regression @id3978 @ZIOS-5247
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -698,10 +687,10 @@ Feature: People View
     And I wait until popover is closed
     And I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    Then I see conversation <GroupChatName> is NOT presented in Search results
+    Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
-    And I open archived conversations on iPad
+    And I open archived conversations
     Then I dont see conversation <GroupChatName> in contact list
 
     Examples:
@@ -727,7 +716,6 @@ Feature: People View
     And I wait until popover is closed
     And I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
 
@@ -755,13 +743,12 @@ Feature: People View
     And I wait until popover is closed
     And I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message | GroupChatName | Image       |
-      | user1Name | user2Name | user3Name | testing | ForDeletion   | testing.jpg |
+      | Name      | Contact1  | Contact2  | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
   @C1835 @regression @id3979
   Scenario Outline: Verify removing the content from 1-to-1 via participant view [PORTRAIT]
@@ -783,8 +770,8 @@ Feature: People View
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
-    And I click open conversation button on People picker page
-    Then I see the only message in dialog is system message CONNECTED TO <Contact1>
+    And I tap Open conversation action button on People picker page
+    Then I see 0 conversation entries
 
     Examples:
       | Name      | Contact1  | Image       |
@@ -811,14 +798,14 @@ Feature: People View
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
-    And I click open conversation button on People picker page
-    Then I see the only message in dialog is system message CONNECTED TO <Contact1>
+    And I tap Open conversation action button on People picker page
+    Then I see 0 conversation entries
 
     Examples:
-      | Name      | Contact1  | Message | GroupChatName | Image       |
-      | user1Name | user2Name | testing | ForDeletion   | testing.jpg |
+      | Name      | Contact1  | Image       |
+      | user1Name | user2Name | testing.jpg |
 
-  @C2556 @staging @id4003
+  @C2556 @regression @id4003
   Scenario Outline: Verify that left conversation is shown in the Archive [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -834,14 +821,14 @@ Feature: People View
     And I see leave conversation alert
     And I press leave
     And I wait until popover is closed
-    And I open archived conversations on iPad
+    And I open archived conversations
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
-    Then I see 4 conversation entries
+    Then I see 1 photo in the dialog
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | Message | Image       |
-      | user1Name | user2Name | user3Name | TESTCHAT      | hello   | testing.jpg |
+      | Name      | Contact1  | Contact2  | GroupChatName | Image       |
+      | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
   @C2557 @regression @id4004
   Scenario Outline: Verify that left conversation is shown in the Archive [LANDSCAPE]
@@ -860,10 +847,10 @@ Feature: People View
     And I see leave conversation alert
     And I press leave
     And I wait until popover is closed
-    And I open archived conversations on iPad
+    And I open archived conversations
     And I see user <GroupChatName> in contact list
     And I tap on group chat with name <GroupChatName>
-    Then I see 4 conversation entries
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
@@ -941,7 +928,7 @@ Feature: People View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2709 @staging @id2440
+  @C2709 @regression @id2440
   Scenario Outline: Verify length limit for group conversation name [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

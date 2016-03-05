@@ -2,7 +2,6 @@ package com.wearezeta.auto.common;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -14,13 +13,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import javax.imageio.ImageIO;
-
-import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rc.RCTestcase;
@@ -133,23 +130,6 @@ public class ZetaFormatter implements Formatter, Reporter {
     private static final int MAX_SCREENSHOT_WIDTH = 1600;
     private static final int MAX_SCREENSHOT_HEIGHT = 900;
 
-    private static BufferedImage adjustScreenshotSize(BufferedImage originalImage) {
-        int height = originalImage.getHeight();
-        int width = originalImage.getWidth();
-        float resizeRatio = 1;
-        if (width > MAX_SCREENSHOT_WIDTH || height > MAX_SCREENSHOT_HEIGHT) {
-            float resizeRatioW = (float) MAX_SCREENSHOT_WIDTH / width;
-            float resizeRatioH = (float) MAX_SCREENSHOT_HEIGHT / height;
-            resizeRatio = (resizeRatioH > resizeRatioW) ? resizeRatioW : resizeRatioH;
-        }
-        try {
-            return ImageUtil.resizeImage(originalImage, resizeRatio);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return originalImage;
-        }
-    }
-
     private void takeStepScreenshot(final Result stepResult, final String stepName) throws Exception {
         final ZetaDriver driver = getDriver().orElse(null);
         if (driver != null) {
@@ -159,26 +139,26 @@ public class ZetaFormatter implements Formatter, Reporter {
                 return;
             }
             int index = 1;
-            boolean isExist;
-            String tmpScreenshotPath;
+            File tmpScreenshot;
             do {
-                tmpScreenshotPath = String.format("%s/%s/%s/%s_%s.png",
+                tmpScreenshot = new File(String.format("%s/%s/%s/%s_%s.png",
                         CommonUtils.getPictureResultsPathFromConfig(this.getClass()), feature.replaceAll("\\W+", "_"),
-                        scenario.replaceAll("\\W+", "_"), stepName.replaceAll("\\W+", "_"), index);
-                isExist = new File(tmpScreenshotPath).exists();
+                        scenario.replaceAll("\\W+", "_"),
+                        (stepName.matches(".*\\W") ? stepName.substring(0, stepName.length() - 1) : stepName).replaceAll("\\W+",
+                                "_"), index));
                 index++;
-            } while (isExist);
-            final String screenshotPath = tmpScreenshotPath;
+            } while (tmpScreenshot.exists());
+            final File resultScreenshot = tmpScreenshot;
             if (driver instanceof IOSDriver && CommonUtils.getIsSimulatorFromConfig(ZetaFormatter.class)) {
                 try {
-                    CommonUtils.takeIOSSimulatorScreenshot(screenshotPath);
+                    CommonUtils.takeIOSSimulatorScreenshot(resultScreenshot);
                 } catch (Exception e) {
                     log.error("Failed to take iOS simulator screenshot:");
                     e.printStackTrace();
                 }
             } else if (driver instanceof ZetaAndroidDriver) {
                 try {
-                    CommonUtils.takeAndroidScreenshot((ZetaAndroidDriver) driver, new File(screenshotPath));
+                    CommonUtils.takeAndroidScreenshot((ZetaAndroidDriver) driver, resultScreenshot, true);
                 } catch (Exception e) {
                     log.error("Failed to take Android screenshot:");
                     e.printStackTrace();
@@ -188,7 +168,9 @@ public class ZetaFormatter implements Formatter, Reporter {
                 if (!screenshot.isPresent()) {
                     return;
                 }
-                screenshotSavers.execute(() -> storeScreenshot(screenshot.get(), screenshotPath));
+                screenshotSavers.execute(() ->
+                        ImageUtil.storeImage(ImageUtil.scaleTo(screenshot.get(),
+                                MAX_SCREENSHOT_WIDTH, MAX_SCREENSHOT_HEIGHT), resultScreenshot));
             }
         } else {
             log.debug(String.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'", stepName));
@@ -241,19 +223,6 @@ public class ZetaFormatter implements Formatter, Reporter {
         } else {
             log.debug(String.format("%s (status: %s, step duration: %s ms)", stepName, stepStatus,
                     stepFinishedTimestamp - stepStartedTimestamp));
-        }
-    }
-
-    private void storeScreenshot(final BufferedImage screenshot, final String path) {
-        try {
-            final File outputFile = new File(path);
-            if (!outputFile.getParentFile().exists()) {
-                // noinspection ResultOfMethodCallIgnored
-                outputFile.getParentFile().mkdirs();
-            }
-            ImageIO.write(adjustScreenshotSize(screenshot), "png", outputFile);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

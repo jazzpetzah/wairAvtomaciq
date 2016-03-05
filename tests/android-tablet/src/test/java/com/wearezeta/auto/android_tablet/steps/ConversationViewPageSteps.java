@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android_tablet.steps;
 
-import java.awt.image.BufferedImage;
-
+import com.wearezeta.auto.common.misc.ElementState;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletConversationViewPage;
@@ -17,16 +16,13 @@ import cucumber.api.java.en.When;
 public class ConversationViewPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
-			.getInstance();
+	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
 
-	private TabletConversationViewPage getConversationViewPage()
-			throws Exception {
+	private TabletConversationViewPage getConversationViewPage() throws Exception {
 		return pagesCollection.getPage(TabletConversationViewPage.class);
 	}
 
-	private ConversationViewCameraPage getConversationViewCameraPage()
-			throws Exception {
+	private ConversationViewCameraPage getConversationViewCameraPage() throws Exception {
 		return pagesCollection.getPage(ConversationViewCameraPage.class);
 	}
 
@@ -152,28 +148,6 @@ public class ConversationViewPageSteps {
 						expectedMessage),
 				getConversationViewPage()
 						.waitForSystemConnectionMessageContains(expectedMessage));
-	}
-
-	/**
-	 * Verify the chat header system message contains expected text
-	 * 
-	 * @step. ^I see the chat header message contains \"(.*)\" text on
-	 *        conversation view page$
-	 * 
-	 * @param expectedMessage
-	 *            the message to verify
-	 * @throws Exception
-	 */
-	@Then("^I see the chat header message contains \"(.*)\" text on conversation view page$")
-	public void ISeeChatHeaderSystemMessage(String expectedMessage)
-			throws Exception {
-		expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
-				FindBy.NAME_ALIAS);
-		Assert.assertTrue(
-				String.format(
-						"The chat header message containing text '%s' is not visible in the conversation view",
-						expectedMessage), getConversationViewPage()
-						.waitForChatHeaderMessageContains(expectedMessage));
 	}
 
 	/**
@@ -467,7 +441,7 @@ public class ConversationViewPageSteps {
 	private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
 
 	private enum PictureDestination {
-		CONVERSATION_VIEW, PREVIEW;
+		CONVERSATION_VIEW, PREVIEW
 	}
 
 	/**
@@ -655,80 +629,6 @@ public class ConversationViewPageSteps {
 		getConversationViewPage().tapSketchButtonOnPicturePreview();
 	}
 
-	private BufferedImage previousMediaButtonState = null;
-
-	/**
-	 * Store the screenshot of current media button state in the internal
-	 * variable for further comparison
-	 * 
-	 * @step. ^I remember the state of media button in (?:the
-	 *        |\\s*)[Cc]onversation view$
-	 * 
-	 * @throws Exception
-	 */
-	@And("^I remember the state of media button in (?:the |\\s*)[Cc]onversation view$")
-	public void IRememberMediaButtonState() throws Exception {
-		this.previousMediaButtonState = getConversationViewPage()
-				.getMediaButtonScreenshot();
-	}
-
-	private static final double MAX_SIMILARITY_VALUE = 0.97;
-
-	/**
-	 * Verify whether the current state of media control button is changed in
-	 * comparison to the previously screenshoted one
-	 * 
-	 * @step. ^I see the state of media button in (?:the |\\s*)[Cc]onversation
-	 *        view is changed$
-	 * 
-	 * @param shouldNotBeChanged
-	 *            equals to null if "not " part does not exist in step signature
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I see the state of media button in (?:the |\\s*)[Cc]onversation view is (not )?changed$")
-	public void ISeeMediaButtonStateIsChanged(String shouldNotBeChanged)
-			throws Exception {
-		if (this.previousMediaButtonState == null) {
-			throw new IllegalStateException(
-					"Please take a screenshot of media button first");
-		}
-		final int maxRetries = 3;
-		int ntry = 1;
-		double score = 1;
-		do {
-			final BufferedImage currentMediaButtonState = getConversationViewPage()
-					.getMediaButtonScreenshot();
-			score = ImageUtil.getOverlapScore(this.previousMediaButtonState,
-					currentMediaButtonState,
-					ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
-			if (shouldNotBeChanged == null) {
-				if (score < MAX_SIMILARITY_VALUE) {
-					return;
-				}
-			} else {
-				if (score >= MAX_SIMILARITY_VALUE) {
-					return;
-				}
-			}
-			Thread.sleep(1000);
-			ntry++;
-		} while (ntry <= maxRetries);
-		if (shouldNotBeChanged == null) {
-			Assert.assertTrue(
-					String.format(
-							"The current and the previous button states seems to be identical (%.2f >= %.2f)",
-							score, MAX_SIMILARITY_VALUE),
-					score < MAX_SIMILARITY_VALUE);
-		} else {
-			Assert.assertTrue(
-					String.format(
-							"The current and the previous button states seems to be different (%.2f < %.2f)",
-							score, MAX_SIMILARITY_VALUE),
-					score >= MAX_SIMILARITY_VALUE);
-		}
-	}
-
 	/**
 	 * Tap Media Bar control button to start/pause media playback
 	 * 
@@ -757,4 +657,49 @@ public class ConversationViewPageSteps {
 		Assert.assertTrue("Media Bar is not visible", getConversationViewPage()
 				.scrollUpUntilMediaBarVisible(MAX_SWIPES));
 	}
-}
+
+    private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
+    private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
+
+	private ElementState mediaButtonState = new ElementState(
+			() -> getConversationViewPage().getMediaControlButtonState()
+	);
+
+	/**
+	 * Store the screenshot of current media button state in the internal
+	 * variable for further comparison
+	 *
+	 * @step. ^I remember the state of media button in (?:the
+	 *        |\\s*)[Cc]onversation view$
+	 *
+	 * @throws Exception
+	 */
+	@And("^I remember the state of media button in (?:the |\\s*)[Cc]onversation view$")
+	public void IRememberMediaButtonState() throws Exception {
+		mediaButtonState.remember();
+	}
+
+	/**
+	 * Verify whether the current state of media control button is changed in
+	 * comparison to the previously screenshoted one
+	 *
+	 * @step. ^I see the state of media button in (?:the |\\s*)[Cc]onversation
+	 *        view is changed$
+	 *
+	 * @param shouldNotBeChanged
+	 *            equals to null if "not " part does not exist in step signature
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see the state of media button in (?:the |\\s*)[Cc]onversation view is (not )?changed$")
+	public void ISeeMediaButtonStateIsChanged(String shouldNotBeChanged)
+			throws Exception {
+		if (shouldNotBeChanged == null) {
+			Assert.assertTrue("Media control button state has not changed",
+					mediaButtonState.isChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE));
+		} else {
+			Assert.assertTrue("Media control button state has changed",
+					mediaButtonState.isNotChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE));
+		}
+	}
+ }

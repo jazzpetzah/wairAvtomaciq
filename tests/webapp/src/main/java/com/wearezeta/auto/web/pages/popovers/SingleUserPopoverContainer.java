@@ -1,6 +1,7 @@
 package com.wearezeta.auto.web.pages.popovers;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -108,6 +109,26 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 
 	public String getDevicesText() {
 		return this.singleUserPopoverPage.getDevicesText();
+	}
+
+	public boolean isUserVerified() throws Exception {
+		return this.singleUserPopoverPage.isUserVerified();
+	}
+
+	public List<String> getDeviceIds() {
+		return this.singleUserPopoverPage.getDeviceIds();
+	}
+
+	public List<String> getVerifiedDeviceIds() {
+		return this.singleUserPopoverPage.getVerifiedDeviceIds();
+	}
+
+	public boolean waitForDevices() throws Exception {
+		return this.singleUserPopoverPage.waitForDevices();
+	}
+
+	public void clickDevice(String deviceId) throws Exception {
+		this.singleUserPopoverPage.clickDevice(deviceId);
 	}
 
 	public void clickConfirmButton() {

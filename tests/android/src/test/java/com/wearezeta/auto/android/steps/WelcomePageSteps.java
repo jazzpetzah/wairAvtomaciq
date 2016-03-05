@@ -17,8 +17,7 @@ import cucumber.api.java.en.When;
 import cucumber.api.java.en.Then;
 
 public class WelcomePageSteps {
-	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-			.getInstance();
+	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
 	private WelcomePage getWelcomePage() throws Exception {
 		return pagesCollection.getPage(WelcomePage.class);
@@ -51,8 +50,7 @@ public class WelcomePageSteps {
 	 */
 	@Given("^I see [Ww]elcome screen$")
 	public void GivenISeeWelcomeScreen() throws Exception {
-		Assert.assertTrue("Welcome page is not shown", getWelcomePage()
-				.waitForInitialScreen());
+		Assert.assertTrue("Welcome page is not shown", getWelcomePage().waitForInitialScreen());
 	}
 
 	/**
@@ -81,13 +79,6 @@ public class WelcomePageSteps {
 		getWelcomePage().clickAreaCodeSelector();
 		getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
 
-		if (this.userToRegister == null) {
-			this.userToRegister = new ClientUser();
-		}
-		this.userToRegister.setName(name);
-		this.userToRegister.clearNameAliases();
-		this.userToRegister.addNameAlias(name);
-
 		this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		String number = this.userToRegister.getPhoneNumber().toString();
 		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
@@ -106,8 +97,7 @@ public class WelcomePageSteps {
 	@When("^I input the verification code$")
 	public void IInputTheVerificationCode() throws Exception {
 		final PhoneNumber phoneNumber = this.userToRegister.getPhoneNumber();
-		final String verificationCode = BackendAPIWrappers
-				.getActivationCodeByPhoneNumber(phoneNumber);
+		final String verificationCode = BackendAPIWrappers.getActivationCodeByPhoneNumber(phoneNumber);
 		getVerificationPage().inputVerificationCode(verificationCode);
 		getVerificationPage().clickConfirm();
 	}

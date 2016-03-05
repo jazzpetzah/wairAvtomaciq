@@ -42,7 +42,7 @@ public class CallResource {
     private final String callingServiceAdress;
     private final String callingServiceVersion;
     private final CommonRESTHandlers restHandler = new CommonRESTHandlers(CallResource::verifyRequestResult,
-        MAX_REQUEST_RETRY_COUNT);
+            MAX_REQUEST_RETRY_COUNT);
 
     public CallResource(String callingServiceAdress, String callingServiceVersion, boolean trace) {
         ClientConfig config = new ClientConfig();
@@ -55,7 +55,7 @@ public class CallResource {
     }
 
     private Client initClient(Configuration config) {
-        TrustManager[] certs = new TrustManager[] { new X509TrustManager() {
+        TrustManager[] certs = new TrustManager[]{new X509TrustManager() {
             @Override
             public X509Certificate[] getAcceptedIssuers() {
                 return null;
@@ -68,7 +68,7 @@ public class CallResource {
             @Override
             public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
             }
-        } };
+        }};
         SSLContext ctx = null;
         try {
             ctx = SSLContext.getInstance("SSL");
@@ -78,16 +78,16 @@ public class CallResource {
         }
 
         return ClientBuilder.newBuilder().withConfig(config).hostnameVerifier((String hostname, SSLSession session) -> true)
-            .sslContext(ctx).build();
+                .sslContext(ctx).build();
     }
 
     private static void verifyRequestResult(int currentResponseCode, int[] acceptableResponseCodes, String message)
-        throws BackendRequestException {
+            throws BackendRequestException {
         if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
             throw new BackendRequestException(
-                String.format(
-                    "Calling service call request failed. Request return code is: %d. Expected codes are: %s. Message from service is: %s",
-                    currentResponseCode, Arrays.toString(acceptableResponseCodes), message), currentResponseCode);
+                    String.format(
+                            "Calling service call request failed. Request return code is: %d. Expected codes are: %s. Message from service is: %s",
+                            currentResponseCode, Arrays.toString(acceptableResponseCodes), message), currentResponseCode);
         }
     }
 
@@ -98,10 +98,21 @@ public class CallResource {
 
     public Call start(Instance instance, CallRequest callRequest) throws CallingServiceCallException {
         final String target = String.format("%s/api/v%s/instance/%s/call/start", callingServiceAdress, callingServiceVersion,
-            instance.getId());
+                instance.getId());
         try {
             return restHandler.httpPost(buildDefaultRequest(target, MediaType.APPLICATION_JSON), callRequest, Call.class,
-                new int[] { HttpStatus.SC_OK });
+                    new int[]{HttpStatus.SC_OK});
+        } catch (RESTError ex) {
+            throw new CallingServiceCallException(ex);
+        }
+    }
+
+    public Call startVideo(Instance instance, CallRequest callRequest) throws CallingServiceCallException {
+        final String target = String.format("%s/api/v%s/instance/%s/call/startVideo", callingServiceAdress, callingServiceVersion,
+                instance.getId());
+        try {
+            return restHandler.httpPost(buildDefaultRequest(target, MediaType.APPLICATION_JSON), callRequest, Call.class,
+                    new int[]{HttpStatus.SC_OK});
         } catch (RESTError ex) {
             throw new CallingServiceCallException(ex);
         }
@@ -110,10 +121,10 @@ public class CallResource {
     public Call acceptNext(Instance instance, CallRequest callRequest) throws CallingServiceCallException {
 
         final String target = String.format("%s/api/v%s/instance/%s/call/acceptNext", callingServiceAdress,
-            callingServiceVersion, instance.getId());
+                callingServiceVersion, instance.getId());
         try {
             return restHandler.httpPost(buildDefaultRequest(target, MediaType.APPLICATION_JSON), callRequest, Call.class,
-                new int[] { HttpStatus.SC_OK });
+                    new int[]{HttpStatus.SC_OK});
         } catch (RESTError ex) {
             throw new CallingServiceCallException(ex);
         }
@@ -122,10 +133,10 @@ public class CallResource {
     public Call acceptNextVideo(Instance instance, CallRequest callRequest) throws CallingServiceCallException {
 
         final String target = String.format("%s/api/v%s/instance/%s/call/acceptNextVideo", callingServiceAdress,
-            callingServiceVersion, instance.getId());
+                callingServiceVersion, instance.getId());
         try {
             return restHandler.httpPost(buildDefaultRequest(target, MediaType.APPLICATION_JSON), callRequest, Call.class,
-                new int[] { HttpStatus.SC_OK });
+                    new int[]{HttpStatus.SC_OK});
         } catch (RESTError ex) {
             throw new CallingServiceCallException(ex);
         }
@@ -133,10 +144,10 @@ public class CallResource {
 
     public Call stop(Instance instance, Call call) throws CallingServiceCallException {
         final String target = String.format("%s/api/v%s/instance/%s/call/%s/stop", callingServiceAdress, callingServiceVersion,
-            instance.getId(), call.getId());
+                instance.getId(), call.getId());
         try {
             return restHandler.httpPut(buildDefaultRequest(target, MediaType.APPLICATION_JSON), "", Call.class,
-                new int[] { HttpStatus.SC_OK });
+                    new int[]{HttpStatus.SC_OK});
         } catch (RESTError ex) {
             throw new CallingServiceCallException(ex);
         }
@@ -144,10 +155,10 @@ public class CallResource {
 
     public Call getCall(Instance instance, Call call) throws CallingServiceCallException {
         final String target = String.format("%s/api/v%s/instance/%s/call/%s/status", callingServiceAdress,
-            callingServiceVersion, instance.getId(), call.getId());
+                callingServiceVersion, instance.getId(), call.getId());
         try {
             return restHandler.httpGet(buildDefaultRequest(target, MediaType.APPLICATION_JSON), new GenericType<Call>() {
-            }, new int[] { HttpStatus.SC_OK });
+            }, new int[]{HttpStatus.SC_OK});
         } catch (RESTError ex) {
             throw new CallingServiceCallException(ex);
         }

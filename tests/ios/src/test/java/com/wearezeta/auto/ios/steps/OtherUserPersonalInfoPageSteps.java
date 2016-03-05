@@ -1,7 +1,12 @@
 package com.wearezeta.auto.ios.steps;
 
+import java.util.List;
+
+import cucumber.api.java.en.Then;
+
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 
@@ -10,10 +15,10 @@ import cucumber.api.java.en.When;
 public class OtherUserPersonalInfoPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage() throws Exception {
-        return pagesCollecton.getPage(OtherUserPersonalInfoPage.class);
+        return pagesCollection.getPage(OtherUserPersonalInfoPage.class);
     }
 
     @When("^I see (.*) user profile page$")
@@ -33,12 +38,12 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     @When("^I confirm remove$")
-    public void IConfirmRemove() throws Throwable {
+    public void IConfirmRemove() throws Exception {
         getOtherUserPersonalInfoPage().confirmRemove();
     }
 
     @When("I tap on start dialog button on other user profile page")
-    public void ITapStartDialogOnOtherUserPage() throws Throwable {
+    public void ITapStartDialogOnOtherUserPage() throws Exception {
         getOtherUserPersonalInfoPage().clickOnStartDialogButton();
     }
 
@@ -144,22 +149,22 @@ public class OtherUserPersonalInfoPageSteps {
     /**
      * Clicks on the Block button in the profile menu
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I press menu Block button$
      */
     @When("^I press menu Block button$")
-    public void IPressMenuBlockButton() throws Throwable {
+    public void IPressMenuBlockButton() throws Exception {
         getOtherUserPersonalInfoPage().clickBlockMenuButton();
     }
 
     /**
      * Confirms the blocking alert by clicking block
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I confirm blocking alert$
      */
     @When("^I confirm blocking alert$")
-    public void IConfirmBlockingAlert() throws Throwable {
+    public void IConfirmBlockingAlert() throws Exception {
         getOtherUserPersonalInfoPage().clickBlockMenuButton();
     }
 
@@ -203,7 +208,7 @@ public class OtherUserPersonalInfoPageSteps {
     /**
      * Verify that user email on Other User Profile page is displayed and correct
      *
-     * @param email user email
+     * @param email             user email
      * @param shouldNotBVisible equals to null if the email should be visible
      * @throws Exception
      * @step. ^I verify user email (.*) on Other User Profile page is correct and displayed$
@@ -224,12 +229,13 @@ public class OtherUserPersonalInfoPageSteps {
     /**
      * Click on Devices button
      *
-     * @throws Throwable
-     * @step. ^I tap on Devices button$
+     * @param tabName either Devices or Details
+     * @throws Exception
+     * @step. ^I switch to (Devices|Details) tab$
      */
-    @When("^I tap on Devices button$")
-    public void ITapOnDevicesButton() throws Exception {
-        getOtherUserPersonalInfoPage().clickDevicesButton();
+    @When("^I switch to (Devices|Details) tab$")
+    public void IChangeTab(String tabName) throws Exception {
+        getOtherUserPersonalInfoPage().switchToTab(tabName);
     }
 
     /**
@@ -243,7 +249,68 @@ public class OtherUserPersonalInfoPageSteps {
     @When("^I see (\\d+) devices shown in participant devices tab$")
     public void ISeeDevicesShownInDevicesTab(int expectedNumDevices) throws Exception {
         int numDevices = getOtherUserPersonalInfoPage().getParticipantDevicesCount();
-        Assert.assertTrue("The expected number of devices: "+ expectedNumDevices+ " is not equals to actual count: "+numDevices, expectedNumDevices == numDevices);
+        Assert.assertTrue("The expected number of devices: " + expectedNumDevices +
+                " is not equals to actual count: " + numDevices, expectedNumDevices == numDevices);
     }
+
+    /**
+     * Open the details page of corresponding device on conversation details page
+     *
+     * @param deviceIndex the device index. Starts from 1
+     * @throws Exception
+     * @step. ^I open details page of device number (\d+)$
+     */
+    @When("^I open details page of device number (\\d+)$")
+    public void IOpenDeviceDetails(int deviceIndex) throws Exception {
+        getOtherUserPersonalInfoPage().openDeviceDetailsPage(deviceIndex);
+    }
+
+    /**
+     * Verify whether the shield icon is visible on conversation details page
+     *
+     * @param shouldNotSee equals to null if the shield should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see shield icon on conversation details page$
+     */
+    @Then("^I (do not )?see shield icon on conversation details page$")
+    public void ISeeShieldIcon(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("The shield icon is not visible on convo details page",
+                    getOtherUserPersonalInfoPage().isShieldIconVisible());
+        } else {
+            Assert.assertTrue("The shield icon is still visible on convo details page",
+                    getOtherUserPersonalInfoPage().isShieldIconNotVisible());
+        }
+    }
+    
+    /**
+     * Verify all device with correct IDs are presented on participant devices tab
+     * 
+     * @step. ^I see user (.*) devices? IDs? (?:is|are) presented on participant devices tab$
+     * @param name username
+     * @throws Exception
+     */
+    @Then("^I see user (.*) devices? IDs? (?:is|are) presented on participant devices tab$")
+    public void ISeeUserDeveceIDPresentedOnDetailsPage(String name) throws Exception {
+        List<String> deviceIDs = CommonSteps.getInstance().GetDevicesIDsForUser(name);
+        for (String id : deviceIDs) {
+            Assert.assertTrue(String.format("Device ID '%s' is not visible", id), getOtherUserPersonalInfoPage()
+                .isUserDeviceIdVisible(id));
+        }
+    }
+
+    /**
+     * Tap the corresponding link on user details page. Since we cannot detect the exact link position
+     * we just assume this link is located at the bottom left corner of the container text block.
+     *
+     * @step. ^I tap "(.*)" link in user details$
+     * @param expectedLink the full text of the link to be clicked
+     * @throws Exception
+     */
+    @When("^I tap \"(.*)\" link in user details$")
+    public void ITapLink(String expectedLink) throws Exception {
+        getOtherUserPersonalInfoPage().tapLink(expectedLink);
+    }
+
 
 }

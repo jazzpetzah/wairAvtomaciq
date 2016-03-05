@@ -1,13 +1,17 @@
 package com.wearezeta.auto.ios.tools;
 
+import java.io.File;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.concurrent.TimeUnit;
 
 import com.wearezeta.auto.common.CommonUtils;
 
+import static com.wearezeta.auto.common.CommonUtils.getDeviceName;
 import static com.wearezeta.auto.common.CommonUtils.getIOSToolsRoot;
 
 public class IOSSimulatorHelper {
-    public static final int SIMULATOR_INTERACTION_TIMEOUT = 40; //seconds
+    public static final int SIMULATOR_INTERACTION_TIMEOUT = 3 * 60; //seconds
 
     public IOSSimulatorHelper() {
     }
@@ -55,10 +59,10 @@ public class IOSSimulatorHelper {
         swipe(0.2, 0.8, 0.9, 0.8);
     }
 
-    public static void clickAt(String relativeX, String relativeY) throws Exception {
+    public static void clickAt(String relativeX, String relativeY, String durationSeconds) throws Exception {
         CommonUtils.executeUIShellScript(new String[]{
-                String.format("/usr/bin/python '%s/%s' %s %s",
-                        getIOSToolsRoot(IOSSimulatorHelper.class), CLICK_SCRIPT_NAME, relativeX, relativeY)
+                String.format("/usr/bin/python '%s/%s' %s %s %s",
+                        getIOSToolsRoot(IOSSimulatorHelper.class), CLICK_SCRIPT_NAME, relativeX, relativeY, durationSeconds)
         }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
@@ -81,7 +85,8 @@ public class IOSSimulatorHelper {
                     "         -e \"tell application \\\"System Events\\\" to keystroke \\\"${current_char}\\\"\" \\",
                     "    sleep 0.3",
                     "    /usr/bin/osascript -e 'tell application \"System Events\" to key code 53'",
-                    "done"
+                    "done",
+                    "sleep 2",
             };
         } else {
             script = new String[]{
@@ -91,7 +96,8 @@ public class IOSSimulatorHelper {
                     "    /usr/bin/osascript \\",
                     "         -e \"tell application \\\"System Events\\\" to keystroke \\\"${current_char}\\\"\" \\",
                     "    sleep 0.3",
-                    "done"
+                    "done",
+                    "sleep 2",
             };
         }
         CommonUtils.executeUIShellScript(script).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
@@ -112,7 +118,7 @@ public class IOSSimulatorHelper {
                     "    /usr/bin/osascript -e 'tell application \"System Events\" to key code 53'",
                     "done",
                     "/usr/bin/osascript -e 'tell application \"System Events\" to keystroke return'",
-                    "sleep 0.3"
+                    "sleep 2",
             };
         } else {
             script = new String[]{
@@ -124,7 +130,7 @@ public class IOSSimulatorHelper {
                     "    sleep 0.3",
                     "done",
                     "/usr/bin/osascript -e 'tell application \"System Events\" to keystroke return'",
-                    "sleep 0.3"
+                    "sleep 2",
             };
         }
         CommonUtils.executeUIShellScript(script).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
@@ -133,12 +139,15 @@ public class IOSSimulatorHelper {
     private static void activateWindow() throws Exception {
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to tell application process \"Simulator\"",
+                "set frontmost to false",
                 "set frontmost to true",
                 "end tell"
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        // To make sure the window is really activated
+        Thread.sleep(500);
     }
 
-    public static void switchToAppsList() throws Exception {
+    public static void switchAppsList() throws Exception {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\"",
@@ -167,5 +176,62 @@ public class IOSSimulatorHelper {
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke return"
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+    }
+
+    public static void toggleSoftwareKeyboard() throws Exception {
+        activateWindow();
+        CommonUtils.executeUIAppleScript(new String[]{
+                "tell application \"System Events\" to keystroke \"k\" using {command down}"
+        }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+    }
+
+    public static String getId() throws Exception {
+        return CommonUtils.executeOsXCommandWithOutput(new String[]{
+                "/bin/bash",
+                "-c",
+                "xcrun simctl list devices | grep -v 'unavailable' | grep -i '"
+                        + getDeviceName(IOSSimulatorHelper.class)
+                        + " (' | tail -n 1 | cut -d '(' -f2 | cut -d ')' -f1"}).trim();
+    }
+
+    private final static String APP_CRASHES_MARKER = "Wire_";
+    private final static String USED_APP_CRASHES_MARKER = "_";
+
+    private static String getRecentWireCrashReports() throws Exception {
+        final StringBuilder result = new StringBuilder();
+        final File reportsRoot = new File(String.format("%s/Library/Logs/DiagnosticReports",
+                System.getProperty("user.home")));
+        if (reportsRoot.exists() && reportsRoot.isDirectory()) {
+            final File[] allFiles = reportsRoot.listFiles();
+            for (File f : allFiles) {
+                if (f.isFile() && f.getName().endsWith(".crash") && f.getName().startsWith(APP_CRASHES_MARKER)) {
+                    result.append(new String(Files.readAllBytes(f.toPath()), Charset.forName("UTF-8"))).append("\n\n");
+                    final File newPath = new File(
+                            String.format("%s/%s%s", f.getParent(), USED_APP_CRASHES_MARKER, f.getName()));
+                    if (newPath.exists()) {
+                        newPath.delete();
+                    }
+                    if (!f.renameTo(newPath)) {
+                        f.delete();
+                    }
+                }
+            }
+        }
+        return result.toString();
+    }
+
+    public static String getLogsAndCrashes() throws Exception {
+        final String simId = getId();
+        final File logFile = new File(String.format("%s/Library/Logs/CoreSimulator/%s/system.log",
+                System.getProperty("user.home"), simId));
+        final StringBuilder result = new StringBuilder();
+        if (logFile.exists()) {
+            result.append(new String(Files.readAllBytes(logFile.toPath()), Charset.forName("UTF-8")));
+        }
+        final String crashReports = getRecentWireCrashReports();
+        if (!crashReports.isEmpty()) {
+            result.append("\n\n\n\n\n").append(crashReports);
+        }
+        return result.toString();
     }
 }

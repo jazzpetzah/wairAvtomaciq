@@ -35,7 +35,7 @@ public class ActivationMessage extends WireMessage {
 		return links.get(0);
 	}
 
-	private static final String MESSAGE_PURPOSE = "Activation";
+	public static final String MESSAGE_PURPOSE = "Activation";
 
 	@Override
 	protected String getExpectedPurposeValue() {

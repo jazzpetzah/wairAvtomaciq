@@ -154,12 +154,10 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the Search input
-    And I keep on reopening People Picker until I see Top People
+    And I open Search UI
     And I tap <Contact1> avatar in Top People
-    When I tap Open Conversation button on People Picker page
+    When I tap Open Conversation action button on People Picker page
     Then I see the conversation view
-    And I see the chat header message contains "<Contact1>" text on conversation view page
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -173,14 +171,12 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I tap the Search input
-    And I keep on reopening People Picker until I see Top People
+    And I open Search UI
     And I tap <Contact1> avatar in Top People
-    When I tap Open Conversation button on People Picker page
+    When I tap Open Conversation action button on People Picker page
     Then I see the conversation view
-    And I do not see the Open Conversation button on People Picker page
+    And I do not see Open Conversation action button on People Picker page
     And I see the conversation <Contact1> in my conversations list
-    And I see the chat header message contains "<Contact1>" text on conversation view page
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -221,7 +217,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    Given User <Contact1> sends encrypted  message <Message> to user Myself
+    Given User <Contact1> sends encrypted message <Message> to user Myself
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view

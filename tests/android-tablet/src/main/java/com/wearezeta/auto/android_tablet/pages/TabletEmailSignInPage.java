@@ -8,6 +8,7 @@ import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletEmailSignInPage extends AndroidTabletPage {
+	public static final By idPhoneLoginButton = By.id("ttv__new_reg__sign_in__go_to__phone");
 
 	public TabletEmailSignInPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
@@ -37,11 +38,11 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 				VISIBILITY_TIMEOUT_SECONDS);
 	}
 
-	public void verifyErrorMessageText(String expectedMsg) throws Exception {
-		getEmailSignInPage().verifyErrorMessageText(expectedMsg);
-	}
-
 	public void acceptErrorMessage() throws Exception {
 		getEmailSignInPage().acceptErrorMessage();
 	}
+
+    public void tapPhoneLogin() throws Exception {
+        getElement(idPhoneLoginButton).click();
+    }
 }

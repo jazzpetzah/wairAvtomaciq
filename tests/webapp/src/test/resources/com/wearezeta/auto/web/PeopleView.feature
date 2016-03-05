@@ -7,7 +7,7 @@ Feature: People View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     When I open conversation with <Contact>
     And I click People button in one to one conversation
     Then I see Single User Profile popover
@@ -28,7 +28,7 @@ Feature: People View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
@@ -51,7 +51,7 @@ Feature: People View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
@@ -74,7 +74,7 @@ Feature: People View
     Given I sent connection request to <UnknownContact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    Given I am signed in properly
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover
@@ -102,7 +102,7 @@ Feature: People View
     Given <UnknownContact> sent connection request to Myself
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    Given I am signed in properly
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover
@@ -132,7 +132,7 @@ Feature: People View
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    Given I am signed in properly
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover
@@ -157,7 +157,7 @@ Feature: People View
     Given I sent connection request to <UnknownContact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    Given I am signed in properly
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover
@@ -177,32 +177,6 @@ Feature: People View
       | Login      | Password      | Name      | KnownContact | KnownContactMail | UnknownContact | ChatName               | Message   |
       | user1Email | user1Password | user1Name | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat | YOU ADDED |
 
-  @C1716 @regression
-  Scenario Outline: Verify I can see participant profile of myself in a group conversation
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <KnownContact>
-    Given <KnownContact> is connected to <UnknownContact>
-    Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
-    Given Myself sent connection request to <UnknownContact>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
-    When I open conversation with <ChatName>
-    When I click People button in group conversation
-    Then I see Group Participants popover
-    When I click on participant Myself on Group Participants popover
-    Then I see username me on Group Participants popover
-    And I see an avatar on Group Participants popover
-    And I see profile button on Group Participants popover
-    And I see correct profile button tool tip on Group Participants popover
-    And I see Mail <Mail> on Group Participants popover
-    And Would open mail client when clicking mail on Group Participants popover
-    When I click profile button on Group Participants popover
-
-    Examples: 
-      | Login      | Password      | Name      | Mail       | KnownContact | KnownContactMail | UnknownContact | ChatName               | Message   |
-      | user1Email | user1Password | user1Name | user1Email | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat | YOU ADDED |
-
   @C1693 @regression
   Scenario Outline: Verify I can ignore connection request in a group conversation
     Given There are 3 users where <Name> is me
@@ -212,7 +186,7 @@ Feature: People View
     Given <UnknownContact> sent connection request to me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    Given I am signed in properly
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover
@@ -238,12 +212,21 @@ Feature: People View
     Given User <KnownContact> changes avatar picture to default
     Given <UnknownContact> sent connection request to me
     Given I switch to Sign In page
+    Given I Sign in using login <KnownContact> and password <KnownContactPassword>
+    Given I am signed in properly
+    Given I see Contact list with name <ChatName>
+    Given I open self profile
+    Given I click gear button on self profile page
+    Given I select Log out menu item on self profile page
+    Given I see the clear data dialog
+    Given I click Logout button on clear data dialog
+    Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    Given I am signed in properly
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover
-    And I see Myself,<KnownContact>,<UnknownContact>,<UnknownContact2> displayed on Group Participants popover
+    And I see <KnownContact>,<UnknownContact>,<UnknownContact2> displayed on Group Participants popover
     And I do not see Archive button at the bottom of my Contact list
     When I click Leave button on Group Participants popover
     And I click confirm leave group conversation on Group Participants popover
@@ -254,12 +237,14 @@ Feature: People View
     When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And I Sign in using login <KnownContact> and password <KnownContactPassword>
     And I open conversation with <ChatName>
     Then I see <MessageLeft> action for <Name> in conversation
     When I click People button in group conversation
     Then I see Group Participants popover
-    And I see <KnownContact>,<UnknownContact>,<UnknownContact2> displayed on Group Participants popover
+    And I see <UnknownContact>,<UnknownContact2> displayed on Group Participants popover
 
     Examples: 
       | Login      | Password      | Name      | KnownContact | KnownContactPassword | UnknownContact | UnknownContact2 | ChatName               | MessageLeft |
@@ -272,13 +257,11 @@ Feature: People View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
     When I click Add People button on Group Participants popover
-    And I see Add People message on Group Participants popover
-    And I confirm add to chat on Group Participants popover
     And I input user name <Contact3> in search field on Group Participants popover
     And I select user <Contact3> from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
@@ -295,9 +278,8 @@ Feature: People View
     And I click People button in group conversation
     And I see Group Participants popover
     And I click Add People button on Group Participants popover
-    And I confirm add to chat on Group Participants popover
+    And I see message that everyone is already added on Group Participants popover
 
-    #add last verification - that no one left to add
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName       | Message   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | AddToGroupChat | YOU ADDED |
@@ -309,13 +291,14 @@ Feature: People View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
     And I change group conversation title to <ChatNameEdit> on Group Participants popover
+    Then I see <Message> action in conversation
+    And I see Group Participants popover
     Then I see conversation title <ChatNameEdit> on Group Participants popover
-    And I see <Message> action in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | ChatNameEdit   | Message                  |
@@ -325,9 +308,18 @@ Feature: People View
   Scenario Outline: Verify the new conversation is created on the other end from 1to1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given User <Contact1> changes avatar picture to default
     Given I switch to Sign In page
+    Given I Sign in using login <Contact1> and password <Contact1Password>
+    Given I am signed in properly
+    Given I open self profile
+    Given I click gear button on self profile page
+    Given I select Log out menu item on self profile page
+    Given I see the clear data dialog
+    Given I click Logout button on clear data dialog
+    Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <Contact1>
     And I click People button in one to one conversation
     And I see Single User Profile popover
@@ -341,27 +333,31 @@ Feature: People View
     Then I see <Message> action for <Contact2>,<Contact1> in conversation
     And I open self profile
     And I click gear button on self profile page
-      And I select Log out menu item on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And I see Sign In page
     And User <Contact1> is me
     And I Sign in using login <Contact1> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I see Contact list with name <Name>,<Contact2>
     And I open conversation with <Name>,<Contact2>
     And I see <Message2> action for <Name>,<Contact2>,You in conversation
     And I open self profile
-      And I click gear button on self profile page
-      And I select Log out menu item on self profile page
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And I see Sign In page
     And User <Contact2> is me
     And I Sign in using login <Contact2> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I see Contact list with name <Name>,<Contact1>
-    And I see <Message2> action for <Name>,<Contact1>,You in conversation
+    And I see <Message3> action for <Name>,<Contact1> in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Message                         | Message2                    |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | YOU STARTED A CONVERSATION WITH | STARTED A CONVERSATION WITH |
+      | Login      | Password      | Name      | Contact1  | Contact1Password | Contact2  | Message                         | Message2                    | Message3                  |
+      | user1Email | user1Password | user1Name | user2Name | user2Password    | user3Name | YOU STARTED A CONVERSATION WITH | STARTED A CONVERSATION WITH | START A CONVERSATION WITH |
 
   @C1697 @regression
   Scenario Outline: Verify you can unblock someone from a group conversation
@@ -371,7 +367,7 @@ Feature: People View
     Given Myself blocked <Contact1>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover

@@ -19,7 +19,6 @@ Feature: Sign In
   Scenario Outline: Sign in to Wire by phone
     Given There are 1 users where <Name> is me
     When I sign in using my phone number
-    And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
 
     Examples:
@@ -32,7 +31,7 @@ Feature: Sign In
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
-    When I tap on my avatar
+    When I tap conversations list settings button
     When I tap options button
     And I tap settings button
     And I select "Account" settings menu item
@@ -42,7 +41,7 @@ Feature: Sign In
     And I sign in using my email or phone number
     And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
-    When I tap on my avatar
+    When I tap conversations list settings button
     Then I see personal info page
 
     Examples:
@@ -56,7 +55,7 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Log in button
-    Then I see error message "<ErrMessage>"
+    Then I see alert message containing "<ErrMessage>"
 
     Examples:
       | Login | Password  | ErrMessage                          |
@@ -72,9 +71,9 @@ Feature: Sign In
     And I have entered login <Email>
     And I have entered password <Password>
     And I press Log in button
-    Then I see error message "<ErrMessage>"
-    When I accept the error message
-    And I disable Airplane mode on the device
+    Then I see alert message containing "<ErrMessage>"
+    When I disable Airplane mode on the device
+    And I accept the error message
     And I press Log in button
     And I accept First Time overlay as soon as it is visible
     Then I see Contact list with contacts
@@ -82,3 +81,51 @@ Feature: Sign In
     Examples:
       | Name      | Email      | Password      | Contact   | ErrMessage                                           |
       | user1Name | user1Email | user1Password | user2Name | Please check your Internet connection and try again. |
+
+  @C43807 @rc @regression
+  Scenario Outline: Verify sign in with email address only
+    Given There is 1 user with email address only where <Name> is me
+    Given I see welcome screen
+    When I switch to email sign in screen
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I press Log in button
+    And I input a new phone number for user <Name>
+    And I input the verification code
+    Then I see Contact list with no contacts
+
+    Examples:
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @C43808 @rc @regression
+  Scenario Outline: Verify sign in with phone number only
+    Given There is 1 user with phone number only where <Name> is me
+    Given I see welcome screen
+    When I sign in using my phone number
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I start listening for confirmation email
+    And I press Log in button
+    And I verify my email
+    Then I see Contact list with no contacts
+
+    Examples:
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @C43810 @rc @regression
+  Scenario Outline: Verify you can skip phone number input
+    Given There is 1 user with email address only where <Name> is me
+    Given I see welcome screen
+    When I switch to email sign in screen
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I press Log in button
+    And I postpone Add Phone Number action
+    And I accept First Time overlay as soon as it is visible
+    Then I see Contact list with no contacts
+
+    Examples:
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

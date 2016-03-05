@@ -1,55 +1,81 @@
 package com.wearezeta.auto.common.sync_engine_bridge;
 
 import java.util.Optional;
-import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import akka.actor.ActorRef;
 
+import akka.actor.PoisonPill;
 import com.waz.model.RConvId;
 import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
+import org.apache.commons.lang3.StringUtils;
+import scala.concurrent.Await;
+import scala.concurrent.Future;
+import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
+
+import static akka.pattern.Patterns.gracefulStop;
 
 class Device extends RemoteEntity implements IDevice {
 
     private Optional<ClientUser> loggedInUser = Optional.empty();
     private Optional<String> id = Optional.empty();
     private Optional<String> fingerprint = Optional.empty();
-    private IRemoteProcess hostProcess;
-    private ActorRef coordinatorActorRef;
-    private String backendType;
-    private boolean otrOnly;
+    private IRemoteProcess hostProcess = null;
+    private final ActorRef coordinatorActorRef;
 
-    public Device(String deviceName, ActorRef coordinatorActorRef,
-                  String backendType, boolean otrOnly, FiniteDuration actorTimeout) {
-        super(null, deviceName, actorTimeout);
+    public Device(IRemoteProcess hostProcess, String deviceName, ActorRef coordinatorActorRef,
+                  FiniteDuration actorTimeout) {
+        super(deviceName, actorTimeout);
+        this.hostProcess = hostProcess;
         this.coordinatorActorRef = coordinatorActorRef;
-        this.backendType = backendType;
-        this.otrOnly = otrOnly;
         respawn();
     }
 
-    private void respawn() {
-        this.hostProcess = new RemoteProcess(UUID.randomUUID().toString().substring(0, 8),
-                this.coordinatorActorRef, this.actorTimeout, this.backendType, this.otrOnly);
-        final ActorRef processActorRef = this.hostProcess.ref();
+    private boolean spawnOnHostProcess() {
         try {
-            final Object resp = askActor(processActorRef, new ActorMessage.SpawnRemoteDevice(null, this.name()));
+            final Object resp = askActor(this.hostProcess.ref(), new ActorMessage.SpawnRemoteDevice(null, this.name()));
             if (resp instanceof ActorRef) {
                 ActorRef deviceRef = (ActorRef) resp;
                 this.setRef(deviceRef);
-                return;
+                return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        throw new IllegalStateException(String.format(
-                "There was an error establishing a connection with a new device: "
-                        + "%s on process: %s. Please check the log file %s for more details.",
-                this.name(), this.hostProcess.name(),
-                this.hostProcess.getLogPath()));
+        return false;
+    }
+
+    private void respawn() {
+        if (this.ref() != null) {
+            try {
+                Future<Boolean> stopped = gracefulStop(this.ref(), Duration.create(5, TimeUnit.SECONDS),
+                        PoisonPill.getInstance());
+                Await.result(stopped, Duration.create(6, TimeUnit.SECONDS));
+                // the actor has been stopped
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            this.setRef(null);
+        }
+
+        if (!spawnOnHostProcess()) {
+            try {
+                this.hostProcess.restart();
+                if (spawnOnHostProcess()) {
+                    return;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            throw new IllegalStateException(String.format(
+                    "There was an error establishing a connection with a new device: "
+                            + "%s on process: %s. Please check the log file %s for more details.",
+                    this.name(), this.hostProcess.name(), this.hostProcess.getLogPath()));
+        }
     }
 
     @Override
@@ -60,6 +86,11 @@ class Device extends RemoteEntity implements IDevice {
     @Override
     public boolean isLoggedInUser(ClientUser user) {
         return this.loggedInUser.orElseGet(() -> null) == user;
+    }
+
+    @Override
+    public Optional<ClientUser> getLoggedInUser() {
+        return this.loggedInUser;
     }
 
     @Override
@@ -110,11 +141,6 @@ class Device extends RemoteEntity implements IDevice {
     }
 
     @Override
-    public void logout() {
-        // TODO: Auto-generated method stub
-    }
-
-    @Override
     public void sendImage(String convId, String path) throws Exception {
         try {
             askActor(this.ref(), new ActorMessage.SendImage(new RConvId(convId), path));
@@ -157,7 +183,10 @@ class Device extends RemoteEntity implements IDevice {
                 resp = askActor(this.ref(), new ActorMessage.GetDeviceId());
             }
             if (resp instanceof ActorMessage.Successful) {
-                id = Optional.of(((ActorMessage.Successful) resp).response());
+                // FIXME: This padding should happen on SE side. Please remove this workaround when it's fixed
+                id = Optional.of(
+                        StringUtils.leftPad(((ActorMessage.Successful) resp).response(), 16, "0")
+                );
                 return id.get();
             } else {
                 throw new RuntimeException(String.format(
@@ -193,6 +222,14 @@ class Device extends RemoteEntity implements IDevice {
             }
         } else {
             return this.fingerprint.get();
+        }
+    }
+
+    @Override
+    public void destroy() {
+        if (this.coordinatorActorRef != null && this.hostProcess != null) {
+            this.ref().tell(PoisonPill.getInstance(), null);
+            this.hostProcess = null;
         }
     }
 }

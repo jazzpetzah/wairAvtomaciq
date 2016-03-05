@@ -1,7 +1,11 @@
 package com.wearezeta.auto.android.steps;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.email.ActivationMessage;
+import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import org.junit.Assert;
 
@@ -9,13 +13,11 @@ import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.android.pages.registration.ProfilePicturePage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.UserState;
 
 import cucumber.api.java.en.*;
 
 public class RegistrationSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
@@ -36,7 +38,6 @@ public class RegistrationSteps {
      * a picture
      *
      * @param shouldPressTwice this will tap camera button twice if exists
-     *
      * @throws Exception
      * @step. ^I press Camera button( twice|\s*)$
      */
@@ -81,8 +82,9 @@ public class RegistrationSteps {
      */
     @When("^I submit registration data$")
     public void ISubmitRegistrationData() throws Exception {
-        activationMessage = BackendAPIWrappers
-                .initMessageListener(userToRegister);
+        final Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, ActivationMessage.MESSAGE_PURPOSE);
+        activationMessage = BackendAPIWrappers.initMessageListener(userToRegister, additionalHeaders);
         getRegistrationPage().createAccount();
     }
 
@@ -107,8 +109,7 @@ public class RegistrationSteps {
      */
     @When("^I input password \"(.*)\"$")
     public void IInputPassword(String pwd) throws Exception {
-        final String password = usrMgr.replaceAliasesOccurences(pwd,
-                ClientUsersManager.FindBy.PASSWORD_ALIAS);
+        final String password = usrMgr.replaceAliasesOccurences(pwd, ClientUsersManager.FindBy.PASSWORD_ALIAS);
         getRegistrationPage().enterPassword(password);
     }
 
@@ -151,13 +152,40 @@ public class RegistrationSteps {
     /**
      * Wait for Unsplash screen to appear
      *
-     * @step. ^I wait until Unsplash screen is visible$
-     *
      * @throws Exception
+     * @step. ^I wait until Unsplash screen is visible$
      */
     @And("^I wait until Unsplash screen is visible$")
     public void IWaitUnspashScreen() throws Exception {
         Assert.assertTrue("Unsplash screen is still not visible after timeout",
                 getRegistrationPage().waitUntilUnsplashScreenIsVisible());
+    }
+
+    private Future<String> emailConfirmMessage;
+
+    /**
+     * Starts the internal email listener to get the confirmation email
+     *
+     * @throws Exception
+     * @step. ^I start listening for confirmation email$
+     */
+    @When("^I start listening for confirmation email$")
+    public void IStartListeningForConfirmEmail() throws Exception {
+        final Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, ActivationMessage.MESSAGE_PURPOSE);
+        emailConfirmMessage = BackendAPIWrappers.initMessageListener(usrMgr.getSelfUserOrThrowError(),
+                additionalHeaders);
+    }
+
+    /**
+     * Wait until confirmation email with confirmation link is delivered and
+     * then activates the user using values from this email message
+     *
+     * @throws Exception
+     * @step. ^I verify my email$
+     */
+    @Then("^I verify my email$")
+    public void IVerifyMyRegistrationData() throws Exception {
+        BackendAPIWrappers.activateRegisteredUserByEmail(emailConfirmMessage);
     }
 }

@@ -1,7 +1,7 @@
 Feature: Connect
 
   @C2461 @regression @id3223
-  Scenario Outline: Verify possibility of disconnecting from conversation list  [PORTRAIT]
+  Scenario Outline: Verify possibility of disconnecting from conversation list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
     Given I Sign in on tablet using my email
@@ -21,8 +21,8 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2465 @regression @id3268
-  Scenario Outline: Verify possibility of disconnecting from conversation list  [LANDSCAPE]
+  @C2465 @rc @regression @id3268
+  Scenario Outline: Verify possibility of disconnecting from conversation list [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
     Given I rotate UI to landscape
@@ -41,7 +41,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2462 @regression @rc @id3228
+  @C2462 @regression @id3228
   Scenario Outline: Verify sending connection request after disconnecting [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -67,7 +67,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2466 @regression @id3273
+  @C2466 @rc @regression @id3273
   Scenario Outline: Verify sending connection request after disconnecting [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -82,7 +82,7 @@ Feature: Connect
     And I dismiss popover on iPad
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
-    And I tap on conversation <Contact> in search result
+    And I tap on conversation <Contact1> in search result
     And I see connect to <Contact1> dialog
     And I click Connect button on connect to dialog
     And I see Connect dialog is closed
@@ -100,13 +100,12 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I click Cancel request button
     And I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
-    Then I see user <Contact1> found on People picker page
+    Then I see the conversation "<Contact1>" exists in Search results
 
     Examples: 
       | Name      | Contact1  |
@@ -120,19 +119,18 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I click Cancel request button
     And I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
-    Then I see user <Contact1> found on People picker page
+    Then I see the conversation "<Contact1>" exists in Search results
 
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C2437 @staging @id2332 @ZIOS-4985
+  @C2437 @regression @id2332 @ZIOS-4985
   Scenario Outline: Verify ignoring a connection request from another person (People view) [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -156,7 +154,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
-  @C2442 @staging @id3305 @ZIOS-4985
+  @C2442 @rc @regression @id3305 @ZIOS-4985
   Scenario Outline: Verify ignoring a connection request from another person (People view) [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -180,25 +178,6 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
-  @C2428 @regression @id3795
-  Scenario Outline: Verify common connections are not tappable [PORTRAIT]
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given <Contact2> sent connection request to me
-    Given <Contact1> is connected to <Contact2>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I see Pending request link in contact list
-    And I click on Pending request link in contact list
-    And I see Pending request page
-    And I see YOU BOTH KNOW people section
-    And I click person in YOU BOTH KNOW section
-    Then I see Pending request page
-
-    Examples: 
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
-
   @C2429 @regression @id3796
   Scenario Outline: Verify common connections are not tappable [LANDSCAPE]
     Given There are 3 users where <Name> is me
@@ -219,23 +198,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2512 @regression @id3903
-  Scenario Outline: Verify inbox is highlighted and opened in the list [PORTRAIT]
-    Given There are 4 users where <Name> is me
-    Given Myself is connected to <Contact3>
-    Given <Contact> sent connection request to Me
-    Given <Contact2> sent connection request to Me
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I see Pending request link in contact list
-    And I click on Pending request link in contact list
-    Then I see Pending request page
-
-    Examples: 
-      | Name      | Contact   | Contact2  | Contact3  |
-      | user1Name | user2Name | user3Name | user4Name |
-
-  @C2513 @regression @id3904
+  @C2513 @rc @regression @id3904
   Scenario Outline: Verify inbox is highlighted and opened in the list [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact3>

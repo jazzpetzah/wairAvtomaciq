@@ -2,6 +2,8 @@ package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.ios.pages.FirstTimeOverlay;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Then;
+import org.junit.Assert;
 
 public class FirstTimeOverlaySteps {
 
@@ -12,6 +14,22 @@ public class FirstTimeOverlaySteps {
     }
 
     /**
+     * Verify whether First Time overlay is visible
+     *
+     * @param shouldNotSee equals to null if the overlay should be visible
+     * @throws Exception
+     * @step. I (do not )?see First Time overlay$
+     */
+    @Then("^I (do not )?see First Time overlay$")
+    public void ISeeFirstTimeOverlay(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("First time overlay is not visible", getFirstTimeOverlay().waitUntiVisible());
+        } else {
+            Assert.assertTrue("First time overlay is not visible", getFirstTimeOverlay().waitUntiInvisible());
+        }
+    }
+
+    /**
      * Wait for a while and accept First Time Usage overlay if it is viisble
      *
      * @throws Exception
@@ -19,6 +37,6 @@ public class FirstTimeOverlaySteps {
      */
     @And("^I accept First Time overlay if it is visible")
     public void IAcceptFirstTimeOverlayIfVisible() throws Exception {
-        getFirstTimeOverlay().acceptIfVisible(5);
+        getFirstTimeOverlay().acceptIfVisible(7);
     }
 }

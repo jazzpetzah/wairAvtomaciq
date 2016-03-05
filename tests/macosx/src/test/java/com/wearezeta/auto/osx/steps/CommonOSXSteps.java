@@ -61,7 +61,6 @@ import java.util.logging.Level;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
-import static org.junit.Assert.assertEquals;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -70,6 +69,7 @@ import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import static org.junit.Assert.assertEquals;
 
 public class CommonOSXSteps {
 
@@ -368,8 +368,7 @@ public class CommonOSXSteps {
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
 	public void ThereAreNUsersWhereXIsMeWithoutEmail(int count,
 			String myNameAlias) throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
-				OSXExecutionContext.CURRENT_PLATFORM, count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
 	}
 
 	/**
@@ -387,7 +386,7 @@ public class CommonOSXSteps {
 	@When("^User (\\w+) changes? avatar picture to (.*)")
 	public void IChangeUserAvatarPicture(String userNameAlias, String path)
 			throws Exception {
-		String avatar = null;
+		String avatar;
 		final String rootPath = "/images/";
 		if (path.equals("default")) {
 			avatar = DEFAULT_USER_PICTURE;

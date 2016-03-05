@@ -12,7 +12,6 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	private NonConnectedParticipantInfoPopoverPage nonConnectedParticipantInfoPopoverPage;
 	private PendingParticipantInfoPopoverPage pendingParticipantInfoPopoverPage;
 	private BlockedParticipantInfoPopoverPage blockedParticipantInfoPopoverPage;
-	private AddPeopleConfirmationPopoverPage addPeopleConfirmationPopoverPage;
 	private LeaveGroupConfirmationPopoverPage leaveGroupConfirmationPopoverPage;
 	private RemoveFromGroupConfirmationPopoverPage removeFromGroupConfirmationPopoverPage;
 	private UnblockUserConfirmationPopoverPage unblockUserConfirmationPopoverPage;
@@ -31,8 +30,6 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		this.pendingParticipantInfoPopoverPage = new PendingParticipantInfoPopoverPage(
 				lazyDriver, this);
 		this.blockedParticipantInfoPopoverPage = new BlockedParticipantInfoPopoverPage(
-				lazyDriver, this);
-		this.addPeopleConfirmationPopoverPage = new AddPeopleConfirmationPopoverPage(
 				lazyDriver, this);
 		this.leaveGroupConfirmationPopoverPage = new LeaveGroupConfirmationPopoverPage(
 				lazyDriver, this);
@@ -142,8 +139,8 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		return this.participantsListPopoverPage.isParticipantVisible(name);
 	}
 
-	public boolean isAddPeopleMessageShown() throws Exception {
-		return this.addPeopleConfirmationPopoverPage.isCurrent();
+	public boolean isEveryoneAlreadyAddedMessageShown() throws Exception {
+		return this.participantsListPopoverPage.isEveryoneAlreadyAddedMessageShown();
 	}
 
 	public String getConversationTitle() {
@@ -156,10 +153,6 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 
 	public void selectUsersFromSearchResult(int amount) throws Exception {
 		this.addPeoplePopoverPage.selectUsersFromSearchResult(amount);
-	}
-
-	public void confirmAddPeople() throws Exception {
-		this.addPeopleConfirmationPopoverPage.clickContinueButton();
 	}
 
 	public boolean isPendingButtonVisible() {

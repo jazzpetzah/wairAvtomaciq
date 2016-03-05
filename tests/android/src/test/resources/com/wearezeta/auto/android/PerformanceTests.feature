@@ -5,10 +5,11 @@ Feature: Performance Tests
     Given There are <UsersNumber> shared users with name prefix <UserNamePrefix>
     Given User <Name> is Me
     Given Myself is connected to all other users
-    Given User Myself removes all his registered OTR clients
-    Given I receive <MsgsCount> messages from contact <Sender>
+    Given User Myself only keeps his 2 most recent OTR clients
     Given I sign in using my email with <LoginTimeout> seconds timeout
     Given I accept First Time overlay as soon as it is visible
+    Given User <Sender> removes all his registered OTR clients
+    Given I receive <MsgsCount> messages from contact <Sender>
     When I start test cycle for <Time> minutes with messages received from <Sender>
     Then I generate performance report for <UsersNumber> users
 
@@ -22,12 +23,13 @@ Feature: Performance Tests
     Given There are 2 users where <Name> is me
     Given <Contact> has an avatar picture from file <Picture>
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    And <Contact> calls me using <CallBackend>
+    And <Contact> calls me
     And I answer the call from the overlay bar
-    Then I see calling overlay Big bar
+    Then I see ongoing call
     When I lock the device
     When I initialize battery performance report
     And I verify the call from <Contact> is in progress for <Time> minutes

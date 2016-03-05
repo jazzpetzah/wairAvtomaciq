@@ -9,6 +9,9 @@ import com.waz.provision.ActorMessage.WaitUntilRegistered;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import org.apache.log4j.Logger;
+import scala.concurrent.Await;
+import scala.concurrent.Future;
+import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
 
 import java.io.File;
@@ -17,15 +20,24 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import static akka.pattern.Patterns.gracefulStop;
 
 class RemoteProcess extends RemoteEntity implements IRemoteProcess {
     private static final Logger LOG = ZetaLogger.getLog(RemoteProcess.class.getSimpleName());
 
+    private static final FiniteDuration ACTOR_DURATION = new FiniteDuration(90, TimeUnit.SECONDS);
+
+    private final ActorRef coordinatorActorRef;
     private final String backendType;
     private final boolean otrOnly;
-    private volatile ExecutorService pinger;
+    private volatile Optional<ExecutorService> pinger = Optional.empty();
+    private Optional<Process> currentProcess = Optional.empty();
+
     {
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
     }
@@ -33,53 +45,64 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
     // Default actor lib TTL equals to 30 seconds
     private static final int PING_INTERVAL_SECONDS = 20;
 
-    public RemoteProcess(String processName, ActorRef coordinatorActorRef,
-                         FiniteDuration actorTimeout, String backendType, boolean otrOnly) {
-        super(coordinatorActorRef, processName, actorTimeout);
+    public RemoteProcess(String processName, ActorRef coordinatorActorRef, String backendType, boolean otrOnly) {
+        super(processName, ACTOR_DURATION);
         this.backendType = backendType;
         this.otrOnly = otrOnly;
-        if (!isConnected()) {
-            throw new IllegalStateException(
-                    "There is no connection to the CoordinatorActor at path: "
-                            + coordinatorActorRef);
-        }
+        this.coordinatorActorRef = coordinatorActorRef;
         try {
-            startProcess();
+            restart();
         } catch (Exception e) {
             e.printStackTrace();
             Throwables.propagate(e);
         }
-        reconnect();
     }
 
-    private void startProcess() throws Exception {
-        final String serialized = Serialization.serializedActorPath(ref());
+    private void restartProcess() throws Exception {
+        if (currentProcess.isPresent()) {
+            currentProcess.get().destroyForcibly();
+        }
+        final String serialized = Serialization.serializedActorPath(this.coordinatorActorRef);
         final String[] cmd = {"java", "-jar", getActorsJarLocation(),
                 this.name(), serialized, backendType, String.valueOf(otrOnly)};
         LOG.info(String.format("Executing actors using the command line: %s", Arrays.toString(cmd)));
         final ProcessBuilder pb = new ProcessBuilder(cmd);
         // ! Having a log file is mandatory
         pb.redirectErrorStream(true);
-        pb.redirectOutput(ProcessBuilder.Redirect.appendTo(new File(
-                getLogPath())));
+        pb.redirectOutput(ProcessBuilder.Redirect.appendTo(new File(getLogPath())));
         LOG.info(String.format("Actor logs will be redirected to %s", getLogPath()));
-        pb.start();
+        this.currentProcess = Optional.of(pb.start());
     }
 
     @Override
-    public void reconnect() {
+    public void restart() throws Exception {
+        if (this.pinger.isPresent()) {
+            this.pinger.get().shutdownNow();
+            this.pinger = Optional.empty();
+        }
+
+        if (this.ref() != null) {
+            try {
+                Future<Boolean> stopped = gracefulStop(this.ref(), Duration.create(5, TimeUnit.SECONDS), null);
+                Await.result(stopped, Duration.create(6, TimeUnit.SECONDS));
+                // the actor has been stopped
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            this.setRef(null);
+        }
+
+        restartProcess();
+
         try {
-            final Object resp = askActor(this.ref(), new WaitUntilRegistered(this.name()));
+            final Object resp = askActor(this.coordinatorActorRef, new WaitUntilRegistered(this.name()));
             if (resp instanceof ActorRef) {
                 this.setRef((ActorRef) resp);
-                if (this.pinger != null) {
-                    this.pinger.shutdownNow();
-                }
-                this.pinger = Executors.newSingleThreadExecutor();
+                this.pinger = Optional.of(Executors.newSingleThreadExecutor());
                 LOG.debug(String.format(
                         "Starting ping thread with %s-seconds interval for the remote process '%s'...",
                         PING_INTERVAL_SECONDS, name()));
-                this.pinger.submit(() -> {
+                this.pinger.get().submit(() -> {
                     while (!Thread.currentThread().isInterrupted()) {
                         try {
                             Thread.sleep(PING_INTERVAL_SECONDS * 1000);
@@ -132,13 +155,16 @@ class RemoteProcess extends RemoteEntity implements IRemoteProcess {
     }
 
     public void shutdown() {
-        // The process will kill itself if no messages within 30 seconds
-        if (this.pinger != null) {
+        if (this.pinger.isPresent()) {
             try {
-                this.pinger.shutdownNow();
+                this.pinger.get().shutdownNow();
             } catch (Throwable e) {
                 e.printStackTrace();
             }
+        }
+
+        if (currentProcess.isPresent()) {
+            currentProcess.get().destroy();
         }
     }
 }

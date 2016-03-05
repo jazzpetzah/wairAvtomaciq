@@ -39,7 +39,7 @@ Feature: Utility
   Scenario Outline: Verify that there are no dead links on start page for <Agent>
     When I navigate to start page for <Agent>
     When I navigate to start page for <Agent>
-    And I can see no dead links
+    Then I can see no dead links
 
     Examples: 
       | Agent   |
@@ -52,7 +52,7 @@ Feature: Utility
   Scenario Outline: Verify that there are no dead links on german start page for <Agent>
     When I navigate to german start page for <Agent>
     When I navigate to german start page for <Agent>
-    And I can see no dead links
+    Then I can see no dead links
 
     Examples: 
       | Agent   |
@@ -144,7 +144,6 @@ Feature: Utility
       | Agent   |
       | iphone  |
       | android |
-  
 
   @C3277 @Utility
   Scenario: Verify buttons from verification link for osx
@@ -171,3 +170,100 @@ Feature: Utility
       | android |
       | osx     |
       | windows |
+
+  @C14580 @utility
+  Scenario Outline: Verify you can delete account on <Agent>
+    Given There is 1 user where <Name> is me
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I click gear button on self profile page
+    When I select Settings menu item on self profile page
+    And I see Settings dialog
+    And I click delete account button on settings page
+    And I see email <Email> in delete info text on settings page
+    And I click send button to delete account
+    And I delete account of user <Name> via email on <Agent>
+    And I open Sign In page
+    And I see Sign In page
+    When I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then the sign in error message reads <Error>
+
+    Examples:
+      | Email      | Password      | Name      | Error                                     | Agent   |
+      | user1Email | user1Password | user1Name | Please verify your details and try again. | iphone  |
+      | user1Email | user1Password | user1Name | Please verify your details and try again. | android |
+      | user1Email | user1Password | user1Name | Please verify your details and try again. | osx     |
+      | user1Email | user1Password | user1Name | Please verify your details and try again. | windows |
+      
+  @C14581 @utility
+  Scenario Outline: Change key checksum on <Agent>
+    Given There is 1 user where <Name> is me
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I click gear button on self profile page
+    When I select Settings menu item on self profile page
+    And I see Settings dialog
+    And I click delete account button on settings page
+    And I see email <Email> in delete info text on settings page
+    And I click send button to delete account
+    And I navigate to delete account page of user <Name> on <Agent> with changed key checksum
+    And I click delete account button
+    Then I see error message for wrong key checksum
+    
+    Examples:
+      | Email      | Password      | Name      | Agent   |
+      | user1Email | user1Password | user1Name | iphone  |
+      | user1Email | user1Password | user1Name | android |
+      | user1Email | user1Password | user1Name | osx     |
+      | user1Email | user1Password | user1Name | windows |
+      
+  @C14582 @utility
+  Scenario Outline: Change code checksum on <Agent>
+    Given There is 1 user where <Name> is me
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I click gear button on self profile page
+    When I select Settings menu item on self profile page
+    And I see Settings dialog
+    And I click delete account button on settings page
+    And I see email <Email> in delete info text on settings page
+    And I click send button to delete account
+    Then I navigate to delete account page of user <Name> on <Agent> with changed code checksum
+    And I click delete account button
+    Then I see error message for wrong code checksum
+        
+    Examples:
+      | Email      | Password      | Name      | Agent   |
+      | user1Email | user1Password | user1Name | iphone  |
+      | user1Email | user1Password | user1Name | android |
+      | user1Email | user1Password | user1Name | osx     |
+      | user1Email | user1Password | user1Name | windows |
+            
+  @C14583 @utility
+    Scenario Outline: Remove checksums on <Agent>
+    Given There is 1 user where <Name> is me
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I click gear button on self profile page
+    When I select Settings menu item on self profile page
+    And I see Settings dialog
+    And I click delete account button on settings page
+    And I see email <Email> in delete info text on settings page
+    And I click send button to delete account
+    And I remember delete link of user <Name>
+    And I use remembered link on <Agent> without key checksum
+    Then I see error message for missing checksum
+    And I use remembered link on <Agent> without code checksum
+    Then I see error message for missing checksum
+    And I use remembered link on <Agent> without both checksum
+    Then I see error message for missing checksum
+
+    Examples:
+      | Email      | Password      | Name      | Agent   |
+      | user1Email | user1Password | user1Name | iphone  |      
+      | user1Email | user1Password | user1Name | android |
+      | user1Email | user1Password | user1Name | osx     |
+      | user1Email | user1Password | user1Name | windows |  
+      

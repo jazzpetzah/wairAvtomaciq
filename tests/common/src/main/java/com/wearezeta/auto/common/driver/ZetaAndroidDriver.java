@@ -129,13 +129,11 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     }
 
     @Override
-    public void swipe(int startx, int starty, int endx, int endy,
-                      int durationMilliseconds) {
+    public void swipe(int startx, int starty, int endx, int endy, int durationMilliseconds) {
         if (androidOSVersion.compareTo("4.3") < 0) {
             // adb swipe command under 4.2 does not support duration parameter
             // and this fucks up all the tests
-            swipeViaTouchActions(startx, starty, endx, endy,
-                    durationMilliseconds);
+            swipeViaTouchActions(startx, starty, endx, endy, durationMilliseconds);
             return;
         }
 
@@ -150,6 +148,16 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         } catch (Exception e) {
             throw new WebDriverException(e.getMessage(), e);
         }
+    }
+
+    public void longTap(WebElement el, int durationMilliseconds) {
+        final Point location = el.getLocation();
+        final Dimension size = el.getSize();
+        this.longTap(location.x + size.width / 2, location.y + size.height / 2, durationMilliseconds);
+    }
+
+    public void longTap(int x, int y, int durationMilliseconds) {
+        this.swipe(x, y, x, y, durationMilliseconds);
     }
 
     public String getOSVersionString() {
@@ -207,7 +215,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
             throw new WebDriverException(e);
         }
         try {
-            CommonUtils.takeAndroidScreenshot(this, tmpScreenshot);
+            CommonUtils.takeAndroidScreenshot(this, tmpScreenshot, false);
             result.setSessionId(this.getSessionId().toString());
             result.setStatus(HttpStatus.SC_OK);
             result.setValue(Base64.encodeBase64(IOUtils.toByteArray(new FileInputStream(tmpScreenshot))));
@@ -232,6 +240,12 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
 
     private static final long DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS = 2000;
     private static final String SERVER_SIDE_ERROR_SIGNATURE = "unknown server-side error";
+    private static final String NO_OPEN_WINDOWS_ERROR_SIGNATURE = "No open windows";
+
+    private static boolean shouldRetryServerError(Throwable e) {
+        return e.getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE) ||
+                e.getMessage().contains(NO_OPEN_WINDOWS_ERROR_SIGNATURE);
+    }
 
     private ExecutorService pool;
 
@@ -243,24 +257,19 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     }
 
     private boolean isSessionLostBecause(Throwable e) {
-        return (e instanceof UnreachableBrowserException)
-                || (e instanceof SessionNotFoundException);
+        return (e instanceof UnreachableBrowserException) || (e instanceof SessionNotFoundException);
     }
 
     /**
      * This is workaround for some Selendroid issues when driver just generates unknown error when some transition in AUT is
      * currently in progress. Retry helps
      *
-     * @param driverCommand
-     * @param parameters
-     * @return
      */
     @Override
     public Response execute(String driverCommand, Map<String, ?> parameters) {
         if (this.isSessionLost() && !driverCommand.equals(DriverCommand.SCREENSHOT)) {
             throw new IllegalStateException(
-                    String.format(
-                            "Appium session is dead. Skipping execution of '%s' command...",
+                    String.format("Appium session is dead. Skipping execution of '%s' command...",
                             driverCommand));
         }
         final Callable<Response> task = () -> super.execute(driverCommand,
@@ -270,44 +279,38 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
             return future.get(MAX_COMMAND_DURATION, TimeUnit.SECONDS);
         } catch (Exception e) {
             if (e instanceof ExecutionException) {
+                if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD)) {
+                    log.debug("The keyboard seems to be already hidden.");
+                    final Response response = new Response();
+                    response.setSessionId(this.getSessionId().toString());
+                    response.setStatus(HttpStatus.SC_OK);
+                    return response;
+                }
+                if (shouldRetryServerError(e.getCause())) {
+                    final long millisecondsStarted = System.currentTimeMillis();
+                    while (System.currentTimeMillis() - millisecondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
+                        try {
+                            Thread.sleep(300);
+                        } catch (InterruptedException e1) {
+                            Throwables.propagate(e1);
+                        }
+                        try {
+                            return super.execute(driverCommand, parameters);
+                        } catch (WebDriverException e1) {
+                            if (isSessionLostBecause(e1)) {
+                                setSessionLost(true);
+                            }
+                            if (!shouldRetryServerError(e1)) {
+                                throw e1;
+                            }
+                        }
+                    } // while have time
+                } // if getMessage contains
+                log.error(String.format("Android driver is still not available after %s seconds timeout. "
+                                + "The recent webdriver command was '%s'",
+                        DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000, driverCommand));
                 if (isSessionLostBecause(e.getCause())) {
                     setSessionLost(true);
-                } else {
-                    if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD)) {
-                        log.debug("The keyboard seems to be already hidden.");
-                        final Response response = new Response();
-                        response.setSessionId(this.getSessionId().toString());
-                        response.setStatus(HttpStatus.SC_OK);
-                        return response;
-                    }
-                    if (e.getCause().getMessage()
-                            .contains(SERVER_SIDE_ERROR_SIGNATURE)) {
-                        final long millisecondsStarted = System
-                                .currentTimeMillis();
-                        while (System.currentTimeMillis() - millisecondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
-                            try {
-                                Thread.sleep(300);
-                            } catch (InterruptedException e1) {
-                                Throwables.propagate(e1);
-                            }
-                            try {
-                                return super.execute(driverCommand, parameters);
-                            } catch (WebDriverException e1) {
-                                if (isSessionLostBecause(e1)) {
-                                    setSessionLost(true);
-                                }
-                                if (!e1.getMessage().contains(
-                                        SERVER_SIDE_ERROR_SIGNATURE)) {
-                                    throw e1;
-                                }
-                            }
-                        } // while have time
-                    } // if getMessage contains
-                    log.error(String.format(
-                            "Android driver is still not available after %s seconds timeout. "
-                                    + "The recent webdriver command was '%s'",
-                            DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000,
-                            driverCommand));
                 }
                 Throwables.propagate(e.getCause());
             } else {
@@ -399,7 +402,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
      */
     public void tapSendButton() throws Exception {
         final File screenshot = File.createTempFile("tmp", ".png");
-        CommonUtils.takeAndroidScreenshot(this, screenshot);
+        CommonUtils.takeAndroidScreenshot(this, screenshot, false);
         try {
             final List<List<Rect>> keyboardButtons = new OnScreenKeyboardScanner()
                     .getButtonCoordinates(screenshot.getCanonicalPath());

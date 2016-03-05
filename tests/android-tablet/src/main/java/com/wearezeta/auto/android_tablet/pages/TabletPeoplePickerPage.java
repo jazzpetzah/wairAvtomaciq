@@ -9,7 +9,6 @@ import org.openqa.selenium.By;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import org.openqa.selenium.WebElement;
 
 public class TabletPeoplePickerPage extends AndroidTabletPage {
 
@@ -22,14 +21,11 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        final Optional<WebElement> pickerSearch = getElementIfDisplayed(PeoplePickerPage.xpathMainSearchField);
-        return pickerSearch.isPresent() && pickerSearch.get().getLocation().getX() >= 0;
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.xpathMainSearchField);
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        final Optional<WebElement> pickerSearch = getElementIfDisplayed(PeoplePickerPage.xpathMainSearchField, 3);
-        return !pickerSearch.isPresent() || pickerSearch.get().getLocation().getX() < 0 ||
-                DriverUtils.waitUntilLocatorDissapears(getDriver(), PeoplePickerPage.xpathTopPeopleAvatars, 3);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), PeoplePickerPage.xpathMainSearchField);
     }
 
     public void tapCloseButton() throws Exception {
@@ -46,10 +42,6 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
         getElement(locator,
                 String.format("The item '%s' is not visible in People Picker search list after the defualt timeout expired",
                         item)).click();
-    }
-
-    public boolean waitUntilTopPeopleIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.xpathTopPeopleAvatars);
     }
 
     public void tapTopPeopleAvatar(String name) throws Exception {
@@ -78,32 +70,19 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
         return this.getAndroidPeoplePickerPage().isGroupInvisible(name);
     }
 
-    public void doShortSwipeDown() throws Exception {
-        getAndroidPeoplePickerPage().doShortSwipeDown();
+    public void tapActionButton(String name) throws Exception {
+        getAndroidPeoplePickerPage().tapActionButton(name);
     }
 
-    public void doLongSwipeDown() throws Exception {
-        getAndroidPeoplePickerPage().doLongSwipeDown();
+    public void typeBackspaceInSearchInput() throws Exception {
+        getAndroidPeoplePickerPage().typeBackspaceInSearchInput();
     }
 
-    public void tapOpenOrCreateConversationButton() throws Exception {
-        getAndroidPeoplePickerPage().tapOpenConversationButton();
+    public boolean waitUntilActionButtonIsVisible(String buttonName) throws Exception {
+        return getAndroidPeoplePickerPage().waitUntilActionButtonIsVisible(buttonName);
     }
 
-    public boolean waitUntilOpenOrCreateConversationButtonIsVisible(String expectedCaption) throws Exception {
-        return getAndroidPeoplePickerPage().waitUntilOpenOrCreateConversationButtonIsVisible(expectedCaption);
+    public boolean waitUntilActionButtonIsInvisible(String buttonName) throws Exception {
+        return getAndroidPeoplePickerPage().waitUntilActionButtonIsInvisible(buttonName);
     }
-
-    public boolean waitUntilOpenConversationButtonIsInvisible() throws Exception {
-        return getAndroidPeoplePickerPage().waitUntilOpenOrCreateConversationButtonIsInvisible();
-    }
-
-    public void tapCameraButton() throws Exception {
-        getAndroidPeoplePickerPage().tapCameraButton();
-    }
-
-    public void tapCallButton() throws Exception {
-        getAndroidPeoplePickerPage().tapCallButton();
-    }
-
 }

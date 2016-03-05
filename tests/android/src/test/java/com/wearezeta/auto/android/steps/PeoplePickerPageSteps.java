@@ -12,8 +12,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private PeoplePickerPage getPeoplePickerPage() throws Exception {
@@ -35,17 +34,18 @@ public class PeoplePickerPageSteps {
     /**
      * Taps on the search bar in the people picker page
      *
+     * @throws Exception
      * @step. ^I tap on Search input on People picker page$
      */
     @When("^I tap on Search input on People picker page$")
-    public void WhenITapOnSearchInputOnPeoplePickerPage() throws Throwable {
+    public void WhenITapOnSearchInputOnPeoplePickerPage() throws Exception {
         getPeoplePickerPage().tapPeopleSearch();
     }
 
     /**
      * Selects a contact from the top people section in the people picker page
      *
-     * @param contact
+     * @param contact user name/alias
      * @throws Exception
      * @step. ^I tap on (.*) in Top People$
      */
@@ -62,41 +62,29 @@ public class PeoplePickerPageSteps {
     /**
      * Creates a conversation from any selected users
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I tap on create conversation$
      */
     @When("^I tap on create conversation$")
-    public void WhenITapOnCreateConversation() throws Throwable {
+    public void WhenITapOnCreateConversation() throws Exception {
         getPeoplePickerPage().tapCreateConversation();
     }
 
     /**
      * Presses the close button in the people picker page
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I press Clear button$
      */
     @When("^I press Clear button$")
-    public void WhenIPressClearButton() throws Throwable {
+    public void WhenIPressClearButton() throws Exception {
         getPeoplePickerPage().tapClearButton();
-    }
-
-    /**
-     * Swipe down people picker
-     *
-     * @throws Exception
-     * @step. ^I swipe down people picker$
-     */
-    @When("^I swipe down people picker$")
-    public void ISwipeDownContactList() throws Exception {
-        getPeoplePickerPage().hideKeyboard();
-        getPeoplePickerPage().swipeDown(500);
     }
 
     /**
      * Types a user name into the people picker search field.
      *
-     * @param contact
+     * @param contact user name/alias
      * @throws Exception
      * @step. ^I input in People picker search field user name (.*)$
      */
@@ -114,13 +102,12 @@ public class PeoplePickerPageSteps {
     /**
      * Types a user email address into the people picker search field
      *
-     * @param email
+     * @param email user email/alias
      * @throws Exception
      * @step. ^I input in People picker search field user email (.*)$
      */
     @When("^I input in People picker search field user email (.*)$")
-    public void WhenIInputInPeoplePickerSearchFieldUserEmail(String email)
-            throws Exception {
+    public void WhenIInputInPeoplePickerSearchFieldUserEmail(String email) throws Exception {
         try {
             email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
         } catch (NoSuchUserException e) {
@@ -132,15 +119,15 @@ public class PeoplePickerPageSteps {
     /**
      * Inputs a part of a username into the search field.
      *
-     * @param part
-     * @param contact
-     * @throws Throwable
+     * @param part    a part of user name
+     * @param contact user name/alias
+     * @throws Exception
      * @step. ^I input in search field part (.*) of user name to connect to
      * (.*)$
      */
     @When("^I input in search field part (.*) of user name to connect to (.*)$")
     public void WhenIInputInPeoplePickerSearchFieldPartOfUserName(String part,
-                                                                  String contact) throws Throwable {
+                                                                  String contact) throws Exception {
         try {
             contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         } catch (NoSuchUserException e) {
@@ -158,14 +145,10 @@ public class PeoplePickerPageSteps {
      * @step. ^I enter \"(.*)\" into Search input on People [Pp]icker page$
      */
     @When("^I enter \"(.*)\" into Search input on People [Pp]icker page")
-    public void IEnterStringIntoSearchField(String searchCriteria)
-            throws Exception {
-        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
-                FindBy.EMAIL_ALIAS);
-        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
-                FindBy.NAME_ALIAS);
-        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
-                FindBy.PHONENUMBER_ALIAS);
+    public void IEnterStringIntoSearchField(String searchCriteria) throws Exception {
+        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.EMAIL_ALIAS);
+        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.NAME_ALIAS);
+        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.PHONENUMBER_ALIAS);
         getPeoplePickerPage().typeTextInPeopleSearch(searchCriteria);
         CommonSteps.getInstance().WaitForTime(2);
     }
@@ -173,13 +156,12 @@ public class PeoplePickerPageSteps {
     /**
      * Adds user name to search field (existing content is not cleaned)
      *
-     * @param contact
-     * @throws Throwable
+     * @param contact user name/alias
+     * @throws Exception
      * @step. ^I add in search field user name to connect to (.*)$
      */
     @When("^I add in search field user name to connect to (.*)$")
-    public void WhenIAddInSearchFieldUserNameToConnectTo(String contact)
-            throws Throwable {
+    public void WhenIAddInSearchFieldUserNameToConnectTo(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getPeoplePickerPage().addTextToPeopleSearch(contact);
     }
@@ -187,17 +169,13 @@ public class PeoplePickerPageSteps {
     /**
      * Wait for a user in the people picker search list
      *
-     * @param contact
+     * @param contact user name/alias
      * @throws Exception
      * @step. ^I see user (.*) found on People picker page$
      */
     @When("^I see user (.*) found on People picker page$")
-    public void WhenISeeUserFoundOnPeoplePickerPage(String contact)
-            throws Exception {
-        try {
-            contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        } catch (NoSuchUserException e) {
-        }
+    public void WhenISeeUserFoundOnPeoplePickerPage(String contact) throws Exception {
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("User '%s' is not visible on People Picker page", contact),
                 getPeoplePickerPage().isUserVisible(contact));
     }
@@ -217,7 +195,7 @@ public class PeoplePickerPageSteps {
     /**
      * Taps on a name found in the people picker page
      *
-     * @param contact
+     * @param contact user name/alias
      * @throws Exception
      * @step. ^I tap on user name found on People picker page (.*)$
      */
@@ -235,7 +213,7 @@ public class PeoplePickerPageSteps {
     /**
      * Taps on a group found in the people picker page
      *
-     * @param contact
+     * @param contact user name/alias
      * @throws Exception
      * @step. ^I tap on group found on People picker page (.*)$
      */
@@ -266,35 +244,20 @@ public class PeoplePickerPageSteps {
      */
     @When("^I click on Add to conversation button$")
     public void WhenIClickOnAddToConversationButton() throws Exception {
-        getPeoplePickerPage().clickOnAddToCoversationButton();
-    }
-
-    /**
-     * Navigates back to the conversation list by swiping down
-     *
-     * @throws Exception
-     * @step. ^I navigate back to Conversations List$
-     */
-    @When("^I navigate back to Conversations List$")
-    public void WhenINavigateBackToConversationsList() throws Exception {
-        getPeoplePickerPage().navigateBack();
+        getPeoplePickerPage().clickOnAddToConversationButton();
     }
 
     /**
      * Check that user exists in People picker
      *
-     * @param contact
-     * @throws Throwable
+     * @param contact user name/alias
+     * @throws Exception
      * @step. ^I see user (.*) in [Pp]eople [Pp]icker$
      */
     @Then("^I see user (.*) in [Pp]eople [Pp]icker$")
-    public void ThenISeeUserInPeoplePicker(String contact) throws Throwable {
-        try {
-            contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        } catch (NoSuchUserException e) {
-        }
-        Assert.assertTrue(String.format(
-                "User '%s' is not visible in People Picker", contact),
+    public void ThenISeeUserInPeoplePicker(String contact) throws Exception {
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("User '%s' is not visible in People Picker", contact),
                 getPeoplePickerPage().isUserVisible(contact));
     }
 
@@ -302,7 +265,7 @@ public class PeoplePickerPageSteps {
      * Looks for a group chat in the people picker search view
      *
      * @param shouldNotSee equals to null if "do not" part does not exist
-     * @param name group name/alias
+     * @param name         group name/alias
      * @throws Exception
      * @step. ^I (do not )?see group (.*) in [Pp]eople [Pp]icker$
      */
@@ -352,142 +315,34 @@ public class PeoplePickerPageSteps {
     }
 
     /**
-     * Verify that Call action button is visible
+     * Verify action button presence
      *
+     * @param shouldNotSee equals to null if the button should be visible
+     * @param buttonName   one of possible action button names
      * @throws Exception
-     * @step. ^I see call action button on People picker page$
+     * @step. ^I (do not )?see (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on People Picker page$
      */
-    @When("^I see call action button on People picker page$")
-    public void ISeeCallActionButtonOnPeoplePickerPage() throws Exception {
-        Assert.assertTrue("Call action button is not visible",
-                getPeoplePickerPage().isCallButtonVisible());
-    }
-
-    /**
-     * Verify that Send image action button is visible
-     *
-     * @throws Exception
-     * @step. ^I see Send image action button on People picker page$
-     */
-    @When("^I see Send image action button on People picker page$")
-    public void ISeeSendImageActionButtonOnPeoplePickerPage() throws Exception {
-        Assert.assertTrue("Send image action button is not visible",
-                getPeoplePickerPage().isSendImageButtonVisible());
-    }
-
-    /**
-     * Verify if Open conversation button is visible
-     *
-     * @throws Exception
-     * @step. ^I see open conversation action button on People picker page$
-     */
-    @When("^I see open conversation action button on People picker page$")
-    public void ISeeOpenConversationActionButton() throws Exception {
-        Assert.assertTrue("Open conversation button is not visible",
-                getPeoplePickerPage()
-                        .waitUntilOpenOrCreateConversationButtonIsVisible());
-    }
-
-    /**
-     * Verify whether Open/Create Conversation button is visible
-     *
-     * @param shouldBeVisible equals to null if the button should be visible
-     * @param expectedCaption either 'Open' or 'Create'
-     * @throws Exception
-     * @step. ^I (do not )?see (?:the |\\s*)(Open|Create) Conversation button on
-     * [Pp]eople [Pp]icker page$"
-     */
-    @Then("^I (do not )?see (?:the |\\s*)(Open|Create) Conversation button on [Pp]eople [Pp]icker page$")
-    public void ISeeOpenConversationButton(String shouldBeVisible,
-                                           String expectedCaption) throws Exception {
-        if (shouldBeVisible == null) {
-            Assert.assertTrue(
-                    String.format("%s Conversation button is not visible",
-                            expectedCaption),
-                    getPeoplePickerPage()
-                            .waitUntilOpenOrCreateConversationButtonIsVisible(
-                                    expectedCaption));
+    @Then("^I (do not )?see (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on People Picker page$")
+    public void ISeeActionButton(String shouldNotSee, String buttonName) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("'%s' action button is not visible", buttonName),
+                    getPeoplePickerPage().waitUntilActionButtonIsVisible(buttonName));
         } else {
-            Assert.assertTrue(
-                    String.format(
-                            "%s Conversation button is still visible, but should be hidden",
-                            expectedCaption),
-                    getPeoplePickerPage()
-                            .waitUntilOpenOrCreateConversationButtonIsInvisible());
+            Assert.assertTrue(String.format("'%s' action button is not visible", buttonName),
+                    getPeoplePickerPage().waitUntilActionButtonIsInvisible(buttonName));
         }
     }
 
     /**
-     * Verify if Open, Call and Send image action buttons are visible
+     * Tap the corresponding action button
      *
+     * @param buttonName one of possible action button names
      * @throws Exception
-     * @step. ^I see action buttons appeared on People picker page
+     * @step. ^I tap (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on People Picker page$
      */
-    @When("^I see action buttons appeared on People picker page$")
-    public void ISeeActionButttonsAppearedOnPeoplePickerPage() throws Exception {
-        ISeeOpenConversationActionButton();
-        ISeeCallActionButtonOnPeoplePickerPage();
-        ISeeSendImageActionButtonOnPeoplePickerPage();
-    }
-
-    /**
-     * Opens the conversation by clicking the conversation action button
-     *
-     * @throws Throwable
-     * @step. ^I click on open conversation action button on People picker page$
-     */
-    @When("^I click on open conversation action button on People picker page$")
-    public void IClickOnOpenConversationActionButtonOnPeoplePickerPage()
-            throws Throwable {
-        getPeoplePickerPage().tapOpenConversationButton();
-    }
-
-    /**
-     * Tap the Create/Open Conversation button
-     *
-     * @throws Exception
-     * @step. ^I tap (?:Open|Create) Conversation button on [Pp]eople [Pp]icker
-     * page$
-     */
-    @When("^I tap (?:Open|Create) Conversation button on [Pp]eople [Pp]icker page$")
-    public void ITapConversationActionButton() throws Exception {
-        getPeoplePickerPage().tapOpenConversationButton();
-    }
-
-    /**
-     * Opens the picture gallery by clicking the send image action button
-     *
-     * @throws Throwable
-     * @step. ^I click Send image action button on People picker page$
-     */
-    @When("^I click Send image action button on People picker page$")
-    public void IClickSendImageActionButtonOnPeoplePickerPage()
-            throws Throwable {
-        getPeoplePickerPage().tapCameraButton();
-    }
-
-    /**
-     * Starts a call by clicking the call action button
-     *
-     * @throws Throwable
-     * @step. ^I click Call action button on People picker page$
-     */
-    @When("^I click Call action button on People picker page$")
-    public void IClickCallActionButtonOnPeoplePickerPage() throws Throwable {
-        getPeoplePickerPage().tapCallButton();
-    }
-
-    /**
-     * Action buttons disappear when contact gets unchecked from search
-     *
-     * @throws Exception
-     * @step. ^I see action buttons disappear from People Picker page$
-     */
-    @Then("^I see action buttons disappear from People Picker page$")
-    public void ISeeActionButtonsDisappearFromPeoplePickerPage()
-            throws Exception {
-        getPeoplePickerPage()
-                .waitUntilOpenOrCreateConversationButtonIsInvisible();
+    @When("^I tap (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on People Picker page$")
+    public void ITapActionButtons(String buttonName) throws Exception {
+        getPeoplePickerPage().tapActionButton(buttonName);
     }
 
     /**

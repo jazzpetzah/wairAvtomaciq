@@ -3,6 +3,7 @@ Feature: Conversation View
   @C1703 @smoke
   Scenario Outline: Send message in 1on1
     Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -22,6 +23,17 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
+    Given I Sign in using login <Login2> and password <Password2>
+    Given I am signed in properly
+    Given I see Welcome page
+    Given I confirm keeping picture on Welcome page
+    Given I see Contact list with name <ChatName>
+    Given I open self profile
+    Given I click gear button on self profile page
+    Given I select Log out menu item on self profile page
+    Given I see the clear data dialog
+    Given I click Logout button on clear data dialog
+    Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
@@ -31,6 +43,8 @@ Feature: Conversation View
     When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
@@ -46,6 +60,8 @@ Feature: Conversation View
   @C1704 @regression
   Scenario Outline: Send message to group chat
     Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Contact2> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
@@ -79,6 +95,7 @@ Feature: Conversation View
   @C1784 @regression
   Scenario Outline: Able to send and play youtube link
     Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -117,34 +134,34 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | userpicture_landscape.jpg |
 
-  @C1764 @regression
-  Scenario Outline: I can see missed messages when rejoining a conversation after leaving it
+  @C1764 @regression @e2ee
+  Scenario Outline: I cannot see missed messages when rejoining a conversation after leaving it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given User Myself sends message <Msg1FromUserA> to conversation <ChatName>
-    Given User <Contact1> is me
     Given I switch to Sign In page
-    Given I Sign in using login <Contact1Email> and password <Contact1Password>
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
     And I see Contact list with name <ChatName>
     When I open conversation with <ChatName>
+    And Contact <Contact1> sends encrypted message <Msg1FromUserA> to group conversation <ChatName>
     Then I see text message <Msg1FromUserA>
     And I click People button in group conversation
     And I see Group Participants popover
     When I click Leave button on Group Participants popover
     And I click confirm leave group conversation on Group Participants popover
     Then I do not see Contact list with name <ChatName>
-    And User <Name> sends message <Msg2FromUserA> to conversation <ChatName>
+    And Contact <Contact1> sends encrypted message <Msg2FromUserA> to group conversation <ChatName>
     When I open archive
     And I unarchive conversation <ChatName>
     When I open conversation with <ChatName>
     Then I do not see text message <Msg2FromUserA>
-    When User <Name> added contact <Contact1> to group chat <ChatName>
-    Then I see text message <Msg2FromUserA>
+    When User <Contact1> added contact <Name> to group chat <ChatName>
+    Then I do not see text message <Msg2FromUserA>
 
-    Examples: 
-      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | ChatName  | Msg1FromUserA | Msg2FromUserA |
-      | user1Name | user2Name | user2Email    | user2Password    | user3Name | GroupChat | Message1      | Message2      |
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Msg1FromUserA | Msg2FromUserA |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | SendPictureGroupChat | Message1      | Message2      |
 
   @C1710 @regression
   Scenario Outline: Verify you can add maximum+1 number of participants into group conversation
@@ -152,8 +169,10 @@ Feature: Conversation View
     Given I enter email "<Login>"
     Given I enter password "<Password>"
     Given I press Sign In button
+    Given I see the history info page
+    Given I click confirm on history info page
     Given I wait for 20 seconds
-    When I see my avatar on top of Contact list
+    And I am signed in properly
     And I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results
@@ -165,21 +184,17 @@ Feature: Conversation View
     And I click People button in group conversation
     And I see Group Participants popover
     When I click Add People button on Group Participants popover
-    And I see Add People message on Group Participants popover
-    And I confirm add to chat on Group Participants popover
     And I select the first 125 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
     When I click People button in group conversation
     And I see Group Participants popover
-    Then I see 128 participants in the Group Participants popover
+    Then I see 127 participants in the Group Participants popover
     When I click Add People button on Group Participants popover
-    And I see Add People message on Group Participants popover
-    And I confirm add to chat on Group Participants popover
     And I select the first 1 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
     When I click People button in group conversation
     And I see Group Participants popover
-    Then I see 128 participants in the Group Participants popover
+    Then I see 127 participants in the Group Participants popover
 
     Examples: 
       | Login                       | Password   | Contact1   | Contact2   |
@@ -188,6 +203,7 @@ Feature: Conversation View
   @C1781 @regression
   Scenario Outline: Send a long message containing new lines in 1on1
     Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -204,6 +220,22 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   | ExpectedMessage                   |
       | user1Email | user1Password | user1Name | user2Name | ('a' * 100)('LF' * 10)('b' * 100) |
+
+  @C49977 @regression
+  Scenario Outline: Send a really long message to group conversation
+    Given I switch to Sign In page
+    Given I Sign in temporary using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I see my avatar on top of Contact list
+    When I open conversation with <ChatName>
+    And I paste message from file <File>
+    And I send message
+    Then I verify the last text message equals file <File>
+
+    Examples:
+      | Login                         | Password   | ChatName    | File           |
+      | smoketester+68b16b1c@wire.com | aqa123456! | Lorem ipsum | loremipsum.txt |
 
   @C1702 @regression
   Scenario Outline: Verify you can see conversation images in fullscreen
@@ -285,6 +317,7 @@ Feature: Conversation View
   @C1794 @regression
   Scenario Outline: Verify you ping in a conversation when you press alt + ctrl + K (Win)
     Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -312,7 +345,7 @@ Feature: Conversation View
     When I hover call button
     Then I see correct call button tooltip
     When I type shortcut combination to start a call
-    Then I see the calling bar
+    Then I see the outgoing call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   |

@@ -109,4 +109,9 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 				.cssSelector(PopoverLocators.GroupPopover.ParticipantsListPage.cssParticipants);
 		return this.getDriver().findElements(locator).size();
 	}
+
+	public boolean isEveryoneAlreadyAddedMessageShown() throws Exception {
+		final By locator = By.cssSelector(PopoverLocators.GroupPopover.ParticipantsListPage.cssEveryoneAlreadyAdded);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+	}
 }

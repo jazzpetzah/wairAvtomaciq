@@ -6,6 +6,9 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.*;
 
@@ -15,38 +18,35 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class ContactListPage extends IOSPage {
     private static final int CONV_SWIPE_TIME = 500;
 
-    private static final By nameSelfButton = By.name("SelfButton");
+    private static final By nameSelfButton = MobileBy.AccessibilityId("SelfButton");
 
     private static final String xpathStrContactListRoot = xpathStrMainWindow + "/UIACollectionView[1]";
     private static final By xpathContactListRoot = By.xpath(xpathStrContactListRoot);
 
-    private static final String xpathStrContactListItems = xpathStrContactListRoot + "//UIACollectionCell";
+    protected static final String xpathStrContactListItems = xpathStrContactListRoot + "/UIACollectionCell";
     private static final Function<String, String> xpathStrContactListItemByExpr = xpathExpr ->
             String.format("%s/UIAStaticText[%s]", xpathStrContactListItems, xpathExpr);
-    private static final Function<String, String> xpathStrContactListItemYouAreInCallWithByName = name ->
-            String.format("%s/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
-
-    private static final Function<String, String> xpathStrConvoListEntryByName = name ->
-            String.format("%s[ .//*[@value='%s'] ]", xpathStrContactListItems, name);
+    protected static final Function<String, String> xpathStrConvoListEntryByName = name ->
+            String.format("%s/UIAStaticText[@value='%s']/parent::*", xpathStrContactListItems, name);
     private static final Function<Integer, String> xpathStrConvoListEntryByIdx = idx ->
-            String.format("(%s)[%s]", xpathStrContactListItems, idx);
-    private static final Function<Integer, String> xpathStrConvoListEntryNameByIdx = idx ->
-            String.format("(%s)[%s]/UIAStaticText", xpathStrContactListItems, idx);
+            String.format("%s[%s]", xpathStrContactListItems, idx);
+    private static final Function<String, String> xpathStrFirstConversationEntryByName = name ->
+            String.format("%s[1]/UIAStaticText[@value='%s']", xpathStrContactListItems, name);
 
-    private static final By nameOpenStartUI = By.name("START A CONVERSATION");
+    private static final By nameOpenStartUI = MobileBy.AccessibilityId("START A CONVERSATION");
 
-    private static final By nameMediaCellPlayButton = By.name("mediaCellButton");
+    private static final By nameMediaCellPlayButton = MobileBy.AccessibilityId("mediaCellButton");
 
     private static final By xpathPendingRequest =
             By.xpath("//UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]");
 
-    private static final By nameMuteCallButton = By.name("MuteVoiceButton");
+    private static final By nameMuteCallButton = MobileBy.AccessibilityId("MuteVoiceButton");
 
-    private static final By nameLeaveConversationButton = By.name("LEAVE");
+    private static final By nameLeaveConversationButton = MobileBy.AccessibilityId("LEAVE");
 
-    public static final By nameCancelButton = By.name("CANCEL");
+    public static final By nameCancelButton = MobileBy.AccessibilityId("CANCEL");
 
-    private static final By nameSendAnInviteButton = By.name("INVITE MORE PEOPLE");
+    private static final By nameSendAnInviteButton = MobileBy.AccessibilityId("INVITE MORE PEOPLE");
 
     private static final Function<String, String> xpathStrContactListPlayPauseButtonByConvoName = name ->
             String.format("//UIACollectionCell[@name='%s']/UIAButton[@name='mediaCellButton']", name);
@@ -92,28 +92,10 @@ public class ContactListPage extends IOSPage {
         getElement(nameSelfButton).click();
     }
 
-    public String getSelfButtonLabel() throws Exception {
-        return getElement(nameSelfButton).getAttribute("label").toUpperCase();
-    }
-
-    public boolean isSelfButtonContainingFirstNameLetter(String name) throws Exception {
-        String sub = name.substring(0, 1).toUpperCase();
-        return sub.equals(getSelfButtonLabel());
-    }
-
     public void tapOnName(String name) throws Exception {
         findNameInContactList(name).orElseThrow(
                 () -> new IllegalStateException(String.format("The conversation '%s' is not visible in the list", name))
         ).click();
-    }
-
-    public String getFirstDialogName() throws Exception {
-        return getDialogNameByIndex(1);
-    }
-
-    public String getDialogNameByIndex(int index) throws Exception {
-        final By locator = By.xpath(xpathStrConvoListEntryNameByIdx.apply(index));
-        return getElement(locator, String.format("Conversation # %s is not visible", index)).getText();
     }
 
     private Optional<WebElement> findNameInContactList(String name) throws Exception {
@@ -147,10 +129,6 @@ public class ContactListPage extends IOSPage {
         } while ((count < 5) && !isCancelActionButtonVisible());
     }
 
-    public String getFirstConversationName() throws Exception {
-        return getDialogNameByIndex(1);
-    }
-
     public boolean waitForContactListToLoad() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpathStrConvoListEntryByIdx.apply(1)));
     }
@@ -168,7 +146,7 @@ public class ContactListPage extends IOSPage {
     }
 
     public boolean contactIsNotDisplayed(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.name(name), 5);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), MobileBy.AccessibilityId(name), 5);
     }
 
     @Override
@@ -274,7 +252,7 @@ public class ContactListPage extends IOSPage {
     }
 
     public void tapConvoItemByIdx(int idx) throws Exception {
-        final By locator = By.xpath(xpathStrConvoListEntryNameByIdx.apply(idx));
+        final By locator = By.xpath(xpathStrConvoListEntryByIdx.apply(idx));
         getElement(locator, String.format("Conversation list entry number '%s' is not visible", idx)).click();
     }
 
@@ -286,16 +264,25 @@ public class ContactListPage extends IOSPage {
     }
 
     private Optional<WebElement> findNameIamCallingInContactList(String name) throws Exception {
-        final By locator = By.xpath(xpathStrContactListItemYouAreInCallWithByName.apply(name));
-        final Optional<WebElement> contactCellCalling = getElementIfDisplayed(locator);
-        if (contactCellCalling.isPresent()) {
-            return contactCellCalling;
-        } else {
-            try {
-                return Optional.of(((IOSElement) getElement(xpathContactListRoot)).scrollToExact(name));
-            } catch (WebDriverException e) {
-                return Optional.empty();
+        return getElementIfDisplayed(MobileBy.AccessibilityId(name));
+    }
+
+    public boolean isFirstConversationName(String convoName) throws Exception {
+        final By locator = By.xpath(xpathStrFirstConversationEntryByName.apply(convoName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public void openArchivedConversations() throws Exception {
+        // This is to make sure that we are not in some transition state from the previous step
+        Thread.sleep(3000);
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            if (CommonUtils.getDeviceName(this.getClass()).equals("iPhone 4s")) {
+                IOSSimulatorHelper.swipe(0.2, 0.6, 0.2, 0.1);
+            } else {
+                IOSSimulatorHelper.swipe(0.2, 0.7, 0.2, 0.1);
             }
+        } else {
+            swipeUp(1000);
         }
     }
 }

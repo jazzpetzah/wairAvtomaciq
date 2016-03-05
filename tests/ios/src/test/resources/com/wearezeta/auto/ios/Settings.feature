@@ -106,3 +106,21 @@ Feature: Settings
     Examples:
       | Name      | Color  |
       | user1Name | Violet |
+
+  @C3247 @regression @rc
+  Scenario Outline: Verify deleting the account registered by email
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap my avatar
+    And I click on Settings button on personal page
+    And I click on Settings button from the options menu
+    And I select settings item Account
+    And I start waiting for <Name> account removal notification
+    And I select settings item Delete Account
+    Then I see sign in screen
+    And I verify account removal notification is received
+
+    Examples:
+      | Name      |
+      | user1Name |

@@ -18,12 +18,11 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
  * @author deancook
  */
 public class EmailSignInPage extends AndroidPage {
-    private static final Function<String, String> xpathStrLoginMessageByText = text -> String
-            .format("//*[@id='message' and @value='%s']", text);
-
     private static final By xpathAlertOKButton = By.xpath("//*[starts-with(@id, 'button') and @value='OK']");
 
     public static final By idLoginInput = By.id("get__sign_in__email");
+
+    public static final By idForcedLoginInput = By.id("tet__profile__guided");
 
     private static final By idPasswordInput = By.id("get__sign_in__password");
 
@@ -84,12 +83,11 @@ public class EmailSignInPage extends AndroidPage {
 
     }
 
-    public void verifyErrorMessageText(String expectedMsg) throws Exception {
-        getElement(By.xpath(xpathStrLoginMessageByText.apply(expectedMsg)),
-                String.format("Error message '%s' is not visible on the screen", expectedMsg), 15);
-    }
-
     public void acceptErrorMessage() throws Exception {
         getElement(xpathAlertOKButton).click();
+    }
+
+    public boolean waitForForcedEmailLoginScreen() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idForcedLoginInput, 30);
     }
 }

@@ -93,7 +93,6 @@ Feature: Conversation View
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
     And I tap the conversation <Contact1>
-    And I see the conversation view
     And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Single user popover
@@ -101,8 +100,7 @@ Feature: Conversation View
     And I enter "<Contact2>" into the Search input on Single user popover
     And I tap the avatar of <Contact2> in search results on Single user popover
     And I tap the Add To Conversation button on Single user popover
-    Then I see the conversation view
-    And I see the system message contains "<Action>" text on conversation view page
+    Then I see the system message contains "<Action>" text on conversation view page
     And I see the system message contains "<Contact1>" text on conversation view page
     And I see the system message contains "<Contact2>" text on conversation view page
 
@@ -120,7 +118,6 @@ Feature: Conversation View
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
     And I tap the conversation <Contact1>
-    And I see the conversation view
     And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Single user popover
@@ -128,8 +125,7 @@ Feature: Conversation View
     And I enter "<Contact2>" into the Search input on Single user popover
     And I tap the avatar of <Contact2> in search results on Single user popover
     And I tap the Add To Conversation button on Single user popover
-    Then I see the conversation view
-    And I see the system message contains "<Action>" text on conversation view page
+    Then I see the system message contains "<Action>" text on conversation view page
     And I see the system message contains "<Contact1>" text on conversation view page
     And I see the system message contains "<Contact2>" text on conversation view page
 

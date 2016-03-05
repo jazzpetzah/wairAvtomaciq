@@ -181,6 +181,14 @@ public class ConversationPage extends WebPage {
 		wait.until(visibilityOfTextInElementsLocated(locator, parts));
 	}
 
+	public boolean waitForMessageContains(String text) throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
+		WebDriverWait wait = new WebDriverWait(getDriver(),
+				DriverUtils.getDefaultLookupTimeoutSeconds());
+		return wait.until(visibilityOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
+	}
+
 	public void waitForMessageHeaderContains(String text) throws Exception {
 		waitForMessageHeaderContains(new HashSet<String>(Arrays.asList(text)));
 	}
@@ -192,6 +200,11 @@ public class ConversationPage extends WebPage {
 		WebDriverWait wait = new WebDriverWait(getDriver(),
 				DriverUtils.getDefaultLookupTimeoutSeconds());
 		wait.until(visibilityOfTextInElementsLocated(locator, parts));
+	}
+
+	public int waitForNumberOfMessageHeadersContain(String text)
+			throws Exception {
+		return waitForNumberOfMessageHeadersContain(new HashSet<String>(Arrays.asList(text)));
 	}
 
 	public int waitForNumberOfMessageHeadersContain(Set<String> parts)
@@ -492,6 +505,15 @@ public class ConversationPage extends WebPage {
 		getDriver().findElement(locator).click();
 	}
 
+	public void clickAcceptVideoCallButton() throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.ConversationPage.cssAcceptVideoCallButton);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Accept video call button has not been shown after "
+				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
+		getDriver().findElement(locator).click();
+	}
+
 	public void clickEndCallButton() throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssEndCallButton);
@@ -718,4 +740,8 @@ public class ConversationPage extends WebPage {
 		return connectedMessageLabel.getText();
 	}
 
+	public boolean isConversationVerified() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+				.cssConversationVerifiedIcon));
+	}
 }

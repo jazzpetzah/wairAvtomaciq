@@ -5,7 +5,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.GroupChatInfoPage;
 
 import cucumber.api.java.en.Then;
@@ -22,10 +21,6 @@ public class GroupChatInfoPageSteps {
 
     private GroupChatInfoPage getGroupChatInfoPage() throws Exception {
         return pagesCollection.getPage(GroupChatInfoPage.class);
-    }
-
-    private ContactListPage getContactListPage() throws Exception {
-        return pagesCollection.getPage(ContactListPage.class);
     }
 
     @When("^I press leave conversation button$")
@@ -70,9 +65,10 @@ public class GroupChatInfoPageSteps {
         Assert.assertTrue(getGroupChatInfoPage().isCorrectConversationName(expectedNames));
     }
 
-    @When("I see correct conversation name (.*)")
-    public void ISeeCorrectConversationName(String name) throws Exception {
-        Assert.assertEquals(getGroupChatInfoPage().getGroupChatName(), name);
+    @Then("I see correct conversation name (.*)")
+    public void ISeeCorrectConversationName(String expectedName) throws Exception {
+        Assert.assertTrue(String.format("Group conversation name is not equal to '%s'", expectedName),
+                getGroupChatInfoPage().isGroupNameEqualTo(expectedName));
     }
 
     @When("^I close group info page$")
@@ -138,7 +134,6 @@ public class GroupChatInfoPageSteps {
 
         PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
         pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact);
-        pickerSteps.WhenISeeUserFoundOnPeoplePickerPage(contact);
         pickerSteps.ITapOnConversationFromSearch(contact);
         pickerSteps.WhenIClickOnAddToConversationButton();
     }

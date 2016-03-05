@@ -6,7 +6,7 @@ Feature: Settings
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
-    When I tap on my avatar
+    When I tap conversations list settings button
     And I tap options button
     And I tap settings button
     Then I see settings page
@@ -23,7 +23,7 @@ Feature: Settings
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
-    And I tap on my avatar
+    And I tap conversations list settings button
     And I tap on my name
     And I see edit name field with my name
     When I tap options button
@@ -39,7 +39,7 @@ Feature: Settings
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
-    When I tap on my avatar
+    When I tap conversations list settings button
     And I tap options button
     And I tap about button
     Then I see About page

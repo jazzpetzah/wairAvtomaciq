@@ -2,12 +2,10 @@ package com.wearezeta.auto.android.steps;
 
 import java.util.Random;
 
+import com.wearezeta.auto.android.pages.registration.*;
+import cucumber.api.java.en.And;
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.registration.AreaCodePage;
-import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
-import com.wearezeta.auto.android.pages.registration.PhoneNumberVerificationPage;
-import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -33,6 +31,10 @@ public class LoginSteps {
 
     private AreaCodePage getAreaCodePage() throws Exception {
         return pagesCollection.getPage(AreaCodePage.class);
+    }
+
+    private AddPhoneNumberPage getAddPhoneNumberPage() throws Exception {
+        return pagesCollection.getPage(AddPhoneNumberPage.class);
     }
 
     private PhoneNumberVerificationPage getVerificationPage() throws Exception {
@@ -104,7 +106,7 @@ public class LoginSteps {
     /**
      * Types an email address into the email login field
      *
-     * @param login
+     * @param login email/alias
      * @throws Exception
      * @step. ^I have entered login (.*)$
      */
@@ -121,7 +123,7 @@ public class LoginSteps {
     /**
      * Enters a password into the password login field
      *
-     * @param password
+     * @param password password/alias
      * @throws Exception
      * @step. ^I have entered password (.*)$
      */
@@ -147,19 +149,6 @@ public class LoginSteps {
     }
 
     /**
-     * Checks to see that the login error message contains the correct text
-     * After providing a false email address or password
-     *
-     * @param expectedMsg the expected error message
-     * @throws Exception
-     * @step. ^I see error message \"(.*)\"$
-     */
-    @Then("^I see error message \"(.*)\"$")
-    public void ISeeErrorMessage(String expectedMsg) throws Exception {
-        getEmailSignInPage().verifyErrorMessageText(expectedMsg);
-    }
-
-    /**
      * Accept an error message by clicking OK button
      *
      * @throws Exception
@@ -168,5 +157,29 @@ public class LoginSteps {
     @When("^I accept the error message$")
     public void IAcceptErrorMsg() throws Exception {
         getEmailSignInPage().acceptErrorMessage();
+    }
+    
+    /**
+     * Verify whether forcer email login page is visible
+     * 
+     * @step. ^I see (?:forced)? e?mail login page$
+     * @throws Exception
+     */
+    @Given("^I see (?:forced)? e?mail login page$")
+    public void GivenISeeEmailScreen() throws Exception {
+        Assert.assertTrue("Forced email login page is not shown", getEmailSignInPage()
+                .waitForForcedEmailLoginScreen());
+    }
+
+    /**
+     * Click NOT NOW button on the corresponding page
+     *
+     * @step. ^I postpone Add Phone Number action$
+     *
+     * @throws Exception
+     */
+    @And("^I postpone Add Phone Number action$")
+    public void IPostponeAddPhoneNumber() throws Exception {
+        getAddPhoneNumberPage().tapNotNowButton();
     }
 }

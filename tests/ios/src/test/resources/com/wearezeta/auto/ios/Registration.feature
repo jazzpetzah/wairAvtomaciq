@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @C1019 @regression @rc @id589
+  @C1019 @clumsy @regression @rc @id589
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
     When I enter phone number for user <Name>
@@ -32,22 +32,6 @@ Feature: Registration
     When I enter phone number for user <Name>
     And I input random activation code
     Then I see invalid code alert
-
-    Examples:
-      | Name      |
-      | user1Name |
-
-  @C1008 @regression @id295
-  Scenario Outline: Verify cutting spaces from the beginning and ending the name
-    Given I see sign in screen
-    When I enter phone number for user <Name>
-    And I enter activation code
-    And I accept terms of service
-    And I fill in name <Name> with leading and trailing spaces and hit Enter
-    And I press Keep This One button
-    Then I see conversations list
-    When I tap my avatar
-    Then I see user name doesnt contains spaces
 
     Examples:
       | Name      |

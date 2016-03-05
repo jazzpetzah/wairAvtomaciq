@@ -45,7 +45,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | Number | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | 3      | TESTCHAT      |
 
-  @C3175 @rc @regression @id1389
+  @C3175 @rc @regression @clumsy @id1389
   Scenario Outline: Leave from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -65,7 +65,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @C3169 @rc @regression @id1390
+  @C3169 @rc @regression @clumsy @id1390
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -84,7 +84,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @C3173 @rc @regression @id1396
+  @C3173 @rc @regression @clumsy @id1396
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -100,7 +100,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName |
       | user1Name | user2Name | user3Name | 2                 | GroupInfo     |
 
-  @C3174 @rc @regression @id1406
+  @C3174 @rc @regression @clumsy @id1406
   Scenario Outline: I can edit the conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -120,7 +120,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | ChatName | GroupChatName |
       | user1Name | user2Name | user3Name | QAtest   | TESTCHAT      |
 
-  @C3172 @rc @regression @id339
+  @C3172 @rc @regression @clumsy @id339
   Scenario Outline: Tap on participant profiles in group info page participant view
     Given There are 3 users where <Name> is me
     Given <GroupCreator> is connected to me
@@ -168,7 +168,6 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     And I tap on group chat with name <GroupChatName>
-    #And I swipe up on group chat page
     And I open group conversation details
     And I select participant <NonConnectedContact>
     Then I see connect to <NonConnectedContact> dialog
@@ -177,27 +176,21 @@ Feature: People View
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-  # broken functionality
   @C975 @regression @id555
   Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact1>
-    #And I swipe up on dialog page to open other user personal page
+    And I tap on contact name <Contact1>
     And I open conversation details
-    And I see <Contact1> user profile page
     And I press Add button
-    #And I dont see keyboard
-    And I tap on conversation <Contact2> in search result
-    Then I see user <Contact2> on People picker page is selected
-    And I tap on conversation <Contact2> in search result
-    Then I see user <Contact2> on People picker page is NOT selected
-    And I tap on conversation <Contact2> in search result
     And I tap on Search input on People picker page
-    #Then I see keyboard
-    #And I don't see Add to conversation button
+    When I tap on conversation <Contact2> in search result
+    Then I see user <Contact2> on People picker page is selected
+    When I tap on conversation <Contact2> in search result
+    Then I see user <Contact2> on People picker page is NOT selected
+    When I tap on conversation <Contact2> in search result
     And I press keyboard Delete button
     Then I see user <Contact2> on People picker page is NOT selected
 
@@ -205,7 +198,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C986 @rc @regression @id556
+  @C986 @rc @clumsy @regression @id556
   Scenario Outline: Verify you can add people from 1:1 people view (via keyboard button)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -213,7 +206,6 @@ Feature: People View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I see <Contact1> user profile page
     And I press Add button
     And I tap on Search input on People picker page
     And I don't see Add to conversation button
@@ -253,7 +245,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @C3170 @rc @regression @id1462
+  @C3170 @rc @regression @clumsy @id1462
   Scenario Outline: Verify silence the conversation
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -274,7 +266,7 @@ Feature: People View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C3171 @rc @regression @id1335
+  @C3171 @rc @regression @clumsy @id1335
   Scenario Outline: Verify unsilence the conversation
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
@@ -344,9 +336,8 @@ Feature: People View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
-    And I see user <Contact3> found on People picker page
+    And I see the conversation "<Contact3>" exists in Search results
     And I click close button to dismiss people view
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
@@ -354,7 +345,7 @@ Feature: People View
     And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
-    Then I see that user <Contact3> is NOT found on People picker page
+    Then I see the conversation "<Contact3>" does not exist in Search results
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
@@ -398,7 +389,7 @@ Feature: People View
     And I confirm delete conversation content
     And I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    Then I see conversation <GroupChatName> is NOT presented in Search results
+    Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
     And I open archived conversations
@@ -426,7 +417,6 @@ Feature: People View
     And I confirm delete conversation content
     And I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    Then I see conversation <GroupChatName> is presented in Search results
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
     And I see 0 conversation entries
@@ -454,8 +444,8 @@ Feature: People View
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
-    And I click open conversation button on People picker page
-    Then I see the only message in dialog is system message CONNECTED TO <Contact1>
+    And I tap Open conversation action button on People picker page
+    Then I see the system message CONNECTED TO <Contact1> in the conversation view
 
     Examples:
       | Name      | Contact1  | Image       |

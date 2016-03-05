@@ -1,13 +1,12 @@
 package com.wearezeta.auto.android.steps;
 
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.wearezeta.auto.common.misc.ElementState;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -18,8 +17,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ContactListPageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
     private ContactListPage getContactListPage() throws Exception {
         return pagesCollection.getPage(ContactListPage.class);
@@ -34,8 +32,7 @@ public class ContactListPageSteps {
      * @step. ^I see Contact list with (no )?contacts$
      */
     @Given("^I see Contact list with (no )?contacts$")
-    public void GivenISeeContactList(String shouldNotBeVisible)
-            throws Exception {
+    public void GivenISeeContactList(String shouldNotBeVisible) throws Exception {
         getContactListPage().verifyContactListIsFullyLoaded();
         if (shouldNotBeVisible == null) {
             Assert.assertTrue(
@@ -70,8 +67,7 @@ public class ContactListPageSteps {
     @When("^I tap on contact name (.*)$")
     public void WhenITapOnContactName(String contactName) throws Exception {
         try {
-            contactName = usrMgr.findUserByNameOrNameAlias(contactName)
-                    .getName();
+            contactName = usrMgr.findUserByNameOrNameAlias(contactName).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
@@ -79,25 +75,14 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Taps on the currently logged-in user's avatar
+     * Taps on the profile icon at the bottom of convo list
      *
      * @throws Exception
-     * @step. ^I tap on my avatar$
+     * @step. ^I tap conversations list settings button$
      */
-    @When("^I tap on my avatar$")
-    public void WhenITapOnMyAvatar() throws Exception {
-        getContactListPage().tapOnMyAvatar();
-    }
-
-    /**
-     * Swipes down on the contact list to return the search list page
-     *
-     * @throws Exception
-     * @step. ^I swipe down contact list$
-     */
-    @When("^I swipe down contact list$")
-    public void ISwipeDownContactList() throws Exception {
-        getContactListPage().doLongSwipeDown();
+    @When("^I tap conversations list settings button$")
+    public void ITapConvoSettings() throws Exception {
+        getContactListPage().tapListSettingsButton();
     }
 
     /**
@@ -134,15 +119,14 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Presses on search bar in the conversation List to open search (people
-     * picker)
+     * Tap the corresponding button to open Search UI
      *
      * @throws Exception
-     * @step. ^I open [Ss]earch by tap$
+     * @step. I open [Ss]earch UI$
      */
-    @When("^I open [Ss]earch by tap")
-    public void WhenITapOnSearchBox() throws Exception {
-        getContactListPage().tapOnSearchBox();
+    @When("^I open [Ss]earch UI$")
+    public void IOpenSearchUI() throws Exception {
+        getContactListPage().tapListActionsAvatar();
     }
 
     /**
@@ -207,7 +191,7 @@ public class ContactListPageSteps {
     /**
      * Checks to see that the muted symbol appears or not for the given contact.
      *
-     * @param contact
+     * @param contact          user name/alias
      * @param shouldNotBeMuted is set to null if 'not' part does not exist
      * @throws Exception
      * @step. "^Contact (.*) is (not )?muted$
@@ -218,20 +202,16 @@ public class ContactListPageSteps {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         if (shouldNotBeMuted == null) {
             Assert.assertTrue(
-                    String.format(
-                            "The conversation '%s' is supposed to be muted, but it is not",
-                            contact),
+                    String.format("The conversation '%s' is supposed to be muted, but it is not", contact),
                     getContactListPage().isContactMuted(contact));
         } else {
-            Assert.assertTrue(
-                    String.format(
-                            "The conversation '%s' is supposed to be not muted, but it is",
-                            contact), getContactListPage()
-                            .waitUntilContactNotMuted(contact));
+            Assert.assertTrue(String.format(
+                    "The conversation '%s' is supposed to be not muted, but it is", contact),
+                    getContactListPage().waitUntilContactNotMuted(contact));
         }
     }
 
-    private BufferedImage previousPlayPauseBtnState = null;
+    private ElementState previousPlayPauseBtnState = null;
 
     /**
      * Save the current state of PlayPause button into the internal data
@@ -245,10 +225,10 @@ public class ContactListPageSteps {
     @When("^I remember the state of PlayPause button next to the (.*) conversation$")
     public void IRememberTheStateOfPlayPauseButton(String convoName)
             throws Exception {
-        convoName = usrMgr.findUserByNameOrNameAlias(convoName).getName();
-        previousPlayPauseBtnState = getContactListPage()
-                .getScreenshotOfPlayPauseButtonNextTo(convoName).orElseThrow(
-                        IllegalStateException::new);
+        final String name = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
+        previousPlayPauseBtnState = new ElementState(
+                () -> getContactListPage().getScreenshotOfPlayPauseButtonNextTo(name).orElseThrow(
+                        IllegalStateException::new)).remember();
     }
 
     private final static double MAX_SIMILARITY_THRESHOLD = 0.6;
@@ -264,32 +244,16 @@ public class ContactListPageSteps {
      * is changed$
      */
     @Then("^I see the state of PlayPause button next to the (.*) conversation is changed$")
-    public void ISeeThePlayPauseButtonStateIsChanged(String convoName)
-            throws Exception {
+    public void ISeeThePlayPauseButtonStateIsChanged(String convoName) throws Exception {
         if (previousPlayPauseBtnState == null) {
-            throw new IllegalStateException(
-                    "Please take a screenshot of previous button state first");
+            throw new IllegalStateException("Please take a screenshot of previous button state first");
         }
         convoName = usrMgr.findUserByNameOrNameAlias(convoName).getName();
-        final long millisecondsStarted = System.currentTimeMillis();
-        double score = 1;
-        while (System.currentTimeMillis() - millisecondsStarted <= STATE_CHANGE_TIMEOUT_SECONDS * 1000) {
-            final BufferedImage currentPlayPauseBtnState = getContactListPage()
-                    .getScreenshotOfPlayPauseButtonNextTo(convoName)
-                    .orElseThrow(IllegalStateException::new);
-            score = ImageUtil.getOverlapScore(currentPlayPauseBtnState,
-                    previousPlayPauseBtnState, ImageUtil.RESIZE_TO_MAX_SCORE);
-            if (score < MAX_SIMILARITY_THRESHOLD) {
-                break;
-            }
-            Thread.sleep(500);
-        }
-        Assert.assertTrue(
-                String.format(
-                        "The current and previous states of PlayPause button seems to be very similar after %d seconds (%.2f >= %.2f)",
-                        STATE_CHANGE_TIMEOUT_SECONDS, score,
-                        MAX_SIMILARITY_THRESHOLD),
-                score < MAX_SIMILARITY_THRESHOLD);
+        Assert.assertTrue(String.format(
+                "The current and previous states of PlayPause button for '%s' conversation " +
+                        "seems to be very similar after %d seconds",
+                convoName, STATE_CHANGE_TIMEOUT_SECONDS),
+                previousPlayPauseBtnState.isChanged(STATE_CHANGE_TIMEOUT_SECONDS, MAX_SIMILARITY_THRESHOLD));
     }
 
     /**
@@ -323,18 +287,6 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Open Search by clicking the Search button in the right top corner of
-     * convo list
-     *
-     * @throws Exception
-     * @step. ^I open Search by UI button$
-     */
-    @When("^I open Search by UI button$")
-    public void IOpenPeoplePicker() throws Exception {
-        getContactListPage().tapOnSearchButton();
-    }
-
-    /**
      * Tap the corresponding item in conversation settings menu
      *
      * @param itemName menu item name
@@ -346,7 +298,7 @@ public class ContactListPageSteps {
         getContactListPage().selectConvoSettingsMenuItem(itemName);
     }
 
-    private Map<String, BufferedImage> previousUnreadIndicatorState = new HashMap<>();
+    private Map<String, ElementState> previousUnreadIndicatorState = new HashMap<>();
 
     /**
      * Save the state of conversation idicator into the internal field for the
@@ -358,10 +310,10 @@ public class ContactListPageSteps {
      */
     @When("^I remember unread messages indicator state for conversation (.*)")
     public void IRememberUnreadIndicatorState(String name) throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        this.previousUnreadIndicatorState.put(name,
-                getContactListPage().getMessageIndicatorScreenshot(name)
-                        .orElseThrow(IllegalStateException::new));
+        final String convoName = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        this.previousUnreadIndicatorState.put(convoName,
+                new ElementState(() -> getContactListPage().getMessageIndicatorScreenshot(convoName)).remember()
+        );
     }
 
     private static final double MAX_UNREAD_DOT_SIMILARITY_THRESHOLD = 0.97;
@@ -376,36 +328,18 @@ public class ContactListPageSteps {
      * (.*)"
      */
     @Then("^I see unread messages indicator state is changed for conversation (.*)")
-    public void ISeeUnreadIndicatorStateIsChanged(String name)
-            throws Exception {
-        name = usrMgr.findUserByNameOrNameAlias(name).getName();
+    public void ISeeUnreadIndicatorStateIsChanged(String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         if (!this.previousUnreadIndicatorState.containsKey(name)) {
             throw new IllegalStateException(
                     String.format(
-                            "Please invoke the correspoding step to make a screenshot of previous state of '%s' conversation",
+                            "Please invoke the corresponding step to make a screenshot of previous state of '%s' conversation",
                             name));
         }
-        final int maxTries = 3;
-        int ntry = 1;
-        double score = 1;
-        do {
-            final BufferedImage currentIndicatorState = getContactListPage()
-                    .getMessageIndicatorScreenshot(name).orElseThrow(
-                            IllegalStateException::new);
-            score = ImageUtil.getOverlapScore(
-                    this.previousUnreadIndicatorState.get(name),
-                    currentIndicatorState, ImageUtil.RESIZE_NORESIZE);
-            if (score < MAX_UNREAD_DOT_SIMILARITY_THRESHOLD) {
-                break;
-            }
-            Thread.sleep(500);
-            ntry++;
-        } while (ntry <= maxTries);
-        Assert.assertTrue(
-                String.format(
-                        "The current and previous states of Unread Dot seems to be very similar (%.2f >= %.2f)",
-                        score, MAX_UNREAD_DOT_SIMILARITY_THRESHOLD),
-                score < MAX_UNREAD_DOT_SIMILARITY_THRESHOLD);
+        Assert.assertTrue(String.format(
+                "The current and previous states of Unread Dot for conversation '%s' seems to be very similar",
+                name),
+                this.previousUnreadIndicatorState.get(name).isChanged(10, MAX_UNREAD_DOT_SIMILARITY_THRESHOLD));
     }
 
     /**
@@ -441,18 +375,6 @@ public class ContactListPageSteps {
     public void ISeeButtonInConversationSettingsMenuAtPosition(String name) throws Exception {
         Assert.assertTrue("The converastion settings menu item is not visible",
                 getContactListPage().isConvSettingsMenuItemVisible(name));
-    }
-
-
-    /**
-     * Tap the Invite Other People button at the bottom of conversations list
-     *
-     * @throws Exception
-     * @step. ^I tap Invite button at the bottom of conversations list$
-     */
-    @When("^I tap Invite button at the bottom of conversations list$")
-    public void ITapInviteButton() throws Exception {
-        getContactListPage().tapInviteButton();
     }
 
     /**

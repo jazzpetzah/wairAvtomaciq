@@ -3,10 +3,10 @@ package com.wearezeta.auto.ios.pages;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -15,37 +15,37 @@ public class PersonalInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrEmailFieldByValue = value ->
             String.format("//*UIAStaticText[contains(@name, '%s')]", value);
 
-    private static final By nameProfileSettingsButton = By.name("SettingsButton");
+    private static final By nameProfileSettingsButton = MobileBy.AccessibilityId("SettingsButton");
 
     private static final By xpathSettingsAboutButton = By.xpath("//UIAButton[@name='ABOUT' or @name='About']");
 
-    private static final By nameTermsOfUseButton = By.name("Terms of Use");
+    private static final By nameTermsOfUseButton = MobileBy.AccessibilityId("Terms of Use");
 
-    private static final By namePictureButton = By.name("CameraLibraryButton");
+    private static final By namePictureButton = MobileBy.AccessibilityId("CameraLibraryButton");
 
     private static final By xpathProfileNameEditField =
             By.xpath("//UIAElement[@name='ProfileSelfNameField']/UIATextView");
 
-    private static final By nameSelfNameTooShortError = By.name("AT LEAST 2 CHARACTERS ");
+    private static final By nameSelfNameTooShortError = MobileBy.AccessibilityId("AT LEAST 2 CHARACTERS ");
 
     private static final By xpathOptionsSettingsButton = By.xpath("//UIAButton[@name='SETTINGS' or @name='Settings']");
 
-    private static final By nameOptionsHelpButton = By.name("HELP");
+    private static final By nameOptionsHelpButton = MobileBy.AccessibilityId("HELP");
 
     private static final By xpathSettingsHelpHeader = By.xpath("//UIAWebView/UIAStaticText[@name='Support']");
 
-    private static final By nameAccentColorPicker = By.name("AccentColorPickerView");
+    private static final By nameAccentColorPicker = MobileBy.AccessibilityId("AccentColorPickerView");
 
-    private static final By nameCloseButton = By.name("CloseButton");
+    private static final By nameCloseButton = MobileBy.AccessibilityId("CloseButton");
 
-    private static final By nameWireWebsiteButton = By.name("wire.com");
+    private static final By nameWireWebsiteButton = MobileBy.AccessibilityId("wire.com");
 
-    public static final By namePrivacyPolicyButton = By.name("Privacy Policy");
+    public static final By namePrivacyPolicyButton = MobileBy.AccessibilityId("Privacy Policy");
 
     private static final By xpathBuildNumberText = By.xpath(
             "//UIAApplication/UIAWindow/UIAStaticText[contains(@name, 'Wire Swiss GmbH • version')]");
 
-    private static final By nameCloseLegalPageButton = By.name("WebViewCloseButton");
+    private static final By nameCloseLegalPageButton = MobileBy.AccessibilityId("WebViewCloseButton");
 
     private static final Function<String, String> xpathStrTermsOfUseByText = text ->
             String.format("//UIAStaticText[@name='%s']", text);
@@ -53,18 +53,19 @@ public class PersonalInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrPrivacyPolicyByText = text ->
             String.format("//UIAStaticText[@name='%s']", text);
 
-    private static final By xpathWireWebsiteUrl = By.xpath("//UIAElement[@name ='URL']");
+    // TODO: this locator has to be more precise
+    private static final By xpathWireWebsiteUrl = MobileBy.AccessibilityId("URL");
 
-    private static final By nameAboutCloseButton = By.name("aboutCloseButton");
+    private static final By nameAboutCloseButton = MobileBy.AccessibilityId("aboutCloseButton");
 
-    private static final By nameAddPhoneNumberButton = By.name("ADD PHONE NUMBER");
+    private static final By nameAddPhoneNumberButton = MobileBy.AccessibilityId("ADD PHONE NUMBER");
 
-    private static final By nameThemeSwitcherButton = By.name("ThemeButton");
+    private static final By nameThemeSwitcherButton = MobileBy.AccessibilityId("ThemeButton");
 
     private static final Function<String, String> xpathStrPhoneEmailFieldByValue =
             value -> String.format("//UIAStaticText[contains(@name, '%s')]", value);
 
-    private static final By nameProfileName = By.name("ProfileSelfNameField");
+    private static final By nameProfileName = MobileBy.AccessibilityId("ProfileSelfNameField");
 
     private static final By xpathChangePasswordPageChangePasswordButton =
             By.xpath("//UIAButton[@name='RESET PASSWORD']");
@@ -82,12 +83,12 @@ public class PersonalInfoPage extends IOSPage {
         getElement(nameCloseButton).click();
     }
 
-    public String getUserNameValue() throws Exception {
-        return getElement(xpathProfileNameEditField).getText();
+    public boolean waitUntilVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameProfileSettingsButton);
     }
 
-    public boolean isUserNameContainingSpaces() throws Exception {
-        return getElement(xpathProfileNameEditField).getAttribute("value").contains(" ");
+    public String getUserNameValue() throws Exception {
+        return getElement(xpathProfileNameEditField).getText();
     }
 
     public boolean isEmailVisible(String expectedEmail) throws Exception {
@@ -97,6 +98,8 @@ public class PersonalInfoPage extends IOSPage {
 
     public void clickOnSettingsButton() throws Exception {
         getElement(nameProfileSettingsButton).click();
+        // Wait for animation
+        Thread.sleep(2000);
     }
 
     public void clickOnAboutButton() throws Exception {
@@ -140,7 +143,8 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public boolean isWireWebsitePageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathWireWebsiteUrl);
+        // This is to let the browser and the webpage to be loaded
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathWireWebsiteUrl, 15);
     }
 
     public void closeLegalPage() throws Exception {
@@ -149,36 +153,20 @@ public class PersonalInfoPage extends IOSPage {
 
     public boolean isTermsOfUsePageVisible() throws Exception {
         final By locator = By.xpath(xpathStrTermsOfUseByText.apply(TERMS_OF_USE_PAGE_VALUE));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
     public boolean isPrivacyPolicyPageVisible() throws Exception {
         final By locator = By.xpath(xpathStrPrivacyPolicyByText.apply(PRIVACY_POLICY_PAGE_VALUE));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
     public boolean isResetPasswordPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathChangePasswordPageChangePasswordButton);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathChangePasswordPageChangePasswordButton);
     }
 
     public void tapOnEditNameField() throws Exception {
         getElement(xpathProfileNameEditField, "Edit name field is not visible").click();
-    }
-
-    public void changeNameUsingOnlySpaces() throws Exception {
-        final WebElement profileNameEditField = getElement(xpathProfileNameEditField);
-        DriverUtils.tapByCoordinates(this.getDriver(), profileNameEditField);
-        profileNameEditField.clear();
-        profileNameEditField.sendKeys("  \n");
-    }
-
-    public void attemptTooLongName() throws Exception {
-        String name = CommonUtils.generateRandomString(80).toLowerCase();
-        getElement(xpathProfileNameEditField).sendKeys(name + "\n");
-    }
-
-    public int getSelfNameLength() throws Exception {
-        return getUserNameValue().length();
     }
 
     public void changeName(String newName) throws Exception {
@@ -224,7 +212,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public boolean isSupportWebPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),xpathSettingsHelpHeader,5);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(),xpathSettingsHelpHeader, 15);
     }
 
     private void swipeColorPickerFromColorToColor(int startColor, int endColor) throws Exception {

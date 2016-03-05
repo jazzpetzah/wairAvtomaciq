@@ -1,45 +1,6 @@
 Feature: Connect
 
-  @C2484 @regression @id2355
-  Scenario Outline: Verify sending a connection request to user chosen from search [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I open search by taping on it
-    And I tap on Search input on People picker page
-    And I search for user name <UnconnectedUser> and tap on it on People picker page
-    And I see connect to <UnconnectedUser> dialog
-    And I click Connect button on connect to dialog
-    And I click close button to dismiss people view
-    And I tap on contact name <UnconnectedUser>
-    And I open conversation details
-    Then I see <UnconnectedUser> user pending profile popover on iPad
-
-    Examples: 
-      | Name      | UnconnectedUser |
-      | user1Name | user2Name       |
-
-  @C2488 @regression @id3008
-  Scenario Outline: Verify sending a connection request to user chosen from search [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I open search by taping on it
-    And I tap on Search input on People picker page
-    And I search for user name <UnconnectedUser> and tap on it on People picker page
-    And I see connect to <UnconnectedUser> dialog
-    And I click Connect button on connect to dialog
-    And I click close button to dismiss people view
-    And I tap on contact name <UnconnectedUser>
-    And I open conversation details
-    Then I see <UnconnectedUser> user pending profile popover on iPad
-
-    Examples: 
-      | Name      | UnconnectedUser |
-      | user1Name | user2Name       |
-
-  @C2486 @regression @rc @id2119
+  @C2486 @regression @id2119
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -55,13 +16,15 @@ Feature: Connect
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
+    And I see Pending Connect to <Contact> message on Dialog page
+    When I open conversation details
+    Then I see <Contact> user pending profile popover on iPad
 
     Examples: 
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @C2489 @regression @id3009
+  @C2489 @rc @regression @id3009
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -78,13 +41,15 @@ Feature: Connect
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
+    And I see Pending Connect to <Contact> message on Dialog page
+    When I open conversation details
+    Then I see <Contact> user pending profile popover on iPad
 
     Examples: 
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @C2483 @regression @rc @id2354 @id2610
+  @C2483 @regression @id2354 @id2610
   Scenario Outline: Send connection request to unconnected participant in a group chat [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -104,7 +69,7 @@ Feature: Connect
       | Name      | GroupCreator | GroupChatName | UnconnectedUser |
       | user1Name | user2Name    | TESTCHAT      | user3Name       |
 
-  @C2490 @regression @id3011
+  @C2490 @rc @regression @id3011
   Scenario Outline: Send connection request to unconnected participant in a group chat [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -222,7 +187,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
   @C2481 @regression @id2359
-  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user [PORTRAIT]
+  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending user [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact>
@@ -230,7 +195,7 @@ Feature: Connect
     Given I see conversations list
     And I see user <Contact> in contact list
     When I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
+    And I see Pending Connect to <Contact> message on Dialog page
     Then I see text input in dialog is not allowed
 
     Examples: 
@@ -238,7 +203,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name |
 
   @C2482 @regression @id3014
-  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user [LANDSCAPE]
+  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending user [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact>
@@ -247,14 +212,14 @@ Feature: Connect
     Given I see conversations list
     And I see user <Contact> in contact list
     When I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
+    And I see Pending Connect to <Contact> message on Dialog page
     Then I see text input in dialog is not allowed
 
     Examples: 
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2455 @regression @rc @id2341
+  @C2455 @regression @id2341
   Scenario Outline: Verify you don't receive any messages from blocked person in 1to1 chat [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -271,20 +236,14 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
-    And I see 0 default message in the dialog
-    And I see 0 photo in the dialog
-    And I navigate back to conversations list
-    #And I see People picker page
-    #And I click close button to dismiss people view
-    Given User <Contact> sends 1 encrypted message to user Myself
-    When I tap on contact name <Contact>
-    Then I see 1 default message in the dialog
+    Then I see 0 default messages in the dialog
+    And I see 0 photos in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C2457 @regression @id3015
+  @C2457 @rc @regression @id3015
   Scenario Outline: Verify you don't receive any messages from blocked person in 1to1 chat [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -302,40 +261,12 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
-    And I see 1 default message in the dialog
-    And I see 1 photo in the dialog
-    #And I click close button to dismiss people view
-    Given User <Contact> sends 1 encrypted message to user Myself
-    When I tap on contact name <Contact>
-    Then I see 2 default messages in the dialog
+    Then I see 0 default messages in the dialog
+    And I see 0 photos in the dialog
 
     Examples: 
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
-
-  @C2485 @regression @id2436
-  Scenario Outline: Verify you cannot send the invitation message twice [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I open search by taping on it
-    And I tap on Search input on People picker page
-    And I wait until <ContactEmail> exists in backend search results
-    And I input in People picker search field user name <Contact>
-    And I tap on conversation <Contact> in search result
-    And I see connect to <Contact> dialog
-    And I click Connect button on connect to dialog
-    And I click close button to dismiss people view
-    Then I see first item in contact list named <Contact>
-    When I open search by taping on it
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact>
-    And I tap on conversation <Contact> in search result
-    And I see <Contact> user pending profile popover on iPad
-
-    Examples: 
-      | Name      | Contact   | ContactEmail |
-      | user1Name | user2Name | user2Email   |
 
   @C2491 @regression @id3016
   Scenario Outline: Verify you cannot send the invitation message twice [LANDSCAPE]
@@ -362,34 +293,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @C2780 @regression @rc @id1492
-  Scenario Outline: Verify you can send an invitation via mail [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
-    And I see top people list on People picker page
-    And I press the send an invite button
-    And I press invite others button
-    And I press the copy button
-    And I click close Invite list button
-    And I click clear button
-    And I tap on contact name <Contact>
-    And I see dialog page
-    And I tap on text input
-    And I see keyboard
-    And I tap and hold on message input
-    And I click on popup Paste item
-    And I send the message
-    Then I check copied content from <Name>
-
-    Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C2796 @regression @id3017
+  @C2796 @rc @regression @id3017
   Scenario Outline: Verify you can send an invitation via mail [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -397,8 +301,6 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
-    And I see top people list on People picker page
     And I press the send an invite button
     And I press invite others button
     And I press the copy button
@@ -407,8 +309,7 @@ Feature: Connect
     And I tap on contact name <Contact>
     And I tap on text input
     And I tap and hold on message input
-    And I click on popup Paste item
-    And I send the message
+    And I paste and commit the text
     Then I check copied content from <Name>
 
     Examples: 

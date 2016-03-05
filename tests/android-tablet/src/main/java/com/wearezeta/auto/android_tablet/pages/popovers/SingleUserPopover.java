@@ -9,14 +9,12 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class SingleUserPopover extends AbstractPopoverContainer {
 	public final static String idRootLocator = "fl__participant_dialog__root";
 
-	private SingleConnectedUserDetalsPage singleConnectedUserDetalsPage;
+	private SingleConnectedUserDetailsPage singleConnectedUserDetailsPage;
 	private SearchPage searchPage;
 
-	public SingleUserPopover(Future<ZetaAndroidDriver> lazyDriver)
-			throws Exception {
+	public SingleUserPopover(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
-		this.singleConnectedUserDetalsPage = new SingleConnectedUserDetalsPage(
-				lazyDriver, this);
+		this.singleConnectedUserDetailsPage = new SingleConnectedUserDetailsPage(lazyDriver, this);
 		this.searchPage = new SearchPage(lazyDriver, this);
 	}
 
@@ -26,31 +24,27 @@ public class SingleUserPopover extends AbstractPopoverContainer {
 	}
 
 	public void tapOptionsButton() throws Exception {
-		this.singleConnectedUserDetalsPage.tapOptionsButton();
+		this.singleConnectedUserDetailsPage.tapOptionsButton();
 	}
 
 	public void selectMenuItem(String itemName) throws Exception {
-		this.singleConnectedUserDetalsPage.selectMenuItem(itemName);
+		this.singleConnectedUserDetailsPage.selectMenuItem(itemName);
 	}
 
 	public boolean isMenuItemVisible(String itemName) throws Exception {
-		return this.singleConnectedUserDetalsPage.isMenuItemVisible(itemName);
+		return this.singleConnectedUserDetailsPage.isMenuItemVisible(itemName);
 	}
 
-	public boolean waitUntilUserNameVisible(String expectedName)
-			throws Exception {
-		return this.singleConnectedUserDetalsPage
-				.waitUntilUserNameVisible(expectedName);
+	public boolean waitUntilUserNameVisible(String expectedName) throws Exception {
+		return this.singleConnectedUserDetailsPage.waitUntilUserNameVisible(expectedName);
 	}
 
-	public boolean waitUntilUserEmailVisible(String expectedEmail)
-			throws Exception {
-		return this.singleConnectedUserDetalsPage
-				.waitUntilUserEmailVisible(expectedEmail);
+	public boolean waitUntilUserEmailVisible(String expectedEmail) throws Exception {
+		return this.singleConnectedUserDetailsPage.waitUntilUserEmailVisible(expectedEmail);
 	}
 
 	public void tapAddPeopleButton() throws Exception {
-		this.singleConnectedUserDetalsPage.tapAddPeopleButton();
+		this.singleConnectedUserDetailsPage.tapAddPeopleButton();
 	}
 
 	public void enterSearchText(String text) throws Exception {
@@ -66,7 +60,7 @@ public class SingleUserPopover extends AbstractPopoverContainer {
 	}
 
 	public void tapCloseButton() throws Exception {
-		this.singleConnectedUserDetalsPage.tapCloseButton();
+		this.singleConnectedUserDetailsPage.tapCloseButton();
 	}
 
 }

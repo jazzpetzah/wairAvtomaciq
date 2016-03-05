@@ -3,11 +3,11 @@ package com.wearezeta.auto.android_tablet.steps;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
 
 import com.wearezeta.auto.android.common.logging.LoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
+import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.Scenario;
@@ -18,8 +18,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -50,8 +48,7 @@ import cucumber.api.java.en.When;
 
 public class CommonAndroidTabletSteps {
     static {
-        System.setProperty("org.apache.commons.logging.Log",
-                "org.apache.commons.logging.impl.SimpleLog");
+        System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
         System.setProperty(
                 "org.apache.commons.logging.simplelog.log.org.apache.http",
                 "warn");
@@ -82,18 +79,15 @@ public class CommonAndroidTabletSteps {
     @SuppressWarnings("unchecked")
     public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
-        LoggingPreferences object = new LoggingPreferences();
-        object.enable("logcat", Level.ALL);
-        capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
+        capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         // To init the first available device
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
-        capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(this.getClass()));
-        capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(this.getClass()));
-        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(this.getClass()));
-        capabilities.setCapability("applicationName", "selendroid");
-        capabilities.setCapability("automationName", "selendroid");
+        capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(getClass()));
+        capabilities.setCapability("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
+        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(getClass()));
+        capabilities.setCapability("automationName", "Selendroid");
 
         try {
             return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
@@ -288,9 +282,7 @@ public class CommonAndroidTabletSteps {
                 AndroidCommonUtils.tapHomeButton();
                 break;
             case "restore":
-                AndroidCommonUtils.switchToApplication(
-                        CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-                        CommonUtils.getAndroidActivityFromConfig(this.getClass()));
+                AndroidCommonUtils.switchToApplication(CommonUtils.getAndroidPackageFromConfig(this.getClass()));
                 break;
         }
     }
@@ -309,9 +301,7 @@ public class CommonAndroidTabletSteps {
         } else {
             AndroidCommonUtils.unlockDevice();
             // FIXME: Unlock selendroid app does not restore the previously active application
-            AndroidCommonUtils.switchToApplication(
-                    CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-                    CommonUtils.getAndroidActivityFromConfig(this.getClass()));
+            AndroidCommonUtils.switchToApplication(CommonUtils.getAndroidPackageFromConfig(this.getClass()));
         }
     }
 
@@ -369,12 +359,11 @@ public class CommonAndroidTabletSteps {
      *
      * @param name      the user to check
      * @param colorName the assumed accent color
-     * @throws Throwable
+     * @throws Exception
      * @step. ^(.*) has an accent color (.*)$
      */
     @Given("^(.*) has an accent color (.*)$")
-    public void GivenUserHasAnAccentColor(String name, String colorName)
-            throws Exception {
+    public void GivenUserHasAnAccentColor(String name, String colorName) throws Exception {
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
@@ -388,7 +377,7 @@ public class CommonAndroidTabletSteps {
      *
      * @param name    the user to check
      * @param newName the name to check they have
-     * @throws Throwable
+     * @throws Exception
      * @step. ^(.*) has a name (.*)$
      */
     @Given("^(.*) has a name (.*)$")
@@ -524,7 +513,7 @@ public class CommonAndroidTabletSteps {
      *
      * @param pingFromUserNameAlias The user to do the pinging
      * @param dstConversationName   the target conversation to send the ping to
-     * @param isSecure equals null if ping should not be secure
+     * @param isSecure              equals null if ping should not be secure
      * @throws Exception
      * @step. ^User (\\w+) (securely )?pings? conversation (.*)$
      */
@@ -543,7 +532,7 @@ public class CommonAndroidTabletSteps {
      *
      * @param hotPingFromUserNameAlias The user to do the hotpinging
      * @param dstConversationName      the target converation to send the ping to
-     * @param isSecure equals null if ping should not be secure
+     * @param isSecure                 equals null if ping should not be secure
      * @throws Exception
      * @step. ^User (\\w+) (securely )?hotpings? conversation (.*)$
      */
@@ -635,16 +624,18 @@ public class CommonAndroidTabletSteps {
     }
 
     /**
-     * Verifies that there are N new users for a test, and makes them if they
-     * don't exist. -unused
+     * Verifies that there are N new users for a test, makes them if they don't
+     * exist, and sets one of those users to be the current user.
      *
-     * @param count the number of users to make
+     * @param count       the number of users to make
+     * @param myNameAlias the name of the user to set as the current user
      * @throws Exception
-     * @step. ^There \\w+ (\\d+) user[s]*$
+     * @step. ^There (?:is|are) (\\d+) users? where (.*) is me$
      */
-    @Given("^There \\w+ (\\d+) user[s]*$")
-    public void ThereAreNUsers(int count) throws Exception {
-        commonSteps.ThereAreNUsers(CURRENT_PLATFORM, count);
+    @Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
+    public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
+        commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
+        GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
     }
 
     /**
@@ -652,31 +643,19 @@ public class CommonAndroidTabletSteps {
      * exist, and sets one of those users to be the current user.
      *
      * @param count       the number of users to make
+     * @param what        either 'email' or 'phone number'
      * @param myNameAlias the name of the user to set as the current user
-     * @throws Throwable
-     * @step. ^There \\w+ (\\d+) user[s]* where (.*) is me$
-     */
-    @Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
-    public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
-            throws Throwable {
-        commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
-                myNameAlias);
-        GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
-    }
-
-    /**
-     * Verifies that there are N new users for a test all sharing a common
-     * prefix in their names and makes them if they don't exist.
-     *
-     * @param count      the number of users to make
-     * @param namePrefix the prefix for all of the users to share
      * @throws Exception
-     * @step. ^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$
+     * @step. ^There (?:are|is) (\d+) users? with (email address|phone number) only where (.*) is me$
      */
-    @Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
-    public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
-            throws Exception {
-        commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
+    @Given("^There (?:are|is) (\\d+) users? with (email address|phone number) only where (.*) is me$")
+    public void ThereAreNUsersWithZOnlyWhereXIsMe(int count, String what, String myNameAlias) throws Exception {
+        if (what.equals("email address")) {
+            commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(count, myNameAlias);
+        } else {
+            commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
+        }
+        GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
     }
 
     /**
@@ -686,14 +665,12 @@ public class CommonAndroidTabletSteps {
      * @param picture the file name of the picture to check against. The file name
      *                is relative to the pictures directory as defined in the
      *                Configurations.cnf file
-     * @throws Throwable
+     * @throws Exception
      * @step. ^(.*) has an avatar picture from file (.*)$
      */
     @Given("^(.*) has an avatar picture from file (.*)$")
-    public void GivenUserHasAnAvatarPicture(String name, String picture)
-            throws Throwable {
-        String picturePath = CommonUtils.getImagesPath(this.getClass()) + "/"
-                + picture;
+    public void GivenUserHasAnAvatarPicture(String name, String picture) throws Exception {
+        String picturePath = CommonUtils.getImagesPath(this.getClass()) + "/" + picture;
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
@@ -805,5 +782,19 @@ public class CommonAndroidTabletSteps {
         } else {
             throw new IllegalArgumentException(String.format("Cannot parse what to exclude from '%s'", whatToExclude));
         }
+    }
+
+    /**
+     * Checks to see that an alert message contains the correct text
+     *
+     * @param expectedMsg the expected error message
+     * @throws Exception
+     * @step. ^I see alert message containing \"(.*)\"$
+     */
+    @Then("^I see alert message containing \"(.*)\"$")
+    public void ISeeAlertMessage(String expectedMsg) throws Exception {
+        expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, ClientUsersManager.FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("An alert containing text '%s' is not visible", expectedMsg),
+                pagesCollection.getCommonPage().isAlertMessageVisible(expectedMsg));
     }
 }

@@ -13,18 +13,7 @@ import javax.imageio.ImageIO;
 
 import io.appium.java_client.android.AndroidDriver;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.InvalidElementStateException;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.SessionNotFoundException;
@@ -48,16 +37,17 @@ public class DriverUtils {
 
     /**
      * https://code.google.com/p/selenium/issues/detail?id=1880
-     * <p/>
+     * <p>
      * DO NOT use this method if you want to check whether the element is NOT
      * visible, because it will wait at least "imlicitTimeout" seconds until the
      * actual result is returned. This slows down automated tests!
-     * <p/>
+     * <p>
      * Use "waitUntilLocatorDissapears" method instead. That's quick and does
      * exactly what you need
      *
-     * @param element
-     * @return
+     * @param driver selenium driver instance
+     * @param element web element to verify
+     * @return wither true or false
      */
     public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver, final WebElement element) {
         try {
@@ -236,13 +226,11 @@ public class DriverUtils {
         }
     }
 
-    public static boolean waitUntilAlertAppears(
-            AppiumDriver<? extends WebElement> driver) throws Exception {
-        return waitUntilAlertAppears(driver, 20);
+    public static boolean waitUntilAlertAppears(AppiumDriver<? extends WebElement> driver) throws Exception {
+        return waitUntilAlertAppears(driver, getDefaultLookupTimeoutSeconds());
     }
 
-    public static boolean waitUntilAlertAppears(
-            AppiumDriver<? extends WebElement> driver, long timeout)
+    public static boolean waitUntilAlertAppears(AppiumDriver<? extends WebElement> driver, long timeout)
             throws Exception {
         DriverUtils.turnOffImplicitWait(driver);
         try {
@@ -258,40 +246,27 @@ public class DriverUtils {
         }
     }
 
-    /**
-     * Swipes from point inside element given by percent of element size.
-     * Default swipe size is 2/3 of window.width, but is end point outsie of
-     * screen then it is changed to 0;
-     *
-     * @param driver
-     * @param element
-     * @param time
-     * @param elementPercentX min value is 1. Starting point of swipe (in percents relative
-     *                        to the original control width)
-     * @param elementPercentY min value is 1. Starting point of swipe (in percents relative
-     *                        to the original control height)
-     */
-    public static void swipeLeft(AppiumDriver<? extends WebElement> driver,
-                                 WebElement element, int time, int elementPercentX,
-                                 int elementPercentY) {
-        final Point coords = element.getLocation();
-        final Dimension screenSize = driver.manage().window().getSize();
-        final Dimension elementSize = element.getSize();
-        final int xOffset = elementSize.width * elementPercentX / 100;
-        final int yOffset = elementSize.height * elementPercentY / 100;
-        int endX = coords.x + xOffset - screenSize.width * 2 / 3 < 0 ? 0
-                : coords.x + xOffset - screenSize.width * 2 / 3;
-        driver.swipe(coords.x + xOffset, coords.y + yOffset, endX, coords.y
-                + yOffset, time);
+    public static Optional<Alert> getAlertIfDisplayed(AppiumDriver<? extends WebElement> driver) throws Exception {
+       return getAlertIfDisplayed(driver, getDefaultLookupTimeoutSeconds());
+    }
+
+    public static Optional<Alert> getAlertIfDisplayed(AppiumDriver<? extends WebElement> driver,
+                                                      int timeoutSeconds) throws Exception {
+        DriverUtils.turnOffImplicitWait(driver);
+        try {
+            Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+                    .withTimeout(timeoutSeconds, TimeUnit.SECONDS)
+                    .pollingEvery(1, TimeUnit.SECONDS)
+                    .ignoring(NoSuchElementException.class);
+            return Optional.ofNullable(wait.until(ExpectedConditions.alertIsPresent()));
+        } catch (TimeoutException e) {
+            return Optional.empty();
+        } finally {
+            restoreImplicitWait(driver);
+        }
     }
 
     public static final int SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL = 100;
-
-    public static void swipeLeft(AppiumDriver<? extends WebElement> driver,
-                                 WebElement element, int time) {
-        swipeLeft(driver, element, time, SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
-                DEFAULT_PERCENTAGE);
-    }
 
     public static void swipeRight(AppiumDriver<? extends WebElement> driver,
                                   WebElement element, int time, int percentX, int percentY) {
@@ -377,23 +352,6 @@ public class DriverUtils {
         driver.tap(fingers, xCoords, yCoords, time);
     }
 
-    public static final int SWIPE_X_DEFAULT_PERCENTAGE_START = 10;
-    public static final int SWIPE_X_DEFAULT_PERCENTAGE_END = 90;
-
-    public static void swipeRightCoordinates(
-            AppiumDriver<? extends WebElement> driver, int time, int percentY)
-            throws Exception {
-        swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_START,
-                percentY, SWIPE_X_DEFAULT_PERCENTAGE_END, percentY);
-    }
-
-    public static void swipeLeftCoordinates(
-            AppiumDriver<? extends WebElement> driver, int time, int percentY)
-            throws Exception {
-        swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_END,
-                percentY, SWIPE_X_DEFAULT_PERCENTAGE_START, percentY);
-    }
-
     public static void tapByCoordinates(
             AppiumDriver<? extends WebElement> driver, WebElement element,
             int offsetX, int offsetY) {
@@ -401,12 +359,20 @@ public class DriverUtils {
         final Dimension elementSize = element.getSize();
         driver.tap(1, (coords.x + offsetX + elementSize.width) - elementSize.width / 2,
                 (coords.y + offsetY + elementSize.height) - elementSize.height / 2,
-                100);
+                SINGLE_TAP_DURATION);
     }
 
     public static void tapByCoordinates(
             AppiumDriver<? extends WebElement> driver, WebElement element) {
         tapByCoordinates(driver, element, 0, 0);
+    }
+
+    public static void tapByCoordinatesWithPercentOffcet(AppiumDriver<? extends WebElement> driver, WebElement element,
+                                                         int offsetX, int offsetY) {
+        final Point coords = element.getLocation();
+        final Dimension elementSize = element.getSize();
+        driver.tap(1, (coords.x + elementSize.width * offsetX / 100), (coords.y + elementSize.height * offsetY / 100),
+                SINGLE_TAP_DURATION);
     }
 
     public static void multiTap(AppiumDriver<? extends WebElement> driver,
@@ -421,8 +387,7 @@ public class DriverUtils {
 
     public static void addClass(RemoteWebDriver driver, WebElement element,
                                 String cssClass) {
-        String addHoverClassScript = "arguments[0].classList.add('" + cssClass
-                + "');";
+        String addHoverClassScript = "arguments[0].classList.add('" + cssClass + "');";
         driver.executeScript(addHoverClassScript, element);
     }
 
@@ -481,7 +446,7 @@ public class DriverUtils {
 
     // in milliseconds (http://stackoverflow.com/questions/13670094/duration-of-a-single-tap-and-long-tap-in-android)
     public static final int SINGLE_TAP_DURATION = 125;
-    public static final int LONG_TAP_DURATION = 500;
+    public static final int LONG_TAP_DURATION = 1000;
 
 
     public static void tapInTheCenterOfTheElement(
@@ -495,8 +460,7 @@ public class DriverUtils {
     }
 
     public static void tapOnPercentOfElement(
-            AppiumDriver<? extends WebElement> driver, WebElement element,
-            int percentX, int percentY) {
+            AppiumDriver<? extends WebElement> driver, WebElement element, int percentX, int percentY) {
         final Point coords = element.getLocation();
         final Dimension size = element.getSize();
         final int x = coords.x + size.getWidth() * percentX / 100;
@@ -506,8 +470,7 @@ public class DriverUtils {
     }
 
     public static void tapOutsideOfTheElement(
-            AppiumDriver<? extends WebElement> driver, WebElement element,
-            int xOffset, int yOffset) {
+            AppiumDriver<? extends WebElement> driver, WebElement element, int xOffset, int yOffset) {
         assert xOffset != 0 && yOffset != 0;
         final Point coords = element.getLocation();
         final Dimension size = element.getSize();

@@ -18,6 +18,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
@@ -33,7 +34,7 @@ import org.openqa.selenium.Keys;
 
 public class ConversationPageSteps {
 
-    private static final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.75;
+    private static final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.70;
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
@@ -53,8 +54,8 @@ public class ConversationPageSteps {
     /**
      * Sends random message (generated GUID) into opened conversation
      *
-     * @step. ^I write random message$
      * @throws Exception
+     * @step. ^I write random message$
      */
     @When("^I write random message$")
     public void WhenIWriteRandomMessage() throws Exception {
@@ -64,12 +65,11 @@ public class ConversationPageSteps {
 
     /**
      * Verify that the input text field contains random message
-     *
      */
     @Then("^I verify that random message was typed$")
     public void IVerifyThatRandomMessageWasTyped() throws Exception {
         assertThat("Random message in input field", webappPagesCollection.getPage(ConversationPage.class)
-            .getMessageFromInputField(), equalTo(randomMessage));
+                .getMessageFromInputField(), equalTo(randomMessage));
     }
 
     /**
@@ -80,29 +80,42 @@ public class ConversationPageSteps {
     @Then("^I verify that message \"(.*)\" was typed$")
     public void IVerifyThatMessageWasTyped(String message) throws Exception {
         assertThat("Message in input field", webappPagesCollection.getPage(ConversationPage.class).getMessageFromInputField(),
-            equalTo(message));
+                equalTo(message));
     }
 
     /**
      * Types text message to opened conversation, but does not send it
      *
-     * @step. ^I write message (.*)$
-     *
      * @param message text message
      * @throws Exception
+     * @step. ^I write message (.*)$
      */
     @When("^I write message (.*)$")
     public void IWriteMessage(String message) throws Exception {
         webappPagesCollection.getPage(ConversationPage.class).writeNewMessage(message);
     }
 
+    @When("^I paste message from file (.*)$")
+    public void IPasteMessageFromFile(String file) throws Exception {
+        String s = WebCommonUtils.getTextFromFile(file);
+        String message = "";
+        for (int i = 0; i < s.length(); i++){
+            char c = s.charAt(i);
+            if(c == '\n') {
+                message = message + Keys.chord(Keys.SHIFT, Keys.ENTER);
+            } else {
+                message = message + c;
+            }
+        }
+        webappPagesCollection.getPage(ConversationPage.class).writeNewMessage(message);
+    }
+
     /**
      * Types x number of new lines to opened conversation, but does not send them
      *
-     * @step. ^I write (.*) new lines$
-     *
      * @param amount number of lines to write
      * @throws Exception
+     * @step. ^I write (.*) new lines$
      */
     @When("^I write (\\d+) new lines$")
     public void IWriteXNewLines(int amount) throws Exception {
@@ -126,23 +139,20 @@ public class ConversationPageSteps {
     /**
      * Checks that last sent random message appear in conversation
      *
-     * @step. ^I see random message in conversation$
      * @throws Exception
-     *
      * @throws AssertionError if message did not appear in conversation
+     * @step. ^I see random message in conversation$
      */
     @Then("^I see random message in conversation$")
     public void ThenISeeRandomMessageInConversation() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class).isMessageSent(randomMessage));
+        ISeeTextMessage(randomMessage);
     }
 
     /**
      * Verifies whether YouTube video is visible
      *
-     * @step. ^I see embedded youtube video of (.*)
-     *
      * @throws Exception
-     *
+     * @step. ^I see embedded youtube video of (.*)
      */
     @Then("^I see embedded youtube video of (.*)")
     public void ThenISeeEmbeddedYoutubeVideoOf(String url) throws Exception {
@@ -152,9 +162,8 @@ public class ConversationPageSteps {
     /**
      * Click People button in 1:1 conversation
      *
-     * @step. I click People button in one to one conversation$
-     *
      * @throws Exception
+     * @step. I click People button in one to one conversation$
      */
     @When("^I click People button in one to one conversation$")
     public void WhenIClickPeopleButtonIn1to1() throws Exception {
@@ -164,9 +173,8 @@ public class ConversationPageSteps {
     /**
      * Click People button in a group conversation to close People Popover
      *
-     * @step. ^I close Group Participants popover$
-     *
      * @throws Exception if the popover is not visible
+     * @step. ^I close Group Participants popover$
      */
     @When("^I close Group Participants popover$")
     public void WhenICloseGroupParticipantsPopover() throws Exception {
@@ -181,9 +189,8 @@ public class ConversationPageSteps {
     /**
      * Click People button in 1:1 conversation to close People Popover
      *
-     * @step. ^I close Single User Profile popover$
-     *
      * @throws Exception if the popover is not visible
+     * @step. ^I close Single User Profile popover$
      */
     @When("^I close Single User Profile popover$")
     public void WhenICloseSingleUserPopover() throws Exception {
@@ -198,23 +205,25 @@ public class ConversationPageSteps {
     /**
      * Click People button in a group conversation
      *
-     * @step. I click People button in group conversation$
-     *
      * @throws Exception
+     * @step. I click People button in group conversation$
      */
     @When("^I click People button in group conversation$")
     public void WhenIClickPeopleButtonInGroup() throws Exception {
         webappPagesCollection.getPage(ConversationPage.class).clickPeopleButton();
     }
 
+    @When("^I see verified icon in conversation$")
+    public void ISeeVerifiedIconInConversation() throws Throwable {
+        assertThat("No verified icon", webappPagesCollection.getPage(ConversationPage.class).isConversationVerified());
+    }
+
     /**
      * Send a picture into current conversation
      *
-     * @step. ^I send picture (.*) to the current conversation$
-     *
      * @param pictureName the name of a picture file. This file should already exist in the ~/Documents folder
-     *
      * @throws Exception
+     * @step. ^I send picture (.*) to the current conversation$
      */
     @When("^I send picture (.*) to the current conversation$")
     public void WhenISendPicture(String pictureName) throws Exception {
@@ -224,46 +233,58 @@ public class ConversationPageSteps {
     /**
      * Verifies whether previously sent picture exists in the conversation view
      *
-     * @step. ^I see sent picture (.*) in the conversation view$
-     *
      * @param pictureName the name of a picture file. This file should already exist in the ~/Documents folder
      * @throws Exception
+     * @step. ^I see sent picture (.*) in the conversation view$
      */
     @Then("^I see sent picture (.*) in the conversation view$")
     public void ISeeSentPicture(String pictureName) throws Exception {
         assertThat("Message with image not found", webappPagesCollection.getPage(ConversationPage.class).isImageMessageFound());
         assertThat("Overlap score of image comparsion", webappPagesCollection.getPage(ConversationPage.class)
-            .getOverlapScoreOfLastImage(pictureName), greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
+                .getOverlapScoreOfLastImage(pictureName), greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
     }
 
     /**
      * Verifies that only x images are in the conversation. Helps with checking for doubles.
      *
-     * @step. ^I see only (\\d+) picture[s]? in the conversation$
-     *
      * @param x the amount of images
+     * @step. ^I see only (\\d+) picture[s]? in the conversation$
      */
     @Then("^I see only (\\d+) picture[s]? in the conversation$")
     public void ISeeOnlyXPicturesInConversation(int x) throws Exception {
         assertThat("Number of images in the conversation", webappPagesCollection.getPage(ConversationPage.class)
-            .getNumberOfImagesInCurrentConversation(), equalTo(x));
+                .getNumberOfImagesInCurrentConversation(), equalTo(x));
     }
 
     /**
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
-     * @step. ^I see (.*) action in conversation$
+     * @param message  constant part of the system message
      * @throws Exception
-     *
      * @throws AssertionError if action message did not appear in conversation
+     * @step. ^I see (.*) action in conversation$
      */
     @Then("^I( do not)? see (.*) action in conversation$")
     public void ThenISeeActionInConversation(String doNot, String message) throws Exception {
+        ThenISeeActionInConversation(doNot, message, 1);
+    }
+
+    /**
+     * Checks action message (e.g. you left, etc.) appear in conversation
+     *
+     * @param message  constant part of the system message
+     * @param times  number of times the message appears
+     * @throws Exception
+     * @throws AssertionError if action message did not appear in conversation
+     * @step. ^I see (.*) action in conversation$
+     */
+    @Then("^I( do not)? see (.*) action (\\d+) times in conversation$")
+    public void ThenISeeActionInConversation(String doNot, String message, int times) throws Exception {
         if (doNot == null) {
-            webappPagesCollection.getPage(ConversationPage.class).waitForMessageHeaderContains(message);
+            assertThat(message + " action", webappPagesCollection.getPage(ConversationPage.class)
+                    .waitForNumberOfMessageHeadersContain(message), equalTo(times));
         } else {
             Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class).isActionMessageNotSent(message));
-
         }
     }
 
@@ -271,7 +292,6 @@ public class ConversationPageSteps {
      * Verifies whether people button tool tip is correct or not.
      *
      * @step. ^I see correct people button tool tip$
-     *
      */
     @Then("^I see correct people button tool tip$")
     public void ThenISeeCorrectPeopleButtonToolTip() throws Exception {
@@ -282,60 +302,75 @@ public class ConversationPageSteps {
     public void ISeeConnectingMessage(String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         assertThat("User name", webappPagesCollection.getPage(ConversationPage.class).getConnectedMessageUser(),
-            equalTo(contact));
+                equalTo(contact));
         assertThat("Label", webappPagesCollection.getPage(ConversationPage.class).getConnectedMessageLabel(),
-            equalTo("CONNECTING"));
+                equalTo("CONNECTING"));
     }
 
     @Then("^I see connected message for (.*) in conversation$")
     public void ISeeConnectedMessage(String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         assertThat("User name", webappPagesCollection.getPage(ConversationPage.class).getConnectedMessageUser(),
-            equalTo(contact));
+                equalTo(contact));
         assertThat("Label", webappPagesCollection.getPage(ConversationPage.class).getConnectedMessageLabel(),
-            equalTo("CONNECTED"));
+                equalTo("CONNECTED"));
     }
 
     /**
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
-     * @step. ^I see (.*) action for (.*) in conversation$
-     *
-     * @throws AssertionError if action message did not appear in conversation
-     *
-     * @param message constant part of the system message
+     * @param message  constant part of the system message
      * @param contacts list of comma separated contact names/aliases
+     * @throws AssertionError if action message did not appear in conversation
      * @throws Exception
-     *
+     * @step. ^I see (.*) action for (.*) in conversation$
      */
     @Then("^I( do not)? see (.*) action for (.*) in conversation$")
     public void ThenISeeActionForContactInConversation(String doNot, String message, String contacts) throws Exception {
+        ThenISeeActionForContactInConversation(doNot, message, 1, contacts);
+    }
+
+    /**
+     * Checks action message (e.g. you left, etc.) appear in conversation
+     *
+     * @param message  constant part of the system message
+     * @param times  number of times the message appears
+     * @param contacts list of comma separated contact names/aliases
+     * @throws AssertionError if action message did not appear in conversation
+     * @throws Exception
+     * @step. ^I see (.*) action for (.*) in conversation$
+     */
+    @Then("^I( do not)? see (.*) action (\\d+) times for (.*) in conversation$")
+    public void ThenISeeActionForContactInConversation(String doNot, String message, int times, String contacts) throws Exception {
         contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
         Set<String> parts = new HashSet<String>();
         parts.add(message);
         parts.addAll(CommonSteps.splitAliases(contacts));
         if (doNot == null) {
-            webappPagesCollection.getPage(ConversationPage.class).waitForMessageHeaderContains(parts);
+            if(times > 1) {
+                assertThat(message + " action for " + contacts, webappPagesCollection.getPage(ConversationPage.class)
+                        .waitForNumberOfMessageHeadersContain(parts), equalTo(times));
+            } else {
+                webappPagesCollection.getPage(ConversationPage.class).waitForMessageHeaderContains(parts);
+            }
         } else {
             assertThat(message + " action for " + contacts, webappPagesCollection.getPage(ConversationPage.class)
-                .waitForNumberOfMessageHeadersContain(parts), equalTo(0));
+                    .waitForNumberOfMessageHeadersContain(parts), equalTo(0));
         }
     }
 
     /**
      * Add a user to group chat
      *
-     * @step. ^I add (.*) to group chat$
-     *
      * @param contact
      * @throws Exception
+     * @step. ^I add (.*) to group chat$
      */
     @When("^I add (.*) to group chat$")
     public void IAddContactToGroupChat(String contact) throws Exception {
         WhenIClickPeopleButtonInGroup();
         GroupPopoverPageSteps cpSteps = new GroupPopoverPageSteps();
         cpSteps.IClickAddPeopleButton();
-        cpSteps.IClickConfirmAddToChat();
         cpSteps.ISearchForUser(contact);
         cpSteps.ISelectUserFromSearchResults(contact);
         cpSteps.IChooseToCreateGroupConversation();
@@ -344,8 +379,8 @@ public class ConversationPageSteps {
     /**
      * Click ping button to send ping and hot ping
      *
-     * @step. ^I click ping button$
      * @throws Exception
+     * @step. ^I click ping button$
      */
     @When("^I click ping button$")
     public void IClickPingButton() throws Exception {
@@ -355,13 +390,13 @@ public class ConversationPageSteps {
     /**
      * Verify a text message is visible in conversation.
      *
-     * @step. ^I see text message (.*)
      * @param message
      * @throws Exception
+     * @step. ^I see text message (.*)
      */
     @Then("^I see text message (.*)")
     public void ISeeTextMessage(String message) throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class).isTextMessageVisible(message));
+        webappPagesCollection.getPage(ConversationPage.class).waitForMessageContains(message);
     }
 
     private static String expandPattern(final String originalStr) {
@@ -391,23 +426,30 @@ public class ConversationPageSteps {
      * Verify the text of the last text message in conversation. Patterns are allowed, for example ('a' * 100) will print the a
      * character 100 times. Line break is equal to LF char sequence.
      *
-     * @step. ^I verify the last text message equals to (.*)
      * @param expectedMessage the expected message
      * @throws Exception
+     * @step. ^I verify the last text message equals to (.*)
      */
     @Then("^I verify the last text message equals to (.*)")
     public void IVerifyLastTextMessage(String expectedMessage) throws Exception {
         Assert.assertEquals(expandPattern(expectedMessage), webappPagesCollection.getPage(ConversationPage.class)
-            .getLastTextMessage());
+                .getLastTextMessage());
+    }
+
+    @Then("^I verify the last text message equals file (.*)")
+    public void IVerifyLastTextMessageEqualsFile(String file) throws Exception {
+        String expectedMessage = WebCommonUtils.getTextFromFile(file);
+        Assert.assertEquals(expandPattern(expectedMessage), webappPagesCollection.getPage(ConversationPage.class)
+                .getLastTextMessage());
     }
 
     /**
      * Verify the text of the second last text message in conversation. This step should only be used after verifying the last
      * message of the conversation, because otherwise you might run into a race condition.
      *
-     * @step. ^I verify the second last text message equals to (.*)
      * @param expectedMessage the expected message
      * @throws Exception
+     * @step. ^I verify the second last text message equals to (.*)
      */
     @Then("^I verify the second last text message equals to (.*)")
     public void IVerifySecondLastTextMessage(String expectedMessage) throws Exception {
@@ -417,28 +459,14 @@ public class ConversationPageSteps {
     /**
      * Verify a text message is not visible in conversation
      *
-     * @step. ^I do not see text message (.*)
      * @param message
      * @throws Exception
+     * @step. ^I do not see text message (.*)
      */
     @Then("^I do not see text message ?(.*)$")
     public void IDontSeeTextMessage(String message) throws Exception {
         Assert.assertFalse("Saw text message " + message, webappPagesCollection.getPage(ConversationPage.class)
-            .isTextMessageVisible(message == null ? "" : message));
-    }
-
-    /**
-     * Verify that there is only one ping message visible in conversation
-     *
-     * @step. ^I see only one ping message$
-     * @throws Exception
-     */
-    @When("^I see only one ping message$")
-    public void ISeeOnlyOnePingMessage() throws Exception {
-        assertThat(
-            "PING action",
-            webappPagesCollection.getPage(ConversationPage.class).waitForNumberOfMessageHeadersContain(
-                Collections.singleton("PING")), equalTo(1));
+                .isTextMessageVisible(message == null ? "" : message));
     }
 
     /**
@@ -455,9 +483,8 @@ public class ConversationPageSteps {
      * Verifies whether calling button is visible or not.
      *
      * @param doNot is set to null if "do not" part does not exist
-     *
-     * @step. ^I can see calling button$
      * @throws java.lang.Exception
+     * @step. ^I can see calling button$
      */
     @Then("^I( do not)? see calling button$")
     public void ISeeCallButton(String doNot) throws Exception {
@@ -469,9 +496,8 @@ public class ConversationPageSteps {
     }
 
     /**
-     * @step. ^I see the calling bar$
-     *
      * @throws Exception
+     * @step. ^I see the calling bar$
      */
     @Then("^I see the calling bar$")
     public void IWaitForCallingBar() throws Exception {
@@ -479,10 +505,9 @@ public class ConversationPageSteps {
     }
 
     /**
-     *
-     * @step. ^I see the calling bar from users? (.*)$
      * @param aliases comma separated list of usernames currently calling
      * @throws Exception
+     * @step. ^I see the calling bar from users? (.*)$
      */
     @Then("^I see the calling bar from users? (.*)$")
     public void IWaitForCallingBar(String aliases) throws Exception {
@@ -495,10 +520,9 @@ public class ConversationPageSteps {
     }
 
     /**
-     *
-     * @step. ^I see outgoing call for users? (.*)$
      * @param aliases comma separated list of usernames currently calling
      * @throws Exception
+     * @step. ^I see outgoing call for users? (.*)$
      */
     @Then("^I see outgoing call for users? (.*)$")
     public void ISeeOutgoingCallForUsers(String aliases) throws Exception {
@@ -514,9 +538,8 @@ public class ConversationPageSteps {
     /**
      * Verifies whether calling bar is not visible anymore
      *
-     * @step. ^I do not see the calling bar$
-     *
      * @throws Exception
+     * @step. ^I do not see the calling bar$
      */
     @Then("^I do not see the calling bar$")
     public void IDoNotCallingBar() throws Exception {
@@ -526,9 +549,8 @@ public class ConversationPageSteps {
     /**
      * Accepts incoming call by clicking the check button on the calling bar
      *
-     * @step. ^I accept the incoming call$
-     *
      * @throws Exception
+     * @step. ^I accept the incoming call$
      */
     @When("^I accept the incoming call$")
     public void IAcceptIncomingCall() throws Exception {
@@ -536,11 +558,21 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Joins ongoing call by clicking the join call bar
-     *
-     * @step. ^I join call$
+     * Accepts incoming video call by clicking the video call button on the calling bar
      *
      * @throws Exception
+     * @step. ^I accept the incoming video call$
+     */
+    @When("^I accept the incoming video call$")
+    public void IAcceptIncomingVideoCall() throws Exception {
+        webappPagesCollection.getPage(ConversationPage.class).clickAcceptVideoCallButton();
+    }
+
+    /**
+     * Joins ongoing call by clicking the join call bar
+     *
+     * @throws Exception
+     * @step. ^I join call$
      */
     @When("^I join call$")
     public void IJoinCall() throws Exception {
@@ -550,9 +582,8 @@ public class ConversationPageSteps {
     /**
      * Silences the incoming call by clicking the corresponding button on the calling bar
      *
-     * @step. ^I silence the incoming call$
-     *
      * @throws Exception
+     * @step. ^I silence the incoming call$
      */
     @When("^I silence the incoming call$")
     public void ISilenceIncomingCall() throws Exception {
@@ -562,9 +593,8 @@ public class ConversationPageSteps {
     /**
      * End the current call by clicking the X button on calling bar
      *
-     * @step. ^I end the call$
-     *
      * @throws Exception
+     * @step. ^I end the call$
      */
     @When("^I end the call$")
     public void IEndTheCall() throws Exception {
@@ -574,9 +604,8 @@ public class ConversationPageSteps {
     /**
      * Verify that conversation contains my missed call
      *
-     * @step. ^I see conversation with my missed call$
-     *
      * @throws Exception
+     * @step. ^I see conversation with my missed call$
      */
     @Then("^I see conversation with my missed call$")
     public void ThenISeeConversationWithMyMissedCall() throws Exception {
@@ -586,9 +615,8 @@ public class ConversationPageSteps {
     /**
      * Click on picture to open it in full screen mode
      *
-     * @step. ^I click on picture$
-     *
      * @throws Exception
+     * @step. ^I click on picture$
      */
     @When("^I click on picture$")
     public void WhenIClickOnPicture() throws Exception {
@@ -599,9 +627,8 @@ public class ConversationPageSteps {
      * Verifies whether picture is in fullscreen or not.
      *
      * @param doNot is set to null if "do not" part does not exist
-     *
-     * @step. ^I( do not)? see picture in fullscreen$
      * @throws java.lang.Exception
+     * @step. ^I( do not)? see picture in fullscreen$
      */
     @Then("^I( do not)? see picture (.*) in fullscreen$")
     public void ISeePictureInFullscreen(String doNot, String pictureName) throws Exception {
@@ -610,7 +637,7 @@ public class ConversationPageSteps {
             Assert.assertTrue(conversationPage.isPictureInModalDialog());
             Assert.assertTrue(conversationPage.isPictureInFullscreen());
             assertThat("Overlap score of image comparsion", conversationPage.getOverlapScoreOfFullscreenImage(pictureName),
-                greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
+                    greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
         } else {
             Assert.assertTrue(conversationPage.isPictureNotInModalDialog());
         }
@@ -619,8 +646,8 @@ public class ConversationPageSteps {
     /**
      * Click x button to close picture fullscreen mode
      *
-     * @step. ^I click x button to close fullscreen mode$
      * @throws Exception
+     * @step. ^I click x button to close fullscreen mode$
      */
     @When("^I click x button to close fullscreen mode$")
     public void IClickXButtonToCloseFullscreen() throws Exception {
@@ -630,8 +657,8 @@ public class ConversationPageSteps {
     /**
      * I click on black border to close fullscreen mode
      *
-     * @step. ^I click on black border to close fullscreen mode$
      * @throws Exception
+     * @step. ^I click on black border to close fullscreen mode$
      */
     @When("^I click on black border to close fullscreen mode$")
     public void IClickOnBlackBorderToCloseFullscreen() throws Exception {
@@ -656,14 +683,14 @@ public class ConversationPageSteps {
     @Then("^I verify that message (.*) was cached$")
     public void IVerifyThatMessageWasCached(String message) throws Exception {
         assertThat("Cached message in input field", webappPagesCollection.getPage(ConversationPage.class)
-            .getMessageFromInputField(), equalTo(message));
+                .getMessageFromInputField(), equalTo(message));
     }
 
     /**
      * Types shortcut combination to open search
      *
-     * @step. ^I type shortcut combination to open search$
      * @throws Exception
+     * @step. ^I type shortcut combination to open search$
      */
     @Then("^I type shortcut combination to open search$")
     public void ITypeShortcutCombinationToOpenSearch() throws Exception {
@@ -673,8 +700,8 @@ public class ConversationPageSteps {
     /**
      * Hovers ping button
      *
-     * @step. ^I hover ping button$
      * @throws Exception
+     * @step. ^I hover ping button$
      */
     @Then("^I hover ping button$")
     public void IHoverPingButton() throws Exception {
@@ -684,8 +711,8 @@ public class ConversationPageSteps {
     /**
      * Types shortcut combination to ping
      *
-     * @step. ^I type shortcut combination to ping$
      * @throws Exception
+     * @step. ^I type shortcut combination to ping$
      */
     @Then("^I type shortcut combination to ping$")
     public void ITypeShortcutCombinationToPing() throws Exception {
@@ -696,7 +723,6 @@ public class ConversationPageSteps {
      * Verifies whether ping button tool tip is correct or not.
      *
      * @step. ^I see correct ping button tool tip$
-     *
      */
     @Then("^I see correct ping button tooltip$")
     public void ISeeCorrectPingButtonTooltip() throws Exception {
@@ -708,7 +734,7 @@ public class ConversationPageSteps {
             tooltip = tooltip + SHORTCUT_PING_MAC;
         }
         assertThat("Ping button tooltip", webappPagesCollection.getPage(ConversationPage.class).getPingButtonToolTip(),
-            equalTo(tooltip));
+                equalTo(tooltip));
     }
 
     /**
@@ -725,7 +751,6 @@ public class ConversationPageSteps {
      * Verifies whether call button tool tip is correct or not.
      *
      * @step. ^I see correct call button tool tip$
-     *
      */
     @Then("^I see correct call button tooltip$")
     public void ISeeCorrectCallButtonTooltip() throws Exception {
@@ -737,14 +762,14 @@ public class ConversationPageSteps {
             tooltip = tooltip + SHORTCUT_CALL_MAC;
         }
         assertThat("Call button tooltip", webappPagesCollection.getPage(ConversationPage.class).getCallButtonToolTip(),
-            equalTo(tooltip));
+                equalTo(tooltip));
     }
 
     /**
      * Types shortcut combination to call
      *
-     * @step. ^I type shortcut combination to ping$
      * @throws Exception
+     * @step. ^I type shortcut combination to ping$
      */
     @Then("^I type shortcut combination to start a call$")
     public void ITypeShortcutCombinationToCall() throws Exception {
@@ -758,10 +783,10 @@ public class ConversationPageSteps {
 
     /**
      * Click on an avatar bubble inside the conversation view
-     * 
-     * @step. ^I click on avatar of user (.*) in conversation view$
+     *
      * @param userAlias name of the user
      * @throws Exception
+     * @step. ^I click on avatar of user (.*) in conversation view$
      */
     @And("^I click on avatar of user (.*) in conversation view$")
     public void IClickOnUserAvatar(String userAlias) throws Exception {
@@ -772,7 +797,7 @@ public class ConversationPageSteps {
     /**
      * Start a video call in opened conversation
      *
-     * @step. ^I call$
+     * @step. ^I start a video call$
      */
     @When("^I start a video call$")
     public void IMakeVideoCallToUser() throws Throwable {

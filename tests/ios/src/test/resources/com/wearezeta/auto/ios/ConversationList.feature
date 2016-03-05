@@ -16,7 +16,7 @@ Feature: Conversation List
       | Name      | ArchivedUser |
       | user1Name | user2Name    |
 
-  @C352 @rc @regression @id1332 @id2171 @id2172
+  @C352 @rc @clumsy @regression @id1332 @id2171 @id2172
   Scenario Outline: Verify archive a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -113,39 +113,22 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  @C3177 @regression @id1369
-  Scenario Outline: Verify Ping animation in the conversations list
-    Given There are 2 users where <Name> is me
-    Given User Myself removes his avatar picture
-    Given <Contact> is connected to Myself
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    Given I remember the state of <Contact> conversation item
-    When User <Contact> securely pings conversation Myself
-    # Wait for ping animation
-    And I wait for 2 seconds
-    Then I see the state of <Contact> conversation item is changed
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @C104 @regression @id2761
   Scenario Outline: Verify conversations are sorted according to most recent activity
     Given There are 4 users where <Name> is me
-    Given <Name> is connected to <Contact1>,<Contact2>,<Contact3>
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User <Contact3> sends <Number> encrypted messages to user Myself
+    Given User <Contact3> sends 1 encrypted message to user Myself
     And I see first item in contact list named <Contact3>
-    Given User <Contact2> securely pings conversation <Name>
+    Given User <Contact2> securely pings conversation Myself
     And I see first item in contact list named <Contact2>
     Given User <Contact1> sends encrypted image <Picture> to single user conversation Myself
     Then I see first item in contact list named <Contact1>
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Number | Picture     |
-      | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
+      | Name      | Contact1  | Contact2  | Contact3  | Picture     |
+      | user1Name | user2Name | user3name | user4name | testing.jpg |
 
   @C851 @regression @id3310
   Scenario Outline: Verify action menu is opened on swipe right on the group conversation
@@ -202,7 +185,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C848 @rc @regression @id3314
+  @C848 @rc @clumsy @regression @id3314
   Scenario Outline: Verify leaving group conversation from the action menu
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -225,7 +208,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName   |
       | user1Name | user2Name | user3Name | LeaveActionMenu |
 
-  @C840 @rc @regression @id3315
+  @C840 @rc @clumsy @regression @id3315
   Scenario Outline: Verify removing the content from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -242,7 +225,6 @@ Feature: Conversation List
     And I click delete menu button
     And I confirm delete conversation content
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I search for user name <GroupChatName> and tap on it on People picker page
     Then I see group chat page with users <Contact1>,<Contact2>
     And I see 0 conversation entries
@@ -251,7 +233,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
-  @C842 @rc @regression @id3318
+  @C842 @rc @clumsy @regression @id3318
   Scenario Outline: Verify removing the history from 1-to1 conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -267,9 +249,8 @@ Feature: Conversation List
     And I click delete menu button
     And I confirm delete conversation content
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
-    And I click open conversation button on People picker page
+    And I tap Open conversation action button on People picker page
     Then I see dialog page
     And I see 0 conversation entries
 
@@ -385,7 +366,7 @@ Feature: Conversation List
     And I confirm delete conversation content
     And I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    Then I see conversation <GroupChatName> is NOT presented in Search results
+    Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     And I dont see conversation <GroupChatName> in contact list
     And I open archived conversations
@@ -412,7 +393,6 @@ Feature: Conversation List
     Then I dont see conversation <GroupChatName> in contact list
     When I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
-    And I see conversation <GroupChatName> is presented in Search results
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
     When I type the default message and send it
@@ -472,9 +452,8 @@ Feature: Conversation List
     And I open archived conversations
     And I dont see conversation <Contact> in contact list
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    Then I see user <Contact> found on People picker page
+    Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
       | Name      | Contact   |

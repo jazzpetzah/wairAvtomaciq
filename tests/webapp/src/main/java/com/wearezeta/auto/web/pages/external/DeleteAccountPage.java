@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.ExternalLocators;
 import com.wearezeta.auto.web.pages.WebPage;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -14,6 +15,8 @@ public class DeleteAccountPage extends WebPage {
 
     @FindBy(css = ExternalLocators.DeleteAccountPage.cssSubmitButton)
     private WebElement submitButton;
+    
+    private static final String ERROR_TEXT = "Something went wrong.";
 
     public DeleteAccountPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
@@ -30,6 +33,22 @@ public class DeleteAccountPage extends WebPage {
     }
 
     public boolean isSuccess() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), By.cssSelector(ExternalLocators.DeleteAccountPage.cssSuccess));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.DeleteAccountPage.cssSuccess));
+    }
+    
+    public boolean isWrongKey() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(ExternalLocators.DeleteAccountPage.idWrongKey));
+    }
+    
+    public boolean isWrongCode() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(ExternalLocators.DeleteAccountPage.idWrongCode));
+    }
+    
+    public boolean isButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.DeleteAccountPage.cssSubmitButton));
+    }
+    
+    public boolean isErrorMessage() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(ExternalLocators.DeleteAccountPage.xpathLabelByText.apply(ERROR_TEXT)));
     }
 }

@@ -9,8 +9,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class WelcomePageSteps {
-	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
-			.getInstance();
+	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
 
 	private TabletWelcomePage getWelcomePage() throws Exception {
 		return pagesCollection.getPage(TabletWelcomePage.class);
@@ -37,7 +36,7 @@ public class WelcomePageSteps {
 	 */
 	@When("^I switch to [Ee]mail [Ss]ign [Ii]n screen$")
 	public void ISwitchToEmailSignIn() throws Exception {
-		getWelcomePage().tapSignInButton();
+        getWelcomePage().tapSignInButton();
 	}
 
 	/**

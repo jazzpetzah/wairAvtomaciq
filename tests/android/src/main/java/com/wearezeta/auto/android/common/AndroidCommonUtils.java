@@ -22,31 +22,34 @@ import org.openqa.selenium.ScreenOrientation;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+
 import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
+
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 
 public class AndroidCommonUtils extends CommonUtils {
 
-    private static final Logger log = ZetaLogger
-            .getLog(AndroidCommonUtils.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(AndroidCommonUtils.class.getSimpleName());
 
-    private static final String stagingBackend = "[\"https://staging-nginz-https.zinfra.io\", \"https://staging-nginz-ssl.zinfra.io/await\", \"723990470614\"]";
-    private static final String edgeBackend = "[\"https://edge-nginz-https.zinfra.io\", \"https://edge-nginz-ssl.zinfra.io/await\", \"258787940529\"]";
-    private static final String productionBackend = "[\"https://prod-nginz-https.wire.com\", \"https://prod-nginz-ssl.wire.com/await\", \"782078216207\"]";
+    private static final String stagingBackend =
+            "[\"https://staging-nginz-https.zinfra.io\", \"https://staging-nginz-ssl.zinfra.io/await\", \"723990470614\"]";
+    private static final String edgeBackend =
+            "[\"https://edge-nginz-https.zinfra.io\", \"https://edge-nginz-ssl.zinfra.io/await\", \"258787940529\"]";
+    private static final String productionBackend =
+            "[\"https://prod-nginz-https.wire.com\", \"https://prod-nginz-ssl.wire.com/await\", \"782078216207\"]";
 
     private static final String BACKEND_JSON = "customBackend.json";
     private static final String BACKEND_FILE_LOCATION = "/mnt/sdcard/customBackend.json";
 
     public static void executeAdb(final String cmdline) throws Exception {
         executeOsXCommand(new String[]{"/bin/bash", "-c",
-            ADB_PREFIX + "adb " + cmdline});
+                ADB_PREFIX + "adb " + cmdline});
     }
 
     public static void uploadPhotoToAndroid(String photoPathOnDevice)
             throws Exception {
-        executeAdb(String.format("push %s %s", getImagePath(CommonUtils.class),
-                photoPathOnDevice));
+        executeAdb(String.format("push %s %s", getImagePath(CommonUtils.class), photoPathOnDevice));
         executeAdb("shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d "
                 + "file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }");
     }
@@ -103,7 +106,7 @@ public class AndroidCommonUtils extends CommonUtils {
     public static String readClientVersionFromAdb() throws Exception {
         final String output = getAdbOutput(String.format(
                 "shell dumpsys package %s | grep versionName", CommonUtils
-                .getAndroidPackageFromConfig(AndroidCommonUtils.class)));
+                        .getAndroidPackageFromConfig(AndroidCommonUtils.class)));
         if (output.contains("=")) {
             return output.substring(output.indexOf("=") + 1, output.length());
         } else {
@@ -150,13 +153,11 @@ public class AndroidCommonUtils extends CommonUtils {
                 isWifiEnabled);
     }
 
-    public static String getPerfReportPathFromConfig(Class<?> c)
-            throws Exception {
+    public static String getPerfReportPathFromConfig(Class<?> c) throws Exception {
         return CommonUtils.getValueFromConfig(c, "perfReportPath");
     }
 
-    public static String getAndroidToolsPathFromConfig(Class<?> c)
-            throws Exception {
+    public static String getAndroidToolsPathFromConfig(Class<?> c) throws Exception {
         return CommonUtils.getValueFromConfig(c, "androidToolsPath");
     }
 
@@ -189,16 +190,10 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     /**
-     * http://stackoverflow.com/questions/4567904/how-to-start-an-application- using-android-adb-tools
-     *
-     * @param packageId
-     * @param mainActivity
-     * @throws Exception
+     * http://stackoverflow.com/questions/29931318/launch-app-via-adb-without-knowing-activity-name
      */
-    public static void switchToApplication(String packageId, String mainActivity)
-            throws Exception {
-        executeAdb(String.format("shell am start -n %s/%s", packageId,
-                mainActivity));
+    public static void switchToApplication(String packageId) throws Exception {
+        executeAdb(String.format("shell monkey -p %s -c android.intent.category.LAUNCHER 1", packageId));
     }
 
     /**
@@ -216,6 +211,10 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static void tapHomeButton() throws Exception {
         executeAdb("shell input keyevent 3");
+    }
+
+    public static void tapBackspaceButton() throws Exception {
+        executeAdb("shell input keyevent 67");
     }
 
     public static double getScreenDensity() throws Exception {
@@ -398,7 +397,7 @@ public class AndroidCommonUtils extends CommonUtils {
      * @throws Exception
      */
     private static long getNetworkStatValue(final String packageId,
-            final int columnNumber) throws Exception {
+                                            final int columnNumber) throws Exception {
         final String output = getAdbOutput(
                 String.format("shell cat /proc/%d/net/dev",
                         getPackagePid(packageId))).trim();
@@ -539,22 +538,20 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     public static void insertContact(String name, String email,
-            PhoneNumber phoneNumber) throws Exception {
+                                     PhoneNumber phoneNumber) throws Exception {
         final List<Integer> ids = insertContactAndGetIds();
         bindContactNameById(ids, name);
         bindContactEmailById(ids, email);
         bindContactPhoneNumberById(ids, phoneNumber);
     }
 
-    public static void insertContact(String name, String email)
-            throws Exception {
+    public static void insertContact(String name, String email) throws Exception {
         final List<Integer> ids = insertContactAndGetIds();
         bindContactNameById(ids, name);
         bindContactEmailById(ids, email);
     }
 
-    public static void insertContact(String name, PhoneNumber phoneNumber)
-            throws Exception {
+    public static void insertContact(String name, PhoneNumber phoneNumber) throws Exception {
         final List<Integer> ids = insertContactAndGetIds();
         bindContactNameById(ids, name);
         bindContactPhoneNumberById(ids, phoneNumber);

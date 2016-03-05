@@ -10,10 +10,12 @@ import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -34,17 +36,11 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.*;
-import java.util.logging.Level;
 
 public class CommonAndroidSteps {
     static {
@@ -56,7 +52,11 @@ public class CommonAndroidSteps {
 
     private static final Logger log = ZetaLogger.getLog(CommonAndroidSteps.class.getSimpleName());
 
-    private static ArrayList<BufferedImage> images = new ArrayList<>();
+    private final ElementState screenState = new ElementState(
+            () -> pagesCollection.getCommonPage().takeScreenshot().orElseThrow(
+                    () -> new IllegalStateException("Cannot take a screenshot of the whole screen")
+            )
+    );
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     public static final Platform CURRENT_PLATFORM = Platform.Android;
@@ -76,18 +76,15 @@ public class CommonAndroidSteps {
     @SuppressWarnings("unchecked")
     public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path, Class<?> cls) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
-        LoggingPreferences object = new LoggingPreferences();
-        object.enable("logcat", Level.ALL);
-        capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
+        capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         // To init the first available device
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(cls));
-        capabilities.setCapability("appActivity", CommonUtils.getAndroidActivityFromConfig(cls));
+        capabilities.setCapability("appActivity", CommonUtils.getAndroidMainActivityFromConfig(cls));
         capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(cls));
-        capabilities.setCapability("applicationName", "selendroid");
-        capabilities.setCapability("automationName", "selendroid");
+        capabilities.setCapability("automationName", "Selendroid");
 
         try {
             return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities, 1,
@@ -270,9 +267,7 @@ public class CommonAndroidSteps {
         } else {
             AndroidCommonUtils.unlockDevice();
             // FIXME: Unlock selendroid app does not restore the previously active application
-            AndroidCommonUtils.switchToApplication(
-                    CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-                    CommonUtils.getAndroidActivityFromConfig(this.getClass()));
+            AndroidCommonUtils.switchToApplication(CommonUtils.getAndroidPackageFromConfig(this.getClass()));
         }
     }
 
@@ -280,38 +275,11 @@ public class CommonAndroidSteps {
      * Takes 1st screenshot for comparison, previous taken screenshots will be cleaned
      *
      * @throws Exception
-     * @step. ^I take( 1st)? screenshot$
+     * @step. ^I take screenshot$
      */
-    @When("^I take( 1st)? screenshot$")
-    public void WhenITake1stScreenshot(String first) throws Exception {
-        final Optional<BufferedImage> screenshot = pagesCollection.getCommonPage().takeScreenshot();
-        if (screenshot.isPresent()) {
-            if (first != null || images.size() >= 2) {
-                images.clear();
-            }
-            images.add(screenshot.get());
-//            File outputfile = new File("/Project/screen_"+System.nanoTime()+".png");
-//            ImageIO.write(screenshot.get(), "png", outputfile);
-        } else {
-            throw new RuntimeException("Selenium has failed to take the screenshot from current page");
-        }
-    }
-
-    /**
-     * Takes 2nd screenshot for comparison
-     *
-     * @throws Exception
-     * @step. ^I take 2nd screenshot$
-     */
-    @When("^I take 2nd screenshot$")
-    public void WhenITake2ndScreenshot() throws Exception {
-        final Optional<BufferedImage> screenshot = pagesCollection.getCommonPage().takeScreenshot();
-        if (screenshot.isPresent()) {
-            if (images.size() == 2) images.remove(1);
-            images.add(screenshot.get());
-        } else {
-            throw new RuntimeException("Selenium has failed to take the screenshot from current page");
-        }
+    @When("^I take screenshot$")
+    public void WhenITake1stScreenshot() throws Exception {
+        screenState.remember();
     }
 
     /**
@@ -320,7 +288,7 @@ public class CommonAndroidSteps {
      * @param user          that adds someone to a chat
      * @param userToBeAdded user that gets added by someone
      * @param group         group chat you get added to
-     * @throws Throwable
+     * @throws Exception
      * @step. ^User (.*) adds [Uu]ser (.*) to group chat (.*)$
      */
     @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
@@ -343,16 +311,23 @@ public class CommonAndroidSteps {
      * Compare that 1st and 2nd screenshots are equal/not equal
      *
      * @param shouldBeEqual equals to null if screenshots should be different
-     * @step. ^I compare 1st and 2nd screenshots and they are( not)?different$
+     * @step. ^I verify the previous and the current screenshots are( not)? different$
      */
-    @Then("^I compare 1st and 2nd screenshots and they are( not)? different$")
-    public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent(String shouldBeEqual) {
-        double score = ImageUtil.getOverlapScore(images.get(0), images.get(1));
-        double targetScore = 0.75d;
-        if (shouldBeEqual == null)
-            Assert.assertTrue("Screenshots overlap score=" + score + ", but expected less than " + targetScore, score < targetScore);
-        else
-            Assert.assertTrue("Screenshots overlap score=" + score + ", but expected more than " + targetScore, score >= targetScore);
+    @Then("^I verify the previous and the current screenshots are( not)? different$")
+    public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent(String shouldBeEqual) throws Exception {
+        final int timeoutSeconds = 10;
+        final double targetScore = 0.75d;
+        if (shouldBeEqual == null) {
+            Assert.assertTrue(
+                    String.format("The current screen state seems to be similar to the previous one after %s seconds",
+                            timeoutSeconds),
+                    screenState.isChanged(timeoutSeconds, targetScore));
+        } else {
+            Assert.assertTrue(
+                    String.format("The current screen state seems to be different to the previous one after %s seconds",
+                            timeoutSeconds),
+                    screenState.isNotChanged(timeoutSeconds, targetScore));
+        }
     }
 
     /**
@@ -362,9 +337,8 @@ public class CommonAndroidSteps {
      * @step. ^I restore the application$
      */
     @When("^I restore the application$")
-    public void IRestoreApllication() throws Exception {
-        AndroidCommonUtils.switchToApplication(CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-                CommonUtils.getAndroidActivityFromConfig(this.getClass()));
+    public void IRestoreApplication() throws Exception {
+        AndroidCommonUtils.switchToApplication(CommonUtils.getAndroidPackageFromConfig(this.getClass()));
     }
 
     /**
@@ -659,11 +633,31 @@ public class CommonAndroidSteps {
      * @param count       the number of users to make
      * @param myNameAlias the name of the user to set as the current user
      * @throws Exception
-     * @step. ^There \\w+ (\\d+) user[s]* where (.*) is me$
+     * @step. ^There (?:are|is) (\\d+) user[s]* where (.*) is me$
      */
-    @Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
+    @Given("^There (?:are|is) (\\d+) users? where (.*) is me$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
+        GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
+    }
+
+    /**
+     * Verifies that there are N new users for a test, makes them if they don't
+     * exist, and sets one of those users to be the current user.
+     *
+     * @param count       the number of users to make
+     * @param what        either 'email' or 'phone number'
+     * @param myNameAlias the name of the user to set as the current user
+     * @throws Exception
+     * @step. ^There (?:are|is) (\d+) users? with (email address|phone number) only where (.*) is me$
+     */
+    @Given("^There (?:are|is) (\\d+) users? with (email address|phone number) only where (.*) is me$")
+    public void ThereAreNUsersWithZOnlyWhereXIsMe(int count, String what, String myNameAlias) throws Exception {
+        if (what.equals("email address")) {
+            commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(count, myNameAlias);
+        } else {
+            commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
+        }
         GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
     }
 
@@ -674,9 +668,9 @@ public class CommonAndroidSteps {
      * @param count      the number of users to make
      * @param namePrefix the prefix for all of the users to share
      * @throws Exception
-     * @step. ^There \\w+ (\\d+) shared user[s]* with name prefix ([\\w\\.]+)$
+     * @step. ^There (?:are|is) (\d+) shared users? with name prefix ([\w\.]+)$$
      */
-    @Given("^There \\w+ (\\d+) shared user[s]* with name prefix ([\\w\\.]+)$")
+    @Given("^There (?:are|is) (\\d+) shared users? with name prefix ([\\w\\.]+)$")
     public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix) throws Exception {
         commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
     }
@@ -721,21 +715,6 @@ public class CommonAndroidSteps {
     @Given("^(\\w+) waits? until (.*) exists in backend search results$")
     public void UserWaitsUntilContactExistsInHisSearchResults(String searchByNameAlias, String query) throws Exception {
         commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
-    }
-
-    /**
-     * Waits for a given time to verify that another user is blocked in search
-     * results
-     *
-     * @param searchByNameAlias the user to search for in the query results.
-     * @param query             the search query to pass to the backend, which will return a
-     *                          list of users.
-     * @throws Exception
-     * @step. ^(\\w+) waits? until (.*) is blocked in backend search results$
-     */
-    @Given("^(\\w+) waits? until (.*) is blocked in backend search results$")
-    public void UserWaitsUntilContactIsBlockedInSearchResults(String searchByNameAlias, String query) throws Exception {
-        commonSteps.WaitUntilContactBlockStateInSearch(searchByNameAlias, query, true);
     }
 
     /**
@@ -935,9 +914,9 @@ public class CommonAndroidSteps {
     /**
      * User X removes User Y from a group conversation via backend
      *
-     * @param user1
-     * @param user2
-     * @param group
+     * @param user1 removal action initiator
+     * @param user2 user name to be removed from the group chat
+     * @param group group chat name
      * @throws Exception
      * @step. ^(.*) removes (.*) from group (.*)$
      */
@@ -986,7 +965,7 @@ public class CommonAndroidSteps {
             });
         }
         pool.shutdown();
-        final int secondsTimeout = (names.size() / poolSize + 1) * 40;
+        final int secondsTimeout = (names.size() / poolSize + 1) * 60;
         if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS)) {
             throw new IllegalStateException(String.format(
                     "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
@@ -1016,4 +995,30 @@ public class CommonAndroidSteps {
         commonSteps.UserRemovesAllRegisteredOtrClients(userAs);
     }
 
+    /**
+     * Remove all registered OTR clients for the particular user except of the X most recent ones
+     *
+     * @param userAs       user name/alias
+     * @param clientsCount the count of recents OTR clients to keep
+     * @throws Exception
+     * @step. ^User (.*) only keeps his (\d+) most recent OTR clients$
+     */
+    @Given("^User (.*) only keeps his (\\d+) most recent OTR clients$")
+    public void UserKeepsXOtrClients(String userAs, int clientsCount) throws Exception {
+        commonSteps.UserKeepsXOtrClients(userAs, clientsCount);
+    }
+
+    /**
+     * Checks to see that an alert message contains the correct text
+     *
+     * @param expectedMsg the expected error message
+     * @throws Exception
+     * @step. ^I see alert message containing \"(.*)\"$
+     */
+    @Then("^I see alert message containing \"(.*)\"$")
+    public void ISeeAlertMessage(String expectedMsg) throws Exception {
+        expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, ClientUsersManager.FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("An alert containing text '%s' is not visible", expectedMsg),
+                pagesCollection.getCommonPage().isAlertMessageVisible(expectedMsg));
+    }
 }

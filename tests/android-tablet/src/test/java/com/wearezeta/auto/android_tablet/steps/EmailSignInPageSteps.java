@@ -83,21 +83,6 @@ public class EmailSignInPageSteps {
 	}
 
 	/**
-	 * Checks to see that the login error message contains the correct text
-	 * After providing a false email address or password
-	 * 
-	 * @step. ^I see error message \"(.*)\"$
-	 * @param expectedMsg
-	 *            the expected error message
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I see error message \"(.*)\"$")
-	public void ISeeErrorMessage(String expectedMsg) throws Exception {
-		getEmailSignInPage().verifyErrorMessageText(expectedMsg);
-	}
-
-	/**
 	 * Tap OK button on an alert
 	 * 
 	 * @step. ^I tap OK button on the error message$
@@ -107,5 +92,17 @@ public class EmailSignInPageSteps {
 	@When("^I tap OK button on the error message$")
 	public void ITapOKOnErrorMessage() throws Exception {
 		getEmailSignInPage().acceptErrorMessage();
+	}
+
+	/**
+	 * Press the "Phone Login" button on the email sign in to switch to
+	 * phone number login
+	 *
+	 * @step. ^I switch to [Pp]hone [Ll]ogin screen$
+	 * @throws Exception
+	 */
+	@When("^I switch to [Pp]hone [Ll]ogin screen$")
+	public void ISwitchToPhoneLogin() throws Exception {
+        getEmailSignInPage().tapPhoneLogin();
 	}
 }

@@ -7,7 +7,7 @@ Feature: Rotations
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
-    When I tap my avatar on top of conversations list
+    When I tap conversations list settings button
     And I see my name on Self Profile page
     # We try to set the self name to make sure this action is really visible and available
     And I tap my name field on Self Profile page
@@ -33,7 +33,7 @@ Feature: Rotations
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
-    When I tap the Search input
+    When I open Search UI
     Then I see People Picker page
     When I rotate UI to landscape
     Then I see People Picker page
@@ -52,7 +52,7 @@ Feature: Rotations
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    Given User <Contact> sends exnrypted message <Message> to user Myself
+    Given User <Contact> sends encrypted message <Message> to user Myself
     When I tap the conversation <Contact>
     Then I see the conversation view
     And I see the message "<Message>" in the conversation view
@@ -74,7 +74,7 @@ Feature: Rotations
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    When I tap the Search input
+    When I open Search UI
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap the found item <Contact2> on People Picker page
     Then I see Outgoing Connection popover

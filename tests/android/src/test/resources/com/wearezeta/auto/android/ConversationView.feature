@@ -65,7 +65,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I swipe on text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press "Take Photo" button
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -188,7 +188,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I swipe on text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press "Gallery" button
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -206,7 +206,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I swipe on text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press "Gallery" button
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -234,7 +234,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I swipe on text input
-    And I press Sketch button
+    And I tap Sketch button from input tools
     And I draw a sketch with <NumColors> colors
     And I send my sketch
     And I select last photo in dialog
@@ -252,7 +252,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I swipe on text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press "Gallery" button
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
@@ -272,7 +272,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I swipe on text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press "Take Photo" button
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
@@ -304,7 +304,7 @@ Feature: Conversation View
       | user1Name | user2Name | Yo      |
 
   @C674 @id165 @regression @rc
-  Scenario Outline: Send GIF format pic
+  Scenario Outline: (BUG AN-3443) Send GIF format pic
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -331,7 +331,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I swipe on text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press "Switch Camera" button
     And I press "Take Photo" button
     And I press "Confirm" button

@@ -49,8 +49,7 @@ public class IMAPSMailbox implements ISupportsMessagesPolling {
 						firstPriorityHandlerType.name()));
 	}
 
-	public Future<String> getMessage(Map<String, String> expectedHeaders,
-			int timeoutSeconds) throws Exception {
+	public Future<String> getMessage(Map<String, String> expectedHeaders, int timeoutSeconds) throws Exception {
 		return getMessage(expectedHeaders, timeoutSeconds, 0);
 	}
 

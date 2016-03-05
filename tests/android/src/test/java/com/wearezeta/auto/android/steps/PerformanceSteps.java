@@ -33,16 +33,12 @@ import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
 
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-            .getInstance();
-    private final PerformanceCommon perfCommon = PerformanceCommon
-            .getInstance();
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
+    private final PerformanceCommon perfCommon = PerformanceCommon.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2
-            .getInstance();
+    private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2.getInstance();
 
-    private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class.getSimpleName());
 
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_MSGS_IN_CONVO_WINDOW = 100;
@@ -68,22 +64,15 @@ public class PerformanceSteps {
      * button.
      *
      * @param timeoutSeconds sign in timeout
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I sign in using my email with (\\d+) seconds? timeout$
      */
     @Given("^I sign in using my email with (\\d+) seconds? timeout$")
-    public void ISignInUsingMyEmail(int timeoutSeconds) throws Throwable {
+    public void ISignInUsingMyEmail(int timeoutSeconds) throws Exception {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
         getWelcomePage().tapSignInTab();
-        try {
-            getEmailSignInPage().setLogin(self.getEmail());
-        } catch (NoSuchElementException e) {
-            // FIXME: try again because sometimes tapping "I have account"
-            // button fails without any reason
-            getWelcomePage().tapSignInTab();
-            getEmailSignInPage().setLogin(self.getEmail());
-        }
+        getEmailSignInPage().setLogin(self.getEmail());
         getEmailSignInPage().setPassword(self.getPassword());
         getEmailSignInPage().logIn(true, timeoutSeconds);
     }
@@ -99,8 +88,7 @@ public class PerformanceSteps {
      * @step. ^I receive (\\d+) messages? from contact (.*)
      */
     @Given("^I receive (\\d+) messages? from contact (.*)")
-    public void IReceiveXMessagesFromContact(int msgsCount, String asContact)
-            throws Exception {
+    public void IReceiveXMessagesFromContact(int msgsCount, String asContact) throws Exception {
         assert msgsCount >= MAX_MSGS_IN_CONVO_WINDOW : String.format(
                 "The count of messages to send (%d) should be greater or equal to the max "
                         + "count of messages in conversation window (%d)",
@@ -110,9 +98,9 @@ public class PerformanceSteps {
     }
 
     private void waitUntilConversationsListIsFullyLoaded() throws Exception {
-        final int maxTries = 15;
+        final int timeoutSeconds = 15 * 60;
         final long millisecondsDelay = 20000;
-        int ntry = 1;
+        final long millisecondsStarted = System.currentTimeMillis();
         do {
             try {
                 getContactListPage().verifyContactListIsFullyLoaded();
@@ -123,32 +111,26 @@ public class PerformanceSteps {
                 e.printStackTrace();
             }
             Thread.sleep(millisecondsDelay);
-            ntry++;
-        } while (ntry <= maxTries);
-        Assert.assertTrue(
-                "No conversations are visible in the conversations list, but some are expected",
-                getContactListPage().isAnyConversationVisible());
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        Assert.assertTrue(String.format(
+                "No conversations are visible in the conversations list after %s seconds, but some are expected",
+                timeoutSeconds), getContactListPage().isAnyConversationVisible());
     }
 
-    private void visitConversationWhenAvailable(final String destConvoName)
-            throws Exception {
-        final int maxRetries = 30;
-        int ntry = 1;
+    private void visitConversationWhenAvailable(final String destConvoName) throws Exception {
+        final int timeoutSeconds = 15 * 60;
+        final long millisecondsStarted = System.currentTimeMillis();
         do {
             try {
                 getContactListPage().tapOnName(destConvoName);
             } catch (IllegalStateException | WebDriverException e) {
-                if (ntry >= maxRetries) {
-                    throw e;
-                } else {
-                    e.printStackTrace();
-                }
+                e.printStackTrace();
             }
             Thread.sleep(10000);
-            ntry++;
-        } while (!getDialogPage().isDialogVisible() && ntry <= maxRetries);
+        } while (!getDialogPage().isDialogVisible() &&
+                System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
         assert getDialogPage().isDialogVisible() : "The conversation has not been opened after "
-                + maxRetries + " retries";
+                + timeoutSeconds + " seconds timeout";
         getDialogPage().scrollToTheBottom();
         getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
     }
@@ -164,13 +146,10 @@ public class PerformanceSteps {
      * from (.*)
      */
     @When("^I start test cycle for (\\d+) minutes? with messages received from (.*)")
-    public void WhenIStartTestCycleForNMinutes(int timeout, String fromContact)
-            throws Exception {
+    public void WhenIStartTestCycleForNMinutes(int timeout, String fromContact) throws Exception {
         waitUntilConversationsListIsFullyLoaded();
-        final String destConvoName = usrMgr.findUserByNameOrNameAlias(
-                fromContact).getName();
-        String firstConvoName = getContactListPage()
-                .getFirstVisibleConversationName();
+        final String destConvoName = usrMgr.findUserByNameOrNameAlias(fromContact).getName();
+        String firstConvoName = getContactListPage().getFirstVisibleConversationName();
         final int maxRetries = 20;
         final long millisecondsDelay = 10000;
         int ntry = 1;
@@ -213,11 +192,9 @@ public class PerformanceSteps {
     public void ThenIGeneratePerformanceReport(int usersCount) throws Exception {
         final AndroidPerfReportModel dataModel = new AndroidPerfReportModel();
         dataModel.setContactsCount(usersCount - 1);
-        final String logOutput = AndroidLogListener.getInstance(
-                ListenerType.PERF).getStdOut();
+        final String logOutput = AndroidLogListener.getInstance(ListenerType.PERF).getStdOut();
         dataModel.loadDataFromLogCat(logOutput);
-        PerformanceHelpers.storeWidgetDataAsJSON(dataModel,
-                AndroidCommonUtils.getPerfReportPathFromConfig(getClass()));
+        PerformanceHelpers.storeWidgetDataAsJSON(dataModel, AndroidCommonUtils.getPerfReportPathFromConfig(getClass()));
     }
 
     private AndroidBatteryPerfReportModel batteryPerfReport = null;
@@ -234,14 +211,10 @@ public class PerformanceSteps {
     @When("^I initialize battery performance report$")
     public void IInitializeBatteryPerfReport() throws Exception {
         batteryPerfReport = new AndroidBatteryPerfReportModel();
-        batteryPerfReport.setPreviousCapacityValue(AndroidCommonUtils
-                .getBatteryCapacity());
-        final String packageId = AndroidCommonUtils
-                .getAndroidPackageFromConfig(getClass());
-        batteryPerfReport.setPreviousRxBytes(AndroidCommonUtils
-                .getRxBytes(packageId));
-        batteryPerfReport.setPreviousTxBytes(AndroidCommonUtils
-                .getTxBytes(packageId));
+        batteryPerfReport.setPreviousCapacityValue(AndroidCommonUtils.getBatteryCapacity());
+        final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
+        batteryPerfReport.setPreviousRxBytes(AndroidCommonUtils.getRxBytes(packageId));
+        batteryPerfReport.setPreviousTxBytes(AndroidCommonUtils.getTxBytes(packageId));
     }
 
     private final static long CALL_STATUS_CHECKING_INTERVAL = 30000; // milliseconds
@@ -255,8 +228,7 @@ public class PerformanceSteps {
      * @step. ^I verify the call from (.*) is in progress for (\\d+) minutes?$
      */
     @And("^I verify the call from (.*) is in progress for (\\d+) minutes?$")
-    public void IStartBatteryPerfTest(String caller, int durationMinutes)
-            throws Exception {
+    public void IStartBatteryPerfTest(String caller, int durationMinutes) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         while (System.currentTimeMillis() - millisecondsStarted <= durationMinutes * 1000 * 60) {
             Thread.sleep(CALL_STATUS_CHECKING_INTERVAL);
@@ -293,20 +265,15 @@ public class PerformanceSteps {
      * @step. ^I generate battery performance report for (\\d+) minutes?$
      */
     @Then("^I generate battery performance report for (\\d+) minutes?$")
-    public void IGerenearetBatteryPerfReport(int durationMinutes)
-            throws Exception {
+    public void IGerenearetBatteryPerfReport(int durationMinutes) throws Exception {
         if (this.batteryPerfReport == null) {
             throw new IllegalStateException(
                     "You have to initialize the report first");
         }
-        batteryPerfReport.setCurrentCapacityValue(AndroidCommonUtils
-                .getBatteryCapacity());
-        final String packageId = AndroidCommonUtils
-                .getAndroidPackageFromConfig(getClass());
-        batteryPerfReport.setCurrentRxBytes(AndroidCommonUtils
-                .getRxBytes(packageId));
-        batteryPerfReport.setCurrentTxBytes(AndroidCommonUtils
-                .getTxBytes(packageId));
+        batteryPerfReport.setCurrentCapacityValue(AndroidCommonUtils.getBatteryCapacity());
+        final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
+        batteryPerfReport.setCurrentRxBytes(AndroidCommonUtils.getRxBytes(packageId));
+        batteryPerfReport.setCurrentTxBytes(AndroidCommonUtils.getTxBytes(packageId));
         batteryPerfReport.setMinutesDuration(durationMinutes);
         batteryPerfReport.setFlowRxBytes(flowRxBytes);
         batteryPerfReport.setFlowTxBytes(flowTxBytes);

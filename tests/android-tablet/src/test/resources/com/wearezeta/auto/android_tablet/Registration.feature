@@ -67,7 +67,8 @@ Feature: Registration
     And I start listening for registration email
     And I submit the registration data
     Then I see the Confirmation page
-    And I see the entered email on the Confirmation page    
+    And I see the entered email on the Confirmation page
+    And I wait for 5 seconds
     When I lock the device
     And I verify my registration via email
     And I unlock the device
@@ -91,6 +92,7 @@ Feature: Registration
     And I submit the registration data
     Then I see the Confirmation page
     And I see the entered email on the Confirmation page
+    And I wait for 5 seconds
     When I lock the device
     And I verify my registration via email
     And I unlock the device
@@ -109,7 +111,7 @@ Feature: Registration
     And I enter password "<Password>"
     When I enable Airplane mode on the device
     And I tap Sign In button
-    Then I see error message "<ErrMessage>"
+    Then I see alert message containing "<ErrMessage>"
     When I tap OK button on the error message
     And I disable Airplane mode on the device
     And I tap Sign In button

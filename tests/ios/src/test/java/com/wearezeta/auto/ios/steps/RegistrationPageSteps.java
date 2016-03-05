@@ -1,7 +1,11 @@
 package com.wearezeta.auto.ios.steps;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.email.ActivationMessage;
+import com.wearezeta.auto.common.email.WireMessage;
 import cucumber.api.java.en.And;
 import org.junit.Assert;
 
@@ -37,13 +41,6 @@ public class RegistrationPageSteps {
      */
     @When("^I enter phone number for user (.*)$")
     public void IEnterPhoneNumber(String name) throws Exception {
-        if (this.userToRegister == null) {
-            this.userToRegister = new ClientUser();
-        }
-        this.userToRegister.setName(name);
-        this.userToRegister.clearNameAliases();
-        this.userToRegister.addNameAlias(name);
-
         this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
         getRegistrationPage().selectWirestan();
         getRegistrationPage().inputPhoneNumber(
@@ -58,8 +55,7 @@ public class RegistrationPageSteps {
      */
     @When("^I enter random phone number$")
     public void IEnterRandomPhoneNumber() throws Exception {
-        getRegistrationPage().inputPhoneNumber(
-                CommonUtils.generateRandomXdigits(7));
+        getRegistrationPage().inputPhoneNumber(CommonUtils.generateRandomXdigits(7));
     }
 
     /**
@@ -97,9 +93,8 @@ public class RegistrationPageSteps {
      * @step. ^I enter (.*) digits phone number
      */
     @When("^I enter (.*) digits phone number$")
-    public void IEnterXDigitesPhoneNumber(int x) throws Exception {
-        getRegistrationPage().inputPhoneNumber(
-                CommonUtils.generateRandomXdigits(x));
+    public void IEnterXDigitsPhoneNumber(int x) throws Exception {
+        getRegistrationPage().inputPhoneNumber(CommonUtils.generateRandomXdigits(x));
     }
 
     /**
@@ -124,16 +119,7 @@ public class RegistrationPageSteps {
 
     @When("^I enter name (.*)$")
     public void IEnterName(String name) throws Exception {
-        try {
-            this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
-        } catch (NoSuchUserException e) {
-            if (this.userToRegister == null) {
-                this.userToRegister = new ClientUser();
-            }
-            this.userToRegister.setName(name);
-            this.userToRegister.clearNameAliases();
-            this.userToRegister.addNameAlias(name);
-        }
+        this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
         getRegistrationPage().setName(this.userToRegister.getName());
     }
 
@@ -142,44 +128,6 @@ public class RegistrationPageSteps {
         IEnterName(name);
         getRegistrationPage().inputName();
     }
-
-    /**
-     * Fill in name field username with leading and trailing spaces
-     *
-     * @param name username
-     * @throws Exception
-     * @step. ^I fill in name (.*) with leading and trailing spaces and hit
-     * Enter$
-     */
-    @When("^I fill in name (.*) with leading and trailing spaces and hit Enter$")
-    public void IInputNameWithSpacesAndHitEnter(String name) throws Exception {
-        getRegistrationPage().setName(
-                "  " + usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS) + "  ");
-        getRegistrationPage().inputName();
-    }
-
-    /**
-     * Fill in name field username with leading and trailing spaces on iPad
-     *
-     * @param name username
-     * @throws Exception
-     * @step. ^I fill in name (.*) with leading and trailing spaces on iPad
-     */
-    @When("^I fill in name (.*) with leading and trailing spaces on iPad$")
-    public void IInputNameWithSpacesOnIpad(String name) throws Exception {
-        try {
-            this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
-        } catch (NoSuchUserException e) {
-            if (this.userToRegister == null) {
-                this.userToRegister = new ClientUser();
-            }
-            this.userToRegister.setName(name);
-            this.userToRegister.clearNameAliases();
-            this.userToRegister.addNameAlias(name);
-        }
-        getRegistrationPage().setName("  " + userToRegister.getName() + "  ");
-    }
-
     @When("^I enter email (.*)$")
     public void IEnterEmail(String email) throws Exception {
         boolean isRealEmail = false;
@@ -233,14 +181,14 @@ public class RegistrationPageSteps {
      */
     @When("^I start activation email monitoring$")
     public void IStartActivationEmailMonitoring() throws Exception {
-        activationMessage = BackendAPIWrappers
-            .initMessageListener(userToRegister);
+        final Map<String, String> additionalHeaders = new HashMap<>();
+        additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, ActivationMessage.MESSAGE_PURPOSE);
+        activationMessage = BackendAPIWrappers.initMessageListener(userToRegister, additionalHeaders);
     }
 
     @Then("^I verify registration address$")
     public void IVerifyRegistrationAddress() throws Exception {
-        BackendAPIWrappers
-                .activateRegisteredUserByEmail(this.activationMessage);
+        BackendAPIWrappers.activateRegisteredUserByEmail(this.activationMessage);
         userToRegister.setUserState(UserState.Created);
         getRegistrationPage().waitRegistrationToFinish();
     }

@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -14,10 +15,10 @@ public class PeoplePickerPage extends AndroidPage {
     public static final By idParticipantsClose = By.id("gtv__participants__close");
 
     public static final By xpathMainSearchField =
-            By.xpath("//*[@id='fl__search_box_container']//*[@id='puet_pickuser__searchbox']");
+            By.xpath("//*[@id='fl__conversation_list_main']//*[@id='sbv__search_box']");
 
     public static final By xpathAddPeopleSearchField =
-            By.xpath("//*[@id='fl__add_to_conversation__searchbox__container']//*[@id='puet_pickuser__searchbox']");
+            By.xpath("//*[@id='fl__add_to_conversation__pickuser__container']//*[@id='sbv__search_box']");
 
     public static final By idSingleParticipantClose = By.id("gtv__single_participants__close");
 
@@ -28,6 +29,8 @@ public class PeoplePickerPage extends AndroidPage {
     public static final By idQuickMenuCameraButton = By.id("gtv__conversation_quick_menu__camera_button");
 
     public static final By idQuickMenuCallButton = By.id("gtv__conversation_quick_menu__call_button");
+
+    public static final By idQuickMenuVideoCallButton = By.id("gtv__conversation_quick_menu__video_call_button");
 
     private static final Function<String, String> xpathStrPeoplePickerGroupByName = name -> String
             .format("//*[@id='ttv_pickuser_searchconversation_name' and @value='%s']", name);
@@ -47,13 +50,15 @@ public class PeoplePickerPage extends AndroidPage {
     public static final By idPickerBtnDone = By.id("zb__pickuser__confirmation_button");
 
     private static final String idStrCreateOrOpenConversationButton = "zb__conversation_quick_menu__conversation_button";
+    private static final By xpathOpenConversationButton = By.xpath(String.format("//*[@id='%s' and @value='OPEN']",
+            idStrCreateOrOpenConversationButton));
+    private static final By xpathCreateConversationButton =
+            By.xpath(String.format("//*[@id='%s' and @value='CREATE GROUP']", idStrCreateOrOpenConversationButton));
     private static final By idCreateOrOpenConversationButton = By.id(idStrCreateOrOpenConversationButton);
-    private static final Function<String, String> xpathStrCreateOrOpenConversationButtonByCaption = caption -> String
-            .format("//*[@id='%s' and @value='%s']", idStrCreateOrOpenConversationButton, caption.toUpperCase());
 
     private static final By idNoResultsFound = By.id("ttv_pickuser__error_header");
 
-    private static final By idPickerListContainer = By.id("pfac__pickuser__header_list_view");
+    private static final By idPickerListContainer = By.id("rv__pickuser__header_list_view");
 
     public PeoplePickerPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -129,23 +134,14 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public boolean isPeoplePickerPageVisible() throws Exception {
-        try {
-            getPickerEdit();
-            return true;
-        } catch (IllegalStateException e) {
-            return false;
-        }
-    }
-
-    public void navigateBack() throws Exception {
-        getElement(idPeoplePickerClearbtn).click();
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMainSearchField);
     }
 
     public boolean isAddToConversationBtnVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idPickerBtnDone);
     }
 
-    public void clickOnAddToCoversationButton() throws Exception {
+    public void clickOnAddToConversationButton() throws Exception {
         getElement(idPickerBtnDone).click();
     }
 
@@ -178,53 +174,42 @@ public class PeoplePickerPage extends AndroidPage {
                 By.xpath(xpathStrPeoplePickerGroupByName.apply(name)), 2);
     }
 
-    public void doShortSwipeDown() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idPickerListContainer), 500, 15, 20, 15, 30);
-    }
-
-    public void doLongSwipeDown() throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idPickerListContainer), 1000, 15, 15, 15, 180);
-    }
-
-    public void tapOpenConversationButton() throws Exception {
-        getElement(idCreateOrOpenConversationButton).click();
-    }
-
-    public boolean waitUntilOpenOrCreateConversationButtonIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCreateOrOpenConversationButton);
-    }
-
-    public boolean waitUntilOpenOrCreateConversationButtonIsVisible(String expectedCaption) throws Exception {
-        final By locator = By.xpath(xpathStrCreateOrOpenConversationButtonByCaption.apply(expectedCaption));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public boolean waitUntilOpenOrCreateConversationButtonIsInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCreateOrOpenConversationButton);
-    }
-
-    public void swipeDown(int durationMilliseconds) throws Exception {
-        DriverUtils.swipeByCoordinates(getDriver(), durationMilliseconds, 50, 20, 50, 90);
-    }
-
-    public void tapCallButton() throws Exception {
-        getElement(idQuickMenuCallButton).click();
-    }
-
-    public void tapCameraButton() throws Exception {
-        getElement(idQuickMenuCameraButton).click();
-    }
-
-    public boolean isCallButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idQuickMenuCallButton);
-    }
-
-    public boolean isSendImageButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idQuickMenuCameraButton);
-    }
-
     public void swipeRightOnContactAvatar(String name) throws Exception {
         final By locator = By.xpath(xpathStrPeoplePickerContactByName.apply(name));
         DriverUtils.swipeRight(getDriver(), getDriver().findElement(locator), 500);
+    }
+
+    public void typeBackspaceInSearchInput() throws Exception {
+        getPickerEdit().click();
+        AndroidCommonUtils.tapBackspaceButton();
+    }
+
+    private By getActionButtonLocatorByName(String name) {
+        switch (name.toLowerCase()) {
+            case "open conversation":
+                return xpathOpenConversationButton;
+            case "create conversation":
+                return xpathCreateConversationButton;
+            case "send image":
+                return idQuickMenuCameraButton;
+            case "call":
+                return idQuickMenuCallButton;
+            case "video call":
+                return idQuickMenuVideoCallButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown action button name '%s'", name));
+        }
+    }
+
+    public boolean waitUntilActionButtonIsVisible(String name) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getActionButtonLocatorByName(name));
+    }
+
+    public boolean waitUntilActionButtonIsInvisible(String name) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), getActionButtonLocatorByName(name));
+    }
+
+    public void tapActionButton(String name) throws Exception {
+        getElement(getActionButtonLocatorByName(name)).click();
     }
 }

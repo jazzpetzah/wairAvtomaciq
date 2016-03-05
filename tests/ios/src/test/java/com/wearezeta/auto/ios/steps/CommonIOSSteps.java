@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -8,12 +7,17 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.driver.AppiumServer;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.en.Then;
+import gherkin.formatter.model.Result;
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -24,7 +28,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
-import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -36,17 +39,16 @@ import static com.wearezeta.auto.common.CommonUtils.*;
 public class CommonIOSSteps {
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
-    private Date testStartedDate = new Date();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
+    private static Logger log = ZetaLogger.getLog(CommonIOSSteps.class.getSimpleName());
 
-    public static final String DEFAULT_AUTOMATION_MESSAGE = "iPhone has stupid spell checker";
+    // We keep this short and compatible with spell checker
+    public static final String DEFAULT_AUTOMATION_MESSAGE = "1 message";
 
     static {
-        System.setProperty("org.apache.commons.logging.Log",
-                "org.apache.commons.logging.impl.SimpleLog");
-        System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http",
-                "warn");
+        System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
+        System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http", "warn");
     }
 
     public static final Platform CURRENT_PLATFORM = Platform.iOS;
@@ -72,8 +74,7 @@ public class CommonIOSSteps {
         return getIOSAppName(CommonIOSSteps.class);
     }
 
-    public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts)
-            throws Exception {
+    public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts) throws Exception {
         return resetIOSDriver(enableAutoAcceptAlerts, false);
     }
 
@@ -84,7 +85,7 @@ public class CommonIOSSteps {
                                                 boolean overrideWaitForAppScript) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("nativeInstrumentsLib", isUseNativeInstrumentsEnabled());
-        capabilities.setCapability("newCommandTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT / 1000);
+        capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
         capabilities.setCapability("app", getPath());
         capabilities.setCapability("appName", getAppName());
@@ -93,11 +94,17 @@ public class CommonIOSSteps {
         capabilities.setCapability("platformVersion", getPlatformVersion());
         capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT);
         final String backendType = getBackendType(this.getClass());
-        capabilities
-                .setCapability(
-                        "processArguments",
-                        "--args -TutorialOverlaysEnabled 0 -SkipFirstTimeUseChecks 1 -DisableHockeyUpdates 1 -UseHockey 1 -ZMBackendEnvironmentType "
-                                + backendType);
+        capabilities.setCapability("processArguments",
+                String.join(" ", new String[]{
+                        "--args",
+                        "-TutorialOverlaysEnabled", "0",
+                        "-SkipFirstTimeUseChecks", "1",
+                        "-DisableHockeyUpdates", "1",
+                        "-UseHockey", "0",
+                        "-ZMBackendEnvironmentType", backendType,
+                        // "--debug-log-network"
+                })
+        );
         if (enableAutoAcceptAlerts) {
             capabilities.setCapability("autoAcceptAlerts", true);
         }
@@ -107,7 +114,6 @@ public class CommonIOSSteps {
                     "$.delay(20000); true;");
         }
 
-        setTestStartedDate(new Date());
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
                 .resetDriver(getUrl(), capabilities, DRIVER_CREATION_RETRIES_COUNT);
     }
@@ -148,10 +154,9 @@ public class CommonIOSSteps {
         pagesCollection.clearAllPages();
 
         try {
-            if (getIsSimulatorFromConfig(getClass())) {
-                IOSCommonUtils.collectSimulatorLogs(getDeviceName(getClass()), getTestStartedDate());
-            }
-            if (scenario.getSourceTagNames().contains("@performance")) {
+            if (!scenario.getStatus().equals(Result.PASSED) && getIsSimulatorFromConfig(getClass())) {
+                log.debug(IOSSimulatorHelper.getLogsAndCrashes() + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+            } else if (scenario.getSourceTagNames().contains("@performance")) {
                 IOSLogListener.forceStopAll();
                 IOSLogListener.writeDeviceLogsToConsole(IOSLogListener.getInstance());
             }
@@ -174,16 +179,6 @@ public class CommonIOSSteps {
         }
     }
 
-    @When("^I see keyboard$")
-    public void ISeeKeyboard() throws Exception {
-        Assert.assertTrue(pagesCollection.getCommonPage().isKeyboardVisible());
-    }
-
-    @When("^I dont see keyboard$")
-    public void IDontSeeKeyboard() throws Exception {
-        Assert.assertFalse(pagesCollection.getCommonPage().isKeyboardVisible());
-    }
-
     @When("^I press keyboard Delete button$")
     public void IPressKeyboardDeleteBtn() throws Exception {
         pagesCollection.getCommonPage().clickKeyboardDeleteButton();
@@ -197,12 +192,12 @@ public class CommonIOSSteps {
 
     @When("^I accept alert$")
     public void IAcceptAlert() throws Exception {
-        pagesCollection.getCommonPage().acceptAlert();
+        pagesCollection.getCommonPage().acceptAlertIfVisible();
     }
 
     @When("^I dismiss alert$")
     public void IDismissAlert() throws Exception {
-        pagesCollection.getCommonPage().dismissAlert();
+        pagesCollection.getCommonPage().dismissAlertIfVisible();
     }
 
     /**
@@ -277,7 +272,7 @@ public class CommonIOSSteps {
      *
      * @param seconds time in seconds to lock screen
      * @throws Exception
-     * @step.^I lock screen for (.*) seconds$
+     * @step. ^I lock screen for (.*) seconds$
      */
     @When("^I lock screen for (\\d+) seconds$")
     public void ILockScreen(int seconds) throws Exception {
@@ -287,16 +282,13 @@ public class CommonIOSSteps {
     @Given("^(.*) sent connection request to (.*)$")
     public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
                                                String usersToNameAliases) throws Throwable {
-        commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
-                usersToNameAliases);
+        commonSteps.ConnectionRequestIsSentTo(userFromNameAlias, usersToNameAliases);
     }
 
     @Given("^(.*) has group chat (.*) with (.*)$")
     public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
-                                             String chatName, String otherParticipantsNameAlises)
-            throws Exception {
-        commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
-                otherParticipantsNameAlises);
+                                             String chatName, String otherParticipantsNameAlises) throws Exception {
+        commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName, otherParticipantsNameAlises);
     }
 
     /**
@@ -327,8 +319,7 @@ public class CommonIOSSteps {
     @When("^(.*) added (.*) to group chat (.*)")
     public void UserXaddUserBToGroupChat(String chatOwnerNameAlias,
                                          String userToAdd, String chatName) throws Exception {
-        commonSteps.UserXAddedContactsToGroupChat(chatOwnerNameAlias,
-                userToAdd, chatName);
+        commonSteps.UserXAddedContactsToGroupChat(chatOwnerNameAlias, userToAdd, chatName);
     }
 
     /**
@@ -340,14 +331,12 @@ public class CommonIOSSteps {
      * @step. ^(.*) leave(s) group chat (.*)$
      */
     @Given("^(.*) leave[s]* group chat (.*)$")
-    public void UserLeavesGroupChat(String userName, String chatName)
-            throws Exception {
+    public void UserLeavesGroupChat(String userName, String chatName) throws Exception {
         commonSteps.UserXLeavesGroupChat(userName, chatName);
     }
 
     @Given("^(.*) is connected to (.*)$")
-    public void UserIsConnectedTo(String userFromNameAlias,
-                                  String usersToNameAliases) throws Exception {
+    public void UserIsConnectedTo(String userFromNameAlias, String usersToNameAliases) throws Exception {
         commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
     }
 
@@ -357,10 +346,8 @@ public class CommonIOSSteps {
     }
 
     @Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
-    public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
-            throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
-                myNameAlias);
+    public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
+        commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "default");
     }
 
@@ -376,10 +363,8 @@ public class CommonIOSSteps {
      * only$
      */
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
-    public void ThereAreNUsersWhereXIsMeWithoutEmail(int count,
-                                                     String myNameAlias) throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
-                CURRENT_PLATFORM, count, myNameAlias);
+    public void ThereAreNUsersWhereXIsMeWithoutEmail(int count, String myNameAlias) throws Exception {
+        commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
     }
 
     /**
@@ -393,15 +378,12 @@ public class CommonIOSSteps {
      * @step. ^There (?:is|are) (\\d+) users? where (.*) is me with email only$
      */
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with email only$")
-    public void ThereAreNUsersWhereXIsMeWithoutPhone(int count,
-                                                     String myNameAlias) throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(CURRENT_PLATFORM,
-                count, myNameAlias);
+    public void ThereAreNUsersWhereXIsMeWithoutPhone(int count, String myNameAlias) throws Exception {
+        commonSteps.ThereAreNUsersWhereXIsMeRegOnlyByMail(count, myNameAlias);
     }
 
     @When("^(.*) ignore all requests$")
-    public void IgnoreAllIncomingConnectRequest(String userToNameAlias)
-            throws Exception {
+    public void IgnoreAllIncomingConnectRequest(String userToNameAlias) throws Exception {
         commonSteps.IgnoreAllIncomingConnectRequest(userToNameAlias);
     }
 
@@ -413,8 +395,7 @@ public class CommonIOSSteps {
      * @step. ^(.*) cancel all outgoing connection requests$
      */
     @When("^(.*) cancel all outgoing connection requests$")
-    public void CancelAllOutgoingConnectRequest(String userToNameAlias)
-            throws Exception {
+    public void CancelAllOutgoingConnectRequest(String userToNameAlias) throws Exception {
         commonSteps.CancelAllOutgoingConnectRequests(userToNameAlias);
     }
 
@@ -537,6 +518,24 @@ public class CommonIOSSteps {
         }
     }
 
+    @Given("^User (.*) sends (\\d+) encrypted messages? using device (.*) to (user|group conversation) (.*)$")
+    public void UserSendXMessagesToConversationUsingDevice(String msgFromUserNameAlias,
+                                                           int msgsCount, String deviceName,
+                                                           String conversationType,
+                                                           String conversationName) throws Exception {
+        for (int i = 0; i < msgsCount; i++) {
+            if (conversationType.equals("user")) {
+                // 1:1 conversation
+                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias,
+                        conversationName, DEFAULT_AUTOMATION_MESSAGE, deviceName);
+            } else {
+                // group conversation
+                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias,
+                        conversationName, DEFAULT_AUTOMATION_MESSAGE, deviceName);
+            }
+        }
+    }
+
     @Given("^User (.*) sends (encrypted )?message \"(.*)\" to (user|group conversation) (.*)$")
     public void UserSentMessageToConversation(String userFromNameAlias,
                                               String areEncrypted, String msg,
@@ -609,7 +608,7 @@ public class CommonIOSSteps {
                                                String isEncrypted,
                                                String imageFileName, String conversationType,
                                                String dstConversationName) throws Exception {
-        final String imagePath = IOSPage.getImagesPath() + imageFileName;
+        final String imagePath = CommonUtils.getSimulatorImagesPathFromConfig(this.getClass()) + "/" + imageFileName;
         final boolean isGroup = conversationType.equals("group");
         if (isEncrypted == null) {
             commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
@@ -618,14 +617,6 @@ public class CommonIOSSteps {
             commonSteps.UserSentImageToConversationOtr(imageSenderUserNameAlias,
                     imagePath, dstConversationName, isGroup);
         }
-    }
-
-    public Date getTestStartedDate() {
-        return testStartedDate;
-    }
-
-    public void setTestStartedDate(Date testStartedDate) {
-        this.testStartedDate = testStartedDate;
     }
 
     /**
@@ -670,12 +661,11 @@ public class CommonIOSSteps {
      * @param user          that adds someone to a chat
      * @param userToBeAdded user that gets added by someone
      * @param group         group chat you get added to
-     * @throws Throwable
+     * @throws Exception
      * @step. ^User (.*) adds [Uu]ser (.*) to group chat (.*)$
      */
     @When("^User (.*) adds [Uu]ser (.*) to group chat (.*)$")
-    public void UserAddsUserToGroupChat(String user, String userToBeAdded,
-                                        String group) throws Throwable {
+    public void UserAddsUserToGroupChat(String user, String userToBeAdded, String group) throws Exception {
         commonSteps.UserXAddedContactsToGroupChat(user, userToBeAdded, group);
     }
 
@@ -690,7 +680,7 @@ public class CommonIOSSteps {
     @When("^I click at ([\\d\\.]+),([\\d\\.]+) of Simulator window$")
     public void ReturnToWireApp(String strX, String strY) throws Exception {
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            IOSSimulatorHelper.clickAt(strX, strY);
+            IOSSimulatorHelper.clickAt(strX, strY, String.format("%.3f", DriverUtils.SINGLE_TAP_DURATION / 1000.0));
         } else {
             throw new PendingException("This step is not available for non-simulator devices");
         }
@@ -736,7 +726,7 @@ public class CommonIOSSteps {
      * @throws Exception
      * @step. User (.*) adds new devices (.*)
      */
-    @When("^User (.*) adds new devices (.*)")
+    @When("^User (.*) adds new devices? (.*)")
     public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
         final List<String> names = CommonSteps.splitAliases(deviceNames);
         final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
@@ -751,20 +741,62 @@ public class CommonIOSSteps {
             });
         }
         pool.shutdown();
-        final int secondsTimeout = (names.size() / poolSize + 1) * 40;
+        final int secondsTimeout = (names.size() / poolSize + 1) * 60;
         if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS)) {
             throw new IllegalStateException(String.format(
                     "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
         }
     }
 
+    /**
+     * Press Enter button on the keyboard if this is simulator or Commit button on the
+     * on-screen keyboard if real device
+     *
+     * @throws Exception
+     * @step. ^I press Enter key in Simulator window$
+     */
     @When("^I press Enter key in Simulator window$")
     public void IPressEnterKey() throws Exception {
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
             IOSSimulatorHelper.pressEnterKey();
         } else {
-            throw new PendingException("This step is not available for real device");
+            pagesCollection.getCommonPage().clickKeyboardCommitButton();
         }
     }
 
+    /**
+     * Check whether web browser is visible with particular url
+     *
+     * @param expectedUrl full web page URL
+     * @throws Exception
+     * @step. ^I see "(.*)" web page opened$
+     */
+    @Then("^I see \"(.*)\" web page opened$")
+    public void ISeeWebPage(String expectedUrl) throws Exception {
+        Assert.assertTrue(String.format("The expected URL '%s' has not been opened in web browser", expectedUrl),
+                pagesCollection.getCommonPage().isWebPageVisible(expectedUrl));
+    }
+
+    /**
+     * Tap the corresponding button to switch back to Wire app from browser view
+     *
+     * @throws Exception
+     * @step. ^I tap Back To Wire button$
+     */
+    @When("^I tap Back To Wire button$")
+    public void ITapBackToWire() throws Exception {
+        pagesCollection.getCommonPage().tapBackToWire();
+    }
+
+    /**
+     * Remove all registered OTR clients for the particular user
+     *
+     * @param userAs user name/alias
+     * @throws Exception
+     * @step. ^User (.*) removes all his registered OTR clients$
+     */
+    @Given("^User (.*) removes all his registered OTR clients$")
+    public void UserRemovesAllRegisteredOtrClients(String userAs) throws Exception {
+        commonSteps.UserRemovesAllRegisteredOtrClients(userAs);
+    }
 }

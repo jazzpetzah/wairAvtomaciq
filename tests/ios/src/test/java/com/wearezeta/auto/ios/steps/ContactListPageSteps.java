@@ -1,10 +1,10 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.junit.Assert;
 
@@ -12,10 +12,8 @@ import cucumber.api.java.en.*;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.*;
 
 public class ContactListPageSteps {
@@ -33,10 +31,10 @@ public class ContactListPageSteps {
 
     @Given("^I see conversations list$")
     public void GivenISeeConversationsList() throws Exception {
-        Assert.assertTrue("Conversations list is not visible after the timeout", getLoginPage().isLoginFinished());
+        Assert.assertTrue("Conversations list is not visible after the timeout", getLoginPage().isSelfAvatarVisible());
     }
 
-    private Map<String, BufferedImage> savedConvoItemScreenshots = new HashMap<>();
+    private Map<String, ElementState> savedConvoItemStates = new HashMap<>();
 
     /**
      * Store the screenshot of a particular conversation list entry
@@ -48,7 +46,9 @@ public class ContactListPageSteps {
     @When("^I remember the state of (.*) conversation item$")
     public void IRememberConvoItemState(String nameAlias) throws Exception {
         final String name = usrMgr.replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
-        this.savedConvoItemScreenshots.put(name, getContactListPage().getConversationEntryScreenshot(name));
+        this.savedConvoItemStates.put(name,
+                new ElementState(() -> getContactListPage().getConversationEntryScreenshot(name)).remember()
+        );
     }
 
     /**
@@ -62,26 +62,22 @@ public class ContactListPageSteps {
     @Then("^I see the state of (.*) conversation item is (not )?changed$")
     public void IVerifyConvoState(String nameAlias, String shouldNotBeChanged) throws Exception {
         final String name = usrMgr.replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
-        if (!this.savedConvoItemScreenshots.containsKey(name)) {
+        if (!this.savedConvoItemStates.containsKey(name)) {
             throw new IllegalStateException(String.format(
                     "Please take a screenshot of '%s' conversation entry first", name));
         }
-        final BufferedImage actualConvoItemScreenshot = getContactListPage().getConversationEntryScreenshot(name);
-        final double score = ImageUtil.getOverlapScore(this.savedConvoItemScreenshots.get(name),
-                actualConvoItemScreenshot, ImageUtil.RESIZE_NORESIZE);
-        final double minScore = 0.995;
+        final double minScore = 0.999;
+        final int timeoutSeconds = 10;
         if (shouldNotBeChanged == null) {
-            Assert.assertTrue(
-                    String.format("The state of '%s' conversation item seems to be the same (%.3f >= %.3f)",
-                            name, score, minScore), score < minScore);
+            Assert.assertTrue(String.format("The state of '%s' conversation item seems to be the same", name),
+                    this.savedConvoItemStates.get(name).isChanged(timeoutSeconds, minScore));
         } else {
-            Assert.assertTrue(
-                    String.format("The state of '%s' conversation item seems to be changed (%.3f < %.3f)",
-                            name, score, minScore), score >= minScore);
+            Assert.assertTrue(String.format("The state of '%s' conversation item seems to be changed", name),
+                    this.savedConvoItemStates.get(name).isNotChanged(timeoutSeconds, minScore));
         }
     }
 
-    private Map<Integer, BufferedImage> savedConvoItemScreenshotsByIdx = new HashMap<>();
+    private Map<Integer, ElementState> savedConvoItemStatesByIdx = new HashMap<>();
 
     /**
      * Store the screenshot of a particular conversation list entry
@@ -92,7 +88,9 @@ public class ContactListPageSteps {
      */
     @When("^I remember the state of conversation item number (\\d+)$")
     public void IRememberConvoItemStateByIdx(int convoIdx) throws Exception {
-        this.savedConvoItemScreenshotsByIdx.put(convoIdx, getContactListPage().getConversationEntryScreenshot(convoIdx));
+        this.savedConvoItemStatesByIdx.put(convoIdx,
+                new ElementState(() -> getContactListPage().getConversationEntryScreenshot(convoIdx)).remember()
+        );
     }
 
     /**
@@ -105,37 +103,19 @@ public class ContactListPageSteps {
      */
     @Then("^I see the state of conversation item number (\\d+) is (not )?changed$")
     public void IVerifyConvoStateByIdx(int convoIdx, String shouldNotBeChanged) throws Exception {
-        if (!this.savedConvoItemScreenshotsByIdx.containsKey(convoIdx)) {
+        if (!this.savedConvoItemStatesByIdx.containsKey(convoIdx)) {
             throw new IllegalStateException(String.format(
                     "Please take a screenshot of conversation entry number %s first", convoIdx));
         }
-        final BufferedImage actualConvoItemScreenshot = getContactListPage().getConversationEntryScreenshot(convoIdx);
-        final double score = ImageUtil.getOverlapScore(this.savedConvoItemScreenshotsByIdx.get(convoIdx),
-                actualConvoItemScreenshot, ImageUtil.RESIZE_NORESIZE);
         final double minScore = 0.97;
+        final int timeoutSeconds = 10;
         if (shouldNotBeChanged == null) {
-            Assert.assertTrue(
-                    String.format("The state of conversation item number %s seems to be the same (%.2f >= %.2f)",
-                            convoIdx, score, minScore), score < minScore);
+            Assert.assertTrue(String.format("The state of conversation item number %s item seems to be the same", convoIdx),
+                    this.savedConvoItemStatesByIdx.get(convoIdx).isChanged(timeoutSeconds, minScore));
         } else {
-            Assert.assertTrue(
-                    String.format("The state of conversation item number %s seems to be changed (%.2f < %.2f)",
-                            convoIdx, score, minScore), score >= minScore);
+            Assert.assertTrue(String.format("The state of conversation item number %s item seems to be changed", convoIdx),
+                    this.savedConvoItemStatesByIdx.get(convoIdx).isNotChanged(timeoutSeconds, minScore));
         }
-    }
-
-    /**
-     * Verify label in Self button
-     *
-     * @param name username
-     * @throws Exception
-     * @step. ^I see my name (.*) first letter as label of Self Button$
-     */
-    @When("^I see my name (.*) first letter as label of Self Button$")
-    public void ISeeFirstLetterAsLabelSelfButton(String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        Assert.assertTrue(getContactListPage()
-                .isSelfButtonContainingFirstNameLetter(name));
     }
 
     /**
@@ -188,15 +168,29 @@ public class ContactListPageSteps {
         getContactListPage().openSearch();
     }
 
-    @Then("^I see first item in contact list named (.*)$")
-    public void ISeeUserNameFirstInContactList(String value) throws Throwable {
-        try {
-            value = usrMgr.findUserByNameOrNameAlias(value).getName();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
-        Assert.assertEquals("User name doesn't appeared in contact list.",
-                value, getContactListPage().getFirstConversationName());
+    private final static long CONVO_LIST_UPDATE_TIMEOUT = 10000; // milliseconds
+
+    /**
+     * Verify whether the first items in conversations list is the given item
+     *
+     * @param convoName conversation name
+     * @throws Exception
+     * @step. ^I see first item in contact list named (.*)
+     */
+    @Then("^I see first item in contact list named (.*)")
+    public void ISeeUserNameFirstInContactList(String convoName) throws Exception {
+        convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            Thread.sleep(500);
+            if (getContactListPage().isFirstConversationName(convoName)) {
+                return;
+            }
+        } while (System.currentTimeMillis() - millisecondsStarted <= CONVO_LIST_UPDATE_TIMEOUT);
+        throw new AssertionError(
+                String.format("The conversation '%s' is not the first conversation in the list after " +
+                        "%s seconds timeout", convoName, CONVO_LIST_UPDATE_TIMEOUT / 1000));
+
     }
 
     /**
@@ -224,7 +218,6 @@ public class ContactListPageSteps {
         PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
         pickerSteps.WhenITapOnSearchInputOnPeoplePickerPage();
         pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact2);
-        pickerSteps.WhenISeeUserFoundOnPeoplePickerPage(contact2);
         pickerSteps.ITapOnConversationFromSearch(contact2);
         pickerSteps.WhenIClickOnAddToConversationButton();
 
@@ -242,16 +235,11 @@ public class ContactListPageSteps {
 
     @Then("^I open archived conversations$")
     public void IOpenArchivedConversations() throws Exception {
-        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            IOSSimulatorHelper.swipe(0.2, 0.7, 0.2, 0.1);
-        } else {
-            getContactListPage().swipeUp(1000);
-        }
+        getContactListPage().openArchivedConversations();
     }
 
     @When("I see play/pause button next to username (.*) in contact list")
-    public void ISeePlayPauseButtonNextToUserName(String contact)
-            throws Exception {
+    public void ISeePlayPauseButtonNextToUserName(String contact) throws Exception {
         String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
         Assert.assertTrue("Play pause button is not shown",
                 getContactListPage().isPlayPauseButtonVisible(name));
@@ -263,20 +251,18 @@ public class ContactListPageSteps {
     }
 
     @When("I tap play/pause button in contact list next to username (.*)")
-    public void ITapPlayPauseButtonInContactListNextTo(String contact)
-            throws Exception {
+    public void ITapPlayPauseButtonInContactListNextTo(String contact) throws Exception {
         String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getContactListPage().tapPlayPauseButtonNextTo(name);
     }
 
     @When("I see in contact list group chat named (.*)")
-    public void ISeeInContactListGroupChatWithName(String name)
-            throws Exception {
+    public void ISeeInContactListGroupChatWithName(String name) throws Exception {
         Assert.assertTrue(getContactListPage().isChatInContactList(name));
     }
 
     @When("I click on Pending request link in contact list")
-    public void ICcickPendingRequestLinkContactList() throws Throwable {
+    public void ICcickPendingRequestLinkContactList() throws Exception {
         getContactListPage().clickPendingRequest();
     }
 
@@ -462,7 +448,9 @@ public class ContactListPageSteps {
                 getContactListPage().isInviteMorePeopleButtonNotVisible());
     }
 
-    private BufferedImage previousSelfAvatarState = null;
+    private ElementState previousSelfAvatarState = new ElementState(
+            () -> getContactListPage().getAvatarStateScreenshot()
+    );
 
     /**
      * Remember the current state of self avatar
@@ -472,10 +460,8 @@ public class ContactListPageSteps {
      */
     @When("^I remember the state of my avatar$")
     public void IRememberAvatarState() throws Exception {
-        previousSelfAvatarState = getContactListPage().getAvatarStateScreenshot();
+        previousSelfAvatarState.remember();
     }
-
-    private static final long AVATAR_CHANGE_TIMEOUT_MILLISECONDS = 10000;
 
     /**
      * Verify whether avatar state is changed within the timeout
@@ -489,43 +475,28 @@ public class ContactListPageSteps {
         if (previousSelfAvatarState == null) {
             throw new IllegalStateException("Please take the initial screenshot of the avatar first");
         }
-        double score;
+        final int timeoutSeconds = 10;
         final double minScore = 0.97;
-        final long millisecondsStarted = System.currentTimeMillis();
-        do {
-            final BufferedImage currentAvatarState = getContactListPage().getAvatarStateScreenshot();
-            score = ImageUtil.getOverlapScore(currentAvatarState,
-                    previousSelfAvatarState, ImageUtil.RESIZE_NORESIZE);
-            if (shouldNotChange == null) {
-                if (score < minScore) {
-                    return;
-                }
-            } else {
-                if (score >= minScore) {
-                    return;
-                }
-            }
-            Thread.sleep(500);
-        } while (System.currentTimeMillis() - millisecondsStarted <= AVATAR_CHANGE_TIMEOUT_MILLISECONDS);
         if (shouldNotChange == null) {
-            throw new AssertionError(String.format("The previous and the current state of self avatar " +
-                            "icon seems to be equal after %s seconds (%.2f >= %.2f)",
-                    AVATAR_CHANGE_TIMEOUT_MILLISECONDS / 1000, score, minScore));
+            Assert.assertTrue(String.format("The previous and the current state of self avatar " +
+                            "icon seems to be equal after %s seconds", timeoutSeconds),
+                    previousSelfAvatarState.isChanged(timeoutSeconds, minScore));
         } else {
-            throw new AssertionError(String.format("The previous and the current state of self avatar " +
-                            "icon seems to be different after %s seconds (%.2f < %.2f)",
-                    AVATAR_CHANGE_TIMEOUT_MILLISECONDS / 1000, score, minScore));
+            Assert.assertTrue(String.format("The previous and the current state of self avatar " +
+                            "icon seems to be different after %s seconds", timeoutSeconds),
+                    previousSelfAvatarState.isNotChanged(timeoutSeconds, minScore));
         }
     }
 
     /**
      * Taps on the name you are in a call with in conversation list
+     *
+     * @param name user name/alias
+     * @throws Exception
      * @step. ^I tap on chat I am in a call with name (.*)$
-     * @param name
-     * @throws Throwable
      */
     @When("^I tap on chat I am in a call with name (.*)$")
-    public void ITapOnChatIAmInACallWithName(String name) throws Throwable {
+    public void ITapOnChatIAmInACallWithName(String name) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         getContactListPage().tapOnNameYourInCallWith(name);
     }

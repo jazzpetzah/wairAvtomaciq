@@ -1,53 +1,30 @@
 Feature: Search
 
-  @C1035 @rc @regression @id2147
+  @C1035 @rc @clumsy @regression @id2147
   Scenario Outline: Verify search by email
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
-    Then I see user <ContactName> found on People picker page
+    Then I see the conversation "<ContactName>" exists in Search results
 
     Examples:
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @C1036 @rc @regression @id2148 @id2543
+  @C1036 @rc @clumsy @regression @id2148 @id2543
   Scenario Outline: Verify search by name
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    Then I see user <Contact> found on People picker page
+    Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @C1060 @regression @id299 @noAcceptAlert
-  Scenario Outline: Verify denying address book uploading
-    Given There is 1 user where <Name> is me
-    Given I sign in using my email or phone number
-    And I dismiss all alerts
-    And I dismiss settings warning
-    And I open search by taping on it
-    And I see Upload contacts dialog
-    And I click Continue button on Upload dialog
-    And I dismiss alert
-    And I dont see CONNECT label
-    And I press maybe later button
-    And I click clear button
-    And I open search by taping on it
-    And I scroll up page a bit
-    And I dont see Upload contacts dialog
-
-    Examples:
-      | Name      |
-      | user1Name |
 
   @C3167 @rc @regression @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections
@@ -59,7 +36,7 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 1 top connections
-    And I click open conversation button on People picker page
+    And I tap Open conversation action button on People picker page
     And I wait for 2 seconds
     And I see dialog page
 
@@ -69,7 +46,7 @@ Feature: Search
 
   @C1069 @rc @regression @id1150
   Scenario Outline: Start group chat with users from Top Connections
-    Given There are <UserCount> users where <Name> is me
+    Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -77,16 +54,14 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 2 top connections
-    And I click Create Conversation button on People picker page
+    When I tap Create conversation action button on People picker page
+    And I see dialog page
     And I open group conversation details
-    And I change group conversation name to <ConvoName>
-    And I close group info page
-    And I navigate back to conversations list
-    And I see first item in contact list named <ConvoName>
+    Then I see <ParticipantsCount> participant avatars
 
     Examples:
-      | Name      | ConvoName    | UserCount |
-      | user1Name | TopGroupTest | 4         |
+      | Name      | ParticipantsCount |
+      | user1Name | 2                 |
 
   @C40 @rc @regression @id1454
   Scenario Outline: Verify sending a connection request to user chosen from search
@@ -94,7 +69,6 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page
     Then I see connect to <UnconnectedUser> dialog
     And I click Connect button on connect to dialog
@@ -133,12 +107,10 @@ Feature: Search
     Given I see conversations list
     When I dont see conversation <Contact> in contact list
     And I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user
-    And I type the default message
-    And I send the message
+    And I type the default message and send it
     Then I see 1 default message in the dialog
 
     Examples:
@@ -146,37 +118,31 @@ Feature: Search
       | user1Name | user2Name |
 
   @C2785 @regression @id2149
-  Scenario Outline: Verify search by second name (something after space)
+  Scenario Outline: Verify search by part of the name
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I wait until <LastName> exists in backend search results
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <LastName>
-    Then I see user <NewName> found on People picker page
+    And I wait until <Contact> exists in backend search results
+    And I input in People picker search field first 5 letters of user name <Contact>
+    Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
-      | Name      | Contact   | NewName  | LastName |
-      | user1Name | user2Name | NEW NAME | NAME     |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
-  @C1049 @rc @regression @id3282
+  @C1049 @rc @clumsy @regression @id3282
   Scenario Outline: Verify starting a call with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
-    Then I see user <Contact> found on People picker page
     And I tap on conversation <Contact> in search result
-    And I see call action button on People picker page
-    And I click call action button on People picker page
-    Then I see mute call, end call and speakers buttons
-    And I see calling message
+    And I tap Call action button on People picker page
+    Then I see Calling overlay
 
     Examples:
       | Name      | Contact   |
@@ -193,7 +159,7 @@ Feature: Search
     And I see top people list on People picker page
     Then I tap on first 3 top connections
     When I see Send image action button on People picker page
-    And I click Send image action button on People picker page
+    And I tap Send image action button on People picker page
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I press Confirm button
@@ -216,7 +182,7 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     When I tap on first 1 top connections
-    Then I see action buttons appeared on People picker page
+    Then I see Open conversation action button on People picker page
 
     Examples:
       | Name      | Contact   |
@@ -231,7 +197,7 @@ Feature: Search
     When I open search by taping on it
     And I input in People picker search field user name <Contact>
     When I tap on conversation <Contact> in search result
-    Then I see action buttons appeared on People picker page
+    Then I see Open conversation action button on People picker page
 
     Examples:
       | Name      | Contact   |
@@ -247,9 +213,9 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     When I tap on 1st top connection contact
-    Then I see open conversation action button on People picker page
+    Then I see Open conversation action button on People picker page
     When I tap on 2nd top connection contact
-    Then I see Create Conversation button on People picker page
+    Then I see Create conversation action button on People picker page
 
     Examples:
       | Name      |
@@ -265,9 +231,9 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     When I tap on 1st top connection contact
-    Then I see action buttons appeared on People picker page
+    Then I see Open conversation action button on People picker page
     When I tap on 1st top connection contact
-    Then I see action buttons disappeared on People picker page
+    Then I do not see Open conversation action button on People picker page
 
     Examples:
       | Name      |
@@ -283,15 +249,15 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 1st top connection contact
-    And I see action buttons appeared on People picker page
+    And I see Open conversation action button on People picker page
     And I tap on 2nd top connection contact
-    And I see Create Conversation button on People picker page
+    And I see Create conversation action button on People picker page
     And I press backspace button
     And I press backspace button
-    Then I see open conversation action button on People picker page
+    Then I see Open conversation action button on People picker page
     And I press backspace button
     And I press backspace button
-    Then I see action buttons disappeared on People picker page
+    Then I do not see Open conversation action button on People picker page
 
     Examples:
       | Name      |
@@ -307,8 +273,7 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 1st top connection contact
-    And I see open conversation action button on People picker page
-    And I click open conversation action button on People picker page
+    And I tap Open conversation action button on People picker page
     Then I see dialog page
 
     Examples:
@@ -326,17 +291,17 @@ Feature: Search
     And I see Invite more people button
     And I tap on 1st top connection contact
     And I DONT see Invite more people button
-    And I see action buttons appeared on People picker page
+    And I see Open conversation action button on People picker page
     And I tap on 1st top connection contact
-    And I see action buttons disappeared on People picker page
+    And I do not see Open conversation action button on People picker page
     And I see Invite more people button
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I DONT see Invite more people button
-    And I see action buttons appeared on People picker page
+    And I see Open conversation action button on People picker page
     And I press backspace button
     And I press backspace button
-    And I see action buttons disappeared on People picker page
+    And I do not see Open conversation action button on People picker page
     Then I see Invite more people button
 
     Examples:

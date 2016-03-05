@@ -1,14 +1,10 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.awt.image.BufferedImage;
-
+import com.wearezeta.auto.common.misc.ElementState;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PersonalInfoPage;
 
 import cucumber.api.java.en.Then;
@@ -17,14 +13,11 @@ import cucumber.api.java.en.When;
 public class PersonalInfoPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollection = IOSPagesCollection
-            .getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     private PersonalInfoPage getPersonalInfoPage() throws Exception {
         return pagesCollection.getPage(PersonalInfoPage.class);
     }
-
-    BufferedImage referenceImage;
 
     @When("I tap to edit my name")
     public void ITapToEditName() throws Exception {
@@ -41,30 +34,6 @@ public class PersonalInfoPageSteps {
     public void EnterEmptyNameAndTapScreen() throws Exception {
         getPersonalInfoPage().clearNameField();
         getPersonalInfoPage().tapOnPersonalPage();
-    }
-
-    /**
-     * Enters an 80 char username
-     *
-     * @throws Exception
-     * @step. ^I attempt to enter an 80 char name$
-     */
-    @When("^I attempt to enter an 80 char name$")
-    public void EnterTooLongName() throws Exception {
-        getPersonalInfoPage().clearNameField();
-        getPersonalInfoPage().attemptTooLongName();
-    }
-
-    /**
-     * Verifies username is no more than 64 chars
-     *
-     * @throws Exception
-     * @step. New name is only first 64 chars
-     */
-    @When("I verify my new name is only first 64 chars")
-    public void NewNameIsMaxChars() throws Exception {
-        Assert.assertTrue("Username is greater than 64 characters",
-                getPersonalInfoPage().getSelfNameLength() >= 64);
     }
 
     @When("I see error message asking for more characters")
@@ -202,8 +171,7 @@ public class PersonalInfoPageSteps {
      */
     @Then("^I see WireWebsitePage$")
     public void ThenISeeWireWebsite() throws Exception {
-        Assert.assertTrue(
-                "wire.com is not shown or website element has changed",
+        Assert.assertTrue("wire.com is not shown or website element has changed",
                 getPersonalInfoPage().isWireWebsitePageVisible());
     }
 
@@ -256,40 +224,33 @@ public class PersonalInfoPageSteps {
         getPersonalInfoPage().pressCameraButton();
     }
 
-    @When("^I return to personal page$")
-    public void IReturnToPersonalPage() throws Throwable {
-        Thread.sleep(5000);// wait for picture to load on simulator
-        getPersonalInfoPage().tapOnPersonalPage();
-        Thread.sleep(2000);// wait for picture to load on simulator
-        getPersonalInfoPage().tapOnPersonalPage();
-        Thread.sleep(2000);
-        getPersonalInfoPage().tapOnPersonalPage();
-        referenceImage = getPersonalInfoPage().takeScreenshot().orElseThrow(
-                AssertionError::new);
-        getPersonalInfoPage().tapOnPersonalPage();
-    }
-
-    @Then("^I see changed user picture (.*)$")
-    public void ThenISeeChangedUserPicture(String filename) throws Throwable {
-        BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
-                .getImagesPath() + filename);
-        double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
-                ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-        Assert.assertTrue(
-                "Overlap between two images has no enough score. Expected >= 0.65, current = "
-                        + score, score >= 0.65d);
-    }
+    private ElementState previousProfilePictureScreenshot = new ElementState(
+            () -> getPersonalInfoPage().takeScreenshot().
+                    orElseThrow(() -> new IllegalStateException("Cannot take a screenshot of self profile page"))
+    );
 
     /**
-     * Verify that user name doesnt contains spaces
+     * Take a screenshot of self profile page and save it into internal var
      *
      * @throws Exception
-     * @step. ^I see user name doesnt contains spaces$
+     * @step. ^I remember my current profile picture$
      */
-    @When("^I see user name doesnt contains spaces$")
-    public void ISeeUserNameNotContainSpaces() throws Exception {
-        Assert.assertFalse("User name contains space chars",
-                getPersonalInfoPage().isUserNameContainingSpaces());
+    @When("^I remember my current profile picture$")
+    public void IRememberMyProfilePicture() throws Exception {
+        Assert.assertTrue("Profile page is not currently visible", getPersonalInfoPage().waitUntilVisible());
+        previousProfilePictureScreenshot.remember();
+    }
+
+
+    @Then("I wait up to (\\d+) seconds? until my profile picture is changed")
+    public void IWaitUntilProfilePictureIsChanged(int secondsTimeout) throws Exception {
+        Assert.assertTrue("Profile page is not currently visible", getPersonalInfoPage().waitUntilVisible());
+        if (previousProfilePictureScreenshot == null) {
+            throw new IllegalStateException("Please take a screenshot of previous profile picture first");
+        }
+        final double minScore = 0.87;
+        Assert.assertTrue("The previous and the current profile pictures seem to be the same",
+                this.previousProfilePictureScreenshot.isChanged(secondsTimeout, minScore));
     }
 
     @When("I see email (.*) on Personal page")
@@ -313,16 +274,6 @@ public class PersonalInfoPageSteps {
         getPersonalInfoPage().tapOnPersonalPage();
     }
 
-    /**
-     * Attempt to change name using only spaces
-     *
-     * @step. I attempt to change name using only spaces
-     */
-    @When("I attempt to change name using only spaces")
-    public void IEnterNameUsingOnlySpaces() throws Exception {
-        getPersonalInfoPage().changeNameUsingOnlySpaces();
-    }
-
     @When("I click on Settings button from the options menu")
     public void WhenIClickOnSettingsButtonFromOptionsMenu() throws Exception {
         getPersonalInfoPage().tapOnSettingsButton();
@@ -337,17 +288,12 @@ public class PersonalInfoPageSteps {
     /**
      * I change name in textfield
      *
-     * @param name new username in textfield
-     * @throws AssertionError no such user exists
-     * @step. ^I change name (.*) to (.*)$
+     * @param newName new username in textfield
+     * @throws Exception
+     * @step. ^I change my name to (.*)
      */
-    @When("^I change name (.*) to (.*)$")
-    public void IChangeNameTo(String name, String newName) throws Throwable {
-        try {
-            name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
+    @When("^I change my name to (.*)")
+    public void IChangeNameTo(String newName) throws Exception {
         getPersonalInfoPage().changeName(newName);
         usrMgr.getSelfUser().setName(newName);
     }
@@ -385,7 +331,8 @@ public class PersonalInfoPageSteps {
      */
     @Then("^I see Support web page$")
     public void ISeeSupportWebPage() throws Exception {
-        Assert.assertTrue(getPersonalInfoPage().isSupportWebPageVisible());
+        Assert.assertTrue("Customer support page has not been loaded",
+                getPersonalInfoPage().isSupportWebPageVisible());
     }
 
     /**

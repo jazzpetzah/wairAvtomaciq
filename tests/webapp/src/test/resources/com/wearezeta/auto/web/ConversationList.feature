@@ -6,7 +6,8 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
+    Given I see Contact list with name <Contact>
     When I archive conversation <Contact>
     Then I do not see Contact list with name <Contact>
     When I open archive
@@ -23,7 +24,8 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
+    Given I see Contact list with name <Contact>
     When I set muted state for conversation <Contact>
     And I open self profile
     Then I see that conversation <Contact> is muted
@@ -39,7 +41,8 @@ Feature: Conversation List
     Given I muted conversation with <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
+    Given I see Contact list with name <Contact>
     And I see that conversation <Contact> is muted
     When I set unmuted state for conversation <Contact>
     And I open self profile
@@ -55,7 +58,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     When I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open self profile
     When User <Contact> pinged in the conversation with <Name>
     And I see ping icon in conversation with <Contact>
@@ -71,7 +74,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <Contact>
     And I see that conversation <Contact> is not muted
     When I click on options button for conversation <Contact>
@@ -91,7 +94,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <Contact>
     When I click on options button for conversation <Contact>
     And I click the option to block in the options popover
@@ -110,7 +113,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click the option to leave in the options popover
@@ -129,7 +132,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click delete in the options popover
@@ -144,7 +147,9 @@ Feature: Conversation List
     Then I see Contact list with name <ChatName>
     And I open self profile
     And I click gear button on self profile page
-      And I select Log out menu item on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -160,9 +165,18 @@ Feature: Conversation List
   Scenario Outline: Verify I can block a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> changes avatar picture to default
     Given I switch to Sign In page
+    Given I Sign in using login <Login2> and password <Password2>
+    Given I am signed in properly
+    Given I open self profile
+    Given I click gear button on self profile page
+    Given I select Log out menu item on self profile page
+    Given I see the clear data dialog
+    Given I click Logout button on clear data dialog
+    Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <Contact>
     When I click on options button for conversation <Contact>
     And I click the option to block in the options popover
@@ -173,7 +187,9 @@ Feature: Conversation List
     Then I do not see Contact list with name <Contact>
     When I open self profile
     And I click gear button on self profile page
-      And I select Log out menu item on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Contact> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -190,9 +206,18 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> changes avatar picture to default
     Given I switch to Sign In page
+    Given I Sign in using login <Login2> and password <Password2>
+    Given I am signed in properly
+    Given I open self profile
+    Given I click gear button on self profile page
+    Given I select Log out menu item on self profile page
+    Given I see the clear data dialog
+    Given I click Logout button on clear data dialog
+    Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click the option to leave in the options popover
@@ -207,8 +232,10 @@ Feature: Conversation List
     When User <Contact1> sends message <Msg1> to conversation <ChatName>
     Then I do not see text message <Msg1>
     When I open self profile
-      And I click gear button on self profile page
-      And I select Log out menu item on self profile page
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -225,9 +252,10 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click delete in the options popover
@@ -264,7 +292,7 @@ Feature: Conversation List
     And I see a delete warning modal for group conversations
     And I click delete button in the delete warning for group conversations
     And I do not see Contact list with name <ChatName>
-    And <Contact1> calls <ChatName> using <CallBackend>
+    And <Contact1> calls <ChatName>
     And I open conversation with <ChatName>
     Then I see <Action> action for <Contact1> in conversation
     And I see <Action> action for <Contact2> in conversation
@@ -278,9 +306,18 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> changes avatar picture to default
     Given I switch to Sign In page
+    Given I Sign in using login <Login2> and password <Password2>
+    Given I am signed in properly
+    Given I open self profile
+    Given I click gear button on self profile page
+    Given I select Log out menu item on self profile page
+    Given I see the clear data dialog
+    Given I click Logout button on clear data dialog
+    Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click delete in the options popover
@@ -295,8 +332,10 @@ Feature: Conversation List
     When User <Contact1> sends message <Msg1> to conversation <ChatName>
     Then I do not see Contact list with name <ChatName>
     And I open self profile
-      And I click gear button on self profile page
-      And I select Log out menu item on self profile page
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -315,7 +354,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click delete in the options popover
@@ -333,7 +372,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <Contact1>
     When I click on options button for conversation <Contact1>
     And I click delete in the options popover
@@ -348,7 +387,9 @@ Feature: Conversation List
     Then I see Contact list with name <Contact1>
     And I open self profile
     And I click gear button on self profile page
-      And I select Log out menu item on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
@@ -366,7 +407,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     And I open conversation with <Contact1>
     When I click on options button for conversation <Contact1>
     And I click delete in the options popover

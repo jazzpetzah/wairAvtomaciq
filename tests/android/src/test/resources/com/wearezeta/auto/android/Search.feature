@@ -10,8 +10,7 @@ Feature: Search
     Given I wait until <Contact1> exists in backend search results
     When I tap on contact name <Contact2>
     And I navigate back from dialog page
-    And I open search by tap
-    And I tap on Search input on People picker page
+    And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     Then I see user <Contact1> in People picker
 
@@ -27,8 +26,7 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When I open search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see group <GroupChatName> in People picker
 
@@ -45,8 +43,7 @@ Feature: Search
     Given I see Contact list with contacts
     When I tap on contact name <Contact2>
     And I navigate back from dialog page
-    And I open search by tap
-    And I tap on Search input on People picker page
+    And I open Search UI
     And I input in search field part <Size> of user name to connect to <Contact1>
     Then I see user <Contact1> in People picker
 
@@ -62,8 +59,7 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When I open search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I input in search field part <Size> of user name to connect to <GroupChatName>
     Then I see group <GroupChatName> in People picker
 
@@ -77,39 +73,13 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
-    When I open search by tap
+    When I open Search UI
     And I press Clear button
     Then I see Contact list
 
     Examples:
       | Name      |
       | user1Name |
-
-  @C420 @id2177 @regression
-  Scenario Outline: Open/Close Search by different actions
-    Given There are 2 users where <Name> is me
-    # We need at least 1 user in the convo list, otherwise it will be impossible to swipe
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I open Search by tap
-    And I press Clear button
-    Then I see Contact list with contacts
-    And I do not see TOP PEOPLE
-    When I open Search by UI button
-    And I swipe down people picker
-    Then I see Contact list with contacts
-    And I do not see TOP PEOPLE
-    When I swipe down contact list
-    And I see People picker page
-    And I navigate back to Conversations List
-    Then I see Contact list with contacts
-    And I do not see TOP PEOPLE
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
 
   @C683 @id319 @regression @rc
   Scenario Outline: I can create group chat from Search results
@@ -120,8 +90,7 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
-    And I open search by tap
-    And I tap on Search input on People picker page
+    And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I add in search field user name to connect to <Contact2>
@@ -142,7 +111,7 @@ Feature: Search
     Given I see Contact list with contacts
     Given User <Contact1> sends encrypted message to user Myself
     Given User Me sends encrypted message to user <Contact1>
-    When I open Search by UI button
+    When I open Search UI
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
     And I tap on create conversation
@@ -160,11 +129,10 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
-    When I open search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
-    Then I see action buttons appeared on People picker page
+    Then I see Open Conversation action button on People Picker page
 
     Examples:
       | Name      | Contact1  |
@@ -178,12 +146,10 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
-    When I open search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
-    And I see open conversation action button on People picker page
-    And I click on open conversation action button on People picker page
+    And I tap Open Conversation action button on People Picker page
     Then I see dialog page
 
     Examples:
@@ -198,12 +164,10 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
-    When I open search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
-    And I see Send image action button on People picker page
-    And I click Send image action button on People picker page
+    And I tap Send Image action button on People Picker page
     And I press "Gallery" button
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -220,14 +184,11 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
-    When I open search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
-    And I see call action button on People picker page
-    And I click Call action button on People picker page
-    Then I see call overlay
-    Then I see calling overlay Big bar
+    And I tap Call action button on People Picker page
+    Then I see outgoing call
 
     Examples:
       | Name      | Contact1  |
@@ -241,15 +202,13 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
-    When I open search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I tap on Search input on People picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact2>
-    And I see Send image action button on People picker page
-    And I click Send image action button on People picker page
+    And I tap Send Image action button on People Picker page
     And I press "Gallery" button
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -266,12 +225,12 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
-    When I open search by tap
+    When I open Search UI
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
-    Then I see action buttons appeared on People picker page
+    Then I see Open Conversation action button on People Picker page
     When I tap on <Contact1> in Top People
-    Then I see action buttons disappear from People Picker page
+    Then I do not see Open Conversation action button on People Picker page
 
     Examples:
       | Name      | Contact1  |
@@ -286,17 +245,17 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
-    When I open search by tap
+    When I open Search UI
     And I wait until Top People list appears
     And I see TOP PEOPLE
     And I tap on <Contact1> in Top People
-    And I see Open Conversation button on People picker page
+    And I see Open Conversation action button on People Picker page
     And I tap on <Contact2> in Top People
-    And I see Create Conversation button on people picker page
+    And I see Create Conversation action button on People Picker page
     And I tap on <Contact2> in Top People
-    And I see Open Conversation button on People picker page
+    And I see Open Conversation action button on People Picker page
     And I tap on <Contact1> in Top People
-    Then I see action buttons disappear from People Picker page
+    Then I do not see Open Conversation action button on People Picker page
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -310,15 +269,14 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
-    When I open search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I tap on Search input on People picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact2>
-    And I see Create Conversation button on people picker page
-    And I tap Create Conversation button on People picker page
+    And I see Create Conversation action button on People Picker page
+    And I tap Create Conversation action button on People Picker page
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
@@ -333,19 +291,16 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
-    When I open search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I tap on Search input on People picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact2>
-    And I see call action button on People picker page
-    And I click Call action button on People picker page
-    Then I see call overlay
-    Then I see calling overlay Big bar
-    When I tap conversation details button
-    Then I see the correct number of participants in the title 2
+    And I tap Call action button on People Picker page
+    Then I see outgoing call
+#    When I tap conversation details button
+#    Then I see the correct number of participants in the title 2
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -359,8 +314,7 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact> exists in backend search results
-    And I open search by tap
-    And I tap on Search input on People picker page
+    And I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
     When I see user <Contact> in People Picker
     And I swipe right on contact avatar <Contact> in People Picker
@@ -369,3 +323,26 @@ Feature: Search
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C49974 @regression
+  Scenario Outline: Verify video call button is only available for single conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I open Search UI
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap on user name found on People picker page <Contact1>
+    Then I see Video Call action button on People Picker page
+    When I add in search field user name to connect to <Contact2>
+    And I tap on user name found on People picker page <Contact2>
+    Then I do not see Video Call action button on People Picker page
+    When I tap on user name found on People picker page <Contact2>
+    Then I see Video Call action button on People Picker page
+    When I tap on user name found on People picker page <Contact1>
+    Then I do not see Video Call action button on People Picker page
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |

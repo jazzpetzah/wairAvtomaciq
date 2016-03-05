@@ -7,14 +7,13 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
-    When I open Search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I click Connect button on connect to page
     And I see People picker page
-    And I navigate back to Conversations List
+    And I press Clear button
     Then I see contact list with name <Contact>
 
     Examples:
@@ -73,8 +72,7 @@ Feature: Connect
     And <Contact4> sent connection request to me
     And I see contact list with name <WaitingMess3>
     And I wait until <Contact3> exists in backend search results
-    And I open Search by tap
-    And I tap on Search input on People picker page
+    And I open Search UI
     And I enter "<Contact3>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact3>
     And I press Ignore connect button
@@ -104,8 +102,7 @@ Feature: Connect
     Given <Contact3> sent connection request to <Name>
     When I see contact list with name <WaitingMess1>
     And I wait until <Contact3> exists in backend search results
-    And I open Search by tap
-    And I tap on Search input on People picker page
+    And I open Search UI
     And I enter "<Contact3>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact3>
     And I see Accept and Ignore buttons
@@ -132,14 +129,13 @@ Feature: Connect
     And I press Ignore connect button
     And I do not see contact list with name <WaitingMess>
     And I wait until <Contact> exists in backend search results
-    And I open Search by tap
-    And I tap on Search input on People picker page
+    And I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
     And I wait for 5 seconds
-    Then I see Connect to <Contact> Dialog page
+    Then I see dialog page
 
     Examples:
       | Name      | Contact   | WaitingMess      |
@@ -154,8 +150,7 @@ Feature: Connect
     Given I see Contact list with contacts
     When I see contact list with name <WaitingMess>
     And I wait until <Contact> exists in backend search results
-    And I open Search by tap
-    And I tap on Search input on People picker page
+    And I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
@@ -173,8 +168,7 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
-    When I open Search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
@@ -216,8 +210,7 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
-    When I open Search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
@@ -228,7 +221,7 @@ Feature: Connect
     And I press Clear button
     Then I see contact list with name <Contact>
     And I tap on contact name <Contact>
-    And I see Connect to <Contact> Dialog page
+    And I see dialog page
 
     Examples:
       | Name      | Contact   |
@@ -241,8 +234,7 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
-    When I open Search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
@@ -292,9 +284,7 @@ Feature: Connect
     And I confirm block
     Then I do not see contact list with name <Contact1>
     And I wait until <Contact1> exists in backend search results
-    And I wait until <Contact1> is blocked in backend search results
-    And I open Search by tap
-    And I tap on Search input on People picker page
+    And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I see user <Contact1> found on People picker page
     And I tap on user name found on People picker page <Contact1>
@@ -313,8 +303,7 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I wait until <Contact2> exists in backend search results
-    When I open Search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact2>
     And I see connect to <Contact2> dialog
@@ -329,8 +318,7 @@ Feature: Connect
     Then I do not see dialog page
     Then I do not see contact list with name <Contact2>
     And I wait until <Contact2> exists in backend search results
-    And I open Search by tap
-    And I tap on Search input on People picker page
+    And I open Search UI
     And I enter "<Contact2>" into Search input on People Picker page
     And I see user <Contact2> found on People picker page
     And I tap on user name found on People picker page <Contact2>
@@ -355,8 +343,7 @@ Feature: Connect
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
     And I wait until <Contact1> exists in backend search results
-    When I open Search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     Then I see user <Contact1> found on People picker page
 
@@ -376,8 +363,7 @@ Feature: Connect
     When I tap on contact name <Contact2>
     And I navigate back from dialog page
     And I wait until <Contact1> exists in backend search results
-    And I open Search by tap
-    And I tap on Search input on People picker page
+    And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I see user <Contact1> found on People picker page
     And I tap on user name found on People picker page <Contact1>
@@ -398,8 +384,7 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
-    When I open Search by tap
-    And I tap on Search input on People picker page
+    When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog

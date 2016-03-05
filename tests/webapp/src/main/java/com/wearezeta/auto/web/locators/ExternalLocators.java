@@ -14,6 +14,10 @@ public final class ExternalLocators {
 	public static final class DeleteAccountPage {
 		public final static String cssSubmitButton = "[data-uie-name='do-delete-account']";
 		public final static String cssSuccess = ".success";
+		public final static String idWrongKey = "400";
+		public final static String idWrongCode = "403";
+		public final static Function<String, String> xpathLabelByText = txt -> String
+				.format("//*[contains(text(),'%s')]", txt);
 	}
 
 	public static final class PasswordChangePage {
