@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.pages.GiphyPage;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -13,8 +14,14 @@ import cucumber.api.java.en.When;
 
 public class GiphyPageSteps {
 
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+	private final WebappPagesCollection webappPagesCollection;
+        
+        private final Lifecycle.TestContext context;
+
+    public GiphyPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
 	@Then("^I see Giphy popup$")
 	public void ISeeGiphyPopup() throws Throwable {

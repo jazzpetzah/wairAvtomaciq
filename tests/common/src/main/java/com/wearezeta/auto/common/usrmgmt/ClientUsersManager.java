@@ -102,7 +102,7 @@ public class ClientUsersManager {
 
     private static ClientUsersManager instance = null;
 
-    private ClientUsersManager() throws Exception {
+    public ClientUsersManager() throws Exception {
         resetClientsList(this.users, MAX_USERS);
     }
 

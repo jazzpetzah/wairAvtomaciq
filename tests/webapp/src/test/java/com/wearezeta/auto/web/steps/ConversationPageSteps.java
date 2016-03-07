@@ -17,6 +17,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.ConversationPage;
@@ -36,8 +37,8 @@ public class ConversationPageSteps {
 
     private static final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.70;
 
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
+    private final ClientUsersManager usrMgr;
+    private final WebappPagesCollection webappPagesCollection;
 
     private static final String TOOLTIP_PING = "Ping";
     private static final String SHORTCUT_PING_WIN = "(Ctrl + Alt + K)";
@@ -50,6 +51,14 @@ public class ConversationPageSteps {
     private static final Logger log = ZetaLogger.getLog(ConversationPageSteps.class.getSimpleName());
 
     private String randomMessage;
+    
+    private final Lifecycle.TestContext context;
+
+    public ConversationPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.usrMgr = context.getUserManager();
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
     /**
      * Sends random message (generated GUID) into opened conversation
@@ -369,7 +378,7 @@ public class ConversationPageSteps {
     @When("^I add (.*) to group chat$")
     public void IAddContactToGroupChat(String contact) throws Exception {
         WhenIClickPeopleButtonInGroup();
-        GroupPopoverPageSteps cpSteps = new GroupPopoverPageSteps();
+        GroupPopoverPageSteps cpSteps = new GroupPopoverPageSteps(context);
         cpSteps.IClickAddPeopleButton();
         cpSteps.ISearchForUser(contact);
         cpSteps.ISelectUserFromSearchResults(contact);

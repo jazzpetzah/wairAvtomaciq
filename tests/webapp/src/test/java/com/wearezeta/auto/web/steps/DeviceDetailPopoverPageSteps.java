@@ -3,6 +3,7 @@ package com.wearezeta.auto.web.steps;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.popovers.DeviceDetailPopoverPage;
 import cucumber.api.java.en.When;
@@ -12,8 +13,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class DeviceDetailPopoverPageSteps {
 
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
+    private final ClientUsersManager usrMgr;
+    private final WebappPagesCollection webappPagesCollection;
+    
+    private final Lifecycle.TestContext context;
+
+    public DeviceDetailPopoverPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.usrMgr = context.getUserManager();
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
     @When("^I verify id of device (.*) of user (.*) on device detail page of Single User Profile popover$")
     public void IVerifyDeviceId(String deviceName, String userAlias) throws Exception {

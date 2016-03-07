@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.*;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.pages.DeviceLimitPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
@@ -13,9 +14,16 @@ import cucumber.api.java.en.When;
 
 public class DeviceLimitPageSteps {
 
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-            .getInstance();
+    private final ClientUsersManager usrMgr;
+    private final WebappPagesCollection webappPagesCollection;
+    
+    private final Lifecycle.TestContext context;
+
+    public DeviceLimitPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.usrMgr = context.getUserManager();
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
     @When("I click on Sign Out on the device limit page$")
     public void IClickSignOutButton() throws Exception {

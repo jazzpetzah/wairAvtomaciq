@@ -5,6 +5,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -13,8 +14,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class PickleExecutor {
 
@@ -35,7 +38,9 @@ public class PickleExecutor {
         }
     }
 
-    private void cacheMethodsByAnnotationValue(Class<?> loadedClass, Class<? extends Annotation> annotationClass) throws NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
+    private void cacheMethodsByAnnotationValue(Class<?> loadedClass, Class<? extends Annotation> annotationClass) throws
+            NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+            InstantiationException {
         for (Method method : PickleAnnotationSeeker.getMethodsAnnotatedWith(loadedClass, annotationClass)) {
             final Method annotationValueMethod = annotationClass.getMethod(CUCUMBER_ANNOTATION_REGEX_METHOD_NAME);
             final Annotation annotationInstance = method.getAnnotation(annotationClass);
@@ -47,7 +52,8 @@ public class PickleExecutor {
         }
     }
 
-    public void invokeMethodForStep(String rawStep, Map<String, String> exampleParams) throws Exception {
+    public void invokeMethodForStep(String rawStep, Map<String, String> exampleParams, Object... constructorParams) throws
+            Exception {
         boolean match = false;
         final String step = replaceExampleOccurences(rawStep, exampleParams);
 
@@ -97,15 +103,27 @@ public class PickleExecutor {
         }
     }
 
-    private Object getOrAddCachedDeclaringClassForMethod(final Method method) throws InstantiationException, IllegalAccessException {
+    private Object getOrAddCachedDeclaringClassForMethod(final Method method, Object... constructorParams) throws
+            InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException,
+            InvocationTargetException {
         final Object declaringClassObject;
         final String declaringClassName = method.getDeclaringClass().getName();
         if (classInstanceCache.containsKey(declaringClassName)) {
             System.out.println("Using cached decalred class " + declaringClassName);
             declaringClassObject = classInstanceCache.get(declaringClassName);
         } else {
-            System.out.println("Adding new decalred class " + declaringClassName + " to cache");
-            declaringClassObject = method.getDeclaringClass().newInstance();
+            //###############################
+//            System.out.println("Adding new decalred class " + declaringClassName + " to cache");
+//            declaringClassObject = method.getDeclaringClass().newInstance();
+            //###############################
+            final List<Object> constructorParamsList = Arrays.asList(constructorParams);
+            final List<Class<?>> constructorParamTypesList = constructorParamsList.stream().map((object) -> object.getClass()).
+                    collect(Collectors.toList());
+            final Constructor<?> ctor = method.getDeclaringClass().getConstructor(constructorParamTypesList.toArray(
+                    new Class<?>[constructorParamTypesList.size()]));
+            declaringClassObject = method.getDeclaringClass().cast(ctor.newInstance(constructorParamsList.toArray(
+                    new Class<?>[constructorParamsList.size()])));
+
             classInstanceCache.put(declaringClassName, declaringClassObject);
         }
         return declaringClassObject;

@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.DownloadPage;
@@ -11,8 +12,14 @@ import static org.hamcrest.Matchers.*;
 
 public class DownloadPageSteps {
 	
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+	private final WebappPagesCollection webappPagesCollection;
+        
+        private final Lifecycle.TestContext context;
+
+    public DownloadPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
 	/**
 	 * Open download page on website

@@ -4,6 +4,7 @@ import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.Lifecycle;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -19,8 +20,14 @@ public class CallingSteps {
     private static final Logger LOG = ZetaLogger.getLog(CallingSteps.class
             .getName());
 
-    private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2
-            .getInstance();
+    private final CommonCallingSteps2 commonCallingSteps;
+    
+    private final Lifecycle.TestContext context;
+
+    public CallingSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.commonCallingSteps = context.getCallingManager();
+    }
 
     /**
      * Make audio or video call(s) to one specific conversation.
@@ -194,9 +201,8 @@ public class CallingSteps {
             throws Throwable {
         final int flowWaitTime = 3;
         final List<String> calleeList = splitAliases(callees);
-        final ConversationPageSteps convSteps = new ConversationPageSteps();
-        final CommonCallingSteps2 commonCalling = CommonCallingSteps2
-                .getInstance();
+        final ConversationPageSteps convSteps = new ConversationPageSteps(context);
+        final CommonCallingSteps2 commonCalling = context.getCallingManager();
         final WarningPageSteps warningSteps = new WarningPageSteps();
         final Map<Integer, Throwable> failures = new HashMap<>();
         for (int i = 0; i < times; i++) {

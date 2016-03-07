@@ -1,4 +1,4 @@
-package com.wearezeta.auto.web;
+package com.wearezeta.auto.web.common;
 
 import com.googlecode.junittoolbox.ParallelParameterized;
 import com.wearezeta.picklejar.PickleExecutor;
@@ -97,7 +97,7 @@ public class PickleJarTest {
         System.out.println(feature);
         System.out.println(testcase);
         for (String step : steps) {
-            stepExecutor.invokeMethodForStep(step, examples);
+            stepExecutor.invokeMethodForStep(step, examples, lifecycle.getContext());
         }
     }
 

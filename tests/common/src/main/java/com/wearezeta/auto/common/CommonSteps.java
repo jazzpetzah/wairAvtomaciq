@@ -39,7 +39,7 @@ public final class CommonSteps {
         return instance;
     }
 
-    private CommonSteps() {
+    public CommonSteps() {
     }
 
     public static final String ALIASES_SEPARATOR = ",";

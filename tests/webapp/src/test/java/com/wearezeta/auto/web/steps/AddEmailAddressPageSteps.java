@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.pages.AddEmailAddressPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
@@ -12,9 +13,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class AddEmailAddressPageSteps {
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+	private final ClientUsersManager usrMgr;
+	private final WebappPagesCollection webappPagesCollection;
+
+    private final Lifecycle.TestContext context;
+
+    public AddEmailAddressPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.usrMgr = context.getUserManager();
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
 	/**
 	 * Enter email address of user via user alias

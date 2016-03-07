@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.ContactListPage;
@@ -29,12 +30,19 @@ public class ContactListPageSteps {
     private static final Logger log = ZetaLogger
             .getLog(ContactListPageSteps.class.getSimpleName());
 
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-            .getInstance();
+    private final ClientUsersManager usrMgr;
+    private final WebappPagesCollection webappPagesCollection;
     private static final String TOOLTIP_SILENCE = "Silence";
     private static final String SHORTCUT_SILENCE_WIN = "(Ctrl + Alt + S)";
     private static final String SHORTCUT_SILENCE_MAC = "(⌘⌥S)";
+    
+    private final Lifecycle.TestContext context;
+
+    public ContactListPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.usrMgr = context.getUserManager();
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
     /**
      * Checks that contact list is loaded and waits for profile avatar to be

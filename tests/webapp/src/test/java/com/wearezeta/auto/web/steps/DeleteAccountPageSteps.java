@@ -14,6 +14,7 @@ import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
 
@@ -24,11 +25,18 @@ public class DeleteAccountPageSteps {
 	public static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class
 			.getSimpleName());
 	
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private final ClientUsersManager usrMgr;
 	
 	private static final int DELETION_RECEIVING_TIMEOUT = 120;
 	
 	private String deleteLink = null;
+        
+        private final Lifecycle.TestContext context;
+
+    public DeleteAccountPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.usrMgr = context.getUserManager();
+    }
 	
 	/**
 	 * Verify that invitation email exists in user's mailbox

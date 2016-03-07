@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.pages.ConnectedDevicesPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.Then;
@@ -10,8 +11,14 @@ import static org.hamcrest.Matchers.containsString;
 
 public class ConnectedDevicesPageSteps {
 
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-            .getInstance();
+    private final WebappPagesCollection webappPagesCollection;
+    
+    private final Lifecycle.TestContext context;
+
+    public ConnectedDevicesPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
     @When("^I( do not)? see connected devices dialog$")
     public void ISeeDialog(String doNot) throws Exception {

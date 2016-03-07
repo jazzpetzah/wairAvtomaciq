@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.PasswordChangePage;
 import com.wearezeta.auto.web.pages.external.PasswordChangeSuccessfullPage;
@@ -22,11 +23,18 @@ public class PasswordChangeSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(PasswordChangeSteps.class.getSimpleName());
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+	private final ClientUsersManager usrMgr;
+	private final WebappPagesCollection webappPagesCollection;
 
 	private static final int VISIBILITY_TIMEOUT_SECONDS = 15;
+        
+        private final Lifecycle.TestContext context;
+
+    public PasswordChangeSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.usrMgr = context.getUserManager();
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
 	/**
 	 * Verifies whether Password Change page is visible

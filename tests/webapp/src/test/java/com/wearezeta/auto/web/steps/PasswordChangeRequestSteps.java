@@ -14,6 +14,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.PasswordChangePage;
@@ -32,11 +33,18 @@ public class PasswordChangeRequestSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(PasswordChangeRequestSteps.class.getSimpleName());
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+	private final ClientUsersManager usrMgr;
+	private final WebappPagesCollection webappPagesCollection;
 
 	private Future<String> passwordChangeMessage = null;
+        
+        private final Lifecycle.TestContext context;
+
+    public PasswordChangeRequestSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.usrMgr = context.getUserManager();
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
 	@When("^I navigate to Password Change Reset page for (.*)")
 	public void INavigateToPasswordChangeResetPageFor(String agent) throws Exception {

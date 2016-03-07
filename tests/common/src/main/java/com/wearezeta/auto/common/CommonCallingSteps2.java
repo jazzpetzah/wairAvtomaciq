@@ -86,7 +86,7 @@ public final class CommonCallingSteps2 {
         return singleton;
     }
 
-    private CommonCallingSteps2() {
+    public CommonCallingSteps2() {
         this.callMapping = new ConcurrentHashMap<>();
         this.instanceMapping = new ConcurrentHashMap<>();
         this.client = new CallingServiceClient();

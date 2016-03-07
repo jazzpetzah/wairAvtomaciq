@@ -10,13 +10,21 @@ import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
+import com.wearezeta.auto.web.common.Lifecycle;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CallPageSteps {
 
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-            .getInstance();
+    private final ClientUsersManager usrMgr;
+    private final WebappPagesCollection webappPagesCollection;
+    
+    private final Lifecycle.TestContext context;
+
+    public CallPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.usrMgr = context.getUserManager();
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
     /**
      * Verifies visibility of call controls for the given conversation

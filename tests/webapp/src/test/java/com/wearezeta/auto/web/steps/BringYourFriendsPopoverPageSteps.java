@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.YouAreInvitedPage;
 import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
@@ -9,9 +10,15 @@ import cucumber.api.java.en.When;
 
 public class BringYourFriendsPopoverPageSteps {
 
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+	private final WebappPagesCollection webappPagesCollection;
 	private String invitationLink = null;
+        
+        private final Lifecycle.TestContext context;
+
+    public BringYourFriendsPopoverPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
 	/**
 	 * Verifies whether Invite People popover is visible or not

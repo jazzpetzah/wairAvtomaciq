@@ -4,6 +4,7 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
@@ -37,9 +38,16 @@ public class GroupPopoverPageSteps {
 	private static final String TOOLTIP_UNBLOCK = "Unblock";
 	private static final String TOOLTIP_OPEN_YOUR_PROFILE = "Open your profile";
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+	private final ClientUsersManager usrMgr;
+	private final WebappPagesCollection webappPagesCollection;
+        
+        private final Lifecycle.TestContext context;
+
+    public GroupPopoverPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.usrMgr = context.getUserManager();
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
 	/**
 	 * Verify that Group Participants popover is shown or not
