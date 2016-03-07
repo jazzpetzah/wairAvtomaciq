@@ -451,6 +451,8 @@ public final class WebAppLocators {
 
         public static final String cssCallButton = "#search-header [data-uie-name='do-call']";
 
+        public static final String cssVideoCallButton = "#search-header [data-uie-name='do-video-call']";
+
         public static final Function<String, String> xpathSearchResultByName = (
                 name) -> String.format(
                 "%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
