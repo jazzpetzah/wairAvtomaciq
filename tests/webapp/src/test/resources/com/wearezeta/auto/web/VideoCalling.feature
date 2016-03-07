@@ -26,9 +26,9 @@ Feature: VideoCalling
   @C12070 @videocalling
   Scenario Outline: Verify I can accept Video call
     Given My browser supports calling
-    Given <Contact> starts instance using <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given <Contact> starts a video call to me
