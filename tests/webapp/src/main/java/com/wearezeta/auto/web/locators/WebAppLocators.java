@@ -202,15 +202,15 @@ public final class WebAppLocators {
                         user);
 
         public static final Function<String, String> xpathOutgoingCallByConversationName = user -> String
-                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*/span[contains(text(),'Ringing…')]",
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*//*[@data-uie-name='call-label-outgoing']",
                         user);
 
         public static final Function<String, String> xpathIncomingCallByConversationName = user -> String
-                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*/span[contains(text(),'Calling…')]",
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*//*[@data-uie-name='call-label-incoming']",
                         user);
 
         public static final Function<String, String> xpathOngoingCallByConversationName = user -> String
-                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*/span[contains(text(),':')]",
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*//*[@data-uie-name='call-duration']",
                         user);
 
         public static final Function<String, String> xpathAcceptCallButtonByConversationName = (
