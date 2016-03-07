@@ -93,7 +93,7 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public boolean isPeopleSearchTextEmpty() throws Exception {
-        return getPickerEdit().getText().isEmpty();
+        return getPickerEdit().getText() == null || getPickerEdit().getText().isEmpty();
     }
 
     public boolean isNoResultsFoundVisible() throws Exception {

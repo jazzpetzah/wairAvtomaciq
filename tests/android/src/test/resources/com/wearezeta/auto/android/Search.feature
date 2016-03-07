@@ -98,9 +98,7 @@ Feature: Search
     And I clear search result by press clear button or back button
     And I see Contact list
     And I open Search UI
-    And I see user <Contact1> found on People picker page
-    And I see user <Contact2> found on People picker page
-    And I see the search text is empty
+    Then I see the search text is empty
 
     Examples:
       | Name      | Contact1  | Contact2  |
