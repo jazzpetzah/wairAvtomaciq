@@ -375,7 +375,7 @@ Feature: Calling
     When I open self profile
     When <Contact1> calls me
     And I wait for 1 seconds
-    And <Contact1> stops all calls to me
+    And <Contact1> stops calling me
     And I wait for 1 seconds
     Then I see missed call notification for conversation <Contact1>
     When I open conversation with <Contact1>
