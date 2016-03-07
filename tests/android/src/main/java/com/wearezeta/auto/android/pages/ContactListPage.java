@@ -57,6 +57,8 @@ public class ContactListPage extends AndroidPage {
 
     public static final By idListActionsAvatar = By.id("gtv__list_actions__avatar");
 
+    private static final By idConversationListHintContainer = By.id("ll__conversation_list__hint_container");
+
     private static final By xpathConfirmDeleteConversationButton = By.xpath("//*[@id='positive' and @value='DELETE']");
 
     private static final By xpathLeaveCheckbox = By.xpath("(//*[@id='gtv__checkbox_icon'])[1]");
@@ -166,6 +168,14 @@ public class ContactListPage extends AndroidPage {
     public boolean isPlayPauseMediaButtonVisible(String convoName) throws Exception {
         final By locator = By.xpath(xpathStrPlayPauseButtonByConvoName.apply(convoName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isContactsBannerVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idConversationListHintContainer);
+    }
+
+    public boolean isContactsBannerNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idConversationListHintContainer);
     }
 
     private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
