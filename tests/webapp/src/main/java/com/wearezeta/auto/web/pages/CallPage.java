@@ -39,16 +39,21 @@ public class CallPage extends ContactListPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(locator));
     }
-    
+
     public boolean isCallControlsNotVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         final String locator = WebAppLocators.CallPage.xpathUserNameByConversationName
                 .apply(conversationName);
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.xpath(locator));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.xpath(locator));
     }
-    
+
+    public boolean isJoinCallButtonVisibleForConversation(String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        final String locator = WebAppLocators.CallPage.xpathJoinCallButtonByConversationName.apply(conversationName);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(locator));
+    }
+
     public boolean isMuteCallButtonVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
@@ -197,6 +202,13 @@ public class CallPage extends ContactListPage {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         final String locator = WebAppLocators.CallPage.xpathMuteCallButtonNotPressed.apply(conversationName);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(locator));
+    }
+
+    public void clickJoinCallButton(String conversationName) throws Exception {
+        conversationName = fixDefaultGroupConvoName(conversationName, false);
+        final String locator = WebAppLocators.CallPage.xpathJoinCallButtonByConversationName.apply(conversationName);
+        WebElement declineCallButton = getDriver().findElementByXPath(locator);
+        declineCallButton.click();
     }
 
     public boolean isAvatarVisibleInCallControls(String userId) throws Exception {

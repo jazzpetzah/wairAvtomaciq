@@ -481,7 +481,7 @@ Feature: Calling
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
     When I hang up call with conversation <ChatName>
-    And I do not see the ongoing call controls for conversation <ChatName>
+    And I see the join call controls for conversation <ChatName>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
 
     Examples:
@@ -511,7 +511,7 @@ Feature: Calling
     And <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
     And <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
     When I hang up call with conversation <ChatName>
-    Then I do not see the ongoing call controls for conversation <ChatName>
+    Then I see the join call controls for conversation <ChatName>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName  | CallBackend | WaitBackend | Timeout |
@@ -563,7 +563,7 @@ Feature: Calling
     And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
     When I hang up call with conversation <ChatName>
-    Then I do not see the ongoing call controls for conversation <ChatName>
+    Then I see the join call controls for conversation <ChatName>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
@@ -610,9 +610,9 @@ Feature: Calling
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
     When I hang up call with conversation <ChatName>
-    And I do not see the ongoing call controls for conversation <ChatName>
+    And I see the join call controls for conversation <ChatName>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    When I join call
+    When I join call of conversation <ChatName>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
 
@@ -638,7 +638,7 @@ Feature: Calling
     And I wait for 60 seconds
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    Then I join call
+    Then I join call of conversation <ChatName>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
