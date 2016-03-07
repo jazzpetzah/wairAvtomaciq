@@ -188,6 +188,7 @@ Feature: E2EE
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
     And I am signed in properly
+    And I open conversation with <Contact>
     Then I see text message <OnlineMessage>
     And I see text message <OfflineMessage>
     And I see sent picture <ImageName> in the conversation view
