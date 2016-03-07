@@ -120,7 +120,7 @@ Feature: Calling_Matrix
     And <Contact1>,<Contact2> verifies to have 2 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
-    And I do not see the call controls for conversation <ChatName1>
+    And I see the join call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact1>,<Contact2> verifies to have 1 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
@@ -151,7 +151,7 @@ Feature: Calling_Matrix
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName1>
     When I hang up call with conversation <ChatName1>
-    Then I do not see the call controls for conversation <ChatName1>
+    Then I see the join call controls for conversation <ChatName1>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend | Timeout |
@@ -180,7 +180,7 @@ Feature: Calling_Matrix
     And <Contact1>,<Contact2> verify to have 2 flows
     And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
-    And I do not see the call controls for conversation <ChatName1>
+    And I see the join call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact1>,<Contact2> verifies to have 1 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
@@ -218,7 +218,7 @@ Feature: Calling_Matrix
     And <Contact2> verify to have 2 flows
     And <Contact2> verify that all flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
-    And I do not see the call controls for conversation <ChatName1>
+    And I see the join call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact2> verifies to have 1 flows
     And <Contact2> verifies that all flows have greater than 0 bytes
@@ -251,7 +251,7 @@ Feature: Calling_Matrix
     Then <Contact1> verify that call status to <ChatName1> is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName1>
     And I hang up call with conversation <ChatName1>
-    Then I do not see the call controls for conversation <ChatName1>
+    Then I see the join call controls for conversation <ChatName1>
     # Stops all autocall instance calls
     And <Contact1> stops calling <ChatName1>
 
