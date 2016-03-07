@@ -327,4 +327,13 @@ public class PeoplePickerPage extends WebPage {
 		videoCallButton.click();
 	}
 
+	public boolean isVideoCallButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.cssSelector(WebAppLocators.PeoplePickerPage.cssVideoCallButton));
+	}
+
+	public boolean isVideoCallButtonNotVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.cssSelector(WebAppLocators.PeoplePickerPage.cssVideoCallButton));
+	}
 }

@@ -38,9 +38,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Selects user from search results in People Picker
-	 * 
+	 *
 	 * @step. ^I select (.*) from People Picker results$
-	 * 
+	 *
 	 * @param user
 	 *            user name or email
 	 * @throws Exception
@@ -55,9 +55,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Workaround for bug WEBAPP-1386
-	 * 
+	 *
 	 * @step. ^I wait for the search field of People Picker to be empty$
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@When("^I wait for the search field of People Picker to be empty$")
@@ -68,9 +68,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Input user name/email in search field of People Picker
-	 * 
+	 *
 	 * @step. ^I type (.*) in search field of People Picker$
-	 * 
+	 *
 	 * @param nameOrEmail
 	 * @throws Exception
 	 */
@@ -87,9 +87,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Verify if user is found by Search in People Picker
-	 * 
+	 *
 	 * @step. ^I( do not)? see user (.*) found in People Picker$
-	 * 
+	 *
 	 * @param donot
 	 *            if null method returns true if found otherwise true if not
 	 *            found
@@ -113,9 +113,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Click on the X button next to the suggested contact
-	 * 
+	 *
 	 * @step. ^I remove user (.*) from suggestions in People Picker$
-	 * 
+	 *
 	 * @param contact
 	 *            name of contact
 	 * @throws Exception
@@ -129,10 +129,10 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Click on the + button next to the suggested contact
-	 * 
+	 *
 	 * @step. ^I make a connection request for user (.*) directly from People
 	 *        Picker$
-	 * 
+	 *
 	 * @param contact
 	 *            name of contact
 	 * @throws Exception
@@ -146,9 +146,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Click X button to close People Picker page
-	 * 
+	 *
 	 * @step. ^I close People Picker page$
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@When("^I close People Picker$")
@@ -158,15 +158,15 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Clicks on user found by search to open connect dialog
-	 * 
+	 *
 	 * @step. ^I click on (not connected|pending) user (.*) found in People
 	 *        Picker$
-	 * 
+	 *
 	 * @param userType
 	 *            either "not connected" or "pending"
 	 * @param name
 	 *            user name string
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@When("^I click on (not connected|pending) user (.*) found in People Picker$")
@@ -184,7 +184,7 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Creates conversation with users selected in People Picker
-	 * 
+	 *
 	 * @step. ^I choose to create conversation from People Picker$
 	 * @throws Exception
 	 */
@@ -204,9 +204,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Verify whether Bring Your Friends or Invite People button is visible
-	 * 
+	 *
 	 * @step. ^I see Bring Your Friends or Invite People button$
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@When("^I see Bring Your Friends or Invite People button$")
@@ -217,9 +217,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Verify whether Gmail Import button is visible on People Picker page
-	 * 
+	 *
 	 * @step. ^I do not see Gmail Import button on People Picker page$
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@When("^I do not see Gmail Import button on People Picker page$")
@@ -230,9 +230,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Click button to bring friends from Gmail
-	 * 
+	 *
 	 * @step. ^I click button to bring friends from Gmail$
-	 * 
+	 *
 	 */
 	@And("^I click button to bring friends from Gmail$")
 	public void IClickButtonToBringFriendsFromGmail() throws Exception {
@@ -242,9 +242,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Verifies whether Google login prompt is visible
-	 * 
+	 *
 	 * @step. ^I see Google login popup$
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@And("^I see Google login popup$")
@@ -255,9 +255,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Enter gmail login and password into corresponding window
-	 * 
+	 *
 	 * @step. ^I sign up at Google with email (.*) and password (.*)$"
-	 * 
+	 *
 	 * @param email
 	 * @param password
 	 * @throws Exception
@@ -280,9 +280,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Click Bring Your Friends or Invite People button on People Picker page
-	 * 
+	 *
 	 * @step. ^I click Bring Your Friends or Invite People button$
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@When("^I click Bring Your Friends or Invite People button$")
@@ -293,9 +293,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Click Call button on People Picker page
-	 * 
+	 *
 	 * @step. ^I click Call button on People Picker page$
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@When("^I click Call button on People Picker page$")
@@ -306,9 +306,9 @@ public class PeoplePickerPageSteps {
 	/**
 	 * Closes and opens People Picker until Top People list is visible on People
 	 * Picker page
-	 * 
+	 *
 	 * @step. ^I wait till Top People list appears$
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@When("^I wait till Top People list appears$")
@@ -323,9 +323,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Selects users from Top People in People Picker
-	 * 
+	 *
 	 * @step. ^I select (.*) from Top People$
-	 * 
+	 *
 	 * @param namesOfTopPeople
 	 *            comma separated list of names of top people to select
 	 * @throws Exception
@@ -371,9 +371,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Verify if group conversation is found by Search in People Picker
-	 * 
+	 *
 	 * @step. ^I( do not)? see group conversation (.*) found in People Picker$
-	 * 
+	 *
 	 * @param donot
 	 *            if null method returns true if found otherwise true if not
 	 *            found
@@ -396,9 +396,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Verify if More button is shown in People Picker
-	 * 
+	 *
 	 * @step. ^I see More button$
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@And("^I see More button$")
@@ -412,9 +412,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Click More button on People Picker page
-	 * 
+	 *
 	 * @step. ^I click on More button$
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@When("^I click on More button$")
@@ -424,9 +424,9 @@ public class PeoplePickerPageSteps {
 
 	/**
 	 * Verify if More button is shown in People Picker
-	 * 
+	 *
 	 * @step. ^I see (\\d+) people in Top people list$
-	 * 
+	 *
 	 */
 	@Then("^I see (\\d+) people in Top people list$")
 	public void ISeeXPeopleInTopPeopleList(int count) throws Exception {
@@ -445,5 +445,30 @@ public class PeoplePickerPageSteps {
 	@When("^I click Video Call button on People Picker page$")
 	public void IClickVideoCallButton() throws Exception {
 		webappPagesCollection.getPage(PeoplePickerPage.class).clickVideoCallButton();
+	}
+
+	/**
+	 * Verify if Video Call button is shown on People Picker page
+	 *
+	 * @step. ^I( do not)? see Video Call button on People Picker page$
+	 *
+	 * @throws Exception
+	 */
+	@And("^I( do not)? see Video Call button on People Picker page$")
+	public void ISeeVideoCallButton(String doNot) throws Exception {
+		if (doNot == null) {
+			final String searchMissingMessage = "Video Call button is not shown on People Picker Page";
+			Assert.assertTrue(searchMissingMessage,
+					webappPagesCollection.getPage(PeoplePickerPage.class)
+							.isVideoCallButtonVisible());
+		}
+		else
+		{
+			final String searchMissingMessage = "Video Call button is shown on People Picker Page";
+			Assert.assertTrue(searchMissingMessage,
+                    webappPagesCollection.getPage(PeoplePickerPage.class)
+					.isVideoCallButtonNotVisible());
+		}
+
 	}
 }
