@@ -36,23 +36,21 @@ public final class PlatformDrivers {
         return this.drivers.containsKey(platform);
     }
 
-    private final ExecutorService pool = Executors.newFixedThreadPool(Platform
-            .values().length);
-
     public synchronized Future<? extends RemoteWebDriver> resetDriver(
             String url, DesiredCapabilities capabilities, int maxRetryCount,
             Consumer<RemoteWebDriver> initCompletedCallback,
             Supplier<Boolean> beforeInitCallback) throws Exception {
-        final Platform platformInCapabilities = Platform.getByName(capabilities
-                .getCapability("platformName").toString());
+        final Platform platformInCapabilities = Platform.getByName(capabilities.getCapability("platformName").toString());
         if (this.hasDriver(platformInCapabilities)) {
             this.quitDriver(platformInCapabilities);
         }
         final LazyDriverInitializer initializer = new LazyDriverInitializer(
                 platformInCapabilities, url, capabilities, maxRetryCount,
                 initCompletedCallback, beforeInitCallback);
+        final ExecutorService pool = Executors.newSingleThreadExecutor();
         Future<RemoteWebDriver> driverBeingCreated = pool.submit(initializer);
         drivers.put(platformInCapabilities, driverBeingCreated);
+        pool.shutdown();
         return driverBeingCreated;
     }
 
