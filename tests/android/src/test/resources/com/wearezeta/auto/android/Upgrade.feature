@@ -1,4 +1,4 @@
-Feature: Sign In
+Feature: Upgrade
 
   @C418 @upgrade
   Scenario Outline: Check upgrade from previous build
