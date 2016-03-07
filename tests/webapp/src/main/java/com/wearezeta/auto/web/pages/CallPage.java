@@ -22,30 +22,12 @@ public class CallPage extends ContactListPage {
                 By.xpath(locator));
     }
     
-    public boolean isIncomingCallNotVisibleForConversation(
-            String conversationName) throws Exception {
-        conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathIncomingCallByConversationName
-                .apply(conversationName);
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-                By.xpath(locator));
-    }
-    
     public boolean isOutgoingCallVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         final String locator = WebAppLocators.CallPage.xpathOutgoingCallByConversationName
                 .apply(conversationName);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(locator));
-    }
-    
-    public boolean isOutgoingCallNotVisibleForConversation(
-            String conversationName) throws Exception {
-        conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathOutgoingCallByConversationName
-                .apply(conversationName);
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.xpath(locator));
     }
     
@@ -58,10 +40,10 @@ public class CallPage extends ContactListPage {
                 By.xpath(locator));
     }
     
-    public boolean isOngoingCallNotVisibleForConversation(
+    public boolean isCallControlsNotVisibleForConversation(
             String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
-        final String locator = WebAppLocators.CallPage.xpathOngoingCallByConversationName
+        final String locator = WebAppLocators.CallPage.xpathUserNameByConversationName
                 .apply(conversationName);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.xpath(locator));
@@ -215,5 +197,10 @@ public class CallPage extends ContactListPage {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         final String locator = WebAppLocators.CallPage.xpathMuteCallButtonNotPressed.apply(conversationName);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(locator));
+    }
+
+    public boolean isAvatarVisibleInCallControls(String userId) throws Exception {
+        final String locator = WebAppLocators.CallPage.cssAvatarInCallControlsByUserId.apply(userId);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(locator));
     }
 }

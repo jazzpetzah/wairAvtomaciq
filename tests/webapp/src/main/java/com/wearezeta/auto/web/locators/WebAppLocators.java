@@ -193,7 +193,7 @@ public final class WebAppLocators {
 
         public static final Function<String, String> xpathEndCallButtonByConversationName = (
                 name) -> String
-                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
+                .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']/parent::"
                                 + "*/parent::*//*[@data-uie-name='do-call-controls-call-ignore']",
                         name);
 
@@ -231,6 +231,7 @@ public final class WebAppLocators {
         public static final Function<String, String> xpathMuteCallButtonNotPressed = (name) -> String.format("//div[@data-uie-name='do-call-mute'" +
                 " and not(contains(@class, 'toggled'))]", name);
 
+        public static final Function<String, String> cssAvatarInCallControlsByUserId = (id) -> String.format(".conversation-list-call-controls-row-participants [user-id='%s']", id);
     }
 
     public static final class SettingsPage {
