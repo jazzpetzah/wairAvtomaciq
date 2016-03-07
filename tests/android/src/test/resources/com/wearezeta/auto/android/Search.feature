@@ -81,7 +81,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C56397 @staging
+  @C56397 @torun
   Scenario Outline: Verify search results cleaned after closing search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
