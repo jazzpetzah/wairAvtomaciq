@@ -11,9 +11,12 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import java.util.Random;
+
 public class PeoplePickerPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    private static final Random random = new Random();
 
     private PeoplePickerPage getPeoplePickerPage() throws Exception {
         return pagesCollection.getPage(PeoplePickerPage.class);
@@ -79,6 +82,21 @@ public class PeoplePickerPageSteps {
     @When("^I press Clear button$")
     public void WhenIPressClearButton() throws Exception {
         getPeoplePickerPage().tapClearButton();
+    }
+
+    /**
+     * Random to clear search result by click clear button or click navigate back button
+     *
+     * @throws Exception
+     * @step. ^I clear search result by press clear button or back button$
+     */
+    @When("^I clear search result by press clear button or back button$")
+    public void WhenIClearSearchResultByPressClearButtonOrPressBackButton() throws Exception {
+        if (random.nextInt(100) % 2 == 0) {
+            WhenIPressClearButton();
+        } else {
+            pagesCollection.getCommonPage().navigateBack();
+        }
     }
 
     /**
@@ -173,11 +191,16 @@ public class PeoplePickerPageSteps {
      * @throws Exception
      * @step. ^I see user (.*) found on People picker page$
      */
-    @When("^I see user (.*) found on People picker page$")
-    public void WhenISeeUserFoundOnPeoplePickerPage(String contact) throws Exception {
+    @When("^I( do not)? see user (.*) found on People picker page$")
+    public void WhenISeeUserFoundOnPeoplePickerPage(String shouldNotSee, String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("User '%s' is not visible on People Picker page", contact),
-                getPeoplePickerPage().isUserVisible(contact));
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("User '%s' is not visible on People Picker page", contact),
+                    getPeoplePickerPage().isUserVisible(contact));
+        } else {
+            Assert.assertTrue(String.format("User '%s' should not visible on People Picker page", contact),
+                    getPeoplePickerPage().isUserInvisible(contact));
+        }
     }
 
     /**
@@ -331,6 +354,17 @@ public class PeoplePickerPageSteps {
             Assert.assertTrue(String.format("'%s' action button is not visible", buttonName),
                     getPeoplePickerPage().waitUntilActionButtonIsInvisible(buttonName));
         }
+    }
+
+    /**
+     * Verify the search text is empty
+     *
+     * @throws Exception
+     * @step. ^I see the search text is empty$"
+     */
+    @Then("^I see the search text is empty$")
+    public void SearchTextIsEmpty() throws Exception {
+        Assert.assertTrue("The search text should be empty", getPeoplePickerPage().isPeopleSearchTextEmpty());
     }
 
     /**

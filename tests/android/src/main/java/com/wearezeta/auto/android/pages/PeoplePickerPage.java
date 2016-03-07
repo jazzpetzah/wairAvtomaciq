@@ -92,6 +92,10 @@ public class PeoplePickerPage extends AndroidPage {
         getPickerEdit().sendKeys(text);
     }
 
+    public boolean isPeopleSearchTextEmpty() throws Exception {
+        return getPickerEdit().getText().isEmpty();
+    }
+
     public boolean isNoResultsFoundVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idNoResultsFound);
     }
