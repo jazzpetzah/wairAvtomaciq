@@ -205,9 +205,9 @@ Feature: VideoCalling
     And I open conversation with <Contact>
     When I start a video call
     And I see my self video view
+    And I see the outgoing call controls for conversation <Contact>
     And I see mute call button for conversation <Contact>
     And I see hang up button for conversation <Contact>
-    And I see the outgoing call controls for conversation <Contact>
     Then I hang up call with conversation <Contact>
     And I do not see my self video view
     And I do not see hang up button for conversation  <Contact>
