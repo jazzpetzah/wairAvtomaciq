@@ -16,10 +16,7 @@ Feature: Upgrade
     When I tap on contact name <Contact>
     Then I see my message "<Message>" in the dialog
     And I see 1 image in the conversation view
-    When I swipe on text input
-    And I tap Add Picture button from input tools
-    And I press "Gallery" button
-    And I press "Confirm" button
+    When User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Then I see 2 images in the conversation view
     When I tap on text input
     And I type the message "<Message2>" and send it
