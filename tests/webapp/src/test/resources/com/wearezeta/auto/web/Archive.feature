@@ -45,7 +45,6 @@ Feature: Archive
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I see my avatar on top of Contact list
-    And I see Otto the Bot
     When I archive conversation <Contact>
     And User <Contact> pinged in the conversation with me
     Then I do not see Contact list with name <Contact>

@@ -50,8 +50,6 @@ Feature: Registration
     When I see Welcome page
     And Myself take snapshot of current profile picture
     And I choose <PictureName> as my self picture on Welcome page
-    And I see Otto the Bot
-    And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
@@ -73,8 +71,6 @@ Feature: Registration
     And I see Welcome page
     And I confirm keeping picture on Welcome page
     And I am signed in properly
-    And I see Otto the Bot
-    And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog

@@ -30,8 +30,6 @@ Feature: Sign Out
     And I see Welcome page
     And I confirm keeping picture on Welcome page
     And I am signed in properly
-    And I see Otto the Bot
-    And I open People Picker from Contact List
     Then I see Search is opened
     And I see Bring Your Friends or Invite People button
     Then I see user name on self profile page <Contact3>

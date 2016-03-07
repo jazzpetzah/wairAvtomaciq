@@ -74,8 +74,6 @@ Feature: Sign In
     And I see the history info page
     And I click confirm on history info page
     Then I am signed in properly
-    And I see Otto the Bot
-    And I open self profile
     When I click gear button on self profile page
     And I select Settings menu item on self profile page
     Then I verify that the device id of the current device is not the same
