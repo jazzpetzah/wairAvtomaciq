@@ -40,7 +40,7 @@ public final class CommonCallingSteps2 {
 
     private static final String CALL_BACKEND_VERSION_SEPARATOR = ":";
 
-    private static final String ZCALL_DEFAULT_VERSION = "1.12";
+    private static final String ZCALL_DEFAULT_VERSION = "2.1";
     private String zcallVersion = ZCALL_DEFAULT_VERSION;
 
     public String getZcallVersion() {
@@ -51,7 +51,7 @@ public final class CommonCallingSteps2 {
         this.zcallVersion = zcallVersion;
     }
 
-    private static final String AUTOCALL_DEFAULT_VERSION = "1.12";
+    private static final String AUTOCALL_DEFAULT_VERSION = "2.1";
     private String autocallVersion = AUTOCALL_DEFAULT_VERSION;
 
     public String getAutocallVersion() {
@@ -62,8 +62,8 @@ public final class CommonCallingSteps2 {
         this.autocallVersion = autocallVersion;
     }
 
-    private static final String FIREFOX_DEFAULT_VERSION = "44.0";
-    private static final String CHROME_DEFAULT_VERSION = "48.0.2564.97";
+    private static final String FIREFOX_DEFAULT_VERSION = "44.0.2";
+    private static final String CHROME_DEFAULT_VERSION = "49.0.2623.75";
 
     // Request timeout of 180 secs is set by callingservice, we add additional
     // 10 seconds on the client side to actually get a timeout response to
