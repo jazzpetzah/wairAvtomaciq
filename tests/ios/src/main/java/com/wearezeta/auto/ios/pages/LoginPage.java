@@ -26,12 +26,6 @@ public class LoginPage extends IOSPage {
 
     private static final By nameForgotPassword = MobileBy.AccessibilityId("FORGOT PASSWORD?");
 
-    private static final By xpathSafariChangePasswordEmailField =
-            By.xpath("//UIAApplication[@name='Safari']//UIATextField[@value='Email']");
-
-    private static final By xpathSafariEnterNewPasswordField =
-            By.xpath("//UIASecureTextField[@value='Enter new password']");
-
     private static final By namePhoneLoginButton = MobileBy.AccessibilityId("RegistrationRightButton");
 
     private static final By nameMaybeLater = MobileBy.AccessibilityId("MAYBE LATER");
@@ -140,28 +134,6 @@ public class LoginPage extends IOSPage {
 
     public void tapForgotPasswordButton() throws Exception {
         getElement(nameForgotPassword).click();
-    }
-
-    public void commitEmail(String email) throws Exception {
-        this.inputStringFromKeyboard(getElement(xpathSafariChangePasswordEmailField,
-                "Email input field in Safari is not visible"), email, false, true);
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathSafariChangePasswordEmailField)) {
-            this.inputStringFromKeyboard(getElement(xpathSafariChangePasswordEmailField,
-                    "Email input field in Safari is not visible"), email, false, true);
-        }
-    }
-
-    public void changeURLInBrowser(String URL) throws Exception {
-        this.inputStringFromKeyboard(getElement(xpathBrowserURLButton), URL, false, true);
-    }
-
-    public void commitNewPassword(String newPassword) throws Exception {
-        this.inputStringFromKeyboard(getElement(xpathSafariEnterNewPasswordField,
-                "Password input field in Safari is not visible"), newPassword, false, true);
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathSafariEnterNewPasswordField)) {
-            this.inputStringFromKeyboard(getElement(xpathSafariChangePasswordEmailField,
-                    "Password input field in Safari is not visible"), newPassword, false, true);
-        }
     }
 
     public boolean isCountryPickerButtonVisible() throws Exception {
