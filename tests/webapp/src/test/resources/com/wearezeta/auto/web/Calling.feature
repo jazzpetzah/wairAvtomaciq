@@ -368,11 +368,12 @@ Feature: Calling
   Scenario Outline: Verify I get missed call notification when someone calls me
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open self profile
-    When <Contact1> calls me using <CallBackend>
+    When <Contact1> calls me
     And I wait for 1 seconds
     And <Contact1> stops all calls to me
     And I wait for 1 seconds
@@ -404,7 +405,7 @@ Feature: Calling
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact2>
     When I hang up call with conversation <Contact2>
-    Then I do not see the ongoing call controls for conversation <Contact2>
+    Then I do not see the call controls for conversation <Contact2>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | CallWaitBackend | Timeout |
@@ -414,15 +415,16 @@ Feature: Calling
   Scenario Outline: Verify I can not see blocked contact trying to call me
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact> starts instance using <CallBackend>
     # OtherContact is needed otherwise the search will show up sometimes
     Given Myself is connected to <Contact>,<OtherContact>
     Given Myself blocked <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    When <Contact> calls me using <CallBackend>
+    When <Contact> calls me
     Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
-    And I do not see the incoming call controls for conversation <Contact>
+    And I do not see the call controls for conversation <Contact>
 
     Examples:
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
