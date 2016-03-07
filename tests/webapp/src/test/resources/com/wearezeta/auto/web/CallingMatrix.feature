@@ -49,6 +49,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | zcall:1.12  | 60      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:2.1   | 60      |
 
   @C5361 @calling_matrix @calling
   Scenario Outline: Verify I can receive 1:1 call from <CallBackend>
@@ -97,6 +98,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend   | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall:1.12 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | autocall:2.1  | 60      |
 
   @C5363 @calling_matrix @calling
   Scenario Outline: Verify I can make group call with multiple <WaitBackend>
@@ -154,6 +156,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:1.12  | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.1  | 60      |
 
   @C5365 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with multiple <Backend>
@@ -255,3 +258,6 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | zcall:1.12  | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | zcall:2.1   | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1  | zcall:2.1   | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1  | zcall:1.12  | 60      |
