@@ -83,6 +83,7 @@ Feature: Search
 
   @C56397 @torun
   Scenario Outline: Verify search results cleaned after closing search
+    Given I delete all contacts from Address Book
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
