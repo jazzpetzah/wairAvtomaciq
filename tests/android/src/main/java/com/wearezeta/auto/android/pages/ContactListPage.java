@@ -238,7 +238,11 @@ public class ContactListPage extends AndroidPage {
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idConversationListFrame));
         for (int i = getElements(xpathContactListNames).size(); i >= 1; i--) {
             final By locator = By.xpath(xpathStrContactByIndex.apply(i));
-            if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
+            // TODO: Prevent tests from failing because of Dejan's experiments
+            final By locator_Dejan = By.xpath(xpathStrContactByName.apply("Dejan"));
+            final By locator_Bot = By.xpath(xpathStrContactByName.apply("Otto the Bot"));
+            if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator) && DriverUtils.waitUntilLocatorDissapears(getDriver(), locator_Dejan)
+                    && DriverUtils.waitUntilLocatorDissapears(getDriver(), locator_Bot)) {
                 return false;
             }
         }
