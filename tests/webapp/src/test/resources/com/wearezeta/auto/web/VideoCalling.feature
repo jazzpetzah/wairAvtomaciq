@@ -68,8 +68,8 @@ Feature: VideoCalling
     And I do not see my self video view
 
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend         |
-      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 |
+      | Login      | Password      | Name      | Contact   | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | chrome      |
 
   @C12078 @videocalling
   Scenario Outline: Verify I cannot see blocked contact trying to make a video call to me
@@ -275,3 +275,28 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+
+  @C48229 @videocalling
+  Scenario Outline: Verify I can start 1:1 Video Call from Start UI
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I wait until <Contact> exists in backend search results
+    When I open People Picker from Contact List
+    And I type <Contact> in search field of People Picker
+    And I see user <Contact> found in People Picker
+    And I select <Contact> from People Picker results
+    And I click Video Call button on People Picker page
+    Then I see the outgoing call controls for conversation <Contact>
+    When <Contact> accepts next incoming video call automatically
+    Then I see the ongoing call controls for conversation <Contact>
+    When I end the video call
+    Then I do not see the call controls for conversation <Contact>
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | chrome      |

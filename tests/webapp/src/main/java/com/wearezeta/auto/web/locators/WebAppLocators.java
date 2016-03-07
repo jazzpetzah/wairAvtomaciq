@@ -202,7 +202,7 @@ public final class WebAppLocators {
                         user);
 
         public static final Function<String, String> xpathOutgoingCallByConversationName = user -> String
-                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*//*[@data-uie-name='call-label-outgoing']",
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*[@data-uie-name='call-label-outgoing']",
                         user);
 
         public static final Function<String, String> xpathIncomingCallByConversationName = user -> String
@@ -210,7 +210,7 @@ public final class WebAppLocators {
                         user);
 
         public static final Function<String, String> xpathOngoingCallByConversationName = user -> String
-                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*//*[@data-uie-name='call-duration']",
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*[@data-uie-name='call-duration']",
                         user);
 
         public static final Function<String, String> xpathAcceptCallButtonByConversationName = (
@@ -450,6 +450,8 @@ public final class WebAppLocators {
                 "[data-uie-name='do-open']";
 
         public static final String cssCallButton = "#search-header [data-uie-name='do-call']";
+
+        public static final String cssVideoCallButton = "#search-header [data-uie-name='do-video-call']";
 
         public static final Function<String, String> xpathSearchResultByName = (
                 name) -> String.format(
