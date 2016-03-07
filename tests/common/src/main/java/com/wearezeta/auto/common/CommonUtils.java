@@ -286,8 +286,7 @@ public class CommonUtils {
         return getValueFromConfig(c, "waitActivities");
     }
 
-
-    public static String getAndroidConversationsListActivitiesFromConfig(Class<?> c) throws Exception {
+    public static String getAndroidConversationsListActivityFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "convoListActivity");
     }
 
