@@ -225,7 +225,8 @@ Feature: Conversation List
     And I click delete menu button
     And I confirm delete conversation content
     And I open search by taping on it
-    And I search for user name <GroupChatName> and tap on it on People picker page
+    And I input in People picker search field conversation name <GroupChatName>
+    And I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
     And I see 0 conversation entries
 
@@ -249,7 +250,8 @@ Feature: Conversation List
     And I click delete menu button
     And I confirm delete conversation content
     And I open search by taping on it
-    And I search for user name <Contact1> and tap on it on People picker page
+    And I input in People picker search field conversation name <Contact1>
+    And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
     Then I see dialog page
     And I see 0 conversation entries
