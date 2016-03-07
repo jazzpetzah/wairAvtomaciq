@@ -18,6 +18,8 @@ Feature: Menus
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
+    And I see Otto the Bot
+    And I open self profile
     And I click gear button on self profile page
     And I select Settings menu item on self profile page
     And I see Settings dialog
@@ -30,6 +32,8 @@ Feature: Menus
     And I click Logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
+    And I see Otto the Bot
+    And I open self profile
     And I click gear button on self profile page
     And I select Settings menu item on self profile page
     And I see Settings dialog
@@ -43,6 +47,8 @@ Feature: Menus
     And I click Logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
+    And I see Otto the Bot
+    And I open self profile
     And I click gear button on self profile page
     And I select Settings menu item on self profile page
     When I see Settings dialog

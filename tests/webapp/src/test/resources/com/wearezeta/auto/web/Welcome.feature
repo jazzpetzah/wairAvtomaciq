@@ -26,6 +26,8 @@ Feature: Welcome
     And I check option to remember me
     And I press Sign In button
     Then I am signed in properly
+    And I see Otto the Bot
+    And I open self profile
     And I see user name on self profile page <Name>
     And I see user email on self profile page <Email>
 

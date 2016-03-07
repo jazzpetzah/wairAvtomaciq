@@ -28,6 +28,8 @@ public class ContactListPageSteps {
 
     private static final Logger log = ZetaLogger
             .getLog(ContactListPageSteps.class.getSimpleName());
+    public static final String OTTO_THE_BOT = "Otto the Bot";
+    public static final int TIMEOUT_FOR_OTTO = 30;
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
@@ -120,6 +122,13 @@ public class ContactListPageSteps {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         webappPagesCollection.getPage(ContactListPage.class).openConversation(
                 contact);
+    }
+
+    @Given("^I see Otto the Bot$")
+    public void ISeeOttoTheBot() throws Exception {
+        assertThat("Where is Otto?",
+                webappPagesCollection.getPage(ContactListPage.class).isConvoListEntryWithNameExist(OTTO_THE_BOT,
+                        TIMEOUT_FOR_OTTO));
     }
 
     /**

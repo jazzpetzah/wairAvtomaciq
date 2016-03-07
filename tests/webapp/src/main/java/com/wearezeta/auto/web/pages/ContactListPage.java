@@ -193,6 +193,10 @@ public class ContactListPage extends WebPage {
     }
 
     public boolean isConvoListEntryWithNameExist(String name) throws Exception {
+        return isConvoListEntryWithNameExist(name, DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    public boolean isConvoListEntryWithNameExist(String name, int timeout) throws Exception {
         log.debug("Looking for contact with name '" + name + "'");
         name = fixDefaultGroupConvoName(name, false, false);
         if (name == null) {
@@ -200,8 +204,7 @@ public class ContactListPage extends WebPage {
         }
         final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName
                 .apply(name);
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.cssSelector(locator), 5);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(locator), timeout);
     }
 
     public boolean isArchiveListEntryWithNameExist(String name)

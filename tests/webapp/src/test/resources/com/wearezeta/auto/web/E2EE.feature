@@ -90,6 +90,8 @@ Feature: E2EE
     Then I see the history info page
     And I click confirm on history info page
     And I am signed in properly
+    And I see Otto the Bot
+    And I open self profile
     When I click gear button on self profile page
     And I select Settings menu item on self profile page
     Then I see a device named Device1 in the devices section
