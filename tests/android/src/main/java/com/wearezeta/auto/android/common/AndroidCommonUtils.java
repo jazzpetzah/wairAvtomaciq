@@ -564,7 +564,7 @@ public class AndroidCommonUtils extends CommonUtils {
     public static void installApp(File path) throws Exception {
         if (!path.isFile()) {
             throw new IllegalArgumentException(String.format(
-                    "Please make sure that the path '%s' is accessible", path.getCanonicalPath()));
+                    "Please make sure that the file '%s' exists and is accessible", path.getCanonicalPath()));
         }
         executeAdb(String.format("install -r %s", path.getCanonicalPath()));
     }
@@ -574,6 +574,6 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     public static void uninstallPackage(String packageName) throws Exception {
-        executeAdb(String.format("shell am force-stop %s", packageName));
+        executeAdb(String.format("uninstall %s", packageName));
     }
 }

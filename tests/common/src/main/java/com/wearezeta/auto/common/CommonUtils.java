@@ -286,6 +286,11 @@ public class CommonUtils {
         return getValueFromConfig(c, "waitActivities");
     }
 
+
+    public static String getAndroidConversationsListActivitiesFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "convoListActivity");
+    }
+
     public static String getSimulatorImagesPathFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "iosImagesPath");
     }

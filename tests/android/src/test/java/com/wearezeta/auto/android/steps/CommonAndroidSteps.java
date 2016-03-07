@@ -102,7 +102,6 @@ public class CommonAndroidSteps {
         capabilities.setCapability("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
         capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(getClass()));
         capabilities.setCapability("automationName", "Selendroid");
-        capabilities.setCapability("noSign", true);
         if (additionalCaps.isPresent()) {
             for (Map.Entry<String, Object> entry : additionalCaps.get().entrySet()) {
                 capabilities.setCapability(entry.getKey(), entry.getValue());
@@ -195,21 +194,10 @@ public class CommonAndroidSteps {
         AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
 
         String appPath = getPath();
-        Future<ZetaAndroidDriver> lazyDriver;
-        if (scenario.getSourceTagNames().contains("@use_previous_build")) {
-            if (AndroidCommonUtils.isPackageInstalled(getPackageName())) {
-                AndroidCommonUtils.stopPackage(getPackageName());
-                AndroidCommonUtils.uninstallPackage(getPackageName());
-            }
-            AndroidCommonUtils.installApp(new File(getOldPath()));
-            final Map<String, Object> customCaps = new HashMap<>();
-            customCaps.put("dontStopAppOnReset", true);
-            customCaps.put("noReset", true);
-            customCaps.put("fullReset", false);
-            lazyDriver = resetAndroidDriver(getUrl(), getOldPath(), Optional.of(customCaps));
-        } else {
-            lazyDriver = resetAndroidDriver(getUrl(), appPath);
+        if (scenario.getSourceTagNames().contains("@upgrade")) {
+            appPath = getOldPath();
         }
+        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath);
         updateDriver(lazyDriver);
     }
 
@@ -230,11 +218,14 @@ public class CommonAndroidSteps {
     @When("^I upgrade Wire to the recent version$")
     public void IUpgradeWire() throws Exception {
         final String appPath = getPath();
+        AndroidCommonUtils.stopPackage(getPackageName());
         AndroidCommonUtils.installApp(new File(appPath));
         final Map<String, Object> customCaps = new HashMap<>();
-        customCaps.put("dontStopAppOnReset", true);
         customCaps.put("noReset", true);
         customCaps.put("fullReset", false);
+        customCaps.put("skipUninstall", true);
+        customCaps.put("appActivity", CommonUtils.getAndroidConversationsListActivitiesFromConfig(getClass()));
+        customCaps.put("appWaitActivity", CommonUtils.getAndroidConversationsListActivitiesFromConfig(getClass()));
         final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath, Optional.of(customCaps));
         updateDriver(lazyDriver);
     }

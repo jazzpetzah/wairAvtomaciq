@@ -20,6 +20,7 @@
         <package>com.waz.zclient.dev</package>
         <activity>com.waz.zclient.AppEntryActivity</activity>
         <waitActivities>com.waz.zclient.AppEntryActivity</waitActivities>
+        <convoListActivity>com.waz.zclient.LaunchActivity</convoListActivity>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
         <defaultEmail>smoketester@wire.com</defaultEmail>
         <pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>

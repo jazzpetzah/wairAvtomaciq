@@ -3,6 +3,7 @@ androidApplicationPath=${appPath}
 oldAppPath=${oldAppPath}
 package=${package}
 activity=${activity}
+convoListActivity=${convoListActivity}
 waitActivities=${waitActivities}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 resultImage=${resultImage}
