@@ -405,7 +405,8 @@ Feature: Conversation View
     And I confirm delete conversation content
     Then I dont see conversation <GroupChatName> in contact list
     And I open search by taping on it
-    And I search for user name <Contact1> and tap on it on People picker page
+    And I input in People picker search field conversation name <Contact1>
+    And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
     When I type the default message and send it
     Then I see 1 default message in the dialog

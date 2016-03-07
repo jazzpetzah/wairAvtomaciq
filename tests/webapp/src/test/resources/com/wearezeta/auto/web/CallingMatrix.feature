@@ -22,9 +22,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:49.0.2623.75 | 60      |
       | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:44.0        | 60      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:44.0.2      | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 60      |
 
   @C5360 @calling_matrix @calling
@@ -72,9 +72,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:49.0.2623.75 | 60      |
       | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:44.0        | 60      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:44.0.2      | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 60      |
 
   @C5362 @calling_matrix @calling
@@ -128,9 +128,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:48.0.2564.97 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:49.0.2623.75 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:44.0        | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:44.0.2      | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0        | 60      |
 
   @C5364 @calling_matrix @calling
@@ -186,9 +186,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend             | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:48.0.2564.97 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:49.0.2623.75 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:44.0        | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:44.0.2      | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0        | 60      |
 
   @C5366 @calling_matrix @calling
@@ -224,9 +224,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | chrome:48.0.2564.97 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | chrome:49.0.2623.75 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:44.0        | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:44.0.2      | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:43.0        | 60      |
 
   @C5367 @calling_matrix @calling
