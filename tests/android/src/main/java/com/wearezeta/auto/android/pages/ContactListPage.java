@@ -57,6 +57,8 @@ public class ContactListPage extends AndroidPage {
 
     public static final By idListActionsAvatar = By.id("gtv__list_actions__avatar");
 
+    private static final By idConversationListHintContainer = By.id("ll__conversation_list__hint_container");
+
     private static final By xpathConfirmDeleteConversationButton = By.xpath("//*[@id='positive' and @value='DELETE']");
 
     private static final By xpathLeaveCheckbox = By.xpath("(//*[@id='gtv__checkbox_icon'])[1]");
@@ -168,6 +170,14 @@ public class ContactListPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
+    public boolean isContactsBannerVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idConversationListHintContainer);
+    }
+
+    public boolean isContactsBannerNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idConversationListHintContainer);
+    }
+
     private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
     private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = CONTACT_LIST_LOAD_TIMEOUT_SECONDS * 2;
 
@@ -228,7 +238,11 @@ public class ContactListPage extends AndroidPage {
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idConversationListFrame));
         for (int i = getElements(xpathContactListNames).size(); i >= 1; i--) {
             final By locator = By.xpath(xpathStrContactByIndex.apply(i));
-            if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
+            // TODO: Prevent tests from failing because of Dejan's experiments
+            final By locator_Dejan = By.xpath(xpathStrContactByName.apply("Dejan"));
+            final By locator_Bot = By.xpath(xpathStrContactByName.apply("Otto the Bot"));
+            if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator) && DriverUtils.waitUntilLocatorDissapears(getDriver(), locator_Dejan)
+                    && DriverUtils.waitUntilLocatorDissapears(getDriver(), locator_Bot)) {
                 return false;
             }
         }

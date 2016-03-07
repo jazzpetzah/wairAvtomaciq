@@ -69,7 +69,8 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search by taping on it
-    And I search for user name <UnconnectedUser> and tap on it on People picker page
+    And I input in People picker search field conversation name <UnconnectedUser>
+    And I tap on conversation <UnconnectedUser> in search result
     Then I see connect to <UnconnectedUser> dialog
     And I click Connect button on connect to dialog
     And I click close button to dismiss people view

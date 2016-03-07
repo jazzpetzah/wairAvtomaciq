@@ -353,6 +353,7 @@ Feature: People View
     And I Sign in using login <Contact2> and password <Password>
     Given I am signed in properly
     And I see Contact list with name <Name>,<Contact1>
+    And I open conversation with <Name>,<Contact1>
     And I see <Message3> action for <Name>,<Contact1> in conversation
 
     Examples: 

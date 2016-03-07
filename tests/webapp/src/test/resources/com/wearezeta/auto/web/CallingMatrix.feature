@@ -13,18 +13,18 @@ Feature: Calling_Matrix
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the outgoing call controls for conversation <Contact>
+    And I see the ongoing call controls for conversation <Contact>
     And I wait for 10 seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     And I hang up call with conversation <Contact>
-    Then I do not see the outgoing call controls for conversation <Contact>
+    Then I do not see the call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:49.0.2623.75 | 60      |
       | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:44.0        | 60      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:44.0.2      | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 60      |
 
   @C5360 @calling_matrix @calling
@@ -40,10 +40,11 @@ Feature: Calling_Matrix
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the outgoing call controls for conversation <Contact>
+    And I see the ongoing call controls for conversation <Contact>
+    #And I see row of avatars on call controls with user <Contact>
     And I wait for 10 seconds
     And I hang up call with conversation <Contact>
-    And I do not see the outgoing call controls for conversation <Contact>
+    And I do not see the call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
@@ -67,13 +68,13 @@ Feature: Calling_Matrix
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     And I hang up call with conversation <Contact>
-    And I do not see the outgoing call controls for conversation <Contact>
+    And I do not see the call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:49.0.2623.75 | 60      |
       | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:44.0        | 60      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:44.0.2      | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 60      |
 
   @C5362 @calling_matrix @calling
@@ -89,9 +90,9 @@ Feature: Calling_Matrix
     And <Contact> calls me
     When I accept the call from conversation <Contact>
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
-    Then I see the incoming call controls for conversation <Contact>
+    Then I see the ongoing call controls for conversation <Contact>
     And I hang up call with conversation <Contact>
-    And I do not see the outgoing call controls for conversation <Contact>
+    And I do not see the call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend   | Timeout |
@@ -117,7 +118,7 @@ Feature: Calling_Matrix
     And <Contact1>,<Contact2> verifies to have 2 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
-    And I do not see the ongoing call controls for conversation <ChatName1>
+    And I do not see the call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact1>,<Contact2> verifies to have 1 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
@@ -127,9 +128,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:48.0.2564.97 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:49.0.2623.75 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:44.0        | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:44.0.2      | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0        | 60      |
 
   @C5364 @calling_matrix @calling
@@ -148,7 +149,7 @@ Feature: Calling_Matrix
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName1>
     When I hang up call with conversation <ChatName1>
-    Then I do not see the ongoing call controls for conversation <ChatName1>
+    Then I do not see the call controls for conversation <ChatName1>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend | Timeout |
@@ -176,7 +177,7 @@ Feature: Calling_Matrix
     And <Contact1>,<Contact2> verify to have 2 flows
     And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
-    And I do not see the ongoing call controls for conversation <ChatName1>
+    And I do not see the call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact1>,<Contact2> verifies to have 1 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
@@ -185,9 +186,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend             | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:48.0.2564.97 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:49.0.2623.75 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:44.0        | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:44.0.2      | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0        | 60      |
 
   @C5366 @calling_matrix @calling
@@ -208,12 +209,13 @@ Feature: Calling_Matrix
     When I accept the call from conversation <ChatName1>
     Then <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verify that call status to <ChatName1> is changed to active in <Timeout> seconds
-    And I see the calling bar from users <Contact1>,<Contact2>
+    And I see the ongoing call controls for conversation <ChatName1>
+    And I see row of avatars on call controls with users <Contact1>,<Contact2>
     And I wait for 10 seconds
     And <Contact2> verify to have 2 flows
     And <Contact2> verify that all flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
-    And I do not see the calling bar
+    And I do not see the call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact2> verifies to have 1 flows
     And <Contact2> verifies that all flows have greater than 0 bytes
@@ -222,9 +224,9 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | chrome:48.0.2564.97 | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | chrome:49.0.2623.75 | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:44.0        | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:44.0.2      | 60      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:43.0        | 60      |
 
   @C5367 @calling_matrix @calling
@@ -246,7 +248,7 @@ Feature: Calling_Matrix
     Then <Contact1> verify that call status to <ChatName1> is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName1>
     And I hang up call with conversation <ChatName1>
-    And I do not see the calling bar
+    Then I do not see the call controls for conversation <ChatName1>
     # Stops all autocall instance calls
     And <Contact1> stops calling <ChatName1>
 

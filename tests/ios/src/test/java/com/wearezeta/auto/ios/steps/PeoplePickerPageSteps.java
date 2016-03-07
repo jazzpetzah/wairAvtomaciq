@@ -70,15 +70,17 @@ public class PeoplePickerPageSteps {
 
     @When("I re-enter the people picker if top people list is not there")
     public void IRetryPeoplePickerIfNotLoaded() throws Exception {
-        for (int i = 0; i < 3; i++) {
-            if (!getPeoplePickerPage().isTopPeopleLabelVisible()) {
-                IClickCloseButtonDismissPeopleView();
+        final int maxRetries = 3;
+        for (int i = 0; i < maxRetries; i++) {
+            if (getPeoplePickerPage().isTopPeopleLabelVisible()) {
+                return;
+            } else {
+                getPeoplePickerPage().tapOnPeoplePickerClearBtn();
                 Thread.sleep(5000);
                 getСontactListPage().openSearch();
-            } else {
-                break;
             }
         }
+        throw new AssertionError(String.format("Top People are not visible after %s retries", maxRetries));
     }
 
     /**
@@ -144,7 +146,7 @@ public class PeoplePickerPageSteps {
     /**
      * Verify that conversation is presented in search results
      *
-     * @param name conversation name to search
+     * @param name           conversation name to search
      * @param shouldNotExist equals to null if the converssation should be visible
      * @throws Exception
      * @step. ^I see conversation (.*) is (NOT )?presented in Search results$
@@ -165,21 +167,13 @@ public class PeoplePickerPageSteps {
     /**
      * Verify whether No Results label is visible in search results
      *
-     * @step. ^I see No Results label in People picker search result$
-     *
      * @throws Exception
+     * @step. ^I see No Results label in People picker search result$
      */
     @Then("^I see No Results label in People picker search result$")
     public void ISeeNoResultsLabel() throws Exception {
         Assert.assertTrue("'No Results' label is not visible",
                 getPeoplePickerPage().waitUntilNoResultsLabelIsVisible());
-    }
-
-    @When("^I search for user name (.*) and tap on it on People picker page$")
-    public void WhenISearchForUserNameAndTapOnItOnPeoplePickerPage(String contact) throws Throwable {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        getPeoplePickerPage().fillTextInPeoplePickerSearch(contact);
-        getPeoplePickerPage().selectElementInSearchResults(contact);
     }
 
     @When("^I don't see Add to conversation button$")

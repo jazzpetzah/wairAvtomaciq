@@ -198,19 +198,19 @@ public final class WebAppLocators {
                         name);
 
         public static final Function<String, String> xpathUserNameByConversationName = user -> String
-                .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']",
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']",
                         user);
 
         public static final Function<String, String> xpathOutgoingCallByConversationName = user -> String
-                .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']/following-sibling::span[contains(text(),'Ringing…')]",
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*[@data-uie-name='call-label-outgoing']",
                         user);
 
         public static final Function<String, String> xpathIncomingCallByConversationName = user -> String
-                .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']/following-sibling::span[contains(text(),'Calling…')]",
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*//*[@data-uie-name='call-label-incoming']",
                         user);
 
         public static final Function<String, String> xpathOngoingCallByConversationName = user -> String
-                .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']/following-sibling::span[contains(text(),':')]",
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*[@data-uie-name='call-duration']",
                         user);
 
         public static final Function<String, String> xpathAcceptCallButtonByConversationName = (
@@ -231,6 +231,7 @@ public final class WebAppLocators {
         public static final Function<String, String> xpathMuteCallButtonNotPressed = (name) -> String.format("//div[@data-uie-name='do-call-mute'" +
                 " and not(contains(@class, 'toggled'))]", name);
 
+        public static final Function<String, String> cssAvatarInCallControlsByUserId = (id) -> String.format(".conversation-list-call-controls-row-participants [user-id='%s']", id);
     }
 
     public static final class SettingsPage {
@@ -449,6 +450,8 @@ public final class WebAppLocators {
                 "[data-uie-name='do-open']";
 
         public static final String cssCallButton = "#search-header [data-uie-name='do-call']";
+
+        public static final String cssVideoCallButton = "#search-header [data-uie-name='do-video-call']";
 
         public static final Function<String, String> xpathSearchResultByName = (
                 name) -> String.format(

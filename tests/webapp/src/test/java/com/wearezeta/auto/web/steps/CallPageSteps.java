@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.pages.CallPage;
@@ -9,6 +8,9 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
+
+import static com.wearezeta.auto.common.CommonSteps.splitAliases;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CallPageSteps {
 
@@ -22,30 +24,40 @@ public class CallPageSteps {
      * @throws Exception
      * @step. ^I( do not)? see the (incoming|outgoing|ongoing) call controls for conversation (.*)$
      */
-    @And("^I( do not)? see the (incoming|outgoing|ongoing) call controls for conversation (.*)$")
+    @And("^I( do not)? see the( incoming| outgoing| ongoing)? call controls for conversation (.*)$")
     public void IClickAcceptCallButtonInConversationView(String doNot, String direction, String conversation) throws Exception {
         conversation = usrMgr.replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         CallPage page = webappPagesCollection.getPage(CallPage.class);
-        if (direction.equals("incoming")) {
-            if (doNot == null) {
-                page.isIncomingCallVisibleForConversation(conversation);
-            } else {
-                page.isIncomingCallNotVisibleForConversation(conversation);
+        if (doNot == null) {
+            if (direction.equals(" incoming")) {
+                assertThat(String.format("Incoming call controls not visible for conversation %s", conversation),
+                        page.isIncomingCallVisibleForConversation(conversation));
+            } else if (direction.equals(" outgoing")) {
+                assertThat(String.format("Outgoing call controls not visible for conversation %s", conversation),
+                        page.isOutgoingCallVisibleForConversation(conversation));
+            } else if (direction.equals(" ongoing")) {
+                assertThat(String.format("Ongoing call controls not visible for conversation %s", conversation),
+                        page.isOngoingCallVisibleForConversation(conversation));
             }
-        } else if (direction.equals("incoming")) {
-            if (doNot == null) {
-                page.isOutgoingCallVisibleForConversation(conversation);
-            } else {
-                page.isOutgoingCallNotVisibleForConversation(conversation);
-            }
-        } else if (direction.equals("ongoing")) {
-            if (doNot == null) {
-                page.isOngoingCallVisibleForConversation(conversation);
-            } else {
-                page.isOngoingCallNotVisibleForConversation(conversation);
-            }
+        } else {
+            assertThat(String.format("Call controls for conversation %s still visible", conversation),
+                    page.isCallControlsNotVisibleForConversation(conversation));
         }
+    }
 
+    /**
+     * Verifies visibility of avatars in a call for the given conversation
+     *
+     * @throws Exception
+     * @step. ^I( do not)? see the (incoming|outgoing|ongoing) call controls for conversation (.*)$
+     */
+    @And("^I see row of avatars on call controls with users? (.*)$")
+    public void ISeeRowOfAvatarsOnCall(String participants) throws Exception {
+        CallPage page = webappPagesCollection.getPage(CallPage.class);
+        for (String alias : splitAliases(participants)) {
+            String id = usrMgr.findUserByNameOrNameAlias(alias).getId();
+            assertThat(String.format("Avatar of user %s not visible", alias), page.isAvatarVisibleInCallControls(id));
+        }
     }
 
     /**
@@ -90,9 +102,11 @@ public class CallPageSteps {
         CallPage contactListPage = webappPagesCollection
                 .getPage(CallPage.class);
         if (doNot == null) {
-            contactListPage.isMuteCallButtonVisibleForConversation(conversation);
+            assertThat(String.format("Mute call button not visible for conversation %s", conversation),
+                    contactListPage.isMuteCallButtonVisibleForConversation(conversation));
         } else {
-            contactListPage.isMuteCallButtonNotVisibleForConversation(conversation);
+            assertThat(String.format("Mute call button still visible for conversation %s", conversation),
+                    contactListPage.isMuteCallButtonNotVisibleForConversation(conversation));
         }
     }
 
@@ -110,9 +124,11 @@ public class CallPageSteps {
         CallPage contactListPage = webappPagesCollection
                 .getPage(CallPage.class);
         if (doNot == null) {
-            contactListPage.isVideoButtonVisibleForConversation(conversation);
+            assertThat(String.format("Video call button not visible for conversation %s", conversation),
+                    contactListPage.isVideoButtonVisibleForConversation(conversation));
         } else {
-            contactListPage.isVideoButtonNotVisibleForConversation(conversation);
+            assertThat(String.format("Video call button still visible for conversation %s", conversation),
+                    contactListPage.isVideoButtonNotVisibleForConversation(conversation));
         }
     }
 
@@ -130,9 +146,11 @@ public class CallPageSteps {
         CallPage contactListPage = webappPagesCollection
                 .getPage(CallPage.class);
         if (doNot == null) {
-            contactListPage.isEndCallButtonVisibleForConversation(conversation);
+            assertThat(String.format("Hang up button not visible for conversation %s", conversation),
+                    contactListPage.isEndCallButtonVisibleForConversation(conversation));
         } else {
-            contactListPage.isEndCallButtonNotVisibleForConversation(conversation);
+            assertThat(String.format("Hang up button still visible for conversation %s", conversation),
+                    contactListPage.isEndCallButtonNotVisibleForConversation(conversation));
         }
     }
 
@@ -164,9 +182,9 @@ public class CallPageSteps {
         CallPage contactListPage = webappPagesCollection
                 .getPage(CallPage.class);
         if (doNot == null) {
-            contactListPage.isSelfVideoVisible();
+            assertThat("Self video not visible", contactListPage.isSelfVideoVisible());
         } else {
-            contactListPage.isSelfVideoNotVisible();
+            assertThat("Self video still visible", contactListPage.isSelfVideoNotVisible());
         }
     }
 
@@ -199,9 +217,11 @@ public class CallPageSteps {
         CallPage contactListPage = webappPagesCollection
                 .getPage(CallPage.class);
         if (doNot == null) {
-            contactListPage.isAcceptVideoCallButtonVisibleForConversation(conversation);
+            assertThat(String.format("Accept video call button not visible for conversation %s", conversation),
+                    contactListPage.isAcceptVideoCallButtonVisibleForConversation(conversation));
         } else {
-            contactListPage.isAcceptVideoCallButtonNotVisibleForConversation(conversation);
+            assertThat(String.format("Accept video call button still visible for conversation %s", conversation),
+                    contactListPage.isAcceptVideoCallButtonNotVisibleForConversation(conversation));
         }
     }
 
@@ -219,9 +239,11 @@ public class CallPageSteps {
         CallPage contactListPage = webappPagesCollection
                 .getPage(CallPage.class);
         if (doNot == null) {
-            contactListPage.isDeclineCallButtonVisibleForConversation(conversation);
+            assertThat(String.format("Decline call button not visible for conversation %s", conversation),
+                    contactListPage.isDeclineCallButtonVisibleForConversation(conversation));
         } else {
-            contactListPage.isDeclineCallButtonNotVisibleForConversation(conversation);
+            assertThat(String.format("Decline call button still visible for conversation %s", conversation),
+                    contactListPage.isDeclineCallButtonNotVisibleForConversation(conversation));
         }
     }
 
@@ -254,9 +276,11 @@ public class CallPageSteps {
         CallPage contactListPage = webappPagesCollection
                 .getPage(CallPage.class);
         if (doNot == null) {
-            contactListPage.isMuteCallButtonPressed(conversation);
+            assertThat(String.format("Mute call button not pressed for conversation %s", conversation),
+                    contactListPage.isMuteCallButtonPressed(conversation));
         } else {
-            contactListPage.isMuteCallButtonNotPressed(conversation);
+            assertThat(String.format("Mute call button still pressed for conversation %s", conversation),
+                    contactListPage.isMuteCallButtonNotPressed(conversation));
         }
     }
 }

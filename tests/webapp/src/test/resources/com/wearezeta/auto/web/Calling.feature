@@ -368,13 +368,14 @@ Feature: Calling
   Scenario Outline: Verify I get missed call notification when someone calls me
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open self profile
-    When <Contact1> calls me using <CallBackend>
+    When <Contact1> calls me
     And I wait for 1 seconds
-    And <Contact1> stops all calls to me
+    And <Contact1> stops calling me
     And I wait for 1 seconds
     Then I see missed call notification for conversation <Contact1>
     When I open conversation with <Contact1>
@@ -404,7 +405,7 @@ Feature: Calling
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact2>
     When I hang up call with conversation <Contact2>
-    Then I do not see the ongoing call controls for conversation <Contact2>
+    Then I do not see the call controls for conversation <Contact2>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | CallWaitBackend | Timeout |
@@ -414,15 +415,16 @@ Feature: Calling
   Scenario Outline: Verify I can not see blocked contact trying to call me
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact> starts instance using <CallBackend>
     # OtherContact is needed otherwise the search will show up sometimes
     Given Myself is connected to <Contact>,<OtherContact>
     Given Myself blocked <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    When <Contact> calls me using <CallBackend>
+    When <Contact> calls me
     Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
-    And I do not see the incoming call controls for conversation <Contact>
+    And I do not see the call controls for conversation <Contact>
 
     Examples:
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
@@ -492,13 +494,14 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
+    Given <Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
+    Given <Contact1> starts instance using <CallBackend>
     Given <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
-    When <Contact1> calls <ChatName> using <CallBackend>
+    When <Contact1> calls <ChatName>
     And <Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And I see the incoming call controls for conversation <ChatName>
@@ -511,9 +514,9 @@ Feature: Calling
     Then I do not see the ongoing call controls for conversation <ChatName>
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | autocall    | chrome      | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | autocall    | firefox     | 60      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName  | CallBackend | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall    | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall    | firefox     | 60      |
 
   @staging @calling @group @calling_debug
   Scenario Outline: Verify impossibility to connect 6th person to the call
@@ -574,17 +577,18 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given <Contact2> starts instance using <WaitBackend>
+    Given <Contact1> starts instance using <CallBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    When <Contact1> calls <ChatName> using <CallBackend>
+    When <Contact1> calls <ChatName>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    When I ignore the call from conversation <Contact1>
+    When I ignore the call from conversation <ChatName>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    Then I do not see the incoming call controls for conversation <ChatName>
+    Then I do not see the call controls for conversation <ChatName>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
