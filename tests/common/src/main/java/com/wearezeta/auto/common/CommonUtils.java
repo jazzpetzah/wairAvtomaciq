@@ -278,8 +278,8 @@ public class CommonUtils {
         return getValueFromConfig(c, "activity");
     }
 
-    public static String getAndroidLaunchActivityFromConfig(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "launchActivity");
+    public static String getOldAppPathFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "oldAppPath");
     }
 
     public static String getAndroidWaitActivitiesFromConfig(Class<?> c) throws Exception {

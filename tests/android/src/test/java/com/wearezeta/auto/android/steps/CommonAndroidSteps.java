@@ -39,7 +39,11 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.*;
 
 public class CommonAndroidSteps {
@@ -73,18 +77,37 @@ public class CommonAndroidSteps {
         return CommonUtils.getAndroidApplicationPathFromConfig(CommonAndroidSteps.class);
     }
 
+    private static String getOldPath() throws Exception {
+        return CommonUtils.getOldAppPathFromConfig(CommonAndroidSteps.class);
+    }
+
+    private static String getPackageName() throws Exception {
+        return CommonUtils.getAndroidPackageFromConfig(CommonAndroidSteps.class);
+    }
+
+    public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path) throws Exception {
+        return resetAndroidDriver(url, path, Optional.empty());
+    }
+
     @SuppressWarnings("unchecked")
-    public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path, Class<?> cls) throws Exception {
+    public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path,
+                                                        Optional<Map<String, Object>> additionalCaps) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
         capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         // To init the first available device
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
-        capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(cls));
-        capabilities.setCapability("appActivity", CommonUtils.getAndroidMainActivityFromConfig(cls));
-        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(cls));
+        capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(getClass()));
+        capabilities.setCapability("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
+        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(getClass()));
         capabilities.setCapability("automationName", "Selendroid");
+        capabilities.setCapability("noSign", true);
+        if (additionalCaps.isPresent()) {
+            for (Map.Entry<String, Object> entry : additionalCaps.get().entrySet()) {
+                capabilities.setCapability(entry.getKey(), entry.getValue());
+            }
+        }
 
         try {
             return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities, 1,
@@ -170,9 +193,50 @@ public class CommonAndroidSteps {
             AndroidLogListener.getInstance(ListenerType.PERF).start();
         }
         AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
-        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), getPath(), this.getClass());
+
+        String appPath = getPath();
+        Future<ZetaAndroidDriver> lazyDriver;
+        if (scenario.getSourceTagNames().contains("@use_previous_build")) {
+            if (AndroidCommonUtils.isPackageInstalled(getPackageName())) {
+                AndroidCommonUtils.stopPackage(getPackageName());
+                AndroidCommonUtils.uninstallPackage(getPackageName());
+            }
+            AndroidCommonUtils.installApp(new File(getOldPath()));
+            final Map<String, Object> customCaps = new HashMap<>();
+            customCaps.put("dontStopAppOnReset", true);
+            customCaps.put("noReset", true);
+            customCaps.put("fullReset", false);
+            lazyDriver = resetAndroidDriver(getUrl(), getOldPath(), Optional.of(customCaps));
+        } else {
+            lazyDriver = resetAndroidDriver(getUrl(), appPath);
+        }
+        updateDriver(lazyDriver);
+    }
+
+    private void updateDriver(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         ZetaFormatter.setLazyDriver(lazyDriver);
+        if (pagesCollection.hasPages()) {
+            pagesCollection.clearAllPages();
+        }
         pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
+    }
+
+    /**
+     * Install new Wire build taken from appPath Maven variable, but don't override the current state
+     *
+     * @throws Exception
+     * @step. ^I upgrade Wire to the recent version$
+     */
+    @When("^I upgrade Wire to the recent version$")
+    public void IUpgradeWire() throws Exception {
+        final String appPath = getPath();
+        AndroidCommonUtils.installApp(new File(appPath));
+        final Map<String, Object> customCaps = new HashMap<>();
+        customCaps.put("dontStopAppOnReset", true);
+        customCaps.put("noReset", true);
+        customCaps.put("fullReset", false);
+        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath, Optional.of(customCaps));
+        updateDriver(lazyDriver);
     }
 
     /**
@@ -267,7 +331,7 @@ public class CommonAndroidSteps {
         } else {
             AndroidCommonUtils.unlockDevice();
             // FIXME: Unlock selendroid app does not restore the previously active application
-            AndroidCommonUtils.switchToApplication(CommonUtils.getAndroidPackageFromConfig(this.getClass()));
+            AndroidCommonUtils.switchToApplication(getPackageName());
         }
     }
 
@@ -338,7 +402,7 @@ public class CommonAndroidSteps {
      */
     @When("^I restore the application$")
     public void IRestoreApplication() throws Exception {
-        AndroidCommonUtils.switchToApplication(CommonUtils.getAndroidPackageFromConfig(this.getClass()));
+        AndroidCommonUtils.switchToApplication(getPackageName());
     }
 
     /**

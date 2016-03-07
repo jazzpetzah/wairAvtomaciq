@@ -15,8 +15,7 @@ import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public final class PlatformDrivers {
-    private static final Logger log = ZetaLogger.getLog(PlatformDrivers.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(PlatformDrivers.class.getSimpleName());
 
     private Map<Platform, Future<? extends RemoteWebDriver>> drivers = new ConcurrentHashMap<>();
 
@@ -36,15 +35,13 @@ public final class PlatformDrivers {
         return this.drivers.containsKey(platform);
     }
 
-    private final ExecutorService pool = Executors.newFixedThreadPool(Platform
-            .values().length);
+    private final ExecutorService pool = Executors.newFixedThreadPool(Platform.values().length);
 
     public synchronized Future<? extends RemoteWebDriver> resetDriver(
             String url, DesiredCapabilities capabilities, int maxRetryCount,
             Consumer<RemoteWebDriver> initCompletedCallback,
             Supplier<Boolean> beforeInitCallback) throws Exception {
-        final Platform platformInCapabilities = Platform.getByName(capabilities
-                .getCapability("platformName").toString());
+        final Platform platformInCapabilities = Platform.getByName(capabilities.getCapability("platformName").toString());
         if (this.hasDriver(platformInCapabilities)) {
             this.quitDriver(platformInCapabilities);
         }
@@ -57,40 +54,33 @@ public final class PlatformDrivers {
     }
 
     public synchronized Future<? extends RemoteWebDriver> resetDriver(
-            String url, DesiredCapabilities capabilities, int maxRetryCount)
-            throws Exception {
+            String url, DesiredCapabilities capabilities, int maxRetryCount) throws Exception {
         return resetDriver(url, capabilities, maxRetryCount, null, null);
     }
 
-    public Future<? extends RemoteWebDriver> resetDriver(String url, DesiredCapabilities capabilities) throws Exception {
+    public Future<? extends RemoteWebDriver> resetDriver(String url, DesiredCapabilities capabilities)
+            throws Exception {
         return resetDriver(url, capabilities, 1, null, null);
     }
 
-    public static void setImplicitWaitTimeout(RemoteWebDriver driver,
-                                              int count, TimeUnit unit) throws Exception {
+    public static void setImplicitWaitTimeout(RemoteWebDriver driver, int count, TimeUnit unit) throws Exception {
         driver.manage().timeouts().implicitlyWait(count, unit);
     }
 
-    public static void setDefaultImplicitWaitTimeout(RemoteWebDriver driver)
-            throws Exception {
-        setImplicitWaitTimeout(driver, Integer.parseInt(CommonUtils
-                        .getDriverTimeoutFromConfig(PlatformDrivers.class)),
+    public static void setDefaultImplicitWaitTimeout(RemoteWebDriver driver) throws Exception {
+        setImplicitWaitTimeout(driver, Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(PlatformDrivers.class)),
                 TimeUnit.SECONDS);
     }
 
     public Future<? extends RemoteWebDriver> getDriver(Platform platform) {
         if (!drivers.containsKey(platform)) {
-            throw new RuntimeException(String.format(
-                    "Please initialize %s platform driver first",
-                    platform.name()));
+            throw new RuntimeException(String.format("Please initialize %s platform driver first", platform.name()));
         }
         return drivers.get(platform);
     }
 
-    public static WebDriverWait createDefaultExplicitWait(RemoteWebDriver driver)
-            throws Exception {
-        return new WebDriverWait(driver, Integer.parseInt(CommonUtils
-                .getDriverTimeoutFromConfig(PlatformDrivers.class)));
+    public static WebDriverWait createDefaultExplicitWait(RemoteWebDriver driver) throws Exception {
+        return new WebDriverWait(driver, Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(PlatformDrivers.class)));
     }
 
     private static final long DRIVER_CANCELLATION_TIMEOUT = 60; // seconds
@@ -132,8 +122,7 @@ public final class PlatformDrivers {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
             public void run() {
-                for (Future<? extends RemoteWebDriver> futureDriver : drivers
-                        .values()) {
+                for (Future<? extends RemoteWebDriver> futureDriver : drivers.values()) {
                     try {
                         if (futureDriver.isDone() && !futureDriver.isCancelled()) {
                             futureDriver.get().quit();

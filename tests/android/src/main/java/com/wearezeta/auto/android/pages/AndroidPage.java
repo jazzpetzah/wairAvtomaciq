@@ -10,6 +10,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 
+import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -234,5 +235,13 @@ public abstract class AndroidPage extends BasePage {
     public boolean isAlertMessageVisible(String expectedMsg) throws Exception {
         final By locator = By.xpath(xpathStrAlertMessageByText.apply(expectedMsg));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 15);
+    }
+
+//    public void closeApp() throws Exception {
+//        getDriver().closeApp();
+//    }
+
+    public void launchApp() throws Exception {
+        getDriver().launchApp();
     }
 }

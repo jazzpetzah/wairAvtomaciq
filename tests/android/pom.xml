@@ -16,9 +16,9 @@
         <testRun>DevRun</testRun>
         <url>http://127.0.0.1:4723/wd/hub</url>
         <appPath>/Project/zclient.apk</appPath>
+        <oldAppPath></oldAppPath>
         <package>com.waz.zclient.dev</package>
         <activity>com.waz.zclient.AppEntryActivity</activity>
-        <launchActivity>com.waz.zclient.LaunchActivity</launchActivity>
         <waitActivities>com.waz.zclient.AppEntryActivity</waitActivities>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
         <defaultEmail>smoketester@wire.com</defaultEmail>
