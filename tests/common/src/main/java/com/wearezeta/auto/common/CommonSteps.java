@@ -17,7 +17,7 @@ import static javax.xml.bind.DatatypeConverter.parseDateTime;
 public final class CommonSteps {
     public static final String CONNECTION_NAME = "CONNECT TO ";
     public static final String CONNECTION_MESSAGE = "Hello!";
-    private static final int BACKEND_USER_SYNC_TIMEOUT = 45; // seconds
+    private static final int BACKEND_USER_SYNC_TIMEOUT = 180; // seconds
     private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 90; // seconds
 
     private String pingId = null;
