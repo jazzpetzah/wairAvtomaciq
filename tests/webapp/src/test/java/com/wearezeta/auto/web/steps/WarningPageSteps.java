@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.web.common.Lifecycle;
 import org.junit.Assert;
 
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
@@ -9,8 +10,14 @@ import cucumber.api.java.en.Then;
 
 public class WarningPageSteps {
 
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+	private final WebappPagesCollection webappPagesCollection;
+        
+        private final Lifecycle.TestContext context;
+
+    public WarningPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
 	/**
 	 * Verifies whether the 'missing WebRTC support warning bar' is visible

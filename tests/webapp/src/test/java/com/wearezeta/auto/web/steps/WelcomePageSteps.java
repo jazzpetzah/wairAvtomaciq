@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.WelcomePage;
 
@@ -7,8 +8,14 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 
 public class WelcomePageSteps {
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+	private final WebappPagesCollection webappPagesCollection;
+        
+        private final Lifecycle.TestContext context;
+
+    public WelcomePageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
 	/**
 	 * Verify that Welcome page with Picture upload is visible or not

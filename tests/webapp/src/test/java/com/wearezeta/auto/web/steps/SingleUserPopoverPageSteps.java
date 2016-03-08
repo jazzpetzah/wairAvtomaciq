@@ -17,6 +17,7 @@ import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.popovers.DeviceDetailPopoverPage;
@@ -40,9 +41,16 @@ public class SingleUserPopoverPageSteps {
 	private static final String TOOLTIP_PENDING = "Pending";
 	private static final String TOOLTIP_OPEN_CONVERSATION = "Open conversation";
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+	private final ClientUsersManager usrMgr;
+	private final WebappPagesCollection webappPagesCollection;
+        
+        private final Lifecycle.TestContext context;
+
+    public SingleUserPopoverPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.usrMgr = context.getUserManager();
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
 	/**
 	 * Verify that Single User Profile popover is visible or not

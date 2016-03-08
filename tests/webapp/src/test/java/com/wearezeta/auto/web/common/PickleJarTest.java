@@ -8,7 +8,6 @@ import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized.Parameters;
-import com.wearezeta.auto.web.steps.*;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.picklejar.PickleJar;
 import cucumber.runtime.ScenarioImpl;
@@ -48,7 +47,6 @@ public class PickleJarTest {
     private static PickleExecutor stepExecutor;
     private static Reporter reporter;
 
-    private final Lifecycle lifecycle;
     private final ScenarioImpl scenario;
 
     private final String feature;
@@ -70,7 +68,6 @@ public class PickleJarTest {
      * @param examples
      */
     public PickleJarTest(String feature, String testcase, Integer exampleNum, List<String> steps, Map<String, String> examples) {
-        this.lifecycle = new Lifecycle();
         this.feature = feature;
         this.testcase = testcase;
         this.steps = steps;
@@ -89,22 +86,23 @@ public class PickleJarTest {
     @Before
     public void setUp() throws Exception {
         System.out.println("### Before testcase");
-        lifecycle.setUp(scenario);
     }
 
     @Test
     public void test() throws Exception {
         System.out.println(feature);
         System.out.println(testcase);
+        Lifecycle lifecycle = new Lifecycle();
+        lifecycle.setUp(scenario);
         for (String step : steps) {
             stepExecutor.invokeMethodForStep(step, examples, lifecycle.getContext());
         }
+        lifecycle.tearDown(scenario);
     }
 
     @After
     public void tearDown() throws Exception {
         System.out.println("### After testcase");
-        lifecycle.tearDown(scenario);
     }
 
     @AfterClass

@@ -20,6 +20,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
@@ -34,9 +35,8 @@ import org.junit.Assert;
 
 public class RegistrationPageSteps {
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+	private final ClientUsersManager usrMgr;
+	private final WebappPagesCollection webappPagesCollection;
 
 	private ClientUser userToRegister = null;
 
@@ -46,6 +46,14 @@ public class RegistrationPageSteps {
 
 	private static final Logger LOG = ZetaLogger
 			.getLog(RegistrationPageSteps.class.getName());
+        
+        private final Lifecycle.TestContext context;
+
+    public RegistrationPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.usrMgr = context.getUserManager();
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
 	/**
 	 * Enter user name into registration form

@@ -203,7 +203,7 @@ public class CallingSteps {
         final List<String> calleeList = splitAliases(callees);
         final ConversationPageSteps convSteps = new ConversationPageSteps(context);
         final CommonCallingSteps2 commonCalling = context.getCallingManager();
-        final WarningPageSteps warningSteps = new WarningPageSteps();
+        final WarningPageSteps warningSteps = new WarningPageSteps(context);
         final Map<Integer, Throwable> failures = new HashMap<>();
         for (int i = 0; i < times; i++) {
             LOG.info("\n\nSTARTING CALL " + i);

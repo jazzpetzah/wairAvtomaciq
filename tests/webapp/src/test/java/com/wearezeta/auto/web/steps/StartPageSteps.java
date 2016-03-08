@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.web.common.Lifecycle;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.web.common.WebAppConstants;
@@ -13,9 +14,15 @@ import static org.hamcrest.Matchers.*;
 
 public class StartPageSteps {
 	
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+	private final WebappPagesCollection webappPagesCollection;
 
+        
+        private final Lifecycle.TestContext context;
+
+    public StartPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 	
 	/**
 	 * Open start page on website

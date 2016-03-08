@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.VideoCallPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
@@ -9,8 +10,16 @@ import org.junit.Assert;
 
 public class VideoCallPageSteps {
 
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
+    private final WebappPagesCollection webappPagesCollection;
 
+    
+    private final Lifecycle.TestContext context;
+
+    public VideoCallPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.webappPagesCollection = context.getPagesCollection();
+    }
+    
     /**
      * End the current video call by clicking the End video call button on video call page
      *

@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.pages.PhoneNumberLoginPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
@@ -21,10 +22,17 @@ public class PhoneNumberLoginPageSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(PhoneNumberLoginPageSteps.class.getSimpleName());
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+	private final ClientUsersManager usrMgr;
+	private final WebappPagesCollection webappPagesCollection;
 
+        
+        private final Lifecycle.TestContext context;
+
+    public PhoneNumberLoginPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.usrMgr = context.getUserManager();
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 	/**
 	 * Input fake phone number for given user
 	 * 

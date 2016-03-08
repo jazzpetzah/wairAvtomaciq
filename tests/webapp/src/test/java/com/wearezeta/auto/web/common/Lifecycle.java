@@ -115,18 +115,16 @@ public class Lifecycle {
 
     }
 
+    /**
+     * The context is fully initialized after setting up the testcase
+     * @return 
+     */
     public TestContext getContext() {
         return context;
     }
 
     @Before("~@performance")
     public void setUp(Scenario scenario) throws Exception {
-
-        try {
-            context.deviceManager.reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         String platform = WebAppExecutionContext.getPlatform();
         String osName = WebAppExecutionContext.getOsName();
@@ -209,9 +207,17 @@ public class Lifecycle {
         final Future<ZetaWebAppDriver> lazyWebDriver = pool
                 .submit(callableWebAppDriver);
         context = new TestContext(uniqueName, lazyWebDriver);
+        
+        try {
+            context.deviceManager.reset();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         context.getDriver().get(url);
         context.getPagesCollection().setFirstPage(
                 new RegistrationPage(lazyWebDriver, url));
+        
         ZetaFormatter.setLazyDriver(lazyWebDriver);
     }
 

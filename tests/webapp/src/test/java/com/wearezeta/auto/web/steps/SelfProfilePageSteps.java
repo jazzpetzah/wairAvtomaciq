@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.pages.SelfProfilePage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
@@ -17,12 +18,16 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class SelfProfilePageSteps {
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+	private final ClientUsersManager usrMgr;
+	private final WebappPagesCollection webappPagesCollection;
 
-	public SelfProfilePageSteps() {
-	}
+	private final Lifecycle.TestContext context;
+
+    public SelfProfilePageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.usrMgr = context.getUserManager();
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
 	/**
 	 * Clicks the gear button on Self Profile page

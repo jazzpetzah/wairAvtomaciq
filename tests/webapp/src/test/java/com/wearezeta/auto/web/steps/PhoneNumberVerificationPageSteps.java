@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.web.common.Lifecycle;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.PhoneNumberVerificationPage;
 
@@ -21,9 +22,16 @@ public class PhoneNumberVerificationPageSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(PhoneNumberVerificationPage.class.getSimpleName());
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+	private final ClientUsersManager usrMgr;
+	private final WebappPagesCollection webappPagesCollection;
+        
+        private final Lifecycle.TestContext context;
+
+    public PhoneNumberVerificationPageSteps(Lifecycle.TestContext context) {
+        this.context = context;
+        this.usrMgr = context.getUserManager();
+        this.webappPagesCollection = context.getPagesCollection();
+    }
 
 	/**
 	 * Fills out correct country code and phone number for a user

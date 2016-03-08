@@ -89,7 +89,7 @@ public class PickleExecutor {
                     if (params.isEmpty()) {
                         method.invoke(getOrAddCachedDeclaringClassForMethod(method));
                     } else {
-                        method.invoke(getOrAddCachedDeclaringClassForMethod(method), params.toArray());
+                        method.invoke(getOrAddCachedDeclaringClassForMethod(method, constructorParams), params.toArray());
                     }
                 } catch (InvocationTargetException ite) {
                     throw new Exception(ite.getCause());
@@ -116,13 +116,17 @@ public class PickleExecutor {
 //            System.out.println("Adding new decalred class " + declaringClassName + " to cache");
 //            declaringClassObject = method.getDeclaringClass().newInstance();
             //###############################
+            
+            
             final List<Object> constructorParamsList = Arrays.asList(constructorParams);
             final List<Class<?>> constructorParamTypesList = constructorParamsList.stream().map((object) -> object.getClass()).
                     collect(Collectors.toList());
+            System.out.println("param list size: "+constructorParamsList.size());
+            System.out.println("param type list size: "+constructorParamTypesList.size());
+            
             final Constructor<?> ctor = method.getDeclaringClass().getConstructor(constructorParamTypesList.toArray(
                     new Class<?>[constructorParamTypesList.size()]));
-            declaringClassObject = method.getDeclaringClass().cast(ctor.newInstance(constructorParamsList.toArray(
-                    new Class<?>[constructorParamsList.size()])));
+            declaringClassObject = method.getDeclaringClass().cast(ctor.newInstance(constructorParamsList.toArray()));
 
             classInstanceCache.put(declaringClassName, declaringClassObject);
         }
