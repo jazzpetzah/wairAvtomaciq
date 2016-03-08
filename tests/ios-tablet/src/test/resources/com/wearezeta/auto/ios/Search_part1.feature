@@ -34,8 +34,8 @@ Feature: Search
     Given Myself is connected to all other users
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until my Top People list is not empty on the backend
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 1 top connections
     #And I click Go button to create 1:1 conversation
@@ -54,8 +54,8 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until my Top People list is not empty on the backend
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 1 top connections
     #And I click Go button to create 1:1 conversation
@@ -73,8 +73,8 @@ Feature: Search
     Given Myself is connected to all other users
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until my Top People list is not empty on the backend
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 2 top connections
     And I tap Create conversation action button on People picker page
@@ -96,8 +96,8 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until my Top People list is not empty on the backend
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on first 2 top connections
     #And I click hide keyboard button
@@ -195,8 +195,8 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until <Contact> exists in backend search results
+    Given I wait until my Top People list is not empty on the backend
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 3 top connections but not <Contact>
     And I tap on Search input on People picker page
