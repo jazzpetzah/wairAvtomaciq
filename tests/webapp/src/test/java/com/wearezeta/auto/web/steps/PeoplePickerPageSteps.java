@@ -434,4 +434,16 @@ public class PeoplePickerPageSteps {
 				webappPagesCollection.getPage(PeoplePickerPage.class)
 						.getNumberOfTopPeople(), equalTo(count));
 	}
+
+	/**
+	 * Click Video Call button on People Picker page
+	 *
+	 * @step. ^I click Video Call button on People Picker page$
+	 *
+	 * @throws Exception
+	 */
+	@When("^I click Video Call button on People Picker page$")
+	public void IClickVideoCallButton() throws Exception {
+		webappPagesCollection.getPage(PeoplePickerPage.class).clickVideoCallButton();
+	}
 }

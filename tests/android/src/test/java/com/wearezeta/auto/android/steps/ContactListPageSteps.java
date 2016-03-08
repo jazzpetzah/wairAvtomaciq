@@ -162,6 +162,21 @@ public class ContactListPageSteps {
     }
 
     /**
+     * Check to see that the contact hint banner is visible in the bottom of contact list
+     *
+     * @param shouldNotSee equals to null if "do not" part does not exist
+     * @throws Exception
+     */
+    @Then("^I( do not)? see contact hint banner$")
+    public void ISeeContactsHintBanner(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("The contact hint banner is not visible in the list"), getContactListPage().isContactsBannerVisible());
+        } else {
+            Assert.assertTrue(String.format("The contact hint banner is visible in the list, but should be hidden"), getContactListPage().isContactsBannerNotVisible());
+        }
+    }
+
+    /**
      * Check to see that a given username appears in the contact list
      *
      * @param userName     the username to check for in the contact list

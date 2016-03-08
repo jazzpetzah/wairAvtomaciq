@@ -475,57 +475,6 @@ public class LoginPageSteps {
         getLoginPage().tapForgotPasswordButton();
     }
 
-    @When("^I change URL to staging$")
-    public void IChangeURLToStaging() throws Exception {
-        getLoginPage().changeURLInBrowser(stagingURLForgot);
-    }
-
-    /**
-     * Types the mail into the field, where change password link should be send
-     * to
-     *
-     * @param email
-     * @throws Exception
-     * @step. ^I commit email (.*) to change password$
-     */
-    @When("^I commit email (.*) to change password$")
-    public void ITypeInEmailToChangePassword(String email) throws Exception {
-        email = usrMgr.replaceAliasesOccurences(email, FindBy.EMAIL_ALIAS);
-
-        // activate the user, to get access to the mails
-        Map<String, String> expectedHeaders = new HashMap<>();
-        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
-        expectedHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, PasswordResetMessage.MESSAGE_PURPOSE);
-        this.passwordMessage = IMAPSMailbox.getInstance().getMessage(expectedHeaders, 60 * 3);
-
-        getLoginPage().commitEmail(email);
-    }
-
-    /**
-     * Copies the link in the email and types it into the safari search field
-     *
-     * @throws Exception
-     * @step. ^I copy link from email and paste it into Safari
-     */
-    @When("^I copy link from email and paste it into Safari$")
-    public void ICopyLinkFromEmailAndPastItIntoSafari() throws Exception {
-        String link = BackendAPIWrappers.getPasswordResetLink(this.passwordMessage);
-        getLoginPage().changeURLInBrowser(link);
-    }
-
-    /**
-     * Types the new password into the password field and commits it
-     *
-     * @param newPassword that gets set as new password by typing it into the field
-     * @throws Exception
-     * @step. ^I commit new password (.*)$
-     */
-    @When("^I commit new password (.*)$")
-    public void ITypeInNewPassword(String newPassword) throws Exception {
-        usrMgr.getSelfUserOrThrowError().setPassword(newPassword);
-        getLoginPage().commitNewPassword(newPassword);
-    }
-
     /**
      * @throws Throwable
      */
