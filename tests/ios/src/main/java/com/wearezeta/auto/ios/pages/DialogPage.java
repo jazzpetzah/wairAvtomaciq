@@ -135,7 +135,11 @@ public class DialogPage extends IOSPage {
     }
 
     public void pressVideoCallButton() throws Exception {
-        getElement(nameVideoCallButton).click();
+        final WebElement videoCallButton = getElement(nameVideoCallButton);
+        videoCallButton.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameVideoCallButton, 3)) {
+            videoCallButton.click();
+        }
     }
 
     public void returnToConversationsList() throws Exception {
@@ -148,7 +152,11 @@ public class DialogPage extends IOSPage {
     }
 
     public void pressCallButton() throws Exception {
-        getElement(nameCallButton).click();
+        final WebElement callButton = getElement(nameCallButton);
+        callButton.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCallButton, 3)) {
+            callButton.click();
+        }
     }
 
     public int getNumberOfMessageEntries() throws Exception {
