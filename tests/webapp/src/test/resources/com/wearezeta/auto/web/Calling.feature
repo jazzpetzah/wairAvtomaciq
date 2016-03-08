@@ -23,7 +23,7 @@ Feature: Calling
     And I see <PING> action in conversation
     And I see sent picture <PictureName> in the conversation view
     When I hang up call with conversation <Contact>
-    And I see the ongoing call controls for conversation <Contact>
+    And I do not see the call controls for conversation <Contact>
 
     Examples:
       | Login      | Password      | Name      | Contact   | PING       | PictureName               | CallBackend | Timeout |
@@ -123,7 +123,7 @@ Feature: Calling
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
     And I hang up call with conversation <Contact>
-    Then <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
+    Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
     Then <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     And I call
@@ -408,8 +408,8 @@ Feature: Calling
     Then I do not see the call controls for conversation <Contact2>
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | CallWaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome    | chrome          | 60      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | CallWaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome          | 60      |
 
   @C1750 @regression @calling @calling_debug
   Scenario Outline: Verify I can not see blocked contact trying to call me
@@ -437,9 +437,10 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given <Contact> starts instance using <CallBackend>
     And I see my avatar on top of Contact list
-    Given I muted conversation with <Contact>
-    #When <Contact> calls me using <CallBackend>
+    And I muted conversation with <Contact>
+    When <Contact> calls me
     Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see the incoming call controls for conversation <Contact>
 
@@ -588,7 +589,7 @@ Feature: Calling
     When I ignore the call from conversation <ChatName>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    Then I do not see the call controls for conversation <ChatName>
+    Then I see the join call controls for conversation <ChatName>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |

@@ -10,7 +10,7 @@ Feature: VideoCalling
     Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I start a video call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -31,9 +31,9 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given <Contact> starts a video call to me
-    When I see my avatar on top of Contact list
-    And I see the incoming call controls for conversation <Contact>
+    When I am signed in properly
+    And <Contact> starts a video call to me
+    Then I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>
     And I see decline call button for conversation <Contact>
     And I accept the call from conversation <Contact>
@@ -58,7 +58,7 @@ Feature: VideoCalling
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given <Contact> starts a video call to me
-    When I see my avatar on top of Contact list
+    When I am signed in properly
     Then I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>
     And I see decline call button for conversation <Contact>
@@ -75,12 +75,13 @@ Feature: VideoCalling
   Scenario Outline: Verify I cannot see blocked contact trying to make a video call to me
     Given My browser supports calling
     Given There are 3 users where <Name> is me
-    Given <Contact> starts instance using <CallBackend>
     # OtherContact is needed otherwise the search will show up sometimes
     Given Myself is connected to <Contact>,<OtherContact>
     Given Myself blocked <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
     When <Contact> starts a video call to me
     Then <Contact> verifies that call status to Myself is changed to connecting in <Timeout> seconds
     And I do not see accept video call button for conversation <Contact>
@@ -101,7 +102,7 @@ Feature: VideoCalling
     Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I start a video call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -131,7 +132,7 @@ Feature: VideoCalling
     Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I start a video call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -201,7 +202,7 @@ Feature: VideoCalling
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I start a video call
     And I see my self video view
@@ -229,9 +230,9 @@ Feature: VideoCalling
     Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
-    And I open conversation with <Contact>
-    When I start a video call
+    And I am signed in properly
+    When I open conversation with <Contact>
+    And I start a video call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
@@ -255,7 +256,7 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I start a video call
     And I see mute button for conversation <Contact> is not pressed
@@ -283,7 +284,7 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I wait until <Contact> exists in backend search results
     When I open People Picker from Contact List
     And I type <Contact> in search field of People Picker

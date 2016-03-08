@@ -30,7 +30,6 @@ public class ConnectedDevicesPageSteps {
     @Then("^I see (.*) on connected devices dialog$")
     public void ISeeDevice(String deviceName) throws Exception {
         ConnectedDevicesPage page = webappPagesCollection.getPage(ConnectedDevicesPage.class);
-        page.isDialogShown();
         assertThat(page.getDialogText(), containsString(deviceName.toUpperCase()));
     }
 }
