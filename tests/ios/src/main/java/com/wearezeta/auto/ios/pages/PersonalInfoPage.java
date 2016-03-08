@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -212,36 +213,34 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public boolean isSupportWebPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(),xpathSettingsHelpHeader, 15);
-    }
-
-    private void swipeColorPickerFromColorToColor(int startColor, int endColor) throws Exception {
-        DriverUtils.swipeElementPointToPoint(getDriver(), getElement(nameAccentColorPicker),
-                1000, startColor * 2 * COLORS_COUNT - COLORS_COUNT, 50,
-                endColor * 2 * COLORS_COUNT - COLORS_COUNT, 50);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathSettingsHelpHeader, 15);
     }
 
     public boolean waitSelfProfileVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameProfileName);
     }
 
-    public void swipeAccentColor(String currentColor, String destColor)
-            throws Exception {
-        swipeColorPickerFromColorToColor(AccentColor.getByName(currentColor)
-                .getId(), AccentColor.getByName(destColor).getId());
+    public void selectAccentColor(AccentColor destColor) throws Exception {
+        DriverUtils.tapOnPercentOfElement(getDriver(), getElement(nameAccentColorPicker),
+                (destColor.getId() - 1) * 100 / COLORS_COUNT + 50 / COLORS_COUNT, 50);
     }
 
     public void clickAddPhoneNumberButton() throws Exception {
         getElement(nameAddPhoneNumberButton).click();
     }
 
-    public boolean isPhoneNumberAttachedToProfile(String number)
-            throws Exception {
+    public boolean isPhoneNumberAttachedToProfile(String number) throws Exception {
         final By locator = By.xpath(xpathStrPhoneEmailFieldByValue.apply(number));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isThemeSwitcherButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameThemeSwitcherButton, 5);
+    }
+
+    public BufferedImage getPeoplePickerScreenshot() throws Exception {
+        return getElementScreenshot(getElement(nameAccentColorPicker)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot of color picker")
+        );
     }
 }

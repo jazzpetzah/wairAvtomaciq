@@ -118,12 +118,14 @@ Feature: Self Profile
   Scenario Outline: Verify changing and applying accent color [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given User <Name> change accent color to <Color1>
+    Given User Myself changes accent color to <Color1>
+    Given User Myself removes his avatar picture
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap my avatar
-    And I slide my accent color via the colorpicker from <Color1> to <Color2>
-    And I close self profile
+    And I remember the state of color picker
+    And I set my accent color to <Color2>
+    Then I verify the state of color picker is changed
 
     Examples:
       | Name      | Color1 | Color2          | Contact   |
