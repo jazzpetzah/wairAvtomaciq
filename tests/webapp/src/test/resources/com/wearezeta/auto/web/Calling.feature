@@ -23,7 +23,7 @@ Feature: Calling
     And I see <PING> action in conversation
     And I see sent picture <PictureName> in the conversation view
     When I hang up call with conversation <Contact>
-    And I do not see the call controls for conversation  <Contact>
+    And I do not see the call controls for conversation <Contact>
 
     Examples:
       | Login      | Password      | Name      | Contact   | PING       | PictureName               | CallBackend | Timeout |
