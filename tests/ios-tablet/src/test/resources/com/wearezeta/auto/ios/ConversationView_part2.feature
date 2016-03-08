@@ -109,21 +109,6 @@ Feature: Conversation View
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @C2580 @regression @id3205
-  Scenario Outline: Verify appearance of title bar for conversation, restored from background [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I close the app for <CloseAppTime> seconds
-    Then I see title bar in conversation name <Contact>
-
-    Examples:
-      | Name      | Contact   | CloseAppTime |
-      | user1Name | user2Name | 2            |
-
   @C2630 @regression @id3206
   Scenario Outline: Rotate image in fullscreen mode [LANDSCAPE]
     Given There are 2 users where <Name> is me
@@ -405,7 +390,8 @@ Feature: Conversation View
     And I confirm delete conversation content
     Then I dont see conversation <GroupChatName> in contact list
     And I open search by taping on it
-    And I search for user name <Contact1> and tap on it on People picker page
+    And I input in People picker search field conversation name <Contact1>
+    And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
     When I type the default message and send it
     Then I see 1 default message in the dialog

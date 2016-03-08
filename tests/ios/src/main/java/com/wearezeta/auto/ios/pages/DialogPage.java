@@ -54,9 +54,6 @@ public class DialogPage extends IOSPage {
 
     private static final By nameTitle = MobileBy.AccessibilityId("playingMediaTitle");
 
-    private static final Function<String, String> xpathStrDialogTitleBar = title -> String.format(
-            "//UIAStaticText[@name='%s']", title);
-
     private static final By nameGifButton = MobileBy.AccessibilityId("rightMenuButton");
 
     private static final By xpathGiphyImage = By
@@ -102,9 +99,6 @@ public class DialogPage extends IOSPage {
     private static final Function<String, String> xpathStrConvoMessageByText = text -> String.format(
             "%s//UIATableView//*[contains(@name, '%s')]", xpathStrMainWindow, text);
 
-    private static final By xpathYouStartedUsingThisDeviceSystemMesssage = By
-            .xpath("//UIATextView[@name='YOU STARTED USING THIS DEVICE']");
-
     private static final By xpathResendMessageButton = By.xpath("//UIATableView[1]/UIATableCell[last()]/UIAButton[1]");
 
     public static final String MEDIA_STATE_PLAYING = "playing";
@@ -141,7 +135,11 @@ public class DialogPage extends IOSPage {
     }
 
     public void pressVideoCallButton() throws Exception {
-        getElement(nameVideoCallButton).click();
+        final WebElement videoCallButton = getElement(nameVideoCallButton);
+        videoCallButton.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameVideoCallButton, 3)) {
+            videoCallButton.click();
+        }
     }
 
     public void returnToConversationsList() throws Exception {
@@ -154,7 +152,11 @@ public class DialogPage extends IOSPage {
     }
 
     public void pressCallButton() throws Exception {
-        getElement(nameCallButton).click();
+        final WebElement callButton = getElement(nameCallButton);
+        callButton.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCallButton, 3)) {
+            callButton.click();
+        }
     }
 
     public int getNumberOfMessageEntries() throws Exception {
@@ -419,11 +421,6 @@ public class DialogPage extends IOSPage {
         }
     }
 
-    public boolean isTitleBarDisplayed(String name) throws Exception {
-        final By locator = By.xpath(xpathStrDialogTitleBar.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
     public boolean isTypeOrSlideExists(String msg) throws Exception {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), MobileBy.AccessibilityId(msg), 5);
     }
@@ -526,11 +523,6 @@ public class DialogPage extends IOSPage {
 
     public boolean isShieldIconInvisibleNextToInputField() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameShieldIconNextToInput);
-    }
-
-    public void clickThisDeviceLink() throws Exception {
-        DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(),
-                getElement(xpathYouStartedUsingThisDeviceSystemMesssage), 90, 50);
     }
 
     public void resendLastMessageInDialogToUser() throws Exception {

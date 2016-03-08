@@ -101,9 +101,6 @@ public class ConversationPage extends WebPage {
 	@FindBy(css = WebAppLocators.ConversationPage.cssUserAvatar)
 	private WebElement userAvatar;
 
-	@FindBy(xpath = WebAppLocators.ConversationPage.xpathJoinCallBar)
-	private WebElement joinCallBar;
-
 	@FindBy(css = WebAppLocators.ConversationPage.cssLabelOnOutgoingCall)
 	private WebElement labelOnOutgoingCall;
 
@@ -724,12 +721,6 @@ public class ConversationPage extends WebPage {
 			}
 			return false;
 		}
-	}
-
-	public void clickJoinCallBar() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-				joinCallBar) : "Join call bar has not been shown";
-		joinCallBar.click();
 	}
 
 	public Object getConnectedMessageUser() {

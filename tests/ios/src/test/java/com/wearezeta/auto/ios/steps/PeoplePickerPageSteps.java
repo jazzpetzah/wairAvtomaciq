@@ -176,13 +176,6 @@ public class PeoplePickerPageSteps {
                 getPeoplePickerPage().waitUntilNoResultsLabelIsVisible());
     }
 
-    @When("^I search for user name (.*) and tap on it on People picker page$")
-    public void WhenISearchForUserNameAndTapOnItOnPeoplePickerPage(String contact) throws Throwable {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        getPeoplePickerPage().fillTextInPeoplePickerSearch(contact);
-        getPeoplePickerPage().selectElementInSearchResults(contact);
-    }
-
     @When("^I don't see Add to conversation button$")
     public void WhenIDontSeeAddToConversationButton() throws Exception {
         Assert.assertTrue("Add to conversation button is visible", getPeoplePickerPage().addToConversationNotVisible());

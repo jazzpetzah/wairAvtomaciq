@@ -213,6 +213,12 @@ public final class WebAppLocators {
                 .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*[@data-uie-name='call-duration']",
                         user);
 
+        public static final Function<String, String> xpathJoinCallButtonByConversationName = (
+                name) -> String
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
+                                + "*//*[@data-uie-name='do-call-controls-call-join']",
+                        name);
+
         public static final Function<String, String> xpathAcceptCallButtonByConversationName = (
                 name) -> String
                 .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
@@ -374,9 +380,6 @@ public final class WebAppLocators {
                                 + xpathCallingBarRoot
                                 + "//*[contains(@class, 'cc-avatar-label') and text()='%s']",
                         text, text);
-
-        public static final String xpathJoinCallBar = "//div[contains(@class, 'join-menu') and contains(@class, 'on')" +
-                "]/*[contains(@class, 'join-menu-button')]";
 
         public static String cssAcceptCallButton = "[data-uie-name='do-call-controls-call-accept']";
 

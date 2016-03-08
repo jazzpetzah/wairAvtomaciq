@@ -24,7 +24,7 @@ public class CallPageSteps {
      * @throws Exception
      * @step. ^I( do not)? see the (incoming|outgoing|ongoing) call controls for conversation (.*)$
      */
-    @And("^I( do not)? see the( incoming| outgoing| ongoing)? call controls for conversation (.*)$")
+    @And("^I( do not)? see the( incoming| outgoing| ongoing| join)? call controls for conversation (.*)$")
     public void IClickAcceptCallButtonInConversationView(String doNot, String direction, String conversation) throws Exception {
         conversation = usrMgr.replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         CallPage page = webappPagesCollection.getPage(CallPage.class);
@@ -38,6 +38,9 @@ public class CallPageSteps {
             } else if (direction.equals(" ongoing")) {
                 assertThat(String.format("Ongoing call controls not visible for conversation %s", conversation),
                         page.isOngoingCallVisibleForConversation(conversation));
+            } else if (direction.equals(" join")) {
+                assertThat(String.format("Join call controls not visible for conversation %s", conversation),
+                        page.isJoinCallButtonVisibleForConversation(conversation));
             }
         } else {
             assertThat(String.format("Call controls for conversation %s still visible", conversation),
@@ -86,6 +89,17 @@ public class CallPageSteps {
         conversation = usrMgr.replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         webappPagesCollection.getPage(CallPage.class)
                 .clickDeclineCallButton(conversation);
+    }
+
+    /**
+     * Joins ongoing call by clicking the join call bar
+     *
+     * @throws Exception
+     * @step. ^I join call of conversation (.*)$
+     */
+    @When("^I join call of conversation (.*)$")
+    public void IJoinCall(String conversation) throws Exception {
+        webappPagesCollection.getPage(CallPage.class).clickJoinCallButton(conversation);
     }
 
     /**
