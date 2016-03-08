@@ -472,7 +472,7 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | Message1 | Message2 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | Msg2     | GroupConvo    |
 
-  @C3513 @regression @torun
+  @C3513 @regression
   Scenario Outline: If user uses only old Wire builds which don't support E2EE I should see system message inside his profile
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
