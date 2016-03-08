@@ -31,9 +31,9 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given <Contact> starts a video call to me
     When I see my avatar on top of Contact list
-    And I see the incoming call controls for conversation <Contact>
+    And <Contact> starts a video call to me
+    Then I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>
     And I see decline call button for conversation <Contact>
     And I accept the call from conversation <Contact>
@@ -75,10 +75,10 @@ Feature: VideoCalling
   Scenario Outline: Verify I cannot see blocked contact trying to make a video call to me
     Given My browser supports calling
     Given There are 3 users where <Name> is me
-    Given <Contact> starts instance using <CallBackend>
     # OtherContact is needed otherwise the search will show up sometimes
     Given Myself is connected to <Contact>,<OtherContact>
     Given Myself blocked <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When <Contact> starts a video call to me
