@@ -23,7 +23,7 @@ Feature: Calling
     And I see <PING> action in conversation
     And I see sent picture <PictureName> in the conversation view
     When I hang up call with conversation <Contact>
-    And I see the ongoing call controls for conversation <Contact>
+    And I do not see the call controls for conversation  <Contact>
 
     Examples:
       | Login      | Password      | Name      | Contact   | PING       | PictureName               | CallBackend | Timeout |
@@ -408,8 +408,8 @@ Feature: Calling
     Then I do not see the call controls for conversation <Contact2>
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | CallWaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome    | chrome          | 60      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | CallWaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome          | 60      |
 
   @C1750 @regression @calling @calling_debug
   Scenario Outline: Verify I can not see blocked contact trying to call me
