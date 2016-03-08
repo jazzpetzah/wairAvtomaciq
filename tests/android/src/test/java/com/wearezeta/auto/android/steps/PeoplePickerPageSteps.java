@@ -90,7 +90,7 @@ public class PeoplePickerPageSteps {
      * @throws Exception
      * @step. ^I clear search result by press clear button or back button$
      */
-    @When("^I clear search result by press clear button or back button$")
+    @When("^I clear search result by tap clear button or back button$")
     public void WhenIClearSearchResultByPressClearButtonOrPressBackButton() throws Exception {
         if (random.nextInt(100) % 2 == 0) {
             WhenIPressClearButton();
@@ -393,7 +393,7 @@ public class PeoplePickerPageSteps {
      * @throws Exception
      * @step.
      */
-    @Then("^I( do not)? see user (.*) in contact list$")
+    @Then("^I( do not)? see user (.*) in contact list of [Pp]eople [Pp]icker page$")
     public void ISeeExistedContacts(String shouldNotSee, String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         if(shouldNotSee == null)

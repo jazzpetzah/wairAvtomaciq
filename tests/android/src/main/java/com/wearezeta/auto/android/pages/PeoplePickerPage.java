@@ -107,7 +107,7 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public boolean isSuggestionVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), idSuggestionUserName);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idSuggestionUserName);
     }
 
     public boolean isSuggestionInvisible() throws Exception {
@@ -202,7 +202,7 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public boolean isContactInvisible(String name) throws Exception {
-        return !DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+        return !DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 By.xpath(xpathStrExistedContactUserByName.apply(name)), 2);
     }
 
