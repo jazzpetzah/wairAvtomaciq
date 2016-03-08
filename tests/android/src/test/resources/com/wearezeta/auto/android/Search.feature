@@ -81,24 +81,27 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C56397 @staging
+  @C56397 @staging @torun
   Scenario Outline: Verify search results cleaned after closing search
     Given I delete all contacts from Address Book
     Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
     When I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
-    And I see user <Contact1> found on People picker page
-    And I do not see user <Contact2> found on People picker page
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I see user <Contact2> found on People picker page
+    And I do not see user <Contact1> found on People picker page
     And I clear search result by press clear button or back button
     And I see Contact list
     And I open Search UI
     Then I see the search text is empty
+    And I do not see search suggestions
+    And I see user <Contact1> in contact list
+    And I do not see <Contact2> in contact list
 
     Examples:
       | Name      | Contact1  | Contact2  |

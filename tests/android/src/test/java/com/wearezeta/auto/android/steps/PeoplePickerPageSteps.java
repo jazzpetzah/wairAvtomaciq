@@ -367,6 +367,44 @@ public class PeoplePickerPageSteps {
         Assert.assertTrue("The search text should be empty", getPeoplePickerPage().isPeopleSearchTextEmpty());
     }
 
+
+    /**
+     * Verify the search suggestion is visible
+     *
+     * @param shouldNotSee if shouldnotSee equals null, then the search suggestions should be presented
+     * @throws Exception
+     * @step. ^I( do not)? see search suggestions$
+     */
+    @Then("^I( do not)? see search suggestions$")
+    public void ISeeSearchSuggestions(String shouldNotSee) throws Exception {
+        if(shouldNotSee == null)
+        {
+            Assert.assertTrue("The search suggestion should not be empty", getPeoplePickerPage().isSuggestionVisible());
+        }else
+        {
+            Assert.assertTrue("The search suggestion should be presented, but cannot see any suggestions", getPeoplePickerPage().isSuggestionInvisible());
+        }
+    }
+
+    /**
+     * Verify the user exist in Contact List
+     * @param shouldNotSee if shouldNotSee equals null, then the user should be presented as contact
+     * @param contact user alias
+     * @throws Exception
+     * @step.
+     */
+    @Then("^I( do not)? see user (.*) in contact list$")
+    public void ISeeExistedContacts(String shouldNotSee, String contact) throws Exception {
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        if(shouldNotSee == null)
+        {
+            Assert.assertTrue(String.format("The contact '%s' should be presented in contact list, but caonnut found", contact), getPeoplePickerPage().isContactVisible(contact));
+        }else
+        {
+            Assert.assertTrue(String.format("The contact '%s' should NOT be presented in contact list", contact), getPeoplePickerPage().isContactInvisible(contact));
+        }
+    }
+
     /**
      * Tap the corresponding action button
      *

@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
+import java.sql.Driver;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -19,6 +20,8 @@ public class PeoplePickerPage extends AndroidPage {
 
     public static final By xpathAddPeopleSearchField =
             By.xpath("//*[@id='fl__add_to_conversation__pickuser__container']//*[@id='sbv__search_box']");
+
+    public static final By idSuggestionUserName = By.xpath("//*[@id='ttv_pickuser__searchuser_name']");
 
     public static final By idSingleParticipantClose = By.id("gtv__single_participants__close");
 
@@ -46,6 +49,13 @@ public class PeoplePickerPage extends AndroidPage {
     public static final Function<String, String> xpathStrFoundAvatarByName = name -> String
             .format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']"
                     + "/preceding-sibling::*[@id='cv_pickuser__searchuser_chathead']", name);
+
+    public static final Function<String, String> xpathStrPeopleSearchFieldByName = name -> String
+            .format("//*[@id='puet_pickuser__searchbox' and @value='%s']", name);
+
+    public static final Function<String, String> xpathStrExistedContactUserByName = name -> String
+            .format("//*[@id='ttv__contactlist__user__name' and @value='%s']", name);
+
 
     public static final By idPickerBtnDone = By.id("zb__pickuser__confirmation_button");
 
@@ -93,7 +103,16 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public boolean isPeopleSearchTextEmpty() throws Exception {
-        return getPickerEdit().getText() == null || getPickerEdit().getText().isEmpty();
+        final By locator = By.xpath(xpathStrPeopleSearchFieldByName.apply(""));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isSuggestionVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), idSuggestionUserName);
+    }
+
+    public boolean isSuggestionInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idSuggestionUserName);
     }
 
     public boolean isNoResultsFoundVisible() throws Exception {
@@ -168,6 +187,11 @@ public class PeoplePickerPage extends AndroidPage {
         return scrollUntilLocatorVisible(locator).isPresent();
     }
 
+    public boolean isContactVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathStrExistedContactUserByName.apply(name));
+        return scrollUntilLocatorVisible(locator).isPresent();
+    }
+
     public boolean isUserInvisible(String name) throws Exception {
         return !DriverUtils.waitUntilLocatorAppears(this.getDriver(),
                 By.xpath(xpathStrPeoplePickerContactByName.apply(name)), 2);
@@ -176,6 +200,11 @@ public class PeoplePickerPage extends AndroidPage {
     public boolean isGroupInvisible(String name) throws Exception {
         return !DriverUtils.waitUntilLocatorAppears(this.getDriver(),
                 By.xpath(xpathStrPeoplePickerGroupByName.apply(name)), 2);
+    }
+
+    public boolean isContactInvisible(String name) throws Exception {
+        return !DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+                By.xpath(xpathStrExistedContactUserByName.apply(name)), 2);
     }
 
     public void swipeRightOnContactAvatar(String name) throws Exception {
