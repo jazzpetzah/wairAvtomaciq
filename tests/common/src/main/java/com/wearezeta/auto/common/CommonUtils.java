@@ -275,19 +275,19 @@ public class CommonUtils {
     }
 
     public static String getAndroidMainActivityFromConfig(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "activity");
+        return getValueFromConfig(c, "mainActivity");
+    }
+
+    public static String getAndroidConvoListActivityFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "convoListActivity");
+    }
+
+    public static String getAndroidLoginActivityFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "loginActivity");
     }
 
     public static String getOldAppPathFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "oldAppPath");
-    }
-
-    public static String getAndroidWaitActivitiesFromConfig(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "waitActivities");
-    }
-
-    public static String getAndroidConversationsListActivityFromConfig(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "convoListActivity");
     }
 
     public static String getSimulatorImagesPathFromConfig(Class<?> c) throws Exception {

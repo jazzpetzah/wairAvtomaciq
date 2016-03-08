@@ -100,7 +100,7 @@ public class CommonAndroidSteps {
         capabilities.setCapability("app", path);
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(getClass()));
         capabilities.setCapability("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
-        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(getClass()));
+        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidLoginActivityFromConfig(getClass()));
         capabilities.setCapability("automationName", "Selendroid");
         if (additionalCaps.isPresent()) {
             for (Map.Entry<String, Object> entry : additionalCaps.get().entrySet()) {
@@ -224,8 +224,7 @@ public class CommonAndroidSteps {
         customCaps.put("noReset", true);
         customCaps.put("fullReset", false);
         customCaps.put("skipUninstall", true);
-        customCaps.put("appActivity", CommonUtils.getAndroidConversationsListActivityFromConfig(getClass()));
-        customCaps.put("appWaitActivity", CommonUtils.getAndroidConversationsListActivityFromConfig(getClass()));
+        customCaps.put("appWaitActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
         final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath, Optional.of(customCaps));
         updateDriver(lazyDriver);
     }
