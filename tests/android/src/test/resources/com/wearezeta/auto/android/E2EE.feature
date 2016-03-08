@@ -438,7 +438,7 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
 
-  @C12082 @regression
+  @C12082 @regression @torun
   Scenario Outline: First time when group conversation is degraded - I can ignore takeover screen and send message
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -462,7 +462,7 @@ Feature: E2EE
     Then I see a message informing me conversation is verified
     When User <Contact1> adds new device Device1
     And I tap on text input
-    And I type the message "<Message2>" and send it
+    And I type the message "<Message2>" and send it without hiding keyboard
     When I see takeover screen from user "<Contact1>"
     Then I tap send anyway button
     And I do not see takeover screen
