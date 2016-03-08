@@ -86,7 +86,7 @@ public class CommonAndroidTabletSteps {
         capabilities.setCapability("app", path);
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(getClass()));
         capabilities.setCapability("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
-        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(getClass()));
+        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidLoginActivityFromConfig(getClass()));
         capabilities.setCapability("automationName", "Selendroid");
 
         try {

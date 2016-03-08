@@ -28,7 +28,7 @@ public class ConnectedDevicesPage extends WebPage {
     }
 
     public boolean isDialogShown() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(cssDialogLocator));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(cssDialogLocator));
     }
 
     public boolean isDialogNotShown() throws Exception {

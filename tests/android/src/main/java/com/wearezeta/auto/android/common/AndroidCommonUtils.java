@@ -296,10 +296,8 @@ public class AndroidCommonUtils extends CommonUtils {
         Thread.sleep(3000);
     }
 
-    public static boolean isPackageInstalled(String androidPackage)
-            throws Exception {
-        String output = getAdbOutput("shell pm list packages -3 "
-                + androidPackage);
+    public static boolean isPackageInstalled(String androidPackage) throws Exception {
+        String output = getAdbOutput("shell pm list packages -3 " + androidPackage);
         return output.contains(androidPackage);
     }
 
@@ -561,5 +559,21 @@ public class AndroidCommonUtils extends CommonUtils {
         executeAdb(String.format("shell am broadcast -a com.android.vending.INSTALL_REFERRER "
                 + "-n \"%s/com.waz.zclient.broadcast.ReferralBroadcastReceiver\" "
                 + "--es referrer \"invite-%s\"", getAndroidPackageFromConfig(AndroidCommonUtils.class), code));
+    }
+
+    public static void installApp(File path) throws Exception {
+        if (!path.isFile()) {
+            throw new IllegalArgumentException(String.format(
+                    "Please make sure that the file '%s' exists and is accessible", path.getCanonicalPath()));
+        }
+        executeAdb(String.format("install -r %s", path.getCanonicalPath()));
+    }
+
+    public static void stopPackage(String packageName) throws Exception {
+        executeAdb(String.format("shell am force-stop %s", packageName));
+    }
+
+    public static void uninstallPackage(String packageName) throws Exception {
+        executeAdb(String.format("uninstall %s", packageName));
     }
 }
