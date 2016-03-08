@@ -1,16 +1,16 @@
 Feature: Utility
 
   @C3262
-  # Blocked due to limitation of Selenium
   Scenario: Verify buttons on invitation page for iphone
+    # Blocked due to limitation of Selenium
     When I use generic invitation link for invitation for iphone
     And I see You are invited page with agent
     Then I see button that sends me to App Store
     And I see button to connect for iphone including invitation code
 
   @C3263
-  # Blocked due to limitation of Selenium
   Scenario: Verify buttons on invitation page for android
+    # Blocked due to limitation of Selenium
     When I use generic invitation link for invitation for android
     And I see You are invited page with agent
     Then I see button that sends me to Play Store
@@ -136,8 +136,8 @@ Feature: Utility
       | user1Email | user1Password | user1Name | aqa654321#  | windows |
 
   @C3275 @C3276
-  # Blocked due to limitation of Selenium
   Scenario Outline: Verify buttons from verication link for <Agent>
+    # Blocked due to limitation of Selenium
     When I navigate to verify page for <Agent>
     When I navigate to verify page for <Agent>
     Then I see download button for <Agent>
