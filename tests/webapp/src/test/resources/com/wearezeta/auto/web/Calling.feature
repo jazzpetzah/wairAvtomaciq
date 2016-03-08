@@ -122,13 +122,17 @@ Feature: Calling
     Then <Contact> accepts next incoming call automatically
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
-    And I hang up call with conversation <Contact>
+    And <Contact> verify to have 1 flows
+    And <Contact> verify that all flows have greater than 0 bytes
+    When I hang up call with conversation <Contact>
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
-    Then <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
-    And I call
+    And <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    When I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verify to have 1 flows
+    And <Contact> verify that all flows have greater than 0 bytes
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
