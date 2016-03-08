@@ -299,3 +299,27 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | chrome      |
+
+  @C48230 @videocalling
+  Scenario Outline: Verify you don't see video call button when you're creating group from Start UI
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I wait until <Contact1> exists in backend search results
+    And I wait until <Contact2> exists in backend search results
+    When I open People Picker from Contact List
+    And I type <Contact1> in search field of People Picker
+    And I see user <Contact1> found in People Picker
+    And I select <Contact1> from People Picker results
+    Then I see Video Call button on People Picker page
+    When I type <Contact2> in search field of People Picker
+    And I see user <Contact2> found in People Picker
+    And I select <Contact2> from People Picker results
+    Then I do not see Video Call button on People Picker page
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
