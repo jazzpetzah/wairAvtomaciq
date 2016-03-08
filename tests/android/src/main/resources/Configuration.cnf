@@ -1,8 +1,9 @@
 androidAppiumUrl=${url}
 androidApplicationPath=${appPath}
+oldAppPath=${oldAppPath}
 package=${package}
 activity=${activity}
-launchActivity=${launchActivity}
+convoListActivity=${convoListActivity}
 waitActivities=${waitActivities}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 resultImage=${resultImage}

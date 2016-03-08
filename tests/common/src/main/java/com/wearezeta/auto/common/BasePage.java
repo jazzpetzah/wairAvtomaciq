@@ -27,7 +27,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 public abstract class BasePage {
     private final static long DEFAULT_DRIVER_INIT_TIMEOUT = 1000 * 60 * 3; // milliseconds
 
-    private final Future<? extends RemoteWebDriver> lazyDriver;
+    private Future<? extends RemoteWebDriver> lazyDriver;
 
     protected Future<? extends RemoteWebDriver> getLazyDriver() {
         return this.lazyDriver;
@@ -39,8 +39,7 @@ public abstract class BasePage {
     }
 
     protected RemoteWebDriver getDriver() throws Exception {
-        return this.getLazyDriver().get(getDriverInitializationTimeout(),
-                TimeUnit.MILLISECONDS);
+        return this.getLazyDriver().get(getDriverInitializationTimeout(), TimeUnit.MILLISECONDS);
     }
 
     private WebDriverWait wait;
@@ -51,8 +50,7 @@ public abstract class BasePage {
         waitGuard.acquire();
         try {
             if (this.wait == null) {
-                this.wait = PlatformDrivers.createDefaultExplicitWait(this
-                        .getDriver());
+                this.wait = PlatformDrivers.createDefaultExplicitWait(this.getDriver());
             }
         } finally {
             waitGuard.release();
@@ -60,14 +58,13 @@ public abstract class BasePage {
         return this.wait;
     }
 
-    private static final Logger log = ZetaLogger.getLog(BasePage.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(BasePage.class.getSimpleName());
 
-    public BasePage(Future<? extends RemoteWebDriver> lazyDriver)
-            throws Exception {
+    public BasePage(Future<? extends RemoteWebDriver> lazyDriver) throws Exception {
         this.lazyDriver = lazyDriver;
         PageFactory.initElements(new DefaultElementLocatorFactory(
                 new ZetaSearchContext(lazyDriver, this.getDriverInitializationTimeout())), this);
+        this.wait = null;
     }
 
     public void close() throws Exception {
@@ -125,21 +122,11 @@ public abstract class BasePage {
         return DriverUtils.getElementIfDisplayed(getDriver(), locator, timeoutSeconds);
     }
 
-    public Optional<BufferedImage> getScreenshotByCoordinates(int x, int y,
-                                                              int w, int h) throws Exception {
-        final Optional<BufferedImage> screenshot = takeScreenshot();
-        if (screenshot.isPresent()) {
-            try {
-                return Optional.of(screenshot.get().getSubimage(x, y, w, h));
-            } catch (Exception e) {
-                log.debug("Screenshot object is out of borders");
-            }
-            return screenshot;
-        } else {
-            return Optional.empty();
-        }
-    }
-
+    /**
+     *
+     * @deprecated use pagesCollection.clearAllPages() instead
+     */
+    @Deprecated
     protected static void clearPagesCollection(
             Class<? extends AbstractPagesCollection<? extends BasePage>> collection,
             Class<? extends BasePage> baseClass)
