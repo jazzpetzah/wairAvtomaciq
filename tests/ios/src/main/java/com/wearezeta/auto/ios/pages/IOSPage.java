@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -416,5 +417,16 @@ public abstract class IOSPage extends BasePage {
         } else {
             backToWireButton.click();
         }
+    }
+
+    public void launchApp() throws Exception {
+        getDriver().launchApp();
+    }
+
+    public void closeApp() throws Exception {
+        getDriver().closeApp();
+    }
+
+    public void installApp(File file) {
     }
 }
