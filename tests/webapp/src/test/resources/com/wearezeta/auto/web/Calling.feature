@@ -123,7 +123,7 @@ Feature: Calling
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
     And I hang up call with conversation <Contact>
-    Then <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
+    Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
     Then <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     And I call
