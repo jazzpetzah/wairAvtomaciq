@@ -101,7 +101,7 @@ Feature: Search
     Then I see the search text is empty
     And I do not see search suggestions
     And I see user <Contact1> in contact list
-    And I do not see <Contact2> in contact list
+    And I do not see user <Contact2> in contact list
 
     Examples:
       | Name      | Contact1  | Contact2  |
