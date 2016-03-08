@@ -437,9 +437,10 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given <Contact> starts instance using <CallBackend>
     And I see my avatar on top of Contact list
-    Given I muted conversation with <Contact>
-    #When <Contact> calls me using <CallBackend>
+    And I muted conversation with <Contact>
+    When <Contact> calls me
     Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see the incoming call controls for conversation <Contact>
 
