@@ -81,8 +81,7 @@ public class DialogPageSteps {
      */
     @When("^I type the message \"(.*)\" and send it( without hiding keyboard)?$")
     public void ITypeMessageAndSendIt(String msg, String doNotHideKeyboard) throws Exception {
-        boolean isHideKeyboard = doNotHideKeyboard == null;
-        getDialogPage().typeAndSendMessage(expandMessage(msg), isHideKeyboard);
+        getDialogPage().typeAndSendMessage(expandMessage(msg), doNotHideKeyboard == null);
     }
 
     /**
