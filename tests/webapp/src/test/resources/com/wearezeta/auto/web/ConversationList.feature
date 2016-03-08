@@ -419,7 +419,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Msg1    |
       | user1Email | user1Password | user1Name | user2Name | message |
 
-  @C58607 @staging @torun
+  @C58607 @staging
   Scenario Outline: Verify the order of conversation list is synced between devices
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
