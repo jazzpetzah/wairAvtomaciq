@@ -308,7 +308,7 @@ Feature: VideoCalling
     Given Myself is connected to <Contact1>, <Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact2> exists in backend search results
     When I open People Picker from Contact List
