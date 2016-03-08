@@ -20,7 +20,7 @@ public class DeviceDetailPageSteps {
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     
-    private static final Function<String,String> NON_ENCRYPTED_DEVICE_HEADER_TEXT = username -> String.format("%s is not using the encrypted version of Wire.", username);
+    private static final Function<String,String> NON_ENCRYPTED_DEVICE_HEADER_TEXT = username -> String.format("%s is using an old version of Wire. No devices are shown here.", username);
     private String rememberedDeviceId;
 
     private DeviceDetailPage getPage() throws Exception {
