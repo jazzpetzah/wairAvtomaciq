@@ -108,7 +108,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    |
 
-  @C1776 @smoke @calling @calling_debug @torun
+  @C1776 @smoke @calling @calling_debug
   Scenario Outline: Verify I can call a user twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -136,7 +136,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-#      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox     | 60      |
 
   @C1747 @calling
