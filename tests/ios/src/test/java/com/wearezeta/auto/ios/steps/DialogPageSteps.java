@@ -115,21 +115,6 @@ public class DialogPageSteps {
     }
 
     /**
-     * Verifies that the title bar is present with a certain conversation name
-     *
-     * @param convName name of the conversation
-     * @throws Exception
-     * @step. ^I see title bar in conversation name (.*)$
-     */
-    @Then("^I see title bar in conversation name (.*)$")
-    public void ThenITitleBar(String convName) throws Exception {
-        String chatName = usrMgr.findUserByNameOrNameAlias(convName).getName();
-        // Title bar is gone quite fast so it may fail because of this
-        Assert.assertTrue("Title bar with name - " + chatName
-                + " is not on the page", getDialogPage().isTitleBarDisplayed(chatName));
-    }
-
-    /**
      * Click open conversation details button in 1:1 dialog
      *
      * @throws Exception if other user personal profile page was not created
