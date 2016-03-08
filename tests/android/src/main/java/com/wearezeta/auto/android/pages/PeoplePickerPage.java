@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import java.sql.Driver;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
