@@ -538,7 +538,7 @@ Feature: Calling
     And I wait for 1 seconds
     Then I see full call warning modal
     And I close the full call warning modal
-    When I join call
+    When I join call of conversation <ChatName>
     And I wait for 1 seconds
     Then I see full call warning modal
     And I click on "Ok" button in full call warning modal
