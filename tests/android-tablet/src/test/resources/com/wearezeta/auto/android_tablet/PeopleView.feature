@@ -163,7 +163,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C749 @id2283 @regression @rc @rc44
+  @C749 @id2283 @regression @rc @rc44 @torun
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -171,6 +171,8 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
+    Given User <Contact1> sends encrypted message to user Myself
+    Given Myself waits until 1 person in backend top people results
     And I open Search UI
     And I tap <Contact1> avatar in Top People
     When I tap Open Conversation action button on People Picker page

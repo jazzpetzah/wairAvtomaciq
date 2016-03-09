@@ -797,4 +797,18 @@ public class CommonAndroidTabletSteps {
         Assert.assertTrue(String.format("An alert containing text '%s' is not visible", expectedMsg),
                 pagesCollection.getCommonPage().isAlertMessageVisible(expectedMsg));
     }
+
+    /**
+     * Pings BackEnd until user is indexed and available in top people
+     *
+     * @param searchByNameAlias user name to search string
+     * @param size              number of top people
+     * @throws Exception
+     * @step. ^(\w+) waits? until (\d+) (?:person|people) in backend top people results$
+     */
+    @Given("^(\\w+) waits? until (\\d+) (?:person|people) in backend top people results$")
+    public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias, int size) throws Exception {
+        commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
+                searchByNameAlias, size);
+    }
 }
