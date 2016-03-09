@@ -260,7 +260,7 @@ public class CommonAndroidSteps {
      * @param searchByNameAlias user name to search string
      * @param size              number of top people
      * @throws Exception
-     * @step. ^(\\w+) waits? until (.*) exists in backend search results$
+     * @step. ^(\w+) waits? until (\d+) (?:person|people) in backend top people results$
      */
     @Given("^(\\w+) waits? until (\\d+) (?:person|people) in backend top people results$")
     public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias, int size) throws Exception {
