@@ -1,6 +1,6 @@
 Feature: Upgrade
 
-  @upgrade
+  @C58608 @upgrade
   Scenario Outline: Upgrade
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
