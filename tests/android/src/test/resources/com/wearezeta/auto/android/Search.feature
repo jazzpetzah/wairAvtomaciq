@@ -135,7 +135,7 @@ Feature: Search
     Given User <Contact1> sends encrypted message to user Myself
     Given User Me sends encrypted message to user <Contact1>
     Given I sign in using my email
-    Given Myself waits until 1 people in backend top people results
+    Given Myself waits until 1 person in backend top people results
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I open Search UI
@@ -251,7 +251,7 @@ Feature: Search
     Given User <Contact1> sends encrypted message to user Myself
     Given User Me sends encrypted message to user <Contact1>
     Given I sign in using my email
-    Given Myself waits until 1 people in backend top people results
+    Given Myself waits until 1 person in backend top people results
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
