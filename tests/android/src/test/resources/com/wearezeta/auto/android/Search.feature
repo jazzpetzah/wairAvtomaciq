@@ -128,16 +128,15 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C703 @id1395 @regression @rc @rc42
+  @C703 @id1395 @regression @rc @rc42 @torun
   Scenario Outline: (AN-2834) Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User <Contact1> sends encrypted message to user Myself
-    Given User Me sends encrypted message to user <Contact1>
-    Given I sign in using my email
-    Given Myself waits until 1 person in backend top people results
+    Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
+    Given User <Contact1> sends encrypted message to user Myself
+    Given Myself waits until 1 person in backend top people results
     When I open Search UI
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
@@ -244,17 +243,16 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C436 @id3868 @regression
+  @C436 @id3868 @regression @torun
   Scenario Outline: Verify action buttons disappear by unchecking the avatar / deleting token from search field
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given User <Contact1> sends encrypted message to user Myself
-    Given User Me sends encrypted message to user <Contact1>
-    Given I sign in using my email
-    Given Myself waits until 1 person in backend top people results
+    Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
+    Given User <Contact1> sends encrypted message to user Myself
     Given I wait until <Contact1> exists in backend search results
+    Given Myself waits until 1 person in backend top people results
     When I open Search UI
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
@@ -266,20 +264,18 @@ Feature: Search
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C437 @id3870 @regression
+  @C437 @id3870 @regression @torun
   Scenario Outline: Verify button Open is changed to Create after checking second person
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User <Contact1> sends encrypted message to user Myself
-    Given User Me sends encrypted message to user <Contact1>
-    Given User <Contact2> sends encrypted message to user Myself
-    Given User Me sends encrypted message to user <Contact2>
-    Given I sign in using my email
-    Given Myself waits until 2 people in backend top people results
+    Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
+    Given User <Contact1> sends encrypted message to user Myself
+    Given User <Contact2> sends encrypted message to user Myself
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
+    Given Myself waits until 2 people in backend top people results
     When I open Search UI
     And I wait until Top People list appears
     And I see TOP PEOPLE
