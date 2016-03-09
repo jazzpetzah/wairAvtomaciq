@@ -90,10 +90,10 @@ public class PickleJarTest {
     public void test() throws Exception {
         System.out.println(feature);
         System.out.println(testcase);
-        
+
         stepExecutor = new PickleExecutor(STEP_PACKAGE);
         reporter = new ZetaFormatter();
-        
+
         Lifecycle lifecycle = new Lifecycle();
         lifecycle.setUp(scenario);
         for (String step : steps) {
@@ -111,5 +111,5 @@ public class PickleJarTest {
     public static void tearDownClass() throws Exception {
         System.out.println("### After full testrun");
     }
-    
+
 }

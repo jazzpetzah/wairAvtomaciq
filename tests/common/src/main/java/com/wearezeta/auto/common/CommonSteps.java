@@ -26,7 +26,7 @@ public final class CommonSteps {
 
     private SEBridge seBridge;
 
-    private ClientUsersManager getUserManager() {
+    public ClientUsersManager getUserManager() {
         return this.usrMgr;
     }
 
@@ -34,22 +34,16 @@ public final class CommonSteps {
 
     public synchronized static CommonSteps getInstance() {
         if (instance == null) {
-            instance = new CommonSteps();
+            instance = new CommonSteps(ClientUsersManager.getInstance(), SEBridge.getInstance());
         }
         return instance;
     }
 
-    public CommonSteps() {
-    }
-
-    public void setUsrMgr(ClientUsersManager usrMgr) {
+    public CommonSteps(ClientUsersManager usrMgr, SEBridge seBridge) {
         this.usrMgr = usrMgr;
-    }
-
-    public void setSeBridge(SEBridge seBridge) {
         this.seBridge = seBridge;
     }
-    
+
     public static final String ALIASES_SEPARATOR = ",";
 
     public static List<String> splitAliases(String aliases) {

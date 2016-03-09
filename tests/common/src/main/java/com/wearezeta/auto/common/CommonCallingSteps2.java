@@ -81,15 +81,16 @@ public final class CommonCallingSteps2 {
 
     public synchronized static CommonCallingSteps2 getInstance() {
         if (singleton == null) {
-            singleton = new CommonCallingSteps2();
+            singleton = new CommonCallingSteps2(ClientUsersManager.getInstance());
         }
         return singleton;
     }
 
-    public CommonCallingSteps2() {
+    public CommonCallingSteps2(ClientUsersManager usrMgr) {
         this.callMapping = new ConcurrentHashMap<>();
         this.instanceMapping = new ConcurrentHashMap<>();
         this.client = new CallingServiceClient();
+        this.usrMgr = usrMgr;
         this.executor = Executors.newCachedThreadPool();
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
@@ -105,11 +106,6 @@ public final class CommonCallingSteps2 {
                 }
             }
         });
-    }
-    
-
-    public void setUsrMgr(ClientUsersManager usrMgr) {
-        this.usrMgr = usrMgr;
     }
 
     public static class CallNotFoundException extends Exception {

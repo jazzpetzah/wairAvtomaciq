@@ -69,13 +69,10 @@ public class Lifecycle {
         public TestContext(String uniqueTestname, Future<? extends RemoteWebDriver> driver) throws Exception {
             this.testname = uniqueTestname;
             this.driver = driver;
-            this.commonSteps = new CommonSteps();
             this.userManager = new ClientUsersManager();
-            commonSteps.setUsrMgr(userManager);
             this.deviceManager = new SEBridge();
-            commonSteps.setSeBridge(deviceManager);
-            this.callingManager = new CommonCallingSteps2();
-            callingManager.setUsrMgr(userManager);
+            this.commonSteps = new CommonSteps(userManager, deviceManager);
+            this.callingManager = new CommonCallingSteps2(userManager);
             this.pagesCollection = new WebappPagesCollection();
         }
 
@@ -262,8 +259,8 @@ public class Lifecycle {
                     + "'>See more information on "
                     + link
                     + "</a><script>window.location.href = document.getElementById('link').getAttribute('href');</script></body></html>";
-            scenario.embed(html.getBytes(Charset.forName("UTF-8")),
-                    "text/html");
+//            scenario.embed(html.getBytes(Charset.forName("UTF-8")),
+//                    "text/html");
         } catch (Exception e) {
             e.printStackTrace();
         }

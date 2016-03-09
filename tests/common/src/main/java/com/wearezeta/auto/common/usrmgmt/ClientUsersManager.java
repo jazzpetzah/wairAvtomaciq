@@ -84,7 +84,7 @@ public class ClientUsersManager {
         }
     }
 
-    private List<ClientUser> users = Collections.synchronizedList(new ArrayList<>());
+    private List<ClientUser> users = new ArrayList<>();
 
     public List<ClientUser> getCreatedUsers() {
         ArrayList<ClientUser> result = new ArrayList<>();
