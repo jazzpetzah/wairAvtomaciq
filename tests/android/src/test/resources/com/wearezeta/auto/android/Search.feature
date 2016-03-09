@@ -134,7 +134,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given User <Contact1> sends encrypted message to user Myself
     Given User Me sends encrypted message to user <Contact1>
-    Given I sign in using my email or phone number
+    Given I sign in using my email
     Given Myself waits until 1 people in backend top people results
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
