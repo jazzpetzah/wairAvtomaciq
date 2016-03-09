@@ -128,15 +128,16 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C703 @id1395 @regression @rc @rc42
+  @C703 @id1395 @regression @rc @rc42 @torun
   Scenario Outline: (AN-2834) Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
     Given User <Contact1> sends encrypted message to user Myself
     Given User Me sends encrypted message to user <Contact1>
+    Given I sign in using my email or phone number
+    Given Myself waits until 1 people in backend top people results
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
     When I open Search UI
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
