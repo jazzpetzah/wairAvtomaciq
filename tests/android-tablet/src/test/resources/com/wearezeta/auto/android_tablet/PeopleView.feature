@@ -172,7 +172,7 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given User <Contact1> sends encrypted message to user Myself
-    Given Myself waits until 1 person in backend top people results
+    Given Myself wait until 1 person is in the Top People list on the backend
     And I open Search UI
     And I tap <Contact1> avatar in Top People
     When I tap Open Conversation action button on People Picker page

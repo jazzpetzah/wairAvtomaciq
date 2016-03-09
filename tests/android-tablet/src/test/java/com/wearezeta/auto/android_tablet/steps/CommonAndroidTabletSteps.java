@@ -804,9 +804,9 @@ public class CommonAndroidTabletSteps {
      * @param searchByNameAlias user name to search string
      * @param size              number of top people
      * @throws Exception
-     * @step. ^(\w+) waits? until (\d+) (?:person|people) in backend top people results$
+     * @step. ^(\w+) (?:wait|waits) until (\d+) (?:person|people) (?:is|are) in the Top People list on the backend$
      */
-    @Given("^(\\w+) waits? until (\\d+) (?:person|people) in backend top people results$")
+    @Given("^(\\w+) (?:wait|waits) until (\\d+) (?:person|people) (?:is|are) in the Top People list on the backend$")
     public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias, int size) throws Exception {
         commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
                 searchByNameAlias, size);
