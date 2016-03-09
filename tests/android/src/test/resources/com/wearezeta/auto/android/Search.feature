@@ -128,7 +128,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C703 @id1395 @regression @rc @rc42 @torun
+  @C703 @id1395 @regression @rc @rc42
   Scenario Outline: (AN-2834) Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -243,7 +243,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C436 @id3868 @regression @torun
+  @C436 @id3868 @regression
   Scenario Outline: Verify action buttons disappear by unchecking the avatar / deleting token from search field
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -264,7 +264,7 @@ Feature: Search
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C437 @id3870 @regression @torun
+  @C437 @id3870 @regression
   Scenario Outline: Verify button Open is changed to Create after checking second person
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
