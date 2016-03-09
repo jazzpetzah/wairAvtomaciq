@@ -10,7 +10,6 @@ iOSToolsRoot=${iOSToolsRoot}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 pictureResultsPath=${pictureResultsPath}
 iosImagesPath=${iosImagesPath}
-iosClientInfoPlist=${iosClientInfoPlist}
 defaultEmail=${defaultEmail}
 deviceName=${deviceName}
 backendType=${backendType}

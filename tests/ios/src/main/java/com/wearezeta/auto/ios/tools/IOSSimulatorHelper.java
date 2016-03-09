@@ -1,17 +1,26 @@
 package com.wearezeta.auto.ios.tools;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.log4j.Logger;
 
 import static com.wearezeta.auto.common.CommonUtils.getDeviceName;
 import static com.wearezeta.auto.common.CommonUtils.getIOSToolsRoot;
 
 public class IOSSimulatorHelper {
     public static final int SIMULATOR_INTERACTION_TIMEOUT = 3 * 60; //seconds
+
+    private static Logger log = ZetaLogger.getLog(IOSSimulatorHelper.class.getSimpleName());
 
     public IOSSimulatorHelper() {
     }
@@ -233,5 +242,50 @@ public class IOSSimulatorHelper {
             result.append("\n\n\n\n\n").append(crashReports);
         }
         return result.toString();
+    }
+
+    private static final String XCRUN_PATH = "/usr/bin/xcrun";
+    private static final int XCRUN_TIMEOUT_SECONDS = 60;
+
+    private static String executeSimctl(String[] cmd) throws Exception {
+        final String[] firstCmdPart = new String[]{XCRUN_PATH, "simctl"};
+        final String[] fullCmd = ArrayUtils.addAll(firstCmdPart, cmd);
+        log.debug(String.format("Executing: %s", Arrays.toString(fullCmd)));
+        final Process process = new ProcessBuilder(fullCmd).redirectErrorStream(true).start();
+        process.waitFor(XCRUN_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        final StringBuilder builder = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            builder.append(line).append("\n");
+        }
+        final String output = builder.toString().trim();
+        log.debug(String.format("Command output: %s", output));
+        return output;
+    }
+
+    public static void kill() throws Exception {
+        log.debug("Force killing Simulator app...");
+        new ProcessBuilder("/usr/bin/killall", "-9", "Simulator").start().waitFor();
+        Thread.sleep(2000);
+    }
+
+    public static void reset() throws Exception {
+        kill();
+        executeSimctl(new String[]{"erase", getId()});
+    }
+
+
+    public static void installApp(File appPath) throws Exception {
+        executeSimctl(new String[]{"install", getId(), appPath.getCanonicalPath()});
+    }
+
+    public static void installIpa(File ipaPath) throws Exception {
+        final File app = IOSCommonUtils.extractAppFromIpa(ipaPath);
+        try {
+            installApp(app);
+        } finally {
+            FileUtils.deleteDirectory(app);
+        }
     }
 }

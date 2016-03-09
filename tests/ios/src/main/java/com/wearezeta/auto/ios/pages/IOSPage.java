@@ -10,6 +10,7 @@ import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 
@@ -419,14 +420,11 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    public void launchApp() throws Exception {
-        getDriver().launchApp();
-    }
-
-    public void closeApp() throws Exception {
-        getDriver().closeApp();
-    }
-
-    public void installApp(File file) {
+    public void installIpa(File ipaFile) throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            IOSSimulatorHelper.installIpa(ipaFile);
+        } else {
+            throw new NotImplementedException("Application install is only available for Simulator");
+        }
     }
 }

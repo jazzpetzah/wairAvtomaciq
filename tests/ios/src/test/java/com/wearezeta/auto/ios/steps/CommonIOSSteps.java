@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
@@ -95,13 +97,12 @@ public class CommonIOSSteps {
         capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT);
         final String backendType = getBackendType(this.getClass());
         capabilities.setCapability("processArguments",
-                  "\"-e -ZMBackendEnvironmentType " + backendType + "\""
-//                String.join(" ", new String[]{
-//                        "--args",
-//                        "-UseHockey", "0",
-//                        "-ZMBackendEnvironmentType", backendType,
-//                        // "--debug-log-network"
-//                })
+                String.join(" ", new String[]{
+                        "--args",
+                        "-UseHockey", "0",
+                        "-ZMBackendEnvironmentType", backendType,
+                        // "--debug-log-network"
+                })
         );
 
         if (additionalCaps.isPresent()) {
@@ -136,18 +137,21 @@ public class CommonIOSSteps {
             additionalCaps.put("autoAcceptAlerts", true);
         }
 
-        Future<ZetaIOSDriver> lazyDriver;
         String appPath = getAppPath();
         if (scenario.getSourceTagNames().contains("@upgrade")) {
             appPath = getOldAppPath();
-//            lazyDriver = resetIOSDriver(appPath, Optional.of(additionalCaps));
-//            updateDriver(lazyDriver);
-//            additionalCaps.put("noReset", true);
-//            additionalCaps.put("fullReset", false);
-//            lazyDriver.get(IOSPage.IOS_DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS);
+            if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+                IOSSimulatorHelper.reset();
+            } else {
+                // TODO: Make sure the app is uninstalled from the real device
+                throw new NotImplementedException("Reset action is only available for Simulator");
+            }
+            additionalCaps.put("noReset", true);
+            additionalCaps.put("fullReset", false);
         }
 
-        lazyDriver = resetIOSDriver(appPath, additionalCaps.isEmpty() ? Optional.empty() : Optional.of(additionalCaps));
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath,
+                additionalCaps.isEmpty() ? Optional.empty() : Optional.of(additionalCaps));
         updateDriver(lazyDriver);
     }
 
@@ -197,16 +201,16 @@ public class CommonIOSSteps {
         }
     }
 
+    /**
+     * Upgrade Wire to the recent version if the old one was previously installed
+     *
+     * @throws Exception
+     * @step. ^I upgrade Wire to the recent version$
+     */
     @Given("^I upgrade Wire to the recent version$")
     public void IUpgradeWire() throws Exception {
-//        System.out.print("testing");
-//        pagesCollection.getCommonPage().installApp(new File(getAppPath()));
-//        pagesCollection.getCommonPage().launchApp();
-        final Process pb = new ProcessBuilder(new String[]{
-                "/usr/bin/xcrun", "simctl", "install", "booted", "/Users/elf/Desktop/Wire.app"
-        }).start();
-        pb.waitFor(10, TimeUnit.SECONDS);
         final String appPath = getAppPath();
+        pagesCollection.getCommonPage().installIpa(new File(appPath));
         final Map<String, Object> customCaps = new HashMap<>();
         customCaps.put("noReset", true);
         customCaps.put("fullReset", false);
