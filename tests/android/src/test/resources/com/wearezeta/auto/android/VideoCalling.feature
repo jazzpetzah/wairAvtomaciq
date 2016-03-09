@@ -63,7 +63,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C48237 @staging
+  @C48237 @calling_advanced
   Scenario Outline: Verify I can accept video call after another incoming call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -158,7 +158,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C36370 @staging
+  @C36370 @calling_advanced
   Scenario Outline: Verify I can make a Video call one after another
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -254,7 +254,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C49973 @staging
+  @C49973 @calling_advanced
   Scenario Outline: Verify you cannot make audio call to user A while he makes video call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -341,7 +341,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout | ExpectedMsg     |
       | user1Name | user2Name | chrome      | 30      | Try again later |
 
-  @C36368 @staging
+  @C36368 @calling_basic @rc
   Scenario Outline: Verify I can disable video in Video call and enable it back
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

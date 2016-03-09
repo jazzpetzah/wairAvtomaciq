@@ -75,12 +75,13 @@ public class DialogPageSteps {
      * Send message to the chat
      *
      * @param msg message to type. There are several special shortcuts: LONG_MESSAGE - to type long message
+     * @param doNotHideKeyboard if it equals null, should hide keyboard
      * @throws Exception
-     * @step. ^I type the message \"(.*)\" and send it$
+     * @step. I type the message "(.*)" and send it( without hiding keyboard)?$
      */
-    @When("^I type the message \"(.*)\" and send it$")
-    public void ITypeMessageAndSendIt(String msg) throws Exception {
-        getDialogPage().typeAndSendMessage(expandMessage(msg));
+    @When("^I type the message \"(.*)\" and send it( without hiding keyboard)?$")
+    public void ITypeMessageAndSendIt(String msg, String doNotHideKeyboard) throws Exception {
+        getDialogPage().typeAndSendMessage(expandMessage(msg), doNotHideKeyboard == null);
     }
 
     /**

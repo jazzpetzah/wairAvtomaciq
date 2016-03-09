@@ -34,6 +34,8 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
 
     private void tapOngoingVideo() throws Exception {
         getElement(xpathOngoingCallContainer).click();
+        // Wait for elements to stay visible
+        Thread.sleep(300);
     }
 
     @Override

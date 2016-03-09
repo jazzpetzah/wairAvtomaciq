@@ -834,4 +834,16 @@ public class CommonIOSSteps {
     public void UserRemovesAllRegisteredOtrClients(String userAs) throws Exception {
         commonSteps.UserRemovesAllRegisteredOtrClients(userAs);
     }
+
+    /**
+     * Pings BackEnd until user is indexed and available in top people
+     *
+     * @param searchByNameAlias user name to search string
+     * @throws Exception
+     * @step. ^(\w+) waits? until (?:his|my) Top People list is not empty on the backend$
+     */
+    @Given("^(\\w+) waits? until (?:his|my) Top People list is not empty on the backend$")
+    public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias) throws Exception {
+        commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(searchByNameAlias, 1);
+    }
 }

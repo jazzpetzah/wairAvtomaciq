@@ -39,8 +39,8 @@ Feature: Search
     Given Myself is connected to all other users
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until my Top People list is not empty on the backend
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 3 top connections
     And I tap Send image action button on People picker page
@@ -63,8 +63,8 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until my Top People list is not empty on the backend
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 3 top connections
     And I tap Send image action button on People picker page
@@ -86,8 +86,8 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until my Top People list is not empty on the backend
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on first 1 top connections
     Then I see Open conversation action button on People picker page
@@ -119,8 +119,8 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until my Top People list is not empty on the backend
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     When I tap on 1st top connection contact
     Then I see Open conversation action button on People picker page
@@ -138,8 +138,8 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until my Top People list is not empty on the backend
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     When I tap on 1st top connection contact
     Then I see Open conversation action button on People picker page
@@ -157,8 +157,8 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until my Top People list is not empty on the backend
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 1st top connection contact
     And I see Open conversation action button on People picker page
@@ -181,8 +181,8 @@ Feature: Search
     Given Myself is connected to all other users
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until my Top People list is not empty on the backend
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 1st top connection contact
     And I tap Open conversation action button on People picker page
@@ -199,8 +199,8 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until my Top People list is not empty on the backend
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on 1st top connection contact
     And I tap Open conversation action button on People picker page
@@ -217,8 +217,8 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until my Top People list is not empty on the backend
     When I open search by taping on it
-    And I re-enter the people picker if top people list is not there
     And I see Invite more people button
     And I tap on 1st top connection contact
     And I DONT see Invite more people button

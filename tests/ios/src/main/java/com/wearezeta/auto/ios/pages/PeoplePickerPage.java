@@ -15,7 +15,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class PeoplePickerPage extends IOSPage {
     private static final By xpathPickerSearch = By.xpath("//UIATextView[@name='textViewSearch' and @visible='true']");
 
-    private static final By xpathPickerClearButton =
+    public static final By xpathPickerClearButton =
             By.xpath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
 
     private static final By nameKeyboardEnterButton = MobileBy.AccessibilityId("Return");

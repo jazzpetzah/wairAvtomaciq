@@ -42,7 +42,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C909 @C3176 @rc @regression @IPv6 @id332 @id1470
+  @C909 @C3176 @regression @IPv6 @id332 @id1470
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -421,6 +421,8 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
+    # Wait for animations to finish
+    And I wait for 5 seconds
     And I swipe right text input to reveal option buttons
     Then I see conversation tools buttons
     And I see plus button is not shown
