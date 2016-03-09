@@ -136,7 +136,7 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given User <Contact1> sends encrypted message to user Myself
-    Given Myself waits until 1 person in backend top people results
+    Given Myself wait until 1 person is in the Top People list on the backend
     When I open Search UI
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
@@ -252,7 +252,7 @@ Feature: Search
     Given I see Contact list with contacts
     Given User <Contact1> sends encrypted message to user Myself
     Given I wait until <Contact1> exists in backend search results
-    Given Myself waits until 1 person in backend top people results
+    Given Myself wait until 1 person is in the Top People list on the backend
     When I open Search UI
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
@@ -275,7 +275,7 @@ Feature: Search
     Given User <Contact2> sends encrypted message to user Myself
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
-    Given Myself waits until 2 people in backend top people results
+    Given Myself wait until 2 people are in the Top People list on the backend
     When I open Search UI
     And I wait until Top People list appears
     And I see TOP PEOPLE
