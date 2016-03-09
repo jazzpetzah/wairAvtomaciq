@@ -87,7 +87,7 @@ public class PickleExecutor {
 
                 try {
                     if (params.isEmpty()) {
-                        method.invoke(getOrAddCachedDeclaringClassForMethod(method));
+                        method.invoke(getOrAddCachedDeclaringClassForMethod(method, constructorParams));
                     } else {
                         method.invoke(getOrAddCachedDeclaringClassForMethod(method, constructorParams), params.toArray());
                     }

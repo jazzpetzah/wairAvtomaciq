@@ -74,7 +74,7 @@ public final class CommonCallingSteps2 {
     private static CommonCallingSteps2 singleton = null;
 
     private final ExecutorService executor;
-    private final ClientUsersManager usrMgr;
+    private ClientUsersManager usrMgr;
     private final CallingServiceClient client;
     private final Map<String, Instance> instanceMapping;
     private final Map<String, Call> callMapping;
@@ -90,7 +90,6 @@ public final class CommonCallingSteps2 {
         this.callMapping = new ConcurrentHashMap<>();
         this.instanceMapping = new ConcurrentHashMap<>();
         this.client = new CallingServiceClient();
-        this.usrMgr = ClientUsersManager.getInstance();
         this.executor = Executors.newCachedThreadPool();
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
@@ -106,6 +105,11 @@ public final class CommonCallingSteps2 {
                 }
             }
         });
+    }
+    
+
+    public void setUsrMgr(ClientUsersManager usrMgr) {
+        this.usrMgr = usrMgr;
     }
 
     public static class CallNotFoundException extends Exception {

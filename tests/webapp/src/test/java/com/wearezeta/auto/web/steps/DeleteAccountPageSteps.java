@@ -56,7 +56,7 @@ public class DeleteAccountPageSteps {
 				DELETION_RECEIVING_TIMEOUT, 0).get());
 		final String url = message.extractAccountDeletionLink() + "&agent=" + agent;
 		log.info("URL: " + url);
-		DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+		DeleteAccountPage deleteAccountPage = context.getPagesCollection()
 				.getPage(DeleteAccountPage.class);
 		deleteAccountPage.setUrl(url);
 		deleteAccountPage.navigateTo();
@@ -89,7 +89,7 @@ public class DeleteAccountPageSteps {
 				DELETION_RECEIVING_TIMEOUT, 0).get());
 		final String url = message.extractAccountDeletionLink() + "&agent=" + agent;
 		
-		DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+		DeleteAccountPage deleteAccountPage = context.getPagesCollection()
 				.getPage(DeleteAccountPage.class);
 		
 		switch (part) {
@@ -113,14 +113,14 @@ public class DeleteAccountPageSteps {
 	
 	@Then("^I click delete account button$")
 	public void IClickDeleteAccountButton() throws Exception{
-		DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+		DeleteAccountPage deleteAccountPage = context.getPagesCollection()
 				.getPage(DeleteAccountPage.class);
 		deleteAccountPage.clickDeleteAccountButton();
 	}
 	
 	@Then("^I see error message for wrong (.*) checksum$")
 	public void ISeeErrorMessageForWrongChecksum(String checksum) throws Exception{
-		DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+		DeleteAccountPage deleteAccountPage = context.getPagesCollection()
 				.getPage(DeleteAccountPage.class);
 		if (checksum == "key") {
 			assertTrue("Delete account page shows success message", deleteAccountPage.isWrongKey());
@@ -178,7 +178,7 @@ public class DeleteAccountPageSteps {
 		
 		String newUrl = newUrlBuffer.toString();
 		log.info("New URL: " + newUrl);
-		DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+		DeleteAccountPage deleteAccountPage = context.getPagesCollection()
 				.getPage(DeleteAccountPage.class);
 		deleteAccountPage.setUrl(newUrl);
 		deleteAccountPage.navigateTo();
@@ -186,7 +186,7 @@ public class DeleteAccountPageSteps {
 	
 	@Then("^I see error message for missing checksum$")
 	public void ISeeErrorMessageForMissingChecksum() throws Exception{
-		DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+		DeleteAccountPage deleteAccountPage = context.getPagesCollection()
 				.getPage(DeleteAccountPage.class);
 		assertFalse("Delete button is visible", deleteAccountPage.isButtonVisible());
 		assertTrue("Delete account page shows success message", deleteAccountPage.isErrorMessage());

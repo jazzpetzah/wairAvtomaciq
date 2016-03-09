@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import java.math.BigInteger;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -83,7 +84,7 @@ public class ClientUsersManager {
         }
     }
 
-    private List<ClientUser> users = new ArrayList<>();
+    private List<ClientUser> users = Collections.synchronizedList(new ArrayList<>());
 
     public List<ClientUser> getCreatedUsers() {
         ArrayList<ClientUser> result = new ArrayList<>();

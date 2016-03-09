@@ -22,11 +22,11 @@ public final class CommonSteps {
 
     private String pingId = null;
 
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    private ClientUsersManager usrMgr;
 
-    private static final SEBridge seBridge = SEBridge.getInstance();
+    private SEBridge seBridge;
 
-    public ClientUsersManager getUserManager() {
+    private ClientUsersManager getUserManager() {
         return this.usrMgr;
     }
 
@@ -42,6 +42,14 @@ public final class CommonSteps {
     public CommonSteps() {
     }
 
+    public void setUsrMgr(ClientUsersManager usrMgr) {
+        this.usrMgr = usrMgr;
+    }
+
+    public void setSeBridge(SEBridge seBridge) {
+        this.seBridge = seBridge;
+    }
+    
     public static final String ALIASES_SEPARATOR = ",";
 
     public static List<String> splitAliases(String aliases) {
@@ -297,7 +305,7 @@ public final class CommonSteps {
                                          String dstUserNameAlias, String message, String deviceName) throws Exception {
         ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
         ClientUser msgToUser = usrMgr.findUserByNameOrNameAlias(dstUserNameAlias);
-        SEBridge.getInstance().sendConversationMessage(msgFromUser, msgToUser.getId(), message, deviceName);
+        seBridge.sendConversationMessage(msgFromUser, msgToUser.getId(), message, deviceName);
     }
 
     public void UserSentOtrMessageToUser(String msgFromUserNameAlias,

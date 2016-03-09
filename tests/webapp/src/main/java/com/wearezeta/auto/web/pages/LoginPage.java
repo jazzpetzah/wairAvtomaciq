@@ -24,8 +24,6 @@ public class LoginPage extends WebPage {
 
 	private static final int TIMEOUT_SIGNED_IN_PROPERLY = 40; // seconds
 
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathCreateAccountButton)
 	private WebElement createAccountButton;
@@ -137,7 +135,7 @@ public class LoginPage extends WebPage {
 		signInButton.click();
 	}
 
-	public void clickChangePasswordButton() throws Exception {
+	public void clickChangePasswordButton(WebappPagesCollection webappPagesCollection) throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				changePasswordButton);
 

@@ -44,8 +44,8 @@ public class PickleJarTest {
      * - run tests by id<br>
      */
     private static final String STEP_PACKAGE = "com.wearezeta.auto.web.steps";
-    private static PickleExecutor stepExecutor;
-    private static Reporter reporter;
+    private PickleExecutor stepExecutor;
+    private Reporter reporter;
 
     private final ScenarioImpl scenario;
 
@@ -79,8 +79,6 @@ public class PickleJarTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         System.out.println("### Before full testrun");
-        stepExecutor = new PickleExecutor(STEP_PACKAGE);
-        reporter = new ZetaFormatter();
     }
 
     @Before
@@ -92,6 +90,10 @@ public class PickleJarTest {
     public void test() throws Exception {
         System.out.println(feature);
         System.out.println(testcase);
+        
+        stepExecutor = new PickleExecutor(STEP_PACKAGE);
+        reporter = new ZetaFormatter();
+        
         Lifecycle lifecycle = new Lifecycle();
         lifecycle.setUp(scenario);
         for (String step : steps) {

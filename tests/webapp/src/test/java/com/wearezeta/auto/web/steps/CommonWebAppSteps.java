@@ -449,7 +449,7 @@ public class CommonWebAppSteps {
      */
     @Then("^I verify user (.*) has received (?:an |\\s*)email invitation$")
     public void IVerifyUserReceiverInvitation(String alias) throws Throwable {
-        final String email = commonSteps.getUserManager().findUserByNameOrNameAlias(alias).getEmail();
+        final String email = context.getUserManager().findUserByNameOrNameAlias(alias).getEmail();
         assertTrue(
                 String.format("Invitation email for %s is not valid", email),
                 BackendAPIWrappers
@@ -463,7 +463,7 @@ public class CommonWebAppSteps {
 
     @Then("^I delete account of user (.*) via email$")
     public void IDeleteAccountViaEmail(String alias) throws Throwable {
-        final String email = commonSteps.getUserManager().findUserByNameOrNameAlias(alias).getEmail();
+        final String email = context.getUserManager().findUserByNameOrNameAlias(alias).getEmail();
         IMAPSMailbox mbox = IMAPSMailbox.getInstance();
         Map<String, String> expectedHeaders = new HashMap<>();
         expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
@@ -472,8 +472,7 @@ public class CommonWebAppSteps {
                 DELETION_RECEIVING_TIMEOUT, 0).get());
         final String url = message.extractAccountDeletionLink();
         log.info("URL: " + url);
-        DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
-                .getPage(DeleteAccountPage.class);
+        DeleteAccountPage deleteAccountPage = context.getPagesCollection().getPage(DeleteAccountPage.class);
         deleteAccountPage.setUrl(url);
         deleteAccountPage.navigateTo();
         deleteAccountPage.clickDeleteAccountButton();
@@ -490,7 +489,7 @@ public class CommonWebAppSteps {
     @Then("^(.*) navigates to personal invitation registration page$")
     public void INavigateToPersonalInvitationRegistrationPage(String alias)
             throws Throwable {
-        final String email = commonSteps.getUserManager().findUserByNameOrNameAlias(alias).getEmail();
+        final String email = context.getUserManager().findUserByNameOrNameAlias(alias).getEmail();
         String url = BackendAPIWrappers
                 .getInvitationMessage(email)
                 .orElseThrow(
@@ -498,8 +497,7 @@ public class CommonWebAppSteps {
                             throw new IllegalStateException(
                                     "Invitation message has not been received");
                         }).extractInvitationLink();
-        RegistrationPage registrationPage = WebappPagesCollection.getInstance()
-                .getPage(RegistrationPage.class);
+        RegistrationPage registrationPage = context.getPagesCollection().getPage(RegistrationPage.class);
         registrationPage.setUrl(url);
         registrationPage.navigateTo();
     }
@@ -640,7 +638,7 @@ public class CommonWebAppSteps {
      */
     @Then("^I refresh page$")
     public void IRefreshPage() throws Exception {
-        WebappPagesCollection.getInstance().getPage(RegistrationPage.class)
+        context.getPagesCollection().getPage(RegistrationPage.class)
                 .refreshPage();
     }
 
@@ -697,7 +695,7 @@ public class CommonWebAppSteps {
      */
     @Given("^I open Sign In page$")
     public void IOpenSignInPage() throws Exception {
-        WebappPagesCollection.getInstance().getPage(RegistrationPage.class)
+        context.getPagesCollection().getPage(RegistrationPage.class)
                 .openSignInPage();
     }
 

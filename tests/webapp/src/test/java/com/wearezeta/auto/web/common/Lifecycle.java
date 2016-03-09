@@ -71,8 +71,11 @@ public class Lifecycle {
             this.driver = driver;
             this.commonSteps = new CommonSteps();
             this.userManager = new ClientUsersManager();
+            commonSteps.setUsrMgr(userManager);
             this.deviceManager = new SEBridge();
+            commonSteps.setSeBridge(deviceManager);
             this.callingManager = new CommonCallingSteps2();
+            callingManager.setUsrMgr(userManager);
             this.pagesCollection = new WebappPagesCollection();
         }
 

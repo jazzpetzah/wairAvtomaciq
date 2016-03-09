@@ -475,7 +475,7 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I see all devices of user (.*) on Single User Profile popover$")
 	public void ISeeADeviceNamed(String userAlias) throws Exception {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
-		List<String> ids = SEBridge.getInstance().getDeviceIds(user);
+		List<String> ids = context.getDeviceManager().getDeviceIds(user);
 		webappPagesCollection.getPage(SingleUserPopoverContainer.class).waitForDevices();
 		List<String> devices = webappPagesCollection.getPage(SingleUserPopoverContainer.class).getDeviceIds();
 		assertThat("Device id in list", devices, is(ids));
@@ -484,7 +484,7 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I see device (.*) of user (.*) is verified on Single User Profile popover$")
 	public void ISeeADeviceNamed(String deviceName, String userAlias) throws Exception {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
-		String id = SEBridge.getInstance().getDeviceId(user, deviceName);
+		String id = context.getDeviceManager().getDeviceId(user, deviceName);
 		webappPagesCollection.getPage(SingleUserPopoverContainer.class).waitForDevices();
 		List<String> devices = webappPagesCollection.getPage(SingleUserPopoverContainer.class).getVerifiedDeviceIds();
 		assertThat("Device id is in verified devices", devices, hasItem(id));
@@ -493,7 +493,7 @@ public class SingleUserPopoverPageSteps {
 	@When("^I click on device (.*) of user (.*) on Single User Profile popover$")
 	public void IClickOnDevice(String deviceName, String userAlias) throws Exception {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
-		String id = SEBridge.getInstance().getDeviceId(user, deviceName);
+		String id = context.getDeviceManager().getDeviceId(user, deviceName);
 		webappPagesCollection.getPage(SingleUserPopoverContainer.class).clickDevice(id);
 	}
 
