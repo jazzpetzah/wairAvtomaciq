@@ -163,7 +163,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C749 @id2283 @regression @rc @rc44 @torun
+  @C749 @id2283 @regression @rc @rc44
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
