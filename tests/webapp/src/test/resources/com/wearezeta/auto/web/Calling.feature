@@ -620,6 +620,9 @@ Feature: Calling
     When I join call of conversation <ChatName>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
+    And <Contact1>,<Contact2> verify to have 3 flows
+    And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
+    And I see the ongoing call controls for conversation <ChatName>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend | Timeout |
@@ -632,11 +635,12 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given <Contact2> starts instance using <WaitBackend>
+    Given <Contact1> starts instance using <CallBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    When <Contact1> calls <ChatName> using <CallBackend>
+    When <Contact1> calls <ChatName>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And I see the incoming call controls for conversation <ChatName>
@@ -646,6 +650,8 @@ Feature: Calling
     Then I join call of conversation <ChatName>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
+    And <Contact1> verify to have 3 flows
+    And <Contact1> verify that all flows have greater than 0 bytes
     And I see the ongoing call controls for conversation <ChatName>
 
     Examples:
