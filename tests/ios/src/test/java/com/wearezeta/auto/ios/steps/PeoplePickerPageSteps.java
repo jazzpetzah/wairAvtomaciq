@@ -20,7 +20,7 @@ public class PeoplePickerPageSteps {
         return pagesCollection.getPage(PeoplePickerPage.class);
     }
 
-    @When("^I see People picker page$")
+    @When("^I see [Pp]eople [Pp]icker page$")
     public void WhenISeePeoplePickerPage() throws Exception {
         Assert.assertTrue(getPeoplePickerPage().isPeoplePickerPageVisible());
     }

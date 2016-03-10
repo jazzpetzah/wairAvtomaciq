@@ -115,7 +115,8 @@ public class LoginPage extends IOSPage {
     }
 
     public Boolean isSelfAvatarVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(nameSelfButton), LOGIN_TIMEOUT_SECONDS);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(nameSelfButton),
+                LOGIN_TIMEOUT_SECONDS);
     }
 
     public void tapHoldEmailInput() throws Exception {
