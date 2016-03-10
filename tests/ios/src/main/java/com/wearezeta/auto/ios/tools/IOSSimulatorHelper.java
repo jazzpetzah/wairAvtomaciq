@@ -6,7 +6,11 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -194,13 +198,28 @@ public class IOSSimulatorHelper {
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
+    private static Map<String, String> simIdsMapping = new HashMap<>();
+
     public static String getId() throws Exception {
-        return CommonUtils.executeOsXCommandWithOutput(new String[]{
-                "/bin/bash",
-                "-c",
-                "xcrun simctl list devices | grep -v 'unavailable' | grep -i '"
-                        + getDeviceName(IOSSimulatorHelper.class)
-                        + " (' | tail -n 1 | cut -d '(' -f2 | cut -d ')' -f1"}).trim();
+        final String deviceName = getDeviceName(IOSSimulatorHelper.class);
+        if (!simIdsMapping.containsKey(deviceName)) {
+            final String output = executeSimctl(new String[]{"list", "devices"});
+            for (String line : output.split("\n")) {
+                if (line.contains(deviceName + " (") && !line.contains("unavailable")) {
+                    final Pattern pattern =
+                            Pattern.compile("([\\w]{8}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{4}\\-[\\w]{12})");
+                    final Matcher m = pattern.matcher(line);
+                    if (m.find()) {
+                        simIdsMapping.put(deviceName, m.group(0));
+                        break;
+                    }
+                }
+            }
+            if (!simIdsMapping.containsKey(deviceName)) {
+                throw new IllegalStateException(String.format("Cannot get an id for %s Simulator", deviceName));
+            }
+        }
+        return simIdsMapping.get(deviceName);
     }
 
     private final static String APP_CRASHES_MARKER = "Wire_";
@@ -287,5 +306,16 @@ public class IOSSimulatorHelper {
         } finally {
             FileUtils.deleteDirectory(app);
         }
+    }
+
+    public static void uploadImage(File img) throws Exception {
+        if (!img.exists()) {
+            throw new IllegalArgumentException(String.format(
+                    "Please make sure the image %s exists and is accessible", img.getCanonicalPath()
+            ));
+        }
+        executeSimctl(new String[]{
+                "addphoto", getId(), img.getCanonicalPath()
+        });
     }
 }
