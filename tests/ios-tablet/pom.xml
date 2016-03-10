@@ -16,7 +16,7 @@
         <TestRun>DevRun</TestRun>
         <Url>http://127.0.0.1:4723/wd/hub</Url>
         <appPath>/Project/ZClient_ios.app</appPath>
-        <platformVersion>9.1</platformVersion>
+        <platformVersion>9.2</platformVersion>
         <appName>Wire</appName>
         <useNativeInstrumentsLib>true</useNativeInstrumentsLib>
         <isSimulator>true</isSimulator>
