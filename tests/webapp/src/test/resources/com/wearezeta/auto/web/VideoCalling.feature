@@ -1,6 +1,6 @@
 Feature: VideoCalling
 
-  @C12071 @videocalling
+  @C12071 @videocalling @regression
   Scenario Outline: Verify I can start Video call from conversation view
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -23,7 +23,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
-  @C12070 @videocalling
+  @C12070 @videocalling @regression
   Scenario Outline: Verify I can accept Video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -49,7 +49,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
-  @C12072 @videocalling
+  @C12072 @videocalling @regression
   Scenario Outline: Verify I can decline Video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -71,7 +71,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | chrome      |
 
-  @C12078 @videocalling
+  @C12078 @videocalling @regression
   Scenario Outline: Verify I cannot see blocked contact trying to make a video call to me
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -92,7 +92,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout | OtherContact |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      | user3Name    |
 
-  @C12079 @videocalling
+  @C12079 @videocalling @regression
   Scenario Outline: Verify I can make a Video call one after another
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -195,7 +195,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
-  @C12075 @videocalling
+  @C12075 @videocalling @regression
   Scenario Outline: Verify I can cancel the outgoing video call (as a caller)
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -220,7 +220,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C12073 @videocalling
+  @C12073 @videocalling @regression
   Scenario Outline: Verify I can mute Video call after the call is established
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -248,7 +248,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
-  @C49971 @videocalling
+  @C49971 @videocalling @regression
   Scenario Outline: Verify I can mute Video call before the call is established
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -276,7 +276,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
-  @C48229 @videocalling
+  @C48229 @videocalling @regression
   Scenario Outline: Verify I can start 1:1 Video Call from Start UI
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -301,7 +301,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | chrome      |
 
-  @C48230 @videocalling
+  @C48230 @videocalling @regression
   Scenario Outline: Verify you don't see video call button when you're creating group from Start UI
     Given My browser supports calling
     Given There are 3 users where <Name> is me
