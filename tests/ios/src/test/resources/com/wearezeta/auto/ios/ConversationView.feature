@@ -155,17 +155,13 @@ Feature: Conversation View
       | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
   @C883 @regression @id394
-  Scenario Outline: (ZIOS-5920) Tap the cursor to get to the end of the conversation
+  Scenario Outline: Tap the cursor to get to the end of the conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I navigate back to conversations list
     Given User <Contact> sends 40 encrypted messages to user Myself
     When I tap on contact name <Contact>
-    And I see plus button is not shown
-    And I tap on text input to scroll to the end
     Then I see conversation is scrolled to the end
 
     Examples:
