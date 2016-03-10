@@ -81,7 +81,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C56397 @staging
+  @C56397 @regression
   Scenario Outline: Verify search results cleaned after closing search
     Given I delete all contacts from Address Book
     Given There are 3 users where <Name> is me

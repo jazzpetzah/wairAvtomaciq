@@ -421,6 +421,8 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
+    # Wait for animations to finish
+    And I wait for 5 seconds
     And I swipe right text input to reveal option buttons
     Then I see conversation tools buttons
     And I see plus button is not shown

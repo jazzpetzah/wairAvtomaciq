@@ -120,24 +120,6 @@ public class InvitationsPageSteps {
     }
 
     /**
-     * Waits for the invite button to appear or disappear in the conversations list
-     *
-     * @throws Exception
-     * @step. ^I( do not)? see invite more people button (in contacts list)?$
-     */
-    @When("^I( do not)? see invite more people button (in contacts list)?$")
-    public void WhenISeeInvitePeopleContactsButton(String shouldNotSee, String inContacts) throws Exception {
-        if (shouldNotSee == null && inContacts != null)
-            Assert.assertTrue("The invite more people button is not visible in contacts list",
-                    getInvitationsPage().waitForInviteMorePeopleContactsButtonVisible());
-        else if (inContacts != null)
-            Assert.assertTrue("The invite more people button is still visible in contacts list",
-                    getInvitationsPage().waitForInviteMorePeopleContactsButtonNotVisible());
-        else
-            Assert.assertTrue("Received unrecognized parameters", false);
-    }
-
-    /**
      * Tap on search field in invites page
      *
      * @throws Exception

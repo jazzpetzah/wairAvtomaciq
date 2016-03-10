@@ -18,7 +18,8 @@ Feature: Upgrade
     And I see 1 image in the conversation view
     When User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Then I see 2 images in the conversation view
-    When I tap on text input
+    When I scroll to the bottom of conversation view
+    And I tap on text input
     And I type the message "<Message2>" and send it
     Then I see my message "<Message2>" in the dialog
 

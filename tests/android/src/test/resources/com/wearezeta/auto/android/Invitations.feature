@@ -48,40 +48,6 @@ Feature: Invitations
       | Name      | Contact   | ContactEmail | ContactPassword | Message |
       | user1Name | user2Name | user2Email   | user2Password   | Hello   |
 
-  @C460 @id4158 @regression
-  Scenario Outline: Invite people button present in the list even user has more than 5 contacts
-    Given There are 7 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I wait until <Contact6> exists in backend search results
-    Then I see invite more people button in contacts list
-    Given <Contact6> sent connection request to <Name>
-    When <Name> accept all requests
-    Then I see invite more people button in contacts list
-
-    Examples: 
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name |
-      
-  @C461 @id4159 @regression
-  Scenario Outline: Verify that keyboard is closed when I close invites page
-    Given There are 1 user where <Name> is me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
-    When I take screenshot
-    And I open Search UI
-    And I tap search in invites page
-    And I tap invites page close button
-    Then I see Contact list with no contacts
-    Then I verify the previous and the current screenshots are not different
-
-    Examples: 
-      | Name      |
-      | user1Name |
-
   @C567 @id4160 @regression
   Scenario Outline: Verify that swipe do nothing in invites page
     Given There are 1 user where <Name> is me
