@@ -22,8 +22,7 @@ public class IOSPerfReportModel extends PerfReportModel {
 
 	public IOSPerfReportModel() {
 		try {
-			this.setBuildNumber(IOSCommonUtils.readClientVersionFromPlist()
-					.getClientBuildNumber());
+			this.setBuildNumber(IOSCommonUtils.readClientVersionFromPlist().getClientBuildNumber());
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());

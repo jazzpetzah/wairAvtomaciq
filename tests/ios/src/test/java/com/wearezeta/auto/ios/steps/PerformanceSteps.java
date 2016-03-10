@@ -106,26 +106,6 @@ public class PerformanceSteps {
     }
 
     /**
-     * Restarts application and starts new Appium session
-     *
-     * @throws Exception
-     * @step. ^I restart application$
-     */
-    @Given("^I restart application$")
-    public void IResetApplication() throws Exception {
-        CommonIOSSteps commonSteps = new CommonIOSSteps();
-
-        pagesCollecton.clearAllPages();
-        if (PlatformDrivers.getInstance().hasDriver(CommonIOSSteps.CURRENT_PLATFORM)) {
-            PlatformDrivers.getInstance().quitDriver(CommonIOSSteps.CURRENT_PLATFORM);
-        }
-
-        final Future<ZetaIOSDriver> lazyDriver = commonSteps.resetIOSDriver(true);
-        ZetaFormatter.setLazyDriver(lazyDriver);
-        pagesCollecton.setFirstPage(new LoginPage(lazyDriver));
-    }
-
-    /**
      * Waits until spinner after sign in disappers before contact list is shown
      *
      * @throws Exception
