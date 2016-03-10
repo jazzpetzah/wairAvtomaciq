@@ -9,8 +9,6 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends 40 encrypted messages to user Myself
     When I tap on contact name <Contact>
-    And I see plus button is not shown
-    And I tap on text input to scroll to the end
     Then I see conversation is scrolled to the end
 
     Examples:
