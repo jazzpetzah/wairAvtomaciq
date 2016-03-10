@@ -108,31 +108,37 @@ public class CommonAndroidSteps {
             }
         }
 
+        devicePreparationThread.get(DEVICE_PREPARATION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+
         try {
             return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities, 1,
-                    this::onDriverInitFinished, this::onDriverInitStarted);
+                    this::onDriverInitFinished, null);
         } catch (SessionNotCreatedException e) {
             // Unlock the screen and retry
             AndroidCommonUtils.unlockScreen();
             Thread.sleep(5000);
             return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities, 1,
-                    this::onDriverInitFinished, this::onDriverInitStarted);
+                    this::onDriverInitFinished, null);
         }
     }
 
-    private Boolean onDriverInitStarted() {
-        try {
-            AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
-            AndroidCommonUtils.disableHints();
-            AndroidCommonUtils.disableHockeyUpdates();
-            AndroidCommonUtils.installTestingGalleryApp(this.getClass());
-            String backendJSON = AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(this.getClass()));
-            AndroidCommonUtils.deployBackendFile(backendJSON);
-        } catch (Exception e) {
-            Throwables.propagate(e);
-        }
-        return true;
+    private static Void prepareDevice() throws Exception {
+        AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
+        AndroidCommonUtils.disableHints();
+        AndroidCommonUtils.disableHockeyUpdates();
+        AndroidCommonUtils.installTestingGalleryApp(CommonAndroidSteps.class);
+        String backendJSON = AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
+        AndroidCommonUtils.deployBackendFile(backendJSON);
+        return null;
     }
+
+    private static Future<Void> devicePreparationThread;
+    static {
+        final ExecutorService pool = Executors.newSingleThreadExecutor();
+        devicePreparationThread = pool.submit(CommonAndroidSteps::prepareDevice);
+        pool.shutdown();
+    }
+    private static final int DEVICE_PREPARATION_TIMEOUT_SECONDS = 20;
 
     private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
 

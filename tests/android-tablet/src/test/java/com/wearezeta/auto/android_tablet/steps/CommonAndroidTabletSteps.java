@@ -2,7 +2,10 @@ package com.wearezeta.auto.android_tablet.steps;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import com.wearezeta.auto.android.common.logging.LoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
@@ -89,44 +92,44 @@ public class CommonAndroidTabletSteps {
         capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidLoginActivityFromConfig(getClass()));
         capabilities.setCapability("automationName", "Selendroid");
 
+        devicePreparationThread.get(DEVICE_PREPARATION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+
         try {
             return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
-                    .resetDriver(url, capabilities, 1,
-                            this::onDriverInitFinished,
-                            this::onDriverInitStarted);
+                    .resetDriver(url, capabilities, 1, this::onDriverInitFinished, null);
         } catch (SessionNotCreatedException e) {
             // Unlock the screen and retry
             AndroidCommonUtils.unlockScreen();
             Thread.sleep(5000);
             return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
-                    .resetDriver(url, capabilities, 1,
-                            this::onDriverInitFinished,
-                            this::onDriverInitStarted);
+                    .resetDriver(url, capabilities, 1, this::onDriverInitFinished, null);
         }
     }
 
-    private boolean onDriverInitStarted() {
-        try {
-            AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
-            AndroidCommonUtils.disableHints();
-            AndroidCommonUtils.disableHockeyUpdates();
-            AndroidCommonUtils.installTestingGalleryApp(this.getClass());
-            final String backendJSON = AndroidCommonUtils
-                    .createBackendJSON(CommonUtils.getBackendType(this.getClass()));
-            AndroidCommonUtils.deployBackendFile(backendJSON);
-        } catch (Exception e) {
-            Throwables.propagate(e);
-        }
-        return true;
+    private static Void prepareDevice() throws Exception {
+        AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
+        AndroidCommonUtils.disableHints();
+        AndroidCommonUtils.disableHockeyUpdates();
+        AndroidCommonUtils.installTestingGalleryApp(CommonAndroidTabletSteps.class);
+        String backendJSON = AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidTabletSteps.class));
+        AndroidCommonUtils.deployBackendFile(backendJSON);
+        return null;
     }
+
+    private static Future<Void> devicePreparationThread;
+    static {
+        final ExecutorService pool = Executors.newSingleThreadExecutor();
+        devicePreparationThread = pool.submit(CommonAndroidTabletSteps::prepareDevice);
+        pool.shutdown();
+    }
+    private static final int DEVICE_PREPARATION_TIMEOUT_SECONDS = 20;
 
     private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
 
     @SuppressWarnings("unused")
     private void closeUpdateAlertIfAppears(RemoteWebDriver drv, By locator) {
         try {
-            if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
-                    UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
+            if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator, UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
                 drv.findElement(locator).click();
             }
         } catch (Exception e) {
