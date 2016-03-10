@@ -111,12 +111,13 @@ public class CommonAndroidTabletSteps {
         AndroidCommonUtils.disableHints();
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidTabletSteps.class);
-        String backendJSON = AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidTabletSteps.class));
+        final String backendJSON =
+                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidTabletSteps.class));
         AndroidCommonUtils.deployBackendFile(backendJSON);
         return null;
     }
 
-    private static Future<Void> devicePreparationThread;
+    private static final Future<Void> devicePreparationThread;
     static {
         final ExecutorService pool = Executors.newSingleThreadExecutor();
         devicePreparationThread = pool.submit(CommonAndroidTabletSteps::prepareDevice);
