@@ -140,6 +140,9 @@ public class CommonIOSSteps {
         String appPath = getAppPath();
         if (scenario.getSourceTagNames().contains("@upgrade")) {
             appPath = getOldAppPath();
+            if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+            }
             if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
                 IOSSimulatorHelper.reset();
             } else {
