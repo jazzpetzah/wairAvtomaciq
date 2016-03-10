@@ -152,23 +152,17 @@ public class DialogPageSteps {
 
     @Then("^I see last message in dialog (is|contains) expected message (.*)")
     public void ThenISeeLasMessageInTheDialogIsExpected(String operation, String msg) throws Exception {
-        String dialogLastMessage = getDialogPage().getLastMessageFromDialog().orElseThrow(() ->
-                new AssertionError("No messages are present in the conversation view")
-        );
-        if (!Normalizer.isNormalized(dialogLastMessage, Form.NFC)) {
-            dialogLastMessage = Normalizer.normalize(dialogLastMessage, Form.NFC);
-        }
         if (!Normalizer.isNormalized(msg, Form.NFC)) {
             msg = Normalizer.normalize(msg, Form.NFC);
         }
         if (operation.equals("is")) {
             Assert.assertTrue(
-                    String.format("The last message in the conversation '%s' is different from the expected one '%s'",
-                            dialogLastMessage, msg), dialogLastMessage.equals(msg));
+                    String.format("The last message in the conversation is different from the expected one '%s'",
+                            msg), getDialogPage().isLastMessageEqual(msg));
         } else {
             Assert.assertTrue(
-                    String.format("The last message in the conversation '%s' does not contain the expected one '%s'",
-                            dialogLastMessage, msg), dialogLastMessage.contains(msg));
+                    String.format("The last message in the conversation does not contain the expected one '%s'",
+                            msg), getDialogPage().isLastMessageContain(msg));
         }
     }
 
@@ -372,7 +366,7 @@ public class DialogPageSteps {
         final double minScore = 0.8;
         if (shouldNotChange == null) {
             Assert.assertTrue(String.format("The current media state is not different from the expected one after " +
-                    "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
+                            "%s seconds timeout", MEDIA_STATE_CHANGE_TIMEOUT),
                     previousMediaContainerState.isChanged(MEDIA_STATE_CHANGE_TIMEOUT, minScore));
         } else {
             Assert.assertTrue(String.format("The current media state is different from the expected one after " +
@@ -415,10 +409,8 @@ public class DialogPageSteps {
 
     @Then("^I see conversation view is scrolled back to the playing media link (.*)")
     public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link) throws Throwable {
-        Assert.assertEquals(link.toLowerCase(), getDialogPage()
-                .getLastMessageFromDialog().orElseThrow(() ->
-                        new AssertionError("No messages are present in the conversation view")
-                ).toLowerCase());
+        Assert.assertTrue(String.format("The last conversation message does not contain text '%s'", link),
+                getDialogPage().isLastMessageContain(link));
         Assert.assertTrue("View did not scroll back", getDialogPage()
                 .isMediaContainerVisible());
     }
@@ -454,11 +446,8 @@ public class DialogPageSteps {
     public void ICheckCopiedContentFrom(String mail) throws Exception {
         final String finalString = String.format("I’m on Wire. Search for %s",
                 usrMgr.findUserByNameOrNameAlias(mail).getEmail());
-        final String lastMessage = getDialogPage().getLastMessageFromDialog().orElseThrow(() ->
-                new AssertionError("No messages are present in the conversation view")
-        );
-        Assert.assertTrue(String.format("The last message in the chat '%s' does not contain '%s' part",
-                lastMessage, finalString), lastMessage.contains(finalString));
+        Assert.assertTrue(String.format("The last message in the chat does not contain '%s' part",
+                finalString), getDialogPage().isLastMessageContain(finalString));
     }
 
     /**
@@ -663,7 +652,6 @@ public class DialogPageSteps {
      *
      * @throws Exception
      * @step. ^I see no other conversation tools buttons except of Details$
-     *
      */
     @When("^I see no other conversation tools buttons except of Details$")
     public void ISeeOnlyDetailsButtonRestNotShown() throws Exception {
@@ -710,34 +698,30 @@ public class DialogPageSteps {
      * Verifies that vimeo link without ID is shown but NO player
      *
      * @param link of the vimeo video without ID
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I see vimeo link (.*) but NO media player$
      */
     @Then("^I see vimeo link (.*) but NO media player$")
-    public void ISeeVimeoLinkButNOMediaPlayer(String link) throws Throwable {
+    public void ISeeVimeoLinkButNOMediaPlayer(String link) throws Exception {
         Assert.assertFalse("Media player is shown in dialog", getDialogPage()
                 .isYoutubeContainerVisible());
-        Assert.assertEquals(link.toLowerCase(), getDialogPage()
-                .getLastMessageFromDialog().orElseThrow(() ->
-                        new AssertionError("No messages are present in the conversation view")
-                ).toLowerCase());
-    }
+        Assert.assertTrue(String.format("The last conversation message does not contain %s link", link),
+                getDialogPage().isLastMessageContain(link));
+ }
 
     /**
      * Verifies that vimeo link and the video container is visible
      *
      * @param link of vimeo video
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I see vimeo link (.*) and media in dialog$
      */
     @Then("^I see vimeo link (.*) and media in dialog$")
-    public void ISeeVimeoLinkAndMediaInDialog(String link) throws Throwable {
+    public void ISeeVimeoLinkAndMediaInDialog(String link) throws Exception {
         Assert.assertTrue("Media is missing in dialog", getDialogPage()
                 .isYoutubeContainerVisible());
-        Assert.assertEquals(link.toLowerCase(), getDialogPage()
-                .getLastMessageFromDialog().orElseThrow(() ->
-                        new AssertionError("No messages are present in the conversation view")
-                ).toLowerCase());
+        Assert.assertTrue(String.format("The last conversation message does not contain %s link", link),
+                getDialogPage().isLastMessageContain(link));
     }
 
     /**
@@ -894,7 +878,7 @@ public class DialogPageSteps {
     public void ITapThisDeviceLink() throws Exception {
         //getDialogPage().clickThisDeviceLink();
         //this is the fix because it can not locate system message label
-       getOtherUserPersonalInfoPage().openDeviceDetailsPage(1);
+        getOtherUserPersonalInfoPage().openDeviceDetailsPage(1);
     }
 
     /**
