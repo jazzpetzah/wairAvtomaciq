@@ -51,7 +51,7 @@ import org.openqa.selenium.safari.SafariOptions;
 public class Lifecycle {
 
     public static final int SAFARI_DRIVER_CREATION_RETRY = 3;
-    public static final long DRIVER_INIT_TIMEOUT = 60 * 1000;
+    public static final long DRIVER_INIT_TIMEOUT = 120 * 1000;
     private TestContext context;
 
     public class TestContext {
