@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @C1717 @smoke
+  @C1717 @regression
   Scenario Outline: Send ping in 1on1
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -38,7 +38,7 @@ Feature: Ping
       | Login      | Password      | Name      | Contact   | PING       |
       | user1Email | user1Password | user1Name | user2Name | you pinged |
 
-  @C1719 @smoke
+  @C1719 @regression
   Scenario Outline: Verify you can see Ping on the other side (group conversation)
     Given There are 3 users where <Name> is me
     Given user <Contact2> adds a new device Device1 with label Label1

@@ -49,7 +49,7 @@ Feature: Sign In
       | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1   | Message2     | ImageName1               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | Hello 1:1! | Hello Group! | userpicture_portrait.jpg |
 
-  @C2099 @e2ee @smoke
+  @C2099 @e2ee @regression
   Scenario Outline: Verify current browser is set as temporary device
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -98,7 +98,7 @@ Feature: Sign In
       | Email      | Password      | Error                                     |
       | user1Email | wrongPassword | Please verify your details and try again. |
 
-  @C1682 @smoke
+  @C1682 @regression
   Scenario Outline: Verify sign in button is disabled in case of empty credentials
     Given There is 1 user where user1Name is me
     When I switch to sign in page

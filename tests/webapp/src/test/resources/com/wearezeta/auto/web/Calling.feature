@@ -108,7 +108,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    |
 
-  @C1776 @smoke @calling @calling_debug
+  @C1776 @regression @calling @calling_debug
   Scenario Outline: Verify I can call a user twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -493,7 +493,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 60      |
 
-  @C1799 @regression @calling @group @calling_debug
+  @C1799 @smoke @calling @group @calling_debug
   Scenario Outline: Verify accepting group call
     Given My browser supports calling
     Given There are 5 users where <Name> is me
@@ -599,7 +599,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | autocall    | chrome      | 60      |
 
-  @staging @calling @group @calling_debug
+  @smoke @calling @group @calling_debug
   Scenario Outline: Verify leaving and coming back to the call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -627,6 +627,7 @@ Feature: Calling
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox     | 60      |
 
   @staging @calling @group @calling_debug
   Scenario Outline: Verify possibility to join call after 1 minutes of starting it

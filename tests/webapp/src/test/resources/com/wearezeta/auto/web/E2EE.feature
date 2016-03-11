@@ -29,7 +29,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Device  | Label  |
       | user1Email | user1Password | user1Name | Remote1 | Label1 |
 
-  @C1847 @e2ee @regression
+  @C1847 @e2ee @smoke
   Scenario Outline: Login as permanent device after permanent device limit is reached
     Given There is 1 user where <Name> is me
     Given user <Name> adds a new device Device1 with label Label1
@@ -104,7 +104,7 @@ Feature: E2EE
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C12068 @e2ee @regression
+  @C12068 @e2ee @smoke
   Scenario Outline: Verify you can receive encrypted messages in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
@@ -118,8 +118,8 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | EncryptedMessage |
       | user1Email | user1Password | user1Name | user2Name | EncryptedYo      |
 
-  @C12069 @e2ee @regression
-  Scenario Outline: Verify you can receive encrypted and non-encrypted images in 1:1 chat
+  @C12069 @e2ee @smoke
+  Scenario Outline: Verify you can receive encrypted images in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
@@ -132,7 +132,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | ImageName                |
       | user1Email | user1Password | user1Name | user2Name | userpicture_portrait.jpg |
 
-  @C12043 @e2ee @regression
+  @C12043 @e2ee @smoke
   Scenario Outline: Verify you can receive encrypted messages in group chat
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
@@ -150,7 +150,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1   | Contact2  | EncryptedMessage | GroupChatName |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | EncryptedYo      | HybridGroup   |
 
-  @C12044 @e2ee @regression
+  @C12044 @e2ee @smoke
   Scenario Outline: Verify you can receive encrypted images in group chat
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
@@ -168,7 +168,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact1   | Contact2  | ImageName                | GroupChatName |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | userpicture_portrait.jpg | HybridGroup   |
 
-  @C12050 @e2ee @regression
+  @C12050 @e2ee @smoke
   Scenario Outline: Verify you receive encrypted content in 1:1 conversation after switching online
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -197,7 +197,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | OnlineMessage | OfflineMessage | ImageName                |
       | user1Email | user1Password | user1Name | user2Name | Hello         | Are you online | userpicture_portrait.jpg |
 
-  @C12051 @e2ee @regression
+  @C12051 @e2ee @smoke
   Scenario Outline: Verify you receive encrypted content in group conversation after switching online
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1

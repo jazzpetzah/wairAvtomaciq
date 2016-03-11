@@ -1,6 +1,6 @@
 Feature: VideoCalling
 
-  @C12071 @videocalling @regression
+  @C12071 @videocalling @smoke
   Scenario Outline: Verify I can start Video call from conversation view
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -23,7 +23,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
-  @C12070 @videocalling @regression
+  @C12070 @videocalling @smoke
   Scenario Outline: Verify I can accept Video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
