@@ -179,7 +179,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C452 @id4073 @regression
+  @C452 @id4073 @regression @torun
   Scenario Outline: (CM-858) I can unmute 1:1 conversation from the conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

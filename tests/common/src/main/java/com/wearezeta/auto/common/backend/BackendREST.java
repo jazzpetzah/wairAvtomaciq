@@ -579,6 +579,10 @@ final class BackendREST {
         restHandlers.httpPut(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK});
     }
 
+    private static String getDefaultISO8601Time()  {
+        return "1970-01-01T00:00:00.000Z";
+    }
+
     private static String getCurrentISO8601Time() {
         final TimeZone tz = TimeZone.getTimeZone("UTC");
         final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
@@ -596,7 +600,7 @@ final class BackendREST {
             requestBody.put("muted", muted.get());
 
             requestBody.put("otr_muted", muted.get());
-            requestBody.put("otr_muted_ref", getCurrentISO8601Time());
+            requestBody.put("otr_muted_ref", getDefaultISO8601Time());
         }
         if (archived.isPresent()) {
             // TODO: remove deprecated
