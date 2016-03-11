@@ -262,6 +262,20 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * Pings BackEnd until user is indexed and available in top people
+     *
+     * @param searchByNameAlias user name to search string
+     * @param size              number of top people
+     * @throws Exception
+     * @step. ^(\w+) (?:wait|waits) until (\d+) (?:person|people) (?:is|are) in the Top People list on the backend$
+     */
+    @Given("^(\\w+) (?:wait|waits) until (\\d+) (?:person|people) (?:is|are) in the Top People list on the backend$")
+    public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias, int size) throws Exception {
+        commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
+                searchByNameAlias, size);
+    }
+
+    /**
      * Hides the system keyboard
      *
      * @throws Exception
