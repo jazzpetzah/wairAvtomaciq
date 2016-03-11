@@ -87,7 +87,7 @@ public class DialogPage extends IOSPage {
     private static final By nameSoundCloudButton = MobileBy.AccessibilityId("soundcloud");
 
     public static final Function<String, String> xpathStrMissedCallButtonByContact = name -> String.format(
-            "//UIATableCell[UIAStaticText[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']",
+            "//UIATableCell[.//*[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']",
             name.toUpperCase());
 
     private static final By xpathUserAvatarNextToInput = By.xpath(
@@ -573,8 +573,8 @@ public class DialogPage extends IOSPage {
         return true;
     }
 
-    public boolean isMissedCallButtonVisibleFor(String expectedCallMessage) throws Exception {
-        final By locator = By.xpath(xpathStrMissedCallButtonByContact.apply(expectedCallMessage));
+    public boolean isMissedCallButtonVisibleFor(String username) throws Exception {
+        final By locator = By.xpath(xpathStrMissedCallButtonByContact.apply(username));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }

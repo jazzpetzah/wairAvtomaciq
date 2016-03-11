@@ -462,9 +462,8 @@ public class DialogPageSteps {
     @When("^I see missed call from contact (.*)$")
     public void ISeeMissedCall(String contact) throws Exception {
         String username = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        final String expectedCallMessage = username.toUpperCase() + " CALLED";
-        Assert.assertTrue(String.format("'%s'  message is missing in dialog", expectedCallMessage),
-                getDialogPage().isMissedCallButtonVisibleFor(expectedCallMessage));
+        Assert.assertTrue(String.format("Missed call message for '%s' is missing in conversation view", username),
+                getDialogPage().isMissedCallButtonVisibleFor(username));
     }
 
     /**
