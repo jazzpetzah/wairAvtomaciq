@@ -43,6 +43,7 @@ public class PickleJarTest {
      * - run tests by id<br>
      */
     private static final String STEP_PACKAGE = "com.wearezeta.auto.web.steps";
+    private static final String EXECUTION_TAG_KEY = "picklejar.tag";
     private PickleExecutor stepExecutor;
     private Reporter reporter;
 
@@ -55,8 +56,9 @@ public class PickleJarTest {
 
     @Parameters(name = "{0}: {1} {2}")
     public static Collection<Object[]> getTestcases() throws IOException {
-        return new PickleJar().mapToJUnit(new String[]{"@torun"});
+        return new PickleJar().mapToJUnit(new String[]{System.getProperty(EXECUTION_TAG_KEY)});
     }
+    
 
     /**
      *
