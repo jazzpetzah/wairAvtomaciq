@@ -11,13 +11,10 @@ import cucumber.api.java.en.When;
 public class TabletOtherUserInfoPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-            .getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private TabletOtherUserInfoPage getTabletOtherUserInfoPage()
-            throws Exception {
-        return (TabletOtherUserInfoPage) pagesCollecton
-                .getPage(TabletOtherUserInfoPage.class);
+    private TabletOtherUserInfoPage getTabletOtherUserInfoPage() throws Exception {
+        return pagesCollection.getPage(TabletOtherUserInfoPage.class);
     }
 
     /**

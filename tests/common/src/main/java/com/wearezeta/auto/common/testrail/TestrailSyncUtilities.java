@@ -9,6 +9,10 @@ import gherkin.formatter.model.Scenario;
 import org.apache.log4j.Logger;
 
 import javax.mail.MessagingException;
+import java.io.File;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -36,7 +40,20 @@ public class TestrailSyncUtilities {
         }
     }
 
-    private static Optional<String> rcTestsComment = Optional.ofNullable(System.getenv("RC_TESTS_COMMENT"));
+    private static Optional<String> rcTestsComment = Optional.empty();
+
+    static {
+        try {
+            final Optional<String> rcTestsCommentPath =
+                    CommonUtils.getRcTestsCommentPathFromCommonConfig(TestrailSyncUtilities.class);
+            if (rcTestsCommentPath.isPresent()) {
+                rcTestsComment = Optional.of(new String(Files.readAllBytes(Paths.get(rcTestsCommentPath.get())),
+                        Charset.forName("UTF-8")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private static boolean isTestrailMutedSyncEnabled = false;
 

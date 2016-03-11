@@ -9,6 +9,7 @@ import java.util.concurrent.*;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
+import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -481,6 +482,10 @@ public class CommonUtils {
             }
         }
         ImageUtil.storeImage(resultImg, resultScreenshot);
+    }
+
+    public static Optional<String> getRcTestsCommentPathFromCommonConfig(Class<?> c) throws Exception {
+        return getOptionalValueFromCommonConfig(c, "rcTestsCommentPath");
     }
 
     private static class UIScriptExecutionMonitor implements Callable<Void> {

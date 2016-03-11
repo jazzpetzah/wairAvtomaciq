@@ -28,6 +28,7 @@
         <testrailPlanName></testrailPlanName>
         <testrailRunName></testrailRunName>
         <testrailRunConfigName></testrailRunConfigName>
+        <rcTestsCommentPath></rcTestsCommentPath>
         <syncIsAutomated>False</syncIsAutomated>
         <syncIsMuted>False</syncIsMuted>
         <cachedOtrDevicesCount>3</cachedOtrDevicesCount>
