@@ -14,20 +14,18 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 
     private static final By nameRenameButtonEllipsisMenu = MobileBy.AccessibilityId("RENAME");
 
-    private static final By xpathSilenceButtonEllipsisMenu = By.xpath(xpathStrMainWindow +
-            "/UIAPopover[1]/UIAButton[@name='SILENCE']");
-
-    private static final By xpathNotifyButtonEllipsisMenu = By.xpath(xpathStrMainWindow +
-            "/UIAPopover[1]/UIAButton[@name='NOTIFY']");
-
     private static final String xpathStrPopover = "//UIAPopover[@visible='true']";
     private static final By xpathPopover = By.xpath(xpathStrPopover);
+
+    private static final By xpathSilenceButtonEllipsisMenu = By.xpath(xpathStrPopover + "//UIAButton[@name='SILENCE']");
+
+    private static final By xpathNotifyButtonEllipsisMenu = By.xpath(xpathStrPopover + "//UIAButton[@name='NOTIFY']");
 
     private static final Function<String, String> xpathStrPopoverParticipantByName = name ->
             String.format("%s//UIAStaticText[@name='%s']/parent::*", xpathStrPopover, name.toUpperCase());
 
     private static final Function<Integer, String> xpathStrGroupCountByNumber = number ->
-            String.format("//UIAPopover//UIAStaticText[contains(@name,'%s PEOPLE')]", number);
+            String.format("%s//UIAStaticText[contains(@name,'%s PEOPLE')]", xpathStrPopover, number);
 
     public TabletGroupConversationDetailPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
