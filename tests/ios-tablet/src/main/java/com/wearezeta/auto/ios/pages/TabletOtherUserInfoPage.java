@@ -9,41 +9,35 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
-    private static final By nameOtherUserMetaControllerRightButtoniPadPopover =
+    private static final By nameOtherUserMetaControllerRightButtonIPadPopover =
             MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
 
     private static final Function<String, String> xpathStrOtherUserNameField = name ->
-            String.format("%s/UIAPopover[1]/UIAStaticText[@name='%s']", xpathStrMainWindow, name);
+            String.format("%s//*[@name='%s']",
+                    TabletGroupConversationDetailPopoverPage.xpathStrPopover, name);
 
-    private static final By xpathOtherUserEmailField = By.xpath(xpathStrMainWindow +
-            "/UIAPopover[1]/UIATextView[contains(@name, 'WIRE.COM')]");
+    private static final Function<String, String> xpathStrOtherUserEmailField = email ->
+            String.format("%s//*[@name='%s']",
+                    TabletGroupConversationDetailPopoverPage.xpathStrPopover, email.toUpperCase());
 
-    private static final By xpathOtherUserConnectLabel = By.xpath("//UIAPopover/UIAStaticText[@name='CONNECT']");
+    private static final By xpathOtherUserConnectLabel = By.xpath(
+            TabletGroupConversationDetailPopoverPage.xpathStrPopover + "//UIAStaticText[@name='CONNECT']");
 
     private static final By xpathOtherUserConnectButton = By.xpath(
             "//UIAStaticText[@name='CONNECT']/preceding-sibling::UIAButton[@name='OtherUserMetaControllerLeftButton']");
 
-    private static final By nameOtherUserProfilePageCloseButton = MobileBy.AccessibilityId("OtherUserProfileCloseButton");
+    private static final By nameOtherUserProfilePageCloseButton =
+            MobileBy.AccessibilityId("OtherUserProfileCloseButton");
 
-    public TabletOtherUserInfoPage(Future<ZetaIOSDriver> lazyDriver)
-            throws Exception {
+    public TabletOtherUserInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     public void removeFromConversationOniPad() throws Exception {
-        getElement(nameOtherUserMetaControllerRightButtoniPadPopover).click();
+        clickElementWithRetryIfStillDisplayed(nameOtherUserMetaControllerRightButtonIPadPopover);
     }
 
-    public String getNameFieldValueOniPadPopover(String user) throws Exception {
-        return getElement(By.xpath(xpathStrOtherUserNameField.apply(user))).getAttribute("name");
-    }
-
-    public String getEmailFieldValueOniPadPopover() throws Exception {
-        DriverUtils.waitUntilLocatorAppears(getDriver(), xpathOtherPersonalInfoPageEmailField);
-        return getElement(xpathOtherUserEmailField).getAttribute("value");
-    }
-
-    public boolean isConnectLabelVisible() throws Exception {
+     public boolean isConnectLabelVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOtherUserConnectLabel);
     }
 
@@ -63,4 +57,13 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
         DriverUtils.tapByCoordinates(getDriver(), getElement(nameOtherUserConversationMenu), 50, 50);
     }
 
+    public boolean isNameVisible(String user) throws Exception {
+        final By locator = By.xpath(xpathStrOtherUserNameField.apply(user));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isEmailVisible(String email) throws Exception {
+        final By locator = By.xpath(xpathStrOtherUserEmailField.apply(email));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
 }

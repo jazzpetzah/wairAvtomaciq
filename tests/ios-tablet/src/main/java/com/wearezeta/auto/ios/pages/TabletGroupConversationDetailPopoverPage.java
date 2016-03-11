@@ -15,7 +15,7 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 
     private static final By nameRenameButtonEllipsisMenu = MobileBy.AccessibilityId("RENAME");
 
-    private static final String xpathStrPopover = "//UIAPopover[@visible='true']";
+    public static final String xpathStrPopover = "//UIAPopover[@visible='true']";
     private static final By xpathPopover = By.xpath(xpathStrPopover);
 
     private static final By xpathSilenceButtonEllipsisMenu = By.xpath(xpathStrPopover + "//UIAButton[@name='SILENCE']");

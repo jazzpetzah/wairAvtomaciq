@@ -335,7 +335,7 @@ public abstract class IOSPage extends BasePage {
         do {
             el.click();
             counter++;
-            if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator)) {
+            if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator, 4)) {
                 return;
             }
         } while (counter < retryCount);
