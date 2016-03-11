@@ -84,14 +84,14 @@ public class DialogPageSteps {
 
     @Then("^I see You Pinged message in the dialog$")
     public void ISeeHelloMessageFromMeInTheDialog() throws Throwable {
-        Assert.assertTrue(getDialogPage().isMessageVisible(YOU_PINGED_MESSAGE));
+        Assert.assertTrue(getDialogPage().isPartOfTextMessageVisible(YOU_PINGED_MESSAGE));
     }
 
     @Then("^I see User (.*) Pinged message in the conversation$")
     public void ISeeUserPingedMessageTheDialog(String user) throws Throwable {
         String username = usrMgr.findUserByNameOrNameAlias(user).getName();
         String expectedPingMessage = username.toUpperCase() + " PINGED";
-        Assert.assertTrue(getDialogPage().isMessageVisible(expectedPingMessage));
+        Assert.assertTrue(getDialogPage().isPartOfTextMessageVisible(expectedPingMessage));
     }
 
     @When("^I type the (default|\".*\") message and send it$")
@@ -180,11 +180,11 @@ public class DialogPageSteps {
         if (shouldNot == null) {
             Assert.assertTrue(
                     String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
-                    getDialogPage().isMessageVisible(expectedMsg));
+                    getDialogPage().isPartOfTextMessageVisible(expectedMsg));
         } else {
             Assert.assertTrue(
                     String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
-                    getDialogPage().waitUntilMessageIsNotVisible(expectedMsg));
+                    getDialogPage().waitUntilPartOfTextMessageIsNotVisible(expectedMsg));
         }
     }
 
@@ -459,10 +459,10 @@ public class DialogPageSteps {
      */
     @When("^I see missed call from contact (.*)$")
     public void ISeeMissedCall(String contact) throws Exception {
-        String username = (contact.equals("YOU")) ? contact : usrMgr.findUserByNameOrNameAlias(contact).getName();
-        String expectedCallMessage = username.toUpperCase() + " CALLED";
-        Assert.assertTrue(username + " called message is missing in dialog",
-                getDialogPage().isMessageVisible(expectedCallMessage));
+        String username = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        final String expectedCallMessage = username.toUpperCase() + " CALLED";
+        Assert.assertTrue(String.format("'%s'  message is missing in dialog", expectedCallMessage),
+                getDialogPage().isMissedCallButtonVisibleFor(expectedCallMessage));
     }
 
     /**
@@ -707,7 +707,7 @@ public class DialogPageSteps {
                 .isYoutubeContainerVisible());
         Assert.assertTrue(String.format("The last conversation message does not contain %s link", link),
                 getDialogPage().isLastMessageContain(link));
- }
+    }
 
     /**
      * Verifies that vimeo link and the video container is visible

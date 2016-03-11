@@ -86,7 +86,7 @@ public class DialogPage extends IOSPage {
 
     private static final By nameSoundCloudButton = MobileBy.AccessibilityId("soundcloud");
 
-    public static final Function<String, String> xpathFormatMissedCallButtonByContact = name -> String.format(
+    public static final Function<String, String> xpathStrMissedCallButtonByContact = name -> String.format(
             "//UIATableCell[UIAStaticText[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']",
             name.toUpperCase());
 
@@ -122,12 +122,12 @@ public class DialogPage extends IOSPage {
         super(lazyDriver);
     }
 
-    public boolean isMessageVisible(String msg) throws Exception {
+    public boolean isPartOfTextMessageVisible(String msg) throws Exception {
         final By locator = By.xpath(xpathStrMessageByTextPart.apply(msg));
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
-    public boolean waitUntilMessageIsNotVisible(String msg) throws Exception {
+    public boolean waitUntilPartOfTextMessageIsNotVisible(String msg) throws Exception {
         final By locator = By.xpath(xpathStrMessageByTextPart.apply(msg));
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
     }
@@ -174,7 +174,7 @@ public class DialogPage extends IOSPage {
     }
 
     public void clickOnCallButtonForContact(String contact) throws Exception {
-        final By locator = By.xpath(xpathFormatMissedCallButtonByContact.apply(contact));
+        final By locator = By.xpath(xpathStrMissedCallButtonByContact.apply(contact));
         getElement(locator).click();
     }
 
@@ -571,5 +571,10 @@ public class DialogPage extends IOSPage {
             }
         }
         return true;
+    }
+
+    public boolean isMissedCallButtonVisibleFor(String expectedCallMessage) throws Exception {
+        final By locator = By.xpath(xpathStrMissedCallButtonByContact.apply(expectedCallMessage));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }
