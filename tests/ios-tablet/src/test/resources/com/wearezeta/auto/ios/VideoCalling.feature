@@ -2,7 +2,7 @@ Feature: Video Calling
 
   @C28850 @rc @calling_basic
   Scenario Outline: Verify cancelling Video call [LANDSCAPE]
-    Given There are 2 user where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -21,7 +21,7 @@ Feature: Video Calling
 
   @C28852 @calling_basic
   Scenario Outline: Verify accepting video call [LANDSCAPE]
-    Given There are 2 user where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -42,7 +42,7 @@ Feature: Video Calling
 
   @C28856 @calling_basic
   Scenario Outline: Verify finishing video call [LANDSCAPE]
-    Given There are 2 user where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically
@@ -63,7 +63,7 @@ Feature: Video Calling
 
   @C28855 @rc @calling_basic
   Scenario Outline: Verify ignoring Video call [LANDSCAPE]
-    Given There are 2 user where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -79,7 +79,7 @@ Feature: Video Calling
 
   @C28864 @staging
   Scenario Outline: Verify muting ongoing Video call [LANDSCAPE]
-    Given There are 2 user where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email

@@ -21,6 +21,9 @@ public abstract class TestcaseResultTransformer {
 		for (Entry<Step, String> entry : testcase.entrySet()) {
 			final String stepResult = entry.getValue();
 			final Step stepObj = entry.getKey();
+			if (stepResult == null || stepObj == null) {
+                continue;
+            }
 			if (stepResult.equals(Result.UNDEFINED.toString())) {
 				isPending = true;
 			} else if (!stepResult.equals(Result.PASSED.toString())
@@ -40,6 +43,9 @@ public abstract class TestcaseResultTransformer {
 		for (Entry<Step, String> entry : testcase.entrySet()) {
 			final String stepResult = entry.getValue();
 			final Step stepObj = entry.getKey();
+            if (stepResult == null || stepObj == null) {
+                continue;
+            }
 			if (stepResult.equals(Result.FAILED.toString())) {
 				if (!stepObj.getKeyword().toLowerCase().trim()
 						.equals(GIVEN_KEYWORD)) {
@@ -53,6 +59,9 @@ public abstract class TestcaseResultTransformer {
 	protected boolean isSkipped() {
 		for (Entry<Step, String> entry : testcase.entrySet()) {
 			final String stepResult = entry.getValue();
+            if (stepResult == null) {
+                continue;
+            }
 			if (stepResult.equals(Result.SKIPPED.toString())) {
 				return false;
 			}
