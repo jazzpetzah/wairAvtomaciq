@@ -310,7 +310,7 @@ Feature: Calling
       | autocall    | user1Name | user2Name | user3Name | user4Name | user5Name | MaxGroupCallChat |
 
   @C425 @id3165 @calling_basic
-  Scenario Outline: (AN-3507) Verify impossibility to connect 6th person to the call
+  Scenario Outline: (AN-3608) Verify impossibility to connect 6th person to the call
     Given There are 6 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
