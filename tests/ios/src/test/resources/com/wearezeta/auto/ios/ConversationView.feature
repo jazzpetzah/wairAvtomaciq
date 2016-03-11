@@ -265,8 +265,6 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I post media link <YouTubeLink>
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
     And I click video container for the first time
     # Wait until web page is loaded
     And I wait for 5 seconds

@@ -51,6 +51,9 @@ public class DialogPage extends IOSPage {
     private static final Function<String, String> xpathStrMessageByTextPart = text ->
             String.format("%s[contains(@value, '%s')]", xpathStrAllTextMessages, text);
 
+    private static final Function<String, String> xpathConversationEntryTemplate =
+            xpathExpr -> String.format("//UIAStaticText[%s]", xpathExpr);
+
     private static final Function<String, String> xpathStrMessageCellByTextPart = text ->
             String.format("%s[contains(@value, '%s')]/parent::*", xpathStrAllTextMessages, text);
 
@@ -59,13 +62,13 @@ public class DialogPage extends IOSPage {
     private static final By xpathLastImageCell = By.xpath(String.format("(%s)[1]", xpathStrImageCells));
 
     private static final By xpathMediaContainerCell =
-            By.xpath(xpathAllTextMessages + "[contains(@value, '://')]/following-sibling::UIAButton");
+            By.xpath(xpathStrAllTextMessages + "[contains(@value, '://')]/following-sibling::UIAButton");
 
     private static final By xpathGiphyImage = By
-            .xpath(xpathAllTextMessages + "[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']");
+            .xpath(xpathStrAllTextMessages + "[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']");
 
     private static final By xpathLastMessageResendButton =
-            By.xpath(xpathAllTextMessages + "[1]/parent::*/UIAButton");
+            By.xpath(xpathStrAllTextMessages + "[1]/parent::*/UIAButton");
 
     private static final By namePlayButton = MobileBy.AccessibilityId("mediaBarPlayButton");
 
@@ -87,8 +90,8 @@ public class DialogPage extends IOSPage {
             "//UIATableCell[UIAStaticText[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']",
             name.toUpperCase());
 
-    private static final By xpathUserAvatarNextToInput = By
-            .xpath("//UIAImage[following-sibling::UIATextView[@name='ConversationTextInputField'] and @visible='true']");
+    private static final By xpathUserAvatarNextToInput = By.xpath(
+            "//UIAImage[following-sibling::UIATextView[@name='ConversationTextInputField'] and @visible='true']");
 
     public static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
             "//UIAStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
@@ -98,13 +101,7 @@ public class DialogPage extends IOSPage {
     public static final Function<String, String> xpathStrConnectedToUserLabelByName = name -> String.format(
             "//UIAStaticText[contains(@name, 'CONNECTED TO %s')]", name.toUpperCase());
 
-    private static final Function<String, String> xpathStartConversationEntryTemplate = xpathExpr -> String.format(
-            "//UIAStaticText[%s]", xpathExpr);
-
     private static final By nameShieldIconNextToInput = MobileBy.AccessibilityId("verifiedConversationIndicator");
-
-    private static final Function<String, String> xpathStrConvoMessageByText = text -> String.format(
-            "%s//UIATableView//*[contains(@name, '%s')]", xpathStrMainWindow, text);
 
     public static final String MEDIA_STATE_PLAYING = "playing";
 
@@ -126,12 +123,12 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean isMessageVisible(String msg) throws Exception {
-        final By locator = By.xpath(xpathStrConvoMessageByText.apply(msg));
+        final By locator = By.xpath(xpathStrMessageByTextPart.apply(msg));
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
     public boolean waitUntilMessageIsNotVisible(String msg) throws Exception {
-        final By locator = By.xpath(xpathStrConvoMessageByText.apply(msg));
+        final By locator = By.xpath(xpathStrMessageByTextPart.apply(msg));
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
     }
 
@@ -314,7 +311,7 @@ public class DialogPage extends IOSPage {
     public boolean isChatMessageContainsStringsExist(List<String> values) throws Exception {
         final String xpathExpr = String.join(" and ",
                 values.stream().map(x -> String.format("contains(@name, '%s')", x.toUpperCase())).collect(Collectors.toList()));
-        final By locator = By.xpath(xpathStartConversationEntryTemplate.apply(xpathExpr));
+        final By locator = By.xpath(xpathConversationEntryTemplate.apply(xpathExpr));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 10);
     }
 
