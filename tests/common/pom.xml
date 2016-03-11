@@ -23,7 +23,6 @@
         <makeScreenshots>true</makeScreenshots>
         <makeScreenshotOnPassedSteps>true</makeScreenshotOnPassedSteps>
         <initNodeIp>true</initNodeIp>
-        <jenkinsJobUrl></jenkinsJobUrl>
         <testrailServerUrl>http://192.168.10.44:29082/testrail</testrailServerUrl>
         <testrailProjectName></testrailProjectName>
         <testrailPlanName></testrailPlanName>

@@ -36,16 +36,7 @@ public class TestrailSyncUtilities {
         }
     }
 
-    private static Optional<String> jenkinsJobUrl = Optional.empty();
-
-    static {
-        try {
-            jenkinsJobUrl = CommonUtils.getOptionalValueFromCommonConfig(TestrailSyncUtilities.class,
-                    "jenkinsJobUrl");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    private static Optional<String> rcTestsComment = Optional.ofNullable(System.getenv("RC_TESTS_COMMENT"));
 
     private static boolean isTestrailMutedSyncEnabled = false;
 
@@ -224,7 +215,7 @@ public class TestrailSyncUtilities {
                             testrailPlanName.get(), testrailRunName.get(),
                             testrailRunConfigName.orElse("<No Config>")));
             TestrailRESTWrapper.updateTestResult(testrailRunId.get(), Long.parseLong(tcId),
-                    actualTestResult, jenkinsJobUrl);
+                    actualTestResult, rcTestsComment);
         }
     }
 

@@ -14,7 +14,6 @@ defaultEmailListenerServicePort=${defaultEmailListenerServicePort}
 makeScreenshots=${makeScreenshots}
 makeScreenshotOnPassedSteps=${makeScreenshotOnPassedSteps}
 initNodeIp=${initNodeIp}
-jenkinsJobUrl=${jenkinsJobUrl}
 testrailServerUrl=${testrailServerUrl}
 testrailProjectName=${testrailProjectName}
 testrailPlanName=${testrailPlanName}
