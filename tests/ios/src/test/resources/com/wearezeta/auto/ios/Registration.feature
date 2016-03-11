@@ -10,7 +10,7 @@ Feature: Registration
     And I press Choose Own Picture button
     And I press Choose Photo button
     And I choose a picture from camera roll
-    And I tap Not Now button on Share Contacts overlay
+    And I tap Share Contacts button on Share Contacts overlay
     Then I see People picker page
 
     Examples:
