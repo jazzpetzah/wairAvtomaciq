@@ -53,7 +53,7 @@ public class PickleJarTest {
     private final List<String> steps;
     private final Map<String, String> examples;
 
-    @Parameters(name = "{0}: {1} ({2})")
+    @Parameters(name = "{0}: {1} {2}")
     public static Collection<Object[]> getTestcases() throws IOException {
         return new PickleJar().mapToJUnit(new String[]{"@torun"});
     }
