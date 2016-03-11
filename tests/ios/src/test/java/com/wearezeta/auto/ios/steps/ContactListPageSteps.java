@@ -5,13 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.wearezeta.auto.common.misc.ElementState;
-import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.junit.Assert;
 
 import cucumber.api.java.en.*;
 
 import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.pages.*;
