@@ -408,25 +408,18 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C888 @C889 @rc @regression @id3093 @id3092
-  Scenario Outline: Verify opening and closing input options by buttons click and swiping right/left
+  @C888 @rc @regression
+  Scenario Outline: Verify opening and closing input options by buttons click
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    # Wait for animations to finish
-    And I wait for 5 seconds
-    And I swipe right text input to reveal option buttons
-    Then I see conversation tools buttons
-    And I see plus button is not shown
-    And I swipe left on options buttons
-    And I see Close input options button is not visible
     And I see plus button next to text input
     And I click plus button next to text input
     Then I see conversation tools buttons
-    And I click Close input options button
-    And I see Close input options button is not visible
+    When I click Close input options button
+    Then I see Close input options button is not visible
     And I see plus button next to text input
 
     Examples:

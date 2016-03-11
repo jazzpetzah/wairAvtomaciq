@@ -202,6 +202,8 @@ public class DialogPageSteps {
     /**
      * Swipe right text input to reveal option buttons
      *
+     * !!! The step is unstable on Simulator
+     *
      * @throws Exception
      * @step. ^I swipe right text input to reveal option buttons$
      */
