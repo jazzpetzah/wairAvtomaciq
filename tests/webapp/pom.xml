@@ -38,6 +38,7 @@
         <com.wire.os.version>7</com.wire.os.version>
         <com.wire.browser.name>Chrome</com.wire.browser.name>
         <com.wire.browser.version>44.0</com.wire.browser.version>
+        <picklejar.executor>2</picklejar.executor>
     </properties>
 
     <dependencies>
@@ -97,8 +98,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
                 <configuration>
-                    <!--<parallel>methods</parallel>-->
-                    <!--<threadCount>4</threadCount>-->
                     <skipTests>${skipTests}</skipTests>
                     <trimStackTrace>false</trimStackTrace>
                     <!--<rerunFailingTestsCount>1</rerunFailingTestsCount>-->
@@ -107,6 +106,7 @@
                     </includes>
                     <argLine>-Djava.library.path=../common/native_lib</argLine>
                     <systemPropertyVariables>
+                        <maxParallelTestThreads>${picklejar.executor}</maxParallelTestThreads>
                         <java.awt.headless>true</java.awt.headless>
                         <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
                         <org.apache.commons.logging.simplelog.log.org.apache.http>warn</org.apache.commons.logging.simplelog.log.org.apache.http>

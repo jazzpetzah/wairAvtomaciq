@@ -46,6 +46,7 @@ public class PickleJarTest {
     private static final String EXECUTION_TAG_KEY = "picklejar.tag";
     private PickleExecutor stepExecutor;
     private Reporter reporter;
+    private Lifecycle lifecycle;
 
     private final ScenarioImpl scenario;
 
@@ -73,6 +74,7 @@ public class PickleJarTest {
         this.testcase = testcase;
         this.steps = steps;
         this.examples = examples;
+        reporter = new ZetaFormatter();
         this.scenario = new ScenarioImpl(reporter, Collections.emptySet(), new Scenario(Collections.emptyList(),
                 Collections.emptyList(), "keyword", testcase, "desc", 1, exampleNum.toString()));
     }
@@ -85,27 +87,24 @@ public class PickleJarTest {
     @Before
     public void setUp() throws Exception {
         System.out.println("### Before testcase");
+        lifecycle = new Lifecycle();
+        lifecycle.setUp(scenario);
+        stepExecutor = new PickleExecutor(STEP_PACKAGE);
     }
 
     @Test
     public void test() throws Exception {
         System.out.println(feature);
         System.out.println(testcase);
-
-        stepExecutor = new PickleExecutor(STEP_PACKAGE);
-        reporter = new ZetaFormatter();
-
-        Lifecycle lifecycle = new Lifecycle();
-        lifecycle.setUp(scenario);
         for (String step : steps) {
             stepExecutor.invokeMethodForStep(step, examples, lifecycle.getContext());
         }
-        lifecycle.tearDown(scenario);
     }
 
     @After
     public void tearDown() throws Exception {
         System.out.println("### After testcase");
+        lifecycle.tearDown(scenario);
     }
 
     @AfterClass
