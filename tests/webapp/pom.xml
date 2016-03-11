@@ -100,6 +100,7 @@
                 <configuration>
                     <skipTests>${skipTests}</skipTests>
                     <trimStackTrace>false</trimStackTrace>
+                    <threadCount>${picklejar.executor}</threadCount>
                     <!--<rerunFailingTestsCount>1</rerunFailingTestsCount>-->
                     <includes>
                         <include>**/${TestRun}.java</include>
