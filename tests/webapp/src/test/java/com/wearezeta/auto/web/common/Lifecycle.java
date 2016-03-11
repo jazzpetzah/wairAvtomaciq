@@ -56,6 +56,7 @@ public class Lifecycle {
     private TestContext context;
 
     public class TestContext {
+
         private final Platform currentPlatform = Platform.Web;
 
         private final String testname;
@@ -95,7 +96,7 @@ public class Lifecycle {
         public CommonCallingSteps2 getCallingManager() {
             return callingManager;
         }
-        
+
         public WebappPagesCollection getPagesCollection() {
             return pagesCollection;
         }
@@ -111,13 +112,13 @@ public class Lifecycle {
         public Platform getCurrentPlatform() {
             return currentPlatform;
         }
-        
 
     }
 
     /**
      * The context is fully initialized after setting up the testcase
-     * @return 
+     *
+     * @return
      */
     public TestContext getContext() {
         return context;
@@ -207,17 +208,17 @@ public class Lifecycle {
         final Future<ZetaWebAppDriver> lazyWebDriver = pool
                 .submit(callableWebAppDriver);
         context = new TestContext(uniqueName, lazyWebDriver);
-        
+
         try {
             context.deviceManager.reset();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         context.getDriver().get(url);
         context.getPagesCollection().setFirstPage(
                 new RegistrationPage(lazyWebDriver, url));
-        
+
         ZetaFormatter.setLazyDriver(lazyWebDriver);
     }
 
@@ -259,10 +260,13 @@ public class Lifecycle {
                     + "'>See more information on "
                     + link
                     + "</a><script>window.location.href = document.getElementById('link').getAttribute('href');</script></body></html>";
+            //TODO picklejar: Nullpointer in scenario
 //            scenario.embed(html.getBytes(Charset.forName("UTF-8")),
 //                    "text/html");
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            context.getDriver().quit();
         }
         context.getUserManager().resetUsers();
     }

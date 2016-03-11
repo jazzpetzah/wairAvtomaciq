@@ -39,7 +39,6 @@ public class PickleJarTest {
      * TODO:<br>
      * - [low prio] deal with multiple package paths for step classes<br>
      * - [low prio] using proper logger<br>
-     * - parse feature files<br>
      * - run tests by category<br>
      * - run tests by id<br>
      */
