@@ -171,6 +171,7 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
+    Given Myself wait until 1 person is in the Top People list on the backend
     And I open Search UI
     And I tap <Contact1> avatar in Top People
     When I tap Open Conversation action button on People Picker page
