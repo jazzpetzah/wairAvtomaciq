@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class PickleJar {
 
@@ -82,7 +83,9 @@ public class PickleJar {
                             }
                             
                             scenarioArray[0] = feature.getName();
-                            scenarioArray[1] = PickleExecutor.replaceExampleOccurences(scenarioDefinition.getName(), exampleRowWithHeader);
+                            // replacing placeholders with examples in scenario name
+                            // Pattern quote escapes characters that are dangerous in regexes
+                            scenarioArray[1] = Pattern.quote(PickleExecutor.replaceExampleOccurences(scenarioDefinition.getName(), exampleRowWithHeader));
                             scenarioArray[2] = new Integer(j + 1);
                             scenarioArray[3] = steps;
                             scenarioArray[4] = exampleRowWithHeader;
