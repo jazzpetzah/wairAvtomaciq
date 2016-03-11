@@ -20,10 +20,14 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
     private static final By xpathNotifyButtonEllipsisMenu = By.xpath(xpathStrMainWindow +
             "/UIAPopover[1]/UIAButton[@name='NOTIFY']");
 
+    private static final String xpathStrPopover = "//UIAPopover[@visible='true']";
+    private static final By xpathPopover = By.xpath(xpathStrPopover);
+
+    private static final Function<String, String> xpathStrPopoverParticipantByName = name ->
+            String.format("%s//UIAStaticText[@name='%s']/parent::*", xpathStrPopover, name.toUpperCase());
+
     private static final Function<Integer, String> xpathStrGroupCountByNumber = number ->
             String.format("//UIAPopover//UIAStaticText[contains(@name,'%s PEOPLE')]", number);
-
-    private static final By xpathPopover = By.xpath("//UIAPopover[@visible='true']");
 
     public TabletGroupConversationDetailPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -49,7 +53,8 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
     }
 
     public void selectUserByNameOniPadPopover(String name) throws Exception {
-        DriverUtils.tapByCoordinates(this.getDriver(), getElement(MobileBy.AccessibilityId(name.toUpperCase())));
+        final By locator = By.xpath(xpathStrPopoverParticipantByName.apply(name));
+        getElement(locator).click();
     }
 
     public void pressRenameEllipsesButton() throws Exception {
