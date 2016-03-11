@@ -101,6 +101,7 @@
                     <!--<threadCount>4</threadCount>-->
                     <skipTests>${skipTests}</skipTests>
                     <trimStackTrace>false</trimStackTrace>
+                    <!--<rerunFailingTestsCount>1</rerunFailingTestsCount>-->
                     <includes>
                         <include>**/${TestRun}.java</include>
                     </includes>
