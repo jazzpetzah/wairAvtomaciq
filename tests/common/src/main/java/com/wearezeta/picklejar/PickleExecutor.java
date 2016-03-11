@@ -147,7 +147,7 @@ public class PickleExecutor {
         }
     }
 
-    private static String replaceExampleOccurences(String rawStep, Map<String, String> exampleParams) {
+    public static String replaceExampleOccurences(String rawStep, Map<String, String> exampleParams) {
         for (String key : exampleParams.keySet()) {
             rawStep = rawStep.replaceAll("<" + key + ">", exampleParams.get(key));
         }

@@ -72,10 +72,7 @@ public class PickleJar {
                         for (int j = 0; j < tableRows.size(); j++) {
                             TableRow tableRow = tableRows.get(j);
                             Object[] scenarioArray = new Object[5];
-                            scenarioArray[0] = feature.getName();
-                            scenarioArray[1] = scenarioDefinition.getName();
-                            scenarioArray[2] = new Integer(j + 1);
-                            scenarioArray[3] = steps;
+                            
 
                             Map<String, String> exampleRowWithHeader = new HashMap<>();
                             for (int k = 0; k < tableRow.getCells().size(); k++) {
@@ -83,6 +80,11 @@ public class PickleJar {
                                 String value = tableRow.getCells().get(k).getValue();
                                 exampleRowWithHeader.put(key, value);
                             }
+                            
+                            scenarioArray[0] = feature.getName();
+                            scenarioArray[1] = PickleExecutor.replaceExampleOccurences(scenarioDefinition.getName(), exampleRowWithHeader);
+                            scenarioArray[2] = new Integer(j + 1);
+                            scenarioArray[3] = steps;
                             scenarioArray[4] = exampleRowWithHeader;
 
                             System.out.println("Adding scenario with example");
