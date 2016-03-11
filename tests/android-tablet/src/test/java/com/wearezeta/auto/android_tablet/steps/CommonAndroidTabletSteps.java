@@ -90,7 +90,6 @@ public class CommonAndroidTabletSteps {
         capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(getClass()));
         capabilities.setCapability("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
         capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidLoginActivityFromConfig(getClass()));
-        capabilities.setCapability("noReset", false);
         capabilities.setCapability("automationName", "Selendroid");
 
         devicePreparationThread.get(DEVICE_PREPARATION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
