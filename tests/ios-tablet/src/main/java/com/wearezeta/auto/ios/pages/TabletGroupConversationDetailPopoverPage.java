@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import org.openqa.selenium.WebElement;
 
 public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage {
     private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
@@ -40,8 +41,9 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
     }
 
     public void dismissPopover() throws Exception {
+        final WebElement popover = getElement(xpathPopover);
         for (int i = 0; i < 3; i++) {
-            DriverUtils.tapOutsideOfTheElement(getDriver(), getElement(xpathPopover), 100, 0);
+            DriverUtils.tapOutsideOfTheElement(getDriver(), popover, 100, 0);
             if (waitConversationInfoPopoverToClose()) {
                 // Wait for animation
                 Thread.sleep(1000);
