@@ -21,7 +21,6 @@ import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -224,16 +223,6 @@ public class Lifecycle {
 
     @After
     public void tearDown(Scenario scenario) throws Exception {
-
-        try {
-            // async calls/waiting instances cleanup
-            context.getCallingManager().cleanup();
-        } catch (Exception e) {
-            log.warn(e);
-        }
-
-        WebPage.clearPagesCollection();
-
         try {
             ZetaWebAppDriver driver = (ZetaWebAppDriver) context.getDriver();
 
@@ -268,6 +257,13 @@ public class Lifecycle {
         } finally {
             context.getDriver().quit();
         }
+        try {
+            // async calls/waiting instances cleanup
+            context.getCallingManager().cleanup();
+        } catch (Exception e) {
+            log.warn(e);
+        }
+        WebPage.clearPagesCollection();
         context.getUserManager().resetUsers();
     }
 

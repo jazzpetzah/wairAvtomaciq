@@ -35,7 +35,7 @@ public class PickleJar {
         for (Feature feature : features) {
             params.addAll(mapAndFlatFeature(feature, tagFilter));
         }
-        System.out.println("Found "+params.size()+" Scenarios");
+        System.out.println("Found " + params.size() + " Scenarios");
         return params;
     }
 
@@ -73,7 +73,6 @@ public class PickleJar {
                         for (int j = 0; j < tableRows.size(); j++) {
                             TableRow tableRow = tableRows.get(j);
                             Object[] scenarioArray = new Object[5];
-                            
 
                             Map<String, String> exampleRowWithHeader = new HashMap<>();
                             for (int k = 0; k < tableRow.getCells().size(); k++) {
@@ -81,11 +80,12 @@ public class PickleJar {
                                 String value = tableRow.getCells().get(k).getValue();
                                 exampleRowWithHeader.put(key, value);
                             }
-                            
+
                             scenarioArray[0] = feature.getName();
                             // replacing placeholders with examples in scenario name
                             // Pattern quote escapes characters that are dangerous in regexes
-                            scenarioArray[1] = Pattern.quote(PickleExecutor.replaceExampleOccurences(scenarioDefinition.getName(), exampleRowWithHeader));
+                            scenarioArray[1] = Pattern.quote(PickleExecutor.replaceExampleOccurences(scenarioDefinition.
+                                    getName(), exampleRowWithHeader));
                             scenarioArray[2] = new Integer(j + 1);
                             scenarioArray[3] = steps;
                             scenarioArray[4] = exampleRowWithHeader;
