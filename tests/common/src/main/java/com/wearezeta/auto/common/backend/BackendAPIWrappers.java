@@ -11,10 +11,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.onboarding.AddressBook;
 import com.wearezeta.auto.common.onboarding.Card;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
-import com.wearezeta.auto.common.usrmgmt.UserState;
+import com.wearezeta.auto.common.usrmgmt.*;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
@@ -267,15 +264,8 @@ public final class BackendAPIWrappers {
         sendConvertsationHotPing(fromUser, conv_id, id);
     }
 
-    private static AuthToken generateAuthToken(ClientUser user) {
-        return new AuthToken(user.getTokenType(), user.getAccessToken());
-    }
-
     private static AuthToken receiveAuthToken(ClientUser user) throws Exception {
-        if (user.getAccessToken() == null) {
-            user = tryLoginByUser(user);
-        }
-        return generateAuthToken(user);
+        return new AuthToken(user.getTokenType(), user.getToken());
     }
 
     public static void sendPictureToSingleUserConversation(ClientUser userFrom,
@@ -350,7 +340,6 @@ public final class BackendAPIWrappers {
     }
 
     private static String getConversationWithSingleUser(ClientUser fromUser, ClientUser toUser) throws Exception {
-        toUser = tryLoginByUser(toUser);
         String conversationId;
         JSONArray jsonArray = getConversations(fromUser);
         for (int i = 0; i < jsonArray.length(); i++) {
@@ -375,39 +364,26 @@ public final class BackendAPIWrappers {
         BackendREST.generateLoginCode(user.getPhoneNumber());
     }
 
-    public static ClientUser tryLoginByUser(ClientUser user) throws Exception {
-        if (user.getAccessToken() != null) {
-            try {
-                BackendREST.getUserInfo(generateAuthToken(user));
-                return user;
-            } catch (BackendRequestException e) {
-                // Ignore silently
-            }
-        }
-
-        JSONObject loggedUserInfo = null;
+    public static ClientToken login(final String email, final String password,
+                                    final PhoneNumber phoneNumber) throws Exception {
+        JSONObject loggedUserInfo = new JSONObject();
         int tryNum = 0;
         while (tryNum < MAX_BACKEND_RETRIES) {
             try {
                 try {
-                    loggedUserInfo = BackendREST.login(user.getEmail(),
-                            user.getPassword());
+                    loggedUserInfo = BackendREST.login(email, password);
                 } catch (BackendRequestException e) {
                     // Retry in case the user has only phone number attached
                     if (e.getReturnCode() == AUTH_FAILED_ERROR) {
                         try {
-                            BackendREST
-                                    .generateLoginCode(user.getPhoneNumber());
+                            BackendREST.generateLoginCode(phoneNumber);
                         } catch (BackendRequestException e1) {
                             if (e1.getReturnCode() != LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR) {
                                 throw e1;
                             }
                         }
-                        final String code = BackendREST
-                                .getLoginCodeViaBackdoor(user.getPhoneNumber())
-                                .getString("code");
-                        loggedUserInfo = BackendREST.login(
-                                user.getPhoneNumber(), code);
+                        final String code = BackendREST.getLoginCodeViaBackdoor(phoneNumber).getString("code");
+                        loggedUserInfo = BackendREST.login(phoneNumber, code);
                     }
                 }
                 break;
@@ -429,11 +405,13 @@ public final class BackendAPIWrappers {
             }
         }
 
-        user.setAccessToken(loggedUserInfo.getString("access_token"));
-        user.setTokenType(loggedUserInfo.getString("token_type"));
-        final JSONObject additionalUserInfo = BackendREST.getUserInfo(generateAuthToken(user));
-        user.setId(additionalUserInfo.getString("id"));
-        return user;
+        final ClientToken result = new ClientToken();
+        result.setToken(loggedUserInfo.getString("access_token"));
+        result.setTokenType(loggedUserInfo.getString("token_type"));
+        final JSONObject additionalUserInfo = BackendREST.getUserInfo(
+                new AuthToken(result.getTokenType(), result.getToken()));
+        result.setId(additionalUserInfo.getString("id"));
+        return result;
     }
 
     private static String getUserNameByID(String id, ClientUser user) throws Exception {
@@ -449,13 +427,10 @@ public final class BackendAPIWrappers {
 
     public static void sendConnectRequest(ClientUser user, ClientUser contact,
                                           String connectName, String message) throws Exception {
-        user = tryLoginByUser(user);
-        contact = tryLoginByUser(contact);
         BackendREST.sendConnectRequest(receiveAuthToken(user), contact.getId(), connectName, message);
     }
 
     private static JSONArray getAllConnections(ClientUser user) throws Exception {
-        user = tryLoginByUser(user);
         String startId = null;
         JSONObject connectionsInfo;
         final JSONArray result = new JSONArray();
@@ -512,10 +487,8 @@ public final class BackendAPIWrappers {
 
     public static void createGroupConversation(ClientUser user,
                                                List<ClientUser> contacts, String conversationName) throws Exception {
-        user = tryLoginByUser(user);
         List<String> ids = new ArrayList<>();
         for (ClientUser contact : contacts) {
-            tryLoginByUser(contact);
             ids.add(contact.getId());
         }
         BackendREST.createGroupConversation(receiveAuthToken(user), ids, conversationName);
@@ -524,10 +497,8 @@ public final class BackendAPIWrappers {
     public static void addContactsToGroupConversation(ClientUser asUser,
                                                       List<ClientUser> contacts, String conversationName)
             throws Exception {
-        asUser = tryLoginByUser(asUser);
         List<String> ids = new ArrayList<>();
         for (ClientUser contact : contacts) {
-            tryLoginByUser(contact);
             ids.add(contact.getId());
         }
         BackendREST.addContactsToGroupConvo(receiveAuthToken(asUser), ids,
@@ -536,7 +507,6 @@ public final class BackendAPIWrappers {
 
     public static void removeUserFromGroupConversation(ClientUser asUser,
                                                        ClientUser contact, String conversationName) throws Exception {
-        contact = tryLoginByUser(contact);
         String contactId = contact.getId();
         BackendREST.removeContactFromGroupConvo(receiveAuthToken(asUser),
                 contactId, getConversationIdByName(asUser, conversationName));
@@ -590,10 +560,9 @@ public final class BackendAPIWrappers {
     }
 
     public static JSONArray getConversations(ClientUser user) throws Exception {
-        user = tryLoginByUser(user);
         final JSONArray result = new JSONArray();
         String startId = null;
-        JSONObject conversationsInfo = null;
+        JSONObject conversationsInfo = new JSONObject();
         do {
             int tryNum = 0;
             while (tryNum < MAX_BACKEND_RETRIES) {
@@ -630,11 +599,10 @@ public final class BackendAPIWrappers {
     }
 
     public static void updateUserPicture(ClientUser user, String picturePath) throws Exception {
-        tryLoginByUser(user);
         final String convId = user.getId();
         if (picturePath == null) {
             // This will delete self picture
-            BackendREST.updateSelfInfo(generateAuthToken(user), null, new HashMap<>(), null);
+            BackendREST.updateSelfInfo(receiveAuthToken(user), null, new HashMap<>(), null);
         } else {
             final byte[] srcImageAsByteArray = Files.readAllBytes(Paths.get(picturePath));
 
@@ -645,13 +613,13 @@ public final class BackendAPIWrappers {
             ImageAssetProcessor imgProcessor = new SelfImageProcessor(srcImgData);
             ImageAssetRequestBuilder reqBuilder = new ImageAssetRequestBuilder(imgProcessor);
             Map<JSONObject, AssetData> sentPictures = BackendREST.sendPicture(
-                    generateAuthToken(user), convId, reqBuilder);
+                    receiveAuthToken(user), convId, reqBuilder);
             Map<String, AssetData> processedAssets = new LinkedHashMap<>();
             for (Map.Entry<JSONObject, AssetData> entry : sentPictures.entrySet()) {
                 final String postedImageId = entry.getKey().getJSONObject("data").getString("id");
                 processedAssets.put(postedImageId, entry.getValue());
             }
-            BackendREST.updateSelfInfo(generateAuthToken(user), null, processedAssets, null);
+            BackendREST.updateSelfInfo(receiveAuthToken(user), null, processedAssets, null);
         }
 
     }
@@ -699,8 +667,7 @@ public final class BackendAPIWrappers {
 
     public static void unarchiveGroupConv(ClientUser ownerUser,
                                           String conversationToUnarchive) throws Exception {
-        tryLoginByUser(ownerUser);
-        BackendREST.updateConvSelfInfo(generateAuthToken(ownerUser), conversationToUnarchive,
+        BackendREST.updateConvSelfInfo(receiveAuthToken(ownerUser), conversationToUnarchive,
                 Optional.empty(), Optional.of(false));
     }
 
@@ -715,7 +682,6 @@ public final class BackendAPIWrappers {
     public static void waitUntilContactsFound(ClientUser searchByUser,
                                               String query, int expectedCount, boolean orMore, int timeoutSeconds)
             throws Exception {
-        searchByUser = tryLoginByUser(searchByUser);
         final long startTimestamp = System.currentTimeMillis();
         int currentCount;
         while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
@@ -778,8 +744,7 @@ public final class BackendAPIWrappers {
 
     public static void sendPersonalInvitation(ClientUser ownerUser,
                                               String toEmail, String toName, String message) throws Exception {
-        tryLoginByUser(ownerUser);
-        BackendREST.sendPersonalInvitation(generateAuthToken(ownerUser), toEmail, toName, message);
+        BackendREST.sendPersonalInvitation(receiveAuthToken(ownerUser), toEmail, toName, message);
     }
 
     public static Optional<InvitationMessage> getInvitationMessage(String email)
@@ -798,7 +763,6 @@ public final class BackendAPIWrappers {
     }
 
     public static List<OtrClient> getOtrClients(ClientUser forUser) throws Exception {
-        tryLoginByUser(forUser);
         final List<OtrClient> result = new ArrayList<>();
         final JSONArray responseList = BackendREST.getClients(receiveAuthToken(forUser));
         for (int clientIdx = 0; clientIdx < responseList.length(); clientIdx++) {
@@ -808,7 +772,6 @@ public final class BackendAPIWrappers {
     }
 
     public static void removeOtrClient(ClientUser forUser, OtrClient otrClientInfo) throws Exception {
-        tryLoginByUser(forUser);
         BackendREST.deleteClient(receiveAuthToken(forUser), forUser.getPassword(), otrClientInfo.getId());
     }
 }

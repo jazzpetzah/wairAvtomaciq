@@ -1,14 +1,17 @@
 package com.wearezeta.auto.ios.steps;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import com.wearezeta.auto.common.*;
-import com.wearezeta.auto.common.driver.AppiumServer;
-import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
@@ -17,13 +20,12 @@ import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import com.wearezeta.auto.common.driver.PlatformDrivers;
-import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.pages.IOSPage;
@@ -61,8 +63,12 @@ public class CommonIOSSteps {
         return getIosAppiumUrlFromConfig(CommonIOSSteps.class);
     }
 
-    private static String getPath() throws Exception {
+    private static String getAppPath() throws Exception {
         return getIosApplicationPathFromConfig(CommonIOSSteps.class);
+    }
+
+    private static String getOldAppPath() throws Exception {
+        return getOldAppPathFromConfig(CommonIOSSteps.class);
     }
 
     private static boolean isUseNativeInstrumentsEnabled() throws Exception {
@@ -74,20 +80,16 @@ public class CommonIOSSteps {
         return getIOSAppName(CommonIOSSteps.class);
     }
 
-    public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts) throws Exception {
-        return resetIOSDriver(enableAutoAcceptAlerts, false);
-    }
-
     private static final int DRIVER_CREATION_RETRIES_COUNT = 2;
 
     @SuppressWarnings("unchecked")
-    public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts,
-                                                boolean overrideWaitForAppScript) throws Exception {
+    public Future<ZetaIOSDriver> resetIOSDriver(String appPath,
+                                                Optional<Map<String, Object>> additionalCaps) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("nativeInstrumentsLib", isUseNativeInstrumentsEnabled());
         capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
-        capabilities.setCapability("app", getPath());
+        capabilities.setCapability("app", appPath);
         capabilities.setCapability("appName", getAppName());
         final String deviceName = getDeviceName(this.getClass());
         capabilities.setCapability("deviceName", deviceName);
@@ -97,21 +99,16 @@ public class CommonIOSSteps {
         capabilities.setCapability("processArguments",
                 String.join(" ", new String[]{
                         "--args",
-                        "-TutorialOverlaysEnabled", "0",
-                        "-SkipFirstTimeUseChecks", "1",
-                        "-DisableHockeyUpdates", "1",
                         "-UseHockey", "0",
                         "-ZMBackendEnvironmentType", backendType,
                         // "--debug-log-network"
                 })
         );
-        if (enableAutoAcceptAlerts) {
-            capabilities.setCapability("autoAcceptAlerts", true);
-        }
 
-        if (overrideWaitForAppScript) {
-            capabilities.setCapability("waitForAppScript",
-                    "$.delay(20000); true;");
+        if (additionalCaps.isPresent()) {
+            for (Map.Entry<String, Object> entry : additionalCaps.get().entrySet()) {
+                capabilities.setCapability(entry.getKey(), entry.getValue());
+            }
         }
 
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
@@ -135,9 +132,37 @@ public class CommonIOSSteps {
             }
         }
 
-        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(
-                !scenario.getSourceTagNames().contains("@noAcceptAlert"));
+        final Map<String, Object> additionalCaps = new HashMap<>();
+        if (!scenario.getSourceTagNames().contains("@noAcceptAlert")) {
+            additionalCaps.put("autoAcceptAlerts", true);
+        }
+
+        String appPath = getAppPath();
+        if (scenario.getSourceTagNames().contains("@upgrade")) {
+            appPath = getOldAppPath();
+            if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+            }
+            if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+                IOSSimulatorHelper.reset();
+            } else {
+                // TODO: Make sure the app is uninstalled from the real device
+                throw new NotImplementedException("Reset action is only available for Simulator");
+            }
+            additionalCaps.put("noReset", true);
+            additionalCaps.put("fullReset", false);
+        }
+
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath,
+                additionalCaps.isEmpty() ? Optional.empty() : Optional.of(additionalCaps));
+        updateDriver(lazyDriver);
+    }
+
+    private void updateDriver(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         ZetaFormatter.setLazyDriver(lazyDriver);
+        if (pagesCollection.hasPages()) {
+            pagesCollection.clearAllPages();
+        }
         pagesCollection.setFirstPage(new LoginPage(lazyDriver));
     }
 
@@ -177,6 +202,23 @@ public class CommonIOSSteps {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Upgrade Wire to the recent version if the old one was previously installed
+     *
+     * @throws Exception
+     * @step. ^I upgrade Wire to the recent version$
+     */
+    @Given("^I upgrade Wire to the recent version$")
+    public void IUpgradeWire() throws Exception {
+        final String appPath = getAppPath();
+        pagesCollection.getCommonPage().installIpa(new File(appPath));
+        final Map<String, Object> customCaps = new HashMap<>();
+        customCaps.put("noReset", true);
+        customCaps.put("fullReset", false);
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath, Optional.of(customCaps));
+        updateDriver(lazyDriver);
     }
 
     @When("^I press keyboard Delete button$")
@@ -798,5 +840,17 @@ public class CommonIOSSteps {
     @Given("^User (.*) removes all his registered OTR clients$")
     public void UserRemovesAllRegisteredOtrClients(String userAs) throws Exception {
         commonSteps.UserRemovesAllRegisteredOtrClients(userAs);
+    }
+
+    /**
+     * Pings BackEnd until user is indexed and available in top people
+     *
+     * @param searchByNameAlias user name to search string
+     * @throws Exception
+     * @step. ^(\w+) waits? until (?:his|my) Top People list is not empty on the backend$
+     */
+    @Given("^(\\w+) waits? until (?:his|my) Top People list is not empty on the backend$")
+    public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias) throws Exception {
+        commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(searchByNameAlias, 1);
     }
 }

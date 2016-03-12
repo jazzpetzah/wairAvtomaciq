@@ -23,12 +23,12 @@
         <makeScreenshots>true</makeScreenshots>
         <makeScreenshotOnPassedSteps>true</makeScreenshotOnPassedSteps>
         <initNodeIp>true</initNodeIp>
-        <jenkinsJobUrl></jenkinsJobUrl>
         <testrailServerUrl>http://192.168.10.44:29082/testrail</testrailServerUrl>
         <testrailProjectName></testrailProjectName>
         <testrailPlanName></testrailPlanName>
         <testrailRunName></testrailRunName>
         <testrailRunConfigName></testrailRunConfigName>
+        <rcTestsCommentPath></rcTestsCommentPath>
         <syncIsAutomated>False</syncIsAutomated>
         <syncIsMuted>False</syncIsMuted>
         <cachedOtrDevicesCount>3</cachedOtrDevicesCount>
@@ -100,19 +100,19 @@
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-picocontainer</artifactId>
-            <version>1.1.8</version>
+            <version>1.2.4</version>
         </dependency>
 
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-junit</artifactId>
-            <version>1.1.8</version>
+            <version>1.2.4</version>
         </dependency>
 
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>1.1.8</version>
+            <version>1.2.4</version>
         </dependency>
 
         <dependency>

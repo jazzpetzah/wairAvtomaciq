@@ -63,6 +63,42 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
+  @C48237 @calling_advanced
+  Scenario Outline: Verify I can accept video call after another incoming call
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> start instances using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given <Contact1> starts a video call to me
+    Given I see incoming call
+    Given I swipe to accept the call
+    Given <Contact1> verifies that call status to me is changed to active in <Timeout> seconds
+    Given I see ongoing video call
+    Given I hang up ongoing video call
+    Given <Contact1> verifies that call status to me is changed to destroyed in <Timeout> seconds
+    When <Contact1> starts a video call to me
+    And I see incoming call
+    And I swipe to accept the call
+    Then <Contact1> verifies that call status to me is changed to active in <Timeout> seconds
+    When I see ongoing video call
+    And I hang up ongoing video call
+    Then <Contact1> verifies that call status to me is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing video call
+    When <Contact2> starts a video call to me
+    And I see incoming call
+    And I swipe to accept the call
+    Then <Contact2> verifies that call status to me is changed to active in <Timeout> seconds
+    When I see ongoing video call
+    And I hang up ongoing video call
+    Then <Contact2> verifies that call status to me is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing video call
+
+    Examples:
+      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
+      | user1Name | user2Name | user3Name | chrome      | 60      |
+
+
   @C36364 @calling_basic @rc
   Scenario Outline: Verify I can decline Video call from the locked device
     Given There are 2 users where <Name> is me
@@ -122,7 +158,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C36370 @staging
+  @C36370 @calling_advanced
   Scenario Outline: Verify I can make a Video call one after another
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -218,7 +254,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C49973 @staging
+  @C49973 @calling_advanced
   Scenario Outline: Verify you cannot make audio call to user A while he makes video call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -305,7 +341,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout | ExpectedMsg     |
       | user1Name | user2Name | chrome      | 30      | Try again later |
 
-  @C36368 @staging
+  @C36368 @calling_basic @rc
   Scenario Outline: Verify I can disable video in Video call and enable it back
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -328,5 +364,30 @@ Feature: VideoCalling
     Then I see state of video button has changed for ongoing video call
 
     Examples:
-      | Name      | Contact  | CallBackend | Timeout |
-      | user1Name | user2Name| chrome      | 30      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 30      |
+
+  @C58890 @staging
+  Scenario Outline: Verify that receiving ping, message or picture have not affect to ongoing call
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When <Contact> starts a video call to me
+    And I see incoming call
+    And I swipe to accept the call
+    Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    And I see ongoing video call
+    When User <Contact> sends encrypted image <ImageName> to single user conversation Myself
+    And User <Contact> sends encrypted message <Message> to user Myself
+    And User <Contact> securely pings conversation <Name>
+    # Wait until content is delivered
+    And I wait for 5 seconds
+    Then <Contact> verifies that call status to me is changed to active in 3 seconds
+    And I see ongoing video call
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout | Message | ImageName   |
+      | user1Name | user2Name | chrome      | 30      | Testing | testing.jpg |

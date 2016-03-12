@@ -230,6 +230,10 @@ public class DialogPage extends AndroidPage {
     }
 
     public void typeAndSendMessage(String message) throws Exception {
+        typeAndSendMessage(message, true);
+    }
+
+    public void typeAndSendMessage(String message, boolean hideKeyboard) throws Exception {
         // FIXME: Find a better solution for text autocorrection issues
         final WebElement cursorInput = getElement(idEditText);
         final int maxTries = 5;
@@ -246,7 +250,9 @@ public class DialogPage extends AndroidPage {
                 message));
         }
         pressKeyboardSendButton();
-        this.hideKeyboard();
+        if(hideKeyboard) {
+            this.hideKeyboard();
+        }
     }
 
     public void typeMessage(String message) throws Exception {

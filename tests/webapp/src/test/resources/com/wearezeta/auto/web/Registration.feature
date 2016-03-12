@@ -63,7 +63,7 @@ Feature: Registration
       | Login      | Password      | Name      | PictureName               |
       | user1Email | user1Password | user1Name | userpicture_landscape.jpg |
 
-  @C1771 @regression
+  @C1771 @smoke
   Scenario Outline: Keep picture on Welcome page
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
@@ -103,7 +103,7 @@ Feature: Registration
       | Name      | UsedEmail  | UnusedEmail | Password      |
       | user1Name | user1Email | user2Email  | user2Password |
 
-  @C1763 @smoke
+  @C1763 @regression
   Scenario Outline: I want to see an error message if the email address is forbidden
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page

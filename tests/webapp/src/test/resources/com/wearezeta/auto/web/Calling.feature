@@ -23,7 +23,7 @@ Feature: Calling
     And I see <PING> action in conversation
     And I see sent picture <PictureName> in the conversation view
     When I hang up call with conversation <Contact>
-    And I see the ongoing call controls for conversation <Contact>
+    And I do not see the call controls for conversation <Contact>
 
     Examples:
       | Login      | Password      | Name      | Contact   | PING       | PictureName               | CallBackend | Timeout |
@@ -108,7 +108,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    |
 
-  @C1776 @smoke @calling @calling_debug
+  @C1776 @regression @calling @calling_debug
   Scenario Outline: Verify I can call a user twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -122,13 +122,17 @@ Feature: Calling
     Then <Contact> accepts next incoming call automatically
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
-    And I hang up call with conversation <Contact>
-    Then <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
+    And <Contact> verify to have 1 flows
+    And <Contact> verify that all flows have greater than 0 bytes
+    When I hang up call with conversation <Contact>
+    Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
-    Then <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
-    And I call
+    And <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    When I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verify to have 1 flows
+    And <Contact> verify that all flows have greater than 0 bytes
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
@@ -368,13 +372,14 @@ Feature: Calling
   Scenario Outline: Verify I get missed call notification when someone calls me
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open self profile
-    When <Contact1> calls me using <CallBackend>
+    When <Contact1> calls me
     And I wait for 1 seconds
-    And <Contact1> stops all calls to me
+    And <Contact1> stops calling me
     And I wait for 1 seconds
     Then I see missed call notification for conversation <Contact1>
     When I open conversation with <Contact1>
@@ -404,25 +409,26 @@ Feature: Calling
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact2>
     When I hang up call with conversation <Contact2>
-    Then I do not see the ongoing call controls for conversation <Contact2>
+    Then I do not see the call controls for conversation <Contact2>
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | CallWaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome    | chrome          | 60      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | CallWaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome          | 60      |
 
   @C1750 @regression @calling @calling_debug
   Scenario Outline: Verify I can not see blocked contact trying to call me
     Given My browser supports calling
     Given There are 3 users where <Name> is me
+    Given <Contact> starts instance using <CallBackend>
     # OtherContact is needed otherwise the search will show up sometimes
     Given Myself is connected to <Contact>,<OtherContact>
     Given Myself blocked <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    When <Contact> calls me using <CallBackend>
+    When <Contact> calls me
     Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
-    And I do not see the incoming call controls for conversation <Contact>
+    And I do not see the call controls for conversation <Contact>
 
     Examples:
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
@@ -435,9 +441,10 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given <Contact> starts instance using <CallBackend>
     And I see my avatar on top of Contact list
-    Given I muted conversation with <Contact>
-    #When <Contact> calls me using <CallBackend>
+    And I muted conversation with <Contact>
+    When <Contact> calls me
     Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see the incoming call controls for conversation <Contact>
 
@@ -479,26 +486,27 @@ Feature: Calling
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
     When I hang up call with conversation <ChatName>
-    And I do not see the ongoing call controls for conversation <ChatName>
+    And I see the join call controls for conversation <ChatName>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 60      |
 
-  @C1799 @regression @calling @group @calling_debug
+  @C1799 @smoke @calling @group @calling_debug
   Scenario Outline: Verify accepting group call
     Given My browser supports calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
+    Given <Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
+    Given <Contact1> starts instance using <CallBackend>
     Given <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
-    When <Contact1> calls <ChatName> using <CallBackend>
+    When <Contact1> calls <ChatName>
     And <Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And I see the incoming call controls for conversation <ChatName>
@@ -508,12 +516,12 @@ Feature: Calling
     And <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
     And <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
     When I hang up call with conversation <ChatName>
-    Then I do not see the ongoing call controls for conversation <ChatName>
+    Then I see the join call controls for conversation <ChatName>
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | autocall    | chrome      | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | autocall    | firefox     | 60      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName  | CallBackend | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall    | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall    | firefox     | 60      |
 
   @staging @calling @group @calling_debug
   Scenario Outline: Verify impossibility to connect 6th person to the call
@@ -535,7 +543,7 @@ Feature: Calling
     And I wait for 1 seconds
     Then I see full call warning modal
     And I close the full call warning modal
-    When I join call
+    When I join call of conversation <ChatName>
     And I wait for 1 seconds
     Then I see full call warning modal
     And I click on "Ok" button in full call warning modal
@@ -560,7 +568,7 @@ Feature: Calling
     And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
     When I hang up call with conversation <ChatName>
-    Then I do not see the ongoing call controls for conversation <ChatName>
+    Then I see the join call controls for conversation <ChatName>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
@@ -574,23 +582,24 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given <Contact2> starts instance using <WaitBackend>
+    Given <Contact1> starts instance using <CallBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    When <Contact1> calls <ChatName> using <CallBackend>
+    When <Contact1> calls <ChatName>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    When I ignore the call from conversation <Contact1>
+    When I ignore the call from conversation <ChatName>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    Then I do not see the incoming call controls for conversation <ChatName>
+    Then I see the join call controls for conversation <ChatName>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | autocall    | chrome      | 60      |
 
-  @staging @calling @group @calling_debug
+  @smoke @calling @group @calling_debug
   Scenario Outline: Verify leaving and coming back to the call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -606,15 +615,19 @@ Feature: Calling
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
     When I hang up call with conversation <ChatName>
-    And I do not see the ongoing call controls for conversation <ChatName>
+    And I see the join call controls for conversation <ChatName>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    When I join call
+    When I join call of conversation <ChatName>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    And I see the ongoing call controls for conversation <ChatName>
+    And <Contact1>,<Contact2> verify to have 3 flows
+    And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
     And I see the ongoing call controls for conversation <ChatName>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox     | 60      |
 
   @staging @calling @group @calling_debug
   Scenario Outline: Verify possibility to join call after 1 minutes of starting it
@@ -623,20 +636,23 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given <Contact2> starts instance using <WaitBackend>
+    Given <Contact1> starts instance using <CallBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    When <Contact1> calls <ChatName> using <CallBackend>
+    When <Contact1> calls <ChatName>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And I see the incoming call controls for conversation <ChatName>
     And I wait for 60 seconds
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    Then I join call
+    Then I join call of conversation <ChatName>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
+    And <Contact1> verify to have 3 flows
+    And <Contact1> verify that all flows have greater than 0 bytes
     And I see the ongoing call controls for conversation <ChatName>
 
     Examples:

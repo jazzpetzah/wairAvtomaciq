@@ -19,11 +19,11 @@ public class AsyncProcess {
 
     private static final Logger log = ZetaLogger.getLog(AsyncProcess.class.getSimpleName());
 
-    private String[] cmd;
-    private boolean shouldLogStdOut;
+    private final String[] cmd;
+    private final boolean shouldLogStdOut;
     private Optional<StringBuilder> stdOut = Optional.empty();
     private Optional<StringBuilder> stdErr = Optional.empty();
-    private boolean shouldLogStdErr;
+    private final boolean shouldLogStdErr;
     private Optional<Process> process = Optional.empty();
     private Optional<Thread> stdOutMonitor = Optional.empty();
     private Optional<Thread> stdErrMonitor = Optional.empty();
@@ -84,7 +84,7 @@ public class AsyncProcess {
         if (this.isRunning()) {
             this.stop(9, new int[]{this.getPid()}, 2000);
         }
-        this.process = Optional.of(Runtime.getRuntime().exec(cmd));
+        this.process = Optional.of(new ProcessBuilder(cmd).start());
         final BufferedReader stdout = new BufferedReader(new InputStreamReader(process.get().getInputStream()));
         this.stdOut = Optional.of(new StringBuilder());
         this.stdOutMonitor = Optional.of(createListenerThread(stdout, STDOUT_LOG_PREFIX));
@@ -97,15 +97,7 @@ public class AsyncProcess {
     }
 
     public boolean isRunning() {
-        if (!this.process.isPresent()) {
-            return false;
-        }
-        try {
-            this.process.get().exitValue();
-            return false;
-        } catch (IllegalThreadStateException e) {
-            return true;
-        }
+        return this.process.isPresent() && this.process.get().isAlive();
     }
 
     /**
@@ -179,8 +171,7 @@ public class AsyncProcess {
      */
     public int getPid() throws Exception {
         if (!process.isPresent() || !this.isRunning()) {
-            throw new IllegalStateException(
-                    "PID is not available while the process is not running");
+            throw new IllegalStateException("PID is not available while the process is not running");
         }
         if (process.get().getClass().getName().equals("java.lang.UNIXProcess")) {
             Field f = process.get().getClass().getDeclaredField("pid");

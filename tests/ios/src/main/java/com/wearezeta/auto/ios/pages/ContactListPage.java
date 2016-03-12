@@ -72,6 +72,8 @@ public class ContactListPage extends IOSPage {
 
     public void openSearch() throws Exception {
         getElement(nameOpenStartUI).click();
+        // Wait until animation is completed
+        DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.xpathPickerClearButton, 3);
     }
 
     public boolean isPlayPauseButtonVisible(String contact) throws Exception {

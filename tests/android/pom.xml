@@ -16,10 +16,11 @@
         <testRun>DevRun</testRun>
         <url>http://127.0.0.1:4723/wd/hub</url>
         <appPath>/Project/zclient.apk</appPath>
+        <oldAppPath></oldAppPath>
         <package>com.waz.zclient.dev</package>
-        <activity>com.waz.zclient.AppEntryActivity</activity>
-        <launchActivity>com.waz.zclient.LaunchActivity</launchActivity>
-        <waitActivities>com.waz.zclient.AppEntryActivity</waitActivities>
+        <mainActivity>com.waz.zclient.MainActivity</mainActivity>
+        <loginActivity>com.waz.zclient.AppEntryActivity</loginActivity>
+        <convoListActivity>com.waz.zclient.LaunchActivity</convoListActivity>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
         <defaultEmail>smoketester@wire.com</defaultEmail>
         <pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
@@ -27,7 +28,7 @@
         <androidVersion>44</androidVersion>
         <backendType>staging</backendType>
         <androidToolsPath>${project.basedir}/../tools/android</androidToolsPath>
-        <rcNotificationsRecepients>vova@wire.com,nick@wire.com</rcNotificationsRecepients>
+        <rcNotificationsRecepients>vova@wire.com,nick@wire.com,robin@wire.com</rcNotificationsRecepients>
         <adbPrefix></adbPrefix>
     </properties>
 

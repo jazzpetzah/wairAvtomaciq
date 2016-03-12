@@ -162,8 +162,8 @@ public class CallingSteps {
     public void UserXVerifesHavingXFlows(String callees, int numberOfFlows)
             throws Exception {
         for (String callee : splitAliases(callees)) {
-            assertThat(commonCallingSteps.getFlows(callee),
-                    hasSize(numberOfFlows));
+            final List<Flow> flows = commonCallingSteps.getFlows(callee);
+            assertThat("existing flows: \n"+flows, flows, hasSize(numberOfFlows));
         }
     }
 
@@ -179,9 +179,8 @@ public class CallingSteps {
     public void UserXVerifesHavingXFlows(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
             for (Flow flow : commonCallingSteps.getFlows(callee)) {
-                assertThat("incoming bytes", flow.getBytesIn(), greaterThan(0L));
-                assertThat("outgoing bytes", flow.getBytesOut(),
-                        greaterThan(0L));
+                assertThat("incoming bytes: \n"+flow, flow.getBytesIn(), greaterThan(0L));
+                assertThat("outgoing bytes: \n"+flow, flow.getBytesOut(), greaterThan(0L));
             }
         }
     }

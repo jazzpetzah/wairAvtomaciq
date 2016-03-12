@@ -269,6 +269,8 @@ public class ZetaFormatter implements Formatter, Reporter {
 
             TestrailSyncUtilities.syncExecutedScenarioWithTestrail(scenario,
                     new TestcaseResultToTestrailTransformer(steps).transform(), normalizedTags);
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             steps.clear();
             stepsIterator = Optional.empty();

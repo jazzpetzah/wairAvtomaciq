@@ -33,14 +33,42 @@ public class DialogPage extends IOSPage {
 
     protected static final By nameYouRenamedConversation = MobileBy.AccessibilityId("YOU RENAMED THE CONVERSATION");
 
-    private static final By xpathMessageEntries = By.xpath(xpathStrMainWindow + "/UIATableView/UIATableCell");
+    /**
+     * !!! The actual message order in DOM is reversed relatively to the messages order in the conversation view
+     */
+    private static final String xpathStrAllEntries = xpathStrMainWindow + "/UIATableView/UIATableCell";
+    private static final By xpathAllEntries = By.xpath(xpathStrAllEntries);
 
-    private static final String xpathStrImageCells = "//UIATableCell[@name='ImageCell']";
+    private static final String xpathStrAllTextMessages = xpathStrAllEntries + "/UIATextView[boolean(string(@value))]";
+    private static final By xpathAllTextMessages = By.xpath(xpathStrAllTextMessages);
+
+    private static final Function<String, String> xpathStrLastMessageByTextPart = text ->
+            String.format("%s[1][contains(@value, '%s')]", xpathStrAllTextMessages, text);
+
+    private static final Function<String, String> xpathStrLastMessageByExactText = text ->
+            String.format("%s[1][@value='%s']", xpathStrAllTextMessages, text);
+
+    private static final Function<String, String> xpathStrMessageByTextPart = text ->
+            String.format("%s[contains(@value, '%s')]", xpathStrAllTextMessages, text);
+
+    private static final Function<String, String> xpathConversationEntryTemplate =
+            xpathExpr -> String.format("//UIAStaticText[%s]", xpathExpr);
+
+    private static final Function<String, String> xpathStrMessageCellByTextPart = text ->
+            String.format("%s[contains(@value, '%s')]/parent::*", xpathStrAllTextMessages, text);
+
+    private static final String xpathStrImageCells = xpathStrAllEntries + "[@name='ImageCell']";
     private static final By xpathImageCell = By.xpath(xpathStrImageCells);
-    private static final By xpathLastImageCell = By.xpath(String.format("(%s)[last()]", xpathStrImageCells));
+    private static final By xpathLastImageCell = By.xpath(String.format("(%s)[1]", xpathStrImageCells));
 
     private static final By xpathMediaContainerCell =
-            By.xpath("//UIATextView[contains(@value, '://')]/following-sibling::UIAButton");
+            By.xpath(xpathStrAllTextMessages + "[contains(@value, '://')]/following-sibling::UIAButton");
+
+    private static final By xpathGiphyImage = By
+            .xpath(xpathStrAllTextMessages + "[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']");
+
+    private static final By xpathLastMessageResendButton =
+            By.xpath(xpathStrAllTextMessages + "[1]/parent::*/UIAButton");
 
     private static final By namePlayButton = MobileBy.AccessibilityId("mediaBarPlayButton");
 
@@ -54,58 +82,26 @@ public class DialogPage extends IOSPage {
 
     private static final By nameTitle = MobileBy.AccessibilityId("playingMediaTitle");
 
-    private static final Function<String, String> xpathStrDialogTitleBar = title -> String.format(
-            "//UIAStaticText[@name='%s']", title);
-
     private static final By nameGifButton = MobileBy.AccessibilityId("rightMenuButton");
-
-    private static final By xpathGiphyImage = By
-            .xpath("//UIATextView[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']");
 
     private static final By nameSoundCloudButton = MobileBy.AccessibilityId("soundcloud");
 
-    private static final By xpathUserAvatarNextToInput = By
-            .xpath("//UIAImage[following-sibling::UIATextView[@name='ConversationTextInputField'] and @visible='true']");
+    public static final Function<String, String> xpathStrMissedCallButtonByContact = name -> String.format(
+            "//UIATableCell[.//*[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']",
+            name.toUpperCase());
 
-    private static final By xpathAllMessages = By.xpath(xpathStrMainWindow + "/UIATableView[1]/UIATableCell/UIATextView");
-
-    private static final String xpathStrAllMessages = xpathStrMainWindow + "/UIATableView[1]/UIATableCell/UIATextView";
-
-    private static final Function<String, String> xpathMessagesByText =
-            text -> String.format("%s[starts-with(@value, '%s')]", xpathStrAllMessages, text);
-
-    public static final Function<String, String> xpathFormatMissedCallButtonByContact = name -> String.format(
-            "//UIATableCell[UIAStaticText[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']", name.toUpperCase());
-
-    private static final By xpathLastMessage = By.xpath(String.format("%s/UIATableView[1]/UIATableCell[last()]/UIATextView[1]",
-            xpathStrMainWindow));
+    private static final By xpathUserAvatarNextToInput = By.xpath(
+            "//UIAImage[following-sibling::UIATextView[@name='ConversationTextInputField'] and @visible='true']");
 
     public static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
             "//UIAStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
 
     protected static final By nameCameraLibraryButton = MobileBy.AccessibilityId("cameraLibraryButton");
 
-    private static final Function<String, String> xpathStrMessageViewByText = text -> String.format(
-            "//UIATextView[contains(@value, '%s')]", text);
-
-    private static final Function<String, String> xpathStrLastItemByNameInDialog = name -> String.format(
-            "//UIAStaticText[@name='%s'][last()]", name.toUpperCase());
-
     public static final Function<String, String> xpathStrConnectedToUserLabelByName = name -> String.format(
             "//UIAStaticText[contains(@name, 'CONNECTED TO %s')]", name.toUpperCase());
 
-    private static final Function<String, String> xpathStartConversationEntryTemplate = xpathExpr -> String.format(
-            "//UIAStaticText[%s]", xpathExpr);
-
     private static final By nameShieldIconNextToInput = MobileBy.AccessibilityId("verifiedConversationIndicator");
-
-    private static final Function<String, String> xpathStrConvoMessageByText = text -> String.format(
-            "%s//UIATableView//*[contains(@name, '%s')]", xpathStrMainWindow, text);
-
-    private static final By xpathYouStartedUsingThisDeviceSystemMesssage = By
-            .xpath("//UIATextView[@name='YOU STARTED USING THIS DEVICE']");
-
-    private static final By xpathResendMessageButton = By.xpath("//UIATableView[1]/UIATableCell[last()]/UIAButton[1]");
 
     public static final String MEDIA_STATE_PLAYING = "playing";
 
@@ -126,13 +122,13 @@ public class DialogPage extends IOSPage {
         super(lazyDriver);
     }
 
-    public boolean isMessageVisible(String msg) throws Exception {
-        final By locator = By.xpath(xpathStrConvoMessageByText.apply(msg));
+    public boolean isPartOfTextMessageVisible(String msg) throws Exception {
+        final By locator = By.xpath(xpathStrMessageByTextPart.apply(msg));
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
-    public boolean waitUntilMessageIsNotVisible(String msg) throws Exception {
-        final By locator = By.xpath(xpathStrConvoMessageByText.apply(msg));
+    public boolean waitUntilPartOfTextMessageIsNotVisible(String msg) throws Exception {
+        final By locator = By.xpath(xpathStrMessageByTextPart.apply(msg));
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
     }
 
@@ -141,7 +137,11 @@ public class DialogPage extends IOSPage {
     }
 
     public void pressVideoCallButton() throws Exception {
-        getElement(nameVideoCallButton).click();
+        final WebElement videoCallButton = getElement(nameVideoCallButton);
+        videoCallButton.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameVideoCallButton, 3)) {
+            videoCallButton.click();
+        }
     }
 
     public void returnToConversationsList() throws Exception {
@@ -154,11 +154,15 @@ public class DialogPage extends IOSPage {
     }
 
     public void pressCallButton() throws Exception {
-        getElement(nameCallButton).click();
+        final WebElement callButton = getElement(nameCallButton);
+        callButton.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCallButton, 3)) {
+            callButton.click();
+        }
     }
 
     public int getNumberOfMessageEntries() throws Exception {
-        return selectVisibleElements(xpathMessageEntries).size();
+        return selectVisibleElements(xpathAllEntries).size();
     }
 
     public boolean waitForCursorInputVisible() throws Exception {
@@ -170,7 +174,7 @@ public class DialogPage extends IOSPage {
     }
 
     public void clickOnCallButtonForContact(String contact) throws Exception {
-        final By locator = By.xpath(xpathFormatMissedCallButtonByContact.apply(contact));
+        final By locator = By.xpath(xpathStrMissedCallButtonByContact.apply(contact));
         getElement(locator).click();
     }
 
@@ -186,12 +190,14 @@ public class DialogPage extends IOSPage {
         return getElement(nameConversationCursorInput).getText();
     }
 
-    public Optional<String> getLastMessageFromDialog() throws Exception {
-        final Optional<WebElement> el = getElementIfDisplayed(xpathLastMessage);
-        if (el.isPresent()) {
-            return Optional.of(el.get().getText());
-        }
-        return Optional.empty();
+    public boolean isLastMessageContain(String expectedText) throws Exception {
+        final By locator = By.xpath(xpathStrLastMessageByTextPart.apply(expectedText));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isLastMessageEqual(String expectedText) throws Exception {
+        final By locator = By.xpath(xpathStrLastMessageByExactText.apply(expectedText));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public int getMessagesCount() throws Exception {
@@ -199,16 +205,11 @@ public class DialogPage extends IOSPage {
     }
 
     public int getMessagesCount(String expectedMessage) throws Exception {
-        By locator;
-        if (expectedMessage == null) {
-            locator = xpathAllMessages;
-        } else {
-            locator = By.xpath(xpathMessagesByText.apply(expectedMessage));
+        By locator = xpathAllTextMessages;
+        if (expectedMessage != null) {
+            locator = By.xpath(xpathStrMessageByTextPart.apply(expectedMessage));
         }
-        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)) {
-            return getDriver().findElements(locator).size();
-        }
-        return 0;
+        return selectVisibleElements(locator).size();
     }
 
     public void swipeRightToShowConversationTools() throws Exception {
@@ -310,7 +311,7 @@ public class DialogPage extends IOSPage {
     public boolean isChatMessageContainsStringsExist(List<String> values) throws Exception {
         final String xpathExpr = String.join(" and ",
                 values.stream().map(x -> String.format("contains(@name, '%s')", x.toUpperCase())).collect(Collectors.toList()));
-        final By locator = By.xpath(xpathStartConversationEntryTemplate.apply(xpathExpr));
+        final By locator = By.xpath(xpathConversationEntryTemplate.apply(xpathExpr));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 10);
     }
 
@@ -419,11 +420,6 @@ public class DialogPage extends IOSPage {
         }
     }
 
-    public boolean isTitleBarDisplayed(String name) throws Exception {
-        final By locator = By.xpath(xpathStrDialogTitleBar.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
     public boolean isTypeOrSlideExists(String msg) throws Exception {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), MobileBy.AccessibilityId(msg), 5);
     }
@@ -441,8 +437,7 @@ public class DialogPage extends IOSPage {
     }
 
     public boolean isMyNameInDialogDisplayed(String name) throws Exception {
-        final By locator = By.xpath(xpathStrLastItemByNameInDialog.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(name.toUpperCase()));
     }
 
     public boolean isConnectedToUserStartedConversationLabelVisible(String username) throws Exception {
@@ -515,9 +510,10 @@ public class DialogPage extends IOSPage {
     }
 
     public void tapMessage(String expectedLink) throws Exception {
-        final By locator = By.xpath(xpathStrMessageViewByText.apply(expectedLink));
+        final By locator = By.xpath(xpathStrMessageCellByTextPart.apply(expectedLink));
         final WebElement el = getElement(locator);
-        DriverUtils.tapByCoordinates(getDriver(), el, -el.getSize().width / 4, 0);
+        // TODO: Find a better way to calculate these click coordinates
+        DriverUtils.tapByCoordinates(getDriver(), el, 10, 10);
     }
 
     public boolean isShieldIconVisibleNextToInputField() throws Exception {
@@ -528,13 +524,8 @@ public class DialogPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameShieldIconNextToInput);
     }
 
-    public void clickThisDeviceLink() throws Exception {
-        DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(),
-                getElement(xpathYouStartedUsingThisDeviceSystemMesssage), 90, 50);
-    }
-
     public void resendLastMessageInDialogToUser() throws Exception {
-        getElement(xpathResendMessageButton).click();
+        getElement(xpathLastMessageResendButton).click();
     }
 
     public BufferedImage getMediaContainerStateGlyphScreenshot() throws Exception {
@@ -580,5 +571,10 @@ public class DialogPage extends IOSPage {
             }
         }
         return true;
+    }
+
+    public boolean isMissedCallButtonVisibleFor(String username) throws Exception {
+        final By locator = By.xpath(xpathStrMissedCallButtonByContact.apply(username));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }

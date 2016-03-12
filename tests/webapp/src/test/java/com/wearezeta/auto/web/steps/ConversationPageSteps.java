@@ -578,17 +578,6 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Joins ongoing call by clicking the join call bar
-     *
-     * @throws Exception
-     * @step. ^I join call$
-     */
-    @When("^I join call$")
-    public void IJoinCall() throws Exception {
-        webappPagesCollection.getPage(ConversationPage.class).clickJoinCallBar();
-    }
-
-    /**
      * Silences the incoming call by clicking the corresponding button on the calling bar
      *
      * @throws Exception

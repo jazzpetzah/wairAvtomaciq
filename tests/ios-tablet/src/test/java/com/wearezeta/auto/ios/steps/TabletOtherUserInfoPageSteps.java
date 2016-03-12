@@ -9,129 +9,111 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class TabletOtherUserInfoPageSteps {
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-			.getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-	private TabletOtherUserInfoPage getTabletOtherUserInfoPage()
-			throws Exception {
-		return (TabletOtherUserInfoPage) pagesCollecton
-				.getPage(TabletOtherUserInfoPage.class);
-	}
+    private TabletOtherUserInfoPage getTabletOtherUserInfoPage() throws Exception {
+        return pagesCollection.getPage(TabletOtherUserInfoPage.class);
+    }
 
-	/**
-	 * Clicks remove button on the other user info popover
-	 * 
-	 * @step. ^I click Remove on iPad$
-	 * @throws Throwable
-	 */
-	@When("^I click Remove on iPad$")
-	public void IClickRemoveOniPad() throws Throwable {
-		getTabletOtherUserInfoPage().removeFromConversationOniPad();
-	}
+    /**
+     * Clicks remove button on the other user info popover
+     *
+     * @throws Throwable
+     * @step. ^I click Remove on iPad$
+     */
+    @When("^I click Remove on iPad$")
+    public void IClickRemoveOniPad() throws Throwable {
+        getTabletOtherUserInfoPage().removeFromConversationOniPad();
+    }
 
-	/**
-	 * Clicks the confirm REMOVE button
-	 * 
-	 * @step. ^I confirm remove on iPad$
-	 * @throws Throwable
-	 */
-	@When("^I confirm remove on iPad$")
-	public void IConfirmRemoveOniPad() throws Throwable {
-		getTabletOtherUserInfoPage().confirmRemove();
-	}
+    /**
+     * Clicks the confirm REMOVE button
+     *
+     * @throws Throwable
+     * @step. ^I confirm remove on iPad$
+     */
+    @When("^I confirm remove on iPad$")
+    public void IConfirmRemoveOniPad() throws Throwable {
+        getTabletOtherUserInfoPage().confirmRemove();
+    }
 
-	/**
-	 * Verifies that singleuser mail and name is seen
-	 * 
-	 * @step. ^I see email and name of user (.*) on iPad popover$
-	 * @param user
-	 *            that I check name and mail for
-	 * @throws Throwable
-	 */
-	@Then("^I see email and name of user (.*) on iPad popover$")
-	public void ISeeEmailAndNameOfUserOniPadPopover(String user)
-			throws Throwable {
+    /**
+     * Verifies that singleuser mail and name is seen
+     *
+     * @param user that I check name and mail for
+     * @throws Exception
+     * @step. ^I see email and name of user (.*) on iPad popover$
+     */
+    @Then("^I see email and name of user (.*) on iPad popover$")
+    public void ISeeEmailAndNameOfUserOniPadPopover(String user) throws Exception {
+        user = usrMgr.findUserByNameOrNameAlias(user).getName();
+        String email = usrMgr.findUserByNameOrNameAlias(user).getEmail();
 
-		String participantNameTextFieldValue = "";
-		String participantEmailTextFieldValue = "";
+        Assert.assertTrue(String.format("Participant name %s is not displayed on the popover", user),
+                getTabletOtherUserInfoPage().isNameVisible(user));
+        Assert.assertTrue(String.format("Participant Email %s is not displayed on the popover", email),
+                getTabletOtherUserInfoPage().isEmailVisible(email));
+    }
 
-		user = usrMgr.findUserByNameOrNameAlias(user).getName();
-		String email = usrMgr.findUserByNameOrNameAlias(user).getEmail();
+    /**
+     * Verify connect label shown on not connected user profile popover
+     *
+     * @throws Exception
+     * @step. I see Connect label on Other user profile popover
+     */
+    @Then("I see Connect label on Other user profile popover")
+    public void ISeeConnectLabelOnOtherUserProfilePopover() throws Exception {
+        Assert.assertTrue("Connect label is not shown",
+                getTabletOtherUserInfoPage().isConnectLabelVisible());
+    }
 
-		participantNameTextFieldValue = getTabletOtherUserInfoPage()
-				.getNameFieldValueOniPadPopover(user);
-		participantEmailTextFieldValue = getTabletOtherUserInfoPage()
-				.getEmailFieldValueOniPadPopover();
-		Assert.assertTrue("Participant Name is incorrect and/or not displayed",
-				participantNameTextFieldValue.equalsIgnoreCase(user));
-		Assert.assertTrue(
-				"Participant Email is incorrect and/or not displayed",
-				participantEmailTextFieldValue.equalsIgnoreCase(email));
-	}
+    /**
+     * Verify connect button shown on not connected user profile popover
+     *
+     * @throws Exception
+     * @step. I see Connect Button on Other user profile popover
+     */
+    @Then("I see Connect Button on Other user profile popover")
+    public void ISeeConnectButtonOnOtherUserProfilePopover() throws Exception {
+        Assert.assertTrue("Connect button is not shown",
+                getTabletOtherUserInfoPage().isConnectButtonVisible());
+    }
 
-	/**
-	 * Verify connect label shown on not connected user profile popover
-	 * 
-	 * @step. I see Connect label on Other user profile popover
-	 * 
-	 * @throws Exception
-	 */
-	@Then("I see Connect label on Other user profile popover")
-	public void ISeeConnectLabelOnOtherUserProfilePopover() throws Exception {
-		Assert.assertTrue("Connect label is not shown",
-				getTabletOtherUserInfoPage().isConnectLabelVisible());
-	}
+    /**
+     * Click on Connect button on not connected user profile popover
+     *
+     * @throws Exception
+     * @step. ^I click Connect button on not connected user profile popover$
+     */
+    @When("^I click Connect button on not connected user profile popover$")
+    public void IClickConnectButtonOnNotConnectedUserProfilePopover()
+            throws Exception {
+        getTabletOtherUserInfoPage().clickConnectButton();
+    }
 
-	/**
-	 * Verify connect button shown on not connected user profile popover
-	 * 
-	 * @step. I see Connect Button on Other user profile popover
-	 * 
-	 * @throws Exception
-	 */
-	@Then("I see Connect Button on Other user profile popover")
-	public void ISeeConnectButtonOnOtherUserProfilePopover() throws Exception {
-		Assert.assertTrue("Connect button is not shown",
-				getTabletOtherUserInfoPage().isConnectButtonVisible());
-	}
+    /**
+     * Click on Back button on user profile popover (usually to return to group chat info page )
+     *
+     * @throws Exception
+     * @step. ^I click Go back button on user profile popover$
+     */
+    @When("^I click Go back button on user profile popover$")
+    public void IClickGOButtonOnUserProfilePopover()
+            throws Exception {
+        getTabletOtherUserInfoPage().clickGoBackButton();
+    }
 
-	/**
-	 * Click on Connect button on not connected user profile popover
-	 * 
-	 * @step. ^I click Connect button on not connected user profile popover$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I click Connect button on not connected user profile popover$")
-	public void IClickConnectButtonOnNotConnectedUserProfilePopover()
-			throws Exception {
-		getTabletOtherUserInfoPage().clickConnectButton();
-	}
-	
-	/**
-	 * Click on Back button on user profile popover (usually to return to group chat info page )
-	 * 
-	 * @step. ^I click Go back button on user profile popover$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I click Go back button on user profile popover$")
-	public void IClickGOButtonOnUserProfilePopover()
-			throws Exception {
-		getTabletOtherUserInfoPage().clickGoBackButton();
-	}
-
-	/**
-	 * Closes the single other user view in group popover
-	 *
-	 * @throws Exception
-	 * @step. ^I exit the other user group info iPad popover$
-	 */
-	@When("^I exit the other user group info iPad popover$")
-	public void IExitTheOtherUserGroupInfoiPadPopover() throws Exception {
-		getTabletOtherUserInfoPage().exitOtherUserGroupChatPopover();
-	}
+    /**
+     * Closes the single other user view in group popover
+     *
+     * @throws Exception
+     * @step. ^I exit the other user group info iPad popover$
+     */
+    @When("^I exit the other user group info iPad popover$")
+    public void IExitTheOtherUserGroupInfoiPadPopover() throws Exception {
+        getTabletOtherUserInfoPage().exitOtherUserGroupChatPopover();
+    }
 
 }

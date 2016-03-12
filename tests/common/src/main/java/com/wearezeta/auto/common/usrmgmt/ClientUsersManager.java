@@ -417,8 +417,7 @@ public class ClientUsersManager {
         int lastExistingUserIndex = sharedUsers.size() - 1;
         while (lastExistingUserIndex >= 0) {
             try {
-                BackendAPIWrappers.tryLoginByUser(sharedUsers
-                        .get(lastExistingUserIndex));
+                sharedUsers.get(lastExistingUserIndex).getId();
                 for (int idx = 0; idx <= lastExistingUserIndex; idx++) {
                     sharedUsers.get(idx).setUserState(UserState.Created);
                 }
@@ -430,8 +429,7 @@ public class ClientUsersManager {
                     break;
                 }
             } catch (BackendRequestException e) {
-                if (e.getReturnCode() == HttpStatus.SC_FORBIDDEN
-                        || e.getReturnCode() == HttpStatus.SC_BAD_REQUEST) {
+                if (e.getReturnCode() == HttpStatus.SC_FORBIDDEN || e.getReturnCode() == HttpStatus.SC_BAD_REQUEST) {
                     lastExistingUserIndex -= SHARED_USERS_MIN_CREATION_INTERVAL;
                 } else {
                     throw e;
@@ -439,9 +437,7 @@ public class ClientUsersManager {
             }
         }
 
-        this.generateUsers(
-                sharedUsers.subList(lastExistingUserIndex + 1,
-                        sharedUsers.size()), strategy);
+        this.generateUsers(sharedUsers.subList(lastExistingUserIndex + 1, sharedUsers.size()), strategy);
     }
 
     public void appendSharedUsers(String commonNamePrefix, int count)

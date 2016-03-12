@@ -8,6 +8,9 @@ Feature: Archive
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
+    # This is to eliminate invitation banner
+    Given I open Search UI
+    Given I press Clear button
     And I see contact list with name <Contact1>
     When I swipe right on a <Contact1>
     And I select ARCHIVE from conversation settings menu
@@ -31,6 +34,9 @@ Feature: Archive
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
+    # This is to eliminate invitation banner
+    Given I open Search UI
+    Given I press Clear button
     And I see contact list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I select ARCHIVE from conversation settings menu

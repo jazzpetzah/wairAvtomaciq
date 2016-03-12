@@ -8,22 +8,25 @@ import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import org.openqa.selenium.WebElement;
 
 public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage {
     private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
 
     private static final By nameRenameButtonEllipsisMenu = MobileBy.AccessibilityId("RENAME");
 
-    private static final By xpathSilenceButtonEllipsisMenu = By.xpath(xpathStrMainWindow +
-            "/UIAPopover[1]/UIAButton[@name='SILENCE']");
+    public static final String xpathStrPopover = "//UIAPopover[@visible='true']";
+    private static final By xpathPopover = By.xpath(xpathStrPopover);
 
-    private static final By xpathNotifyButtonEllipsisMenu = By.xpath(xpathStrMainWindow +
-            "/UIAPopover[1]/UIAButton[@name='NOTIFY']");
+    private static final By xpathSilenceButtonEllipsisMenu = By.xpath(xpathStrPopover + "//UIAButton[@name='SILENCE']");
+
+    private static final By xpathNotifyButtonEllipsisMenu = By.xpath(xpathStrPopover + "//UIAButton[@name='NOTIFY']");
+
+    private static final Function<String, String> xpathStrPopoverParticipantByName = name ->
+            String.format("%s//UIAStaticText[@name='%s']/parent::*", xpathStrPopover, name.toUpperCase());
 
     private static final Function<Integer, String> xpathStrGroupCountByNumber = number ->
-            String.format("//UIAPopover//UIAStaticText[contains(@name,'%s PEOPLE')]", number);
-
-    private static final By xpathPopover = By.xpath("//UIAPopover[@visible='true']");
+            String.format("%s//UIAStaticText[contains(@name,'%s PEOPLE')]", xpathStrPopover, number);
 
     public TabletGroupConversationDetailPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -38,8 +41,9 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
     }
 
     public void dismissPopover() throws Exception {
+        final WebElement popover = getElement(xpathPopover);
         for (int i = 0; i < 3; i++) {
-            DriverUtils.tapOutsideOfTheElement(getDriver(), getElement(xpathPopover), 100, 0);
+            DriverUtils.tapOutsideOfTheElement(getDriver(), popover, 100, 0);
             if (waitConversationInfoPopoverToClose()) {
                 // Wait for animation
                 Thread.sleep(1000);
@@ -49,7 +53,8 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
     }
 
     public void selectUserByNameOniPadPopover(String name) throws Exception {
-        DriverUtils.tapByCoordinates(this.getDriver(), getElement(MobileBy.AccessibilityId(name.toUpperCase())));
+        final By locator = By.xpath(xpathStrPopoverParticipantByName.apply(name));
+        getElement(locator).click();
     }
 
     public void pressRenameEllipsesButton() throws Exception {

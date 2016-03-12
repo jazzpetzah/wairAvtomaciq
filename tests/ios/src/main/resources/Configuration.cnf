@@ -2,6 +2,7 @@
 #Configure before running tests
 iosAppiumUrl=${Url}
 iosApplicationPath=${appPath}
+oldAppPath=${oldAppPath}
 isSimulator=${isSimulator}
 appName=${appName}
 useNativeInstrumentsLib=${useNativeInstrumentsLib}
@@ -10,7 +11,6 @@ iOSToolsRoot=${iOSToolsRoot}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 pictureResultsPath=${pictureResultsPath}
 iosImagesPath=${iosImagesPath}
-iosClientInfoPlist=${iosClientInfoPlist}
 defaultEmail=${defaultEmail}
 deviceName=${deviceName}
 backendType=${backendType}

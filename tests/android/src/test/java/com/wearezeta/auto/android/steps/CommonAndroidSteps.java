@@ -39,7 +39,11 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.*;
 
 public class CommonAndroidSteps {
@@ -73,44 +77,69 @@ public class CommonAndroidSteps {
         return CommonUtils.getAndroidApplicationPathFromConfig(CommonAndroidSteps.class);
     }
 
+    private static String getOldPath() throws Exception {
+        return CommonUtils.getOldAppPathFromConfig(CommonAndroidSteps.class);
+    }
+
+    private static String getPackageName() throws Exception {
+        return CommonUtils.getAndroidPackageFromConfig(CommonAndroidSteps.class);
+    }
+
+    public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path) throws Exception {
+        return resetAndroidDriver(url, path, Optional.empty());
+    }
+
     @SuppressWarnings("unchecked")
-    public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path, Class<?> cls) throws Exception {
+    public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path,
+                                                        Optional<Map<String, Object>> additionalCaps) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
         capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         // To init the first available device
         capabilities.setCapability("deviceName", "null");
         capabilities.setCapability("app", path);
-        capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(cls));
-        capabilities.setCapability("appActivity", CommonUtils.getAndroidMainActivityFromConfig(cls));
-        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidWaitActivitiesFromConfig(cls));
+        capabilities.setCapability("appPackage", CommonUtils.getAndroidPackageFromConfig(getClass()));
+        capabilities.setCapability("appActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
+        capabilities.setCapability("appWaitActivity", CommonUtils.getAndroidLoginActivityFromConfig(getClass()));
         capabilities.setCapability("automationName", "Selendroid");
+        if (additionalCaps.isPresent()) {
+            for (Map.Entry<String, Object> entry : additionalCaps.get().entrySet()) {
+                capabilities.setCapability(entry.getKey(), entry.getValue());
+            }
+        }
+
+        devicePreparationThread.get(DEVICE_PREPARATION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
         try {
             return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities, 1,
-                    this::onDriverInitFinished, this::onDriverInitStarted);
+                    this::onDriverInitFinished, null);
         } catch (SessionNotCreatedException e) {
             // Unlock the screen and retry
             AndroidCommonUtils.unlockScreen();
             Thread.sleep(5000);
             return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities, 1,
-                    this::onDriverInitFinished, this::onDriverInitStarted);
+                    this::onDriverInitFinished, null);
         }
     }
 
-    private Boolean onDriverInitStarted() {
-        try {
-            AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
-            AndroidCommonUtils.disableHints();
-            AndroidCommonUtils.disableHockeyUpdates();
-            AndroidCommonUtils.installTestingGalleryApp(this.getClass());
-            String backendJSON = AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(this.getClass()));
-            AndroidCommonUtils.deployBackendFile(backendJSON);
-        } catch (Exception e) {
-            Throwables.propagate(e);
-        }
-        return true;
+    private static Void prepareDevice() throws Exception {
+        AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
+        AndroidCommonUtils.disableHints();
+        AndroidCommonUtils.disableHockeyUpdates();
+        AndroidCommonUtils.installTestingGalleryApp(CommonAndroidSteps.class);
+        final String backendJSON =
+                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
+        AndroidCommonUtils.deployBackendFile(backendJSON);
+        return null;
     }
+
+    private static final Future<Void> devicePreparationThread;
+    static {
+        final ExecutorService pool = Executors.newSingleThreadExecutor();
+        devicePreparationThread = pool.submit(CommonAndroidSteps::prepareDevice);
+        pool.shutdown();
+    }
+    private static final int DEVICE_PREPARATION_TIMEOUT_SECONDS = 20;
 
     private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
 
@@ -170,9 +199,41 @@ public class CommonAndroidSteps {
             AndroidLogListener.getInstance(ListenerType.PERF).start();
         }
         AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
-        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), getPath(), this.getClass());
+
+        String appPath = getPath();
+        if (scenario.getSourceTagNames().contains("@upgrade")) {
+            appPath = getOldPath();
+        }
+        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath);
+        updateDriver(lazyDriver);
+    }
+
+    private void updateDriver(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         ZetaFormatter.setLazyDriver(lazyDriver);
+        if (pagesCollection.hasPages()) {
+            pagesCollection.clearAllPages();
+        }
         pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
+    }
+
+    /**
+     * Install new Wire build taken from appPath Maven variable, but don't override the current state
+     *
+     * @throws Exception
+     * @step. ^I upgrade Wire to the recent version$
+     */
+    @When("^I upgrade Wire to the recent version$")
+    public void IUpgradeWire() throws Exception {
+        final String appPath = getPath();
+        AndroidCommonUtils.stopPackage(getPackageName());
+        AndroidCommonUtils.installApp(new File(appPath));
+        final Map<String, Object> customCaps = new HashMap<>();
+        customCaps.put("noReset", true);
+        customCaps.put("fullReset", false);
+        customCaps.put("skipUninstall", true);
+        customCaps.put("appWaitActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
+        final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath, Optional.of(customCaps));
+        updateDriver(lazyDriver);
     }
 
     /**
@@ -198,6 +259,20 @@ public class CommonAndroidSteps {
         for (int i = 0; i < times; i++) {
             pagesCollection.getCommonPage().navigateBack();
         }
+    }
+
+    /**
+     * Pings BackEnd until user is indexed and available in top people
+     *
+     * @param searchByNameAlias user name to search string
+     * @param size              number of top people
+     * @throws Exception
+     * @step. ^(\w+) (?:wait|waits) until (\d+) (?:person|people) (?:is|are) in the Top People list on the backend$
+     */
+    @Given("^(\\w+) (?:wait|waits) until (\\d+) (?:person|people) (?:is|are) in the Top People list on the backend$")
+    public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias, int size) throws Exception {
+        commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
+                searchByNameAlias, size);
     }
 
     /**
@@ -267,7 +342,7 @@ public class CommonAndroidSteps {
         } else {
             AndroidCommonUtils.unlockDevice();
             // FIXME: Unlock selendroid app does not restore the previously active application
-            AndroidCommonUtils.switchToApplication(CommonUtils.getAndroidPackageFromConfig(this.getClass()));
+            AndroidCommonUtils.switchToApplication(getPackageName());
         }
     }
 
@@ -338,7 +413,7 @@ public class CommonAndroidSteps {
      */
     @When("^I restore the application$")
     public void IRestoreApplication() throws Exception {
-        AndroidCommonUtils.switchToApplication(CommonUtils.getAndroidPackageFromConfig(this.getClass()));
+        AndroidCommonUtils.switchToApplication(getPackageName());
     }
 
     /**

@@ -13,8 +13,6 @@ import java.util.function.Function;
 
 public class InvitationsPage extends AndroidPage {
 
-    private static final By idInviteMorePeopleContactsBtn = By.id("zb__conversationlist__show_contacts");
-
     private static final By idInviteSearchField = By.id("puet_pickuser__searchbox");
 
     private static final By idInvitePageCloseBtn = By.id("gtv_pickuser__clearbutton");
@@ -73,14 +71,6 @@ public class InvitationsPage extends AndroidPage {
                     throw new IllegalStateException("Invitation message has not been received");
                 }).
                 isValid();
-    }
-
-    public boolean waitForInviteMorePeopleContactsButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idInviteMorePeopleContactsBtn);
-    }
-
-    public boolean waitForInviteMorePeopleContactsButtonNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idInviteMorePeopleContactsBtn);
     }
 
     public String getRecentInvitationCode(String email) throws Throwable {

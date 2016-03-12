@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @C1690 @smoke
+  @C1690 @regression
   Scenario Outline: Archive and unarchive conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

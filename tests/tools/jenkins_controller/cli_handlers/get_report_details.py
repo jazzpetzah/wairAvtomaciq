@@ -6,6 +6,11 @@ import os
 
 from cli_handlers.cli_handler_base import CliHandlerBase
 
+PENDING = 'pending'
+PASSED = 'passed'
+FAILED = 'failed'
+SKIPPED = 'skipped'
+
 
 class GetReportDetails(CliHandlerBase):
     def _build_options(self, parser):
@@ -15,7 +20,10 @@ class GetReportDetails(CliHandlerBase):
 
     @staticmethod
     def _get_step_status(step):
-        return step['result']['status'].strip().lower()
+        if 'result' in step:
+            return step['result']['status'].strip().lower()
+        else:
+            return SKIPPED
 
     @staticmethod
     def _is_given_step_type(step):
@@ -26,12 +34,12 @@ class GetReportDetails(CliHandlerBase):
         is_pending = False
         for step in steps:
             step_status = GetReportDetails._get_step_status(step)
-            if step_status == 'pending':
+            if step_status == PENDING:
                 # Parse test cases with pending steps as passed by default
                 is_pending = True
-            elif step_status != 'passed' and not is_pending:
+            elif step_status != PASSED and not is_pending:
                 return False
-            elif step_status == 'failed':
+            elif step_status == FAILED:
                 if not GetReportDetails._is_given_step_type(step):
                     return False
         return True
@@ -39,7 +47,7 @@ class GetReportDetails(CliHandlerBase):
     @staticmethod
     def _is_test_failed(steps):
         for step in steps:
-            if GetReportDetails._get_step_status(step) == 'failed':
+            if GetReportDetails._get_step_status(step) == FAILED:
                 if not GetReportDetails._is_given_step_type(step):
                     return True
         return False
@@ -47,11 +55,11 @@ class GetReportDetails(CliHandlerBase):
     @staticmethod
     def _parse_test_status(steps):
         if GetReportDetails._is_test_passed(steps):
-            return 'passed'
+            return PASSED
         elif GetReportDetails._is_test_failed(steps):
-            return 'failed'
+            return FAILED
         else:
-            return 'skipped'
+            return SKIPPED
 
     @staticmethod
     def _extract_details(report_path):
@@ -70,7 +78,7 @@ class GetReportDetails(CliHandlerBase):
                         tc_result = GetReportDetails._parse_test_status(element['steps'])
                         result[tc_result] += 1
                     else:
-                        result['skipped'] += 1
+                        result[SKIPPED] += 1
                     result['all'] += 1
         return result
 

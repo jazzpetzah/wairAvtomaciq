@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
@@ -9,6 +10,7 @@ import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 
@@ -333,7 +335,7 @@ public abstract class IOSPage extends BasePage {
         do {
             el.click();
             counter++;
-            if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator)) {
+            if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator, 4)) {
                 return;
             }
         } while (counter < retryCount);
@@ -415,6 +417,14 @@ public abstract class IOSPage extends BasePage {
             Thread.sleep(1000);
         } else {
             backToWireButton.click();
+        }
+    }
+
+    public void installIpa(File ipaFile) throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            IOSSimulatorHelper.installIpa(ipaFile);
+        } else {
+            throw new NotImplementedException("Application install is only available for Simulator");
         }
     }
 }

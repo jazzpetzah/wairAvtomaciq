@@ -9,6 +9,10 @@ import gherkin.formatter.model.Scenario;
 import org.apache.log4j.Logger;
 
 import javax.mail.MessagingException;
+import java.io.File;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -36,12 +40,16 @@ public class TestrailSyncUtilities {
         }
     }
 
-    private static Optional<String> jenkinsJobUrl = Optional.empty();
+    private static Optional<String> rcTestsComment = Optional.empty();
 
     static {
         try {
-            jenkinsJobUrl = CommonUtils.getOptionalValueFromCommonConfig(TestrailSyncUtilities.class,
-                    "jenkinsJobUrl");
+            final Optional<String> rcTestsCommentPath =
+                    CommonUtils.getRcTestsCommentPathFromCommonConfig(TestrailSyncUtilities.class);
+            if (rcTestsCommentPath.isPresent()) {
+                rcTestsComment = Optional.of(new String(Files.readAllBytes(Paths.get(rcTestsCommentPath.get())),
+                        Charset.forName("UTF-8")));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -224,7 +232,7 @@ public class TestrailSyncUtilities {
                             testrailPlanName.get(), testrailRunName.get(),
                             testrailRunConfigName.orElse("<No Config>")));
             TestrailRESTWrapper.updateTestResult(testrailRunId.get(), Long.parseLong(tcId),
-                    actualTestResult, jenkinsJobUrl);
+                    actualTestResult, rcTestsComment);
         }
     }
 

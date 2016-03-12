@@ -6,7 +6,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.Then;
@@ -21,11 +20,7 @@ public class PeoplePickerPageSteps {
         return pagesCollection.getPage(PeoplePickerPage.class);
     }
 
-    private ContactListPage getСontactListPage() throws Exception {
-        return pagesCollection.getPage(ContactListPage.class);
-    }
-
-    @When("^I see People picker page$")
+    @When("^I see [Pp]eople [Pp]icker page$")
     public void WhenISeePeoplePickerPage() throws Exception {
         Assert.assertTrue(getPeoplePickerPage().isPeoplePickerPageVisible());
     }
@@ -59,46 +54,6 @@ public class PeoplePickerPageSteps {
     @When("^I press maybe later button$")
     public void IPressMaybeLater() throws Exception {
         getPeoplePickerPage().clickMaybeLaterButton();
-    }
-
-    /**
-     * A workaround for top people not loading immediately
-     *
-     * @throws Exception
-     * @step. I re-enter the people picker if top people list is not there
-     */
-
-    @When("I re-enter the people picker if top people list is not there")
-    public void IRetryPeoplePickerIfNotLoaded() throws Exception {
-        for (int i = 0; i < 3; i++) {
-            if (!getPeoplePickerPage().isTopPeopleLabelVisible()) {
-                IClickCloseButtonDismissPeopleView();
-                Thread.sleep(5000);
-                getСontactListPage().openSearch();
-            } else {
-                break;
-            }
-        }
-    }
-
-    /**
-     * A workaround for CONNECT label not loading immediately
-     *
-     * @throws Exception
-     * @step. I re-enter the people picker if CONNECT label is not there
-     */
-    @When("I re-enter the people picker if CONNECT label is not there")
-    public void IRetryPeoplePickerIfNoConnectLabel() throws Exception {
-        for (int i = 0; i < 3; i++) {
-            if (!getPeoplePickerPage().isConnectLabelVisible()) {
-                IClickCloseButtonDismissPeopleView();
-                Thread.sleep(5000);
-                getСontactListPage().openSearch();
-                // getPeoplePickerPage().closeShareContactsIfVisible();
-            } else {
-                break;
-            }
-        }
     }
 
     @When("^I tap on Search input on People picker page$")
@@ -144,7 +99,7 @@ public class PeoplePickerPageSteps {
     /**
      * Verify that conversation is presented in search results
      *
-     * @param name conversation name to search
+     * @param name           conversation name to search
      * @param shouldNotExist equals to null if the converssation should be visible
      * @throws Exception
      * @step. ^I see conversation (.*) is (NOT )?presented in Search results$
@@ -165,21 +120,13 @@ public class PeoplePickerPageSteps {
     /**
      * Verify whether No Results label is visible in search results
      *
-     * @step. ^I see No Results label in People picker search result$
-     *
      * @throws Exception
+     * @step. ^I see No Results label in People picker search result$
      */
     @Then("^I see No Results label in People picker search result$")
     public void ISeeNoResultsLabel() throws Exception {
         Assert.assertTrue("'No Results' label is not visible",
                 getPeoplePickerPage().waitUntilNoResultsLabelIsVisible());
-    }
-
-    @When("^I search for user name (.*) and tap on it on People picker page$")
-    public void WhenISearchForUserNameAndTapOnItOnPeoplePickerPage(String contact) throws Throwable {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        getPeoplePickerPage().fillTextInPeoplePickerSearch(contact);
-        getPeoplePickerPage().selectElementInSearchResults(contact);
     }
 
     @When("^I don't see Add to conversation button$")

@@ -9,6 +9,7 @@ import java.util.concurrent.*;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
+import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -275,15 +276,19 @@ public class CommonUtils {
     }
 
     public static String getAndroidMainActivityFromConfig(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "activity");
+        return getValueFromConfig(c, "mainActivity");
     }
 
-    public static String getAndroidLaunchActivityFromConfig(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "launchActivity");
+    public static String getAndroidConvoListActivityFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "convoListActivity");
     }
 
-    public static String getAndroidWaitActivitiesFromConfig(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "waitActivities");
+    public static String getAndroidLoginActivityFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "loginActivity");
+    }
+
+    public static String getOldAppPathFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "oldAppPath");
     }
 
     public static String getSimulatorImagesPathFromConfig(Class<?> c) throws Exception {
@@ -477,6 +482,10 @@ public class CommonUtils {
             }
         }
         ImageUtil.storeImage(resultImg, resultScreenshot);
+    }
+
+    public static Optional<String> getRcTestsCommentPathFromCommonConfig(Class<?> c) throws Exception {
+        return getOptionalValueFromCommonConfig(c, "rcTestsCommentPath");
     }
 
     private static class UIScriptExecutionMonitor implements Callable<Void> {

@@ -59,7 +59,7 @@ public class PhoneNumberVerificationPage extends AndroidPage {
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), idConfirmButton)) {
             // Try to click the button again if we did it too fast for the first time
             DriverUtils.tapByCoordinates(getDriver(), getElement(idConfirmButton));
-            return DriverUtils.waitUntilLocatorDissapears(getDriver(), idConfirmButton, 40);
+            return DriverUtils.waitUntilLocatorDissapears(getDriver(), idConfirmButton, 60);
         }
         return true;
     }

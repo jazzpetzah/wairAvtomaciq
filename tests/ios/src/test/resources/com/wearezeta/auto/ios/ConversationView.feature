@@ -42,7 +42,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C909 @C3176 @rc @regression @IPv6 @id332 @id1470
+  @C909 @C3176 @regression @IPv6 @id332 @id1470
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -155,17 +155,13 @@ Feature: Conversation View
       | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
   @C883 @regression @id394
-  Scenario Outline: (ZIOS-5920) Tap the cursor to get to the end of the conversation
+  Scenario Outline: Tap the cursor to get to the end of the conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on contact name <Contact>
-    And I navigate back to conversations list
     Given User <Contact> sends 40 encrypted messages to user Myself
     When I tap on contact name <Contact>
-    And I see plus button is not shown
-    And I tap on text input to scroll to the end
     Then I see conversation is scrolled to the end
 
     Examples:
@@ -269,8 +265,6 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I post media link <YouTubeLink>
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
     And I click video container for the first time
     # Wait until web page is loaded
     And I wait for 5 seconds
@@ -414,23 +408,18 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C888 @C889 @rc @regression @id3093 @id3092
-  Scenario Outline: Verify opening and closing input options by buttons click and swiping right/left
+  @C888 @rc @regression
+  Scenario Outline: Verify opening and closing input options by buttons click
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I swipe right text input to reveal option buttons
-    Then I see conversation tools buttons
-    And I see plus button is not shown
-    And I swipe left on options buttons
-    And I see Close input options button is not visible
     And I see plus button next to text input
     And I click plus button next to text input
     Then I see conversation tools buttons
-    And I click Close input options button
-    And I see Close input options button is not visible
+    When I click Close input options button
+    Then I see Close input options button is not visible
     And I see plus button next to text input
 
     Examples:
@@ -591,7 +580,8 @@ Feature: Conversation View
     And I confirm delete conversation content
     Then I dont see conversation <GroupChatName> in contact list
     And I open search by taping on it
-    And I search for user name <Contact1> and tap on it on People picker page
+    And I input in People picker search field conversation name <Contact1>
+    And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
     Then I see dialog page
     And I type the default message and send it

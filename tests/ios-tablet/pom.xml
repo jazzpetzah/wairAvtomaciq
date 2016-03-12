@@ -16,7 +16,7 @@
         <TestRun>DevRun</TestRun>
         <Url>http://127.0.0.1:4723/wd/hub</Url>
         <appPath>/Project/ZClient_ios.app</appPath>
-        <platformVersion>9.1</platformVersion>
+        <platformVersion>9.2</platformVersion>
         <appName>Wire</appName>
         <useNativeInstrumentsLib>true</useNativeInstrumentsLib>
         <isSimulator>true</isSimulator>
@@ -25,7 +25,6 @@
         <iosImagesPath>${project.basedir}/../tools/img/</iosImagesPath>
         <iOSToolsRoot>${project.basedir}/../tools/ios</iOSToolsRoot>
         <defaultEmail>smoketester@wire.com</defaultEmail>
-        <iosClientInfoPlist>/Project/builds_info/Info_ios.plist</iosClientInfoPlist>
         <deviceName>iPad Air</deviceName>
         <backendType>staging</backendType>
         <rcNotificationsRecepients>dasha@wire.com,nick@wire.com,juliane@wire.com,piotr.iazadji@wire.com</rcNotificationsRecepients>

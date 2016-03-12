@@ -1,14 +1,20 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.io.File;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
+import static com.wearezeta.auto.common.CommonUtils.getSimulatorImagesPathFromConfig;
+
 public class CameraRollPage extends IOSPage {
+    private static final String TESTING_IMAGE_NAME = "testing.jpg";
 
     private static final By nameCameraLibraryButton = MobileBy.AccessibilityId("cameraLibraryButton");
 
@@ -22,45 +28,52 @@ public class CameraRollPage extends IOSPage {
 
     private static final By nameCameraRollSketchButton = MobileBy.AccessibilityId("editNotConfirmedImageButton");
 
-	public CameraRollPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
-	}
+    public CameraRollPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
 
-	public void pressSelectFromLibraryButton() throws Exception {
-		getElement(nameCameraLibraryButton).click();
-	}
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            IOSSimulatorHelper.uploadImage(new File(
+                    getSimulatorImagesPathFromConfig(getClass()) + File.separator + TESTING_IMAGE_NAME));
+            // Let Simulator to update the lib
+            Thread.sleep(3000);
+        }
+    }
 
-	public void selectImageFromLibrary() throws Exception {
-		try {
-			clickFirstLibraryFolder();
-		} catch (IllegalStateException e) {
+    public void pressSelectFromLibraryButton() throws Exception {
+        getElement(nameCameraLibraryButton).click();
+    }
+
+    public void selectImageFromLibrary() throws Exception {
+        try {
+            clickFirstLibraryFolder();
+        } catch (IllegalStateException e) {
             // Ignore silently
-		}
+        }
 
-		clickFirstImage();
-	}
+        clickFirstImage();
+    }
 
-	public void clickFirstLibraryFolder() throws Exception {
-		DriverUtils.getElementIfPresentInDOM(getDriver(), xpathCameraLibraryFirstFolder).
+    public void clickFirstLibraryFolder() throws Exception {
+        DriverUtils.getElementIfPresentInDOM(getDriver(), xpathCameraLibraryFirstFolder).
                 orElseThrow(() -> new IllegalStateException("Cannot find a library to select")).click();
-	}
+    }
 
-	public void clickFirstImage() throws Exception {
+    public void clickFirstImage() throws Exception {
         DriverUtils.getElementIfPresentInDOM(getDriver(), xpathLibraryFirstPicture).
                 orElseThrow(() -> new IllegalStateException("Cannot find an image to select")).click();
-	}
+    }
 
-	public void clickLastImage() throws Exception {
+    public void clickLastImage() throws Exception {
         DriverUtils.getElementIfPresentInDOM(getDriver(), xpathLibraryLastPicture).
                 orElseThrow(() -> new IllegalStateException("Cannot find an image to select")).click();
-	}
+    }
 
-	public void pressConfirmButton() throws Exception {
-		getElement(xpathConfirmPictureButton).click();
-	}
+    public void pressConfirmButton() throws Exception {
+        getElement(xpathConfirmPictureButton).click();
+    }
 
-	public void clickCameraRollSketchButton() throws Exception {
-		getElement(nameCameraRollSketchButton).click();
-	}
+    public void clickCameraRollSketchButton() throws Exception {
+        getElement(nameCameraRollSketchButton).click();
+    }
 
 }

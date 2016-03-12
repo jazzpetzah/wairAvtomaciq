@@ -40,6 +40,9 @@ public class PeoplePickerPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssCallButton)
 	private WebElement callButton;
 
+	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssVideoCallButton)
+	private WebElement videoCallButton;
+
 	@FindBy(css = WebAppLocators.PeoplePickerPage.cssCloseSearchButton)
 	private WebElement closeSearchButton;
 
@@ -319,4 +322,18 @@ public class PeoplePickerPage extends WebPage {
 		return topPeople.size();
 	}
 
+	public void clickVideoCallButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), videoCallButton);
+		videoCallButton.click();
+	}
+
+	public boolean isVideoCallButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.cssSelector(WebAppLocators.PeoplePickerPage.cssVideoCallButton));
+	}
+
+	public boolean isVideoCallButtonNotVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.cssSelector(WebAppLocators.PeoplePickerPage.cssVideoCallButton));
+	}
 }

@@ -18,6 +18,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.pages.CallPage;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
@@ -593,14 +594,13 @@ public class ConversationPageSteps {
 	/**
 	 * Joins ongoing call by clicking the join call bar
 	 *
-	 * @step. ^I join call$
+	 * @step. ^I join call of conversation (.*)$
 	 *
 	 * @throws Exception
 	 */
-	@When("^I join call$")
-	public void IJoinCall() throws Exception {
-		webappPagesCollection.getPage(ConversationPage.class)
-				.clickJoinCallBar();
+	@When("^I join call of conversation (.*)$")
+	public void IJoinCall(String conversationName) throws Exception {
+		webappPagesCollection.getPage(CallPage.class).clickJoinCallButton(conversationName);
 	}
 
 	/**

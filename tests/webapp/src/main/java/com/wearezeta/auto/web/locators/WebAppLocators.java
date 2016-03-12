@@ -193,25 +193,31 @@ public final class WebAppLocators {
 
         public static final Function<String, String> xpathEndCallButtonByConversationName = (
                 name) -> String
-                .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']/parent::"
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
                                 + "*/parent::*//*[@data-uie-name='do-call-controls-call-ignore']",
                         name);
 
         public static final Function<String, String> xpathUserNameByConversationName = user -> String
-                .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']",
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']",
                         user);
 
         public static final Function<String, String> xpathOutgoingCallByConversationName = user -> String
-                .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']/following-sibling::span[contains(text(),'Ringing…')]",
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*[@data-uie-name='call-label-outgoing']",
                         user);
 
         public static final Function<String, String> xpathIncomingCallByConversationName = user -> String
-                .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']/following-sibling::span[contains(text(),'Calling…')]",
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*[@data-uie-name='call-label-incoming']",
                         user);
 
         public static final Function<String, String> xpathOngoingCallByConversationName = user -> String
-                .format("//div[@class='conversation-list-call-controls-row']//*[@data-uie-value='%s']/following-sibling::span[contains(text(),':')]",
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/following-sibling::*[@data-uie-name='call-duration']",
                         user);
+
+        public static final Function<String, String> xpathJoinCallButtonByConversationName = (
+                name) -> String
+                .format("//*[@data-uie-name='item-call' and @data-uie-value='%s']/parent::"
+                                + "*//*[@data-uie-name='do-call-controls-call-join']",
+                        name);
 
         public static final Function<String, String> xpathAcceptCallButtonByConversationName = (
                 name) -> String
@@ -375,9 +381,6 @@ public final class WebAppLocators {
                                 + "//*[contains(@class, 'cc-avatar-label') and text()='%s']",
                         text, text);
 
-        public static final String xpathJoinCallBar = "//div[contains(@class, 'join-menu') and contains(@class, 'on')" +
-                "]/*[contains(@class, 'join-menu-button')]";
-
         public static String cssAcceptCallButton = "[data-uie-name='do-call-controls-call-accept']";
 
         public static String cssAcceptVideoCallButton = "[data-uie-name='do-call-controls-video-accept']";
@@ -450,6 +453,8 @@ public final class WebAppLocators {
                 "[data-uie-name='do-open']";
 
         public static final String cssCallButton = "#search-header [data-uie-name='do-call']";
+
+        public static final String cssVideoCallButton = "#search-header [data-uie-name='do-video-call']";
 
         public static final Function<String, String> xpathSearchResultByName = (
                 name) -> String.format(

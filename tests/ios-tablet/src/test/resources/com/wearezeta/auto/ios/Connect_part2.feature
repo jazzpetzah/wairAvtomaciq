@@ -13,7 +13,6 @@ Feature: Connect
     And I click Cancel request button
     Then I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
-    And I dismiss popover on iPad
     When I navigate back to conversations list
     Then I dont see conversation <Contact> in contact list
 
@@ -52,7 +51,6 @@ Feature: Connect
     And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
-    And I dismiss popover on iPad
     And I navigate back to conversations list
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
@@ -79,7 +77,6 @@ Feature: Connect
     And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
-    And I dismiss popover on iPad
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result

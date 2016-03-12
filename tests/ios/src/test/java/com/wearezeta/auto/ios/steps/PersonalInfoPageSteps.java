@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.misc.ElementState;
 import org.junit.Assert;
 
@@ -336,20 +337,16 @@ public class PersonalInfoPageSteps {
     }
 
     /**
-     * Changes the accent color by sliding to relevant one by coordinates at the
-     * color picker
+     * Changes the accent color by clicking the color picker
      *
-     * @param startColor should be one of - StrongBlue, StrongLimeGreen, BrightYellow,
-     *                   VividRed, BrightOrange, SoftPink, Violet
-     * @param endColor   should be one of - StrongBlue, StrongLimeGreen, BrightYellow,
-     *                   VividRed, BrightOrange, SoftPink, Violet
+     * @param color should be one of - StrongBlue, StrongLimeGreen, BrightYellow,
+     *              VividRed, BrightOrange, SoftPink, Violet
      * @throws Exception
-     * @step. ^I slide my accent color via the colorpicker from (.*) to (.*)$
+     * @step. ^I set my accent color to (.*)
      */
-    @When("^I slide my accent color via the colorpicker from (.*) to (.*)$")
-    public void ISlideMyAccentColorViaTheColorpicker(String startColor,
-                                                     String endColor) throws Exception {
-        getPersonalInfoPage().swipeAccentColor(startColor, endColor);
+    @When("^I set my accent color to (.*)")
+    public void IChangeMyAccentColor(String color) throws Exception {
+        getPersonalInfoPage().selectAccentColor(AccentColor.getByName(color));
     }
 
     /**
@@ -422,6 +419,36 @@ public class PersonalInfoPageSteps {
     public void IDontSeeThemeSwitcherButton() throws Exception {
         Assert.assertFalse("Theme switcher button is visible",
                 getPersonalInfoPage().isThemeSwitcherButtonVisible());
+    }
+
+    private ElementState colorPickerState = new ElementState(
+            () -> getPersonalInfoPage().getPeoplePickerScreenshot()
+    );
+
+    private static final int COLOR_PICKER_STATE_CHANGE_TIMEOUT = 10;
+    private static final double MIN_COLOR_PICKER_SIMILARITY_SCORE = 0.95;
+
+    /**
+     * Get and remember the screenshot of People Picker
+     *
+     * @throws Exception
+     * @step. ^I remember the state of color picker$
+     */
+    @When("^I remember the state of color picker$")
+    public void IRememberColorPickerState() throws Exception {
+        colorPickerState.remember();
+    }
+
+    /**
+     * Verify that color picker state has been changed
+     *
+     * @throws Exception
+     * @step. ^I verify the state of color picker is changed$
+     */
+    @Then("^I verify the state of color picker is changed$")
+    public void IVerifyColorPickerState() throws Exception {
+        Assert.assertTrue("Color picker state has not been changed",
+                colorPickerState.isChanged(COLOR_PICKER_STATE_CHANGE_TIMEOUT, MIN_COLOR_PICKER_SIMILARITY_SCORE));
     }
 }
 

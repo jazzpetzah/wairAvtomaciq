@@ -13,7 +13,7 @@ Feature: Menus
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C1773 @smoke
+  @C1773 @regression
   Scenario Outline: Verify sound settings are saved after re-login
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page

@@ -2,12 +2,29 @@ package com.wearezeta.auto.common.usrmgmt;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.AccentColor;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.MessagingUtils;
 
 import java.util.*;
 
 public class ClientUser {
+    private static final int TOKEN_TIMEOUT = 10 * 60; // seconds
+
+    private long lastTokenRequestTimestamp = -1;
+
+    private Optional<String> id = Optional.empty();
     private String name = null;
+    private String password = null;
+    private String email = null;
+    private Set<String> emailAliases = new HashSet<>();
+    private Set<String> nameAliases = new HashSet<>();
+    private PhoneNumber phoneNumber;
+    private Set<String> phoneNumberAliases = new HashSet<>();
+    private Set<String> passwordAliases = new HashSet<>();
+    private Optional<String> tokenType = Optional.empty();
+    private Optional<String> token = Optional.empty();
+    private UserState userState = UserState.NotCreated;
+    private AccentColor accentColor = AccentColor.Undefined;
 
     public ClientUser(String email, String password, PhoneNumber phoneNumber, String name, UserState state) {
         this.email = email;
@@ -25,8 +42,6 @@ public class ClientUser {
         this.name = name;
     }
 
-    private Set<String> nameAliases = new HashSet<>();
-
     public Set<String> getNameAliases() {
         return new HashSet<>(this.nameAliases);
     }
@@ -43,8 +58,6 @@ public class ClientUser {
         this.nameAliases.clear();
     }
 
-    private String password = null;
-
     public String getPassword() {
         return password;
     }
@@ -52,8 +65,6 @@ public class ClientUser {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    private Set<String> passwordAliases = new HashSet<>();
 
     public Set<String> getPasswordAliases() {
         return new HashSet<>(this.passwordAliases);
@@ -71,8 +82,6 @@ public class ClientUser {
         this.passwordAliases.clear();
     }
 
-    private String email = null;
-
     public String getEmail() {
         return email;
     }
@@ -80,8 +89,6 @@ public class ClientUser {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    private Set<String> emailAliases = new HashSet<>();
 
     public Set<String> getEmailAliases() {
         return new HashSet<>(this.emailAliases);
@@ -99,37 +106,33 @@ public class ClientUser {
         this.emailAliases.clear();
     }
 
-    private String id = null;
-
-    public String getId() {
-        return id;
+    private void refreshTokenInfoIfExpired() throws Exception {
+        if (lastTokenRequestTimestamp < 0 ||
+                System.currentTimeMillis() - lastTokenRequestTimestamp >= TOKEN_TIMEOUT * 1000) {
+            final ClientToken clientToken = BackendAPIWrappers.login(
+                    this.getEmail(), this.getPassword(), this.getPhoneNumber()
+            );
+            this.id = Optional.of(clientToken.getId());
+            this.tokenType = Optional.of(clientToken.getTokenType());
+            this.token = Optional.of(clientToken.getToken());
+            lastTokenRequestTimestamp = System.currentTimeMillis();
+        }
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getId() throws Exception {
+        refreshTokenInfoIfExpired();
+        return id.get();
     }
 
-    private String accessToken = null;
-
-    public String getAccessToken() {
-        return accessToken;
+    public String getTokenType() throws Exception {
+        refreshTokenInfoIfExpired();
+        return tokenType.get();
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public String getToken() throws Exception {
+        refreshTokenInfoIfExpired();
+        return token.get();
     }
-
-    private String tokenType = null;
-
-    public String getTokenType() {
-        return tokenType;
-    }
-
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
-    }
-
-    private UserState userState = UserState.NotCreated;
 
     public UserState getUserState() {
         return userState;
@@ -139,8 +142,6 @@ public class ClientUser {
         this.userState = userState;
     }
 
-    private AccentColor accentColor = AccentColor.Undefined;
-
     public void setAccentColor(AccentColor newColor) {
         this.accentColor = newColor;
     }
@@ -149,8 +150,6 @@ public class ClientUser {
         return this.accentColor;
     }
 
-    private PhoneNumber phoneNumber;
-
     public PhoneNumber getPhoneNumber() {
         return phoneNumber;
     }
@@ -158,8 +157,6 @@ public class ClientUser {
     public void setPhoneNumber(PhoneNumber phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
-    private Set<String> phoneNumberAliases = new HashSet<>();
 
     public Set<String> getPhoneNumberAliases() {
         return new HashSet<>(this.phoneNumberAliases);
@@ -193,8 +190,7 @@ public class ClientUser {
     public ClientUser() throws Exception {
         this.name = generateUniqName();
         this.phoneNumber = new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX);
-        this.password = CommonUtils
-                .getDefaultPasswordFromConfig(ClientUser.class);
+        this.password = CommonUtils.getDefaultPasswordFromConfig(ClientUser.class);
         this.email = generateEmail(name);
     }
 
