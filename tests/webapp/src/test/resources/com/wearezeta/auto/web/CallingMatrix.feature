@@ -50,7 +50,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | zcall:1.12  | 60      |
 
-  @C5361 @calling_matrix @calling @testing
+  @C5361 @calling_matrix @calling
   Scenario Outline: Verify I can receive 1:1 call from <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me

@@ -1,6 +1,6 @@
 package com.wearezeta.auto.web.common;
 
-import com.googlecode.junittoolbox.ParallelParameterized;
+import com.google.common.base.Throwables;
 import com.wearezeta.picklejar.PickleExecutor;
 import java.util.Collection;
 import java.util.List;
@@ -15,6 +15,8 @@ import gherkin.formatter.Reporter;
 import gherkin.formatter.model.Scenario;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -44,6 +46,7 @@ public class PickleJarTest {
      */
     private static final String STEP_PACKAGE = "com.wearezeta.auto.web.steps";
     private static final String EXECUTION_TAG_KEY = "picklejar.tag";
+    private static AtomicInteger testCounter = new AtomicInteger(0);
     private PickleExecutor stepExecutor;
     private Reporter reporter;
     private Lifecycle lifecycle;
@@ -59,7 +62,6 @@ public class PickleJarTest {
     public static Collection<Object[]> getTestcases() throws IOException {
         return new PickleJar().mapToJUnit(new String[]{System.getProperty(EXECUTION_TAG_KEY)});
     }
-    
 
     /**
      *
@@ -86,16 +88,17 @@ public class PickleJarTest {
 
     @Before
     public void setUp() throws Exception {
-        System.out.println("### Before testcase");
+        System.out.println("### Before testcase Count: " + testCounter.incrementAndGet());
         lifecycle = new Lifecycle();
         lifecycle.setUp(scenario);
-        stepExecutor = new PickleExecutor(STEP_PACKAGE);
     }
 
     @Test
     public void test() throws Exception {
         System.out.println(feature);
         System.out.println(testcase);
+
+        stepExecutor = new PickleExecutor(STEP_PACKAGE);
         for (String step : steps) {
             stepExecutor.invokeMethodForStep(step, examples, lifecycle.getContext());
         }
@@ -103,8 +106,8 @@ public class PickleJarTest {
 
     @After
     public void tearDown() throws Exception {
-        System.out.println("### After testcase");
         lifecycle.tearDown(scenario);
+        System.out.println("### After testcase Count: " + testCounter.decrementAndGet());
     }
 
     @AfterClass
