@@ -1,9 +1,13 @@
-package com.wearezeta.picklejar;
+package com.wire.picklejar.execution;
 
+import com.wire.picklejar.Config;
+import com.wire.picklejar.scan.PickleAnnotationSeeker;
+import com.wire.picklejar.scan.JavaSeeker;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -14,12 +18,16 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PickleExecutor {
+    
+    private static final Logger LOG = LogManager.getLogger();
 
     private static final String CUCUMBER_ANNOTATION_REGEX_METHOD_NAME = "value";
     private static final Class<? extends Annotation>[] CUCUMBER_STEP_ANNOTATIONS = new Class[]{
@@ -29,12 +37,17 @@ public class PickleExecutor {
     private final Map<String, Method> methodCache = new ConcurrentHashMap<>();
     private final Map<String, Object> classInstanceCache = new ConcurrentHashMap<>();
 
-    public PickleExecutor(String pkg) throws Exception {
-        Collection<Class> loadedClasses = JavaSeeker.getClasses(pkg);
-        for (Class<?> loadedClass : loadedClasses) {
-            for (Class<? extends Annotation> annotationClass : CUCUMBER_STEP_ANNOTATIONS) {
-                cacheMethodsByAnnotationValue(loadedClass, annotationClass);
+    public PickleExecutor() {
+        try {
+            Collection<Class> loadedClasses = JavaSeeker.getClasses(Config.STEP_PACKAGE);
+            for (Class<?> loadedClass : loadedClasses) {
+                for (Class<? extends Annotation> annotationClass : CUCUMBER_STEP_ANNOTATIONS) {
+                    cacheMethodsByAnnotationValue(loadedClass, annotationClass);
+                }
             }
+        } catch (IOException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException |
+                InvocationTargetException | InstantiationException ex) {
+            LOG.log(Level.ERROR, "Could not load step classes and cache step methods", ex);
         }
     }
 
@@ -65,25 +78,25 @@ public class PickleExecutor {
             final Matcher matcher = pattern.matcher(step);
 
             if (matcher.matches()) {
-                System.out.println("Method " + method.getName() + " matches");
+                LOG.log(Level.INFO, "Method " + method.getName() + " matches");
 
                 if (matcher.groupCount() == method.getParameterTypes().length) {
-                    System.out.println("Number of Regex groups and number of method paramaters match");
+                    LOG.log(Level.DEBUG, "Number of Regex groups and number of method paramaters match");
                 } else {
-                    System.out.println("Number of Regex groups and number of method paramaters do not match:\n"
+                    LOG.log(Level.DEBUG, "Number of Regex groups and number of method paramaters do not match:\n"
                             + "Regex groups: " + matcher.groupCount() + "\n"
                             + "Method paramaters: " + method.getParameterTypes().length);
-                    System.out.println("Looking for other method");
+                    LOG.log(Level.INFO, "Parameters do not match - Looking for other method");
                     continue;
                 }
 
                 final List<Object> params = new ArrayList<>();
                 Class<?>[] types = method.getParameterTypes();
-                System.out.println("Expected parameter types: \n" + Arrays.asList(types));
+                LOG.log(Level.DEBUG, "Expected parameter types: \n" + Arrays.asList(types));
                 for (int i = 1; i <= matcher.groupCount(); i++) {
                     params.add(tryCast(matcher.group(i), types[i - 1]));
                 }
-                System.out.println("Actual parameters: \n" + params);
+                LOG.log(Level.DEBUG, "Actual parameters: \n" + params);
 
                 try {
                     if (params.isEmpty()) {
@@ -99,7 +112,7 @@ public class PickleExecutor {
             }
         }
         if (!match) {
-            System.out.println(String.format("Could not find any match for step '%s'", rawStep));
+            LOG.log(Level.ERROR, String.format("Could not find any match for step '%s'", rawStep));
         }
     }
 
@@ -109,20 +122,14 @@ public class PickleExecutor {
         final Object declaringClassObject;
         final String declaringClassName = method.getDeclaringClass().getName();
         if (classInstanceCache.containsKey(declaringClassName)) {
-            System.out.println("Using cached decalred class " + declaringClassName);
+            LOG.log(Level.INFO, "Using cached decalred class " + declaringClassName);
             declaringClassObject = classInstanceCache.get(declaringClassName);
         } else {
-            //###############################
-//            System.out.println("Adding new decalred class " + declaringClassName + " to cache");
-//            declaringClassObject = method.getDeclaringClass().newInstance();
-            //###############################
-            
-            
             final List<Object> constructorParamsList = Arrays.asList(constructorParams);
             final List<Class<?>> constructorParamTypesList = constructorParamsList.stream().map((object) -> object.getClass()).
                     collect(Collectors.toList());
-            System.out.println("param list size: "+constructorParamsList.size());
-            System.out.println("param type list size: "+constructorParamTypesList.size());
+            LOG.log(Level.DEBUG, "Step constructor param list size: "+constructorParamsList.size());
+            LOG.log(Level.DEBUG, "Step constructor param type list size: "+constructorParamTypesList.size());
             
             final Constructor<?> ctor = method.getDeclaringClass().getConstructor(constructorParamTypesList.toArray(
                     new Class<?>[constructorParamTypesList.size()]));

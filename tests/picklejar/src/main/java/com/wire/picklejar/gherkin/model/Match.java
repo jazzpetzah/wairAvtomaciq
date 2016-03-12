@@ -1,4 +1,4 @@
-package com.wearezeta.picklejar.gherkin.model;
+package com.wire.picklejar.gherkin.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

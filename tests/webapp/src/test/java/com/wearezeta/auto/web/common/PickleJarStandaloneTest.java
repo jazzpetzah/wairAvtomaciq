@@ -1,29 +1,29 @@
 package com.wearezeta.auto.web.common;
 
-import com.google.common.base.Throwables;
-import com.wearezeta.picklejar.PickleExecutor;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized.Parameters;
 import com.wearezeta.auto.common.ZetaFormatter;
-import com.wearezeta.picklejar.PickleJar;
+import com.wire.picklejar.PickleJar;
+import com.wire.picklejar.PickleJarJUnitProvider;
+import com.wire.picklejar.execution.ParallelParameterized;
 import cucumber.runtime.ScenarioImpl;
+import edu.emory.mathcs.backport.java.util.Arrays;
 import gherkin.formatter.Reporter;
 import gherkin.formatter.model.Scenario;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 @RunWith(ParallelParameterized.class)
-public class PickleJarTest {
+public class PickleJarStandaloneTest {
 
     /**
      * Info:<br>
@@ -44,10 +44,9 @@ public class PickleJarTest {
      * - run tests by category<br>
      * - run tests by id<br>
      */
-    private static final String STEP_PACKAGE = "com.wearezeta.auto.web.steps";
-    private static final String EXECUTION_TAG_KEY = "picklejar.tag";
-    private static AtomicInteger testCounter = new AtomicInteger(0);
-    private PickleExecutor stepExecutor;
+    private static final AtomicInteger TEST_COUNTER = new AtomicInteger(0);
+    private final PickleJar pickle = new PickleJarJUnitProvider();
+
     private Reporter reporter;
     private Lifecycle lifecycle;
 
@@ -60,7 +59,7 @@ public class PickleJarTest {
 
     @Parameters(name = "{0}: {1} {2}")
     public static Collection<Object[]> getTestcases() throws IOException {
-        return new PickleJar().mapToJUnit(new String[]{System.getProperty(EXECUTION_TAG_KEY)});
+        return PickleJar.getTestcases();
     }
 
     /**
@@ -71,7 +70,8 @@ public class PickleJarTest {
      * @param steps
      * @param examples
      */
-    public PickleJarTest(String feature, String testcase, Integer exampleNum, List<String> steps, Map<String, String> examples) {
+    public PickleJarStandaloneTest(String feature, String testcase, Integer exampleNum, List<String> steps,
+            Map<String, String> examples) {
         this.feature = feature;
         this.testcase = testcase;
         this.steps = steps;
@@ -88,7 +88,7 @@ public class PickleJarTest {
 
     @Before
     public void setUp() throws Exception {
-        System.out.println("### Before testcase Count: " + testCounter.incrementAndGet());
+        System.out.println("### Before testcase Count: " + TEST_COUNTER.incrementAndGet());
         lifecycle = new Lifecycle();
         lifecycle.setUp(scenario);
     }
@@ -98,16 +98,15 @@ public class PickleJarTest {
         System.out.println(feature);
         System.out.println(testcase);
 
-        stepExecutor = new PickleExecutor(STEP_PACKAGE);
         for (String step : steps) {
-            stepExecutor.invokeMethodForStep(step, examples, lifecycle.getContext());
+            pickle.getExecutor().invokeMethodForStep(step, examples, lifecycle.getContext());
         }
     }
 
     @After
     public void tearDown() throws Exception {
         lifecycle.tearDown(scenario);
-        System.out.println("### After testcase Count: " + testCounter.decrementAndGet());
+        System.out.println("### After testcase Count: " + TEST_COUNTER.decrementAndGet());
     }
 
     @AfterClass

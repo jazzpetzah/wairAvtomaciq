@@ -1,13 +1,13 @@
-package com.wearezeta.picklejar;
+package com.wire.picklejar.scan;
 
-import com.wearezeta.picklejar.gherkin.GherkinParser;
+import com.wire.picklejar.Config;
+import com.wire.picklejar.execution.PickleExecutor;
+import com.wire.picklejar.gherkin.GherkinParser;
 import gherkin.ast.Feature;
 import gherkin.ast.ScenarioDefinition;
 import gherkin.ast.ScenarioOutline;
 import gherkin.ast.Step;
 import gherkin.ast.TableRow;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,30 +15,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class PickleJar {
-
-    private static final String FEATURE_PACKAGE = "com.wearezeta.auto.web";
-    private static final String FEATURE_EXTENSION = "feature";
-
-    private GherkinParser parser;
-    private List<String> featureFiles = new ArrayList<>();
-
-    public PickleJar() throws IOException {
-        Map<String, String> featureContents = getFeatureContents(getFeatureFiles());
-        parser = new GherkinParser(featureContents);
+public class PickleJarScanner {
+    
+    private static final Logger LOG = LogManager.getLogger();
+    
+    public static Collection<Object[]> getTestcases() {
+        return getTestcases(Config.EXECUTION_TAG);
     }
 
-    public Collection<Object[]> mapToJUnit(String[] tagFilter) {
+    public static Collection<Object[]> getTestcases(String[] filterTags) {
         Collection<Object[]> params = new ArrayList<>();
-        List<Feature> features = getAllFeatures();
-        for (Feature feature : features) {
-            params.addAll(mapAndFlatFeature(feature, tagFilter));
+        for (Feature feature : GherkinParser.getAllFeatures()) {
+            params.addAll(mapAndFlatFeature(feature, filterTags));
         }
-        System.out.println("Found " + params.size() + " Scenarios");
+        LOG.log(Level.INFO, "Found {} Scenarios", params.size());
+        System.out.println("Found "+params.size()+" Scenarios");
         return params;
     }
-
+    
     /**
      * 0 - Feature name<br>
      * 1 - Scenario name<br>
@@ -50,9 +48,9 @@ public class PickleJar {
      * @param tagFilter
      * @return List of mapped scenarios per feature
      */
-    private Collection<Object[]> mapAndFlatFeature(Feature feature, String[] tagFilter) {
+    private static Collection<Object[]> mapAndFlatFeature(Feature feature, String[] tagFilter) {
         Collection<Object[]> scenarios = new ArrayList<>();
-        List<ScenarioDefinition> filteredScenarios = getFilteredScenarios(feature, tagFilter);
+        List<ScenarioDefinition> filteredScenarios = GherkinParser.getFilteredScenarios(feature, tagFilter);
         if (!filteredScenarios.isEmpty()) {
 
             for (ScenarioDefinition scenarioDefinition : filteredScenarios) {
@@ -90,13 +88,13 @@ public class PickleJar {
                             scenarioArray[3] = steps;
                             scenarioArray[4] = exampleRowWithHeader;
 
-                            System.out.println("Adding scenario with example");
-                            System.out.println("FeatureName: " + feature.getName());
-                            System.out.println("ScenarioName: " + scenarioDefinition.getName());
-                            System.out.println("ExampleNumber: " + scenarioArray[2]);
-                            System.out.println("Steps: " + Arrays.toString(steps.toArray()));
-                            System.out.println("Examples: " + Arrays.toString(exampleRowWithHeader.keySet().toArray()));
-                            System.out.println("Examples: " + Arrays.toString(exampleRowWithHeader.values().toArray()));
+                            LOG.log(Level.DEBUG, "Adding scenario with example\n"
+                                    + "FeatureName: " + feature.getName() + "\n"
+                                    + "ScenarioName: " + scenarioDefinition.getName() + "\n"
+                                    + "ExampleNumber: " + scenarioArray[2] + "\n"
+                                    + "Steps: " + Arrays.toString(steps.toArray()) + "\n"
+                                    + "Examples: " + Arrays.toString(exampleRowWithHeader.keySet().toArray()) + "\n"
+                                    + "Examples: " + Arrays.toString(exampleRowWithHeader.values().toArray()));
 
                             scenarios.add(scenarioArray);
                         }
@@ -110,53 +108,19 @@ public class PickleJar {
                     scenarioArray[2] = new Integer(0);
                     scenarioArray[3] = steps;
                     scenarioArray[4] = new HashMap<String, String>();
-
-                    System.out.println("Adding scenario without example");
-                    System.out.println("FeatureName: " + feature.getName());
-                    System.out.println("ScenarioName: " + scenarioDefinition.getName());
-                    System.out.println("ExampleNumber: " + scenarioArray[2]);
-                    System.out.println("Steps: " + Arrays.toString(steps.toArray()));
-                    System.out.println("Examples: " + scenarioArray[4]);
+                    
+                    LOG.log(Level.DEBUG, "Adding scenario without example\n"
+                                    + "FeatureName: " + feature.getName() + "\n"
+                                    + "ScenarioName: " + scenarioDefinition.getName() + "\n"
+                                    + "ExampleNumber: " + scenarioArray[2] + "\n"
+                                    + "Steps: " + Arrays.toString(steps.toArray()) + "\n"
+                                    + "Examples: " + scenarioArray[4]);
 
                     scenarios.add(scenarioArray);
                 }
             }
         }
         return scenarios;
-    }
-
-    private List<ScenarioDefinition> getAllScenarios() {
-        return parser.getAllScenarios();
-    }
-
-    private List<Feature> getAllFeatures() {
-        return parser.getAllFeatures();
-    }
-
-    private List<ScenarioDefinition> getFilteredScenarios(String[] tagFilter) {
-        return parser.getFilteredScenarios(tagFilter);
-    }
-
-    private List<ScenarioDefinition> getFilteredScenarios(Feature feature, String[] tagFilter) {
-        return parser.getFilteredScenarios(feature, tagFilter);
-    }
-
-    private Map<String, File> getFeatureFiles() throws IOException {
-        final Map<String, File> featureFiles = new HashMap<>();
-        Collection<File> resource = JavaSeeker.getResource(FEATURE_PACKAGE, FEATURE_EXTENSION);
-        for (File file : resource) {
-            System.out.println(file.getAbsolutePath());
-            featureFiles.put(file.getName(), file);
-        }
-        return featureFiles;
-    }
-
-    private Map<String, String> getFeatureContents(Map<String, File> featureFiles) throws IOException {
-        final Map<String, String> featureContents = new HashMap<>();
-        for (Map.Entry<String, File> entry : featureFiles.entrySet()) {
-            featureContents.put(entry.getKey(), PickleFeatureReader.readFile(entry.getValue()));
-        }
-        return featureContents;
     }
 
 }

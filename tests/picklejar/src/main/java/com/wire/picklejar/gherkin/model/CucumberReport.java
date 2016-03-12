@@ -1,4 +1,4 @@
-package com.wearezeta.picklejar.gherkin.model;
+package com.wire.picklejar.gherkin.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,4 +1,4 @@
-package com.wearezeta.picklejar;
+package com.wire.picklejar.scan;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,8 +7,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class PickleFeatureReader {
+    
+    private static final Logger LOG = LogManager.getLogger();
 
     public static List<String> readFolders(File[] files) throws IOException {
         List<String> features = new ArrayList<>();
@@ -55,7 +60,7 @@ public class PickleFeatureReader {
     }
 
     public static String readFile(File file) throws IOException {
-        System.out.println("reading file: " + file.getName());
+        LOG.log(Level.INFO, "Reading file: " + file.getName());
         if (!file.isFile() || !file.getName().contains(".feature")) {
             throw new IllegalArgumentException("Provided file is a folder or does not have extension '.feature'");
         }

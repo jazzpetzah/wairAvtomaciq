@@ -1,6 +1,5 @@
-package com.wearezeta.picklejar;
+package com.wire.picklejar.scan;
 
-import com.google.common.io.Files;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -15,12 +14,21 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class JavaSeeker {
+    
+    private static final Logger LOG = LogManager.getLogger();
+    
+    private static final String CLASS_LOADER_CLASSES_FIELD_NAME = "classes";
 
     public static Collection<Class> getClasses(final String pack) throws IOException {
-        final StandardJavaFileManager fileManager = ToolProvider.getSystemJavaCompiler().getStandardFileManager(null, null, null);
-        return StreamSupport.stream(fileManager.list(StandardLocation.CLASS_PATH, pack, Collections.singleton(JavaFileObject.Kind.CLASS), true).spliterator(), false)
+        final StandardJavaFileManager fileManager = ToolProvider.getSystemJavaCompiler().
+                getStandardFileManager(null, null, null);
+        return StreamSupport.stream(fileManager.list(StandardLocation.CLASS_PATH, pack, Collections.singleton(
+                JavaFileObject.Kind.CLASS), true).spliterator(), false)
                 .map(javaFileObject -> {
                     try {
                         final String packagePath = pack.
@@ -31,7 +39,7 @@ public class JavaSeeker {
                                 replace(")", "");
                         final String fullClassName = strippedFullClassNamePath.
                                 replaceAll(Pattern.quote(File.separator), ".");
-                        System.out.println(fullClassName);
+                        LOG.log(Level.DEBUG, "Loading class: "+fullClassName);
                         return Class.forName(fullClassName);
                     } catch (ClassNotFoundException e) {
                         throw new RuntimeException(e);
@@ -42,12 +50,14 @@ public class JavaSeeker {
     }
 
     public static Collection<File> getResource(final String pack, String extension) throws IOException {
-        final StandardJavaFileManager fileManager = ToolProvider.getSystemJavaCompiler().getStandardFileManager(null, null, null);
-        return StreamSupport.stream(fileManager.list(StandardLocation.CLASS_PATH, pack, Collections.singleton(JavaFileObject.Kind.OTHER), true).spliterator(), false)
+        final StandardJavaFileManager fileManager = ToolProvider.getSystemJavaCompiler().
+                getStandardFileManager(null, null, null);
+        return StreamSupport.stream(fileManager.list(StandardLocation.CLASS_PATH, pack, Collections.singleton(
+                JavaFileObject.Kind.OTHER), true).spliterator(), false)
                 .map(javaFileObject -> {
                     return new File(javaFileObject.getName());
                 })
-                .filter((file) -> Files.getFileExtension(file.getName()).equalsIgnoreCase(extension))
+                .filter((file) -> getFileExtension(file.getName()).equalsIgnoreCase(extension))
                 .collect(Collectors.toList());
     }
 
@@ -65,9 +75,16 @@ public class JavaSeeker {
         ArrayList<Class<?>> classesList = new ArrayList((List) classLoaderClassesField.get(classLoader));
         return classesList;
     }
-    private static final String CLASS_LOADER_CLASSES_FIELD_NAME = "classes";
 
     private static ClassLoader getClassLoader() {
         return Thread.currentThread().getContextClassLoader();
+    }
+
+    private static String getFileExtension(String fileName) {
+        try {
+            return fileName.substring(fileName.lastIndexOf(".") + 1);
+        } catch (Exception e) {
+            return "";
+        }
     }
 }

@@ -13,6 +13,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <skipTests>false</skipTests>
         <TestRun>DevRun</TestRun>
         <pictureResultsPath>/var/tmp/</pictureResultsPath>
@@ -40,6 +42,8 @@
         <com.wire.browser.version>44.0</com.wire.browser.version>
         <picklejar.parallel.max>2</picklejar.parallel.max>
         <picklejar.timeout.testclass>180</picklejar.timeout.testclass>
+        <picklejar.steps.package>com.wearezeta.auto.web.steps</picklejar.steps.package>
+        <picklejar.feature.package>com.wearezeta.auto.web</picklejar.feature.package>
     </properties>
 
     <dependencies>
@@ -61,19 +65,17 @@
             <artifactId>selenium-java</artifactId>
             <version>2.49.0</version>
         </dependency>
+        
+        <dependency>
+            <groupId>com.wire</groupId>
+            <artifactId>picklejar</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -87,20 +89,60 @@
                     </execution>
                 </executions>
             </plugin>
+            
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>gen-test-classes</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <property name="picklejar.tag" value="${picklejar.tag}"/>
+                                <property name="picklejar.feature.package" value="${picklejar.feature.package}"/>
+                                <property name="basedir" value="${project.build.directory}" />
+                                <property name="runtime_classpath" refid="maven.runtime.classpath" />
+                                <exec executable="java" spawn="false">
+                                    <arg value="-classpath"/>
+                                    <arg value="${runtime_classpath}:${basedir}/target/test-classes"/>
+                                    <arg value="-Dpicklejar.tag=${picklejar.tag}"/>
+                                    <arg value="-Dpicklejar.feature.package=${picklejar.feature.package}"/>
+                                    <arg value="-Dlog4j.rootLogger=DEBUG"/>
+                                    <arg value="com.wire.picklejar.construct.TestClassGenerator"/>
+                                </exec>  
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
                 <configuration>
+                    <threadCount>${picklejar.parallel.max}</threadCount>
+                    <reuseForks>false</reuseForks>
+                    <forkCount>${picklejar.parallel.max}</forkCount>
                     <skipTests>${skipTests}</skipTests>
                     <trimStackTrace>false</trimStackTrace>
                     <!--<rerunFailingTestsCount>1</rerunFailingTestsCount>-->
-                    <includes>
+                    <!--<includes>
                         <include>**/${TestRun}.java</include>
-                    </includes>
+                    </includes>-->
+                    <excludes>
+                        <exclude>**/TestRun.java</exclude>
+                        <exclude>**/PickleJarInheritedTest.java</exclude>
+                        <exclude>**/PickleJarStandaloneTest.java</exclude>
+                    </excludes>
                     <argLine>-Djava.library.path=../common/native_lib</argLine>
                     <systemPropertyVariables>
+                        <picklejar.steps.package>${picklejar.steps.package}</picklejar.steps.package>
+                        <picklejar.feature.package>${picklejar.feature.package}</picklejar.feature.package>
                         <picklejar.timeout.testclass>${picklejar.timeout.testclass}</picklejar.timeout.testclass>
                         <picklejar.parallel.max>${picklejar.parallel.max}</picklejar.parallel.max>
                         <java.awt.headless>true</java.awt.headless>

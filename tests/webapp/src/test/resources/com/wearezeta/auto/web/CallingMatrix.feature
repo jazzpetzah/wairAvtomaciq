@@ -22,10 +22,10 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:44.0        | 60      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 10      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 10      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:44.0        | 10      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 10      |
 
   @C5360 @calling_matrix @calling
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>

@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.web.pages.HistoryInfoPage;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
