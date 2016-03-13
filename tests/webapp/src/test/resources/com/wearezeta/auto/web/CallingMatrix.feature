@@ -27,7 +27,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | firefox:44.0.2      | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 20      |
 
-  @C5360 @calling_matrix @calling
+#  @C5360 @calling_matrix @calling
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -135,7 +135,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:44.0.2      | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0        | 20      |
 
-  @C5364 @calling_matrix @calling
+#  @C5364 @calling_matrix @calling
   Scenario Outline: Verify I can make group call with multiple AVS <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -232,7 +232,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:44.0.2      | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:43.0        | 20      |
 
-  @C5367 @calling_matrix @calling
+#  @C5367 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
