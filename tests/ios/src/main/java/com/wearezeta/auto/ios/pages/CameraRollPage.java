@@ -18,8 +18,7 @@ public class CameraRollPage extends IOSPage {
 
     private static final By nameCameraLibraryButton = MobileBy.AccessibilityId("cameraLibraryButton");
 
-    private static final By xpathCameraLibraryFirstFolder =
-            By.xpath(xpathStrMainWindow + "//UIATableView/UIATableCell");
+    private static final By xpathCameraLibraryFirstFolder = By.xpath("(//UIATableView)[last()]/UIATableCell");
 
     private static final By xpathLibraryFirstPicture = By.xpath("//UIACollectionView/UIACollectionCell");
 
