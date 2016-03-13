@@ -26,7 +26,7 @@ Feature: Conversation View
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I press Confirm button
+    And I confirm Camera Roll picture selection
     And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -55,7 +55,7 @@ Feature: Conversation View
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I press Confirm button
+    And I confirm Camera Roll picture selection
     And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -119,7 +119,7 @@ Feature: Conversation View
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I press Confirm button
+    And I confirm Camera Roll picture selection
     And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -346,7 +346,7 @@ Feature: Conversation View
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
-    And I press Confirm button
+    And I confirm Camera Roll picture selection
     Then I see 2 photos in the dialog
 
     Examples:
@@ -368,7 +368,7 @@ Feature: Conversation View
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
-    And I press Confirm button
+    And I confirm Camera Roll picture selection
     Then I see 2 photos in the dialog
 
     Examples:
@@ -415,8 +415,8 @@ Feature: Conversation View
     And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
-    And I choose last picture from camera roll
-    And I press Confirm button
+    And I choose a picture from camera roll
+    And I confirm Camera Roll picture selection
     And I see 2 photos in the dialog
 
     Examples:
@@ -441,8 +441,8 @@ Feature: Conversation View
     And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
-    And I choose last picture from camera roll
-    And I press Confirm button
+    And I choose a picture from camera roll
+    And I confirm Camera Roll picture selection
     And I see 2 photos in the dialog
 
     Examples:

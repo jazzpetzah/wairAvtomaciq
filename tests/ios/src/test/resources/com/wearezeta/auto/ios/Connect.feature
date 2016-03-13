@@ -334,7 +334,7 @@ Feature: Connect
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I press Confirm button
+    And I confirm Camera Roll picture selection
     Then I see 1 photo in the dialog
 
     Examples: 

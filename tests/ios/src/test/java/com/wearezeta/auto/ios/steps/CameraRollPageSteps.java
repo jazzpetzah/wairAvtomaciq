@@ -6,11 +6,10 @@ import cucumber.api.java.en.When;
 
 public class CameraRollPageSteps {
 
-	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-			.getInstance();
+	private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
 	private CameraRollPage getCameraRollPage() throws Exception {
-		return (CameraRollPage) pagesCollecton.getPage(CameraRollPage.class);
+		return pagesCollection.getPage(CameraRollPage.class);
 	}
 
 	@When("^I press Camera Roll button$")
@@ -22,22 +21,9 @@ public class CameraRollPageSteps {
 	public void IChooseAPictureFromCameraRoll() throws Throwable {
 		getCameraRollPage().selectImageFromLibrary();
 	}
-	
-	/**
-	 * Select last image from camera roll library
-	 * 
-	 * @step. ^I choose last picture from camera roll$
-	 * 
-	 * @throws Throwable
-	 */
-	@When("^I choose last picture from camera roll$")
-	public void IChooseLastPictureFromCameraRoll() throws Throwable {
-		getCameraRollPage().clickFirstLibraryFolder();
-		getCameraRollPage().clickLastImage();
-	}
 
-	@When("^I press Confirm button$")
-	public void IPressConfirmButton() throws Throwable {
+	@When("^I confirm Camera Roll picture selection$")
+	public void IConfirmImageSelection() throws Throwable {
 		getCameraRollPage().pressConfirmButton();
 	}
 

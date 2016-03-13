@@ -18,11 +18,10 @@ public class CameraRollPage extends IOSPage {
 
     private static final By nameCameraLibraryButton = MobileBy.AccessibilityId("cameraLibraryButton");
 
-    private static final By xpathCameraLibraryFirstFolder = By.xpath("//UIATableCell[@name='Moments']");
+    private static final By xpathCameraLibraryFirstFolder =
+            By.xpath(xpathStrMainWindow + "//UIATableView/UIATableCell");
 
-    private static final By xpathLibraryFirstPicture = By.xpath("//UIACollectionCell[starts-with(@name, 'Photo,')]");
-
-    private static final By xpathLibraryLastPicture = By.xpath("//UIACollectionView/UIACollectionCell[last()]");
+    private static final By xpathLibraryFirstPicture = By.xpath("//UIACollectionView/UIACollectionCell");
 
     private static final By xpathConfirmPictureButton = By.xpath("//UIAButton[@name='OK' and @visible='true']");
 
@@ -60,11 +59,6 @@ public class CameraRollPage extends IOSPage {
 
     public void clickFirstImage() throws Exception {
         DriverUtils.getElementIfPresentInDOM(getDriver(), xpathLibraryFirstPicture).
-                orElseThrow(() -> new IllegalStateException("Cannot find an image to select")).click();
-    }
-
-    public void clickLastImage() throws Exception {
-        DriverUtils.getElementIfPresentInDOM(getDriver(), xpathLibraryLastPicture).
                 orElseThrow(() -> new IllegalStateException("Cannot find an image to select")).click();
     }
 
