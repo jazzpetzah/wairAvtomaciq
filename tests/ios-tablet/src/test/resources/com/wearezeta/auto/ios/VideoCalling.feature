@@ -87,11 +87,12 @@ Feature: Video Calling
     When <Contact> starts a video call to <Name> using <CallBackend>
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept Video button on Calling overlay
+    And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see Mute button on Video Calling overlay
     And I remember state of Mute button on Video Calling overlay
     And I tap Mute button on Video Calling overlay
     Then I see state of Mute button has changed on Video Calling overlay
 
     Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | chrome      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 30      |
