@@ -65,13 +65,14 @@ Feature: Video Calling
     And I click plus button next to text input
     And I click Video Call button
     And I see Video Calling overlay
+    And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see Mute button on Video Calling overlay
     And I tap Leave button on Video Calling overlay
     Then I see dialog page
 
     Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | chrome      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 30      |
 
   @C12104 @calling_basic @video_calling
   Scenario Outline: Verify ignoring Video call
@@ -167,12 +168,13 @@ Feature: Video Calling
     And <Contact> starts a video call to me using <VideoCallBackend>
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept Video button on Calling overlay
+    And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     Then I see Switch Camera button on Video Calling overlay
     When <Contact2> starts a video call to me using <VideoCallBackend>
     And I tap Accept Video button on Calling overlay
     Then I see Mute button on Video Calling overlay
-    And <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
-    And <Contact2> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And <Contact> verifies that call status to Myself is changed to destroyed in <Timeout> seconds
+    And <Contact2> verifies that call status to Myself is changed to active in <Timeout> seconds
 
     Examples:
       | Name      | Contact    | Contact2 | VideoCallBackend | Timeout |
@@ -187,14 +189,15 @@ Feature: Video Calling
     When <Contact> starts a video call to <Name> using <CallBackend>
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept Video button on Calling overlay
+    And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see Mute button on Video Calling overlay
     And I remember state of Mute button on Video Calling overlay
     And I tap Mute button on Video Calling overlay
     Then I see state of Mute button has changed on Video Calling overlay
 
     Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | chrome      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 30      |
 
   @C28861 @staging @video_calling @AUDIO-868
   Scenario Outline: Verify video call continues after rejecting 2nd incoming video call
