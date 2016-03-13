@@ -32,7 +32,7 @@ Feature: Video Calling
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
-    And I tap Leave button on Calling overlay
+    And I tap Leave button on Video Calling overlay
     And I do not see Calling overlay
     Then I see dialog page
 
