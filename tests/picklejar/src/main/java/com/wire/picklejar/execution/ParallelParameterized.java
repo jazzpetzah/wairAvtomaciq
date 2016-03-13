@@ -10,6 +10,13 @@ import org.apache.logging.log4j.Logger;
 import org.junit.runners.Parameterized;
 import org.junit.runners.model.RunnerScheduler;
 
+/**
+ * Parallel JUnit runner for parameterized test classes
+ * 
+ * @author mkoppen
+ * @deprecated
+ */
+@Deprecated
 public class ParallelParameterized extends Parameterized {
 
     private static final Logger LOG = LogManager.getLogger();

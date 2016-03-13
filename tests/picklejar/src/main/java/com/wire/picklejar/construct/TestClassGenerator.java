@@ -4,11 +4,7 @@ import com.wire.picklejar.Config;
 import com.wire.picklejar.PickleJar;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -34,7 +30,8 @@ public class TestClassGenerator {
     private static final Logger LOG = LogManager.getLogger();
 
     private static final String CLASS_OUTPUT_FOLDER = "target/test-classes/";
-    private static final String TEST_TEMPLATE_LOCATION = "src/main/resources/testTemplate.txt";
+    private static final String TEST_TEMPLATE_LOCATION = "src/main/resources/";
+    private static final String TEST_TEMPLATE_NAME = "testTemplate.txt";
 
     public class InMemoryJavaFileObject extends SimpleJavaFileObject {
 
@@ -96,7 +93,7 @@ public class TestClassGenerator {
             StringBuilder data = new StringBuilder("List<Object[]> testcases = new ArrayList<>();\n");
             data.append(buildExamplesMap());
             data.append(buildStepList());
-            data.append(String.format("testcases.add(new Object[]{\"%s\", \"%s\", %d, steps, examples});\n", 
+            data.append(String.format("testcases.add(new Object[]{\"%s\", \"%s\", %d, steps, examples});\n",
                     featureName, scenarioName, exampleNum));
             data.append("return testcases;");
             return data.toString();
@@ -132,15 +129,15 @@ public class TestClassGenerator {
         TestClassGenerator generator = new TestClassGenerator();
 
         for (TestCase generateTestCase : generator.generateTestCases()) {
-            LOG.log(Level.INFO, "Generated Testclass: "+generateTestCase.toClassName());
-            generator.compile(Config.GENERATED_TEST_PACKAGE, generateTestCase.toClassName(), generateTestCase.toSource());
+            LOG.log(Level.INFO, "Generated Testclass: " + generateTestCase.toClassName());
+            generator.compile(generateTestCase.toClassName(), generateTestCase.toSource());
         }
     }
 
     public List<TestCase> generateTestCases() throws IOException {
         List<TestCase> testObjects = new ArrayList<>();
         Collection<Object[]> testcases = PickleJar.getTestcases();
-        String template = new String(Files.readAllBytes(Paths.get(TEST_TEMPLATE_LOCATION)));
+        String template = new String(Files.readAllBytes(Paths.get(TEST_TEMPLATE_LOCATION + TEST_TEMPLATE_NAME)));
 
         for (Object[] testcase : testcases) {
             testObjects.add(new TestCase(testcase, template));
@@ -148,12 +145,13 @@ public class TestClassGenerator {
         return testObjects;
     }
 
-    private boolean compile(String packageName, String testName, String source) {
+    private boolean compile(String testName, String source) {
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
         StandardJavaFileManager fileManager
                 = compiler.getStandardFileManager(null, Locale.ENGLISH, null);
 
-        InMemoryJavaFileObject classSourceObject = new InMemoryJavaFileObject(packageName + "." + testName + "Test", source);
+        InMemoryJavaFileObject classSourceObject = new InMemoryJavaFileObject(
+                Config.GENERATED_TEST_PACKAGE + "." + testName + "Test", source);
         Iterable<? extends JavaFileObject> files = Arrays.asList(classSourceObject);
 
         new File(CLASS_OUTPUT_FOLDER).mkdirs();

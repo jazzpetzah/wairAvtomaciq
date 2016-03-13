@@ -21,26 +21,6 @@ import org.junit.Test;
 public class PickleJarTest {
     
     private static final Logger LOG = LogManager.getLogger();
-
-    /**
-     * Info:<br>
-     * - Surefire plugin v2.19.1 needed for parameterized test execution<br>
-     * - Convention: step classes must have a no-args constructor<br>
-     *
-     * Features:<br>
-     * - Can run steps of other jars<br>
-     * - Execution of single example of testcase<br>
-     * - Inherited parallelism of junit<br>
-     * - Inherited rerun feature of junit<br>
-     *
-     * Con:<br>
-     *
-     * TODO:<br>
-     * - [low prio] deal with multiple package paths for step classes<br>
-     * - [low prio] using proper logger<br>
-     * - run tests by category<br>
-     * - run tests by id<br>
-     */
     
     private static final AtomicInteger TEST_COUNTER = new AtomicInteger(0);
     private final PickleJar pickle = new PickleJarJUnitProvider();
