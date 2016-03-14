@@ -407,6 +407,8 @@ Feature: VideoCalling
     Then I see ongoing video call
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I hang up ongoing video call
+    And <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing video call
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
