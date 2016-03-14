@@ -6,13 +6,13 @@ Feature: Calling_Matrix
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
-    Given <Contact> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
-    And I call
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    When I call
+    Then <Contact> accepts next incoming call automatically
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
     And I wait for 10 seconds
     And <Contact> verify to have 1 flows
@@ -33,13 +33,13 @@ Feature: Calling_Matrix
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
-    Given <Contact> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
-    And I call
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    When I call
+    Then <Contact> accepts next incoming call automatically
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
     #And I see row of avatars on call controls with user <Contact>
     And I wait for 10 seconds

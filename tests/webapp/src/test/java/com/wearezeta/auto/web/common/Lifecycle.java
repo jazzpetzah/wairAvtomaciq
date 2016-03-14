@@ -84,11 +84,16 @@ public class Lifecycle {
         public void startPinging(){
             pinger = ping.scheduleAtFixedRate(()->{
                 try {
-                    driver.get(10, TimeUnit.SECONDS).getSessionId();
+                    if (driver.isCancelled()) {
+                        pinger.cancel(true);
+                    }
+                    if (driver.isDone()) {
+                        driver.get(10, TimeUnit.SECONDS).getPageSource();
+                    }
                 } catch (InterruptedException | ExecutionException | TimeoutException ex) {
                     Logger.getLogger(Lifecycle.class.getName()).log(Level.WARNING, "Could not ping driver because it's not initialized yet");
                 }
-            }, 1, 1, TimeUnit.MINUTES);
+            }, 0, 30, TimeUnit.SECONDS);
         }
         
         public void stopPinging(){
