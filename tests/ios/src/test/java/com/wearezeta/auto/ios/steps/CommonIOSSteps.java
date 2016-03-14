@@ -136,9 +136,13 @@ public class CommonIOSSteps {
                     FileUtils.deleteDirectory(appPath);
                 }
             }
-            CommonUtils.executeOsCommandWithTimeout(new String[]{
+            final Process p = new ProcessBuilder(new String[]{
                     "/usr/local/bin/ideviceinstaller", "-U", cachedBundleIds.get(ipaPath)
-            }, 25);
+            }).start();
+            if (!p.waitFor(25, TimeUnit.SECONDS)) {
+                throw new IllegalStateException("ideviceinstaller has failed to perform application uninstall.\n" +
+                        "Please try to reconnect the device.");
+            }
         }
 
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
