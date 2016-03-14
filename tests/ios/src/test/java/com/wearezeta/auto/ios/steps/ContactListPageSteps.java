@@ -360,12 +360,12 @@ public class ContactListPageSteps {
     /**
      * Checks that specified button is exist in displayed action menu
      *
-     * @param buttonTitle Silence | Delete | Leave | Archive | Block | Cancel
+     * @param buttonTitle Silence | Delete | Leave | Archive | Block | Cancel Request | Cancel
      * @throws Exception
-     * @step. ^I see (Silence|Delete|Leave|Archive|Block|Cancel) button in
+     * @step. ^I see (Silence|Delete|Leave|Archive|Block|Cancel Request|Cancel) button in
      * action menu in [Cc]ontact [Ll]ist$
      */
-    @And("^I see (Silence|Delete|Leave|Archive|Block|Cancel) button in action menu in [Cc]ontact [Ll]ist$")
+    @And("^I see (Silence|Delete|Leave|Archive|Block|Cancel Request|Cancel) button in action menu in [Cc]ontact [Ll]ist$")
     public void ISeeXButtonInActionMenu(String buttonTitle) throws Exception {
         Assert.assertTrue("There is no button " + buttonTitle.toUpperCase()
                 + " in opened action menu.", getContactListPage()
