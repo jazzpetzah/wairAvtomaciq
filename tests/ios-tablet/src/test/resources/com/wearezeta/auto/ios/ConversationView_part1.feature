@@ -41,7 +41,7 @@ Feature: Conversation View
     And I press Add Picture button on iPad
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     Then I see 1 photo in the dialog
 
     Examples:
@@ -60,7 +60,7 @@ Feature: Conversation View
     And I press Add Picture button on iPad
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     Then I see 1 photo in the dialog
 
     Examples:

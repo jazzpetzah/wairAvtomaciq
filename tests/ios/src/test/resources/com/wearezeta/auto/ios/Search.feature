@@ -163,7 +163,7 @@ Feature: Search
     And I tap Send image action button on People picker page
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the dialog
     When I navigate back to conversations list

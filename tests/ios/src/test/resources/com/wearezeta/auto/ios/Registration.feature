@@ -10,6 +10,7 @@ Feature: Registration
     And I press Choose Own Picture button
     And I press Choose Photo button
     And I choose a picture from camera roll
+    And I confirm my choice
     And I tap Share Contacts button on Share Contacts overlay
     Then I see People picker page
 
@@ -33,6 +34,23 @@ Feature: Registration
     When I enter phone number for user <Name>
     And I input random activation code
     Then I see invalid code alert
+
+    Examples:
+      | Name      |
+      | user1Name |
+
+  @C3166 @real
+  Scenario Outline: Verify taking photo with a front camera
+    Given I see sign in screen
+    When I enter phone number for user <Name>
+    And I enter activation code
+    And I accept terms of service
+    And I input name <Name> and hit Enter
+    And I press Choose Own Picture button
+    And I press Take Photo button
+    And I tap Camera Shutter button
+    And I confirm my choice
+    Then I see People picker page
 
     Examples:
       | Name      |
