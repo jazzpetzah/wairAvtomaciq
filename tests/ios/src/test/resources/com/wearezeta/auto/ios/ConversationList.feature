@@ -493,3 +493,19 @@ Feature: Conversation List
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Number |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | 8      |
+
+  @C854 @regression @id3996
+  Scenario Outline: Verify action menu is opened on swipe right on outgoing connection request
+    Given There are 2 users where <Name> is me
+    Given Myself sent connection request to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I see first item in contact list named <Contact>
+    When I swipe right on a <Contact>
+    Then I see conversation <Contact> name in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
