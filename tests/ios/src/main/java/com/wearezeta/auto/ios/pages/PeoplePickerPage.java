@@ -259,7 +259,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public boolean isShareContactsSettingsWarningShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLaterButton, 1);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLaterButton);
     }
 
     public void tapCancelInvitePeopleButton() throws Exception {

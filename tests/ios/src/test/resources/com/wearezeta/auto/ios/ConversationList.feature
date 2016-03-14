@@ -520,12 +520,10 @@ Feature: Conversation List
     Given I dismiss alert
     Given I dismiss settings warning
     Given I see conversations list
-    When I see Invite more people button
-    And I tap Invite more people button
+    When I tap Invite more people button
     Then I see Share Contacts settings warning
     And I dismiss settings warning
     And I tap Cancel button to not Invite more people
-    And I see Invite more people button
     And I tap Invite more people button
     Then I see Share Contacts settings warning
 
