@@ -509,3 +509,26 @@ Feature: Conversation List
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+ 
+  @C109 @noAcceptAlert @staging
+  Scenario Outline: Verify share contacts dialogue is shown each time on invite more friends click
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email
+    Given I accept alert
+    Given I accept First Time overlay if it is visible
+    Given I dismiss alert
+    Given I dismiss settings warning
+    Given I see conversations list
+    When I tap Invite more people button
+    Then I see Share Contacts settings warning
+    And I dismiss settings warning
+    And I tap Cancel button to not Invite more people
+    And I tap Invite more people button
+    Then I see Share Contacts settings warning
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  

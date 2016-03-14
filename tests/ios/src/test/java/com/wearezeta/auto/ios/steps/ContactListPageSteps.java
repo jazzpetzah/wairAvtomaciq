@@ -27,6 +27,10 @@ public class ContactListPageSteps {
         return pagesCollection.getPage(LoginPage.class);
     }
 
+    private PeoplePickerPage getPeoplePickerPage() throws Exception {
+        return pagesCollection.getPage(PeoplePickerPage.class);
+    }
+
     @Given("^I see conversations list$")
     public void GivenISeeConversationsList() throws Exception {
         Assert.assertTrue("Conversations list is not visible after the timeout", getLoginPage().isSelfAvatarVisible());
@@ -499,4 +503,13 @@ public class ContactListPageSteps {
         getContactListPage().tapOnNameYourInCallWith(name);
     }
 
+    /**
+     * Taps on the Invite More button in contact list
+     * @step. ^I tap Invite more people button$
+     * @throws Exception
+     */
+    @When("^I tap Invite more people button$")
+    public void ITapInviteMorePeopleButton() throws Exception {
+        getPeoplePickerPage().tapSendInviteButton();
+    }
 }

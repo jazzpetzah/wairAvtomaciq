@@ -340,4 +340,25 @@ public class PeoplePickerPageSteps {
                     getPeoplePickerPage().isActionButtonInvisible(actionButtonName));
         }
     }
+
+    /**
+     * Verifies that Share your contacts settings message is shown
+     * @step. I see Share Contacts settings warning
+     * @throws Exception
+     */
+    @Then("^I see Share Contacts settings warning$")
+    public void ISeeShareContactsSettingsWarning() throws Exception {
+        Assert.assertTrue("Share Contacts settings warning is not visible",
+                getPeoplePickerPage().isShareContactsSettingsWarningShown());
+    }
+
+    /**
+     * Taps cancel button to stop invite more people
+     * @step. ^I tap Cancel button to not Invite more people$
+     * @throws Exception
+     */
+    @When("^I tap Cancel button to not Invite more people$")
+    public void iTapCancelButtonToNotInviteMorePeople() throws Exception {
+        getPeoplePickerPage().tapCancelInvitePeopleButton();
+    }
 }
