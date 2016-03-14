@@ -16,11 +16,11 @@ public class ShareContactsOverlay extends IOSPage {
         super(lazyDriver);
     }
 
-    public boolean waitUntiVisible() throws Exception {
+    public boolean waitUntilVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameShareContactsButton);
     }
 
-    public boolean waitUntiInvisible() throws Exception {
+    public boolean waitUntilInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameShareContactsButton);
     }
 
