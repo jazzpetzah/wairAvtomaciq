@@ -435,27 +435,27 @@ Feature: Conversation List
     And I send message
     And I see random message in conversation
     Then I see conversation <Contact1> is on the top
-    And I open self profile
+    When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
-    And I see Sign In page
+    Then I see Sign In page
       When I Sign in using login <Login2> and password <Password2>
       And I am signed in properly
       And I see Welcome page
       And I confirm keeping picture on Welcome page
       And I open conversation with <Name>
     And user <Name> adds a new device Device1 with label Label1
-    When Contact <Name> sends encrypted message <Message> via device Device1 to user <Contact2>
+    And Contact <Name> sends encrypted message <Message> via device Device1 to user <Contact2>
       Then I see text message <Message>
-      And I open self profile
+      When I open self profile
       And I click gear button on self profile page
       And I select Log out menu item on self profile page
       And I see the clear data dialog
       And I click Logout button on clear data dialog
-      And I see Sign In page
-    And I Sign in using login <Login> and password <Password>
+      Then I see Sign In page
+    When I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I see Contact list with name <Contact2>
     Then I see conversation <Contact2> is on the top
