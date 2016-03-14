@@ -49,9 +49,14 @@ Feature: Registration
     And I press Choose Own Picture button
     And I press Take Photo button
     And I tap Camera Shutter button
+    And I remember current screen state
     And I confirm my choice
-    Then I see People picker page
+    And I see People picker page
+    And I click clear button
+    And I tap my avatar
+    And I tap on personal screen
+    Then I verify that current screen similarity score is more than <Score> within <Timeout> seconds
 
     Examples:
-      | Name      |
-      | user1Name |
+      | Name      | Score | Timeout |
+      | user1Name | 0.4   | 15      |
