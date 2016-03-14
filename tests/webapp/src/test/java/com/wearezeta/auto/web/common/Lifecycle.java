@@ -88,6 +88,7 @@ public class Lifecycle {
                         pinger.cancel(true);
                     }
                     if (driver.isDone()) {
+                        Logger.getLogger(Lifecycle.class.getName()).log(Level.INFO, "Ping");
                         driver.get(10, TimeUnit.SECONDS).getPageSource();
                     }
                 } catch (InterruptedException | ExecutionException | TimeoutException ex) {

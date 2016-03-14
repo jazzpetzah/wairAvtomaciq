@@ -39,24 +39,22 @@ public class PickleJarInheritedTest extends PickleJarTest{
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        
+        lifecycle = new Lifecycle();
+        lifecycle.setUp(getScenario());
     }
 
     @Test
     public void test() throws Exception {
         super.test();
-        lifecycle = new Lifecycle();
-        lifecycle.setUp(getScenario());
         for (String step : getSteps()) {
             getPickle().getExecutor().invokeMethodForStep(step, getExamples(), lifecycle.getContext());
         }
-        lifecycle.tearDown(getScenario());
     }
 
     @After
     public void tearDown() throws Exception {
         super.tearDown();
-        
+        lifecycle.tearDown(getScenario());
     }
 
     @AfterClass
