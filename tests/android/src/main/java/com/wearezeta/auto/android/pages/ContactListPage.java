@@ -61,7 +61,7 @@ public class ContactListPage extends AndroidPage {
 
     private static final By xpathConfirmDeleteConversationButton = By.xpath("//*[@id='positive' and @value='DELETE']");
 
-    private static final By xpathLeaveCheckbox = By.xpath("(//*[@id='gtv__checkbox_icon'])[1]");
+    private static final By xpathLeaveCheckbox = By.xpath("//*[@id='gtv__checkbox_icon']");
 
     private static final Function<String, String> xpathStrConvoSettingsMenuItemByName = name -> String
             .format("//*[@id='ttv__settings_box__item' and @value='%s']" +

@@ -251,4 +251,16 @@ public class RegistrationPageSteps {
         getRegistrationPage().clickKeepThisOneButton();
     }
 
+    /**
+     * Tap Take Photo button on unsplash page
+     *
+     * @step. ^I press Take Photo button$
+     *
+     * @throws Exception
+     */
+    @And("^I press Take Photo button$")
+    public void IPressTakePhotoButton() throws Exception {
+        getRegistrationPage().tapTakePhotoButton();
+    }
+
 }

@@ -32,7 +32,7 @@ Feature: Self Profile
     And I tap on personal screen
     And I press Camera button
     And I choose a picture from camera roll
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     Then I wait up to <Timeout> seconds until my profile picture is changed
 
     Examples:
@@ -52,7 +52,7 @@ Feature: Self Profile
     And I tap on personal screen
     And I press Camera button
     And I choose a picture from camera roll
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     Then I wait up to <Timeout> seconds until my profile picture is changed
 
     Examples:

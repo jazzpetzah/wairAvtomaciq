@@ -15,11 +15,13 @@ import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
+import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -82,17 +84,26 @@ public class CommonIOSSteps {
 
     private static final int DRIVER_CREATION_RETRIES_COUNT = 2;
 
+    private static Map<String, String> cachedBundleIds = new HashMap<>();
+
     @SuppressWarnings("unchecked")
-    public Future<ZetaIOSDriver> resetIOSDriver(String appPath,
+    public Future<ZetaIOSDriver> resetIOSDriver(String ipaPath,
                                                 Optional<Map<String, Object>> additionalCaps) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("nativeInstrumentsLib", isUseNativeInstrumentsEnabled());
         capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
-        capabilities.setCapability("app", appPath);
+        capabilities.setCapability("app", ipaPath);
         capabilities.setCapability("appName", getAppName());
-        final String deviceName = getDeviceName(this.getClass());
-        capabilities.setCapability("deviceName", deviceName);
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
+        } else {
+            // We don't really care about which particular real device model we have
+            capabilities.setCapability("deviceName", getDeviceName(this.getClass()).split("\\s+")[0]);
+            capabilities.setCapability("udid", IOSCommonUtils.getConnectedIDeviceUDID().orElseThrow(
+                    () -> new IllegalStateException("Cannot detect any connected iDevice")
+            ));
+        }
         capabilities.setCapability("platformVersion", getPlatformVersion());
         capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT);
         final String backendType = getBackendType(this.getClass());
@@ -109,6 +120,24 @@ public class CommonIOSSteps {
             for (Map.Entry<String, Object> entry : additionalCaps.get().entrySet()) {
                 capabilities.setCapability(entry.getKey(), entry.getValue());
             }
+        }
+
+        if (!CommonUtils.getIsSimulatorFromConfig(getClass()) &&
+                (capabilities.is("noReset") && !((Boolean)capabilities.getCapability("noReset")) ||
+                 !capabilities.is("noReset"))) {
+            // FIXME: Sometimes Appium fails to reset app prefs properly on real device
+            if (!cachedBundleIds.containsKey(ipaPath)) {
+                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(ipaPath));
+                try {
+                    cachedBundleIds.put(ipaPath, IOSCommonUtils.getBundleId(
+                            new File(appPath.getCanonicalPath() + File.separator + "Info.plist")));
+                } finally {
+                    FileUtils.deleteDirectory(appPath);
+                }
+            }
+            CommonUtils.executeOsCommandWithTimeout(new String[]{
+                    "/usr/local/bin/ideviceinstaller", "-U", cachedBundleIds.get(ipaPath)
+            }, 25);
         }
 
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
@@ -852,5 +881,10 @@ public class CommonIOSSteps {
     @Given("^(\\w+) waits? until (?:his|my) Top People list is not empty on the backend$")
     public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias) throws Exception {
         commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(searchByNameAlias, 1);
+    }
+
+    @When("^I confirm my choice$")
+    public void IConfirmImageSelection() throws Throwable {
+        pagesCollection.getCommonPage().pressConfirmButton();
     }
 }
