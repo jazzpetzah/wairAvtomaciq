@@ -288,3 +288,30 @@ class IOSSimulator(BaseNodeVerifier):
             return result
         finally:
             client.close()
+
+
+class IOSRealDevice(BaseNodeVerifier):
+    def _get_connected_devices(self, ssh_client):
+        _, stdout, _ = ssh_client.exec_command('/usr/sbin/system_profiler SPUSBDataType')
+        return re.findall(r'Serial Number: ([0-9a-f]{40})', stdout.read())
+
+    def _is_verification_passed(self):
+        result = super(IOSRealDevice, self)._is_verification_passed()
+        if not result:
+            return False
+        client = paramiko.SSHClient()
+        try:
+            client.load_system_host_keys()
+            client.set_missing_host_key_policy(paramiko.WarningPolicy())
+            client.connect(self._node_hostname, username=self._verification_kwargs['node_user'],
+                           password=self._verification_kwargs['node_password'])
+
+            available_devices = self._get_connected_devices(client)
+            if not available_devices:
+                msg = 'There are no real iOS device(s) connected to the node "{}"'.format(self._node.name)
+                sys.stderr.write(msg)
+                self._send_email_notification('No real iOS device(s) are connected', msg)
+                return False
+            return result
+        finally:
+            client.close()
