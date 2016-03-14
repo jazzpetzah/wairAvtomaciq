@@ -30,10 +30,10 @@ public class OSXExecutionContext {
 			"com.wire.os.version", "10");
 
 	public static final String BROWSER_NAME = System.getProperty(
-			"com.wire.browser.name", "Chrome");
+			"com.wire.browser.name", "chrome");
 
 	public static final String BROWSER_VERSION = System.getProperty(
-			"com.wire.browser.version", "45");
+			"com.wire.browser.version", "49");
 
 	public static final String ELECTRON_SUFFIX = System.getProperty(
 			"com.wire.electron.path.suffix", "/Contents/MacOS/Electron");

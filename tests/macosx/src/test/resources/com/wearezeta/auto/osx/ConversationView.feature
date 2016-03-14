@@ -43,7 +43,7 @@ Feature: Conversation View
     Then I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And I type shortcut combination to start a call
-    Then I see the calling bar
+    Then I see the outgoing call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -58,7 +58,7 @@ Feature: Conversation View
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I click menu bar item "Conversation" and menu item "Call"
-    Then I see the calling bar
+    Then I see the outgoing call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -110,7 +110,7 @@ Feature: Conversation View
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
     And I type shortcut combination to start a call
-    Then I see the calling bar
+    Then I see the outgoing call controls for conversation <ChatName>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
@@ -126,7 +126,7 @@ Feature: Conversation View
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     And I click menu bar item "Conversation" and menu item "Call"
-    Then I see the calling bar
+    Then I see the outgoing call controls for conversation <ChatName>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
