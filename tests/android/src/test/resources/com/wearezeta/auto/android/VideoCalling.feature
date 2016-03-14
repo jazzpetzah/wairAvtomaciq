@@ -392,7 +392,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout | Message | ImageName   |
       | user1Name | user2Name | chrome      | 30      | Testing | testing.jpg |
 
-  @C58886 @staging @torun
+  @C58886 @staging
   Scenario Outline: Verify I can accept Video call from background
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
