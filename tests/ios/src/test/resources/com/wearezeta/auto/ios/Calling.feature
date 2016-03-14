@@ -137,7 +137,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | firefox     |
+      | user1Name | user2Name | chrome      |
 
   @C3164 @calling_advanced @id2645
   Scenario Outline: 3rd person tries to call me after I initiate a call to somebody
@@ -168,7 +168,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 |
-      | user1Name | user2Name | user3Name | firefox     | autocall     |
+      | user1Name | user2Name | user3Name | chrome      | autocall     |
 
   @C2082 @calling_basic @id2646
   Scenario Outline: Put app into background after initiating call
@@ -186,7 +186,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | firefox     |
+      | user1Name | user2Name | chrome      |
 
   @C2077 @calling_basic @id933
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button)
@@ -203,7 +203,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | firefox     | autocall     | 30      |
+      | user1Name | user2Name | chrome      | autocall     | 30      |
 
   @C2074 @calling_basic @id913
   Scenario Outline: I want to end the call from the ongoing voice overlay
@@ -227,7 +227,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | CallBackend2 |
-      | user1Name | user2Name | firefox     | autocall     |
+      | user1Name | user2Name | chrome      | autocall     |
 
   @C2046 @rc @calling_basic @IPv6 @id2682
   Scenario Outline: Verify accepting group call in foreground
@@ -244,13 +244,13 @@ Feature: Calling
     And I tap Accept button on Calling overlay
     # FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
     # Then I see <NumberOfAvatars> avatars on the Calling overlay
-    And I wait for 10 seconds
-    Then <Contact2> verify to have 2 flows
+    # And I wait for 10 seconds
+    # Then <Contact2> verify to have 2 flows
     # Then <Contact2> verify that all flows have greater than 0 bytes
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | AcceptingGROUPCALL | firefox     | autocall     | 2               |
+      | user1Name | user2Name | user3Name | AcceptingGROUPCALL | chrome      | autocall     | 2               |
 
   @C2047 @calling_basic @id2683
   Scenario Outline: Verify ignoring group call in foreground
