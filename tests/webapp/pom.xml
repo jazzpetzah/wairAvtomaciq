@@ -96,7 +96,7 @@
                         <include>**/${TestRun}.java</include>
                     </includes>
                     <disableXmlReport>true</disableXmlReport>
-                    <argLine>-Djava.library.path=../common/native_lib:/home/jenkins/avscore/lib/</argLine>
+                    <argLine>-Djava.library.path=../common/native_lib</argLine>
                     <systemPropertyVariables>
                         <java.awt.headless>true</java.awt.headless>
                         <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
