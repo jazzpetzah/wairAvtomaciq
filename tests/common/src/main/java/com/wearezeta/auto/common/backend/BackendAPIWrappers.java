@@ -74,6 +74,7 @@ public final class BackendAPIWrappers {
                         break;
                     } catch (BackendRequestException e) {
                         if (e.getReturnCode() == PHONE_NUMBER_ALREADY_REGISTERED_ERROR) {
+                            user.forceTokenExpiration();
                             user.setPhoneNumber(new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX));
                         } else {
                             throw e;
@@ -102,6 +103,7 @@ public final class BackendAPIWrappers {
                                 e.getReturnCode() == 403) && nTry < maxRetries) {
                             // Assign different phone number to this user
                             // The current has been most likely already already created
+                            user.forceTokenExpiration();
                             user.setPhoneNumber(new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX));
                             nTry++;
                         } else {

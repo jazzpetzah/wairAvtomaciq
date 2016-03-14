@@ -194,6 +194,12 @@ public class ClientUser {
         this.email = generateEmail(name);
     }
 
+    public void forceTokenExpiration() {
+        this.id = Optional.empty();
+        this.tokenType = Optional.empty();
+        this.token = Optional.empty();
+    }
+
     @Override
     public String toString() {
         return this.getName();
