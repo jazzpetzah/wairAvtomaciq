@@ -78,7 +78,7 @@ Feature: Conversation View
     Given I tap on contact name <Contact1>
     Given User <Contact1> securely pings conversation <Name>
     When I wait for 3 seconds
-    Then I see User <Contact1> Pinged message in the conversation
+    Then I see "<ContactName> PINGED" system message in the conversation view
 
     Examples:
       | Name      | Contact1  | ContactName |
@@ -95,7 +95,7 @@ Feature: Conversation View
     Given I tap on group chat with name <GroupChatName>
     Given User <Contact1> securely pings conversation <GroupChatName>
     When I wait for 3 seconds
-    Then I see User <Contact1> Pinged message in the conversation
+    Then I see "<Contact1> PINGED" system message in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName        |
@@ -240,11 +240,11 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I click plus button next to text input
     And I click Ping button
-    Then I see You Pinged message in the dialog
+    Then I see "<PingMsg>" system message in the conversation view
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | PingMsg    |
+      | user1Name | user2Name | YOU PINGED |
 
   @C2660 @regression @id3195
   Scenario Outline: Send message to group chat [LANDSCAPE]

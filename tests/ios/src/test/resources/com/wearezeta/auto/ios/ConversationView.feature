@@ -36,11 +36,11 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I click plus button next to text input
     And I click Ping button
-    Then I see You Pinged message in the dialog
+    Then I see "<PingMsg>" system message in the conversation view
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | PingMsg    |
+      | user1Name | user2Name | YOU PINGED |
 
   @C909 @C3176 @regression @IPv6 @id332 @id1470
   Scenario Outline: Send a camera roll picture to user from contact list

@@ -57,6 +57,9 @@ public class DialogPage extends IOSPage {
     private static final Function<String, String> xpathStrMessageCellByTextPart = text ->
             String.format("%s[contains(@value, '%s')]/parent::*", xpathStrAllTextMessages, text);
 
+    private static final Function<String, String> xpathStrSystemMessageByText = text ->
+            String.format("%s[@name='%s']", xpathStrAllEntries, text.toUpperCase());
+
     private static final String xpathStrImageCells = xpathStrAllEntries + "[@name='ImageCell']";
     private static final By xpathImageCell = By.xpath(xpathStrImageCells);
     private static final By xpathLastImageCell = By.xpath(String.format("(%s)[1]", xpathStrImageCells));
@@ -575,6 +578,11 @@ public class DialogPage extends IOSPage {
 
     public boolean isMissedCallButtonVisibleFor(String username) throws Exception {
         final By locator = By.xpath(xpathStrMissedCallButtonByContact.apply(username));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isSystemMessageVisible(String expectedMsg) throws Exception {
+        final By locator = By.xpath(xpathStrSystemMessageByText.apply(expectedMsg));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }

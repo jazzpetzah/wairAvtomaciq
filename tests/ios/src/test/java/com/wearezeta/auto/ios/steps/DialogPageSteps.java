@@ -80,11 +80,18 @@ public class DialogPageSteps {
         }
     }
 
-    private static final String YOU_PINGED_MESSAGE = "YOU PINGED";
-
-    @Then("^I see You Pinged message in the dialog$")
-    public void ISeeHelloMessageFromMeInTheDialog() throws Throwable {
-        Assert.assertTrue(getDialogPage().isPartOfTextMessageVisible(YOU_PINGED_MESSAGE));
+    /**
+     * Verify whether the particular system message is visible in the conversation view
+     *
+     * @param expectedMsg the expected system message. may contyain user name aliases
+     * @throws Exception
+     * @step. ^I see "(.*)" system message in the conversation view$
+     */
+    @Then("^I see \"(.*)\" system message in the conversation view$")
+    public void ISeeSystemMessage(String expectedMsg) throws Exception {
+        expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("The expected system message '%s' is not visible in the conversation",
+                expectedMsg), getDialogPage().isSystemMessageVisible(expectedMsg));
     }
 
     @Then("^I see User (.*) Pinged message in the conversation$")
@@ -201,7 +208,7 @@ public class DialogPageSteps {
 
     /**
      * Swipe right text input to reveal option buttons
-     *
+     * <p>
      * !!! The step is unstable on Simulator
      *
      * @throws Exception
