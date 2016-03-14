@@ -123,13 +123,4 @@ public class SettingsPage extends IOSPage {
     public boolean isItemInvisible(String itemName) throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), MobileBy.AccessibilityId(itemName));
     }
-
-    public void swipeLeftOnDevice(int deviceIndex) throws Exception {
-        final By locator = By.xpath(xpathStrDeviceByIndex.apply(deviceIndex));
-        final WebElement deviceCell = getElement(locator);
-        final Point cellLocation = deviceCell.getLocation();
-        final Dimension cellSize = deviceCell.getSize();
-        getDriver().swipe(cellLocation.x + cellSize.width - 5, cellLocation.y * 3, cellLocation.x + cellSize.width / 3,
-                cellLocation.y * 3, 1000);
-    }
 }
