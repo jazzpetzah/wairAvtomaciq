@@ -125,9 +125,10 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
                 <configuration>
+                    <parallel>suites</parallel>
+                    <perCoreThreadCount>false</perCoreThreadCount>
+                    <!--number of threads per fork-->
                     <threadCount>${picklejar.parallel.max}</threadCount>
-                    <reuseForks>false</reuseForks>
-                    <forkCount>${picklejar.parallel.max}</forkCount>
                     <skipTests>${skipTests}</skipTests>
                     <trimStackTrace>false</trimStackTrace>
                     <!--<rerunFailingTestsCount>1</rerunFailingTestsCount>-->

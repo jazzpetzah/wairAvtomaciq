@@ -5,7 +5,6 @@ import java.util.Map;
 import org.junit.runner.RunWith;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wire.picklejar.PickleJar;
-import com.wire.picklejar.execution.ParallelParameterized;
 import com.wire.picklejar.execution.PickleJarTest;
 import java.io.IOException;
 import java.util.Collection;
@@ -14,9 +13,10 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-@RunWith(ParallelParameterized.class)
+@RunWith(Parameterized.class)
 public class PickleJarInheritedTest extends PickleJarTest{
     
     private Lifecycle lifecycle;
