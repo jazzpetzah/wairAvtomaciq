@@ -391,3 +391,23 @@ Feature: VideoCalling
     Examples:
       | Name      | Contact   | CallBackend | Timeout | Message | ImageName   |
       | user1Name | user2Name | chrome      | 30      | Testing | testing.jpg |
+
+  @C58886 @staging @torun
+  Scenario Outline: Verify I can accept Video call from background
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I minimize the application
+    And <Contact> starts a video call to me
+    And I see incoming call
+    And I swipe to accept the call
+    Then I see ongoing video call
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    And I hang up ongoing video call
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 30      |
