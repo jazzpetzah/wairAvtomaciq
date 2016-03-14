@@ -30,9 +30,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.Dimension;
@@ -57,6 +60,8 @@ public class Lifecycle {
     public class TestContext {
 
         private final Platform currentPlatform = Platform.Web;
+        private final ScheduledExecutorService ping = Executors.newScheduledThreadPool(1);
+        private ScheduledFuture<?> pinger;
 
         private final String testname;
         private final CommonSteps commonSteps;
@@ -74,6 +79,20 @@ public class Lifecycle {
             this.commonSteps = new CommonSteps(userManager, deviceManager);
             this.callingManager = new CommonCallingSteps2(userManager);
             this.pagesCollection = new WebappPagesCollection();
+        }
+        
+        public void startPinging(){
+            pinger = ping.scheduleAtFixedRate(()->{
+                try {
+                    driver.get(10, TimeUnit.SECONDS).getSessionId();
+                } catch (InterruptedException | ExecutionException | TimeoutException ex) {
+                    Logger.getLogger(Lifecycle.class.getName()).log(Level.WARNING, "Could not ping driver because it's not initialized yet");
+                }
+            }, 1, 1, TimeUnit.MINUTES);
+        }
+        
+        public void stopPinging(){
+            pinger.cancel(true);
         }
 
         public String getTestname() {
@@ -207,6 +226,7 @@ public class Lifecycle {
         final Future<ZetaWebAppDriver> lazyWebDriver = pool
                 .submit(callableWebAppDriver);
         context = new TestContext(uniqueName, lazyWebDriver);
+        context.startPinging();
 
         try {
             context.deviceManager.reset();
@@ -224,6 +244,7 @@ public class Lifecycle {
     @After
     public void tearDown(Scenario scenario) throws Exception {
         try {
+            context.stopPinging();
             ZetaWebAppDriver driver = (ZetaWebAppDriver) context.getDriver();
 
             // save browser console if possible
