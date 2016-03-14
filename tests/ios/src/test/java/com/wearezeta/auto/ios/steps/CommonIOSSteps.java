@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
@@ -123,8 +124,8 @@ public class CommonIOSSteps {
         }
 
         if (!CommonUtils.getIsSimulatorFromConfig(getClass()) &&
-                (capabilities.is("noReset") && !((Boolean)capabilities.getCapability("noReset")) ||
-                 !capabilities.is("noReset"))) {
+                (capabilities.is("noReset") && !((Boolean) capabilities.getCapability("noReset")) ||
+                        !capabilities.is("noReset"))) {
             // FIXME: Sometimes Appium fails to reset app prefs properly on real device
             if (!cachedBundleIds.containsKey(ipaPath)) {
                 final File appPath = IOSCommonUtils.extractAppFromIpa(new File(ipaPath));
@@ -248,6 +249,45 @@ public class CommonIOSSteps {
         customCaps.put("fullReset", false);
         final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath, Optional.of(customCaps));
         updateDriver(lazyDriver);
+    }
+
+    private ElementState screenState = new ElementState(
+            () -> pagesCollection.getCommonPage().takeScreenshot().orElseThrow(
+                    () -> new IllegalStateException("Cannot take a screenshot of the current device state")
+            )
+    );
+
+    /**
+     * Store current screen state into an internal variable
+     *
+     * @throws Exception
+     * @step. ^I remember current screen state$
+     */
+    @When("^I remember current screen state$")
+    public void IRememberCurrentScreenState() throws Exception {
+        screenState.remember();
+    }
+
+    /**
+     * Verify whether screen state has been changed or not
+     *
+     * @param moreOrLess     either one of two possible values
+     * @param score          similarity score value. Can be positive float number less than 1
+     * @param timeoutSeconds screen change timeout
+     * @throws Exception
+     * @step. ^I verify that current screen similarity score is (more|less) than ([\d\.]+) within (\d+) seconds?$
+     */
+    @Then("^I verify that current screen similarity score is (more|less) than ([\\d\\.]+) within (\\d+) seconds?$")
+    public void IVerifyScreenState(String moreOrLess, String score, int timeoutSeconds) throws Exception {
+        if (moreOrLess.equals("less")) {
+            Assert.assertTrue(
+                    String.format("Current screen state looks too similar to the previous one after %s seconds",
+                            timeoutSeconds), screenState.isChanged(timeoutSeconds, Double.parseDouble(score)));
+        } else {
+            Assert.assertTrue(
+                    String.format("Current screen state looks different to the previous one after %s seconds",
+                            timeoutSeconds), screenState.isNotChanged(timeoutSeconds, Double.parseDouble(score)));
+        }
     }
 
     @When("^I press keyboard Delete button$")
