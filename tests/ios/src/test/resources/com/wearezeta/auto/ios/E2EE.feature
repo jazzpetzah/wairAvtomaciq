@@ -422,31 +422,6 @@ Feature: E2EE
       | Name      |
       | user1Name |
 
-  @C3292 @noAcceptAlert @regression
-  Scenario Outline: Verify deleting one of the devices from device management by swipe
-    Given There is 1 user where <Name> is me
-    Given I sign in using my email
-    Given I accept alert
-    Given I accept First Time overlay if it is visible
-    Given I accept alert
-    Given I dismiss settings warning
-    Given I see conversations list
-    And User Myself adds a new device <DeviceName> with label <DeviceLabel>
-    When I tap my avatar
-    And I accept alert
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
-    And I select settings item Privacy & Security
-    And I select settings item Manage devices
-    And I swipe left on device number 1
-    And I tap Delete button opened from swipe left on device
-    And I confirm with my <Password> the deletion of the device
-    Then I do not see device <DeviceName> in devices list
-
-    Examples:
-      | Name      | DeviceName | DeviceLabel | Password      |
-      | user1Name | Device1    | Label1      | user1Password |
-
   @C3511 @noAcceptAlert @regression
   Scenario Outline: Verify deleting one of the devices from device information screen
     Given There is 1 user where <Name> is me
