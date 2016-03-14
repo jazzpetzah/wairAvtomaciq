@@ -44,6 +44,8 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameLaterButton = MobileBy.AccessibilityId("MAYBE LATER");
 
+    private static final By nameCancelInviteButton = MobileBy.AccessibilityId("Cancel");
+
     private static final By nameOpenConversationButton = MobileBy.AccessibilityId("OPEN");
 
     private static final By nameCallButton = MobileBy.AccessibilityId("actionBarCallButton");
@@ -254,5 +256,13 @@ public class PeoplePickerPage extends IOSPage {
 
     public boolean isActionButtonInvisible(String actionButtonName) throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), getActionButtonByName(actionButtonName));
+    }
+
+    public boolean isShareContactsSettingsWarningShown() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLaterButton, 1);
+    }
+
+    public void tapCancelInvitePeopleButton() throws Exception {
+        getElement(nameCancelInviteButton).click();
     }
 }
