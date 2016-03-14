@@ -494,7 +494,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Number |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | 8      |
 
-  @C854 @regression @id3996
+  @C854 @staging
   Scenario Outline: Verify action menu is opened on swipe right on outgoing connection request
     Given There are 2 users where <Name> is me
     Given Myself sent connection request to <Contact>
