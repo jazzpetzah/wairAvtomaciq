@@ -670,3 +670,20 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C917 @real
+  Scenario Outline: Verify sending photo from a back camera
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I click plus button next to text input
+    And I press Add Picture button
+    And I tap Camera Shutter button
+    And I confirm my choice
+    Then I see 1 photo in the dialog
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
