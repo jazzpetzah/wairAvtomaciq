@@ -36,7 +36,7 @@ public class DownloadPageSteps {
 	
 	@Then("^I see button for Android$")
 	public void ISeeButtonForAndroid() throws Exception {
-		String storeUrl = "https://play.google.com/store/apps/details?id=com.wire&utm_source=website&localytics_test_mode=true";
+		String storeUrl = "https://play.google.com/store/apps/details?id=com.wire";
 		assertThat(webappPagesCollection.getPage(DownloadPage.class).getAndroidDownloadHref(), equalTo(storeUrl));
 	}
 	
@@ -54,7 +54,7 @@ public class DownloadPageSteps {
 	
 	@Then("^I see button for Webapp$")
 	public void ISeeButtonForWebapp() throws Exception {
-		String storeUrl = "https://app.wire.com/";
+		String storeUrl = "https://wire-webapp-staging.zinfra.io/";
 		assertThat(webappPagesCollection.getPage(DownloadPage.class).getWebappDownloadHref(), equalTo(storeUrl));
 	}
 }

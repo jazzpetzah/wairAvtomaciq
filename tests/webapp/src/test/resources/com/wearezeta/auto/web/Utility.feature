@@ -51,8 +51,9 @@ Feature: Utility
   
   @C12086 @utility
   Scenario Outline: Verify that there are no dead links on german start page for <Agent>
-    When I open german start page for <Agent>
-    And Start page for <Agent> is german 
+    When I navigate to start page for <Agent>
+    And I change language to german
+    And <Page> page for <Agent> is german
     Then I can see no dead links
 
     Examples: 
@@ -64,7 +65,6 @@ Feature: Utility
         
   @C5232 @utility
   Scenario Outline: Check password reset utility page for all agents
-  #All mails not in use? WIP -> Directs not to staging
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
     When I click Change Password button
@@ -98,7 +98,7 @@ Feature: Utility
 
   @C5233 @utility
   Scenario Outline: Check password reset with unregistered email for all agents
-    When I navigate to Password Change Reset page for <Agent>
+    When I go to Password Change Reset page for <Agent>
     Then I see Password Change Request page
     And I enter unregistered email <UnregisteredMail>
     And I click Change Password button on Password Change Request page
@@ -113,7 +113,6 @@ Feature: Utility
 
   @C5234 @utility
   Scenario Outline: Check password reset with wrong checksum for all agents
-  #All mails not in use? WIP -> Directs not to staging
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
     When I click Change Password button
@@ -129,14 +128,14 @@ Feature: Utility
     Then I dont see Password Change Succeeded page
 
     Examples: 
-      | Email      | OldPassword   | Name      | NewPassword | Agent   |
-      | user1Email | user1Password | user1Name | aqa654321#  | ios     |
-      | user1Email | user1Password | user1Name | aqa654321#  | android |
-      | user1Email | user1Password | user1Name | aqa654321#  | osx     |
-      | user1Email | user1Password | user1Name | aqa654321#  | windows |
+      | Email      | Name      | NewPassword | Agent   |
+      | user1Email | user1Name | aqa654321#  | ios     |
+      | user1Email | user1Name | aqa654321#  | android |
+      | user1Email | user1Name | aqa654321#  | osx     |
+      | user1Email | user1Name | aqa654321#  | windows |
 
   @C3275 @C3276
-  Scenario Outline: Verify buttons from verication link for <Agent>
+  Scenario Outline: Verify buttons from verfication link for <Agent>
     # Blocked due to limitation of Selenium
     When I navigate to verify page for <Agent>
     When I navigate to verify page for <Agent>
@@ -147,20 +146,20 @@ Feature: Utility
       | iphone  |
       | android |
 
-  @C3277 @Utility
+  @C3277 @utility
   Scenario: Verify buttons from verification link for osx
-  When I navigate to verify page for osx
+  When I go to verify page for osx
   Then I see download button for osx
   And I see webapp button
 
-  @C3278 @Utility
+  @C3278 @utility
   Scenario: Verify buttons from verification link for windows
-  When I navigate to verify page for windows
+  When I go to verify page for windows
   Then I see download button for windows
 
-  @C5236 @Utility
+  @C5236 @utility
   Scenario Outline: Verify error message by broken verification link for <Agent>
-  When I navigate to broken verify page for <Agent>
+  When I go to broken verify page for <Agent>
   Then I see error message
 
   Examples: 
@@ -289,17 +288,17 @@ Feature: Utility
       | android | legal    |
       | android | job      |
       | android | download |
-      | android | forgot   |     
+      | android | forgot   |
       | osx     | start    |
       | osx     | privacy  |
       | osx     | legal    |
       | osx     | job      |
       | osx     | download |
-      | osx     | forgot   |     
+      | osx     | forgot   |
       | windows | start    |
       | windows | privacy  |
       | windows | legal    |
       | windows | job      |
       | windows | download |
-      | windows | forgot   |     
+      | windows | forgot   |
     

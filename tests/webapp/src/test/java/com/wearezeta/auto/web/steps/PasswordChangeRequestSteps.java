@@ -38,8 +38,8 @@ public class PasswordChangeRequestSteps {
 
 	private Future<String> passwordChangeMessage = null;
 
-	@When("^I navigate to Password Change Reset page for (.*)")
-	public void INavigateToPasswordChangeResetPageFor(String agent) throws Exception {
+	@When("^I go to Password Change Reset page for (.*)")
+	public void IGoToPasswordChangeResetPageFor(String agent) throws Exception {
 		webappPagesCollection.getPage(PasswordChangePage.class).setUrl(
 				WebAppConstants.STAGING_SITE_ROOT + "/forgot/?agent=" + agent);
 		webappPagesCollection.getPage(PasswordChangePage.class).navigateTo();
@@ -138,7 +138,7 @@ public class PasswordChangeRequestSteps {
 						.isConfirmationTextVisible(), is(true));
 	}
 
-	@Then("^ I see unused mail message$")
+	@Then("^I see unused mail message$")
 	public void ISeeUnusedMailMessage() throws Exception {
 		assertThat(
 				webappPagesCollection.getPage(
