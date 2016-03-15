@@ -54,6 +54,6 @@ public class FirstTimeOverlaySteps {
 	 */
 	@And("^I accept First Time overlay as soon as it is visible$")
 	public void IAcceptTheOverLayWhenItIsVisible() throws Exception {
-		getFirstTimeOverlay().acceptWhenVisible(2);
+		getFirstTimeOverlay().acceptWhenVisible(5);
 	}
 }
