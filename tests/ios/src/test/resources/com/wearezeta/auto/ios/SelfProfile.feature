@@ -70,7 +70,7 @@ Feature: Self Profile
       | Name      | NewUsername |
       | user1Name | New Name    |
 
-  @C1085 @clumsy @rc @regression @id3849
+  @C1085 @clumsy @rc @regression @id3849 @ZIOS-5836
   Scenario Outline: Verify adding phone number to the contact signed up with email
     Given There is 1 user where <Name> is me with email only
     Given I sign in using my email
