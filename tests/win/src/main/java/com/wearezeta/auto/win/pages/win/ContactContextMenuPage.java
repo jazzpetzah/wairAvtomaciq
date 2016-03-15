@@ -1,6 +1,5 @@
 package com.wearezeta.auto.win.pages.win;
 
-import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.driver.ZetaWinDriver;
 import java.util.concurrent.Future;
 
@@ -11,7 +10,7 @@ public class ContactContextMenuPage extends WinPage {
 
 	private static final int CONTEXT_SILENCE_INDEX = 1;
 	private static final int CONTEXT_ARCHIVE_INDEX = 2;
-	private static final int CONTEXT_DELETE_INDEX = 3;
+        private static final int CONTEXT_DELETE_INDEX = 3;
 	private static final int CONTEXT_BLOCK_INDEX = 4;
 	private static final int CONTEXT_LEAVE_INDEX = 4;
 
