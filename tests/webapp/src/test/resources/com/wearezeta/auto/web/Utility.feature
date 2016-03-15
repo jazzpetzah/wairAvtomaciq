@@ -19,17 +19,20 @@ Feature: Utility
   @C3264 @utility
   Scenario: Verify buttons on invitation page for osx
     When I use generic invitation link for invitation for osx
+    When I use generic invitation link for invitation for osx
     And I see You are invited page
     Then I see 'Open Wire' button
 
   @C3265 @utility
   Scenario: Verify buttons on invitation page for windows
     When I use generic invitation link for invitation for windows
+    When I use generic invitation link for invitation for windows
     And I see You are invited page
     Then I see 'Open Wire' button
 
   @C3257 @utility
   Scenario: Verify buttons on download page
+    When I navigate to download page
     When I navigate to download page
     Then I see button for iOS
     And I see button for Android
@@ -39,6 +42,7 @@ Feature: Utility
 
   @C3283 @utility
   Scenario Outline: Verify that there are no dead links on start page for <Agent>
+    When I navigate to start page for <Agent>
     When I navigate to start page for <Agent>
     Then I can see no dead links
 
@@ -51,6 +55,7 @@ Feature: Utility
   
   @C12086 @utility
   Scenario Outline: Verify that there are no dead links on german start page for <Agent>
+    When I navigate to start page for <Agent>
     When I navigate to start page for <Agent>
     And I change language to german
     And <Page> page for <Agent> is german
@@ -149,16 +154,19 @@ Feature: Utility
   @C3277 @utility
   Scenario: Verify buttons from verification link for osx
   When I go to verify page for osx
+  When I go to verify page for osx
   Then I see download button for osx
   And I see webapp button
 
   @C3278 @utility
   Scenario: Verify buttons from verification link for windows
   When I go to verify page for windows
+  When I go to verify page for windows
   Then I see download button for windows
 
   @C5236 @utility
   Scenario Outline: Verify error message by broken verification link for <Agent>
+  When I go to broken verify page for <Agent>
   When I go to broken verify page for <Agent>
   Then I see error message
 
@@ -267,6 +275,7 @@ Feature: Utility
 
   @C49970 @utility
     Scenario Outline: Verify that language switch works for <Agent>
+    When I navigate to <Page> page for <Agent>
     When I navigate to <Page> page for <Agent>
     And I can see language switch button for english on <Page> for <Agent>
     Then I change language to german
