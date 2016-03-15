@@ -14,6 +14,7 @@ customBackend.json
 .classpath
 *.iml
 tests/.idea
+tests/.project
 .idea/.name
 .idea/compiler.xml
 .idea/encodings.xml
@@ -33,4 +34,3 @@ lib/cucumber-jvm-deps-1.0.3.jar
 lib/gherkin-2.12.2.jar
 lib/hamcrest-core-1.3.jar
 lib/junit-4.11.jar
-.project
