@@ -307,7 +307,7 @@ public class DialogPageSteps {
      * @step. ^I type and send invitaion link from user (.*)$
      */
     @When("^I type and send invitation link from user (.*)$")
-    public void ITypeAndSendInvitationLinkFrom(String user) throws Throwable {
+    public void ITypeAndSendInvitationLinkFrom(String user) throws Exception {
         String link = CommonSteps.getInstance().GetInvitationUrl(user);
         getDialogPage().typeAndSendConversationMessage(link);
     }
