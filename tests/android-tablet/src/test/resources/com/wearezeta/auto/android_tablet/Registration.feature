@@ -102,7 +102,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C480 @id2823 @regression @torun
+  @C480 @id2823 @regression
   Scenario Outline: (AN-2841) Verify Sign In progress behaviour while there are probelms with internet connectivity
     Given There are 1 users where <Name> is me
     Given I see welcome screen
