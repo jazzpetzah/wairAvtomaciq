@@ -52,6 +52,19 @@ Feature: Utility
       | android |
       | osx     |
       | windows |
+
+  @C77922 @utility
+  Scenario Outline: Verify that there are no dead links on privacy page for <Agent>
+    When I navigate to privacy page for <Agent>
+    When I navigate to privacy page for <Agent>
+    Then I can see no dead links
+
+    Examples:
+      | Agent   |
+      | iphone  |
+      | android |
+      | osx     |
+      | windows |
   
   @C12086 @utility
   Scenario Outline: Verify that there are no dead links on german start page for <Agent>
@@ -62,6 +75,21 @@ Feature: Utility
     Then I can see no dead links
 
     Examples: 
+      | Agent   |
+      | iphone  |
+      | android |
+      | osx     |
+      | windows |
+
+  @C77923 @utility
+  Scenario Outline: Verify that there are no dead links on german privacy page for <Agent>
+    When I navigate to privacy page for <Agent>
+    When I navigate to privacy page for <Agent>
+    And I change language to german
+    And <Page> page for <Agent> is german
+    Then I can see no dead links
+
+    Examples:
       | Agent   |
       | iphone  |
       | android |
