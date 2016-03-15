@@ -52,14 +52,15 @@ Feature: Video Calling
     When I tap on contact name <Contact>
     And I click plus button next to text input
     And I click Video Call button
+    And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see Calling overlay
     And I tap Leave button on Calling overlay
     And I do not see Calling overlay
     Then I see dialog page
 
     Examples:
-      | Name      | Contact   | CallBackend  |
-      | user1Name | user2Name | chrome		 |
+      | Name      | Contact   | CallBackend  | Timeout |
+      | user1Name | user2Name | chrome		 | 30      |
 
   @C28855 @rc @calling_basic
   Scenario Outline: Verify ignoring Video call [LANDSCAPE]
