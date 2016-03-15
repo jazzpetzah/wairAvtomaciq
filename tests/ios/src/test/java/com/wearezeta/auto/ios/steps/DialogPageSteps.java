@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.steps;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
@@ -295,6 +296,19 @@ public class DialogPageSteps {
 
     @When("^I post media link (.*)$")
     public void IPostMediaLink(String link) throws Throwable {
+        getDialogPage().typeAndSendConversationMessage(link);
+    }
+
+    /**
+     * Type and send invitation link from pointed user in a conversation
+     *
+     * @param user username
+     * @throws Throwable
+     * @step. ^I type and send invitaion link from user (.*)$
+     */
+    @When("^I type and send invitation link from user (.*)$")
+    public void ITypeAndSendInvitationLinkFrom(String user) throws Exception {
+        String link = CommonSteps.getInstance().GetInvitationUrl(user);
         getDialogPage().typeAndSendConversationMessage(link);
     }
 

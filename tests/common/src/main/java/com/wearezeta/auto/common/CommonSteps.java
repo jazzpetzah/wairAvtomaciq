@@ -541,4 +541,9 @@ public final class CommonSteps {
             }
         }
     }
+
+    public String GetInvitationUrl(String user) throws Exception {
+        final ClientUser usr = usrMgr.findUserByNameOrNameAlias(user);
+        return InvitationLinkGenerator.getInvitationUrl(usr.getId());
+    }
 }
