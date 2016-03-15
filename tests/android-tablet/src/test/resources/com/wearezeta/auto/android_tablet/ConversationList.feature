@@ -295,7 +295,7 @@ Feature: Conversation List
       | user1Name | user2Name | user3Name | DELETELeave   | huhuhu  | DELETE     |
 
   @C551 @id4055 @regression
-  Scenario Outline: Verify I can delete and leave a group conversation from conversation list (portrait)
+  Scenario Outline: (BUG AN-3438) Verify I can delete and leave a group conversation from conversation list (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
