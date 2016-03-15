@@ -16,7 +16,7 @@ import static com.wearezeta.auto.common.CommonUtils.getSimulatorImagesPathFromCo
 public class TakePicturePage extends IOSPage {
     private static final String TESTING_IMAGE_NAME = "testing.jpg";
 
-    private static final By nameCameraLibraryButton = MobileBy.AccessibilityId("cameraLibraryButton");
+    private static final By nameCameraLibraryButton = MobileBy.AccessibilityId("CameraLibraryButton");
 
     private static final By nameCameraShutterButton = MobileBy.AccessibilityId("cameraShutterButton");
 
@@ -27,6 +27,8 @@ public class TakePicturePage extends IOSPage {
     private static final By xpathLibraryFirstPicture = By.xpath("//UIACollectionView/UIACollectionCell");
 
     private static final By nameCameraRollSketchButton = MobileBy.AccessibilityId("editNotConfirmedImageButton");
+
+    private static final By nameCameraButton = MobileBy.AccessibilityId("cameraButton");
 
     public TakePicturePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -71,4 +73,7 @@ public class TakePicturePage extends IOSPage {
         getElement(nameCameraShutterButton).click();
     }
 
+    public void tapCameraButton() throws Exception {
+        getElement(nameCameraButton).click();
+    }
 }
