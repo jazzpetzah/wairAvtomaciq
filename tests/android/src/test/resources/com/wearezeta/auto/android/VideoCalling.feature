@@ -367,7 +367,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 30      |
 
-  @C58890 @staging
+  @C58890 @calling_advanced
   Scenario Outline: Verify that receiving ping, message or picture have not affect to ongoing call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
