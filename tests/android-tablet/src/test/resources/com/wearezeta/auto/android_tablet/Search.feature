@@ -123,7 +123,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C537 @id3885 @regression
+  @C537 @id3885 @regression @torun
   Scenario Outline: Verify starting a new group conversation with action button (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
