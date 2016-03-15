@@ -636,7 +636,7 @@ public class CommonAndroidTabletSteps {
      * @throws Exception
      * @step. ^There (?:is|are) (\\d+) users? where (.*) is me$
      */
-    @Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
+    @Given("^There (?:is|are) (\\d+) (?:user|users) where (.*) is me$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
         GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);

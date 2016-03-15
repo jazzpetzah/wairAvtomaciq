@@ -104,7 +104,7 @@ Feature: Registration
 
   @C480 @id2823 @regression
   Scenario Outline: (AN-2841) Verify Sign In progress behaviour while there are probelms with internet connectivity
-    Given There are 1 users where <Name> is me
+    Given There is 1 user where <Name> is me
     Given I see welcome screen
     Given I rotate UI to landscape
     When I switch to email sign in screen
