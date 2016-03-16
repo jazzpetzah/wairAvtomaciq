@@ -101,3 +101,24 @@ Feature: Log In
     Examples:
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @C480 @id2823 @regression
+  Scenario Outline: (AN-2841) Verify Sign In progress behaviour while there are probelms with internet connectivity
+    Given There is 1 user where <Name> is me
+    Given I see welcome screen
+    Given I rotate UI to landscape
+    When I switch to email sign in screen
+    And I enter login "<Email>"
+    And I enter password "<Password>"
+    When I enable Airplane mode on the device
+    And I tap Sign In button
+    Then I see alert message containing "<ErrMessage>"
+    When I tap OK button on the error message
+    And I disable Airplane mode on the device
+    And I tap Sign In button
+    And I accept First Time overlay as soon as it is visible
+    Then I see the Conversations list with no conversations
+
+    Examples:
+      | Email      | Password      | ErrMessage                                           | Name      |
+      | user1Email | user1Password | Please check your Internet connection and try again. | user1Name |
