@@ -46,6 +46,8 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By nameBackToWireBrowserButton = MobileBy.AccessibilityId("Back to Wire");
 
+    private static final By xpathConfirmButton = By.xpath("//UIAButton[@name='OK' and @visible='true']");
+
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
@@ -426,5 +428,9 @@ public abstract class IOSPage extends BasePage {
         } else {
             throw new NotImplementedException("Application install is only available for Simulator");
         }
+    }
+
+    public void pressConfirmButton() throws Exception {
+        getElement(xpathConfirmButton).click();
     }
 }

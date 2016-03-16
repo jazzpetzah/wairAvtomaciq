@@ -53,7 +53,7 @@ Feature: Conversation View
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     Then I see 1 photo in the dialog
 
     Examples:
@@ -240,7 +240,7 @@ Feature: Conversation View
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -484,7 +484,7 @@ Feature: Conversation View
     And I press sketch button on camera roll page
     And I draw a random sketch
     And I send my sketch
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     Then I see 1 photo in the dialog
 
     Examples:
@@ -605,7 +605,7 @@ Feature: Conversation View
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     Then I see 2 photo in the dialog
 
     Examples:
@@ -630,7 +630,7 @@ Feature: Conversation View
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     And I see 2 photos in the dialog
 
     Examples:
@@ -666,6 +666,23 @@ Feature: Conversation View
     And I see plus icon is changed to user avatar icon
     And I clear conversation text input
     Then I see plus button next to text input
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C917 @real
+  Scenario Outline: Verify sending photo from a back camera
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I click plus button next to text input
+    And I press Add Picture button
+    And I tap Camera Shutter button
+    And I confirm my choice
+    Then I see 1 photo in the dialog
 
     Examples:
       | Name      | Contact   |

@@ -26,7 +26,7 @@ Feature: Conversation View
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -55,7 +55,7 @@ Feature: Conversation View
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -119,7 +119,7 @@ Feature: Conversation View
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -281,39 +281,6 @@ Feature: Conversation View
       | Name      | Contact   | VimeoLink                    |
       | user1Name | user2Name | https://vimeo.com/categories |
 
-
-  @C2666 @regression @id3793
-  Scenario Outline: Verify sending link and text in one message and opening the link [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User Myself sends encrypted message "<MessageAndLink>" to user <Contact1>
-    When I tap on contact name <Contact1>
-    And I tap on message "<MessageAndLink>"
-    Then I see WireWebsitePage
-
-    Examples:
-      | Name      | Contact1  | MessageAndLink                                |
-      | user1Name | user2Name | https://www.wire.com/ is the best of the best |
-
-  @C2664 @regression @id3791
-  Scenario Outline: Verify sending link and opening it [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User Myself sends encrypted message "<Link>" to user <Contact1>
-    When I tap on contact name <Contact1>
-    And I tap on message "<Link>"
-    Then I see WireWebsitePage
-
-    Examples:
-      | Name      | Contact1  | Link                  |
-      | user1Name | user2Name | https://www.wire.com/ |
-
   @C2668 @regression @id3800
   Scenario Outline: Verify input field and action buttons are not shown simultaniously [LANDSCAPE]
     Given There are 3 users where <Name> is me
@@ -346,7 +313,7 @@ Feature: Conversation View
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     Then I see 2 photos in the dialog
 
     Examples:
@@ -368,7 +335,7 @@ Feature: Conversation View
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     Then I see 2 photos in the dialog
 
     Examples:
@@ -416,7 +383,7 @@ Feature: Conversation View
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     And I see 2 photos in the dialog
 
     Examples:
@@ -442,7 +409,7 @@ Feature: Conversation View
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     And I see 2 photos in the dialog
 
     Examples:

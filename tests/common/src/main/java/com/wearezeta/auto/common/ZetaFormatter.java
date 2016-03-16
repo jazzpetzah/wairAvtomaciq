@@ -89,6 +89,9 @@ public class ZetaFormatter implements Formatter, Reporter {
     public void scenario(Scenario arg0) {
         scenario = arg0.getName();
         log.debug(String.format("\n\nScenario: %s %s", scenario, formatTags(arg0.getTags())));
+        if (steps.size() > 0) {
+            steps.clear();
+        }
     }
 
     @Override

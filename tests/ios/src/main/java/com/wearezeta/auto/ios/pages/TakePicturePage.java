@@ -13,20 +13,22 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 import static com.wearezeta.auto.common.CommonUtils.getSimulatorImagesPathFromConfig;
 
-public class CameraRollPage extends IOSPage {
+public class TakePicturePage extends IOSPage {
     private static final String TESTING_IMAGE_NAME = "testing.jpg";
 
     private static final By nameCameraLibraryButton = MobileBy.AccessibilityId("cameraLibraryButton");
+
+    private static final By nameCameraShutterButton = MobileBy.AccessibilityId("cameraShutterButton");
+
+    // private static final By nameCameraCloseButton = MobileBy.AccessibilityId("cameraCloseButton");
 
     private static final By xpathCameraLibraryFirstFolder = By.xpath("(//UIATableView)[last()]/UIATableCell");
 
     private static final By xpathLibraryFirstPicture = By.xpath("//UIACollectionView/UIACollectionCell");
 
-    private static final By xpathConfirmPictureButton = By.xpath("//UIAButton[@name='OK' and @visible='true']");
-
     private static final By nameCameraRollSketchButton = MobileBy.AccessibilityId("editNotConfirmedImageButton");
 
-    public CameraRollPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+    public TakePicturePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
 
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
@@ -61,12 +63,12 @@ public class CameraRollPage extends IOSPage {
                 orElseThrow(() -> new IllegalStateException("Cannot find an image to select")).click();
     }
 
-    public void pressConfirmButton() throws Exception {
-        getElement(xpathConfirmPictureButton).click();
-    }
-
     public void clickCameraRollSketchButton() throws Exception {
         getElement(nameCameraRollSketchButton).click();
+    }
+
+    public void tapShutterButton() throws Exception {
+        getElement(nameCameraShutterButton).click();
     }
 
 }

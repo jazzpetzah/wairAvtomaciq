@@ -12,7 +12,7 @@ Feature: Self Profile
     And I tap on personal screen
     And I press Camera button
     And I choose a picture from camera roll
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     Then I wait up to <Timeout> seconds until my profile picture is changed
 
     Examples:
@@ -70,7 +70,7 @@ Feature: Self Profile
       | Name      | NewUsername |
       | user1Name | New Name    |
 
-  @C1085 @clumsy @rc @regression @id3849
+  @C1085 @clumsy @rc @regression @id3849 @ZIOS-5836
   Scenario Outline: Verify adding phone number to the contact signed up with email
     Given There is 1 user where <Name> is me with email only
     Given I sign in using my email

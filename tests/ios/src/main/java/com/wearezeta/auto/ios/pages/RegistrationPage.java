@@ -46,6 +46,8 @@ public class RegistrationPage extends IOSPage {
 
     private static final By nameAgreeButton = MobileBy.AccessibilityId("I AGREE");
 
+    private static final By nameTakePhotoButton = MobileBy.AccessibilityId("Take photo");
+
     private static final By xpathVerificationPage = By
             .xpath("//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]");
 
@@ -215,5 +217,9 @@ public class RegistrationPage extends IOSPage {
 
     public void clickKeepThisOneButton() throws Exception {
         getElement(nameKeepThisOneButton).click();
+    }
+
+    public void tapTakePhotoButton() throws Exception {
+        getElement(nameTakePhotoButton).click();
     }
 }

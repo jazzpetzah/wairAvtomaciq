@@ -30,10 +30,10 @@ public class WinExecutionContext {
 			"com.wire.os.version", "7");
 
 	public static final String BROWSER_NAME = System.getProperty(
-			"com.wire.browser.name", "Chrome");
+			"com.wire.browser.name", "chrome");
 
 	public static final String BROWSER_VERSION = System.getProperty(
-			"com.wire.browser.version", "45");
+			"com.wire.browser.version", "49");
 
 	public static final String WINIUM_PATH = System.getProperty(
 			"com.wire.winium.path", "C:\\Users\\Michael\\Desktop\\Winium.Desktop.Driver.exe");

@@ -163,7 +163,7 @@ Feature: Search
     And I tap Send image action button on People picker page
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I confirm Camera Roll picture selection
+    And I confirm my choice
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the dialog
     When I navigate back to conversations list
@@ -308,3 +308,24 @@ Feature: Search
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C1030 @staging
+  Scenario Outline: Verify possibility of general invitation accepting
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I type and send invitation link from user <Contact2>
+    And I tap on message "<Link>"
+    And I wait for 10 seconds
+    And I press Enter key in Simulator window
+    And I see dialog page
+    And I navigate back to conversations list
+    Then I see first item in contact list named <Contact2>
+    And I tap on contact name <Contact2>
+    And I see Pending Connect to <Contact2> message on Dialog page
+
+    Examples:
+      | Name      |  Contact   |  Link      | Contact2  |
+      | user1Name |  user2Name |  https://  | user3Name |

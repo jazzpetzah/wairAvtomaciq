@@ -274,7 +274,7 @@ Feature: Search
       | user1Name | user2Name | user3Name |
 
   @C534 @id3881 @regression
-  Scenario Outline: (AN-2894) Verify button Open is changed to Create after checking second person (landscape)
+  Scenario Outline: (AN-3616) Verify button Open is changed to Create after checking second person (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
@@ -298,7 +298,7 @@ Feature: Search
       | user1Name | user2Name | user3Name |
 
   @C542 @id3890 @regression
-  Scenario Outline: (AN-2894) Verify button Open is changed to Create after checking second person (portrait)
+  Scenario Outline: (AN-3616) Verify button Open is changed to Create after checking second person (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
