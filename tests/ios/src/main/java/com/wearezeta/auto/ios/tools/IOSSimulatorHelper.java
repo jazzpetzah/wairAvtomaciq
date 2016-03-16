@@ -285,15 +285,19 @@ public class IOSSimulatorHelper {
 
     public static void kill() throws Exception {
         log.debug("Force killing Simulator app...");
-        new ProcessBuilder("/usr/bin/killall", "-9", "Simulator").start().waitFor();
+        new ProcessBuilder("/usr/bin/killall", "Simulator").start().waitFor();
         Thread.sleep(2000);
     }
 
+    public static void shutdown() throws Exception {
+        executeSimctl(new String[]{"shutdown", getId()});
+    }
+
     public static void reset() throws Exception {
+        shutdown();
         kill();
         executeSimctl(new String[]{"erase", getId()});
     }
-
 
     public static void installApp(File appPath) throws Exception {
         executeSimctl(new String[]{"install", getId(), appPath.getCanonicalPath()});

@@ -236,6 +236,16 @@ public class CommonIOSSteps {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        if (scenario.getSourceTagNames().contains("@upgrade")) {
+            try {
+                if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+                    IOSSimulatorHelper.kill();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
