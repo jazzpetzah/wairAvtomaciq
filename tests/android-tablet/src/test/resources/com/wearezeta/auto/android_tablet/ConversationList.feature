@@ -21,6 +21,7 @@ Feature: Conversation List
     And I tap outside of Single user popover
     And I do not see the Single user popover
     Then I see the conversation <Contact> in my conversations list is silenced
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     Then I see the Single user popover
     When I tap Options button on Single user popover
@@ -265,7 +266,7 @@ Feature: Conversation List
       | user1Name | user2Name | user3Name | GroupChat     | YoMessage1 | YoMessage2 | DELETE     |
 
   @C550 @id4054 @regression
-  Scenario Outline: Verify I can delete and leave a group conversation from conversation list (landscape)
+  Scenario Outline: (BUG AN-3438) Verify I can delete and leave a group conversation from conversation list (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -295,7 +296,7 @@ Feature: Conversation List
       | user1Name | user2Name | user3Name | DELETELeave   | huhuhu  | DELETE     |
 
   @C551 @id4055 @regression
-  Scenario Outline: Verify I can delete and leave a group conversation from conversation list (portrait)
+  Scenario Outline: (BUG AN-3438) Verify I can delete and leave a group conversation from conversation list (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>

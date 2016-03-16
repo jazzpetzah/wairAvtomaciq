@@ -33,7 +33,7 @@
         <syncIsMuted>False</syncIsMuted>
         <cachedOtrDevicesCount>3</cachedOtrDevicesCount>
         <!-- http://192.168.10.18:8081/nexus/content/repositories/releases/com/wearezeta/zmessaging-actor/ -->
-        <zmessaging.actor.version>62.389</zmessaging.actor.version>
+        <zmessaging.actor.version>65.410</zmessaging.actor.version>
     </properties>
 
     <dependencies>
@@ -54,7 +54,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        
+
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-library</artifactId>
@@ -100,19 +100,19 @@
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-picocontainer</artifactId>
-            <version>1.1.8</version>
+            <version>1.2.4</version>
         </dependency>
 
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-junit</artifactId>
-            <version>1.1.8</version>
+            <version>1.2.4</version>
         </dependency>
 
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>1.1.8</version>
+            <version>1.2.4</version>
         </dependency>
 
         <dependency>

@@ -21,15 +21,15 @@ public class VerifyPageSteps {
 	 *
 	 * @throws Exception
 	 */
-	@When("^I navigate to verify page for (.*)$")
-	public void INavigateToVerifyPage(String agent) throws Exception {
+	@When("^I go to verify page for (.*)$")
+	public void IGoToVerifyPage(String agent) throws Exception {
 		webappPagesCollection.getPage(VerifyPage.class).setUrl(
 				WebAppConstants.STAGING_SITE_ROOT + "/verify/%3Fsuccess%26agent=" + agent);
 		webappPagesCollection.getPage(VerifyPage.class).navigateTo();		
 	}
 	
-	@When("^I navigate to broken verify page for (.*)$")
-	public void INavigateToBrokenVerifyPage(String agent) throws Exception {
+	@When("^I go to broken verify page for (.*)$")
+	public void IGoToBrokenVerifyPage(String agent) throws Exception {
 		webappPagesCollection.getPage(VerifyPage.class).setUrl(
 				WebAppConstants.STAGING_SITE_ROOT + "/verify/%3Fagent=" + agent);
 		webappPagesCollection.getPage(VerifyPage.class).navigateTo();		
