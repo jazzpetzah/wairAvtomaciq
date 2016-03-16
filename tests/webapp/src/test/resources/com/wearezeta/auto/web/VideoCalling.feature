@@ -299,14 +299,14 @@ Feature: VideoCalling
     When <Contact> accepts next incoming video call automatically
     Then I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flows
+    And <Contact> verifies that all flows have greater than 0 bytes
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | chrome      |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
   @C48230 @videocalling @regression
   Scenario Outline: Verify you don't see video call button when you're creating group from Start UI
