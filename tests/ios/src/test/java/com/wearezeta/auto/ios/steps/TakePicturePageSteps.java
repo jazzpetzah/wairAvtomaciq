@@ -56,4 +56,16 @@ public class TakePicturePageSteps {
 	public void ITapLensButton() throws Exception {
 		getTakePicturePage().tapCameraButton();
 	}
+
+    /**
+     * Tap the corresponding button to switch camera
+     *
+     * @step. ^I tap Toggle Camera button$
+     *
+     * @throws Exception
+     */
+    @When("^I tap Toggle Camera button$")
+    public void ITapToggleCameraButton() throws Exception {
+        getTakePicturePage().tapToggleCameraButton();
+    }
 }
