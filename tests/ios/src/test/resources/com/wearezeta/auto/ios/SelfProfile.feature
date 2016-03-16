@@ -10,7 +10,7 @@ Feature: Self Profile
     And I wait for 10 seconds
     And I remember my current profile picture
     And I tap on personal screen
-    And I press Camera button
+    And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
     Then I wait up to <Timeout> seconds until my profile picture is changed
@@ -141,3 +141,20 @@ Feature: Self Profile
     Examples:
       | Name      |
       | user1Name |
+
+  @C3168 @real
+  Scenario Outline: Verify changing profile picture using camera
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap my avatar
+    And I remember my current profile picture
+    And I tap on personal screen
+    And I tap Lens button
+    And I tap Camera Shutter button
+    And I confirm my choice
+    Then I wait up to <Timeout> seconds until my profile picture is changed
+
+    Examples:
+      | Name      | Timeout |
+      | user1Name | 60      |

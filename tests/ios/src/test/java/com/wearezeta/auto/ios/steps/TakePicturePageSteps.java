@@ -45,4 +45,15 @@ public class TakePicturePageSteps {
     public void ITapCameraShutterButton() throws Exception {
         getTakePicturePage().tapShutterButton();
     }
+
+	/**
+	 * Taps lens camera button to take picture
+	 *
+	 * @throws Exception
+	 * @step. ^I tap Lens button$
+	 */
+	@When("^I tap Lens button$")
+	public void ITapLensButton() throws Exception {
+		getTakePicturePage().tapCameraButton();
+	}
 }

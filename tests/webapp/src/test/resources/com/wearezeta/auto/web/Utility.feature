@@ -2,6 +2,7 @@ Feature: Utility
 
   @C3262
   Scenario: Verify buttons on invitation page for iphone
+    # Blocked due to limitation of Selenium
     When I use generic invitation link for invitation for iphone
     And I see You are invited page with agent
     Then I see button that sends me to App Store
@@ -9,6 +10,7 @@ Feature: Utility
 
   @C3263
   Scenario: Verify buttons on invitation page for android
+    # Blocked due to limitation of Selenium
     When I use generic invitation link for invitation for android
     And I see You are invited page with agent
     Then I see button that sends me to Play Store
@@ -17,17 +19,20 @@ Feature: Utility
   @C3264 @utility
   Scenario: Verify buttons on invitation page for osx
     When I use generic invitation link for invitation for osx
+    When I use generic invitation link for invitation for osx
     And I see You are invited page
     Then I see 'Open Wire' button
 
   @C3265 @utility
   Scenario: Verify buttons on invitation page for windows
     When I use generic invitation link for invitation for windows
+    When I use generic invitation link for invitation for windows
     And I see You are invited page
     Then I see 'Open Wire' button
 
   @C3257 @utility
   Scenario: Verify buttons on download page
+    When I navigate to download page
     When I navigate to download page
     Then I see button for iOS
     And I see button for Android
@@ -47,14 +52,44 @@ Feature: Utility
       | android |
       | osx     |
       | windows |
+
+  @C77922 @utility
+  Scenario Outline: Verify that there are no dead links on privacy page for <Agent>
+    When I navigate to privacy page for <Agent>
+    When I navigate to privacy page for <Agent>
+    Then I can see no dead links
+
+    Examples:
+      | Agent   |
+      | iphone  |
+      | android |
+      | osx     |
+      | windows |
   
   @C12086 @utility
   Scenario Outline: Verify that there are no dead links on german start page for <Agent>
-    When I navigate to german start page for <Agent>
-    When I navigate to german start page for <Agent>
+    When I navigate to start page for <Agent>
+    When I navigate to start page for <Agent>
+    And I change language to german
+    And <Page> page for <Agent> is german
     Then I can see no dead links
 
     Examples: 
+      | Agent   |
+      | iphone  |
+      | android |
+      | osx     |
+      | windows |
+
+  @C77923 @utility
+  Scenario Outline: Verify that there are no dead links on german privacy page for <Agent>
+    When I navigate to privacy page for <Agent>
+    When I navigate to privacy page for <Agent>
+    And I change language to german
+    And <Page> page for <Agent> is german
+    Then I can see no dead links
+
+    Examples:
       | Agent   |
       | iphone  |
       | android |
@@ -96,13 +131,11 @@ Feature: Utility
 
   @C5233 @utility
   Scenario Outline: Check password reset with unregistered email for all agents
-    When I navigate to Password Change Reset page for <Agent>
-    #Workaround fix below
-    And I navigate to Password Change Reset page for <Agent>
+    When I go to Password Change Reset page for <Agent>
     Then I see Password Change Request page
     And I enter unregistered email <UnregisteredMail>
     And I click Change Password button on Password Change Request page
-    Then I dont see Password Change Request Succeeded page
+    Then I see unused mail message
 
     Examples: 
       | UnregisteredMail                 | Agent   |
@@ -128,14 +161,15 @@ Feature: Utility
     Then I dont see Password Change Succeeded page
 
     Examples: 
-      | Email      | OldPassword   | Name      | NewPassword | Agent   |
-      | user1Email | user1Password | user1Name | aqa654321#  | ios     |
-      | user1Email | user1Password | user1Name | aqa654321#  | android |
-      | user1Email | user1Password | user1Name | aqa654321#  | osx     |
-      | user1Email | user1Password | user1Name | aqa654321#  | windows |
+      | Email      | Name      | NewPassword | Agent   |
+      | user1Email | user1Name | aqa654321#  | ios     |
+      | user1Email | user1Name | aqa654321#  | android |
+      | user1Email | user1Name | aqa654321#  | osx     |
+      | user1Email | user1Name | aqa654321#  | windows |
 
   @C3275 @C3276
-  Scenario Outline: Verify buttons from verication link for <Agent>
+  Scenario Outline: Verify buttons from verfication link for <Agent>
+    # Blocked due to limitation of Selenium
     When I navigate to verify page for <Agent>
     When I navigate to verify page for <Agent>
     Then I see download button for <Agent>
@@ -145,26 +179,26 @@ Feature: Utility
       | iphone  |
       | android |
 
-  @C3277 @Utility
+  @C3277 @utility
   Scenario: Verify buttons from verification link for osx
-  When I navigate to verify page for osx
-  When I navigate to verify page for osx
+  When I go to verify page for osx
+  When I go to verify page for osx
   Then I see download button for osx
   And I see webapp button
 
-  @C3278 @Utility
+  @C3278 @utility
   Scenario: Verify buttons from verification link for windows
-  When I navigate to verify page for windows
-  When I navigate to verify page for windows
+  When I go to verify page for windows
+  When I go to verify page for windows
   Then I see download button for windows
 
-  @C5236 @Utility
+  @C5236 @utility
   Scenario Outline: Verify error message by broken verification link for <Agent>
-  When I navigate to broken verify page for <Agent>
-  When I navigate to broken verify page for <Agent>
+  When I go to broken verify page for <Agent>
+  When I go to broken verify page for <Agent>
   Then I see error message
 
-      Examples: 
+  Examples: 
       | Agent   |
       | iphone  |
       | android |
@@ -266,4 +300,42 @@ Feature: Utility
       | user1Email | user1Password | user1Name | android |
       | user1Email | user1Password | user1Name | osx     |
       | user1Email | user1Password | user1Name | windows |  
-      
+
+  @C49970 @utility
+    Scenario Outline: Verify that language switch works for <Agent>
+    When I navigate to <Page> page for <Agent>
+    When I navigate to <Page> page for <Agent>
+    And I can see language switch button for english on <Page> for <Agent>
+    Then I change language to german
+    And <Page> page for <Agent> is german 
+    And I can see language switch button for german on <Page> for <Agent>
+    Then I change language to english
+    Then <Page> page for <Agent> is english
+    
+    Examples:
+      | Agent   | Page     |
+      | iphone  | start    |
+      | iphone  | privacy  |
+      | iphone  | legal    |
+      | iphone  | job      |
+      | iphone  | download |
+      | iphone  | forgot   |     
+      | android | start    |
+      | android | privacy  |
+      | android | legal    |
+      | android | job      |
+      | android | download |
+      | android | forgot   |
+      | osx     | start    |
+      | osx     | privacy  |
+      | osx     | legal    |
+      | osx     | job      |
+      | osx     | download |
+      | osx     | forgot   |
+      | windows | start    |
+      | windows | privacy  |
+      | windows | legal    |
+      | windows | job      |
+      | windows | download |
+      | windows | forgot   |
+    

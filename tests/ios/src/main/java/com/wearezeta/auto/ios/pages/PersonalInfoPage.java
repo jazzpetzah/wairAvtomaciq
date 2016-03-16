@@ -137,7 +137,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public boolean isWireWebsitePageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathWireWebsiteUrl, 15);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathWireWebsiteUrl, 30);
     }
 
     public void closeLegalPage() throws Exception {

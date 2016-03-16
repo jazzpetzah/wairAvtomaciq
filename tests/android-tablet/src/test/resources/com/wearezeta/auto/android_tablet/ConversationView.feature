@@ -183,22 +183,22 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
-    And I tap the conversation <Contact>
+    Given I see the conversation <Contact> in my conversations list
+    When I tap the conversation <Contact>
     And I see the conversation view
     And I tap Show Tools button on conversation view page
-    When I tap Show Details button on conversation view page
+    And I tap Show Details button on conversation view page
     Then I see the Single user popover
     And I see the user name <Contact> on Single user popover
     When I tap Close button on Single user popover
     Then I do not see the Single user popover
-    When I tap Show Details button on conversation view page
+    When I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
     Then I see the Single user popover
     When I tap in the center of Single user popover
     Then I see the Single user popover
     When I tap outside of Single user popover
     Then I do not see the Single user popover
-    When I tap Close Tools button on conversation view page
     And I tap the text input in the conversation view
     And I tap Show Tools button on conversation view page
     When I tap Show Details button on conversation view page

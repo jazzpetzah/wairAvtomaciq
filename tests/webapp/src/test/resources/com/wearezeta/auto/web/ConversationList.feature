@@ -418,3 +418,48 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | Contact1  | Msg1    |
       | user1Email | user1Password | user1Name | user2Name | message |
+
+  @C58607 @staging
+  Scenario Outline: Verify the order of conversation list is synced between devices
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I open conversation with <Contact2>
+    And I write random message
+    And I send message
+    And I see random message in conversation
+    And I open conversation with <Contact1>
+    And I write random message
+    And I send message
+    And I see random message in conversation
+    Then I see conversation <Contact1> is on the top
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    Then I see Sign In page
+      When I Sign in using login <Login2> and password <Password2>
+      And I am signed in properly
+      And I see Welcome page
+      And I confirm keeping picture on Welcome page
+      And I open conversation with <Name>
+    And user <Name> adds a new device Device1 with label Label1
+    And Contact <Name> sends encrypted message <Message> via device Device1 to user <Contact2>
+      Then I see text message <Message>
+      When I open self profile
+      And I click gear button on self profile page
+      And I select Log out menu item on self profile page
+      And I see the clear data dialog
+      And I click Logout button on clear data dialog
+      Then I see Sign In page
+    When I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I see Contact list with name <Contact2>
+    Then I see conversation <Contact2> is on the top
+
+    Examples:
+      | Login      | Password      | Login2     | Password2     | Name      | Contact1  | Contact2  | Message |
+      | user1Email | user1Password | user3Email | user3Password | user1Name | user2Name | user3Name | TESTING |
