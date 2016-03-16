@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android_tablet.steps;
 
 import com.wearezeta.auto.android_tablet.pages.TabletFirstTimeOverlay;
-import com.wearezeta.auto.common.CommonSteps;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
