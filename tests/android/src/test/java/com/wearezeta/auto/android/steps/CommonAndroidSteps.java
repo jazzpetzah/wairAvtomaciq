@@ -194,7 +194,7 @@ public class CommonAndroidSteps {
 
     static {
         try {
-            isLogcatEnabled = CommonUtils.getAndroidShowLogcatFromConfig(ZetaFormatter.class);
+            isLogcatEnabled = CommonUtils.getAndroidShowLogcatFromConfig(CommonAndroidSteps.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
