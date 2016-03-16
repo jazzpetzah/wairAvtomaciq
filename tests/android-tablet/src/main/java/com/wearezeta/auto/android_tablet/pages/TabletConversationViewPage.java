@@ -107,7 +107,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     public void tapShowInstrumentsButton() throws Exception {
         final WebElement showToolsButton = getElement(idShowToolsButton);
         showToolsButton.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), idShowToolsButton, 2)) {
+        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCloseToolsButton, 2)) {
             showToolsButton.click();
         }
     }
