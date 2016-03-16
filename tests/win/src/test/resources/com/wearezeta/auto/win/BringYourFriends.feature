@@ -1,7 +1,7 @@
 Feature: Bring Your Friends
 
   @C2312 @smoke @id3502
-  Scenario Outline: Use Gmail contacts import on registration
+  Scenario Outline: Use Gmail contacts import from search UI
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
