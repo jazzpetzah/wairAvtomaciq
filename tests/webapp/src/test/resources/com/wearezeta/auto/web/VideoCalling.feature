@@ -16,7 +16,8 @@ Feature: VideoCalling
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
-    And I end the video call
+    When I end the video call
+    Then I do not see the call controls for conversation <Contact>
     And I do not see my self video view
 
     Examples:
@@ -40,7 +41,8 @@ Feature: VideoCalling
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
-    And I end the video call
+    When I end the video call
+    Then I do not see the call controls for conversation <Contact>
     And I do not see accept video call button for conversation <Contact>
     And I do not see decline call button for conversation <Contact>
     And I do not see my self video view
@@ -63,7 +65,8 @@ Feature: VideoCalling
     And I see accept video call button for conversation <Contact>
     And I see decline call button for conversation <Contact>
     When I ignore the call from conversation <Contact>
-    Then I do not see accept video call button for conversation <Contact>
+    Then I do not see the call controls for conversation <Contact>
+    And I do not see accept video call button for conversation <Contact>
     And I do not see decline call button for conversation <Contact>
     And I do not see my self video view
 
