@@ -190,7 +190,7 @@ public class CommonAndroidSteps {
         // closeUpdateAlertIfAppears(drv, locator);
     }
 
-    private static boolean isLogcatEnabled;
+    private static boolean isLogcatEnabled = true;
 
     static {
         try {
