@@ -289,6 +289,7 @@ Feature: VideoCalling
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I wait until <Contact> exists in backend search results
+    And I see Contact list with name <Contact>
     When I open People Picker from Contact List
     And I type <Contact> in search field of People Picker
     And I see user <Contact> found in People Picker
@@ -297,6 +298,9 @@ Feature: VideoCalling
     Then I see the outgoing call controls for conversation <Contact>
     When <Contact> accepts next incoming video call automatically
     Then I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact> verify to have 1 flows
+    And <Contact> verify that all flows have greater than 0 bytes
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
 
