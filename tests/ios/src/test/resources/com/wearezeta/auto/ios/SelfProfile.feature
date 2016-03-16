@@ -150,7 +150,7 @@ Feature: Self Profile
     When I tap my avatar
     And I remember my current profile picture
     And I tap on personal screen
-    And I tap real Camera button
+    And I tap Lens button
     And I tap Camera Shutter button
     And I confirm my choice
     Then I wait up to <Timeout> seconds until my profile picture is changed

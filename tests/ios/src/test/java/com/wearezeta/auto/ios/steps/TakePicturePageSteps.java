@@ -47,13 +47,13 @@ public class TakePicturePageSteps {
     }
 
 	/**
-	 * Tap real camera button to take picture
+	 * Taps lens camera button to take picture
 	 *
 	 * @throws Exception
-	 * @step. ^I tap real Camera button$
+	 * @step. ^I tap Lens button$
 	 */
-	@When("^I tap real Camera button$")
-	public void ITapRealCameraButton() throws Exception {
+	@When("^I tap Lens button$")
+	public void ITapLensButton() throws Exception {
 		getTakePicturePage().tapCameraButton();
 	}
 }
