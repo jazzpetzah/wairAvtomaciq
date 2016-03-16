@@ -31,7 +31,9 @@ Feature: E2EE
 
   @C1847 @e2ee @smoke
   Scenario Outline: Login as permanent device after permanent device limit is reached
-    Given There is 1 user where <Name> is me
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Myself
+    Given user <Contact> adds a new device ContactDevice1 with label ContactLabel1
     Given user <Name> adds a new device Device1 with label Label1
     Given user <Name> adds a new device Device2 with label Label2
     Given user <Name> adds a new device Device3 with label Label3
@@ -67,10 +69,13 @@ Feature: E2EE
     Then I see the history info page
     And I click confirm on history info page
     And I am signed in properly
+    When I open conversation with <Contact>
+    And Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
+    Then I see text message <EncryptedMessage>
 
     Examples:
-      | Email      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Email      | Password      | Name      | Contact   | EncryptedMessage |
+      | user1Email | user1Password | user1Name | user2Name | Still decrypting |
 
   @C2100 @e2ee @regression
   Scenario Outline: Login as temporary device after device limit is reached
