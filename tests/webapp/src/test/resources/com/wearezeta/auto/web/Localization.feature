@@ -15,7 +15,7 @@ Feature: Localization
       | de       | KONTO ERSTELLEN   | Name            | E-Mail-Adresse   | Passwort (min. acht Zeichen) | Erstellen      | Ich akzeptiere die Nutzungsbedingungen |
 
   @C77947 @regression
-  Scenario Outline: Verify login screen has German-localized strings
+  Scenario Outline: Verify registration screen has German-localized strings
     When I switch language to <Language>
     And I switch to Sign In page
     Then I see a string <LoginLink> on the page
