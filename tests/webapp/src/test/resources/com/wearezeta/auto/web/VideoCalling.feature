@@ -327,3 +327,30 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @C77944 @videocalling @staging
+  Scenario Outline: Verify I can start Video call after declining an audio call
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given <Contact> calls me
+    When I am signed in properly
+    Then I see the incoming call controls for conversation <Contact>
+    And I see decline call button for conversation <Contact>
+    When I ignore the call from conversation <Contact>
+    Then I do not see the call controls for conversation <Contact>
+    And I open conversation with <Contact>
+    When I start a video call
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact> verify to have 1 flows
+    And <Contact> verify that all flows have greater than 0 bytes
+    When I end the video call
+    Then I do not see the call controls for conversation <Contact>
+    And I do not see my self video view
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |

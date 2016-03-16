@@ -279,6 +279,10 @@ public class CommonUtils {
         return getValueFromConfig(c, "mainActivity");
     }
 
+    public static boolean getAndroidShowLogcatFromConfig(Class<?> c) throws Exception {
+        return Boolean.parseBoolean(getOptionalValueFromConfig(c, "showLogcat").orElse("true"));
+    }
+
     public static String getAndroidConvoListActivityFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "convoListActivity");
     }

@@ -30,6 +30,7 @@
         <androidToolsPath>${project.basedir}/../tools/android</androidToolsPath>
         <rcNotificationsRecepients>vova@wire.com,nick@wire.com,robin@wire.com</rcNotificationsRecepients>
         <adbPrefix></adbPrefix>
+        <showLogcat>true</showLogcat>
     </properties>
 
     <dependencies>
