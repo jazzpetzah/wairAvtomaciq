@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android_tablet.steps;
 
 import com.wearezeta.auto.android_tablet.pages.TabletFirstTimeOverlay;
+import com.wearezeta.auto.common.CommonSteps;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -54,6 +55,6 @@ public class FirstTimeOverlaySteps {
 	 */
 	@And("^I accept First Time overlay as soon as it is visible$")
 	public void IAcceptTheOverLayWhenItIsVisible() throws Exception {
-		getFirstTimeOverlay().acceptWhenVisible(5);
+		getFirstTimeOverlay().acceptWhenVisible(CommonAndroidTabletSteps.FIRST_TIME_OVERLAY_TIMEOUT);
 	}
 }

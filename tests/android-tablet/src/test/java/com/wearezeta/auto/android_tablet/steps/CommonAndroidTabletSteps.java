@@ -67,6 +67,7 @@ public class CommonAndroidTabletSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     public static final Platform CURRENT_PLATFORM = Platform.Android;
 
+    public static final int FIRST_TIME_OVERLAY_TIMEOUT = 5; // seconds
     public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
     public static final int DEFAULT_SWIPE_TIME = 1500;
     private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
@@ -636,7 +637,7 @@ public class CommonAndroidTabletSteps {
      * @throws Exception
      * @step. ^There (?:is|are) (\\d+) users? where (.*) is me$
      */
-    @Given("^There (?:is|are) (\\d+) (?:user|users) where (.*) is me$")
+    @Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
         GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
