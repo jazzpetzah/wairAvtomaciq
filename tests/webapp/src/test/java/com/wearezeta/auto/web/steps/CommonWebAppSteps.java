@@ -64,6 +64,10 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import org.openqa.selenium.WebDriverException;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertTrue;
 
 public class CommonWebAppSteps {
@@ -348,6 +352,26 @@ public class CommonWebAppSteps {
 					+ " does support calling but this test is just for browsers without support.");
 			}
 		}
+	}
+
+	@Given("^I switch language to (.*)$")
+	public void ISwitchLanguageTo(String language) throws Exception {
+		WebappPagesCollection.getInstance().getPage(WebPage.class).switchLanguage(language);
+	}
+
+	@Then("^I see a string (.*) on the page$")
+	public void ISeeAStringOnPage(String string) throws Throwable {
+		assertThat(WebappPagesCollection.getInstance().getPage(WebPage.class).getText(), containsString(string));
+	}
+
+	@Then("^I see a placeholder (.*) on the page$")
+	public void ISeeAPlaceholderOnPage(String placeholder) throws Throwable {
+		assertThat(WebappPagesCollection.getInstance().getPage(WebPage.class).getPlaceholders(), hasItem(placeholder));
+	}
+
+	@Then("^I see a button with (.*) on the page$")
+	public void ISeeAButtonOnPage(String value) throws Throwable {
+		assertThat(WebappPagesCollection.getInstance().getPage(WebPage.class).getButtonValues(), hasItem(value));
 	}
 
 	/**
