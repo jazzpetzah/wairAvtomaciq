@@ -19,7 +19,6 @@ import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
@@ -29,7 +28,6 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-
 import gherkin.formatter.model.Result;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -44,7 +42,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class CommonAndroidSteps {
     static {
@@ -134,11 +135,13 @@ public class CommonAndroidSteps {
     }
 
     private static final Future<Void> devicePreparationThread;
+
     static {
         final ExecutorService pool = Executors.newSingleThreadExecutor();
         devicePreparationThread = pool.submit(CommonAndroidSteps::prepareDevice);
         pool.shutdown();
     }
+
     private static final int DEVICE_PREPARATION_TIMEOUT_SECONDS = 20;
 
     private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
@@ -187,6 +190,16 @@ public class CommonAndroidSteps {
         // closeUpdateAlertIfAppears(drv, locator);
     }
 
+    private static boolean isLogcatEnabled = true;
+
+    static {
+        try {
+            isLogcatEnabled = CommonUtils.getAndroidShowLogcatFromConfig(CommonAndroidSteps.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Before
     public void setUp(Scenario scenario) throws Exception {
         try {
@@ -195,10 +208,12 @@ public class CommonAndroidSteps {
             e.printStackTrace();
         }
 
-        if (scenario.getSourceTagNames().contains("@performance")) {
-            AndroidLogListener.getInstance(ListenerType.PERF).start();
+        if (isLogcatEnabled) {
+            if (scenario.getSourceTagNames().contains("@performance")) {
+                AndroidLogListener.getInstance(ListenerType.PERF).start();
+            }
+            AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
         }
-        AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
 
         String appPath = getPath();
         if (scenario.getSourceTagNames().contains("@upgrade")) {
@@ -866,16 +881,19 @@ public class CommonAndroidSteps {
             e.printStackTrace();
         }
 
+
         AndroidLogListener.forceStopAll();
         LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
         if (!scenario.getStatus().equals(Result.PASSED)) {
             loggingProfile = new RegressionFailedLoggingProfile();
         }
-        try {
-            AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener.getInstance(ListenerType.DEFAULT),
-                    loggingProfile);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (isLogcatEnabled) {
+            try {
+                AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener.getInstance(ListenerType.DEFAULT),
+                        loggingProfile);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         try {
