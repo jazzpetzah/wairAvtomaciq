@@ -299,7 +299,7 @@ Feature: VideoCalling
     When <Contact> accepts next incoming video call automatically
     Then I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact> verifies to have 1 flows
+    And <Contact> verifies to have 1 flow
     And <Contact> verifies that all flows have greater than 0 bytes
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
