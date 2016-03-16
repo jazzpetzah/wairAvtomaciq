@@ -30,6 +30,8 @@ public class TakePicturePage extends IOSPage {
 
     private static final By nameCameraButton = MobileBy.AccessibilityId("cameraButton");
 
+    private static final By nameToggleCameraButton = MobileBy.AccessibilityId("toggleCameraButton");
+
     public TakePicturePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
 
@@ -75,5 +77,9 @@ public class TakePicturePage extends IOSPage {
 
     public void tapCameraButton() throws Exception {
         getElement(nameCameraButton).click();
+    }
+
+    public void tapToggleCameraButton() throws Exception {
+        getElement(nameToggleCameraButton).click();
     }
 }
