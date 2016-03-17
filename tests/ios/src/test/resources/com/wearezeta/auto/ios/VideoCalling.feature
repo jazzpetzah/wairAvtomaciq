@@ -33,7 +33,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C12101 @staging @video_calling @AUDIO-868
+  @C12101 @calling_basic @video_calling @AUDIO-868
   Scenario Outline: Verify accepting video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -53,7 +53,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C12103 @staging @video_calling @AUDIO-868
+  @C12103 @calling_basic @video_calling @AUDIO-868
   Scenario Outline: Verify finishing video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -108,7 +108,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C12114 @staging @video_calling
+  @C12114 @calling_basic @video_calling
   Scenario Outline: (AUDIO-830) Verify I can switch to another incoming audio call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -160,7 +160,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C12115 @staging @video_calling @AUDIO-830
+  @C12115 @calling_basic @video_calling @AUDIO-830
   Scenario Outline: Verify I can switch to another video call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -180,7 +180,7 @@ Feature: Video Calling
       | Name      | Contact    | Contact2 | VideoCallBackend | Timeout |
       | user1Name | user2Name  | user3Name| chrome           | 60      |
 
-  @C12106 @staging @video_calling @AUDIO-868
+  @C12106 @calling_basic @video_calling @AUDIO-868
   Scenario Outline: Verify muting ongoing Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -199,7 +199,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 30      |
 
-  @C28861 @staging @video_calling @AUDIO-868
+  @C28861 @calling_basic @video_calling @AUDIO-868
   Scenario Outline: Verify video call continues after rejecting 2nd incoming video call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
