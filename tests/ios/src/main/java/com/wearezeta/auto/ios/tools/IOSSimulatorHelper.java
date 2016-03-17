@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.common.process.UnixProcessHelpers;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
@@ -285,7 +286,7 @@ public class IOSSimulatorHelper {
 
     public static void kill() throws Exception {
         log.debug("Force killing Simulator app...");
-        new ProcessBuilder("/usr/bin/killall", "Simulator").start().waitFor();
+        UnixProcessHelpers.killProcessesGracefully("Simulator");
         Thread.sleep(2000);
     }
 
