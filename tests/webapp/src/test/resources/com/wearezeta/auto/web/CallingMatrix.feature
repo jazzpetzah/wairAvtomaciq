@@ -94,11 +94,12 @@ Feature: Calling_Matrix
     Then I see the ongoing call controls for conversation <Contact>
     And I hang up call with conversation <Contact>
     And I do not see the call controls for conversation <Contact>
+    And <Contact> verifies that call to conversation <Contact> was successful
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend   | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | autocall:1.12 | 60      |
-      | user1Email | user1Password | user1Name | user2Name | autocall:2.1  | 60      |
+      | user1Email | user1Password | user1Name | user2Name | autocall:1.12 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | autocall:2.1  | 20      |
 
   @C5363 @calling_matrix @calling
   Scenario Outline: Verify I can make group call with multiple <WaitBackend>

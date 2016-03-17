@@ -3,6 +3,7 @@ package com.wearezeta.auto.web.steps;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
+import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 import cucumber.api.java.en.Then;
@@ -13,6 +14,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class CallingSteps {
 
@@ -156,7 +158,7 @@ public class CallingSteps {
             throws Exception {
         for (String callee : splitAliases(callees)) {
             final List<Flow> flows = commonCallingSteps.getFlows(callee);
-            assertThat("existing flows: \n"+flows, flows, hasSize(numberOfFlows));
+            assertThat("existing flows: \n" + flows, flows, hasSize(numberOfFlows));
         }
     }
 
@@ -172,9 +174,24 @@ public class CallingSteps {
     public void UserXVerifesHavingXFlows(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
             for (Flow flow : commonCallingSteps.getFlows(callee)) {
-                assertThat("incoming bytes: \n"+flow, flow.getBytesIn(), greaterThan(0L));
-                assertThat("outgoing bytes: \n"+flow, flow.getBytesOut(), greaterThan(0L));
+                assertThat("incoming bytes: \n" + flow, flow.getBytesIn(), greaterThan(0L));
+                assertThat("outgoing bytes: \n" + flow, flow.getBytesOut(), greaterThan(0L));
             }
+        }
+    }
+
+    /**
+     * Verify that each call of the instances was successful
+     *
+     * @step. (.*) verif(?:ies|y) that call to conversation (.*) was successful$
+     *
+     * @param callees comma separated list of callee names/aliases
+     * @throws Exception
+     */
+    @Then("(.*) verif(?:ies|y) that call to conversation (.*) was successful$")
+    public void UserXVerifesCallWasSuccessful(String callees, String conversation) throws Exception {
+        for (Call call : commonCallingSteps.getOutgoingCall(splitAliases(callees), conversation)) {
+            assertTrue("Call failed: \n" + call +"\n"+call.getMetrics(), call.getMetrics().isSuccess());
         }
     }
 

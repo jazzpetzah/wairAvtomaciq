@@ -91,7 +91,7 @@ public class Instance {
 
 	@Override
 	public String toString() {
-		return "Instance{" + "id=" + id + ", instanceStatus=" + instanceStatus
+		return "Instance{id=" + id + ", instanceStatus=" + instanceStatus
 				+ ", email=" + email + ", password=" + password
 				+ ", currentCall=" + currentCall + ", backend=" + backend
 				+ ", instanceType=" + instanceType
