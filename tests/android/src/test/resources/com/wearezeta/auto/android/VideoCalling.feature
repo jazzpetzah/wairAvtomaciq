@@ -413,3 +413,26 @@ Feature: VideoCalling
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 30      |
+
+  @C58888 @staging
+  Scenario Outline: Verify video call is not terminated after putting client to background and restore
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    And <Contact> starts a video call to me
+    And I see incoming call
+    And I swipe to accept the call
+    And I see ongoing video call
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    When I minimize the application
+    And I wait for 5 seconds
+    And I restore the application
+    Then <Contact> verifies that call status to me is changed to active in 3 seconds
+    And I see ongoing video call
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 30      |
