@@ -29,7 +29,7 @@ public class CallRequest {
 
 	@Override
 	public String toString() {
-		return "CallRequest{" + "conversationId=" + conversationId
+		return "CallRequest{conversationId=" + conversationId
 				+ ", timeout=" + timeout + '}';
 	}
 

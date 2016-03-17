@@ -82,7 +82,7 @@ public class Call {
 
     @Override
     public String toString() {
-        return "Call{" + "id=" + id + ", status=" + status + ", conversationId=" + conversationId + ", timeout=" + timeout + ", creationTime=" + creationTime + ", metrics=" + metrics + '}';
+        return "Call{id=" + id + ", status=" + status + ", conversationId=" + conversationId + ", timeout=" + timeout + ", creationTime=" + creationTime + ", metrics=" + metrics + '}';
     }
 
 }

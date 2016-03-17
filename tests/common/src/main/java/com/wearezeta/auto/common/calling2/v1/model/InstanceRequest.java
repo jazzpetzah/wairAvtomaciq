@@ -47,7 +47,7 @@ public final class InstanceRequest {
 
 	@Override
 	public String toString() {
-		return "InstanceRequest{" + "email=" + email + ", password=" + password
+		return "InstanceRequest{email=" + email + ", password=" + password
 				+ ", backend=" + backend + ", instanceType=" + instanceType
 				+ ", name=" + name + ", timeout=" + timeout + '}';
 	}

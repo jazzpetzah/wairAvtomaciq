@@ -41,7 +41,7 @@ public class Flow {
 
     @Override
     public String toString() {
-        return "Flow{" + "bytesIn=" + bytesIn + ", bytesOut=" + bytesOut
+        return "Flow{bytesIn=" + bytesIn + ", bytesOut=" + bytesOut
                 + ", remoteUserId=" + remoteUserId + ", remoteUserName=" + remoteUserName + '}';
     }
 
