@@ -75,9 +75,23 @@ public class CallingServiceClient {
         return CALL_RESOURCE.startVideo(instance, callRequest);
     }
 
+    /**
+     * Deprecated use getCall instead
+     * @param instance
+     * @param call
+     * @return
+     * @throws CallingServiceCallException
+     * @deprecated
+     */
+    @Deprecated
     public CallStatus getCallStatus(Instance instance, Call call)
             throws CallingServiceCallException {
         return CALL_RESOURCE.getCall(instance, call).getStatus();
+    }
+    
+    public Call getCall(Instance instance, Call call)
+            throws CallingServiceCallException {
+        return CALL_RESOURCE.getCall(instance, call);
     }
 
     public Call stopCall(Instance instance, Call call)
