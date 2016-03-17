@@ -171,7 +171,7 @@ Feature: People View
     And I press conversation menu button on iPad
     And I press RENAME on the menu on iPad
     And I change group conversation name to <ChatName>
-    And I exit the group info iPad popover
+    And I dismiss popover on iPad
     Then I see you renamed conversation to <ChatName> message shown in Group Chat
     And I navigate back to conversations list
     Then I see in contact list group chat named <ChatName>
@@ -193,7 +193,7 @@ Feature: People View
     And I press conversation menu button on iPad
     And I press RENAME on the menu on iPad
     And I change group conversation name to <ChatName>
-    And I exit the group info iPad popover
+    And I dismiss popover on iPad
     Then I see you renamed conversation to <ChatName> message shown in Group Chat
     Then I see in contact list group chat named <ChatName>
 
@@ -357,7 +357,7 @@ Feature: People View
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click NOTIFY button on iPad ellipsis menu
-    And I exit the group info iPad popover
+    And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I see the state of <GroupChatName> conversation item is changed on iPad
 
@@ -380,7 +380,7 @@ Feature: People View
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click NOTIFY button on iPad ellipsis menu
-    And I exit the group info iPad popover
+    And I dismiss popover on iPad
     Then I see the state of <GroupChatName> conversation item is changed on iPad
 
     Examples:
@@ -400,7 +400,7 @@ Feature: People View
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click SILENCE button on iPad ellipsis menu
-    And I exit the group info iPad popover
+    And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I see the state of <GroupChatName> conversation item is changed on iPad
 
@@ -422,7 +422,7 @@ Feature: People View
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click SILENCE button on iPad ellipsis menu
-    And I exit the group info iPad popover
+    And I dismiss popover on iPad
     Then I see the state of <GroupChatName> conversation item is changed on iPad
 
     Examples:

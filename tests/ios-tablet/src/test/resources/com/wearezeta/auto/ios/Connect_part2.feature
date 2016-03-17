@@ -143,7 +143,7 @@ Feature: Connect
     And I see incoming pending popover from user <Contact3> on iPad
     And I tap on start dialog button on other user profile page
     And I click on Ignore button on Pending requests page
-    And I exit the group info iPad popover
+    And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I dont see Pending request link in contact list
 
@@ -168,7 +168,7 @@ Feature: Connect
     And I see incoming pending popover from user <Contact3> on iPad
     And I tap on start dialog button on other user profile page
     And I click on Ignore button on Pending requests page
-    And I exit the group info iPad popover
+    And I dismiss popover on iPad
     Then I dont see Pending request link in contact list
 
     Examples: 

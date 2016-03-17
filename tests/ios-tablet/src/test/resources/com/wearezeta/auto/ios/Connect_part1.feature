@@ -61,7 +61,7 @@ Feature: Connect
     And I open group conversation details
     And I select participant <UnconnectedUser>
     And I click Connect button on not connected user profile popover
-    And I exit the group info iPad popover
+    And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I see first item in contact list named <UnconnectedUser>
 
@@ -82,7 +82,7 @@ Feature: Connect
     And I open group conversation details
     And I select participant <UnconnectedUser>
     And I click Connect button on not connected user profile popover
-    And I exit the group info iPad popover
+    And I dismiss popover on iPad
     Then I see first item in contact list named <UnconnectedUser>
 
     Examples: 
