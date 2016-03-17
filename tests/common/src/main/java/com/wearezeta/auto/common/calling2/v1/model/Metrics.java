@@ -20,7 +20,7 @@ public class Metrics {
 
     @Override
     public String toString() {
-        return "Metrics{" + "success=" + success + '}';
+        return "Metrics{success=" + success + '}';
     }
     
 }
