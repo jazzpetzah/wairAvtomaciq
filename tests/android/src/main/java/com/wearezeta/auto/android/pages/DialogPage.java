@@ -26,6 +26,8 @@ public class DialogPage extends AndroidPage {
 
     public static final By idAddPicture = By.id("cursor_menu_item_camera");
 
+    public static final By idPing = By.id("cursor_menu_item_ping");
+
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
         .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
 
@@ -68,9 +70,9 @@ public class DialogPage extends AndroidPage {
 
     private static final By idSketch = By.id("cursor_menu_item_draw");
 
-    private static final By idCall = By.id("cursor_menu_item_calling");
+    private static final By idAudioCall = By.id("action_audio_call");
 
-    private static final By idVideoCall = By.id("cursor_menu_item_video");
+    private static final By idVideoCall = By.id("action_video_call");
 
     public static final By idCursorCloseButton = By.id("cursor_button_close");
 
@@ -203,22 +205,15 @@ public class DialogPage extends AndroidPage {
     }
 
     public void tapPingBtn() throws Exception {
-        getDriver().longTap(getElement(idCall), DriverUtils.LONG_TAP_DURATION);
-    }
-
-    public void tapPingButtonIfVisible() throws Exception {
-        final Optional<WebElement> callBtn = getElementIfDisplayed(idCall, 2);
-        if (callBtn.isPresent()) {
-            getDriver().longTap(callBtn.get(), DriverUtils.LONG_TAP_DURATION);
-        }
+        getElement(idPing, "Ping button is not visible").click();
     }
 
     public void tapSketchBtn() throws Exception {
         getElement(idSketch, "Sketch button is not visible").click();
     }
 
-    public void tapCallBtn() throws Exception {
-        getElement(idCall, "Call button is not visible").click();
+    public void tapAudioCallBtn() throws Exception {
+        getElement(idAudioCall, "Audio Call button is not visible").click();
     }
 
     public void tapVideoCallBtn() throws Exception {
