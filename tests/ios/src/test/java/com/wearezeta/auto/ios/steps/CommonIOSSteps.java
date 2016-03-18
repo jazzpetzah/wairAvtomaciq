@@ -18,6 +18,7 @@ import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import com.wearezeta.common.process.UnixProcessHelpers;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.en.Then;
@@ -136,9 +137,11 @@ public class CommonIOSSteps {
                     FileUtils.deleteDirectory(appPath);
                 }
             }
-            final Process p = new ProcessBuilder(new String[]{
-                    "/usr/local/bin/ideviceinstaller", "-U", cachedBundleIds.get(ipaPath)
-            }).start();
+
+            UnixProcessHelpers.killProcessesGracefully("ideviceinstaller");
+            final Process p = new ProcessBuilder(
+                    "/usr/local/bin/ideviceinstaller", "--debug", "-U", cachedBundleIds.get(ipaPath)
+            ).redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT).start();
             if (!p.waitFor(25, TimeUnit.SECONDS)) {
                 throw new IllegalStateException("ideviceinstaller has failed to perform application uninstall.\n" +
                         "Please try to reconnect the device.");
