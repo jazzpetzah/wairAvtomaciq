@@ -144,12 +144,12 @@ public class ZetaFormatter implements Formatter, Reporter {
             int index = 1;
             File tmpScreenshot;
             do {
-                String stepNameForSrc = stepName.replaceAll("\\W+", "_");
+                String stepNameForScr = stepName.replaceAll("\\W+", "_");
                 tmpScreenshot = new File(String.format("%s/%s/%s/%s_%s.png",
                         CommonUtils.getPictureResultsPathFromConfig(this.getClass()), feature.replaceAll("\\W+", "_"),
                         scenario.replaceAll("\\W+", "_"),
-                        stepNameForSrc.matches(".*\\W") ? stepNameForSrc.substring(0, stepNameForSrc.length() - 1) :
-                                stepNameForSrc, index));
+                        stepNameForScr.matches(".*\\W") ? stepNameForScr.substring(0, stepNameForScr.length() - 1) :
+                                stepNameForScr, index));
                 index++;
             } while (tmpScreenshot.exists());
             final File resultScreenshot = tmpScreenshot;
