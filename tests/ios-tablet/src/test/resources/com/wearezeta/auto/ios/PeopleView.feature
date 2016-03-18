@@ -761,7 +761,7 @@ Feature: People View
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
-    And I see 5 conversation entries
+    And I see 4 conversation entries
     And I open conversation details
     And I press conversation menu button
     And I click delete menu button
