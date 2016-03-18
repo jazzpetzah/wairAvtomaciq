@@ -59,29 +59,4 @@ public class IncomingPendingRequestsPageSteps {
 		Assert.assertTrue(String.format("Connect To message is not visible for user '%s'", user),
 				getPendingRequestsPage().isConnectToNameExist(user));
 	}
-
-	/**
-	 * Verifies that you both know section is visible
-	 * 
-	 * @step. ^I see YOU BOTH KNOW people section$
-	 * @throws Exception
-	 */
-	@When("^I see YOU BOTH KNOW people section$")
-	public void ISeeYOUBOTHKNOWPeopleSection() throws Exception {
-		if (!getPendingRequestsPage().isYouBothKnowDisplayed()) {
-			getPendingRequestsPage().printPageSource();
-			throw new AssertionError("You Both Know section is not visible on the current page");
-		}
-	}
-
-	/**
-	 * Clicks on a person in the you both know section
-	 * 
-	 * @step. ^I click person in YOU BOTH KNOW section$
-	 * @throws Exception
-	 */
-	@When("^I click person in YOU BOTH KNOW section$")
-	public void IClickPersonInYOUBOTHKNOWSection() throws Exception {
-		getPendingRequestsPage().clickYouBothKnowPeopleIcon();
-	}
 }

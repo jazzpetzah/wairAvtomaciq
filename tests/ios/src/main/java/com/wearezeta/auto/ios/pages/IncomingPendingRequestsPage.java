@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios.pages;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -17,11 +16,6 @@ public class IncomingPendingRequestsPage extends IOSPage {
 
     private static final Function<String, String> xpathStrPendingRequesterByName = name ->
             String.format("//UIAStaticText[contains(@name, 'Connect to %s')]", name);
-
-    private static final By xpathYouBothKnowPeopleIcon = By.xpath(
-            xpathStrMainWindow + "/UIATableView[1]/UIATableCell[1]/UIAButton[2]");
-
-    private static final By nameYouBothKnowHeader = MobileBy.AccessibilityId("YOU BOTH KNOW");
 
     public IncomingPendingRequestsPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -58,13 +52,5 @@ public class IncomingPendingRequestsPage extends IOSPage {
     public boolean isConnectToNameExist(String expectedName) throws Exception {
         final By locator = By.xpath(xpathStrPendingRequesterByName.apply(expectedName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public boolean isYouBothKnowDisplayed() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameYouBothKnowHeader);
-    }
-
-    public void clickYouBothKnowPeopleIcon() throws Exception {
-        getElement(xpathYouBothKnowPeopleIcon).click();
     }
 }

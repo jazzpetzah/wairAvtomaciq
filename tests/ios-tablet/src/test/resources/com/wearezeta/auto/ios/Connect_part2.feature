@@ -175,26 +175,6 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
-  @C2429 @regression @id3796
-  Scenario Outline: Verify common connections are not tappable [LANDSCAPE]
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given <Contact2> sent connection request to me
-    Given <Contact1> is connected to <Contact2>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I see Pending request link in contact list
-    And I click on Pending request link in contact list
-    And I see Pending request page
-    And I see YOU BOTH KNOW people section
-    And I click person in YOU BOTH KNOW section
-    Then I see Pending request page
-
-    Examples: 
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
-
   @C2513 @rc @regression @id3904
   Scenario Outline: Verify inbox is highlighted and opened in the list [LANDSCAPE]
     Given There are 4 users where <Name> is me
