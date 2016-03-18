@@ -62,21 +62,6 @@ public class IOSCommonUtils {
         return new ClientDeviceInfo(os, osBuild, deviceName, gsmNetworkType, isWifiEnabled);
     }
 
-    public static Optional<String> getConnectedIDeviceUDID() throws Exception {
-        for (String deviceName: new String[] {"iPhone", "iPad"}) {
-            final String result = CommonUtils.executeOsXCommandWithOutput(new String[]{
-                    "/bin/bash",
-                    "-c",
-                    "system_profiler SPUSBDataType | sed -n '/"
-                            + deviceName
-                            + "/,/Serial/p' | grep 'Serial Number:' | awk -F ': ' '{print $2}'"}).trim();
-            if (result.length() > 0) {
-                return Optional.of(result);
-            }
-        }
-        return Optional.empty();
-    }
-
     public static String getPerfReportPathFromConfig(Class<?> c) throws Exception {
         return CommonUtils.getValueFromConfig(c, "perfReportPath");
     }

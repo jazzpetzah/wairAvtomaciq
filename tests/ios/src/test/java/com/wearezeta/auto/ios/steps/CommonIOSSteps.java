@@ -18,6 +18,7 @@ import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import com.wearezeta.auto.ios.tools.RealDeviceHelpers;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.en.Then;
@@ -87,45 +88,11 @@ public class CommonIOSSteps {
 
     private static Map<String, String> cachedBundleIds = new HashMap<>();
 
-    private static final int APP_UNINSTALL_TIMEOUT_SECONDS = 10;
-    private static final int DEVICE_REBOOT_TIMEOUT_SECONDS = 20;
-
-    private static void uninstallAppFromRealDevice(final String ipaPath) throws Exception {
-        // FIXME: Sometimes Appium fails to reset app prefs properly on real device
-        if (!cachedBundleIds.containsKey(ipaPath)) {
-            final File appPath = IOSCommonUtils.extractAppFromIpa(new File(ipaPath));
-            try {
-                cachedBundleIds.put(ipaPath, IOSCommonUtils.getBundleId(
-                        new File(appPath.getCanonicalPath() + File.separator + "Info.plist")));
-            } finally {
-                FileUtils.deleteDirectory(appPath);
-            }
-        }
-
-        final Process p = new ProcessBuilder(
-                "/usr/local/bin/ideviceinstaller", "-U", cachedBundleIds.get(ipaPath)
-        ).redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT).start();
-        if (!p.waitFor(APP_UNINSTALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-            // FIXME: Workaround for https://github.com/appium/appium/issues/5039
-
-            new ProcessBuilder(
-                    "/usr/local/bin/idevicediagnostics", "restart"
-            ).redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT).start();
-            // Wait until the device is restarted
-            Thread.sleep(DEVICE_REBOOT_TIMEOUT_SECONDS * 1000);
-            final Process p1 = new ProcessBuilder(
-                    "/usr/local/bin/ideviceinstaller", "-U", cachedBundleIds.get(ipaPath)
-            ).redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT).start();
-            if (!p1.waitFor(APP_UNINSTALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-                throw new IllegalStateException("ideviceinstaller has failed to perform application uninstall.\n" +
-                        "Please try to reconnect the device.");
-            }
-        }
-    }
-
     @SuppressWarnings("unchecked")
     public Future<ZetaIOSDriver> resetIOSDriver(String ipaPath,
                                                 Optional<Map<String, Object>> additionalCaps) throws Exception {
+        Optional<String> udid = Optional.empty();
+
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("nativeInstrumentsLib", isUseNativeInstrumentsEnabled());
         capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
@@ -137,7 +104,8 @@ public class CommonIOSSteps {
         } else {
             // We don't really care about which particular real device model we have
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()).split("\\s+")[0]);
-            capabilities.setCapability("udid", IOSCommonUtils.getConnectedIDeviceUDID().orElseThrow(
+            udid = RealDeviceHelpers.getUDID();
+            capabilities.setCapability("udid", udid.orElseThrow(
                     () -> new IllegalStateException("Cannot detect any connected iDevice")
             ));
         }
@@ -162,7 +130,18 @@ public class CommonIOSSteps {
         if (!CommonUtils.getIsSimulatorFromConfig(getClass()) &&
                 (capabilities.is("noReset") && !((Boolean) capabilities.getCapability("noReset")) ||
                         !capabilities.is("noReset"))) {
-            uninstallAppFromRealDevice(ipaPath);
+            if (!cachedBundleIds.containsKey(ipaPath)) {
+                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(ipaPath));
+                try {
+                    cachedBundleIds.put(ipaPath, IOSCommonUtils.getBundleId(
+                            new File(appPath.getCanonicalPath() + File.separator + "Info.plist")));
+                } finally {
+                    FileUtils.deleteDirectory(appPath);
+                }
+            }
+            RealDeviceHelpers.uninstallApp(udid.orElseThrow(
+                    () -> new IllegalStateException("Cannot detect any connected iDevice")
+            ), cachedBundleIds.get(ipaPath));
         }
 
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
