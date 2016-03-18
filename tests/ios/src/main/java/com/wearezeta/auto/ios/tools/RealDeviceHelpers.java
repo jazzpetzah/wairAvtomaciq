@@ -21,7 +21,7 @@ public class RealDeviceHelpers {
      * @throws Exception
      */
     public static Optional<String> getUDID() throws Exception {
-        for (String deviceName: new String[] {"iPhone", "iPad"}) {
+        for (String deviceName : new String[]{"iPhone", "iPad"}) {
             final String result = CommonUtils.executeOsXCommandWithOutput(new String[]{
                     "/bin/bash",
                     "-c",
@@ -55,26 +55,14 @@ public class RealDeviceHelpers {
     }
 
     public static void uninstallApp(final String udid, final String bundleId) throws Exception {
-        // FIXME: Sometimes Appium fails to reset app prefs properly on real device
         final Process p = new ProcessBuilder(
                 "/usr/local/bin/ideviceinstaller", "-u", udid, "-U", bundleId
         ).redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT).start();
         if (!p.waitFor(APP_UNINSTALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
             // FIXME: Workaround for https://github.com/appium/appium/issues/5039
             p.destroy();
-            new ProcessBuilder(
-                    "/usr/local/bin/idevicediagnostics", "-u", udid, "restart"
-            ).redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT).start();
-            Thread.sleep(5000);
-            waitUntilIsConnected(udid, DEVICE_REBOOT_TIMEOUT_SECONDS);
-            final Process p1 = new ProcessBuilder(
-                    "/usr/local/bin/ideviceinstaller", "-u", udid, "-U", bundleId
-            ).redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT).start();
-            if (!p1.waitFor(APP_UNINSTALL_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-                p1.destroy();
-                throw new IllegalStateException("ideviceinstaller has failed to perform application uninstall.\n" +
-                        "Please try to reconnect the device.");
-            }
+            throw new IllegalStateException("ideviceinstaller has failed to perform application uninstall.\n" +
+                    "Please try to reconnect the device.");
         }
     }
 }

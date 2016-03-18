@@ -130,6 +130,7 @@ public class CommonIOSSteps {
         if (!CommonUtils.getIsSimulatorFromConfig(getClass()) &&
                 (capabilities.is("noReset") && !((Boolean) capabilities.getCapability("noReset")) ||
                         !capabilities.is("noReset"))) {
+            // FIXME: Sometimes Appium fails to reset app prefs properly on real device
             if (!cachedBundleIds.containsKey(ipaPath)) {
                 final File appPath = IOSCommonUtils.extractAppFromIpa(new File(ipaPath));
                 try {
