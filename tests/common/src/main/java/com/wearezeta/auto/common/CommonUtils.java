@@ -3,6 +3,7 @@ package com.wearezeta.auto.common;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.*;
@@ -585,6 +586,16 @@ public class CommonUtils {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static boolean isRunningInJenkinsNetwork() throws UnknownHostException {
+        final String prevPropValue = System.getProperty("java.net.preferIPv4Stack");
+        try {
+            System.setProperty("java.net.preferIPv4Stack", "true");
+            return InetAddress.getLocalHost().getHostAddress().startsWith("192.168.2.");
+        } finally {
+            System.setProperty("java.net.preferIPv4Stack", prevPropValue);
         }
     }
 }
