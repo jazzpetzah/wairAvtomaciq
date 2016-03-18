@@ -65,7 +65,7 @@ public class RealDeviceHelpers {
             new ProcessBuilder(
                     "/usr/local/bin/idevicediagnostics", "-u", udid, "restart"
             ).redirectErrorStream(true).redirectOutput(ProcessBuilder.Redirect.INHERIT).start();
-            Thread.sleep(1000);
+            Thread.sleep(5000);
             waitUntilIsConnected(udid, DEVICE_REBOOT_TIMEOUT_SECONDS);
             final Process p1 = new ProcessBuilder(
                     "/usr/local/bin/ideviceinstaller", "-u", udid, "-U", bundleId
