@@ -219,3 +219,24 @@ Feature: Video Calling
     Examples:
       | Name      | Contact    | Contact2 | VideoCallBackend | Timeout | TimeoutAlreadyInCall |
       | user1Name | user2Name  | user3Name| chrome           | 60      | 4                    |
+
+  @C12108 @real @video_calling @staging
+  Scenario Outline: Verify disabling video in Video call and enabling it back
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When <Contact> starts a video call to <Name> using <CallBackend>
+    And I see call status message contains "<Contact> CALLING"
+    And I tap Accept Video button on Calling overlay
+    And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
+    And I see Call Video button on Video Calling overlay
+    And I see Switch Camera button on Video Calling overlay
+    And I remember state of Video button on Video Calling overlay
+    And I tap Call Video button on Video Calling overlay
+    Then I do not see Switch Camera button on Video Calling overlay
+    And I see state of Video button has changed on Video Calling overlay
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
