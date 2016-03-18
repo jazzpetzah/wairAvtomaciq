@@ -515,7 +515,7 @@ public class DialogPage extends IOSPage {
     public void tapMessage(String expectedLink) throws Exception {
         final By locator = By.xpath(xpathStrMessageCellByTextPart.apply(expectedLink));
         // TODO: Find a better way to calculate these click coordinates
-        DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(), getElement(locator), 20, 50);
+        DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(), getElement(locator), 20, 70);
     }
 
     public boolean isShieldIconVisibleNextToInputField() throws Exception {
