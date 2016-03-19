@@ -118,10 +118,10 @@ public class DialogPage extends IOSPage {
 
     //FIXME: Add accessibility locator
     private static final By xpathCallButton =
-            By.xpath("//UIANavigationBar[@name='ConversationView']/UIAButton[last() - 1]");
+            By.xpath("//UIANavigationBar[@name='ConversationView']/UIAButton[last()]");
     //FIXME: Add accessibility locator
     private static final By xpathVideoCallButton =
-            By.xpath("//UIANavigationBar[@name='ConversationView']/UIAButton[last()]");
+            By.xpath("//UIANavigationBar[@name='ConversationView']/UIAButton[last() - 1]");
 
     private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton};
 
