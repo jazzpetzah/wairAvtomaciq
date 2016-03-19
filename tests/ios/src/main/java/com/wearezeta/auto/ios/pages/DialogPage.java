@@ -116,12 +116,12 @@ public class DialogPage extends IOSPage {
     protected static final By nameAddPictureButton = MobileBy.AccessibilityId("ComposeControllerPictureButton");
     private static final By namePingButton = MobileBy.AccessibilityId("ComposeControllerPingButton");
 
+    private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[@name='ConversationView']";
+
     //FIXME: Add accessibility locator
-    private static final By xpathCallButton =
-            By.xpath("//UIANavigationBar[@name='ConversationView']/UIAButton[last()]");
+    private static final By xpathCallButton = By.xpath(xpathStrConversationViewTopBar + "/UIAButton[last()]");
     //FIXME: Add accessibility locator
-    private static final By xpathVideoCallButton =
-            By.xpath("//UIANavigationBar[@name='ConversationView']/UIAButton[last() - 1]");
+    private static final By xpathVideoCallButton = By.xpath(xpathStrConversationViewTopBar + "/UIAButton[last() - 1]");
 
     private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton};
 
