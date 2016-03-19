@@ -23,16 +23,17 @@ public class UnixProcessHelpers {
             throws Exception {
         new ProcessBuilder(ArrayUtils.addAll(new String[]{"/usr/bin/killall"}, expectedNames)).start().waitFor();
         final long millisecondsStarted = System.currentTimeMillis();
-        boolean areAllProcessesTerminated = false;
+        boolean areAllProcessesTerminated = true;
         while (System.currentTimeMillis() - millisecondsStarted <= timeoutSecondsUntilForceKill * 1000) {
             final Process p = new ProcessBuilder("/bin/ps", "axco", "command").start();
+            p.waitFor();
             final InputStream stream = p.getInputStream();
             final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             String line;
             while ((line = reader.readLine()) != null) {
                 for (String name : expectedNames) {
                     if (line.matches(".*\\b" + name.trim() + "\\b.*")) {
-                        areAllProcessesTerminated = true;
+                        areAllProcessesTerminated = false;
                         break;
                     }
                 }
@@ -43,7 +44,7 @@ public class UnixProcessHelpers {
             if (areAllProcessesTerminated) {
                 break;
             } else {
-                Thread.sleep(100);
+                Thread.sleep(300);
             }
         }
         if (!areAllProcessesTerminated) {
