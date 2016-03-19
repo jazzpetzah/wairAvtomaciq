@@ -8,8 +8,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     And I see Calling overlay
     When I tap Leave button on Calling overlay
     Then I do not see Calling overlay
@@ -95,8 +94,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     And I see Calling overlay
     Then I lock screen for 5 seconds
     And I see Calling overlay
@@ -116,8 +114,7 @@ Feature: Calling
     Given I see conversations list
     And I tap on contact name <Contact1>
     And I remember the left side state of <Contact2> conversation item on iPad
-    When I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     And I see Calling overlay
     And <Contact2> calls me using <CallBackend2>
     And I see call status message contains "<Contact2> CALLING"
@@ -142,8 +139,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     And I see Calling overlay
     Then I close the app for 5 seconds
     And I see Calling overlay
@@ -193,8 +189,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     And I see Calling overlay
     And I tap Leave button on Calling overlay
     Then I do not see Calling overlay

@@ -10,10 +10,8 @@ import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 
 import cucumber.api.java.en.Then;
@@ -26,10 +24,6 @@ public class DialogPageSteps {
 
     private DialogPage getDialogPage() throws Exception {
         return pagesCollection.getPage(DialogPage.class);
-    }
-
-    private ContactListPage getContactListPage() throws Exception {
-        return pagesCollection.getPage(ContactListPage.class);
     }
 
     private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage() throws Exception {
@@ -226,30 +220,24 @@ public class DialogPageSteps {
     }
 
     /**
-     * Click call button to start a call
+     * Click call button to start an audio or video call
      *
+     * @param btnType either Audio or Video
      * @throws Exception
-     * @step. ^I press call button$
+     * @step. ^I tap (Audio|Video) Call button$
      */
-    @When("^I press call button$")
-    public void IPressCallButton() throws Exception {
-        getDialogPage().pressCallButton();
+    @When("^I tap (Audio|Video) Call button$")
+    public void ITapCallButton(String btnType) throws Exception {
+        if (btnType.equals("Audio")) {
+            getDialogPage().tapAudioCallButton();
+        } else {
+            getDialogPage().tapVideoCallButton();
+        }
     }
 
     @When("^I click Ping button$")
     public void IPressPingButton() throws Exception {
-        getDialogPage().pressPingButton();
-    }
-
-    /**
-     * Click on Video call button
-     *
-     * @throws Exception
-     * @step. ^I click Video Call button$
-     */
-    @When("^I click Video Call button$")
-    public void IPressVideoCallButton() throws Exception {
-        getDialogPage().pressVideoCallButton();
+        getDialogPage().tapPingButton();
     }
 
     @Then("^I see Pending Connect to (.*) message on Dialog page$")
@@ -283,17 +271,6 @@ public class DialogPageSteps {
         getDialogPage().clickOnPlayVideoButton();
     }
 
-    @When("I swipe right on Dialog page")
-    public void ISwipeRightOnDialogPage() throws Exception {
-        for (int i = 0; i < 3; i++) {
-            getDialogPage().swipeRight(1000,
-                    DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 28);
-            if (getContactListPage().waitUntilSelfButtonIsDisplayed()) {
-                break;
-            }
-        }
-    }
-
     @When("^I post media link (.*)$")
     public void IPostMediaLink(String link) throws Throwable {
         getDialogPage().typeAndSendConversationMessage(link);
@@ -303,7 +280,7 @@ public class DialogPageSteps {
      * Type and send invitation link from pointed user in a conversation
      *
      * @param user username
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I type and send invitaion link from user (.*)$
      */
     @When("^I type and send invitation link from user (.*)$")
@@ -620,39 +597,6 @@ public class DialogPageSteps {
     @When("^I see Details button is visible$")
     public void ISeeDetailsButtonShown() throws Exception {
         Assert.assertTrue("Details button is not visible", getDialogPage().isOpenConversationDetailsButtonVisible());
-    }
-
-    /**
-     * Verify Call button is visible
-     *
-     * @throws Exception
-     * @step. ^I see Call button is visible$
-     */
-    @When("^I see Call button is visible$")
-    public void ISeeCalButtonShown() throws Exception {
-        Assert.assertTrue("Call button is not visible", getDialogPage().isCallButtonVisible());
-    }
-
-    /**
-     * Verify Camera button is visible
-     *
-     * @throws Exception
-     * @step. ^I see Camera button is visible$
-     */
-    @When("^I see Camera button is visible$")
-    public void ISeeCameraButtonShown() throws Exception {
-        Assert.assertTrue("Camera button is not visible", getDialogPage().isCameraButtonVisible());
-    }
-
-    /**
-     * Verify Sketch button is visible
-     *
-     * @throws Exception
-     * @step. ^I see Sketch button is visible$
-     */
-    @When("^I see Sketch button is visible$")
-    public void ISeeSketchButtonShown() throws Exception {
-        Assert.assertTrue("Sketch button is not visible", getDialogPage().isOpenSketchButtonVisible());
     }
 
     /**

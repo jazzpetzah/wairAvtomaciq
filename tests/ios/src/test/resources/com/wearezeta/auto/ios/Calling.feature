@@ -25,8 +25,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     Then I see Calling overlay
 
     Examples:
@@ -40,8 +39,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     And I see Calling overlay
     When I tap Leave button on Calling overlay
     Then I do not see Calling overlay
@@ -130,8 +128,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     And I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     When I lock screen for 5 seconds
     Then I see Calling overlay
 
@@ -153,8 +150,7 @@ Feature: Calling
     Given I navigate back to conversations list
     When I remember the state of <Contact2> conversation item
     And I tap on contact name <Contact1>
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     And I see Calling overlay
     And <Contact2> calls me using <CallBackend2>
     And I see call status message contains "<Contact2> CALLING"
@@ -179,8 +175,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     Then I close the app for 5 seconds
     And I see Calling overlay
 
@@ -214,8 +209,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     And I see Calling overlay
     And I tap Leave button on Calling overlay
     Then I do not see Calling overlay
@@ -308,8 +302,7 @@ Feature: Calling
     And I tap Ignore button on Calling overlay
     Then I do not see Calling overlay
     And I wait for 20 seconds
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     Then I see Calling overlay
     # FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
     # Then I see <NumberOfAvatars> avatars on the Calling overlay
@@ -354,8 +347,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     Then I see Calling overlay
 
     Examples:
@@ -374,8 +366,7 @@ Feature: Calling
     And I see call status message contains "<GroupChatName> RINGING"
     And I wait for 45 seconds
     When I tap on group chat with name <GroupChatName>
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     Then I see Calling overlay
     # FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
     # Then I see <NumberOfAvatars> avatars on the Calling overlay

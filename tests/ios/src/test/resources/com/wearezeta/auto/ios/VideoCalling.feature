@@ -7,8 +7,7 @@ Feature: Video Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I click Video Call button
+    And I tap Video Call button
     Then I see call status message contains "<Contact> RINGING"
     And I see Leave button on Calling overlay
 
@@ -23,8 +22,7 @@ Feature: Video Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I click Video Call button
+    And I tap Video Call button
     Then I see call status message contains "<Contact> RINGING"
     When I tap Leave button on Calling overlay
     Then I see missed call from contact YOU
@@ -62,8 +60,7 @@ Feature: Video Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I click Video Call button
+    And I tap Video Call button
     And I see Video Calling overlay
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see Mute button on Video Calling overlay
