@@ -18,7 +18,7 @@ public class TabletDialogPage extends DialogPage {
 	
 	public void pressAddPictureiPadButton() throws Exception {
 		getElement(nameAddPictureButton).click();
-		DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameCameraLibraryButton);
+		DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathCameraLibraryButton);
 	}
 	
 	public void pressConversationDetailiPadButton() throws Exception{

@@ -99,7 +99,8 @@ public class DialogPage extends IOSPage {
     public static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
             "//UIAStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
 
-    protected static final By nameCameraLibraryButton = MobileBy.AccessibilityId("cameraLibraryButton");
+    protected static final By xpathCameraLibraryButton =
+            By.xpath("//*[@name='cameraLibraryButton' or @name='CameraLibraryButton']");
 
     public static final Function<String, String> xpathStrConnectedToUserLabelByName = name -> String.format(
             "//UIAStaticText[contains(@name, 'CONNECTED TO %s')]", name.toUpperCase());
