@@ -110,7 +110,7 @@ Feature: Log In
     When I switch to email sign in screen
     And I enter login "<Email>"
     And I enter password "<Password>"
-    When I enable Airplane mode on the device
+    And I enable Airplane mode on the device
     And I tap Sign In button
     Then I see alert message containing "<ErrMessage>"
     When I tap OK button on the error message
