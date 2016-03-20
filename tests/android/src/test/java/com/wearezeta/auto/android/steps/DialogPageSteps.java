@@ -125,23 +125,38 @@ public class DialogPageSteps {
      * @throws Exception
      * @step. ^I tap (Call|Ping|Add Picture|Video Call|Sketch) button$ from input tools$
      */
-    @When("^I tap (Call|Ping|Add Picture|Video Call|Sketch) button from input tools$")
+    @When("^I tap (Ping|Add Picture|Sketch) button from input tools$")
     public void WhenITapInputToolButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
-            case "call":
-                getDialogPage().tapCallBtn();
-                break;
             case "ping":
                 getDialogPage().tapPingBtn();
                 break;
             case "add picture":
                 getDialogPage().tapAddPictureBtn();
                 break;
-            case "video call":
-                getDialogPage().tapVideoCallBtn();
-                break;
             case "sketch":
                 getDialogPage().tapSketchBtn();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
+        }
+    }
+
+    /**
+     * Press the corresponding button in the top toolbar
+     *
+     * @param btnName button name
+     * @throws Exception
+     * @step. ^I tap (Audio Call|Video Call) button from top toolbar$
+     */
+    @When("^I tap (Audio Call|Video Call) button from top toolbar$")
+    public void WhenITapTopToolbarButton(String btnName) throws Exception {
+        switch (btnName.toLowerCase()) {
+            case "audio call":
+                getDialogPage().tapAudioCallBtn();
+                break;
+            case "video call":
+                getDialogPage().tapVideoCallBtn();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));

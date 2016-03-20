@@ -260,21 +260,14 @@ public class ConversationViewPageSteps {
 	/**
 	 * Tap the Ping button to send Ping/Ping Again event from the currently
 	 * opened conversation
-	 * 
-	 * @step. ^I tap Ping button (twice )?in (?:the |\\s*)[Cc]onversation view$
-	 * 
-	 * @param shouldTapTwice
-	 *            equals to null if 'twice' part does not exist in the step
-	 *            signature
-	 * 
+	 *
+	 * @step. ^I tap Ping button in (?:the |\\s*)[Cc]onversation view$
+	 *
 	 * @throws Exception
 	 */
-	@And("^I tap Ping button (twice )?in (?:the |\\s*)[Cc]onversation view$")
-	public void ITapPingButton(String shouldTapTwice) throws Exception {
+	@And("^I tap Ping button in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapPingButton() throws Exception {
 		getConversationViewPage().tapPingButton();
-		if (shouldTapTwice != null) {
-			getConversationViewPage().tapPingButtonIfVisible();
-		}
 	}
 
 	/**

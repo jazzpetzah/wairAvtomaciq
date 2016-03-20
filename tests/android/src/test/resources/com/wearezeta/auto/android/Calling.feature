@@ -49,8 +49,7 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I swipe on text input
-    And I tap Call button from input tools
+    And I tap Audio Call button from top toolbar
     Then I see outgoing call
     When <Contact> accepts next incoming call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -200,8 +199,7 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And I swipe on text input
-    And I tap Call button from input tools
+    And I tap Audio Call button from top toolbar
     Then I see outgoing call
     When <Contact1>,<Contact2> accept next incoming call automatically
     # Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
@@ -256,8 +254,7 @@ Feature: Calling
     And <Contact1> calls <GroupChatName>
     Then I see incoming call
     When I swipe to ignore the call
-    And I swipe on text input
-    And I tap Call button from input tools
+    And I tap Audio Call button from top toolbar
     Then I see ongoing call
 
     Examples:
@@ -281,8 +278,7 @@ Feature: Calling
     When I hang up ongoing call
     Then I do not see incoming call
     And I wait for 20 seconds
-    When I swipe on text input
-    And I tap Call button from input tools
+    And I tap Audio Call button from top toolbar
     Then I see ongoing call
 
     Examples:
@@ -433,8 +429,7 @@ Then I do not see incoming call
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact>
-    And I swipe on text input
-    And I tap Call button from input tools
+    And I tap Audio Call button from top toolbar
     And I see outgoing call
     When I lock the device
     And I wait for 2 seconds

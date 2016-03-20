@@ -92,10 +92,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getDialogPage().tapPingBtn();
     }
 
-    public void tapPingButtonIfVisible() throws Exception {
-        getDialogPage().tapPingButtonIfVisible();
-    }
-
     public boolean waitUntilPingMessageIsVisible(String expectedMessage) throws Exception {
         return getDialogPage().waitForPingMessageWithText(expectedMessage);
     }
