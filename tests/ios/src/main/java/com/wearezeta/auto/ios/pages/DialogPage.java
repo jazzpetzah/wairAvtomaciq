@@ -123,6 +123,8 @@ public class DialogPage extends IOSPage {
     private static final By xpathCallButton = By.xpath(xpathStrConversationViewTopBar + "/UIAButton[last()]");
     //FIXME: Add accessibility locator
     private static final By xpathVideoCallButton = By.xpath(xpathStrConversationViewTopBar + "/UIAButton[last() - 1]");
+    private static final By xpathConversationDetailsButton = By.xpath(xpathStrConversationViewTopBar +
+                    "/UIAButton[@name='ConversationBackButton']/following-sibling::UIAButton");
 
     private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton};
 
@@ -334,8 +336,7 @@ public class DialogPage extends IOSPage {
     private static final int TOP_BORDER_WIDTH = 40;
 
     public void openConversationDetails() throws Exception {
-        getElementIfDisplayed(namePlusButton, 3).orElseGet(DummyElement::new).click();
-        getElement(nameOpenConversationDetails).click();
+        getElement(xpathConversationDetailsButton).click();
     }
 
     @Override

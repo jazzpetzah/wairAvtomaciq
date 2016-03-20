@@ -120,9 +120,9 @@ public class DialogPageSteps {
      * Click open conversation details button in 1:1 dialog
      *
      * @throws Exception if other user personal profile page was not created
-     * @step. ^I open conversation details$
+     * @step. ^I open (?:group |\s*)conversation details$
      */
-    @When("^I open conversation details$")
+    @When("^I open (?:group |\\s*)conversation details$")
     public void IOpenConversationDetails() throws Exception {
         getDialogPage().openConversationDetails();
     }

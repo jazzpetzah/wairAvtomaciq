@@ -45,20 +45,8 @@ public class GroupChatPageSteps {
      * @throws Exception
      */
     @Then("^I see empty group chat page with users (.*) with only system message$")
-    public void ISeeGroupChatPageWithUsersAndOnlySystemMessage(
-            String participantNameAliases) throws Exception {
+    public void ISeeGroupChatPageWithUsersAndOnlySystemMessage(String participantNameAliases) throws Exception {
         ThenISeeGroupChatPage(participantNameAliases);
-    }
-
-    /**
-     * Click open conversation details button in group chat
-     *
-     * @throws Exception if group chat info page was not created
-     * @step. ^I open group conversation details$
-     */
-    @When("^I open group conversation details$")
-    public void IOpenConversationDetails() throws Exception {
-        getGroupChatPage().openConversationDetails();
     }
 
     @When("^I swipe up on group chat page$")
@@ -66,13 +54,13 @@ public class GroupChatPageSteps {
         getGroupChatPage().swipeUp(1000);
     }
 
-    @When("I see you renamed conversation to (.*) message shown in Group Chat")
-    public void ISeeYouRenamedMessageInGroupChat(String name) throws Exception {
-        Assert.assertTrue(getGroupChatPage()
-                .isYouRenamedConversationMessageVisible());
+    @When("^I see You Renamed Conversation message shown in conversation view$")
+    public void ISeeYouRenamedMessageInGroupChat() throws Exception {
+        Assert.assertTrue("You Renamed Conversation message is not visible in the conversation view",
+                getGroupChatPage().isYouRenamedConversationMessageVisible());
     }
 
-    @Then("I see You Left message in group chat")
+    @Then("^I see You Left message in group chat$")
     public void ISeeYouLeftMessage() throws Exception {
         Assert.assertTrue(getGroupChatPage().isYouLeftMessageShown());
     }
@@ -80,8 +68,7 @@ public class GroupChatPageSteps {
     @When("^I can see You Added (.*) message$")
     public void ICanSeeYouAddedContact(String contact) throws Throwable {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(getGroupChatPage()
-                .isYouAddedUserMessageShown(contact));
+        Assert.assertTrue(getGroupChatPage().isYouAddedUserMessageShown(contact));
     }
 
 }

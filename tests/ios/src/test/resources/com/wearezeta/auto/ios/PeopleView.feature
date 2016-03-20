@@ -112,7 +112,7 @@ Feature: People View
     And I change group conversation name to <ChatName>
     Then I see correct conversation name <ChatName>
     And I close group info page
-    And I see you renamed conversation to <ChatName> message shown in Group Chat
+    And I see You Renamed Conversation message shown in conversation view
     And I navigate back to conversations list
     And I see in contact list group chat named <ChatName>
 
