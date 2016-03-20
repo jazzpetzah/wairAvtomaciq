@@ -255,7 +255,7 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <ChatName>
-    And I tap conversation details button
+    And I tap conversation details button from top toolbar
     #Sometimes here only one user visible (backend issue)
     And I tap on group chat contact <Contact2>
     And I see connect to <Contact2> dialog
@@ -278,7 +278,7 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap conversation details button
+    And I tap conversation details button from top toolbar
     And I press options menu button
     And I press BLOCK conversation menu button
     And I confirm block

@@ -189,12 +189,17 @@ public class DialogPageSteps {
      * Tap in Dialog page on details button to open participants view
      *
      * @throws Exception
-     * @step. ^I tap conversation details button$
+     * @step. ^I tap conversation details button( from top toolbar)$
      */
-    @When("^I tap conversation details button$")
-    public void WhenITapConversationDetailsBottom() throws Exception {
-        getDialogPage().pressPlusButtonOnDialogPage();
-        getDialogPage().tapConversationDetailsButton();
+    @When("^I tap conversation details button( from top toolbar)?$")
+    public void WhenITapConversationDetailsBottom(String fromTopToolbar) throws Exception {
+        if(fromTopToolbar == null) {
+            getDialogPage().pressPlusButtonOnDialogPage();
+            getDialogPage().tapConversationDetailsButton();
+        }else
+        {
+            getDialogPage().tapTopToolbarTitle();
+        }
     }
 
     /**

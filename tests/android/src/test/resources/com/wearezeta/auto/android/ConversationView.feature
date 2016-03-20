@@ -8,7 +8,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap conversation details button
+    And I tap conversation details button from top toolbar
     And I press options menu button
     And I press SILENCE conversation menu button
     And I press back button
@@ -19,7 +19,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C414 @id1514 @regression
+  @C414 @id1514 @regression @torun
   Scenario Outline: Verify unsilence the conversation from conversation view
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to me
@@ -29,7 +29,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     Given Contact <Contact1> is muted
     When I tap on contact name <Contact1>
-    And I tap conversation details button
+    And I tap conversation details button from top toolbar
     And I press options menu button
     And I press NOTIFY conversation menu button
     And I press back button
@@ -82,7 +82,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap conversation details button
+    And I tap conversation details button from top toolbar
     And I see <Contact1> user profile page
     And I press add contact button
     And I tap on Search input on People picker page

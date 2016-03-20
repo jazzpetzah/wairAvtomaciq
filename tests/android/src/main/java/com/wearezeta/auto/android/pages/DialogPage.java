@@ -74,6 +74,8 @@ public class DialogPage extends AndroidPage {
 
     private static final By idVideoCall = By.id("action_video_call");
 
+    private static final By idTopToolbar = By.id("t_conversation_toolbar");
+
     public static final By idCursorCloseButton = By.id("cursor_button_close");
 
     private static final String idStrNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
@@ -218,6 +220,10 @@ public class DialogPage extends AndroidPage {
 
     public void tapVideoCallBtn() throws Exception {
         getElement(idVideoCall, "Video Call button is not visible").click();
+    }
+
+    public void tapTopToolbarTitle() throws Exception {
+        getElement(idTopToolbar, "Top toolbar is not visible").click();
     }
 
     public void closeInputOptions() throws Exception {
