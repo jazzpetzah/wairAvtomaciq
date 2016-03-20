@@ -125,7 +125,7 @@ public class DialogPageSteps {
      * @throws Exception
      * @step. ^I tap (Call|Ping|Add Picture|Video Call|Sketch) button$ from input tools$
      */
-    @When("^I tap (Call|Ping|Add Picture|Video Call|Sketch) button from input tools$")
+    @When("^I tap (Ping|Add Picture|Sketch) button from input tools$")
     public void WhenITapInputToolButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "ping":
@@ -142,6 +142,13 @@ public class DialogPageSteps {
         }
     }
 
+    /**
+     * Press the corresponding button in the top toolbar
+     *
+     * @param btnName button name
+     * @throws Exception
+     * @step. ^I tap (Audio Call|Video Call) button from top toolbar$
+     */
     @When("^I tap (Audio Call|Video Call) button from top toolbar$")
     public void WhenITapTopToolbarButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
