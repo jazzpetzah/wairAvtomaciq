@@ -515,10 +515,6 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email
-    Given I accept alert
-    Given I accept First Time overlay if it is visible
-    Given I dismiss alert
-    Given I dismiss settings warning
     Given I see conversations list
     When I tap Invite more people button
     Then I see Share Contacts settings warning

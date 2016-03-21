@@ -381,10 +381,6 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given I sign in using my email or phone number
-    Given I dismiss alert
-    Given I accept First Time overlay if it is visible
-    Given I accept alert
-    Given I dismiss settings warning
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>

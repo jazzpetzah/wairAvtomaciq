@@ -78,12 +78,16 @@ public class LoginPageSteps {
         getLoginPage().clickLoginButton();
         getLoginPage().waitForLoginToFinish();
         try {
-            // FIXME: Sometimes Appium fails to accept this alert automatically
             getLoginPage().acceptAlertIfVisible(5);
         } catch (WebDriverException e) {
             // pass silently
         }
         getFirstTimeOverlayPage().acceptIfVisible(2);
+        try {
+            getLoginPage().acceptAlertIfVisible(5);
+        } catch (WebDriverException e) {
+            // pass silently
+        }
         getLoginPage().dismissSettingsWarningIfVisible(5);
     }
 
