@@ -74,6 +74,12 @@ public class DialogPage extends AndroidPage {
 
     private static final By idVideoCall = By.id("action_video_call");
 
+    private static final String xpathStrConversationToolbar = "//*[@id='t_conversation_toolbar']";
+
+    private static final By xpathToolBarTitle = By.xpath(String.format("%s/*[boolean(string(@value))]", xpathStrConversationToolbar));
+
+    private static final By xpathToolBarNavigation = By.xpath(String.format("%s/*[@value='' and count(*)=1]", xpathStrConversationToolbar));
+
     public static final By idCursorCloseButton = By.id("cursor_button_close");
 
     private static final String idStrNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
@@ -218,6 +224,14 @@ public class DialogPage extends AndroidPage {
 
     public void tapVideoCallBtn() throws Exception {
         getElement(idVideoCall, "Video Call button is not visible").click();
+    }
+
+    public void tapTopToolbarTitle() throws Exception {
+        getElement(xpathToolBarTitle, "Top toolbar title is not visible").click();
+    }
+
+    public void tapTopToolbarBackButton() throws Exception {
+        getElement(xpathToolBarNavigation, "Top toolbar back button is not visible").click();
     }
 
     public void closeInputOptions() throws Exception {

@@ -43,8 +43,7 @@ Feature: Lock/Unlock
     And I lock the device
     And I unlock the device
     Then I see the message "<MessageGroup>" in the conversation view
-    When I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     And I see the Group popover
     And I lock the device
     And I unlock the device
@@ -56,8 +55,7 @@ Feature: Lock/Unlock
     And I lock the device
     And I unlock the device
     Then I see the message "<Message1to1>" in the conversation view
-    When I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     And I see the Single user popover
     And I lock the device
     And I unlock the device

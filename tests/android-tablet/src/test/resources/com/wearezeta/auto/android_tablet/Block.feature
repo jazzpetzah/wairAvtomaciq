@@ -23,8 +23,7 @@ Feature: Block
     # Workaround for https://wearezeta.atlassian.net/browse/AN-2560
     And I tap the conversation <Contact>
     And I do not see the message "<Message>" in the conversation view
-    When I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     And I see the Single user popover
     And I tap Options button on Single user popover
     Then I see BLOCK menu item on Single user popover
@@ -56,8 +55,7 @@ Feature: Block
     # Workaround for https://wearezeta.atlassian.net/browse/AN-2560
     And I tap the conversation <Contact>
     And I do not see the message "<Message>" in the conversation view
-    When I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     And I see the Single user popover
     And I tap Options button on Single user popover
     Then I see BLOCK menu item on Single user popover

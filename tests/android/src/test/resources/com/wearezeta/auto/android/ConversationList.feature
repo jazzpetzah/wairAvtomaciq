@@ -273,7 +273,7 @@ Feature: Conversation List
     And I see BLOCK button in conversation settings menu
     And I press back button
     When I tap on contact name <Contact1>
-    And I tap conversation details button
+    And I tap conversation name from top toolbar
     When I press options menu button
     Then I see SILENCE button in option menu
     And I see ARCHIVE button in option menu
@@ -299,7 +299,7 @@ Feature: Conversation List
     And I see LEAVE button in conversation settings menu
     And I press back button
     When I tap on contact name <GroupChatName>
-    And I tap conversation details button
+    And I tap conversation name from top toolbar
     When I press options menu button
     Then I see SILENCE button in option menu
     And I see RENAME button in option menu
