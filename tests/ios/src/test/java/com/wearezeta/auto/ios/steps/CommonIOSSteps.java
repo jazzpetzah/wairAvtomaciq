@@ -117,6 +117,8 @@ public class CommonIOSSteps {
                         "--args",
                         "-UseHockey", "0",
                         "-ZMBackendEnvironmentType", backendType,
+                        // https://wearezeta.atlassian.net/browse/ZIOS-5259
+                        "-AnalyticsUserDefaultsDisabledKey", "0"
                         // "--debug-log-network"
                 })
         );
