@@ -13,7 +13,7 @@ Feature: People View
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact1NewName>
     Then I see <Contact1> user name and email
 
@@ -30,7 +30,7 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I press options menu button
     And I press LEAVE conversation menu button
     And I confirm leaving
@@ -51,7 +51,7 @@ Feature: People View
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact2>
     And I click Remove
     And I confirm remove
@@ -79,13 +79,13 @@ Feature: People View
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     Then I see that the conversation name is <GroupChatName>
     And I see the correct number of participants in the title <ParticipantNumber>
     And I close participants page by UI button
     When I navigate back from dialog page
     And I tap on contact name <GroupChatName>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     Then I see the correct participant avatars for <Contact1NewName>,<Contact2NewName>
 
     Examples:
@@ -101,7 +101,7 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <OldGroupChatName>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I rename group conversation to <NewConversationName>
     # Clicking X button to close participants view crashes the app
     And I press back button
@@ -121,7 +121,7 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I see <Contact> user profile page
     And I press options menu button
     Then I see correct 1:1 options menu
@@ -164,7 +164,7 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact2>
     Then I see user name <Contact2> on non connected user page
     When I click Connect button on non connected user page
@@ -189,7 +189,7 @@ Feature: People View
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     Then I see participants page
     And I see that the conversation name is <GroupChatName>
     And I see the correct number of participants in the title <ParticipantNumber>
@@ -201,12 +201,12 @@ Feature: People View
     When I close participants page by UI button
     Then I do not see participants page
     And I see dialog page
-    When I tap conversation details button from top toolbar
+    When I tap conversation name from top toolbar
     Then I see participants page
     When I press back button
     Then I do not see participants page
     And I see dialog page
-    When I tap conversation details button from top toolbar
+    When I tap conversation name from top toolbar
     And I swipe right
     And I swipe up
     And I swipe left
@@ -227,11 +227,11 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact1>
     Then I see <Contact1> user profile page
     And I click Open Conversation button on connected user page
-    When I tap conversation details button from top toolbar
+    When I tap conversation name from top toolbar
     Then I see <Contact1> user name and email
     When I close participants page by UI button
     Then I see dialog page

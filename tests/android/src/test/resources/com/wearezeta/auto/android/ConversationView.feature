@@ -8,7 +8,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I press options menu button
     And I press SILENCE conversation menu button
     And I press back button
@@ -29,7 +29,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     Given Contact <Contact1> is muted
     When I tap on contact name <Contact1>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I press options menu button
     And I press NOTIFY conversation menu button
     And I press back button
@@ -74,7 +74,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C700 @id1262 @regression @rc @rc42
+  @C700 @id1262 @regression @rc @rc42 @torun
   Scenario Outline: Create group conversation from 1:1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -82,7 +82,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I see <Contact1> user profile page
     And I press add contact button
     And I tap on Search input on People picker page
@@ -108,7 +108,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
     When I tap on contact name <GroupChatName>
-    Then I see group chat page with users <Contact1>,<Contact2>
+    Then I see group chat page with users\ <Contact1>,<Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName      |

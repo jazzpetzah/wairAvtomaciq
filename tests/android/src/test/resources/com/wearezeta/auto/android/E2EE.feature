@@ -154,7 +154,7 @@ Feature: E2EE
     When User <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
     And User <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
     And I tap on contact name <GroupChatName>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I select contact <Contact1>
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
@@ -178,7 +178,7 @@ Feature: E2EE
     Given I see Contact list with contacts
     When User <Contact1> sends encrypted message <Message1> to user Myself
     And I tap on contact name <Contact1>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify all device ids of user <Contact1> are shown in single participant devices tab
@@ -288,7 +288,7 @@ Feature: E2EE
     Given I see Contact list with contacts
     When User <Contact1> sends encrypted message <Message1> to user Myself
     And I tap on contact name <Contact1>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I remember state of 1st device
@@ -309,7 +309,7 @@ Feature: E2EE
     Given I see Contact list with contacts
     When User <Contact1> sends encrypted message "<Message1>" to user Myself
     And I tap on contact name <Contact1>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
@@ -334,7 +334,7 @@ Feature: E2EE
     When User <Contact1> sends encrypted message "<Message1>" to group conversation <GroupChatName>
     When User <Contact2> sends encrypted message "<Message1>" to group conversation <GroupChatName>
     And I tap on contact name <GroupChatName>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I select contact <Contact1>
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
@@ -365,7 +365,7 @@ Feature: E2EE
     When User <Contact1> sends encrypted message "<Message1>" to user Myself
     And I tap on contact name <Contact1>
     And I remember verified conversation shield state
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
@@ -388,7 +388,7 @@ Feature: E2EE
     Given I see Contact list with contacts
     When User <Contact2> sends encrypted message "<Message1>" to group conversation <GroupChatName>
     And I tap on contact name <GroupChatName>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I select contact <Contact1>
     And I select single participant tab "Devices"
     Then I see 2 devices is shown in single participant devices tab
@@ -420,7 +420,7 @@ Feature: E2EE
     When User <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
     And User <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
     And I tap on contact name <GroupChatName>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I select contact <Contact1>
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
@@ -449,7 +449,7 @@ Feature: E2EE
     When User <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
     And User <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
     And I tap on contact name <GroupChatName>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I select contact <Contact1>
     And I select single participant tab "Devices"
     And I verify 1st device
@@ -480,7 +480,7 @@ Feature: E2EE
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact>
-    When I tap conversation details button from top toolbar
+    When I tap conversation name from top toolbar
     And I select single participant tab "Devices"
     Then I see no encrypted device text for user <Contact> in header of device detail page
 
@@ -513,7 +513,7 @@ Feature: E2EE
     Given I see Contact list with contacts
     When User <Contact1> sends encrypted message "<Message1>" to user Myself
     And I tap on contact name <Contact1>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
@@ -541,7 +541,7 @@ Feature: E2EE
     Given I see Contact list with contacts
     When User <Contact1> sends encrypted message "<Message1>" to user Myself
     And I tap on contact name <Contact1>
-    And I tap conversation details button from top toolbar
+    And I tap conversation name from top toolbar
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
     And I verify 1st device
