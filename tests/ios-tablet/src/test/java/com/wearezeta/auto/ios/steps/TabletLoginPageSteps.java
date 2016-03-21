@@ -37,12 +37,14 @@ public class TabletLoginPageSteps {
         getTabletLoginPage().clickLoginButton();
         getTabletLoginPage().waitForLoginToFinish();
         try {
+            // FIXME: Sometimes Appium fails to accept this alert automatically
             getTabletLoginPage().acceptAlertIfVisible(5);
         } catch (WebDriverException e) {
             // pass silently
         }
         getFirstTimeOverlayPage().acceptIfVisible(2);
         try {
+            // FIXME: Sometimes Appium fails to accept this alert automatically
             getTabletLoginPage().acceptAlertIfVisible(5);
         } catch (WebDriverException e) {
             // pass silently

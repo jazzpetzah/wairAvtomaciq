@@ -22,6 +22,7 @@ import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.RegistrationPage;
 
 import cucumber.api.java.en.*;
+import org.openqa.selenium.WebDriverException;
 
 /**
  * Contains steps to work with Login/Welcome page
@@ -89,7 +90,13 @@ public class LoginPageSteps {
         getLoginPage().setPassword(password);
         getLoginPage().clickLoginButton();
         getLoginPage().waitForLoginToFinish();
-        getFirstTimeOverlayPage().acceptIfVisible(5);
+        try {
+            // FIXME: Sometimes Appium fails to accept this alert automatically
+            getLoginPage().acceptAlertIfVisible(5);
+        } catch (WebDriverException e) {
+            // pass silently
+        }
+        getFirstTimeOverlayPage().acceptIfVisible(2);
         getLoginPage().dismissSettingsWarningIfVisible(5);
     }
 
