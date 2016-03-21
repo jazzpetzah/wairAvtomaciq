@@ -74,9 +74,11 @@ public class DialogPage extends AndroidPage {
 
     private static final By idVideoCall = By.id("action_video_call");
 
-    private static final By xpathToolBarTitle = By.xpath("//*[@id='t_conversation_toolbar']/*[@value!='']");
+    private static final String xpathStrConversationToolbar = "//*[@id='t_conversation_toolbar']";
 
-    private static final By xpathToolBarNavigation = By.xpath("//*[@id='t_conversation_toolbar']/*[@value='' and count(*)=1]");
+    private static final By xpathToolBarTitle = By.xpath(String.format("%s/*[boolean(string(@value))]", xpathStrConversationToolbar));
+
+    private static final By xpathToolBarNavigation = By.xpath(String.format("%s/*[@value='' and count(*)=1]", xpathStrConversationToolbar));
 
     public static final By idCursorCloseButton = By.id("cursor_button_close");
 
