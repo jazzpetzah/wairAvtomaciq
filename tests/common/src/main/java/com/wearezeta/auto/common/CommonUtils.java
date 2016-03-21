@@ -577,10 +577,13 @@ public class CommonUtils {
             return;
         }
         final File allVersionsRoot = pluginJar.getParentFile().getParentFile();
+        final String currentLibVersion = pluginJar.getParentFile().getName();
         for (String versionRootName : allVersionsRoot.list()) {
             try {
                 final File versionRoot = new File(allVersionsRoot.getCanonicalPath() + File.separator + versionRootName);
-                if (versionRoot.isDirectory() && !versionRoot.getName().equals(pluginJar.getParentFile().getName())) {
+                if (versionRoot.isDirectory() && !versionRoot.getName().equals(currentLibVersion)) {
+                    log.debug(String.format("Cleaning outdated SE library by path %s (current lib version is %s)...",
+                            versionRoot.getAbsolutePath(), currentLibVersion));
                     FileUtils.deleteDirectory(versionRoot);
                 }
             } catch (IOException e) {
