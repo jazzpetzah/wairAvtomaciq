@@ -939,8 +939,14 @@ public class CommonIOSSteps {
         commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(searchByNameAlias, 1);
     }
 
+    /**
+     * Click OK button on the current page
+     *
+     * @throws Exception
+     * @step. ^I confirm my choice$
+     */
     @When("^I confirm my choice$")
-    public void IConfirmImageSelection() throws Throwable {
+    public void IConfirmImageSelection() throws Exception {
         pagesCollection.getCommonPage().pressConfirmButton();
     }
 }
