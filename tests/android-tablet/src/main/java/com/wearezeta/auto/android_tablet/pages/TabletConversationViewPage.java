@@ -34,12 +34,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     private static final Function<String, String> xpathStrSystemConvoNameMessageByContent = content -> String
             .format("//*[@id='ttv__row_conversation__new_conversation_name' and @value='%s']", content);
 
-    private static final String xpathStrConversationToolbar = "//*[@id='t_conversation_toolbar']";
-
-    private static final By xpathToolBarTitle = By.xpath(String.format("%s/*[boolean(string(@value))]", xpathStrConversationToolbar));
-
-    private static final By xpathToolBarNavigation = By.xpath(String.format("%s/*[@value='' and count(*)=1]", xpathStrConversationToolbar));
-
     private static final By idMissedCallImage = By.id("sci__conversation__missed_call__image");
 
     private static final By idShowToolsButton = By.id("cursor_button_open");
@@ -59,10 +53,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     public boolean waitUntilVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idStrRootLocator));
-    }
-
-    public void tapShowDetailsButton() throws Exception {
-        getElement(DialogPage.idParticipantsBtn).click();
     }
 
     public boolean waitForSystemMessageContains(String expectedMessage) throws Exception {
@@ -99,7 +89,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public void tapTopToolbarTitle() throws Exception {
-        getElement(xpathToolBarTitle, "Top toolbar title is not visible").click();
+        getDialogPage().tapTopToolbarTitle();
     }
 
     public boolean waitUntilPingMessageIsVisible(String expectedMessage) throws Exception {
