@@ -997,7 +997,7 @@ public class CommonWebAppSteps {
 
     @After
     public void tearDown(Scenario scenario) throws Exception {
-
+        stopPinging();
         try {
             // async calls/waiting instances cleanup
             CommonCallingSteps2.getInstance().cleanup();
