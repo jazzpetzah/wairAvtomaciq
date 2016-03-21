@@ -74,7 +74,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C700 @id1262 @regression @rc @rc42 @torun
+  @C700 @id1262 @regression @rc @rc42
   Scenario Outline: Create group conversation from 1:1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -108,7 +108,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
     When I tap on contact name <GroupChatName>
-    Then I see group chat page with users\ <Contact1>,<Contact2>
+    Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName      |
