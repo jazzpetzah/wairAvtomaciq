@@ -5,7 +5,6 @@ import java.util.concurrent.Future;
 import io.appium.java_client.MobileBy;
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class TabletDialogPage extends DialogPage {
@@ -18,7 +17,6 @@ public class TabletDialogPage extends DialogPage {
 	
 	public void pressAddPictureiPadButton() throws Exception {
 		getElement(nameAddPictureButton).click();
-		DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathCameraLibraryButton);
 	}
 	
 	public void pressConversationDetailiPadButton() throws Exception{

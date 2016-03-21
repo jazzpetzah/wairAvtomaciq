@@ -16,7 +16,8 @@ import static com.wearezeta.auto.common.CommonUtils.getSimulatorImagesPathFromCo
 public class TakePicturePage extends IOSPage {
     private static final String TESTING_IMAGE_NAME = "testing.jpg";
 
-    private static final By nameCameraLibraryButton = MobileBy.AccessibilityId("cameraLibraryButton");
+    private static final By xpathCameraLibraryButton =
+            By.xpath("//*[@name='cameraLibraryButton' or @name='CameraLibraryButton']");
 
     private static final By nameCameraShutterButton = MobileBy.AccessibilityId("cameraShutterButton");
 
@@ -44,7 +45,7 @@ public class TakePicturePage extends IOSPage {
     }
 
     public void pressSelectFromLibraryButton() throws Exception {
-        getElement(nameCameraLibraryButton).click();
+        getElement(xpathCameraLibraryButton).click();
     }
 
     public void selectImageFromLibrary() throws Exception {
