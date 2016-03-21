@@ -148,7 +148,7 @@ public class ZetaFormatter implements Formatter, Reporter {
                 tmpScreenshot = new File(String.format("%s/%s/%s/%s_%s.png",
                         CommonUtils.getPictureResultsPathFromConfig(this.getClass()), feature.replaceAll("\\W+", "_"),
                         scenario.replaceAll("\\W+", "_"),
-                        stepNameForScr.matches(".*\\W") ? stepNameForScr.substring(0, stepNameForScr.length() - 1) :
+                        stepNameForScr.matches(".*_") ? stepNameForScr.substring(0, stepNameForScr.length() - 1) :
                                 stepNameForScr, index));
                 index++;
             } while (tmpScreenshot.exists());
