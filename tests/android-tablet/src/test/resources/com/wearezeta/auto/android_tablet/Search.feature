@@ -138,8 +138,7 @@ Feature: Search
     And I tap the found item <Contact2> on People Picker page
     When I tap Create Conversation action button on People Picker page
     Then I do not see People Picker page
-    When I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     Then I see the participant avatar <Contact1> on Group popover
     And I see the participant avatar <Contact2> on Group popover
     And I do not see the participant avatar Myself on Group popover
@@ -163,8 +162,7 @@ Feature: Search
     And I tap the found item <Contact2> on People Picker page
     When I tap Create Conversation action button on People Picker page
     Then I do not see People Picker page
-    When I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     Then I see the participant avatar <Contact1> on Group popover
     And I see the participant avatar <Contact2> on Group popover
     And I do not see the participant avatar Myself on Group popover
@@ -233,8 +231,7 @@ Feature: Search
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
     And I do not see People Picker page
-    When I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     And I see the Group popover
     Then I do not see the participant avatar Myself on Group popover
     And I see the participant avatar <Contact1> on Group popover
@@ -262,8 +259,7 @@ Feature: Search
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
     And I do not see People Picker page
-    When I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     And I see the Group popover
     Then I do not see the participant avatar Myself on Group popover
     And I see the participant avatar <Contact1> on Group popover
