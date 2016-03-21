@@ -8,7 +8,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.DummyElement;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
@@ -121,7 +120,8 @@ public class DialogPage extends IOSPage {
     //FIXME: Add accessibility locator
     private static final By xpathVideoCallButton = By.xpath(xpathStrConversationViewTopBar + "/UIAButton[last() - 1]");
     private static final By xpathConversationDetailsButton = By.xpath(xpathStrConversationViewTopBar +
-                    "/UIAButton[@name='ConversationBackButton' or @name='Back']/following-sibling::UIAButton");
+            "/UIAButton[@name='Back']/following-sibling::" +
+            "UIAButton[not(@name='ConversationBackButton') and boolean(string(@label))]");
 
     private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton};
 
