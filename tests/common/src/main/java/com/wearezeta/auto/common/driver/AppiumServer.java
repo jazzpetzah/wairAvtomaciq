@@ -82,7 +82,15 @@ public class AppiumServer {
 
     public static synchronized void resetIOSSimulator() throws Exception {
         UnixProcessHelpers.killProcessesGracefully(
-                "Simulator", "configd_sim", "ids_simd", "launchd_sim", "instruments");
+                "Simulator", "configd_sim", "xpcproxy_sim", "backboardd",
+                "platform_launch_", "companionappd", "ids_simd", "launchd_sim",
+                "CoreSimulatorBridge", "SimulatorBridge", "SpringBoard",
+                "locationd", "MobileGestaltHelper", "cfprefsd",
+                "assetsd", "fileproviderd", "mediaremoted",
+                "routined", "assetsd", "mstreamd", "healthd", "MobileCal",
+                "callservicesd", "revisiond", "touchsetupd", "calaccessd",
+                "ServerFileProvider", "mobileassetd", "IMDPersistenceAgent",
+                "itunesstored", "profiled", "passd", "carkitd", "instruments");
         restart();
     }
 
