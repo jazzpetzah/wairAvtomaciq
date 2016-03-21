@@ -1,22 +1,12 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.ios.pages.FirstTimeOverlay;
 import org.junit.Assert;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Future;
-
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.email.PasswordResetMessage;
-import com.wearezeta.auto.common.email.WireMessage;
-import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.RegistrationPage;
@@ -43,9 +33,6 @@ public class LoginPageSteps {
     private FirstTimeOverlay getFirstTimeOverlayPage() throws Exception {
         return pagesCollection.getPage(FirstTimeOverlay.class);
     }
-
-    private Future<String> passwordMessage;
-    private static final String stagingURLForgot = "https://staging-website.zinfra.io/forgot/";
 
     /**
      * Verifies whether sign in screen is the current screen
