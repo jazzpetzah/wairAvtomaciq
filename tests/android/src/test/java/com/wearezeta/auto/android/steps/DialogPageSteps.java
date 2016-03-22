@@ -492,12 +492,7 @@ public class DialogPageSteps {
      */
     @Then("^I see dialog with missed call from (.*)$")
     public void ThenISeeDialogWithMissedCallFrom(String contact) throws Exception {
-        try {
-            contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        } catch (NoSuchUserException e) {
-            //Ignore error
-        }
-
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         final String expectedMessage = contact + " CALLED";
         Assert.assertTrue(String.format("Missed call message '%s' is not visible in the conversation view", expectedMessage),
                 getDialogPage().waitUntilMissedCallMessageIsVisible(expectedMessage));
