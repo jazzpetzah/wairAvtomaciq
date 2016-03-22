@@ -58,8 +58,6 @@ public class DialogPage extends AndroidPage {
 
     private static final By idFullScreenImage = By.id("tiv__single_image_message__image");
 
-    public static final By idParticipantsBtn = By.id("cursor_menu_item_participant");
-
     public static final By idVerifiedConversationShield = By.id("cursor_button_giphy");
 
     private static final By idPlayPauseMedia = By.id("gtv__media_play");
@@ -75,6 +73,8 @@ public class DialogPage extends AndroidPage {
     private static final By idVideoCall = By.id("action_video_call");
 
     private static final String xpathStrConversationToolbar = "//*[@id='t_conversation_toolbar']";
+
+    private static final By xpathToolbar = By.xpath(xpathStrConversationToolbar);
 
     private static final By xpathToolBarTitle = By.xpath(String.format("%s/*[boolean(string(@value))]", xpathStrConversationToolbar));
 
@@ -375,12 +375,6 @@ public class DialogPage extends AndroidPage {
         getElement(idCloseImageBtn).click();
     }
 
-    public void tapConversationDetailsButton() throws Exception {
-        getElement(idParticipantsBtn).click();
-        // Wait for animation
-        Thread.sleep(500);
-    }
-
     public boolean waitForPingMessageWithText(String expectedText) throws Exception {
         final By locator = By.xpath(xpathStrPingMessageByText.apply(expectedText));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -400,6 +394,10 @@ public class DialogPage extends AndroidPage {
             }
         }
         return true;
+    }
+
+    public boolean isTopToolbarVisible() throws Exception{
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathToolbar);
     }
 
     public boolean isDialogVisible() throws Exception {
