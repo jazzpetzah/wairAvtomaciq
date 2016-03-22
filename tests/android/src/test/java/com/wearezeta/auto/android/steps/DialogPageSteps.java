@@ -679,4 +679,15 @@ public class DialogPageSteps {
                 "Unsent indicator has not been shown next to the '%s' message in the conversation view", msg),
                 getDialogPage().waitForUnsentIndicator(msg));
     }
+
+    /**
+     * Checks to see that upper toolbar is visible
+     *
+     * @throws Exception
+     * @step.  ^I see the upper toolbar$
+     */
+    @Then("^I see the upper toolbar$")
+    public void ThenISeeTopToolbar() throws Exception {
+        Assert.assertTrue("The upper toolbar is invisible", getDialogPage().isTopToolbarVisible());
+    }
 }

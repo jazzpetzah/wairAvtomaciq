@@ -76,6 +76,8 @@ public class DialogPage extends AndroidPage {
 
     private static final String xpathStrConversationToolbar = "//*[@id='t_conversation_toolbar']";
 
+    private static final By xpathToolbar = By.xpath(xpathStrConversationToolbar);
+
     private static final By xpathToolBarTitle = By.xpath(String.format("%s/*[boolean(string(@value))]", xpathStrConversationToolbar));
 
     private static final By xpathToolBarNavigation = By.xpath(String.format("%s/*[@value='' and count(*)=1]", xpathStrConversationToolbar));
@@ -400,6 +402,10 @@ public class DialogPage extends AndroidPage {
             }
         }
         return true;
+    }
+
+    public boolean isTopToolbarVisible() throws Exception{
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathToolbar);
     }
 
     public boolean isDialogVisible() throws Exception {
