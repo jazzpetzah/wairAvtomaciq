@@ -10,7 +10,7 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
     And <Contact> verifies to have 1 flow
@@ -35,7 +35,7 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
     When I tap Leave button on Calling overlay
@@ -101,14 +101,14 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
     And <Contact1>,<Contact2> verifies to have 2 flow
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
     When I tap Leave button on Calling overlay
     And I do not see Calling overlay
-    And I wait for 10 seconds
+    And I wait for 5 seconds
     Then <Contact1>,<Contact2> verifies to have 1 flow
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
 
@@ -130,7 +130,7 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
     When I tap Leave button on Calling overlay
@@ -157,8 +157,13 @@ Feature: Calling Matrix
     Then I see Calling overlay
     And <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verify that call status to <GroupChatName> is changed to active in <Timeout> seconds
+    And <Contact1>,<Contact2> verifies to have 2 flow
+    And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
     When I tap Leave button on Calling overlay
-    Then I do not see Calling overlay
+    And I do not see Calling overlay
+    And I wait for 5 seconds
+    Then <Contact1>,<Contact2> verifies to have 1 flow
+    And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Backend             | Timeout |
@@ -183,6 +188,8 @@ Feature: Calling Matrix
     Then I see Calling overlay
     And <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verify that call status to <GroupChatName> is changed to active in <Timeout> seconds
+    And <Contact2> verifies to have 1 flow
+    And <Contact2> verifies that all flows have greater than 0 bytes
     When I tap Leave button on Calling overlay
     Then I do not see Calling overlay
 
@@ -209,6 +216,8 @@ Feature: Calling Matrix
     Then I see Calling overlay
     And <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verify that call status to <GroupChatName> is changed to active in <Timeout> seconds
+    And <Contact2> verifies to have 1 flow
+    And <Contact2> verifies that all flows have greater than 0 bytes
     When I tap Leave button on Calling overlay
     Then I do not see Calling overlay
 
