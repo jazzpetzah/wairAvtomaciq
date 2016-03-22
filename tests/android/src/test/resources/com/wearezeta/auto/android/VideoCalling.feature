@@ -465,10 +465,10 @@ Feature: VideoCalling
     When I tap on contact name <Contact>
     And I tap Video Call button from top toolbar
     Then I see ongoing video call
-    And I wait for 65 seconds
+    And I wait for <Timeout> seconds
     And I do not see ongoing video call
     Then I see dialog with missed call from YOU
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | chrome      | 60      |
+      | user1Name | user2Name | chrome      | 65      |
