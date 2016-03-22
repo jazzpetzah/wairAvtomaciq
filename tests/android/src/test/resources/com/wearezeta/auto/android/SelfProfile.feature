@@ -72,7 +72,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C450 @id4069 @regression
+  @C450 @id4069 @regression @torun
   Scenario Outline: Verify I can switch dark/white theme from self profile
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
@@ -85,7 +85,6 @@ Feature: Self Profile
     When I navigate back from dialog page
     And I tap conversations list settings button
     And I tap Light Bulb button
-    And I wait for 2 seconds
     And I close Personal Info Page
     When I tap on contact name <Contact>
     And I see dialog page
@@ -94,7 +93,6 @@ Feature: Self Profile
     When I navigate back from dialog page
     And I tap conversations list settings button
     And I tap Light Bulb button
-    And I wait for 2 seconds
     And I close Personal Info Page
     When I tap on contact name <Contact>
     And I see dialog page
