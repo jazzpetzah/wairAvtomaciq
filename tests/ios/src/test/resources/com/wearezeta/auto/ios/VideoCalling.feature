@@ -35,9 +35,10 @@ Feature: Video Calling
   Scenario Outline: Verify accepting video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When <Contact> starts a video call to <Name> using <CallBackend>
+    When <Contact> starts a video call to <Name>
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
@@ -55,7 +56,7 @@ Feature: Video Calling
   Scenario Outline: Verify finishing video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming video call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -75,9 +76,10 @@ Feature: Video Calling
   Scenario Outline: Verify ignoring Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When <Contact> starts a video call to me using <CallBackend>
+    When <Contact> starts a video call to me
     And I see call status message contains "<Contact> CALLING"
     And I tap Ignore button on the Calling overlay
     Then I do not see Calling overlay
@@ -90,10 +92,11 @@ Feature: Video Calling
   Scenario Outline: Verify getting missed call indication when someone called
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
     And I remember the state of <Contact> conversation item
-    When <Contact> starts a video call to me using <CallBackend>
+    When <Contact> starts a video call to me
     Then I see call status message contains "<Contact> CALLING"
     And <Contact> stops all calls to me
     And I do not see Calling overlay
@@ -109,12 +112,14 @@ Feature: Video Calling
   Scenario Outline: (AUDIO-830) Verify I can switch to another incoming audio call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1> starts instance using <VideoCallBackend>
+    Given <Contact> starts instance using <AudioCallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And <Contact1> starts a video call to me using <VideoCallBackend>
+    And <Contact1> starts a video call to me
     And I see call status message contains "<Contact1> CALLING"
     And I tap Accept Video button on Calling overlay
-    When <Contact2> calls me using <AudioCallBackend>
+    When <Contact2> calls me
     And I see call status message contains "<Contact2> CALLING"
     Then I tap Accept button on Calling overlay
     And I do not see Accept Video button on Calling overlay
@@ -131,9 +136,10 @@ Feature: Video Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User Myself blocks user <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     And I dont see conversation <Contact> in contact list
-    When <Contact> starts a video call to me using <CallBackend>
+    When <Contact> starts a video call to me
     Then I do not see Calling overlay
 
     Examples:
@@ -161,13 +167,14 @@ Feature: Video Calling
   Scenario Outline: Verify I can switch to another video call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
+    Given <Contact> starts instance using <VideoCallBackend>
     Given I sign in using my email or phone number
-    And <Contact> starts a video call to me using <VideoCallBackend>
+    And <Contact>,<Contact2> starts a video call to me
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     Then I see Switch Camera button on Video Calling overlay
-    When <Contact2> starts a video call to me using <VideoCallBackend>
+    When <Contact2> starts a video call to me
     And I tap Accept Video button on Calling overlay
     Then I see Mute button on Video Calling overlay
     And <Contact> verifies that call status to Myself is changed to destroyed in <Timeout> seconds
@@ -181,9 +188,10 @@ Feature: Video Calling
   Scenario Outline: Verify muting ongoing Video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When <Contact> starts a video call to <Name> using <CallBackend>
+    When <Contact> starts a video call to <Name>
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
@@ -200,13 +208,14 @@ Feature: Video Calling
   Scenario Outline: Verify video call continues after rejecting 2nd incoming video call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
+    Given <Contact>,<Contact2> starts instance using <VideoCallBackend>
     Given I sign in using my email or phone number
-    And <Contact> starts a video call to me using <VideoCallBackend>
+    And <Contact> starts a video call to me
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     Then I see Switch Camera button on Video Calling overlay
-    When <Contact2> starts a video call to me using <VideoCallBackend>
+    When <Contact2> starts a video call to me
     And I see call status message contains "<Contact2> CALLING"
     And I tap Ignore button on the Calling overlay
     Then I see Mute button on Video Calling overlay
@@ -221,9 +230,10 @@ Feature: Video Calling
   Scenario Outline: Verify disabling video in Video call and enabling it back
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When <Contact> starts a video call to <Name> using <CallBackend>
+    When <Contact> starts a video call to <Name> 
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
