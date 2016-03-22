@@ -702,4 +702,32 @@ public class DialogPageSteps {
     public void ThenISeeTopToolbar() throws Exception {
         Assert.assertTrue("The upper toolbar is invisible", getDialogPage().isTopToolbarVisible());
     }
+
+    /**
+     * Checks to see that Audio call button is visible in upper toolbar
+     *
+     * @throws Exception
+     * @step. ^I see the audio call button in upper toolbar$"
+     */
+    @Then("^I see the audio call button in upper toolbar$")
+    public void ThenISeeAudioCallButtonInUpperToolbar() throws Exception {
+        Assert.assertTrue("The audio call button is invisible in upper toolbar", getDialogPage().isAudioCallIconInToptoolbarVisible());
+    }
+
+    /**
+     * Checks to see whether Video call button is visible in upper toolbar
+     *
+     * @param doNotSeeVideoCall equal null means the Video call button should be visible
+     * @throws Exception
+     */
+    @Then("I( do not)? see the video call button in upper toolbar$")
+    public void ThenIseeVideoCallButtonInUpperToolbar(String doNotSeeVideoCall) throws Exception{
+        if(doNotSeeVideoCall == null)
+        {
+            Assert.assertTrue("The video call button should be visible in upper toolbar", getDialogPage().isVideoCallIconInToptoolbarVisible());
+        }else
+        {
+            Assert.assertTrue("The video call button should be invisible in upper toolbar", getDialogPage().isVideoCallIconInToptoolbarInvisible());
+        }
+    }
 }

@@ -400,6 +400,18 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathToolbar);
     }
 
+    public boolean isAudioCallIconInToptoolbarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioCall);
+    }
+
+    public boolean isVideoCallIconInToptoolbarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idVideoCall);
+    }
+
+    public boolean isVideoCallIconInToptoolbarInvisible() throws Exception{
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idVideoCall);
+    }
+
     public boolean isDialogVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idDialogRoot);
     }
