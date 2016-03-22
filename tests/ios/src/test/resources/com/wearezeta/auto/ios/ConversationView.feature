@@ -415,7 +415,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see plus button next to text input
     And I click plus button next to text input
     Then I see conversation tools buttons
     When I click Close input options button
@@ -436,13 +435,11 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see plus button next to text input
     And I click plus button next to text input
     Then I see no other conversation tools buttons except of Details
     And I click Close input options button
     And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see plus button next to text input
     And I click plus button next to text input
     Then I see no other conversation tools buttons except of Details
 
@@ -661,7 +658,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see plus button next to text input
     And I type the default message
     And I see plus icon is changed to user avatar icon
     And I clear conversation text input

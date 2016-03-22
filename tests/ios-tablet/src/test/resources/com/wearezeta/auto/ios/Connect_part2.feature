@@ -7,7 +7,6 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see plus button next to text input
     And I open conversation details
     And I click Cancel request button
     Then I see Cancel request confirmation page
@@ -27,7 +26,6 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see plus button next to text input
     And I open conversation details
     And I click Cancel request button
     Then I see Cancel request confirmation page
