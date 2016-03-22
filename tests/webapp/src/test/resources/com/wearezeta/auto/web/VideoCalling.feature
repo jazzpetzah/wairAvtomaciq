@@ -358,3 +358,24 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+
+  @77975 @videocalling @staging
+  Scenario Outline: Verify I see the timer/duration of the video call
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I am signed in properly
+    And <Contact> starts a video call to me
+    Then I see the incoming call controls for conversation <Contact>
+    And I see accept video call button for conversation <Contact>
+    And I see decline call button for conversation <Contact>
+    And I accept the call from conversation <Contact>
+    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And I can see the video call timer
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | Chrome      | 60      |

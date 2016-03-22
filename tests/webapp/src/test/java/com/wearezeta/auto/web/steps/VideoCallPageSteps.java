@@ -3,6 +3,7 @@ package com.wearezeta.auto.web.steps;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.VideoCallPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import cucumber.api.java.en.And;
 import org.junit.Assert;
@@ -68,5 +69,11 @@ public class VideoCallPageSteps {
         } else {
             Assert.assertTrue("Mute call button is pressed", videoCallPage.isMuteCallButtonNotPressed());
         }
+    }
+
+    @Then("^I can see the video call timer$")
+    public void ICanSeeDurationTimer() throws Exception {
+        VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
+        Assert.assertTrue("Duration Timer is not visible", videoCallPage.isDurationTimerVisible());
     }
 }

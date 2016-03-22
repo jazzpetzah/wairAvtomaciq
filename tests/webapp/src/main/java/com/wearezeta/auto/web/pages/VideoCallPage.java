@@ -52,4 +52,9 @@ public class VideoCallPage extends WebPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(WebAppLocators.VideoCallPage.xpathMuteCallButtonNotPressed));
     }
+
+    public boolean isDurationTimerVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.cssSelector(WebAppLocators.VideoCallPage.cssDurationTimer));
+    }
 }
