@@ -217,7 +217,7 @@ Feature: Video Calling
       | Name      | Contact    | Contact2 | VideoCallBackend | Timeout | TimeoutAlreadyInCall |
       | user1Name | user2Name  | user3Name| chrome           | 60      | 4                    |
 
-  @C12108 @staging
+  @C12108 @real
   Scenario Outline: Verify disabling video in Video call and enabling it back
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

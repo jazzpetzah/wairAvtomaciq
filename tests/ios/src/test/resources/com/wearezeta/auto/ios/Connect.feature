@@ -223,13 +223,11 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see plus button next to text input
-    And I click plus button next to text input
     And I open conversation details
     And I click Cancel request button
     Then I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
-    Then I dont see conversation <Contact> in contact list
+    Then I dont see conversation <Contact1> in contact list
 
     Examples: 
       | Name      | Contact1  | Contact2  |
@@ -243,7 +241,6 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I click plus button next to text input
     And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button

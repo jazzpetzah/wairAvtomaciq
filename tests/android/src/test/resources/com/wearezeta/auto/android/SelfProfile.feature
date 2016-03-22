@@ -27,7 +27,7 @@ Feature: Self Profile
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I tap conversation details button
+    And I tap conversation name from top toolbar
     Then I see <Contact> user name and email
 
     Examples:

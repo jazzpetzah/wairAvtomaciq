@@ -117,6 +117,8 @@ public class CommonIOSSteps {
                         "--args",
                         "-UseHockey", "0",
                         "-ZMBackendEnvironmentType", backendType,
+                        // https://wearezeta.atlassian.net/browse/ZIOS-5259
+                        "-AnalyticsUserDefaultsDisabledKey", "0",
                         // "--debug-log-network"
                 })
         );
@@ -937,8 +939,14 @@ public class CommonIOSSteps {
         commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(searchByNameAlias, 1);
     }
 
+    /**
+     * Click OK button on the current page
+     *
+     * @throws Exception
+     * @step. ^I confirm my choice$
+     */
     @When("^I confirm my choice$")
-    public void IConfirmImageSelection() throws Throwable {
+    public void IConfirmImageSelection() throws Exception {
         pagesCollection.getCommonPage().pressConfirmButton();
     }
 }

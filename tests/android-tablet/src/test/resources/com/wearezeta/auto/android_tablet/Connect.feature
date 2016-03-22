@@ -98,14 +98,13 @@ Feature: Connect
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
     And I tap Connect button on Group popover
     Then I see Pending button on Group popover
-    When I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     Then I do not see the Group popover
     And I see the conversation <Contact2> in my conversations list
 
@@ -127,14 +126,13 @@ Feature: Connect
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
     And I tap Connect button on Group popover
     Then I see Pending button on Group popover
-    When I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     Then I do not see the Group popover
     And I see the conversation <Contact2> in my conversations list
 

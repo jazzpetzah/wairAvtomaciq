@@ -73,15 +73,14 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
-	 * Tap the Show Details button on conversation view
-	 * 
-	 * @step. ^I tap Show Details button on [Cc]onversation view page$
-	 * 
+	 * Tap in Dialog page on converstaion title to open participants view
+	 *
 	 * @throws Exception
+	 * @step. ^I tap conversation name from top toolbar$
 	 */
-	@And("^I tap Show Details button on [Cc]onversation view page$")
-	public void ITapShowDetailsButton() throws Exception {
-		getConversationViewPage().tapShowDetailsButton();
+	@When("^I tap conversation name from top toolbar$")
+	public void WhenITapConversationDetailsBottom() throws Exception {
+		getConversationViewPage().tapTopToolbarTitle();
 	}
 
 	/**

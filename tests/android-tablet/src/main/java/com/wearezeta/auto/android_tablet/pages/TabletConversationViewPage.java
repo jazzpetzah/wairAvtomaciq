@@ -55,10 +55,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idStrRootLocator));
     }
 
-    public void tapShowDetailsButton() throws Exception {
-        getElement(DialogPage.idParticipantsBtn).click();
-    }
-
     public boolean waitForSystemMessageContains(String expectedMessage) throws Exception {
         final By locator = By.xpath(xpathStrSystemMessageByContent.apply(expectedMessage));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -90,6 +86,10 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     public void tapPingButton() throws Exception {
         getDialogPage().tapPingBtn();
+    }
+
+    public void tapTopToolbarTitle() throws Exception {
+        getDialogPage().tapTopToolbarTitle();
     }
 
     public boolean waitUntilPingMessageIsVisible(String expectedMessage) throws Exception {

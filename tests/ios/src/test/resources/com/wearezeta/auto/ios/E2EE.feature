@@ -41,10 +41,6 @@ Feature: E2EE
     Given There is 1 user where <Name> is me
     Given User Myself removes his avatar picture
     Given I sign in using my email
-    Given I accept alert
-    Given I accept First Time overlay if it is visible
-    Given I accept alert
-    Given I dismiss settings warning
     Given I see conversations list
     When I remember the state of my avatar
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
@@ -178,22 +174,22 @@ Feature: E2EE
   Scenario Outline: On first login on 2nd device there should be an explanation that user will not see previous messages
     Given There are 1 user where <Name> is me
     Given User Myself adds a new device <DeviceName> with label <DeviceLabel>
-    When I sign in using my email
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I press Login button
     And I accept alert
     Then I see First Time overlay
 
     Examples:
-      | Name      | DeviceName | DeviceLabel  |
-      | user1Name | Device1    | Device1Label |
+      | Login      | Password      | Name      | DeviceName | DeviceLabel  |
+      | user1Email | user1Password | user1Name | Device1    | Device1Label |
 
   @C3510 @noAcceptAlert @regression
   Scenario Outline: Verify deleting one of the devices from device management by Edit
     Given There is 1 user where <Name> is me
     Given I sign in using my email
-    Given I accept alert
-    Given I accept First Time overlay if it is visible
-    Given I accept alert
-    Given I dismiss settings warning
     Given I see conversations list
     And User Myself adds new devices <DeviceName>
     When I tap my avatar
@@ -426,10 +422,6 @@ Feature: E2EE
   Scenario Outline: Verify deleting one of the devices from device information screen
     Given There is 1 user where <Name> is me
     Given I sign in using my email
-    Given I accept alert
-    Given I accept First Time overlay if it is visible
-    Given I accept alert
-    Given I dismiss settings warning
     Given I see conversations list
     And User Myself adds new device <DeviceName>
     When I tap my avatar
