@@ -201,7 +201,7 @@ Feature: Calling Matrix
       | user1Name | user2Name | user3Name | GroupCall     | firefox:43.0        | 20      | autocall:1.12 |
 
   @calling_matrix
-  Scenario Outline: Verify I can join group call with ZCall <CallBackend> and <WaitBackend>
+  Scenario Outline: Verify I can join group call with ZCall <WaitBackend> and <CallBackend>
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -222,8 +222,8 @@ Feature: Calling Matrix
     Then I do not see Calling overlay
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend         | Timeout | CallBackend |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:49.0.2623.75 | 20      | zcall:1.12  |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:47.0.2526.73 | 20      | zcall:1.12  |
-      | user1Name | user2Name | user3Name | GroupCall     | firefox:44.0.2      | 20      | zcall:1.12  |
-      | user1Name | user2Name | user3Name | GroupCall     | firefox:43.0        | 20      | zcall:1.12  |
+      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend   | Timeout | WaitBackend |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:1.12 | 20      | zcall:1.12  |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:1.12 | 20      | zcall:1.12  |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:1.12 | 20      | zcall:1.12  |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:1.12 | 20      | zcall:1.12  |
