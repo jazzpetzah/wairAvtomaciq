@@ -37,6 +37,8 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 
     private static final By xpathConfirmBlockButton = By.xpath("//*[@id='positive' and @value='BLOCK']");
 
+    private static final By idPendingUserAvatar = By.id("iaiv__pending_connect");
+
     public IncomingPendingConnectionsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -104,8 +106,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     }
 
     public boolean isPending() throws Exception {
-        final By locator = By.xpath(xpathStrUserDetailsLeftButtonByLabel.apply("Pending"));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idPendingUserAvatar);
     }
 
     public void pressLeftConnectButton() throws Exception {
