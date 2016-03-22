@@ -24,15 +24,13 @@ public class CallingSteps {
      *
      * @param caller           caller name/alias
      * @param conversationName destination conversation name
-     * @param callBackend      call backend. Available values: 'autocall', 'chrome',
-     *                         'firefox'
+     *
      * @throws Exception
-     * @step. (.*) calls (.*) using (.*)$
+     * @step. (.*) calls (.*)$
      */
-    @When("(.*) calls (.*) using (.*)$")
-    public void UserXCallsToUserYUsingCallBackend(String caller,
-                                                  String conversationName, String callBackend) throws Exception {
-        commonCallingSteps.callToConversation(caller, conversationName, callBackend);
+    @When("(.*) calls (.*)$")
+    public void UserXCallsToUserYUsingCallBackend(String caller, String conversationName) throws Exception {
+        commonCallingSteps.callToConversation(splitAliases(caller), conversationName);
     }
 
     /**
@@ -43,10 +41,10 @@ public class CallingSteps {
      * @throws Exception
      * @step. (.*) stops? all calls to (.*)
      */
-    @When("(.*) stops? all calls to (.*)")
+    @When("(.*) stops? calling (.*)")
     public void UserXStopsCallsToUserY(String caller, String conversationName)
             throws Exception {
-        commonCallingSteps.stopCall(caller, conversationName);
+        commonCallingSteps.stopOutgoingCall(splitAliases(caller), conversationName);
     }
 
     /**
@@ -125,18 +123,18 @@ public class CallingSteps {
     }
 
     /**
-     * Execute waiting instance as 'userAsNameAlias' user on calling server
+     * Execute instance as 'userAsNameAlias' user on calling server
      * using 'callingServiceBackend' tool
      *
      * @param callees               comma separated callee name/alias
      * @param callingServiceBackend available values: 'blender', 'chrome', * 'firefox'
      * @throws Exception
-     * @step. (.*) starts? waiting instance using (.*)$
+     * @step. (.*) starts? instance using (.*)$
      */
-    @When("(.*) starts? waiting instance using (.*)$")
-    public void UserXStartsWaitingInstance(String callees,
+    @When("(.*) starts? instance using (.*)$")
+    public void UserXStartsInstance(String callees,
                                            String callingServiceBackend) throws Exception {
-        commonCallingSteps.startWaitingInstances(splitAliases(callees), callingServiceBackend);
+        commonCallingSteps.startInstances(splitAliases(callees), callingServiceBackend);
     }
 
     /**
@@ -172,14 +170,12 @@ public class CallingSteps {
      *
      * @param caller           caller name/alias
      * @param conversationName destination conversation name
-     * @param callBackend      call backend. Available values: 'autocall', 'chrome',
-     *                         'firefox'
+     *
      * @throws Exception
-     * @step. (.*) starts a video call to (.*) using (.*)$
+     * @step. (.*) starts a video call to (.*)$
      */
-    @When("(.*) starts a video call to (.*) using (.*)$")
-    public void UserXStartVideoCallsToUserYUsingCallBackend(String caller,
-                                                            String conversationName, String callBackend) throws Exception {
-        commonCallingSteps.startVideoCallToConversation(caller, conversationName, callBackend);
+    @When("(.*) starts a video call to (.*)$")
+    public void UserXStartVideoCallsToUserYUsingCallBackend(String caller, String conversationName) throws Exception {
+        commonCallingSteps.startVideoCallToConversation(splitAliases(caller), conversationName);
     }
 }

@@ -44,6 +44,8 @@ public class CallingOverlayPage extends IOSPage {
 
     private static final By xpathGroupCallFullMessage = By.xpath("//UIAAlert[@name='The call is full']");
 
+    private static final Integer WAIT_FOR_GROUPCALL_FULL_MSG  = 20;
+
     public CallingOverlayPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -69,7 +71,7 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isGroupCallFullMessageShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGroupCallFullMessage);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGroupCallFullMessage, WAIT_FOR_GROUPCALL_FULL_MSG);
     }
 
     protected By getButtonLocatorByName(final String name) {
