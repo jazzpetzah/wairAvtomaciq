@@ -72,7 +72,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C450 @id4069 @regression
+  @C450 @id4069 @regression @torun
   Scenario Outline: Verify I can switch dark/white theme from self profile
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
