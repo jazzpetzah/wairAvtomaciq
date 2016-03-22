@@ -380,6 +380,7 @@ Feature: Connect
   @C705 @id1405 @regression @rc
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search)
     Given There are 2 users where <Name> is me
+    Given <Contact> has an avatar picture from file <Picture>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
@@ -395,8 +396,8 @@ Feature: Connect
     Then I see that connection is pending
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | Picture                      |
+      | user1Name | user2Name | aqaPictureContact600_800.jpg |
 
   @C409 @id1397 @regression
   Scenario Outline: Verify you do not receive any messages from blocked person in 1:1 chat

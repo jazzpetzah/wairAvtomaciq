@@ -22,7 +22,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 
     private static final By idConnectRequestIgnore = By.id("zb__connect_request__ignore_button");
 
-    private static final Function<String, String> xpathStrUserDetailsLeftButton = label -> String
+    private static final Function<String, String> xpathStrUserDetailsLeftButtonByLabel = label -> String
             .format("//*[@id='ttv__participants__left_label' and @value='%s']", label);
 
     private static final By idConnectToCharCounter =
@@ -104,12 +104,12 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     }
 
     public boolean isPending() throws Exception {
-        final By locator = By.xpath(xpathStrUserDetailsLeftButton.apply("Pending"));
+        final By locator = By.xpath(xpathStrUserDetailsLeftButtonByLabel.apply("Pending"));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public void pressLeftConnectButton() throws Exception {
-        getElement(By.xpath(xpathStrUserDetailsLeftButton.apply("Connect")),
+        getElement(By.xpath(xpathStrUserDetailsLeftButtonByLabel.apply("Connect")),
                 "Connect button is not visible").click();
     }
 
