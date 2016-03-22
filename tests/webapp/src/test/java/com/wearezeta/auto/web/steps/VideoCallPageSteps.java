@@ -70,7 +70,12 @@ public class VideoCallPageSteps {
             Assert.assertTrue("Mute call button is pressed", videoCallPage.isMuteCallButtonNotPressed());
         }
     }
-
+    /**
+     * Checks if the duration timer is visible during a video call
+     *
+     * @throws Exception
+     * @step. ^I can see the video call timer$
+     */
     @Then("^I can see the video call timer$")
     public void ICanSeeDurationTimer() throws Exception {
         VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
