@@ -704,30 +704,39 @@ public class DialogPageSteps {
     }
 
     /**
-     * Checks to see that Audio call button is visible in upper toolbar
+     * Checks to see whether Audio/Video call button is visible in upper toolbar
      *
-     * @throws Exception
-     * @step. ^I see the audio call button in upper toolbar$"
-     */
-    @Then("^I see the audio call button in upper toolbar$")
-    public void ThenISeeAudioCallButtonInUpperToolbar() throws Exception {
-        Assert.assertTrue("The audio call button is invisible in upper toolbar", getDialogPage().isAudioCallIconInToptoolbarVisible());
-    }
-
-    /**
-     * Checks to see whether Video call button is visible in upper toolbar
-     *
-     * @param doNotSeeVideoCall equal null means the Video call button should be visible
+     * @param doNotSee equal null means the Video call button should be visible
      * @throws Exception
      */
-    @Then("I( do not)? see the video call button in upper toolbar$")
-    public void ThenIseeVideoCallButtonInUpperToolbar(String doNotSeeVideoCall) throws Exception{
-        if(doNotSeeVideoCall == null)
-        {
-            Assert.assertTrue("The video call button should be visible in upper toolbar", getDialogPage().isVideoCallIconInToptoolbarVisible());
-        }else
-        {
-            Assert.assertTrue("The video call button should be invisible in upper toolbar", getDialogPage().isVideoCallIconInToptoolbarInvisible());
+    @Then("I( do not)? see the (audio|video) call button in upper toolbar$")
+    public void ThenIseeVideoCallButtonInUpperToolbar(String doNotSee, String callType) throws Exception {
+        if (doNotSee == null) {
+            switch (callType) {
+                case "audio":
+                    Assert.assertTrue("The audio call button should be visible in upper toolbar",
+                            getDialogPage().isAudioCallIconInToptoolbarVisible());
+                    break;
+                case "video":
+                    Assert.assertTrue("The video call button should be visible in upper toolbar",
+                            getDialogPage().isVideoCallIconInToptoolbarVisible());
+                    break;
+                default:
+                    throw new IllegalArgumentException(String.format("Unknown button name '%s'", callType));
+            }
+        } else {
+            switch (callType) {
+                case "audio":
+                    Assert.assertTrue("The audio call button should be visible in upper toolbar",
+                            getDialogPage().isAudioCallIconInToptoolbarInvisible());
+                    break;
+                case "video":
+                    Assert.assertTrue("The video call button should be visible in upper toolbar",
+                            getDialogPage().isVideoCallIconInToptoolbarInvisible());
+                    break;
+                default:
+                    throw new IllegalArgumentException(String.format("Unknown button name '%s'", callType));
+            }
         }
     }
 }

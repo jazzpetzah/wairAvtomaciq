@@ -404,6 +404,10 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioCall);
     }
 
+    public boolean isAudioCallIconInToptoolbarInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idAudioCall);
+    }
+
     public boolean isVideoCallIconInToptoolbarVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idVideoCall);
     }
