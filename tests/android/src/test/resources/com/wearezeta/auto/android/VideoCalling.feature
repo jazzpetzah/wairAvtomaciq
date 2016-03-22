@@ -463,7 +463,6 @@ Feature: VideoCalling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I swipe on text input
     And I tap Video Call button from top toolbar
     Then I see ongoing video call
     And I wait for 65 seconds
