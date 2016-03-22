@@ -469,6 +469,18 @@ public class DialogPageSteps {
         mediaButtonState.remember();
     }
 
+
+    /**
+     * Tap back arrow button in upper toolbar
+     *
+     * @throws Exception
+     * @step. ^I tap back button in upper toolbar$
+     */
+    @When("^I tap back button in upper toolbar$")
+    public void TapBackbuttonInUpperToolbar() throws Exception {
+        getDialogPage().tapTopToolbarBackButton();
+    }
+
     /**
      * Verify the current state of media control button has been changed since the last snapshot was made
      *

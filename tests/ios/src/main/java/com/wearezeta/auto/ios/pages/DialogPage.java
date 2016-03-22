@@ -115,10 +115,8 @@ public class DialogPage extends IOSPage {
 
     private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[@name='ConversationView']";
 
-    //FIXME: Add accessibility locator
-    private static final By xpathCallButton = By.xpath(xpathStrConversationViewTopBar + "/UIAButton[last()]");
-    //FIXME: Add accessibility locator
-    private static final By xpathVideoCallButton = By.xpath(xpathStrConversationViewTopBar + "/UIAButton[last() - 1]");
+    private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
+    private static final By xpathVideoCallButton = MobileBy.AccessibilityId("videoCallBarButton");
     private static final By xpathConversationDetailsButton = By.xpath(xpathStrConversationViewTopBar +
             "/UIAButton[@name='Back']/following-sibling::" +
             "UIAButton[not(@name='ConversationBackButton') and boolean(string(@label))]");
@@ -159,7 +157,7 @@ public class DialogPage extends IOSPage {
     }
 
     public void tapAudioCallButton() throws Exception {
-        getElement(xpathCallButton).click();
+        getElement(xpathAudioCallButton).click();
     }
 
     public int getNumberOfMessageEntries() throws Exception {

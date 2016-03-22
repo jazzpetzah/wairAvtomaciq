@@ -58,8 +58,6 @@ public class DialogPage extends AndroidPage {
 
     private static final By idFullScreenImage = By.id("tiv__single_image_message__image");
 
-    public static final By idParticipantsBtn = By.id("cursor_menu_item_participant");
-
     public static final By idVerifiedConversationShield = By.id("cursor_button_giphy");
 
     private static final By idPlayPauseMedia = By.id("gtv__media_play");
@@ -100,7 +98,7 @@ public class DialogPage extends AndroidPage {
 
     private static final By xpathLastConversationMessage = By.xpath("(//*[@id='ltv__row_conversation__message'])[last()]");
 
-    private static final String idStrDialogRoot = "pfac__conversation__list_view_container";
+    private static final String idStrDialogRoot = "clv__conversation_list_view";
     private static final By idDialogRoot = By.id(idStrDialogRoot);
     private static final By xpathDialogContent = By.xpath("//*[@id='" + idStrDialogRoot + "']/*/*/*");
 
@@ -375,12 +373,6 @@ public class DialogPage extends AndroidPage {
             ntry++;
         }
         getElement(idCloseImageBtn).click();
-    }
-
-    public void tapConversationDetailsButton() throws Exception {
-        getElement(idParticipantsBtn).click();
-        // Wait for animation
-        Thread.sleep(500);
     }
 
     public boolean waitForPingMessageWithText(String expectedText) throws Exception {
