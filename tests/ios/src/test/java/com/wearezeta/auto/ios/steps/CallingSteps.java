@@ -27,9 +27,9 @@ public class CallingSteps {
      * @param callBackend      call backend. Available values: 'autocall', 'chrome',
      *                         'firefox'
      * @throws Exception
-     * @step. (.*) calls (.*) using (\\w+)$
+     * @step. (.*) calls (.*) using (.*)$
      */
-    @When("(.*) calls (.*) using (\\w+)$")
+    @When("(.*) calls (.*) using (.*)$")
     public void UserXCallsToUserYUsingCallBackend(String caller,
                                                   String conversationName, String callBackend) throws Exception {
         commonCallingSteps.callToConversation(caller, conversationName, callBackend);
@@ -131,9 +131,9 @@ public class CallingSteps {
      * @param callees               comma separated callee name/alias
      * @param callingServiceBackend available values: 'blender', 'chrome', * 'firefox'
      * @throws Exception
-     * @step. (.*) starts? waiting instance using (\\w+)$
+     * @step. (.*) starts? waiting instance using (.*)$
      */
-    @When("(.*) starts? waiting instance using (\\w+)$")
+    @When("(.*) starts? waiting instance using (.*)$")
     public void UserXStartsWaitingInstance(String callees,
                                            String callingServiceBackend) throws Exception {
         commonCallingSteps.startWaitingInstances(splitAliases(callees), callingServiceBackend);
