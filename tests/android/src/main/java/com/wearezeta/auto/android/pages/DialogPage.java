@@ -98,8 +98,8 @@ public class DialogPage extends AndroidPage {
 
     private static final By xpathLastConversationMessage = By.xpath("(//*[@id='ltv__row_conversation__message'])[last()]");
 
-    private static final String idStrDialogRoot = "clv__conversation_list_view";
-    private static final By idDialogRoot = By.id(idStrDialogRoot);
+    public static final String idStrDialogRoot = "clv__conversation_list_view";
+    public static final By idDialogRoot = By.id(idStrDialogRoot);
     private static final By xpathDialogContent = By.xpath("//*[@id='" + idStrDialogRoot + "']/*/*/*");
 
     public static Function<String, String> xpathStrInputFieldByValue = value -> String.format("//*[@value='%s']", value);
