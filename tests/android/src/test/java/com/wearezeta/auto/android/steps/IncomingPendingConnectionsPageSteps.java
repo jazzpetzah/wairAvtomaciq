@@ -127,12 +127,10 @@ public class IncomingPendingConnectionsPageSteps {
 	 * 
 	 * @step. ^I see that connection is pending$
 	 * 
-	 * @throws NumberFormatException
 	 * @throws Exception
 	 */
 	@Then("^I see that connection is pending$")
-	public void ThenConnectionIsPending() throws NumberFormatException,
-			Exception {
+	public void ThenConnectionIsPending() throws Exception {
 		Assert.assertTrue("Pending connection screen is not visible",
 				getIncomingPendingConnectionsPage().isPending());
 	}

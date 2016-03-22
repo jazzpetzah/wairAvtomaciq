@@ -9,7 +9,6 @@ Feature: Calling Matrix
     Given I sign in using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Audio Call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
@@ -34,7 +33,6 @@ Feature: Calling Matrix
     Given I sign in using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Audio Call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
@@ -100,7 +98,6 @@ Feature: Calling Matrix
     Given I sign in using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I click plus button next to text input
     And I tap Audio Call button
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay
@@ -129,7 +126,6 @@ Feature: Calling Matrix
     Given I sign in using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I click plus button next to text input
     And I tap Audio Call button
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see Calling overlay

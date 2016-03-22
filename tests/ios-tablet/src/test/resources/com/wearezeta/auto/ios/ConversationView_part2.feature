@@ -180,7 +180,6 @@ Feature: Conversation View
     And I see plus button is not shown
     And I swipe left on options buttons
     And I see Close input options button is not visible
-    And I see plus button next to text input
     And I click plus button next to text input
     Then I see conversation tools buttons
     And I click Close input options button
@@ -201,7 +200,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see plus button next to text input
     And I click plus button next to text input
     Then I see no other conversation tools buttons except of Details
     And I click Close input options button
@@ -225,7 +223,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see plus button next to text input
     And I click plus button next to text input
     Then I see no other conversation tools buttons except of Details
     And I click Close input options button
@@ -460,7 +457,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see plus button next to text input
     And I type the default message
     And I see plus icon is changed to user avatar icon
     And I clear conversation text input
