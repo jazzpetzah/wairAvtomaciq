@@ -365,6 +365,21 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
+  @C77948 @staging
+  Scenario Outline: Verify an upper toolbar displayed in the conversation view
+    Given There is 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    Then I see the upper toolbar
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+
   @C77950 @staging
   Scenario Outline: Verify going back to the conversation list by tapping on the upper toolbar arrow
     Given There are 2 users where <Name> is me
