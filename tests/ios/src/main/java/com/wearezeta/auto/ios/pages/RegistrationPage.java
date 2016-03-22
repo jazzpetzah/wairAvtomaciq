@@ -21,6 +21,8 @@ public class RegistrationPage extends IOSPage {
 
     private static final By xpathYourName = By.xpath(xpathStrMainWindow + "/UIATextField[@value='YOUR FULL NAME']");
 
+    private static final By xpathNameField = By.xpath(xpathStrMainWindow + "/UIATextField[1]");
+
     private static final By nameYourEmail = MobileBy.AccessibilityId("EmailField");
 
     private static final By nameYourPassword = MobileBy.AccessibilityId("PasswordField");
@@ -151,6 +153,10 @@ public class RegistrationPage extends IOSPage {
         getElement(xpathYourName, "Name input is not visible").sendKeys(getName());
     }
 
+    public void typeUsernamewithSpace() throws Exception {
+        getElement(xpathYourName, "Name input is not visible").sendKeys(getName());
+    }
+
     public String getName() {
         return name;
     }
@@ -221,5 +227,14 @@ public class RegistrationPage extends IOSPage {
 
     public void tapTakePhotoButton() throws Exception {
         getElement(nameTakePhotoButton).click();
+    }
+
+    /**
+     *
+     * Send extra space keys (workaround for simulator bug)
+     * @throws Exception
+     */
+    public void tapNameInputField() throws Exception {
+        getElement(xpathNameField).sendKeys("\n\n");
     }
 }

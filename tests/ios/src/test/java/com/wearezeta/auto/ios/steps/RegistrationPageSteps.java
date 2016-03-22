@@ -13,6 +13,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.common.usrmgmt.UserState;
@@ -128,6 +129,19 @@ public class RegistrationPageSteps {
         IEnterName(name);
         getRegistrationPage().inputName();
     }
+
+    /**
+     * Copy and paste non-English chars and send extra space keystroke (workaround for simulator bug)
+     *
+     * @throws Exception
+     */
+    @When("^I input Non-English name (.*) and hit Enter$")
+    public void IInputNonEnglishNameAndHitEnter(String name) throws Exception {
+        getRegistrationPage().setName(name);
+        getRegistrationPage().tapNameInputField();
+        getRegistrationPage().inputName();
+    }
+
     @When("^I enter email (.*)$")
     public void IEnterEmail(String email) throws Exception {
         boolean isRealEmail = false;
