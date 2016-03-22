@@ -374,7 +374,9 @@ Feature: VideoCalling
     And I see decline call button for conversation <Contact>
     And I accept the call from conversation <Contact>
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
-    And I can see the video call timer
+    And I see the video call timer
+    When I end the video call
+    Then I do not see the video call timer
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
