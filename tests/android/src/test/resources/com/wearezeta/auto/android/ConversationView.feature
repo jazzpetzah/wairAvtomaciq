@@ -225,7 +225,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C809 @id3242 @regression @rc @rc42
+  @C809 @id3242 @regression @rc @rc42 @torun
   Scenario Outline: (CM-717) I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

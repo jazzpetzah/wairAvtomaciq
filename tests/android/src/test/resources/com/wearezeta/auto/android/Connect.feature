@@ -54,7 +54,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @C383 @C386 @id539 @id543 @regression
+  @C383 @C386 @id539 @id543 @regression @torun
   Scenario Outline: I can see a inbox count increasing/decreasing correctly + I ignore someone from people picker and clear my inbox
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
