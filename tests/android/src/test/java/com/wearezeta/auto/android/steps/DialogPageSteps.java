@@ -758,7 +758,7 @@ public class DialogPageSteps {
     public void ThenTheConversationTitleShouldBe(String conversationNameAliases) throws Exception {
         List<String> names = new ArrayList<>();
         for (String nameAlias : CommonSteps.splitAliases(conversationNameAliases)) {
-            names.add(usrMgr.findUserByNameOrNameAlias(nameAlias).getName());
+            names.add(usrMgr.replaceAliasesOccurences(conversationNameAliases, FindBy.NAME_ALIAS));
         }
         String expectedConversationNames = StringUtils.join(names, ",");
         Assert.assertTrue(String.format("The conversation title should be %s", expectedConversationNames),
