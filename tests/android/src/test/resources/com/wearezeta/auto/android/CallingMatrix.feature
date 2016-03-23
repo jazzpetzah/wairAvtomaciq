@@ -197,8 +197,6 @@ Feature: Calling Matrix
     When I swipe to accept the call
     And I see ongoing call
     And <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact2> verifies to have 1 flow
-    And <Contact2> verifies that all flows have greater than 0 bytes
     And I hang up ongoing call
     And I do not see ongoing call
 
@@ -226,8 +224,6 @@ Feature: Calling Matrix
     When I swipe to accept the call
     And I see ongoing call
     And <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact2> verifies to have 1 flow
-    And <Contact2> verifies that all flows have greater than 0 bytes
     And I hang up ongoing call
     And I do not see ongoing call
 
