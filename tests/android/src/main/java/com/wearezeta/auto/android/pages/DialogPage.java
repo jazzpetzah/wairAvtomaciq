@@ -76,9 +76,11 @@ public class DialogPage extends AndroidPage {
 
     private static final By xpathToolbar = By.xpath(xpathStrConversationToolbar);
 
-    private static final By xpathToolBarTitle = By.xpath(String.format("%s/*[boolean(string(@value))]", xpathStrConversationToolbar));
+    private static final By xpathToolBarTitle =
+            By.xpath(String.format("%s/*[boolean(string(@value))]", xpathStrConversationToolbar));
 
-    private static final By xpathToolBarNavigation = By.xpath(String.format("%s/*[@value='' and count(*)=1]", xpathStrConversationToolbar));
+    private static final By xpathToolBarNavigation =
+            By.xpath(String.format("%s/*[@value='' and count(*)=1]", xpathStrConversationToolbar));
 
     public static final By idCursorCloseButton = By.id("cursor_button_close");
 
@@ -238,10 +240,6 @@ public class DialogPage extends AndroidPage {
         getElement(idCursorCloseButton, "Close cursor button is not visible").click();
     }
 
-    public void typeAndSendMessage(String message) throws Exception {
-        typeAndSendMessage(message, true);
-    }
-
     public void typeAndSendMessage(String message, boolean hideKeyboard) throws Exception {
         // FIXME: Find a better solution for text autocorrection issues
         final WebElement cursorInput = getElement(idEditText);
@@ -398,6 +396,22 @@ public class DialogPage extends AndroidPage {
 
     public boolean isTopToolbarVisible() throws Exception{
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathToolbar);
+    }
+
+    public boolean isAudioCallIconInToptoolbarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioCall);
+    }
+
+    public boolean isAudioCallIconInToptoolbarInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idAudioCall);
+    }
+
+    public boolean isVideoCallIconInToptoolbarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idVideoCall);
+    }
+
+    public boolean isVideoCallIconInToptoolbarInvisible() throws Exception{
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idVideoCall);
     }
 
     public boolean isDialogVisible() throws Exception {

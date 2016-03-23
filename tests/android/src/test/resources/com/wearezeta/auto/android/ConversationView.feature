@@ -394,3 +394,24 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C77958 @staging
+  Scenario Outline: Verify video call icon is not shown in a group conversation on the upper toolbar
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Name>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
+    When I tap on contact name <GroupChatName>
+    Then I see the audio call button in upper toolbar
+    And I do not see the video call button in upper toolbar
+    And I navigate back from dialog page
+    And I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    Then I see the audio call button in upper toolbar
+    And I see the video call button in upper toolbar
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName     |
+      | user1Name | user2Name | user3Name | SendMessGroupChat |

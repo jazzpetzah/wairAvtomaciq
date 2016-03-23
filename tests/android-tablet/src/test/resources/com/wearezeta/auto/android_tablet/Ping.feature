@@ -8,9 +8,7 @@ Feature: Ping
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     And I swipe right on text input in the conversation view
     When I tap Ping button in the conversation view
     Then I see the ping message "<Message1>" in the conversation view
@@ -30,9 +28,7 @@ Feature: Ping
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     And I swipe right on text input in the conversation view
     When I tap Ping button in the conversation view
     Then I see the ping message "<Message1>" in the conversation view
@@ -53,9 +49,7 @@ Feature: Ping
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
     When User <Contact1> securely pings conversation <GroupChatName>
     Then I see the ping message "<PingMessage>" in the conversation view
     When User <Contact1> securely hotpings conversation <GroupChatName>
@@ -75,9 +69,7 @@ Feature: Ping
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
     When User <Contact1> securely pings conversation <GroupChatName>
     Then I see the ping message "<PingMessage>" in the conversation view
     When User <Contact1> securely hotpings conversation <GroupChatName>

@@ -133,22 +133,17 @@ public class GroupPopoverSteps {
      * @step ^I see the participant avatars? (.*) on [Gg]roup popover$
      */
     @Then("^I (do not )?see the participant avatars? (.*) on [Gg]roup popover$")
-    public void ISeeParticipantAvatar(String shouldNotBeVisible, String names)
-            throws Exception {
+    public void ISeeParticipantAvatar(String shouldNotBeVisible, String names) throws Exception {
         for (String name : CommonSteps.splitAliases(names)) {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
             if (shouldNotBeVisible == null) {
                 Assert.assertTrue(
-                        String.format(
-                                "The avatar of '%s' is not visible in the conversation details popover",
-                                name), getGroupPopover()
-                                .waitForParticipantAvatarVisible(name));
+                        String.format("The avatar of '%s' is not visible in the conversation details popover", name),
+                        getGroupPopover().waitForParticipantAvatarVisible(name));
             } else {
                 Assert.assertTrue(
-                        String.format(
-                                "The avatar of '%s' is still visible in the conversation details popover",
-                                name), getGroupPopover()
-                                .waitForParticipantAvatarNotVisible(name));
+                        String.format("The avatar of '%s' is still visible in the conversation details popover", name),
+                        getGroupPopover().waitForParticipantAvatarNotVisible(name));
             }
         }
     }
