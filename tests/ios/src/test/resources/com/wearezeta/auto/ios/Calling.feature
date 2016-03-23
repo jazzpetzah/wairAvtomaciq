@@ -66,7 +66,7 @@ Feature: Calling
       | user1Name | user2Name | autocall    |
 
   @C2111 @rc @calling_basic @clumsy @IPv6 @id2093
-  Scenario Outline: (ZIOS-5534) Verify accepting incoming call
+  Scenario Outline: (ZIOS-5534) Verify acepting and ending incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
@@ -76,7 +76,9 @@ Feature: Calling
     When <Contact> calls me
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept button on Calling overlay
-    Then I see call status message contains "<Contact>"
+    And I see call status message contains "<Contact>"
+    And I tap Leave button on Calling overlay
+    Then I do not see Calling overlay
 
     Examples:
       | Name      | Contact   | CallBackend |
@@ -208,11 +210,10 @@ Feature: Calling
       | user1Name | user2Name | chrome      | autocall     | 30      |
 
   @C2074 @calling_basic @id913
-  Scenario Outline: I want to end the call from the ongoing voice overlay
+  Scenario Outline: Verify starting and ending outgoing call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
-    Given <Contact> starts instance using <CallBackend2>
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -221,11 +222,6 @@ Feature: Calling
     And I see Calling overlay
     And I tap Leave button on Calling overlay
     Then I do not see Calling overlay
-    And <Contact> calls me
-    And I see call status message contains "<Contact> CALLING"
-    And I tap Accept button on Calling overlay
-    And <Contact> stops calling me
-    And I do not see Calling overlay
 
     Examples:
       | Name      | Contact   | CallBackend | CallBackend2 |
