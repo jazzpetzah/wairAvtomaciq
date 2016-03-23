@@ -48,10 +48,11 @@ Feature: Calling Matrix
   Scenario Outline: Verify I can receive 1:1 call from <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email
     Given I see conversations list
     And I tap on contact name <Contact>
-    When <Contact> calls me using <CallBackend>
+    When <Contact> calls me
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept button on Calling overlay
     And I see call status message contains "<Contact>"
@@ -72,10 +73,11 @@ Feature: Calling Matrix
   Scenario Outline: Verify I can receive 1:1 call from AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email
     Given I see conversations list
     And I tap on contact name <Contact>
-    When <Contact> calls me using <CallBackend>
+    When <Contact> calls me
     And I see call status message contains "<Contact> CALLING"
     And I tap Accept button on Calling overlay
     And I see call status message contains "<Contact>"
@@ -142,12 +144,12 @@ Feature: Calling Matrix
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Contact2> starts instance using <Backend>
+    Given <Contact1>,<Contact2> starts instance using <Backend>
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <Backend>
+    And <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> RINGING"
     And I tap Accept button on Calling overlay
     Then I see Calling overlay
@@ -174,17 +176,18 @@ Feature: Calling Matrix
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact2> starts instance using <WaitBackend>
+    Given <Contact1> starts instance using <CallBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend>
+    And <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> RINGING"
     And I tap Accept button on Calling overlay
     Then I see Calling overlay
     And <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verify that call status to <GroupChatName> is changed to active in <Timeout> seconds
-    And <Contact2> verifies to have 1 flow
+    And <Contact2> verifies to have 2 flow
     And <Contact2> verifies that all flows have greater than 0 bytes
     When I tap Leave button on Calling overlay
     Then I do not see Calling overlay
@@ -202,17 +205,18 @@ Feature: Calling Matrix
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact2> starts instance using <WaitBackend>
+    Given <Contact1> starts instance using <CallBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend>
+    And <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> RINGING"
     And I tap Accept button on Calling overlay
     Then I see Calling overlay
     And <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verify that call status to <GroupChatName> is changed to active in <Timeout> seconds
-    And <Contact2> verifies to have 1 flow
+    And <Contact2> verifies to have 2 flow
     And <Contact2> verifies that all flows have greater than 0 bytes
     When I tap Leave button on Calling overlay
     Then I do not see Calling overlay
