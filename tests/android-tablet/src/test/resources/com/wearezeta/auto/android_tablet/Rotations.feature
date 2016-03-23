@@ -54,7 +54,6 @@ Feature: Rotations
     Given I see the conversations list with conversations
     Given User <Contact> sends encrypted message <Message> to user Myself
     When I tap the conversation <Contact>
-    Then I see the conversation view
     And I see the message "<Message>" in the conversation view
     When I rotate UI to landscape
     Then I see the message "<Message>" in the conversation view
@@ -95,9 +94,7 @@ Feature: Rotations
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     And I swipe right on text input in the conversation view
     When I tap Add Picture button in the conversation view
     And I tap Take Photo button in the conversation view

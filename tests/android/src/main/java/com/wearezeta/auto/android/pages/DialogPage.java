@@ -76,9 +76,11 @@ public class DialogPage extends AndroidPage {
 
     private static final By xpathToolbar = By.xpath(xpathStrConversationToolbar);
 
-    private static final By xpathToolBarTitle = By.xpath(String.format("%s/*[boolean(string(@value))]", xpathStrConversationToolbar));
+    private static final By xpathToolBarTitle =
+            By.xpath(String.format("%s/*[boolean(string(@value))]", xpathStrConversationToolbar));
 
-    private static final By xpathToolBarNavigation = By.xpath(String.format("%s/*[@value='' and count(*)=1]", xpathStrConversationToolbar));
+    private static final By xpathToolBarNavigation =
+            By.xpath(String.format("%s/*[@value='' and count(*)=1]", xpathStrConversationToolbar));
 
     public static final By idCursorCloseButton = By.id("cursor_button_close");
 
@@ -236,10 +238,6 @@ public class DialogPage extends AndroidPage {
 
     public void closeInputOptions() throws Exception {
         getElement(idCursorCloseButton, "Close cursor button is not visible").click();
-    }
-
-    public void typeAndSendMessage(String message) throws Exception {
-        typeAndSendMessage(message, true);
     }
 
     public void typeAndSendMessage(String message, boolean hideKeyboard) throws Exception {

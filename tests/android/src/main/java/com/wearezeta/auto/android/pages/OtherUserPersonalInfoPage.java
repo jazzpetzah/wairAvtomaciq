@@ -36,12 +36,13 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     private static final By idParticipantOtrShield = By.id("sv__otr__verified_shield");
 
     private static final Function<Integer, String> xpathParticipantDeviceByIdx = idx -> String
-        .format("(//*[@id='ttv__row_otr_device'])[%d]", idx);
+            .format("(//*[@id='ttv__row_otr_device'])[%d]", idx);
 
     private static final Function<Integer, String> xpathParticipantDeviceShieldByIdx = idx -> String
-        .format("(//*[@id='iv__row_otr_icon'])[%d]", idx);
+            .format("(//*[@id='iv__row_otr_icon'])[%d]", idx);
 
-    private static final By xpathSingleOtrSwitch = By.xpath("//OtrSwitch[@id='os__single_otr_client__verify']/SwitchCompat");
+    private static final By xpathSingleOtrSwitch =
+            By.xpath("//OtrSwitch[@id='os__single_otr_client__verify']/SwitchCompat");
 
     private static final By xpathSingleOtrSwitchValue =
             By.xpath("//OtrSwitch[@id='os__single_otr_client__verify']//TypefaceTextView[contains(@value, 'erified')]");
@@ -49,10 +50,10 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     private static final Function<String, String> xpathParticipantAvatarByName = name -> String
             .format("//*[@id='cv__group__adapter' and ./parent::*/*[@value='%s']]",
                     name.split("\\s+")[0]);
-    
+
+    // TODO: Improve locator
     private static final Function<String, String> xpathVerifiedParticipantAvatarByName = name -> String
-            .format("//*[@id='pfac__participants']/*/LinearLayout/following-sibling::*//*[@id='cv__group__adapter' and ./parent::*/*[@value='%s']]",
-                    name.split("\\s+")[0]);
+            .format("//*[@value='%s']", name.split("\\s+")[0]);
 
     private static final By idParticipantsHeader = By.id("ttv__participants__header");
 
@@ -111,7 +112,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public List<String> getParticipantDevices() throws Exception {
-        return selectVisibleElements(idParticipantDevices).stream().map(WebElement::getText).map((string) -> string.replaceAll("(PHONE)|(DESKTOP)|(\\n)|(\\s)|(ID:)", "").toLowerCase()).collect(Collectors.toList());
+        return selectVisibleElements(idParticipantDevices).stream().map(WebElement::getText).map(
+                (string) -> string.replaceAll("(PHONE)|(DESKTOP)|(\\n)|(\\s)|(ID:)", ""
+                ).toLowerCase()).collect(Collectors.toList());
     }
 
     public void tapOnParticipantFirstDevice(int deviceNum) throws Exception {
@@ -125,17 +128,12 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         return getElementScreenshot(deviceShield).orElseThrow(IllegalStateException::new);
     }
 
-    private static final String VERIFIED_VELUE = "Verified";
-    private static final String NOT_VERIFIED_VELUE = "Not verified";
+    private static final String NOT_VERIFIED_VALUE = "Not verified";
 
     public void verifyParticipantDevice() throws Exception {
-        if (getElement(xpathSingleOtrSwitchValue, "Device verification status fot found").getText().equals(NOT_VERIFIED_VELUE)) {
+        if (getElement(xpathSingleOtrSwitchValue, "Device verification status fot found").getText()
+                .equals(NOT_VERIFIED_VALUE)) {
             getElement(xpathSingleOtrSwitch).click();
-        }
-        if (getElement(xpathSingleOtrSwitchValue, "Device verification status fot found").getText().equals(VERIFIED_VELUE)) {
-            return;
-        } else {
-            throw new RuntimeException("Failed verify device");
         }
     }
 
@@ -230,7 +228,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     public void tapLeftActionBtn() throws Exception {
         final List<WebElement> visibleButtons = selectVisibleElements(xpathLeftActionButton);
         if (visibleButtons.isEmpty()) {
-                throw new IllegalStateException("Cannot locate left action button");
+            throw new IllegalStateException("Cannot locate left action button");
         }
         this.getDriver().tap(1, visibleButtons.get(0).getLocation().getX() + visibleButtons.get(0).getSize().width / 2,
                 visibleButtons.get(0).getLocation().getY() + visibleButtons.get(0).getSize().height / 2,
@@ -282,7 +280,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
                 && ntry <= maxRetries);
         if (ntry > maxRetries) {
             throw new AssertionError(String.format(
-                            "The conversations details screen has not been closed after %s retries", maxRetries));
+                    "The conversations details screen has not been closed after %s retries", maxRetries));
         }
     }
 
@@ -300,7 +298,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
                 && ntry <= maxRetries);
         if (ntry > maxRetries) {
             throw new AssertionError(String.format(
-                            "The participant details screen has not been closed after %s retries", maxRetries));
+                    "The participant details screen has not been closed after %s retries", maxRetries));
         }
     }
 
@@ -308,7 +306,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         final By locator = By.xpath(xpathParticipantAvatarByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
-    
+
     public boolean isVerifiedParticipantAvatarVisible(String name) throws Exception {
         final By locator = By.xpath(xpathVerifiedParticipantAvatarByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);

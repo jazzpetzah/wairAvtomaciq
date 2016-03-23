@@ -8,7 +8,6 @@ Feature: Archive
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact1> in my conversations list
     When I swipe right the conversations list item <Contact1>
     Then I see Conversation Actions overlay
     When I select <ArchiveItem> menu item on Conversation Actions overlay
@@ -37,7 +36,6 @@ Feature: Archive
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact1> in my conversations list
     When I swipe right the conversations list item <Contact1>
     Then I see Conversation Actions overlay
     When I select <ArchiveItem> menu item on Conversation Actions overlay
