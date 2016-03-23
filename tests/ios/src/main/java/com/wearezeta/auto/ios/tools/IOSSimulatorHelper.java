@@ -326,8 +326,6 @@ public class IOSSimulatorHelper {
 
     public static void copySystemClipboardToSimulatorClipboard() throws Exception {
         activateWindow();
-        CommonUtils.executeUIAppleScript(new String[]{
-                "tell application \"System Events\" to keystroke \"v\" using {command down}"
-        }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        CommonUtils.pressCmdVByAppleScript();
     }
 }

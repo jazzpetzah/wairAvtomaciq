@@ -609,4 +609,10 @@ public class CommonUtils {
                 String.format("set the clipboard to \"%s\"", val)
         }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
+
+    public static void pressCmdVByAppleScript() throws Exception {
+        CommonUtils.executeUIAppleScript(new String[]{
+                "tell application \"System Events\" to keystroke \"v\" using {command down}"
+        }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+    }
 }
