@@ -136,7 +136,6 @@ Feature: E2EE
     And I click close user profile page button
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And User <Contact1> sends 1 encrypted message using device <DeviceName2> to user Myself
-    And I click Close input options button
     Then I do not see shield icon next to conversation input field
     # TODO: Check the device label in the system message
     #BUG system message labels can not be located on appium
@@ -161,7 +160,6 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
-    And I click Close input options button
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
     Then I see the label "<Contact1> <ExpectedSuffix>" on New Device overlay
@@ -264,7 +262,6 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
-    And I click Close input options button
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
     And I close New Device overlay
@@ -319,7 +316,6 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
-    And I click Close input options button
     Then I see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
     # And I see last message in dialog is expected message <VerificationMsg>
