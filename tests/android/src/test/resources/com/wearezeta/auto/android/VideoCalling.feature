@@ -455,3 +455,22 @@ Feature: VideoCalling
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 30      |
+
+  @C36389 @staging
+  Scenario Outline: Verify video call is terminated after 1 minute if nobody responds
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I tap Video Call button from top toolbar
+    Then I see ongoing video call
+    And I wait for <Timeout> seconds
+    And I do not see ongoing video call
+    Then I see dialog with missed call from YOU
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 65      |
