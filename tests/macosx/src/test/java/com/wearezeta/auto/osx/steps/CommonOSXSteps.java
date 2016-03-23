@@ -195,6 +195,7 @@ public class CommonOSXSteps {
 
 		clearDrivers();
 		osxDriverFuture = createOSXDriver();
+                Thread.sleep(30000);
 		webDriverFuture = createWebDriver(osxDriverFuture);
 
 		// get drivers instantly
@@ -202,6 +203,7 @@ public class CommonOSXSteps {
 		final ZetaWebAppDriver webappDriver = webDriverFuture.get();
 		LOG.debug("Opening app");
 		osxDriver.navigate().to(WIRE_APP_PATH);// open app
+                Thread.sleep(30000);
 
 		ZetaFormatter.setLazyDriver(osxDriverFuture);
 
@@ -211,6 +213,7 @@ public class CommonOSXSteps {
 
 		LOG.debug("Activating app");
 		osxDriver.navigate().to(WIRE_APP_PATH);// activate app
+                Thread.sleep(30000);
 		waitForAppStartup(osxDriver);
 		mainWirePage.focusApp();
 
