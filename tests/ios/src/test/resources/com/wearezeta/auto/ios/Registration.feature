@@ -63,12 +63,12 @@ Feature: Registration
   @C1009 @staging
   Scenario Outline: Verify registering new user with Arabic name
     Given I see sign in screen
-    When I enter phone number for user <Name>
+    Given I enter phone number for user <Name>
     And I enter activation code
     And I accept terms of service
     And I input Non-English name <ArabicName> and hit Enter
     And I press Keep This One button
-    And I tap Share Contacts button on Share Contacts overlay
+    And I tap Not Now button on Share Contacts overlay
     Then I see People picker page
     And I click clear button
     And I tap my avatar

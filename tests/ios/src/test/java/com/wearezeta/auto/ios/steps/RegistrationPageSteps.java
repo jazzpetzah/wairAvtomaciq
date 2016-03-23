@@ -134,12 +134,13 @@ public class RegistrationPageSteps {
      * Copy and paste non-English chars and send extra space keystroke (workaround for simulator bug)
      *
      * @throws Exception
+     * @step. ^I input Non-English name (.*) and hit Enter
      */
     @When("^I input Non-English name (.*) and hit Enter$")
     public void IInputNonEnglishNameAndHitEnter(String name) throws Exception {
         getRegistrationPage().setName(name);
         getRegistrationPage().tapNameInputField();
-        getRegistrationPage().inputName();
+        //getRegistrationPage().inputName();
     }
 
     @When("^I enter email (.*)$")

@@ -153,10 +153,6 @@ public class RegistrationPage extends IOSPage {
         getElement(xpathYourName, "Name input is not visible").sendKeys(getName());
     }
 
-    public void typeUsernamewithSpace() throws Exception {
-        getElement(xpathYourName, "Name input is not visible").sendKeys(getName());
-    }
-
     public String getName() {
         return name;
     }
