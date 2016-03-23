@@ -4,7 +4,7 @@ Feature: Calling Matrix
   Scenario Outline: Verify I can make 1:1 call to <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email
     Given I see conversations list
@@ -28,7 +28,7 @@ Feature: Calling Matrix
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> starts instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email
     Given I see conversations list
@@ -93,7 +93,7 @@ Feature: Calling Matrix
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact1>,<Contact2> starts instance using <WaitBackend>
     Given <Contact1>,<Contact2> accepts next incoming call automatically
     Given I sign in using my email
     Given I see conversations list
@@ -121,7 +121,7 @@ Feature: Calling Matrix
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact1>,<Contact2> starts instance using <WaitBackend>
     Given <Contact1>,<Contact2> accepts next incoming call automatically
     Given I sign in using my email
     Given I see conversations list
@@ -142,7 +142,7 @@ Feature: Calling Matrix
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Contact2> starts waiting instance using <Backend>
+    Given <Contact2> starts instance using <Backend>
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email
     Given I see conversations list
@@ -173,7 +173,7 @@ Feature: Calling Matrix
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact2> starts instance using <WaitBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email
     Given I see conversations list
@@ -201,7 +201,7 @@ Feature: Calling Matrix
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact2> starts instance using <WaitBackend>
     Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email
     Given I see conversations list
