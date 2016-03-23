@@ -12,6 +12,7 @@ import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 
 import java.util.ArrayList;
@@ -376,6 +377,30 @@ public class DialogPageSteps {
     }
 
     /**
+     * Tap new message notification in conversation view
+     *
+     * @param message the message content of message notification
+     * @throws Exception
+     * @step. ^I tap new message notification of message "(.*)"$
+     */
+    @When("^I tap new message notification of message \"(.*)\"$")
+    public void WhenIChangeConversationByClickMessageNotification(String message) throws Exception {
+        getDialogPage().tapMessageNotification(message);
+    }
+
+    /**
+     * Checks to see that the new message notification is visible
+     *
+     * @param message the message content of message notification
+     * @throws Exception
+     * @step. ^I see new message notification of message "(.*)"$
+     */
+    @Then("^I see new message notification of message \"(.*)\"$")
+    public void WhenISeeNewMessageNotification(String message) throws Exception {
+        getDialogPage().waitForMessageNotification(message);
+    }
+
+    /**
      * Checks to see that a group chat exists, where the name of the group chat is the list of users
      *
      * @param participantNameAliases one or more comma-separated user names/aliases
@@ -673,6 +698,7 @@ public class DialogPageSteps {
     private enum PictureDestination {
         DIALOG, PREVIEW
     }
+
     /**
      * Checks to see that upper toolbar is visible
      *
@@ -682,5 +708,22 @@ public class DialogPageSteps {
     @Then("^I see the upper toolbar$")
     public void ThenISeeTopToolbar() throws Exception {
         Assert.assertTrue("The upper toolbar is invisible", getDialogPage().isTopToolbarVisible());
+    }
+
+    /**
+     * Checks the conversation title should be <conversationNameAliases>
+     * @param conversationNameAliases The expected conversation name aliases
+     *
+     * @throws Exception
+     * @step. ^the conversation title should be "(.*)"$
+     */
+    @Then("^the conversation title should be \"(.*)\"$")
+    public void ThenTheConversationTitleShouldBe(String conversationNameAliases) throws Exception {
+        List<String> names = new ArrayList<>();
+        for (String nameAlias : CommonSteps.splitAliases(conversationNameAliases)) {
+            names.add(usrMgr.findUserByNameOrNameAlias(nameAlias).getName());
+        }
+        String expectedConversationNames = StringUtils.join(names, ",");
+        Assert.assertEquals("The conversation name should be", expectedConversationNames, getDialogPage().getConversationTitle());
     }
 }

@@ -76,7 +76,7 @@ public class DialogPage extends AndroidPage {
 
     private static final By xpathToolbar = By.xpath(xpathStrConversationToolbar);
 
-    private static final By xpathToolBarTitle = By.xpath(String.format("%s/*[boolean(string(@value))]", xpathStrConversationToolbar));
+    private static final By xpathToolBarTitle = By.xpath("//*[@id='tv__conversation_toolbar__title']");
 
     private static final By xpathToolBarNavigation = By.xpath(String.format("%s/*[@value='' and count(*)=1]", xpathStrConversationToolbar));
 
@@ -105,6 +105,9 @@ public class DialogPage extends AndroidPage {
     public static Function<String, String> xpathStrInputFieldByValue = value -> String.format("//*[@value='%s']", value);
 
     private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__back_camera");
+
+    private static Function<String, String> xpathMessageNotificationByValue = value -> String
+            .format("//*[starts-with(@id,'ttv_message_notification_chathead__label') and @value='%s']", value);
 
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_SWIPE_RETRIES = 5;
@@ -324,6 +327,10 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idDialogImages);
     }
 
+    public String getConversationTitle() throws Exception {
+        return getElement(xpathToolBarTitle).getText();
+    }
+
     public void confirm() throws Exception {
         final By locator = xpathConfirmOKButton;
         final WebElement okBtn = getElement(locator, "OK button is not visible");
@@ -530,6 +537,14 @@ public class DialogPage extends AndroidPage {
     public boolean waitForUnsentIndicator(String text) throws Exception {
         final By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(text));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitForMessageNotification(String message) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathMessageNotificationByValue.apply(message)));
+    }
+
+    public void tapMessageNotification(String message) throws Exception {
+        getElement(By.xpath(xpathMessageNotificationByValue.apply(message))).click();
     }
 
 }
