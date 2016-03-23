@@ -395,7 +395,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C78372 @staging @torun
+  @C78372 @staging
   Scenario Outline: Verify title is not changed on receiving messages in other conversations
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
