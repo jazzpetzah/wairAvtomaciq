@@ -10,11 +10,12 @@ Feature: Upgrade
     Given User <Contact> sends encrypted message <Message> to user Myself
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     # Let the content to be delivered
-    Given I wait for 5 seconds
+    Given I wait for 10 seconds
     Given I upgrade Wire to the recent version
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     Then I see my message "<Message>" in the dialog
+    And I wait for 10 seconds
     And I see 1 image in the conversation view
     When User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Then I see 2 images in the conversation view
