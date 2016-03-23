@@ -207,7 +207,6 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I press Add button
-    And I tap on Search input on People picker page
     And I don't see Add to conversation button
     And I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
@@ -215,7 +214,7 @@ Feature: People View
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
     And I see conversations list
-    And I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
+    Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
