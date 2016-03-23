@@ -53,7 +53,7 @@ Feature: Calling Matrix
     Given I see conversations list
     And I tap on contact name <Contact>
     When <Contact> calls me
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     And I see call status message contains "<Contact>"
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
@@ -78,7 +78,7 @@ Feature: Calling Matrix
     Given I see conversations list
     And I tap on contact name <Contact>
     When <Contact> calls me
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     And I see call status message contains "<Contact>"
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
@@ -150,7 +150,7 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And <Contact1> calls <GroupChatName>
-    And I see call status message contains "<GroupChatName> RINGING"
+    And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
     Then I see Calling overlay
     And <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
@@ -182,13 +182,11 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And <Contact1> calls <GroupChatName>
-    And I see call status message contains "<GroupChatName> RINGING"
+    And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
     Then I see Calling overlay
     And <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verify that call status to <GroupChatName> is changed to active in <Timeout> seconds
-    And <Contact2> verifies to have 2 flow
-    And <Contact2> verifies that all flows have greater than 0 bytes
     When I tap Leave button on Calling overlay
     Then I do not see Calling overlay
 
@@ -211,13 +209,11 @@ Feature: Calling Matrix
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And <Contact1> calls <GroupChatName>
-    And I see call status message contains "<GroupChatName> RINGING"
+    And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
     Then I see Calling overlay
     And <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verify that call status to <GroupChatName> is changed to active in <Timeout> seconds
-    And <Contact2> verifies to have 2 flow
-    And <Contact2> verifies that all flows have greater than 0 bytes
     When I tap Leave button on Calling overlay
     Then I do not see Calling overlay
 

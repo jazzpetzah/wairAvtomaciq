@@ -57,7 +57,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When <Contact> calls me
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Ignore button on Calling overlay
     Then I do not see Calling overlay
 
@@ -74,7 +74,7 @@ Feature: Calling
     Given I see conversations list
     And I tap on contact name <Contact>
     When <Contact> calls me
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     And I see call status message contains "<Contact>"
     And I tap Leave button on Calling overlay
@@ -161,7 +161,7 @@ Feature: Calling
     And I tap Audio Call button
     And I see Calling overlay
     And <Contact2> calls me
-    And I see call status message contains "<Contact2> CALLING"
+    And I see call status message contains "<Contact2> calling"
     And I tap Ignore button on Calling overlay
     And <Contact2> stops calling me
     And I tap Leave button on Calling overlay
@@ -201,7 +201,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And <Contact> calls me
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
@@ -239,7 +239,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And <Contact1> calls <GroupChatName>
-    And I see call status message contains "<GroupChatName> RINGING"
+    And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
     # FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
     # Then I see <NumberOfAvatars> avatars on the Calling overlay
@@ -261,7 +261,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And <Contact1>,<Contact2> calls <GroupChatName>
-    And I see call status message contains "<GroupChatName> RINGING"
+    And I see call status message contains "<GroupChatName> ringing"
     And I tap Ignore button on Calling overlay
     Then I do not see Calling overlay
 
@@ -281,7 +281,7 @@ Feature: Calling
     When <Contact1> calls me
     And I tap Accept button on Calling overlay
     When <Contact2>,<Contact3> calls <GroupChatName>
-    And I see call status message contains "<GroupChatName> RINGING"
+    And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
     # And I see Accept second call alert
     # And I press Accept button on alert
@@ -303,7 +303,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And <Contact1>,<Contact2> calls <GroupChatName>
-    And I see call status message contains "<GroupChatName> RINGING"
+    And I see call status message contains "<GroupChatName> ringing"
     And I tap Ignore button on Calling overlay
     Then I do not see Calling overlay
     And I wait for 20 seconds
@@ -326,13 +326,13 @@ Feature: Calling
     Given I see conversations list
     And I tap on group chat with name <GroupChatName>
     When <Contact1>,<Contact2> calls <GroupChatName>
-    And I see call status message contains "<GroupChatName> RINGING"
+    And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
     And I see Calling overlay
     # FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
     # Then I see <NumberOfAvatars> avatars on the Calling overlay
     When <Contact3> calls me
-    And I see call status message contains "<Contact3> CALLING"
+    And I see call status message contains "<Contact3> calling"
     And I tap Accept button on Calling overlay
     # And I see Accept second call alert
     # And I press Accept button on alert
@@ -368,7 +368,7 @@ Feature: Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     And <Contact1>,<Contact2> calls <GroupChatName>
-    And I see call status message contains "<GroupChatName> RINGING"
+    And I see call status message contains "<GroupChatName> ringing"
     And I wait for 45 seconds
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
@@ -390,7 +390,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5> calls <GroupChatName>
-    And I see call status message contains "<GroupChatName> RINGING"
+    And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
     Then I see group call is Full message
 
@@ -407,7 +407,7 @@ Feature: Calling
     Given I see conversations list
     And I tap on contact name <Contact>
     When <Contact> calls me
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     Then I see call status message contains "<Contact>"
     When I close the app for 5 seconds
