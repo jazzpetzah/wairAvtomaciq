@@ -25,7 +25,7 @@ Feature: Video Calling
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When <Contact> starts a video call to <Name> using <CallBackend>
+    When <Contact> starts a video call to me
     And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
@@ -57,8 +57,8 @@ Feature: Video Calling
     Then I see dialog page
 
     Examples:
-      | Name      | Contact   | CallBackend  | Timeout |
-      | user1Name | user2Name | chrome		 | 30      |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 30      |
 
   @C28855 @rc @calling_basic
   Scenario Outline: Verify ignoring Video call [LANDSCAPE]
@@ -67,14 +67,14 @@ Feature: Video Calling
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When <Contact> starts a video call to me using <CallBackend>
+    When <Contact> starts a video call to me
     And I see call status message contains "<Contact> calling"
     And I tap Ignore button on the Calling overlay
     Then I do not see Calling overlay
 
     Examples:
-      | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | chrome      |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C28864 @staging
   Scenario Outline: Verify muting ongoing Video call [LANDSCAPE]
@@ -83,7 +83,7 @@ Feature: Video Calling
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When <Contact> starts a video call to <Name> using <CallBackend>
+    When <Contact> starts a video call to me
     And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
@@ -93,5 +93,5 @@ Feature: Video Calling
     Then I see state of Mute button has changed on Video Calling overlay
 
     Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | chrome      | 30      |
+      | Name      | Contact   | Timeout |
+      | user1Name | user2Name | 30      |
