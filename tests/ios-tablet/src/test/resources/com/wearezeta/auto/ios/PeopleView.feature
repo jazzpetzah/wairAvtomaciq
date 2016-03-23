@@ -51,7 +51,7 @@ Feature: People View
     And I press Add button
     And I click on connected user <Contact2> on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
-    And I click on Add to Conversation button on iPad popover
+    And I click on Create button on iPad popover
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
     Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
@@ -73,7 +73,7 @@ Feature: People View
     And I press Add button
     And I click on connected user <Contact2> on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
-    And I click on Add to Conversation button on iPad popover
+    And I click on Create button on iPad popover
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
