@@ -7,31 +7,40 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Assert;
-
 public class DialogPageSteps {
-
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
-    private DialogPage getDialogPage() throws Exception {
-        return pagesCollection.getPage(DialogPage.class);
-    }
-
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private static final String ANDROID_LONG_MESSAGE = CommonUtils.generateRandomString(300);
     private static final String LONG_MESSAGE_ALIAS = "LONG_MESSAGE";
+    private static final int SWIPE_DURATION_MILLISECONDS = 1300;
+    private static final int MAX_SWIPES = 5;
+    private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
+    private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
+    private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
+    private static final int CONVO_VIEW_STATE_CHANGE_TIMEOUT = 15;
+    private static final double CONVO_VIEW_MIN_SIMILARITY_SCORE = 0.5;
+    private static final int SHIELD_STATE_CHANGE_TIMEOUT = 15;
+    private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    private final ElementState mediaButtonState = new ElementState(
+            () -> getDialogPage().getMediaButtonState());
+    private final ElementState conversationViewState = new ElementState(
+            () -> getDialogPage().getConvoViewStateScreenshot());
+    private final ElementState verifiedConversationShieldState = new ElementState(
+            () -> getDialogPage().getShieldStateScreenshot());
+    private Boolean wasShieldVisible = null;
 
     private static String expandMessage(String message) {
         final Map<String, String> specialStrings = new HashMap<>();
@@ -41,6 +50,10 @@ public class DialogPageSteps {
         } else {
             return message;
         }
+    }
+
+    private DialogPage getDialogPage() throws Exception {
+        return pagesCollection.getPage(DialogPage.class);
     }
 
     /**
@@ -74,7 +87,7 @@ public class DialogPageSteps {
     /**
      * Send message to the chat
      *
-     * @param msg message to type. There are several special shortcuts: LONG_MESSAGE - to type long message
+     * @param msg               message to type. There are several special shortcuts: LONG_MESSAGE - to type long message
      * @param doNotHideKeyboard if it equals null, should hide keyboard
      * @throws Exception
      * @step. I type the message "(.*)" and send it( without hiding keyboard)?$
@@ -320,8 +333,6 @@ public class DialogPageSteps {
         getDialogPage().clickLastImageFromDialog();
     }
 
-    private static final int SWIPE_DURATION_MILLISECONDS = 1300;
-
     /**
      * @throws Exception
      * @step. ^I swipe up on dialog page
@@ -341,8 +352,6 @@ public class DialogPageSteps {
     public void WhenISwipedownOnDialogPage() throws Exception {
         getDialogPage().dialogsPagesSwipeDown(SWIPE_DURATION_MILLISECONDS);
     }
-
-    private static final int MAX_SWIPES = 5;
 
     /**
      * Swipe down on dialog page until Mediabar appears
@@ -451,13 +460,6 @@ public class DialogPageSteps {
                 getDialogPage().isLastMessageEqualTo(message, 30));
     }
 
-    private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
-    private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
-
-    private final ElementState mediaButtonState = new ElementState(
-            () -> getDialogPage().getMediaButtonState()
-    );
-
     /**
      * Store the screenshot of current media control button state
      *
@@ -502,16 +504,10 @@ public class DialogPageSteps {
      */
     @Then("^I see dialog with missed call from (.*)$")
     public void ThenISeeDialogWithMissedCallFrom(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         final String expectedMessage = contact + " CALLED";
         Assert.assertTrue(String.format("Missed call message '%s' is not visible in the conversation view", expectedMessage),
                 getDialogPage().waitUntilMissedCallMessageIsVisible(expectedMessage));
-    }
-
-    private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
-
-    private enum PictureDestination {
-        DIALOG, PREVIEW
     }
 
     /**
@@ -567,14 +563,6 @@ public class DialogPageSteps {
         int actualValue = getDialogPage().getCurrentNumberOfItemsInDialog();
         Assert.assertEquals("It looks like the conversation has some content", actualValue, 0);
     }
-
-
-    private static final int CONVO_VIEW_STATE_CHANGE_TIMEOUT = 15;
-    private static final double CONVO_VIEW_MIN_SIMILARITY_SCORE = 0.5;
-
-    private final ElementState conversationViewState = new ElementState(
-            () -> getDialogPage().getConvoViewStateScreenshot()
-    );
 
     /**
      * Store the screenshot of current convo view into internal variable
@@ -633,16 +621,6 @@ public class DialogPageSteps {
                 getDialogPage().waitForXImages(expectedCount));
     }
 
-
-    private static final int SHIELD_STATE_CHANGE_TIMEOUT = 15;
-    private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
-
-    private final ElementState verifiedConversationShieldState = new ElementState(
-            () -> getDialogPage().getShieldStateScreenshot()
-    );
-
-    private Boolean wasShieldVisible = null;
-
     /**
      * Save the state of verified conversation shield into the internal field for the future comparison
      *
@@ -681,8 +659,8 @@ public class DialogPageSteps {
     /**
      * Checks to see that an unsent indicator is present next to the particular message in the chat history
      *
-     * @throws Exception
      * @param msg the expected conversation message
+     * @throws Exception
      * @step. ^I see unsent indicator next to \"(.*)\" in the conversation view$
      */
     @Then("^I see unsent indicator next to \"(.*)\" in the conversation view$")
@@ -692,6 +670,9 @@ public class DialogPageSteps {
                 getDialogPage().waitForUnsentIndicator(msg));
     }
 
+    private enum PictureDestination {
+        DIALOG, PREVIEW
+    }
     /**
      * Checks to see that upper toolbar is visible
      *

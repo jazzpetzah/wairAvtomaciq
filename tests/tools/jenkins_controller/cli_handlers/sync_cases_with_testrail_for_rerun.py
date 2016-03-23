@@ -34,9 +34,8 @@ class SyncCasesWithTestrailForRerun(CliHandlerBase, TestrailUtilities, GherkinUt
         args = parser.parse_args()
         # 4 - means Retest status for Testrail
         case_ids = self._get_run_cases(args, '4')
-        return '\n'.join(self._update_feature_files(args.features_root,
-                                                    map(lambda x: '{}{}'.format(TESTRAIL_TAG_MAGIC, x),
-                                                        case_ids), RERUN_TAG))
+        return self._update_feature_files(args.features_root,
+                                          map(lambda x: '{}{}'.format(TESTRAIL_TAG_MAGIC, x), case_ids), RERUN_TAG)
 
     def _is_exceptions_handled_in_invoke(self):
         return True

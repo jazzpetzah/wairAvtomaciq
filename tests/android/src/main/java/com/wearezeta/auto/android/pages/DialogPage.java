@@ -227,7 +227,7 @@ public class DialogPage extends AndroidPage {
     }
 
     public void tapTopToolbarTitle() throws Exception {
-        getElement(xpathToolBarTitle, "Top toolbar title is not visible").click();
+        getElement(xpathToolbar, "Top toolbar title is not visible").click();
     }
 
     public void tapTopToolbarBackButton() throws Exception {

@@ -211,6 +211,7 @@ public class ZetaFormatter implements Formatter, Reporter {
         final String stepStatus = result.getStatus();
         steps.put(currentStep, stepStatus);
         final long stepFinishedTimestamp = System.currentTimeMillis();
+        log.debug("-----------------------");
         if (isScreenshotingEnabled) {
             if (!isScreenshotingOnPassedStepsEnabled && (result.getStatus().equals(Result.PASSED))) {
                 log.debug("Skip screenshot for passed step....");
@@ -222,10 +223,10 @@ public class ZetaFormatter implements Formatter, Reporter {
                     e.printStackTrace();
                 }
             }
-            log.debug(String.format("%s (status: %s, step duration: %s ms + screenshot duration: %s ms)", stepName, stepStatus,
+            log.debug(String.format("STEP: %s (status: %s, step duration: %s ms + screenshot duration: %s ms)", stepName, stepStatus,
                     stepFinishedTimestamp - stepStartedTimestamp, System.currentTimeMillis() - stepFinishedTimestamp));
         } else {
-            log.debug(String.format("%s (status: %s, step duration: %s ms)", stepName, stepStatus,
+            log.debug(String.format("STEP: %s (status: %s, step duration: %s ms)", stepName, stepStatus,
                     stepFinishedTimestamp - stepStartedTimestamp));
         }
     }
