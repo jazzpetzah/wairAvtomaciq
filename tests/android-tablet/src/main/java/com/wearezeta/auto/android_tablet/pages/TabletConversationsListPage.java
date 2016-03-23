@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.InvalidElementStateException;
@@ -19,7 +20,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
     private static final int PLAY_PAUSE_BUTTON_WIDTH_PERCENTAGE = 15;
 
     private static final By xpathStrConvoViewOrSelfProfile = By.xpath(String.format("//*[@id='%s' or @id='%s']",
-            TabletSelfProfilePage.idStrSelfProfileView, TabletConversationViewPage.idStrRootLocator));
+            TabletSelfProfilePage.idStrSelfProfileView, DialogPage.idStrDialogRoot));
 
     public TabletConversationsListPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {

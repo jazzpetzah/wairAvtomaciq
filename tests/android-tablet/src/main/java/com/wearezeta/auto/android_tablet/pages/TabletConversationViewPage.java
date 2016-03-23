@@ -15,14 +15,8 @@ import org.openqa.selenium.WebElement;
 
 public class TabletConversationViewPage extends AndroidTabletPage {
 
-    public static final String idStrRootLocator = "pfac__conversation__list_view_container";
-
     public static final Function<String, String> xpathStrSystemMessageByContent = content -> String
             .format("//*[@id='ltv__row_conversation__message' and contains(@value, '%s')]", content);
-
-    public static final Function<String, String> xpathStrChatHeaderMessageByContent = content -> String
-            .format("//*[@id='ttv__row_conversation__connect_request__chathead_footer__label' and contains(@value, '%s')]",
-                    content);
 
     private static final Function<String, String> xpathStrOutgoingInvitationMessageByContent = content -> String
             .format("//*[@id='ttv__connect_request__first_message' and @value='%s']", content);
@@ -52,7 +46,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idStrRootLocator));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), DialogPage.idDialogRoot);
     }
 
     public boolean waitForSystemMessageContains(String expectedMessage) throws Exception {
@@ -163,7 +157,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(idStrRootLocator));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), DialogPage.idDialogRoot);
     }
 
     public boolean waitUntilPicturesNotVisible() throws Exception {

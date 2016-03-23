@@ -396,6 +396,8 @@ Feature: VideoCalling
     Given I see Contact list with contacts
     When I minimize the application
     And <Contact> starts a video call to me
+    # Wait for a while until the call is established with UI
+    And I wait for 7 seconds
     And I see incoming call
     And I swipe to accept the call
     Then I see ongoing video call
