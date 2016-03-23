@@ -22,6 +22,7 @@ Feature: Video Calling
   Scenario Outline: Verify accepting video call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -64,6 +65,7 @@ Feature: Video Calling
   Scenario Outline: Verify ignoring Video call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -73,13 +75,14 @@ Feature: Video Calling
     Then I do not see Calling overlay
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |
 
   @C28864 @staging
   Scenario Outline: Verify muting ongoing Video call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -93,5 +96,5 @@ Feature: Video Calling
     Then I see state of Mute button has changed on Video Calling overlay
 
     Examples:
-      | Name      | Contact   | Timeout |
-      | user1Name | user2Name | 30      |
+      | Name      | Contact   | Timeout | CallBackend |
+      | user1Name | user2Name | 30      | chrome      |
