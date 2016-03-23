@@ -29,7 +29,7 @@ public class CallingOverlayPage extends IOSPage {
     private static final By nameAcceptCallButton = MobileBy.AccessibilityId("AcceptButton");
 
     private static final Function<String, String> xpathStrCallingMessageByText = text ->
-            String.format("//*[@name='CallStatusLabel' and contains(@value, '%s')]", text);
+            String.format("//*[@name='CallStatusLabel' and contains(@value, '%s')]", text.toLowerCase());
 
     private static final By nameSecondCallAlert = MobileBy.AccessibilityId("Answer call?");
 
