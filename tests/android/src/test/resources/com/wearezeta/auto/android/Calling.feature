@@ -9,7 +9,6 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact> calls me
-    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see incoming call
     And <Contact> stops calling me
     Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
@@ -30,15 +29,14 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact> calls me
-    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see incoming call
     And I see incoming call from <Contact>
     And I swipe to ignore the call
     And I do not see incoming call
 
     Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | autocall    | 60      |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
 
   @C698 @id727 @calling_basic @rc
   Scenario Outline: I can start 1:1 call
@@ -120,6 +118,7 @@ Feature: Calling
     Given I see Contact list with contacts
     When I lock the device
     And <Contact> calls me
+    And I wait for 7 seconds
     Then I see incoming call
     And I see incoming call from <Contact>
     When I swipe to accept the call
@@ -202,14 +201,13 @@ Feature: Calling
     And I tap Audio Call button from top toolbar
     Then I see outgoing call
     When <Contact1>,<Contact2> accept next incoming call automatically
-    # Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see ongoing call
     And I hang up ongoing call
     Then I do not see ongoing call
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName    | CallBackend | Timeout |
-      | user1Name | user2Name | user3Name | ChatForGroupCall | chrome      | 60      |
+      | Name      | Contact1  | Contact2  | GroupChatName    | CallBackend |
+      | user1Name | user2Name | user3Name | ChatForGroupCall | chrome      |
 
   @C804 @id3172 @regression @rc @rc42
   Scenario Outline: I can join group call in foreground
@@ -339,7 +337,7 @@ Feature: Calling
     When I swipe to accept the call
     And I see ongoing call
     And <Contact3> calls me
-Then I do not see incoming call
+    Then I do not see incoming call
 #    Then I see incoming call
 #    And I see incoming call from <Contact3>
 #    When I swipe to accept the call
