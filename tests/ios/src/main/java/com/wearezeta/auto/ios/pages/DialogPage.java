@@ -529,16 +529,6 @@ public class DialogPage extends IOSPage {
     public void pasteAndCommit() throws Exception {
         this.clickPopupPasteButton();
         this.clickKeyboardCommitButton();
-//        final WebElement convoInput = getElement(nameConversationCursorInput,
-//                "Conversation input is not visible after the timeout");
-//        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-//            inputStringFromKeyboard(convoInput, "", false, true);
-//        } else {
-//            convoInput.click();
-//            // Wait for animation
-//            Thread.sleep(1000);
-//            this.clickKeyboardCommitButton();
-//        }
     }
 
     public boolean areInputToolsVisible() throws Exception {
