@@ -140,7 +140,7 @@ public class RegistrationPageSteps {
     public void IInputNonEnglishNameAndHitEnter(String name) throws Exception {
         getRegistrationPage().setName(name);
         getRegistrationPage().tapNameInputField();
-        //getRegistrationPage().inputName();
+        getRegistrationPage().inputName();
     }
 
     @When("^I enter email (.*)$")
