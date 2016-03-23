@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.common.driver.DummyElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -196,7 +197,7 @@ public class DialogPage extends AndroidPage {
     public void scrollToTheBottom() throws Exception {
         this.hideKeyboard();
         swipeByCoordinates(1000, 50, 75, 50, 20);
-        getElement(idCursorFrame, "Cursor Frame is not visible", 5).click();
+        getElementIfDisplayed(idCursorFrame, 3).orElseGet(DummyElement::new).click();
         this.hideKeyboard();
     }
 
