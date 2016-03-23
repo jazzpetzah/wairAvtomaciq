@@ -112,7 +112,7 @@ public class DialogPageSteps {
      * @step. ^I paste and commit the text$
      */
     @When("^I paste and commit the text$")
-    public void IClickPopupPaste() throws Exception {
+    public void IClickPopupPasteAndCommitText() throws Exception {
         getDialogPage().pasteAndCommit();
     }
 
@@ -277,16 +277,19 @@ public class DialogPageSteps {
     }
 
     /**
-     * Type and send invitation link from pointed user in a conversation
+     * Copy to system clipboard, paste and send invitation link from pointed user in a conversation
      *
      * @param user username
      * @throws Exception
-     * @step. ^I type and send invitaion link from user (.*)$
+     * @step. ^I copy paste and send invitation link from user (.*)$
      */
-    @When("^I type and send invitation link from user (.*)$")
-    public void ITypeAndSendInvitationLinkFrom(String user) throws Exception {
+    @When("^I copy paste and send invitation link from user (.*)$")
+    public void ICopyPasteAndSendInvitationLinkFrom(String user) throws Exception {
         String link = CommonSteps.getInstance().GetInvitationUrl(user);
-        getDialogPage().typeAndSendConversationMessage(link);
+        IOSSimulatorHelper.setStringValueInSystemClipboard(link);
+        IOSSimulatorHelper.copySystemClipboardToSimulatorClipboard();
+        ITapHoldTextInput();
+        IClickPopupPasteAndCommitText();
     }
 
     @When("^I tap media container$")
