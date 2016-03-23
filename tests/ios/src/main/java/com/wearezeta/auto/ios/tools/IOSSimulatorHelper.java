@@ -324,17 +324,10 @@ public class IOSSimulatorHelper {
         });
     }
 
-    public static void setStringValueInSystemClipboard(String val) throws Exception {
-        String script = String.format("set the clipboard to \"%s\"", val);
-        CommonUtils.executeUIAppleScript(new String[]{
-                script
-        }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
-    }
-
     public static void copySystemClipboardToSimulatorClipboard() throws Exception {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke \"v\" using {command down}"
-        }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 }

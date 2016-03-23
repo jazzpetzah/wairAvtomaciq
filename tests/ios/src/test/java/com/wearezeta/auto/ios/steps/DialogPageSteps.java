@@ -286,7 +286,7 @@ public class DialogPageSteps {
     @When("^I copy paste and send invitation link from user (.*)$")
     public void ICopyPasteAndSendInvitationLinkFrom(String user) throws Exception {
         String link = CommonSteps.getInstance().GetInvitationUrl(user);
-        IOSSimulatorHelper.setStringValueInSystemClipboard(link);
+        CommonUtils.setStringValueInSystemClipboard(link);
         IOSSimulatorHelper.copySystemClipboardToSimulatorClipboard();
         ITapHoldTextInput();
         IClickPopupPasteAndCommitText();
