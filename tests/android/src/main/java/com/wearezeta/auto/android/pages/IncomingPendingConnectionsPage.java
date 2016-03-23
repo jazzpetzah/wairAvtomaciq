@@ -106,7 +106,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     }
 
     public boolean isPending() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idPendingUserAvatar);
+        return selectVisibleElements(idPendingUserAvatar).size() > 0;
     }
 
     public void pressLeftConnectButton() throws Exception {
