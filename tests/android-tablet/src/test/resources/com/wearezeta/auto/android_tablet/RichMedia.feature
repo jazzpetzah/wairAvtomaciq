@@ -9,9 +9,7 @@ Feature: Rich Media
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given User <Contact> sends encrypted image <GifName> to single user conversation Myself
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     When I scroll to the bottom of the conversation view
     Then I see a new picture in the conversation view
     And I see the picture in the conversation view is animated
@@ -31,9 +29,7 @@ Feature: Rich Media
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given User <Contact> sends encrypted image <GifName> to single user conversation Myself
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     When I scroll to the bottom of the conversation view
     Then I see a new picture in the conversation view
     And I see the picture in the conversation view is animated
@@ -52,10 +48,8 @@ Feature: Rich Media
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I remember the coordinates of conversation item <Contact>
     And I tap the conversation <Contact>
-    And I see the conversation view
     And I tap the text input in the conversation view
     When I type the message "<SoundCloudLink>" in the conversation view
     And I send the typed message in the conversation view
@@ -79,10 +73,8 @@ Feature: Rich Media
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I remember the coordinates of conversation item <Contact>
     And I tap the conversation <Contact>
-    And I see the conversation view
     And I tap the text input in the conversation view
     When I type the message "<SoundCloudLink>" in the conversation view
     And I send the typed message in the conversation view
@@ -105,9 +97,7 @@ Feature: Rich Media
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     When I tap the text input in the conversation view
     Then I do not see Giphy button in the conversation view
     When I type the message "<Message>" in the conversation view
@@ -132,9 +122,7 @@ Feature: Rich Media
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     When I tap the text input in the conversation view
     Then I do not see Giphy button in the conversation view
     When I type the message "<Message>" in the conversation view
@@ -161,9 +149,7 @@ Feature: Rich Media
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given User <Contact> sends <MsgsInConvo> encrypted messages to user Myself
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     And I tap the text input in the conversation view
     When I type the message "<SoundCloudLink>" in the conversation view
     And I send the typed message in the conversation view

@@ -8,9 +8,7 @@ Feature: Offline Mode
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     When User <Contact> sends encrypted message <Message1> to user Myself
     Then I see the message "<Message1>" in the conversation view
     When I enable Airplane mode on the device
@@ -37,9 +35,7 @@ Feature: Offline Mode
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     When I enable Airplane mode on the device
     And I tap the text input in the conversation view
     And I type the message "<Message>" in the conversation view

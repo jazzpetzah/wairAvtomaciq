@@ -28,12 +28,12 @@ public class ConversationViewPageSteps {
 
 	/**
 	 * Verifies whether conversation view is currently visible or not
-	 * 
+	 *
 	 * @step. ^I (do not )?see (?:the |\\s*)[Cc]onversation view$
-	 * 
+	 *
 	 * @param shouldNotSee
 	 *            equals to null is 'do not ' does not exist in step signature
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@When("^I (do not )?see (?:the |\\s*)[Cc]onversation view$")

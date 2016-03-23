@@ -711,6 +711,43 @@ public class DialogPageSteps {
     }
 
     /**
+     * Checks to see whether Audio/Video call button is visible in upper toolbar
+     *
+     * @param doNotSee equal null means the Video call button should be visible
+     * @throws Exception
+     */
+    @Then("I( do not)? see the (audio|video) call button in upper toolbar$")
+    public void ThenIseeVideoCallButtonInUpperToolbar(String doNotSee, String callType) throws Exception {
+        if (doNotSee == null) {
+            switch (callType) {
+                case "audio":
+                    Assert.assertTrue("The audio call button should be visible in upper toolbar",
+                            getDialogPage().isAudioCallIconInToptoolbarVisible());
+                    break;
+                case "video":
+                    Assert.assertTrue("The video call button should be visible in upper toolbar",
+                            getDialogPage().isVideoCallIconInToptoolbarVisible());
+                    break;
+                default:
+                    throw new IllegalArgumentException(String.format("Unknown button name '%s'", callType));
+            }
+        } else {
+            switch (callType) {
+                case "audio":
+                    Assert.assertTrue("The audio call button should be visible in upper toolbar",
+                            getDialogPage().isAudioCallIconInToptoolbarInvisible());
+                    break;
+                case "video":
+                    Assert.assertTrue("The video call button should be visible in upper toolbar",
+                            getDialogPage().isVideoCallIconInToptoolbarInvisible());
+                    break;
+                default:
+                    throw new IllegalArgumentException(String.format("Unknown button name '%s'", callType));
+            }
+        }
+    }
+
+    /**
      * Checks the conversation title should be <conversationNameAliases>
      * @param conversationNameAliases The expected conversation name aliases
      *

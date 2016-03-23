@@ -9,7 +9,6 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     When <Contact1> calls <GroupChatName> using <CallBackend>
     And I see incoming call
@@ -29,7 +28,6 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    When I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And <Contact> calls me using <CallBackend>
     Then I see incoming call
@@ -60,9 +58,7 @@ Feature: Calling
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given <Contact2>,<Contact3>,<Contact4> accepts next incoming call automatically
-    When I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
     And <Contact1> calls <GroupChatName> using <CallBackend2>
     Then I see incoming call
     When I swipe to accept the call
@@ -84,7 +80,6 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    When I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And <Contact> calls me using <CallBackend>
     Then I see incoming call
@@ -112,8 +107,6 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact1> in my conversations list
-    And I see the conversation <Contact2> in my conversations list
     And I tap the conversation <Contact1>
     When <Contact2> calls me using <CallBackend>
     And I see incoming call
@@ -138,8 +131,6 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact1> in my conversations list
-    And I see the conversation <Contact2> in my conversations list
     And I tap the conversation <Contact1>
     When <Contact2> calls me using <CallBackend>
     And I see incoming call
@@ -162,7 +153,6 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I minimize the application
     When <Contact> calls me using <CallBackend>
     Then I see incoming call
@@ -184,7 +174,6 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I lock the device
     When <Contact> calls me using <CallBackend>
     Then I see incoming call
@@ -206,8 +195,6 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact1> in my conversations list
-    And I see the conversation <Contact2> in my conversations list
     When <Contact1> calls me using <CallBackend>
     Then I see incoming call from <Contact1>
     When I swipe to accept the call
@@ -229,7 +216,6 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And <Contact> calls me using <CallBackend>
     And I see incoming call
@@ -248,7 +234,6 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And <Contact> calls me using <CallBackend>
     And I see incoming call

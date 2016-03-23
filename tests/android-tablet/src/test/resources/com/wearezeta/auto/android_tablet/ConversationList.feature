@@ -8,9 +8,7 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     And I tap conversation name from top toolbar
     And I see the Single user popover
     And I tap Options button on Single user popover
@@ -42,9 +40,7 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     And I tap conversation name from top toolbar
     And I see the Single user popover
     And I tap Options button on Single user popover
@@ -54,9 +50,7 @@ Feature: Conversation List
     And I tap outside of Single user popover
     And I do not see the Single user popover
     When I swipe right to show the conversations list
-    Then I see the conversation <Contact> in my conversations list is silenced
     When I tap the conversation <Contact>
-    And I see the conversation view
     And I tap conversation name from top toolbar
     Then I see the Single user popover
     When I tap Options button on Single user popover
@@ -80,7 +74,6 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact1> in my conversations list
     When I swipe right the conversations list item <Contact1>
     Then I see Conversation Actions overlay
     When I select <ItemSilence> menu item on Conversation Actions overlay
@@ -104,7 +97,6 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact1> in my conversations list
     When I swipe right the conversations list item <Contact1>
     Then I see Conversation Actions overlay
     When I select <ItemSilence> menu item on Conversation Actions overlay
@@ -128,9 +120,7 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     And I tap the text input in the conversation view
     When I type the message "<SoundCloudLink>" in the conversation view
     And I send the typed message in the conversation view
@@ -151,9 +141,7 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     And I tap the text input in the conversation view
     When I type the message "<SoundCloudLink>" in the conversation view
     And I send the typed message in the conversation view
@@ -173,7 +161,6 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact1> in my conversations list
     And User <Contact1> sends encrypted message <Msg1> to user Myself
     When I swipe right the conversations list item <Contact1>
     Then I see Conversation Actions overlay
@@ -186,9 +173,7 @@ Feature: Conversation List
     Then I see "<Contact1>" avatar on People Picker page
     And I close People Picker
     When User <Contact1> sends encrypted message <Msg2> to user Myself
-    Then I see conversation <Contact1> in my conversations list
     When I tap the conversation <Contact1>
-    Then I see the conversation view
     And I see the message "<Msg2>" in the conversation view
     And I do not see the message "<Msg1>" in the conversation view
 
@@ -205,7 +190,6 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And User <Contact1> sends encrypted message <Msg1> to group conversation <GroupChatName>
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay
@@ -218,9 +202,7 @@ Feature: Conversation List
     Then I see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
     And User <Contact1> sends encrypted message <Msg2> to group conversation <GroupChatName>
-    Then I see conversation <GroupChatName> in my conversations list
     When I tap the conversation <GroupChatName>
-    Then I see the conversation view
     And I see the message "<Msg2>" in the conversation view
     And I do not see the message "<Msg1>" in the conversation view
 
@@ -237,7 +219,6 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And User <Contact1> sends encrypted message <Msg1> to group conversation <GroupChatName>
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay
@@ -251,9 +232,7 @@ Feature: Conversation List
     Then I see "<GroupChatName>" group avatar on People Picker page
     And I close People Picker
     And User <Contact1> sends encrypted message <Msg2> to group conversation <GroupChatName>
-    Then I see conversation <GroupChatName> in my conversations list
     When I tap the conversation <GroupChatName>
-    Then I see the conversation view
     And I see the message "<Msg2>" in the conversation view
     And I do not see the message "<Msg1>" in the conversation view
 
@@ -270,7 +249,6 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     And I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay
     When I select <DeleteItem> menu item on Conversation Actions overlay
@@ -300,7 +278,6 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     And I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay
     When I select <DeleteItem> menu item on Conversation Actions overlay
@@ -331,7 +308,6 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     And I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay
     When I select <DeleteItem> menu item on Conversation Actions overlay
@@ -373,7 +349,6 @@ Feature: Conversation List
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     And I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     When I swipe right the conversations list item <GroupChatName>
     Then I see Conversation Actions overlay
     When I select <DeleteItem> menu item on Conversation Actions overlay

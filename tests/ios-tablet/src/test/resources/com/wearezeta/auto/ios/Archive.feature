@@ -22,7 +22,7 @@ Feature: Archive
     When Myself archived conversation with <ArchivedUser>
     And I dont see conversation <ArchivedUser> in contact list
     And <ArchivedUser> calls me using <CallBackend>
-    And I see call status message contains "<ArchivedUser> CALLING"
+    And I see call status message contains "<ArchivedUser> calling"
     And I tap Ignore button on Calling overlay
     Then I see first item in contact list named <ArchivedUser>
 
@@ -47,7 +47,7 @@ Feature: Archive
     When User <ArchivedUser> securely pings conversation <Name>
     And I dont see conversation <ArchivedUser> in contact list
     And <ArchivedUser> calls me using <CallBackend>
-    And I see call status message contains "<ArchivedUser> CALLING"
+    And I see call status message contains "<ArchivedUser> calling"
     And I tap Ignore button on Calling overlay
     Then I see first item in contact list named <ArchivedUser>
 

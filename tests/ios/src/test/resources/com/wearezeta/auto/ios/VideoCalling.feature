@@ -8,7 +8,7 @@ Feature: Video Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Video Call button
-    Then I see call status message contains "<Contact> RINGING"
+    Then I see call status message contains "<Contact> ringing"
     And I see Leave button on Calling overlay
 
     Examples:
@@ -23,7 +23,7 @@ Feature: Video Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Video Call button
-    Then I see call status message contains "<Contact> RINGING"
+    Then I see call status message contains "<Contact> ringing"
     When I tap Leave button on Calling overlay
     Then I see missed call from contact YOU
 
@@ -39,7 +39,7 @@ Feature: Video Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When <Contact> starts a video call to <Name>
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
@@ -80,7 +80,7 @@ Feature: Video Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When <Contact> starts a video call to me
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Ignore button on the Calling overlay
     Then I do not see Calling overlay
 
@@ -97,7 +97,7 @@ Feature: Video Calling
     Given I see conversations list
     And I remember the state of <Contact> conversation item
     When <Contact> starts a video call to me
-    Then I see call status message contains "<Contact> CALLING"
+    Then I see call status message contains "<Contact> calling"
     And <Contact> stops all calls to me
     And I do not see Calling overlay
     Then I see the state of <Contact> conversation item is changed
@@ -117,10 +117,10 @@ Feature: Video Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     And <Contact1> starts a video call to me
-    And I see call status message contains "<Contact1> CALLING"
+    And I see call status message contains "<Contact1> calling"
     And I tap Accept Video button on Calling overlay
     When <Contact2> calls me
-    And I see call status message contains "<Contact2> CALLING"
+    And I see call status message contains "<Contact2> calling"
     Then I tap Accept button on Calling overlay
     And I do not see Accept Video button on Calling overlay
     And I see Leave button on Calling overlay
@@ -156,7 +156,7 @@ Feature: Video Calling
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Video call action button on People picker page
-    Then I see call status message contains "<Contact> RINGING"
+    Then I see call status message contains "<Contact> ringing"
     And I see Leave button on Video Calling overlay
 
     Examples:
@@ -170,7 +170,7 @@ Feature: Video Calling
     Given <Contact> starts instance using <VideoCallBackend>
     Given I sign in using my email or phone number
     And <Contact>,<Contact2> starts a video call to me
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     Then I see Switch Camera button on Video Calling overlay
@@ -192,7 +192,7 @@ Feature: Video Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When <Contact> starts a video call to <Name>
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see Mute button on Video Calling overlay
@@ -211,12 +211,12 @@ Feature: Video Calling
     Given <Contact>,<Contact2> starts instance using <VideoCallBackend>
     Given I sign in using my email or phone number
     And <Contact> starts a video call to me
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     Then I see Switch Camera button on Video Calling overlay
     When <Contact2> starts a video call to me
-    And I see call status message contains "<Contact2> CALLING"
+    And I see call status message contains "<Contact2> calling"
     And I tap Ignore button on the Calling overlay
     Then I see Mute button on Video Calling overlay
     And <Contact> verifies that call status to me is changed to active in <TimeoutAlreadyInCall> seconds
@@ -234,7 +234,7 @@ Feature: Video Calling
     Given I sign in using my email or phone number
     Given I see conversations list
     When <Contact> starts a video call to <Name> 
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see Call Video button on Video Calling overlay

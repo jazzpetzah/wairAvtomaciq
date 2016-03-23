@@ -44,7 +44,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When <Contact> calls me using <CallBackend>
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Ignore button on Calling overlay
     Then I do not see Calling overlay
 
@@ -61,7 +61,7 @@ Feature: Calling
     Given I see conversations list
     And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     Then I see call status message contains "<Contact>"
 
@@ -107,7 +107,7 @@ Feature: Calling
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
-    Given <Contact1> starts waiting instance using <CallBackend>
+    Given <Contact1> starts instance using <CallBackend>
     Given <Contact1> accepts next incoming call automatically
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -117,7 +117,7 @@ Feature: Calling
     And I tap Audio Call button
     And I see Calling overlay
     And <Contact2> calls me using <CallBackend2>
-    And I see call status message contains "<Contact2> CALLING"
+    And I see call status message contains "<Contact2> calling"
     And I tap Ignore button on Calling overlay
     And I see Calling overlay
     And <Contact2> stops all calls to me
@@ -156,7 +156,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And <Contact> calls me using <CallBackend>
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     Then I see Leave button on Calling overlay
 
@@ -173,7 +173,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And <Contact> calls me using <CallBackend>
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     Then I see Leave button on Calling overlay
 
@@ -194,7 +194,7 @@ Feature: Calling
     And I tap Leave button on Calling overlay
     Then I do not see Calling overlay
     And <Contact> calls me using <CallBackend>
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     And <Contact> stops all calls to me
     And I do not see Calling overlay
@@ -212,7 +212,7 @@ Feature: Calling
     Given I see conversations list
     And I tap on contact name <Contact>
     When <Contact> calls me using <CallBackend>
-    And I see call status message contains "<Contact> CALLING"
+    And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     And I see Leave button on Calling overlay
     When I close the app for 5 seconds
