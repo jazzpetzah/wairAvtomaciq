@@ -381,9 +381,9 @@ public class DialogPageSteps {
      *
      * @param message the message content of message notification
      * @throws Exception
-     * @step. ^I tap new message notification of message "(.*)"$
+     * @step. ^I tap new message notification "(.*)"$
      */
-    @When("^I tap new message notification of message \"(.*)\"$")
+    @When("^I tap new message notification \"(.*)\"$")
     public void WhenIChangeConversationByClickMessageNotification(String message) throws Exception {
         getDialogPage().tapMessageNotification(message);
     }
@@ -393,9 +393,9 @@ public class DialogPageSteps {
      *
      * @param message the message content of message notification
      * @throws Exception
-     * @step. ^I see new message notification of message "(.*)"$
+     * @step. ^I see new message notification "(.*)"$
      */
-    @Then("^I see new message notification of message \"(.*)\"$")
+    @Then("^I see new message notification \"(.*)\"$")
     public void WhenISeeNewMessageNotification(String message) throws Exception {
         getDialogPage().waitForMessageNotification(message);
     }
@@ -749,8 +749,8 @@ public class DialogPageSteps {
 
     /**
      * Checks the conversation title should be <conversationNameAliases>
-     * @param conversationNameAliases The expected conversation name aliases
      *
+     * @param conversationNameAliases The expected conversation name aliases
      * @throws Exception
      * @step. ^the conversation title should be "(.*)"$
      */
@@ -761,6 +761,7 @@ public class DialogPageSteps {
             names.add(usrMgr.findUserByNameOrNameAlias(nameAlias).getName());
         }
         String expectedConversationNames = StringUtils.join(names, ",");
-        Assert.assertEquals("The conversation name should be", expectedConversationNames, getDialogPage().getConversationTitle());
+        Assert.assertTrue(String.format("The conversation title should be %s", expectedConversationNames),
+                getDialogPage().isConversationTitileVisible(expectedConversationNames));
     }
 }

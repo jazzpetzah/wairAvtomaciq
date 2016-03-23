@@ -77,8 +77,6 @@ public class DialogPage extends AndroidPage {
 
     private static final By xpathToolbar = By.xpath(xpathStrConversationToolbar);
 
-    private static final By xpathToolBarTitle = By.xpath("//*[@id='tv__conversation_toolbar__title']");
-
     private static final By xpathToolBarNavigation =
             By.xpath(String.format("%s/*[@value='' and count(*)=1]", xpathStrConversationToolbar));
 
@@ -110,6 +108,9 @@ public class DialogPage extends AndroidPage {
 
     private static Function<String, String> xpathMessageNotificationByValue = value -> String
             .format("//*[starts-with(@id,'ttv_message_notification_chathead__label') and @value='%s']", value);
+
+    private static Function<String, String> xpathConversationTitleByValue = value -> String
+            .format("//*[@id='tv__conversation_toolbar__title' and @value='%s']", value);
 
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_SWIPE_RETRIES = 5;
@@ -318,8 +319,9 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idDialogImages);
     }
 
-    public String getConversationTitle() throws Exception {
-        return getElement(xpathToolBarTitle).getText();
+    public boolean isConversationTitileVisible(String conversationTitle) throws Exception {
+        final By locator = By.xpath(xpathConversationTitleByValue.apply(conversationTitle));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
     public void confirm() throws Exception {
@@ -547,7 +549,8 @@ public class DialogPage extends AndroidPage {
     }
 
     public boolean waitForMessageNotification(String message) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathMessageNotificationByValue.apply(message)));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathMessageNotificationByValue.apply(message)));
     }
 
     public void tapMessageNotification(String message) throws Exception {

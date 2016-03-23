@@ -426,7 +426,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And the conversation title should be "<Contact1>"
     And User <Contact2> send message "<Message1>" to user Myself
-    And I tap new message notification of message "<Message1>"
+    And I tap new message notification "<Message1>"
     Then I see my message "<Message1>" in the dialog
     And the conversation title should be "<Contact2>"
     And I tap conversation name from top toolbar
@@ -434,7 +434,7 @@ Feature: Conversation View
     When I tap back button in upper toolbar
     And I tap on contact name <Contact1>
     And User <Contact2> send message "<Message2>" to user Myself
-    And I see new message notification of message "<Message2>"
+    And I see new message notification "<Message2>"
     Then the conversation title should be "<Contact1>"
 
     Examples:
