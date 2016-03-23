@@ -181,6 +181,7 @@ public class CommonOSXSteps {
 		try {
 			startAppium4Mac();
 			killAllApps();
+                        Thread.sleep(10000);
 			clearAppData();
 			clearAddressbookPermission();
 		} catch (Exception e) {
@@ -195,7 +196,6 @@ public class CommonOSXSteps {
 
 		clearDrivers();
 		osxDriverFuture = createOSXDriver();
-                Thread.sleep(30000);
 		webDriverFuture = createWebDriver(osxDriverFuture);
 
 		// get drivers instantly
@@ -213,7 +213,6 @@ public class CommonOSXSteps {
 
 		LOG.debug("Activating app");
 		osxDriver.navigate().to(WIRE_APP_PATH);// activate app
-                Thread.sleep(30000);
 		waitForAppStartup(osxDriver);
 		mainWirePage.focusApp();
 
