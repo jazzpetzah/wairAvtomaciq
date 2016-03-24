@@ -80,77 +80,7 @@ public class IOSSimulatorHelper {
         }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
-    /**
-     * Type a string using keyboard and avoiding autocorrection
-     *
-     * @param str the string to enter
-     * @throws Exception
-     */
-    public static void typeString(String str, boolean useAutocompleteWorkaround) throws Exception {
-        activateWindow();
-        String[] script;
-        if (useAutocompleteWorkaround) {
-            // FIXME: Quote string for bash script
-            script = new String[]{
-                    "str_to_enter='" + str + "'",
-                    "for (( i=0; i<${#str_to_enter}; i++ )); do",
-                    "    current_char=\"${str_to_enter:$i:1}\"",
-                    "    /usr/bin/osascript \\",
-                    "         -e \"tell application \\\"System Events\\\" to keystroke \\\"${current_char}\\\"\" \\",
-                    "    sleep 0.3",
-                    "    /usr/bin/osascript -e 'tell application \"System Events\" to key code 53'",
-                    "done",
-                    "sleep 2",
-            };
-        } else {
-            script = new String[]{
-                    "str_to_enter='" + str + "'",
-                    "for (( i=0; i<${#str_to_enter}; i++ )); do",
-                    "    current_char=\"${str_to_enter:$i:1}\"",
-                    "    /usr/bin/osascript \\",
-                    "         -e \"tell application \\\"System Events\\\" to keystroke \\\"${current_char}\\\"\" \\",
-                    "    sleep 0.3",
-                    "done",
-                    "sleep 2",
-            };
-        }
-        CommonUtils.executeUIShellScript(script).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
-    }
-
-    public static void typeStringAndPressEnter(String str, boolean useAutocompleteWorkaround) throws Exception {
-        activateWindow();
-        String[] script;
-        if (useAutocompleteWorkaround) {
-            // FIXME: Quote string for bash script
-            script = new String[]{
-                    "str_to_enter='" + str + "'",
-                    "for (( i=0; i<${#str_to_enter}; i++ )); do",
-                    "    current_char=\"${str_to_enter:$i:1}\"",
-                    "    /usr/bin/osascript \\",
-                    "         -e \"tell application \\\"System Events\\\" to keystroke \\\"${current_char}\\\"\" \\",
-                    "    sleep 0.3",
-                    "    /usr/bin/osascript -e 'tell application \"System Events\" to key code 53'",
-                    "done",
-                    "/usr/bin/osascript -e 'tell application \"System Events\" to keystroke return'",
-                    "sleep 2",
-            };
-        } else {
-            script = new String[]{
-                    "str_to_enter='" + str + "'",
-                    "for (( i=0; i<${#str_to_enter}; i++ )); do",
-                    "    current_char=\"${str_to_enter:$i:1}\"",
-                    "    /usr/bin/osascript \\",
-                    "         -e \"tell application \\\"System Events\\\" to keystroke \\\"${current_char}\\\"\" \\",
-                    "    sleep 0.3",
-                    "done",
-                    "/usr/bin/osascript -e 'tell application \"System Events\" to keystroke return'",
-                    "sleep 2",
-            };
-        }
-        CommonUtils.executeUIShellScript(script).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
-    }
-
-    private static void activateWindow() throws Exception {
+    public static void activateWindow() throws Exception {
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to tell application process \"Simulator\"",
                 "set frontmost to false",

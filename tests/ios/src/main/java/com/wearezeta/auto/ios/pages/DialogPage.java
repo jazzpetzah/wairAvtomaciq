@@ -396,12 +396,12 @@ public class DialogPage extends IOSPage {
     public void typeAndSendConversationMessage(String message) throws Exception {
         final WebElement convoInput = getElement(nameConversationCursorInput,
                 "Conversation input is not visible after the timeout");
+        convoInput.click();
+        // Wait for animation
+        Thread.sleep(1000);
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            inputStringFromKeyboard(convoInput, message, true, true);
+            inputStringFromKeyboard(convoInput, message, true);
         } else {
-            convoInput.click();
-            // Wait for animation
-            Thread.sleep(1000);
             convoInput.sendKeys(message);
             this.clickKeyboardCommitButton();
         }
@@ -410,12 +410,12 @@ public class DialogPage extends IOSPage {
     public void typeMessage(String message) throws Exception {
         final WebElement convoInput = getElement(nameConversationCursorInput,
                 "Conversation input is not visible after the timeout");
+        convoInput.click();
+        // Wait for animation
+        Thread.sleep(1000);
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            inputStringFromKeyboard(convoInput, message, true, false);
+            inputStringFromKeyboard(convoInput, message, false);
         } else {
-            convoInput.click();
-            // Wait for animation
-            Thread.sleep(1000);
             convoInput.sendKeys(message);
         }
     }

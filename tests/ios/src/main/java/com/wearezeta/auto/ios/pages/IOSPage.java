@@ -151,25 +151,28 @@ public abstract class IOSPage extends BasePage {
      * @throws Exception
      */
     public void inputStringFromKeyboard(WebElement dstElement, int relativeClickPointX, int relativeClickPointY,
-                                        String str, boolean useAutocompleteWorkaround, boolean shouldCommitInput)
-            throws Exception {
+                                        String str, boolean shouldCommitInput) throws Exception {
         final Dimension elSize = dstElement.getSize();
         final Point elLocation = dstElement.getLocation();
+        final int tapX = elLocation.x + (relativeClickPointX * elSize.width) / 100;
+        final int tapY = elLocation.y + (relativeClickPointY * elSize.height) / 100;
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            Thread.sleep(1000);
-            clickAtSimulator(elLocation.x + (relativeClickPointX * elSize.width) / 100,
-                    elLocation.y + (relativeClickPointY * elSize.height) / 100);
-            Thread.sleep(2000);
+            CommonUtils.setStringValueInSystemClipboard(str);
+
+            // FIXME: Paste does not appear in the input field until we press Cmd + V in the window :-@
+            IOSSimulatorHelper.activateWindow();
+            CommonUtils.pressCmdVByAppleScript();
+
+            getDriver().tap(1, tapX, tapY, DriverUtils.LONG_TAP_DURATION);
+            getElement(nameEditingItemPaste).click();
+            DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemPaste);
+            clickAtSimulator(tapX, tapY);
             if (shouldCommitInput) {
-                IOSSimulatorHelper.typeStringAndPressEnter(str, useAutocompleteWorkaround);
-            } else {
-                IOSSimulatorHelper.typeString(str, useAutocompleteWorkaround);
+                Thread.sleep(1000);
+                IOSSimulatorHelper.pressEnterKey();
             }
         } else {
-            getDriver().tap(1,
-                    elLocation.x + (relativeClickPointX * elSize.width) / 100,
-                    elLocation.y + (relativeClickPointY * elSize.height) / 100,
-                    DriverUtils.SINGLE_TAP_DURATION);
+            getDriver().tap(1, tapX, tapY, DriverUtils.SINGLE_TAP_DURATION);
             this.onScreenKeyboard.typeString(str);
             if (shouldCommitInput) {
                 this.clickKeyboardCommitButton();
@@ -177,9 +180,8 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    public void inputStringFromKeyboard(WebElement dstElement, String str, boolean useAutocompleteWorkaround,
-                                        boolean shouldCommitInput) throws Exception {
-        inputStringFromKeyboard(dstElement, 50, 50, str, useAutocompleteWorkaround, shouldCommitInput);
+    public void inputStringFromKeyboard(WebElement dstElement, String str, boolean shouldCommitInput) throws Exception {
+        inputStringFromKeyboard(dstElement, 50, 50, str, shouldCommitInput);
     }
 
     public boolean isKeyboardVisible() throws Exception {
