@@ -415,3 +415,28 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName     |
       | user1Name | user2Name | user3Name | SendMessGroupChat |
+
+  @C78372 @staging
+  Scenario Outline: Verify title is not changed on receiving messages in other conversations
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And the conversation title should be "<Contact1>"
+    And User <Contact2> send message "<Message1>" to user Myself
+    And I tap new message notification "<Message1>"
+    Then I see my message "<Message1>" in the dialog
+    And the conversation title should be "<Contact2>"
+    And I tap conversation name from top toolbar
+    And I press back button
+    When I tap back button in upper toolbar
+    And I tap on contact name <Contact1>
+    And User <Contact2> send message "<Message2>" to user Myself
+    And I see new message notification "<Message2>"
+    Then the conversation title should be "<Contact1>"
+
+    Examples:
+      | Name      | Contact1  | Contact2  |  Message1 | Message2 |
+      | user1Name | user2Name | user3Name |  Msg1     | Msg2     |
