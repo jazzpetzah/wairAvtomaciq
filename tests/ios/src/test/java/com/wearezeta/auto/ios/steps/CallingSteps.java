@@ -1,9 +1,12 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
+import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -177,5 +180,21 @@ public class CallingSteps {
     @When("(.*) starts a video call to (.*)$")
     public void UserXStartVideoCallsToUserYUsingCallBackend(String caller, String conversationName) throws Exception {
         commonCallingSteps.startVideoCallToConversation(splitAliases(caller), conversationName);
+    }
+
+    /**
+     * Verify that each call of the instances was successful
+     *
+     * @step. (.*) verif(?:ies|y) that call to conversation (.*) was successful$
+     *
+     * @param callees comma separated list of callee names/aliases
+     * @throws Exception
+     */
+    @Then("(.*) verif(?:ies|y) that call to conversation (.*) was successful$")
+    public void UserXVerifesCallWasSuccessful(String callees, String conversation) throws Exception {
+        for (Call call : commonCallingSteps.getOutgoingCall(splitAliases(callees), conversation)) {
+            assertNotNull("There are no metrics available for this call \n" + call, call.getMetrics());
+            assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
+        }
     }
 }
