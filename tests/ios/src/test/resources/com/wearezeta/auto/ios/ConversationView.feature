@@ -710,8 +710,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    Then I see dialog page
-    And I see Upper Toolbar on dialog page
+    Then I see Upper Toolbar on dialog page
 
     Examples:
       | Name      | Contact   |
