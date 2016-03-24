@@ -199,7 +199,7 @@ public class DialogPage extends AndroidPage {
     // NOTE: visible
     public void scrollToTheBottom() throws Exception {
         this.hideKeyboard();
-        swipeByCoordinates(1000, 50, 75, 50, 20);
+        swipeByCoordinates(1000, 50, 75, 50, 40);
         getElementIfDisplayed(idCursorFrame, 3).orElseGet(DummyElement::new).click();
         this.hideKeyboard();
     }
@@ -297,7 +297,6 @@ public class DialogPage extends AndroidPage {
     }
 
     public boolean waitForMessage(String text) throws Exception {
-        scrollToTheBottom();
         final By locator = By.xpath(xpathStrConversationMessageByText.apply(text));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }

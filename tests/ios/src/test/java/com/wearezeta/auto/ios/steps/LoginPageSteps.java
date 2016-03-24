@@ -114,7 +114,6 @@ public class LoginPageSteps {
     @When("^I enter phone number and verification code$")
     public void IEnterPhoneNumberAndVerificationCode() throws Throwable {
         ClientUser self = usrMgr.getSelfUserOrThrowError();
-        self.setPhoneNumber(new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX));
         getRegistrationPage().selectWirestan();
         getRegistrationPage().inputPhoneNumber(
                 self.getPhoneNumber().toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));

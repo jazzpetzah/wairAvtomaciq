@@ -70,7 +70,7 @@ Feature: Self Profile
       | Name      | NewUsername |
       | user1Name | New Name    |
 
-  @C1085 @clumsy @rc @regression @id3849 @ZIOS-5836
+  @C1085 @clumsy @rc @regression @id3849
   Scenario Outline: Verify adding phone number to the contact signed up with email
     Given There is 1 user where <Name> is me with email only
     Given I sign in using my email
@@ -80,7 +80,6 @@ Feature: Self Profile
     Given I see conversations list
     When I tap my avatar
     And I tap to add my phone number
-    And I see country picker button on Sign in screen
     And I enter phone number and verification code
     Then I see phone number attached to profile
 
