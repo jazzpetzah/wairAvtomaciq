@@ -316,7 +316,7 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I type and send invitation link from user <Contact2>
+    And I copy paste and send invitation link from user <Contact2>
     And I tap on message "<Link>"
     And I wait for 10 seconds
     And I press Enter key in Simulator window

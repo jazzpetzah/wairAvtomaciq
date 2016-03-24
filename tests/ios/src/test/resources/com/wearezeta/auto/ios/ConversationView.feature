@@ -352,8 +352,9 @@ Feature: Conversation View
     And I wait for 1 second
     And I tap play/pause button in contact list next to username <Contact>
     And I tap on contact name <Contact>
-    Then I see media container state is not changed
-    When I navigate back to conversations list
+    Then I see media container state is changed
+    When I remember media container state
+    And I navigate back to conversations list
     And I wait for 1 second
     And I tap play/pause button in contact list next to username <Contact>
     And I tap on contact name <Contact>
@@ -697,6 +698,19 @@ Feature: Conversation View
     And I tap Camera Shutter button
     And I confirm my choice
     Then I see 1 photo in the dialog
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C77924 @staging
+  Scenario Outline: Verify an upper toolbar exists in the conversation view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    Then I see Upper Toolbar on dialog page
 
     Examples:
       | Name      | Contact   |

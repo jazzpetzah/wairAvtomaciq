@@ -119,11 +119,12 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given User Myself removes his avatar picture
+    Given <Contact> starts instance using <CallBackend>
     Given I Sign in on tablet using my email
     And I see conversations list
     When I remember the left side state of <Contact> conversation item on iPad
-    When <Contact> calls me using <CallBackend>
-    And <Contact> stops all calls to me
+    When <Contact> calls me
+    And <Contact> stops calling me
     Then I see the state of <Contact> conversation item is changed on iPad
     When I remember the left side state of <Contact> conversation item on iPad
     And User <Contact> sends <Number> encrypted messages to user Myself

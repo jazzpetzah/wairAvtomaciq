@@ -113,7 +113,9 @@ public class DialogPage extends IOSPage {
     protected static final By nameAddPictureButton = MobileBy.AccessibilityId("ComposeControllerPictureButton");
     private static final By namePingButton = MobileBy.AccessibilityId("ComposeControllerPingButton");
 
+
     private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[@name='ConversationView']";
+    private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
 
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
     private static final By xpathVideoCallButton = MobileBy.AccessibilityId("videoCallBarButton");
@@ -528,16 +530,7 @@ public class DialogPage extends IOSPage {
 
     public void pasteAndCommit() throws Exception {
         this.clickPopupPasteButton();
-        final WebElement convoInput = getElement(nameConversationCursorInput,
-                "Conversation input is not visible after the timeout");
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            inputStringFromKeyboard(convoInput, "", false, true);
-        } else {
-            convoInput.click();
-            // Wait for animation
-            Thread.sleep(1000);
-            this.clickKeyboardCommitButton();
-        }
+        this.clickKeyboardCommitButton();
     }
 
     public boolean areInputToolsVisible() throws Exception {
@@ -566,5 +559,9 @@ public class DialogPage extends IOSPage {
     public boolean isSystemMessageVisible(String expectedMsg) throws Exception {
         final By locator = By.xpath(xpathStrSystemMessageByText.apply(expectedMsg));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isUpperToolbarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathConversationViewTopBar);
     }
 }
