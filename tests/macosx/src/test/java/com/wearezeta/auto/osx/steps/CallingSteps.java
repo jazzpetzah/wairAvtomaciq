@@ -197,7 +197,7 @@ public class CallingSteps {
             throws Throwable {
         final int flowWaitTime = 3;
         final List<String> calleeList = splitAliases(callees);
-        final ConversationPageSteps convSteps = new ConversationPageSteps();
+        final ConversationPageSteps convSteps = new ConversationPageSteps(context);
         final CommonCallingSteps2 commonCalling = CommonCallingSteps2
                 .getInstance();
         final WarningPageSteps warningSteps = new WarningPageSteps();
