@@ -84,6 +84,7 @@ Feature: Calling Matrix
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     When I tap Leave button on Calling overlay
     Then I do not see Calling overlay
+    And <Contact> verifies that call to conversation <Name> was successful
 
     Examples:
       | Name      | Contact   | CallBackend   | Timeout |
