@@ -158,7 +158,7 @@ public class IOSSimulatorHelper {
                 "end tell"
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
         // To make sure the window is really activated
-        Thread.sleep(500);
+        Thread.sleep(5000);
     }
 
     public static void switchAppsList() throws Exception {
@@ -322,5 +322,10 @@ public class IOSSimulatorHelper {
         executeSimctl(new String[]{
                 "addphoto", getId(), img.getCanonicalPath()
         });
+    }
+
+    public static void copySystemClipboardToSimulatorClipboard() throws Exception {
+        activateWindow();
+        CommonUtils.pressCmdVByAppleScript();
     }
 }
