@@ -181,6 +181,7 @@ public class CommonOSXSteps {
 		try {
 			startAppium4Mac();
 			killAllApps();
+                        Thread.sleep(10000);
 			clearAppData();
 			clearAddressbookPermission();
 		} catch (Exception e) {
@@ -202,6 +203,7 @@ public class CommonOSXSteps {
 		final ZetaWebAppDriver webappDriver = webDriverFuture.get();
 		LOG.debug("Opening app");
 		osxDriver.navigate().to(WIRE_APP_PATH);// open app
+                Thread.sleep(30000);
 
 		ZetaFormatter.setLazyDriver(osxDriverFuture);
 

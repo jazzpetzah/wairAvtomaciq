@@ -97,7 +97,7 @@ public class PeoplePickerPage extends IOSPage {
     public void fillTextInPeoplePickerSearch(String text) throws Exception {
         final WebElement searchInput = getElement(xpathPickerSearch);
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass()) && text.matches(".*\\W+.*")) {
-            inputStringFromKeyboard(searchInput, text + " ", true, true);
+            inputStringFromKeyboard(searchInput, text + " ", false);
         } else {
             searchInput.sendKeys(text + " ");
         }

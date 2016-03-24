@@ -98,6 +98,7 @@ public class CommonIOSSteps {
         capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
         capabilities.setCapability("app", ipaPath);
+        capabilities.setCapability("fullReset", true);
         capabilities.setCapability("appName", getAppName());
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
             capabilities.setCapability("deviceName", getDeviceName(this.getClass()));

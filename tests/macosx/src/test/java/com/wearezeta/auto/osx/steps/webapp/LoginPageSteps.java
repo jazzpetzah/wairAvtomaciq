@@ -74,6 +74,7 @@ public class LoginPageSteps {
 	 */
 	@When("^I press Sign In button$")
 	public void IPressSignInButton() throws Exception {
+            Thread.sleep(5000);
 		webappPagesCollection.getPage(LoginPage.class).clickSignInButton();
 	}
 

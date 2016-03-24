@@ -33,8 +33,6 @@ public class CommonUtils {
 
     private static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
 
-    public static final int SIMULATOR_INTERACTION_TIMEOUT = 3 * 60; //seconds
-
     public static boolean executeOsCommandWithTimeout(String[] cmd, long timeoutSeconds) throws Exception {
         Process process = Runtime.getRuntime().exec(cmd);
         log.debug("Process started for cmdline " + Arrays.toString(cmd));
@@ -607,12 +605,12 @@ public class CommonUtils {
     public static void setStringValueInSystemClipboard(String val) throws Exception {
         CommonUtils.executeUIAppleScript(new String[]{
                 String.format("set the clipboard to \"%s\"", val)
-        }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(DEFAULT_COMMAND_TIMEOUT, TimeUnit.SECONDS);
     }
 
     public static void pressCmdVByAppleScript() throws Exception {
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke \"v\" using {command down}"
-        }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+        }).get(DEFAULT_COMMAND_TIMEOUT, TimeUnit.SECONDS);
     }
 }
