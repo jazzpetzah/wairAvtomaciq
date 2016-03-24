@@ -113,6 +113,7 @@ public class DialogPage extends IOSPage {
     protected static final By nameAddPictureButton = MobileBy.AccessibilityId("ComposeControllerPictureButton");
     private static final By namePingButton = MobileBy.AccessibilityId("ComposeControllerPingButton");
 
+    private static final By xpathConversationViewTopBar = By.xpath("//UIANavigationBar[@name='ConversationView']");
     private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[@name='ConversationView']";
 
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
@@ -557,5 +558,9 @@ public class DialogPage extends IOSPage {
     public boolean isSystemMessageVisible(String expectedMsg) throws Exception {
         final By locator = By.xpath(xpathStrSystemMessageByText.apply(expectedMsg));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isUpperToolbarVisible() throws Exception {
+        return DriverUtils.isElementPresentAndDisplayed(getDriver(), getElement(xpathConversationViewTopBar));
     }
 }
