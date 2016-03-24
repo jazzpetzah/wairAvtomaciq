@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.steps;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.InvitationsPage;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
@@ -114,9 +115,9 @@ public class InvitationsPageSteps {
      */
     @Then("^I verify user (.*) has received (?:an |\\s*)email invitation$")
     public void IVerifyUserReceiverInvitation(String alias) throws Throwable {
-        final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
-        Assert.assertTrue(String.format("Invitation email for %s has not been received", email),
-                getInvitationsPage().isInvitationMessageReceivedBy(email));
+        final ClientUser user = usrMgr.findUserByNameOrNameAlias(alias);
+        Assert.assertTrue(String.format("Invitation email for %s has not been received", user.getEmail()),
+                getInvitationsPage().isInvitationMessageReceivedBy(user));
     }
 
     /**
@@ -151,9 +152,8 @@ public class InvitationsPageSteps {
      */
     @When("^I broadcast the invitation for (.*)")
     public void IBroadcastInvitation(String receiver) throws Throwable {
-        final String email = usrMgr.replaceAliasesOccurences(receiver,
-                ClientUsersManager.FindBy.EMAIL_ALIAS);
-        final String code = getInvitationsPage().getRecentInvitationCode(email);
+        final ClientUser user = usrMgr.findUserByEmailOrEmailAlias(receiver);
+        final String code = getInvitationsPage().getRecentInvitationCode(user);
         AndroidCommonUtils.broadcastInvitationCode(code);
     }
 }

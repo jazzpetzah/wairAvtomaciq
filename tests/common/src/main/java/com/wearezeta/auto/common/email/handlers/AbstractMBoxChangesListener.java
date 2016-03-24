@@ -24,8 +24,7 @@ public abstract class AbstractMBoxChangesListener implements Callable<String> {
 		return this.parentMBox;
 	}
 
-	protected final Logger log = ZetaLogger.getLog(this.getClass()
-			.getSimpleName());
+	protected final Logger log = ZetaLogger.getLog(this.getClass().getSimpleName());
 
 	public AbstractMBoxChangesListener(Object parentMBox,
 			Map<String, String> expectedHeaders, int timeoutSeconds,

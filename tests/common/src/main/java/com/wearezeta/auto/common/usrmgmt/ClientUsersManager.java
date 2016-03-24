@@ -4,6 +4,7 @@ import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
+import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,9 +18,22 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ClientUsersManager {
     private static final int NUMBER_OF_REGISTRATION_RETRIES = 3;
+
+    private boolean useSpecialEmail = false;
+
+    /**
+     * Set this flag BEFORE users list is reset to use non-default email address for newly created
+     * accounts. This ensures that target mailbox will not be flooded by unnecessary messages,
+     * which significantly improves delivery times. The flag will be automatically unset upon the next
+     * resetClientsList method call.
+     */
+    public void setSpecialEmailFlag() {
+        this.useSpecialEmail = true;
+    }
 
     public static final Function<Integer, String> NAME_ALIAS_TEMPLATE = idx -> String
             .format("user%dName", idx);
@@ -63,36 +77,31 @@ public class ClientUsersManager {
         }
     }
 
-    private void resetClientsList(List<ClientUser> dstList, int maxCount)
-            throws Exception {
+    private void resetClientsList(List<ClientUser> dstList, int maxCount) throws Exception {
         this.selfUser = null;
         dstList.clear();
         for (int userIdx = 0; userIdx < maxCount; userIdx++) {
             ClientUser pendingUser = new ClientUser();
-            final String[] nameAliases = new String[]{NAME_ALIAS_TEMPLATE
-                    .apply(userIdx + 1)};
-            final String[] passwordAliases = new String[]{PASSWORD_ALIAS_TEMPLATE
-                    .apply(userIdx + 1)};
-            final String[] emailAliases = new String[]{EMAIL_ALIAS_TEMPLATE
-                    .apply(userIdx + 1)};
-            final String[] phoneNumberAliases = new String[]{PHONE_NUMBER_ALIAS_TEMPLATE
-                    .apply(userIdx + 1)};
-            setClientUserAliases(pendingUser, nameAliases, passwordAliases,
-                    emailAliases, phoneNumberAliases);
+            final String[] nameAliases = new String[]{NAME_ALIAS_TEMPLATE.apply(userIdx + 1)};
+            final String[] passwordAliases = new String[]{PASSWORD_ALIAS_TEMPLATE.apply(userIdx + 1)};
+            if (this.useSpecialEmail) {
+                pendingUser.setEmail(
+                        MessagingUtils.generateEmail(MessagingUtils.getSpecialAccountName(), pendingUser.getName()));
+            }
+            final String[] emailAliases = new String[]{EMAIL_ALIAS_TEMPLATE.apply(userIdx + 1)};
+            final String[] phoneNumberAliases = new String[]{PHONE_NUMBER_ALIAS_TEMPLATE.apply(userIdx + 1)};
+            setClientUserAliases(pendingUser, nameAliases, passwordAliases, emailAliases, phoneNumberAliases);
             dstList.add(pendingUser);
+        }
+        if (this.useSpecialEmail) {
+            this.useSpecialEmail = false;
         }
     }
 
     private List<ClientUser> users = new ArrayList<>();
 
     public List<ClientUser> getCreatedUsers() {
-        ArrayList<ClientUser> result = new ArrayList<>();
-        for (ClientUser usr : this.users) {
-            if (usr.getUserState() != UserState.NotCreated) {
-                result.add(usr);
-            }
-        }
-        return result;
+        return this.users.stream().filter(x -> x.getUserState() != UserState.NotCreated).collect(Collectors.toList());
     }
 
     public void resetUsers() throws Exception {
@@ -461,7 +470,7 @@ public class ClientUsersManager {
                     + Integer.toString(sharedUserIdx + 1);
             dstUser.setName(name);
             dstUser.addNameAlias(name);
-            dstUser.setEmail(ClientUser.generateEmail(name));
+            dstUser.setEmail(MessagingUtils.generateEmail(MessagingUtils.getDefaultAccountName(), name));
             dstUser.addEmailAlias(name + "Email");
         }
         generateSharedUsers(sharedUsers, ceiledCount,
@@ -497,7 +506,7 @@ public class ClientUsersManager {
                     + Integer.toString(sharedUserIdx + 1);
             dstUser.setName(name);
             dstUser.addNameAlias(name);
-            dstUser.setEmail(ClientUser.generateEmail(name));
+            dstUser.setEmail(MessagingUtils.generateEmail(MessagingUtils.getDefaultAccountName(), name));
             dstUser.addEmailAlias(name + "Email");
             dstUser.setPhoneNumber(PhoneNumber.increasedBy(startingPhoneNumber,
                     BigInteger.valueOf(sharedUserIdx)));

@@ -23,6 +23,8 @@
         <convoListActivity>com.waz.zclient.LaunchActivity</convoListActivity>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
         <defaultEmail>smoketester@wire.com</defaultEmail>
+        <specialEmail>smoketester.android@wire.com</specialEmail>
+        <specialPassword>aqa12345678</specialPassword>
         <pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
         <perfReportPath>${user.home}/Documents/performance.json</perfReportPath>
         <androidVersion>44</androidVersion>

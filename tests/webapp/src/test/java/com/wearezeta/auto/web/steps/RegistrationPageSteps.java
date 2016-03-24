@@ -206,10 +206,10 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I start activation email monitoring$")
 	public void IStartActivationEmailMonitoring() throws Exception {
-		Map<String, String> expectedHeaders = new HashMap<String, String>();
+		Map<String, String> expectedHeaders = new HashMap<>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
+		this.activationMessage = IMAPSMailbox.getInstance(userToRegister.getEmail(), userToRegister.getPassword())
+				.getMessage(expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
 	}
 
 	/**

@@ -44,7 +44,7 @@ public final class BackendAPIWrappers {
 
     public static Future<String> initMessageListener(ClientUser forUser,
                                                      Map<String, String> additionalExpectedHeaders) throws Exception {
-        IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+        IMAPSMailbox mbox = IMAPSMailbox.getInstance(forUser.getEmail(), forUser.getPassword());
         Map<String, String> expectedHeaders = new HashMap<>();
         expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, forUser.getEmail());
         if (additionalExpectedHeaders != null) {
@@ -749,11 +749,10 @@ public final class BackendAPIWrappers {
         BackendREST.sendPersonalInvitation(receiveAuthToken(ownerUser), toEmail, toName, message);
     }
 
-    public static Optional<InvitationMessage> getInvitationMessage(String email)
-            throws Exception {
-        IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+    public static Optional<InvitationMessage> getInvitationMessage(ClientUser user) throws Exception {
+        IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
         Map<String, String> expectedHeaders = new HashMap<>();
-        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
+        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
         try {
             final String msg = mbox.getMessage(expectedHeaders,
                     INVITATION_RECEIVING_TIMEOUT, 0).get();

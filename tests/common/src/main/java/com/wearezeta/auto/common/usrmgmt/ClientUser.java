@@ -178,20 +178,11 @@ public class ClientUser {
         return CommonUtils.generateGUID().replace("-", "").substring(0, 8);
     }
 
-    public static String generateEmail(String suffix) throws Exception {
-        return generateEmail(MessagingUtils.getAccountName(), suffix);
-    }
-
-    private static String generateEmail(String basemail, String suffix) {
-        return basemail.split("@")[0].concat("+").concat(suffix)
-                .concat("@").concat(basemail.split("@")[1]);
-    }
-
     public ClientUser() throws Exception {
         this.name = generateUniqName();
         this.phoneNumber = new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX);
         this.password = CommonUtils.getDefaultPasswordFromConfig(ClientUser.class);
-        this.email = generateEmail(name);
+        this.email = MessagingUtils.generateEmail(MessagingUtils.getDefaultAccountName(), name);
     }
 
     public void forceTokenExpiration() {

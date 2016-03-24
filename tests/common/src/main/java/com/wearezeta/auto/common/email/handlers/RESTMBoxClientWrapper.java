@@ -21,7 +21,14 @@ import com.wearezeta.auto.common.email.handlers.RESTMBoxAPI;
 class RESTMBoxClientWrapper implements ISupportsMessagesPolling {
     private static final Logger log = ZetaLogger.getLog(RESTMBoxClientWrapper.class.getSimpleName());
 
-    public RESTMBoxClientWrapper() {
+    private String mboxUserName;
+
+    public String getMboxUserName() {
+        return mboxUserName;
+    }
+
+    public RESTMBoxClientWrapper(String mboxUserName) {
+        this.mboxUserName = mboxUserName;
     }
 
     protected List<String> getRecentMessages(String email, int minCount, int maxCount, int timeoutMilliseconds)
@@ -57,7 +64,7 @@ class RESTMBoxClientWrapper implements ISupportsMessagesPolling {
     @Override
     public boolean isAlive() {
         try {
-            RESTMBoxAPI.getRecentEmailsForUser(MessagingUtils.getAccountName(), 0, 0, 1000);
+            RESTMBoxAPI.getRecentEmailsForUser(this.mboxUserName, 0, 0, 1000);
             return true;
         } catch (Throwable e) {
             e.printStackTrace();

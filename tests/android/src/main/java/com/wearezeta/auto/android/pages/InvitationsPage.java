@@ -4,6 +4,7 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import org.openqa.selenium.By;
 
 import java.awt.image.BufferedImage;
@@ -65,16 +66,16 @@ public class InvitationsPage extends AndroidPage {
         getElement(xpathAlertOK).click();
     }
 
-    public boolean isInvitationMessageReceivedBy(String email) throws Throwable {
-        return BackendAPIWrappers.getInvitationMessage(email).
+    public boolean isInvitationMessageReceivedBy(ClientUser user) throws Throwable {
+        return BackendAPIWrappers.getInvitationMessage(user).
                 orElseThrow(() -> {
                     throw new IllegalStateException("Invitation message has not been received");
                 }).
                 isValid();
     }
 
-    public String getRecentInvitationCode(String email) throws Throwable {
-        final String link = BackendAPIWrappers.getInvitationMessage(email).
+    public String getRecentInvitationCode(ClientUser user) throws Throwable {
+        final String link = BackendAPIWrappers.getInvitationMessage(user).
                 orElseThrow(() -> {
                     throw new IllegalStateException("Invitation message has not been received");
                 }).

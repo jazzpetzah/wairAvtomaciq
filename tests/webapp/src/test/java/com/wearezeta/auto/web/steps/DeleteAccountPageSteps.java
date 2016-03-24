@@ -6,6 +6,7 @@ import static org.junit.Assert.assertFalse;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.email.AccountDeletionMessage;
@@ -39,10 +40,10 @@ public class DeleteAccountPageSteps {
 	 */
 	@Then("^I delete account of user (.*) via email on (.*)$")
 	public void IDeleteAccountViaEmaiOn(String alias, String agent) throws Throwable {
-		final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
-		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+		final ClientUser user = usrMgr.findUserByNameOrNameAlias(alias);
+		IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
 		Map<String, String> expectedHeaders = new HashMap<>();
-		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
+		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
 		expectedHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, AccountDeletionMessage.MESSAGE_PURPOSE);
 		AccountDeletionMessage message = new AccountDeletionMessage(mbox.getMessage(expectedHeaders,
 				DELETION_RECEIVING_TIMEOUT, 0).get());
@@ -72,10 +73,10 @@ public class DeleteAccountPageSteps {
 		String newUrl = "";
 		int position = 0;
 		
-		final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
-		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+		final ClientUser user = usrMgr.findUserByNameOrNameAlias(alias);
+		IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
 		Map<String, String> expectedHeaders = new HashMap<>();
-		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
+		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
 		expectedHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, AccountDeletionMessage.MESSAGE_PURPOSE);
 		AccountDeletionMessage message = new AccountDeletionMessage(mbox.getMessage(expectedHeaders,
 				DELETION_RECEIVING_TIMEOUT, 0).get());
@@ -123,10 +124,10 @@ public class DeleteAccountPageSteps {
 		
 	@Then("^I remember delete link of user (.*)$")
 	public void IRememberDeleteLinkOfUser(String alias) throws Throwable {
-		final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
-		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+		final ClientUser user = usrMgr.findUserByNameOrNameAlias(alias);
+		IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
 		Map<String, String> expectedHeaders = new HashMap<>();
-		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
+		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
 		expectedHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, AccountDeletionMessage.MESSAGE_PURPOSE);
 		AccountDeletionMessage message = new AccountDeletionMessage(mbox.getMessage(expectedHeaders,
 				DELETION_RECEIVING_TIMEOUT, 0).get());

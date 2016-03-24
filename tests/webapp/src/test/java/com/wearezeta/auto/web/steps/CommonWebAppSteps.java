@@ -20,6 +20,7 @@ import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.NotImplementedException;
@@ -780,11 +781,11 @@ public class CommonWebAppSteps {
      */
     @Then("^I verify user (.*) has received (?:an |\\s*)email invitation$")
     public void IVerifyUserReceiverInvitation(String alias) throws Throwable {
-        final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
+        final ClientUser user = usrMgr.findUserByNameOrNameAlias(alias);
         assertTrue(
-                String.format("Invitation email for %s is not valid", email),
+                String.format("Invitation email for %s is not valid", user.getEmail()),
                 BackendAPIWrappers
-                .getInvitationMessage(email)
+                .getInvitationMessage(user)
                 .orElseThrow(
                         () -> {
                             throw new IllegalStateException(
@@ -794,10 +795,10 @@ public class CommonWebAppSteps {
 
     @Then("^I delete account of user (.*) via email$")
     public void IDeleteAccountViaEmail(String alias) throws Throwable {
-        final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
-        IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+        final ClientUser user = usrMgr.findUserByNameOrNameAlias(alias);
+        IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
         Map<String, String> expectedHeaders = new HashMap<>();
-        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
+        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
         expectedHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, AccountDeletionMessage.MESSAGE_PURPOSE);
         AccountDeletionMessage message = new AccountDeletionMessage(mbox.getMessage(expectedHeaders,
                 DELETION_RECEIVING_TIMEOUT, 0).get());
@@ -819,11 +820,10 @@ public class CommonWebAppSteps {
      * @step. ^(.*) navigates to personal invitation registration page$
      */
     @Then("^(.*) navigates to personal invitation registration page$")
-    public void INavigateToPersonalInvitationRegistrationPage(String alias)
-            throws Throwable {
-        final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
+    public void INavigateToPersonalInvitationRegistrationPage(String alias) throws Throwable {
+        final ClientUser user = usrMgr.findUserByNameOrNameAlias(alias);
         String url = BackendAPIWrappers
-                .getInvitationMessage(email)
+                .getInvitationMessage(user)
                 .orElseThrow(
                         () -> {
                             throw new IllegalStateException(
