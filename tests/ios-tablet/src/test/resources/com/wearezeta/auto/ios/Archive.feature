@@ -5,6 +5,7 @@ Feature: Archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
     Given Myself archived conversation with <ArchivedUser>
+    Given <ArchivedUser> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -21,12 +22,12 @@ Feature: Archive
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
     And I dont see conversation <ArchivedUser> in contact list
-    And <ArchivedUser> calls me using <CallBackend>
-    And I see call status message contains "<ArchivedUser> CALLING"
+    And <ArchivedUser> calls me
+    And I see call status message contains "<ArchivedUser> calling"
     And I tap Ignore button on Calling overlay
     Then I see first item in contact list named <ArchivedUser>
 
-    Examples: 
+    Examples:
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
@@ -36,6 +37,7 @@ Feature: Archive
     Given Myself is connected to <ArchivedUser>
     Given Myself silenced conversation with <ArchivedUser>
     Given Myself archived conversation with <ArchivedUser>
+    Given <ArchivedUser> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -46,12 +48,12 @@ Feature: Archive
     Then I dont see conversation <ArchivedUser> in contact list
     When User <ArchivedUser> securely pings conversation <Name>
     And I dont see conversation <ArchivedUser> in contact list
-    And <ArchivedUser> calls me using <CallBackend>
-    And I see call status message contains "<ArchivedUser> CALLING"
+    And <ArchivedUser> calls me
+    And I see call status message contains "<ArchivedUser> calling"
     And I tap Ignore button on Calling overlay
     Then I see first item in contact list named <ArchivedUser>
 
-    Examples: 
+    Examples:
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | autocall    |
 
@@ -59,7 +61,7 @@ Feature: Archive
   Scenario Outline: Verify restoring from archive after adding to conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -71,6 +73,6 @@ Feature: Archive
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Then I see first item in contact list named <GroupChatName>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveArchive  |

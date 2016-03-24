@@ -76,7 +76,7 @@ public class VersionedInstanceType {
 
 	@Override
 	public String toString() {
-		return "VersionedInstanceType{" + "name=" + name + ", version="
+		return "VersionedInstanceType{name=" + name + ", version="
 				+ version + '}';
 	}
 

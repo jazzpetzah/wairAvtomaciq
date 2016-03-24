@@ -8,8 +8,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     And I see Calling overlay
     When I tap Leave button on Calling overlay
     Then I do not see Calling overlay
@@ -22,12 +21,13 @@ Feature: Calling
   Scenario Outline: Verify calling from missed call indicator in conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When <Contact> calls me using <CallBackend>
+    When <Contact> calls me
     And I wait for 5 seconds
-    And <Contact> stops all calls to me
+    And <Contact> stops calling me
     And I tap on contact name <Contact>
     Then I see missed call from contact <Contact>
     And I click missed call button to call contact <Contact>
@@ -41,11 +41,12 @@ Feature: Calling
   Scenario Outline: Verify ignoring of incoming call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When <Contact> calls me using <CallBackend>
-    And I see call status message contains "<Contact> CALLING"
+    When <Contact> calls me
+    And I see call status message contains "<Contact> calling"
     And I tap Ignore button on Calling overlay
     Then I do not see Calling overlay
 
@@ -57,12 +58,13 @@ Feature: Calling
   Scenario Outline: Verify accepting incoming call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I tap on contact name <Contact>
-    When <Contact> calls me using <CallBackend>
-    And I see call status message contains "<Contact> CALLING"
+    When <Contact> calls me
+    And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     Then I see call status message contains "<Contact>"
 
@@ -74,12 +76,13 @@ Feature: Calling
   Scenario Outline: Receiving missed call notification from one user [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When <Contact> calls me using <CallBackend>
+    When <Contact> calls me
     And I wait for 5 seconds
-    And <Contact> stops all calls to me
+    And <Contact> stops calling me
     And I tap on contact name <Contact>
     Then I see missed call from contact <Contact>
 
@@ -95,8 +98,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     And I see Calling overlay
     Then I lock screen for 5 seconds
     And I see Calling overlay
@@ -109,21 +111,21 @@ Feature: Calling
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
-    Given <Contact1> starts waiting instance using <CallBackend>
+    Given <Contact1> starts instance using <CallBackend>
     Given <Contact1> accepts next incoming call automatically
+    Given <Contact2> starts instance using <CallBackend2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I tap on contact name <Contact1>
     And I remember the left side state of <Contact2> conversation item on iPad
-    When I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     And I see Calling overlay
-    And <Contact2> calls me using <CallBackend2>
-    And I see call status message contains "<Contact2> CALLING"
+    And <Contact2> calls me
+    And I see call status message contains "<Contact2> calling"
     And I tap Ignore button on Calling overlay
     And I see Calling overlay
-    And <Contact2> stops all calls to me
+    And <Contact2> stops calling me
     And I tap Leave button on Calling overlay
     And I do not see Calling overlay
     And I see the state of <Contact2> conversation item is changed on iPad
@@ -142,8 +144,7 @@ Feature: Calling
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     And I see Calling overlay
     Then I close the app for 5 seconds
     And I see Calling overlay
@@ -156,11 +157,12 @@ Feature: Calling
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button) [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And <Contact> calls me using <CallBackend>
-    And I see call status message contains "<Contact> CALLING"
+    And <Contact> calls me
+    And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     Then I see Leave button on Calling overlay
 
@@ -172,12 +174,13 @@ Feature: Calling
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button) [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And <Contact> calls me using <CallBackend>
-    And I see call status message contains "<Contact> CALLING"
+    And <Contact> calls me
+    And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     Then I see Leave button on Calling overlay
 
@@ -189,19 +192,19 @@ Feature: Calling
   Scenario Outline: I want to end the call from the ongoing voice overlay [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
-    And I press call button
+    And I tap Audio Call button
     And I see Calling overlay
     And I tap Leave button on Calling overlay
     Then I do not see Calling overlay
-    And <Contact> calls me using <CallBackend>
-    And I see call status message contains "<Contact> CALLING"
+    And <Contact> calls me
+    And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
-    And <Contact> stops all calls to me
+    And <Contact> stops calling me
     And I do not see Calling overlay
 
     Examples:
@@ -212,12 +215,13 @@ Feature: Calling
   Scenario Outline: Verify putting client to the background during 1-to-1 call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I tap on contact name <Contact>
-    When <Contact> calls me using <CallBackend>
-    And I see call status message contains "<Contact> CALLING"
+    When <Contact> calls me
+    And I see call status message contains "<Contact> calling"
     And I tap Accept button on Calling overlay
     And I see Leave button on Calling overlay
     When I close the app for 5 seconds

@@ -7,8 +7,6 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see plus button next to text input
-    And I click plus button next to text input
     And I open conversation details
     And I click Cancel request button
     Then I see Cancel request confirmation page
@@ -28,8 +26,6 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see plus button next to text input
-    And I click plus button next to text input
     And I open conversation details
     And I click Cancel request button
     Then I see Cancel request confirmation page
@@ -47,7 +43,6 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I click plus button next to text input
     And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
@@ -73,7 +68,6 @@ Feature: Connect
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I click plus button next to text input
     And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
@@ -143,7 +137,7 @@ Feature: Connect
     And I see incoming pending popover from user <Contact3> on iPad
     And I tap on start dialog button on other user profile page
     And I click on Ignore button on Pending requests page
-    And I exit the group info iPad popover
+    And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I dont see Pending request link in contact list
 
@@ -168,32 +162,12 @@ Feature: Connect
     And I see incoming pending popover from user <Contact3> on iPad
     And I tap on start dialog button on other user profile page
     And I click on Ignore button on Pending requests page
-    And I exit the group info iPad popover
+    And I dismiss popover on iPad
     Then I dont see Pending request link in contact list
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
-
-  @C2429 @regression @id3796
-  Scenario Outline: Verify common connections are not tappable [LANDSCAPE]
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given <Contact2> sent connection request to me
-    Given <Contact1> is connected to <Contact2>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I see Pending request link in contact list
-    And I click on Pending request link in contact list
-    And I see Pending request page
-    And I see YOU BOTH KNOW people section
-    And I click person in YOU BOTH KNOW section
-    Then I see Pending request page
-
-    Examples: 
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
 
   @C2513 @rc @regression @id3904
   Scenario Outline: Verify inbox is highlighted and opened in the list [LANDSCAPE]

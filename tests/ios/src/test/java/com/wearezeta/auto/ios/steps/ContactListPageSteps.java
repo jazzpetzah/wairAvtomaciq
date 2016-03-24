@@ -27,6 +27,10 @@ public class ContactListPageSteps {
         return pagesCollection.getPage(LoginPage.class);
     }
 
+    private PeoplePickerPage getPeoplePickerPage() throws Exception {
+        return pagesCollection.getPage(PeoplePickerPage.class);
+    }
+
     @Given("^I see conversations list$")
     public void GivenISeeConversationsList() throws Exception {
         Assert.assertTrue("Conversations list is not visible after the timeout", getLoginPage().isSelfAvatarVisible());
@@ -360,12 +364,12 @@ public class ContactListPageSteps {
     /**
      * Checks that specified button is exist in displayed action menu
      *
-     * @param buttonTitle Silence | Delete | Leave | Archive | Block | Cancel
+     * @param buttonTitle Silence | Delete | Leave | Archive | Block | Cancel Request | Cancel
      * @throws Exception
-     * @step. ^I see (Silence|Delete|Leave|Archive|Block|Cancel) button in
+     * @step. ^I see (Silence|Delete|Leave|Archive|Block|Cancel Request|Cancel) button in
      * action menu in [Cc]ontact [Ll]ist$
      */
-    @And("^I see (Silence|Delete|Leave|Archive|Block|Cancel) button in action menu in [Cc]ontact [Ll]ist$")
+    @And("^I see (Silence|Delete|Leave|Archive|Block|Cancel Request|Cancel) button in action menu in [Cc]ontact [Ll]ist$")
     public void ISeeXButtonInActionMenu(String buttonTitle) throws Exception {
         Assert.assertTrue("There is no button " + buttonTitle.toUpperCase()
                 + " in opened action menu.", getContactListPage()
@@ -499,4 +503,13 @@ public class ContactListPageSteps {
         getContactListPage().tapOnNameYourInCallWith(name);
     }
 
+    /**
+     * Taps on the Invite More button in contact list
+     * @step. ^I tap Invite more people button$
+     * @throws Exception
+     */
+    @When("^I tap Invite more people button$")
+    public void ITapInviteMorePeopleButton() throws Exception {
+        getPeoplePickerPage().tapSendInviteButton();
+    }
 }

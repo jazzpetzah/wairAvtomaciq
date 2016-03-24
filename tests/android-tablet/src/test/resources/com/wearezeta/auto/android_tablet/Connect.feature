@@ -54,7 +54,6 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
-    And I see the conversation <WaitingMess> in my conversations list
     When I tap the conversation <WaitingMess>
     And I see the Incoming connections page
     And I accept incoming connection request from <Contact> on Incoming connections page
@@ -73,7 +72,6 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
-    And I see the conversation <WaitingMess> in my conversations list
     When I tap the conversation <WaitingMess>
     And I see the Incoming connections page
     And I accept incoming connection request from <Contact> on Incoming connections page
@@ -95,17 +93,14 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I do not see the conversation <Contact2> in my conversations list
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
     And I tap Connect button on Group popover
     Then I see Pending button on Group popover
-    When I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     Then I do not see the Group popover
     And I see the conversation <Contact2> in my conversations list
 
@@ -124,17 +119,14 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I do not see the conversation <Contact2> in my conversations list
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
     And I tap Connect button on Group popover
     Then I see Pending button on Group popover
-    When I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     Then I do not see the Group popover
     And I see the conversation <Contact2> in my conversations list
 
@@ -196,7 +188,6 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
-    And I see the conversation <WaitingMess> in my conversations list
     When I tap the conversation <WaitingMess>
     And I see the Incoming connections page
     And I ignore incoming connection request from <Contact> on Incoming connections page
@@ -231,7 +222,6 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
-    And I see the conversation <WaitingMess> in my conversations list
     When I tap the conversation <WaitingMess>
     And I see the Incoming connections page
     And I ignore incoming connection request from <Contact> on Incoming connections page
@@ -262,7 +252,6 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
-    And I see the conversation <WaitingMess2> in my conversations list
     When I tap the conversation <WaitingMess2>
     And I see the Incoming connections page
     And I ignore incoming connection request from <Contact2> on Incoming connections page
@@ -289,12 +278,10 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversation
-    And I see the conversation <WaitingMess2> in my conversations list
     When I tap the conversation <WaitingMess2>
     And I see the Incoming connections page
     And I scroll the list up to 2 times until <Contact2> entry is visible on Incoming connections page
     And I ignore incoming connection request from <Contact2> on Incoming connections page
-    Then I see the conversation <WaitingMess1> in my conversations list
     When I tap the conversation <WaitingMess1>
     And I see the Incoming connections page
     And I scroll the list up to 2 times until <Contact1> entry is visible on Incoming connections page
@@ -317,7 +304,6 @@ Feature: Connect
     When <Contact> sent connection request to me
     # Workaround for a bug
     And I swipe right to show the conversations list
-    Then I see the conversation <WaitingMsg> in my conversations list
     When I tap the conversation <WaitingMsg>
     Then I see the Incoming connections page
     And I see email <ContactEmail> on Incoming connections page
@@ -335,7 +321,6 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
     When <Contact> sent connection request to me
-    Then I see the conversation <WaitingMsg> in my conversations list
     When I tap the conversation <WaitingMsg>
     Then I see the Incoming connections page
     And I see email <ContactEmail> on Incoming connections page
@@ -353,7 +338,6 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     When I tap the conversation <Contact>
     Then I see Outgoing Pending Connection page
     And I see <Contact> name on the Outgoing Pending Connection page
@@ -373,7 +357,6 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     When I tap the conversation <Contact>
     Then I see Outgoing Pending Connection page
     And I see <Contact> name on the Outgoing Pending Connection page
@@ -393,7 +376,6 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     When I tap the conversation <Contact>
     Then I see Outgoing Pending Connection page
     And I see <Contact> name on the Outgoing Pending Connection page
@@ -415,7 +397,6 @@ Feature: Connect
     When I minimize the application
     And <Contact> sent connection request to me
     And I restore the application
-    Then I see the conversation <WaitingMsg> in my conversations list
     When I tap the conversation <WaitingMsg>
     Then I see the Incoming connections page
     And I see email <ContactEmail> on Incoming connections page

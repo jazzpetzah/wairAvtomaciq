@@ -11,11 +11,15 @@ Feature: Upgrade
     # To let the content to be synchronized
     Given I wait for 5 seconds
     Given I upgrade Wire to the recent version
-    And I see conversations list
-    When I tap on contact name <Contact>
+    # Commented out due to ZIOS-6143
+    # And I see conversations list
+    # When I tap on contact name <Contact>
     Then I see 1 photo in the dialog
     And I see 1 default message in the dialog
     When I type the default message and send it
+    # This is to make the keyboard invisible
+    And I navigate back to conversations list
+    When I tap on contact name <Contact>
     Then I see 2 default messages in the dialog
 
     Examples:

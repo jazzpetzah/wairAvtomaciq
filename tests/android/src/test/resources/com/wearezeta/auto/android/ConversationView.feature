@@ -8,7 +8,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap conversation details button
+    And I tap conversation name from top toolbar
     And I press options menu button
     And I press SILENCE conversation menu button
     And I press back button
@@ -29,7 +29,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     Given Contact <Contact1> is muted
     When I tap on contact name <Contact1>
-    And I tap conversation details button
+    And I tap conversation name from top toolbar
     And I press options menu button
     And I press NOTIFY conversation menu button
     And I press back button
@@ -82,7 +82,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap conversation details button
+    And I tap conversation name from top toolbar
     And I see <Contact1> user profile page
     And I press add contact button
     And I tap on Search input on People picker page
@@ -364,3 +364,79 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
+
+  @C77948 @staging
+  Scenario Outline: Verify an upper toolbar displayed in the conversation view
+    Given There is 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    Then I see the upper toolbar
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+
+  @C77950 @staging
+  Scenario Outline: Verify going back to the conversation list by tapping on the upper toolbar arrow
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I tap back button in upper toolbar
+    Then I see Contact list with contacts
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C77958 @staging
+  Scenario Outline: Verify video call icon is not shown in a group conversation on the upper toolbar
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Name>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
+    When I tap on contact name <GroupChatName>
+    Then I see the audio call button in upper toolbar
+    And I do not see the video call button in upper toolbar
+    And I navigate back from dialog page
+    And I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    Then I see the audio call button in upper toolbar
+    And I see the video call button in upper toolbar
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName     |
+      | user1Name | user2Name | user3Name | SendMessGroupChat |
+
+  @C78372 @staging
+  Scenario Outline: Verify title is not changed on receiving messages in other conversations
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And the conversation title should be "<Contact1>"
+    And User <Contact2> send message "<Message1>" to user Myself
+    And I tap new message notification "<Message1>"
+    Then I see my message "<Message1>" in the dialog
+    And the conversation title should be "<Contact2>"
+    And I tap conversation name from top toolbar
+    And I press back button
+    When I tap back button in upper toolbar
+    And I tap on contact name <Contact1>
+    And User <Contact2> send message "<Message2>" to user Myself
+    And I see new message notification "<Message2>"
+    Then the conversation title should be "<Contact1>"
+
+    Examples:
+      | Name      | Contact1  | Contact2  |  Message1 | Message2 |
+      | user1Name | user2Name | user3Name |  Msg1     | Msg2     |

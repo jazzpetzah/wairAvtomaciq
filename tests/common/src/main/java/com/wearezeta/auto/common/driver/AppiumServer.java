@@ -2,11 +2,11 @@ package com.wearezeta.auto.common.driver;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.common.process.AsyncProcess;
+import com.wearezeta.common.process.UnixProcessHelpers;
 import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.net.InetAddress;
-import java.util.concurrent.TimeUnit;
 
 public class AppiumServer {
     private static final Logger log = ZetaLogger.getLog(AppiumServer.class.getSimpleName());
@@ -43,7 +43,7 @@ public class AppiumServer {
             if (exitCode == IS_RUNNING_RETCODE) {
                 return true;
             }
-            Thread.sleep(1500);
+            Thread.sleep(1000);
         }
         return false;
     }
@@ -81,13 +81,21 @@ public class AppiumServer {
     }
 
     public static synchronized void resetIOSSimulator() throws Exception {
-        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9",
-                "Simulator", "configd_sim", "ids_simd", "launchd_sim", "instruments"}).waitFor(2, TimeUnit.SECONDS);
+        UnixProcessHelpers.killProcessesGracefully(
+                "Simulator", "configd_sim", "xpcproxy_sim", "backboardd",
+                "platform_launch_", "companionappd", "ids_simd", "launchd_sim",
+                "CoreSimulatorBridge", "SimulatorBridge", "SpringBoard",
+                "locationd", "MobileGestaltHelper", "cfprefsd",
+                "assetsd", "fileproviderd", "mediaremoted",
+                "routined", "assetsd", "mstreamd", "healthd", "MobileCal",
+                "callservicesd", "revisiond", "touchsetupd", "calaccessd",
+                "ServerFileProvider", "mobileassetd", "IMDPersistenceAgent",
+                "itunesstored", "profiled", "passd", "carkitd", "instruments");
         restart();
     }
 
     public static synchronized void resetIOSRealDevice() throws Exception {
-        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "instruments"}).waitFor(2, TimeUnit.SECONDS);
+        UnixProcessHelpers.killProcessesGracefully("instruments");
         restart();
     }
 
@@ -99,7 +107,7 @@ public class AppiumServer {
         final String hostname = InetAddress.getLocalHost().getHostName();
         log.warn(String.format("Trying to (re)start Appium server on %s:%s...", hostname, PORT));
 
-        Runtime.getRuntime().exec(new String[]{"/usr/bin/killall", "-9", "node"}).waitFor(2, TimeUnit.SECONDS);
+        UnixProcessHelpers.killProcessesGracefully("node");
         waitUntilIsStopped(RESTART_TIMEOUT / 2);
 
         ensureAppiumExecutableExistence();

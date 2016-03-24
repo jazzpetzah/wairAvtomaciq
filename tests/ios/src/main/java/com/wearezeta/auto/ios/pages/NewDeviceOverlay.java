@@ -22,7 +22,7 @@ public class NewDeviceOverlay extends IOSPage {
         super(lazyDriver);
     }
 
-    public boolean isConatniningLabel(String expectedLabel) throws Exception {
+    public boolean isContainingLabel(String expectedLabel) throws Exception {
         final By locator = By.xpath(xpathStrLabelByText.apply(expectedLabel));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }

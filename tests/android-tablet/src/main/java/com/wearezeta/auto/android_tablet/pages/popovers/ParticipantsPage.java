@@ -13,7 +13,7 @@ public class ParticipantsPage extends AbstractConversationDetailsPage {
     public static final By xpathConfirmLeaveButton = By.xpath("//*[@id='positive' and @value='LEAVE']");
 
     public static final Function<String, String> xpathStrParticipantAvatarByName = name -> String
-            .format("//*[@id='pfac__participants']//*[@id='ttv__group__adapter' and @value='%s']/parent::*/parent::*",
+            .format("//*[@id='pgv__participants']//*[@id='ttv__group__adapter' and @value='%s']/parent::*/parent::*",
                     name.split("\\s+")[0]);
 
     private static final String idStrConvoNameInput = "taet__participants__header__editable";
@@ -32,8 +32,7 @@ public class ParticipantsPage extends AbstractConversationDetailsPage {
         getElement(xpathConfirmLeaveButton).click();
     }
 
-    public boolean waitForParticipantAvatarVisible(String name)
-            throws Exception {
+    public boolean waitForParticipantAvatarVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrParticipantAvatarByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }

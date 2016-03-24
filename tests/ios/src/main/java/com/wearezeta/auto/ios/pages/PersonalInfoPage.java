@@ -33,7 +33,7 @@ public class PersonalInfoPage extends IOSPage {
 
     private static final By nameOptionsHelpButton = MobileBy.AccessibilityId("HELP");
 
-    private static final By xpathSettingsHelpHeader = By.xpath("//UIAWebView/UIAStaticText[@name='Support']");
+    private static final By xpathAskSupport = By.xpath("//*[@name='Ask Support']");
 
     private static final By nameAccentColorPicker = MobileBy.AccessibilityId("AccentColorPickerView");
 
@@ -48,13 +48,6 @@ public class PersonalInfoPage extends IOSPage {
 
     private static final By nameCloseLegalPageButton = MobileBy.AccessibilityId("WebViewCloseButton");
 
-    private static final Function<String, String> xpathStrTermsOfUseByText = text ->
-            String.format("//UIAStaticText[@name='%s']", text);
-
-    private static final Function<String, String> xpathStrPrivacyPolicyByText = text ->
-            String.format("//UIAStaticText[@name='%s']", text);
-
-    // TODO: this locator has to be more precise
     private static final By xpathWireWebsiteUrl = MobileBy.AccessibilityId("URL");
 
     private static final By nameAboutCloseButton = MobileBy.AccessibilityId("aboutCloseButton");
@@ -71,9 +64,9 @@ public class PersonalInfoPage extends IOSPage {
     private static final By xpathChangePasswordPageChangePasswordButton =
             By.xpath("//UIAButton[@name='RESET PASSWORD']");
 
-    private static final String TERMS_OF_USE_PAGE_VALUE =
-            "PLEASE READ THIS AGREEMENT CAREFULLY; THIS IS A BINDING CONTRACT.";
-    private static final String PRIVACY_POLICY_PAGE_VALUE = "Our Privacy Commitment";
+    private static final By xpathTermsAndConditions = By.xpath("//*[@name='Basic Information']");
+    private static final By xpathPrivacyPolicy= By.xpath("//*[@name='Our Privacy Commitment']");
+
     private static final int COLORS_COUNT = 7;
 
     public PersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -144,8 +137,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public boolean isWireWebsitePageVisible() throws Exception {
-        // This is to let the browser and the webpage to be loaded
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathWireWebsiteUrl, 15);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathWireWebsiteUrl, 30);
     }
 
     public void closeLegalPage() throws Exception {
@@ -153,13 +145,11 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public boolean isTermsOfUsePageVisible() throws Exception {
-        final By locator = By.xpath(xpathStrTermsOfUseByText.apply(TERMS_OF_USE_PAGE_VALUE));
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathTermsAndConditions, 15);
     }
 
     public boolean isPrivacyPolicyPageVisible() throws Exception {
-        final By locator = By.xpath(xpathStrPrivacyPolicyByText.apply(PRIVACY_POLICY_PAGE_VALUE));
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathPrivacyPolicy, 15);
     }
 
     public boolean isResetPasswordPageVisible() throws Exception {
@@ -213,7 +203,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public boolean isSupportWebPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathSettingsHelpHeader, 15);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathAskSupport, 15);
     }
 
     public boolean waitSelfProfileVisible() throws Exception {

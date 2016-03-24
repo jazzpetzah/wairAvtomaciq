@@ -9,9 +9,7 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     When I tap the conversation <Contact>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     Then I see the Single user popover
     And I see the user name <Contact> on Single user popover
     And I see the user email <ContactEmail> on Single user popover
@@ -29,9 +27,7 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     When I tap the conversation <Contact>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     Then I see the Single user popover
     And I see the user name <Contact> on Single user popover
     And I see the user email <ContactEmail> on Single user popover
@@ -49,11 +45,8 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     And I see the Group popover
     And I tap Options button on Group popover
     When I select <ItemLeave> menu item on Group popover
@@ -74,11 +67,8 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     And I see the Group popover
     And I tap Options button on Group popover
     When I select <ItemLeave> menu item on Group popover
@@ -99,11 +89,8 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
@@ -127,11 +114,8 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
@@ -193,11 +177,8 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given User <Contact1> sends encrypted message <Message> to user Myself
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     And I see the Group popover
     When I see the participant avatar <Contact1> on Group popover
     And I tap the participant avatar <Contact1> on Group popover
@@ -219,11 +200,8 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given User <Contact1> sends encrypted message <Message> to user Myself
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     And I see the Group popover
     When I see the participant avatar <Contact1> on Group popover
     And I tap the participant avatar <Contact1> on Group popover
@@ -244,11 +222,8 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     And I see the Group popover
     When I see the participant avatar <Contact1> on Group popover
     And I tap the participant avatar <Contact1> on Group popover
@@ -268,11 +243,8 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     And I see the Group popover
     When I see the participant avatar <Contact1> on Group popover
     And I tap the participant avatar <Contact1> on Group popover
@@ -292,11 +264,8 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    When I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     Then I see the Group popover
     And I see the participant avatars <Contact1>,<Contact2> on Group popover
     And I see the conversation name "<GroupChatName>" on Group popover
@@ -315,11 +284,8 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    When I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     Then I see the Group popover
     And I see the participant avatars <Contact1>,<Contact2> on Group popover
     And I see the conversation name "<GroupChatName>" on Group popover
@@ -338,11 +304,8 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     And I see the Group popover
     When I tap Options button on Group popover
     And I see <ItemLeave> menu item on Group popover
@@ -363,11 +326,8 @@ Feature: People View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     And I see the Group popover
     When I tap Options button on Group popover
     And I see <ItemLeave> menu item on Group popover
@@ -390,11 +350,8 @@ Feature: People View
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
     And I do not see the conversation <Contact2> in my conversations list
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover

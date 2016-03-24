@@ -89,6 +89,9 @@ public class ZetaFormatter implements Formatter, Reporter {
     public void scenario(Scenario arg0) {
         scenario = arg0.getName();
         log.debug(String.format("\n\nScenario: %s %s", scenario, formatTags(arg0.getTags())));
+        if (steps.size() > 0) {
+            steps.clear();
+        }
     }
 
     @Override
@@ -141,11 +144,12 @@ public class ZetaFormatter implements Formatter, Reporter {
             int index = 1;
             File tmpScreenshot;
             do {
+                final String stepNameForScr = stepName.replaceAll("\\W+", "_");
                 tmpScreenshot = new File(String.format("%s/%s/%s/%s_%s.png",
                         CommonUtils.getPictureResultsPathFromConfig(this.getClass()), feature.replaceAll("\\W+", "_"),
                         scenario.replaceAll("\\W+", "_"),
-                        (stepName.matches(".*\\W") ? stepName.substring(0, stepName.length() - 1) : stepName).replaceAll("\\W+",
-                                "_"), index));
+                        stepNameForScr.matches(".*_") ? stepNameForScr.substring(0, stepNameForScr.length() - 1) :
+                                stepNameForScr, index));
                 index++;
             } while (tmpScreenshot.exists());
             final File resultScreenshot = tmpScreenshot;
@@ -207,6 +211,7 @@ public class ZetaFormatter implements Formatter, Reporter {
         final String stepStatus = result.getStatus();
         steps.put(currentStep, stepStatus);
         final long stepFinishedTimestamp = System.currentTimeMillis();
+        log.debug("-----------------------");
         if (isScreenshotingEnabled) {
             if (!isScreenshotingOnPassedStepsEnabled && (result.getStatus().equals(Result.PASSED))) {
                 log.debug("Skip screenshot for passed step....");
@@ -218,10 +223,10 @@ public class ZetaFormatter implements Formatter, Reporter {
                     e.printStackTrace();
                 }
             }
-            log.debug(String.format("%s (status: %s, step duration: %s ms + screenshot duration: %s ms)", stepName, stepStatus,
+            log.debug(String.format("STEP: %s (status: %s, step duration: %s ms + screenshot duration: %s ms)", stepName, stepStatus,
                     stepFinishedTimestamp - stepStartedTimestamp, System.currentTimeMillis() - stepFinishedTimestamp));
         } else {
-            log.debug(String.format("%s (status: %s, step duration: %s ms)", stepName, stepStatus,
+            log.debug(String.format("STEP: %s (status: %s, step duration: %s ms)", stepName, stepStatus,
                     stepFinishedTimestamp - stepStartedTimestamp));
         }
     }

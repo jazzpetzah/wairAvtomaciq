@@ -62,37 +62,6 @@ public class IOSCommonUtils {
         return new ClientDeviceInfo(os, osBuild, deviceName, gsmNetworkType, isWifiEnabled);
     }
 
-    /**
-     * @param deviceName           either iPhone or iPad
-     * @param shouldThrowException set this to true if you want the RuntimeException to be thrown
-     *                             if no device is found. Setting this to false will return null
-     *                             value in case if no device is connected
-     * @return UDID number of connected iDevice
-     * @throws Exception
-     */
-    private static String getConnectedIOSDeviceUDID(String deviceName,
-                                                    boolean shouldThrowException) throws Exception {
-        final String result = CommonUtils.executeOsXCommandWithOutput(new String[]{
-                "/bin/bash",
-                "-c",
-                "system_profiler SPUSBDataType | sed -n '/"
-                        + deviceName
-                        + "/,/Serial/p' | grep 'Serial Number:' | awk -F ': ' '{print $2}'"});
-        if (result.length() > 0) {
-            return result.trim();
-        } else {
-            if (shouldThrowException) {
-                throw new RuntimeException("Cannot detect any connected iPhone device");
-            } else {
-                return null;
-            }
-        }
-    }
-
-    public static String getConnectediPhoneUDID(boolean shouldThrowException) throws Exception {
-        return getConnectedIOSDeviceUDID("iPhone", shouldThrowException);
-    }
-
     public static String getPerfReportPathFromConfig(Class<?> c) throws Exception {
         return CommonUtils.getValueFromConfig(c, "perfReportPath");
     }
@@ -150,6 +119,6 @@ public class IOSCommonUtils {
 
     public static String getBundleId(File plist) throws Exception {
         final NSDictionary rootDict = parsePlist(plist);
-        return rootDict.objectForKey("WireBundleId").toString();
+        return rootDict.objectForKey("CFBundleIdentifier").toString();
     }
 }

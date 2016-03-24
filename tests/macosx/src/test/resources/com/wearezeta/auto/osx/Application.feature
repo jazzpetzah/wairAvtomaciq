@@ -66,6 +66,8 @@ Feature: Application
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I click menu bar item "Wire" and menu item "Log Out"
+    Then I see the clear data dialog
+    When I click Logout button on clear data dialog
     Then I see Sign In page
 
     Examples: 

@@ -62,7 +62,6 @@ public class WinCommonUtils extends CommonUtils {
 	}
 
 	public static boolean clearAppData() throws Exception {
-
 		final String[] commands = new String[] { "cmd", "/c",
 				String.format("DEL /F /S /Q /A \"%s*\"", WIRE_APP_CACHE_FOLDER) };
 

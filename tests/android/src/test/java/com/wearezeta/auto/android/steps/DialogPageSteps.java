@@ -7,31 +7,41 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Assert;
-
 public class DialogPageSteps {
-
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
-
-    private DialogPage getDialogPage() throws Exception {
-        return pagesCollection.getPage(DialogPage.class);
-    }
-
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private static final String ANDROID_LONG_MESSAGE = CommonUtils.generateRandomString(300);
     private static final String LONG_MESSAGE_ALIAS = "LONG_MESSAGE";
+    private static final int SWIPE_DURATION_MILLISECONDS = 1300;
+    private static final int MAX_SWIPES = 5;
+    private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
+    private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
+    private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
+    private static final int CONVO_VIEW_STATE_CHANGE_TIMEOUT = 15;
+    private static final double CONVO_VIEW_MIN_SIMILARITY_SCORE = 0.5;
+    private static final int SHIELD_STATE_CHANGE_TIMEOUT = 15;
+    private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
+    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    private final ElementState mediaButtonState = new ElementState(
+            () -> getDialogPage().getMediaButtonState());
+    private final ElementState conversationViewState = new ElementState(
+            () -> getDialogPage().getConvoViewStateScreenshot());
+    private final ElementState verifiedConversationShieldState = new ElementState(
+            () -> getDialogPage().getShieldStateScreenshot());
+    private Boolean wasShieldVisible = null;
 
     private static String expandMessage(String message) {
         final Map<String, String> specialStrings = new HashMap<>();
@@ -41,6 +51,10 @@ public class DialogPageSteps {
         } else {
             return message;
         }
+    }
+
+    private DialogPage getDialogPage() throws Exception {
+        return pagesCollection.getPage(DialogPage.class);
     }
 
     /**
@@ -74,7 +88,7 @@ public class DialogPageSteps {
     /**
      * Send message to the chat
      *
-     * @param msg message to type. There are several special shortcuts: LONG_MESSAGE - to type long message
+     * @param msg               message to type. There are several special shortcuts: LONG_MESSAGE - to type long message
      * @param doNotHideKeyboard if it equals null, should hide keyboard
      * @throws Exception
      * @step. I type the message "(.*)" and send it( without hiding keyboard)?$
@@ -125,23 +139,38 @@ public class DialogPageSteps {
      * @throws Exception
      * @step. ^I tap (Call|Ping|Add Picture|Video Call|Sketch) button$ from input tools$
      */
-    @When("^I tap (Call|Ping|Add Picture|Video Call|Sketch) button from input tools$")
+    @When("^I tap (Ping|Add Picture|Sketch) button from input tools$")
     public void WhenITapInputToolButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
-            case "call":
-                getDialogPage().tapCallBtn();
-                break;
             case "ping":
                 getDialogPage().tapPingBtn();
                 break;
             case "add picture":
                 getDialogPage().tapAddPictureBtn();
                 break;
-            case "video call":
-                getDialogPage().tapVideoCallBtn();
-                break;
             case "sketch":
                 getDialogPage().tapSketchBtn();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
+        }
+    }
+
+    /**
+     * Press the corresponding button in the top toolbar
+     *
+     * @param btnName button name
+     * @throws Exception
+     * @step. ^I tap (Audio Call|Video Call) button from top toolbar$
+     */
+    @When("^I tap (Audio Call|Video Call) button from top toolbar$")
+    public void WhenITapTopToolbarButton(String btnName) throws Exception {
+        switch (btnName.toLowerCase()) {
+            case "audio call":
+                getDialogPage().tapAudioCallBtn();
+                break;
+            case "video call":
+                getDialogPage().tapVideoCallBtn();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
@@ -171,15 +200,14 @@ public class DialogPageSteps {
     }
 
     /**
-     * Tap in Dialog page on details button to open participants view
+     * Tap in Dialog page on converstaion title to open participants view
      *
      * @throws Exception
-     * @step. ^I tap conversation details button$
+     * @step. ^I tap conversation name from top toolbar$
      */
-    @When("^I tap conversation details button$")
+    @When("^I tap conversation name from top toolbar$")
     public void WhenITapConversationDetailsBottom() throws Exception {
-        getDialogPage().pressPlusButtonOnDialogPage();
-        getDialogPage().tapConversationDetailsButton();
+        getDialogPage().tapTopToolbarTitle();
     }
 
     /**
@@ -306,8 +334,6 @@ public class DialogPageSteps {
         getDialogPage().clickLastImageFromDialog();
     }
 
-    private static final int SWIPE_DURATION_MILLISECONDS = 1300;
-
     /**
      * @throws Exception
      * @step. ^I swipe up on dialog page
@@ -327,8 +353,6 @@ public class DialogPageSteps {
     public void WhenISwipedownOnDialogPage() throws Exception {
         getDialogPage().dialogsPagesSwipeDown(SWIPE_DURATION_MILLISECONDS);
     }
-
-    private static final int MAX_SWIPES = 5;
 
     /**
      * Swipe down on dialog page until Mediabar appears
@@ -350,6 +374,30 @@ public class DialogPageSteps {
     @When("^I navigate back from dialog page$")
     public void WhenINavigateBackFromDialogPage() throws Exception {
         getDialogPage().navigateBack(1000);
+    }
+
+    /**
+     * Tap new message notification in conversation view
+     *
+     * @param message the message content of message notification
+     * @throws Exception
+     * @step. ^I tap new message notification "(.*)"$
+     */
+    @When("^I tap new message notification \"(.*)\"$")
+    public void WhenIChangeConversationByClickMessageNotification(String message) throws Exception {
+        getDialogPage().tapMessageNotification(message);
+    }
+
+    /**
+     * Checks to see that the new message notification is visible
+     *
+     * @param message the message content of message notification
+     * @throws Exception
+     * @step. ^I see new message notification "(.*)"$
+     */
+    @Then("^I see new message notification \"(.*)\"$")
+    public void WhenISeeNewMessageNotification(String message) throws Exception {
+        getDialogPage().waitForMessageNotification(message);
     }
 
     /**
@@ -437,13 +485,6 @@ public class DialogPageSteps {
                 getDialogPage().isLastMessageEqualTo(message, 30));
     }
 
-    private static final int MEDIA_BUTTON_STATE_CHANGE_TIMEOUT = 15;
-    private static final double MEDIA_BUTTON_MIN_SIMILARITY_SCORE = 0.97;
-
-    private final ElementState mediaButtonState = new ElementState(
-            () -> getDialogPage().getMediaButtonState()
-    );
-
     /**
      * Store the screenshot of current media control button state
      *
@@ -453,6 +494,18 @@ public class DialogPageSteps {
     @When("^I remember the state of PlayPause media item button$")
     public void IRememeberMediaItemButtonState() throws Exception {
         mediaButtonState.remember();
+    }
+
+
+    /**
+     * Tap back arrow button in upper toolbar
+     *
+     * @throws Exception
+     * @step. ^I tap back button in upper toolbar$
+     */
+    @When("^I tap back button in upper toolbar$")
+    public void TapBackbuttonInUpperToolbar() throws Exception {
+        getDialogPage().tapTopToolbarBackButton();
     }
 
     /**
@@ -476,16 +529,10 @@ public class DialogPageSteps {
      */
     @Then("^I see dialog with missed call from (.*)$")
     public void ThenISeeDialogWithMissedCallFrom(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         final String expectedMessage = contact + " CALLED";
         Assert.assertTrue(String.format("Missed call message '%s' is not visible in the conversation view", expectedMessage),
                 getDialogPage().waitUntilMissedCallMessageIsVisible(expectedMessage));
-    }
-
-    private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
-
-    private enum PictureDestination {
-        DIALOG, PREVIEW
     }
 
     /**
@@ -541,14 +588,6 @@ public class DialogPageSteps {
         int actualValue = getDialogPage().getCurrentNumberOfItemsInDialog();
         Assert.assertEquals("It looks like the conversation has some content", actualValue, 0);
     }
-
-
-    private static final int CONVO_VIEW_STATE_CHANGE_TIMEOUT = 15;
-    private static final double CONVO_VIEW_MIN_SIMILARITY_SCORE = 0.5;
-
-    private final ElementState conversationViewState = new ElementState(
-            () -> getDialogPage().getConvoViewStateScreenshot()
-    );
 
     /**
      * Store the screenshot of current convo view into internal variable
@@ -607,16 +646,6 @@ public class DialogPageSteps {
                 getDialogPage().waitForXImages(expectedCount));
     }
 
-
-    private static final int SHIELD_STATE_CHANGE_TIMEOUT = 15;
-    private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
-
-    private final ElementState verifiedConversationShieldState = new ElementState(
-            () -> getDialogPage().getShieldStateScreenshot()
-    );
-
-    private Boolean wasShieldVisible = null;
-
     /**
      * Save the state of verified conversation shield into the internal field for the future comparison
      *
@@ -655,8 +684,8 @@ public class DialogPageSteps {
     /**
      * Checks to see that an unsent indicator is present next to the particular message in the chat history
      *
-     * @throws Exception
      * @param msg the expected conversation message
+     * @throws Exception
      * @step. ^I see unsent indicator next to \"(.*)\" in the conversation view$
      */
     @Then("^I see unsent indicator next to \"(.*)\" in the conversation view$")
@@ -664,5 +693,75 @@ public class DialogPageSteps {
         Assert.assertTrue(String.format(
                 "Unsent indicator has not been shown next to the '%s' message in the conversation view", msg),
                 getDialogPage().waitForUnsentIndicator(msg));
+    }
+
+    private enum PictureDestination {
+        DIALOG, PREVIEW
+    }
+
+    /**
+     * Checks to see that upper toolbar is visible
+     *
+     * @throws Exception
+     * @step.  ^I see the upper toolbar$
+     */
+    @Then("^I see the upper toolbar$")
+    public void ThenISeeTopToolbar() throws Exception {
+        Assert.assertTrue("The upper toolbar is invisible", getDialogPage().isTopToolbarVisible());
+    }
+
+    /**
+     * Checks to see whether Audio/Video call button is visible in upper toolbar
+     *
+     * @param doNotSee equal null means the Video call button should be visible
+     * @throws Exception
+     */
+    @Then("I( do not)? see the (audio|video) call button in upper toolbar$")
+    public void ThenIseeVideoCallButtonInUpperToolbar(String doNotSee, String callType) throws Exception {
+        if (doNotSee == null) {
+            switch (callType) {
+                case "audio":
+                    Assert.assertTrue("The audio call button should be visible in upper toolbar",
+                            getDialogPage().isAudioCallIconInToptoolbarVisible());
+                    break;
+                case "video":
+                    Assert.assertTrue("The video call button should be visible in upper toolbar",
+                            getDialogPage().isVideoCallIconInToptoolbarVisible());
+                    break;
+                default:
+                    throw new IllegalArgumentException(String.format("Unknown button name '%s'", callType));
+            }
+        } else {
+            switch (callType) {
+                case "audio":
+                    Assert.assertTrue("The audio call button should be visible in upper toolbar",
+                            getDialogPage().isAudioCallIconInToptoolbarInvisible());
+                    break;
+                case "video":
+                    Assert.assertTrue("The video call button should be visible in upper toolbar",
+                            getDialogPage().isVideoCallIconInToptoolbarInvisible());
+                    break;
+                default:
+                    throw new IllegalArgumentException(String.format("Unknown button name '%s'", callType));
+            }
+        }
+    }
+
+    /**
+     * Checks the conversation title should be <conversationNameAliases>
+     *
+     * @param conversationNameAliases The expected conversation name aliases
+     * @throws Exception
+     * @step. ^the conversation title should be "(.*)"$
+     */
+    @Then("^the conversation title should be \"(.*)\"$")
+    public void ThenTheConversationTitleShouldBe(String conversationNameAliases) throws Exception {
+        List<String> names = new ArrayList<>();
+        for (String nameAlias : CommonSteps.splitAliases(conversationNameAliases)) {
+            names.add(usrMgr.replaceAliasesOccurences(conversationNameAliases, FindBy.NAME_ALIAS));
+        }
+        String expectedConversationNames = StringUtils.join(names, ",");
+        Assert.assertTrue(String.format("The conversation title should be %s", expectedConversationNames),
+                getDialogPage().isConversationTitileVisible(expectedConversationNames));
     }
 }

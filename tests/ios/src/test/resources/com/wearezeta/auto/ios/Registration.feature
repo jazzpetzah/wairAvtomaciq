@@ -37,3 +37,43 @@ Feature: Registration
     Examples:
       | Name      |
       | user1Name |
+
+  @C3166 @real
+  Scenario Outline: Verify taking photo with a front camera
+    Given I see sign in screen
+    When I enter phone number for user <Name>
+    And I enter activation code
+    And I accept terms of service
+    And I input name <Name> and hit Enter
+    And I press Choose Own Picture button
+    And I press Take Photo button
+    And I tap Camera Shutter button
+    And I remember current screen state
+    And I confirm my choice
+    And I see People picker page
+    And I click clear button
+    And I tap my avatar
+    And I tap on personal screen
+    Then I verify that current screen similarity score is more than <Score> within <Timeout> seconds
+
+    Examples:
+      | Name      | Score | Timeout |
+      | user1Name | 0.4   | 15      |
+
+  @C1009 @staging
+  Scenario Outline: Verify registering new user with Arabic name
+    Given I see sign in screen
+    Given I enter phone number for user <Name>
+    Given I enter activation code
+    Given I accept terms of service
+    And I input Non-English name <ArabicName> and hit Enter
+    And I press Keep This One button
+    When I tap Not Now button on Share Contacts overlay
+    Then I see People picker page
+    And I click clear button
+    And I tap my avatar
+    Then I see my new name <ArabicName>
+
+    Examples:
+      | Name      | ArabicName |
+      | user1Name | عبد العزيز |

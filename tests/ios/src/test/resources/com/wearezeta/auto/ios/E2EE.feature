@@ -41,10 +41,6 @@ Feature: E2EE
     Given There is 1 user where <Name> is me
     Given User Myself removes his avatar picture
     Given I sign in using my email
-    Given I accept alert
-    Given I accept First Time overlay if it is visible
-    Given I accept alert
-    Given I dismiss settings warning
     Given I see conversations list
     When I remember the state of my avatar
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
@@ -140,7 +136,6 @@ Feature: E2EE
     And I click close user profile page button
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And User <Contact1> sends 1 encrypted message using device <DeviceName2> to user Myself
-    And I click Close input options button
     Then I do not see shield icon next to conversation input field
     # TODO: Check the device label in the system message
     #BUG system message labels can not be located on appium
@@ -165,7 +160,6 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
-    And I click Close input options button
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
     Then I see the label "<Contact1> <ExpectedSuffix>" on New Device overlay
@@ -178,22 +172,22 @@ Feature: E2EE
   Scenario Outline: On first login on 2nd device there should be an explanation that user will not see previous messages
     Given There are 1 user where <Name> is me
     Given User Myself adds a new device <DeviceName> with label <DeviceLabel>
-    When I sign in using my email
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I press Login button
     And I accept alert
     Then I see First Time overlay
 
     Examples:
-      | Name      | DeviceName | DeviceLabel  |
-      | user1Name | Device1    | Device1Label |
+      | Login      | Password      | Name      | DeviceName | DeviceLabel  |
+      | user1Email | user1Password | user1Name | Device1    | Device1Label |
 
   @C3510 @noAcceptAlert @regression
   Scenario Outline: Verify deleting one of the devices from device management by Edit
     Given There is 1 user where <Name> is me
     Given I sign in using my email
-    Given I accept alert
-    Given I accept First Time overlay if it is visible
-    Given I accept alert
-    Given I dismiss settings warning
     Given I see conversations list
     And User Myself adds new devices <DeviceName>
     When I tap my avatar
@@ -268,7 +262,6 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
-    And I click Close input options button
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
     And I close New Device overlay
@@ -323,7 +316,6 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
-    And I click Close input options button
     Then I see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
     # And I see last message in dialog is expected message <VerificationMsg>
@@ -422,39 +414,10 @@ Feature: E2EE
       | Name      |
       | user1Name |
 
-  @C3292 @noAcceptAlert @regression
-  Scenario Outline: Verify deleting one of the devices from device management by swipe
-    Given There is 1 user where <Name> is me
-    Given I sign in using my email
-    Given I accept alert
-    Given I accept First Time overlay if it is visible
-    Given I accept alert
-    Given I dismiss settings warning
-    Given I see conversations list
-    And User Myself adds a new device <DeviceName> with label <DeviceLabel>
-    When I tap my avatar
-    And I accept alert
-    And I click on Settings button on personal page
-    And I click on Settings button from the options menu
-    And I select settings item Privacy & Security
-    And I select settings item Manage devices
-    And I swipe left on device number 1
-    And I tap Delete button opened from swipe left on device
-    And I confirm with my <Password> the deletion of the device
-    Then I do not see device <DeviceName> in devices list
-
-    Examples:
-      | Name      | DeviceName | DeviceLabel | Password      |
-      | user1Name | Device1    | Label1      | user1Password |
-
   @C3511 @noAcceptAlert @regression
   Scenario Outline: Verify deleting one of the devices from device information screen
     Given There is 1 user where <Name> is me
     Given I sign in using my email
-    Given I accept alert
-    Given I accept First Time overlay if it is visible
-    Given I accept alert
-    Given I dismiss settings warning
     Given I see conversations list
     And User Myself adds new device <DeviceName>
     When I tap my avatar

@@ -28,7 +28,7 @@ public class NewDeviceOverlaySteps {
     public void ISeeLabel(String expectedLabel) throws Exception {
         expectedLabel = usrMgr.replaceAliasesOccurences(expectedLabel, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("New Device overlay does not contain the label '%s'", expectedLabel),
-                getNewDeviceOverlay().isConatniningLabel(expectedLabel));
+                getNewDeviceOverlay().isContainingLabel(expectedLabel));
     }
 
     /**

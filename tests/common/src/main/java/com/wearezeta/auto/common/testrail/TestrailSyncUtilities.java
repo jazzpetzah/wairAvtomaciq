@@ -47,8 +47,13 @@ public class TestrailSyncUtilities {
             final Optional<String> rcTestsCommentPath =
                     CommonUtils.getRcTestsCommentPathFromCommonConfig(TestrailSyncUtilities.class);
             if (rcTestsCommentPath.isPresent()) {
-                rcTestsComment = Optional.of(new String(Files.readAllBytes(Paths.get(rcTestsCommentPath.get())),
-                        Charset.forName("UTF-8")));
+                if (new File(rcTestsCommentPath.get()).exists()) {
+                    rcTestsComment = Optional.of(new String(Files.readAllBytes(Paths.get(rcTestsCommentPath.get())),
+                            Charset.forName("UTF-8")));
+                } else {
+                    log.error(String.format("Please make sure the file %s exists and is accessible",
+                            rcTestsCommentPath.get()));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -150,7 +155,7 @@ public class TestrailSyncUtilities {
                         x.length())).collect(Collectors.toList());
         if (actualIds.isEmpty()) {
             final String warningMessage = String.format(
-                            "Cannot change IsAutomated state for the test case '%s' (tags: '%s'). " +
+                    "Cannot change IsAutomated state for the test case '%s' (tags: '%s'). " +
                             "No Testrail ids can be parsed.",
                     scenarioName, normalizedTags);
             log.warn(warningMessage);

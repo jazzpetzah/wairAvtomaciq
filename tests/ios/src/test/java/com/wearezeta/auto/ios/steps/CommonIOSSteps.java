@@ -13,13 +13,17 @@ import java.util.concurrent.TimeUnit;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
+import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import com.wearezeta.auto.ios.tools.RealDeviceHelpers;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
 import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -82,17 +86,29 @@ public class CommonIOSSteps {
 
     private static final int DRIVER_CREATION_RETRIES_COUNT = 2;
 
+    private static Map<String, String> cachedBundleIds = new HashMap<>();
+
     @SuppressWarnings("unchecked")
-    public Future<ZetaIOSDriver> resetIOSDriver(String appPath,
+    public Future<ZetaIOSDriver> resetIOSDriver(String ipaPath,
                                                 Optional<Map<String, Object>> additionalCaps) throws Exception {
+        Optional<String> udid = Optional.empty();
+
         final DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("nativeInstrumentsLib", isUseNativeInstrumentsEnabled());
         capabilities.setCapability("newCommandTimeout", AppiumServer.DEFAULT_COMMAND_TIMEOUT);
         capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
-        capabilities.setCapability("app", appPath);
+        capabilities.setCapability("app", ipaPath);
         capabilities.setCapability("appName", getAppName());
-        final String deviceName = getDeviceName(this.getClass());
-        capabilities.setCapability("deviceName", deviceName);
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            capabilities.setCapability("deviceName", getDeviceName(this.getClass()));
+        } else {
+            // We don't really care about which particular real device model we have
+            capabilities.setCapability("deviceName", getDeviceName(this.getClass()).split("\\s+")[0]);
+            udid = RealDeviceHelpers.getUDID();
+            capabilities.setCapability("udid", udid.orElseThrow(
+                    () -> new IllegalStateException("Cannot detect any connected iDevice")
+            ));
+        }
         capabilities.setCapability("platformVersion", getPlatformVersion());
         capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT);
         final String backendType = getBackendType(this.getClass());
@@ -101,6 +117,8 @@ public class CommonIOSSteps {
                         "--args",
                         "-UseHockey", "0",
                         "-ZMBackendEnvironmentType", backendType,
+                        // https://wearezeta.atlassian.net/browse/ZIOS-5259
+                        "-AnalyticsUserDefaultsDisabledKey", "0",
                         // "--debug-log-network"
                 })
         );
@@ -109,6 +127,24 @@ public class CommonIOSSteps {
             for (Map.Entry<String, Object> entry : additionalCaps.get().entrySet()) {
                 capabilities.setCapability(entry.getKey(), entry.getValue());
             }
+        }
+
+        if (!CommonUtils.getIsSimulatorFromConfig(getClass()) &&
+                (capabilities.is("noReset") && !((Boolean) capabilities.getCapability("noReset")) ||
+                        !capabilities.is("noReset"))) {
+            // FIXME: Sometimes Appium fails to reset app prefs properly on real device
+            if (!cachedBundleIds.containsKey(ipaPath)) {
+                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(ipaPath));
+                try {
+                    cachedBundleIds.put(ipaPath, IOSCommonUtils.getBundleId(
+                            new File(appPath.getCanonicalPath() + File.separator + "Info.plist")));
+                } finally {
+                    FileUtils.deleteDirectory(appPath);
+                }
+            }
+            RealDeviceHelpers.uninstallApp(udid.orElseThrow(
+                    () -> new IllegalStateException("Cannot detect any connected iDevice")
+            ), cachedBundleIds.get(ipaPath));
         }
 
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
@@ -202,6 +238,16 @@ public class CommonIOSSteps {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        if (scenario.getSourceTagNames().contains("@upgrade")) {
+            try {
+                if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+                    IOSSimulatorHelper.kill();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -219,6 +265,45 @@ public class CommonIOSSteps {
         customCaps.put("fullReset", false);
         final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath, Optional.of(customCaps));
         updateDriver(lazyDriver);
+    }
+
+    private ElementState screenState = new ElementState(
+            () -> pagesCollection.getCommonPage().takeScreenshot().orElseThrow(
+                    () -> new IllegalStateException("Cannot take a screenshot of the current device state")
+            )
+    );
+
+    /**
+     * Store current screen state into an internal variable
+     *
+     * @throws Exception
+     * @step. ^I remember current screen state$
+     */
+    @When("^I remember current screen state$")
+    public void IRememberCurrentScreenState() throws Exception {
+        screenState.remember();
+    }
+
+    /**
+     * Verify whether screen state has been changed or not
+     *
+     * @param moreOrLess     either one of two possible values
+     * @param score          similarity score value. Can be positive float number less than 1
+     * @param timeoutSeconds screen change timeout
+     * @throws Exception
+     * @step. ^I verify that current screen similarity score is (more|less) than ([\d\.]+) within (\d+) seconds?$
+     */
+    @Then("^I verify that current screen similarity score is (more|less) than ([\\d\\.]+) within (\\d+) seconds?$")
+    public void IVerifyScreenState(String moreOrLess, String score, int timeoutSeconds) throws Exception {
+        if (moreOrLess.equals("less")) {
+            Assert.assertTrue(
+                    String.format("Current screen state looks too similar to the previous one after %s seconds",
+                            timeoutSeconds), screenState.isChanged(timeoutSeconds, Double.parseDouble(score)));
+        } else {
+            Assert.assertTrue(
+                    String.format("Current screen state looks different to the previous one after %s seconds",
+                            timeoutSeconds), screenState.isNotChanged(timeoutSeconds, Double.parseDouble(score)));
+        }
     }
 
     @When("^I press keyboard Delete button$")
@@ -852,5 +937,16 @@ public class CommonIOSSteps {
     @Given("^(\\w+) waits? until (?:his|my) Top People list is not empty on the backend$")
     public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias) throws Exception {
         commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(searchByNameAlias, 1);
+    }
+
+    /**
+     * Click OK button on the current page
+     *
+     * @throws Exception
+     * @step. ^I confirm my choice$
+     */
+    @When("^I confirm my choice$")
+    public void IConfirmImageSelection() throws Exception {
+        pagesCollection.getCommonPage().pressConfirmButton();
     }
 }

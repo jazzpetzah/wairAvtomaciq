@@ -14,6 +14,7 @@ customBackend.json
 .classpath
 *.iml
 tests/.idea
+tests/.project
 .idea/.name
 .idea/compiler.xml
 .idea/encodings.xml

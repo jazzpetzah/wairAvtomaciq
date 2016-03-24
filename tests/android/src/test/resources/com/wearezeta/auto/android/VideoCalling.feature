@@ -127,8 +127,7 @@ Feature: VideoCalling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I swipe on text input
-    And I tap Video Call button from input tools
+    And I tap Video Call button from top toolbar
     Then I see outgoing call
     When <Contact> accepts next incoming video call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -267,8 +266,7 @@ Feature: VideoCalling
     And I see incoming call
     And I swipe to ignore the call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
-    When I swipe on text input
-    And I tap Call button from input tools
+    When I tap Audio Call button from top toolbar
     Then I see alert message containing "<ExpectedMsg>"
     And <Contact> verifies that call status to me is changed to connecting in 3 seconds
 
@@ -285,8 +283,7 @@ Feature: VideoCalling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact1>
-    And I swipe on text input
-    When I tap Video Call button from input tools
+    When I tap Video Call button from top toolbar
     And I see outgoing call
     And <Contact1> accepts next incoming video call automatically
     And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -294,8 +291,7 @@ Feature: VideoCalling
     Then I hang up ongoing video call
     And <Contact1> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
-    And I swipe on text input
-    When I tap Video Call button from input tools
+    When I tap Video Call button from top toolbar
     And I see outgoing call
     And <Contact1> accepts next incoming video call automatically
     And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -305,8 +301,7 @@ Feature: VideoCalling
     And I do not see ongoing video call
     When I navigate back from dialog page
     And I tap on contact name <Contact2>
-    And I swipe on text input
-    And I tap Video Call button from input tools
+    When I tap Video Call button from top toolbar
     And I see outgoing call
     And <Contact2> accepts next incoming video call automatically
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -332,8 +327,7 @@ Feature: VideoCalling
     And I see incoming call
     And I swipe to ignore the call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
-    When I swipe on text input
-    And I tap Video Call button from input tools
+    When I tap Video Call button from top toolbar
     Then I see alert message containing "<ExpectedMsg>"
     And <Contact> verifies that call status to me is changed to connecting in 3 seconds
 
@@ -367,7 +361,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 30      |
 
-  @C58890 @staging
+  @C58890 @calling_advanced
   Scenario Outline: Verify that receiving ping, message or picture have not affect to ongoing call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -391,3 +385,92 @@ Feature: VideoCalling
     Examples:
       | Name      | Contact   | CallBackend | Timeout | Message | ImageName   |
       | user1Name | user2Name | chrome      | 30      | Testing | testing.jpg |
+
+  @C58886 @staging
+  Scenario Outline: Verify I can accept Video call from background
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I minimize the application
+    And <Contact> starts a video call to me
+    # Wait for a while until the call is established with UI
+    And I wait for 7 seconds
+    And I see incoming call
+    And I swipe to accept the call
+    Then I see ongoing video call
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    And I hang up ongoing video call
+    And <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing video call
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 30      |
+
+  @C58888 @staging
+  Scenario Outline: Verify video call is not terminated after putting client to background and restore
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    And <Contact> starts a video call to me
+    And I see incoming call
+    And I swipe to accept the call
+    And I see ongoing video call
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    When I minimize the application
+    And I wait for 5 seconds
+    And I restore the application
+    Then <Contact> verifies that call status to me is changed to active in 3 seconds
+    And I see ongoing video call
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 30      |
+
+  @C36378 @staging
+  Scenario Outline: Verify video call is not terminated if I lock and unlock device
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    And <Contact> starts a video call to me
+    And I see incoming call
+    And I swipe to accept the call
+    And I see ongoing video call
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    When I lock the device
+    And I wait for 5 seconds
+    And I unlock the device
+    Then <Contact> verifies that call status to me is changed to active in 3 seconds
+    And I see ongoing video call
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 30      |
+
+  @C36389 @staging
+  Scenario Outline: Verify video call is terminated after 1 minute if nobody responds
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I tap Video Call button from top toolbar
+    Then I see ongoing video call
+    And I wait for <Timeout> seconds
+    And I do not see ongoing video call
+    Then I see dialog with missed call from YOU
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 65      |

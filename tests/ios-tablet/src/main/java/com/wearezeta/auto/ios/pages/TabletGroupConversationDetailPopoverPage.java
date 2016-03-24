@@ -61,10 +61,6 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
         getElement(nameRenameButtonEllipsisMenu).click();
     }
 
-    public void exitGroupChatPopover() throws Exception {
-        DriverUtils.tapByCoordinates(getDriver(), getElement(nameConversationMenu), 50, 50);
-    }
-
     public boolean isNumberOfPeopleInGroupEqualToExpected(int expectedNumber) throws Exception {
         final By locator = By.xpath(xpathStrGroupCountByNumber.apply(expectedNumber));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);

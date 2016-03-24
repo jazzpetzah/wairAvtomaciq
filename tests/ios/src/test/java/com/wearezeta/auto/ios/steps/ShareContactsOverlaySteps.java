@@ -23,9 +23,9 @@ public class ShareContactsOverlaySteps {
     @Then("^I (do not )?see Share Contact overlay$")
     public void ISeeShareContactsOverlay(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
-            Assert.assertTrue("Share Contacts overlay is not visible", getShareContactsOverlay().waitUntiVisible());
+            Assert.assertTrue("Share Contacts overlay is not visible", getShareContactsOverlay().waitUntilVisible());
         } else {
-            Assert.assertTrue("Share Contacts overlay is not visible", getShareContactsOverlay().waitUntiInvisible());
+            Assert.assertTrue("Share Contacts overlay is not visible", getShareContactsOverlay().waitUntilInvisible());
         }
     }
 

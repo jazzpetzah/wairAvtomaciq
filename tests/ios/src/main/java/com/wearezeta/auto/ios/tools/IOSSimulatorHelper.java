@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.common.process.UnixProcessHelpers;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
@@ -157,7 +158,7 @@ public class IOSSimulatorHelper {
                 "end tell"
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
         // To make sure the window is really activated
-        Thread.sleep(500);
+        Thread.sleep(5000);
     }
 
     public static void switchAppsList() throws Exception {
@@ -285,15 +286,19 @@ public class IOSSimulatorHelper {
 
     public static void kill() throws Exception {
         log.debug("Force killing Simulator app...");
-        new ProcessBuilder("/usr/bin/killall", "-9", "Simulator").start().waitFor();
+        UnixProcessHelpers.killProcessesGracefully("Simulator");
         Thread.sleep(2000);
     }
 
+    public static void shutdown() throws Exception {
+        executeSimctl(new String[]{"shutdown", getId()});
+    }
+
     public static void reset() throws Exception {
+        shutdown();
         kill();
         executeSimctl(new String[]{"erase", getId()});
     }
-
 
     public static void installApp(File appPath) throws Exception {
         executeSimctl(new String[]{"install", getId(), appPath.getCanonicalPath()});
@@ -317,5 +322,10 @@ public class IOSSimulatorHelper {
         executeSimctl(new String[]{
                 "addphoto", getId(), img.getCanonicalPath()
         });
+    }
+
+    public static void copySystemClipboardToSimulatorClipboard() throws Exception {
+        activateWindow();
+        CommonUtils.pressCmdVByAppleScript();
     }
 }

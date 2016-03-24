@@ -1,19 +1,31 @@
 package com.wearezeta.auto.android_tablet.steps;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-
+import com.google.common.base.Throwables;
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.logging.AndroidLogListener;
+import com.wearezeta.auto.android.common.logging.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.common.logging.LoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
+import com.wearezeta.auto.android.pages.AndroidPage;
+import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
+import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
+import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.AppiumServer;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.Scenario;
+import cucumber.api.java.After;
+import cucumber.api.java.Before;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import gherkin.formatter.model.Result;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -24,30 +36,12 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import com.google.common.base.Throwables;
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.logging.AndroidLogListener;
-import com.wearezeta.auto.android.common.logging.AndroidLogListener.ListenerType;
-import com.wearezeta.auto.android.pages.AndroidPage;
-import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
-import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
-import com.wearezeta.auto.common.CommonCallingSteps2;
-import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.Platform;
-import com.wearezeta.auto.common.ZetaFormatter;
-import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.PlatformDrivers;
-import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class CommonAndroidTabletSteps {
     static {
@@ -67,6 +61,7 @@ public class CommonAndroidTabletSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     public static final Platform CURRENT_PLATFORM = Platform.Android;
 
+    public static final int FIRST_TIME_OVERLAY_TIMEOUT = 5; // seconds
     public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
     public static final int DEFAULT_SWIPE_TIME = 1500;
     private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
@@ -118,11 +113,13 @@ public class CommonAndroidTabletSteps {
     }
 
     private static final Future<Void> devicePreparationThread;
+
     static {
         final ExecutorService pool = Executors.newSingleThreadExecutor();
         devicePreparationThread = pool.submit(CommonAndroidTabletSteps::prepareDevice);
         pool.shutdown();
     }
+
     private static final int DEVICE_PREPARATION_TIMEOUT_SECONDS = 20;
 
     private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
@@ -171,6 +168,16 @@ public class CommonAndroidTabletSteps {
         // closeUpdateAlertIfAppears(drv, locator);
     }
 
+    private static boolean isLogcatEnabled = true;
+
+    static {
+        try {
+            isLogcatEnabled = CommonUtils.getAndroidShowLogcatFromConfig(CommonAndroidTabletSteps.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Before
     public void setUp() throws Exception {
         try {
@@ -179,7 +186,9 @@ public class CommonAndroidTabletSteps {
             e.printStackTrace();
         }
 
-        AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
+        if (isLogcatEnabled) {
+            AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
+        }
         final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), getPath());
         ZetaFormatter.setLazyDriver(lazyDriver);
         pagesCollection.setFirstPage(new TabletWelcomePage(lazyDriver));
@@ -218,11 +227,13 @@ public class CommonAndroidTabletSteps {
         if (!scenario.getStatus().equals(Result.PASSED)) {
             loggingProfile = new RegressionFailedLoggingProfile();
         }
-        try {
-            AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener
-                    .getInstance(ListenerType.DEFAULT), loggingProfile);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (isLogcatEnabled) {
+            try {
+                AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener
+                        .getInstance(ListenerType.DEFAULT), loggingProfile);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         try {

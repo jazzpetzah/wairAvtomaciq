@@ -112,7 +112,7 @@ Feature: People View
     And I change group conversation name to <ChatName>
     Then I see correct conversation name <ChatName>
     And I close group info page
-    And I see you renamed conversation to <ChatName> message shown in Group Chat
+    And I see You Renamed Conversation message shown in conversation view
     And I navigate back to conversations list
     And I see in contact list group chat named <ChatName>
 
@@ -207,7 +207,6 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I press Add button
-    And I tap on Search input on People picker page
     And I don't see Add to conversation button
     And I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
@@ -215,7 +214,7 @@ Feature: People View
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
     And I see conversations list
-    And I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
+    Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
@@ -436,7 +435,7 @@ Feature: People View
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
-    And I see 5 conversation entries
+    And I see 4 conversation entries
     And I open conversation details
     And I press conversation menu button
     And I click delete menu button

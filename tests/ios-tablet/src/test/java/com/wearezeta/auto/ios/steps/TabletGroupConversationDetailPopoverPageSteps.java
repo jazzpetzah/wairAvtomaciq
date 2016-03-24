@@ -11,83 +11,67 @@ import cucumber.api.java.en.When;
 public class TabletGroupConversationDetailPopoverPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-    private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private TabletGroupConversationDetailPopoverPage getTabletGroupConversationDetailPopoverPage()
-            throws Exception {
-        return pagesCollecton.getPage(TabletGroupConversationDetailPopoverPage.class);
+    private TabletGroupConversationDetailPopoverPage getTabletGroupConversationDetailPopoverPage() throws Exception {
+        return pagesCollection.getPage(TabletGroupConversationDetailPopoverPage.class);
     }
 
     /**
      * Opens the ellipses menu on the ipad popover
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I press conversation menu button on iPad$
      */
     @When("^I press conversation menu button on iPad$")
-    public void IPressConversationMenuButtonOniPad() throws Throwable {
-        getTabletGroupConversationDetailPopoverPage()
-                .openConversationMenuOnPopover();
+    public void IPressConversationMenuButtonOniPad() throws Exception {
+        getTabletGroupConversationDetailPopoverPage().openConversationMenuOnPopover();
     }
 
     /**
      * Presses leave button in ellipsis menu
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I press leave converstation button on iPad$
      */
     @When("^I press leave converstation button on iPad$")
-    public void IPressLeaveConverstationButtonOniPad() throws Throwable {
+    public void IPressLeaveConverstationButtonOniPad() throws Exception {
         getTabletGroupConversationDetailPopoverPage().leaveConversation();
     }
 
     /**
      * Presses the confirmation leave button
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I press leave on iPad$
      */
     @Then("^I press leave on iPad$")
-    public void i_press_leave_on_iPad() throws Throwable {
-        getTabletGroupConversationDetailPopoverPage()
-                .confirmLeaveConversation();
+    public void i_press_leave_on_iPad() throws Exception {
+        getTabletGroupConversationDetailPopoverPage().confirmLeaveConversation();
     }
 
     /**
      * Selects a user on the group conversation popover
      *
      * @param name of user I select
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I select user on iPad group popover (.*)$
      */
     @When("^I select user on iPad group popover (.*)$")
-    public void ISelectUserOniPadGroupPopover(String name) throws Throwable {
+    public void ISelectUserOniPadGroupPopover(String name) throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        getTabletGroupConversationDetailPopoverPage()
-                .selectUserByNameOniPadPopover(name);
+        getTabletGroupConversationDetailPopoverPage().selectUserByNameOniPadPopover(name);
     }
 
     /**
      * Presses in the ellipses menu on the RENAME button
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I press RENAME on the menu on iPad$
      */
     @When("^I press RENAME on the menu on iPad$")
-    public void IPressRENAMEOnTheMenuOniPad() throws Throwable {
-        getTabletGroupConversationDetailPopoverPage()
-                .pressRenameEllipsesButton();
-    }
-
-    /**
-     * Closes the group info popover
-     *
-     * @throws Throwable
-     * @step. ^I exit the group info iPad popover$
-     */
-    @When("^I exit the group info iPad popover$")
-    public void IExitTheGroupInfoiPadPopover() throws Throwable {
-        getTabletGroupConversationDetailPopoverPage().exitGroupChatPopover();
+    public void IPressRENAMEOnTheMenuOniPad() throws Exception {
+        getTabletGroupConversationDetailPopoverPage().pressRenameEllipsesButton();
     }
 
     /**
@@ -95,12 +79,12 @@ public class TabletGroupConversationDetailPopoverPageSteps {
      * popover
      *
      * @param expectedNumber the expected number of participants in that group
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I see that number of participants (\\d+) is correct on iPad
      * popover$
      */
     @Then("^I see that number of participants (\\d+) is correct on iPad popover$")
-    public void ISeeThatNumberOfParticipantsIsCorrectOniPadPopover(int expectedNumber) throws Throwable {
+    public void ISeeThatNumberOfParticipantsIsCorrectOniPadPopover(int expectedNumber) throws Exception {
         Assert.assertTrue(String.format("The actual number of participants in the current group conversation " +
                         "seems to be different from the expected number %s", expectedNumber),
                 getTabletGroupConversationDetailPopoverPage().isNumberOfPeopleInGroupEqualToExpected(expectedNumber));
@@ -109,25 +93,23 @@ public class TabletGroupConversationDetailPopoverPageSteps {
     /**
      * Clicks on the SILENCE button in the iPad popover ellipsis menu
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I click SILENCE button on iPad ellipsis menu$
      */
     @When("^I click SILENCE button on iPad ellipsis menu$")
-    public void IClickSILENCEButtonOniPadEllipsisMenu() throws Throwable {
-        getTabletGroupConversationDetailPopoverPage()
-                .pressSilenceEllipsisButton();
+    public void IClickSILENCEButtonOniPadEllipsisMenu() throws Exception {
+        getTabletGroupConversationDetailPopoverPage().pressSilenceEllipsisButton();
     }
 
     /**
      * Clicks on the NOTIFY button in the iPad popover ellipsis menu
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I click NOTIFY button on iPad ellipsis menu$
      */
     @When("^I click NOTIFY button on iPad ellipsis menu$")
-    public void IClickNOTIFYButtonOniPadEllipsisMenu() throws Throwable {
-        getTabletGroupConversationDetailPopoverPage()
-                .pressNotifyEllipsisButton();
+    public void IClickNOTIFYButtonOniPadEllipsisMenu() throws Exception {
+        getTabletGroupConversationDetailPopoverPage().pressNotifyEllipsisButton();
     }
 
     /**

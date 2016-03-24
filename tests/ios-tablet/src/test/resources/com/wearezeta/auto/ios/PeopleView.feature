@@ -51,7 +51,7 @@ Feature: People View
     And I press Add button
     And I click on connected user <Contact2> on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
-    And I click on Add to Conversation button on iPad popover
+    And I click on Create button on iPad popover
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
     Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
@@ -73,7 +73,7 @@ Feature: People View
     And I press Add button
     And I click on connected user <Contact2> on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
-    And I click on Add to Conversation button on iPad popover
+    And I click on Create button on iPad popover
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
 
@@ -171,8 +171,8 @@ Feature: People View
     And I press conversation menu button on iPad
     And I press RENAME on the menu on iPad
     And I change group conversation name to <ChatName>
-    And I exit the group info iPad popover
-    Then I see you renamed conversation to <ChatName> message shown in Group Chat
+    And I dismiss popover on iPad
+    Then I see You Renamed Conversation message shown in conversation view
     And I navigate back to conversations list
     Then I see in contact list group chat named <ChatName>
 
@@ -193,8 +193,8 @@ Feature: People View
     And I press conversation menu button on iPad
     And I press RENAME on the menu on iPad
     And I change group conversation name to <ChatName>
-    And I exit the group info iPad popover
-    Then I see you renamed conversation to <ChatName> message shown in Group Chat
+    And I dismiss popover on iPad
+    Then I see You Renamed Conversation message shown in conversation view
     Then I see in contact list group chat named <ChatName>
 
     Examples:
@@ -357,7 +357,7 @@ Feature: People View
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click NOTIFY button on iPad ellipsis menu
-    And I exit the group info iPad popover
+    And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I see the state of <GroupChatName> conversation item is changed on iPad
 
@@ -380,7 +380,7 @@ Feature: People View
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click NOTIFY button on iPad ellipsis menu
-    And I exit the group info iPad popover
+    And I dismiss popover on iPad
     Then I see the state of <GroupChatName> conversation item is changed on iPad
 
     Examples:
@@ -400,7 +400,7 @@ Feature: People View
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click SILENCE button on iPad ellipsis menu
-    And I exit the group info iPad popover
+    And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I see the state of <GroupChatName> conversation item is changed on iPad
 
@@ -422,7 +422,7 @@ Feature: People View
     And I open group conversation details
     And I press conversation menu button on iPad
     And I click SILENCE button on iPad ellipsis menu
-    And I exit the group info iPad popover
+    And I dismiss popover on iPad
     Then I see the state of <GroupChatName> conversation item is changed on iPad
 
     Examples:
@@ -761,7 +761,7 @@ Feature: People View
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
-    And I see 5 conversation entries
+    And I see 4 conversation entries
     And I open conversation details
     And I press conversation menu button
     And I click delete menu button

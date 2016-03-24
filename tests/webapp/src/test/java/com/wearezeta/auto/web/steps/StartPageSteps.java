@@ -9,8 +9,6 @@ import com.wearezeta.auto.web.pages.external.StartPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 
 public class StartPageSteps {
 	
@@ -31,21 +29,49 @@ public class StartPageSteps {
 	 *
 	 * @throws Exception
 	 */
-	@When("^I navigate to start page for (.*)$")
-	public void INavigateToStartPage(String agent) throws Exception {
-		webappPagesCollection.getPage(StartPage.class).setUrl(
-				WebAppConstants.STAGING_SITE_ROOT + "/%3Fagent=" + agent);
-		webappPagesCollection.getPage(StartPage.class).navigateTo();
+	@When("^I navigate to (.*) page for (.*)$")
+	public void INavigateToPage(String page, String agent) throws Exception {
+		switch (page) {
+			case "start":
+				webappPagesCollection.getPage(StartPage.class).setUrl(
+						WebAppConstants.STAGING_SITE_ROOT + "/%3Fagent=" + agent);
+				webappPagesCollection.getPage(StartPage.class).navigateTo();
+				break;
+			case "privacy":
+				webappPagesCollection.getPage(StartPage.class).setUrl(
+						WebAppConstants.STAGING_SITE_ROOT + "/privacy/%3Fagent=" + agent);
+				webappPagesCollection.getPage(StartPage.class).navigateTo();
+				break;
+			case "legal":
+				webappPagesCollection.getPage(StartPage.class).setUrl(
+						WebAppConstants.STAGING_SITE_ROOT + "/legal/%3Fagent=" + agent);
+				webappPagesCollection.getPage(StartPage.class).navigateTo();
+				break;
+			case "job":
+				webappPagesCollection.getPage(StartPage.class).setUrl(
+						WebAppConstants.STAGING_SITE_ROOT + "/jobs/%3Fagent=" + agent);
+				webappPagesCollection.getPage(StartPage.class).navigateTo();
+				break;
+			case "download":
+				webappPagesCollection.getPage(StartPage.class).setUrl(
+						WebAppConstants.STAGING_SITE_ROOT + "/download/%3Fagent=" + agent);
+				webappPagesCollection.getPage(StartPage.class).navigateTo();
+				break;
+			case "forgot":
+				webappPagesCollection.getPage(StartPage.class).setUrl(
+						WebAppConstants.STAGING_SITE_ROOT + "/forgot/%3Fagent=" + agent);
+				webappPagesCollection.getPage(StartPage.class).navigateTo();
+				break;
+			default: break;
+		}
 	}
 	
-	@When("^I navigate to german start page for (.*)$")
-	public void INavigateToGermanStartPage(String agent) throws Exception {
-		webappPagesCollection.getPage(StartPage.class).setUrl(
-				WebAppConstants.STAGING_SITE_ROOT + "/l/de/");
-		webappPagesCollection.getPage(StartPage.class).navigateTo();
+	@When("^I open german start page for (.*)$")
+	public void IOpenGermanStartPage(String agent) throws Exception {
 		webappPagesCollection.getPage(StartPage.class).setUrl(
 				WebAppConstants.STAGING_SITE_ROOT + "/%3Fagent=" + agent);
 		webappPagesCollection.getPage(StartPage.class).navigateTo();
+		webappPagesCollection.getPage(StartPage.class).changeLanguageTo("german");
 	}
 	
 	/**
@@ -68,4 +94,41 @@ public class StartPageSteps {
         }
 	}
 	
+	@Then("^I can see language switch button for (.*) on (.*) for (.*)$")
+	public void ICanSeeLanguageSwitchButton(String language, String page, String agent) throws Exception {
+		String url = "";
+		switch (language) {
+			case "german":
+				url = "/l/de/";
+				assertThat("German language button is not visible on " + page + " page for " + agent, 
+						webappPagesCollection.getPage(StartPage.class).getGermanValue(), equalTo(url));
+				break;
+			case "english":
+				url = "/l/en/";
+				assertThat("English language button is not visible on " + page + " page for " + agent,
+						webappPagesCollection.getPage(StartPage.class).getEnglishValue(), equalTo(url));
+				break;
+			default: break;
+		}
+	}
+	
+	@Then("^I change language to (.*)$")
+	public void IChangeLanguageTo(String language) throws Exception {
+		webappPagesCollection.getPage(StartPage.class).changeLanguageTo(language);
+	}
+	
+	@Then("^(.*) page for (.*) is (.*)$")
+	public void StartPageIs(String page, String agent, String language) throws Exception {
+		StartPage startPage = WebappPagesCollection.getInstance()
+				.getPage(StartPage.class);
+		switch (language) {
+			case "english":
+				assertTrue(page + "Page for " + agent + " is not in " + language, startPage.isEnglish());
+				break;
+			case "german":
+				assertTrue(page + "Page for " + agent + " is not in " + language, startPage.isGerman());
+				break;
+			default: break;
+		}
+	}
 }

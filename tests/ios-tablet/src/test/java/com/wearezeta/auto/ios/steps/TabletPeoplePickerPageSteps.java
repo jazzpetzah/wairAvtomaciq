@@ -81,12 +81,22 @@ public class TabletPeoplePickerPageSteps {
     /**
      * Clicks the Add to Conversation button to create the group chat
      *
-     * @throws Throwable
-     * @step. ^I click on Add to Conversation button on iPad popover$
+     * @throws Exception
+     * @param btnName one of available button names
+     * @step. ^I click on (Add to Conversation|Create) button on iPad popover$
      */
-    @When("^I click on Add to Conversation button on iPad popover$")
-    public void IClickOnAddToConversationButtonOniPadPopover() throws Throwable {
-        getTabletPeoplePickerPage().clickAddToConversationButtonOniPadPopover();
+    @When("^I click on (Add to Conversation|Create) button on iPad popover$")
+    public void IClickOnAddToConversationButtonOniPadPopover(String btnName) throws Exception {
+        switch (btnName) {
+            case "Add to Conversation":
+                getTabletPeoplePickerPage().clickAddToConversationButtonOniPadPopover();
+                break;
+            case "Create":
+                getTabletPeoplePickerPage().clickCreateConversationButtonOniPadPopover();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
+        }
     }
 
 }

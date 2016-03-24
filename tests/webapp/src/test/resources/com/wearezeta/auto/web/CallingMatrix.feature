@@ -94,6 +94,7 @@ Feature: Calling_Matrix
     Then I see the ongoing call controls for conversation <Contact>
     And I hang up call with conversation <Contact>
     And I do not see the call controls for conversation <Contact>
+    And <Contact> verifies that call to conversation <Contact> was successful
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend   | Timeout |

@@ -1,7 +1,7 @@
 Feature: Conversation List
 
-  @C56396 @staging
-  Scenario Outline: (AN-3523) Verify contacts banner does not appear anymore after you opened contacts once
+  @C56396 @regression
+  Scenario Outline: (AN-3523?) Verify contacts banner does not appear anymore after you opened contacts once
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     When I accept First Time overlay as soon as it is visible
@@ -273,7 +273,7 @@ Feature: Conversation List
     And I see BLOCK button in conversation settings menu
     And I press back button
     When I tap on contact name <Contact1>
-    And I tap conversation details button
+    And I tap conversation name from top toolbar
     When I press options menu button
     Then I see SILENCE button in option menu
     And I see ARCHIVE button in option menu
@@ -299,7 +299,7 @@ Feature: Conversation List
     And I see LEAVE button in conversation settings menu
     And I press back button
     When I tap on contact name <GroupChatName>
-    And I tap conversation details button
+    And I tap conversation name from top toolbar
     When I press options menu button
     Then I see SILENCE button in option menu
     And I see RENAME button in option menu

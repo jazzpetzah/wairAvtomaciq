@@ -1,4 +1,4 @@
-Feature: Menus
+Feature: Settings
 
   @C1706 @regression
   Scenario Outline: Check Preferences opening

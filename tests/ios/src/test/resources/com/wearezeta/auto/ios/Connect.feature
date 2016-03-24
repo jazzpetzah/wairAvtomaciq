@@ -223,13 +223,11 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see plus button next to text input
-    And I click plus button next to text input
     And I open conversation details
     And I click Cancel request button
     Then I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
-    Then I dont see conversation <Contact> in contact list
+    Then I dont see conversation <Contact1> in contact list
 
     Examples: 
       | Name      | Contact1  | Contact2  |
@@ -243,7 +241,6 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I click plus button next to text input
     And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
@@ -301,25 +298,6 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
-  @C46 @regression @id3794
-  Scenario Outline: Verify common connections are not tappable
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given <Contact2> sent connection request to me
-    Given <Contact1> is connected to <Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    And I see Pending request link in contact list
-    And I click on Pending request link in contact list
-    And I see Pending request page
-    And I see YOU BOTH KNOW people section
-    And I click person in YOU BOTH KNOW section
-    Then I see Pending request page
-
-    Examples: 
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
-
   @C31 @regression @id1199
   Scenario Outline: Verify you can send text messages and images in 1to1 chat to the person who blocked you
     Given There are 2 users where <Name> is me
@@ -334,7 +312,7 @@ Feature: Connect
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I press Confirm button
+    And I confirm my choice
     Then I see 1 photo in the dialog
 
     Examples: 

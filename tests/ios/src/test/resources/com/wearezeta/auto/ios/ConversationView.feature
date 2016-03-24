@@ -36,11 +36,11 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I click plus button next to text input
     And I click Ping button
-    Then I see You Pinged message in the dialog
+    Then I see "<PingMsg>" system message in the conversation view
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | PingMsg    |
+      | user1Name | user2Name | YOU PINGED |
 
   @C909 @C3176 @regression @IPv6 @id332 @id1470
   Scenario Outline: Send a camera roll picture to user from contact list
@@ -53,7 +53,7 @@ Feature: Conversation View
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I press Confirm button
+    And I confirm my choice
     Then I see 1 photo in the dialog
 
     Examples:
@@ -240,7 +240,7 @@ Feature: Conversation View
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I press Confirm button
+    And I confirm my choice
     And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -352,8 +352,9 @@ Feature: Conversation View
     And I wait for 1 second
     And I tap play/pause button in contact list next to username <Contact>
     And I tap on contact name <Contact>
-    Then I see media container state is not changed
-    When I navigate back to conversations list
+    Then I see media container state is changed
+    When I remember media container state
+    And I navigate back to conversations list
     And I wait for 1 second
     And I tap play/pause button in contact list next to username <Contact>
     And I tap on contact name <Contact>
@@ -415,7 +416,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see plus button next to text input
     And I click plus button next to text input
     Then I see conversation tools buttons
     When I click Close input options button
@@ -436,13 +436,11 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I see plus button next to text input
     And I click plus button next to text input
     Then I see no other conversation tools buttons except of Details
     And I click Close input options button
     And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
-    And I see plus button next to text input
     And I click plus button next to text input
     Then I see no other conversation tools buttons except of Details
 
@@ -484,7 +482,7 @@ Feature: Conversation View
     And I press sketch button on camera roll page
     And I draw a random sketch
     And I send my sketch
-    And I press Confirm button
+    And I confirm my choice
     Then I see 1 photo in the dialog
 
     Examples:
@@ -605,7 +603,7 @@ Feature: Conversation View
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
-    And I press Confirm button
+    And I confirm my choice
     Then I see 2 photo in the dialog
 
     Examples:
@@ -629,8 +627,8 @@ Feature: Conversation View
     And I click plus button next to text input
     And I press Add Picture button
     And I press Camera Roll button
-    And I choose last picture from camera roll
-    And I press Confirm button
+    And I choose a picture from camera roll
+    And I confirm my choice
     And I see 2 photos in the dialog
 
     Examples:
@@ -661,11 +659,58 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I see plus button next to text input
     And I type the default message
     And I see plus icon is changed to user avatar icon
     And I clear conversation text input
     Then I see plus button next to text input
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C917 @real
+  Scenario Outline: Verify sending photo from a back camera
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I click plus button next to text input
+    And I press Add Picture button
+    And I tap Camera Shutter button
+    And I confirm my choice
+    Then I see 1 photo in the dialog
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C918 @real
+  Scenario Outline: Verify sending photo from a front camera
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I click plus button next to text input
+    And I press Add Picture button
+    And I tap Toggle Camera button
+    And I tap Camera Shutter button
+    And I confirm my choice
+    Then I see 1 photo in the dialog
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C77924 @staging
+  Scenario Outline: Verify an upper toolbar exists in the conversation view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    Then I see Upper Toolbar on dialog page
 
     Examples:
       | Name      | Contact   |

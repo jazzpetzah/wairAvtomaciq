@@ -493,3 +493,38 @@ Feature: Conversation List
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Number |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | 8      |
+
+  @C854 @regression
+  Scenario Outline: Verify action menu is opened on swipe right on outgoing connection request
+    Given There are 2 users where <Name> is me
+    Given Myself sent connection request to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I see first item in contact list named <Contact>
+    When I swipe right on a <Contact>
+    Then I see conversation <Contact> name in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+ 
+  @C109 @noAcceptAlert @regression
+  Scenario Outline: Verify share contacts dialogue is shown each time on invite more friends click
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email
+    Given I see conversations list
+    When I tap Invite more people button
+    Then I see Share Contacts settings warning
+    And I dismiss settings warning
+    And I tap Cancel button to not Invite more people
+    And I tap Invite more people button
+    Then I see Share Contacts settings warning
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  

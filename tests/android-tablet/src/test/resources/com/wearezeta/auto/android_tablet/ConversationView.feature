@@ -8,9 +8,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     And I tap the text input in the conversation view
     When I type the message "<Message>" in the conversation view
     And I send the typed message in the conversation view
@@ -28,9 +26,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     And I tap the text input in the conversation view
     When I type the message "<Message>" in the conversation view
     And I send the typed message in the conversation view
@@ -49,9 +45,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     And I swipe right on text input in the conversation view
     When I tap Add Picture button in the conversation view
     And I tap Take Photo button in the conversation view
@@ -70,9 +64,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     And I swipe right on text input in the conversation view
     When I tap Add Picture button in the conversation view
     And I tap Take Photo button in the conversation view
@@ -91,10 +83,8 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact1> in my conversations list
     And I tap the conversation <Contact1>
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     And I see the Single user popover
     When I tap Add People button on Single user popover
     And I enter "<Contact2>" into the Search input on Single user popover
@@ -116,10 +106,8 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact1> in my conversations list
     And I tap the conversation <Contact1>
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     And I see the Single user popover
     When I tap Add People button on Single user popover
     And I enter "<Contact2>" into the Search input on Single user popover
@@ -142,9 +130,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
     And I tap the text input in the conversation view
     When I type the message "<Message>" in the conversation view
     And I send the typed message in the conversation view
@@ -163,9 +149,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
     And I tap the text input in the conversation view
     When I type the message "<Message>" in the conversation view
     And I send the typed message in the conversation view
@@ -183,25 +167,20 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
-    And I tap the conversation <Contact>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    When I tap Show Details button on conversation view page
+    When I tap the conversation <Contact>
+    And I tap conversation name from top toolbar
     Then I see the Single user popover
     And I see the user name <Contact> on Single user popover
     When I tap Close button on Single user popover
     Then I do not see the Single user popover
-    When I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     Then I see the Single user popover
     When I tap in the center of Single user popover
     Then I see the Single user popover
     When I tap outside of Single user popover
     Then I do not see the Single user popover
-    When I tap Close Tools button on conversation view page
     And I tap the text input in the conversation view
-    And I tap Show Tools button on conversation view page
-    When I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     Then I see the Single user popover
     When I navigate back
     Then I do not see the Single user popover
@@ -219,18 +198,14 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     When I tap the text input in the conversation view
     Then I do not see the Single user popover
-    When I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     Then I see the Single user popover
     When I rotate UI to landscape
     Then I do not see the Single user popover
-    When I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    When I tap conversation name from top toolbar
     Then I see the Single user popover
     When I rotate UI to portrait
     Then I do not see the Single user popover
@@ -248,9 +223,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
     And I swipe right on text input in the conversation view
     When I tap Add Picture button in the conversation view
     And I tap Take Photo button in the conversation view
@@ -270,9 +243,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
     And I swipe right on text input in the conversation view
     When I tap Add Picture button in the conversation view
     And I tap Take Photo button in the conversation view
@@ -291,9 +262,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     And I swipe right on text input in the conversation view
     When I tap Add Picture button in the conversation view
     And I tap Gallery button in the conversation view
@@ -312,9 +281,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
-    And I see the conversation view
     And I swipe right on text input in the conversation view
     When I tap Add Picture button in the conversation view
     And I tap Gallery button in the conversation view
@@ -334,11 +301,8 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     And I see the Group popover
     When I rename the conversation to "<NewGroupChatName>" on Group popover
     And I tap Close button on Group popover
@@ -358,11 +322,8 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
+    And I tap conversation name from top toolbar
     And I see the Group popover
     When I rename the conversation to "<NewGroupChatName>" on Group popover
     And I tap Close button on Group popover
@@ -381,9 +342,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact1> in my conversations list
     And I tap the conversation <Contact1>
-    And I see the conversation view
     And I tap Show Tools button on conversation view page
     And I tap Sketch button on conversation view page
     And I draw a sketch with <NumColors> colors on Sketch page
@@ -403,9 +362,7 @@ Feature: Conversation View
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I see the conversation <Contact1> in my conversations list
     And I tap the conversation <Contact1>
-    And I see the conversation view
     And I tap Show Tools button on conversation view page
     When I tap Add Picture button in the conversation view
     And I tap Gallery button in the conversation view

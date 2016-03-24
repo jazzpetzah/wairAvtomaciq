@@ -155,7 +155,7 @@ public class CallPageSteps {
     }
 
     /**
-     * Verifies if end call button is visible for conversation
+     * Verifies if hang up button is visible for conversation
      *
      * @param doNot is set to null if "do not" part does not exist
      * @param conversation conversation name string
@@ -177,10 +177,9 @@ public class CallPageSteps {
     }
 
     /**
-     * Clicks end call button for conversation
+     * Clicks hang up button for conversation
      *
      * @throws Exception
-     * @step. ^I click end call button from conversation list$
      * @step. ^I hang up call with conversation (.*)$
      */
     @When("^I hang up call with conversation (.*)$")
@@ -273,7 +272,6 @@ public class CallPageSteps {
      * Clicks mute call button in conversation list
      *
      * @throws Exception
-     * @step. ^I click mute call button in conversation list$
      * @step. ^I click mute call button for conversation (.*)$
      */
     @When("^I click mute call button for conversation (.*)$")
@@ -288,7 +286,6 @@ public class CallPageSteps {
      *
      * @param doNot is set to null if "do not" part does not exist
      * @throws Exception
-     * @step. ^I see mute button in conversation list is( not)? pressed$
      * @step. ^I see mute button for conversation (.*) is( not)? pressed$
      */
     @When("^I see mute button for conversation (.*) is( not)? pressed$")

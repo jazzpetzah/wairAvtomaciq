@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.common.driver.DummyElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -26,15 +27,17 @@ public class DialogPage extends AndroidPage {
 
     public static final By idAddPicture = By.id("cursor_menu_item_camera");
 
+    public static final By idPing = By.id("cursor_menu_item_ping");
+
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
-        .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
+            .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
 
     private static final Function<String, String> xpathStrUnsentIndicatorByText = text -> String
-        .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']",
-                xpathStrConversationMessageByText.apply(text));
+            .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']",
+                    xpathStrConversationMessageByText.apply(text));
 
     private static final By xpathUnsentIndicatorForImage = By
-        .xpath("//*[@id='" + idStrDialogImages + "']/parent::*/parent::*//*[@id='v__row_conversation__error']");
+            .xpath("//*[@id='" + idStrDialogImages + "']/parent::*/parent::*//*[@id='v__row_conversation__error']");
 
     private static final By idCursorBtn = By.id("typing_indicator_button");
 
@@ -42,21 +45,19 @@ public class DialogPage extends AndroidPage {
 
     private static final String idStrMissedCallMesage = "ttv__row_conversation__missed_call";
     private static final Function<String, String> xpathStrMissedCallMesageByText = text -> String
-        .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text);
+            .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text);
 
     private static final By idCursorFrame = By.id("cursor_layout");
 
     public static final Function<String, String> xpathStrPingMessageByText = text -> String
-        .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']", text);
+            .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']", text);
 
     private static final By xpathDialogTakePhotoButton = By
-        .xpath("//*[@id='gtv__camera_control__take_a_picture' and @shown='true']");
+            .xpath("//*[@id='gtv__camera_control__take_a_picture' and @shown='true']");
 
     private static final By idSketchImagePaintButton = By.id("gtv__sketch_image_paint_button");
 
     private static final By idFullScreenImage = By.id("tiv__single_image_message__image");
-
-    public static final By idParticipantsBtn = By.id("cursor_menu_item_participant");
 
     public static final By idVerifiedConversationShield = By.id("cursor_button_giphy");
 
@@ -68,40 +69,53 @@ public class DialogPage extends AndroidPage {
 
     private static final By idSketch = By.id("cursor_menu_item_draw");
 
-    private static final By idCall = By.id("cursor_menu_item_calling");
+    private static final By idAudioCall = By.id("action_audio_call");
 
-    private static final By idVideoCall = By.id("cursor_menu_item_video");
+    private static final By idVideoCall = By.id("action_video_call");
+
+    private static final String xpathStrConversationToolbar = "//*[@id='t_conversation_toolbar']";
+
+    private static final By xpathToolbar = By.xpath(xpathStrConversationToolbar);
+
+    private static final By xpathToolBarNavigation =
+            By.xpath(String.format("%s/*[@value='' and count(*)=1]", xpathStrConversationToolbar));
 
     public static final By idCursorCloseButton = By.id("cursor_button_close");
 
     private static final String idStrNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
 
     private static Function<String, String> xpathStrNewConversationNameByValue = value -> String
-        .format("//*[@id='%s' and @value='%s']", idStrNewConversationNameMessage, value);
+            .format("//*[@id='%s' and @value='%s']", idStrNewConversationNameMessage, value);
 
     private static final By xpathStrOtrVerifiedMessage = By
-        .xpath("//*[@id='ttv__otr_added_new_device__message' and @value='ALL FINGERPRINTS ARE VERIFIED']");
+            .xpath("//*[@id='ttv__otr_added_new_device__message' and @value='ALL FINGERPRINTS ARE VERIFIED']");
 
     private static final By xpathStrOtrNonVerifiedMessage = By
-        .xpath("//*[@id='ttv__otr_added_new_device__message' and contains(@value,'STARTED USING A NEW DEVICE')]");
+            .xpath("//*[@id='ttv__otr_added_new_device__message' and contains(@value,'STARTED USING A NEW DEVICE')]");
 
     private static final Function<String, String> xpathStrOtrNonVerifiedMessageByValue = value -> String.format(
-        "//*[@id='ttv__otr_added_new_device__message' and @value='%s STARTED USING A NEW DEVICE']", value.toUpperCase());
+            "//*[@id='ttv__otr_added_new_device__message' and @value='%s STARTED USING A NEW DEVICE']", value.toUpperCase());
 
     private static final By xpathLastConversationMessage = By.xpath("(//*[@id='ltv__row_conversation__message'])[last()]");
 
-    private static final String idStrDialogRoot = "pfac__conversation__list_view_container";
-    private static final By idDialogRoot = By.id(idStrDialogRoot);
+    public static final String idStrDialogRoot = "clv__conversation_list_view";
+    public static final By idDialogRoot = By.id(idStrDialogRoot);
     private static final By xpathDialogContent = By.xpath("//*[@id='" + idStrDialogRoot + "']/*/*/*");
 
     public static Function<String, String> xpathStrInputFieldByValue = value -> String.format("//*[@value='%s']", value);
 
     private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__back_camera");
 
+    private static Function<String, String> xpathMessageNotificationByValue = value -> String
+            .format("//*[starts-with(@id,'ttv_message_notification_chathead__label') and @value='%s']", value);
+
+    private static Function<String, String> xpathConversationTitleByValue = value -> String
+            .format("//*[@id='tv__conversation_toolbar__title' and @value='%s']", value);
+
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_SWIPE_RETRIES = 5;
     private static final int MAX_CLICK_RETRIES = 5;
-    
+
     public DialogPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -137,6 +151,7 @@ public class DialogPage extends AndroidPage {
         // FIXME: Scroll to the bottom if cursor input is not visible
         if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorBtnImg, 1)) {
             getElement(idCursorFrame).click();
+            Thread.sleep(1000);
         }
         getElement(idCursorArea).click();
     }
@@ -151,12 +166,12 @@ public class DialogPage extends AndroidPage {
                 return;
             }
             log.debug(String.format("Failed to open control buttons by tap on plus button. Retrying (%s of %s)...", ntry,
-                MAX_SWIPE_RETRIES));
+                    MAX_SWIPE_RETRIES));
             ntry++;
             Thread.sleep(500);
         } while (ntry <= MAX_SWIPE_RETRIES);
         throw new RuntimeException(
-            String.format("Failed to open control buttons by tap on plus button after %s retries!", MAX_SWIPE_RETRIES));
+                String.format("Failed to open control buttons by tap on plus button after %s retries!", MAX_SWIPE_RETRIES));
     }
 
     public void swipeRightOnCursorInput() throws Exception {
@@ -176,25 +191,16 @@ public class DialogPage extends AndroidPage {
             Thread.sleep(1000);
         } while (ntry <= MAX_SWIPE_RETRIES);
         throw new RuntimeException(
-            String.format("Failed to swipe the text cursor on input field after %s retries!", MAX_SWIPE_RETRIES));
+                String.format("Failed to swipe the text cursor on input field after %s retries!", MAX_SWIPE_RETRIES));
     }
 
     // NOTE: This method is required to scroll conversation to the end.
     // NOTE: Click happens on the text input area if participants button is not
     // NOTE: visible
     public void scrollToTheBottom() throws Exception {
-        // Close cursor if it is currently opened
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), DialogPage.idCursorCloseButton, 1)) {
-            getElement(DialogPage.idCursorCloseButton).click();
-            // Wait for animation
-            Thread.sleep(500);
-        } else {
-            this.hideKeyboard();
-            if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorFrame, 2)) {
-                throw new IllegalStateException("Cursor frame is not visible");
-            }
-        }
-        getElement(idCursorFrame).click();
+        this.hideKeyboard();
+        swipeByCoordinates(1000, 50, 75, 50, 20);
+        getElementIfDisplayed(idCursorFrame, 3).orElseGet(DummyElement::new).click();
         this.hideKeyboard();
     }
 
@@ -203,34 +209,31 @@ public class DialogPage extends AndroidPage {
     }
 
     public void tapPingBtn() throws Exception {
-        getDriver().longTap(getElement(idCall), DriverUtils.LONG_TAP_DURATION);
-    }
-
-    public void tapPingButtonIfVisible() throws Exception {
-        final Optional<WebElement> callBtn = getElementIfDisplayed(idCall, 2);
-        if (callBtn.isPresent()) {
-            getDriver().longTap(callBtn.get(), DriverUtils.LONG_TAP_DURATION);
-        }
+        getElement(idPing, "Ping button is not visible").click();
     }
 
     public void tapSketchBtn() throws Exception {
         getElement(idSketch, "Sketch button is not visible").click();
     }
 
-    public void tapCallBtn() throws Exception {
-        getElement(idCall, "Call button is not visible").click();
+    public void tapAudioCallBtn() throws Exception {
+        getElement(idAudioCall, "Audio Call button is not visible").click();
     }
 
     public void tapVideoCallBtn() throws Exception {
         getElement(idVideoCall, "Video Call button is not visible").click();
     }
 
-    public void closeInputOptions() throws Exception {
-        getElement(idCursorCloseButton, "Close cursor button is not visible").click();
+    public void tapTopToolbarTitle() throws Exception {
+        getElement(xpathToolbar, "Top toolbar title is not visible").click();
     }
 
-    public void typeAndSendMessage(String message) throws Exception {
-        typeAndSendMessage(message, true);
+    public void tapTopToolbarBackButton() throws Exception {
+        getElement(xpathToolBarNavigation, "Top toolbar back button is not visible").click();
+    }
+
+    public void closeInputOptions() throws Exception {
+        getElement(idCursorCloseButton, "Close cursor button is not visible").click();
     }
 
     public void typeAndSendMessage(String message, boolean hideKeyboard) throws Exception {
@@ -242,15 +245,16 @@ public class DialogPage extends AndroidPage {
             cursorInput.clear();
             cursorInput.sendKeys(message);
             ntry++;
-        } while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathStrInputFieldByValue.apply(message)), 2)
-            && ntry < maxTries);
+        }
+        while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathStrInputFieldByValue.apply(message)), 2)
+                && ntry < maxTries);
         if (ntry >= maxTries) {
             throw new IllegalStateException(String.format(
-                "The string '%s' was autocorrected. Please disable autocorrection on the device and restart the test.",
-                message));
+                    "The string '%s' was autocorrected. Please disable autocorrection on the device and restart the test.",
+                    message));
         }
         pressKeyboardSendButton();
-        if(hideKeyboard) {
+        if (hideKeyboard) {
             this.hideKeyboard();
         }
     }
@@ -263,7 +267,7 @@ public class DialogPage extends AndroidPage {
     }
 
     public void clickLastImageFromDialog() throws Exception {
-        final WebElement lastPicture =  getElement(xpathLastPicture);
+        final WebElement lastPicture = getElement(xpathLastPicture);
         lastPicture.click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathLastPicture, 3)) {
             try {
@@ -289,7 +293,7 @@ public class DialogPage extends AndroidPage {
 
     public boolean waitForOtrNonVerifiedMessageCausedByUser(String userName) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-            By.xpath(xpathStrOtrNonVerifiedMessageByValue.apply(userName)));
+                By.xpath(xpathStrOtrNonVerifiedMessageByValue.apply(userName)));
     }
 
     public boolean waitForMessage(String text) throws Exception {
@@ -313,6 +317,11 @@ public class DialogPage extends AndroidPage {
 
     public boolean isImageExists() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idDialogImages);
+    }
+
+    public boolean isConversationTitileVisible(String conversationTitle) throws Exception {
+        final By locator = By.xpath(xpathConversationTitleByValue.apply(conversationTitle));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
     public void confirm() throws Exception {
@@ -366,12 +375,6 @@ public class DialogPage extends AndroidPage {
         getElement(idCloseImageBtn).click();
     }
 
-    public void tapConversationDetailsButton() throws Exception {
-        getElement(idParticipantsBtn).click();
-        // Wait for animation
-        Thread.sleep(500);
-    }
-
     public boolean waitForPingMessageWithText(String expectedText) throws Exception {
         final By locator = By.xpath(xpathStrPingMessageByText.apply(expectedText));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -384,13 +387,33 @@ public class DialogPage extends AndroidPage {
 
     public boolean isGroupChatDialogContainsNames(List<String> names) throws Exception {
         final String convoText = getElement(xpathLastConversationMessage, "No messages are visible in the conversation view")
-            .getText();
+                .getText();
         for (String name : names) {
             if (!convoText.toLowerCase().contains(name.toLowerCase())) {
                 return false;
             }
         }
         return true;
+    }
+
+    public boolean isTopToolbarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathToolbar);
+    }
+
+    public boolean isAudioCallIconInToptoolbarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioCall);
+    }
+
+    public boolean isAudioCallIconInToptoolbarInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idAudioCall);
+    }
+
+    public boolean isVideoCallIconInToptoolbarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idVideoCall);
+    }
+
+    public boolean isVideoCallIconInToptoolbarInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idVideoCall);
     }
 
     public boolean isDialogVisible() throws Exception {
@@ -405,13 +428,13 @@ public class DialogPage extends AndroidPage {
             throw new IllegalStateException("Play/Pause button is not clickable");
         }
         final BufferedImage initialState = getElementScreenshot(playPauseBtn)
-            .orElseThrow(() -> new IllegalStateException("Failed to get a screenshot of Play/Pause button"));
+                .orElseThrow(() -> new IllegalStateException("Failed to get a screenshot of Play/Pause button"));
         playPauseBtn.click();
         Thread.sleep(2000);
         int clickTry = 1;
         do {
             final BufferedImage currentState = getElementScreenshot(playPauseBtn)
-                .orElseThrow(() -> new AssertionError("Failed to get a screenshot of Play/Pause button"));
+                    .orElseThrow(() -> new AssertionError("Failed to get a screenshot of Play/Pause button"));
             final double overlapScore = ImageUtil.getOverlapScore(currentState, initialState, ImageUtil.RESIZE_TO_MAX_SCORE);
             if (overlapScore < MAX_BUTTON_STATE_OVERLAP) {
                 return;
@@ -422,7 +445,7 @@ public class DialogPage extends AndroidPage {
             clickTry++;
         } while (clickTry <= MAX_CLICK_RETRIES);
         assert (clickTry > MAX_CLICK_RETRIES) : "Media playback state has not been changed after " + MAX_CLICK_RETRIES
-            + " retries";
+                + " retries";
     }
 
     public boolean waitUntilYoutubePlayButtonVisible() throws Exception {
@@ -449,7 +472,7 @@ public class DialogPage extends AndroidPage {
             final Optional<WebElement> msgElement = getElementIfDisplayed(locator);
             if (msgElement.isPresent()) {
                 final String lastMessage = getElement(xpathLastConversationMessage,
-                    "Cannot find the last message in the dialog", 1).getText();
+                        "Cannot find the last message in the dialog", 1).getText();
                 if (expectedMessage.equals(lastMessage)) {
                     return true;
                 } else {
@@ -479,7 +502,7 @@ public class DialogPage extends AndroidPage {
     public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries) throws Exception {
         int swipeNum = 1;
         while (swipeNum <= maxScrollRetries) {
-            swipeByCoordinates(1000, 50, 10, 50, 90);
+            swipeByCoordinates(1000, 50, 20, 50, 90);
             if (waitUntilMediaBarVisible(2)) {
                 return true;
             }
@@ -523,6 +546,15 @@ public class DialogPage extends AndroidPage {
     public boolean waitForUnsentIndicator(String text) throws Exception {
         final By locator = By.xpath(xpathStrUnsentIndicatorByText.apply(text));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean waitForMessageNotification(String message) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathMessageNotificationByValue.apply(message)));
+    }
+
+    public void tapMessageNotification(String message) throws Exception {
+        getElement(By.xpath(xpathMessageNotificationByValue.apply(message))).click();
     }
 
 }

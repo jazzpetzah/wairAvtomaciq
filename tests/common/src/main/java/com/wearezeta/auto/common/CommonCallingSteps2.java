@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.calling2.v1.CallingServiceClient;
 import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceInstanceException;
+import com.wearezeta.auto.common.calling2.v1.model.Metrics;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.CallStatus;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
@@ -223,11 +224,11 @@ public final class CommonCallingSteps2 {
     public void verifyCallingStatus(List<String> callerNames, String conversationName,
             String expectedStatuses, int secondsTimeout) throws Exception {
         for (String callerName : callerNames) {
-        ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
-        final String convId = getConversationId(userAs, conversationName);
-        waitForExpectedCallStatuses(getInstance(userAs),
-                getOutgoingCall(userAs, convId),
-                callStatusesListToObject(expectedStatuses), secondsTimeout);
+            ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
+            final String convId = getConversationId(userAs, conversationName);
+            waitForExpectedCallStatuses(getInstance(userAs),
+                    getOutgoingCall(userAs, convId),
+                    callStatusesListToObject(expectedStatuses), secondsTimeout);
         }
     }
 
@@ -455,6 +456,25 @@ public final class CommonCallingSteps2 {
         return client.getFlows(getInstance(userAs));
     }
 
+    public List<Call> getOutgoingCall(List<String> callerNames, String conversationName) throws NoSuchUserException, Exception {
+        final List<Call> calls = new ArrayList<>();
+        for (String callerName : callerNames) {
+            ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
+            final String convId = getConversationId(userAs, conversationName);
+            calls.add(client.getCall(getInstance(userAs), getOutgoingCall(userAs, convId)));
+        }
+        return calls;
+    }
+
+    public List<Call> getIncomingCall(List<String> calleeNames) throws NoSuchUserException, Exception {
+        final List<Call> calls = new ArrayList<>();
+        for (String callerName : calleeNames) {
+            ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
+            calls.add(client.getCall(getInstance(userAs), getIncomingCall(userAs)));
+        }
+        return calls;
+    }
+
     /**
      * Stops and terminates all instances and calls asynchronously.
      *
@@ -489,8 +509,8 @@ public final class CommonCallingSteps2 {
             throws Exception {
         long millisecondsStarted = System.currentTimeMillis();
         while (System.currentTimeMillis() - millisecondsStarted <= secondsTimeout * 1000) {
-            final CallStatus currentStatus = client.getCallStatus(instance,
-                    call);
+            final CallStatus currentStatus = client.getCall(instance,
+                    call).getStatus();
             if (expectedStatuses.contains(currentStatus)) {
                 return;
             }
@@ -522,7 +542,8 @@ public final class CommonCallingSteps2 {
                 clearedStatus = "DESTROYED";
                 // READY could mean DESTROYED or NON_EXISTENT so we add both
                 result.add(CallStatus.NON_EXISTENT);
-                LOG.warn("Please use DESTROYED or NON_EXISTENT instead of READY to check the state of a call! READY will be removed in future versions.");
+                LOG.warn(
+                        "Please use DESTROYED or NON_EXISTENT instead of READY to check the state of a call! READY will be removed in future versions.");
             }
             result.add(CallStatus.valueOf(clearedStatus));
         }

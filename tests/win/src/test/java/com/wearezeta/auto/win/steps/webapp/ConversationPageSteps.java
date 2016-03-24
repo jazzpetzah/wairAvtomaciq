@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.CommonSteps;
 
-import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -331,20 +330,6 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Verify ping (or ping again) message is visible in conversation
-	 *
-	 * @step. ^I see ping message (.*)$
-	 * @param message
-	 *            pinged/pinged again
-	 * @throws Exception
-	 */
-	@When("^I see ping message (.*)$")
-	public void ISeePingMessage(String message) throws Exception {
-		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
-				.waitForMessageHeaderContains(message);
-	}
-
-	/**
 	 * Verify a text message is visible in conversation.
 	 *
 	 * @step. ^I see text message (.*)
@@ -476,123 +461,6 @@ public class ConversationPageSteps {
 			Assert.assertFalse(WebappPagesCollection.getInstance()
 					.getPage(ConversationPage.class).isCallButtonVisible());
 		}
-	}
-
-	/**
-	 * @step. ^I see the calling bar$
-	 *
-	 * @throws Exception
-	 */
-	@Then("^I see the calling bar$")
-	public void IWaitForCallingBar() throws Exception {
-		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
-				.waitForCallingBarToBeDisplayed();
-	}
-
-	/**
-	 *
-	 * @step. ^I see the calling bar from users? (.*)$
-	 * @param aliases
-	 *            comma separated list of usernames currently calling
-	 * @throws Exception
-	 */
-	@Then("^I see the calling bar from users? (.*)$")
-	public void IWaitForCallingBar(String aliases) throws Exception {
-		final List<String> aliasList = splitAliases(aliases);
-		for (String alias : aliasList) {
-			final String participantName = usrMgr.findUserByNameOrNameAlias(
-					alias).getName();
-			WebappPagesCollection.getInstance().getPage(ConversationPage.class)
-					.waitForCallingBarToBeDisplayedWithName(participantName);
-		}
-	}
-
-	/**
-	 *
-	 * @step. ^I see outgoing call for users? (.*)$
-	 * @param aliases
-	 *            comma separated list of usernames currently calling
-	 * @throws Exception
-	 */
-	@Then("^I see outgoing call for users? (.*)$")
-	public void ISeeOutgoingCallForUsers(String aliases) throws Exception {
-		final List<String> participants = new ArrayList<String>();
-		final List<String> aliasList = splitAliases(aliases);
-		for (String alias : aliasList) {
-			final String participantName = usrMgr.findUserByNameOrNameAlias(
-					alias).getName();
-			participants.add(participantName.toUpperCase());
-		}
-		assertThat(
-				WebappPagesCollection.getInstance()
-						.getPage(ConversationPage.class)
-						.getNamesFromOutgoingCallingBar(), is(participants));
-	}
-
-	/**
-	 * Verifies whether calling bar is not visible anymore
-	 *
-	 * @step. ^I do not see the calling bar$
-	 *
-	 * @throws Exception
-	 */
-	@Then("^I do not see the calling bar$")
-	public void IDoNotCallingBar() throws Exception {
-		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
-				.verifyCallingBarIsNotVisible();
-	}
-
-	/**
-	 * Accepts incoming call by clicking the check button on the calling bar
-	 *
-	 * @step. ^I accept the incoming call$
-	 *
-	 * @throws Exception
-	 */
-	@When("^I accept the incoming call$")
-	public void IAcceptIncomingCall() throws Exception {
-		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
-				.clickAcceptCallButton();
-	}
-
-	/**
-	 * Joins ongoing call by clicking the join call bar
-	 *
-	 * @step. ^I join call$
-	 *
-	 * @throws Exception
-	 */
-	@When("^I join call$")
-	public void IJoinCall() throws Exception {
-		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
-				.clickJoinCallBar();
-	}
-
-	/**
-	 * Silences the incoming call by clicking the corresponding button on the
-	 * calling bar
-	 *
-	 * @step. ^I silence the incoming call$
-	 *
-	 * @throws Exception
-	 */
-	@When("^I silence the incoming call$")
-	public void ISilenceIncomingCall() throws Exception {
-		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
-				.clickSilenceCallButton();
-	}
-
-	/**
-	 * End the current call by clicking the X button on calling bar
-	 *
-	 * @step. ^I end the call$
-	 *
-	 * @throws Exception
-	 */
-	@When("^I end the call$")
-	public void IEndTheCall() throws Exception {
-		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
-				.clickEndCallButton();
 	}
 
 	/**

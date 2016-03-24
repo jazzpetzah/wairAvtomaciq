@@ -3,6 +3,7 @@ package com.wearezeta.auto.common;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.*;
@@ -31,6 +32,8 @@ public class CommonUtils {
     private static final Random rand = new Random();
 
     private static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
+
+    public static final int SIMULATOR_INTERACTION_TIMEOUT = 3 * 60; //seconds
 
     public static boolean executeOsCommandWithTimeout(String[] cmd, long timeoutSeconds) throws Exception {
         Process process = Runtime.getRuntime().exec(cmd);
@@ -277,6 +280,10 @@ public class CommonUtils {
 
     public static String getAndroidMainActivityFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "mainActivity");
+    }
+
+    public static boolean getAndroidShowLogcatFromConfig(Class<?> c) throws Exception {
+        return Boolean.parseBoolean(getOptionalValueFromConfig(c, "showLogcat").orElse("true"));
     }
 
     public static String getAndroidConvoListActivityFromConfig(Class<?> c) throws Exception {
@@ -572,15 +579,40 @@ public class CommonUtils {
             return;
         }
         final File allVersionsRoot = pluginJar.getParentFile().getParentFile();
+        final String currentLibVersion = pluginJar.getParentFile().getName();
         for (String versionRootName : allVersionsRoot.list()) {
             try {
                 final File versionRoot = new File(allVersionsRoot.getCanonicalPath() + File.separator + versionRootName);
-                if (versionRoot.isDirectory() && !versionRoot.getName().equals(pluginJar.getParentFile().getName())) {
+                if (versionRoot.isDirectory() && !versionRoot.getName().equals(currentLibVersion)) {
+                    log.debug(String.format("Cleaning outdated SE library by path %s (current lib version is %s)...",
+                            versionRoot.getAbsolutePath(), currentLibVersion));
                     FileUtils.deleteDirectory(versionRoot);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static boolean isRunningInJenkinsNetwork() throws UnknownHostException {
+        final String prevPropValue = System.getProperty("java.net.preferIPv4Stack");
+        try {
+            System.setProperty("java.net.preferIPv4Stack", "true");
+            return InetAddress.getLocalHost().getHostAddress().startsWith("192.168.2.");
+        } finally {
+            System.setProperty("java.net.preferIPv4Stack", prevPropValue);
+        }
+    }
+
+    public static void setStringValueInSystemClipboard(String val) throws Exception {
+        CommonUtils.executeUIAppleScript(new String[]{
+                String.format("set the clipboard to \"%s\"", val)
+        }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+    }
+
+    public static void pressCmdVByAppleScript() throws Exception {
+        CommonUtils.executeUIAppleScript(new String[]{
+                "tell application \"System Events\" to keystroke \"v\" using {command down}"
+        }).get(SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 }

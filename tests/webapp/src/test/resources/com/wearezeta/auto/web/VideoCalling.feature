@@ -16,7 +16,8 @@ Feature: VideoCalling
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
-    And I end the video call
+    When I end the video call
+    Then I do not see the call controls for conversation <Contact>
     And I do not see my self video view
 
     Examples:
@@ -40,7 +41,8 @@ Feature: VideoCalling
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
-    And I end the video call
+    When I end the video call
+    Then I do not see the call controls for conversation <Contact>
     And I do not see accept video call button for conversation <Contact>
     And I do not see decline call button for conversation <Contact>
     And I do not see my self video view
@@ -63,7 +65,8 @@ Feature: VideoCalling
     And I see accept video call button for conversation <Contact>
     And I see decline call button for conversation <Contact>
     When I ignore the call from conversation <Contact>
-    Then I do not see accept video call button for conversation <Contact>
+    Then I do not see the call controls for conversation <Contact>
+    And I do not see accept video call button for conversation <Contact>
     And I do not see decline call button for conversation <Contact>
     And I do not see my self video view
 
@@ -286,6 +289,7 @@ Feature: VideoCalling
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I wait until <Contact> exists in backend search results
+    And I see Contact list with name <Contact>
     When I open People Picker from Contact List
     And I type <Contact> in search field of People Picker
     And I see user <Contact> found in People Picker
@@ -294,12 +298,15 @@ Feature: VideoCalling
     Then I see the outgoing call controls for conversation <Contact>
     When <Contact> accepts next incoming video call automatically
     Then I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies that all flows have greater than 0 bytes
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | chrome      |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
   @C48230 @videocalling @regression
   Scenario Outline: Verify you don't see video call button when you're creating group from Start UI
@@ -324,3 +331,53 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @C77944 @videocalling @staging
+  Scenario Outline: Verify I can start Video call after declining an audio call
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given <Contact> calls me
+    When I am signed in properly
+    Then I see the incoming call controls for conversation <Contact>
+    And I see decline call button for conversation <Contact>
+    When I ignore the call from conversation <Contact>
+    Then I do not see the call controls for conversation <Contact>
+    And I open conversation with <Contact>
+    When I start a video call
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact> verify to have 1 flows
+    And <Contact> verify that all flows have greater than 0 bytes
+    When I end the video call
+    Then I do not see the call controls for conversation <Contact>
+    And I do not see my self video view
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+
+  @C77975 @videocalling @staging
+  Scenario Outline: Verify I see the timer/duration of the video call
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I am signed in properly
+    And <Contact> starts a video call to me
+    Then I see the incoming call controls for conversation <Contact>
+    And I see accept video call button for conversation <Contact>
+    And I see decline call button for conversation <Contact>
+    And I accept the call from conversation <Contact>
+    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And I see the video call timer
+    When I end the video call
+    Then I do not see the video call timer
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | Chrome      | 60      |

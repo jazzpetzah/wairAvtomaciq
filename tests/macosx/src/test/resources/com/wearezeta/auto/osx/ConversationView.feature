@@ -11,11 +11,11 @@ Feature: Conversation View
     And I click menu bar item "Conversation" and menu item "Ping"
     Then I see <PING> action in conversation
     And I click menu bar item "Conversation" and menu item "Ping"
-    Then I see <PING_AGAIN> action in conversation
+    Then I see <PING> action 2 times in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
-      | user1Email | user1Password | user1Name | user2Name | pinged | pinged again |
+      | Login      | Password      | Name      | Contact   | PING   |
+      | user1Email | user1Password | user1Name | user2Name | pinged |
 
   @C2333 @smoke
   Scenario Outline: Verify you ping in a conversation when you press ⌘ + K (Mac)
@@ -28,11 +28,11 @@ Feature: Conversation View
     And I type shortcut combination to ping
     Then I see <PING> action in conversation
     When I type shortcut combination to ping
-    Then I see <PING_AGAIN> action in conversation
+    Then I see <PING> action 2 times in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
-      | user1Email | user1Password | user1Name | user2Name | pinged | pinged again |
+      | Login      | Password      | Name      | Contact   | PING   |
+      | user1Email | user1Password | user1Name | user2Name | pinged |
 
   @C2334 @smoke
   Scenario Outline: Verify you start a call in a conversation when you press ⌘ R (Mac)
@@ -43,7 +43,7 @@ Feature: Conversation View
     Then I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And I type shortcut combination to start a call
-    Then I see the calling bar
+    Then I see the outgoing call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -58,7 +58,7 @@ Feature: Conversation View
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I click menu bar item "Conversation" and menu item "Call"
-    Then I see the calling bar
+    Then I see the outgoing call controls for conversation <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -76,11 +76,11 @@ Feature: Conversation View
     And I click menu bar item "Conversation" and menu item "Ping"
     Then I see <PING> action in conversation
     And I click menu bar item "Conversation" and menu item "Ping"
-    Then I see <PING_AGAIN> action in conversation
+    Then I see <PING> action 2 times in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | PING   | PING_AGAIN   |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | pinged | pinged again |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | PING   |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | pinged |
 
   @C2348 @smoke
   Scenario Outline: Verify you ping in a group conversation when you press ⌘ + K (Mac)
@@ -94,11 +94,11 @@ Feature: Conversation View
     And I type shortcut combination to ping
     Then I see <PING> action in conversation
     When I type shortcut combination to ping
-    Then I see <PING_AGAIN> action in conversation
+    Then I see <PING> action 2 times in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | PING   | PING_AGAIN   |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | pinged | pinged again |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | PING   |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | pinged |
 
   @C2349 @smoke
   Scenario Outline: Verify you start a call in a group conversation when you press ⌘ T (Mac)
@@ -110,7 +110,7 @@ Feature: Conversation View
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
     And I type shortcut combination to start a call
-    Then I see the calling bar
+    Then I see the outgoing call controls for conversation <ChatName>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
@@ -126,7 +126,7 @@ Feature: Conversation View
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     And I click menu bar item "Conversation" and menu item "Call"
-    Then I see the calling bar
+    Then I see the outgoing call controls for conversation <ChatName>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |

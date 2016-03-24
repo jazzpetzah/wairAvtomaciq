@@ -3,16 +3,15 @@ package com.wearezeta.auto.ios.steps;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 
 import cucumber.api.java.en.Then;
@@ -25,10 +24,6 @@ public class DialogPageSteps {
 
     private DialogPage getDialogPage() throws Exception {
         return pagesCollection.getPage(DialogPage.class);
-    }
-
-    private ContactListPage getContactListPage() throws Exception {
-        return pagesCollection.getPage(ContactListPage.class);
     }
 
     private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage() throws Exception {
@@ -80,11 +75,18 @@ public class DialogPageSteps {
         }
     }
 
-    private static final String YOU_PINGED_MESSAGE = "YOU PINGED";
-
-    @Then("^I see You Pinged message in the dialog$")
-    public void ISeeHelloMessageFromMeInTheDialog() throws Throwable {
-        Assert.assertTrue(getDialogPage().isPartOfTextMessageVisible(YOU_PINGED_MESSAGE));
+    /**
+     * Verify whether the particular system message is visible in the conversation view
+     *
+     * @param expectedMsg the expected system message. may contyain user name aliases
+     * @throws Exception
+     * @step. ^I see "(.*)" system message in the conversation view$
+     */
+    @Then("^I see \"(.*)\" system message in the conversation view$")
+    public void ISeeSystemMessage(String expectedMsg) throws Exception {
+        expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("The expected system message '%s' is not visible in the conversation",
+                expectedMsg), getDialogPage().isSystemMessageVisible(expectedMsg));
     }
 
     @Then("^I see User (.*) Pinged message in the conversation$")
@@ -110,7 +112,7 @@ public class DialogPageSteps {
      * @step. ^I paste and commit the text$
      */
     @When("^I paste and commit the text$")
-    public void IClickPopupPaste() throws Exception {
+    public void IClickPopupPasteAndCommitText() throws Exception {
         getDialogPage().pasteAndCommit();
     }
 
@@ -118,9 +120,9 @@ public class DialogPageSteps {
      * Click open conversation details button in 1:1 dialog
      *
      * @throws Exception if other user personal profile page was not created
-     * @step. ^I open conversation details$
+     * @step. ^I open (?:group |\s*)conversation details$
      */
-    @When("^I open conversation details$")
+    @When("^I open (?:group |\\s*)conversation details$")
     public void IOpenConversationDetails() throws Exception {
         getDialogPage().openConversationDetails();
     }
@@ -201,7 +203,7 @@ public class DialogPageSteps {
 
     /**
      * Swipe right text input to reveal option buttons
-     *
+     * <p>
      * !!! The step is unstable on Simulator
      *
      * @throws Exception
@@ -218,30 +220,24 @@ public class DialogPageSteps {
     }
 
     /**
-     * Click call button to start a call
+     * Click call button to start an audio or video call
      *
+     * @param btnType either Audio or Video
      * @throws Exception
-     * @step. ^I press call button$
+     * @step. ^I tap (Audio|Video) Call button$
      */
-    @When("^I press call button$")
-    public void IPressCallButton() throws Exception {
-        getDialogPage().pressCallButton();
+    @When("^I tap (Audio|Video) Call button$")
+    public void ITapCallButton(String btnType) throws Exception {
+        if (btnType.equals("Audio")) {
+            getDialogPage().tapAudioCallButton();
+        } else {
+            getDialogPage().tapVideoCallButton();
+        }
     }
 
     @When("^I click Ping button$")
     public void IPressPingButton() throws Exception {
-        getDialogPage().pressPingButton();
-    }
-
-    /**
-     * Click on Video call button
-     *
-     * @throws Exception
-     * @step. ^I click Video Call button$
-     */
-    @When("^I click Video Call button$")
-    public void IPressVideoCallButton() throws Exception {
-        getDialogPage().pressVideoCallButton();
+        getDialogPage().tapPingButton();
     }
 
     @Then("^I see Pending Connect to (.*) message on Dialog page$")
@@ -275,20 +271,25 @@ public class DialogPageSteps {
         getDialogPage().clickOnPlayVideoButton();
     }
 
-    @When("I swipe right on Dialog page")
-    public void ISwipeRightOnDialogPage() throws Exception {
-        for (int i = 0; i < 3; i++) {
-            getDialogPage().swipeRight(1000,
-                    DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 28);
-            if (getContactListPage().waitUntilSelfButtonIsDisplayed()) {
-                break;
-            }
-        }
-    }
-
     @When("^I post media link (.*)$")
     public void IPostMediaLink(String link) throws Throwable {
         getDialogPage().typeAndSendConversationMessage(link);
+    }
+
+    /**
+     * Copy to system clipboard, paste and send invitation link from pointed user in a conversation
+     *
+     * @param user username
+     * @throws Exception
+     * @step. ^I copy paste and send invitation link from user (.*)$
+     */
+    @When("^I copy paste and send invitation link from user (.*)$")
+    public void ICopyPasteAndSendInvitationLinkFrom(String user) throws Exception {
+        String link = CommonSteps.getInstance().GetInvitationUrl(user);
+        CommonUtils.setStringValueInSystemClipboard(link);
+        IOSSimulatorHelper.copySystemClipboardToSimulatorClipboard();
+        ITapHoldTextInput();
+        IClickPopupPasteAndCommitText();
     }
 
     @When("^I tap media container$")
@@ -602,39 +603,6 @@ public class DialogPageSteps {
     }
 
     /**
-     * Verify Call button is visible
-     *
-     * @throws Exception
-     * @step. ^I see Call button is visible$
-     */
-    @When("^I see Call button is visible$")
-    public void ISeeCalButtonShown() throws Exception {
-        Assert.assertTrue("Call button is not visible", getDialogPage().isCallButtonVisible());
-    }
-
-    /**
-     * Verify Camera button is visible
-     *
-     * @throws Exception
-     * @step. ^I see Camera button is visible$
-     */
-    @When("^I see Camera button is visible$")
-    public void ISeeCameraButtonShown() throws Exception {
-        Assert.assertTrue("Camera button is not visible", getDialogPage().isCameraButtonVisible());
-    }
-
-    /**
-     * Verify Sketch button is visible
-     *
-     * @throws Exception
-     * @step. ^I see Sketch button is visible$
-     */
-    @When("^I see Sketch button is visible$")
-    public void ISeeSketchButtonShown() throws Exception {
-        Assert.assertTrue("Sketch button is not visible", getDialogPage().isOpenSketchButtonVisible());
-    }
-
-    /**
      * Verify Buttons: Details, Call, Camera, Sketch are visible
      *
      * @throws Exception
@@ -643,8 +611,7 @@ public class DialogPageSteps {
     @When("^I see conversation tools buttons$")
     public void ISeeButtonsDetailsCallCameraSketchPing() throws Exception {
         ISeeDetailsButtonShown();
-        Assert.assertTrue("Some of expected input tools buttons are not visible",
-                getDialogPage().areInputToolsVisible());
+        Assert.assertTrue("Some of expected input tools buttons are not visible", getDialogPage().areInputToolsVisible());
     }
 
     /**
@@ -669,8 +636,8 @@ public class DialogPageSteps {
      */
     @When("^I see Close input options button is not visible$")
     public void ISeeCloseButtonInputOptionsNotVisible() throws Exception {
-        Assert.assertTrue("Close input options button is visible", getDialogPage()
-                .verifyInputOptionsCloseButtonNotVisible());
+        Assert.assertTrue("Close input options button is visible",
+                getDialogPage().verifyInputOptionsCloseButtonNotVisible());
     }
 
     /**
@@ -891,6 +858,17 @@ public class DialogPageSteps {
     @When("^I resend the last message in the conversation with Resend button$")
     public void IResendTheLastMessageToUserInDialog() throws Exception {
         getDialogPage().resendLastMessageInDialogToUser();
+    }
+
+    /**
+     * Verifies that Upper Toolbar is visible in conversation
+     *
+     * @throws Exception
+     * @step.^I see Upper Toolbar on dialog page$
+     */
+    @Then("^I see Upper Toolbar on dialog page$")
+    public void ISeeUpperToolbar() throws Exception {
+        Assert.assertTrue(getDialogPage().isUpperToolbarVisible());
     }
 
 }

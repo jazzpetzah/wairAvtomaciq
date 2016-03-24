@@ -61,7 +61,7 @@ public class ContactListPage extends AndroidPage {
 
     private static final By xpathConfirmDeleteConversationButton = By.xpath("//*[@id='positive' and @value='DELETE']");
 
-    private static final By xpathLeaveCheckbox = By.xpath("(//*[@id='gtv__checkbox_icon'])[1]");
+    private static final By xpathLeaveCheckbox = By.xpath("//*[@id='gtv__checkbox_icon']");
 
     private static final Function<String, String> xpathStrConvoSettingsMenuItemByName = name -> String
             .format("//*[@id='ttv__settings_box__item' and @value='%s']" +
@@ -225,8 +225,12 @@ public class ContactListPage extends AndroidPage {
         for (int i = getElements(xpathContactListNames).size(); i >= 1; i--) {
             final By locator = By.xpath(xpathStrContactByIndex.apply(i));
             final Optional<WebElement> contactEl = getElementIfDisplayed(locator);
-            if (contactEl.isPresent() && !contactEl.get().getText().equals(LOADING_CONVERSATION_NAME)) {
-                return true;
+            try {
+                if (contactEl.isPresent() && !contactEl.get().getText().equals(LOADING_CONVERSATION_NAME)) {
+                    return true;
+                }
+            } catch (NoSuchElementException e) {
+                // pass silently
             }
         }
         final Optional<WebElement> lastEl = getElementIfDisplayed(xpathLastContact, CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
@@ -238,11 +242,7 @@ public class ContactListPage extends AndroidPage {
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idConversationListFrame));
         for (int i = getElements(xpathContactListNames).size(); i >= 1; i--) {
             final By locator = By.xpath(xpathStrContactByIndex.apply(i));
-            // TODO: Prevent tests from failing because of Dejan's experiments
-            final By locator_Dejan = By.xpath(xpathStrContactByName.apply("Dejan"));
-            final By locator_Bot = By.xpath(xpathStrContactByName.apply("Otto the Bot"));
-            if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator) && DriverUtils.waitUntilLocatorDissapears(getDriver(), locator_Dejan)
-                    && DriverUtils.waitUntilLocatorDissapears(getDriver(), locator_Bot)) {
+            if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
                 return false;
             }
         }

@@ -29,7 +29,7 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @C1138 @regression @id2719
+  @C1138 @regression @id2719 @ZIOS-5585
   Scenario Outline: Verify phone sign in when email is assigned
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -81,7 +81,7 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @C1136 @rc @regression @id3851
+  @C1136 @rc @regression @id3851 @ZIOS-5585
   Scenario Outline: Verify first time phone sign in when email is not assigned
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -103,7 +103,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C1089 @regression @id3863 @noAcceptAlert
+  @C1089 @regression @id3863 @noAcceptAlert @ZIOS-5585
   Scenario Outline: Verify error message appears in case of registering already taken email
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -122,7 +122,7 @@ Feature: Sign In
       | Email                     | Password      | Name      |
       | smoketester@wearezeta.com | user1Password | user1Name |
 
-  @C1147 @regression @id3857 @noAcceptAlert
+  @C1147 @regression @id3857 @noAcceptAlert @ZIOS-5585
   Scenario Outline: Verify error message appears in case of registering already taken email
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen

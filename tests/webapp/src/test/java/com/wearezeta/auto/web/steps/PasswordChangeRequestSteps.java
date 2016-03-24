@@ -46,8 +46,8 @@ public class PasswordChangeRequestSteps {
         this.webappPagesCollection = context.getPagesCollection();
     }
 
-	@When("^I navigate to Password Change Reset page for (.*)")
-	public void INavigateToPasswordChangeResetPageFor(String agent) throws Exception {
+	@When("^I go to Password Change Reset page for (.*)")
+	public void IGoToPasswordChangeResetPageFor(String agent) throws Exception {
 		webappPagesCollection.getPage(PasswordChangePage.class).setUrl(
 				WebAppConstants.STAGING_SITE_ROOT + "/forgot/?agent=" + agent);
 		webappPagesCollection.getPage(PasswordChangePage.class).navigateTo();
@@ -146,12 +146,12 @@ public class PasswordChangeRequestSteps {
 						.isConfirmationTextVisible(), is(true));
 	}
 
-	@Then("^I dont see Password Change Request Succeeded page$")
-	public void IDontSeeRequestSucceededPage() throws Exception {
+	@Then("^I see unused mail message$")
+	public void ISeeUnusedMailMessage() throws Exception {
 		assertThat(
 				webappPagesCollection.getPage(
 						PasswordChangeRequestSuccessfullPage.class)
-						.isConfirmationTextVisible(), is(false));
+						.isUnusedTextVisible(), is(false));
 	}
 	
 	/**

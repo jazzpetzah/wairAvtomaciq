@@ -28,12 +28,12 @@ public class ConversationViewPageSteps {
 
 	/**
 	 * Verifies whether conversation view is currently visible or not
-	 * 
+	 *
 	 * @step. ^I (do not )?see (?:the |\\s*)[Cc]onversation view$
-	 * 
+	 *
 	 * @param shouldNotSee
 	 *            equals to null is 'do not ' does not exist in step signature
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@When("^I (do not )?see (?:the |\\s*)[Cc]onversation view$")
@@ -73,15 +73,14 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
-	 * Tap the Show Details button on conversation view
-	 * 
-	 * @step. ^I tap Show Details button on [Cc]onversation view page$
-	 * 
+	 * Tap in Dialog page on converstaion title to open participants view
+	 *
 	 * @throws Exception
+	 * @step. ^I tap conversation name from top toolbar$
 	 */
-	@And("^I tap Show Details button on [Cc]onversation view page$")
-	public void ITapShowDetailsButton() throws Exception {
-		getConversationViewPage().tapShowDetailsButton();
+	@When("^I tap conversation name from top toolbar$")
+	public void WhenITapConversationDetailsBottom() throws Exception {
+		getConversationViewPage().tapTopToolbarTitle();
 	}
 
 	/**
@@ -260,21 +259,14 @@ public class ConversationViewPageSteps {
 	/**
 	 * Tap the Ping button to send Ping/Ping Again event from the currently
 	 * opened conversation
-	 * 
-	 * @step. ^I tap Ping button (twice )?in (?:the |\\s*)[Cc]onversation view$
-	 * 
-	 * @param shouldTapTwice
-	 *            equals to null if 'twice' part does not exist in the step
-	 *            signature
-	 * 
+	 *
+	 * @step. ^I tap Ping button in (?:the |\\s*)[Cc]onversation view$
+	 *
 	 * @throws Exception
 	 */
-	@And("^I tap Ping button (twice )?in (?:the |\\s*)[Cc]onversation view$")
-	public void ITapPingButton(String shouldTapTwice) throws Exception {
+	@And("^I tap Ping button in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapPingButton() throws Exception {
 		getConversationViewPage().tapPingButton();
-		if (shouldTapTwice != null) {
-			getConversationViewPage().tapPingButtonIfVisible();
-		}
 	}
 
 	/**

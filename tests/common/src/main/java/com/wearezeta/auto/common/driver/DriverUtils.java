@@ -45,7 +45,7 @@ public class DriverUtils {
      * Use "waitUntilLocatorDissapears" method instead. That's quick and does
      * exactly what you need
      *
-     * @param driver selenium driver instance
+     * @param driver  selenium driver instance
      * @param element web element to verify
      * @return wither true or false
      */
@@ -108,8 +108,12 @@ public class DriverUtils {
             do {
                 final List<WebElement> foundElements = driver.findElements(by);
                 try {
-                    if (foundElements.size() > 0 && isElementPresentAndDisplayed(driver, foundElements.get(0))) {
-                        return Optional.of(foundElements.get(0));
+                    if (foundElements.size() > 0) {
+                        for (WebElement foundeLement : foundElements) {
+                            if (isElementPresentAndDisplayed(driver, foundeLement)) {
+                                return Optional.of(foundeLement);
+                            }
+                        }
                     }
                 } catch (NoSuchElementException | StaleElementReferenceException | InvalidElementStateException e) {
                     // Ignore silently
@@ -247,7 +251,7 @@ public class DriverUtils {
     }
 
     public static Optional<Alert> getAlertIfDisplayed(AppiumDriver<? extends WebElement> driver) throws Exception {
-       return getAlertIfDisplayed(driver, getDefaultLookupTimeoutSeconds());
+        return getAlertIfDisplayed(driver, getDefaultLookupTimeoutSeconds());
     }
 
     public static Optional<Alert> getAlertIfDisplayed(AppiumDriver<? extends WebElement> driver,

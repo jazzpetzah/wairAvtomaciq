@@ -22,7 +22,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
 
     private static final By idConnectRequestIgnore = By.id("zb__connect_request__ignore_button");
 
-    private static final Function<String, String> xpathStrUserDetailsLeftButton = label -> String
+    private static final Function<String, String> xpathStrUserDetailsLeftButtonByLabel = label -> String
             .format("//*[@id='ttv__participants__left_label' and @value='%s']", label);
 
     private static final By idConnectToCharCounter =
@@ -36,6 +36,8 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
                     text.toUpperCase());
 
     private static final By xpathConfirmBlockButton = By.xpath("//*[@id='positive' and @value='BLOCK']");
+
+    private static final By idPendingUserAvatar = By.id("iaiv__pending_connect");
 
     public IncomingPendingConnectionsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -104,12 +106,11 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     }
 
     public boolean isPending() throws Exception {
-        final By locator = By.xpath(xpathStrUserDetailsLeftButton.apply("Pending"));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return selectVisibleElements(idPendingUserAvatar).size() > 0;
     }
 
     public void pressLeftConnectButton() throws Exception {
-        getElement(By.xpath(xpathStrUserDetailsLeftButton.apply("Connect")),
+        getElement(By.xpath(xpathStrUserDetailsLeftButtonByLabel.apply("Connect")),
                 "Connect button is not visible").click();
     }
 
