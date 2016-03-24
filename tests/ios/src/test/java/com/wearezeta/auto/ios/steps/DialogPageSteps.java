@@ -860,4 +860,15 @@ public class DialogPageSteps {
         getDialogPage().resendLastMessageInDialogToUser();
     }
 
+    /**
+     * Verifies that Upper Toolbar is visible in conversation
+     *
+     * @throws Exception
+     * @step.^I see Upper Toolbar on dialog page$
+     */
+    @Then("^I see Upper Toolbar on dialog page$")
+    public void ISeeUpperToolbar() throws Exception {
+        Assert.assertTrue(getDialogPage().isUpperToolbarVisible());
+    }
+
 }
