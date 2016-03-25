@@ -19,14 +19,7 @@ public class VideoCallPageSteps {
      */
     @When("^I end the video call$")
     public void IEndTheCall() throws Exception {
-
-        Assert.assertTrue("End Video Call button is not visible",
-                webappPagesCollection.getPage(VideoCallPage.class).isEndVideoCallButtonVisible());
-
         webappPagesCollection.getPage(VideoCallPage.class).clickEndVideoCallButton();
-
-        Assert.assertTrue("End Video Call button is still visible",
-                webappPagesCollection.getPage(VideoCallPage.class).isEndVideoCallButtonNotVisible());
     }
 
     /**
