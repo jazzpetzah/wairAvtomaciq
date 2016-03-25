@@ -603,13 +603,13 @@ public class DialogPageSteps {
     }
 
     /**
-     * Verify Buttons: Details, Call, Camera, Sketch are visible
+     * Verify tools Buttons are presented after text input swipe
      *
      * @throws Exception
      * @step. ^I see conversation tools buttons$
      */
     @When("^I see conversation tools buttons$")
-    public void ISeeButtonsDetailsCallCameraSketchPing() throws Exception {
+    public void ISeeButtonsDetailsCameraSketchPing() throws Exception {
         ISeeDetailsButtonShown();
         Assert.assertTrue("Some of expected input tools buttons are not visible", getDialogPage().areInputToolsVisible());
     }
