@@ -102,6 +102,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1      | 20      |      
       | user1Email | user1Password | user1Name | user2Name | firefox:44.0.2      | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 20      |
 
@@ -129,6 +130,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1      | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:44.0.2      | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 20      |
 
@@ -187,6 +189,7 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend         | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:49.0.2623.75 | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:47.0.2526.73 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:45.0.1      | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:44.0.2      | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0        | 20      |
 
@@ -246,8 +249,10 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend             | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:49.0.2623.75 | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:47.0.2526.73 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:45.0.1      | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:44.0.2      | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0        | 20      |
+      
 
   @C5368 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
@@ -284,8 +289,14 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend         | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | chrome:49.0.2623.75 | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | chrome:47.0.2526.73 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:45.0.1      | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:44.0.2      | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:43.0        | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1  | chrome:49.0.2623.75 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1  | chrome:47.0.2526.73 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1  | firefox:45.0.1      | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1  | firefox:44.0.2      | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1  | firefox:43.0        | 30      |
 
   @C5369 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
