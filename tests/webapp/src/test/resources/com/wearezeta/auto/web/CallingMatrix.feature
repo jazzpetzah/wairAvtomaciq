@@ -116,7 +116,7 @@ Feature: Calling_Matrix
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And <Contact> starts a video call to me
-    When I accept the incoming video call
+    When I accept the call from conversation <Contact>
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 #    Then I see the ongoing call controls for conversation <Contact>
     And I wait for 5 seconds
