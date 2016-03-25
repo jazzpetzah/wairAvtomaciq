@@ -1,7 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.web.common.Lifecycle;
-import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.VideoCallPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.Then;
@@ -40,7 +39,6 @@ public class VideoCallPageSteps {
      */
     @And("^I see end video call button$")
     public void ISeeEndVideoCallButton() throws Exception {
-
         Assert.assertTrue("End video call button is not visible",
                 webappPagesCollection.getPage(VideoCallPage.class).isEndVideoCallButtonVisible());
     }
