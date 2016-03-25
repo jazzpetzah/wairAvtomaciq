@@ -876,7 +876,7 @@ public class DialogPageSteps {
      *
      * @param shouldNotSee equals to null if the shield should be visible
      * @param buttonName Audio call, Video call or Calling for both buttons verification
-     * @step. I (do not )?see (Audio call|Video call|Calling) buttons? on Upper Toolbar
+     * @step. ^I (do not )?see ([Aa]udio call|[Vv]ideo call|[Cc]alling) buttons? on [Uu]pper [Tt]oolbar$
      */
     @Then("^I (do not )?see ([Aa]udio call|[Vv]ideo call|[Cc]alling) buttons? on [Uu]pper [Tt]oolbar$")
     public void IDonotSeeCallingButtonsOnUpperToolbar(String shouldNotSee, String buttonName) throws Exception {
