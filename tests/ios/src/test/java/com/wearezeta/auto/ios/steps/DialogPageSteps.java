@@ -908,4 +908,9 @@ public class DialogPageSteps {
             }
         }
     }
+
+    @Then("^I see 10 people limit alert$")
+    public void ISee10PeopleAlert() throws Exception {
+        Assert.assertTrue(getDialogPage().isTooManyPeopleAlertVisible());
+    }
 }

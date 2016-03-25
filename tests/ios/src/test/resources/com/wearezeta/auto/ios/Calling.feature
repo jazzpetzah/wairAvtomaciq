@@ -417,3 +417,19 @@ Feature: Calling
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
+
+  @77933 @calling_advanced @noAcceptAlert
+  Scenario Outline: Verify calling from an upper toolbar in a group conversation with more than 10 people
+    Given There are 12 users where <Name> is me
+    Given Myself is connected to all other
+    Given Myself has group chat <GroupChatName> with all other
+    Given I sign in using my email or phone number
+    Given User Me sends 1 encrypted message to group conversation <GroupChatName>
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    And I tap Audio Call button
+    Then I see 10 people limit alert
+
+    Examples:
+      | Name      | GroupChatName  |
+      | user1Name | StartGROUPCALL |
