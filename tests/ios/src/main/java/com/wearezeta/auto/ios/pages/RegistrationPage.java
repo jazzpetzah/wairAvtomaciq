@@ -91,7 +91,11 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void inputPhoneNumber(String number) throws Exception {
-        getElement(namePhoneNumberField).sendKeys(number);
+        final WebElement phoneNumberField = getElement(namePhoneNumberField);
+        phoneNumberField.click();
+        // Wait for animation
+        Thread.sleep(1000);
+        phoneNumberField.sendKeys(number);
         getElement(nameConfirmButton).click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
             throw new IllegalStateException("Confirm button is still visible");

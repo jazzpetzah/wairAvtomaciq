@@ -27,7 +27,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact   | PING       | PictureName               | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | you pinged | userpicture_landscape.jpg | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | you pinged | userpicture_landscape.jpg | chrome      | 20      |
 
   @C1772 @regression @calling @calling_debug
   Scenario Outline: Verify I can get pinged by callee during call
@@ -51,7 +51,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact   | PING   | HOTPING      | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | pinged | pinged again | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | pinged | pinged again | chrome      | 20      |
 
   @C1753 @regression @calling @calling_debug
   Scenario Outline: Verify the corresponding conversations list item gets sticky on outgoing call
@@ -78,7 +78,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 20      |
 
   @C1752 @regression @calling @calling_debug
   Scenario Outline: Verify the corresponding conversations list item gets sticky on incoming call
@@ -136,8 +136,8 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
-      | user1Email | user1Password | user1Name | user2Name | firefox     | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox     | 20      |
 
   @C1747 @calling
   Scenario Outline: Verify I can call a user for more than 15 mins
@@ -202,7 +202,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
 
   @C1754 @regression @calling @calling_debug
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as caller)
@@ -246,7 +246,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 20      |
 
   @C1801 @regression @calling @calling_debug
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as callee)
@@ -292,7 +292,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    | chrome      | 20      |
 
   @staging @calling @group @calling_debug
   Scenario Outline: Verify receiving group call during group call
@@ -348,7 +348,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | ChatName2 | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GC1       | GC2       | autocall    | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GC1       | GC2       | autocall    | chrome      | 20      |
 
   @C1765 @regression @calling @calling_debug
   Scenario Outline: Verify I get missed call notification when I call
@@ -413,7 +413,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallWaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome          | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome          | 20      |
 
   @C1750 @regression @calling @calling_debug
   Scenario Outline: Verify I can not see blocked contact trying to call me
@@ -427,12 +427,12 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When <Contact> calls me
-    Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
+    Then <Contact> verifies that call status to Myself is changed to connecting in <Timeout> seconds
     And I do not see the call controls for conversation <Contact>
 
     Examples:
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 20      |
 
   @C1751 @regression @calling @calling_debug
   Scenario Outline: Verify I can see muted conversation person trying to call me
@@ -445,12 +445,12 @@ Feature: Calling
     And I see my avatar on top of Contact list
     And I muted conversation with <Contact>
     When <Contact> calls me
-    Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
+    Then <Contact> verifies that call status to Myself is changed to connecting in <Timeout> seconds
     And I see the incoming call controls for conversation <Contact>
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | autocall    | 60      |
+      | user1Email | user1Password | user1Name | user2Name | autocall    | 20      |
 
   @staging @calling
   Scenario Outline: Verify that outgoing call is terminated after within 1 minute timeout if nobody responds
@@ -463,7 +463,7 @@ Feature: Calling
     And I open conversation with <Contact>
     When I call
     And I see the outgoing call controls for conversation <Contact>
-    And I wait for 60 seconds
+    And I wait for 20 seconds
     And I do not see the outgoing call controls for conversation <Contact>
 
     Examples:
@@ -491,7 +491,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 20      |
 
   @C1799 @smoke @calling @group @calling_debug
   Scenario Outline: Verify accepting group call
@@ -520,8 +520,8 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName  | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall    | chrome      | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall    | firefox     | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall    | chrome      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall    | firefox     | 20      |
 
   @staging @calling @group @calling_debug
   Scenario Outline: Verify impossibility to connect 6th person to the call
@@ -550,7 +550,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | ChatName              | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GroupCallConversation | autocall    | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GroupCallConversation | autocall    | chrome      | 20      |
 
   @C1813 @regression @calling @group @calling_debug
   Scenario Outline: Verify initiating group call
@@ -572,8 +572,8 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | firefox     | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | firefox     | 20      |
 
   @C1800 @regression @calling @group @calling_debug
   Scenario Outline: Verify ignoring group call
@@ -597,7 +597,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | autocall    | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | autocall    | chrome      | 20      |
 
   @smoke @calling @group @calling_debug
   Scenario Outline: Verify leaving and coming back to the call
@@ -626,8 +626,8 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 60      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox     | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox     | 20      |
 
   @staging @calling @group @calling_debug
   Scenario Outline: Verify possibility to join call after 1 minutes of starting it
@@ -645,7 +645,7 @@ Feature: Calling
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And I see the incoming call controls for conversation <ChatName>
-    And I wait for 60 seconds
+    And I wait for 20 seconds
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     Then I join call of conversation <ChatName>
@@ -657,7 +657,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | autocall    | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | autocall    | chrome      | 20      |
 
   @calling @group @durational
   Scenario Outline: Verify initiating group call several times
@@ -674,7 +674,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 20      |
 
   @calling @group @durational2
   Scenario Outline: Verify 5 min group call several times
@@ -691,7 +691,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 20      |
 
 
   @staging @calling @group @debug @id3073
@@ -743,4 +743,4 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName1 | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GC1       | autocall    | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GC1       | autocall    | chrome      | 20      |

@@ -229,10 +229,10 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend       | WaitBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | chrome:49.0.2623.75 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | chrome:47.0.2526.73 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:44.0.2      | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:43.0        | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | chrome:49.0.2623.75 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | chrome:47.0.2526.73 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:44.0.2      | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:1.12 | firefox:43.0        | 30      |
 
   @C5367 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>

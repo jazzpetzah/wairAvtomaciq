@@ -149,6 +149,14 @@ public class DialogPage extends IOSPage {
         getElement(xpathVideoCallButton).click();
     }
 
+    public boolean isVideoCallButtonOnToolbarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathVideoCallButton);
+    }
+
+    public boolean isVideoCallButtonOnToolbarNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathVideoCallButton);
+    }
+
     public void returnToConversationsList() throws Exception {
         final Optional<WebElement> backBtn = getElementIfDisplayed(nameConversationBackButton);
         if (backBtn.isPresent()) {
@@ -160,6 +168,14 @@ public class DialogPage extends IOSPage {
 
     public void tapAudioCallButton() throws Exception {
         getElement(xpathAudioCallButton).click();
+    }
+
+    public boolean isAudioCallButtonOnToolbarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathAudioCallButton);
+    }
+
+    public boolean isAudioCallButtonOnToolbarNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathAudioCallButton);
     }
 
     public int getNumberOfMessageEntries() throws Exception {
@@ -396,12 +412,12 @@ public class DialogPage extends IOSPage {
     public void typeAndSendConversationMessage(String message) throws Exception {
         final WebElement convoInput = getElement(nameConversationCursorInput,
                 "Conversation input is not visible after the timeout");
+        convoInput.click();
+        // Wait for animation
+        Thread.sleep(1000);
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            inputStringFromKeyboard(convoInput, message, true, true);
+            inputStringFromKeyboard(convoInput, message, true);
         } else {
-            convoInput.click();
-            // Wait for animation
-            Thread.sleep(1000);
             convoInput.sendKeys(message);
             this.clickKeyboardCommitButton();
         }
@@ -410,12 +426,12 @@ public class DialogPage extends IOSPage {
     public void typeMessage(String message) throws Exception {
         final WebElement convoInput = getElement(nameConversationCursorInput,
                 "Conversation input is not visible after the timeout");
+        convoInput.click();
+        // Wait for animation
+        Thread.sleep(1000);
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            inputStringFromKeyboard(convoInput, message, true, false);
+            inputStringFromKeyboard(convoInput, message, false);
         } else {
-            convoInput.click();
-            // Wait for animation
-            Thread.sleep(1000);
             convoInput.sendKeys(message);
         }
     }

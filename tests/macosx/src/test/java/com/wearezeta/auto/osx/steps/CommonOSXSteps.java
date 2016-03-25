@@ -177,18 +177,6 @@ public class CommonOSXSteps {
 				+ "'");
 	}
 
-	private void commonBefore() throws Exception {
-		try {
-			startAppium4Mac();
-			killAllApps();
-			clearAppData();
-			clearAddressbookPermission();
-		} catch (Exception e) {
-			LOG.error(e);
-		}
-		startApp();
-	}
-
 	private void startApp() throws Exception {
 		Future<ZetaOSXDriver> osxDriverFuture;
 		Future<ZetaWebAppDriver> webDriverFuture;
@@ -202,6 +190,7 @@ public class CommonOSXSteps {
 		final ZetaWebAppDriver webappDriver = webDriverFuture.get();
 		LOG.debug("Opening app");
 		osxDriver.navigate().to(WIRE_APP_PATH);// open app
+                Thread.sleep(20000);
 
 		ZetaFormatter.setLazyDriver(osxDriverFuture);
 
@@ -219,14 +208,19 @@ public class CommonOSXSteps {
 				.setFirstPage(new RegistrationPage(webDriverFuture));
 	}
 
-	@Before("@performance")
-	public void setUpPerformance() throws Exception {
-		commonBefore();
-	}
-
 	@Before("~@performance")
 	public void setUp() throws Exception {
-		commonBefore();
+		try {
+			startAppium4Mac();
+			killAllApps();
+                        Thread.sleep(5000);
+			clearAppData();
+                        Thread.sleep(5000);
+			clearAddressbookPermission();
+		} catch (Exception e) {
+			LOG.error(e);
+		}
+		startApp();
 	}
 
 	private void waitForAppStartup(ZetaOSXDriver osxdriver) throws Exception {
