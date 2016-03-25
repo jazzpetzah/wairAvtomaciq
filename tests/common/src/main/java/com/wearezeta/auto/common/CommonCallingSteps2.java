@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.calling2.v1.CallingServiceClient;
 import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceInstanceException;
-import com.wearezeta.auto.common.calling2.v1.model.Metrics;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.CallStatus;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
@@ -263,19 +262,9 @@ public final class CommonCallingSteps2 {
      * @throws Exception
      * @see com.wearezeta.auto.common.calling2.v1.model.InstanceType
      */
-    public void startInstances(List<String> calleeNames,
-            String instanceType) throws Exception {
-        int creationRetries = INSTANCE_CREATION_RETRIES;
-        List<String> callees = new ArrayList<>(calleeNames);
-        Collections.copy(callees, calleeNames);
-
-        do {
-            LOG.debug(creationRetries + " retries left");
-            LOG.debug("Creating instances for "
-                    + Arrays.toString(callees.toArray()));
-            callees = createInstances(callees, instanceType);
-            creationRetries--;
-        } while (!callees.isEmpty() && creationRetries > 0);
+    public void startInstances(List<String> calleeNames, String instanceType) throws Exception {
+        LOG.debug("Creating instances for " + Arrays.toString(calleeNames.toArray()));
+        createInstances(calleeNames, instanceType);
     }
 
     /**
@@ -290,64 +279,30 @@ public final class CommonCallingSteps2 {
      * @see #acceptNextCall(java.lang.String)
      */
     @Deprecated
-    public void startWaitingInstances(List<String> calleeNames,
-            String instanceType) throws Exception {
-        int creationRetries = INSTANCE_CREATION_RETRIES;
-        List<String> callees = new ArrayList<>(calleeNames);
-        Collections.copy(callees, calleeNames);
-
-        do {
-            LOG.debug(creationRetries + " retries left");
-            LOG.debug("Creating instances for "
-                    + Arrays.toString(callees.toArray()));
-            callees = createInstances(callees, instanceType);
-            creationRetries--;
-        } while (!callees.isEmpty() && creationRetries > 0);
+    public void startWaitingInstances(List<String> calleeNames, String instanceType) throws Exception {
+        LOG.debug("Creating instances for " + Arrays.toString(calleeNames.toArray()));
+        createInstances(calleeNames, instanceType);
     }
 
-    private List<String> createInstances(List<String> calleeNames,
-            String instanceType) throws InterruptedException,
-            ExecutionException, NoSuchUserException {
-        Map<String, CompletableFuture<Instance>> createTasks = new HashMap<>(
-                calleeNames.size());
+    private void createInstances(final List<String> calleeNames, String instanceType) throws InterruptedException,
+            ExecutionException, NoSuchUserException, TimeoutException {
+        Map<String, CompletableFuture<Instance>> createTasks = new HashMap<>(calleeNames.size());
         for (String calleeName : calleeNames) {
             ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
             createTasks.put(calleeName, CompletableFuture.supplyAsync(() -> {
                 try {
-                    final Instance instance = client.startInstance(userAs,
-                            convertTypeStringToTypeObject(instanceType),
+                    final Instance instance = client.startInstance(userAs, convertTypeStringToTypeObject(instanceType),
                             ZetaFormatter.getScenario());
                     addInstance(instance, userAs);
                     return instance;
                 } catch (CallingServiceInstanceException ex) {
-                    LOG.error(String.format(
-                            "Could not start instance for user '%s'",
-                            userAs.getName()), ex);
-                    return null;
+                    throw new IllegalStateException(String.format("Could not start instance for user '%s'", userAs.getName()),
+                            ex);
                 }
             }));
         }
-        try {
-            CompletableFuture.allOf(
-                    createTasks.values().toArray(
-                            new CompletableFuture[createTasks.size()])).get(
-                            INSTANCE_START_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-            return Collections.EMPTY_LIST;
-        } catch (TimeoutException e) {
-            LOG.error(String.format(
-                    "Could not start all instances in '%d' seconds",
-                    INSTANCE_START_TIMEOUT_SECONDS), e);
-            List<String> calleesForRetry = new ArrayList<>();
-            Instance instance;
-            for (Map.Entry<String, CompletableFuture<Instance>> taskEntries : createTasks
-                    .entrySet()) {
-                instance = taskEntries.getValue().getNow(null);
-                if (instance == null) {
-                    calleesForRetry.add(taskEntries.getKey());
-                }
-            }
-            return calleesForRetry;
-        }
+        CompletableFuture.allOf(createTasks.values().toArray(new CompletableFuture[createTasks.size()])).get(
+                INSTANCE_START_TIMEOUT_SECONDS, TimeUnit.SECONDS);
     }
 
     /**
