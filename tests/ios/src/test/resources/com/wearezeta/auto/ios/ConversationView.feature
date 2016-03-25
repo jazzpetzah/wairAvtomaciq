@@ -719,7 +719,7 @@ Feature: Conversation View
   @77968 @staging
   Scenario Outline: Verify upper toolbar for the outgoing connection request is shown
     Given There are 2 users where <Name> is me
-    Given Me sent connection request to <Contact1>
+    Given I sent connection request to <Contact1>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
