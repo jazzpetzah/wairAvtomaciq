@@ -149,6 +149,14 @@ public class DialogPage extends IOSPage {
         getElement(xpathVideoCallButton).click();
     }
 
+    public boolean isVideoCallButtonOnToolbarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathVideoCallButton);
+    }
+
+    public boolean isVideoCallButtonOnToolbarNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathVideoCallButton);
+    }
+
     public void returnToConversationsList() throws Exception {
         final Optional<WebElement> backBtn = getElementIfDisplayed(nameConversationBackButton);
         if (backBtn.isPresent()) {
@@ -160,6 +168,14 @@ public class DialogPage extends IOSPage {
 
     public void tapAudioCallButton() throws Exception {
         getElement(xpathAudioCallButton).click();
+    }
+
+    public boolean isAudioCallButtonOnToolbarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathAudioCallButton);
+    }
+
+    public boolean isAudioCallButtonOnToolbarNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathAudioCallButton);
     }
 
     public int getNumberOfMessageEntries() throws Exception {
