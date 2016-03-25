@@ -821,7 +821,7 @@ public class DialogPageSteps {
     /**
      * Verify whether shield icon is visible next to convo input field
      *
-     * @param shouldNotSee equals to null is the shield should be visible
+     * @param shouldNotSee equals to null if the shield should be visible
      * @throws Exception
      * @step. ^I (do not )?see shield icon next to conversation input field$"
      */
@@ -871,4 +871,41 @@ public class DialogPageSteps {
         Assert.assertTrue(getDialogPage().isUpperToolbarVisible());
     }
 
+    /**
+     * Verify visibility of Audio call|Video call or both buttons on Upper Toolbar
+     *
+     * @param shouldNotSee equals to null if the shield should be visible
+     * @param buttonName Audio call, Video call or Calling for both buttons verification
+     * @step. I (do not )?see (Audio call|Video call|Calling) buttons? on Upper Toolbar
+     */
+    @Then("^I (do not )?see ([Aa]udio call|[Vv]ideo call|[Cc]alling) buttons? on [Uu]pper [Tt]oolbar$")
+    public void IDonotSeeCallingButtonsOnUpperToolbar(String shouldNotSee, String buttonName) throws Exception {
+        if (shouldNotSee == null) {
+            switch (buttonName) {
+                case "Audio call":
+                    Assert.assertTrue("Audio call button is not visible on Upper Toolbar", getDialogPage().isAudioCallButtonOnToolbarVisible());
+                    break;
+                case "Video call":
+                    Assert.assertTrue("Video call button is not visible on Upper Toolbar", getDialogPage().isVideoCallButtonOnToolbarVisible());
+                    break;
+                case "Calling":
+                    Assert.assertTrue("Audio call button is not visible on Upper Toolbar", getDialogPage().isAudioCallButtonOnToolbarVisible());
+                    Assert.assertTrue("Video call button is not visible on Upper Toolbar", getDialogPage().isVideoCallButtonOnToolbarVisible());
+                    break;
+            }
+        } else {
+            switch (buttonName) {
+                case "Audio call":
+                    Assert.assertTrue("Audio call button is visible on Upper Toolbar", getDialogPage().isAudioCallButtonOnToolbarNotVisible());
+                    break;
+                case "Video call":
+                    Assert.assertTrue("Video call button is visible on Upper Toolbar", getDialogPage().isVideoCallButtonOnToolbarNotVisible());
+                    break;
+                case "Calling":
+                    Assert.assertTrue("Audio call button is visible on Upper Toolbar", getDialogPage().isAudioCallButtonOnToolbarNotVisible());
+                    Assert.assertTrue("Video call button is visible on Upper Toolbar", getDialogPage().isVideoCallButtonOnToolbarNotVisible());
+                    break;
+            }
+        }
+    }
 }
