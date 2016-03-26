@@ -10,8 +10,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class InvitationMessage extends WireMessage {
 
-	public static final Logger log = ZetaLogger.getLog(InvitationMessage.class
-            .getSimpleName());
+	public static final Logger log = ZetaLogger.getLog(InvitationMessage.class.getSimpleName());
 
 	public InvitationMessage(String msg) throws Exception {
 		super(msg);

@@ -3,7 +3,6 @@ package com.wearezeta.auto.common.email.handlers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -13,10 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
-import com.wearezeta.auto.common.email.handlers.RESTMBoxAPI;
 
 class RESTMBoxClientWrapper implements ISupportsMessagesPolling {
     private static final Logger log = ZetaLogger.getLog(RESTMBoxClientWrapper.class.getSimpleName());
@@ -63,10 +60,18 @@ class RESTMBoxClientWrapper implements ISupportsMessagesPolling {
 
     @Override
     public boolean isAlive() {
+        final String[] pingCmd = new String[]{
+                "/usr/bin/curl",
+                "--output", "/dev/null",
+                "--fail",
+                "--silent",
+                "--head",
+                String.format("%s/recent_emails/%s/%s/%s", RESTMBoxAPI.getApiRoot(), this.mboxUserName, 0, 0)
+        };
         try {
-            RESTMBoxAPI.getRecentEmailsForUser(this.mboxUserName, 0, 0, 1000);
-            return true;
-        } catch (Throwable e) {
+            final int exitCode = new ProcessBuilder(pingCmd).start().waitFor();
+            return (exitCode == 0);
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }

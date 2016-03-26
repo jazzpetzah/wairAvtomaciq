@@ -82,20 +82,20 @@ public class ClientUsersManager {
         dstList.clear();
         for (int userIdx = 0; userIdx < maxCount; userIdx++) {
             ClientUser pendingUser = new ClientUser();
-            final String[] nameAliases = new String[]{NAME_ALIAS_TEMPLATE.apply(userIdx + 1)};
-            final String[] passwordAliases = new String[]{PASSWORD_ALIAS_TEMPLATE.apply(userIdx + 1)};
             if (this.useSpecialEmail) {
                 pendingUser.setEmail(
                         MessagingUtils.generateEmail(MessagingUtils.getSpecialAccountName(), pendingUser.getName()));
+                pendingUser.setPassword(MessagingUtils.getSpecialAccountPassword());
             }
+            final String[] nameAliases = new String[]{NAME_ALIAS_TEMPLATE.apply(userIdx + 1)};
+            final String[] passwordAliases = new String[]{PASSWORD_ALIAS_TEMPLATE.apply(userIdx + 1)};
             final String[] emailAliases = new String[]{EMAIL_ALIAS_TEMPLATE.apply(userIdx + 1)};
             final String[] phoneNumberAliases = new String[]{PHONE_NUMBER_ALIAS_TEMPLATE.apply(userIdx + 1)};
             setClientUserAliases(pendingUser, nameAliases, passwordAliases, emailAliases, phoneNumberAliases);
             dstList.add(pendingUser);
         }
-        if (this.useSpecialEmail) {
-            this.useSpecialEmail = false;
-        }
+        // !!! Reset the flag automatically
+        this.useSpecialEmail = false;
     }
 
     private List<ClientUser> users = new ArrayList<>();

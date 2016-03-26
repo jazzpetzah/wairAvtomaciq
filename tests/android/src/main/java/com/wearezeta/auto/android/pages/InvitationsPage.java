@@ -66,23 +66,6 @@ public class InvitationsPage extends AndroidPage {
         getElement(xpathAlertOK).click();
     }
 
-    public boolean isInvitationMessageReceivedBy(ClientUser user) throws Throwable {
-        return BackendAPIWrappers.getInvitationMessage(user).
-                orElseThrow(() -> {
-                    throw new IllegalStateException("Invitation message has not been received");
-                }).
-                isValid();
-    }
-
-    public String getRecentInvitationCode(ClientUser user) throws Throwable {
-        final String link = BackendAPIWrappers.getInvitationMessage(user).
-                orElseThrow(() -> {
-                    throw new IllegalStateException("Invitation message has not been received");
-                }).
-                extractInvitationLink();
-        return link.substring(link.indexOf("/i/") + 3, link.length());
-    }
-
     public void tapOnInviteSearchField() throws Exception {
         getElement(idInviteSearchField).click();
     }

@@ -2,6 +2,10 @@ package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.InvitationsPage;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.email.InvitationMessage;
+import com.wearezeta.auto.common.email.MessagingUtils;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -10,6 +14,10 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import org.junit.Assert;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Future;
 
 public class InvitationsPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
@@ -110,14 +118,38 @@ public class InvitationsPageSteps {
      * Verify that invitation email exists in user's mailbox
      *
      * @param alias user name/alias
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I verify user (.*) has received (?:an |\s*)email invitation$
      */
     @Then("^I verify user (.*) has received (?:an |\\s*)email invitation$")
-    public void IVerifyUserReceiverInvitation(String alias) throws Throwable {
+    public void IVerifyUserReceiverInvitation(String alias) throws Exception {
         final ClientUser user = usrMgr.findUserByNameOrNameAlias(alias);
+        if (!invitationMessages.containsKey(user)) {
+            throw new IllegalStateException(String.format("Please start invitation message listener for '%s' first",
+                    user.getName()));
+        }
+        final String receivedMessage = invitationMessages.get(user).get();
         Assert.assertTrue(String.format("Invitation email for %s has not been received", user.getEmail()),
-                getInvitationsPage().isInvitationMessageReceivedBy(user));
+                new InvitationMessage(receivedMessage).isValid());
+    }
+
+    private Map<ClientUser, Future<String>> invitationMessages = new HashMap<>();
+
+    /**
+     * Start invitation messages listener for the particular user
+     *
+     * @param forUser user name/alias
+     * @throws Exception
+     * @step. ^I start listening to invitation messages for (.*)
+     */
+    @When("^I start listening to invitation messages for (.*)")
+    public void IStartListeningToInviteMessages(String forUser) throws Exception {
+        final ClientUser user = usrMgr.findUserByNameOrNameAlias(forUser);
+        IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
+        Map<String, String> expectedHeaders = new HashMap<>();
+        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
+        invitationMessages.put(user,
+                mbox.getMessage(expectedHeaders, BackendAPIWrappers.INVITATION_RECEIVING_TIMEOUT));
     }
 
     /**
@@ -147,13 +179,19 @@ public class InvitationsPageSteps {
      * Broadcast the link parsed from the recent invitation email for receiver
      *
      * @param receiver email/alias
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I broadcast the invitation for (.*)
      */
     @When("^I broadcast the invitation for (.*)")
-    public void IBroadcastInvitation(String receiver) throws Throwable {
+    public void IBroadcastInvitation(String receiver) throws Exception {
         final ClientUser user = usrMgr.findUserByEmailOrEmailAlias(receiver);
-        final String code = getInvitationsPage().getRecentInvitationCode(user);
+        if (!invitationMessages.containsKey(user)) {
+            throw new IllegalStateException(String.format("There are no invitation messages for user %s",
+                    user.getName()));
+        }
+        final String receivedMessage = invitationMessages.get(user).get();
+        final String invitationLink = new InvitationMessage(receivedMessage).extractInvitationLink();
+        final String code = invitationLink.substring(invitationLink.indexOf("/i/") + 3, invitationLink.length());
         AndroidCommonUtils.broadcastInvitationCode(code);
     }
 }
