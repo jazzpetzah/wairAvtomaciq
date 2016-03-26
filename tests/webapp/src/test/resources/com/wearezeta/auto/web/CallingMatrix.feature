@@ -24,10 +24,10 @@ Feature: Calling_Matrix
       | Login      | Password      | Name      | Contact   | CallBackend      | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:latest    | 20      |
 #      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
-#      | user1Email | user1Password | user1Name | user2Name | chrome:latest-2  | 20      |
-#      | user1Email | user1Password | user1Name | user2Name | firefox:latest   | 20      |
-#      | user1Email | user1Password | user1Name | user2Name | firefox:latest-1 | 20      |
-#      | user1Email | user1Password | user1Name | user2Name | firefox:latest-2 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:latest-2  | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:latest   | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:latest-1 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:latest-2 | 20      |
 
   @C5360 @calling_matrix @calling
   Scenario Outline: Verify I can make 1:1 video call to <CallBackend>
@@ -52,7 +52,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend      | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:latest    | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
+#      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:latest-2  | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:latest   | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:latest-1 | 20      |
@@ -105,7 +105,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend      | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:latest    | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
+#      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:latest-2  | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:latest   | 20      |      
       | user1Email | user1Password | user1Name | user2Name | firefox:latest-1 | 20      |
@@ -134,7 +134,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend      | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:latest    | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
+#      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:latest-2  | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:latest   | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:latest-1 | 20      |
@@ -194,7 +194,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend      | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest    | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest-1  | 20      |
+#      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest-1  | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest-2  | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:latest   | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:latest-1 | 20      |
@@ -255,7 +255,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest    | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest-1  | 20      |
+#      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest-1  | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest-2  | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:latest   | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:latest-1 | 20      |
@@ -294,14 +294,14 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend           | WaitBackend         | Timeout |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | chrome:latest    | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | chrome:latest    | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | chrome:latest-1  | 30      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | chrome:latest-2  | 30      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | firefox:latest   | 30      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | firefox:latest-1 | 30      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | firefox:latest-2 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | chrome:latest-2  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | firefox:latest   | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | firefox:latest-1 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | firefox:latest-2 | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | chrome:latest    | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | chrome:latest-1  | 30      |
+#      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | chrome:latest-1  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | chrome:latest-2  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | firefox:latest   | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | firefox:latest-1 | 30      |
