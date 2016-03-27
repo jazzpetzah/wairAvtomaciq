@@ -7,11 +7,9 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-import com.wearezeta.auto.web.common.Lifecycle;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.PhoneNumberLoginPage;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -22,16 +20,14 @@ public class PhoneNumberLoginPageSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(PhoneNumberLoginPageSteps.class.getSimpleName());
 
-	private final ClientUsersManager usrMgr;
-	private final WebappPagesCollection webappPagesCollection;
-
+        private final TestContext context;
         
-        private final Lifecycle.TestContext context;
+    public PhoneNumberLoginPageSteps() {
+        this.context = new TestContext();
+    }
 
-    public PhoneNumberLoginPageSteps(Lifecycle.TestContext context) {
+    public PhoneNumberLoginPageSteps(TestContext context) {
         this.context = context;
-        this.usrMgr = context.getUserManager();
-        this.webappPagesCollection = context.getPagesCollection();
     }
 	/**
 	 * Input fake phone number for given user
@@ -42,12 +38,12 @@ public class PhoneNumberLoginPageSteps {
 	 */
 	@When("^I sign in using phone number of user (.*)$")
 	public void ISignInUsignPhoneNumberOfUser(String name) throws Exception {
-		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
+		ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
 		String number = user.getPhoneNumber().toString();
 		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
+		context.getPagesCollection().getPage(PhoneNumberLoginPage.class)
 				.enterCountryCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
-		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
+		context.getPagesCollection().getPage(PhoneNumberLoginPage.class)
 				.enterPhoneNumber(number);
 	}
 
@@ -61,7 +57,7 @@ public class PhoneNumberLoginPageSteps {
 	 */
 	@When("^I enter phone number (.*) on phone number sign in$")
 	public void IEnterPhoneNumber(String number) throws Exception {
-		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
+		context.getPagesCollection().getPage(PhoneNumberLoginPage.class)
 				.enterPhoneNumber(number);
 	}
 
@@ -76,7 +72,7 @@ public class PhoneNumberLoginPageSteps {
 	 */
 	@When("^I enter country code (.*) on phone number sign in$")
 	public void ISelectCountryCode(String code) throws Exception {
-		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
+		context.getPagesCollection().getPage(PhoneNumberLoginPage.class)
 				.enterCountryCode(code);
 	}
 
@@ -89,7 +85,7 @@ public class PhoneNumberLoginPageSteps {
 	 */
 	@When("^I click on sign in button on phone number sign in$")
 	public void IClickOnForwardButtonOnPhoneNumberSignIn() throws Exception {
-		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
+		context.getPagesCollection().getPage(PhoneNumberLoginPage.class)
 				.clickSignInButton();
 	}
 
@@ -105,7 +101,7 @@ public class PhoneNumberLoginPageSteps {
 	public void ISeeInvalidPhoneNumberErrorMessageSayingX(String message)
 			throws Exception {
 		assertThat("invalid phone number error",
-				webappPagesCollection.getPage(PhoneNumberLoginPage.class)
+				context.getPagesCollection().getPage(PhoneNumberLoginPage.class)
 						.getErrorMessage(), equalTo(message));
 	}
 }

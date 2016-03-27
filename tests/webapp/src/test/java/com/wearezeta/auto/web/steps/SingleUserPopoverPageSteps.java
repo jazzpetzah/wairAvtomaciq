@@ -13,14 +13,10 @@ import java.util.List;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.web.common.Lifecycle;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
-import com.wearezeta.auto.web.pages.popovers.DeviceDetailPopoverPage;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
 import cucumber.api.java.en.And;
@@ -41,15 +37,14 @@ public class SingleUserPopoverPageSteps {
 	private static final String TOOLTIP_PENDING = "Pending";
 	private static final String TOOLTIP_OPEN_CONVERSATION = "Open conversation";
 
-	private final ClientUsersManager usrMgr;
-	private final WebappPagesCollection webappPagesCollection;
+        private final TestContext context;
         
-        private final Lifecycle.TestContext context;
+    public SingleUserPopoverPageSteps() {
+        this.context = new TestContext();
+    }
 
-    public SingleUserPopoverPageSteps(Lifecycle.TestContext context) {
+    public SingleUserPopoverPageSteps(TestContext context) {
         this.context = context;
-        this.usrMgr = context.getUserManager();
-        this.webappPagesCollection = context.getPagesCollection();
     }
 
 	/**
@@ -65,10 +60,10 @@ public class SingleUserPopoverPageSteps {
 	@When("^I( do not)? see Single User Profile popover$")
 	public void ISeeSingleUserPopup(String shouldNotBeVisible) throws Exception {
 		if (shouldNotBeVisible == null) {
-			webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+			context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 					.waitUntilVisibleOrThrowException();
 		} else {
-			webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+			context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 					.waitUntilNotVisibleOrThrowException();
 		}
 	}
@@ -82,7 +77,7 @@ public class SingleUserPopoverPageSteps {
 	@When("^I choose to create conversation from Single User Profile popover$")
 	public void IChooseToCreateConversationFromSingleUserPopover()
 			throws Exception {
-		webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+		context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 				.clickCreateGroupConversation();
 	}
 
@@ -95,7 +90,7 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@When("^I click Add People button on Single User Profile popover$")
 	public void IClickAddPeopleButton() throws Exception {
-		webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+		context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 				.clickAddPeopleButton();
 	}
 
@@ -110,8 +105,8 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@When("^I input user name (.*) in search field on Single User Profile popover$")
 	public void ISearchForUser(String name) throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+		name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 				.searchForUser(name);
 	}
 
@@ -125,8 +120,8 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@When("^I select (.*) from Single User Profile popover search results$")
 	public void ISelectUserFromSearchResults(String user) throws Exception {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-		webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+		user = context.getUserManager().replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+		context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 				.selectUserFromSearchResult(user);
 	}
 
@@ -141,9 +136,9 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@When("^I see username (.*) on Single User Profile popover$")
 	public void IseeUserNameOnUserProfilePage(String name) throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertEquals(name,
-				webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+				context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 						.getUserName());
 	}
 
@@ -156,7 +151,7 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@When("^I see an avatar on Single User Profile popover$")
 	public void IseeAvatarOnUserProfilePage() throws Exception {
-		Assert.assertTrue(webappPagesCollection.getPage(
+		Assert.assertTrue(context.getPagesCollection().getPage(
 				SingleUserPopoverContainer.class).isAvatarVisible());
 	}
 
@@ -169,7 +164,7 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@Then("^I see Add people button on Single User Profile popover$")
 	public void ISeeAddButton() throws Exception {
-		Assert.assertTrue(webappPagesCollection.getPage(
+		Assert.assertTrue(context.getPagesCollection().getPage(
 				SingleUserPopoverContainer.class).isAddButtonVisible());
 	}
 
@@ -181,7 +176,7 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@Then("^I see Block button on Single User Profile popover$")
 	public void ISeeBlockButton() throws Exception {
-		Assert.assertTrue(webappPagesCollection.getPage(
+		Assert.assertTrue(context.getPagesCollection().getPage(
 				SingleUserPopoverContainer.class).isBlockButtonVisible());
 	}
 
@@ -193,7 +188,7 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@Then("^I click Block button on Single User Profile popover$")
 	public void IClickBlockButton() throws Exception {
-		webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+		context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 				.clickBlockButton();
 	}
 
@@ -205,7 +200,7 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@And("^I confirm user blocking on Single User Profile popover$")
 	public void IConfirmBlockUser() throws Exception {
-		webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+		context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 				.clickConfirmButton();
 	}
 
@@ -217,7 +212,7 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@Then("^I switch to Devices tab on Single User Profile popover$")
 	public void ISwitchToDevices() throws Exception {
-		webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+		context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 				.switchToDevicesTab();
 	}
 
@@ -229,7 +224,7 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@Then("^I switch to Details tab on Single User Profile popover$")
 	public void ISwitchToDetails() throws Exception {
-		webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+		context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 				.switchToDetailsTab();
 	}
 
@@ -240,7 +235,7 @@ public class SingleUserPopoverPageSteps {
      */
 	@Then("^I verify system message contains (.*) on Single User Profile popover$")
 	public void ISeeSystemMessage(String message) throws Exception {
-		assertThat(webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+		assertThat(context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 				.getDevicesText(), containsString(message));
 	}
 
@@ -258,15 +253,15 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I( do not)? see Mail of user (.*) on Single Participant popover$")
 	public void ISeeMailOfUser(String not, String userAlias) throws Exception {
 		if (not == null) {
-			ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
+			ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
 			assertThat(
-					webappPagesCollection
+					context.getPagesCollection()
 							.getPage(SingleUserPopoverContainer.class)
 							.getUserMail().toLowerCase(),
 					equalTo(user.getEmail()));
 		} else {
 			assertThat(
-					webappPagesCollection.getPage(
+					context.getPagesCollection().getPage(
 							SingleUserPopoverContainer.class).getUserMail(),
 					equalTo(""));
 		}
@@ -291,7 +286,7 @@ public class SingleUserPopoverPageSteps {
 			throws Exception {
 		final String picturePath = WebCommonUtils.getFullPicturePath(avatar);
 		BufferedImage expectedAvatar = ImageUtil.readImageFromFile(picturePath);
-		BufferedImage actualAvatar = webappPagesCollection.getPage(
+		BufferedImage actualAvatar = context.getPagesCollection().getPage(
 				SingleUserPopoverContainer.class).getAvatar();
 		double overlapScore = ImageUtil.getOverlapScore(actualAvatar,
 				expectedAvatar,
@@ -316,12 +311,12 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I see Pending button on Single Participant popover$")
 	public void ISeePendingButton() throws Exception {
 		final String pendingButtonMissingMessage = "Pending button is not visible on Single Participant popover";
-		Assert.assertTrue(pendingButtonMissingMessage, webappPagesCollection
+		Assert.assertTrue(pendingButtonMissingMessage, context.getPagesCollection()
 				.getPage(SingleUserPopoverContainer.class)
 				.isPendingButtonVisible());
 		Assert.assertTrue(
 				pendingButtonMissingMessage,
-				webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+				context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 						.getPendingButtonCaption().trim()
 						.equalsIgnoreCase(CAPTION_PENDING));
 	}
@@ -335,7 +330,7 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@Then("^I click Pending button on Single Participant popover$")
 	public void IClickPendingButton() throws Exception {
-		webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+		context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 				.clickPendingButton();
 	}
 
@@ -350,12 +345,12 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I see open conversation button on Single Participant popover$")
 	public void ISeeOpenConversationButton() throws Exception {
 		final String openConvMissingMessage = "Open conversation button is not visible on Single Participant popover";
-		Assert.assertTrue(openConvMissingMessage, webappPagesCollection
+		Assert.assertTrue(openConvMissingMessage, context.getPagesCollection()
 				.getPage(SingleUserPopoverContainer.class)
 				.isOpenConvButtonVisible());
 		Assert.assertTrue(
 				openConvMissingMessage,
-				webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+				context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 						.getOpenConvButtonCaption().trim()
 						.equalsIgnoreCase(CAPTION_OPEN_CONVERSATION));
 	}
@@ -369,7 +364,7 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@Then("^I see Pending text box on Single Participant popover$")
 	public void ISeePendingTextBox() throws Exception {
-		Assert.assertTrue(webappPagesCollection.getPage(
+		Assert.assertTrue(context.getPagesCollection().getPage(
 				SingleUserPopoverContainer.class).isPendingTextBoxVisible());
 	}
 
@@ -381,7 +376,7 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@When("^I click open conversation from Single Participant popover$")
 	public void IClickOpenConversation() throws Exception {
-		webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+		context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 				.clickOpenConvButton();
 	}
 
@@ -394,7 +389,7 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@Then("^I see correct open conversation button tool tip on Single Participant popover$")
 	public void ThenISeeCorrectOpenConvButtonToolTip() throws Exception {
-		Assert.assertTrue(webappPagesCollection
+		Assert.assertTrue(context.getPagesCollection()
 				.getPage(SingleUserPopoverContainer.class)
 				.getOpenConvButtonToolTip().equals(TOOLTIP_OPEN_CONVERSATION));
 	}
@@ -410,7 +405,7 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@Then("^Would open mail client when clicking mail on Single Participant popover$")
 	public void ThenISeeThatClickOnMailWouldOpenMailClient() throws Exception {
-		Assert.assertTrue(webappPagesCollection
+		Assert.assertTrue(context.getPagesCollection()
 				.getPage(SingleUserPopoverContainer.class).getMailHref()
 				.contains(MAILTO));
 
@@ -425,7 +420,7 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@Then("^I see correct pending button tool tip on Single Participant popover$")
 	public void ThenISeeCorrectPendingButtonToolTip() throws Exception {
-		Assert.assertTrue(webappPagesCollection
+		Assert.assertTrue(context.getPagesCollection()
 				.getPage(SingleUserPopoverContainer.class)
 				.getPendingButtonToolTip().equals(TOOLTIP_PENDING));
 	}
@@ -438,7 +433,7 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@Then("^I see Unblock button on Single User Profile popover$")
 	public void ISeeUnblockButton() throws Exception {
-		Assert.assertTrue(webappPagesCollection.getPage(
+		Assert.assertTrue(context.getPagesCollection().getPage(
 				SingleUserPopoverContainer.class).isUnblockButtonVisible());
 	}
 
@@ -457,44 +452,44 @@ public class SingleUserPopoverPageSteps {
 
 	@When("^I click Unblock button on Single User popover$")
 	public void IClickUnblockButton() throws Exception {
-		webappPagesCollection.getPage(SingleUserPopoverContainer.class)
+		context.getPagesCollection().getPage(SingleUserPopoverContainer.class)
 				.clickUnblockButton();
 	}
 
 	@Then("^I( do not)? see user verified icon on Single User Profile popover$")
 	public void ISeeUserVerifiedIcon(String doNot) throws Exception {
 		if (doNot == null) {
-			assertThat("No blue shield found", webappPagesCollection.getPage(SingleUserPopoverContainer.class).isUserVerified
+			assertThat("No blue shield found", context.getPagesCollection().getPage(SingleUserPopoverContainer.class).isUserVerified
 					());
 		} else {
-			assertThat("Blue shield found :(", !webappPagesCollection.getPage(SingleUserPopoverContainer.class).isUserVerified
+			assertThat("Blue shield found :(", !context.getPagesCollection().getPage(SingleUserPopoverContainer.class).isUserVerified
 					());
 		}
 	}
 
 	@Then("^I see all devices of user (.*) on Single User Profile popover$")
 	public void ISeeADeviceNamed(String userAlias) throws Exception {
-		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
+		ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
 		List<String> ids = context.getDeviceManager().getDeviceIds(user);
-		webappPagesCollection.getPage(SingleUserPopoverContainer.class).waitForDevices();
-		List<String> devices = webappPagesCollection.getPage(SingleUserPopoverContainer.class).getDeviceIds();
+		context.getPagesCollection().getPage(SingleUserPopoverContainer.class).waitForDevices();
+		List<String> devices = context.getPagesCollection().getPage(SingleUserPopoverContainer.class).getDeviceIds();
 		assertThat("Device id in list", devices, is(ids));
 	}
 
 	@Then("^I see device (.*) of user (.*) is verified on Single User Profile popover$")
 	public void ISeeADeviceNamed(String deviceName, String userAlias) throws Exception {
-		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
+		ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
 		String id = context.getDeviceManager().getDeviceId(user, deviceName);
-		webappPagesCollection.getPage(SingleUserPopoverContainer.class).waitForDevices();
-		List<String> devices = webappPagesCollection.getPage(SingleUserPopoverContainer.class).getVerifiedDeviceIds();
+		context.getPagesCollection().getPage(SingleUserPopoverContainer.class).waitForDevices();
+		List<String> devices = context.getPagesCollection().getPage(SingleUserPopoverContainer.class).getVerifiedDeviceIds();
 		assertThat("Device id is in verified devices", devices, hasItem(id));
 	}
 
 	@When("^I click on device (.*) of user (.*) on Single User Profile popover$")
 	public void IClickOnDevice(String deviceName, String userAlias) throws Exception {
-		ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
+		ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
 		String id = context.getDeviceManager().getDeviceId(user, deviceName);
-		webappPagesCollection.getPage(SingleUserPopoverContainer.class).clickDevice(id);
+		context.getPagesCollection().getPage(SingleUserPopoverContainer.class).clickDevice(id);
 	}
 
 }

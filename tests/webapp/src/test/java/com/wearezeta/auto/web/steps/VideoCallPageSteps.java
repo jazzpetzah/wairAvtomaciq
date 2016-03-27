@@ -1,8 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.web.common.Lifecycle;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.VideoCallPage;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import cucumber.api.java.en.And;
@@ -10,14 +9,14 @@ import org.junit.Assert;
 
 public class VideoCallPageSteps {
 
-    private final WebappPagesCollection webappPagesCollection;
-
+    private final TestContext context;
     
-    private final Lifecycle.TestContext context;
+    public VideoCallPageSteps() {
+        this.context = new TestContext();
+    }
 
-    public VideoCallPageSteps(Lifecycle.TestContext context) {
+    public VideoCallPageSteps(TestContext context) {
         this.context = context;
-        this.webappPagesCollection = context.getPagesCollection();
     }
     
     /**
@@ -28,7 +27,7 @@ public class VideoCallPageSteps {
      */
     @When("^I end the video call$")
     public void IEndTheCall() throws Exception {
-        webappPagesCollection.getPage(VideoCallPage.class).clickEndVideoCallButton();
+        context.getPagesCollection().getPage(VideoCallPage.class).clickEndVideoCallButton();
     }
 
     /**
@@ -40,7 +39,7 @@ public class VideoCallPageSteps {
     @And("^I see end video call button$")
     public void ISeeEndVideoCallButton() throws Exception {
         Assert.assertTrue("End video call button is not visible",
-                webappPagesCollection.getPage(VideoCallPage.class).isEndVideoCallButtonVisible());
+                context.getPagesCollection().getPage(VideoCallPage.class).isEndVideoCallButtonVisible());
     }
 
     /**
@@ -51,7 +50,7 @@ public class VideoCallPageSteps {
      */
     @When("^I click mute button on video call page$")
     public void IClickMuteButton() throws Exception {
-        webappPagesCollection.getPage(VideoCallPage.class).clickMuteCallButton();
+        context.getPagesCollection().getPage(VideoCallPage.class).clickMuteCallButton();
     }
 
     /**
@@ -63,7 +62,7 @@ public class VideoCallPageSteps {
      */
     @When("^I see mute button on video call page is( not)? pressed$")
     public void ISeeMuteButtonNotPressed(String doNot) throws Exception {
-        VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
+        VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
         if (doNot == null) {
             Assert.assertTrue("Mute call button is not pressed", videoCallPage.isMuteCallButtonPressed());
         } else {
@@ -79,7 +78,7 @@ public class VideoCallPageSteps {
      */
     @Then("^I( do not)? see the video call timer$")
     public void ICanSeeDurationTimer(String doNot) throws Exception {
-        VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
+        VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
         if (doNot == null) {
             Assert.assertTrue("Duration Timer is not visible", videoCallPage.isDurationTimerVisible());
         } else {

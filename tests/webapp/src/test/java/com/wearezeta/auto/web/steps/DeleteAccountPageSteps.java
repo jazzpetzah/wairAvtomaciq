@@ -13,9 +13,7 @@ import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.web.common.Lifecycle;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
 
 import cucumber.api.java.en.Then;
@@ -25,17 +23,18 @@ public class DeleteAccountPageSteps {
 	public static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class
 			.getSimpleName());
 	
-	private final ClientUsersManager usrMgr;
-	
 	private static final int DELETION_RECEIVING_TIMEOUT = 120;
 	
 	private String deleteLink = null;
         
-        private final Lifecycle.TestContext context;
+        private final TestContext context;
+        
+    public DeleteAccountPageSteps() {
+        this.context = new TestContext();
+    }
 
-    public DeleteAccountPageSteps(Lifecycle.TestContext context) {
+    public DeleteAccountPageSteps(TestContext context) {
         this.context = context;
-        this.usrMgr = context.getUserManager();
     }
 	
 	/**
@@ -47,7 +46,7 @@ public class DeleteAccountPageSteps {
 	 */
 	@Then("^I delete account of user (.*) via email on (.*)$")
 	public void IDeleteAccountViaEmaiOn(String alias, String agent) throws Throwable {
-		final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
+		final String email = context.getUserManager().findUserByNameOrNameAlias(alias).getEmail();
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
 		Map<String, String> expectedHeaders = new HashMap<>();
 		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
@@ -80,7 +79,7 @@ public class DeleteAccountPageSteps {
 		String newUrl = "";
 		int position = 0;
 		
-		final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
+		final String email = context.getUserManager().findUserByNameOrNameAlias(alias).getEmail();
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
 		Map<String, String> expectedHeaders = new HashMap<>();
 		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
@@ -131,7 +130,7 @@ public class DeleteAccountPageSteps {
 		
 	@Then("^I remember delete link of user (.*)$")
 	public void IRememberDeleteLinkOfUser(String alias) throws Throwable {
-		final String email = usrMgr.findUserByNameOrNameAlias(alias).getEmail();
+		final String email = context.getUserManager().findUserByNameOrNameAlias(alias).getEmail();
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
 		Map<String, String> expectedHeaders = new HashMap<>();
 		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);

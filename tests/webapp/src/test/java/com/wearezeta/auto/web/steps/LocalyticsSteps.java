@@ -2,7 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.localytics.CommonLocalyticsSteps;
 import com.wearezeta.auto.common.localytics.LocalyticsAPIWrappers;
-import com.wearezeta.auto.web.common.Lifecycle;
+import com.wearezeta.auto.web.common.TestContext;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -17,9 +17,14 @@ public class LocalyticsSteps {
 
 	private static CommonLocalyticsSteps commonSteps;
         
-        private final Lifecycle.TestContext context;
+        private final TestContext context;
+        
+        
+    public LocalyticsSteps() {
+        this.context = new TestContext();
+    }
 
-    public LocalyticsSteps(Lifecycle.TestContext context) {
+    public LocalyticsSteps(TestContext context) {
         this.context = context;
         this.commonSteps = new CommonLocalyticsSteps(
 			APP_ID, new LocalyticsAPIWrappers(API_KEY, API_SECRET));

@@ -194,7 +194,7 @@ public class LoginPageSteps {
 	@When("^I click Change Password button$")
 	public void IClickChangePassword() throws Exception {
 		webappPagesCollection.getPage(LoginPage.class)
-				.clickChangePasswordButton();
+				.clickChangePasswordButton(webappPagesCollection);
 	}
 
 	/**

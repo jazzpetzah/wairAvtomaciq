@@ -10,7 +10,6 @@ import com.wire.picklejar.PickleJar;
 import com.wire.picklejar.PickleJarJUnitProvider;
 import com.wire.picklejar.execution.ParallelParameterized;
 import cucumber.runtime.ScenarioImpl;
-import edu.emory.mathcs.backport.java.util.Arrays;
 import gherkin.formatter.Reporter;
 import gherkin.formatter.model.Scenario;
 import java.io.IOException;

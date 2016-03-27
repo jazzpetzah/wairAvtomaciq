@@ -1,55 +1,50 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.email.AccountDeletionMessage;
+import com.wearezeta.auto.common.email.MessagingUtils;
+import com.wearezeta.auto.common.email.WireMessage;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.Lifecycle;
+import static com.wearezeta.auto.web.common.Lifecycle.DRIVER_INIT_TIMEOUT;
+import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.pages.RegistrationPage;
+import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
+import cucumber.api.PendingException;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-
-import com.wearezeta.auto.common.email.AccountDeletionMessage;
-import com.wearezeta.auto.common.email.MessagingUtils;
-import com.wearezeta.auto.common.email.WireMessage;
-import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
-import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.logging.LogEntry;
-import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.driver.PlatformDrivers;
-import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.Lifecycle;
-import static com.wearezeta.auto.web.common.Lifecycle.DRIVER_INIT_TIMEOUT;
-import com.wearezeta.auto.web.common.Lifecycle.TestContext;
-import com.wearezeta.auto.web.common.WebAppExecutionContext;
-import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
-import com.wearezeta.auto.web.pages.RegistrationPage;
-
-import cucumber.api.PendingException;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeoutException;
-
 import static org.junit.Assert.assertTrue;
+import org.openqa.selenium.logging.LogEntry;
 
 public class CommonWebAppSteps {
 
     public static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class
             .getSimpleName());
     
-    private final CommonSteps commonSteps;
     private static final int DELETION_RECEIVING_TIMEOUT = 120;
     private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
     
     private final TestContext context;
+    
+    public CommonWebAppSteps() {
+        this.context = new TestContext();
+    }
+    
     public CommonWebAppSteps(TestContext context) {
         this.context = context;
-        this.commonSteps = context.getCommonSteps();
     }
     
     /**
@@ -91,7 +86,7 @@ public class CommonWebAppSteps {
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
             throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMe(context.getCurrentPlatform(), count,
+        context.getCommonSteps().ThereAreNUsersWhereXIsMe(context.getCurrentPlatform(), count,
                 myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "default");
     }
@@ -109,7 +104,7 @@ public class CommonWebAppSteps {
     @Given("^User (\\w+) change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
     public void IChangeAccentColor(String userNameAlias, String newColor)
             throws Exception {
-        commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
+        context.getCommonSteps().IChangeUserAccentColor(userNameAlias, newColor);
     }
 
     /**
@@ -124,7 +119,7 @@ public class CommonWebAppSteps {
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
     public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
             String myNameAlias) throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMe(context.getCurrentPlatform(), count,
+        context.getCommonSteps().ThereAreNUsersWhereXIsMe(context.getCurrentPlatform(), count,
                 myNameAlias);
     }
 
@@ -140,7 +135,7 @@ public class CommonWebAppSteps {
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
     public void ThereAreNUsersWhereXIsMeWithoutEmail(int count,
             String myNameAlias) throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
+        context.getCommonSteps().ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
     }
 
     /**
@@ -165,7 +160,7 @@ public class CommonWebAppSteps {
                 .toString());
         log.debug("Change avatar of user " + userNameAlias + " to "
                 + uri.getPath());
-        commonSteps.IChangeUserAvatarPicture(userNameAlias, uri.getPath());
+        context.getCommonSteps().IChangeUserAvatarPicture(userNameAlias, uri.getPath());
     }
 
     /**
@@ -179,7 +174,7 @@ public class CommonWebAppSteps {
     @Given("^(\\w+) is connected to (.*)$")
     public void UserIsConnectedTo(String userFromNameAlias,
             String usersToNameAliases) throws Exception {
-        commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
+        context.getCommonSteps().UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
     }
 
     /**
@@ -193,7 +188,7 @@ public class CommonWebAppSteps {
     @Given("^(\\w+) blocked (\\w+)$")
     public void UserBlocks(String userAsNameAlias, String userToBlockNameAlias)
             throws Exception {
-        commonSteps.BlockContact(userAsNameAlias, userToBlockNameAlias);
+        context.getCommonSteps().BlockContact(userAsNameAlias, userToBlockNameAlias);
     }
 
     /**
@@ -209,7 +204,7 @@ public class CommonWebAppSteps {
     public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
             String chatName, String otherParticipantsNameAlises)
             throws Exception {
-        commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
+        context.getCommonSteps().UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
                 otherParticipantsNameAlises);
     }
 
@@ -222,7 +217,7 @@ public class CommonWebAppSteps {
      */
     @Given("^User (\\w+) is [Mm]e$")
     public void UserXIsMe(String nameAlias) throws Exception {
-        commonSteps.UserXIsMe(nameAlias);
+        context.getCommonSteps().UserXIsMe(nameAlias);
         IChangeUserAvatarPicture(nameAlias, "default");
     }
 
@@ -235,7 +230,7 @@ public class CommonWebAppSteps {
      */
     @Given("^User (\\w+) is [Mm]e without avatar$")
     public void UserXIsMeWithoutAvatar(String nameAlias) throws Exception {
-        commonSteps.UserXIsMe(nameAlias);
+        context.getCommonSteps().UserXIsMe(nameAlias);
     }
 
     /**
@@ -249,7 +244,7 @@ public class CommonWebAppSteps {
     @Given("^(.*) sent connection request to (.*)")
     public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
             String usersToNameAliases) throws Throwable {
-        commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
+        context.getCommonSteps().ConnectionRequestIsSentTo(userFromNameAlias,
                 usersToNameAliases);
     }
 
@@ -264,7 +259,7 @@ public class CommonWebAppSteps {
     @Given("^(\\w+) waits? until (.*) exists in backend search results$")
     public void UserWaitsUntilContactExistsInHisSearchResults(
             String searchByNameAlias, String query) throws Exception {
-        commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
+        context.getCommonSteps().WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
     }
 
     /**
@@ -278,7 +273,7 @@ public class CommonWebAppSteps {
     @Given("^(\\w+) waits? until (\\d+) people in backend top people results$")
     public void UserWaitsUntilContactExistsInTopPeopleResults(
             String searchByNameAlias, int size) throws Exception {
-        commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
+        context.getCommonSteps().WaitUntilTopPeopleContactsIsFoundInSearch(
                 searchByNameAlias, size);
     }
 
@@ -292,7 +287,7 @@ public class CommonWebAppSteps {
      */
     @When("^I wait for (\\d+) seconds?$")
     public void WaitForTime(int seconds) throws Exception {
-        commonSteps.WaitForTime(seconds);
+        context.getCommonSteps().WaitForTime(seconds);
     }
 
     /**
@@ -306,7 +301,7 @@ public class CommonWebAppSteps {
     @When("^(.*) muted conversation with (.*)$")
     public void MuteConversationWithUser(String userToNameAlias,
             String muteUserNameAlias) throws Exception {
-        commonSteps
+        context.getCommonSteps()
                 .MuteConversationWithUser(userToNameAlias, muteUserNameAlias);
     }
 
@@ -321,7 +316,7 @@ public class CommonWebAppSteps {
     @When("^(.*) archived conversation with (.*)$")
     public void ArchiveConversationWithUser(String userToNameAlias,
             String archivedUserNameAlias) throws Exception {
-        commonSteps.ArchiveConversationWithUser(userToNameAlias,
+        context.getCommonSteps().ArchiveConversationWithUser(userToNameAlias,
                 archivedUserNameAlias);
     }
 
@@ -336,7 +331,7 @@ public class CommonWebAppSteps {
     @When("^User (.*) pinged in the conversation with (.*)$")
     public void UserPingedConversation(String pingFromUserNameAlias,
             String dstConversationName) throws Exception {
-        commonSteps.UserPingedConversation(pingFromUserNameAlias,
+        context.getCommonSteps().UserPingedConversation(pingFromUserNameAlias,
                 dstConversationName);
     }
 
@@ -351,7 +346,7 @@ public class CommonWebAppSteps {
     @When("^User (.*) pinged twice in the conversation with (.*)$")
     public void UserHotPingedConversation(String pingFromUserNameAlias,
             String dstConversationName) throws Exception {
-        commonSteps.UserHotPingedConversation(pingFromUserNameAlias,
+        context.getCommonSteps().UserHotPingedConversation(pingFromUserNameAlias,
                 dstConversationName);
     }
 
@@ -373,14 +368,14 @@ public class CommonWebAppSteps {
                 ? CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
             if (isEncrypted == null) {
-                commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
+                context.getCommonSteps().UserSentMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
             } else {
-                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
+                context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
             }
         } else if (isEncrypted == null) {
-            commonSteps.UserSentMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
+            context.getCommonSteps().UserSentMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
         } else {
-            commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
+            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
         }
     }
 
@@ -403,10 +398,10 @@ public class CommonWebAppSteps {
         final String imagePath = WebCommonUtils.getFullPicturePath(imageFileName);
         final boolean isGroup = conversationType.equals("group");
         if (isEncrypted == null) {
-            commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
+            context.getCommonSteps().UserSentImageToConversation(imageSenderUserNameAlias,
                     imagePath, dstConversationName, isGroup);
         } else {
-            commonSteps.UserSentImageToConversationOtr(imageSenderUserNameAlias,
+            context.getCommonSteps().UserSentImageToConversationOtr(imageSenderUserNameAlias,
                     imagePath, dstConversationName, isGroup);
         }
     }
@@ -423,7 +418,7 @@ public class CommonWebAppSteps {
     @When("^User (.*) sends? message (.*) to conversation (.*)")
     public void UserSentMessageToConversation(String userFromNameAlias,
             String message, String conversationName) throws Exception {
-        commonSteps.UserSentMessageToConversation(userFromNameAlias,
+        context.getCommonSteps().UserSentMessageToConversation(userFromNameAlias,
                 conversationName, message);
     }
 
@@ -439,7 +434,7 @@ public class CommonWebAppSteps {
     @When("^(.*) sends personal invitation to mail (.*) with message (.*)$")
     public void UserXSendsPersonalInvitation(String userToNameAlias,
             String toMail, String message) throws Exception {
-        commonSteps.UserXSendsPersonalInvitationWithMessageToUserWithMail(
+        context.getCommonSteps().UserXSendsPersonalInvitationWithMessageToUserWithMail(
                 userToNameAlias, toMail, message);
     }
 
@@ -517,7 +512,7 @@ public class CommonWebAppSteps {
     @Given("^User (.*) added contacts? (.*) to group chat (.*)")
     public void UserXAddedContactsToGroupChat(String asUser, String contacts,
             String conversationName) throws Exception {
-        commonSteps.UserXAddedContactsToGroupChat(asUser, contacts,
+        context.getCommonSteps().UserXAddedContactsToGroupChat(asUser, contacts,
                 conversationName);
     }
 
@@ -529,7 +524,7 @@ public class CommonWebAppSteps {
      */
     @Given("^There are suggestions for user (.*) on backend$")
     public void suggestions(String userNameAlias) throws Exception {
-        commonSteps.WaitUntilSuggestionFound(userNameAlias);
+        context.getCommonSteps().WaitUntilSuggestionFound(userNameAlias);
     }
 
     /**
@@ -542,7 +537,7 @@ public class CommonWebAppSteps {
     @Given("^User (.*) has contacts? (.*) in address book")
     public void UserXHasContactsInAddressBook(String asUser, String emails)
             throws Exception {
-        commonSteps.UserXHasContactsInAddressBook(asUser, emails);
+        context.getCommonSteps().UserXHasContactsInAddressBook(asUser, emails);
     }
 
     /**
@@ -555,7 +550,7 @@ public class CommonWebAppSteps {
     @Given("(.*) takes? snapshot of current profile picture$")
     public void UserXTakesSnapshotOfProfilePicture(String asUser)
             throws Exception {
-        commonSteps.UserXTakesSnapshotOfProfilePicture(asUser);
+        context.getCommonSteps().UserXTakesSnapshotOfProfilePicture(asUser);
     }
 
     /**
@@ -568,7 +563,7 @@ public class CommonWebAppSteps {
     @Then("^I verify that current profile picture snapshot of (.*) differs? from the previous one$")
     public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
             String userNameAlias) throws Exception {
-        commonSteps
+        context.getCommonSteps()
                 .UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias);
     }
 
@@ -584,7 +579,7 @@ public class CommonWebAppSteps {
     @When("user (.*) adds a new device (.*) with label (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias,
             String deviceName, String label) throws Exception {
-        commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
+        context.getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
     }
 
     /**
@@ -671,7 +666,7 @@ public class CommonWebAppSteps {
             throw new Exception(
                     "Incorrect type of conversation specified (single user | group) expected.");
         }
-        commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
+        context.getCommonSteps().UserSentImageToConversation(imageSenderUserNameAlias,
                 imagePath, dstConversationName, isGroup);
     }
 
@@ -686,7 +681,7 @@ public class CommonWebAppSteps {
     @Given("^(\\w+) unblocks user (\\w+)$")
     public void UserUnblocks(String userAsNameAlias, String userToBlockNameAlias)
             throws Exception {
-        commonSteps.UnblockContact(userAsNameAlias, userToBlockNameAlias);
+        context.getCommonSteps().UnblockContact(userAsNameAlias, userToBlockNameAlias);
     }
 
     /**

@@ -1,7 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.web.common.Lifecycle;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
 
 import cucumber.api.java.en.And;
@@ -9,13 +8,14 @@ import cucumber.api.java.en.When;
 
 public class ConnectToPopoverPageSteps {
 
-	private final WebappPagesCollection webappPagesCollection;
-        
-    private final Lifecycle.TestContext context;
+    private final TestContext context;
+    
+    public ConnectToPopoverPageSteps() {
+        this.context = new TestContext();
+    }
 
-    public ConnectToPopoverPageSteps(Lifecycle.TestContext context) {
+    public ConnectToPopoverPageSteps(TestContext context) {
         this.context = context;
-        this.webappPagesCollection = context.getPagesCollection();
     }
 
 	/**
@@ -27,7 +27,7 @@ public class ConnectToPopoverPageSteps {
 	 */
 	@When("^I click Connect button on Connect To popover$")
 	public void IAcceptConnectionRequestFromUser() throws Exception {
-		webappPagesCollection.getPage(ConnectToPopoverContainer.class)
+		context.getPagesCollection().getPage(ConnectToPopoverContainer.class)
 				.clickConnectButton();
 	}
 
@@ -38,7 +38,7 @@ public class ConnectToPopoverPageSteps {
 	 */
 	@And("^I see Connect To popover$")
 	public void ISeeConnectToPopover() throws Exception {
-		webappPagesCollection.getPage(ConnectToPopoverContainer.class)
+		context.getPagesCollection().getPage(ConnectToPopoverContainer.class)
 				.waitUntilVisibleOrThrowException();
 	}
 
@@ -54,10 +54,10 @@ public class ConnectToPopoverPageSteps {
 	public void ISeePendingOutgoingConnectionPopover(String doNot)
 			throws Exception {
 		if (doNot == null) {
-			webappPagesCollection.getPage(ConnectToPopoverContainer.class)
+			context.getPagesCollection().getPage(ConnectToPopoverContainer.class)
 					.waitUntilVisibleOrThrowException();
 		} else {
-			webappPagesCollection.getPage(ConnectToPopoverContainer.class)
+			context.getPagesCollection().getPage(ConnectToPopoverContainer.class)
 					.waitUntilNotVisibleOrThrowException();
 		}
 	}
@@ -72,7 +72,7 @@ public class ConnectToPopoverPageSteps {
 	@When("^I click Cancel request on Pending Outgoing Connection popover$")
 	public void IClickCancelRequestButtonOnPendingOutgoingConnectionPopover()
 			throws Exception {
-		webappPagesCollection.getPage(ConnectToPopoverContainer.class)
+		context.getPagesCollection().getPage(ConnectToPopoverContainer.class)
 				.clickCancelRequestButton();
 	}
 
@@ -84,7 +84,7 @@ public class ConnectToPopoverPageSteps {
 	 */
 	@And("^I see Cancel request confirmation popover$")
 	public void ISeeCancelRequestConfirmationPopover() throws Exception {
-		webappPagesCollection.getPage(ConnectToPopoverContainer.class)
+		context.getPagesCollection().getPage(ConnectToPopoverContainer.class)
 				.waitUntilVisibleOrThrowException();
 	}
 
@@ -96,7 +96,7 @@ public class ConnectToPopoverPageSteps {
 	@When("^I click No button on Cancel request confirmation popover$")
 	public void IClickNoButtonOnCancelRequestConfirmationPopover()
 			throws Exception {
-		webappPagesCollection.getPage(ConnectToPopoverContainer.class)
+		context.getPagesCollection().getPage(ConnectToPopoverContainer.class)
 				.clickNoButton();
 	}
 
@@ -108,7 +108,7 @@ public class ConnectToPopoverPageSteps {
 	@When("^I click Yes button on Cancel request confirmation popover$")
 	public void IClickYesButtonOnCancelRequestConfirmationPopover()
 			throws Exception {
-		webappPagesCollection.getPage(ConnectToPopoverContainer.class)
+		context.getPagesCollection().getPage(ConnectToPopoverContainer.class)
 				.clickYesButton();
 	}
 }

@@ -3,26 +3,23 @@ package com.wearezeta.auto.web.steps;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.common.Lifecycle;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.DeviceDetailPage;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class DeviceDetailPageSteps {
 
-	private final ClientUsersManager usrMgr;
-	private final WebappPagesCollection webappPagesCollection;
+        private final TestContext context;
         
-        private final Lifecycle.TestContext context;
+    public DeviceDetailPageSteps() {
+        this.context = new TestContext();
+    }
 
-    public DeviceDetailPageSteps(Lifecycle.TestContext context) {
+    public DeviceDetailPageSteps(TestContext context) {
         this.context = context;
-        this.usrMgr = context.getUserManager();
-        this.webappPagesCollection = context.getPagesCollection();
     }
 
 	/**
@@ -37,31 +34,31 @@ public class DeviceDetailPageSteps {
 	@Then("I see a device named (.*) with label (.*) in the device details")
 	public void ISeeACertainDeviceInDevicesSection(String name, String label)
 			throws Exception {
-		assertThat(webappPagesCollection.getPage(DeviceDetailPage.class)
+		assertThat(context.getPagesCollection().getPage(DeviceDetailPage.class)
 				.getDeviceLabel(), equalTo(label.toUpperCase()));
-		assertThat(webappPagesCollection.getPage(DeviceDetailPage.class)
+		assertThat(context.getPagesCollection().getPage(DeviceDetailPage.class)
 				.getDeviceLabel(), equalTo(label.toUpperCase()));
 	}
 
 	@When("I click the remove device link")
 	public void IClickTheRemoveDeviceButton() throws Exception {
-		webappPagesCollection.getPage(DeviceDetailPage.class)
+		context.getPagesCollection().getPage(DeviceDetailPage.class)
 				.clickRemoveDeviceLink();
 	}
 
 	@When("I type password \"([^\"]*)\" into the device remove form")
 	public void ITypePassword(String password) throws Exception {
 		try {
-			password = usrMgr.findUserByPasswordAlias(password).getPassword();
+			password = context.getUserManager().findUserByPasswordAlias(password).getPassword();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		webappPagesCollection.getPage(DeviceDetailPage.class).setPassword(password);
+		context.getPagesCollection().getPage(DeviceDetailPage.class).setPassword(password);
 	}
 
 	@When("I click the remove button")
 	public void IClickTheRemoveDeviceButtonOnForm() throws Exception {
-		webappPagesCollection.getPage(DeviceDetailPage.class)
+		context.getPagesCollection().getPage(DeviceDetailPage.class)
 				.clickRemoveButton();
 	}
 }

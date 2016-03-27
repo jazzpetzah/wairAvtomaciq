@@ -1,7 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.web.common.Lifecycle;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.external.YouAreInvitedPage;
 import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 
@@ -10,14 +9,16 @@ import cucumber.api.java.en.When;
 
 public class BringYourFriendsPopoverPageSteps {
 
-	private final WebappPagesCollection webappPagesCollection;
 	private String invitationLink = null;
         
-        private final Lifecycle.TestContext context;
+        private final TestContext context;
+        
+    public BringYourFriendsPopoverPageSteps() {
+        this.context = new TestContext();
+    }
 
-    public BringYourFriendsPopoverPageSteps(Lifecycle.TestContext context) {
+    public BringYourFriendsPopoverPageSteps(TestContext context) {
         this.context = context;
-        this.webappPagesCollection = context.getPagesCollection();
     }
 
 	/**
@@ -33,10 +34,10 @@ public class BringYourFriendsPopoverPageSteps {
 	public void ISeeInvitatePeoplePopover(String shouldNotBeVisible)
 			throws Exception {
 		if (shouldNotBeVisible == null) {
-			webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
+			context.getPagesCollection().getPage(BringYourFriendsPopoverPage.class)
 					.isVisible();
 		} else {
-			webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
+			context.getPagesCollection().getPage(BringYourFriendsPopoverPage.class)
 					.isNotVisible();
 		}
 	}
@@ -54,10 +55,10 @@ public class BringYourFriendsPopoverPageSteps {
 	public void ISeeShareContactsButton(String shouldNotBeVisible)
 			throws Exception {
 		if (shouldNotBeVisible == null) {
-			webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
+			context.getPagesCollection().getPage(BringYourFriendsPopoverPage.class)
 					.isShareContactsButtonVisible();
 		} else {
-			webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
+			context.getPagesCollection().getPage(BringYourFriendsPopoverPage.class)
 					.isShareContactsButtonNotVisible();
 		}
 	}
@@ -71,7 +72,7 @@ public class BringYourFriendsPopoverPageSteps {
 	 */
 	@Then("^I click Share Contacts button$")
 	public void IClickShareContactsButton() throws Exception {
-		webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
+		context.getPagesCollection().getPage(BringYourFriendsPopoverPage.class)
 				.clickShareContactsButton();
 	}
 
@@ -85,7 +86,7 @@ public class BringYourFriendsPopoverPageSteps {
 	 */
 	@Then("^I click Invite People button$")
 	public void IClickInvitePeopleButton() throws Exception {
-		webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
+		context.getPagesCollection().getPage(BringYourFriendsPopoverPage.class)
 				.clickInvitePeopleButton();
 	}
 
@@ -98,7 +99,7 @@ public class BringYourFriendsPopoverPageSteps {
 	 */
 	@When("^I remember invitation link on Bring Your Friends popover$")
 	public void IRemeberInvitationLink() throws Exception {
-		invitationLink = webappPagesCollection.getPage(
+		invitationLink = context.getPagesCollection().getPage(
 				BringYourFriendsPopoverPage.class).parseInvitationLink();
 	}
 
@@ -116,7 +117,7 @@ public class BringYourFriendsPopoverPageSteps {
 					"Invitation link has not been remembered before!");
 		}
 
-		YouAreInvitedPage youAreInvitedPage = webappPagesCollection
+		YouAreInvitedPage youAreInvitedPage = context.getPagesCollection()
 				.getPage(YouAreInvitedPage.class);
 		youAreInvitedPage.setUrl(invitationLink);
 		youAreInvitedPage.navigateTo();

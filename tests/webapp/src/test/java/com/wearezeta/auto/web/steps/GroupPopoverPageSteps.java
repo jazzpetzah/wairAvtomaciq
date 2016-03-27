@@ -1,12 +1,10 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.common.Lifecycle;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 
 import cucumber.api.java.en.Then;
@@ -38,15 +36,15 @@ public class GroupPopoverPageSteps {
 	private static final String TOOLTIP_UNBLOCK = "Unblock";
 	private static final String TOOLTIP_OPEN_YOUR_PROFILE = "Open your profile";
 
-	private final ClientUsersManager usrMgr;
-	private final WebappPagesCollection webappPagesCollection;
+        private final TestContext context;
         
-        private final Lifecycle.TestContext context;
+        
+    public GroupPopoverPageSteps() {
+        this.context = new TestContext();
+    }
 
-    public GroupPopoverPageSteps(Lifecycle.TestContext context) {
+    public GroupPopoverPageSteps(TestContext context) {
         this.context = context;
-        this.usrMgr = context.getUserManager();
-        this.webappPagesCollection = context.getPagesCollection();
     }
 
 	/**
@@ -64,10 +62,10 @@ public class GroupPopoverPageSteps {
 	public void ISeeUserProfilePopupPage(String shouldNotBeVisible)
 			throws Exception {
 		if (shouldNotBeVisible == null) {
-			webappPagesCollection.getPage(GroupPopoverContainer.class)
+			context.getPagesCollection().getPage(GroupPopoverContainer.class)
 					.waitUntilVisibleOrThrowException();
 		} else {
-			webappPagesCollection.getPage(GroupPopoverContainer.class)
+			context.getPagesCollection().getPage(GroupPopoverContainer.class)
 					.waitUntilNotVisibleOrThrowException();
 		}
 	}
@@ -80,7 +78,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I click Leave button on Group Participants popover$")
 	public void IClickLeaveGroupChat() throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.clickLeaveGroupChat();
 	}
 
@@ -95,7 +93,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I click confirm leave group conversation on Group Participants popover$")
 	public void IClickConfirmLeaveGroupChat() throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.confirmLeaveGroupChat();
 	}
 
@@ -107,7 +105,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I see correct back button tool tip on Group Participants popover$")
 	public void ThenISeeCorrectBackButtonToolTip() throws Exception {
-		Assert.assertTrue(webappPagesCollection
+		Assert.assertTrue(context.getPagesCollection()
 				.getPage(GroupPopoverContainer.class).getBackButtonToolTip()
 				.equals(TOOLTIP_BACK));
 	}
@@ -120,7 +118,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I click back button on Group Participants popover$")
 	public void WhenIClickBackButton() throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.clickBackButton();
 	}
 
@@ -133,7 +131,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I see correct pending button tool tip on Group Participants popover$")
 	public void ThenISeeCorrectPendingButtonToolTip() throws Exception {
-		Assert.assertTrue(webappPagesCollection
+		Assert.assertTrue(context.getPagesCollection()
 				.getPage(GroupPopoverContainer.class).getPendingButtonToolTip()
 				.equals(TOOLTIP_PENDING));
 	}
@@ -149,8 +147,8 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I click on participant (.*) on Group Participants popover$")
 	public void IClickOnParticipant(String name) throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.clickOnParticipant(name);
 	}
 
@@ -165,11 +163,11 @@ public class GroupPopoverPageSteps {
 	public void ISeePendingButton() throws Exception {
 		final String pendingButtonMissingMessage = "Pending button is not visible on Group Participants popover";
 		final String pendingButtonWrongCaptionMessage = "Pending button has wrong caption on Group Participants popover";
-		Assert.assertTrue(pendingButtonMissingMessage, webappPagesCollection
+		Assert.assertTrue(pendingButtonMissingMessage, context.getPagesCollection()
 				.getPage(GroupPopoverContainer.class).isPendingButtonVisible());
 		Assert.assertTrue(
 				pendingButtonWrongCaptionMessage,
-				webappPagesCollection.getPage(GroupPopoverContainer.class)
+				context.getPagesCollection().getPage(GroupPopoverContainer.class)
 						.getPendingButtonCaption().trim()
 						.equals(CAPTION_PENDING));
 	}
@@ -183,7 +181,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I click Pending button on Group Participants popover$")
 	public void IClickPendingButton() throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.clickPendingButton();
 	}
 
@@ -198,11 +196,11 @@ public class GroupPopoverPageSteps {
 	public void ISeeProfileButton() throws Exception {
 		final String pendingButtonMissingMessage = "Profile button is not visible on Group Participants popover";
 		final String pendingButtonWrongCaptionMessage = "Profile button has wrong caption on Group Participants popover";
-		Assert.assertTrue(pendingButtonMissingMessage, webappPagesCollection
+		Assert.assertTrue(pendingButtonMissingMessage, context.getPagesCollection()
 				.getPage(GroupPopoverContainer.class).isProfileButtonVisible());
 		Assert.assertTrue(
 				pendingButtonWrongCaptionMessage,
-				webappPagesCollection.getPage(GroupPopoverContainer.class)
+				context.getPagesCollection().getPage(GroupPopoverContainer.class)
 						.getProfileButtonCaption().trim()
 						.equals(CAPTION_PROFILE));
 	}
@@ -216,7 +214,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I click profile button on Group Participants popover$")
 	public void IClickProfileButton() throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.clickProfileButton();
 	}
 
@@ -229,7 +227,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I see correct profile button tool tip on Group Participants popover$")
 	public void ThenISeeCorrectProfileButtonToolTip() throws Exception {
-		Assert.assertTrue(webappPagesCollection
+		Assert.assertTrue(context.getPagesCollection()
 				.getPage(GroupPopoverContainer.class).getProfileButtonToolTip()
 				.equals(TOOLTIP_OPEN_YOUR_PROFILE));
 	}
@@ -243,7 +241,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I click Unblock button on Group Participants popover$")
 	public void IClickUnblockButton() throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.clickUnblockButton();
 	}
 
@@ -256,7 +254,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I see correct Unblock button tool tip on Group Participants popover$")
 	public void ThenISeeCorrectUnblockButtonToolTip() throws Exception {
-		Assert.assertTrue(webappPagesCollection
+		Assert.assertTrue(context.getPagesCollection()
 				.getPage(GroupPopoverContainer.class).getUnblockButtonToolTip()
 				.equals(TOOLTIP_UNBLOCK));
 	}
@@ -273,11 +271,11 @@ public class GroupPopoverPageSteps {
 		final String openUnblockButtonMissingMessage = "Unblock button is not visible on Group Participants popover";
 		final String openUnblockButtonWrongCaptionMessage = "Unblock button has wrong caption on Group Participants popover";
 		Assert.assertTrue(openUnblockButtonMissingMessage,
-				webappPagesCollection.getPage(GroupPopoverContainer.class)
+				context.getPagesCollection().getPage(GroupPopoverContainer.class)
 						.isUnblockButtonVisible());
 		Assert.assertTrue(
 				openUnblockButtonWrongCaptionMessage,
-				webappPagesCollection.getPage(GroupPopoverContainer.class)
+				context.getPagesCollection().getPage(GroupPopoverContainer.class)
 						.getUnblockButtonCaption().trim()
 						.equals(CAPTION_UNBLOCK));
 	}
@@ -291,7 +289,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I confirm Unblock from group chat on Group Participants popover$")
 	public void IConfirmUnblockUser() throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.clickConfirmUnblockButton();
 	}
 
@@ -304,7 +302,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I click confirm connect button on Group Participants popover$")
 	public void IClickConfirmConnectButton() throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.clickConfirmConnectButton();
 	}
 
@@ -317,7 +315,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I click ignore connect button on Group Participants popover$")
 	public void IClickIgnoreConnectButton() throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.clickIgnoreConnectButton();
 	}
 
@@ -330,7 +328,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I click Remove button on Group Participants popover$")
 	public void IRemoveUserFromGroupChat() throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.clickRemoveFromGroupChat();
 	}
 
@@ -343,7 +341,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I see Remove button on Group Participants popover$")
 	public void ISeeRemoveUserFromGroupChat() throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.isRemoveButtonVisible();
 	}
 
@@ -356,7 +354,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I confirm remove from group chat on Group Participants popover$")
 	public void IConfirmRemoveFromGroupChat() throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.confirmRemoveFromGroupChat();
 	}
 
@@ -372,9 +370,9 @@ public class GroupPopoverPageSteps {
 	public void ISeeContactsDisplayed(String contactsAliases) throws Exception {
 		List<String> contacts = CommonSteps.splitAliases(contactsAliases);
 		for (String contact : contacts) {
-			contact = usrMgr.replaceAliasesOccurences(contact,
+			contact = context.getUserManager().replaceAliasesOccurences(contact,
 					FindBy.NAME_ALIAS);
-			Assert.assertTrue(webappPagesCollection.getPage(
+			Assert.assertTrue(context.getPagesCollection().getPage(
 					GroupPopoverContainer.class).isParticipantVisible(contact));
 		}
 	}
@@ -390,7 +388,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I change group conversation title to (.*) on Group Participants popover$")
 	public void IChangeGroupChatTitleTo(String title) throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.setConversationTitle(title);
 	}
 
@@ -405,7 +403,7 @@ public class GroupPopoverPageSteps {
 	@Then("^I see conversation title (.*) on Group Participants popover$")
 	public void ISeeConversationTitle(String title) throws Exception {
 		Assert.assertEquals(title,
-				webappPagesCollection.getPage(GroupPopoverContainer.class)
+				context.getPagesCollection().getPage(GroupPopoverContainer.class)
 						.getConversationTitle());
 	}
 
@@ -418,23 +416,23 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I click Add People button on Group Participants popover$")
 	public void IClickAddPeopleButton() throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.clickAddPeopleButton();
 	}
 
 	@When("^I see message that everyone is already added on Group Participants popover$")
 	public void ISeeEveryoneAlreadyAddedMessage() throws Exception {
-		Assert.assertTrue(webappPagesCollection.getPage(
+		Assert.assertTrue(context.getPagesCollection().getPage(
 				GroupPopoverContainer.class).isEveryoneAlreadyAddedMessageShown());
 	}
 
 	@Then("I see (\\d+) participants in the Group Participants popover")
 	public void ISeeXParticipants(int amount) throws Exception {
 		assertThat("People information under conversation name",
-				webappPagesCollection.getPage(GroupPopoverContainer.class)
+				context.getPagesCollection().getPage(GroupPopoverContainer.class)
 						.getPeopleCountInfo(), equalTo(String.valueOf(amount)
 						+ " PEOPLE"));
-		assertThat("Actual amount of people in popover", webappPagesCollection
+		assertThat("Actual amount of people in popover", context.getPagesCollection()
 				.getPage(GroupPopoverContainer.class).getPeopleCount(),
 				equalTo(amount));
 	}
@@ -450,8 +448,8 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I input user name (.*) in search field on Group Participants popover$")
 	public void ISearchForUser(String name) throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.searchForUser(name);
 	}
 
@@ -466,8 +464,8 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I select user (.*) from Group Participants popover search results$")
 	public void ISelectUserFromSearchResults(String user) throws Exception {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		user = context.getUserManager().replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.selectUserFromSearchResult(user);
 	}
 
@@ -484,7 +482,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I select the first (\\d+) participants from Group Participants popover search results$")
 	public void ISelectFirstUsersFromSearchResults(int amount) throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.selectUsersFromSearchResult(amount);
 	}
 
@@ -497,7 +495,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I choose to create group conversation from Group Participants popover$")
 	public void IChooseToCreateGroupConversation() throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.clickCreateGroupConversation();
 	}
 
@@ -509,7 +507,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I click open conversation from Group Participants popover$")
 	public void IClickOpenConversation() throws Exception {
-		webappPagesCollection.getPage(GroupPopoverContainer.class)
+		context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.clickOpenConvButton();
 	}
 
@@ -528,7 +526,7 @@ public class GroupPopoverPageSteps {
 		} else {
 			tooltip = tooltip + SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_MAC;
 		}
-		assertThat(webappPagesCollection.getPage(GroupPopoverContainer.class)
+		assertThat(context.getPagesCollection().getPage(GroupPopoverContainer.class)
 				.getAddPeopleButtonToolTip(), equalTo(tooltip));
 	}
 
@@ -542,7 +540,7 @@ public class GroupPopoverPageSteps {
 	@Then("^I see correct leave conversation button tool tip$")
 	public void ThenISeeCorrectLeaveConversationButtonToolTip()
 			throws Exception {
-		Assert.assertTrue(webappPagesCollection
+		Assert.assertTrue(context.getPagesCollection()
 				.getPage(GroupPopoverContainer.class)
 				.getLeaveGroupChatButtonToolTip()
 				.equals(TOOLTIP_LEAVE_CONVERSATION));
@@ -558,7 +556,7 @@ public class GroupPopoverPageSteps {
 	@Then("^I see correct rename conversation button tool tip$")
 	public void ThenISeeCorrectRenameConversationButtonToolTip()
 			throws Exception {
-		Assert.assertTrue(webappPagesCollection
+		Assert.assertTrue(context.getPagesCollection()
 				.getPage(GroupPopoverContainer.class)
 				.getRenameConversationToolTip()
 				.equals(TOOLTIP_CHANGE_CONVERSATION_NAME));
@@ -574,7 +572,7 @@ public class GroupPopoverPageSteps {
 	@Then("^I see correct remove from group button tool tip on Group Participants popover$")
 	public void ThenISeeCorrectRemoveFromGroupChatButtonToolTip()
 			throws Exception {
-		Assert.assertTrue(webappPagesCollection
+		Assert.assertTrue(context.getPagesCollection()
 				.getPage(GroupPopoverContainer.class)
 				.getRemoveFromGroupChatButtonToolTip()
 				.equals(TOOLTIP_REMOVE_FROM_CONVERSATION));
@@ -593,9 +591,9 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I see username (.*) on Group Participants popover$")
 	public void IseeUserNameOnUserProfilePage(String name) throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertEquals(name,
-				webappPagesCollection.getPage(GroupPopoverContainer.class)
+				context.getPagesCollection().getPage(GroupPopoverContainer.class)
 						.getUserName());
 	}
 
@@ -609,7 +607,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@When("^I see an avatar on Group Participants popover")
 	public void IseeAvatarOnUserProfilePage() throws Exception {
-		Assert.assertTrue(webappPagesCollection.getPage(
+		Assert.assertTrue(context.getPagesCollection().getPage(
 				GroupPopoverContainer.class).isAvatarVisible());
 	}
 
@@ -627,7 +625,7 @@ public class GroupPopoverPageSteps {
 	@Then("^I( do not)? see Mail (.*)on Group Participants popover$")
 	public void ISeeMailOfUser(String not, String mailAlias) throws Exception {
 		mailAlias = mailAlias.trim();
-		GroupPopoverContainer groupPopoverPage = webappPagesCollection
+		GroupPopoverContainer groupPopoverPage = context.getPagesCollection()
 				.getPage(GroupPopoverContainer.class);
 		if (not == null) {
 			if ("".equals(mailAlias)) {
@@ -637,7 +635,7 @@ public class GroupPopoverPageSteps {
 				// mail given. strict check for mail
 				String email = null;
 				try {
-					email = usrMgr.findUserByEmailOrEmailAlias(mailAlias)
+					email = context.getUserManager().findUserByEmailOrEmailAlias(mailAlias)
 							.getEmail().toUpperCase();
 				} catch (NoSuchUserException e) {
 					// Ignore silently
@@ -661,7 +659,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^Would open mail client when clicking mail on Group Participants popover$")
 	public void ThenISeeThatClickOnMailWouldOpenMailClient() throws Exception {
-		Assert.assertTrue(webappPagesCollection
+		Assert.assertTrue(context.getPagesCollection()
 				.getPage(GroupPopoverContainer.class).getMailHref()
 				.contains(MAILTO));
 
@@ -676,7 +674,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I see Pending text box on Group Participants popover$")
 	public void ISeePendingTextBox() throws Exception {
-		Assert.assertTrue(webappPagesCollection.getPage(
+		Assert.assertTrue(context.getPagesCollection().getPage(
 				GroupPopoverContainer.class).isPendingTextBoxVisible());
 	}
 
@@ -690,7 +688,7 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I see correct open conversation button tool tip on Group Participants popover$")
 	public void ThenISeeCorrectOpenConversationButtonToolTip() throws Exception {
-		Assert.assertTrue(webappPagesCollection
+		Assert.assertTrue(context.getPagesCollection()
 				.getPage(GroupPopoverContainer.class)
 				.getOpenConvButtonToolTip().equals(TOOLTIP_OPEN_CONVERSATION));
 	}
@@ -707,11 +705,11 @@ public class GroupPopoverPageSteps {
 	public void ISeeOpenConversationButton() throws Exception {
 		final String openConvButtonMissingMessage = "Open conversation button is not visible on Group Participants popover";
 		final String openConvButtonWrongCaptionMessage = "Open conversation button has wrong caption on Group Participants popover";
-		Assert.assertTrue(openConvButtonMissingMessage, webappPagesCollection
+		Assert.assertTrue(openConvButtonMissingMessage, context.getPagesCollection()
 				.getPage(GroupPopoverContainer.class).isOpenConvButtonVisible());
 		Assert.assertTrue(
 				openConvButtonWrongCaptionMessage,
-				webappPagesCollection.getPage(GroupPopoverContainer.class)
+				context.getPagesCollection().getPage(GroupPopoverContainer.class)
 						.getOpenConvButtonCaption().trim()
 						.equals(CAPTION_OPEN_CONVERSATION));
 	}
