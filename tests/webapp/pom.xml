@@ -59,6 +59,12 @@
             <version>2.49.0</version>
         </dependency>
         
+        <dependency>
+            <groupId>com.wire</groupId>
+            <artifactId>picklejar</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        
     </dependencies>
 
 
@@ -132,13 +138,7 @@
                 <picklejar.steps.package>com.wearezeta.auto.web.steps</picklejar.steps.package>
                 <picklejar.feature.package>com.wearezeta.auto.web</picklejar.feature.package>
             </properties>
-            <dependencies>
-                <dependency>
-                    <groupId>com.wire</groupId>
-                    <artifactId>picklejar</artifactId>
-                    <version>0.1-SNAPSHOT</version>
-                </dependency>
-            </dependencies>
+
             <build>
                 <plugins>
                     <plugin>
