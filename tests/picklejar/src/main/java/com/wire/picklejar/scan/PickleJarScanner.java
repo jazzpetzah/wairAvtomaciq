@@ -80,7 +80,7 @@ public class PickleJarScanner {
                             scenarioArray[0] = feature.getName();
                             // replacing placeholders with examples in scenario name
                             // Pattern quote escapes characters that are dangerous in regexes
-                            scenarioArray[1] = Pattern.quote(PickleExecutor.replaceExampleOccurences(scenarioDefinition.
+                            scenarioArray[1] = quote(PickleExecutor.replaceExampleOccurences(scenarioDefinition.
                                     getName(), exampleRowWithHeader));
                             scenarioArray[2] = new Integer(j + 1);
                             scenarioArray[3] = steps;
@@ -101,7 +101,7 @@ public class PickleJarScanner {
                 } catch (Exception e) {
                     Object[] scenarioArray = new Object[5];
                     scenarioArray[0] = feature.getName();
-                    scenarioArray[1] = scenarioDefinition.getName();
+                    scenarioArray[1] = quote(scenarioDefinition.getName());
                     // if we don't have examples we default to example row number 0
                     scenarioArray[2] = new Integer(0);
                     scenarioArray[3] = steps;
@@ -119,6 +119,10 @@ public class PickleJarScanner {
             }
         }
         return scenarios;
+    }
+    
+    private static String quote(String string){
+        return string;//.replaceAll(" ", "_");
     }
 
 }

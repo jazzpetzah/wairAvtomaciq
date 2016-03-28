@@ -81,7 +81,7 @@ public class TestClassGenerator {
         }
 
         public String toClassName() {
-            return (featureName + "" + scenarioName).replaceAll("[^a-zA-Z0-9]", "");
+            return (featureName + "__" + scenarioName).replaceAll("[^a-zA-Z0-9]", "_");
         }
 
         public String toSource() {
