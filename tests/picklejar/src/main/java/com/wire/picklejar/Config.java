@@ -14,7 +14,7 @@ public class Config {
     public static final String FEATURE_EXTENSION = "feature";
 
     public static final String STEP_PACKAGE = System.getProperty(STEP_PACKAGE_KEY, "com");
-    public static final String GENERATED_TEST_PACKAGE = System.getProperty(GENERATED_TEST_PACKAGE_KEY, "com.picklejar.generated");
+    public static final String GENERATED_TEST_PACKAGE = System.getProperty(GENERATED_TEST_PACKAGE_KEY, "c.pj.g");
     public static final String FEATURE_PACKAGE = System.getProperty(FEATURE_PACKAGE_KEY, "com");
     public static final String[] EXECUTION_TAG = System.getProperty(EXECUTION_TAG_KEY, "@torun").split(",");
     @Deprecated
