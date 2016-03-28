@@ -210,7 +210,7 @@ public class CommonAndroidSteps {
         }
 
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
-            usrMgr.setSpecialEmailFlag();
+            usrMgr.setUseSpecialEmailFlag();
         }
 
         if (isLogcatEnabled) {

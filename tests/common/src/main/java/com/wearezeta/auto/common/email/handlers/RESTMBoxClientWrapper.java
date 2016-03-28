@@ -1,5 +1,7 @@
 package com.wearezeta.auto.common.email.handlers;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -60,20 +62,18 @@ class RESTMBoxClientWrapper implements ISupportsMessagesPolling {
 
     @Override
     public boolean isAlive() {
-        final String[] pingCmd = new String[]{
-                "/usr/bin/curl",
-                "--output", "/dev/null",
-                "--fail",
-                "--silent",
-                "--head",
-                String.format("%s/recent_emails/%s/%s/%s", RESTMBoxAPI.getApiRoot(), this.mboxUserName, 0, 0)
-        };
         try {
-            final int exitCode = new ProcessBuilder(pingCmd).start().waitFor();
-            return (exitCode == 0);
+            final URL siteURL =
+                    new URL(String.format("%s/recent_emails/%s/0/0", RESTMBoxAPI.getApiRoot(), this.mboxUserName));
+            final HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
+            connection.setRequestMethod("HEAD");
+            connection.connect();
+            final int responseCode = connection.getResponseCode();
+            log.debug(String.format("Response code from %s: %s", siteURL.toString(), responseCode));
+            return (responseCode == 200);
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 }

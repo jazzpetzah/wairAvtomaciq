@@ -31,7 +31,7 @@ public class ClientUsersManager {
      * which significantly improves delivery times. The flag will be automatically unset upon the next
      * resetClientsList method call.
      */
-    public void setSpecialEmailFlag() {
+    public void setUseSpecialEmailFlag() {
         this.useSpecialEmail = true;
     }
 
