@@ -715,3 +715,17 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @77968 @staging
+  Scenario Outline: Verify upper toolbar for the outgoing connection request is shown
+    Given There are 2 users where <Name> is me
+    Given I sent connection request to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact1>
+    Then I see Upper Toolbar on dialog page
+    And I do not see Calling buttons on Upper Toolbar
+
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |

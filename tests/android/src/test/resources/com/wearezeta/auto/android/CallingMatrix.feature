@@ -94,6 +94,8 @@ Feature: Calling Matrix
     When <Contact1> stops calling me
     Then <Contact1> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
     And I do not see ongoing call
+    #BUG: If the autocall stops the call, you can get no metrics - to be fixed soon
+    #And <Contact1> verifies that call to conversation <Name> was successful
 
     Examples:
       | Name      | Contact1  | CallBackend   | Timeout |
@@ -230,6 +232,6 @@ Feature: Calling Matrix
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend   | Timeout | WaitBackend |
       | user1Name | user2Name | user3Name | GroupCall     | autocall:1.12 | 20      | zcall:1.12  |
-      | user1Name | user2Name | user3Name | GroupCall     | autocall:1.12 | 20      | zcall:1.12  |
-      | user1Name | user2Name | user3Name | GroupCall     | autocall:1.12 | 20      | zcall:1.12  |
-      | user1Name | user2Name | user3Name | GroupCall     | autocall:1.12 | 20      | zcall:1.12  |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:1.12 | 20      | zcall:2.1   |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.1  | 20      | zcall:1.12  |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.1  | 20      | zcall:2.1   |
