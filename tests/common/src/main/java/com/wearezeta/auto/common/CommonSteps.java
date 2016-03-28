@@ -65,12 +65,21 @@ public final class CommonSteps {
         }
     }
 
+    private static final String OTHER_USERS_ALIAS = "all other";
+
     public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
                                              String chatName, String otherParticipantsNameAlises) throws Exception {
         ClientUser chatOwner = usrMgr.findUserByNameOrNameAlias(chatOwnerNameAlias);
         List<ClientUser> participants = new ArrayList<>();
-        for (String participantNameAlias : splitAliases(otherParticipantsNameAlises)) {
-            participants.add(usrMgr.findUserByNameOrNameAlias(participantNameAlias));
+
+        if (otherParticipantsNameAlises.toLowerCase().contains(OTHER_USERS_ALIAS)) {
+            participants = usrMgr.getCreatedUsers();
+            participants.remove(chatOwner);
+        }
+        else {
+            for (String participantNameAlias : splitAliases(otherParticipantsNameAlises)) {
+                participants.add(usrMgr.findUserByNameOrNameAlias(participantNameAlias));
+            }
         }
         BackendAPIWrappers.createGroupConversation(chatOwner, participants, chatName);
         // Set nameAlias for the group
@@ -80,8 +89,6 @@ public final class CommonSteps {
         groupUser.addNameAlias(chatName);
         usrMgr.appendCustomUser(groupUser);
     }
-
-    private static final String OTHER_USERS_ALIAS = "all other";
 
     public void UserIsConnectedTo(String userFromNameAlias,
                                   String usersToNameAliases) throws Exception {

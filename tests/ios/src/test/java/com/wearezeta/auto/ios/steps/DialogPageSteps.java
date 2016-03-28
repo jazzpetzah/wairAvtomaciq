@@ -908,4 +908,15 @@ public class DialogPageSteps {
             }
         }
     }
+
+    /**
+     *Verify that too many people alert is visible
+     *
+     * @throws Exception
+     * @step. ^I see Too many people alert$
+     */
+    @Then("^I see Too many people alert$")
+    public void ISee10PeopleAlert() throws Exception {
+        Assert.assertTrue(getDialogPage().isTooManyPeopleAlertVisible());
+    }
 }
