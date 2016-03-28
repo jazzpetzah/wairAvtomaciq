@@ -125,6 +125,8 @@ public class DialogPage extends IOSPage {
 
     private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton};
 
+    private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
+
     private static final Logger log = ZetaLogger.getLog(DialogPage.class.getSimpleName());
 
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -579,5 +581,9 @@ public class DialogPage extends IOSPage {
 
     public boolean isUpperToolbarVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathConversationViewTopBar);
+    }
+
+    public boolean isTooManyPeopleAlertVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameToManyPeopleAlert);
     }
 }
