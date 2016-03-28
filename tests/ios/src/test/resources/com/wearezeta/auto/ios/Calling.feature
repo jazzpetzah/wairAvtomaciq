@@ -424,7 +424,6 @@ Feature: Calling
     Given Myself is connected to all other
     Given Myself has group chat <GroupChatName> with all other
     Given I sign in using my email or phone number
-    Given User Me sends 1 encrypted message to group conversation <GroupChatName>
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button

@@ -125,7 +125,7 @@ public class DialogPage extends IOSPage {
 
     private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton};
 
-    private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("To many people to call");
+    private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
     private static final Logger log = ZetaLogger.getLog(DialogPage.class.getSimpleName());
 
