@@ -21,29 +21,29 @@ Feature: Invitations
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @C825 @id4162 @regression @rc @torun @useSpecialEmail
+  @C825 @id4162 @regression @rc @useSpecialEmail
   Scenario Outline: Invitations (Registration): I can receive and accept an email notification
     Given There is 1 user where <Name> is me
     Given I start listening to invitation messages for <Contact>
     Given Myself sends personal invitation to mail <ContactEmail> with message <Message>
     Given I verify user <Contact> has received an email invitation
-#    Given I see welcome screen
-#    When I hide keyboard
-#    And I press back button
-#    And I broadcast the invitation for <ContactEmail>
-#    And I restore the application
-#    And I input password "<ContactPassword>"
-#    And I confirm password
-#    And I wait until Unsplash screen is visible
-#    And I select to choose my own picture
-#    And I select Camera as picture source
-#    And I press Camera button
-#    And I confirm selection
-#    And I add <Contact> to the list of test case users
-#    And User <Contact> is me without picture
-#    Then I see Contact list with contacts
-#    When I tap on contact name <Name>
-#    Then I see dialog page
+    Given I see welcome screen
+    When I hide keyboard
+    And I press back button
+    And I broadcast the invitation for <ContactEmail>
+    And I restore the application
+    And I input password "<ContactPassword>"
+    And I confirm password
+    And I wait until Unsplash screen is visible
+    And I select to choose my own picture
+    And I select Camera as picture source
+    And I press Camera button
+    And I confirm selection
+    And I add <Contact> to the list of test case users
+    And User <Contact> is me without picture
+    Then I see Contact list with contacts
+    When I tap on contact name <Name>
+    Then I see dialog page
 
     Examples:
       | Name      | Contact   | ContactEmail | ContactPassword | Message |
