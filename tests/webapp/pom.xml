@@ -133,8 +133,8 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+                <picklejar.tag></picklejar.tag>
                 <picklejar.parallel.max>2</picklejar.parallel.max>
-                <picklejar.timeout.testclass>180</picklejar.timeout.testclass>
                 <picklejar.steps.package>com.wearezeta.auto.web.steps</picklejar.steps.package>
                 <picklejar.feature.package>com.wearezeta.auto.web</picklejar.feature.package>
             </properties>
@@ -196,9 +196,9 @@
                             </excludes>
                             <argLine>-Djava.library.path=../common/native_lib</argLine>
                             <systemPropertyVariables>
+                                <picklejar.tag>${picklejar.tag}</picklejar.tag>
                                 <picklejar.steps.package>${picklejar.steps.package}</picklejar.steps.package>
                                 <picklejar.feature.package>${picklejar.feature.package}</picklejar.feature.package>
-                                <picklejar.timeout.testclass>${picklejar.timeout.testclass}</picklejar.timeout.testclass>
                                 <picklejar.parallel.max>${picklejar.parallel.max}</picklejar.parallel.max>
                                 <java.awt.headless>true</java.awt.headless>
                                 <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>

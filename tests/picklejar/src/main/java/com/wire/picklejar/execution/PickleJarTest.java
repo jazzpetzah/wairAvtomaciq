@@ -9,18 +9,17 @@ import gherkin.formatter.Reporter;
 import gherkin.formatter.model.Scenario;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PickleJarTest {
     
-    private static final Logger LOG = LogManager.getLogger();
+    private static final Logger LOG = LoggerFactory.getLogger(PickleJarTest.class);
     
     private static final AtomicInteger TEST_COUNTER = new AtomicInteger(0);
     private final PickleJar pickle = new PickleJarJUnitProvider();
@@ -53,28 +52,28 @@ public class PickleJarTest {
 
     @BeforeClass
     protected static void setUpClass() throws Exception {
-        LOG.log(Level.INFO, "### Before full testrun");
+        LOG.info("### Before full testrun");
     }
 
     @Before
     protected void setUp() throws Exception {
-        LOG.log(Level.INFO, "### Before testcase Count: " + TEST_COUNTER.incrementAndGet());
+        LOG.info("### Before testcase Count: {}", TEST_COUNTER.incrementAndGet());
         pickle.reset();
     }
     
     @Test
     public void test() throws Exception {
-        LOG.log(Level.INFO, "Executing "+feature+": "+testcase);
+        LOG.info("Executing {}: {}", new Object[]{feature, testcase});
     }
 
     @After
     protected void tearDown() throws Exception {
-        LOG.log(Level.INFO, "### After testcase Count: " + TEST_COUNTER.decrementAndGet());
+        LOG.info("### After testcase Count: {}", TEST_COUNTER.decrementAndGet());
     }
 
     @AfterClass
     protected static void tearDownClass() throws Exception {
-        LOG.log(Level.INFO, "### After full testrun");
+        LOG.info("### After full testrun");
     }
 
     public PickleJar getPickle() {

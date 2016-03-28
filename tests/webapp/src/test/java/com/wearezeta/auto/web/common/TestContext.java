@@ -4,6 +4,7 @@ import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import static com.wearezeta.auto.web.common.Lifecycle.DRIVER_INIT_TIMEOUT;
@@ -15,11 +16,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class TestContext {
+    
+    private static final Logger LOG = ZetaLogger.getLog(TestContext.class.getSimpleName());
     
     static Future<ZetaWebAppDriver> COMPAT_WEB_DRIVER;
 
@@ -65,12 +67,11 @@ public class TestContext {
                     pinger.cancel(true);
                 }
                 if (driver.isDone()) {
-                    Logger.getLogger(Lifecycle.class.getName()).log(Level.INFO, "Ping");
+                    LOG.info("Ping");
                     driver.get(10, TimeUnit.SECONDS).getPageSource();
                 }
             } catch (InterruptedException | ExecutionException | TimeoutException ex) {
-                Logger.getLogger(Lifecycle.class.getName()).log(Level.WARNING,
-                        "Could not ping driver because it's not initialized yet");
+                LOG.warn("Could not ping driver because it's not initialized yet");
             }
         }, 0, 30, TimeUnit.SECONDS);
     }

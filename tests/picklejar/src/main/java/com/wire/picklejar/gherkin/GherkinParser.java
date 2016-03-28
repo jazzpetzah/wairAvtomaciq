@@ -18,24 +18,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-import javax.tools.StandardLocation;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GherkinParser {
     
-    private static final Logger LOG = LogManager.getLogger();
+    private static final Logger LOG = LoggerFactory.getLogger(GherkinParser.class);
 
     private static final Map<String, String> featureContents;
     private static final Parser<Feature> parser = new Parser<>(new AstBuilder());
     
     static {
         featureContents = getFeatureContents(getFeatureFiles());
-        for (Map.Entry<String, String> entry : featureContents.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-        }
     }
     
     private static Map<String, File> getFeatureFiles() {
@@ -43,11 +37,11 @@ public class GherkinParser {
         try {
             Collection<File> resource = JavaSeeker.getResource(Config.FEATURE_PACKAGE, Config.FEATURE_EXTENSION);
             for (File file : resource) {
-                LOG.log(Level.DEBUG, file.getAbsolutePath());
+                LOG.debug(file.getAbsolutePath());
                 featureFiles.put(file.getName(), file);
             }
         } catch (IOException ex) {
-            LOG.log(Level.ERROR, "Could not get feature files", ex);
+            LOG.error("Could not get feature files", ex);
         }
         return featureFiles;
     }
@@ -58,7 +52,7 @@ public class GherkinParser {
             try {
                 featureContents.put(entry.getKey(), PickleFeatureReader.readFile(entry.getValue()));
             } catch (IOException ex) {
-                LOG.log(Level.ERROR, "Could not read feature file", ex);
+                LOG.error("Could not read feature file", ex);
             }
         }
         return featureContents;

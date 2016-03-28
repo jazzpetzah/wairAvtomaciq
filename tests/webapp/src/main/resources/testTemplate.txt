@@ -35,7 +35,6 @@ public class $(TESTNAME)Test extends PickleJarTest{
     @BeforeClass
     public static void setUpClass() throws Exception {
         PickleJarTest.setUpClass();
-        System.out.println("### Before inherited full testrun");
     }
 
     @Before
@@ -62,7 +61,6 @@ public class $(TESTNAME)Test extends PickleJarTest{
     @AfterClass
     public static void tearDownClass() throws Exception {
         PickleJarTest.tearDownClass();
-        System.out.println("### After inherited full testrun");
     }
 
 }

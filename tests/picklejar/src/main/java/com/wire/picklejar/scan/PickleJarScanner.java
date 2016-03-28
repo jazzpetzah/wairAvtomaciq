@@ -15,13 +15,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PickleJarScanner {
     
-    private static final Logger LOG = LogManager.getLogger();
+    private static final Logger LOG = LoggerFactory.getLogger(PickleJarScanner.class);
     
     public static Collection<Object[]> getTestcases() {
         return getTestcases(Config.EXECUTION_TAG);
@@ -32,8 +31,7 @@ public class PickleJarScanner {
         for (Feature feature : GherkinParser.getAllFeatures()) {
             params.addAll(mapAndFlatFeature(feature, filterTags));
         }
-        LOG.log(Level.INFO, "Found {} Scenarios", params.size());
-        System.out.println("Found "+params.size()+" Scenarios");
+        LOG.info("Found {} Scenarios", params.size());
         return params;
     }
     
@@ -88,7 +86,7 @@ public class PickleJarScanner {
                             scenarioArray[3] = steps;
                             scenarioArray[4] = exampleRowWithHeader;
 
-                            LOG.log(Level.DEBUG, "Adding scenario with example\n"
+                            LOG.debug("Adding scenario with example\n"
                                     + "FeatureName: " + feature.getName() + "\n"
                                     + "ScenarioName: " + scenarioDefinition.getName() + "\n"
                                     + "ExampleNumber: " + scenarioArray[2] + "\n"
@@ -109,7 +107,7 @@ public class PickleJarScanner {
                     scenarioArray[3] = steps;
                     scenarioArray[4] = new HashMap<String, String>();
                     
-                    LOG.log(Level.DEBUG, "Adding scenario without example\n"
+                    LOG.debug("Adding scenario without example\n"
                                     + "FeatureName: " + feature.getName() + "\n"
                                     + "ScenarioName: " + scenarioDefinition.getName() + "\n"
                                     + "ExampleNumber: " + scenarioArray[2] + "\n"

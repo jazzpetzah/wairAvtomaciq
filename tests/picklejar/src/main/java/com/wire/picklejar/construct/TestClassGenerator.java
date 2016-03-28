@@ -21,13 +21,12 @@ import javax.tools.JavaFileObject.Kind;
 import javax.tools.SimpleJavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TestClassGenerator {
 
-    private static final Logger LOG = LogManager.getLogger();
+    private static final Logger LOG = LoggerFactory.getLogger(TestClassGenerator.class);
 
     private static final String CLASS_OUTPUT_FOLDER = "target/test-classes/";
     private static final String TEST_TEMPLATE_LOCATION = "src/main/resources/";
@@ -122,14 +121,14 @@ public class TestClassGenerator {
         for (Map.Entry<Object, Object> entry : System.getProperties().entrySet()) {
             Object key = entry.getKey();
             Object value = entry.getValue();
-            LOG.log(Level.DEBUG, key + "=" + value);
+            LOG.debug(key + "=" + value);
 
         }
 
         TestClassGenerator generator = new TestClassGenerator();
 
         for (TestCase generateTestCase : generator.generateTestCases()) {
-            LOG.log(Level.INFO, "Generated Testclass: " + generateTestCase.toClassName());
+            LOG.info("Generated Testclass: {}", generateTestCase.toClassName());
             generator.compile(generateTestCase.toClassName(), generateTestCase.toSource());
         }
     }
@@ -170,12 +169,10 @@ public class TestClassGenerator {
 
         public void report(Diagnostic<? extends JavaFileObject> diagnostic) {
 
-            System.out.println("Line Number->" + diagnostic.getLineNumber());
-            System.out.println("code->" + diagnostic.getCode());
-            System.out.println("Message->"
-                    + diagnostic.getMessage(Locale.ENGLISH));
-            System.out.println("Source->" + diagnostic.getSource());
-            System.out.println(" ");
+            LOG.info("Line Number -> {}", diagnostic.getLineNumber());
+            LOG.info("code -> {}", diagnostic.getCode());
+            LOG.info("Message -> {}", diagnostic.getMessage(Locale.ENGLISH));
+            LOG.info("Source -> {}\n", diagnostic.getSource());
         }
     }
 

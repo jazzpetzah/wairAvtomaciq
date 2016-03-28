@@ -22,12 +22,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PickleExecutor {
     
-    private static final Logger LOG = LogManager.getLogger();
+    private static final Logger LOG = LoggerFactory.getLogger(PickleExecutor.class);
 
     private static final String CUCUMBER_ANNOTATION_REGEX_METHOD_NAME = "value";
     private static final Class<? extends Annotation>[] CUCUMBER_STEP_ANNOTATIONS = new Class[]{
@@ -47,7 +47,7 @@ public class PickleExecutor {
             }
         } catch (IOException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException |
                 InvocationTargetException | InstantiationException ex) {
-            LOG.log(Level.ERROR, "Could not load step classes and cache step methods", ex);
+            LOG.error("Could not load step classes and cache step methods", ex);
         }
     }
 
@@ -78,25 +78,25 @@ public class PickleExecutor {
             final Matcher matcher = pattern.matcher(step);
 
             if (matcher.matches()) {
-                LOG.log(Level.INFO, "Method " + method.getName() + " matches");
+                LOG.info("Method {} matches", method.getName());
 
                 if (matcher.groupCount() == method.getParameterTypes().length) {
-                    LOG.log(Level.DEBUG, "Number of Regex groups and number of method paramaters match");
+                    LOG.debug("Number of Regex groups and number of method paramaters match");
                 } else {
-                    LOG.log(Level.DEBUG, "Number of Regex groups and number of method paramaters do not match:\n"
-                            + "Regex groups: " + matcher.groupCount() + "\n"
-                            + "Method paramaters: " + method.getParameterTypes().length);
-                    LOG.log(Level.INFO, "Parameters do not match - Looking for other method");
+                    LOG.debug("Number of Regex groups and number of method paramaters do not match:\n"
+                            + "Regex groups: {}\n"
+                            + "Method paramaters: {}", new Object[]{matcher.groupCount(), method.getParameterTypes().length});
+                    LOG.info("Parameters do not match - Looking for other method");
                     continue;
                 }
 
                 final List<Object> params = new ArrayList<>();
                 Class<?>[] types = method.getParameterTypes();
-                LOG.log(Level.DEBUG, "Expected parameter types: \n" + Arrays.asList(types));
+                LOG.debug("Expected parameter types: \n{}", new Object[]{Arrays.asList(types)});
                 for (int i = 1; i <= matcher.groupCount(); i++) {
                     params.add(tryCast(matcher.group(i), types[i - 1]));
                 }
-                LOG.log(Level.DEBUG, "Actual parameters: \n" + params);
+                LOG.debug("Actual parameters: \n{}", new Object[]{params});
 
                 try {
                     if (params.isEmpty()) {
@@ -112,7 +112,7 @@ public class PickleExecutor {
             }
         }
         if (!match) {
-            LOG.log(Level.ERROR, String.format("Could not find any match for step '%s'", rawStep));
+            LOG.error("Could not find any match for step '{}'", rawStep);
         }
     }
 
@@ -122,14 +122,14 @@ public class PickleExecutor {
         final Object declaringClassObject;
         final String declaringClassName = method.getDeclaringClass().getName();
         if (classInstanceCache.containsKey(declaringClassName)) {
-            LOG.log(Level.INFO, "Using cached decalred class " + declaringClassName);
+            LOG.info("Using cached decalred class {}", declaringClassName);
             declaringClassObject = classInstanceCache.get(declaringClassName);
         } else {
             final List<Object> constructorParamsList = Arrays.asList(constructorParams);
             final List<Class<?>> constructorParamTypesList = constructorParamsList.stream().map((object) -> object.getClass()).
                     collect(Collectors.toList());
-            LOG.log(Level.DEBUG, "Step constructor param list size: "+constructorParamsList.size());
-            LOG.log(Level.DEBUG, "Step constructor param type list size: "+constructorParamTypesList.size());
+            LOG.debug("Step constructor param list size: {}", constructorParamsList.size());
+            LOG.debug("Step constructor param type list size: {}", constructorParamTypesList.size());
             
             final Constructor<?> ctor = method.getDeclaringClass().getConstructor(constructorParamTypesList.toArray(
                     new Class<?>[constructorParamTypesList.size()]));

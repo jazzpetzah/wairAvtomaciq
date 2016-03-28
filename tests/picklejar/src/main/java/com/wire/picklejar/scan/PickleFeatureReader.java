@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PickleFeatureReader {
     
-    private static final Logger LOG = LogManager.getLogger();
+    private static final Logger LOG = LoggerFactory.getLogger(PickleAnnotationSeeker.class);
 
     public static List<String> readFolders(File[] files) throws IOException {
         List<String> features = new ArrayList<>();
@@ -60,7 +60,7 @@ public class PickleFeatureReader {
     }
 
     public static String readFile(File file) throws IOException {
-        LOG.log(Level.INFO, "Reading file: " + file.getName());
+        LOG.info("Reading file: {}", file.getName());
         if (!file.isFile() || !file.getName().contains(".feature")) {
             throw new IllegalArgumentException("Provided file is a folder or does not have extension '.feature'");
         }

@@ -4,11 +4,10 @@ import com.wire.picklejar.Config;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.runners.Parameterized;
 import org.junit.runners.model.RunnerScheduler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Parallel JUnit runner for parameterized test classes
@@ -19,7 +18,7 @@ import org.junit.runners.model.RunnerScheduler;
 @Deprecated
 public class ParallelParameterized extends Parameterized {
 
-    private static final Logger LOG = LogManager.getLogger();
+    private static final Logger LOG = LoggerFactory.getLogger(ParallelParameterized.class);
 
     private static class ThreadPoolScheduler implements RunnerScheduler {
 
@@ -36,7 +35,7 @@ public class ParallelParameterized extends Parameterized {
             try {
                 // global timeout to execute everyting
                 executor.awaitTermination(Config.GLOBAL_TEST_TIMEOUT_MINUTES, TimeUnit.MINUTES);
-                LOG.log(Level.INFO, "Shutting down test suite");
+                LOG.info("Shutting down test suite");
             } catch (InterruptedException exc) {
                 throw new RuntimeException(exc);
             }

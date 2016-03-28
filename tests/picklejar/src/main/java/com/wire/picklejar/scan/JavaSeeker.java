@@ -14,14 +14,13 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JavaSeeker {
-    
-    private static final Logger LOG = LogManager.getLogger();
-    
+
+    private static final Logger LOG = LoggerFactory.getLogger(JavaSeeker.class);
+
     private static final String CLASS_LOADER_CLASSES_FIELD_NAME = "classes";
 
     public static Collection<Class> getClasses(final String pack) throws IOException {
@@ -39,7 +38,7 @@ public class JavaSeeker {
                                 replace(")", "");
                         final String fullClassName = strippedFullClassNamePath.
                                 replaceAll(Pattern.quote(File.separator), ".");
-                        LOG.log(Level.DEBUG, "Loading class: "+fullClassName);
+                        LOG.debug("Loading class: {}", fullClassName);
                         return Class.forName(fullClassName);
                     } catch (ClassNotFoundException e) {
                         throw new RuntimeException(e);
