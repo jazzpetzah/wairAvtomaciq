@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 
 public class TestClassGenerator {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TestClassGenerator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TestClassGenerator.class.getSimpleName());
 
     private static final String CLASS_OUTPUT_FOLDER = "target/test-classes/";
     private static final String TEST_TEMPLATE_LOCATION = "src/main/resources/";
