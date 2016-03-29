@@ -10,7 +10,6 @@ import java.util.concurrent.*;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
-import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -190,6 +189,14 @@ public class CommonUtils {
 
     public static String getDefaultEmailFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "defaultEmail");
+    }
+
+    public static String getSpecialEmailFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "specialEmail");
+    }
+
+    public static String getSpecialPasswordFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "specialPassword");
     }
 
     public static String getDefaultEmailServerFromConfig(Class<?> c) throws Exception {

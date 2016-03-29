@@ -45,7 +45,7 @@ class JavaXMBoxChangesListener extends AbstractMBoxChangesListener implements
 	}
 
 	private List<Message> preprocessReceivedMessages(Message[] deliveredMessages) {
-		List<Message> result = new ArrayList<Message>();
+		List<Message> result = new ArrayList<>();
 		for (Message msg : deliveredMessages) {
 			try {
 				log.debug("\tMessage timestamp:" + msg.getSentDate().getTime());

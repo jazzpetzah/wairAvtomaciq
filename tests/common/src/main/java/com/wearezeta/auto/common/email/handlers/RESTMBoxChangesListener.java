@@ -21,7 +21,8 @@ class RESTMBoxChangesListener extends AbstractMBoxChangesListener {
 
     @Override
     public String call() throws Exception {
-        final String deliveredTo = MessagingUtils.extractDeliveredToValue(this.expectedHeaders);
+        final String deliveredTo = MessagingUtils.extractDeliveredToValue(
+                getParentMbox().getMboxUserName(), this.expectedHeaders);
         final long millisecondsStarted = System.currentTimeMillis();
         do {
             final List<String> deliveredRawMessages = this.getParentMbox()

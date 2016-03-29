@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -96,15 +97,15 @@ public class PasswordChangeRequestSteps {
 	@And("(.*) starts? listening for password change confirmation$")
 	public void IStartListeningForPasswordChangeEmail(String emailOrName)
 			throws Exception {
-		String email = null;
+		ClientUser user;
 		try {
-			email = usrMgr.findUserByEmailOrEmailAlias(emailOrName).getEmail();
+			user = usrMgr.findUserByEmailOrEmailAlias(emailOrName);
 		} catch (NoSuchUserException e) {
-			email = usrMgr.findUserByNameOrNameAlias(emailOrName).getEmail();
+			user = usrMgr.findUserByNameOrNameAlias(emailOrName);
 		}
-		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
-		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
+		IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
+		Map<String, String> expectedHeaders = new HashMap<>();
+		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
 		this.passwordChangeMessage = mbox.getMessage(expectedHeaders,
 				PASSWORD_MSG_TIMWOUT_SECONDS, System.currentTimeMillis()
 						- TIME_SENT_DELTA_MILLISECONDS);

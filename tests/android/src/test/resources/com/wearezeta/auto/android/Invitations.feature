@@ -21,9 +21,10 @@ Feature: Invitations
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @C825 @id4162 @regression @rc
+  @C825 @id4162 @regression @rc @useSpecialEmail
   Scenario Outline: Invitations (Registration): I can receive and accept an email notification
     Given There is 1 user where <Name> is me
+    Given I start listening to invitation messages for <Contact>
     Given Myself sends personal invitation to mail <ContactEmail> with message <Message>
     Given I verify user <Contact> has received an email invitation
     Given I see welcome screen

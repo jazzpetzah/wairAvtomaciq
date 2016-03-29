@@ -209,6 +209,10 @@ public class CommonAndroidSteps {
             e.printStackTrace();
         }
 
+        if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
+            usrMgr.setUseSpecialEmailFlag();
+        }
+
         if (isLogcatEnabled) {
             if (scenario.getSourceTagNames().contains("@performance")) {
                 AndroidLogListener.getInstance(ListenerType.PERF).start();

@@ -27,8 +27,7 @@ public final class CommonRESTHandlers {
         this.maxRetries = maxRetries;
     }
 
-    private static final Logger log = ZetaLogger
-            .getLog(CommonRESTHandlers.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(CommonRESTHandlers.class.getSimpleName());
     private static final String EMPTY_LOG_RECORD = "<EMPTY>";
 
     private static final int MAX_SINGLE_ENTITY_LENGTH_IN_LOG = 400;
