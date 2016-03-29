@@ -210,6 +210,10 @@ public class CommonWebAppSteps {
             e.printStackTrace();
         }
 
+        if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
+            usrMgr.setUseSpecialEmailFlag();
+        }
+
         String platform = WebAppExecutionContext.getPlatform();
         String osName = WebAppExecutionContext.getOsName();
         String osVersion = WebAppExecutionContext.getOsVersion();
