@@ -1,6 +1,6 @@
 Feature: Archive
 
-  @C413 @id1511 @regression
+  @C413 @id1511 @regression @torun
   Scenario Outline: Verify you can archive and unarchive
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -14,7 +14,6 @@ Feature: Archive
     And I see contact list with name <Contact1>
     When I swipe right on a <Contact1>
     And I select ARCHIVE from conversation settings menu
-    And I navigate back from dialog page
     Then I do not see contact list with name <Contact1>
     And I swipe up contact list
     And I see contact list with name <Contact1>
