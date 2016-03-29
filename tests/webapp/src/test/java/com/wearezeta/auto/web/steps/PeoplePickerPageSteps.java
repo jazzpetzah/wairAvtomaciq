@@ -395,35 +395,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Verify if More button is shown in People Picker
-	 *
-	 * @step. ^I see More button$
-	 *
-	 * @throws Exception
-	 */
-	@And("^I see More button$")
-	public void ISeeMoreButton() throws Exception {
-		final String searchMissingMessage = "More button is not visible on People Picker Page";
-		Assert.assertTrue(searchMissingMessage,
-				webappPagesCollection.getPage(PeoplePickerPage.class)
-						.isMoreButtonVisible());
-
-	}
-
-	/**
-	 * Click More button on People Picker page
-	 *
-	 * @step. ^I click on More button$
-	 *
-	 * @throws Exception
-	 */
-	@When("^I click on More button$")
-	public void IClickOnMoreButton() throws Exception {
-		webappPagesCollection.getPage(PeoplePickerPage.class).clickMoreButton();
-	}
-
-	/**
-	 * Verify if More button is shown in People Picker
+	 * Verify if (\\d+) people is/are shown in People Picker
 	 *
 	 * @step. ^I see (\\d+) people in Top people list$
 	 *
