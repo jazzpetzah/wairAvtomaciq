@@ -414,12 +414,14 @@ public class DialogPage extends IOSPage {
         }
     }
 
+    private static final long KEYBOARD_OPEN_ANIMATION_DURATION = 3000; // milliseconds
+
     public void typeAndSendConversationMessage(String message) throws Exception {
         final WebElement convoInput = getElement(nameConversationCursorInput,
                 "Conversation input is not visible after the timeout");
         convoInput.click();
         // Wait for animation
-        Thread.sleep(3000);
+        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
             inputStringFromKeyboard(convoInput, message, true);
         } else {
@@ -433,7 +435,7 @@ public class DialogPage extends IOSPage {
                 "Conversation input is not visible after the timeout");
         convoInput.click();
         // Wait for animation
-        Thread.sleep(1000);
+        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
             inputStringFromKeyboard(convoInput, message, false);
         } else {
