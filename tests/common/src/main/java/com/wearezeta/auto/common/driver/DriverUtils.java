@@ -86,10 +86,9 @@ public class DriverUtils {
             try {
                 return wait.until(drv -> {
                     final List<WebElement> foundElements = drv.findElements(by);
-                    if(foundElements.size() > 0) {
-                        for(WebElement element : foundElements) {
-                            if(isElementPresentAndDisplayed(driver, element))
-                            {
+                    if (foundElements.size() > 0) {
+                        for (WebElement element : foundElements) {
+                            if (isElementPresentAndDisplayed(driver, element)) {
                                 return true;
                             }
                         }
