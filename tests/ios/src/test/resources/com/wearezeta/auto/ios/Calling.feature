@@ -418,7 +418,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @77933 @calling_advanced @noAcceptAlert
+  @C77933 @calling_advanced @noAcceptAlert
   Scenario Outline: Verify calling from an upper toolbar in a group conversation with more than 10 people
     Given There are <UsersAmount> users where <Name> is me
     Given Myself is connected to all other
