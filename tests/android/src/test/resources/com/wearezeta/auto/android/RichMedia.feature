@@ -1,6 +1,6 @@
 Feature: Rich Media
 
-  @C714 @id1504 @regression @rc @rc42
+  @C714 @id1504 @regression @rc @rc42 @torun
   Scenario Outline: Verify you can play/pause SoundCloud media from the Media Bar in conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
