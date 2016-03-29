@@ -349,7 +349,7 @@ Feature: Search
       | user1Name | user2Name |
 
   @C49974 @regression
-  Scenario Outline: Verify video call button is only available for single conversation
+  Scenario Outline: (AN-3688) Verify video call button is only available for single conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
