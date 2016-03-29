@@ -178,7 +178,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     |
 
-  @C396 @id2291 @regression
+  @C396 @id2291 @regression @torun
   Scenario Outline: Check interaction with participants view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -193,11 +193,6 @@ Feature: People View
     Then I see participants page
     And I see that the conversation name is <GroupChatName>
     And I see the correct number of participants in the title <ParticipantNumber>
-    When I close participants page by UI button
-    Then I do not see participants page
-    And I see dialog page
-    When I swipe up on dialog page
-    Then I see participants page
     When I close participants page by UI button
     Then I do not see participants page
     And I see dialog page
