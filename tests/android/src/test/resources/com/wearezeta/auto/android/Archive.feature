@@ -1,6 +1,6 @@
 Feature: Archive
 
-  @C413 @id1511 @regression @torun
+  @C413 @id1511 @regression
   Scenario Outline: Verify you can archive and unarchive
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
