@@ -88,13 +88,12 @@ public class RegistrationPage extends IOSPage {
             countryPickerBtn.click();
         }
         ((IOSElement) getElement(xpathCountryList)).scrollTo(WIRE_COUNTRY_NAME).click();
+        // Wait for animation
+        Thread.sleep(2000);
     }
 
     public void inputPhoneNumber(String number) throws Exception {
         final WebElement phoneNumberField = getElement(namePhoneNumberField);
-        phoneNumberField.click();
-        // Wait for animation
-        Thread.sleep(1000);
         phoneNumberField.sendKeys(number);
         getElement(nameConfirmButton).click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
