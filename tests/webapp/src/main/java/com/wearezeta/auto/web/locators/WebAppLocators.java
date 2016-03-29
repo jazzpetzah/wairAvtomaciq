@@ -369,21 +369,10 @@ public final class WebAppLocators {
 
         public static final String cssGIFButton = "[data-uie-name='do-giphy-popover']";
 
-        // bars (call bar)
-        public static String xpathCallingBarRoot = "//*[contains(@class, 'call-menu') and contains(@class, ' on')]";
-
-        public static final Function<String, String> xpathCallingBarRootByName = text -> String
-                .format(xpathCallingBarRoot
-                                + "//span[contains(text(),'%s')]|"
-                                + xpathCallingBarRoot
-                                + "//*[contains(@class, 'cc-avatar-label') and text()='%s']",
-                        text, text);
-
+        // call controls
         public static String cssAcceptCallButton = "[data-uie-name='do-call-controls-call-accept']";
 
         public static String cssAcceptVideoCallButton = "[data-uie-name='do-call-controls-video-accept']";
-
-        public static String cssEndCallButton = "[data-uie-name='do-call-controls-call-cancel']";
 
         public static String cssSilenceIncomingCallButton = "[data-uie-name='do-call-controls-call-ignore']";
 
@@ -450,7 +439,7 @@ public final class WebAppLocators {
         public static final String cssOpenOrCreateConversationButton = "[data-uie-name='do-add-create']," +
                 "[data-uie-name='do-open']";
 
-        public static final String cssCallButton = "#search-header [data-uie-name='do-call']";
+        public static final String cssCallButton = "#search-header [data-uie-name='do-audio-call']";
 
         public static final String cssVideoCallButton = "#search-header [data-uie-name='do-video-call']";
 
