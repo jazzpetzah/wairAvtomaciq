@@ -224,3 +224,66 @@ Feature: Calling Matrix
       | user1Name | user2Name | user3Name | GroupCall     | autocall:1.12 | 20      | zcall:2.1   |
       | user1Name | user2Name | user3Name | GroupCall     | autocall:2.1  | 20      | zcall:1.12  |
       | user1Name | user2Name | user3Name | GroupCall     | autocall:2.1  | 20      | zcall:2.1   |
+
+  @calling_matrix
+  Scenario Outline: Put app into background after initiating call with user <WaitBackend>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <WaitBackend>
+    Given <Contact> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I tap Audio Call button
+    Then I close the app for 5 seconds
+    And I see Calling overlay
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+
+    Examples:
+      | Name      | Contact   | WaitBackend         | Timeout |
+      | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
+      | user1Name | user2Name | chrome:47.0.2526.73 | 20      |
+      | user1Name | user2Name | firefox:44.0.2      | 20      |
+      | user1Name | user2Name | firefox:43.0        | 20      |
+
+  @calling_matrix
+  Scenario Outline: Verify putting client to the background during 1-to-1 call <CallBackend> to me
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    And I tap on contact name <Contact>
+    When <Contact> calls me
+    And I see call status message contains "<Contact> calling"
+    And I tap Accept button on Calling overlay
+    Then I see call status message contains "<Contact>"
+    When I close the app for 5 seconds
+    Then I see call status message contains "<Contact>"
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+
+    Examples:
+      | Name      | Contact   | CallBackend   | Timeout |
+      | user1Name | user2Name | autocall:1.12 | 20      |
+      | user1Name | user2Name | autocall:2.1  | 20      |
+
+  @calling_matrix
+  Scenario Outline: Lock device screen when in call with user <WaitBackend>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <WaitBackend>
+    Given <Contact> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    And I tap on contact name <Contact>
+    And I tap Audio Call button
+    When I lock screen for 5 seconds
+    Then I see Calling overlay
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+
+    Examples:
+      | Name      | Contact   | WaitBackend         | Timeout |
+      | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
+      | user1Name | user2Name | chrome:47.0.2526.73 | 20      |
+      | user1Name | user2Name | firefox:44.0.2      | 20      |
+      | user1Name | user2Name | firefox:43.0        | 20      |
