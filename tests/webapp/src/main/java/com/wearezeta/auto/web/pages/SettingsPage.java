@@ -43,6 +43,9 @@ public class SettingsPage extends WebPage {
     @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssConfirmText)
     private WebElement confirmText;
 
+    @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssImportButton)
+    private WebElement importButton;
+
     public SettingsPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -165,5 +168,10 @@ public class SettingsPage extends WebPage {
 
     public String getDeleteInfo() throws Exception {
         return confirmText.getText();
+    }
+
+    public void clickImportButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), importButton);
+        importButton.click();
     }
 }

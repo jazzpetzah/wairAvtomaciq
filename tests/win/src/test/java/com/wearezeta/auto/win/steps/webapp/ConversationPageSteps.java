@@ -177,9 +177,6 @@ public class ConversationPageSteps {
 	 */
 	@Then("^I see sent picture (.*) in the conversation view$")
 	public void ISeeSentPicture(String pictureName) throws Exception {
-		assertThat("Message with image not found", WebappPagesCollection
-				.getInstance().getPage(ConversationPage.class)
-				.isImageMessageFound());
 		assertThat("Overlap score of image comparsion", WebappPagesCollection
 				.getInstance().getPage(ConversationPage.class)
 				.getOverlapScoreOfLastImage(pictureName),
@@ -572,8 +569,7 @@ public class ConversationPageSteps {
 
 	@Then("^I see sent gif in the conversation view$")
 	public void ISeeSentGifInTheConversationView() throws Throwable {
-		WebappPagesCollection.getInstance().getPage(ConversationPage.class)
-				.isGifVisible();
+		WebappPagesCollection.getInstance().getPage(ConversationPage.class).isImageMessageFound();
 	}
 
 	/**

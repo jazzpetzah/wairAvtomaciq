@@ -127,6 +127,9 @@ public class DialogPage extends IOSPage {
 
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
+    private static final Function<String, String> xpathStrUserNameInUpperToolbar = text ->
+            String.format("%s/UIAButton[contains(@name, '%s')]", xpathStrConversationViewTopBar, text.toUpperCase());
+
     private static final Logger log = ZetaLogger.getLog(DialogPage.class.getSimpleName());
 
     public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -585,5 +588,10 @@ public class DialogPage extends IOSPage {
 
     public boolean isTooManyPeopleAlertVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameToManyPeopleAlert);
+    }
+
+    public boolean isUserNameInUpperToolbarVisible(String name) throws Exception {
+        final By locator = By.xpath(xpathStrUserNameInUpperToolbar.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }
