@@ -117,7 +117,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | WaitingMess1     | WaitingMess2     |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 4 people waiting | 3 people waiting |
 
-  @C384 @id540 @regression
+  @C384 @id540 @regression @torun
   Scenario Outline: I can ignore a connect request and reconnect later
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
