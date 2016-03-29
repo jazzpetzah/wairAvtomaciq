@@ -179,11 +179,15 @@ public class CommonAndroidTabletSteps {
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp(Scenario scenario) throws Exception {
         try {
             SEBridge.getInstance().reset();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
+            usrMgr.setUseSpecialEmailFlag();
         }
 
         if (isLogcatEnabled) {

@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @C752 @id2286 @regression @rc @rc44
+  @C752 @id2286 @regression @rc @rc44 @useSpecialEmail
   Scenario Outline: Register new user using front camera in landscape mode
     Given I see welcome screen
     Given I rotate UI to landscape
@@ -27,7 +27,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C753 @id2287 @regression @rc
+  @C753 @id2287 @regression @rc @useSpecialEmail
   Scenario Outline: Register new user using front camera in portrait mode
     Given I see welcome screen
     Given I rotate UI to portrait
@@ -54,7 +54,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C479 @id2821 @regression
+  @C479 @id2821 @regression @useSpecialEmail
   Scenario Outline: (AN-2965) Verify automatic email verification is performed (portrait)
     Given I see welcome screen
     Given I rotate UI to portrait
@@ -78,7 +78,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C512 @id3105 @regression
+  @C512 @id3105 @regression @useSpecialEmail
   Scenario Outline: (AN-2965) Verify automatic email verification is performed (landscape)
     Given I see welcome screen
     Given I rotate UI to landscape

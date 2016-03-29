@@ -716,7 +716,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @77968 @staging
+  @C77968 @staging
   Scenario Outline: Verify upper toolbar for the outgoing connection request is shown
     Given There are 2 users where <Name> is me
     Given I sent connection request to <Contact1>
@@ -729,3 +729,34 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @C77970 @staging
+  Scenario Outline: Verify call icon is not shown in the left group conversation
+    Given There are <UsersAmount> users where <Name> is me
+    Given Myself is connected to all other
+    Given Myself has group chat <GroupChatName> with all other
+    Given Me leave group chat <GroupChatName>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    Then I do not see Audio call button on Upper Toolbar
+
+    Examples:
+      | Name      | GroupChatName  | UsersAmount |
+      | user1Name | LeaveGROUPCALL | 4           |
+
+  @C78373 @staging
+  Scenario Outline: Verify changing name of the user in the upper toolbar
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I see conversation name <Contact> in Upper Toolbar
+    And User <Contact> changes name to <NewName>
+    Then I see conversation name <NewName> in Upper Toolbar
+
+
+    Examples:
+      | Name      | Contact   | NewName |
+      | user1Name | user2Name | NewName |

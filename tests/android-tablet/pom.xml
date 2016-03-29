@@ -24,6 +24,8 @@
         <androidClientInfoPath>/Project/builds_info/classes.dex</androidClientInfoPath>
         <androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
         <defaultEmail>smoketester@wire.com</defaultEmail>
+        <specialEmail>smoketester.android@wire.com</specialEmail>
+        <specialPassword>aqa12345678</specialPassword>
         <pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
         <androidVersion>44</androidVersion>
         <resourceFilePath>/Project/</resourceFilePath>

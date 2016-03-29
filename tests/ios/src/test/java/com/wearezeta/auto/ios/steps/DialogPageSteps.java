@@ -875,7 +875,7 @@ public class DialogPageSteps {
      * Verify visibility of Audio call|Video call or both buttons on Upper Toolbar
      *
      * @param shouldNotSee equals to null if the shield should be visible
-     * @param buttonName Audio call, Video call or Calling for both buttons verification
+     * @param buttonName   Audio call, Video call or Calling for both buttons verification
      * @step. ^I (do not )?see ([Aa]udio call|[Vv]ideo call|[Cc]alling) buttons? on [Uu]pper [Tt]oolbar$
      */
     @Then("^I (do not )?see ([Aa]udio call|[Vv]ideo call|[Cc]alling) buttons? on [Uu]pper [Tt]oolbar$")
@@ -883,34 +883,42 @@ public class DialogPageSteps {
         if (shouldNotSee == null) {
             switch (buttonName) {
                 case "Audio call":
-                    Assert.assertTrue("Audio call button is not visible on Upper Toolbar", getDialogPage().isAudioCallButtonOnToolbarVisible());
+                    Assert.assertTrue("Audio call button is not visible on Upper Toolbar",
+                            getDialogPage().isAudioCallButtonOnToolbarVisible());
                     break;
                 case "Video call":
-                    Assert.assertTrue("Video call button is not visible on Upper Toolbar", getDialogPage().isVideoCallButtonOnToolbarVisible());
+                    Assert.assertTrue("Video call button is not visible on Upper Toolbar",
+                            getDialogPage().isVideoCallButtonOnToolbarVisible());
                     break;
                 case "Calling":
-                    Assert.assertTrue("Audio call button is not visible on Upper Toolbar", getDialogPage().isAudioCallButtonOnToolbarVisible());
-                    Assert.assertTrue("Video call button is not visible on Upper Toolbar", getDialogPage().isVideoCallButtonOnToolbarVisible());
+                    Assert.assertTrue("Audio call button is not visible on Upper Toolbar",
+                            getDialogPage().isAudioCallButtonOnToolbarVisible());
+                    Assert.assertTrue("Video call button is not visible on Upper Toolbar",
+                            getDialogPage().isVideoCallButtonOnToolbarVisible());
                     break;
             }
         } else {
             switch (buttonName) {
                 case "Audio call":
-                    Assert.assertTrue("Audio call button is visible on Upper Toolbar", getDialogPage().isAudioCallButtonOnToolbarNotVisible());
+                    Assert.assertTrue("Audio call button is visible on Upper Toolbar",
+                            getDialogPage().isAudioCallButtonOnToolbarNotVisible());
                     break;
                 case "Video call":
-                    Assert.assertTrue("Video call button is visible on Upper Toolbar", getDialogPage().isVideoCallButtonOnToolbarNotVisible());
+                    Assert.assertTrue("Video call button is visible on Upper Toolbar",
+                            getDialogPage().isVideoCallButtonOnToolbarNotVisible());
                     break;
                 case "Calling":
-                    Assert.assertTrue("Audio call button is visible on Upper Toolbar", getDialogPage().isAudioCallButtonOnToolbarNotVisible());
-                    Assert.assertTrue("Video call button is visible on Upper Toolbar", getDialogPage().isVideoCallButtonOnToolbarNotVisible());
+                    Assert.assertTrue("Audio call button is visible on Upper Toolbar",
+                            getDialogPage().isAudioCallButtonOnToolbarNotVisible());
+                    Assert.assertTrue("Video call button is visible on Upper Toolbar",
+                            getDialogPage().isVideoCallButtonOnToolbarNotVisible());
                     break;
             }
         }
     }
 
     /**
-     *Verify that too many people alert is visible
+     * Verify that too many people alert is visible
      *
      * @throws Exception
      * @step. ^I see Too many people alert$
@@ -918,5 +926,19 @@ public class DialogPageSteps {
     @Then("^I see Too many people alert$")
     public void ISee10PeopleAlert() throws Exception {
         Assert.assertTrue(getDialogPage().isTooManyPeopleAlertVisible());
+    }
+
+    /**
+     * Verify conversation name is displayed in Upper Toolbar
+     *
+     * @param convoName user or group chat name
+     * @throws Exception
+     * @step. ^I see conversation name (.*) in Upper Toolbar$
+     */
+    @Then("^I see conversation name (.*) in Upper Toolbar$")
+    public void ISeeUsernameInUpperToolbar(String convoName) throws Exception {
+        convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("Conversation name '%s' is not displayed on Upper Toolbar", convoName),
+                getDialogPage().isUserNameInUpperToolbarVisible(convoName));
     }
 }

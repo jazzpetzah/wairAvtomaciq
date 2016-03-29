@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @C1761 @smoke
+  @C1761 @smoke @useSpecialEmail
   Scenario Outline: Verify new user can be registered
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
@@ -23,7 +23,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C1822 @regression
+  @C1822 @regression @useSpecialEmail
   Scenario Outline: Verify I can accept personal invitation
     Given There is 1 user where <Name> is me
     When me sends personal invitation to mail <ContactMail> with message <Message>
