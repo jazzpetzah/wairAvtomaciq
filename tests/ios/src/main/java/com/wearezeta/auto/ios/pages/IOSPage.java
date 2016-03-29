@@ -141,6 +141,12 @@ public abstract class IOSPage extends BasePage {
                 String.format("%.3f", DriverUtils.SINGLE_TAP_DURATION / 1000.0));
     }
 
+    private void longClickAtSimulator(int x, int y) throws Exception {
+        final Dimension windowSize = getDriver().manage().window().getSize();
+        IOSSimulatorHelper.clickAt(String.format("%.2f", x * 1.0 / windowSize.width),
+                String.format("%.2f", y * 1.0 / windowSize.height), "2");
+    }
+
     /**
      * !!! this method is not able to enter line breaks !!!
      *
@@ -158,17 +164,11 @@ public abstract class IOSPage extends BasePage {
         final int tapY = elLocation.y + (relativeClickPointY * elSize.height) / 100;
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             CommonUtils.setStringValueInSystemClipboard(str);
-
-            // FIXME: Paste does not appear in the input field until we press Cmd + V in the window :-@
-            IOSSimulatorHelper.activateWindow();
-            CommonUtils.pressCmdVByAppleScript();
-
-            getDriver().tap(1, tapX, tapY, DriverUtils.LONG_TAP_DURATION);
+            // FIXME: Paste menu will not be shown without this
+            IOSSimulatorHelper.selectPasteMenuItem();
+            longClickAtSimulator(tapX, tapY);
             getElement(nameEditingItemPaste).click();
-            DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemPaste);
-            clickAtSimulator(tapX, tapY);
             if (shouldCommitInput) {
-                Thread.sleep(1000);
                 IOSSimulatorHelper.pressEnterKey();
             }
         } else {
