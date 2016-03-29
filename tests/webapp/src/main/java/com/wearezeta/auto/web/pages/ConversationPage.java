@@ -47,9 +47,6 @@ public class ConversationPage extends WebPage {
 
 	private static final String CALLING_IN_LABEL = "IN ";
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathLastImageEntry)
-	private WebElement lastImageEntry;
-
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssImageEntries)
 	private List<WebElement> imageEntries;
 
@@ -361,7 +358,7 @@ public class ConversationPage extends WebPage {
 			return 0.0;
 		}
 		// comparison of the original and sent pictures
-		BufferedImage actualImage = this.getElementScreenshot(lastImageEntry).orElseThrow(IllegalStateException::new);
+		BufferedImage actualImage = this.getElementScreenshot(lastPicture).orElseThrow(IllegalStateException::new);
 		BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
 		return ImageUtil.getOverlapScore(actualImage, expectedImage,
 				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
@@ -383,7 +380,7 @@ public class ConversationPage extends WebPage {
 
 	public boolean isImageMessageFound() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.xpath(WebAppLocators.ConversationPage.xpathLastImageEntry),
+				By.cssSelector(WebAppLocators.ConversationPage.cssImageEntries),
 				TIMEOUT_IMAGE_MESSAGE_UPLOAD);
 	}
 
@@ -600,13 +597,6 @@ public class ConversationPage extends WebPage {
 
 	public void clickGIFButton() throws Exception {
 		gifButton.click();
-	}
-
-	public boolean isGifVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.xpath(WebAppLocators.ConversationPage.xpathLastImageEntry),
-				40);
-
 	}
 
 	public boolean isLastTextMessage(String expectedMessage) throws Exception {

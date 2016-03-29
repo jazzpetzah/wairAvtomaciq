@@ -332,10 +332,7 @@ public final class WebAppLocators {
 
         public static final String cssLastAction = cssLastMessage + " .action";
 
-        public static final String xpathLastImageEntry = "(//*[@data-uie-name='go-image-detail' and " +
-                "@data-uie-visible='true'])[last()]";
-
-        public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']";
+        public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']:not(.image-loading)";
 
         public static final String cssPingMessage = ".pinged";
 
