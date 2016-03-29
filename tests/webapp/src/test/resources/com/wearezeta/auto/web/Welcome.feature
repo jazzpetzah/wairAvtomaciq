@@ -1,6 +1,6 @@
 Feature: Welcome
 
-  @C1734 @regression
+  @C1734 @regression @useSpecialEmail
   Scenario Outline: Verify possibility of reseting password
     Given There is 1 user where <Name> is me
     Given I switch to sign in page

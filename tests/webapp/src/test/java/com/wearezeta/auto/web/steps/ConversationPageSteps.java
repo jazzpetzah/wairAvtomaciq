@@ -495,57 +495,6 @@ public class ConversationPageSteps {
     }
 
     /**
-     * @throws Exception
-     * @step. ^I see the calling bar$
-     */
-    @Then("^I see the calling bar$")
-    public void IWaitForCallingBar() throws Exception {
-        webappPagesCollection.getPage(ConversationPage.class).waitForCallingBarToBeDisplayed();
-    }
-
-    /**
-     * @param aliases comma separated list of usernames currently calling
-     * @throws Exception
-     * @step. ^I see the calling bar from users? (.*)$
-     */
-    @Then("^I see the calling bar from users? (.*)$")
-    public void IWaitForCallingBar(String aliases) throws Exception {
-        final List<String> aliasList = splitAliases(aliases);
-        ConversationPage conversationPage = webappPagesCollection.getPage(ConversationPage.class);
-        for (String alias : aliasList) {
-            final String participantName = usrMgr.findUserByNameOrNameAlias(alias).getName();
-            conversationPage.waitForCallingBarToBeDisplayedWithName(participantName);
-        }
-    }
-
-    /**
-     * @param aliases comma separated list of usernames currently calling
-     * @throws Exception
-     * @step. ^I see outgoing call for users? (.*)$
-     */
-    @Then("^I see outgoing call for users? (.*)$")
-    public void ISeeOutgoingCallForUsers(String aliases) throws Exception {
-        final List<String> participants = new ArrayList<String>();
-        final List<String> aliasList = splitAliases(aliases);
-        for (String alias : aliasList) {
-            final String participantName = usrMgr.findUserByNameOrNameAlias(alias).getName();
-            participants.add(participantName.toUpperCase());
-        }
-        assertThat(webappPagesCollection.getPage(ConversationPage.class).getNamesFromOutgoingCallingBar(), is(participants));
-    }
-
-    /**
-     * Verifies whether calling bar is not visible anymore
-     *
-     * @throws Exception
-     * @step. ^I do not see the calling bar$
-     */
-    @Then("^I do not see the calling bar$")
-    public void IDoNotCallingBar() throws Exception {
-        webappPagesCollection.getPage(ConversationPage.class).verifyCallingBarIsNotVisible();
-    }
-
-    /**
      * Accepts incoming call by clicking the check button on the calling bar
      *
      * @throws Exception
@@ -576,17 +525,6 @@ public class ConversationPageSteps {
     @When("^I silence the incoming call$")
     public void ISilenceIncomingCall() throws Exception {
         webappPagesCollection.getPage(ConversationPage.class).clickSilenceCallButton();
-    }
-
-    /**
-     * End the current call by clicking the X button on calling bar
-     *
-     * @throws Exception
-     * @step. ^I end the call$
-     */
-    @When("^I end the call$")
-    public void IEndTheCall() throws Exception {
-        webappPagesCollection.getPage(ConversationPage.class).clickEndCallButton();
     }
 
     /**

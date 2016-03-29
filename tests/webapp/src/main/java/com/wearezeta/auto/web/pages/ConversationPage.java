@@ -466,30 +466,6 @@ public class ConversationPage extends WebPage {
 
 	private static final int MAX_CALLING_BAR_VISIBILITY_TIMEOUT = 5; // seconds
 
-	public void waitForCallingBarToBeDisplayed() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot),
-				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar has not been shown within "
-				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
-	}
-
-	public List<String> getNamesFromOutgoingCallingBar() throws Exception {
-		assert isCallingBarVisible() : "Calling bar is not visible!";
-		String label = labelOnOutgoingCall.getText();
-		label = label.substring(CALLING_IN_LABEL.length(), label.length());
-		return Arrays.asList(label.split(", "));
-	}
-
-	public void waitForCallingBarToBeDisplayedWithName(String name)
-			throws Exception {
-		assert DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						this.getDriver(),
-						By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRootByName
-								.apply(name))) : "Calling bar with name "
-				+ name + " has not been shown.";
-	}
-
 	public void clickAcceptCallButton() throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssAcceptCallButton);
@@ -508,15 +484,6 @@ public class ConversationPage extends WebPage {
 		getDriver().findElement(locator).click();
 	}
 
-	public void clickEndCallButton() throws Exception {
-		final By locator = By
-				.cssSelector(WebAppLocators.ConversationPage.cssEndCallButton);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "End call button has not been shown after "
-				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
-		getDriver().findElement(locator).click();
-	}
-
 	public void clickSilenceCallButton() throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssSilenceIncomingCallButton);
@@ -524,18 +491,6 @@ public class ConversationPage extends WebPage {
 				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Silence call button has not been shown after "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
 		getDriver().findElement(locator).click();
-	}
-
-	public void verifyCallingBarIsNotVisible() throws Exception {
-		assert DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot),
-				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar has not been hidden within "
-				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
-	}
-
-	public boolean isCallingBarVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot));
 	}
 
 	public String getLastTextMessage() throws Exception {

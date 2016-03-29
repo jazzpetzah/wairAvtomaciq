@@ -96,7 +96,7 @@ Feature: Bring Your Friends
       | Login      | Password      | Name      | Contact   | Message |
       | user1Email | user1Password | user1Name | user2Name | Hello   |
 
-  @C80773 @staging 
+  @C80773 @regression
   Scenario Outline: Use Gmail contacts import from settings
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page

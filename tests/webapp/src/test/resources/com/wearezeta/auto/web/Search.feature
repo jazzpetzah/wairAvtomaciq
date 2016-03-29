@@ -198,8 +198,8 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Name2     | Email2     |
       | user1Email | user1Password | user1Name | user2Name | user2Email |
-
-  @C1818 @staging
+    
+  @C1818 @regression
   Scenario Outline: Verify I can start a 1:1 call with search ui buttons
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -213,15 +213,15 @@ Feature: Search
     And I see user <Contact1> found in People Picker
     And I select <Contact1> from People Picker results
     And I click Call button on People Picker page
-    And I see the calling bar
-    When I end the call
-    Then I do not see the calling bar
+    And I see the outgoing call controls for conversation <Contact1>
+    When I hang up call with conversation <Contact1>
+    Then I do not see the call controls for conversation <Contact1>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C1819 @staging
+  @C1819 @regression
   Scenario Outline: Verify I can start a group call with search ui buttons
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -239,9 +239,9 @@ Feature: Search
     And I see user <Contact2> found in People Picker
     And I select <Contact2> from People Picker results
     And I click Call button on People Picker page
-    And I see outgoing call for users <Contact1>,<Contact2>
-    When I end the call
-    Then I do not see the calling bar
+    And I see the outgoing call controls for conversation <Contact1>,<Contact2>
+    When I hang up call with conversation <Contact1>,<Contact2>
+    Then I do not see the call controls for conversation <Contact1>,<Contact2>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
