@@ -226,7 +226,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | Contact10  | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | Message1 |
 
-  @C1818 @staging
+  @C1818 @regression
   Scenario Outline: Verify I can start a 1:1 call with search ui buttons
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -248,7 +248,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C1819 @staging
+  @C1819 @regression
   Scenario Outline: Verify I can start a group call with search ui buttons
     Given My browser supports calling
     Given There are 3 users where <Name> is me
