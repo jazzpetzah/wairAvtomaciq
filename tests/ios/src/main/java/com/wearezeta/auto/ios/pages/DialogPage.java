@@ -550,8 +550,7 @@ public class DialogPage extends IOSPage {
     }
 
     public void pasteAndCommit() throws Exception {
-        this.clickPopupPasteButton();
-        this.clickKeyboardCommitButton();
+        this.inputStringFromPasteboard(getElement(nameConversationCursorInput), true);
     }
 
     public boolean areInputToolsVisible() throws Exception {

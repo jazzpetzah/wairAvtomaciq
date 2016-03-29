@@ -113,7 +113,7 @@ public class DialogPageSteps {
      */
     @When("^I paste and commit the text$")
     public void IClickPopupPasteAndCommitText() throws Exception {
-        getDialogPage().pasteAndCommit();
+       getDialogPage().pasteAndCommit();
     }
 
     /**
@@ -864,7 +864,7 @@ public class DialogPageSteps {
      * Verifies that Upper Toolbar is visible in conversation
      *
      * @throws Exception
-     * @step.^I see Upper Toolbar on dialog page$
+     * @step. ^I see Upper Toolbar on dialog page$
      */
     @Then("^I see Upper Toolbar on dialog page$")
     public void ISeeUpperToolbar() throws Exception {
