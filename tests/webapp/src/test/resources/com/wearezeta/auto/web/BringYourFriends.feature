@@ -95,3 +95,21 @@ Feature: Bring Your Friends
     Examples: 
       | Login      | Password      | Name      | Contact   | Message |
       | user1Email | user1Password | user1Name | user2Name | Hello   |
+
+  @C80773 @staging 
+  Scenario Outline: Use Gmail contacts import from settings
+    Given There is 1 user where <Name> is me
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I click gear button on self profile page
+    And I select Settings menu item on self profile page
+    And I see Settings dialog
+    And I click button to import contacts from Gmail
+    And I see Google login popup
+    And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!
+    Then I see more than 5 suggestions in people picker
+
+    Examples:
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
