@@ -260,6 +260,7 @@ public final class WebAppLocators {
         public static final String cssConfirmDeleteAccountButton = "[data-uie-name='do-delete-account']";
         public static final String cssConfirmText = "[data-uie-name='delete-confirm-text']";
         public static final String cssSentText = "[data-uie-name='delete-sent']";
+        public static final String cssImportButton = "[data-uie-name='do-share-contacts']";
     }
 
     public static final class SelfProfilePage {

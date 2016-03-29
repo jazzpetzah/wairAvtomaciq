@@ -192,4 +192,14 @@ public class SettingsPageSteps {
         assertThat("Email address not in description", webappPagesCollection.getPage(SettingsPage.class).getDeleteInfo(),
                 containsString(email.toUpperCase()));
     }
+
+    /**
+     * Click on import contacts from Gmail via Setting
+     *
+     * @throws Exception
+     */
+	@When("^I click button to import contacts from Gmail$")
+    public void IClickImportButton() throws Exception {
+        webappPagesCollection.getPage(SettingsPage.class).clickImportButton();
+    }
 }
