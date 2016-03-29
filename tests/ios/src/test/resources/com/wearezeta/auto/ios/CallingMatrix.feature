@@ -21,8 +21,9 @@ Feature: Calling Matrix
       | Name      | Contact   | CallBackend         | Timeout |
       | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
       | user1Name | user2Name | chrome:47.0.2526.73 | 20      |
-      | user1Name | user2Name | firefox:44.0.2      | 20      |
-      | user1Name | user2Name | firefox:43.0        | 20      |
+      # Due to not working firefox
+      #| user1Name | user2Name | firefox:44.0.2      | 20      |
+      #| user1Name | user2Name | firefox:43.0        | 20      |
 
   @calling_matrix
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
@@ -116,8 +117,9 @@ Feature: Calling Matrix
       | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend         | Timeout |
       | user1Name | user2Name | user3Name | GroupCall     | chrome:49.0.2623.75 | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | chrome:47.0.2526.73 | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | firefox:44.0.2      | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | firefox:43.0        | 20      |
+      # Due to not working firefox
+      #| user1Name | user2Name | user3Name | GroupCall     | firefox:44.0.2      | 20      |
+      #| user1Name | user2Name | user3Name | GroupCall     | firefox:43.0        | 20      |
 
   @calling_matrix
   Scenario Outline: Verify I can make group call with multiple AVS <WaitBackend>
