@@ -919,4 +919,17 @@ public class DialogPageSteps {
     public void ISee10PeopleAlert() throws Exception {
         Assert.assertTrue(getDialogPage().isTooManyPeopleAlertVisible());
     }
+
+    /**
+     *Verify conversation name is displayed in Upper Toolbar
+     *
+     * @param convoname user or group chat name
+     * @throws Exception
+     * @step. ^I see conversation name (.*) in Upper Toolbar$
+     */
+    @Then("^I see conversation name (.*) in Upper Toolbar$")
+    public void ISeeUsernameInUpperToolbar(String convoname) throws Exception {
+        convoname = usrMgr.findUserByNameOrNameAlias(convoname).getName();
+        Assert.assertTrue(String.format("Conversation name '%s' is not displayed on Upper Toolbar", convoname), getDialogPage().isUserNameInUpperToolbarVisible(convoname));
+    }
 }

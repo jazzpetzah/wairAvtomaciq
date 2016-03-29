@@ -744,3 +744,19 @@ Feature: Conversation View
     Examples:
       | Name      | GroupChatName  | UsersAmount |
       | user1Name | LeaveGROUPCALL | 4           |
+
+  @C78373 @staging
+  Scenario Outline: Verify changing name of the user in the upper toolbar
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I see conversation name <Contact> in Upper Toolbar
+    And User <Contact> changes name to <NewName>
+    Then I see conversation name <NewName> in Upper Toolbar
+
+
+    Examples:
+      | Name      | Contact   | NewName |
+      | user1Name | user2Name | NewName |
