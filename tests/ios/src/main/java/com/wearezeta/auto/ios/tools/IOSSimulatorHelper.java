@@ -136,11 +136,10 @@ public class IOSSimulatorHelper {
                 "  tell process \"Simulator\"",
                 "    tell menu bar item \"Edit\" of menu bar 1",
                 "      click",
-                "      delay 1",
                 "      click (menu item \"Paste\") of menu 1",
                 "    end tell",
                 "  end tell",
-                "end tell"
+                "end tell",
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 

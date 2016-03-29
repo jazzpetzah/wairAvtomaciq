@@ -166,7 +166,6 @@ public abstract class IOSPage extends BasePage {
             CommonUtils.setStringValueInSystemClipboard(str);
             // FIXME: Paste menu will not be shown without this
             IOSSimulatorHelper.selectPasteMenuItem();
-            Thread.sleep(2000);
             longClickAtSimulator(tapX, tapY);
             getElement(nameEditingItemPaste, "Paste item is not visible", 20).click();
             if (shouldCommitInput) {

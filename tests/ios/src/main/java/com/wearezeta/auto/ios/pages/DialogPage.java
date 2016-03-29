@@ -416,7 +416,7 @@ public class DialogPage extends IOSPage {
                 "Conversation input is not visible after the timeout");
         convoInput.click();
         // Wait for animation
-        Thread.sleep(1000);
+        Thread.sleep(3000);
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
             inputStringFromKeyboard(convoInput, message, true);
         } else {
