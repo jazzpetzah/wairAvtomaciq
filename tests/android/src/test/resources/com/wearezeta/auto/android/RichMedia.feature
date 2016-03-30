@@ -1,6 +1,6 @@
 Feature: Rich Media
 
-  @C714 @id1504 @regression @rc @rc42
+  @C714 @C77959 @id1504 @regression @rc @rc42 @torun
   Scenario Outline: Verify you can play/pause SoundCloud media from the Media Bar in conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -8,6 +8,8 @@ Feature: Rich Media
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
+    And I see the upper toolbar
+    And I remember the state of upper toolbar
     And User <Contact1> sends 18 encrypted messages to user Myself
     And I scroll to the bottom of conversation view
     And I tap on text input
@@ -18,7 +20,9 @@ Feature: Rich Media
     And I remember the state of PlayPause media item button
     And I swipe down on dialog page until Mediabar appears
     And I press PlayPause on Mediabar button
-    And I scroll to the bottom of conversation view
+    Then I verify the state of upper toolbar item is not changed
+    And I see the media bar is below the upper toolbar
+    When I scroll to the bottom of conversation view
     Then I verify the state of PlayPause media item button is changed
 
     Examples:
