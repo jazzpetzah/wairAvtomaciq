@@ -73,8 +73,7 @@ public final class CommonSteps {
         if (otherParticipantsNameAlises.toLowerCase().contains(OTHER_USERS_ALIAS)) {
             participants = usrMgr.getCreatedUsers();
             participants.remove(chatOwner);
-        }
-        else {
+        } else {
             for (String participantNameAlias : splitAliases(otherParticipantsNameAlises)) {
                 participants.add(usrMgr.findUserByNameOrNameAlias(participantNameAlias));
             }
@@ -253,6 +252,14 @@ public final class CommonSteps {
         final String conversationIDToArchive = BackendAPIWrappers.getConversationIdByName(user,
                 archiveConversationWithGroup);
         BackendAPIWrappers.unarchiveGroupConv(user, conversationIDToArchive);
+    }
+
+    public void ChangeGroupChatName(String asUserNameAliases, String conversationToRename, String newConversationName)
+            throws Exception {
+        ClientUser asUser = usrMgr.findUserByNameOrNameAlias(asUserNameAliases);
+        final String conversationIDToRename = BackendAPIWrappers.getConversationIdByName(asUser,
+                conversationToRename);
+        BackendAPIWrappers.changeGroupChatName(asUser, conversationIDToRename, newConversationName);
     }
 
     public void AcceptAllIncomingConnectionRequests(String userToNameAlias) throws Exception {

@@ -673,6 +673,11 @@ public final class BackendAPIWrappers {
                 Optional.empty(), Optional.of(false));
     }
 
+    public static void changeGroupChatName(ClientUser asUser, String conversationIDToRename, String newConversationName)
+            throws Exception {
+        BackendREST.changeConversationName(receiveAuthToken(asUser), conversationIDToRename, newConversationName);
+    }
+
     public static class NoContactsFoundException extends Exception {
         private static final long serialVersionUID = -7682778364420522320L;
 
