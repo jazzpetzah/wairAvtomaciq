@@ -26,6 +26,8 @@
         <pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
         <iOSToolsRoot>${project.basedir}/../tools/ios</iOSToolsRoot>
         <defaultEmail>smoketester@wire.com</defaultEmail>
+        <specialEmail>smoketester.android@wire.com</specialEmail>
+        <specialPassword>aqa12345678</specialPassword>
         <deviceName>iPhone 6</deviceName>
         <perfDuration>1</perfDuration> <!-- Performance test duration, minutes -->
         <perfUsersCount>11</perfUsersCount> <!-- The number of contacts for perf test -->

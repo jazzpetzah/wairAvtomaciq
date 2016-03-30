@@ -14,7 +14,7 @@ public class TabletPeoplePickerPage extends PeoplePickerPage {
     public static final By xpathSearchField = By.xpath(xpathStrMainWindow +
             "/UIAPopover[1]/UIATextView[@name='textViewSearch']");
 
-    public static final By namePeoplePickerAddToConversationButton = MobileBy.AccessibilityId("ADD TO CONVERSATION");
+    public static final By namePeoplePickerAddToConversationButton = MobileBy.AccessibilityId("ADD");
 
     public static final By namePeoplePickerCreateConversationButton = MobileBy.AccessibilityId("CREATE");
 

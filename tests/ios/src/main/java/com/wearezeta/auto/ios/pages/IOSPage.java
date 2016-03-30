@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -60,36 +61,9 @@ public abstract class IOSPage extends BasePage {
         this.onScreenKeyboard = new IOSKeyboard(driver);
     }
 
-    /**
-     * Ugly workaround for random Appium bug when UI tree is sometimes not refreshed and is empty
-     *
-     * @param drv Appium driver instance
-     * @return the same driver instance
-     * @throws Exception
-     */
-    private static ZetaIOSDriver fixUITreeIfBroken(final ZetaIOSDriver drv) throws Exception {
-//        if (drv.findElements(By.className("UIAWindow")).size() > 0) {
-//            return drv;
-//        }
-//        log.warn("Detected Appium UI tree corruption. Trying to fix...");
-//        try {
-//            if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
-//                drv.rotate(ScreenOrientation.LANDSCAPE);
-//                drv.rotate(ScreenOrientation.PORTRAIT);
-//            } else {
-//                drv.rotate(ScreenOrientation.PORTRAIT);
-//                drv.rotate(ScreenOrientation.LANDSCAPE);
-//            }
-//            Thread.sleep(500);
-//        } catch (WebDriverException e) {
-//            // pass silently
-//        }
-        return drv;
-    }
-
     @Override
     protected ZetaIOSDriver getDriver() throws Exception {
-        return fixUITreeIfBroken((ZetaIOSDriver) super.getDriver());
+        return (ZetaIOSDriver) super.getDriver();
     }
 
     @SuppressWarnings("unchecked")
@@ -454,5 +428,26 @@ public abstract class IOSPage extends BasePage {
 
     public void pressConfirmButton() throws Exception {
         getElement(xpathConfirmButton).click();
+    }
+
+    /**
+     * fixes taking tablet simulator screenshots via simshot
+     *
+     * @return Optinal screenshot image
+     * @throws Exception
+     */
+    @Override
+    public Optional<BufferedImage> takeScreenshot() throws Exception {
+        Optional<BufferedImage> result = super.takeScreenshot();
+        if (CommonUtils.getIsSimulatorFromConfig(getClass()) && result.isPresent()) {
+            final Dimension screenSize = getDriver().manage().window().getSize();
+            final double scaleX = 1.0 * result.get().getWidth() / screenSize.getWidth();
+            final double scaleY = 1.0 * result.get().getHeight() / screenSize.getHeight();
+            if (scaleX < 1 || scaleY < 1) {
+                final double scale = (scaleX > scaleY) ? scaleY : scaleX;
+                result = Optional.of(ImageUtil.resizeImage(result.get(), (float) (1.0 / scale)));
+            }
+        }
+        return result;
     }
 }

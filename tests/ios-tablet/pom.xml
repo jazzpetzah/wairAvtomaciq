@@ -25,6 +25,8 @@
         <iosImagesPath>${project.basedir}/../tools/img/</iosImagesPath>
         <iOSToolsRoot>${project.basedir}/../tools/ios</iOSToolsRoot>
         <defaultEmail>smoketester@wire.com</defaultEmail>
+        <specialEmail>smoketester.android@wire.com</specialEmail>
+        <specialPassword>aqa12345678</specialPassword>
         <deviceName>iPad Air</deviceName>
         <backendType>staging</backendType>
         <rcNotificationsRecepients>dasha@wire.com,nick@wire.com,juliane@wire.com,piotr.iazadji@wire.com</rcNotificationsRecepients>

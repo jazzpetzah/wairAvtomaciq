@@ -49,6 +49,8 @@ public class GroupChatInfoPage extends IOSPage {
                     "UIACollectionView/UIACollectionCell/UIAStaticText[@name='%s']", name.toUpperCase());
 
     private static final By classNameParticipantAvatarCell = By.className("UIACollectionCell");
+    
+    private static final By nameAddPeopleAtTopButton = MobileBy.AccessibilityId("ADD PEOPLE");
 
     public GroupChatInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -135,5 +137,9 @@ public class GroupChatInfoPage extends IOSPage {
     public boolean waitForContactToDisappear(String contact) throws Exception {
         final By locator = By.xpath(xpathStrUserNameLabelByText.apply(contact));
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+    }
+
+    public void addContactToChat() throws Exception {
+        getElement(nameAddPeopleAtTopButton).click();
     }
 }
