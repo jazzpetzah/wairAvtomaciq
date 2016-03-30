@@ -237,7 +237,6 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idPeopleCursorButton);
     }
 
-
     public void tapAudioCallBtn() throws Exception {
         getElement(idAudioCall, "Audio Call button is not visible").click();
     }
@@ -579,12 +578,7 @@ public class DialogPage extends AndroidPage {
     }
 
     public int getCountOfCursorMenuButton() throws Exception {
-        List<WebElement> cursorMenuButtons = selectVisibleElements(xpathCursorMenuButtons);
-        if(CollectionUtils.isEmpty(cursorMenuButtons))
-        {
-            return 0;
-        }
-        return cursorMenuButtons.size();
+        return selectVisibleElements(xpathCursorMenuButtons).size();
     }
 
 }
