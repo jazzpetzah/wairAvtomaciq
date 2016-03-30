@@ -569,7 +569,7 @@ public class DialogPage extends AndroidPage {
     }
 
     public boolean isMediaBarBelowUptoolbar() throws Exception {
-        return isElementABelowElementB(xpathMediaBar, xpathToolbar, LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR);
+        return isElementABelowElementB(getElement(xpathMediaBar), getElement(xpathToolbar), LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR);
     }
 
 }

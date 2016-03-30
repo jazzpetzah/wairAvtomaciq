@@ -236,15 +236,10 @@ public abstract class AndroidPage extends BasePage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 15);
     }
 
-    public boolean isElementABelowElementB(By elementALocator, By elementBLocator, double locationDifferencePercentage)
+    public boolean isElementABelowElementB(WebElement elementA, WebElement elementB, double locationDifferencePercentage)
             throws Exception {
-        WebElement elementA = getElement(elementALocator);
-        WebElement elementB = getElement(elementBLocator);
         int difference = elementA.getLocation().getY() - elementB.getSize().getHeight() - elementB.getLocation().getY();
-        if (difference >= 0 &&
-                difference / getDriver().manage().window().getSize().getHeight() <= locationDifferencePercentage) {
-            return true;
-        }
-        return false;
+        return difference >= 0
+                && difference / getDriver().manage().window().getSize().getHeight() <= locationDifferencePercentage;
     }
 }
