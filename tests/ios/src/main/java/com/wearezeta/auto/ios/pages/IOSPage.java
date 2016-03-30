@@ -167,13 +167,33 @@ public abstract class IOSPage extends BasePage {
             // FIXME: Paste menu will not be shown without this
             IOSSimulatorHelper.selectPasteMenuItem();
             longClickAtSimulator(tapX, tapY);
-            getElement(nameEditingItemPaste, "Paste item is not visible", 20).click();
+            getElement(nameEditingItemPaste, "Paste item is not visible", 15).click();
             if (shouldCommitInput) {
                 IOSSimulatorHelper.pressEnterKey();
             }
         } else {
             getDriver().tap(1, tapX, tapY, DriverUtils.SINGLE_TAP_DURATION);
             this.onScreenKeyboard.typeString(str);
+            if (shouldCommitInput) {
+                this.clickKeyboardCommitButton();
+            }
+        }
+    }
+
+    public void inputStringFromPasteboard(WebElement dstElement, boolean shouldCommitInput) throws Exception {
+        final Dimension elSize = dstElement.getSize();
+        final Point elLocation = dstElement.getLocation();
+        final int tapX = elLocation.x + elSize.width / 2;
+        final int tapY = elLocation.y + elSize.height / 2;
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            longClickAtSimulator(tapX, tapY);
+            getElement(nameEditingItemPaste, "Paste item is not visible", 15).click();
+            if (shouldCommitInput) {
+                IOSSimulatorHelper.pressEnterKey();
+            }
+        } else {
+            getDriver().tap(1, tapX, tapY, DriverUtils.LONG_TAP_DURATION);
+            getElement(nameEditingItemPaste, "Paste item is not visible", 15).click();
             if (shouldCommitInput) {
                 this.clickKeyboardCommitButton();
             }
