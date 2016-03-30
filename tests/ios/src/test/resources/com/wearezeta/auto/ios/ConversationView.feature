@@ -755,8 +755,7 @@ Feature: Conversation View
     And I see conversation name <Contact> in Upper Toolbar
     And User <Contact> changes name to <NewName>
     Then I see conversation name <NewName> in Upper Toolbar
-
-
+    
     Examples:
       | Name      | Contact   | NewName |
       | user1Name | user2Name | NewName |
@@ -772,7 +771,6 @@ Feature: Conversation View
     And I see conversation name <GroupChatName> in Upper Toolbar
     And User <Contact> renames conversation with name <GroupChatName> to <NewChatName>
     Then I see conversation name <NewChatName> in Upper Toolbar
-
 
     Examples:
       | Name      | Contact   | GroupChatName  | UsersAmount | NewChatName |
