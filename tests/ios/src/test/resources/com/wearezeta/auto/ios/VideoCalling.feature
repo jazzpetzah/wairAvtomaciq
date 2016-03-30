@@ -237,7 +237,6 @@ Feature: Video Calling
     And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
-    And I see Call Video button on Video Calling overlay
     And I see Switch Camera button on Video Calling overlay
     And I remember state of Video button on Video Calling overlay
     And I tap Call Video button on Video Calling overlay
