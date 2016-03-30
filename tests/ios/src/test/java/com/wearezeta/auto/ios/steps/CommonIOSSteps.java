@@ -262,6 +262,7 @@ public class CommonIOSSteps {
         final String appPath = getAppPath();
         pagesCollection.getCommonPage().installIpa(new File(appPath));
         final Map<String, Object> customCaps = new HashMap<>();
+        customCaps.put("autoAcceptAlerts", true);
         customCaps.put("noReset", true);
         customCaps.put("fullReset", false);
         final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath, Optional.of(customCaps));

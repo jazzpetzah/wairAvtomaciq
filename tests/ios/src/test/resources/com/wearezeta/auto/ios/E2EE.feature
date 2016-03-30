@@ -110,7 +110,6 @@ Feature: E2EE
     And I navigate back from Device Details page
     And I close group participant details page
     And I close group info page
-    And I click Close input options button
     Then I see shield icon next to conversation input field
     #BUG Labels can not be located right now in appium
     #And I see last message in dialog is expected message <VerificationMsg>
@@ -450,7 +449,6 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
-    And I click Close input options button
     And I do not see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
     # Then I do not see the conversation view contains message <ExpectedMessage>
@@ -498,7 +496,6 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
-    And I click Close input options button
     Then I see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
     # Then I see last message in dialog is expected message <VerificationMsg>
@@ -509,7 +506,6 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
-    And I click Close input options button
     Then I do not see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
     # Then I see last message in dialog contains expected message <UnverificationMsg>
@@ -533,7 +529,6 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
-    And I click Close input options button
     Then I see shield icon next to conversation input field
     When I type the default message
     Then I do not see shield icon next to conversation input field

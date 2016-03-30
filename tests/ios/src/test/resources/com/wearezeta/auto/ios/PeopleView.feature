@@ -210,7 +210,7 @@ Feature: People View
     And I don't see Add to conversation button
     And I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
-    And I click on Go button
+    And I tap Create conversation action button on People picker page
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
     And I see conversations list

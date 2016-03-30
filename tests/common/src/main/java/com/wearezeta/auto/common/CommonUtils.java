@@ -602,10 +602,18 @@ public class CommonUtils {
     public static boolean isRunningInJenkinsNetwork() throws UnknownHostException {
         final String prevPropValue = System.getProperty("java.net.preferIPv4Stack");
         try {
-            System.setProperty("java.net.preferIPv4Stack", "true");
+            try {
+                System.setProperty("java.net.preferIPv4Stack", "true");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return InetAddress.getLocalHost().getHostAddress().startsWith("192.168.2.");
         } finally {
-            System.setProperty("java.net.preferIPv4Stack", prevPropValue);
+            try {
+                System.setProperty("java.net.preferIPv4Stack", prevPropValue);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

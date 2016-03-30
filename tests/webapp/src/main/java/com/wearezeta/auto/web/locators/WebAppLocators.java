@@ -484,8 +484,6 @@ public final class WebAppLocators {
 
         public static final String cssSearchField = "[data-uie-name='enter-users']";
 
-        public static final String cssMoreButton = "[data-uie-name='item-more']";
-
         public static final String cssBringFriendsFromGMailButton = ".people-picker-import-buttons";
 
     }
