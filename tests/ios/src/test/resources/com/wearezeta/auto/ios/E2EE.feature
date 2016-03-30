@@ -496,7 +496,6 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
-    And I click Close input options button
     Then I see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
     # Then I see last message in dialog is expected message <VerificationMsg>
