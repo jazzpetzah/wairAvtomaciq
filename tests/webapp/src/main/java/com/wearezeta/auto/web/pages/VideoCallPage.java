@@ -57,4 +57,9 @@ public class VideoCallPage extends WebPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.cssSelector(WebAppLocators.VideoCallPage.cssDurationTimer));
     }
+
+    public boolean isDurationTimerNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.cssSelector(WebAppLocators.VideoCallPage.cssDurationTimer));
+    }
 }
