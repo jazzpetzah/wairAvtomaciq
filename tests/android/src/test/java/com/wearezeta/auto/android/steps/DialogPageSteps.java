@@ -504,6 +504,7 @@ public class DialogPageSteps {
      * Store the screenshot of current upper toolbar state
      *
      * @throws Exception
+     * @step. ^I remember the state of upper toolbar$
      */
     @When("^I remember the state of upper toolbar$")
     public void IRememberUpperToolbarState() throws Exception {
@@ -535,7 +536,9 @@ public class DialogPageSteps {
 
     /**
      * Verify the current state of upper toolbar has been not changed since the last snapshot was made
+     *
      * @throws Exception
+     * @step. ^I verify the state of upper toolbar item is not changed$
      */
     @Then("^I verify the state of upper toolbar item is not changed$")
     public void IVerifyStateOfUpperToolbarIsNotChanged() throws Exception {
@@ -792,6 +795,7 @@ public class DialogPageSteps {
      * Checks that to see the media bar is just below the upper toolbar
      *
      * @throws Exception
+     * @step. ^I see the media bar is below the upper toolbar$
      */
     @Then("^I see the media bar is below the upper toolbar$")
     public void ThenISeeTheMediaBarIsBelowUpperToolbar() throws Exception {
