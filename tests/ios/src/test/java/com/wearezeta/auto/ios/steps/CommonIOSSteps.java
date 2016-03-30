@@ -160,6 +160,10 @@ public class CommonIOSSteps {
             e.printStackTrace();
         }
 
+        if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
+            usrMgr.setUseSpecialEmailFlag();
+        }
+
         if (scenario.getSourceTagNames().contains("@performance")) {
             CommonUtils.defineNoHeadlessEnvironment();
             try {
