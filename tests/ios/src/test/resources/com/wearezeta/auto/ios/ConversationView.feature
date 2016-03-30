@@ -769,7 +769,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see conversation name <GroupChatName> in Upper Toolbar
-    And User <Contact> renames conversation with name <GroupChatName> to <NewChatName>
+    And User <Contact> renames conversation <GroupChatName> to <NewChatName>
     Then I see conversation name <NewChatName> in Upper Toolbar
 
     Examples:

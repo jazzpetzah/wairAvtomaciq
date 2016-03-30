@@ -599,9 +599,9 @@ public class CommonIOSSteps {
      * @param oldConversationName old conversation name string
      * @param newConversationName new conversation name string
      * @throws Exception
-     * @step.^User (.*) renames? conversation with name (.*) to (.*)$
+     * @step.^User (.*) renames? conversation (.*) to (.*)$
      */
-    @When("^User (.*) renames? conversation with name (.*) to (.*)$")
+    @When("^User (.*) renames? conversation (.*) to (.*)$")
     public void UserChangeGruopChatName(String user, String oldConversationName, String newConversationName)
             throws Exception {
         commonSteps.ChangeGroupChatName(user, oldConversationName, newConversationName);
