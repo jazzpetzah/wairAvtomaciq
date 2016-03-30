@@ -8,6 +8,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.driver.DummyElement;
+import org.apache.commons.collections.CollectionUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -25,9 +26,13 @@ public class DialogPage extends AndroidPage {
 
     private static final By xpathLastPicture = By.xpath(String.format("(//*[@id='%s'])[last()]", idStrDialogImages));
 
+    private static final By xpathCursorMenuButtons = By.xpath("//*[starts-with(@id,'cursor_menu_item_') and count(*) > 1]");
+
     public static final By idAddPicture = By.id("cursor_menu_item_camera");
 
     public static final By idPing = By.id("cursor_menu_item_ping");
+
+    private static final By idPeopleCursorButton = By.id("cursor_menu_item_participant");
 
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
             .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
@@ -215,6 +220,23 @@ public class DialogPage extends AndroidPage {
     public void tapSketchBtn() throws Exception {
         getElement(idSketch, "Sketch button is not visible").click();
     }
+
+    public boolean isPingButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idPing);
+    }
+
+    public boolean isSketchButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idSketch);
+    }
+
+    public boolean isCameraButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAddPicture);
+    }
+
+    public boolean isPeopleButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idPeopleCursorButton);
+    }
+
 
     public void tapAudioCallBtn() throws Exception {
         getElement(idAudioCall, "Audio Call button is not visible").click();
@@ -554,6 +576,15 @@ public class DialogPage extends AndroidPage {
 
     public void tapMessageNotification(String message) throws Exception {
         getElement(By.xpath(xpathMessageNotificationByValue.apply(message))).click();
+    }
+
+    public int getCountOfCursorMenuButton() throws Exception {
+        List<WebElement> cursorMenuButtons = selectVisibleElements(xpathCursorMenuButtons);
+        if(CollectionUtils.isEmpty(cursorMenuButtons))
+        {
+            return 0;
+        }
+        return cursorMenuButtons.size();
     }
 
 }
