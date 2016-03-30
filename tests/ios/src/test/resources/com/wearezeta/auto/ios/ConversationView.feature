@@ -755,8 +755,23 @@ Feature: Conversation View
     And I see conversation name <Contact> in Upper Toolbar
     And User <Contact> changes name to <NewName>
     Then I see conversation name <NewName> in Upper Toolbar
-
-
+    
     Examples:
       | Name      | Contact   | NewName |
       | user1Name | user2Name | NewName |
+
+  @C37374 @staging
+  Scenario Outline: Verify changing conversation title in the upper toolbar
+    Given There are <UsersAmount> users where <Name> is me
+    Given Myself is connected to all other
+    Given Myself has group chat <GroupChatName> with all other
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    And I see conversation name <GroupChatName> in Upper Toolbar
+    And User <Contact> renames conversation <GroupChatName> to <NewChatName>
+    Then I see conversation name <NewChatName> in Upper Toolbar
+
+    Examples:
+      | Name      | Contact   | GroupChatName  | UsersAmount | NewChatName |
+      | user1Name | user2Name | RenameChatName | 4           | NewName     |

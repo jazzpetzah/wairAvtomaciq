@@ -597,6 +597,21 @@ public class CommonIOSSteps {
     }
 
     /**
+     * Rename conversation in backend
+     *
+     * @param user username who renames
+     * @param oldConversationName old conversation name string
+     * @param newConversationName new conversation name string
+     * @throws Exception
+     * @step.^User (.*) renames? conversation (.*) to (.*)$
+     */
+    @When("^User (.*) renames? conversation (.*) to (.*)$")
+    public void UserChangeGruopChatName(String user, String oldConversationName, String newConversationName)
+            throws Exception {
+        commonSteps.ChangeGroupChatName(user, oldConversationName, newConversationName);
+    }
+
+    /**
      * Call method in BackEnd that should generate new verification code
      *
      * @param user user name
