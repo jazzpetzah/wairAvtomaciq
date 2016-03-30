@@ -10,7 +10,7 @@ import org.junit.Assert;
 public class VideoCallingOverlayPageSteps {
 
     private static final int STATE_CHANGE_TIMEOUT = 15;
-    private static final double MIN_BUTTON_SIMILARITY_SCORE = 0.4;
+    private static final double MIN_BUTTON_SIMILARITY_SCORE = 0.9;
 
     private final ElementState muteButtonState = new ElementState(() -> getVideoCallingOverlayPage().getMuteButtonScreenshot());
     private final ElementState videoButtonState = new ElementState(() -> getVideoCallingOverlayPage().getVideoButtonScreenshot());

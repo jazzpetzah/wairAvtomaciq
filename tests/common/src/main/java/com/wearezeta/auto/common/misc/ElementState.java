@@ -65,14 +65,14 @@ public class ElementState {
 
     public boolean isChanged(int timeoutSeconds, double minScore) throws Exception {
         log.debug(String.format(
-                "Checking if element state has been changed in %s seconds (Min score: %.4f)...",
+                "Checking if element state has been changed in %s seconds (Min score: %.9f)...",
                 timeoutSeconds, minScore));
         return checkState((x) -> x < minScore, timeoutSeconds);
     }
 
     public boolean isNotChanged(int timeoutSeconds, double minScore) throws Exception {
         log.debug(String.format(
-                "Checking if element state has NOT been changed in %s seconds (Min score: %.4f)...",
+                "Checking if element state has NOT been changed in %s seconds (Min score: %.9f)...",
                 timeoutSeconds, minScore));
         return checkState((x) -> x >= minScore, timeoutSeconds);
     }
