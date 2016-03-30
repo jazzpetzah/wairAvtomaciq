@@ -365,35 +365,26 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C77948 @staging
-  Scenario Outline: Verify an upper toolbar displayed in the conversation view
-    Given There is 2 users where <Name> is me
-    Given <Contact> is connected to me
+  @C77948 @C77950 @staging
+  Scenario Outline: Upper toolbar displayed in conversation view, I can back to conversation list by toolbar arrow
+    Given There is 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    When I tap on contact name <Contact1>
     Then I see the upper toolbar
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-
-  @C77950 @staging
-  Scenario Outline: Verify going back to the conversation list by tapping on the upper toolbar arrow
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    And I tap back button in upper toolbar
+    Then I see Contact list with contacts
+    When I tap on contact name <GroupChatName>
+    Then I see the upper toolbar
     And I tap back button in upper toolbar
     Then I see Contact list with contacts
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact1   | Contact2   | GroupChatName |
+      | user1Name | user2Name  | user2Name  | GroupChat     |
 
   @C77958 @staging
   Scenario Outline: Verify video call icon is not shown in a group conversation on the upper toolbar
