@@ -395,7 +395,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C77958 @staging
+  @C77958 @regression
   Scenario Outline: Verify video call icon is not shown in a group conversation on the upper toolbar
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
@@ -416,7 +416,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName     |
       | user1Name | user2Name | user3Name | SendMessGroupChat |
 
-  @C78372 @staging
+  @C78372 @regression
   Scenario Outline: Verify title is not changed on receiving messages in other conversations
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
