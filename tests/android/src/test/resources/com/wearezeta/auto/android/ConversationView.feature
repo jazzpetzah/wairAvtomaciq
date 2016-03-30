@@ -384,7 +384,7 @@ Feature: Conversation View
 
     Examples:
       | Name      | Contact1   | Contact2   | GroupChatName |
-      | user1Name | user2Name  | user2Name  | GroupChat     |
+      | user1Name | user2Name  | user3Name  | GroupChat     |
 
   @C77958 @staging
   Scenario Outline: Verify video call icon is not shown in a group conversation on the upper toolbar
