@@ -50,6 +50,8 @@ public class GroupChatInfoPage extends IOSPage {
 
     private static final By classNameParticipantAvatarCell = By.className("UIACollectionCell");
 
+    private static final By xpathAddPeopleButton = By.xpath("//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIAButton[@name='ADD PEOPLE']");
+
     public GroupChatInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -135,5 +137,9 @@ public class GroupChatInfoPage extends IOSPage {
     public boolean waitForContactToDisappear(String contact) throws Exception {
         final By locator = By.xpath(xpathStrUserNameLabelByText.apply(contact));
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+    }
+
+    public void addContactToChat() throws Exception {
+        getElement(xpathAddPeopleButton).click();
     }
 }

@@ -526,3 +526,22 @@ Feature: People View
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
       | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
+
+  @C80775 @staging
+  Scenario Outline: Verify adding people in group conversation via ADD PEOPLE button in the beginning of the conversation
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    And I press Add People button in the beginning of conversation
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact3>
+    And I tap on conversation <Contact3> in search result
+    And I click on Go button
+    Then I can see You Added <Contact3> message
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
+      | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
