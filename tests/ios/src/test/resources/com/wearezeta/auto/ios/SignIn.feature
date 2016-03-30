@@ -81,7 +81,7 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @C1136 @rc @regression @id3851 @ZIOS-5585
+  @C1136 @rc @regression @id3851 @ZIOS-5585 @useSpecialEmail
   Scenario Outline: Verify first time phone sign in when email is not assigned
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen

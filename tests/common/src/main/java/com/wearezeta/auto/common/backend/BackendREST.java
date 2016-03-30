@@ -727,4 +727,15 @@ final class BackendREST {
 
         return UriBuilder.fromUri(backend).build();
     }
+
+    public static void changeConversationName(AuthToken userToken, String conversationIDToRename, String newConversationName)
+            throws Exception {
+        Builder webResource = buildDefaultRequestWithAuth(
+                String.format("conversations/%s", conversationIDToRename),
+                MediaType.APPLICATION_JSON, userToken);
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("name", newConversationName);
+        restHandlers.httpPut(webResource, requestBody.toString(),
+                new int[]{HttpStatus.SC_OK});
+    }
 }

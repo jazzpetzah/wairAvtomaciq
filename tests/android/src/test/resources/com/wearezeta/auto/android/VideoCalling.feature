@@ -386,7 +386,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout | Message | ImageName   |
       | user1Name | user2Name | chrome      | 30      | Testing | testing.jpg |
 
-  @C58886 @staging
+  @C58886 @calling_basic
   Scenario Outline: Verify I can accept Video call from background
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -433,7 +433,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 30      |
 
-  @C36378 @staging
+  @C36378 @calling_advanced
   Scenario Outline: Verify video call is not terminated if I lock and unlock device
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -456,7 +456,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 30      |
 
-  @C36389 @staging
+  @C36384 @calling_advanced
   Scenario Outline: Verify video call is terminated after 1 minute if nobody responds
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
