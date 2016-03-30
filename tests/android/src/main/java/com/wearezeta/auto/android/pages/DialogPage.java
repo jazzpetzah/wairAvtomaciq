@@ -65,9 +65,11 @@ public class DialogPage extends AndroidPage {
 
     private static final By idYoutubePlayButton = By.id("gtv__youtube_message__play");
 
-    private static final By idMediaBarControl = By.id("gtv__conversation_header__mediabar__control");
+    private static final String strIdMediaBarControl = "gtv__conversation_header__mediabar__control";
 
-    private static final By xpathMediaBar = By.xpath("//*[@id='gtv__conversation_header__mediabar__control']/parent::*");
+    private static final By idMediaBarControl = By.id(strIdMediaBarControl);
+
+    private static final By xpathMediaBar = By.xpath(String.format("//*[@id='%s']/parent::*", strIdMediaBarControl));
 
     private static final By idSketch = By.id("cursor_menu_item_draw");
 
