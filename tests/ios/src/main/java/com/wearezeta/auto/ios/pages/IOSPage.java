@@ -443,7 +443,7 @@ public abstract class IOSPage extends BasePage {
             final Dimension screenSize = getDriver().manage().window().getSize();
             final double scaleX = 1.0 * result.get().getWidth() / screenSize.getWidth();
             final double scaleY = 1.0 * result.get().getHeight() / screenSize.getHeight();
-            if (scaleX != 1.0 || scaleY != 1.0) {
+            if (scaleX < 1 || scaleY < 1) {
                 final double scale = (scaleX > scaleY) ? scaleY : scaleX;
                 result = Optional.of(ImageUtil.resizeImage(result.get(), (float) (1.0 / scale)));
             }
