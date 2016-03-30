@@ -75,7 +75,7 @@ public class VideoCallPageSteps {
         if (doNot == null) {
             Assert.assertTrue("Duration Timer is not visible", videoCallPage.isDurationTimerVisible());
         } else {
-            Assert.assertFalse("Duration Timer is visible", videoCallPage.isDurationTimerVisible());
+            Assert.assertTrue("Duration Timer is visible", videoCallPage.isDurationTimerNotVisible());
         }
     }
 }
