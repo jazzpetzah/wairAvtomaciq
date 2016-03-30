@@ -433,7 +433,7 @@ Feature: Conversation View
       | user1Name | user2Name | user3Name |  Msg1     | Msg2     |
 
 
-  @C77966 @staging @torun
+  @C77966 @staging
   Scenario Outline: Verify there are no video and audio calling icons under the + button bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
