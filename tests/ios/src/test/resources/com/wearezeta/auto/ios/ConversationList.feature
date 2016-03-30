@@ -515,16 +515,16 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
-    And I have entered login <Login>
-    And I have entered password <Password>
-    And I press Login button
-    And I dismiss alert
-    And I accept First Time overlay if it is visible
-    And I dismiss alert
-    And I dismiss settings warning
-    And I see conversations list
-    When I tap Invite more people button
+    Given I tap I HAVE AN ACCOUNT button
+    Given I have entered login <Login>
+    Given I have entered password <Password>
+    Given I press Login button
+    Given I dismiss alert
+    Given I accept First Time overlay if it is visible
+    Given I dismiss alert
+    Given I dismiss settings warning
+    When I see conversations list
+    And I tap Invite more people button
     Then I see Share Contacts settings warning
     And I dismiss settings warning
     And I tap Cancel button to not Invite more people
@@ -532,5 +532,5 @@ Feature: Conversation List
     Then I see Share Contacts settings warning
 
     Examples:
-      |Login       | Password      | Name      | Contact1  | Contact2  |
+      | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
