@@ -703,7 +703,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C77924 @staging
+  @C77924 @regression
   Scenario Outline: Verify an upper toolbar exists in the conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -716,7 +716,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C77968 @staging
+  @C77968 @regression
   Scenario Outline: Verify upper toolbar for the outgoing connection request is shown
     Given There are 2 users where <Name> is me
     Given I sent connection request to <Contact1>
