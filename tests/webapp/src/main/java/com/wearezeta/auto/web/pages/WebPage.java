@@ -140,7 +140,6 @@ public class WebPage extends BasePage {
         String breakSession = "s = wire.app.repository.encryption.cryptobox.store.sessions;\n" +
                 "cs = s[Object.keys(s).filter((x) => x.endsWith(\"" + deviceId + "\"))[0]];\n" +
                 "cs.session_states = {};";
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript(breakSession);
+        getDriver().executeScript(breakSession);
     }
 }
