@@ -309,7 +309,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C1030 @staging
+  @C1030 @regression
   Scenario Outline: Verify possibility of general invitation accepting
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>
