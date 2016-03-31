@@ -217,6 +217,8 @@ public class PersonalInfoPage extends IOSPage {
 
     public void clickAddPhoneNumberButton() throws Exception {
         getElement(nameAddPhoneNumberButton).click();
+        // Wait for animation
+        Thread.sleep(4000);
     }
 
     public boolean isPhoneNumberAttachedToProfile(String number) throws Exception {
