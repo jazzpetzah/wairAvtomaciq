@@ -167,9 +167,9 @@ Feature: Video Calling
   Scenario Outline: Verify I can switch to another video call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
-    Given <Contact> starts instance using <VideoCallBackend>
+    Given <Contact>,<Contact2> start instance using <VideoCallBackend>
     Given I sign in using my email or phone number
-    And <Contact>,<Contact2> starts a video call to me
+    And <Contact>,<Contact2> start a video call to me
     And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
