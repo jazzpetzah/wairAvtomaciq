@@ -285,7 +285,6 @@ Feature: E2EE
     And I tap Verify switcher on Device Details page
     And I navigate back from Device Details page
     And I click close user profile page button
-    And I click Close input options button
     When User Myself adds a new device <DeviceName2> with label <DeviceLabel2>
     Then I do not see shield icon next to conversation input field
     # FIXME: Make it possible in the app to detect labels text with Appium
@@ -382,7 +381,6 @@ Feature: E2EE
     And I navigate back from Device Details page
     And I click close user profile page button
     And I close group info page
-    And I click Close input options button
     When User <Contact1> adds a new device <DeviceName2> with label <DeviceLabel2>
     And I type the default message and send it
     And I close New Device overlay
