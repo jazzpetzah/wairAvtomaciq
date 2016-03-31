@@ -235,4 +235,25 @@ public abstract class AndroidPage extends BasePage {
         final By locator = By.xpath(xpathStrAlertMessageByText.apply(expectedMsg));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 15);
     }
+
+    /**
+     * Check whether Element A is below Element B
+     * The distance percentage(based on screen hight) between B.Y and (A.Y + A.Height)
+     * should small than <locationDifferencePercentage>
+     *
+     * @param elementA The element in the relative "bottom" position
+     * @param elementB The element in the relative "top" position
+     * @param locationDifferencePercentage [0, n), n belong any integer,
+     *                                     if equal 0, means A is below B, and A is close to B
+     *                                     if in (0,1), means A is below B, means the distance percentage
+     *                                     if equal [1, ...), means cannot see A and B in the same view.
+     * @return true if the condition success
+     * @throws Exception
+     */
+    public boolean isElementABelowElementB(WebElement elementA, WebElement elementB, double locationDifferencePercentage)
+            throws Exception {
+        int difference = elementA.getLocation().getY() - elementB.getSize().getHeight() - elementB.getLocation().getY();
+        return difference >= 0
+                && difference / getDriver().manage().window().getSize().getHeight() <= locationDifferencePercentage;
+    }
 }

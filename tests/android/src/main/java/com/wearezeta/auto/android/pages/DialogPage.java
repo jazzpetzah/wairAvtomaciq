@@ -65,7 +65,11 @@ public class DialogPage extends AndroidPage {
 
     private static final By idYoutubePlayButton = By.id("gtv__youtube_message__play");
 
-    private static final By idMediaBarControl = By.id("gtv__conversation_header__mediabar__control");
+    private static final String strIdMediaBarControl = "gtv__conversation_header__mediabar__control";
+
+    private static final By idMediaBarControl = By.id(strIdMediaBarControl);
+
+    private static final By xpathMediaBar = By.xpath(String.format("//*[@id='%s']/parent::*", strIdMediaBarControl));
 
     private static final By idSketch = By.id("cursor_menu_item_draw");
 
@@ -116,6 +120,8 @@ public class DialogPage extends AndroidPage {
     private static final int MAX_SWIPE_RETRIES = 5;
     private static final int MAX_CLICK_RETRIES = 5;
 
+    private static final double LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR = 0.01;
+
     public DialogPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -136,6 +142,12 @@ public class DialogPage extends AndroidPage {
     public BufferedImage getMediaButtonState() throws Exception {
         return this.getElementScreenshot(getElement(idPlayPauseMedia)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of Play/Pause button")
+        );
+    }
+
+    public BufferedImage getTopToolbarState() throws Exception {
+        return this.getElementScreenshot(getElement(xpathToolbar)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot of upper toolbar")
         );
     }
 
@@ -554,6 +566,10 @@ public class DialogPage extends AndroidPage {
 
     public void tapMessageNotification(String message) throws Exception {
         getElement(By.xpath(xpathMessageNotificationByValue.apply(message))).click();
+    }
+
+    public boolean isMediaBarBelowUptoolbar() throws Exception {
+        return isElementABelowElementB(getElement(xpathMediaBar), getElement(xpathToolbar), LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR);
     }
 
 }
