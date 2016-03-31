@@ -107,16 +107,17 @@ Feature: VideoCalling
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When I minimize the application
+    When I lock the device
     And <Contact> starts a video call to me
+    And I wait for 10 seconds
     And I see incoming call
     And I swipe to ignore the call
-    Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
-    And I do not see incoming call
+    And I unlock the device
+    Then I do not see incoming call
 
     Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | chrome      | 60      |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |
 
   @C36389 @calling_basic @rc
   Scenario Outline: Verify I can start Video call from the conversation
