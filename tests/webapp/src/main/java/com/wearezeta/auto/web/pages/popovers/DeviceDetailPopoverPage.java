@@ -21,6 +21,9 @@ public class DeviceDetailPopoverPage extends AbstractPopoverContainer {
     @FindBy(how = How.CSS, using = ".slider")
     private WebElement verificationToggle;
 
+    @FindBy(how = How.CSS, using = ".user-profile-device-reset span")
+    private WebElement resetSession;
+
     public DeviceDetailPopoverPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -44,5 +47,9 @@ public class DeviceDetailPopoverPage extends AbstractPopoverContainer {
 
     public void clickBackButton() {
         backButton.click();
+    }
+
+    public void clickResetSession() {
+        resetSession.click();
     }
 }
