@@ -141,9 +141,9 @@ public class DialogPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Call|Ping|Add Picture|Video Call|Sketch) button$ from input tools$
+     * @step. ^I tap (Add people|Ping|Add Picture|Sketch) button$ from input tools$
      */
-    @When("^I tap (Ping|Add Picture|Sketch) button from input tools$")
+    @When("^I tap (Add people|Ping|Add Picture|Sketch) button from input tools$")
     public void WhenITapInputToolButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "ping":
@@ -154,6 +154,9 @@ public class DialogPageSteps {
                 break;
             case "sketch":
                 getDialogPage().tapSketchBtn();
+                break;
+            case "add people":
+                getDialogPage().tapPeopleBtn();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));

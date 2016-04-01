@@ -446,3 +446,19 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @C77973 @staging @torun
+  Scenario Outline: Verify I can create group conversation from 1:1 using profile button from + button bar
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And I tap plus button in text input
+    And I tap Add people button from input tools
+    And I wait for 10 seconds
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user2Name |

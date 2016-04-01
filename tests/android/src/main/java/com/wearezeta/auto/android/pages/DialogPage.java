@@ -230,6 +230,10 @@ public class DialogPage extends AndroidPage {
         getElement(idSketch, "Sketch button is not visible").click();
     }
 
+    public void tapPeopleBtn() throws Exception {
+        getElement(idPeopleCursorButton, "People button is not visible").click();
+    }
+
     public boolean isPingButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idPing);
     }
