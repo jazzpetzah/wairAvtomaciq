@@ -475,3 +475,24 @@ Feature: VideoCalling
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 65      |
+
+  @C58887 @staging
+  Scenario Outline: Verify I can decline Video call from background
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I minimize the application
+    And <Contact> starts a video call to me
+    # Wait until the call is shown in the UI
+    And I wait for 10 seconds
+    And I see incoming call
+    And I swipe to ignore the call
+    And I restore the application
+    Then I do not see ongoing video call
+
+    Examples:
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |

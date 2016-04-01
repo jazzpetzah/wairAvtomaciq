@@ -143,7 +143,7 @@ public abstract class IOSPage extends BasePage {
             // FIXME: Paste menu will not be shown without this
             IOSSimulatorHelper.selectPasteMenuItem();
             longClickAtSimulator(tapX, tapY);
-            getElement(nameEditingItemPaste, "Paste item is not visible", 15).click();
+            getElement(nameEditingItemPaste).click();
             if (shouldCommitInput) {
                 IOSSimulatorHelper.pressEnterKey();
             }
@@ -163,7 +163,7 @@ public abstract class IOSPage extends BasePage {
         final int tapY = elLocation.y + elSize.height / 2;
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             longClickAtSimulator(tapX, tapY);
-            getElement(nameEditingItemPaste, "Paste item is not visible", 15).click();
+            getElement(nameEditingItemPaste).click();
             if (shouldCommitInput) {
                 IOSSimulatorHelper.pressEnterKey();
             }
@@ -240,13 +240,17 @@ public abstract class IOSPage extends BasePage {
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             IOSSimulatorHelper.goHome();
             Thread.sleep(timeSeconds * 1000);
-            final String ipaPath = (String) getDriver().getCapabilities().getCapability("app");
-            final File appPath = IOSCommonUtils.extractAppFromIpa(new File(ipaPath));
+            final String autPath = (String) getDriver().getCapabilities().getCapability("app");
             String bundleId;
-            try {
-                bundleId = IOSCommonUtils.getBundleId(new File(appPath.getCanonicalPath() + "/Info.plist"));
-            } finally {
-                FileUtils.deleteDirectory(appPath);
+            if (autPath.endsWith(".app")) {
+                bundleId = IOSCommonUtils.getBundleId(new File(autPath + "/Info.plist"));
+            } else {
+                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(autPath));
+                try {
+                    bundleId = IOSCommonUtils.getBundleId(new File(appPath.getCanonicalPath() + "/Info.plist"));
+                } finally {
+                    FileUtils.deleteDirectory(appPath);
+                }
             }
             IOSSimulatorHelper.launchApp(bundleId);
             Thread.sleep(1000);

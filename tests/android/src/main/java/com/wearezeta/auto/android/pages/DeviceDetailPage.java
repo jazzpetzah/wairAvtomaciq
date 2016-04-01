@@ -39,8 +39,15 @@ public class DeviceDetailPage extends AndroidPage {
         return getElement(xpathDeviceId).getText().replaceAll("(\\s\\nID:.*$)", "").toLowerCase();
     }
 
+    /**
+     * Id will be retrieved from summary, which will be separated into 2 parts by comma
+     *
+     * @return the device ID and the Activation place
+     * @throws Exception
+     */
     public String getId() throws Exception {
-        return getElement(xpathDeviceId).getText().replaceAll("(^.*\\nID:)|(\\n(.*)$)|(\\s)", "").toLowerCase();
+        final String[] summaryParts = getElement(xpathDeviceId).getText().split(",");
+        return summaryParts[0].replaceAll("(^.*\\nID:)|(\\n(.*)$)|(\\s)", "").toLowerCase();
     }
 
     public String getActivationInfo() throws Exception {

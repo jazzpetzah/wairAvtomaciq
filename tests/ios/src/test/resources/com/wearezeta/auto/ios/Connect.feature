@@ -193,7 +193,7 @@ Feature: Connect
     And I paste and commit the text
     Then I check copied content from <Name>
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 

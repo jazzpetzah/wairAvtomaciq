@@ -53,11 +53,12 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
         try {
             CommonUtils.executeUIShellScript(
                     new String[]{
-                            String.format("%s/simshot \"%s\" %s", CommonUtils.getIOSToolsRoot(CommonUtils.class),
-                                    result.getCanonicalPath(), this.manage().window().getSize().height)}).
-                    get(CommonUtils.SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+                            String.format("%s/simshot \"%s\"", CommonUtils.getIOSToolsRoot(CommonUtils.class),
+                                    result.getCanonicalPath())
+                    }).get(CommonUtils.SCREENSHOT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             output = Base64.encodeBase64(FileUtils.readFileToByteArray(result));
         } finally {
+            //noinspection ResultOfMethodCallIgnored
             result.delete();
         }
         return output;
