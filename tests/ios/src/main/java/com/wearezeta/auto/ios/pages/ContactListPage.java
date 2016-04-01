@@ -98,6 +98,8 @@ public class ContactListPage extends IOSPage {
         findNameInContactList(name).orElseThrow(
                 () -> new IllegalStateException(String.format("The conversation '%s' is not visible in the list", name))
         ).click();
+        // Wait for transition animation
+        Thread.sleep(1000);
     }
 
     private Optional<WebElement> findNameInContactList(String name) throws Exception {
