@@ -33,6 +33,8 @@ public class DialogPageSteps {
     private static final double CONVO_VIEW_MIN_SIMILARITY_SCORE = 0.5;
     private static final int SHIELD_STATE_CHANGE_TIMEOUT = 15;
     private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
+    private static final int TOP_TOOLBAR_STATE_CHANGE_TIMEOUT = 15;
+    private static final double TOP_TOOLBAR_MIN_SIMILARITY_SCORE = 0.97;
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final ElementState mediaButtonState = new ElementState(
@@ -41,6 +43,8 @@ public class DialogPageSteps {
             () -> getDialogPage().getConvoViewStateScreenshot());
     private final ElementState verifiedConversationShieldState = new ElementState(
             () -> getDialogPage().getShieldStateScreenshot());
+    private final ElementState topToolbarState = new ElementState(
+            () -> getDialogPage().getTopToolbarState());
     private Boolean wasShieldVisible = null;
 
     private static String expandMessage(String message) {
@@ -496,6 +500,16 @@ public class DialogPageSteps {
         mediaButtonState.remember();
     }
 
+    /**
+     * Store the screenshot of current upper toolbar state
+     *
+     * @throws Exception
+     * @step. ^I remember the state of upper toolbar$
+     */
+    @When("^I remember the state of upper toolbar$")
+    public void IRememberUpperToolbarState() throws Exception {
+        topToolbarState.remember();
+    }
 
     /**
      * Tap back arrow button in upper toolbar
@@ -518,6 +532,18 @@ public class DialogPageSteps {
     public void IVerifyStateOfMediaControlButtonIsChanged() throws Exception {
         Assert.assertTrue("State of PlayPause media item button has not changed",
                 mediaButtonState.isChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE));
+    }
+
+    /**
+     * Verify the current state of upper toolbar has been not changed since the last snapshot was made
+     *
+     * @throws Exception
+     * @step. ^I verify the state of upper toolbar item is not changed$
+     */
+    @Then("^I verify the state of upper toolbar item is not changed$")
+    public void IVerifyStateOfUpperToolbarIsNotChanged() throws Exception {
+        Assert.assertTrue("State of upper toolbar has changed",
+                topToolbarState.isNotChanged(TOP_TOOLBAR_STATE_CHANGE_TIMEOUT, TOP_TOOLBAR_MIN_SIMILARITY_SCORE));
     }
 
     /**
@@ -763,6 +789,17 @@ public class DialogPageSteps {
         String expectedConversationNames = StringUtils.join(names, ",");
         Assert.assertTrue(String.format("The conversation title should be %s", expectedConversationNames),
                 getDialogPage().isConversationTitileVisible(expectedConversationNames));
+    }
+
+    /**
+     * Checks that to see the media bar is just below the upper toolbar
+     *
+     * @throws Exception
+     * @step. ^I see the media bar is below the upper toolbar$
+     */
+    @Then("^I see the media bar is below the upper toolbar$")
+    public void ThenISeeTheMediaBarIsBelowUpperToolbar() throws Exception {
+        Assert.assertTrue("The media bar should below the upper toolbar", getDialogPage().isMediaBarBelowUptoolbar());
     }
 
     /**

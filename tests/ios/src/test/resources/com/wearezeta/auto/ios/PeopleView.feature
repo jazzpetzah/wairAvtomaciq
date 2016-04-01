@@ -190,9 +190,6 @@ Feature: People View
     Then I see user <Contact2> on People picker page is selected
     When I tap on conversation <Contact2> in search result
     Then I see user <Contact2> on People picker page is NOT selected
-    When I tap on conversation <Contact2> in search result
-    And I press keyboard Delete button
-    Then I see user <Contact2> on People picker page is NOT selected
 
     Examples:
       | Name      | Contact1  | Contact2  |

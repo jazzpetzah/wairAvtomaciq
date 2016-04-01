@@ -98,7 +98,7 @@ Feature: Video Calling
     And I remember the state of <Contact> conversation item
     When <Contact> starts a video call to me
     Then I see call status message contains "<Contact> calling"
-    And <Contact> stops all calls to me
+    And <Contact> stops calling me
     And I do not see Calling overlay
     Then I see the state of <Contact> conversation item is changed
     And I tap on contact name <Contact>
@@ -113,7 +113,7 @@ Feature: Video Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact1> starts instance using <VideoCallBackend>
-    Given <Contact> starts instance using <AudioCallBackend>
+    Given <Contact2> starts instance using <AudioCallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
     And <Contact1> starts a video call to me
@@ -167,9 +167,9 @@ Feature: Video Calling
   Scenario Outline: Verify I can switch to another video call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
-    Given <Contact> starts instance using <VideoCallBackend>
+    Given <Contact>,<Contact2> start instance using <VideoCallBackend>
     Given I sign in using my email or phone number
-    And <Contact>,<Contact2> starts a video call to me
+    And <Contact>,<Contact2> start a video call to me
     And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds

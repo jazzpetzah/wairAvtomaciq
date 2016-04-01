@@ -131,7 +131,7 @@ public class IOSSimulatorHelper {
 
     public static void selectPasteMenuItem() throws Exception {
         activateWindow();
-        CommonUtils.executeUIAppleScript(new String [] {
+        CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\"",
                 "  tell process \"Simulator\"",
                 "    tell menu bar item \"Edit\" of menu bar 1",
@@ -255,6 +255,10 @@ public class IOSSimulatorHelper {
         } finally {
             FileUtils.deleteDirectory(app);
         }
+    }
+
+    public static void launchApp(String bundleId) throws Exception {
+        executeSimctl(new String[]{"launch", getId(), bundleId});
     }
 
     public static void uploadImage(File img) throws Exception {

@@ -703,7 +703,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C77924 @staging
+  @C77924 @regression
   Scenario Outline: Verify an upper toolbar exists in the conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -716,7 +716,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C77968 @staging
+  @C77968 @regression
   Scenario Outline: Verify upper toolbar for the outgoing connection request is shown
     Given There are 2 users where <Name> is me
     Given I sent connection request to <Contact1>
@@ -730,7 +730,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C77970 @staging
+  @C77970 @regression
   Scenario Outline: Verify call icon is not shown in the left group conversation
     Given There are <UsersAmount> users where <Name> is me
     Given Myself is connected to all other
@@ -745,7 +745,7 @@ Feature: Conversation View
       | Name      | GroupChatName  | UsersAmount |
       | user1Name | LeaveGROUPCALL | 4           |
 
-  @C78373 @staging
+  @C78373 @regression
   Scenario Outline: Verify changing name of the user in the upper toolbar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -760,7 +760,7 @@ Feature: Conversation View
       | Name      | Contact   | NewName |
       | user1Name | user2Name | NewName |
 
-  @C37374 @staging
+  @C37374 @regression
   Scenario Outline: Verify changing conversation title in the upper toolbar
     Given There are <UsersAmount> users where <Name> is me
     Given Myself is connected to all other

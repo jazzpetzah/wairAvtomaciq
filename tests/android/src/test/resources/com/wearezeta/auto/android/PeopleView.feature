@@ -196,11 +196,6 @@ Feature: People View
     When I close participants page by UI button
     Then I do not see participants page
     And I see dialog page
-    When I swipe up on dialog page
-    Then I see participants page
-    When I close participants page by UI button
-    Then I do not see participants page
-    And I see dialog page
     When I tap conversation name from top toolbar
     Then I see participants page
     When I press back button

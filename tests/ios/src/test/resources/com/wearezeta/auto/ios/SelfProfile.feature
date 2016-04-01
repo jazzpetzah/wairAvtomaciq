@@ -121,7 +121,6 @@ Feature: Self Profile
     Given I see conversations list
     When I tap my avatar
     And I tap to add my phone number
-    And I see country picker button on Sign in screen
     And I input phone number <Number> with code <Code>
     Then I see already registered phone number alert
 

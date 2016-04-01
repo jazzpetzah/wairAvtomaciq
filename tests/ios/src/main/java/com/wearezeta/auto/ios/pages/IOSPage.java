@@ -9,8 +9,10 @@ import java.util.function.Function;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
@@ -236,16 +238,18 @@ public abstract class IOSPage extends BasePage {
     public void minimizeApplication(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            final long millisecondsStarted = System.currentTimeMillis();
-            IOSSimulatorHelper.switchAppsList();
-            final long clickAtHelperDuration = (System.currentTimeMillis() - millisecondsStarted) / 1000; // seconds
-            if (timeSeconds > clickAtHelperDuration + 1) {
-                Thread.sleep((timeSeconds - clickAtHelperDuration) * 1000);
-            } else {
-                Thread.sleep(2000);
+            IOSSimulatorHelper.goHome();
+            Thread.sleep(timeSeconds * 1000);
+            final String ipaPath = (String) getDriver().getCapabilities().getCapability("app");
+            final File appPath = IOSCommonUtils.extractAppFromIpa(new File(ipaPath));
+            String bundleId;
+            try {
+                bundleId = IOSCommonUtils.getBundleId(new File(appPath.getCanonicalPath() + "/Info.plist"));
+            } finally {
+                FileUtils.deleteDirectory(appPath);
             }
-            IOSSimulatorHelper.switchAppsList();
-            Thread.sleep(2000);
+            IOSSimulatorHelper.launchApp(bundleId);
+            Thread.sleep(1000);
         } else {
             // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
             this.getDriver().runAppInBackground(timeSeconds);

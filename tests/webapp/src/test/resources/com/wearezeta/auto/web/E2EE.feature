@@ -493,3 +493,30 @@ Feature: E2EE
     Examples:
       | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  | NEW_DEVICE                 | Message          |
       | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified | started using a new device | Unverified hello |
+
+  @C82513 @staging
+  Scenario Outline: Verify you can recover from a broken session
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    And Contact <Contact> sends encrypted message <Message1> via device Device1 to user Myself
+    Then I see text message <Message1>
+    When I break the session with device Device1 of user <Contact>
+    And Contact <Contact> sends encrypted message <Message2> via device Device1 to user Myself
+    Then I see <UNABLE_TO_DECRYPT> action in conversation
+    When I click People button in one to one conversation
+    And I see Single User Profile popover
+    And I switch to Devices tab on Single User Profile popover
+    And I click on device Device1 of user <Contact> on Single User Profile popover
+    And I click reset session on the Device Detail popover
+    And I click People button in one to one conversation
+    And Contact <Contact> sends encrypted message <Message3> via device Device1 to user Myself
+    Then I see text message <Message3>
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT | Message1    | Message2     | Message3    |
+      | user1Email | user1Password | user1Name | user2Name | UNABLE TO DECRYPT | First hello | Second hello | Third hello |

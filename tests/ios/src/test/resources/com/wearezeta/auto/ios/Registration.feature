@@ -60,7 +60,7 @@ Feature: Registration
       | Name      | Score | Timeout |
       | user1Name | 0.4   | 15      |
 
-  @C1009 @staging
+  @C1009 @regression
   Scenario Outline: Verify registering new user with Arabic name
     Given I see sign in screen
     Given I enter phone number for user <Name>
