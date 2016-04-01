@@ -1,6 +1,6 @@
 Feature: Invitations
 
-  @C824 @id4161 @regression @rc @torun @useSpecialEmail
+  @C824 @id4161 @regression @rc @useSpecialEmail
   Scenario Outline: Invitations (Conversations List): I can send an email notification from conversations list
     Given I delete all contacts from Address Book
     Given There is 1 user where <Name> is me
