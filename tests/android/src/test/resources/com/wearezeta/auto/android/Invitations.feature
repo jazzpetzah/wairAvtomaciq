@@ -5,7 +5,6 @@ Feature: Invitations
     Given I delete all contacts from Address Book
     Given There is 1 user where <Name> is me
     Given I add <Contact> into Address Book
-    Given I start listening to invitation messages for <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
@@ -14,6 +13,7 @@ Feature: Invitations
     And I remember the state of <Contact> avatar in the invites list
     And I tap Invite button next to <Contact>
     And I select <ContactEmail> email on invitation sending alert
+    And I start listening to invitation messages for <Contact>
     And I confirm invitation sending alert
     Then I verify the state of <Contact> avatar in the invites list is changed
     And I verify user <Contact> has received an email invitation
