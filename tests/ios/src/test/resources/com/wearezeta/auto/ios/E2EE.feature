@@ -470,10 +470,10 @@ Feature: E2EE
     And I wait for 3 seconds
     Then I see "https://support.wire.com" web page opened
     When I tap Back To Wire button
-    And I wait for 3 seconds
+    And I wait for 7 seconds
     And I open details page of device number 1
     And I tap "How do I do that?" link in user details
-    And I wait for 3 seconds
+    And I wait for 7 seconds
     Then I see "https://support.wire.com" web page opened
 
     Examples:
