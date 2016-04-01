@@ -143,7 +143,7 @@ public abstract class IOSPage extends BasePage {
             // FIXME: Paste menu will not be shown without this
             IOSSimulatorHelper.selectPasteMenuItem();
             longClickAtSimulator(tapX, tapY);
-            getElement(nameEditingItemPaste, "Paste item is not visible", 15).click();
+            getElement(nameEditingItemPaste).click();
             if (shouldCommitInput) {
                 IOSSimulatorHelper.pressEnterKey();
             }
@@ -163,7 +163,7 @@ public abstract class IOSPage extends BasePage {
         final int tapY = elLocation.y + elSize.height / 2;
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             longClickAtSimulator(tapX, tapY);
-            getElement(nameEditingItemPaste, "Paste item is not visible", 15).click();
+            getElement(nameEditingItemPaste).click();
             if (shouldCommitInput) {
                 IOSSimulatorHelper.pressEnterKey();
             }
