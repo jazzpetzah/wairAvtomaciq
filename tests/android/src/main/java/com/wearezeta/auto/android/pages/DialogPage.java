@@ -8,7 +8,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.driver.DummyElement;
-import org.apache.commons.collections.CollectionUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -25,8 +24,6 @@ public class DialogPage extends AndroidPage {
     public static final By idDialogImages = By.id(idStrDialogImages);
 
     private static final By xpathLastPicture = By.xpath(String.format("(//*[@id='%s'])[last()]", idStrDialogImages));
-
-    private static final By xpathCursorMenuButtons = By.xpath("//*[starts-with(@id,'cursor_menu_item_') and count(*) > 1]");
 
     public static final By idAddPicture = By.id("cursor_menu_item_camera");
 
@@ -591,10 +588,6 @@ public class DialogPage extends AndroidPage {
 
     public boolean isMediaBarBelowUptoolbar() throws Exception {
         return isElementABelowElementB(getElement(xpathMediaBar), getElement(xpathToolbar), LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR);
-    }
-
-    public int getCountOfCursorMenuButton() throws Exception {
-        return selectVisibleElements(xpathCursorMenuButtons).size();
     }
 
 }

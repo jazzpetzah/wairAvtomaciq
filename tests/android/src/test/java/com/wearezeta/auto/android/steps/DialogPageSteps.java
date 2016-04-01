@@ -810,7 +810,6 @@ public class DialogPageSteps {
      */
     @Then("^I only see ping, sketch, camera and people buttons in cursor menu")
     public void ThenIOnlySeePingSketchAddPicturePeopleButton() throws Exception {
-        Assert.assertEquals("Cursor menu should only have 4 buttons", 4, getDialogPage().getCountOfCursorMenuButton());
         Assert.assertTrue("Ping button should be visible in cursor menu", getDialogPage().isPingButtonVisible());
         Assert.assertTrue("Sketch button should be visible in cursor menu", getDialogPage().isSketchButtonVisible());
         Assert.assertTrue("Camera button should be visible in cursor menu", getDialogPage().isCameraButtonVisible());
