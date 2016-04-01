@@ -7,7 +7,7 @@ import cucumber.api.junit.Cucumber;
 
 
 @RunWith(Cucumber.class)
-@CucumberOptions(format = {"pretty", "html:target/report", "json:target/test_report.json", "com.wearezeta.auto.common.ZetaFormatter"}, tags  = { "@calling_advanced" } )
+@CucumberOptions(format = {"html:target/report", "json:target/test_report.json", "com.wearezeta.auto.common.ZetaFormatter"}, tags  = { "@calling_advanced" } )
 public class CallCrunchingAdvancedRun {
 
 }
