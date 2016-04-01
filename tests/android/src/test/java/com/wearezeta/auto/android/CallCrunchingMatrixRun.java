@@ -6,7 +6,7 @@ import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(format = {"pretty", "html:target/report", "json:target/test_report.json",
+@CucumberOptions(format = {"html:target/report", "json:target/test_report.json",
         "com.wearezeta.auto.common.ZetaFormatter"}, tags = {"@calling_matrix"})
 
 public class CallCrunchingMatrixRun {
