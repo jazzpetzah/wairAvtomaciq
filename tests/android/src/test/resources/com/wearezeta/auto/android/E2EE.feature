@@ -187,7 +187,7 @@ Feature: E2EE
       | Name      | Contact1  | Message1 |
       | user1Name | user2Name | Msg1     |
 
-  @C3232 @regression @torun
+  @C3232 @regression
   Scenario Outline: Verify the device id is not changed after relogin
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
