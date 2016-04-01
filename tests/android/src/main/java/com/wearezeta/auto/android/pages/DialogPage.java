@@ -29,6 +29,8 @@ public class DialogPage extends AndroidPage {
 
     public static final By idPing = By.id("cursor_menu_item_ping");
 
+    private static final By idPeopleCursorButton = By.id("cursor_menu_item_participant");
+
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
             .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
 
@@ -226,6 +228,22 @@ public class DialogPage extends AndroidPage {
 
     public void tapSketchBtn() throws Exception {
         getElement(idSketch, "Sketch button is not visible").click();
+    }
+
+    public boolean isPingButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idPing);
+    }
+
+    public boolean isSketchButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idSketch);
+    }
+
+    public boolean isCameraButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAddPicture);
+    }
+
+    public boolean isPeopleButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idPeopleCursorButton);
     }
 
     public void tapAudioCallBtn() throws Exception {

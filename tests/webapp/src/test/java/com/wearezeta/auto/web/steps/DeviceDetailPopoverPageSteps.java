@@ -38,4 +38,9 @@ public class DeviceDetailPopoverPageSteps {
     public void IClickBackButton() throws Exception {
         webappPagesCollection.getPage(DeviceDetailPopoverPage.class).clickBackButton();
     }
+
+    @When("^I click reset session on the Device Detail popover$")
+    public void IClickResetSession() throws Exception {
+        webappPagesCollection.getPage(DeviceDetailPopoverPage.class).clickResetSession();
+    }
 }
