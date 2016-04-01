@@ -1,10 +1,11 @@
 Feature: Invitations
 
-  @C824 @id4161 @regression @rc
+  @C824 @id4161 @regression @rc @torun
   Scenario Outline: Invitations (Conversations List): I can send an email notification from conversations list
     Given I delete all contacts from Address Book
     Given There is 1 user where <Name> is me
     Given I add <Contact> into Address Book
+    Given I start listening to invitation messages for <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
