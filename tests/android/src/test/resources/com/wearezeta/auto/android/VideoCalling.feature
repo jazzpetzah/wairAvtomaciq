@@ -39,8 +39,7 @@ Feature: VideoCalling
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
-
-
+    
   @C36362 @calling_basic @rc
   Scenario Outline: Verify I can accept Video call from locked device
     Given There are 2 users where <Name> is me
@@ -49,15 +48,17 @@ Feature: VideoCalling
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When I minimize the application
+    When I lock the device
     And <Contact> starts a video call to me
-    Then I see incoming call
+    # Wait until the call appears in UI
+    And I wait for 7 seconds
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
-    And I hang up ongoing video call
+    When I hang up ongoing video call
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
-    And I do not see ongoing video call
+    When I unlock the device
+    Then I do not see ongoing video call
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
