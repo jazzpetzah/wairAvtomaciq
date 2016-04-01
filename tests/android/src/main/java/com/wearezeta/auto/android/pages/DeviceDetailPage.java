@@ -46,8 +46,7 @@ public class DeviceDetailPage extends AndroidPage {
      * @throws Exception
      */
     public String getId() throws Exception {
-        String summary = getElement(xpathDeviceId).getText();
-        String[] summaryParts = summary.split(",");
+        final String[] summaryParts = getElement(xpathDeviceId).getText().split(",");
         return summaryParts[0].replaceAll("(^.*\\nID:)|(\\n(.*)$)|(\\s)", "").toLowerCase();
     }
 
