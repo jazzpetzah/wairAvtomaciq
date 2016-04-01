@@ -395,7 +395,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
-    When I tap on contact name <Contact>
     And I see 1 photo in the dialog
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
@@ -406,8 +405,8 @@ Feature: Conversation View
     And I press Add Picture button
     And I press Camera Roll button
     And I choose a picture from camera roll
-    And I confirm my choice
-    And I see 2 photos in the dialog
+    When I confirm my choice
+    Then I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |
