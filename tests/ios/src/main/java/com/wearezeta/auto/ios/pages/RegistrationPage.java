@@ -94,6 +94,9 @@ public class RegistrationPage extends IOSPage {
 
     public void inputPhoneNumber(String number) throws Exception {
         final WebElement phoneNumberField = getElement(namePhoneNumberField);
+        phoneNumberField.click();
+        // Wait for animation
+        Thread.sleep(2000);
         phoneNumberField.sendKeys(number);
         getElement(nameConfirmButton).click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
