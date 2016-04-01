@@ -432,3 +432,37 @@ Feature: Calling
     Examples:
       | Name      | GroupChatName  | UsersAmount |
       | user1Name | StartGROUPCALL | 11          |
+
+  @C2040 @staging @torun
+  Scenario Outline: Verify initiator is not a host for the call
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact2> starts waiting instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    And <Contact1> calls <GroupChatName> using <CallBackend2>
+    And I see call status message contains "<GroupChatName> RINGING"
+    And I tap Accept button on Calling overlay
+    Then I see Calling overlay
+    # FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
+    Then I see <NumberOfAvatars> avatars on the Calling overlay
+    And I wait for 10 seconds
+    Then <Contact1> stops all calls to <GroupChatName>
+    And I, <Contact2> verify that call status to <GroupChatName> is changed to active in 2 seconds
+    And <Contact1> verifies that call status to <GroupChatName> is changed to destroyed in 2 seconds
+    #Verify Caller1 is non_exsistent
+    #Verify beiden anderen active
+    And I wait for 10 seconds
+
+# FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
+# Then I see <NumberOfAvatars> avatars on the Calling overlay
+# And I wait for 10 seconds
+# Then <Contact2> verify to have 2 flows
+# Then <Contact2> verify that all flows have greater than 0 bytes
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | CallBackend2 | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | AcceptingGROUPCALL | chrome      | autocall     | 2               |
