@@ -183,7 +183,7 @@ public class UserDevicePool {
     }
 
     public IDevice getOrAddDevice(ClientUser user, String deviceName) throws Exception {
-        return getDevice(user, deviceName).orElse(addDevice(user, deviceName));
+        return getDevice(user, deviceName).orElseGet(() -> addDevice(user, deviceName));
     }
 
     public synchronized void shutdown() {
