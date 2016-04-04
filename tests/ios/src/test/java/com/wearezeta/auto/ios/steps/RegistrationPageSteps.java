@@ -83,8 +83,7 @@ public class RegistrationPageSteps {
      */
     @When("^I enter invalid phone number$")
     public void IEnterInvalidPhoneNumber() throws Exception {
-        getRegistrationPage().inputPhoneNumber(
-                CommonUtils.generateRandomXdigits(11));
+        getRegistrationPage().inputPhoneNumber(CommonUtils.generateRandomXdigits(11));
     }
 
     /**

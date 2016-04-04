@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 
-import paramiko
-import requests
 from multiprocessing import Process
+import os
+import paramiko
 import sys
 import time
 import xml.etree.ElementTree as ET
 
 from cli_handlers.cli_handler_base import CliHandlerBase
-
 
 OFFLINE_TIMEOUT_SECONDS = 60
 ONLINE_TIMEOUT_SECONDS = 60 * 3
@@ -42,23 +41,27 @@ class RestartNodesWithLabels(CliHandlerBase):
             if node.is_online():
                 time.sleep(5)
             else:
-                sys.stderr.write('Node "{}" has been successfully transitioned to offline state after {} seconds\n'\
-                      .format(node.name, int(time.time() - seconds_started)))
+                sys.stderr.write('Node "{}" has been successfully transitioned to offline state after {} seconds\n' \
+                                 .format(node.name, int(time.time() - seconds_started)))
                 break
         if node.is_online():
-            sys.stderr.write('!!! Node "{}" is still online after {} seconds timeout\n'.\
-                               format(node.name, OFFLINE_TIMEOUT_SECONDS))
+            sys.stderr.write('!!! Node "{}" is still online after {} seconds timeout\n'. \
+                             format(node.name, OFFLINE_TIMEOUT_SECONDS))
         seconds_started = time.time()
         while (time.time() - seconds_started <= ONLINE_TIMEOUT_SECONDS):
             if not node.is_online():
                 time.sleep(5)
             else:
-                sys.stderr.write('Node "{}" has been successfully restarted after {} seconds\n'.\
-                      format(node.name, int(time.time() - seconds_started)))
+                sys.stderr.write('Node "{}" has been successfully restarted after {} seconds\n'. \
+                                 format(node.name, int(time.time() - seconds_started)))
                 return node.name
         if not node.is_online():
-            sys.stderr.write('!!! Node "{}" is still offline after {} seconds timeout\n'.\
-                               format(node.name, ONLINE_TIMEOUT_SECONDS))
+            sys.stderr.write('!!! Node "{}" is still offline after {} seconds timeout\n'. \
+                             format(node.name, ONLINE_TIMEOUT_SECONDS))
+
+    @staticmethod
+    def _is_alive(host):
+        return (os.system('ping -c1 {}'.format(host)) == 0)
 
     def _invoke(self):
         parser = self._get_parser()
@@ -67,21 +70,22 @@ class RestartNodesWithLabels(CliHandlerBase):
         count_of_nodes_to_restart = 0
         workers = []
         for _, node in self._jenkins.get_nodes().iteritems():
-            if node.is_online():
-                response = node.jenkins.requester.get_and_confirm_status(
-                                                "%(baseurl)s/config.xml" % node.__dict__)
-                et = ET.fromstring(response.text)
-                node_labels_str = et.find('label').text
-                if node_labels_str:
-                    node_labels = self._normalize_labels(node_labels_str.split(' '))
-                else:
-                    node_labels = set()
-                if expected_labels.issubset(node_labels):
-                    sys.stderr.write('Found matching node "{}". Restarting...\n'.format(node.name))
-                    hostname = et.find('.//host').text
-                    workers.append(Process(target=self._restart_node_and_wait,
-                                args=(node, hostname, args.node_user, args.node_password)))
-                    workers[-1].start()
-                    count_of_nodes_to_restart += 1
+            response = node.jenkins.requester.get_and_confirm_status("%(baseurl)s/config.xml" % node.__dict__)
+            et = ET.fromstring(response.text)
+            hostname = et.find('.//host').text
+            if not self._is_alive(hostname):
+                sys.stderr.write('The host {} seems to be already offline\n'.format(hostname))
+                continue
+            node_labels_str = et.find('label').text
+            if node_labels_str:
+                node_labels = self._normalize_labels(node_labels_str.split(' '))
+            else:
+                node_labels = set()
+            if expected_labels.issubset(node_labels):
+                sys.stderr.write('Found matching node "{}". Restarting...\n'.format(node.name))
+                workers.append(Process(target=self._restart_node_and_wait,
+                                       args=(node, hostname, args.node_user, args.node_password)))
+                workers[-1].start()
+                count_of_nodes_to_restart += 1
         [w.join() for w in workers]
         return count_of_nodes_to_restart

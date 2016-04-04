@@ -365,7 +365,7 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C77948 @C77950 @staging
+  @C77948 @C77950 @rc @regression
   Scenario Outline: Upper toolbar displayed in conversation view, I can back to conversation list by toolbar arrow
     Given There is 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -432,7 +432,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |  Message1 | Message2 |
       | user1Name | user2Name | user3Name |  Msg1     | Msg2     |
 
-  @C77966 @staging
+  @C77966 @regression
   Scenario Outline: Verify there are no video and audio calling icons under the + button bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

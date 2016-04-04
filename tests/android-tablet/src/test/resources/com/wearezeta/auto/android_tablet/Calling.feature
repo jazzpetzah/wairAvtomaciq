@@ -155,11 +155,12 @@ Feature: Calling
     Given I see the conversations list with conversations
     And I minimize the application
     When <Contact> calls me using <CallBackend>
-    Then I see incoming call
+    And I wait for 7 seconds
     Then I see incoming call from <Contact>
     When I swipe to accept the call
     Then I see ongoing call
     And <Contact> stops all calls to me
+    When I restore the application
     Then I do not see ongoing call
 
     Examples:
@@ -174,13 +175,14 @@ Feature: Calling
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    And I lock the device
-    When <Contact> calls me using <CallBackend>
-    Then I see incoming call
+    When I lock the device
+    And <Contact> calls me using <CallBackend>
+    And I wait for 7 seconds
     Then I see incoming call from <Contact>
     When I swipe to accept the call
     Then I see ongoing call
     And <Contact> stops all calls to me
+    When I unlock the device
     Then I do not see ongoing call
 
     Examples:
