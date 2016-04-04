@@ -437,7 +437,7 @@ Feature: Calling
   Scenario Outline: Verify initiator is not a host for the call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> start instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
