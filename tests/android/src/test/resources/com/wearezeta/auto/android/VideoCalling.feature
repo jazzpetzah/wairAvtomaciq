@@ -412,7 +412,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 30      |
 
-  @C58888 @staging
+  @C58888 @calling_advanced @rc
   Scenario Outline: Verify video call is not terminated after putting client to background and restore
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -477,7 +477,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 65      |
 
-  @C58887 @staging
+  @C58887 @calling_advanced @rc
   Scenario Outline: Verify I can decline Video call from background
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
