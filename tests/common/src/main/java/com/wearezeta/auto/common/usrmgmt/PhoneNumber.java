@@ -3,8 +3,6 @@ package com.wearezeta.auto.common.usrmgmt;
 import java.math.BigInteger;
 import java.util.Random;
 
-import org.apache.commons.lang3.StringUtils;
-
 public final class PhoneNumber {
     private static final int MAX_NUMBER_LENGTH = 15;
     private static final int MIN_NUMBER_LENGTH = 8;
@@ -65,18 +63,13 @@ public final class PhoneNumber {
     }
 
     public static PhoneNumber increasedBy(PhoneNumber srcNumber, BigInteger by) {
-        final int digitsCount = srcNumber.withoutPlus().length();
-        final BigInteger srcNumberAsBigInt = new BigInteger(srcNumber.withoutPlus());
+        final BigInteger srcNumberAsBigInt = new BigInteger(srcNumber.withoutPrefix());
         final String increasedNumber = srcNumberAsBigInt.add(by).toString();
-        return new PhoneNumber("+", StringUtils.leftPad(increasedNumber, digitsCount, '0'));
+        return new PhoneNumber(srcNumber.getPrefix(), increasedNumber);
     }
 
     public String withoutPrefix() {
         return this.number;
-    }
-
-    public String withoutPlus() {
-        return this.toString().replace("+", "");
     }
 
     public String getPrefix() {
