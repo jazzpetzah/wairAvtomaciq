@@ -36,12 +36,8 @@ public class PhoneNumberLoginPageSteps {
 	@When("^I sign in using phone number of user (.*)$")
 	public void ISignInUsignPhoneNumberOfUser(String name) throws Exception {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
-		String number = user.getPhoneNumber().toString();
-		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
-				.enterCountryCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
-		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
-				.enterPhoneNumber(number);
+		webappPagesCollection.getPage(PhoneNumberLoginPage.class).enterCountryCode(user.getPhoneNumber().getPrefix());
+		webappPagesCollection.getPage(PhoneNumberLoginPage.class).enterPhoneNumber(user.getPhoneNumber());
 	}
 
 	/**
@@ -57,7 +53,7 @@ public class PhoneNumberLoginPageSteps {
 	@When("^I enter phone number (.*) on phone number sign in$")
 	public void IEnterPhoneNumber(String number) throws Exception {
 		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
-				.enterPhoneNumber(number);
+				.enterPhoneNumber(new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX, number));
 	}
 
 	/**
@@ -71,8 +67,7 @@ public class PhoneNumberLoginPageSteps {
 	 */
 	@When("^I enter country code (.*) on phone number sign in$")
 	public void ISelectCountryCode(String code) throws Exception {
-		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
-				.enterCountryCode(code);
+		webappPagesCollection.getPage(PhoneNumberLoginPage.class).enterCountryCode(code);
 	}
 
 	/**

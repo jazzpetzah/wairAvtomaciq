@@ -3,96 +3,76 @@ package com.wearezeta.auto.common.usrmgmt;
 import java.math.BigInteger;
 import java.util.Random;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.google.common.base.Throwables;
-
 public final class PhoneNumber {
-	private static final int MAX_NUMBER_LENGTH = 16;
-	private static final int MIN_NUMBER_LENGTH = 9;
-	public static final String WIRE_COUNTRY_PREFIX = "+0";
+    private static final int MAX_NUMBER_LENGTH = 14;
+    private static final int MIN_NUMBER_LENGTH = 8;
+    public static final String WIRE_COUNTRY_PREFIX = "+0";
 
-	private String number;
+    private String number;
+    private String prefix = WIRE_COUNTRY_PREFIX;
 
-	@Override
-	public String toString() {
-		return this.number;
-	}
+    @Override
+    public String toString() {
+        return this.prefix + this.number;
+    }
 
-	@Override
-	public boolean equals(Object other) {
-		if (other instanceof String) {
-			try {
-				return this.number.equals(new PhoneNumber("", (String) other)
-						.toString());
-			} catch (IncorrectPhoneNumberException e) {
-				Throwables.propagate(e);
-			}
-		} else if (other instanceof PhoneNumber) {
-			return this.number.equals(((PhoneNumber) other).number);
-		}
-		return false;
-	}
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof String) {
+            return (this.prefix + this.number).equals(other);
+        } else if (other instanceof PhoneNumber) {
+            return this.number.equals(((PhoneNumber) other).number) && this.prefix.equals(((PhoneNumber) other).prefix);
+        }
+        return false;
+    }
 
-	public static class IncorrectPhoneNumberException extends Exception {
+    public PhoneNumber(String prefix, String number) {
+        this.prefix = prefix;
+        this.number = number;
+    }
 
-		private static final long serialVersionUID = 3131850198106711281L;
+    public PhoneNumber(String prefix) {
+        this.prefix = prefix;
+        this.number = generateRandomNumber(this.prefix.replace("+", "").length());
+    }
 
-		public IncorrectPhoneNumberException(String msg) {
-			super(msg);
-		}
-	}
+    public PhoneNumber(String prefix, int digitsCount) {
+        this.prefix = prefix;
+        this.number = generateRandomNumber(this.prefix.replace("+", "").length(), digitsCount);
+    }
 
-	public PhoneNumber(String prefix, String number)
-			throws IncorrectPhoneNumberException {
-		this.number = formatNumber(prefix + number);
-	}
+    public PhoneNumber(int digitsCount) {
+        this.number = generateRandomNumber(this.prefix.replace("+", "").length(), digitsCount);
+    }
 
-	public PhoneNumber(String prefix) throws IncorrectPhoneNumberException {
-		this.number = formatNumber(generateRandomNumber(prefix));
-	}
+    private static final Random rand = new Random();
 
-	private String generateRandomNumber(String prefix) {
-		final StringBuilder result = new StringBuilder();
-		result.append(prefix);
-		final Random rand = new Random();
-		// The very first digit should not be Zero
-		result.append(Integer.toString(1 + rand.nextInt(9)));
-		for (int i = 0; i < MIN_NUMBER_LENGTH
-				- prefix.length()
-				+ rand.nextInt(MAX_NUMBER_LENGTH - MIN_NUMBER_LENGTH
-						+ prefix.length() - 2); i++) {
-			result.append(Integer.toString(rand.nextInt(10)));
-		}
-		return result.toString();
-	}
+    private static String generateRandomNumber(final int prefixLen) {
+        return generateRandomNumber(prefixLen, MIN_NUMBER_LENGTH + rand.nextInt(MAX_NUMBER_LENGTH - MIN_NUMBER_LENGTH));
+    }
 
-	private String formatNumber(String number)
-			throws IncorrectPhoneNumberException {
-		String resultNumber = number;
-		if (!resultNumber.startsWith("+")) {
-			resultNumber = "+" + resultNumber;
-		}
-		if (resultNumber.length() < MIN_NUMBER_LENGTH) {
-			throw new IncorrectPhoneNumberException(String.format(
-					"Phone number '%s' cannot be shorter than %s characters",
-					resultNumber, MIN_NUMBER_LENGTH));
-		}
-		if (resultNumber.length() > MAX_NUMBER_LENGTH) {
-			throw new IncorrectPhoneNumberException(String.format(
-					"Phone number '%s' cannot be longer than %s characters",
-					resultNumber, MAX_NUMBER_LENGTH));
-		}
-		return resultNumber;
-	}
+    private static String generateRandomNumber(final int prefixLen, final int digitsCount) {
+        assert digitsCount > 1 : "Phone number digits count should be greater than one";
+        final StringBuilder result = new StringBuilder();
+        // The very first digit should not be Zero
+        result.append(Integer.toString(1 + rand.nextInt(9)));
+        for (int i = 0; i < digitsCount - prefixLen - 1; i++) {
+            result.append(Integer.toString(rand.nextInt(10)));
+        }
+        return result.toString();
+    }
 
-	public static PhoneNumber increasedBy(PhoneNumber srcNumber, BigInteger by)
-			throws IncorrectPhoneNumberException {
-		final int digitsCount = srcNumber.toString().length() - 1;
-		final BigInteger srcNumberAsBigInt = new BigInteger(srcNumber
-				.toString().substring(1, srcNumber.toString().length()));
-		final String increasedNumber = srcNumberAsBigInt.add(by).toString();
-		return new PhoneNumber("+", StringUtils.leftPad(increasedNumber,
-				digitsCount, '0'));
-	}
+    public static PhoneNumber increasedBy(PhoneNumber srcNumber, BigInteger by) {
+        final BigInteger srcNumberAsBigInt = new BigInteger(srcNumber.withoutPrefix());
+        final String increasedNumber = srcNumberAsBigInt.add(by).toString();
+        return new PhoneNumber(srcNumber.getPrefix(), increasedNumber);
+    }
+
+    public String withoutPrefix() {
+        return this.number;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
 }

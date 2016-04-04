@@ -13,7 +13,6 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.common.usrmgmt.UserState;
@@ -43,20 +42,7 @@ public class RegistrationPageSteps {
     @When("^I enter phone number for user (.*)$")
     public void IEnterPhoneNumber(String name) throws Exception {
         this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
-        getRegistrationPage().selectWirestan();
-        getRegistrationPage().inputPhoneNumber(
-                this.userToRegister.getPhoneNumber().toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
-    }
-
-    /**
-     * Input in sign in by phone number page a random phone number
-     *
-     * @throws Exception
-     * @step. ^I enter random phone number$
-     */
-    @When("^I enter random phone number$")
-    public void IEnterRandomPhoneNumber() throws Exception {
-        getRegistrationPage().inputPhoneNumber(CommonUtils.generateRandomXdigits(7));
+        getRegistrationPage().inputPhoneNumber(this.userToRegister.getPhoneNumber());
     }
 
     /**
@@ -69,22 +55,8 @@ public class RegistrationPageSteps {
      */
     @When("^I input phone number (.*) with code (.*)$")
     public void IInputPhoneNumber(String number, String code) throws Exception {
-        getRegistrationPage().selectWirestan();
-        assert code.equals(PhoneNumber.WIRE_COUNTRY_PREFIX) :
-                "Only Wire-compatible phone numbers are supported";
-        getRegistrationPage().inputPhoneNumber(number);
-    }
-
-    /**
-     * Input in phone number field page an invalid phone number
-     *
-     * @throws Exception
-     * @step. ^I enter invalid phone number$
-     */
-    @When("^I enter invalid phone number$")
-    public void IEnterInvalidPhoneNumber() throws Exception {
-        getRegistrationPage().inputPhoneNumber(
-                CommonUtils.generateRandomXdigits(11));
+        assert code.equals(PhoneNumber.WIRE_COUNTRY_PREFIX) : "Only Wire-compatible phone numbers are supported";
+        getRegistrationPage().inputPhoneNumber(new PhoneNumber(code, number));
     }
 
     /**
@@ -95,7 +67,7 @@ public class RegistrationPageSteps {
      */
     @When("^I enter (.*) digits phone number$")
     public void IEnterXDigitsPhoneNumber(int x) throws Exception {
-        getRegistrationPage().inputPhoneNumber(CommonUtils.generateRandomXdigits(x));
+        getRegistrationPage().inputPhoneNumber(new PhoneNumber(x));
     }
 
     /**
@@ -257,9 +229,8 @@ public class RegistrationPageSteps {
     /**
      * Tap Keep This One button on unsplash page
      *
-     * @step. ^I press Keep This One button$
-     *
      * @throws Exception
+     * @step. ^I press Keep This One button$
      */
     @And("^I press Keep This One button$")
     public void IPressKeepThisOneButton() throws Exception {
@@ -269,9 +240,8 @@ public class RegistrationPageSteps {
     /**
      * Tap Take Photo button on unsplash page
      *
-     * @step. ^I press Take Photo button$
-     *
      * @throws Exception
+     * @step. ^I press Take Photo button$
      */
     @And("^I press Take Photo button$")
     public void IPressTakePhotoButton() throws Exception {

@@ -101,7 +101,7 @@ Feature: Self Profile
     When I tap my avatar
     And I tap to add my phone number
     And I see country picker button on Sign in screen
-    And I enter invalid phone number
+    And I enter 10 digits phone number
     Then I see invalid phone number alert
 
     Examples:

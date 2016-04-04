@@ -14,11 +14,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class PeoplePickerPage extends AndroidPage {
     public static final By idParticipantsClose = By.id("gtv__participants__close");
 
-    public static final By xpathMainSearchField =
-            By.xpath("//*[@id='fl__conversation_list_main']//*[@id='sbv__search_box']");
-
-    public static final By xpathAddPeopleSearchField =
-            By.xpath("//*[@id='fl__add_to_conversation__pickuser__container']//*[@id='sbv__search_box']");
+    public static final By xpathSearchField =  By.xpath("//*[@id='sbv__search_box']");
 
     public static final By idSuggestionUserName = By.xpath("//*[@id='ttv_pickuser__searchuser_name']");
 
@@ -33,6 +29,10 @@ public class PeoplePickerPage extends AndroidPage {
     public static final By idQuickMenuCallButton = By.id("gtv__conversation_quick_menu__call_button");
 
     public static final By idQuickMenuVideoCallButton = By.id("gtv__conversation_quick_menu__video_call_button");
+
+    public static final By idPickUserToolbar = By.id("t_pickuser_toolbar");
+
+    public static final By idPickUserToolbarTitle = By.id("ttv__pickuser__add_header");
 
     private static final Function<String, String> xpathStrPeoplePickerGroupByName = name -> String
             .format("//*[@id='ttv_pickuser_searchconversation_name' and @value='%s']", name);
@@ -55,8 +55,10 @@ public class PeoplePickerPage extends AndroidPage {
     public static final Function<String, String> xpathStrExistedContactUserByName = name -> String
             .format("//*[@id='ttv__contactlist__user__name' and @value='%s']", name);
 
+    public static final Function<String, String> xpathStrToolbarTitleByName = name -> String
+            .format("//*[@id='ttv__pickuser__add_header' and @value='%s']", name);
 
-    public static final By idPickerBtnDone = By.id("zb__pickuser__confirmation_button");
+    public static final By idPickUserConfirmationBtn = By.id("zb__pickuser__confirmation_button");
 
     private static final String idStrCreateOrOpenConversationButton = "zb__conversation_quick_menu__conversation_button";
     private static final By xpathOpenConversationButton = By.xpath(String.format("//*[@id='%s' and @value='OPEN']",
@@ -65,7 +67,7 @@ public class PeoplePickerPage extends AndroidPage {
             By.xpath(String.format("//*[@id='%s' and @value='CREATE GROUP']", idStrCreateOrOpenConversationButton));
     private static final By idCreateOrOpenConversationButton = By.id(idStrCreateOrOpenConversationButton);
 
-    private static final By idNoResultsFound = By.id("ttv_pickuser__error_header");
+    private static final By idPickUserError = By.id("ttv_pickuser__error_header");
 
     private static final By idPickerListContainer = By.id("rv__pickuser__header_list_view");
 
@@ -74,12 +76,7 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     private WebElement getPickerEdit() throws Exception {
-        final Optional<WebElement> mainEdit = getElementIfDisplayed(xpathMainSearchField, 3);
-        if (mainEdit.isPresent()) {
-            return mainEdit.get();
-        } else {
-            return getElement(xpathAddPeopleSearchField, "Search field is not visible on the current page");
-        }
+        return getElement(xpathSearchField, "Search field is not visible on the current page");
     }
 
     public void tapPeopleSearch() throws Exception {
@@ -114,8 +111,12 @@ public class PeoplePickerPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idSuggestionUserName);
     }
 
-    public boolean isNoResultsFoundVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idNoResultsFound);
+    public boolean isErrorVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idPickUserError);
+    }
+
+    public boolean isErrorInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idPickUserError);
     }
 
     public boolean isTopPeopleHeaderVisible() throws Exception {
@@ -156,15 +157,15 @@ public class PeoplePickerPage extends AndroidPage {
     }
 
     public boolean isPeoplePickerPageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathMainSearchField);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathSearchField);
     }
 
-    public boolean isAddToConversationBtnVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idPickerBtnDone);
+    public boolean isPickUserConfirmationBtnVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idPickUserConfirmationBtn);
     }
 
-    public void clickOnAddToConversationButton() throws Exception {
-        getElement(idPickerBtnDone).click();
+    public void tapPickUserConfirmationButton() throws Exception {
+        getElement(idPickUserConfirmationBtn).click();
     }
 
     public void tapCreateConversation() throws Exception {
@@ -204,6 +205,15 @@ public class PeoplePickerPage extends AndroidPage {
     public boolean isContactInvisible(String name) throws Exception {
         return !DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 By.xpath(xpathStrExistedContactUserByName.apply(name)), 2);
+    }
+
+    public boolean isToolbarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idPickUserToolbar);
+    }
+
+    public boolean isToolbarTitleVisible(String name) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.xpath(xpathStrToolbarTitleByName.apply(name)));
     }
 
     public void swipeRightOnContactAvatar(String name) throws Exception {

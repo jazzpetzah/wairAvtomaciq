@@ -74,7 +74,7 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I see sign in screen
     When I see country picker button on Sign in screen
-    And I enter random phone number
+    And I enter 10 digits phone number
     Then I see something went wrong alert
 
     Examples:
