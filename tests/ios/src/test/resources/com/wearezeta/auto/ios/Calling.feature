@@ -450,8 +450,8 @@ Feature: Calling
     #Then I see <NumberOfAvatars> avatars on the Calling overlay
     And I wait for 5 seconds
     Then <Contact1> stops calling <GroupChatName>
-    And <Contact1> verifies that call status to <GroupChatName> is changed to destroyed in 2 seconds
-    And <Contact2> verifies that call status to <GroupChatName> is changed to active in 2 seconds
+    And <Contact1> verifies that call status to <GroupChatName> is changed to destroyed in 15 seconds
+    And <Contact2> verifies that call status to <GroupChatName> is changed to active in 15 seconds
     And I wait for 5 seconds
 
     Examples:
