@@ -93,6 +93,8 @@ public class RegistrationPage extends IOSPage {
 
     public void inputPhoneNumber(String number) throws Exception {
         final WebElement phoneNumberField = getElement(namePhoneNumberField);
+        DriverUtils.tapInTheCenterOfTheElement(getDriver(),phoneNumberField);
+        Thread.sleep(2000);
         phoneNumberField.sendKeys(number);
         getElement(nameConfirmButton).click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
