@@ -359,7 +359,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
-  @C77975 @videocalling @staging
+  @C77975 @videocalling @regression
   Scenario Outline: Verify I see the timer/duration of the video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -380,9 +380,9 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | Chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
-  @C78099 @videocalling @staging
+  @C78099 @videocalling @regression
   Scenario Outline: Verify I can see the incoming video call when I just login
     Given My browser supports calling
     Given There are 2 users where <Name> is me
