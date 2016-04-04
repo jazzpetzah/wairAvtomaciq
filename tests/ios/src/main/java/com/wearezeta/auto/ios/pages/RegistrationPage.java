@@ -1,21 +1,17 @@
 package com.wearezeta.auto.ios.pages;
 
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+import io.appium.java_client.MobileBy;
+import io.appium.java_client.ios.IOSElement;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
 import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.function.Function;
-
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-
-import io.appium.java_client.MobileBy;
-import io.appium.java_client.ios.IOSElement;
-
-import org.openqa.selenium.By;
-
-import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-
-import org.openqa.selenium.WebElement;
 
 public class RegistrationPage extends IOSPage {
 
@@ -63,6 +59,9 @@ public class RegistrationPage extends IOSPage {
 
     private static final By nameKeepThisOneButton = MobileBy.AccessibilityId("KeepDefaultPictureButton");
 
+    private static final By xpathNoCodeShowingUpLabel = By.
+            xpath("//UIAStaticText[contains(@name, 'NO CODE SHOWING UP?')]");
+
     private String name;
     private String email;
     private String password;
@@ -94,9 +93,6 @@ public class RegistrationPage extends IOSPage {
 
     public void inputPhoneNumber(String number) throws Exception {
         final WebElement phoneNumberField = getElement(namePhoneNumberField);
-        phoneNumberField.click();
-        // Wait for animation
-        Thread.sleep(2000);
         phoneNumberField.sendKeys(number);
         getElement(nameConfirmButton).click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
@@ -238,5 +234,21 @@ public class RegistrationPage extends IOSPage {
      */
     public void tapNameInputField() throws Exception {
         getElement(xpathNameField).sendKeys("\n\n");
+    }
+
+    public boolean noCodeShowingUpLabelIsDisplayed() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathNoCodeShowingUpLabel);
+    }
+
+    public boolean noCodeShowingUpLabelIsNotDisplayed() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathNoCodeShowingUpLabel);
+    }
+
+    public boolean resendButtonIsVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameResendCodeButton);
+    }
+
+    public boolean resendButtonIsNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameResendCodeButton);
     }
 }

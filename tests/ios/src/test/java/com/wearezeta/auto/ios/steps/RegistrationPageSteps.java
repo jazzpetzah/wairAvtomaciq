@@ -1,25 +1,19 @@
 package com.wearezeta.auto.ios.steps;
 
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.email.ActivationMessage;
+import com.wearezeta.auto.common.email.WireMessage;
+import com.wearezeta.auto.common.usrmgmt.*;
+import com.wearezeta.auto.ios.pages.RegistrationPage;
+import cucumber.api.java.en.And;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+import org.junit.Assert;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
-
-import com.wearezeta.auto.common.email.ActivationMessage;
-import com.wearezeta.auto.common.email.WireMessage;
-import cucumber.api.java.en.And;
-import org.junit.Assert;
-
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-import com.wearezeta.auto.common.usrmgmt.UserState;
-import com.wearezeta.auto.ios.pages.RegistrationPage;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 
 public class RegistrationPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -183,7 +177,8 @@ public class RegistrationPageSteps {
 
     @Then("^I see confirmation page$")
     public void ISeeConfirmationPage() throws Exception {
-        Assert.assertTrue("Confirmation message is not shown or not correct", getRegistrationPage().isConfirmationShown());
+        Assert.assertTrue("Confirmation message is not shown or not correct", getRegistrationPage()
+                .isConfirmationShown());
     }
 
     /**
@@ -256,9 +251,8 @@ public class RegistrationPageSteps {
     /**
      * Tap Keep This One button on unsplash page
      *
-     * @step. ^I press Keep This One button$
-     *
      * @throws Exception
+     * @step. ^I press Keep This One button$
      */
     @And("^I press Keep This One button$")
     public void IPressKeepThisOneButton() throws Exception {
@@ -268,13 +262,45 @@ public class RegistrationPageSteps {
     /**
      * Tap Take Photo button on unsplash page
      *
-     * @step. ^I press Take Photo button$
-     *
      * @throws Exception
+     * @step. ^I press Take Photo button$
      */
     @And("^I press Take Photo button$")
     public void IPressTakePhotoButton() throws Exception {
         getRegistrationPage().tapTakePhotoButton();
     }
 
+    /**
+     * Verify visibility of "No code to show up" label
+     *
+     * @throws Exception
+     * @step. ^I (do not )?see NO CODE TO SHOW UP label$
+     */
+    @When("^I (do not )?see NO CODE TO SHOW UP label$")
+    public void VerifyNoCodeShowingUpLabelVisibility(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("No code to show up label is not visible", getRegistrationPage()
+                    .noCodeShowingUpLabelIsDisplayed());
+        } else {
+            Assert.assertTrue("No code to show up label is visible", getRegistrationPage()
+                    .noCodeShowingUpLabelIsNotDisplayed());
+        }
+    }
+
+    /**
+     * Verify visibility of "RESEND" button
+     *
+     * @throws Exception
+     * @step. ^I (do not )?see RESEND button$
+     */
+    @When("^I (do not )?see RESEND button$")
+    public void VerifyResendButtonVisibility(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("RESEND button is not visible", getRegistrationPage()
+                    .resendButtonIsVisible());
+        } else {
+            Assert.assertTrue("RESEND button is visible", getRegistrationPage()
+                    .resendButtonIsNotVisible());
+        }
+    }
 }
