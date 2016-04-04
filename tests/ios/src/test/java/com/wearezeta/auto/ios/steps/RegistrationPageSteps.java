@@ -273,6 +273,7 @@ public class RegistrationPageSteps {
     /**
      * Verify visibility of "No code to show up" label
      *
+     * @param shouldNotBeVisible equals to null if the shield should be visible
      * @throws Exception
      * @step. ^I (do not )?see NO CODE TO SHOW UP label$
      */
@@ -290,6 +291,7 @@ public class RegistrationPageSteps {
     /**
      * Verify visibility of "RESEND" button
      *
+     * @param shouldNotBeVisible equals to null if the shield should be visible
      * @throws Exception
      * @step. ^I (do not )?see RESEND button$
      */

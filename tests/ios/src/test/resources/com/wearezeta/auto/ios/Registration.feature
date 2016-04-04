@@ -84,11 +84,11 @@ Feature: Registration
     When I enter phone number for user <Name>
     Then I do not see RESEND button
     And I see NO CODE TO SHOW UP label
-    And I wait for <Timeout> seconds
-    And I do not see NO CODE TO SHOW UP label
+    When I wait for <Timeout> seconds
+    Then I do not see NO CODE TO SHOW UP label
     And I see RESEND button
-    And I tap RESEND code button
-    And I do not see RESEND button
+    When I tap RESEND code button
+    Then I do not see RESEND button
     And I see NO CODE TO SHOW UP label
 
     Examples:
