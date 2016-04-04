@@ -363,15 +363,15 @@ public class PeoplePickerPageSteps {
 
     private static String user2;
 
-	@When("^I remember (.*) suggested user$")
+    @When("^I remember (.*) suggested user$")
     public void IRememberSuggestedUser(String count) throws Exception {
         List<String> suggestedUsers = webappPagesCollection.getPage(PeoplePickerPage.class).getNamesOfSuggestedContacts();
         if (count.contains("first")) {
             user1 = suggestedUsers.get(0);
-			    System.out.println("ERSTER: " + user1);
+            System.out.println("ERSTER: " + user1);
         } else if (count.contains("second")) {
             user2 = suggestedUsers.get(1);
-			    System.out.println("ZWEITER: " + user2);
+            System.out.println("ZWEITER: " + user2);
         }
     }
 
@@ -393,14 +393,14 @@ public class PeoplePickerPageSteps {
     }
 
     @When("^I remove first remembered user from suggestions in People Picker$")
-    public void IRemoveFirstRememberedUser() throws Exception{
+    public void IRemoveFirstRememberedUser() throws Exception {
         user1 = usrMgr.replaceAliasesOccurences(user1, FindBy.NAME_ALIAS);
         webappPagesCollection.getPage(PeoplePickerPage.class)
                 .clickRemoveButtonOnSuggestion(user1);
     }
 
     @When("^I make a connection request for second remembered user directly from People Picker$")
-    public void IMakeAConnectionRequestForSecondRememberedUser() throws Exception{
+    public void IMakeAConnectionRequestForSecondRememberedUser() throws Exception {
         user2 = usrMgr.replaceAliasesOccurences(user2, FindBy.NAME_ALIAS);
         webappPagesCollection.getPage(PeoplePickerPage.class)
                 .clickPlusButtonOnSuggestion(user2);

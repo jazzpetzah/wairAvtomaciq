@@ -274,13 +274,13 @@ public class PeoplePickerPage extends WebPage {
 
     public List getNamesOfSuggestedContacts() throws Exception {
         ArrayList<String> namesOfSuggestedContacts = new ArrayList<String>();
-		final By suggestedContacts = By
+        final By suggestedContacts = By
                 .cssSelector(WebAppLocators.PeoplePickerPage.xpathSuggestedContacts);
         for (WebElement element : suggestions) {
             namesOfSuggestedContacts.add(element.getAttribute("data-uie-value"));
         }
-		return namesOfSuggestedContacts;
-	}
+        return namesOfSuggestedContacts;
+    }
 
 	public boolean isSearchOpened() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
