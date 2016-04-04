@@ -61,7 +61,7 @@ Feature: Bring Your Friends
       | Email      | Password      | Name      | Gmail                       | GmailPassword |
       | user1Email | user1Password | user1Name | smoketester.wire2@gmail.com | aqa123456!    |
 
-  @C1775 @regression @torun
+  @C1775 @regression
   Scenario: Use Gmail contacts import from search UI
     Given There is 1 user where user1Name is me without avatar picture
     Given I switch to Sign In page
@@ -79,6 +79,7 @@ Feature: Bring Your Friends
     When I remove first remembered user from suggestions in People Picker
     And I do not see first remembered user in People Picker
     And I make a connection request for second remembered user directly from People Picker
+    And I do not see second remembered user in People Picker
     And I close People Picker
     And I see Contact list with second remembered user
     When I open second remembered users conversation

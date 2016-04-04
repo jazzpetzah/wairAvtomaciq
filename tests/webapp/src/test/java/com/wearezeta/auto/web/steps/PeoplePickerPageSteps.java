@@ -377,9 +377,12 @@ public class PeoplePickerPageSteps {
 
     @When("^I( do not)? see (.*) remembered user in People Picker$")
     public void ISeeRememberedUserInPeoplePicker(String donot, String count) throws Exception {
-        if (donot != null) {
+        if (donot != null && count.contains("first")) {
             Assert.assertTrue(webappPagesCollection.getPage(
                     PeoplePickerPage.class).isUserNotFound(user1));
+        } else if (donot != null && count.contains("second")) {
+            Assert.assertTrue(webappPagesCollection.getPage(
+                    PeoplePickerPage.class).isUserNotFound(user2));
         } else if (count.contains("first")) {
             Assert.assertTrue(webappPagesCollection.getPage(
                     PeoplePickerPage.class).isUserFound(user1));
