@@ -494,7 +494,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  | NEW_DEVICE                 | Message          |
       | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified | started using a new device | Unverified hello |
 
-  @C82513 @staging
+  @C82513 @e2ee @staging
   Scenario Outline: Verify you can recover from a broken session
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -520,3 +520,55 @@ Feature: E2EE
     Examples:
       | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT | Message1    | Message2     | Message3    |
       | user1Email | user1Password | user1Name | user2Name | UNABLE TO DECRYPT | First hello | Second hello | Third hello |
+
+  @C82514 @e2ee @staging
+  Scenario Outline: Verify you get no decryption errors when receiving messages on load
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given user <Name> adds a new device Device2 with label Label2
+    Given user <Name> adds a new device Device3 with label Label3
+    Given user <Name> adds a new device Device4 with label Label4
+    Given user <Name> adds a new device Device5 with label Label5
+    Given user <Name> adds a new device Device6 with label Label6
+    Given user <Contact> adds a new device Device7 with label Label7
+    Given user <Name> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    And Contact <Name> sends encrypted message <StartMessage> via device Device1 to user <Contact>
+    Then I see text message <StartMessage>
+    When I remember current page
+    And I navigate to download page
+    And Contact <Contact> sends 50 encrypted messages with prefix <PREFIX1> via device Device1 to user <Name>
+    And Contact <Name> sends 50 encrypted messages with prefix <PREFIX2> via device Device1 to user <Contact>
+    And I navigate to previously remembered page
+    And Contact <Contact> sends 60 encrypted messages with prefix <PREFIX3> via device Device1 to user <Name>
+    And Contact <Name> sends 60 encrypted messages with prefix <PREFIX4> via device Device1 to user <Contact>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    And I wait for 30 seconds
+    Then I do not see <UNABLE_TO_DECRYPT> action in conversation
+    And I see text message First10
+    And I see text message First20
+    And I see text message First30
+    And I see text message First40
+    And I see text message Second10
+    And I see text message Second20
+    And I see text message Second30
+    And I see text message Second40
+    And I see text message Third10
+    And I see text message Third20
+    And I see text message Third30
+    And I see text message Third40
+    And I see text message Third50
+    And I see text message Four10
+    And I see text message Four20
+    And I see text message Four30
+    And I see text message Four40
+    And I see text message Four50
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT | StartMessage | PREFIX1 | PREFIX2 | PREFIX3 | PREFIX4 |
+      | user1Email | user1Password | user1Name | user2Name | UNABLE TO DECRYPT | Let's start  | First   | Second  | Third   | Four    |
