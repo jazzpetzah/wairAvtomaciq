@@ -18,7 +18,7 @@ class SearchPage extends AbstractPopoverPage {
     }
 
     private WebElement getSearchInput() throws Exception {
-        return getElement(PeoplePickerPage.xpathAddPeopleSearchField);
+        return getElement(PeoplePickerPage.xpathSearchField);
     }
 
     public void enterSearchText(String text) throws Exception {
@@ -34,7 +34,7 @@ class SearchPage extends AbstractPopoverPage {
     }
 
     public void tapAddToConversationButton() throws Exception {
-        getElement(PeoplePickerPage.idPickerBtnDone).click();
+        getElement(PeoplePickerPage.idPickUserConfirmationBtn).click();
     }
 
 }
