@@ -61,8 +61,8 @@ Feature: Bring Your Friends
       | Email      | Password      | Name      | Gmail                       | GmailPassword |
       | user1Email | user1Password | user1Name | smoketester.wire2@gmail.com | aqa123456!    |
 
-  @C1775 @regression
-  Scenario Outline: Use Gmail contacts import from search UI
+  @C1775 @regression @torun
+  Scenario: Use Gmail contacts import from search UI
     Given There is 1 user where user1Name is me without avatar picture
     Given I switch to Sign In page
     Given I Sign in using login user1Email and password user1Password
@@ -72,19 +72,17 @@ Feature: Bring Your Friends
     And I see Google login popup
     And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!
     Then I see more than 5 suggestions in people picker
-    And I see user <Contact1> found in People Picker
-    And I see user <Contact2> found in People Picker
-    When I remove user <Contact1> from suggestions in People Picker
-    And I make a connection request for user <Contact2> directly from People Picker
+    And I remember first suggested user
+    And I remember second suggested user
+    And I see first remembered user in People Picker
+    And I see second remembered user in People Picker
+    When I remove first remembered user from suggestions in People Picker
+    And I do not see first remembered user in People Picker
+    And I make a connection request for second remembered user directly from People Picker
     And I close People Picker
-    Then I do not see Contact list with name <Contact1>
-    And I see Contact list with name <Contact2>
-    When I open conversation with <Contact2>
-    Then I see connecting message for <Contact2> in conversation
-
-    Examples:
-      | Contact1 | Contact2 |
-      | sven3    | Sven5    |
+    And I see Contact list with second remembered user
+    When I open second remembered users conversation
+    Then I see connecting message in conversation with second remembered user
 
   @C3218 @regression
   Scenario Outline: Switch between Invitation and Share Contacts bubbles

@@ -272,6 +272,16 @@ public class PeoplePickerPage extends WebPage {
 		return namesOfSelectedTopPeople;
 	}
 
+    public List getNamesOfSuggestedContacts() throws Exception {
+        ArrayList<String> namesOfSuggestedContacts = new ArrayList<String>();
+		final By suggestedContacts = By
+                .cssSelector(WebAppLocators.PeoplePickerPage.xpathSuggestedContacts);
+        for (WebElement element : suggestions) {
+            namesOfSuggestedContacts.add(element.getAttribute("data-uie-value"));
+        }
+		return namesOfSuggestedContacts;
+	}
+
 	public boolean isSearchOpened() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.cssSelector(WebAppLocators.PeoplePickerPage.cssSearchField));
