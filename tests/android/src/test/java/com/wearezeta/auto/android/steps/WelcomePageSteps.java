@@ -80,9 +80,7 @@ public class WelcomePageSteps {
 		getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
 
 		this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
-		String number = this.userToRegister.getPhoneNumber().toString();
-		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		getWelcomePage().inputPhoneNumber(number);
+		getWelcomePage().inputPhoneNumber(this.userToRegister.getPhoneNumber());
 		getWelcomePage().clickConfirm();
 	}
 

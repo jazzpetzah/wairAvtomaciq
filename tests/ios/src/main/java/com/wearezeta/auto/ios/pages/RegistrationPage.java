@@ -81,7 +81,7 @@ public class RegistrationPage extends IOSPage {
 
     private static final String WIRE_COUNTRY_NAME = "Wirestan";
 
-    public void selectWirestan() throws Exception {
+    private void selectWirestan() throws Exception {
         final WebElement countryPickerBtn = getElement(nameCountryPickerButton);
         countryPickerBtn.click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCountryPickerButton, 5)) {
@@ -92,12 +92,13 @@ public class RegistrationPage extends IOSPage {
         Thread.sleep(2000);
     }
 
-    public void inputPhoneNumber(String number) throws Exception {
+    public void inputPhoneNumber(PhoneNumber number) throws Exception {
+        selectWirestan();
         final WebElement phoneNumberField = getElement(namePhoneNumberField);
         phoneNumberField.click();
         // Wait for animation
         Thread.sleep(2000);
-        phoneNumberField.sendKeys(number);
+        phoneNumberField.sendKeys(number.withoutPrefix());
         getElement(nameConfirmButton).click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
             throw new IllegalStateException("Confirm button is still visible");
@@ -232,8 +233,8 @@ public class RegistrationPage extends IOSPage {
     }
 
     /**
-     *
      * Send extra space keys (workaround for simulator bug)
+     *
      * @throws Exception
      */
     public void tapNameInputField() throws Exception {

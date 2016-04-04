@@ -136,7 +136,7 @@ Feature: Sign In
     And I see PHONE SIGN IN button
     And I tap on PHONE SIGN IN button
     And I see country picker button on Sign in screen
-    And I enter random phone number
+    And I enter 10 digits phone number
     Then I see invalid phone number alert
 
     Examples:

@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.pages;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -41,10 +42,10 @@ public class PhoneNumberLoginPage extends WebPage {
 		countryCodeField.sendKeys(countryCode);
 	}
 
-	public void enterPhoneNumber(String phoneNumber) {
+	public void enterPhoneNumber(PhoneNumber phoneNumber) {
 		phoneNumberField.click();
 		phoneNumberField.clear();
-		phoneNumberField.sendKeys(phoneNumber);
+		phoneNumberField.sendKeys(phoneNumber.withoutPrefix());
 	}
 
 	public void clickSignInButton() throws Exception {

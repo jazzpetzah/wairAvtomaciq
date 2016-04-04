@@ -28,7 +28,7 @@ public class TabletPhoneLoginPage extends AndroidTabletPage {
 	}
 
     public void inputPhoneNumber(PhoneNumber number) throws Exception {
-        getWelcomePage().inputPhoneNumber(number.toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
+        getWelcomePage().inputPhoneNumber(number);
     }
 
     public void selectWireCountry() throws Exception {
