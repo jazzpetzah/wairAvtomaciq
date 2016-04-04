@@ -77,3 +77,20 @@ Feature: Registration
     Examples:
       | Name      | ArabicName |
       | user1Name | عبد العزيز |
+
+  @C1004 @staging
+  Scenario Outline: Verify resending code
+    Given I see sign in screen
+    When I enter phone number for user <Name>
+    Then I do not see RESEND button
+    And I see NO CODE TO SHOW UP label
+    When I wait for <Timeout> seconds
+    Then I do not see NO CODE TO SHOW UP label
+    And I see RESEND button
+    When I tap RESEND code button
+    Then I do not see RESEND button
+    And I see NO CODE TO SHOW UP label
+
+    Examples:
+      | Name      | Timeout |
+      | user1Name | 30      |
