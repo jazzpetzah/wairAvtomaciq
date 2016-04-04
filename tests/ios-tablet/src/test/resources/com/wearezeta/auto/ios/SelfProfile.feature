@@ -141,7 +141,6 @@ Feature: Self Profile
     Given I see conversations list
     When I tap my avatar
     And I tap to add my phone number
-    And I see country picker button on Sign in screen
     And I enter phone number and verification code
     Then I see phone number attached to profile
 
@@ -154,7 +153,6 @@ Feature: Self Profile
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I accept alert
     Given I click Not Now to not add phone number
     Given I accept alert
     Given I accept First Time overlay if it is visible
@@ -163,7 +161,6 @@ Feature: Self Profile
     Given I see conversations list
     When I tap my avatar
     And I tap to add my phone number
-    And I see country picker button on Sign in screen
     And I enter invalid phone number
     Then I see invalid phone number alert
 
@@ -176,7 +173,6 @@ Feature: Self Profile
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I accept alert
     Given I click Not Now to not add phone number
     Given I accept alert
     Given I accept First Time overlay if it is visible
