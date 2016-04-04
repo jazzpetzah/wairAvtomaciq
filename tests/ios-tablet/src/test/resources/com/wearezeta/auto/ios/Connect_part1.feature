@@ -98,12 +98,11 @@ Feature: Connect
     Given Myself is connected to <Contact4>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I see Pending request link in contact list
-    And I click on Pending request link in contact list
+    When I click on Pending request link in conversations list
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
-    And I dont see Pending request link in contact list
-    And I dont see conversation <Contact1> in contact list
+    And I do not see Pending request link in conversations list
+    And I do not see conversation <Contact1> in conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search by taping on it
     And I tap on Search input on People picker page
@@ -125,12 +124,11 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I see Pending request link in contact list
-    And I click on Pending request link in contact list
+    When I click on Pending request link in conversations list
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
-    And I dont see Pending request link in contact list
-    And I dont see conversation <Contact1> in contact list
+    And I do not see Pending request link in conversations list
+    And I do not see conversation <Contact1> in conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search by taping on it
     And I tap on Search input on People picker page
@@ -151,15 +149,14 @@ Feature: Connect
     Given Myself is connected to <Contact4>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I see Pending request link in contact list
-    And I click on Pending request link in contact list
+    When I click on Pending request link in conversations list
     And I see Pending request page
     And I click on Connect button on Pending requests page <SentRequests> times
     And I navigate back to conversations list
-    Then I dont see Pending request link in contact list
-    And I see user <Contact1> in contact list
-    And I see user <Contact2> in contact list
-    And I see user <Contact3> in contact list
+    Then I do not see Pending request link in conversations list
+    And I see conversation <Contact1> in conversations list
+    And I see conversation <Contact2> in conversations list
+    And I see conversation <Contact3> in conversations list
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
@@ -175,14 +172,13 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I see Pending request link in contact list
-    And I click on Pending request link in contact list
+    When I click on Pending request link in conversations list
     And I see Pending request page
     And I click on Connect button on Pending requests page <SentRequests> times
-    Then I dont see Pending request link in contact list
-    And I see user <Contact1> in contact list
-    And I see user <Contact2> in contact list
-    And I see user <Contact3> in contact list
+    Then I do not see Pending request link in conversations list
+    And I see conversation <Contact1> in conversations list
+    And I see conversation <Contact2> in conversations list
+    And I see conversation <Contact3> in conversations list
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
@@ -195,7 +191,7 @@ Feature: Connect
     Given Me sent connection request to <Contact>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I see user <Contact> in contact list
+    And I see conversation <Contact> in conversations list
     When I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message on Dialog page
     Then I see text input in dialog is not allowed
@@ -212,7 +208,7 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    And I see user <Contact> in contact list
+    And I see conversation <Contact> in conversations list
     When I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message on Dialog page
     Then I see text input in dialog is not allowed
@@ -232,7 +228,7 @@ Feature: Connect
     Given User <Contact> securely pings conversation <Name>
     Given User <Contact> sends 1 encrypted message to user Myself
     When I wait for 10 seconds
-    Then I dont see conversation <Contact> in contact list
+    Then I do not see conversation <Contact> in conversations list
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
@@ -257,7 +253,7 @@ Feature: Connect
     Given User <Contact> securely pings conversation <Name>
     Given User <Contact> sends 1 encrypted message to user Myself
     When I wait for 10 seconds
-    Then I dont see conversation <Contact> in contact list
+    Then I do not see conversation <Contact> in conversations list
     When I open search by taping on it
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>

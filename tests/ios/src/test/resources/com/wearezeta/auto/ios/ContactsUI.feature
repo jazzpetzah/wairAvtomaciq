@@ -7,7 +7,7 @@ Feature: ContactsUI
     Given User <Name> blocks user <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I dont see conversation <Contact> in contact list
+    When I do not see conversation <Contact> in conversations list
     And I open search by taping on it
     And I press the send an invite button
     And I see ContactsUI page

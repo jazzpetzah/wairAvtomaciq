@@ -140,9 +140,9 @@ Feature: Conversation View
     And I open conversation details
     And I open ellipsis menu
     And I click archive menu button
-    Then I dont see conversation <Contact> in contact list
+    Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
-    Then I see user <Contact> in contact list
+    Then I see conversation <Contact> in conversations list
 
     Examples:
       | Name      | Contact   |
@@ -159,9 +159,9 @@ Feature: Conversation View
     And I open conversation details
     And I open ellipsis menu
     And I click archive menu button
-    Then I dont see conversation <Contact> in contact list
+    Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
-    Then I see user <Contact> in contact list
+    Then I see conversation <Contact> in conversations list
 
     Examples:
       | Name      | Contact   |
@@ -350,7 +350,7 @@ Feature: Conversation View
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I do not see conversation <GroupChatName> in conversations list
     And I open search by taping on it
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result

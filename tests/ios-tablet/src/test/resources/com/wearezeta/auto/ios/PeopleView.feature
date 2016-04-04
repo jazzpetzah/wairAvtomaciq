@@ -54,7 +54,7 @@ Feature: People View
     And I click on Create button on iPad popover
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
-    Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
+    Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
@@ -75,7 +75,7 @@ Feature: People View
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Create button on iPad popover
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
-    Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
+    Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
@@ -173,8 +173,9 @@ Feature: People View
     And I change group conversation name to <ChatName>
     And I dismiss popover on iPad
     Then I see You Renamed Conversation message shown in conversation view
-    And I navigate back to conversations list
-    Then I see in contact list group chat named <ChatName>
+    When I navigate back to conversations list
+    Then I see conversation <ChatName> in conversations list
+
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ChatName |
@@ -195,7 +196,7 @@ Feature: People View
     And I change group conversation name to <ChatName>
     And I dismiss popover on iPad
     Then I see You Renamed Conversation message shown in conversation view
-    Then I see in contact list group chat named <ChatName>
+    And I see conversation <ChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | ChatName |
@@ -480,7 +481,7 @@ Feature: People View
     And I press conversation menu button
     And I press menu Block button
     And I confirm blocking alert
-    Then I dont see conversation <Contact1> in contact list
+    Then I do not see conversation <Contact1> in conversations list
     Then I see conversation <Contact2> is selected in list
 
     Examples:
@@ -500,7 +501,7 @@ Feature: People View
     And I press conversation menu button
     And I press menu Block button
     And I confirm blocking alert
-    Then I dont see conversation <Contact1> in contact list
+    Then I do not see conversation <Contact1> in conversations list
     Then I see conversation <Contact2> is selected in list
 
     Examples:
@@ -610,9 +611,9 @@ Feature: People View
     And I click delete menu button
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I dont see conversation <GroupChatName> in contact list
+    And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I see conversation <GroupChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -634,9 +635,9 @@ Feature: People View
     And I click delete menu button
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I dont see conversation <GroupChatName> in contact list
+    And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I see conversation <GroupChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -661,9 +662,9 @@ Feature: People View
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
-    And I dont see conversation <GroupChatName> in contact list
+    And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I see conversation <GroupChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -689,9 +690,9 @@ Feature: People View
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
-    And I dont see conversation <GroupChatName> in contact list
+    And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I see conversation <GroupChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -820,7 +821,7 @@ Feature: People View
     And I press leave
     And I wait until popover is closed
     And I open archived conversations
-    And I see user <GroupChatName> in contact list
+    And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
     Then I see 1 photo in the dialog
 
@@ -846,7 +847,7 @@ Feature: People View
     And I press leave
     And I wait until popover is closed
     And I open archived conversations
-    And I see user <GroupChatName> in contact list
+    And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
     Then I see 1 photo in the dialog
 

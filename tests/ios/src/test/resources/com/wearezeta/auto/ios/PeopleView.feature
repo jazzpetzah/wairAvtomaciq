@@ -113,8 +113,8 @@ Feature: People View
     Then I see correct conversation name <ChatName>
     And I close group info page
     And I see You Renamed Conversation message shown in conversation view
-    And I navigate back to conversations list
-    And I see in contact list group chat named <ChatName>
+    When I navigate back to conversations list
+    Then I see conversation <ChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | ChatName | GroupChatName |
@@ -296,7 +296,7 @@ Feature: People View
     And I press conversation menu button
     And I press menu Block button
     And I confirm blocking alert
-    Then I dont see conversation <Contact1> in contact list
+    Then I do not see conversation <Contact1> in conversations list
     Then I see conversation <Contact2> is selected in list
 
     Examples:
@@ -361,15 +361,15 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I dont see conversation <GroupChatName> in contact list
+    And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I see conversation <GroupChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C1831 @rc @regression @id3972 @ZIOS-5247
+  @C1831 @rc @regression @id3972
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -387,9 +387,9 @@ Feature: People View
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
-    And I dont see conversation <GroupChatName> in contact list
+    And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I see conversation <GroupChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -462,7 +462,7 @@ Feature: People View
     And I see leave conversation alert
     Then I press leave
     And I open archived conversations
-    And I see user <GroupChatName> in contact list
+    And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
     Then I see 4 conversation entries
 
