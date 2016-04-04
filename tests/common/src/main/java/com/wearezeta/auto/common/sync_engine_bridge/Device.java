@@ -105,6 +105,8 @@ class Device extends RemoteEntity implements IDevice {
         }
         if (resp instanceof ActorMessage.Successful$) {
             this.loggedInUser = Optional.of(user);
+            // Wait until prekeys are generated asynchronously for this client
+            Thread.sleep(2000);
         } else {
             throw new RuntimeException(String.format(
                     "User '%s' has failed to log in into device '%s'. Please check the log file %s for more details.",

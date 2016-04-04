@@ -8,7 +8,7 @@ Feature: ContactsUI
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I dont see conversation <Contact> in contact list
+    When I do not see conversation <Contact> in conversations list
     And I open search by taping on it
     And I press the send an invite button
     And I see ContactsUI page

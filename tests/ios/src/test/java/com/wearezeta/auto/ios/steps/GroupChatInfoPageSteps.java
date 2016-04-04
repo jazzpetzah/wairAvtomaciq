@@ -150,4 +150,15 @@ public class GroupChatInfoPageSteps {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         Assert.assertTrue(getGroupChatInfoPage().waitForContactToDisappear(contact));
     }
+
+    /**
+     * Click on the ADD PEOPLE button on the very top of group conversation
+     *
+     * @throws Exception
+     * @step. ^I press Add People button in the beginning of conversation$
+     */
+    @When("^I press Add People button in the beginning of conversation$")
+    public void IPressAddPeopleButtonInTheBeginningOfConversation() throws Exception {
+        getGroupChatInfoPage().addContactToChat();
+    }
 }

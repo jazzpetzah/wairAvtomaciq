@@ -12,7 +12,7 @@ Feature: Connect
     Then I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
     When I navigate back to conversations list
-    Then I dont see conversation <Contact> in contact list
+    Then I do not see conversation <Contact1> in conversations list
 
     Examples: 
       | Name      | Contact1  |
@@ -30,7 +30,7 @@ Feature: Connect
     And I click Cancel request button
     Then I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
-    Then I dont see conversation <Contact> in contact list
+    Then I do not see conversation <Contact1> in conversations list
 
     Examples: 
       | Name      | Contact1  |
@@ -130,7 +130,7 @@ Feature: Connect
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>,<Contact3>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I see Pending request link in contact list
+    When I see Pending request link in conversations list
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
@@ -139,7 +139,7 @@ Feature: Connect
     And I click on Ignore button on Pending requests page
     And I dismiss popover on iPad
     And I navigate back to conversations list
-    Then I dont see Pending request link in contact list
+    Then I do not see Pending request link in conversations list
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
@@ -155,7 +155,7 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I see Pending request link in contact list
+    When I see Pending request link in conversations list
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select user on iPad group popover <Contact3>
@@ -163,7 +163,7 @@ Feature: Connect
     And I tap on start dialog button on other user profile page
     And I click on Ignore button on Pending requests page
     And I dismiss popover on iPad
-    Then I dont see Pending request link in contact list
+    Then I do not see Pending request link in conversations list
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
@@ -178,8 +178,7 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I see Pending request link in contact list
-    And I click on Pending request link in contact list
+    When I click on Pending request link in conversations list
     Then I see Pending request page
 
     Examples: 
@@ -193,8 +192,7 @@ Feature: Connect
     Given User <Contact> changes name to <NewName>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I see Pending request link in contact list
-    And I click on Pending request link in contact list
+    When I click on Pending request link in conversations list
     And I see Pending request page
     Then I see Hello connect message from user <NewName> on Pending request page
 
@@ -210,8 +208,7 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I see Pending request link in contact list
-    And I click on Pending request link in contact list
+    When I click on Pending request link in conversations list
     And I see Pending request page
     Then I see Hello connect message from user <NewName> on Pending request page
 
@@ -226,9 +223,9 @@ Feature: Connect
     Given <Contact> sent connection request to Me
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I see Pending request link in contact list
+    When I see Pending request link in conversations list
     And <Contact> cancel all outgoing connection requests
-    Then I dont see Pending request link in contact list
+    Then I do not see Pending request link in conversations list
 
     Examples: 
       | Name      | Contact   | Contact2  |
@@ -242,9 +239,9 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I see Pending request link in contact list
+    When I see Pending request link in conversations list
     And <Contact> cancel all outgoing connection requests
-    Then I dont see Pending request link in contact list
+    Then I do not see Pending request link in conversations list
 
     Examples: 
       | Name      | Contact   | Contact2  |

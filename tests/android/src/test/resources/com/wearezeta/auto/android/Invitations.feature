@@ -1,6 +1,6 @@
 Feature: Invitations
 
-  @C824 @id4161 @regression @rc
+  @C824 @id4161 @regression @rc @useSpecialEmail
   Scenario Outline: Invitations (Conversations List): I can send an email notification from conversations list
     Given I delete all contacts from Address Book
     Given There is 1 user where <Name> is me
@@ -13,6 +13,7 @@ Feature: Invitations
     And I remember the state of <Contact> avatar in the invites list
     And I tap Invite button next to <Contact>
     And I select <ContactEmail> email on invitation sending alert
+    And I start listening to invitation messages for <Contact>
     And I confirm invitation sending alert
     Then I verify the state of <Contact> avatar in the invites list is changed
     And I verify user <Contact> has received an email invitation
@@ -21,9 +22,10 @@ Feature: Invitations
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @C825 @id4162 @regression @rc
+  @C825 @id4162 @regression @rc @useSpecialEmail
   Scenario Outline: Invitations (Registration): I can receive and accept an email notification
     Given There is 1 user where <Name> is me
+    Given I start listening to invitation messages for <Contact>
     Given Myself sends personal invitation to mail <ContactEmail> with message <Message>
     Given I verify user <Contact> has received an email invitation
     Given I see welcome screen

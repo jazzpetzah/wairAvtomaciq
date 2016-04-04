@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.pages.registration;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -31,10 +32,10 @@ public class WelcomePage extends AndroidPage {
         super(lazyDriver);
     }
 
-    public void inputPhoneNumber(String phoneNumber) throws Exception {
+    public void inputPhoneNumber(PhoneNumber number) throws Exception {
         final WebElement phoneInputField = getElement(idPhoneInputField);
         phoneInputField.clear();
-        phoneInputField.sendKeys(phoneNumber);
+        phoneInputField.sendKeys(number.withoutPrefix());
     }
 
     public void clickConfirm() throws Exception {

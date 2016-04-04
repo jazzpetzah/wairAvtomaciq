@@ -14,14 +14,13 @@ public class TabletPendingUserPopoverPage extends OtherUserOnPendingProfilePage 
 
     public static final By xpathConnectButton = By.xpath("//UIAPopover/*[@name='CONNECT' and @visible='true']");
 
-	public TabletPendingUserPopoverPage(Future<ZetaIOSDriver> lazyDriver)
-			throws Exception {
+	public TabletPendingUserPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 
 	public boolean isUserNameDisplayed(String name) throws Exception {
 		final By locator = By.xpath(xpathStrUserByName.apply(name));
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 2);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
 	}
 
 	public boolean isConnectButtonDisplayed() throws Exception {

@@ -78,7 +78,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C28864 @staging
+  @C28864 @calling_basic
   Scenario Outline: Verify muting ongoing Video call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

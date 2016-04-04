@@ -71,9 +71,8 @@ public class LoginSteps {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
         getWelcomePage().clickAreaCodeSelector();
-        getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
-        getWelcomePage().inputPhoneNumber(self.getPhoneNumber().toString().replace(
-                PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
+        getAreaCodePage().selectAreaCode(self.getPhoneNumber().getPrefix());
+        getWelcomePage().inputPhoneNumber(self.getPhoneNumber());
         getWelcomePage().clickConfirm();
         final String verificationCode = BackendAPIWrappers.getLoginCodeByPhoneNumber(self.getPhoneNumber());
         getVerificationPage().inputVerificationCode(verificationCode);

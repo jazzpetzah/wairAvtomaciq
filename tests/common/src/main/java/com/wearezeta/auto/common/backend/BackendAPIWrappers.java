@@ -27,7 +27,7 @@ import java.util.concurrent.Future;
 // argument by performing automatic login (set id and session token attributes)
 public final class BackendAPIWrappers {
     public static final int ACTIVATION_TIMEOUT = 120; // seconds
-    private static final int INVITATION_RECEIVING_TIMEOUT = ACTIVATION_TIMEOUT; // seconds
+    public static final int INVITATION_RECEIVING_TIMEOUT = ACTIVATION_TIMEOUT; // seconds
 
     private static final int REQUEST_TOO_FREQUENT_ERROR = 429;
     private static final int LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR = 403;
@@ -44,7 +44,7 @@ public final class BackendAPIWrappers {
 
     public static Future<String> initMessageListener(ClientUser forUser,
                                                      Map<String, String> additionalExpectedHeaders) throws Exception {
-        IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+        IMAPSMailbox mbox = IMAPSMailbox.getInstance(forUser.getEmail(), forUser.getPassword());
         Map<String, String> expectedHeaders = new HashMap<>();
         expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, forUser.getEmail());
         if (additionalExpectedHeaders != null) {
@@ -673,6 +673,11 @@ public final class BackendAPIWrappers {
                 Optional.empty(), Optional.of(false));
     }
 
+    public static void changeGroupChatName(ClientUser asUser, String conversationIDToRename, String newConversationName)
+            throws Exception {
+        BackendREST.changeConversationName(receiveAuthToken(asUser), conversationIDToRename, newConversationName);
+    }
+
     public static class NoContactsFoundException extends Exception {
         private static final long serialVersionUID = -7682778364420522320L;
 
@@ -749,11 +754,10 @@ public final class BackendAPIWrappers {
         BackendREST.sendPersonalInvitation(receiveAuthToken(ownerUser), toEmail, toName, message);
     }
 
-    public static Optional<InvitationMessage> getInvitationMessage(String email)
-            throws Exception {
-        IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+    public static Optional<InvitationMessage> getInvitationMessage(ClientUser user) throws Exception {
+        IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
         Map<String, String> expectedHeaders = new HashMap<>();
-        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
+        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
         try {
             final String msg = mbox.getMessage(expectedHeaders,
                     INVITATION_RECEIVING_TIMEOUT, 0).get();

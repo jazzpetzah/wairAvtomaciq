@@ -1,9 +1,10 @@
 package com.wearezeta.auto.common.email.handlers;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -13,15 +14,20 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
-import com.wearezeta.auto.common.email.handlers.RESTMBoxAPI;
 
 class RESTMBoxClientWrapper implements ISupportsMessagesPolling {
     private static final Logger log = ZetaLogger.getLog(RESTMBoxClientWrapper.class.getSimpleName());
 
-    public RESTMBoxClientWrapper() {
+    private String mboxUserName;
+
+    public String getMboxUserName() {
+        return mboxUserName;
+    }
+
+    public RESTMBoxClientWrapper(String mboxUserName) {
+        this.mboxUserName = mboxUserName;
     }
 
     protected List<String> getRecentMessages(String email, int minCount, int maxCount, int timeoutMilliseconds)
@@ -57,11 +63,17 @@ class RESTMBoxClientWrapper implements ISupportsMessagesPolling {
     @Override
     public boolean isAlive() {
         try {
-            RESTMBoxAPI.getRecentEmailsForUser(MessagingUtils.getAccountName(), 0, 0, 1000);
-            return true;
-        } catch (Throwable e) {
+            final URL siteURL =
+                    new URL(String.format("%s/recent_emails/%s/0/0", RESTMBoxAPI.getApiRoot(), this.mboxUserName));
+            final HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
+            connection.setRequestMethod("HEAD");
+            connection.connect();
+            final int responseCode = connection.getResponseCode();
+            log.debug(String.format("Response code from %s: %s", siteURL.toString(), responseCode));
+            return (responseCode == 200);
+        } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 }

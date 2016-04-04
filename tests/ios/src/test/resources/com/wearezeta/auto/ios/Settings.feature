@@ -107,7 +107,7 @@ Feature: Settings
       | Name      | Color  |
       | user1Name | Violet |
 
-  @C3247 @regression @rc
+  @C3247 @regression @rc @useSpecialEmail
   Scenario Outline: Verify deleting the account registered by email
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number

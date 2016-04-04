@@ -21,11 +21,11 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.xpathMainSearchField);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.xpathSearchField);
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), PeoplePickerPage.xpathMainSearchField);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), PeoplePickerPage.xpathSearchField);
     }
 
     public void tapCloseButton() throws Exception {

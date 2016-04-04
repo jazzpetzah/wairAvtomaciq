@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class AbstractMBoxChangesListener implements Callable<String> {
-	protected Map<String, String> expectedHeaders = new HashMap<String, String>();
+	protected Map<String, String> expectedHeaders = new HashMap<>();
 	protected Object parentMBox;
 	protected int timeoutSeconds;
 	protected long filterMessagesAfter;
@@ -24,8 +24,7 @@ public abstract class AbstractMBoxChangesListener implements Callable<String> {
 		return this.parentMBox;
 	}
 
-	protected final Logger log = ZetaLogger.getLog(this.getClass()
-			.getSimpleName());
+	protected final Logger log = ZetaLogger.getLog(this.getClass().getSimpleName());
 
 	public AbstractMBoxChangesListener(Object parentMBox,
 			Map<String, String> expectedHeaders, int timeoutSeconds,

@@ -209,6 +209,10 @@ public class CommonAndroidSteps {
             e.printStackTrace();
         }
 
+        if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
+            usrMgr.setUseSpecialEmailFlag();
+        }
+
         if (isLogcatEnabled) {
             if (scenario.getSourceTagNames().contains("@performance")) {
                 AndroidLogListener.getInstance(ListenerType.PERF).start();
@@ -334,14 +338,19 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Sends the application into back stack and displays the home screen.
+     * Sends the application into back stack and displays the home screen or vice versa
      *
      * @throws Exception
-     * @step. ^I minimize the application$
+     * @param action either minimize or restore
+     * @step. ^I (minimize|restore) the application$
      */
-    @When("^I minimize the application$")
-    public void IMinimizeApplication() throws Exception {
-        AndroidCommonUtils.tapHomeButton();
+    @When("^I (minimize|restore) the application$")
+    public void IMinimizeApplication(String action) throws Exception {
+        if (action.equals("minimize")) {
+            AndroidCommonUtils.tapHomeButton();
+        } else {
+            AndroidCommonUtils.switchToApplication(getPackageName());
+        }
     }
 
     /**
@@ -419,17 +428,6 @@ public class CommonAndroidSteps {
                             timeoutSeconds),
                     screenState.isNotChanged(timeoutSeconds, targetScore));
         }
-    }
-
-    /**
-     * Restores the application from a minimized state.
-     *
-     * @throws Exception
-     * @step. ^I restore the application$
-     */
-    @When("^I restore the application$")
-    public void IRestoreApplication() throws Exception {
-        AndroidCommonUtils.switchToApplication(getPackageName());
     }
 
     /**

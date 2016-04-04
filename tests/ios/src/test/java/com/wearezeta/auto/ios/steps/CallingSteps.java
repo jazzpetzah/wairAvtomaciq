@@ -135,8 +135,7 @@ public class CallingSteps {
      * @step. (.*) starts? instance using (.*)$
      */
     @When("(.*) starts? instance using (.*)$")
-    public void UserXStartsInstance(String callees,
-                                           String callingServiceBackend) throws Exception {
+    public void UserXStartsInstance(String callees, String callingServiceBackend) throws Exception {
         commonCallingSteps.startInstances(splitAliases(callees), callingServiceBackend);
     }
 
@@ -171,15 +170,15 @@ public class CallingSteps {
     /**
      * Make a video call to a specific user.
      *
-     * @param caller           caller name/alias
+     * @param callers          caller names/aliases
      * @param conversationName destination conversation name
      *
      * @throws Exception
-     * @step. (.*) starts a video call to (.*)$
+     * @step. (.*) starts? a video call to (.*)$
      */
-    @When("(.*) starts a video call to (.*)$")
-    public void UserXStartVideoCallsToUserYUsingCallBackend(String caller, String conversationName) throws Exception {
-        commonCallingSteps.startVideoCallToConversation(splitAliases(caller), conversationName);
+    @When("(.*) starts? a video call to (.*)$")
+    public void UserXStartVideoCallsToUserYUsingCallBackend(String callers, String conversationName) throws Exception {
+        commonCallingSteps.startVideoCallToConversation(splitAliases(callers), conversationName);
     }
 
     /**

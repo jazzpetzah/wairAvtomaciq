@@ -58,9 +58,6 @@ public class PeoplePickerPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathSelectedTopPeopleList)
 	private List<WebElement> selectedTopPeopleItemLocator;
 
-	@FindBy(css = WebAppLocators.PeoplePickerPage.cssMoreButton)
-	private WebElement moreButton;
-
 	@FindBy(xpath = "//*[contains(@class,'search-list search-list-sm')]//div[@data-uie-name='item-user']")
 	private List<WebElement> topPeople;
 
@@ -272,6 +269,16 @@ public class PeoplePickerPage extends WebPage {
 		return namesOfSelectedTopPeople;
 	}
 
+    public List getNamesOfSuggestedContacts() throws Exception {
+        ArrayList<String> namesOfSuggestedContacts = new ArrayList<String>();
+        final By suggestedContacts = By
+                .cssSelector(WebAppLocators.PeoplePickerPage.xpathSuggestedContacts);
+        for (WebElement element : suggestions) {
+            namesOfSuggestedContacts.add(element.getAttribute("data-uie-value"));
+        }
+        return namesOfSuggestedContacts;
+    }
+
 	public boolean isSearchOpened() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.cssSelector(WebAppLocators.PeoplePickerPage.cssSearchField));
@@ -306,16 +313,6 @@ public class PeoplePickerPage extends WebPage {
 				.apply(name);
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.xpath(foundGroupXpath));
-	}
-
-	public boolean isMoreButtonVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.cssSelector(WebAppLocators.PeoplePickerPage.cssMoreButton));
-	}
-
-	public void clickMoreButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), moreButton);
-		moreButton.click();
 	}
 
 	public int getNumberOfTopPeople() {

@@ -2,6 +2,8 @@ package com.wearezeta.auto.web.steps;
 
 import java.util.List;
 
+import com.typesafe.config.ConfigException;
+import com.wearezeta.auto.web.pages.ConversationPage;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonSteps;
@@ -15,6 +17,9 @@ import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.WebElement;
+
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -359,6 +364,72 @@ public class PeoplePickerPageSteps {
 				PeoplePickerPage.class).getNamesOfSelectedTopPeople();
 	}
 
+    private static String user1;
+
+    private static String user2;
+
+    @When("^I remember (.*) suggested user$")
+    public void IRememberSuggestedUser(String count) throws Exception {
+        List<String> suggestedUsers = context.getPagesCollection().getPage(PeoplePickerPage.class).getNamesOfSuggestedContacts();
+        if (count.contains("first")) {
+            user1 = suggestedUsers.get(0);
+            System.out.println("ERSTER: " + user1);
+        } else if (count.contains("second")) {
+            user2 = suggestedUsers.get(1);
+            System.out.println("ZWEITER: " + user2);
+        }
+    }
+
+    @When("^I( do not)? see (.*) remembered user in People Picker$")
+    public void ISeeRememberedUserInPeoplePicker(String donot, String count) throws Exception {
+        if (donot != null && count.contains("first")) {
+            Assert.assertTrue(context.getPagesCollection().getPage(
+                    PeoplePickerPage.class).isUserNotFound(user1));
+        } else if (donot != null && count.contains("second")) {
+            Assert.assertTrue(context.getPagesCollection().getPage(
+                    PeoplePickerPage.class).isUserNotFound(user2));
+        } else if (count.contains("first")) {
+            Assert.assertTrue(context.getPagesCollection().getPage(
+                    PeoplePickerPage.class).isUserFound(user1));
+        } else if (count.contains("second")) {
+            Assert.assertTrue(context.getPagesCollection().getPage(
+                    PeoplePickerPage.class).isUserFound(user2));
+        }
+    }
+
+    @When("^I remove first remembered user from suggestions in People Picker$")
+    public void IRemoveFirstRememberedUser() throws Exception {
+        user1 = context.getUserManager().replaceAliasesOccurences(user1, FindBy.NAME_ALIAS);
+        context.getPagesCollection().getPage(PeoplePickerPage.class)
+                .clickRemoveButtonOnSuggestion(user1);
+    }
+
+    @When("^I make a connection request for second remembered user directly from People Picker$")
+    public void IMakeAConnectionRequestForSecondRememberedUser() throws Exception {
+        user2 = context.getUserManager().replaceAliasesOccurences(user2, FindBy.NAME_ALIAS);
+        context.getPagesCollection().getPage(PeoplePickerPage.class)
+                .clickPlusButtonOnSuggestion(user2);
+    }
+
+    @When("^I see Contact list with second remembered user$")
+    public void ISeeContactListWithSecondRememberedUser() throws Exception {
+        Assert.assertTrue(context.getPagesCollection().getPage(ContactListPage.class)
+                .isConvoListEntryWithNameExist(user2));
+    }
+
+    @When("^I open second remembered users conversation$")
+    public void IOpenSecondRememberedUsersConversation() throws Exception {
+        context.getPagesCollection().getPage(ContactListPage.class).openConversation(user2);
+    }
+
+    @When("^I see connecting message in conversation with second remembered user$")
+    public void ISeeConnectingMsgFromSecondRememberedUser() throws Exception {
+        assertThat("User name", context.getPagesCollection().getPage(ConversationPage.class).getConnectedMessageUser(),
+                equalTo(user2));
+        assertThat("Label", context.getPagesCollection().getPage(ConversationPage.class).getConnectedMessageLabel(),
+                equalTo("CONNECTING"));
+    }
+
 	/**
 	 * Verifies whether Search is opened on People Picker Page
 	 *
@@ -400,35 +471,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Verify if More button is shown in People Picker
-	 *
-	 * @step. ^I see More button$
-	 *
-	 * @throws Exception
-	 */
-	@And("^I see More button$")
-	public void ISeeMoreButton() throws Exception {
-		final String searchMissingMessage = "More button is not visible on People Picker Page";
-		Assert.assertTrue(searchMissingMessage,
-				context.getPagesCollection().getPage(PeoplePickerPage.class)
-						.isMoreButtonVisible());
-
-	}
-
-	/**
-	 * Click More button on People Picker page
-	 *
-	 * @step. ^I click on More button$
-	 *
-	 * @throws Exception
-	 */
-	@When("^I click on More button$")
-	public void IClickOnMoreButton() throws Exception {
-		context.getPagesCollection().getPage(PeoplePickerPage.class).clickMoreButton();
-	}
-
-	/**
-	 * Verify if More button is shown in People Picker
+	 * Verify if (\\d+) people is/are shown in People Picker
 	 *
 	 * @step. ^I see (\\d+) people in Top people list$
 	 *

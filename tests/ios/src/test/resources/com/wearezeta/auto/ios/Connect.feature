@@ -28,8 +28,7 @@ Feature: Connect
     Given <Contact> sent connection request to Me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I see Pending request link in contact list
-    And I click on Pending request link in contact list
+    And I click on Pending request link in conversations list
     And I wait for 2 seconds
     And I see Hello connect message from user <Contact> on Pending request page
     And I click Connect button on Pending request page
@@ -71,10 +70,9 @@ Feature: Connect
     Given Myself is connected to <Contact4>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I see Pending request link in contact list
-    And I click on Pending request link in contact list
+    And I click on Pending request link in conversations list
     And I click on Ignore button on Pending requests page <SentRequests> times
-    And I dont see Pending request link in contact list
+    And I do not see Pending request link in conversations list
     And I wait until <Contact1> exists in backend search results
     And I open search by taping on it
     And I input in People picker search field conversation name <Contact1>
@@ -94,14 +92,13 @@ Feature: Connect
     Given Myself is connected to <Contact4>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I see Pending request link in contact list
-    And I click on Pending request link in contact list
+    And I click on Pending request link in conversations list
     And I click on Connect button on Pending requests page <SentRequests> times
     And I navigate back to conversations list
-    Then I dont see Pending request link in contact list
-    And I see user <Contact1> in contact list
-    And I see user <Contact2> in contact list
-    And I see user <Contact3> in contact list
+    Then I do not see Pending request link in conversations list
+    And I see conversation <Contact1> in conversations list
+    And I see conversation <Contact2> in conversations list
+    And I see conversation <Contact3> in conversations list
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
@@ -136,7 +133,7 @@ Feature: Connect
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Given User <Contact> securely pings conversation Myself
     Given User <Contact> sends 1 encrypted message to user Myself
-    Then I dont see conversation <Contact> in contact list
+    Then I do not see conversation <Contact> in conversations list
     When I open search by taping on it
     And I wait until <Contact> exists in backend search results
     And I input in People picker search field user name <Contact>
@@ -193,7 +190,7 @@ Feature: Connect
     And I paste and commit the text
     Then I check copied content from <Name>
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -227,7 +224,7 @@ Feature: Connect
     And I click Cancel request button
     Then I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
-    Then I dont see conversation <Contact1> in contact list
+    Then I do not see conversation <Contact1> in conversations list
 
     Examples: 
       | Name      | Contact1  | Contact2  |
@@ -283,7 +280,7 @@ Feature: Connect
     Given <Contact1> has group chat <GroupChatName> with Myself,<Contact2>,<Contact3>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I see Pending request link in contact list
+    And I see Pending request link in conversations list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <Contact3>
@@ -292,7 +289,7 @@ Feature: Connect
     And I click on Ignore button on Pending requests page
     And I close group info page
     And I navigate back to conversations list
-    Then I dont see Pending request link in contact list
+    Then I do not see Pending request link in conversations list
 
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
@@ -326,14 +323,14 @@ Feature: Connect
     Given User <Name> blocks user <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Then I dont see conversation <Contact> in contact list
+    Then I do not see conversation <Contact> in conversations list
     When I open search by taping on it
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user
     Then I see dialog page
     When I navigate back to conversations list
-    Then I see user <Contact> in contact list
+    Then I see conversation <Contact> in conversations list
 
     Examples: 
       | Name      | Contact   |
@@ -347,8 +344,7 @@ Feature: Connect
     Given <Contact2> sent connection request to Me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I see Pending request link in contact list
-    And I click on Pending request link in contact list
+    When I click on Pending request link in conversations list
     Then I see Pending request page
 
     Examples: 
@@ -362,8 +358,7 @@ Feature: Connect
     Given User <Contact> changes name to <NewName>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I see Pending request link in contact list
-    And I click on Pending request link in contact list
+    When I click on Pending request link in conversations list
     And I see Pending request page
     Then I see Hello connect message from user <NewName> on Pending request page
 
@@ -378,9 +373,9 @@ Feature: Connect
     Given <Contact> sent connection request to Me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I see Pending request link in contact list
+    When I see Pending request link in conversations list
     And <Contact> cancel all outgoing connection requests
-    Then I dont see Pending request link in contact list
+    Then I do not see Pending request link in conversations list
 
     Examples: 
       | Name      | Contact   | Contact2  |

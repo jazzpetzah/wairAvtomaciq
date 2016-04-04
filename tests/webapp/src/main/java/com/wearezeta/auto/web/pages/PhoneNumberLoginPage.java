@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.pages;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

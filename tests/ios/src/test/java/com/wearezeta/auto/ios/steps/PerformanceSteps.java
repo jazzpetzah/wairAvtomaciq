@@ -1,23 +1,17 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.util.Date;
-import java.util.concurrent.Future;
 
-import com.wearezeta.auto.common.ZetaFormatter;
-import com.wearezeta.auto.common.driver.PlatformDrivers;
-import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.ios.pages.LoginPage;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriverException;
 
-import com.wearezeta.auto.ios.pages.ContactListPage;
+import com.wearezeta.auto.ios.pages.ConversationsListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.reporter.IOSPerfReportModel;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.performance.PerformanceCommon;
-import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.common.performance.PerformanceHelpers;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
@@ -41,8 +35,8 @@ public class PerformanceSteps {
         return pagesCollection.getPage(DialogPage.class);
     }
 
-    private ContactListPage getContactListPage() throws Exception {
-        return pagesCollection.getPage(ContactListPage.class);
+    private ConversationsListPage getContactListPage() throws Exception {
+        return pagesCollection.getPage(ConversationsListPage.class);
     }
 
     /**

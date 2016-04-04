@@ -47,9 +47,6 @@ public class ConversationPage extends WebPage {
 
 	private static final String CALLING_IN_LABEL = "IN ";
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathLastImageEntry)
-	private WebElement lastImageEntry;
-
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssImageEntries)
 	private List<WebElement> imageEntries;
 
@@ -361,7 +358,7 @@ public class ConversationPage extends WebPage {
 			return 0.0;
 		}
 		// comparison of the original and sent pictures
-		BufferedImage actualImage = this.getElementScreenshot(lastImageEntry).orElseThrow(IllegalStateException::new);
+		BufferedImage actualImage = this.getElementScreenshot(lastPicture).orElseThrow(IllegalStateException::new);
 		BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
 		return ImageUtil.getOverlapScore(actualImage, expectedImage,
 				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
@@ -383,7 +380,7 @@ public class ConversationPage extends WebPage {
 
 	public boolean isImageMessageFound() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.xpath(WebAppLocators.ConversationPage.xpathLastImageEntry),
+				By.cssSelector(WebAppLocators.ConversationPage.cssImageEntries),
 				TIMEOUT_IMAGE_MESSAGE_UPLOAD);
 	}
 
@@ -469,30 +466,6 @@ public class ConversationPage extends WebPage {
 
 	private static final int MAX_CALLING_BAR_VISIBILITY_TIMEOUT = 5; // seconds
 
-	public void waitForCallingBarToBeDisplayed() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot),
-				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar has not been shown within "
-				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
-	}
-
-	public List<String> getNamesFromOutgoingCallingBar() throws Exception {
-		assert isCallingBarVisible() : "Calling bar is not visible!";
-		String label = labelOnOutgoingCall.getText();
-		label = label.substring(CALLING_IN_LABEL.length(), label.length());
-		return Arrays.asList(label.split(", "));
-	}
-
-	public void waitForCallingBarToBeDisplayedWithName(String name)
-			throws Exception {
-		assert DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						this.getDriver(),
-						By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRootByName
-								.apply(name))) : "Calling bar with name "
-				+ name + " has not been shown.";
-	}
-
 	public void clickAcceptCallButton() throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssAcceptCallButton);
@@ -511,15 +484,6 @@ public class ConversationPage extends WebPage {
 		getDriver().findElement(locator).click();
 	}
 
-	public void clickEndCallButton() throws Exception {
-		final By locator = By
-				.cssSelector(WebAppLocators.ConversationPage.cssEndCallButton);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "End call button has not been shown after "
-				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
-		getDriver().findElement(locator).click();
-	}
-
 	public void clickSilenceCallButton() throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssSilenceIncomingCallButton);
@@ -527,18 +491,6 @@ public class ConversationPage extends WebPage {
 				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Silence call button has not been shown after "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
 		getDriver().findElement(locator).click();
-	}
-
-	public void verifyCallingBarIsNotVisible() throws Exception {
-		assert DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot),
-				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar has not been hidden within "
-				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
-	}
-
-	public boolean isCallingBarVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot));
 	}
 
 	public String getLastTextMessage() throws Exception {
@@ -600,13 +552,6 @@ public class ConversationPage extends WebPage {
 
 	public void clickGIFButton() throws Exception {
 		gifButton.click();
-	}
-
-	public boolean isGifVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.xpath(WebAppLocators.ConversationPage.xpathLastImageEntry),
-				40);
-
 	}
 
 	public boolean isLastTextMessage(String expectedMessage) throws Exception {

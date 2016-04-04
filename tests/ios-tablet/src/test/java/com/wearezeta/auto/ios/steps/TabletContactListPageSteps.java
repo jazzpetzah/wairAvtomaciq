@@ -4,7 +4,7 @@ import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import org.junit.Assert;
 
-import com.wearezeta.auto.ios.pages.TabletContactListPage;
+import com.wearezeta.auto.ios.pages.TabletConversationsListPage;
 
 import cucumber.api.java.en.*;
 
@@ -16,8 +16,8 @@ public class TabletContactListPageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private TabletContactListPage getTabletContactListPage() throws Exception {
-        return pagesCollection.getPage(TabletContactListPage.class);
+    private TabletConversationsListPage getTabletContactListPage() throws Exception {
+        return pagesCollection.getPage(TabletConversationsListPage.class);
     }
 
     private Map<String, ElementState> savedConvoItemStates = new HashMap<>();
@@ -33,7 +33,7 @@ public class TabletContactListPageSteps {
     @When("^I remember the (left|right) side state of (.*) conversation item on iPad$")
     public void IRememberConvoItemState(String side, String nameAlias) throws Exception {
         final String name = usrMgr.replaceAliasesOccurences(nameAlias, ClientUsersManager.FindBy.NAME_ALIAS);
-        final TabletContactListPage.EntrySide entrySide = TabletContactListPage.EntrySide.valueOf(side.toUpperCase());
+        final TabletConversationsListPage.EntrySide entrySide = TabletConversationsListPage.EntrySide.valueOf(side.toUpperCase());
         this.savedConvoItemStates.put(name,
                 new ElementState(
                         () -> getTabletContactListPage().getConversationEntryScreenshot(entrySide, name)

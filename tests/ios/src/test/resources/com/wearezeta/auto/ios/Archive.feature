@@ -4,23 +4,24 @@ Feature: Archive
   Scenario Outline: Verify unarchive by receiving data
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
+    Given <ArchivedUser> starts instance using <CallBackend>
     Given Myself archived conversation with <ArchivedUser>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I dont see conversation <ArchivedUser> in contact list
+    And I do not see conversation <ArchivedUser> in conversations list
     Given User <ArchivedUser> sends 1 encrypted message to user Myself
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
-    And I dont see conversation <ArchivedUser> in contact list
+    And I do not see conversation <ArchivedUser> in conversations list
     Given User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
-    And I dont see conversation <ArchivedUser> in contact list
+    And I do not see conversation <ArchivedUser> in conversations list
     And User <ArchivedUser> securely pings conversation <Name>
     Then I see first item in contact list named <ArchivedUser>
     When Myself archived conversation with <ArchivedUser>
-    And I dont see conversation <ArchivedUser> in contact list
-    And <ArchivedUser> calls me using <CallBackend>
+    And I do not see conversation <ArchivedUser> in conversations list
+    And <ArchivedUser> calls me
     And I see call status message contains "<ArchivedUser> calling"
     And I tap Ignore button on Calling overlay
     Then I see first item in contact list named <ArchivedUser>
@@ -33,18 +34,19 @@ Feature: Archive
   Scenario Outline: Verify unarchiving silenced conversation only by call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
+    Given <ArchivedUser> starts instance using <CallBackend>
     Given Myself silenced conversation with <ArchivedUser>
     Given Myself archived conversation with <ArchivedUser>
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I dont see conversation <ArchivedUser> in contact list
+    And I do not see conversation <ArchivedUser> in conversations list
     Given User <ArchivedUser> sends 1 encrypted message to user Myself
-    Then I dont see conversation <ArchivedUser> in contact list
+    Then I do not see conversation <ArchivedUser> in conversations list
     Given User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
-    Then I dont see conversation <ArchivedUser> in contact list
+    Then I do not see conversation <ArchivedUser> in conversations list
     When User <ArchivedUser> securely pings conversation <Name>
-    Then I dont see conversation <ArchivedUser> in contact list
-    And <ArchivedUser> calls me using <CallBackend>
+    Then I do not see conversation <ArchivedUser> in conversations list
+    And <ArchivedUser> calls me
     And I see call status message contains "<ArchivedUser> calling"
     And I tap Ignore button on Calling overlay
     Then I see first item in contact list named <ArchivedUser>
@@ -63,7 +65,7 @@ Feature: Archive
     When I swipe right on a <GroupChatName>
     And I press Leave button in action menu in Contact List
     And I press leave
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I do not see conversation <GroupChatName> in conversations list
     When <Contact1> added me to group chat <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Then I see first item in contact list named <GroupChatName>

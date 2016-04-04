@@ -188,7 +188,7 @@ Feature: E2EE
       | user1Name | user2Name | Msg1     |
 
   @C3232 @regression
-  Scenario Outline: (AN-3450) Verify the device id is not changed after relogin
+  Scenario Outline: Verify the device id is not changed after relogin
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -533,7 +533,7 @@ Feature: E2EE
       | user1Name | user2Name | device2 | Msg1     | MsgToSendAnyway |
 
   @C12065 @regression
-  Scenario Outline: When 1:1 conversation was degraded - I can manage new device to verified and resend message
+  Scenario Outline: (AN-3683) When 1:1 conversation was degraded - I can manage new device to verified and resend message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number

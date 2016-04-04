@@ -359,7 +359,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
-  @C77975 @videocalling @staging
+  @C77975 @videocalling @regression
   Scenario Outline: Verify I see the timer/duration of the video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -380,4 +380,32 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | Chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+
+  @C78099 @videocalling @regression
+  Scenario Outline: Verify I can see the incoming video call when I just login
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I am signed in properly
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    Then I see Sign In page
+    And <Contact> starts a video call to me
+    When I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    Then I see the incoming call controls for conversation <Contact>
+    And I accept the call from conversation <Contact>
+    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    When I end the video call
+    Then I do not see the call controls for conversation <Contact>
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |

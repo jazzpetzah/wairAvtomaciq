@@ -78,7 +78,6 @@ Feature: Calling
     When <Contact1> stops calling me
     Then <Contact1> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
     And I do not see ongoing call
-#TODO check for system messages
 
     Examples:
       | Name      | Contact1  | CallBackend | Timeout |
@@ -94,15 +93,16 @@ Feature: Calling
     Given I see Contact list with contacts
     When I minimize the application
     And <Contact> calls me
-    Then I see incoming call
-    And I see incoming call from <Contact>
+    # Wait for the call to appear in UI
+    And I wait for 7 seconds
+    Then I see incoming call from <Contact>
     When I swipe to accept the call
-    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing call
     When <Contact> stops calling me
-    Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
-    And I do not see ongoing call
-#TODO check for system messages
+    Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
+    When I restore the application
+    Then I do not see ongoing call
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
@@ -118,16 +118,16 @@ Feature: Calling
     Given I see Contact list with contacts
     When I lock the device
     And <Contact> calls me
+    # Wait for the call to appear in UI
     And I wait for 7 seconds
-    Then I see incoming call
-    And I see incoming call from <Contact>
+    Then I see incoming call from <Contact>
     When I swipe to accept the call
-    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing call
     When <Contact> stops calling me
-    Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
-    And I do not see ongoing call
-#TODO check for system messages
+    Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
+    When I unlock the device
+    Then I do not see ongoing call
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |

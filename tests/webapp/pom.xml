@@ -22,6 +22,8 @@
         <url>http://${hubHost}:${hubPort}/wd/hub</url>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
         <defaultEmail>smoketester@wire.com</defaultEmail>
+        <specialEmail>smoketester.android@wire.com</specialEmail>
+        <specialPassword>aqa12345678</specialPassword>
         <!-- edge | staging | production -->
         <backendType>staging</backendType>
         <!-- leave webappApplicationPath empty to get the default URL for the backendType -->

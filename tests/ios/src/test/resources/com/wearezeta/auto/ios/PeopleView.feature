@@ -113,8 +113,8 @@ Feature: People View
     Then I see correct conversation name <ChatName>
     And I close group info page
     And I see You Renamed Conversation message shown in conversation view
-    And I navigate back to conversations list
-    And I see in contact list group chat named <ChatName>
+    When I navigate back to conversations list
+    Then I see conversation <ChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | ChatName | GroupChatName |
@@ -190,9 +190,6 @@ Feature: People View
     Then I see user <Contact2> on People picker page is selected
     When I tap on conversation <Contact2> in search result
     Then I see user <Contact2> on People picker page is NOT selected
-    When I tap on conversation <Contact2> in search result
-    And I press keyboard Delete button
-    Then I see user <Contact2> on People picker page is NOT selected
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -210,7 +207,7 @@ Feature: People View
     And I don't see Add to conversation button
     And I tap on conversation <Contact2> in search result
     And I tap on conversation <Contact3> in search result
-    And I click on Go button
+    And I tap Create conversation action button on People picker page
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
     And I see conversations list
@@ -299,7 +296,7 @@ Feature: People View
     And I press conversation menu button
     And I press menu Block button
     And I confirm blocking alert
-    Then I dont see conversation <Contact1> in contact list
+    Then I do not see conversation <Contact1> in conversations list
     Then I see conversation <Contact2> is selected in list
 
     Examples:
@@ -364,15 +361,15 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I dont see conversation <GroupChatName> in contact list
+    And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I see conversation <GroupChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C1831 @rc @regression @id3972 @ZIOS-5247
+  @C1831 @rc @regression @id3972
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -390,9 +387,9 @@ Feature: People View
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
-    And I dont see conversation <GroupChatName> in contact list
+    And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I see conversation <GroupChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -435,7 +432,6 @@ Feature: People View
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     When I tap on contact name <Contact1>
-    And I see 4 conversation entries
     And I open conversation details
     And I press conversation menu button
     And I click delete menu button
@@ -466,7 +462,7 @@ Feature: People View
     And I see leave conversation alert
     Then I press leave
     And I open archived conversations
-    And I see user <GroupChatName> in contact list
+    And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
     Then I see 4 conversation entries
 
@@ -526,3 +522,22 @@ Feature: People View
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
       | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
+
+  @C80775 @staging
+  Scenario Outline: Verify adding people in group conversation via ADD PEOPLE button in the beginning of the conversation
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    And I press Add People button in the beginning of conversation
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact3>
+    And I tap on conversation <Contact3> in search result
+    And I click on Go button
+    Then I can see You Added <Contact3> message
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
+      | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |

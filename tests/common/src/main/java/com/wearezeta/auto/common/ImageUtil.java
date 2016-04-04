@@ -166,16 +166,12 @@ public class ImageUtil {
      */
     public static BufferedImage resizeImage(BufferedImage image, float resizeRatio) throws IOException {
         assert resizeRatio > 0 : "Resize ratio should be positive";
-        if ((int) resizeRatio == 1) {
-            return image;
-        }
         int w = image.getWidth(), h = image.getHeight();
         int scaledW = Math.round(w * resizeRatio);
         int scaledH = Math.round(h * resizeRatio);
         BufferedImage result = new BufferedImage(scaledW, scaledH, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = result.createGraphics();
-        g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY));
+        g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
         g2d.drawImage(image, 0, 0, scaledW, scaledH, null);
         return result;
     }
@@ -183,10 +179,8 @@ public class ImageUtil {
     public static BufferedImage tilt(BufferedImage image, double angle) {
         double sin = Math.abs(Math.sin(angle)), cos = Math.abs(Math.cos(angle));
         int w = image.getWidth(), h = image.getHeight();
-        int neww = (int) Math.floor(w * cos + h * sin), newh = (int) Math
-                .floor(h * cos + w * sin);
-        BufferedImage result = new BufferedImage(neww, newh,
-                BufferedImage.TYPE_INT_RGB);
+        int neww = (int) Math.floor(w * cos + h * sin), newh = (int) Math.floor(h * cos + w * sin);
+        BufferedImage result = new BufferedImage(neww, newh, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = result.createGraphics();
         g.translate((neww - w) / 2, (newh - h) / 2);
         g.rotate(angle, w / 2, h / 2);

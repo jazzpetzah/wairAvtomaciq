@@ -39,12 +39,8 @@ public class PhoneNumberLoginPageSteps {
 	@When("^I sign in using phone number of user (.*)$")
 	public void ISignInUsignPhoneNumberOfUser(String name) throws Exception {
 		ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
-		String number = user.getPhoneNumber().toString();
-		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		context.getPagesCollection().getPage(PhoneNumberLoginPage.class)
-				.enterCountryCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
-		context.getPagesCollection().getPage(PhoneNumberLoginPage.class)
-				.enterPhoneNumber(number);
+		context.getPagesCollection().getPage(PhoneNumberLoginPage.class).enterCountryCode(user.getPhoneNumber().getPrefix());
+		context.getPagesCollection().getPage(PhoneNumberLoginPage.class).enterPhoneNumber(user.getPhoneNumber().withoutPrefix());
 	}
 
 	/**
@@ -57,8 +53,8 @@ public class PhoneNumberLoginPageSteps {
 	 */
 	@When("^I enter phone number (.*) on phone number sign in$")
 	public void IEnterPhoneNumber(String number) throws Exception {
-		context.getPagesCollection().getPage(PhoneNumberLoginPage.class)
-				.enterPhoneNumber(number);
+		context.getPagesCollection().getPage(PhoneNumberLoginPage.class).enterPhoneNumber(
+				new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX, number).withoutPrefix());
 	}
 
 	/**

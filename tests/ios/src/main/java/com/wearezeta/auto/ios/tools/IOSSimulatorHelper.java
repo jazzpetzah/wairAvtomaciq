@@ -88,7 +88,7 @@ public class IOSSimulatorHelper {
                 "end tell"
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
         // To make sure the window is really activated
-        Thread.sleep(5000);
+        Thread.sleep(4000);
     }
 
     public static void switchAppsList() throws Exception {
@@ -126,6 +126,20 @@ public class IOSSimulatorHelper {
         activateWindow();
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke \"k\" using {command down}"
+        }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
+    }
+
+    public static void selectPasteMenuItem() throws Exception {
+        activateWindow();
+        CommonUtils.executeUIAppleScript(new String[]{
+                "tell application \"System Events\"",
+                "  tell process \"Simulator\"",
+                "    tell menu bar item \"Edit\" of menu bar 1",
+                "      click",
+                "      click (menu item \"Paste\") of menu 1",
+                "    end tell",
+                "  end tell",
+                "end tell",
         }).get(IOSSimulatorHelper.SIMULATOR_INTERACTION_TIMEOUT, TimeUnit.SECONDS);
     }
 
@@ -241,6 +255,10 @@ public class IOSSimulatorHelper {
         } finally {
             FileUtils.deleteDirectory(app);
         }
+    }
+
+    public static void launchApp(String bundleId) throws Exception {
+        executeSimctl(new String[]{"launch", getId(), bundleId});
     }
 
     public static void uploadImage(File img) throws Exception {

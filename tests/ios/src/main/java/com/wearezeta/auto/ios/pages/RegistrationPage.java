@@ -1,21 +1,17 @@
 package com.wearezeta.auto.ios.pages;
 
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+import io.appium.java_client.MobileBy;
+import io.appium.java_client.ios.IOSElement;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
 import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.function.Function;
-
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-
-import io.appium.java_client.MobileBy;
-import io.appium.java_client.ios.IOSElement;
-
-import org.openqa.selenium.By;
-
-import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-
-import org.openqa.selenium.WebElement;
 
 public class RegistrationPage extends IOSPage {
 
@@ -63,6 +59,9 @@ public class RegistrationPage extends IOSPage {
 
     private static final By nameKeepThisOneButton = MobileBy.AccessibilityId("KeepDefaultPictureButton");
 
+    private static final By xpathNoCodeShowingUpLabel = By.
+            xpath("//UIAStaticText[contains(@name, 'NO CODE SHOWING UP?')]");
+
     private String name;
     private String email;
     private String password;
@@ -81,21 +80,23 @@ public class RegistrationPage extends IOSPage {
 
     private static final String WIRE_COUNTRY_NAME = "Wirestan";
 
-    public void selectWirestan() throws Exception {
+    private void selectWirestan() throws Exception {
         final WebElement countryPickerBtn = getElement(nameCountryPickerButton);
         countryPickerBtn.click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCountryPickerButton, 5)) {
             countryPickerBtn.click();
         }
         ((IOSElement) getElement(xpathCountryList)).scrollTo(WIRE_COUNTRY_NAME).click();
+        // Wait for animation
+        Thread.sleep(2000);
     }
 
-    public void inputPhoneNumber(String number) throws Exception {
+    public void inputPhoneNumber(PhoneNumber number) throws Exception {
+        selectWirestan();
         final WebElement phoneNumberField = getElement(namePhoneNumberField);
-        phoneNumberField.click();
-        // Wait for animation
-        Thread.sleep(1000);
-        phoneNumberField.sendKeys(number);
+        DriverUtils.tapInTheCenterOfTheElement(getDriver(), phoneNumberField);
+        Thread.sleep(2000);
+        phoneNumberField.sendKeys(number.withoutPrefix());
         getElement(nameConfirmButton).click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConfirmButton)) {
             throw new IllegalStateException("Confirm button is still visible");
@@ -230,11 +231,38 @@ public class RegistrationPage extends IOSPage {
     }
 
     /**
-     *
      * Send extra space keys (workaround for simulator bug)
+     *
      * @throws Exception
      */
     public void tapNameInputField() throws Exception {
         getElement(xpathNameField).sendKeys("\n\n");
+    }
+
+    public boolean noCodeShowingUpLabelIsDisplayed() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathNoCodeShowingUpLabel);
+    }
+
+    public boolean noCodeShowingUpLabelIsNotDisplayed() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathNoCodeShowingUpLabel);
+    }
+
+    public boolean resendButtonIsVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameResendCodeButton);
+    }
+
+    public boolean resendButtonIsNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameResendCodeButton);
+    }
+
+    public void inputPhoneNumberAndExpectNoCommit(PhoneNumber phoneNumber) throws Exception {
+        selectWirestan();
+        final WebElement phoneNumberField = getElement(namePhoneNumberField);
+        DriverUtils.tapInTheCenterOfTheElement(getDriver(), phoneNumberField);
+        Thread.sleep(2000);
+        phoneNumberField.sendKeys(phoneNumber.withoutPrefix());
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConfirmButton, 3)) {
+            throw new IllegalStateException("Confirm button is visible, but should be hidden");
+        }
     }
 }

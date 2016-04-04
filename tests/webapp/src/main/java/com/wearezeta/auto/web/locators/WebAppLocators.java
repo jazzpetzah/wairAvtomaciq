@@ -260,6 +260,7 @@ public final class WebAppLocators {
         public static final String cssConfirmDeleteAccountButton = "[data-uie-name='do-delete-account']";
         public static final String cssConfirmText = "[data-uie-name='delete-confirm-text']";
         public static final String cssSentText = "[data-uie-name='delete-sent']";
+        public static final String cssImportButton = "[data-uie-name='do-share-contacts']";
     }
 
     public static final class SelfProfilePage {
@@ -332,10 +333,7 @@ public final class WebAppLocators {
 
         public static final String cssLastAction = cssLastMessage + " .action";
 
-        public static final String xpathLastImageEntry = "(//*[@data-uie-name='go-image-detail' and " +
-                "@data-uie-visible='true'])[last()]";
-
-        public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']";
+        public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']:not(.image-loading)";
 
         public static final String cssPingMessage = ".pinged";
 
@@ -371,21 +369,10 @@ public final class WebAppLocators {
 
         public static final String cssGIFButton = "[data-uie-name='do-giphy-popover']";
 
-        // bars (call bar)
-        public static String xpathCallingBarRoot = "//*[contains(@class, 'call-menu') and contains(@class, ' on')]";
-
-        public static final Function<String, String> xpathCallingBarRootByName = text -> String
-                .format(xpathCallingBarRoot
-                                + "//span[contains(text(),'%s')]|"
-                                + xpathCallingBarRoot
-                                + "//*[contains(@class, 'cc-avatar-label') and text()='%s']",
-                        text, text);
-
+        // call controls
         public static String cssAcceptCallButton = "[data-uie-name='do-call-controls-call-accept']";
 
         public static String cssAcceptVideoCallButton = "[data-uie-name='do-call-controls-video-accept']";
-
-        public static String cssEndCallButton = "[data-uie-name='do-call-controls-call-cancel']";
 
         public static String cssSilenceIncomingCallButton = "[data-uie-name='do-call-controls-call-ignore']";
 
@@ -452,7 +439,7 @@ public final class WebAppLocators {
         public static final String cssOpenOrCreateConversationButton = "[data-uie-name='do-add-create']," +
                 "[data-uie-name='do-open']";
 
-        public static final String cssCallButton = "#search-header [data-uie-name='do-call']";
+        public static final String cssCallButton = "#search-header [data-uie-name='do-audio-call']";
 
         public static final String cssVideoCallButton = "#search-header [data-uie-name='do-video-call']";
 
@@ -495,9 +482,9 @@ public final class WebAppLocators {
         public static final String xpathSelectedTopPeopleList = "//user-list[contains('top_users')]"
                 + "//*[@data-uie-name='item-user' and .//*[contains(@class,'selected')]]";
 
-        public static final String cssSearchField = "[data-uie-name='enter-users']";
+        public static final String xpathSuggestedContacts = "//*[contains(@class,'people-picker-list-suggestions')]//div[@data-uie-name='item-user']";
 
-        public static final String cssMoreButton = "[data-uie-name='item-more']";
+        public static final String cssSearchField = "[data-uie-name='enter-users']";
 
         public static final String cssBringFriendsFromGMailButton = ".people-picker-import-buttons";
 

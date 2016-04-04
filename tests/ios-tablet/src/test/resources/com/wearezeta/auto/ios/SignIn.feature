@@ -66,7 +66,7 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-  @C3134 @regression @id3787
+  @C3134 @regression @id3787 @useSpecialEmail
   Scenario Outline: Verify first time phone sign in when email is not assigned [LANDSCAPE]
     Given There is 1 user where <Name> is me with phone number only
     Given I rotate UI to landscape
@@ -136,14 +136,14 @@ Feature: Sign In
     And I see PHONE SIGN IN button
     And I tap on PHONE SIGN IN button
     And I see country picker button on Sign in screen
-    And I enter random phone number
+    And I enter 10 digits phone number
     Then I see invalid phone number alert
 
     Examples:
       | Name      |
       | user1Name |
 
-  @C2862 @regression @id3853
+  @C2862 @regression @id3853 @useSpecialEmail
   Scenario Outline: Verify adding email to the contact signed up with phone number [LANDSCAPE]
     Given There is 1 user where <Name> is me with phone number only
     Given I rotate UI to landscape

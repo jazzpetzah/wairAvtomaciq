@@ -7,12 +7,10 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 
 import java.util.ArrayList;
@@ -33,6 +31,8 @@ public class DialogPageSteps {
     private static final double CONVO_VIEW_MIN_SIMILARITY_SCORE = 0.5;
     private static final int SHIELD_STATE_CHANGE_TIMEOUT = 15;
     private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
+    private static final int TOP_TOOLBAR_STATE_CHANGE_TIMEOUT = 15;
+    private static final double TOP_TOOLBAR_MIN_SIMILARITY_SCORE = 0.97;
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final ElementState mediaButtonState = new ElementState(
@@ -41,6 +41,8 @@ public class DialogPageSteps {
             () -> getDialogPage().getConvoViewStateScreenshot());
     private final ElementState verifiedConversationShieldState = new ElementState(
             () -> getDialogPage().getShieldStateScreenshot());
+    private final ElementState topToolbarState = new ElementState(
+            () -> getDialogPage().getTopToolbarState());
     private Boolean wasShieldVisible = null;
 
     private static String expandMessage(String message) {
@@ -137,9 +139,9 @@ public class DialogPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Call|Ping|Add Picture|Video Call|Sketch) button$ from input tools$
+     * @step. ^I tap (Add people|Ping|Add Picture|Sketch) button$ from input tools$
      */
-    @When("^I tap (Ping|Add Picture|Sketch) button from input tools$")
+    @When("^I tap (Add people|Ping|Add Picture|Sketch) button from input tools$")
     public void WhenITapInputToolButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "ping":
@@ -150,6 +152,9 @@ public class DialogPageSteps {
                 break;
             case "sketch":
                 getDialogPage().tapSketchBtn();
+                break;
+            case "add people":
+                getDialogPage().tapPeopleBtn();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
@@ -414,7 +419,7 @@ public class DialogPageSteps {
             participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias).getName());
         }
         Assert.assertTrue(String.format("Group chat view with names %s is not visible", participantNames),
-                getDialogPage().isGroupChatDialogContainsNames(participantNames));
+                getDialogPage().isConversationMessageContainsNames(participantNames));
     }
 
     /**
@@ -496,6 +501,16 @@ public class DialogPageSteps {
         mediaButtonState.remember();
     }
 
+    /**
+     * Store the screenshot of current upper toolbar state
+     *
+     * @throws Exception
+     * @step. ^I remember the state of upper toolbar$
+     */
+    @When("^I remember the state of upper toolbar$")
+    public void IRememberUpperToolbarState() throws Exception {
+        topToolbarState.remember();
+    }
 
     /**
      * Tap back arrow button in upper toolbar
@@ -518,6 +533,18 @@ public class DialogPageSteps {
     public void IVerifyStateOfMediaControlButtonIsChanged() throws Exception {
         Assert.assertTrue("State of PlayPause media item button has not changed",
                 mediaButtonState.isChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE));
+    }
+
+    /**
+     * Verify the current state of upper toolbar has been not changed since the last snapshot was made
+     *
+     * @throws Exception
+     * @step. ^I verify the state of upper toolbar item is not changed$
+     */
+    @Then("^I verify the state of upper toolbar item is not changed$")
+    public void IVerifyStateOfUpperToolbarIsNotChanged() throws Exception {
+        Assert.assertTrue("State of upper toolbar has changed",
+                topToolbarState.isNotChanged(TOP_TOOLBAR_STATE_CHANGE_TIMEOUT, TOP_TOOLBAR_MIN_SIMILARITY_SCORE));
     }
 
     /**
@@ -756,12 +783,34 @@ public class DialogPageSteps {
      */
     @Then("^the conversation title should be \"(.*)\"$")
     public void ThenTheConversationTitleShouldBe(String conversationNameAliases) throws Exception {
-        List<String> names = new ArrayList<>();
-        for (String nameAlias : CommonSteps.splitAliases(conversationNameAliases)) {
-            names.add(usrMgr.replaceAliasesOccurences(conversationNameAliases, FindBy.NAME_ALIAS));
-        }
-        String expectedConversationNames = StringUtils.join(names, ",");
+        String expectedConversationNames = usrMgr.replaceAliasesOccurences(conversationNameAliases, FindBy.NAME_ALIAS)
+                .replaceAll(",", ", ");
         Assert.assertTrue(String.format("The conversation title should be %s", expectedConversationNames),
-                getDialogPage().isConversationTitileVisible(expectedConversationNames));
+                getDialogPage().isConversationTitleVisible(expectedConversationNames));
+    }
+
+    /**
+     * Checks that to see the media bar is just below the upper toolbar
+     *
+     * @throws Exception
+     * @step. ^I see the media bar is below the upper toolbar$
+     */
+    @Then("^I see the media bar is below the upper toolbar$")
+    public void ThenISeeTheMediaBarIsBelowUpperToolbar() throws Exception {
+        Assert.assertTrue("The media bar should below the upper toolbar", getDialogPage().isMediaBarBelowUptoolbar());
+    }
+
+    /**
+     * Check the cursor bar only contains ping, sketch, add picture and people buttons in cursor bar
+     *
+     * @throws Exception
+     * @step. ^I only see ping, sketch, camera and people buttons in cursor menu
+     */
+    @Then("^I only see ping, sketch, camera and people buttons in cursor menu")
+    public void ThenIOnlySeePingSketchAddPicturePeopleButton() throws Exception {
+        Assert.assertTrue("Ping button should be visible in cursor menu", getDialogPage().isPingButtonVisible());
+        Assert.assertTrue("Sketch button should be visible in cursor menu", getDialogPage().isSketchButtonVisible());
+        Assert.assertTrue("Camera button should be visible in cursor menu", getDialogPage().isCameraButtonVisible());
+        Assert.assertTrue("People button should be visible in cursor menu", getDialogPage().isPeopleButtonVisible());
     }
 }

@@ -287,13 +287,11 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I tap media container
     And I navigate back to conversations list
-    And I see play/pause button next to username <Contact1> in contact list
-    And I tap play/pause button in contact list next to username <Contact1>
+    And I tap play/pause button in conversations list next to <Contact1>
     And I tap on contact name <Contact2>
     And I tap media container
     And I navigate back to conversations list
-    And I see play/pause button next to username <Contact2> in contact list
-    And I tap play/pause button in contact list next to username <Contact2>
+    And I tap play/pause button in conversations list next to <Contact2>
     And I tap on contact name <Contact2>
     And I scroll media out of sight until media bar appears
     Then I see media is paused on Media Bar
@@ -330,9 +328,9 @@ Feature: Conversation View
     And I open conversation details
     And I open ellipsis menu
     And I click archive menu button
-    Then I dont see conversation <Contact> in contact list
+    Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
-    Then I see user <Contact> in contact list
+    Then I see conversation <Contact> in conversations list
 
     Examples:
       | Name      | Contact   |
@@ -350,13 +348,13 @@ Feature: Conversation View
     And I tap media container
     And I navigate back to conversations list
     And I wait for 1 second
-    And I tap play/pause button in contact list next to username <Contact>
+    And I tap play/pause button in conversations list next to <Contact>
     And I tap on contact name <Contact>
     Then I see media container state is changed
     When I remember media container state
     And I navigate back to conversations list
     And I wait for 1 second
-    And I tap play/pause button in contact list next to username <Contact>
+    And I tap play/pause button in conversations list next to <Contact>
     And I tap on contact name <Contact>
     Then I see media container state is changed
 
@@ -576,7 +574,7 @@ Feature: Conversation View
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I do not see conversation <Contact1> in conversations list
     And I open search by taping on it
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -703,7 +701,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C77924 @staging
+  @C77924 @regression
   Scenario Outline: Verify an upper toolbar exists in the conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -716,7 +714,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @77968 @staging
+  @C77968 @regression
   Scenario Outline: Verify upper toolbar for the outgoing connection request is shown
     Given There are 2 users where <Name> is me
     Given I sent connection request to <Contact1>
@@ -729,3 +727,49 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @C77970 @regression
+  Scenario Outline: Verify call icon is not shown in the left group conversation
+    Given There are <UsersAmount> users where <Name> is me
+    Given Myself is connected to all other
+    Given Myself has group chat <GroupChatName> with all other
+    Given Me leave group chat <GroupChatName>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    Then I do not see Audio call button on Upper Toolbar
+
+    Examples:
+      | Name      | GroupChatName  | UsersAmount |
+      | user1Name | LeaveGROUPCALL | 4           |
+
+  @C78373 @regression
+  Scenario Outline: Verify changing name of the user in the upper toolbar
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I see conversation name <Contact> in Upper Toolbar
+    And User <Contact> changes name to <NewName>
+    Then I see conversation name <NewName> in Upper Toolbar
+    
+    Examples:
+      | Name      | Contact   | NewName |
+      | user1Name | user2Name | NewName |
+
+  @C37374 @regression
+  Scenario Outline: Verify changing conversation title in the upper toolbar
+    Given There are <UsersAmount> users where <Name> is me
+    Given Myself is connected to all other
+    Given Myself has group chat <GroupChatName> with all other
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    And I see conversation name <GroupChatName> in Upper Toolbar
+    And User <Contact> renames conversation <GroupChatName> to <NewChatName>
+    Then I see conversation name <NewChatName> in Upper Toolbar
+
+    Examples:
+      | Name      | Contact   | GroupChatName  | UsersAmount | NewChatName |
+      | user1Name | user2Name | RenameChatName | 4           | NewName     |

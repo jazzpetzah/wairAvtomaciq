@@ -119,7 +119,7 @@ Feature: Search
     Given User <Name> blocks user <Contact>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I dont see conversation <Contact> in contact list
+    When I do not see conversation <Contact> in conversations list
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it
     And I input in People picker search field user name <Contact>
@@ -140,7 +140,7 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I dont see conversation <Contact> in contact list
+    When I do not see conversation <Contact> in conversations list
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it
     And I input in People picker search field user name <Contact>

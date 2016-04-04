@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -8,8 +9,10 @@ import java.util.function.Function;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
@@ -60,36 +63,9 @@ public abstract class IOSPage extends BasePage {
         this.onScreenKeyboard = new IOSKeyboard(driver);
     }
 
-    /**
-     * Ugly workaround for random Appium bug when UI tree is sometimes not refreshed and is empty
-     *
-     * @param drv Appium driver instance
-     * @return the same driver instance
-     * @throws Exception
-     */
-    private static ZetaIOSDriver fixUITreeIfBroken(final ZetaIOSDriver drv) throws Exception {
-//        if (drv.findElements(By.className("UIAWindow")).size() > 0) {
-//            return drv;
-//        }
-//        log.warn("Detected Appium UI tree corruption. Trying to fix...");
-//        try {
-//            if (drv.getOrientation() == ScreenOrientation.PORTRAIT) {
-//                drv.rotate(ScreenOrientation.LANDSCAPE);
-//                drv.rotate(ScreenOrientation.PORTRAIT);
-//            } else {
-//                drv.rotate(ScreenOrientation.PORTRAIT);
-//                drv.rotate(ScreenOrientation.LANDSCAPE);
-//            }
-//            Thread.sleep(500);
-//        } catch (WebDriverException e) {
-//            // pass silently
-//        }
-        return drv;
-    }
-
     @Override
     protected ZetaIOSDriver getDriver() throws Exception {
-        return fixUITreeIfBroken((ZetaIOSDriver) super.getDriver());
+        return (ZetaIOSDriver) super.getDriver();
     }
 
     @SuppressWarnings("unchecked")
@@ -141,6 +117,12 @@ public abstract class IOSPage extends BasePage {
                 String.format("%.3f", DriverUtils.SINGLE_TAP_DURATION / 1000.0));
     }
 
+    private void longClickAtSimulator(int x, int y) throws Exception {
+        final Dimension windowSize = getDriver().manage().window().getSize();
+        IOSSimulatorHelper.clickAt(String.format("%.2f", x * 1.0 / windowSize.width),
+                String.format("%.2f", y * 1.0 / windowSize.height), "2");
+    }
+
     /**
      * !!! this method is not able to enter line breaks !!!
      *
@@ -158,22 +140,36 @@ public abstract class IOSPage extends BasePage {
         final int tapY = elLocation.y + (relativeClickPointY * elSize.height) / 100;
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
             CommonUtils.setStringValueInSystemClipboard(str);
-
-            // FIXME: Paste does not appear in the input field until we press Cmd + V in the window :-@
-            IOSSimulatorHelper.activateWindow();
-            CommonUtils.pressCmdVByAppleScript();
-
-            getDriver().tap(1, tapX, tapY, DriverUtils.LONG_TAP_DURATION);
+            // FIXME: Paste menu will not be shown without this
+            IOSSimulatorHelper.selectPasteMenuItem();
+            longClickAtSimulator(tapX, tapY);
             getElement(nameEditingItemPaste).click();
-            DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemPaste);
-            clickAtSimulator(tapX, tapY);
             if (shouldCommitInput) {
-                Thread.sleep(1000);
                 IOSSimulatorHelper.pressEnterKey();
             }
         } else {
             getDriver().tap(1, tapX, tapY, DriverUtils.SINGLE_TAP_DURATION);
             this.onScreenKeyboard.typeString(str);
+            if (shouldCommitInput) {
+                this.clickKeyboardCommitButton();
+            }
+        }
+    }
+
+    public void inputStringFromPasteboard(WebElement dstElement, boolean shouldCommitInput) throws Exception {
+        final Dimension elSize = dstElement.getSize();
+        final Point elLocation = dstElement.getLocation();
+        final int tapX = elLocation.x + elSize.width / 2;
+        final int tapY = elLocation.y + elSize.height / 2;
+        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
+            longClickAtSimulator(tapX, tapY);
+            getElement(nameEditingItemPaste).click();
+            if (shouldCommitInput) {
+                IOSSimulatorHelper.pressEnterKey();
+            }
+        } else {
+            getDriver().tap(1, tapX, tapY, DriverUtils.LONG_TAP_DURATION);
+            getElement(nameEditingItemPaste, "Paste item is not visible", 15).click();
             if (shouldCommitInput) {
                 this.clickKeyboardCommitButton();
             }
@@ -242,16 +238,22 @@ public abstract class IOSPage extends BasePage {
     public void minimizeApplication(int timeSeconds) throws Exception {
         assert getDriver() != null : "WebDriver is not ready";
         if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            final long millisecondsStarted = System.currentTimeMillis();
-            IOSSimulatorHelper.switchAppsList();
-            final long clickAtHelperDuration = (System.currentTimeMillis() - millisecondsStarted) / 1000; // seconds
-            if (timeSeconds > clickAtHelperDuration + 1) {
-                Thread.sleep((timeSeconds - clickAtHelperDuration) * 1000);
+            IOSSimulatorHelper.goHome();
+            Thread.sleep(timeSeconds * 1000);
+            final String autPath = (String) getDriver().getCapabilities().getCapability("app");
+            String bundleId;
+            if (autPath.endsWith(".app")) {
+                bundleId = IOSCommonUtils.getBundleId(new File(autPath + "/Info.plist"));
             } else {
-                Thread.sleep(2000);
+                final File appPath = IOSCommonUtils.extractAppFromIpa(new File(autPath));
+                try {
+                    bundleId = IOSCommonUtils.getBundleId(new File(appPath.getCanonicalPath() + "/Info.plist"));
+                } finally {
+                    FileUtils.deleteDirectory(appPath);
+                }
             }
-            IOSSimulatorHelper.switchAppsList();
-            Thread.sleep(2000);
+            IOSSimulatorHelper.launchApp(bundleId);
+            Thread.sleep(1000);
         } else {
             // https://discuss.appium.io/t/runappinbackground-does-not-work-for-ios9/6201
             this.getDriver().runAppInBackground(timeSeconds);
@@ -434,5 +436,26 @@ public abstract class IOSPage extends BasePage {
 
     public void pressConfirmButton() throws Exception {
         getElement(xpathConfirmButton).click();
+    }
+
+    /**
+     * fixes taking tablet simulator screenshots via simshot
+     *
+     * @return Optinal screenshot image
+     * @throws Exception
+     */
+    @Override
+    public Optional<BufferedImage> takeScreenshot() throws Exception {
+        Optional<BufferedImage> result = super.takeScreenshot();
+        if (CommonUtils.getIsSimulatorFromConfig(getClass()) && result.isPresent()) {
+            final Dimension screenSize = getDriver().manage().window().getSize();
+            final double scaleX = 1.0 * result.get().getWidth() / screenSize.getWidth();
+            final double scaleY = 1.0 * result.get().getHeight() / screenSize.getHeight();
+            if (scaleX < 1 || scaleY < 1) {
+                final double scale = (scaleX > scaleY) ? scaleY : scaleX;
+                result = Optional.of(ImageUtil.resizeImage(result.get(), (float) (1.0 / scale)));
+            }
+        }
+        return result;
     }
 }

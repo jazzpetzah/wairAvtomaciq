@@ -85,7 +85,7 @@ public class CallingSteps {
      *
      * @step. (.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$
      *
-     * @param caller callers names/aliases
+     * @param callers callers names/aliases
      * @param conversationName destination conversation
      * @param expectedStatuses comma-separated list of expected call statuses. See
      * com.wearezeta.auto.common.calling2.v1.model.CallStatus for more details
@@ -223,6 +223,7 @@ public class CallingSteps {
         final ConversationPageSteps convSteps = new ConversationPageSteps(context);
         final CommonCallingSteps2 commonCalling = context.getCallingManager();
         final WarningPageSteps warningSteps = new WarningPageSteps(context);
+        final CallPageSteps callPageSteps = new CallPageSteps(context);
         final Map<Integer, Throwable> failures = new HashMap<>();
         for (int i = 0; i < times; i++) {
             LOG.info("\n\nSTARTING CALL " + i);
@@ -253,7 +254,7 @@ public class CallingSteps {
                             getCheckAndCompareFlows(flows, callee, flowWaitTime);
                         }
                         LOG.info("All instances are active");
-                        convSteps.IWaitForCallingBar(callees);
+                        callPageSteps.ISeeCallControlsForConversation(null, null, callees);
                         long flowCheckInterval = (callDurationMinutes * 60 * 1000)
                                 / totalFlowChecks;
                         LOG.info("Waiting for " + flowCheckInterval + "ms ...");
@@ -262,19 +263,19 @@ public class CallingSteps {
                     }
 
                     LOG.info("All instances are active");
-                    convSteps.IWaitForCallingBar(callees);
+                    callPageSteps.ISeeCallControlsForConversation(null, null, callees);
                     LOG.info("Callingbar is visible");
-                    convSteps.IEndTheCall();
+                    callPageSteps.IClickEndCallButton(callees);
                     LOG.info("Terminated call");
-                    convSteps.IDoNotCallingBar();
+                    callPageSteps.ISeeCallControlsForConversation("not", null, callees);
                     LOG.info("Calling bar is not visible anymore");
                     LOG.info("CALL " + i + " SUCCESSFUL");
                 } catch (Throwable e) {
                     LOG.info("CALL " + i + " FAILED");
                     failures.put(i, e);
                     try {
-                        convSteps.IEndTheCall();
-                        convSteps.IDoNotCallingBar();
+                        callPageSteps.IClickEndCallButton(callees);
+                        callPageSteps.ISeeCallControlsForConversation("not", null, callees);
                     } catch (Throwable ex) {
                         LOG.error("Cannot stop call " + i + " " + ex);
                     }
@@ -286,8 +287,8 @@ public class CallingSteps {
             } catch (Throwable e) {
                 LOG.error("Can not stop waiting call " + i + " " + e);
                 try {
-                    convSteps.IEndTheCall();
-                    convSteps.IDoNotCallingBar();
+                    callPageSteps.IClickEndCallButton(callees);
+                    callPageSteps.ISeeCallControlsForConversation("not", null, callees);
                 } catch (Throwable ex) {
                     LOG.error("Can not stop call " + i + " " + ex);
                 }

@@ -1,12 +1,13 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.email.AccountDeletionMessage;
 import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.Lifecycle;
 import static com.wearezeta.auto.web.common.Lifecycle.DRIVER_INIT_TIMEOUT;
@@ -14,6 +15,7 @@ import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.RegistrationPage;
+import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
@@ -406,6 +408,13 @@ public class CommonWebAppSteps {
         }
     }
 
+    @When("^I break the session with device (.*) of user (.*)$")
+    public void IBreakTheSession(String deviceName, String userAlias) throws Exception {
+        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
+        String deviceId = context.getDeviceManager().getDeviceId(user, deviceName);
+        context.getPagesCollection().getPage(WebPage.class).breakSession(deviceId);
+    }
+
     /**
      * Send message to a conversation
      *
@@ -447,11 +456,11 @@ public class CommonWebAppSteps {
      */
     @Then("^I verify user (.*) has received (?:an |\\s*)email invitation$")
     public void IVerifyUserReceiverInvitation(String alias) throws Throwable {
-        final String email = context.getUserManager().findUserByNameOrNameAlias(alias).getEmail();
+        final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
         assertTrue(
-                String.format("Invitation email for %s is not valid", email),
+                String.format("Invitation email for %s is not valid", user.getEmail()),
                 BackendAPIWrappers
-                .getInvitationMessage(email)
+                .getInvitationMessage(user)
                 .orElseThrow(
                         () -> {
                             throw new IllegalStateException(
@@ -461,10 +470,10 @@ public class CommonWebAppSteps {
 
     @Then("^I delete account of user (.*) via email$")
     public void IDeleteAccountViaEmail(String alias) throws Throwable {
-        final String email = context.getUserManager().findUserByNameOrNameAlias(alias).getEmail();
-        IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+        final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
+        IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
         Map<String, String> expectedHeaders = new HashMap<>();
-        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
+        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
         expectedHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, AccountDeletionMessage.MESSAGE_PURPOSE);
         AccountDeletionMessage message = new AccountDeletionMessage(mbox.getMessage(expectedHeaders,
                 DELETION_RECEIVING_TIMEOUT, 0).get());
@@ -485,11 +494,10 @@ public class CommonWebAppSteps {
      * @step. ^(.*) navigates to personal invitation registration page$
      */
     @Then("^(.*) navigates to personal invitation registration page$")
-    public void INavigateToPersonalInvitationRegistrationPage(String alias)
-            throws Throwable {
-        final String email = context.getUserManager().findUserByNameOrNameAlias(alias).getEmail();
+    public void INavigateToPersonalInvitationRegistrationPage(String alias) throws Throwable {
+        final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
         String url = BackendAPIWrappers
-                .getInvitationMessage(email)
+                .getInvitationMessage(user)
                 .orElseThrow(
                         () -> {
                             throw new IllegalStateException(

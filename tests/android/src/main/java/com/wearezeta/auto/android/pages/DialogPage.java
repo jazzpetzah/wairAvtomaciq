@@ -29,6 +29,8 @@ public class DialogPage extends AndroidPage {
 
     public static final By idPing = By.id("cursor_menu_item_ping");
 
+    private static final By idPeopleCursorButton = By.id("cursor_menu_item_participant");
+
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
             .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
 
@@ -65,7 +67,11 @@ public class DialogPage extends AndroidPage {
 
     private static final By idYoutubePlayButton = By.id("gtv__youtube_message__play");
 
-    private static final By idMediaBarControl = By.id("gtv__conversation_header__mediabar__control");
+    private static final String strIdMediaBarControl = "gtv__conversation_header__mediabar__control";
+
+    private static final By idMediaBarControl = By.id(strIdMediaBarControl);
+
+    private static final By xpathMediaBar = By.xpath(String.format("//*[@id='%s']/parent::*", strIdMediaBarControl));
 
     private static final By idSketch = By.id("cursor_menu_item_draw");
 
@@ -116,6 +122,8 @@ public class DialogPage extends AndroidPage {
     private static final int MAX_SWIPE_RETRIES = 5;
     private static final int MAX_CLICK_RETRIES = 5;
 
+    private static final double LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR = 0.01;
+
     public DialogPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -136,6 +144,12 @@ public class DialogPage extends AndroidPage {
     public BufferedImage getMediaButtonState() throws Exception {
         return this.getElementScreenshot(getElement(idPlayPauseMedia)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of Play/Pause button")
+        );
+    }
+
+    public BufferedImage getTopToolbarState() throws Exception {
+        return this.getElementScreenshot(getElement(xpathToolbar)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot of upper toolbar")
         );
     }
 
@@ -214,6 +228,26 @@ public class DialogPage extends AndroidPage {
 
     public void tapSketchBtn() throws Exception {
         getElement(idSketch, "Sketch button is not visible").click();
+    }
+
+    public void tapPeopleBtn() throws Exception {
+        getElement(idPeopleCursorButton, "People button is not visible").click();
+    }
+
+    public boolean isPingButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idPing);
+    }
+
+    public boolean isSketchButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idSketch);
+    }
+
+    public boolean isCameraButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAddPicture);
+    }
+
+    public boolean isPeopleButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idPeopleCursorButton);
     }
 
     public void tapAudioCallBtn() throws Exception {
@@ -318,7 +352,7 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idDialogImages);
     }
 
-    public boolean isConversationTitileVisible(String conversationTitle) throws Exception {
+    public boolean isConversationTitleVisible(String conversationTitle) throws Exception {
         final By locator = By.xpath(xpathConversationTitleByValue.apply(conversationTitle));
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
@@ -384,7 +418,7 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public boolean isGroupChatDialogContainsNames(List<String> names) throws Exception {
+    public boolean isConversationMessageContainsNames(List<String> names) throws Exception {
         final String convoText = getElement(xpathLastConversationMessage, "No messages are visible in the conversation view")
                 .getText();
         for (String name : names) {
@@ -501,7 +535,7 @@ public class DialogPage extends AndroidPage {
     public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries) throws Exception {
         int swipeNum = 1;
         while (swipeNum <= maxScrollRetries) {
-            swipeByCoordinates(1000, 50, 20, 50, 90);
+            swipeByCoordinates(1000, 50, 30, 50, 90);
             if (waitUntilMediaBarVisible(2)) {
                 return true;
             }
@@ -554,6 +588,10 @@ public class DialogPage extends AndroidPage {
 
     public void tapMessageNotification(String message) throws Exception {
         getElement(By.xpath(xpathMessageNotificationByValue.apply(message))).click();
+    }
+
+    public boolean isMediaBarBelowUptoolbar() throws Exception {
+        return isElementABelowElementB(getElement(xpathMediaBar), getElement(xpathToolbar), LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR);
     }
 
 }

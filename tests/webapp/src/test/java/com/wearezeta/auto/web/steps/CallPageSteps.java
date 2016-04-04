@@ -31,7 +31,7 @@ public class CallPageSteps {
      * @step. ^I( do not)? see the (incoming|outgoing|ongoing) call controls for conversation (.*)$
      */
     @And("^I( do not)? see the( incoming| outgoing| ongoing| join)? call controls for conversation (.*)$")
-    public void IClickAcceptCallButtonInConversationView(String doNot, String direction, String conversation) throws Exception {
+    public void ISeeCallControlsForConversation(String doNot, String direction, String conversation) throws Exception {
         conversation = context.getUserManager().replaceAliasesOccurences(conversation, ClientUsersManager.FindBy.NAME_ALIAS);
         CallPage page = context.getPagesCollection().getPage(CallPage.class);
         if (doNot == null) {

@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import javax.ws.rs.core.MediaType;
 
+import com.wearezeta.auto.common.rest.RESTError;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
@@ -27,30 +28,24 @@ final class RESTMBoxAPI {
 
     public static String getApiRoot() {
         try {
-            return String
-                    .format("%s%s:%s",
-                            URL_PROTOCOL,
-                            CommonUtils.getDefaultEmailListenerServiceHostFromConfig(RESTMBoxAPI.class),
-                            CommonUtils.getDefaultEmailListenerServicePortFromConfig(RESTMBoxAPI.class));
+            return String.format("%s%s:%s", URL_PROTOCOL,
+                    CommonUtils.getDefaultEmailListenerServiceHostFromConfig(RESTMBoxAPI.class),
+                    CommonUtils.getDefaultEmailListenerServicePortFromConfig(RESTMBoxAPI.class));
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }
     }
 
-    private static final CommonRESTHandlers restHandlers = new CommonRESTHandlers(
-            RESTMBoxAPI::verifyRequestResult);
+    private static final CommonRESTHandlers restHandlers = new CommonRESTHandlers(RESTMBoxAPI::verifyRequestResult);
 
     private static void verifyRequestResult(int currentResponseCode,
-                                            int[] acceptableResponseCodes, String message)
-            throws RESTMBoxException {
+                                            int[] acceptableResponseCodes, String message) throws RESTMBoxException {
         if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
-            throw new RESTMBoxException(
-                    String.format(
-                            "Mailbox service API request failed. Request return code is: %d. Expected codes are: %s. Message from service is: %s",
-                            currentResponseCode,
-                            Arrays.toString(acceptableResponseCodes), message),
-                    currentResponseCode);
+            throw new RESTMBoxException(String.format(
+                    "Mailbox service API request failed. Request return code is: %d. Expected codes are: %s. " +
+                            "Message from service is: %s",
+                    currentResponseCode, Arrays.toString(acceptableResponseCodes), message), currentResponseCode);
         }
     }
 
@@ -63,12 +58,11 @@ final class RESTMBoxAPI {
     }
 
     public static JSONArray getRecentEmailsForUser(String email, int minCount,
-                                                   int maxCount, int timeoutMilliseconds) {
-        Builder webResource = buildDefaultRequest(String.format(
-                "recent_emails/%s/%s/%s", email, maxCount, minCount),
+                                                   int maxCount, int timeoutMilliseconds) throws RESTError {
+        Builder webResource = buildDefaultRequest(String.format("recent_emails/%s/%s/%s", email, maxCount, minCount),
                 timeoutMilliseconds);
+        final String output = restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK});
         try {
-            final String output = restHandlers.httpGet(webResource, new int[]{HttpStatus.SC_OK});
             return new JSONArray(output);
         } catch (Exception e) {
             e.printStackTrace();

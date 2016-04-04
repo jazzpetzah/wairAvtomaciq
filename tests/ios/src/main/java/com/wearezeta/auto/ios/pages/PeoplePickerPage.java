@@ -37,7 +37,7 @@ public class PeoplePickerPage extends IOSPage {
 
     public static final By xpathInviteCopyButton = By.xpath("//UIACollectionCell[@name='Copy']");
 
-    private static final By nameSendAnInviteButton = MobileBy.AccessibilityId("INVITE MORE PEOPLE");
+    private static final By xpathInviteMorePeopleButton = By.xpath("//UIAButton[@name='INVITE MORE PEOPLE']");
 
     private static final Function<String, String> xpathStrInstantConnectButtonByUserName = name -> String.format(
             "//UIACollectionCell[ ./UIAStaticText[@name='%s'] ]/UIAButton[@name='instantPlusConnectButton']", name);
@@ -184,7 +184,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void tapSendInviteButton() throws Exception {
-        getElement(nameSendAnInviteButton).click();
+        getElement(xpathInviteMorePeopleButton).click();
     }
 
     public void tapSendInviteCopyButton() throws Exception {

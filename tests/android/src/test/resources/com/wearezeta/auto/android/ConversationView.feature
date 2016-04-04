@@ -365,37 +365,28 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C77948 @staging
-  Scenario Outline: Verify an upper toolbar displayed in the conversation view
-    Given There is 2 users where <Name> is me
-    Given <Contact> is connected to me
+  @C77948 @C77950 @rc @regression
+  Scenario Outline: Upper toolbar displayed in conversation view, I can back to conversation list by toolbar arrow
+    Given There is 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    When I tap on contact name <Contact1>
     Then I see the upper toolbar
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-
-  @C77950 @staging
-  Scenario Outline: Verify going back to the conversation list by tapping on the upper toolbar arrow
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    And I tap back button in upper toolbar
+    Then I see Contact list with contacts
+    When I tap on contact name <GroupChatName>
+    Then I see the upper toolbar
     And I tap back button in upper toolbar
     Then I see Contact list with contacts
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact1   | Contact2   | GroupChatName |
+      | user1Name | user2Name  | user3Name  | GroupChat     |
 
-  @C77958 @staging
+  @C77958 @regression
   Scenario Outline: Verify video call icon is not shown in a group conversation on the upper toolbar
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
@@ -416,7 +407,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName     |
       | user1Name | user2Name | user3Name | SendMessGroupChat |
 
-  @C78372 @staging
+  @C78372 @regression
   Scenario Outline: Verify title is not changed on receiving messages in other conversations
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -440,3 +431,42 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Contact2  |  Message1 | Message2 |
       | user1Name | user2Name | user3Name |  Msg1     | Msg2     |
+
+  @C77966 @regression
+  Scenario Outline: Verify there are no video and audio calling icons under the + button bar
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And I tap plus button in text input
+    Then I only see ping, sketch, camera and people buttons in cursor menu
+
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @C77973 @staging
+  Scenario Outline: Verify I can create group conversation from 1:1 using profile button from + button bar
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And I tap plus button in text input
+    And I tap Add people button from input tools
+    And the toolbar title in People picker page should be "CREATE GROUP"
+    Then I do not see add people error message on People picker page
+    When I input in People picker search field user name <Contact2>
+    And I tap on user name found on People picker page <Contact2>
+    And I click on Create conversation button
+    Then I see group chat page with users <Contact1>,<Contact2>
+    And the conversation title should be "<Contact1>,<Contact2>"
+    And I do not see the video call button in upper toolbar
+    And I see the audio call button in upper toolbar
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |

@@ -160,6 +160,10 @@ public class CommonIOSSteps {
             e.printStackTrace();
         }
 
+        if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
+            usrMgr.setUseSpecialEmailFlag();
+        }
+
         if (scenario.getSourceTagNames().contains("@performance")) {
             CommonUtils.defineNoHeadlessEnvironment();
             try {
@@ -262,6 +266,7 @@ public class CommonIOSSteps {
         final String appPath = getAppPath();
         pagesCollection.getCommonPage().installIpa(new File(appPath));
         final Map<String, Object> customCaps = new HashMap<>();
+        customCaps.put("autoAcceptAlerts", true);
         customCaps.put("noReset", true);
         customCaps.put("fullReset", false);
         final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath, Optional.of(customCaps));
@@ -351,39 +356,30 @@ public class CommonIOSSteps {
     }
 
     /**
-     * Hide keyboard by click on hide keyboard button
+     * click the corresponding on-screen keyboard button
      *
+     * @param btnName button name, either Space or Hide or Done
      * @throws Exception
-     * @step. ^I click hide keyboard button$
+     * @step. ^I click (\\w+) keyboard button$
      */
-    @When("^I click hide keyboard button$")
-    public void IClickHideKeyboardBtn() throws Exception {
-        pagesCollection.getCommonPage().clickHideKeyboardButton();
+    @When("^I click (\\w+) keyboard button$")
+    public void IClickHideKeyboardBtn(String btnName) throws Exception {
+        switch (btnName.toLowerCase()) {
+            case "hide":
+                pagesCollection.getCommonPage().clickHideKeyboardButton();
+                break;
+            case "space":
+                pagesCollection.getCommonPage().clickSpaceKeyboardButton();
+                break;
+            case "done":
+                pagesCollection.getCommonPage().clickKeyboardCommitButton();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name: %s", btnName));
+        }
     }
 
-    /**
-     * Click on Space button on keyboard
-     *
-     * @throws Exception
-     * @step. I click space keyboard button
-     */
-    @When("I click space keyboard button")
-    public void IClickSpaceKeyboardButton() throws Exception {
-        pagesCollection.getCommonPage().clickSpaceKeyboardButton();
-    }
-
-    /**
-     * Click on Done button on keyboard
-     *
-     * @throws Exception
-     * @step. I click DONE keyboard button
-     */
-    @When("I click DONE keyboard button")
-    public void IClickDoneKeyboardButton() throws Exception {
-        pagesCollection.getCommonPage().clickKeyboardCommitButton();
-    }
-
-    /**
+     /**
      * Closes the app for a certain amount of time in seconds
      *
      * @param seconds time in seconds to close the app
@@ -589,6 +585,21 @@ public class CommonIOSSteps {
                                                    String archivedUserNameAlias) throws Exception {
         commonSteps.ArchiveConversationWithGroup(userToNameAlias,
                 archivedUserNameAlias);
+    }
+
+    /**
+     * Rename conversation in backend
+     *
+     * @param user username who renames
+     * @param oldConversationName old conversation name string
+     * @param newConversationName new conversation name string
+     * @throws Exception
+     * @step.^User (.*) renames? conversation (.*) to (.*)$
+     */
+    @When("^User (.*) renames? conversation (.*) to (.*)$")
+    public void UserChangeGruopChatName(String user, String oldConversationName, String newConversationName)
+            throws Exception {
+        commonSteps.ChangeGroupChatName(user, oldConversationName, newConversationName);
     }
 
     /**

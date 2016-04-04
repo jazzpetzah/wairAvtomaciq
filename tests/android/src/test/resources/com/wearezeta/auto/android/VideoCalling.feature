@@ -39,8 +39,7 @@ Feature: VideoCalling
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
-
-
+    
   @C36362 @calling_basic @rc
   Scenario Outline: Verify I can accept Video call from locked device
     Given There are 2 users where <Name> is me
@@ -49,15 +48,17 @@ Feature: VideoCalling
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When I minimize the application
+    When I lock the device
     And <Contact> starts a video call to me
-    Then I see incoming call
+    # Wait until the call appears in UI
+    And I wait for 7 seconds
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
-    And I hang up ongoing video call
+    When I hang up ongoing video call
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
-    And I do not see ongoing video call
+    When I unlock the device
+    Then I do not see ongoing video call
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
@@ -107,16 +108,17 @@ Feature: VideoCalling
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    When I minimize the application
+    When I lock the device
     And <Contact> starts a video call to me
+    And I wait for 10 seconds
     And I see incoming call
     And I swipe to ignore the call
-    Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
-    And I do not see incoming call
+    And I unlock the device
+    Then I do not see incoming call
 
     Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | chrome      | 60      |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |
 
   @C36389 @calling_basic @rc
   Scenario Outline: Verify I can start Video call from the conversation
@@ -386,7 +388,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout | Message | ImageName   |
       | user1Name | user2Name | chrome      | 30      | Testing | testing.jpg |
 
-  @C58886 @staging
+  @C58886 @calling_basic
   Scenario Outline: Verify I can accept Video call from background
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -410,7 +412,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 30      |
 
-  @C58888 @staging
+  @C58888 @calling_advanced @rc
   Scenario Outline: Verify video call is not terminated after putting client to background and restore
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -433,7 +435,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 30      |
 
-  @C36378 @staging
+  @C36378 @calling_advanced
   Scenario Outline: Verify video call is not terminated if I lock and unlock device
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -456,7 +458,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 30      |
 
-  @C36389 @staging
+  @C36384 @calling_advanced
   Scenario Outline: Verify video call is terminated after 1 minute if nobody responds
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -474,3 +476,24 @@ Feature: VideoCalling
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 65      |
+
+  @C58887 @calling_advanced @rc
+  Scenario Outline: Verify I can decline Video call from background
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I minimize the application
+    And <Contact> starts a video call to me
+    # Wait until the call is shown in the UI
+    And I wait for 10 seconds
+    And I see incoming call
+    And I swipe to ignore the call
+    And I restore the application
+    Then I do not see ongoing video call
+
+    Examples:
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |

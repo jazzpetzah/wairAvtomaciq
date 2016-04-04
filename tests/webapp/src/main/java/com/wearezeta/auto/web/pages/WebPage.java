@@ -10,6 +10,7 @@ import org.openqa.selenium.Alert;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
 public class WebPage extends BasePage {
@@ -127,5 +128,18 @@ public class WebPage extends BasePage {
             }
         }
         return values;
+    }
+
+    /**
+     * Breaks the session to a certain device through injecting Javascript that removes the session state in cryptobox
+     *
+     * @param deviceId Device id
+     * @throws Exception
+     */
+    public void breakSession(String deviceId) throws Exception {
+        String breakSession = "s = wire.app.repository.encryption.cryptobox.store.sessions;\n" +
+                "cs = s[Object.keys(s).filter((x) => x.endsWith(\"" + deviceId + "\"))[0]];\n" +
+                "cs.session_states = {};";
+        getDriver().executeScript(breakSession);
     }
 }
