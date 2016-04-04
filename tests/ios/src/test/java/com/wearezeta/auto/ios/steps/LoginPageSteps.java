@@ -95,10 +95,7 @@ public class LoginPageSteps {
         if (!getRegistrationPage().isCountryPickerButtonVisible()) {
             getLoginPage().switchToPhoneLogin();
         }
-
-        getRegistrationPage().selectWirestan();
-        getRegistrationPage().inputPhoneNumber(
-                number.toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
+        getRegistrationPage().inputPhoneNumber(number);
         getRegistrationPage().inputActivationCode(number);
         getLoginPage().waitForLoginToFinish();
         getFirstTimeOverlayPage().acceptIfVisible(2);
@@ -114,9 +111,7 @@ public class LoginPageSteps {
     @When("^I enter phone number and verification code$")
     public void IEnterPhoneNumberAndVerificationCode() throws Throwable {
         ClientUser self = usrMgr.getSelfUserOrThrowError();
-        getRegistrationPage().selectWirestan();
-        getRegistrationPage().inputPhoneNumber(
-                self.getPhoneNumber().toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
+        getRegistrationPage().inputPhoneNumber(self.getPhoneNumber());
         getRegistrationPage().inputActivationCode(self.getPhoneNumber());
     }
 

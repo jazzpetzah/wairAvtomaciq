@@ -230,6 +230,10 @@ public class DialogPage extends AndroidPage {
         getElement(idSketch, "Sketch button is not visible").click();
     }
 
+    public void tapPeopleBtn() throws Exception {
+        getElement(idPeopleCursorButton, "People button is not visible").click();
+    }
+
     public boolean isPingButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idPing);
     }
@@ -348,7 +352,7 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorAppears(this.getDriver(), idDialogImages);
     }
 
-    public boolean isConversationTitileVisible(String conversationTitle) throws Exception {
+    public boolean isConversationTitleVisible(String conversationTitle) throws Exception {
         final By locator = By.xpath(xpathConversationTitleByValue.apply(conversationTitle));
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
@@ -414,7 +418,7 @@ public class DialogPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public boolean isGroupChatDialogContainsNames(List<String> names) throws Exception {
+    public boolean isConversationMessageContainsNames(List<String> names) throws Exception {
         final String convoText = getElement(xpathLastConversationMessage, "No messages are visible in the conversation view")
                 .getText();
         for (String name : names) {

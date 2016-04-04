@@ -937,11 +937,11 @@ Feature: People View
     And I open group conversation details
     And I try to change group conversation name to empty
     Then I see correct conversation name <GroupChatName>
-    When I try to change group conversation name to random with length <MaxGroupChatNameLenght>
+    When I try to change group conversation name to random with length <MaxGroupChatNameLength>
     Then I see correct conversation name <GroupChatName>
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
+      | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLength |
       | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
 
   @C2725 @regression @id3950
