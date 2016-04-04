@@ -94,7 +94,7 @@ public class RegistrationPage extends IOSPage {
     public void inputPhoneNumber(PhoneNumber number) throws Exception {
         selectWirestan();
         final WebElement phoneNumberField = getElement(namePhoneNumberField);
-        DriverUtils.tapInTheCenterOfTheElement(getDriver(),phoneNumberField);
+        phoneNumberField.click();
         Thread.sleep(2000);
         phoneNumberField.sendKeys(number.withoutPrefix());
         getElement(nameConfirmButton).click();
