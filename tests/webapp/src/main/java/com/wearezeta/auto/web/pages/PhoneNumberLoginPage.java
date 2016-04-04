@@ -42,10 +42,10 @@ public class PhoneNumberLoginPage extends WebPage {
 		countryCodeField.sendKeys(countryCode);
 	}
 
-	public void enterPhoneNumber(PhoneNumber phoneNumber) {
+	public void enterPhoneNumber(String phoneNumber) {
 		phoneNumberField.click();
 		phoneNumberField.clear();
-		phoneNumberField.sendKeys(phoneNumber.withoutPrefix());
+		phoneNumberField.sendKeys(phoneNumber);
 	}
 
 	public void clickSignInButton() throws Exception {

@@ -37,7 +37,7 @@ public class PhoneNumberLoginPageSteps {
 	public void ISignInUsignPhoneNumberOfUser(String name) throws Exception {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
 		webappPagesCollection.getPage(PhoneNumberLoginPage.class).enterCountryCode(user.getPhoneNumber().getPrefix());
-		webappPagesCollection.getPage(PhoneNumberLoginPage.class).enterPhoneNumber(user.getPhoneNumber());
+		webappPagesCollection.getPage(PhoneNumberLoginPage.class).enterPhoneNumber(user.getPhoneNumber().withoutPrefix());
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class PhoneNumberLoginPageSteps {
 	@When("^I enter phone number (.*) on phone number sign in$")
 	public void IEnterPhoneNumber(String number) throws Exception {
 		webappPagesCollection.getPage(PhoneNumberLoginPage.class)
-				.enterPhoneNumber(new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX, number));
+				.enterPhoneNumber(new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX, number).withoutPrefix());
 	}
 
 	/**
