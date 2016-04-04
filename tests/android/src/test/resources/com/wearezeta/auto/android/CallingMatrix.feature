@@ -251,7 +251,7 @@ Feature: Calling Matrix
     And I swipe to accept the call
     Then I see ongoing call
     When I minimize the application
-    And I wait for 10 seconds
+    And I wait for 5 seconds
     And I restore the application
     Then I see ongoing call
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
@@ -275,7 +275,7 @@ Feature: Calling Matrix
     Then I see outgoing call
     And I see ongoing call
     When I lock the device
-    And I wait for 2 seconds
+    And I wait for 5 seconds
     And I unlock the device
     Then I see ongoing call
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
