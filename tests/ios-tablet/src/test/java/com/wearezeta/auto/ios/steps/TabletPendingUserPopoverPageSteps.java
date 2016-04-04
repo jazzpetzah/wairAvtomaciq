@@ -10,59 +10,43 @@ import cucumber.api.java.en.When;
 
 public class TabletPendingUserPopoverPageSteps {
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-			.getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-	private TabletPendingUserPopoverPage getTabletPendingUserPopoverPage()
-			throws Exception {
-		return (TabletPendingUserPopoverPage) pagesCollecton
-				.getPage(TabletPendingUserPopoverPage.class);
-	}
+    private TabletPendingUserPopoverPage getTabletPendingUserPopoverPage() throws Exception {
+        return pagesCollection.getPage(TabletPendingUserPopoverPage.class);
+    }
 
-	/**
-	 * Verifying pending profile popover on iPad
-	 * 
-	 * @step ^I see (.*) user pending profile popover on iPad$
-	 * 
-	 * @param user
-	 *            usern from Examples
-	 * 
-	 * @throws NoSuchUserException
-	 * @throws Exception
-	 */
-	@When("^I see (.*) user pending profile popover on iPad$")
-	public void IseeUserPendingPopoverOnIpad(String user)
-			throws NoSuchUserException, Exception {
-		Assert.assertTrue(
-				"User name is not displayed",
-				getTabletPendingUserPopoverPage().isUserNameDisplayed(
-						usrMgr.findUserByNameOrNameAlias(user).getName()));
-		Assert.assertTrue("Cancel Request label is not displayed",
-				getTabletPendingUserPopoverPage().isCancelRequestLabelVisible());
-	}
+    /**
+     * Verifying pending profile popover on iPad
+     *
+     * @param user usern from Examples
+     * @throws NoSuchUserException
+     * @throws Exception
+     * @step ^I see (.*) user pending profile popover on iPad$
+     */
+    @When("^I see (.*) user pending profile popover on iPad$")
+    public void IseeUserPendingPopoverOnIpad(String user) throws Exception {
+        Assert.assertTrue("User name is not displayed",
+                getTabletPendingUserPopoverPage().isUserNameDisplayed(usrMgr.findUserByNameOrNameAlias(user).getName()));
+        Assert.assertTrue("Cancel Request label is not displayed",
+                getTabletPendingUserPopoverPage().isCancelRequestLabelVisible());
+    }
 
-	/**
-	 * Verify presence of incoming pending popover for particular user
-	 * 
-	 * @step. I see incoming pending popover from user (.*) on iPad$
-	 * 
-	 * @param user
-	 *            username String
-	 * 
-	 * @throws NoSuchUserException
-	 * @throws Exception
-	 */
-	@When("^I see incoming pending popover from user (.*) on iPad$")
-	public void ISeeIncomingPendingPopoverOnIpad(String user)
-			throws NoSuchUserException, Exception {
-		Assert.assertTrue(
-				"User name is not displayed",
-				getTabletPendingUserPopoverPage().isUserNameDisplayed(
-						usrMgr.findUserByNameOrNameAlias(user).getName()));
-		Assert.assertTrue("Connect button is not shown",
-				getTabletPendingUserPopoverPage().isConnectButtonDisplayed());
-	}
+    /**
+     * Verify presence of incoming pending popover for particular user
+     *
+     * @param user username String
+     * @throws NoSuchUserException
+     * @throws Exception
+     * @step. I see incoming pending popover from user (.*) on iPad$
+     */
+    @When("^I see incoming pending popover from user (.*) on iPad$")
+    public void ISeeIncomingPendingPopoverOnIpad(String user) throws Exception {
+        Assert.assertTrue("User name is not displayed",
+                getTabletPendingUserPopoverPage().isUserNameDisplayed(usrMgr.findUserByNameOrNameAlias(user).getName()));
+        Assert.assertTrue("Connect button is not shown", getTabletPendingUserPopoverPage().isConnectButtonDisplayed());
+    }
 
 }
