@@ -72,6 +72,18 @@ Feature: Bring Your Friends
     And I see Google login popup
     And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!
     Then I see more than 5 suggestions in people picker
+    And I remember first suggested user
+    And I remember second suggested user
+    And I see first remembered user in People Picker
+    And I see second remembered user in People Picker
+    When I remove first remembered user from suggestions in People Picker
+    And I do not see first remembered user in People Picker
+    And I make a connection request for second remembered user directly from People Picker
+    And I do not see second remembered user in People Picker
+    And I close People Picker
+    And I see Contact list with second remembered user
+    When I open second remembered users conversation
+    Then I see connecting message in conversation with second remembered user
 
   @C3218 @regression
   Scenario Outline: Switch between Invitation and Share Contacts bubbles
