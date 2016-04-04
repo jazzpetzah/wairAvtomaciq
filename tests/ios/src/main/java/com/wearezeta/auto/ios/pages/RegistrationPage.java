@@ -94,7 +94,7 @@ public class RegistrationPage extends IOSPage {
     public void inputPhoneNumber(PhoneNumber number) throws Exception {
         selectWirestan();
         final WebElement phoneNumberField = getElement(namePhoneNumberField);
-        phoneNumberField.click();
+        DriverUtils.tapInTheCenterOfTheElement(getDriver(), phoneNumberField);
         Thread.sleep(2000);
         phoneNumberField.sendKeys(number.withoutPrefix());
         getElement(nameConfirmButton).click();
@@ -253,5 +253,16 @@ public class RegistrationPage extends IOSPage {
 
     public boolean resendButtonIsNotVisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameResendCodeButton);
+    }
+
+    public void inputPhoneNumberAndExpectNoCommit(PhoneNumber phoneNumber) throws Exception {
+        selectWirestan();
+        final WebElement phoneNumberField = getElement(namePhoneNumberField);
+        DriverUtils.tapInTheCenterOfTheElement(getDriver(), phoneNumberField);
+        Thread.sleep(2000);
+        phoneNumberField.sendKeys(phoneNumber.withoutPrefix());
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConfirmButton, 3)) {
+            throw new IllegalStateException("Confirm button is visible, but should be hidden");
+        }
     }
 }
