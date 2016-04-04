@@ -447,7 +447,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C77973 @staging @torun
+  @C77973 @staging
   Scenario Outline: Verify I can create group conversation from 1:1 using profile button from + button bar
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
