@@ -237,3 +237,53 @@ Feature: Calling Matrix
       | user1Name | user2Name | user3Name | GroupCall     | autocall:1.12 | 20      | zcall:2.1   |
       | user1Name | user2Name | user3Name | GroupCall     | autocall:2.1  | 20      | zcall:1.12  |
       | user1Name | user2Name | user3Name | GroupCall     | autocall:2.1  | 20      | zcall:2.1   |
+
+  @calling_matrix
+  Scenario Outline: Verify putting client to the background during 1-to-1 call <CallBackend> to me
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When <Contact> calls me
+    And I see incoming call
+    And I swipe to accept the call
+    Then I see ongoing call
+    When I minimize the application
+    And I wait for 10 seconds
+    And I restore the application
+    Then I see ongoing call
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+
+    Examples:
+      | Name      | Contact   | CallBackend    | Timeout |
+      | user1Name | user2Name | autocall:1.12  | 20      |
+      | user1Name | user2Name | autocall:2.1   | 20      |
+
+  @calling_matrix
+  Scenario Outline: Lock device screen when in call with user <WaitBackend>
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given <Contact> starts instance using <WaitBackend>
+    Given <Contact> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    And I tap on contact name <Contact>
+    And I tap Audio Call button from top toolbar
+    Then I see outgoing call
+    And I see ongoing call
+    When I lock the device
+    And I wait for 2 seconds
+    And I unlock the device
+    Then I see ongoing call
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+
+    Examples:
+      | Name      | Contact   | WaitBackend         | Timeout |
+      | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
+      | user1Name | user2Name | chrome:47.0.2526.73 | 20      |
+      # Due to not working firefox
+      #| user1Name | user2Name | firefox:44.0.2      | 20      |
+      #| user1Name | user2Name | firefox:43.0        | 20      |
