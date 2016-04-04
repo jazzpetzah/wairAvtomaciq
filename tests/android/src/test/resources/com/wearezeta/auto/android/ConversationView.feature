@@ -447,7 +447,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C77973 @staging
+  @C77973 @staging @torun
   Scenario Outline: Verify I can create group conversation from 1:1 using profile button from + button bar
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -457,14 +457,10 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I tap plus button in text input
     And I tap Add people button from input tools
-    And I see People picker page
-    And I see toolbar in People picker page
     And the toolbar title in People picker page should be "CREATE GROUP"
     Then I do not see add people error message on People picker page
     When I input in People picker search field user name <Contact2>
-    And I see user <Contact2> found on People picker page
     And I tap on user name found on People picker page <Contact2>
-    And I see Create conversation button
     And I click on Create conversation button
     Then I see group chat page with users <Contact1>,<Contact2>
     And the conversation title should be "<Contact1>,<Contact2>"
