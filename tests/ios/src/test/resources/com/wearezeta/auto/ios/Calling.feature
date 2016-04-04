@@ -445,13 +445,13 @@ Feature: Calling
     And <Contact1>,<Contact2> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> RINGING"
     And I tap Accept button on Calling overlay
-    Then I see Calling overlay
+    And I see Calling overlay
     # FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
     #Then I see <NumberOfAvatars> avatars on the Calling overlay
     And I wait for 5 seconds
-    Then <Contact1> stops calling <GroupChatName>
+    And <Contact1> stops calling <GroupChatName>
     And <Contact1> verifies that call status to <GroupChatName> is changed to destroyed in 15 seconds
-    And <Contact2> verifies that call status to <GroupChatName> is changed to active in 15 seconds
+    Then <Contact2> verifies that call status to <GroupChatName> is changed to active in 2 seconds
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | NumberOfAvatars |
