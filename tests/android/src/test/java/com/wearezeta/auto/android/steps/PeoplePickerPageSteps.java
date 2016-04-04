@@ -212,7 +212,23 @@ public class PeoplePickerPageSteps {
     @Then("^I see that no results found$")
     public void ISeeNoResultsFound() throws Exception {
         Assert.assertTrue("Some results were found in People Picker",
-                getPeoplePickerPage().isNoResultsFoundVisible());
+                getPeoplePickerPage().isErrorVisible());
+    }
+
+    /**
+     * Check the add people error message is visible
+     *
+     * @param shouldNotSee equal null means the error message should be visible
+     * @throws Exception
+     * @step. ^I( do not)? see add people error message on People picker page$
+     */
+    @Then("^I( do not)? see add people error message on People picker page$")
+    public void ISeeTheAddPeopleErrorMessage(String shouldNotSee) throws Exception {
+        if(shouldNotSee == null) {
+            Assert.assertTrue("Add people error message should be visible", getPeoplePickerPage().isErrorVisible());
+        }else {
+            Assert.assertTrue("Add people error message should be invisible", getPeoplePickerPage().isErrorInvisible());
+        }
     }
 
     /**
@@ -251,23 +267,23 @@ public class PeoplePickerPageSteps {
      * Checks to see if the add to conversation button is visible
      *
      * @throws Exception
-     * @step. ^I see Add to conversation button$
+     * @step. ^I see (Add to|Create) to conversation button$
      */
-    @When("^I see Add to conversation button$")
-    public void WhenISeeAddToConversationButton() throws Exception {
-        Assert.assertTrue("Add to conversation button is not visible",
-                getPeoplePickerPage().isAddToConversationBtnVisible());
+    @When("^I see (Add to|Create) conversation button$")
+    public void WhenISeeAddToConversationButton(String buttonType) throws Exception {
+        Assert.assertTrue(String.format("%s conversation button is not visible", buttonType),
+                getPeoplePickerPage().isPickUserConfirmationBtnVisible());
     }
 
     /**
      * Clicks on the Add to conversation button
      *
      * @throws Exception
-     * @step. ^I click on Add to conversation button$
+     * @step. ^I click on (Add to|Create)? to conversation button$
      */
-    @When("^I click on Add to conversation button$")
-    public void WhenIClickOnAddToConversationButton() throws Exception {
-        getPeoplePickerPage().clickOnAddToConversationButton();
+    @When("^I click on (Add to|Create) conversation button$")
+    public void WhenIClickOnAddToConversationButton(String buttonType) throws Exception {
+        getPeoplePickerPage().tapPickUserConfirmationButton();
     }
 
     /**
@@ -403,6 +419,17 @@ public class PeoplePickerPageSteps {
         {
             Assert.assertTrue(String.format("The contact '%s' should NOT be presented in contact list", contact), getPeoplePickerPage().isContactInvisible(contact));
         }
+    }
+
+    @Then("^I see toolbar in [Pp]eople [Pp]icker page$")
+    public void ISeeToolbarInPeoplePickerPage() throws Exception {
+        Assert.assertTrue("The toolbar in People picker should be visible", getPeoplePickerPage().isToolbarVisible());
+    }
+
+    @Then("^the toolbar title in [Pp]eople [Pp]icker page should be \"(.*)\"$")
+    public void ISeeToolbarTitleIs(String title) throws Exception {
+        Assert.assertTrue(String.format("The toolbar title in people picker page should be %s", title),
+                getPeoplePickerPage().isToolbarTitleVisible(title));
     }
 
     /**

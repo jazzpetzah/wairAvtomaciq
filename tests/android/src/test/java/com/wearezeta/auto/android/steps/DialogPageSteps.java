@@ -7,12 +7,10 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 
 import java.util.ArrayList;
@@ -421,7 +419,7 @@ public class DialogPageSteps {
             participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias).getName());
         }
         Assert.assertTrue(String.format("Group chat view with names %s is not visible", participantNames),
-                getDialogPage().isGroupChatDialogContainsNames(participantNames));
+                getDialogPage().isConversationMessageContainsNames(participantNames));
     }
 
     /**
@@ -785,13 +783,10 @@ public class DialogPageSteps {
      */
     @Then("^the conversation title should be \"(.*)\"$")
     public void ThenTheConversationTitleShouldBe(String conversationNameAliases) throws Exception {
-        List<String> names = new ArrayList<>();
-        for (String nameAlias : CommonSteps.splitAliases(conversationNameAliases)) {
-            names.add(usrMgr.replaceAliasesOccurences(conversationNameAliases, FindBy.NAME_ALIAS));
-        }
-        String expectedConversationNames = StringUtils.join(names, ",");
+        String expectedConversationNames = usrMgr.replaceAliasesOccurences(conversationNameAliases, FindBy.NAME_ALIAS)
+                .replaceAll(",", ", ");
         Assert.assertTrue(String.format("The conversation title should be %s", expectedConversationNames),
-                getDialogPage().isConversationTitileVisible(expectedConversationNames));
+                getDialogPage().isConversationTitleVisible(expectedConversationNames));
     }
 
     /**
