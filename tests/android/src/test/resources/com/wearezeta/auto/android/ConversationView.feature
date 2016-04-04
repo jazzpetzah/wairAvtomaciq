@@ -472,7 +472,7 @@ Feature: Conversation View
       | user1Name | user2Name | user3Name |
 
 
-  @C77974 @staging @torun
+  @C77974 @staging
   Scenario Outline: Verify I can add people to group conversation using profile button from + button bar
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
