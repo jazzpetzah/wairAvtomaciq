@@ -25,7 +25,6 @@ Feature: Calling Matrix
       #| user1Name | user2Name | firefox:44.0.2      | 20      |
       #| user1Name | user2Name | firefox:43.0        | 20      |
 
-  @calling_matrix
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -44,6 +43,7 @@ Feature: Calling Matrix
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | zcall:1.12  | 20      |
       | user1Name | user2Name | zcall:2.1   | 20      |
+      | user1Name | user2Name | zcall:2.2   | 20      |
 
   @calling_matrix
   Scenario Outline: Verify I can receive 1:1 call from <CallBackend>
@@ -91,6 +91,7 @@ Feature: Calling Matrix
       | Name      | Contact   | CallBackend   | Timeout |
       | user1Name | user2Name | autocall:1.12 | 60      |
       | user1Name | user2Name | autocall:2.1  | 60      |
+      | user1Name | user2Name | autocall:2.2  | 60      |
 
   @calling_matrix
   Scenario Outline: Verify I can make group call with multiple <WaitBackend>
@@ -141,6 +142,7 @@ Feature: Calling Matrix
       | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend| Timeout |
       | user1Name | user2Name | user3Name | GroupCall     | zcall:1.12 | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | zcall:2.1  | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.2  | 20      |
 
   @calling_matrix
   Scenario Outline: Verify I can join group call with multiple <Backend>
@@ -224,8 +226,13 @@ Feature: Calling Matrix
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend   | Timeout | WaitBackend |
       | user1Name | user2Name | user3Name | GroupCall     | autocall:1.12 | 20      | zcall:1.12  |
       | user1Name | user2Name | user3Name | GroupCall     | autocall:1.12 | 20      | zcall:2.1   |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:1.12 | 20      | zcall:2.2   |
       | user1Name | user2Name | user3Name | GroupCall     | autocall:2.1  | 20      | zcall:1.12  |
       | user1Name | user2Name | user3Name | GroupCall     | autocall:2.1  | 20      | zcall:2.1   |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.1  | 20      | zcall:2.2   |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.2  | 20      | zcall:1.12  |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.2  | 20      | zcall:2.1   |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.2  | 20      | zcall:2.2   |
 
   @calling_matrix
   Scenario Outline: Put app into background after initiating call with user <WaitBackend>
@@ -268,6 +275,7 @@ Feature: Calling Matrix
       | Name      | Contact   | CallBackend   | Timeout |
       | user1Name | user2Name | autocall:1.12 | 20      |
       | user1Name | user2Name | autocall:2.1  | 20      |
+      | user1Name | user2Name | autocall:2.2  | 20      |
 
   @calling_matrix
   Scenario Outline: Lock device screen when in call with user <WaitBackend>
