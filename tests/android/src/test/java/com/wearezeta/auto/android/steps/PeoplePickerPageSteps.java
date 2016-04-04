@@ -267,11 +267,11 @@ public class PeoplePickerPageSteps {
      * Checks to see if the add to conversation button is visible
      *
      * @throws Exception
-     * @step. ^I see (Add to|Create) to conversation button$
+     * @step. ^I see (?:Add to|Create) to conversation button$
      */
-    @When("^I see (Add to|Create) conversation button$")
-    public void WhenISeeAddToConversationButton(String buttonType) throws Exception {
-        Assert.assertTrue(String.format("%s conversation button is not visible", buttonType),
+    @When("^I see (?:Add to|Create) conversation button$")
+    public void WhenISeeAddToConversationButton() throws Exception {
+        Assert.assertTrue("Add to/Create conversation button is not visible",
                 getPeoplePickerPage().isPickUserConfirmationBtnVisible());
     }
 
