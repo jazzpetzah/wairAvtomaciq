@@ -57,11 +57,24 @@ public class RegistrationPageSteps {
      * Input in phone number field page a random X digits
      *
      * @throws Exception
-     * @step. ^I enter (.*) digits phone number
+     * @param digitsCount count of digits in the phone number
+     * @step. ^I enter (\\d+) digits phone number
      */
-    @When("^I enter (.*) digits phone number$")
-    public void IEnterXDigitsPhoneNumber(int x) throws Exception {
-        getRegistrationPage().inputPhoneNumber(new PhoneNumber(x));
+    @When("^I enter (\\d+) digits phone number$")
+    public void IEnterXDigitsPhoneNumber(int digitsCount) throws Exception {
+        getRegistrationPage().inputPhoneNumber(new PhoneNumber(digitsCount));
+    }
+
+    /**
+     * Enter a phone number and then verify that no commit button is shown
+     *
+     * @step. ^I enter (\d+) digits phone number and expect no commit button$
+     * @param digitsCount count of digits in the phone number
+     * @throws Exception
+     */
+    @Then("^I enter (\\d+) digits phone number and expect no commit button$")
+    public void IEnterDigitsAndExpectNoCommit(int digitsCount) throws Exception {
+        getRegistrationPage().inputPhoneNumberAndExpectNoCommit(new PhoneNumber(digitsCount));
     }
 
     /**

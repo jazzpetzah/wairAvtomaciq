@@ -15,7 +15,7 @@ import org.openqa.selenium.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-public class ContactListPage extends IOSPage {
+public class ConversationsListPage extends IOSPage {
     private static final int CONV_SWIPE_TIME = 500;
 
     private static final By nameSelfButton = MobileBy.AccessibilityId("SelfButton");
@@ -66,7 +66,7 @@ public class ContactListPage extends IOSPage {
                     name.toUpperCase());
 
 
-    public ContactListPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+    public ConversationsListPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
