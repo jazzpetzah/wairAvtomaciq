@@ -32,7 +32,11 @@ public class WebPage extends BasePage {
         return this.url;
     }
 
-    protected void setUrl(String url) {
+    public String getCurrentUrl() throws Exception {
+        return getDriver().getCurrentUrl();
+    }
+
+    public void setUrl(String url) {
         this.url = url;
     }
 
