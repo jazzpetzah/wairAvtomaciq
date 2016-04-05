@@ -56,4 +56,9 @@ public class DeviceDetailPageSteps {
 		webappPagesCollection.getPage(DeviceDetailPage.class)
 				.clickRemoveButton();
 	}
+
+	@When("I click the reset session button")
+	public void IClickTheResetSessionButtonOnForm() throws Exception {
+		webappPagesCollection.getPage(DeviceDetailPage.class).clickResetSessionButton();
+	}
 }

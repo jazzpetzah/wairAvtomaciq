@@ -524,6 +524,41 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT | Message1    | Message2     | Message3    |
       | user1Email | user1Password | user1Name | user2Name | UNABLE TO DECRYPT | First hello | Second hello | Third hello |
 
+  @C82813 @e2ee @staging
+  Scenario Outline: Verify you can recover from a broken session between your own devices
+    Given There are 2 users where <Name> is me
+    Given user <Name> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I see the history info page
+    And I click confirm on history info page
+    And I am signed in properly
+    And I open conversation with <Contact>
+    And Contact <Name> sends encrypted message <Message1> via device Device1 to user <Contact>
+    Then I see text message <Message1>
+    When I break the session with device Device1 of user <Name>
+    And Contact <Name> sends encrypted message <Message2> via device Device1 to user <Contact>
+    Then I see <UNABLE_TO_DECRYPT> action in conversation
+    When I open self profile
+    And I wait for 2 seconds
+    And I click gear button on self profile page
+    And I select Settings menu item on self profile page
+    And I wait for 2 seconds
+    Then I see a device named Device1 in the devices section
+    When I click on the device Device1 in the devices section
+    Then I see a device named Device1 with label Label1 in the device details
+    When I click the reset session button
+    When I click close settings page button
+    And I wait for 2 seconds
+    And I open conversation with <Contact>
+    And Contact <Name> sends encrypted message <Message3> via device Device1 to user <Contact>
+    Then I see text message <Message3>
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT | Message1    | Message2     | Message3    |
+      | user1Email | user1Password | user1Name | user2Name | UNABLE TO DECRYPT | First hello | Second hello | Third hello |
+
   @C82514 @e2ee @staging
   Scenario Outline: Verify you get no decryption errors when receiving messages on load
     Given There are 2 users where <Name> is me
