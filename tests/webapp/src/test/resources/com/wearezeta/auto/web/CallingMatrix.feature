@@ -1,6 +1,6 @@
 Feature: Calling_Matrix
 
-  @C5359 @calling_matrix @calling @torun
+  @C5359 @calling_matrix @calling
   Scenario Outline: Verify I can make 1:1 call to <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -21,13 +21,13 @@ Feature: Calling_Matrix
     Then I do not see the call controls for conversation <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend      | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:latest    | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:latest-2  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:latest   | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:latest-1 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:latest-2 | 20      |
+      | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:44.0.2      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 20      |
 
   @C5360 @calling_matrix @calling
   Scenario Outline: Verify I can make 1:1 video call to <CallBackend>
@@ -50,13 +50,13 @@ Feature: Calling_Matrix
 #    Then I do not see the call controls for conversation <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend      | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:latest    | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:latest-2  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:latest   | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:latest-1 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:latest-2 | 20      |
+      | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:44.0.2      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 20      |
 
   @C5361 @calling_matrix @calling
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
@@ -79,8 +79,8 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend     | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | zcall:latest-1  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | zcall:latest    | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:2.2       | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:2.1       | 20      |
 
   @C5362 @calling_matrix @calling
   Scenario Outline: Verify I can receive 1:1 call from <CallBackend>
@@ -103,13 +103,13 @@ Feature: Calling_Matrix
     And I do not see the call controls for conversation <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend      | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:latest    | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:latest-2  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:latest   | 20      |      
-      | user1Email | user1Password | user1Name | user2Name | firefox:latest-1 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:latest-2 | 20      |
+      | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1      | 20      |      
+      | user1Email | user1Password | user1Name | user2Name | firefox:44.0.2      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 20      |
 
   @C5363 @calling_matrix @calling
   Scenario Outline: Verify I can receive 1:1 video call from <CallBackend>
@@ -132,13 +132,13 @@ Feature: Calling_Matrix
 #    And I do not see the call controls for conversation <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend      | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome:latest    | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | chrome:latest-2  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:latest   | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:latest-1 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:latest-2 | 20      |
+      | Login      | Password      | Name      | Contact   | CallBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:48.0.2564.97 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:47.0.2526.73 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:44.0.2      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 20      |
 
   @C5364 @calling_matrix @calling
   Scenario Outline: Verify I can receive 1:1 call from AVS <CallBackend>
@@ -160,9 +160,9 @@ Feature: Calling_Matrix
     And <Contact> verifies that call to conversation <Contact> was successful
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend       | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | autocall:latest-1 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | autocall:latest   | 20      |
+      | Login      | Password      | Name      | Contact   | CallBackend  | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | autocall:2.2 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | autocall:2.1 | 20      |
 
   @C5365 @calling_matrix @calling
   Scenario Outline: Verify I can make group call with multiple <WaitBackend>
@@ -192,13 +192,13 @@ Feature: Calling_Matrix
     And <Contact1> stops calling
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend      | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest    | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest-1  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest-2  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:latest   | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:latest-1 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:latest-2 | 20      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:49.0.2623.75 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:48.0.2564.97 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:47.0.2526.73 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:45.0.1      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:44.0.2      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0        | 20      |
 
   @C5366 @calling_matrix @calling
   Scenario Outline: Verify I can make group call with multiple AVS <WaitBackend>
@@ -219,9 +219,9 @@ Feature: Calling_Matrix
     Then I see the join call controls for conversation <ChatName1>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend    | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:latest-1 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:latest   | 20      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.2   | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.1   | 20      |
 
   @C5367 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with multiple <Backend>
@@ -253,13 +253,13 @@ Feature: Calling_Matrix
     And <Contact1> stops calling
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend          | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest    | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest-1  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest-2  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:latest   | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:latest-1 | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:latest-2 | 20      | 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend             | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:49.0.2623.75 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:48.0.2564.97 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:47.0.2526.73 | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:45.0.1      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:44.0.2      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0        | 20      | 
 
   @C5368 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
@@ -293,19 +293,19 @@ Feature: Calling_Matrix
     And <Contact1> stops calling <ChatName1>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend           | WaitBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | chrome:latest    | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | chrome:latest-1  | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | chrome:latest-2  | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | firefox:latest   | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | firefox:latest-1 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | firefox:latest-2 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | chrome:latest    | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | chrome:latest-1  | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | chrome:latest-2  | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | firefox:latest   | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | firefox:latest-1 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | firefox:latest-2 | 30      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend      | WaitBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2 | chrome:49.0.2623.75 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2 | chrome:48.0.2564.97 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2 | chrome:47.0.2526.73 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2 | firefox:45.0.1      | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2 | firefox:44.0.2      | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2 | firefox:43.0        | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1 | chrome:49.0.2623.75 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1 | chrome:48.0.2564.97 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1 | chrome:47.0.2526.73 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1 | firefox:45.0.1      | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1 | firefox:44.0.2      | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1 | firefox:43.0        | 30      |
   
   @C5369 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
@@ -331,8 +331,8 @@ Feature: Calling_Matrix
     And <Contact1> stops calling <ChatName1>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend           | WaitBackend    | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | zcall:latest-1 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | zcall:latest   | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | zcall:latest   | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | zcall:latest-1 | 30      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend      | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2 | zcall:2.2   | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2 | zcall:2.1   | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1 | zcall:2.1   | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1 | zcall:2.2   | 30      |
