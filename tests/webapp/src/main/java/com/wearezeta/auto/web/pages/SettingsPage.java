@@ -120,11 +120,12 @@ public class SettingsPage extends WebPage {
                     .build().perform();
         } else {
             // Workaround for browsers, which don't support native events
+            // TODO: workaround should be clicking instead of sliding and not JS
             final String[] sliderMoveCode = new String[]{
                     "$(\"" + WebAppLocators.SettingsPage.cssSoundAlertsLevel
                             + "\").val(" + newLevel.getIntRepresenation()
                             + ");",
-                    "wire.app.view.content.self_profile.user_repository.save_sound_settings('"
+                    "wire.app.view.content.self_profile.user_repository.save_property_sound_alerts('"
                             + newLevel.toString().toLowerCase() + "');"};
             this.getDriver().executeScript(
                     StringUtils.join(sliderMoveCode, "\n"));

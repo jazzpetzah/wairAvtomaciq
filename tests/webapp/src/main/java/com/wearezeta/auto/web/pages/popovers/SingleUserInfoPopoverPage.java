@@ -98,13 +98,15 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 	}
 
 	public List<String> getVerifiedDeviceIds() {
-		return deviceIds.stream().filter(w -> "#icon-verified".equals(w.findElement(By.xpath
-				("//*[@class='user-profile-device']//*[local-name() = 'use']")).getAttribute("href"))).map(w -> w.findElement
+		return devices.stream().filter(w -> "#icon-verified".equals(w.findElement(By.xpath
+				("//*[@class='user-profile-device']//*[local-name() = 'use']")).getAttribute("xlink:href"))).map(w -> w.findElement
 				(By.cssSelector("[data-uie-name='device-id']")).getText()).collect
 				(Collectors.toList());
 	}
 
 	public boolean waitForDevices() throws Exception {
+		// Unfortunately there is no other workaround than waiting for 1 second
+		Thread.sleep(1000);
 		return DriverUtils.waitUntilElementClickable(this.getDriver(), firstDevice);
 	}
 

@@ -161,4 +161,17 @@ public class GroupChatInfoPageSteps {
     public void IPressAddPeopleButtonInTheBeginningOfConversation() throws Exception {
         getGroupChatInfoPage().addContactToChat();
     }
+
+    /**
+     * Verifies that Spread the words text view and
+     * Add People buttons are visible on Group chat info page
+     *
+     * @throws Exception
+     * @step. ^I see new group chat UI elements in the beginning of the conversation view$
+     */
+    @Then("^I see new group chat UI elements in the beginning of the conversation view$")
+    public void ISeeNewGroupChatUIElementsInTheBeginningOfTheConversationView() throws Exception {
+        Assert.assertTrue("Spread the word textview is not visible", getGroupChatInfoPage().isSpreadTheWordTextViewVisible());
+        Assert.assertTrue("Add people button is not visible", getGroupChatInfoPage().isAddPeopleButtonVisible());
+    }
 }
