@@ -220,9 +220,9 @@ public class PeoplePickerPageSteps {
      *
      * @param shouldNotSee equal null means the error message should be visible
      * @throws Exception
-     * @step. ^I( do not)? see add people error message on People picker page$
+     * @step. ^I( do not)? see No matching result placeholder on People picker page$
      */
-    @Then("^I( do not)? see add people error message on People picker page$")
+    @Then("^I( do not)? see No matching result placeholder on People picker page$")
     public void ISeeTheAddPeopleErrorMessage(String shouldNotSee) throws Exception {
         if(shouldNotSee == null) {
             Assert.assertTrue("Add people error message should be visible", getPeoplePickerPage().isErrorVisible());
