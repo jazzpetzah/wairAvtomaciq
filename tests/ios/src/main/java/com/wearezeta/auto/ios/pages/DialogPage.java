@@ -417,7 +417,7 @@ public class DialogPage extends IOSPage {
         }
     }
 
-    private static final long KEYBOARD_OPEN_ANIMATION_DURATION = 4000; // milliseconds
+    private static final long KEYBOARD_OPEN_ANIMATION_DURATION = 5500; // milliseconds
 
     public void typeAndSendConversationMessage(String message) throws Exception {
         final WebElement convoInput = getElement(nameConversationCursorInput,
