@@ -144,7 +144,7 @@ public class PasswordChangeRequestSteps {
 		assertThat(
 				webappPagesCollection.getPage(
 						PasswordChangeRequestSuccessfullPage.class)
-						.isUnusedTextVisible(), is(false));
+						.isUnusedTextVisible(), is(true));
 	}
 	
 	/**
