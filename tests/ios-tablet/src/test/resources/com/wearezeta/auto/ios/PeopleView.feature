@@ -597,7 +597,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
   @C2738 @regression @id3958
-  Scenario Outline: Verify that deleted conversation via participant view isn't going to archive [PORTRAIT]
+  Scenario Outline: (ZIOS-6284) Verify that deleted conversation via participant view isn't going to archive [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -620,7 +620,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C2739 @rc @regression @id3959
-  Scenario Outline: Verify that deleted conversation via participant view isn't going to archive [LANDSCAPE]
+  Scenario Outline: (ZIOS-6284) Verify that deleted conversation via participant view isn't going to archive [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
