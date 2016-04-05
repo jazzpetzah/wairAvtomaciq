@@ -92,6 +92,9 @@ public class DialogPage extends IOSPage {
             "//UIATableCell[.//*[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']",
             name.toUpperCase());
 
+    public static final By xpathStrMissedCallButtonByYourself = By.xpath("//UIATableCell[.//*[@name='YOU" +
+            " CALLED']]/UIAButton[@name='ConversationMissedCallButton']");
+
     private static final By xpathUserAvatarNextToInput = By.xpath(
             "//UIAImage[following-sibling::UIATextView[@name='ConversationTextInputField'] and @visible='true']");
 
@@ -594,5 +597,9 @@ public class DialogPage extends IOSPage {
     public boolean isUserNameInUpperToolbarVisible(String name) throws Exception {
         final By locator = By.xpath(xpathStrUserNameInUpperToolbar.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isYouCalledMessageAndButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),xpathStrMissedCallButtonByYourself);
     }
 }
