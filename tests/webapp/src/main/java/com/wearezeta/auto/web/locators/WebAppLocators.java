@@ -482,6 +482,8 @@ public final class WebAppLocators {
         public static final String xpathSelectedTopPeopleList = "//user-list[contains('top_users')]"
                 + "//*[@data-uie-name='item-user' and .//*[contains(@class,'selected')]]";
 
+        public static final String xpathSuggestedContacts = "//*[contains(@class,'people-picker-list-suggestions')]//div[@data-uie-name='item-user']";
+
         public static final String cssSearchField = "[data-uie-name='enter-users']";
 
         public static final String cssBringFriendsFromGMailButton = ".people-picker-import-buttons";

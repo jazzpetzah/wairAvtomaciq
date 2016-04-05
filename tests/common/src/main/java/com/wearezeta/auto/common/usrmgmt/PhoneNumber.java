@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import java.util.Random;
 
 public final class PhoneNumber {
-    private static final int MAX_NUMBER_LENGTH = 15;
+    private static final int MAX_NUMBER_LENGTH = 14;
     private static final int MIN_NUMBER_LENGTH = 8;
     public static final String WIRE_COUNTRY_PREFIX = "+0";
 

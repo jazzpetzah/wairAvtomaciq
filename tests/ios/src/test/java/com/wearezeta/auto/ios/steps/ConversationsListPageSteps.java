@@ -14,13 +14,13 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.pages.*;
 
-public class ContactListPageSteps {
+public class ConversationsListPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private ContactListPage getContactListPage() throws Exception {
-        return pagesCollection.getPage(ContactListPage.class);
+    private ConversationsListPage getContactListPage() throws Exception {
+        return pagesCollection.getPage(ConversationsListPage.class);
     }
 
     private LoginPage getLoginPage() throws Exception {
@@ -196,16 +196,24 @@ public class ContactListPageSteps {
     }
 
     /**
-     * verifies the visibility of a specific user in the contact list
+     * verifies the visibility of a specific item in the conversations list
      *
-     * @param value username value string
-     * @throws AssertionError if the user does not exist
-     * @step. ^I see user (.*) in contact list$
+     * @param shouldNotSee equals to null if the item should be visible
+     * @param value conversation name/alias
+     * @throws Exception
+     * @step. ^I (do not )?see conversation (.*) in conversations list$
      */
-    @Then("^I see user (.*) in contact list$")
-    public void ISeeUserInContactList(String value) throws Throwable {
+    @Then("^I (do not )?see conversation (.*) in conversations list$")
+    public void ISeeUserInContactList(String shouldNotSee, String value) throws Exception {
         value = usrMgr.replaceAliasesOccurences(value, FindBy.NAME_ALIAS);
-        Assert.assertTrue(getContactListPage().isChatInContactList(value));
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("The conversation '%s' is not visible in the conversation list",
+                    value), getContactListPage().isChatInContactList(value));
+        } else {
+            Assert.assertTrue(
+                    String.format("The conversation '%s' is visible in the conversation list, but should be hidden",
+                            value), getContactListPage().contactIsNotDisplayed(value));
+        }
     }
 
     @When("^I create group chat with (.*) and (.*)$")
@@ -231,8 +239,7 @@ public class ContactListPageSteps {
     @When("^I swipe right on a (.*)$")
     public void ISwipeRightOnContact(String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        getContactListPage().swipeRightConversationToRevealActionButtons(
-                contact);
+        getContactListPage().swipeRightConversationToRevealActionButtons(contact);
     }
 
     @Then("^I open archived conversations$")
@@ -240,46 +247,29 @@ public class ContactListPageSteps {
         getContactListPage().openArchivedConversations();
     }
 
-    @When("I see play/pause button next to username (.*) in contact list")
-    public void ISeePlayPauseButtonNextToUserName(String contact) throws Exception {
-        String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue("Play pause button is not shown",
-                getContactListPage().isPlayPauseButtonVisible(name));
-    }
-
-    @When("I tap on play/pause button in contact list")
-    public void ITapOnPlayPauseButtonInContactList() throws Exception {
-        getContactListPage().tapPlayPauseButton();
-    }
-
-    @When("I tap play/pause button in contact list next to username (.*)")
+    @When("I tap play/pause button in conversations list next to (.*)")
     public void ITapPlayPauseButtonInContactListNextTo(String contact) throws Exception {
         String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getContactListPage().tapPlayPauseButtonNextTo(name);
     }
 
-    @When("I see in contact list group chat named (.*)")
-    public void ISeeInContactListGroupChatWithName(String name) throws Exception {
-        Assert.assertTrue(getContactListPage().isChatInContactList(name));
-    }
-
-    @When("I click on Pending request link in contact list")
-    public void ICcickPendingRequestLinkContactList() throws Exception {
+    @When("I click on Pending request link in conversations list")
+    public void IClickPendingRequestLinkContactList() throws Exception {
         getContactListPage().clickPendingRequest();
     }
 
-    @When("I (dont )?see Pending request link in contact list")
+    @When("I (do not )?see Pending request link in conversations list")
     public void ISeePendingRequestLinkInContacts(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
-            Assert.assertTrue("Pending request link is not in Contact list",
+            Assert.assertTrue("Pending request link is not in conversations list",
                     getContactListPage().isPendingRequestInContactList());
         } else {
-            Assert.assertTrue("Pending request link is shown in contact list",
+            Assert.assertTrue("Pending request link is shown in conversations list",
                     getContactListPage().pendingRequestInContactListIsNotShown());
         }
     }
 
-    @When("I (don't )?see in contact list group chat with (.*)")
+    @When("I (don't )?see in conversations list group chat with (.*)")
     public void ISeeInContactsGroupChatWith(String shouldNotSee, String participantNameAliases) throws Exception {
         participantNameAliases = usrMgr.replaceAliasesOccurences(participantNameAliases,
                 ClientUsersManager.FindBy.NAME_ALIAS);
@@ -291,22 +281,6 @@ public class ContactListPageSteps {
             Assert.assertFalse(String.format("There is conversation with '%s' in the list, which should be hidden",
                     participantNames), getContactListPage().isConversationWithUsersExist(participantNames, 2));
         }
-    }
-
-    /**
-     * Verify that conversation with pointed name is not displayed in contact
-     * list
-     *
-     * @param name conversation name to verify
-     * @throws Exception
-     * @step. I dont see conversation (.*) in contact list
-     */
-    @When("I dont see conversation (.*) in contact list")
-    public void IDoNotSeeConversationInContactList(String name)
-            throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("Conversation '%s' is still displayed", name),
-                getContactListPage().contactIsNotDisplayed(name));
     }
 
     /**
@@ -505,8 +479,9 @@ public class ContactListPageSteps {
 
     /**
      * Taps on the Invite More button in contact list
-     * @step. ^I tap Invite more people button$
+     *
      * @throws Exception
+     * @step. ^I tap Invite more people button$
      */
     @When("^I tap Invite more people button$")
     public void ITapInviteMorePeopleButton() throws Exception {

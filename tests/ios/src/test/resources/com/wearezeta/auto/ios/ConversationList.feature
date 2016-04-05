@@ -24,9 +24,9 @@ Feature: Conversation List
     Given I see conversations list
     When I swipe right on a <Contact>
     And I click archive button for conversation
-    Then I dont see conversation <Contact> in contact list
+    Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
-    Then I see user <Contact> in contact list
+    Then I see conversation <Contact> in conversations list
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -42,11 +42,11 @@ Feature: Conversation List
     And I press menu silence button
     When I swipe right on a <Contact>
     And I press Archive button in action menu in Contact List
-    Then I dont see conversation <Contact> in contact list
+    Then I do not see conversation <Contact> in conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
-    And I dont see conversation <Contact> in contact list
+    And I do not see conversation <Contact> in conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    Then I dont see conversation <Contact> in contact list
+    Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     And I tap on contact name <Contact>
     And I see dialog page
@@ -87,9 +87,9 @@ Feature: Conversation List
     Given I see conversations list
     When I swipe right on a <GroupChatName>
     And I click archive button for conversation
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
-    Then I see user <GroupChatName> in contact list
+    Then I see conversation <GroupChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    |
@@ -177,9 +177,9 @@ Feature: Conversation List
     And I see conversation <Contact> name in action menu in Contact List
     And I see Archive button in action menu in Contact List
     And I press Archive button in action menu in Contact List
-    Then I dont see conversation <Contact> in contact list
+    Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
-    Then I see user <Contact> in contact list
+    Then I see conversation <Contact> in conversations list
 
     Examples:
       | Name      | Contact   |
@@ -198,9 +198,9 @@ Feature: Conversation List
     And I press Leave button in action menu in Contact List
     And I see leave conversation alert
     And I press leave
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
-    And I see user <GroupChatName> in contact list
+    And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
     Then I see You Left message in group chat
 
@@ -325,9 +325,9 @@ Feature: Conversation List
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
-    And I dont see conversation <Contact1> in contact list
+    And I do not see conversation <Contact1> in conversations list
     And I open archived conversations
-    Then I dont see conversation <Contact1> in contact list
+    Then I do not see conversation <Contact1> in conversations list
 
     Examples:
       | Name      | Contact1  |
@@ -341,20 +341,20 @@ Feature: Conversation List
     Given I see conversations list
     When I swipe right on a <Contact1>
     And I press Archive button in action menu in Contact List
-    And I dont see conversation <Contact1> in contact list
+    And I do not see conversation <Contact1> in conversations list
     And I open archived conversations
     And I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
-    Then I dont see conversation <Contact1> in contact list
+    Then I do not see conversation <Contact1> in conversations list
     And I open archived conversations
-    Then I dont see conversation <Contact1> in contact list
+    Then I do not see conversation <Contact1> in conversations list
 
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C18 @regression @id1481 @ZIOS-5247
+  @C18 @regression @id1481
   Scenario Outline: Verify removing the content and leaving from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -370,9 +370,9 @@ Feature: Conversation List
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
-    And I dont see conversation <GroupChatName> in contact list
+    And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I see conversation <GroupChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -392,7 +392,7 @@ Feature: Conversation List
     When I swipe right on a <GroupChatName>
     And I click delete menu button
     And I confirm delete conversation content
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I do not see conversation <GroupChatName> in conversations list
     When I open search by taping on it
     And I input in People picker search field conversation name <GroupChatName>
     And I tap on conversation <GroupChatName> in search result
@@ -418,9 +418,9 @@ Feature: Conversation List
     And I see Cancel button in action menu in Contact List
     And I click delete menu button
     And I confirm delete conversation content
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I do not see conversation <GroupChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -450,9 +450,9 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I press menu Block button
     And I confirm blocking alert
-    Then I dont see conversation <Contact> in contact list
+    Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
-    And I dont see conversation <Contact> in contact list
+    And I do not see conversation <Contact> in conversations list
     And I open search by taping on it
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results

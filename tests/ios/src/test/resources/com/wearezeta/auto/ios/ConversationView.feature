@@ -287,13 +287,11 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I tap media container
     And I navigate back to conversations list
-    And I see play/pause button next to username <Contact1> in contact list
-    And I tap play/pause button in contact list next to username <Contact1>
+    And I tap play/pause button in conversations list next to <Contact1>
     And I tap on contact name <Contact2>
     And I tap media container
     And I navigate back to conversations list
-    And I see play/pause button next to username <Contact2> in contact list
-    And I tap play/pause button in contact list next to username <Contact2>
+    And I tap play/pause button in conversations list next to <Contact2>
     And I tap on contact name <Contact2>
     And I scroll media out of sight until media bar appears
     Then I see media is paused on Media Bar
@@ -330,9 +328,9 @@ Feature: Conversation View
     And I open conversation details
     And I open ellipsis menu
     And I click archive menu button
-    Then I dont see conversation <Contact> in contact list
+    Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
-    Then I see user <Contact> in contact list
+    Then I see conversation <Contact> in conversations list
 
     Examples:
       | Name      | Contact   |
@@ -350,13 +348,13 @@ Feature: Conversation View
     And I tap media container
     And I navigate back to conversations list
     And I wait for 1 second
-    And I tap play/pause button in contact list next to username <Contact>
+    And I tap play/pause button in conversations list next to <Contact>
     And I tap on contact name <Contact>
     Then I see media container state is changed
     When I remember media container state
     And I navigate back to conversations list
     And I wait for 1 second
-    And I tap play/pause button in contact list next to username <Contact>
+    And I tap play/pause button in conversations list next to <Contact>
     And I tap on contact name <Contact>
     Then I see media container state is changed
 
@@ -576,7 +574,7 @@ Feature: Conversation View
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
-    Then I dont see conversation <GroupChatName> in contact list
+    Then I do not see conversation <Contact1> in conversations list
     And I open search by taping on it
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result

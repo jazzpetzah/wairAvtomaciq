@@ -2,6 +2,8 @@ package com.wearezeta.auto.web.steps;
 
 import java.util.List;
 
+import com.typesafe.config.ConfigException;
+import com.wearezeta.auto.web.pages.ConversationPage;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonSteps;
@@ -16,6 +18,9 @@ import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.WebElement;
+
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -353,6 +358,72 @@ public class PeoplePickerPageSteps {
 		selectedTopPeople = webappPagesCollection.getPage(
 				PeoplePickerPage.class).getNamesOfSelectedTopPeople();
 	}
+
+    private static String user1;
+
+    private static String user2;
+
+    @When("^I remember (.*) suggested user$")
+    public void IRememberSuggestedUser(String count) throws Exception {
+        List<String> suggestedUsers = webappPagesCollection.getPage(PeoplePickerPage.class).getNamesOfSuggestedContacts();
+        if (count.contains("first")) {
+            user1 = suggestedUsers.get(0);
+            System.out.println("ERSTER: " + user1);
+        } else if (count.contains("second")) {
+            user2 = suggestedUsers.get(1);
+            System.out.println("ZWEITER: " + user2);
+        }
+    }
+
+    @When("^I( do not)? see (.*) remembered user in People Picker$")
+    public void ISeeRememberedUserInPeoplePicker(String donot, String count) throws Exception {
+        if (donot != null && count.contains("first")) {
+            Assert.assertTrue(webappPagesCollection.getPage(
+                    PeoplePickerPage.class).isUserNotFound(user1));
+        } else if (donot != null && count.contains("second")) {
+            Assert.assertTrue(webappPagesCollection.getPage(
+                    PeoplePickerPage.class).isUserNotFound(user2));
+        } else if (count.contains("first")) {
+            Assert.assertTrue(webappPagesCollection.getPage(
+                    PeoplePickerPage.class).isUserFound(user1));
+        } else if (count.contains("second")) {
+            Assert.assertTrue(webappPagesCollection.getPage(
+                    PeoplePickerPage.class).isUserFound(user2));
+        }
+    }
+
+    @When("^I remove first remembered user from suggestions in People Picker$")
+    public void IRemoveFirstRememberedUser() throws Exception {
+        user1 = usrMgr.replaceAliasesOccurences(user1, FindBy.NAME_ALIAS);
+        webappPagesCollection.getPage(PeoplePickerPage.class)
+                .clickRemoveButtonOnSuggestion(user1);
+    }
+
+    @When("^I make a connection request for second remembered user directly from People Picker$")
+    public void IMakeAConnectionRequestForSecondRememberedUser() throws Exception {
+        user2 = usrMgr.replaceAliasesOccurences(user2, FindBy.NAME_ALIAS);
+        webappPagesCollection.getPage(PeoplePickerPage.class)
+                .clickPlusButtonOnSuggestion(user2);
+    }
+
+    @When("^I see Contact list with second remembered user$")
+    public void ISeeContactListWithSecondRememberedUser() throws Exception {
+        Assert.assertTrue(webappPagesCollection.getPage(ContactListPage.class)
+                .isConvoListEntryWithNameExist(user2));
+    }
+
+    @When("^I open second remembered users conversation$")
+    public void IOpenSecondRememberedUsersConversation() throws Exception {
+        webappPagesCollection.getPage(ContactListPage.class).openConversation(user2);
+    }
+
+    @When("^I see connecting message in conversation with second remembered user$")
+    public void ISeeConnectingMsgFromSecondRememberedUser() throws Exception {
+        assertThat("User name", webappPagesCollection.getPage(ConversationPage.class).getConnectedMessageUser(),
+                equalTo(user2));
+        assertThat("Label", webappPagesCollection.getPage(ConversationPage.class).getConnectedMessageLabel(),
+                equalTo("CONNECTING"));
+    }
 
 	/**
 	 * Verifies whether Search is opened on People Picker Page

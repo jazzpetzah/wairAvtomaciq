@@ -432,3 +432,27 @@ Feature: Calling
     Examples:
       | Name      | GroupChatName  | UsersAmount |
       | user1Name | StartGROUPCALL | 11          |
+
+  @C2040 @staging
+  Scenario Outline: Verify initiator is not a host for the call
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> start instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    And <Contact1>,<Contact2> calls <GroupChatName>
+    And I see call status message contains "<GroupChatName> RINGING"
+    And I tap Accept button on Calling overlay
+    And I see Calling overlay
+    # FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
+    #Then I see <NumberOfAvatars> avatars on the Calling overlay
+    And I wait for 5 seconds
+    And <Contact1> stops calling <GroupChatName>
+    And <Contact1> verifies that call status to <GroupChatName> is changed to destroyed in 15 seconds
+    Then <Contact2> verifies that call status to <GroupChatName> is changed to active in 2 seconds
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | AcceptingGROUPCALL | autocall    | 2               |

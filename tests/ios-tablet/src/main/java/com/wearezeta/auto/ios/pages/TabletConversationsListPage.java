@@ -13,14 +13,14 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
 
-public class TabletContactListPage extends ContactListPage {
+public class TabletConversationsListPage extends ConversationsListPage {
     private static final By xpathConversationListPage =
             By.xpath("//UIAApplication[1]/UIAWindow[2]/UIACollectionView[1]");
 
     protected static final Function<String, String> xpathStrConvoListTitleByName = name ->
             String.format("%s/UIAStaticText[@value='%s']", xpathStrContactListItems, name);
 
-    public TabletContactListPage(Future<ZetaIOSDriver> lazyDriver)
+    public TabletConversationsListPage(Future<ZetaIOSDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
     }

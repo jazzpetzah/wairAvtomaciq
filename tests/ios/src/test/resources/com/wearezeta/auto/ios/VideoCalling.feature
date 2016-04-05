@@ -138,7 +138,7 @@ Feature: Video Calling
     Given User Myself blocks user <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
-    And I dont see conversation <Contact> in contact list
+    And I do not see conversation <Contact> in conversations list
     When <Contact> starts a video call to me
     Then I do not see Calling overlay
 
