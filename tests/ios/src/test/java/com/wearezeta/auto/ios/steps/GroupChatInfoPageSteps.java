@@ -171,7 +171,7 @@ public class GroupChatInfoPageSteps {
      */
     @Then("^I see new group chat UI elements in the beginning of the conversation view$")
     public void ISeeNewGroupChatUIElementsInTheBeginningOfTheConversationView() throws Exception {
-        Assert.assertTrue(getGroupChatInfoPage().isSpreadTheWordTextViewVisible() &&
-                getGroupChatInfoPage().isAddPeopleButtonVisible());
+        Assert.assertTrue("Spread the word textview is not visible", getGroupChatInfoPage().isSpreadTheWordTextViewVisible());
+        Assert.assertTrue("Add people button is not visible", getGroupChatInfoPage().isAddPeopleButtonVisible());
     }
 }
