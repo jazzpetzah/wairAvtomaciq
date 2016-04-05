@@ -8,6 +8,8 @@ Feature: Giphy
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type tag for giphy preview <GiphyTag> and open preview overlay
+    # Wait for GIF picture to be downloaded
+    And I wait for 10 seconds
     And I see giphy preview page
 
     Examples: 
@@ -22,6 +24,8 @@ Feature: Giphy
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type tag for giphy preview <GiphyTag> and open preview overlay
+    # Wait for GIF picture to be downloaded
+    And I wait for 10 seconds
     And I send gif from giphy preview page
     Then I see 1 photo in the dialog
 
