@@ -183,17 +183,17 @@ public class ConversationPage extends WebPage {
 		return wait.until(visibilityOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
 	}
 
-	public void waitForMessageHeaderContains(String text) throws Exception {
-		waitForMessageHeaderContains(new HashSet<String>(Arrays.asList(text)));
+	public boolean waitForMessageHeaderContains(String text) throws Exception {
+		return waitForMessageHeaderContains(new HashSet<String>(Arrays.asList(text)));
 	}
 
-	public void waitForMessageHeaderContains(Set<String> parts)
+	public boolean waitForMessageHeaderContains(Set<String> parts)
 			throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssMessageHeader);
 		WebDriverWait wait = new WebDriverWait(getDriver(),
 				DriverUtils.getDefaultLookupTimeoutSeconds());
-		wait.until(visibilityOfTextInElementsLocated(locator, parts));
+		return wait.until(visibilityOfTextInElementsLocated(locator, parts));
 	}
 
 	public int waitForNumberOfMessageHeadersContain(String text)

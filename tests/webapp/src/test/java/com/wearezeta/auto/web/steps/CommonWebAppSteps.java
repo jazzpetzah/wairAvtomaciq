@@ -89,6 +89,8 @@ public class CommonWebAppSteps {
     public static final int SAFARI_DRIVER_CREATION_RETRY = 3;
     private static final int DELETION_RECEIVING_TIMEOUT = 120;
 
+    private String rememberedPage = null;
+
     private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
 
     private static final int DRIVER_COMMAND_TIMEOUT_SECONDS = 30;
@@ -716,6 +718,38 @@ public class CommonWebAppSteps {
         } else {
             commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
         }
+    }
+
+    @When("^Contact (.*) sends? (\\d+) encrypted messages with prefix (.*) via device (.*) to (user|group conversation) (.*)$")
+    public void UserSendAmountOfMessages(String msgFromUserNameAlias, int amount, String prefix, String deviceName,
+                                         String convoType, String dstConvoName) throws Exception {
+        if (convoType.equals("user")) {
+            for (int i = 0; i < amount; i++) {
+                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, prefix + i, deviceName);
+            }
+        } else {
+            for (int i = 0; i < amount; i++) {
+                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, prefix + i, deviceName);
+            }
+        }
+    }
+
+    @When("^I remember current page$")
+    public void IRememberCurrentPage() throws Exception {
+        WebPage page = WebappPagesCollection.getInstance().getPage(WebPage.class);
+        rememberedPage = page.getCurrentUrl();
+    }
+
+    @When("^I navigate to previously remembered page$")
+    public void INavigateToPage() throws Exception {
+        if (rememberedPage == null) {
+            throw new RuntimeException(
+                    "No page has been remembered before!");
+        }
+
+        WebPage page = WebappPagesCollection.getInstance().getPage(WebPage.class);
+        page.setUrl(rememberedPage);
+        page.navigateTo();
     }
 
     /**

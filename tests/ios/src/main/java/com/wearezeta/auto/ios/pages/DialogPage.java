@@ -417,7 +417,7 @@ public class DialogPage extends IOSPage {
         }
     }
 
-    private static final long KEYBOARD_OPEN_ANIMATION_DURATION = 4000; // milliseconds
+    private static final long KEYBOARD_OPEN_ANIMATION_DURATION = 5500; // milliseconds
 
     public void typeAndSendConversationMessage(String message) throws Exception {
         final WebElement convoInput = getElement(nameConversationCursorInput,
@@ -555,7 +555,12 @@ public class DialogPage extends IOSPage {
     }
 
     public void pasteAndCommit() throws Exception {
-        this.inputStringFromPasteboard(getElement(nameConversationCursorInput), true);
+        final WebElement convoInput = getElement(nameConversationCursorInput,
+                "Conversation input is not visible after the timeout");
+        convoInput.click();
+        // Wait for animation
+        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
+        this.inputStringFromPasteboard(convoInput, true);
     }
 
     public boolean areInputToolsVisible() throws Exception {
