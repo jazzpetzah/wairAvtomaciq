@@ -448,7 +448,7 @@ Feature: Conversation View
       | user1Name | user2Name |
 
   @C77973 @staging
-  Scenario Outline: Verify I can create group conversation from 1:1 using profile button from + button bar
+  Scenario Outline: (AN-3688) Verify I can create group conversation from 1:1 using profile button from + button bar
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
@@ -458,7 +458,7 @@ Feature: Conversation View
     And I tap plus button in text input
     And I tap Add people button from input tools
     And the toolbar title in People picker page should be "CREATE GROUP"
-    Then I do not see add people error message on People picker page
+    Then I do not see No matching result placeholder on People picker page
     When I input in People picker search field user name <Contact2>
     And I tap on user name found on People picker page <Contact2>
     And I click on Create conversation button
@@ -470,3 +470,28 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
+
+
+  @C77974 @staging
+  Scenario Outline: (AN-3688) Verify I can add people to group conversation using profile button from + button bar
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    When I tap on contact name <GroupChatName>
+    And I tap plus button in text input
+    And I tap Add people button from input tools
+    And the toolbar title in People picker page should be "ADD PEOPLE"
+    Then I do not see No matching result placeholder on People picker page
+    When I input in People picker search field user name <Contact3>
+    And I tap on user name found on People picker page <Contact3>
+    And I click on Add to conversation button
+    And I tap conversation name from top toolbar
+    Then I see the correct participant avatars for <Contact1>,<Contact2>,<Contact3>
+
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
+      | user1Name | user2Name | user3Name | user4Name | Group Chat    |

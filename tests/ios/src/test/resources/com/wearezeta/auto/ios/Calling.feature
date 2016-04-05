@@ -456,3 +456,20 @@ Feature: Calling
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | NumberOfAvatars |
       | user1Name | user2Name | user3Name | AcceptingGROUPCALL | autocall    | 2               |
+
+  @C2101 @staging
+  Scenario Outline: Verify message about your missed call
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I tap Audio Call button
+    And I wait for 5 seconds
+    And I tap Leave button on Calling overlay
+    And I do not see Calling overlay
+    Then I see You Called message and button
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |

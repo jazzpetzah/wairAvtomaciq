@@ -150,7 +150,7 @@ public class PasswordChangeRequestSteps {
 		assertThat(
 				context.getPagesCollection().getPage(
 						PasswordChangeRequestSuccessfullPage.class)
-						.isUnusedTextVisible(), is(false));
+						.isUnusedTextVisible(), is(true));
 	}
 	
 	/**

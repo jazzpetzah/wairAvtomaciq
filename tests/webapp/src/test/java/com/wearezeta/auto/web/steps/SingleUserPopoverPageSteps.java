@@ -482,13 +482,15 @@ public class SingleUserPopoverPageSteps {
 		String id = context.getDeviceManager().getDeviceId(user, deviceName);
 		context.getPagesCollection().getPage(SingleUserPopoverContainer.class).waitForDevices();
 		List<String> devices = context.getPagesCollection().getPage(SingleUserPopoverContainer.class).getVerifiedDeviceIds();
-		assertThat("Device id is in verified devices", devices, hasItem(id));
+		assertThat("Device id is in verified devices", devices, hasItem(id.toUpperCase()));
 	}
 
 	@When("^I click on device (.*) of user (.*) on Single User Profile popover$")
 	public void IClickOnDevice(String deviceName, String userAlias) throws Exception {
 		ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
 		String id = context.getDeviceManager().getDeviceId(user, deviceName);
+		// TODO: workaround to remove leading zeros
+		id = id.replaceFirst("^0+(?!$)", "");
 		context.getPagesCollection().getPage(SingleUserPopoverContainer.class).clickDevice(id);
 	}
 

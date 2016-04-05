@@ -393,7 +393,7 @@ public class PeoplePickerPageSteps {
 					PeoplePickerPage.class).isGroupConversationNotFound(name));
 		}
 	}
-	
+
 	/**
 	 * Verify if More button is shown in People Picker
 	 * 
