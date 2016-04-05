@@ -211,7 +211,7 @@ Feature: People View
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
     And I see conversations list
-    Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
+    Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
@@ -235,7 +235,7 @@ Feature: People View
     And I click close button to dismiss people view
     And I click close user profile page button
     And I navigate back to conversations list
-    Then I don't see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
+    Then I don't see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
