@@ -23,7 +23,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend      | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:latest    | 20      |
-#      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:latest-2  | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:latest   | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:latest-1 | 20      |
@@ -52,7 +52,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend      | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:latest    | 20      |
-#      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:latest-2  | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:latest   | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:latest-1 | 20      |
@@ -80,7 +80,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend     | Timeout |
       | user1Email | user1Password | user1Name | user2Name | zcall:latest-1  | 20      |
-#      | user1Email | user1Password | user1Name | user2Name | zcall:latest    | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:latest    | 20      |
 
   @C5362 @calling_matrix @calling
   Scenario Outline: Verify I can receive 1:1 call from <CallBackend>
@@ -105,7 +105,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend      | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:latest    | 20      |
-#      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:latest-2  | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:latest   | 20      |      
       | user1Email | user1Password | user1Name | user2Name | firefox:latest-1 | 20      |
@@ -134,7 +134,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend      | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome:latest    | 20      |
-#      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome:latest-1  | 20      |
       | user1Email | user1Password | user1Name | user2Name | chrome:latest-2  | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:latest   | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:latest-1 | 20      |
@@ -194,7 +194,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend      | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest    | 20      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest-1  | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest-1  | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest-2  | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:latest   | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:latest-1 | 20      |
@@ -221,7 +221,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend    | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:latest-1 | 20      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:latest   | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:latest   | 20      |
 
   @C5367 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with multiple <Backend>
@@ -255,7 +255,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend          | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest    | 20      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest-1  | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest-1  | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:latest-2  | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:latest   | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:latest-1 | 20      |
@@ -295,13 +295,13 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend           | WaitBackend         | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | chrome:latest    | 30      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | chrome:latest-1  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | chrome:latest-1  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | chrome:latest-2  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | firefox:latest   | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | firefox:latest-1 | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | firefox:latest-2 | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | chrome:latest    | 30      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | chrome:latest-1  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | chrome:latest-1  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | chrome:latest-2  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | firefox:latest   | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | firefox:latest-1 | 30      |
@@ -333,6 +333,6 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend           | WaitBackend    | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | zcall:latest-1 | 30      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | zcall:latest    | 30      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | zcall:latest    | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest-1 | zcall:latest   | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | zcall:latest   | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:latest   | zcall:latest-1 | 30      |
