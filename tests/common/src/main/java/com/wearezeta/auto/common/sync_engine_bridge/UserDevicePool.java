@@ -166,6 +166,7 @@ public class UserDevicePool {
         final List<IDevice> userDevices = getDevices(user);
         for (IDevice device : userDevices) {
             if (device.name().equals(deviceName)) {
+                LOG.info("Found device " + deviceName + " in device pool!");
                 return Optional.of(device);
             }
         }

@@ -283,7 +283,8 @@ public class ConversationPageSteps {
             assertThat(message + " action", webappPagesCollection.getPage(ConversationPage.class)
                     .waitForNumberOfMessageHeadersContain(message), equalTo(times));
         } else {
-            Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class).isActionMessageNotSent(message));
+            Assert.assertFalse("I see action containing " + message, webappPagesCollection.getPage(ConversationPage.class)
+                    .waitForMessageHeaderContains(message));
         }
     }
 
