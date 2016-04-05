@@ -941,4 +941,16 @@ public class DialogPageSteps {
         Assert.assertTrue(String.format("Conversation name '%s' is not displayed on Upper Toolbar", convoName),
                 getDialogPage().isUserNameInUpperToolbarVisible(convoName));
     }
+
+    /**
+     * Verify that the YOU CALLED and button is shown
+     *
+     * @throws Exception
+     * @step. ^I see You Called message and button$
+     */
+    @Then("^I see You Called message and button$")
+    public void iSeeYouCalledMessageAndButton() throws Exception {
+        Assert.assertTrue("YOU CALLED and phone button is not shown",getDialogPage().
+                isYouCalledMessageAndButtonVisible());
+    }
 }
