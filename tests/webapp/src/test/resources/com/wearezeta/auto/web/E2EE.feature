@@ -573,6 +573,8 @@ Feature: E2EE
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
+    And I see the history info page
+    And I click confirm on history info page
     And I am signed in properly
     And I open conversation with <Contact>
     And Contact <Name> sends encrypted message <StartMessage> via device Device1 to user <Contact>
