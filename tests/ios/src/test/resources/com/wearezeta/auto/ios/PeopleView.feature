@@ -211,7 +211,7 @@ Feature: People View
     And I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I navigate back to conversations list
     And I see conversations list
-    Then I see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
+    Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
@@ -235,7 +235,7 @@ Feature: People View
     And I click close button to dismiss people view
     And I click close user profile page button
     And I navigate back to conversations list
-    Then I don't see in contact list group chat with <Contact1>,<Contact2>,<Contact3>
+    Then I don't see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  |
@@ -348,7 +348,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
   @C1829 @regression @id3957
-  Scenario Outline: Verify that deleted conversation via participant view isn't going to archive
+  Scenario Outline: Verify that deleted conversation via participant view is not going to archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -363,7 +363,7 @@ Feature: People View
     And I confirm delete conversation content
     And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
-    Then I see conversation <GroupChatName> in conversations list
+    Then I do not see conversation <GroupChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |

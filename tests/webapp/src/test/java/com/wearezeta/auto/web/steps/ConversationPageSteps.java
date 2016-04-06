@@ -289,7 +289,8 @@ public class ConversationPageSteps {
             assertThat(message + " action", context.getPagesCollection().getPage(ConversationPage.class)
                     .waitForNumberOfMessageHeadersContain(message), equalTo(times));
         } else {
-            Assert.assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isActionMessageNotSent(message));
+            Assert.assertFalse("I see action containing " + message, context.getPagesCollection().getPage(ConversationPage.class)
+                    .waitForMessageHeaderContains(message));
         }
     }
 
