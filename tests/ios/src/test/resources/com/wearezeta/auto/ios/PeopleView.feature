@@ -348,7 +348,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
   @C1829 @regression @id3957
-  Scenario Outline: Verify that deleted conversation via participant view isn't going to archive
+  Scenario Outline: Verify that deleted conversation via participant view is going to archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
