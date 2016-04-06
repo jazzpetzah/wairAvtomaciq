@@ -89,8 +89,8 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void tapOnPeoplePickerSearch() throws Exception {
-        //getElement(xpathPickerSearch).click();
-        getElement(xpathPickerSearchInput).click();
+        getElement(xpathPickerSearch).click();
+        //getElement(xpathPickerSearchInput).click();
     }
 
     public void tapOnPeoplePickerClearBtn() throws Exception {
