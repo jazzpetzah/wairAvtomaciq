@@ -597,7 +597,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
   @C2738 @regression @id3958
-  Scenario Outline: (ZIOS-6284) Verify that deleted conversation via participant view is going to archive [PORTRAIT]
+  Scenario Outline: Verify that deleted conversation via participant view is not going to archive [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -613,14 +613,14 @@ Feature: People View
     And I wait until popover is closed
     And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
-    Then I see conversation <GroupChatName> in conversations list
+    Then I do not see conversation <GroupChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C2739 @rc @regression @id3959
-  Scenario Outline: (ZIOS-6284) Verify that deleted conversation via participant view is going to archive [LANDSCAPE]
+  Scenario Outline: Verify that deleted conversation via participant view is not going to archive [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -637,7 +637,7 @@ Feature: People View
     And I wait until popover is closed
     And I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
-    Then I see conversation <GroupChatName> in conversations list
+    Then I do not see conversation <GroupChatName> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
