@@ -62,13 +62,14 @@ public class GroupChatPageSteps {
 
     @Then("^I see You Left message in group chat$")
     public void ISeeYouLeftMessage() throws Exception {
-        Assert.assertTrue(getGroupChatPage().isYouLeftMessageShown());
+        Assert.assertTrue("You Left message is not shown",getGroupChatPage().isYouLeftMessageShown());
     }
 
     @When("^I can see You Added (.*) message$")
     public void ICanSeeYouAddedContact(String contact) throws Throwable {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        Assert.assertTrue(getGroupChatPage().isYouAddedUserMessageShown(contact));
+        Assert.assertTrue("YOU ADDED contact to group is not shown",
+                getGroupChatPage().isYouAddedUserMessageShown(contact));
     }
 
 }
