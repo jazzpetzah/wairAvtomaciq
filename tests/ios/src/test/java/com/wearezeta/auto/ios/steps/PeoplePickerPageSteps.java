@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.steps;
 
 import java.awt.datatransfer.UnsupportedFlavorException;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;

@@ -535,7 +535,7 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I tap on conversation <Contact3> in search result
-    And I click on Go button
+    And I click on Add to conversation button
     Then I can see You Added <Contact3> message
 
     Examples:

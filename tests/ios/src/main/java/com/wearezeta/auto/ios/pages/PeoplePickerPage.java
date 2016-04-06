@@ -15,6 +15,8 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class PeoplePickerPage extends IOSPage {
     private static final By xpathPickerSearch = By.xpath("//UIATextView[@name='textViewSearch' and @visible='true']");
 
+    private static final By xpathPickerSearchInput = By.xpath("//UIStaticText[@name='SEARCH BY NAME' and @visible='true']");
+
     public static final By xpathPickerClearButton =
             By.xpath("//*[@name='PeoplePickerClearButton' or @name='ContactsViewCloseButton']");
 
@@ -24,7 +26,7 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By namePeoplePickerTopPeopleLabel = MobileBy.AccessibilityId("TOP PEOPLE");
 
-    private static final By namePeoplePickerAddToConversationButton = MobileBy.AccessibilityId("ADD TO CONVERSATION");
+    private static final By namePeoplePickerAddToConversationButton = MobileBy.AccessibilityId("ADD");
 
     private static final By nameContinueUploadButton = MobileBy.AccessibilityId("SHARE CONTACTS");
 
@@ -87,7 +89,8 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void tapOnPeoplePickerSearch() throws Exception {
-        getElement(xpathPickerSearch).click();
+        //getElement(xpathPickerSearch).click();
+        getElement(xpathPickerSearchInput).click();
     }
 
     public void tapOnPeoplePickerClearBtn() throws Exception {
