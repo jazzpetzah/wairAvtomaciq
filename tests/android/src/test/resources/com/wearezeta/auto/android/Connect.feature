@@ -428,15 +428,16 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact2>
-    And I tap plus button in text input
-    And I tap Add people button from input tools
+    And I tap conversation name from top toolbar
+    And I press add contact button
+#    And I tap plus button in text input
+#    And I tap Add people button from input tools
     And I enter "<Contact1>" into Search input on People Picker page
     And I see user <Contact1> found on People picker page
     And I tap on user name found on People picker page <Contact1>
     And I click on Add to conversation button
     Then I see Unable to Create Group Conversation overlay
     When I accept Unable to Create Group Conversation overlay
-    And I press back button
     And I press back button
     Then I see Contact list with contacts
     And I do not see group conversation with <Contact1>,<Contact2> in conversations list
