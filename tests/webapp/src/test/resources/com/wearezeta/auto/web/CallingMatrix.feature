@@ -227,30 +227,30 @@ Feature: Calling_Matrix
   Scenario Outline: Verify I can join group call with multiple <Backend>
     Given My browser supports calling
     Given There are 5 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <Backend>
-    Given <Contact1>,<Contact2>,<Contact3> accept next incoming call automatically
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts instance using <Backend>
+    Given <Contact1> accept next incoming call automatically
     Given <Contact1> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName1>
     And <Contact2> calls <ChatName1>
-    Then <Contact1>,<Contact3>,<Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact2> verifies that call status to <ChatName1> is changed to active in <Timeout> seconds
     When I accept the call from conversation <ChatName1>
     And I see the ongoing call controls for conversation <ChatName1>
     And I wait for 5 seconds
-    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify to have 4 flows
-    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
+    And <Contact1>,<Contact2> verify to have 2 flows
+    And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
     And I see the join call controls for conversation <ChatName1>
     And I wait for 5 seconds
-    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies to have 3 flows
-    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies that all flows have greater than 0 bytes
+    And <Contact1>,<Contact2> verifies to have 1 flows
+    And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
     # Stops all waiting instance calls
-    And <Contact1>,<Contact2>,<Contact3> stops calling
+    And <Contact1> stops calling
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend             | Timeout |
