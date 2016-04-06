@@ -111,6 +111,7 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 	}
 
 	public void clickDevice(String deviceId) throws Exception {
+		waitForDevices();
 		String locator = PopoverLocators.DeviceDetailPopoverPage.cssDeviceById.apply(deviceId);
 		this.getDriver().findElement(By.cssSelector(locator)).click();
 	}
