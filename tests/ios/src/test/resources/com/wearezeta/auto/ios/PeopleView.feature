@@ -523,7 +523,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
       | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
 
-  @C80775 @staging
+  @torun @C80775 @staging
   Scenario Outline: Verify adding people in group conversation via ADD PEOPLE button in the beginning of the conversation
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
