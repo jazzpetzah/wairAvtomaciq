@@ -265,49 +265,48 @@ Feature: Calling_Matrix
   @C5368 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
     Given My browser supports calling
-    Given There are 5 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
+    Given <Contact2> starts instance using <WaitBackend>
     Given <Contact1> starts instance using <Backend>
-    Given <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
-    Given <Contact2>,<Contact3>,<Contact4> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    Given <Contact2> accept next incoming call automatically
+    Given <Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName1>
     And <Contact1> calls <ChatName1>
     When I accept the call from conversation <ChatName1>
-    Then <Contact2>,<Contact3>,<Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName1> is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName1>
-    And I see row of avatars on call controls with users <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    And I see row of avatars on call controls with users <Contact1>
     And I wait for 5 seconds
-    And <Contact2>,<Contact3>,<Contact4> verifies to have 4 flows
-    And <Contact2>,<Contact3>,<Contact4> verifies that all flows have greater than 0 bytes
+    And <Contact2> verifies to have 2 flows
+    And <Contact2> verifies that all flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
     And I see the join call controls for conversation <ChatName1>
     And I wait for 5 seconds
-    And <Contact2>,<Contact3>,<Contact4> verifies to have 3 flows
-    And <Contact2>,<Contact3>,<Contact4> verifies that all flows have greater than 0 bytes
+    And <Contact2> verifies to have 1 flows
+    And <Contact2> verifies that all flows have greater than 0 bytes
     # Stops all autocall instance calls
     And <Contact1> stops calling <ChatName1>
-    And <Contact2>,<Contact3> stops calling
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend      | WaitBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2 | chrome:49.0.2623.75 | 30      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2 | chrome:48.0.2564.97 | 30      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2 | chrome:47.0.2526.73 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2 | firefox:45.0.1      | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2 | firefox:44.0.2      | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2 | firefox:43.0        | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.1 | chrome:49.0.2623.75 | 30      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.1 | chrome:48.0.2564.97 | 30      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.1 | chrome:47.0.2526.73 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.1 | firefox:45.0.1      | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.1 | firefox:44.0.2      | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.1 | firefox:43.0        | 30      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend      | WaitBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2 | chrome:49.0.2623.75 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2 | chrome:48.0.2564.97 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2 | chrome:47.0.2526.73 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2 | firefox:45.0.1      | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2 | firefox:44.0.2      | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2 | firefox:43.0        | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1 | chrome:49.0.2623.75 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1 | chrome:48.0.2564.97 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1 | chrome:47.0.2526.73 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1 | firefox:45.0.1      | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1 | firefox:44.0.2      | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1 | firefox:43.0        | 30      |
 
   @C5369 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
