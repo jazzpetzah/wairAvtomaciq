@@ -58,7 +58,8 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | firefox:44.0.2      | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:43.0        | 20      |
 
-  @C5361 @calling_matrix @calling
+# Zcall is sending video all the time so we can not make audio calls
+#  @C5361 @calling_matrix @calling
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
