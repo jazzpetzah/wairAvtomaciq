@@ -5,7 +5,6 @@ import os
 import paramiko
 import sys
 import time
-import xml.etree.ElementTree as ET
 
 from cli_handlers.cli_handler_base import CliHandlerBase
 
@@ -70,14 +69,11 @@ class RestartNodesWithLabels(CliHandlerBase):
         count_of_nodes_to_restart = 0
         workers = []
         for _, node in self._jenkins.get_nodes().iteritems():
-            response = node.jenkins.requester.get_and_confirm_status("%(baseurl)s/config.xml" % node.__dict__)
-            sys.stderr.write(response.text + '\n\n')
-            et = ET.fromstring(response.text)
-            hostname = et.find('.//host').text
+            hostname = node.nodename
             if not self._is_alive(hostname):
                 sys.stderr.write('The host {} seems to be already offline\n'.format(hostname))
                 continue
-            node_labels_str = et.find('label').text
+            node_labels_str = node.get_labels()
             if node_labels_str:
                 node_labels = self._normalize_labels(node_labels_str.split(' '))
             else:
