@@ -167,7 +167,8 @@ public class CallingSteps {
             throws Exception {
         for (String callee : splitAliases(callees)) {
             final List<Flow> flows = context.getCallingManager().getFlows(callee);
-            assertThat("existing flows: \n" + flows, flows, hasSize(numberOfFlows));
+            LOG.info("flows: \n"+ flows);
+            assertThat("# of flows doesn't match "+numberOfFlows , flows, hasSize(numberOfFlows));
         }
     }
 
@@ -182,7 +183,9 @@ public class CallingSteps {
     @Then("(.*) verif(?:ies|y) that all flows have greater than 0 bytes$")
     public void UserXVerifesHavingXFlows(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
-            for (Flow flow : context.getCallingManager().getFlows(callee)) {
+            List<Flow> flows = context.getCallingManager().getFlows(callee);
+            for (Flow flow : flows) {
+                LOG.info("flows: \n"+flows);
                 assertThat("incoming bytes: \n" + flow, flow.getBytesIn(), greaterThan(0L));
                 assertThat("outgoing bytes: \n" + flow, flow.getBytesOut(), greaterThan(0L));
             }
