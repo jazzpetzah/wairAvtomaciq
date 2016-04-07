@@ -168,7 +168,7 @@ public class CallingSteps {
         for (String callee : splitAliases(callees)) {
             final List<Flow> flows = context.getCallingManager().getFlows(callee);
             LOG.info("flows: \n"+ flows);
-            assertThat("# of flows doesn't match "+numberOfFlows , flows, hasSize(numberOfFlows));
+            assertThat("# of flows don't match "+numberOfFlows , flows, hasSize(numberOfFlows));
         }
     }
 

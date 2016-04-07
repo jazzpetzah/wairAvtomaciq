@@ -168,38 +168,38 @@ Feature: Calling_Matrix
   @C5365 @calling_matrix @calling
   Scenario Outline: Verify I can make group call with multiple <WaitBackend>
     Given My browser supports calling
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts instance using <WaitBackend>
-    Given <Contact1>,<Contact2> accept next incoming call automatically
-    Given <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName1>
     And I call
-    Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    Then <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName1>
     And I wait for 10 seconds
-    And <Contact1>,<Contact2> verifies to have 2 flows
-    And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies to have 4 flows
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies that all flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
     And I see the join call controls for conversation <ChatName1>
     And I wait for 10 seconds
-    And <Contact1>,<Contact2> verifies to have 1 flows
-    And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies to have 3 flows
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies that all flows have greater than 0 bytes
     # Stops all waiting instance calls
-    And <Contact1> stops calling
+    And <Contact1>,<Contact2>,<Contact3> stops calling
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend         | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:49.0.2623.75 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:48.0.2564.97 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | chrome:47.0.2526.73 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:45.0.1      | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:44.0.2      | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | firefox:43.0        | 30      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | WaitBackend         | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:49.0.2623.75 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:48.0.2564.97 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:47.0.2526.73 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.0.1      | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:44.0.2      | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:43.0        | 30      |
 
   @C5366 @calling_matrix @calling
   Scenario Outline: Verify I can make group call with multiple AVS <WaitBackend>
