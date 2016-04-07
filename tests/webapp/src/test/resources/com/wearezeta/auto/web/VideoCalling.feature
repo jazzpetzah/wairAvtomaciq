@@ -413,7 +413,7 @@ Feature: VideoCalling
   @C12076 @videocalling @staging
   Scenario Outline: Verify I get missed call indication when someone called (video)
     Given My browser supports calling
-    Given There are 3 users where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
