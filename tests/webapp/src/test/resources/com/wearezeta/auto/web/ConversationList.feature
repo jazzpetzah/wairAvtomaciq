@@ -374,6 +374,8 @@ Feature: Conversation List
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     And I open conversation with <Contact1>
+    When User <Contact1> sends message <Msg1> to conversation <Contact1>
+    Then I see text message <Msg1>
     When I click on options button for conversation <Contact1>
     And I click delete in the options popover
     Then I see a delete warning modal for 1:1 conversations
@@ -383,8 +385,11 @@ Feature: Conversation List
     And I type <Contact1> in search field of People Picker
     Then I see user <Contact1> found in People Picker
     And I close People Picker
-    When User <Contact1> sends message <Msg1> to conversation <Contact1>
+    When User <Contact1> sends message <Msg2> to conversation <Contact1>
     Then I see Contact list with name <Contact1>
+    And I open conversation with <Contact1>
+    And I see text message <Msg2>
+    And I do not see text message <Msg1>
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
@@ -398,8 +403,8 @@ Feature: Conversation List
     Then I do not see <Action> action in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Action | Msg1    | Login2     | Password2     |
-      | user1Email | user1Password | user1Name | user2Name | LEFT   | message | user2Email | user2Password |
+      | Login      | Password      | Name      | Contact1  | Action | Msg1   | Msg2   |Login2     | Password2     |
+      | user1Email | user1Password | user1Name | user2Name | LEFT   | hello1 | hello2 | user2Email | user2Password |
 
   @C1809 @regression
   Scenario Outline: Verify I can cancel deleting a 1:1 conversation from conversation list
