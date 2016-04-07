@@ -346,8 +346,7 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void sendFile(String fileName) throws Exception {
-		final String filePath = WebCommonUtils
-				.getFullPicturePath(fileName);
+		final String filePath = WebCommonUtils.getFullFilePath("filetransfer/" + fileName);
 		hoverOverConversationInput();
 		moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendFileInput);
 		assert DriverUtils

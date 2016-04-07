@@ -20,5 +20,41 @@ Feature: File Transfer
     # Verify receiver is notified when upload is finished (might be moved to a second test)
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File                      |
-      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
+      | Login      | Password      | Name      | Contact   | File        |
+      | user1Email | user1Password | user1Name | user2Name | example.txt |
+
+  @C82823 @filetransfer
+  Scenario Outline: Verify gifs are inlined if shared via file transfer
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Given I see Contact list with name <Contact>
+    When I open conversation with <Contact>
+    Then I see file transfer button in conversation input
+    When I send file <File> to the current conversation
+    And I see sent gif in the conversation view
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | File        |
+      | user1Email | user1Password | user1Name | user2Name | example.gif |
+
+  @C82824 @filetransfer
+  Scenario Outline: Verify JPEGs and PNGs are inlined if shared via file transfer
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Given I see Contact list with name <Contact>
+    When I open conversation with <Contact>
+    Then I see file transfer button in conversation input
+    When I send file <File> to the current conversation
+    And I see sent picture <File> in the conversation view
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | File         |
+      | user1Email | user1Password | user1Name | user2Name | example.jpg  |
+      | user1Email | user1Password | user1Name | user2Name | example.jpeg |
+      | user1Email | user1Password | user1Name | user2Name | example.png  |
