@@ -71,6 +71,7 @@ class RestartNodesWithLabels(CliHandlerBase):
         workers = []
         for _, node in self._jenkins.get_nodes().iteritems():
             response = node.jenkins.requester.get_and_confirm_status("%(baseurl)s/config.xml" % node.__dict__)
+            sys.stderr.write(response.text + '\n\n')
             et = ET.fromstring(response.text)
             hostname = et.find('.//host').text
             if not self._is_alive(hostname):
