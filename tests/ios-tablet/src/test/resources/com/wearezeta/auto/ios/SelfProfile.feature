@@ -6,12 +6,12 @@ Feature: Self Profile
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I tap to edit my name
     And I change my name to <NewUsername>
     Then I see my new name <NewUsername1>
     When I close self profile
-    And I tap my avatar
+    And I tap settings gear button
     And I tap to edit my name
     And I change my name to <NewUsername>
     Then I see my new name <NewUsername1>
@@ -25,7 +25,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     # This is usually enough to have the profile picture loaded
     And I wait for 10 seconds
     And I remember my current profile picture
@@ -45,7 +45,7 @@ Feature: Self Profile
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     # This is usually enough to have the profile picture loaded
     And I wait for 10 seconds
     And I remember my current profile picture
@@ -64,7 +64,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I tap to edit my name
     And I attempt to input an empty name and press return
     And I see error message asking for more characters
@@ -81,7 +81,7 @@ Feature: Self Profile
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I tap to edit my name
     And I attempt to enter <username1char> and press return
     Then I see error message asking for more characters
@@ -102,7 +102,7 @@ Feature: Self Profile
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Name> sends 1 encrypted message to user <Contact>
-    When I tap my avatar
+    When I tap settings gear button
     And I tap to edit my name
     And I change my name to <NewUsername>
     And I close self profile
@@ -122,7 +122,7 @@ Feature: Self Profile
     Given User Myself removes his avatar picture
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I remember the state of color picker
     And I set my accent color to <Color2>
     Then I verify the state of color picker is changed
@@ -139,7 +139,7 @@ Feature: Self Profile
     Given I accept First Time overlay if it is visible
     Given I dismiss settings warning
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I tap to add my phone number
     And I enter phone number and verification code
     Then I see phone number attached to profile
@@ -159,7 +159,7 @@ Feature: Self Profile
     Given I accept alert
     Given I dismiss settings warning
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I tap to add my phone number
     And I see country picker button on Sign in screen
     And I input phone number <Number> with code <Code>
@@ -175,7 +175,7 @@ Feature: Self Profile
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     Then I dont see theme switcher button on self profile page
 
     Examples:

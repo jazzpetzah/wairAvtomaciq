@@ -152,7 +152,7 @@ Feature: Video Calling
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Video call action button on People picker page

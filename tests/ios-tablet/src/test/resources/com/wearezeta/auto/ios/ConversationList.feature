@@ -57,7 +57,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     Then I see People picker page
 
     Examples:
@@ -271,7 +271,7 @@ Feature: Conversation List
     And I click delete menu button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
@@ -336,7 +336,7 @@ Feature: Conversation List
     And I click delete menu button
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
@@ -384,7 +384,7 @@ Feature: Conversation List
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     And I do not see conversation <Contact> in conversations list
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 

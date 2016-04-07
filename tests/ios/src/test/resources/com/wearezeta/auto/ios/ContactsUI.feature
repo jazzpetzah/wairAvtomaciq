@@ -8,7 +8,7 @@ Feature: ContactsUI
     Given I sign in using my email or phone number
     Given I see conversations list
     When I do not see conversation <Contact> in conversations list
-    And I open search by taping on it
+    And I open search UI
     And I press the send an invite button
     And I see ContactsUI page
     And I input user name <Contact> in search on ContactsUI
@@ -24,7 +24,7 @@ Feature: ContactsUI
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I open search by taping on it
+    And I open search UI
     And I press the send an invite button
     And I see contact <Contact> in ContactsUI page list
     And I click on Open button next to user name <Contact> on ContactsUI

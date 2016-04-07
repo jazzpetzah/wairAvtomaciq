@@ -6,7 +6,7 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     Given I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -74,7 +74,7 @@ Feature: Connect
     And I click on Ignore button on Pending requests page <SentRequests> times
     And I do not see Pending request link in conversations list
     And I wait until <Contact1> exists in backend search results
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
     Then I see Pending request page
@@ -110,7 +110,7 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I wait until <Contact> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -134,7 +134,7 @@ Feature: Connect
     Given User <Contact> securely pings conversation Myself
     Given User <Contact> sends 1 encrypted message to user Myself
     Then I do not see conversation <Contact> in conversations list
-    When I open search by taping on it
+    When I open search UI
     And I wait until <Contact> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -155,7 +155,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -163,7 +163,7 @@ Feature: Connect
     And I click Connect button on connect to dialog
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     Then I see cancel request button on pending profile page
@@ -178,7 +178,7 @@ Feature: Connect
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I press the send an invite button
     And I press invite others button
     And I press the copy button
@@ -199,7 +199,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     Given I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user email <ContactEmail>
     And I press the instant connect button next to <UnconnectedUser>
@@ -242,7 +242,7 @@ Feature: Connect
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
     And I navigate back to conversations list
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I see connect to <Contact1> dialog
@@ -260,7 +260,7 @@ Feature: Connect
     Given I sent connection request to <Contact1>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I click Cancel request button
@@ -324,7 +324,7 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     Then I do not see conversation <Contact> in conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user

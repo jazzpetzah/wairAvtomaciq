@@ -52,7 +52,7 @@ Feature: Registration
     And I confirm my choice
     And I see People picker page
     And I click clear button
-    And I tap my avatar
+    And I tap settings gear button
     And I tap on personal screen
     Then I verify that current screen similarity score is more than <Score> within <Timeout> seconds
 
@@ -71,7 +71,7 @@ Feature: Registration
     When I tap Not Now button on Share Contacts overlay
     Then I see People picker page
     And I click clear button
-    And I tap my avatar
+    And I tap settings gear button
     Then I see my new name <ArabicName>
 
     Examples:

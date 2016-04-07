@@ -6,7 +6,7 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I tap on Search input on People picker page
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
@@ -31,7 +31,7 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I tap on Search input on People picker page
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
@@ -104,7 +104,7 @@ Feature: Connect
     And I do not see Pending request link in conversations list
     And I do not see conversation <Contact1> in conversations list
     And I wait until <Contact1> exists in backend search results
-    And I open search by taping on it
+    And I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -130,7 +130,7 @@ Feature: Connect
     And I do not see Pending request link in conversations list
     And I do not see conversation <Contact1> in conversations list
     And I wait until <Contact1> exists in backend search results
-    And I open search by taping on it
+    And I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -229,7 +229,7 @@ Feature: Connect
     Given User <Contact> sends 1 encrypted message to user Myself
     When I wait for 10 seconds
     Then I do not see conversation <Contact> in conversations list
-    When I open search by taping on it
+    When I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -254,7 +254,7 @@ Feature: Connect
     Given User <Contact> sends 1 encrypted message to user Myself
     When I wait for 10 seconds
     Then I do not see conversation <Contact> in conversations list
-    When I open search by taping on it
+    When I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -272,7 +272,7 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I tap on Search input on People picker page
     And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
@@ -281,7 +281,7 @@ Feature: Connect
     And I click Connect button on connect to dialog
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
-    When I open search by taping on it
+    When I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -298,7 +298,7 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I press the send an invite button
     And I press invite others button
     And I press the copy button

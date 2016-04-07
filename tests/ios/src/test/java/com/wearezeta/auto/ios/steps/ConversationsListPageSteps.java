@@ -33,7 +33,7 @@ public class ConversationsListPageSteps {
 
     @Given("^I see conversations list$")
     public void GivenISeeConversationsList() throws Exception {
-        Assert.assertTrue("Conversations list is not visible after the timeout", getLoginPage().isSelfAvatarVisible());
+        Assert.assertTrue("Conversations list is not visible after the timeout", getLoginPage().isContactsButtonVisible());
     }
 
     private Map<String, ElementState> savedConvoItemStates = new HashMap<>();
@@ -131,9 +131,15 @@ public class ConversationsListPageSteps {
         getLoginPage().dismissSettingsWarning();
     }
 
-    @When("^I tap my avatar$")
-    public void WhenITapOnMyName() throws Exception {
-        getContactListPage().tapMyAvatar();
+    /**
+     * Tap the settings gear button
+     *
+     * @step. ^I tap settings gear button$
+     * @throws Exception
+     */
+    @When("^I tap settings gear button$")
+    public void ITapSettingsGear() throws Exception {
+        getContactListPage().tapSettingsGearButton();
     }
 
     @When("^I tap on contact name (.*)")
@@ -160,14 +166,14 @@ public class ConversationsListPageSteps {
     }
 
     /**
-     * Open search by taping on search field
+     * Open search by taping Contacts button
      *
      * @throws Exception
-     * @step. ^I open search by taping on it$
+     * @step. ^I open search UI$
      */
-    @When("^I open search by taping on it$")
+    @When("^I open search UI$")
     public void IOpenSearchByTap() throws Exception {
-        getContactListPage().openSearch();
+        getContactListPage().tapContactsButton();
     }
 
     private final static long CONVO_LIST_UPDATE_TIMEOUT = 10000; // milliseconds
@@ -425,7 +431,7 @@ public class ConversationsListPageSteps {
     }
 
     private ElementState previousSelfAvatarState = new ElementState(
-            () -> getContactListPage().getAvatarStateScreenshot()
+            () -> getContactListPage().getSettingsGearStateScreenshot()
     );
 
     /**

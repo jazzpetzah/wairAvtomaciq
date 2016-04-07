@@ -6,7 +6,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
@@ -26,7 +26,7 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
@@ -555,7 +555,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I see the conversation "<Contact3>" exists in Search results
@@ -580,7 +580,7 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact3>
     And I see the conversation "<Contact3>" exists in Search results
     And I click close button to dismiss people view
@@ -658,7 +658,7 @@ Feature: People View
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
@@ -686,7 +686,7 @@ Feature: People View
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
@@ -715,7 +715,7 @@ Feature: People View
     And I click delete menu button
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -742,7 +742,7 @@ Feature: People View
     And I click delete menu button
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -767,7 +767,7 @@ Feature: People View
     And I click delete menu button
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
@@ -794,7 +794,7 @@ Feature: People View
     And I click delete menu button
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
