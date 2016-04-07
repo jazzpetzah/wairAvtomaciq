@@ -42,14 +42,14 @@ Feature: E2EE
     Given User Myself removes his avatar picture
     Given I sign in using my email
     Given I see conversations list
-    When I remember the state of my avatar
+    When I remember the state of settings gear
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
-    Then I wait until my avatar is changed
+    Then I wait until settings gear is changed
     When I tap settings gear button
     Then I verify the alert contains text <DeviceName>
     When I accept alert
     And I close self profile
-    Then I wait until my avatar is not changed
+    Then I wait until settings gear is not changed
     When I tap settings gear button
     And I click on Settings button on personal page
     And I click on Settings button from the options menu

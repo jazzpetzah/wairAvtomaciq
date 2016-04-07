@@ -291,14 +291,14 @@ Feature: Search
     When I open search UI
     And I see Invite more people button
     And I tap on 1st top connection contact
-    And I DONT see Invite more people button
+    And I do not see Invite more people button
     And I see Open conversation action button on People picker page
     And I tap on 1st top connection contact
     And I do not see Open conversation action button on People picker page
     And I see Invite more people button
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I DONT see Invite more people button
+    And I do not see Invite more people button
     And I see Open conversation action button on People picker page
     And I press backspace button
     And I press backspace button

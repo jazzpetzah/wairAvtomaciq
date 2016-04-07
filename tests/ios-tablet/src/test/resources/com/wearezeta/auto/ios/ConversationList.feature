@@ -402,7 +402,7 @@ Feature: Conversation List
     And Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>
     And I see Invite more people button
     And Myself is connected to <Contact7>
-    Then I DONT see Invite more people button
+    Then I do not see Invite more people button
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Number |

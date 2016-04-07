@@ -134,8 +134,8 @@ public class ConversationsListPageSteps {
     /**
      * Tap the settings gear button
      *
-     * @step. ^I tap settings gear button$
      * @throws Exception
+     * @step. ^I tap settings gear button$
      */
     @When("^I tap settings gear button$")
     public void ITapSettingsGear() throws Exception {
@@ -205,7 +205,7 @@ public class ConversationsListPageSteps {
      * verifies the visibility of a specific item in the conversations list
      *
      * @param shouldNotSee equals to null if the item should be visible
-     * @param value conversation name/alias
+     * @param value        conversation name/alias
      * @throws Exception
      * @step. ^I (do not )?see conversation (.*) in conversations list$
      */
@@ -407,66 +407,60 @@ public class ConversationsListPageSteps {
     }
 
     /**
-     * Verify if Invite more people button is shown in contact list
+     * Verify if Invite more people button is shown or not in contact list
      *
+     * @param shouldNotBeVisible equals to null if the button should not be visible
      * @throws Exception
-     * @step. ^I see Invite more people button$
+     * @step. ^I (do not )?see Invite more people button$
      */
-    @When("^I see Invite more people button$")
-    public void ISeeInviteMorePeopleButton() throws Exception {
-        Assert.assertTrue("Invite more people button is not shown",
-                getContactListPage().isInviteMorePeopleButtonVisible());
+    @When("^I (do not )?see Invite more people button$")
+    public void ISeeInviteMorePeopleButton(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("Invite more people button is not shown",
+                    getContactListPage().isInviteMorePeopleButtonVisible());
+        } else {
+            Assert.assertTrue("Invite more people button is shown",
+                    getContactListPage().isInviteMorePeopleButtonNotVisible());
+        }
     }
 
-    /**
-     * Verify if Invite more people button is NOT shown in contact list
-     *
-     * @throws Exception
-     * @step. ^I DONT see Invite more people button$
-     */
-    @When("^I DONT see Invite more people button$")
-    public void IDontSeeInviteMorePeopleButton() throws Exception {
-        Assert.assertTrue("Invite more people button is shown",
-                getContactListPage().isInviteMorePeopleButtonNotVisible());
-    }
-
-    private ElementState previousSelfAvatarState = new ElementState(
+    private ElementState previousSettingsGearState = new ElementState(
             () -> getContactListPage().getSettingsGearStateScreenshot()
     );
 
     /**
-     * Remember the current state of self avatar
+     * Remember the current state of settings gear
      *
      * @throws Exception
-     * @step. ^I remember the state of my self avatar$
+     * @step. ^I remember the state of settings gear$
      */
-    @When("^I remember the state of my avatar$")
-    public void IRememberAvatarState() throws Exception {
-        previousSelfAvatarState.remember();
+    @When("^I remember the state of settings gear$")
+    public void IRememberGearState() throws Exception {
+        previousSettingsGearState.remember();
     }
 
     /**
-     * Verify whether avatar state is changed within the timeout
+     * Verify whether settings gear state is changed within the timeout
      *
      * @param shouldNotChange equals to null if the state should be changed
      * @throws Exception
-     * @step. ^I wait until my avatar is (not )?changed$
+     * @step. ^I wait until settings gear is (not )?changed$
      */
-    @Then("^I wait until my avatar is (not )?changed$")
-    public void IWaitUntilAvatarIsChanged(String shouldNotChange) throws Exception {
-        if (previousSelfAvatarState == null) {
-            throw new IllegalStateException("Please take the initial screenshot of the avatar first");
+    @Then("^I wait until settings gear is (not )?changed$")
+    public void IWaitUntilGearIsChanged(String shouldNotChange) throws Exception {
+        if (previousSettingsGearState == null) {
+            throw new IllegalStateException("Please take the initial screenshot of settings gear first");
         }
         final int timeoutSeconds = 10;
         final double minScore = 0.97;
         if (shouldNotChange == null) {
-            Assert.assertTrue(String.format("The previous and the current state of self avatar " +
+            Assert.assertTrue(String.format("The previous and the current state of settings gear " +
                             "icon seems to be equal after %s seconds", timeoutSeconds),
-                    previousSelfAvatarState.isChanged(timeoutSeconds, minScore));
+                    previousSettingsGearState.isChanged(timeoutSeconds, minScore));
         } else {
-            Assert.assertTrue(String.format("The previous and the current state of self avatar " +
+            Assert.assertTrue(String.format("The previous and the current state of settings gear " +
                             "icon seems to be different after %s seconds", timeoutSeconds),
-                    previousSelfAvatarState.isNotChanged(timeoutSeconds, minScore));
+                    previousSettingsGearState.isNotChanged(timeoutSeconds, minScore));
         }
     }
 
