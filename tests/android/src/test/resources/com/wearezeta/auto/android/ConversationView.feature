@@ -457,7 +457,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I tap plus button in text input
     And I tap Add people button from input tools
-    And the toolbar title in People picker page should be "CREATE GROUP"
+    And the toolbar title in People picker page should be "Create group"
     Then I do not see No matching result placeholder on People picker page
     When I input in People picker search field user name <Contact2>
     And I tap on user name found on People picker page <Contact2>
@@ -483,7 +483,7 @@ Feature: Conversation View
     When I tap on contact name <GroupChatName>
     And I tap plus button in text input
     And I tap Add people button from input tools
-    And the toolbar title in People picker page should be "ADD PEOPLE"
+    And the toolbar title in People picker page should be "Add people"
     Then I do not see No matching result placeholder on People picker page
     When I input in People picker search field user name <Contact3>
     And I tap on user name found on People picker page <Contact3>
