@@ -157,7 +157,7 @@ Feature: Calling_Matrix
     And I hang up call with conversation <Contact>
     And I do not see the call controls for conversation <Contact>
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
-    And <Contact> verifies that call to conversation <Contact> was successful
+#    And <Contact> verifies that call to conversation <Contact> was successful
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend   | Timeout |
