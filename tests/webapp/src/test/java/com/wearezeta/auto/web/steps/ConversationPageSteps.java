@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+import java.io.File;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -253,6 +254,108 @@ public class ConversationPageSteps {
     public void ISeeOnlyXPicturesInConversation(int x) throws Exception {
         assertThat("Number of images in the conversation", webappPagesCollection.getPage(ConversationPage.class)
                 .getNumberOfImagesInCurrentConversation(), equalTo(x));
+    }
+
+    /**
+     * Verifies if file transfer button is shown in the cursor
+     *
+     * @throws Exception
+     * @step. ^I see file transfer button in conversation input$
+     */
+    @Then("^I see file transfer button in conversation input$")
+    public void ISeeFileButton() throws Exception {
+        assertThat("No button found", webappPagesCollection.getPage(ConversationPage.class).isFileButtonDisplayed());
+    }
+
+    /**
+     * Send a file into current conversation
+     *
+     * @param fileName the name of a picture file. This file should already exist in the ~/Documents folder
+     * @throws Exception
+     * @step. ^I send picture (.*) to the current conversation$
+     */
+    @When("^I send file (.*) to the current conversation$")
+    public void WhenISendFile(String fileName) throws Exception {
+        webappPagesCollection.getPage(ConversationPage.class).sendFile(fileName);
+    }
+
+    /**
+     * Verifies if the file transfer placeholder contains correct file name
+     *
+     * @param fileName the name of a file
+     * @throws Exception
+     * @step. ^I see file transfer for file (.*) in the conversation view$
+     */
+    @Then("^I see file transfer for file (.*) in the conversation view$")
+    public void ISeeFileTransferOfFile(String fileName) throws Exception {
+        assertThat("Could not find file transfer for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+                .isFileTransferDisplayed(fileName));
+        assertThat("Wrong file name for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+                .getFileNameOf(fileName), equalTo(fileName.toUpperCase()));
+    }
+
+    /**
+     * Verifies if the file transfer placeholder contains correct file name
+     *
+     * @param count the name of a file
+     * @throws Exception
+     * @step. ^I see file transfer for file (.*) in the conversation view$
+     */
+    @Then("^I see (//d+) file transfers in the conversation view$")
+    public void ISeeFileTransfers(String count) throws Exception {
+        // TODO
+    }
+
+    /**
+     * Verifies if the file transfer placeholder contains correct file icon
+     *
+     * @param fileName the name of a file
+     * @throws Exception
+     * @step. ^I verify icon of file (.*) in the conversation view$
+     */
+    @Then("^I verify icon of file (.*) in the conversation view$")
+    public void IVerifyIconOfFile(String fileName) throws Exception {
+        assertThat("No file icon for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+                .getFileIcon(fileName));
+    }
+
+    /**
+     * Verifies if the file transfer placeholder contains correct file size
+     *
+     * @param fileName the name of a file
+     * @throws Exception
+     * @step. ^I verify size of file (.*) in the conversation view$
+     */
+    @Then("^I verify size of file (.*) in the conversation view$")
+    public void IVerifySizeOfFile(String fileName) throws Exception {
+        final String filePath = WebCommonUtils.getFullPicturePath(fileName);
+        File file = new File(filePath);
+        String fileSize = "";
+        // Get length of file in bytes
+        if(file.length() < 1024) {
+            fileSize = String.format("%s Bytes", String.valueOf(file.length()));
+        } else if (file.length() < 1024*1024) {
+            fileSize = String.format("%s KB", String.valueOf(file.length() / 1024));
+        } else {
+            fileSize = String.format("%s MB", String.valueOf(file.length() / 1024 / 1024));
+        }
+
+        assertThat("Wrong file size for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+                .getFileSizeOf(fileName), equalTo(fileSize));
+    }
+
+    /**
+     * Verifies if the file transfer placeholder contains correct file status
+     *
+     * @param fileName the name of a file
+     * @param status the status of the transfer
+     * @throws Exception
+     * @step. ^I verify status of file (.*) is (.*) in the conversation view$
+     */
+    @Then("^I verify status of file (.*) is (.*) in the conversation view$")
+    public void IVerifySizeOfFile(String fileName, String status) throws Exception {
+        assertThat("Wrong file status for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+                .getFileStatusOf(fileName), equalTo(status));
     }
 
     /**

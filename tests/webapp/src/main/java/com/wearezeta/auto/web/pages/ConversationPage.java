@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.pages;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -28,7 +27,6 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -62,6 +60,9 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssSendImageInput)
 	private WebElement imagePathInput;
+
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssSendFileInput)
+	private WebElement filePathInput;
 
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssPingButton)
 	private WebElement pingButton;
@@ -321,11 +322,8 @@ public class ConversationPage extends WebPage {
 	public void sendPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
-		DriverUtils.addClass(getDriver(), conversation, "hover");
-		final String showPathInputJScript = "$(\""
-				+ WebAppLocators.ConversationPage.cssSendImageInput
-				+ "\").css({'left': -200});";
-		this.getDriver().executeScript(showPathInputJScript);
+		hoverOverConversationInput();
+		moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendImageInput);
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
@@ -336,6 +334,27 @@ public class ConversationPage extends WebPage {
 		} else {
 			imagePathInput.sendKeys(picturePath);
 		}
+	}
+
+	public void hoverOverConversationInput() throws Exception {
+		DriverUtils.addClass(getDriver(), conversation, "hover");
+	}
+
+	public void moveCssSelectorIntoViewport(String selector) throws Exception {
+		final String showPathInputJScript = "$(\"" + selector + "\").css({'left': -200});";
+		getDriver().executeScript(showPathInputJScript);
+	}
+
+	public void sendFile(String fileName) throws Exception {
+		final String filePath = WebCommonUtils
+				.getFullPicturePath(fileName);
+		hoverOverConversationInput();
+		moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendFileInput);
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssSendFileInput));
+		filePathInput.sendKeys(filePath);
 	}
 
 	public double getOverlapScoreOfLastImage(String pictureName)
@@ -667,5 +686,36 @@ public class ConversationPage extends WebPage {
 	public boolean isConversationVerified() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage
 				.cssConversationVerifiedIcon));
+	}
+
+	public boolean isFileButtonDisplayed() throws Exception {
+		hoverOverConversationInput();
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+				.cssSendFileButton));
+	}
+
+	public boolean isFileTransferDisplayed(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFile,fileName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean getFileIcon(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileIcon, fileName));
+		return getDriver().findElement(locator).isDisplayed();
+	}
+
+	public String getFileNameOf(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileName,fileName));
+		return getDriver().findElement(locator).getText();
+	}
+
+	public String getFileSizeOf(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileSize,fileName));
+		return getDriver().findElement(locator).getText();
+	}
+
+	public String getFileStatusOf(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileStatus,fileName));
+		return getDriver().findElement(locator).getText();
 	}
 }

@@ -333,6 +333,16 @@ public final class WebAppLocators {
 
         public static final String cssLastAction = cssLastMessage + " .action";
 
+        public static final String cssFile = "[data-uie-name='file'][data-uie-value='%s']";
+
+        public static final String cssFileIcon = cssFile + " .icon-file";
+
+        public static final String cssFileName = cssFile + " [data-uie-name='file-name']";
+
+        public static final String cssFileSize = cssFile + " [data-uie-name='file-size']";
+
+        public static final String cssFileStatus = cssFile + " [data-uie-name='file-status']";
+
         public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']:not(.image-loading)";
 
         public static final String cssPingMessage = ".pinged";
@@ -360,6 +370,10 @@ public final class WebAppLocators {
         public static final String cssRightControlsPanel = "div.controls-right";
 
         public static final String cssSendImageInput = "input[data-uie-name=do-share-image]";
+
+        public static final String cssSendFileButton = "#conversation-input-files";
+
+        public static final String cssSendFileInput = "input[data-uie-name=do-share-file]";
 
         public static final String cssPingButton = "[data-uie-name='do-ping'], [data-uie-name='do-hot-ping']";
 
