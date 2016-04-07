@@ -419,8 +419,8 @@ Feature: VideoCalling
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I am signed in properly
-    And I open self profile
-    Then <Contact> starts a video call to me
+    Then I open self profile
+    When <Contact> starts a video call to me
     Then I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>
     When <Contact> stops calling me
