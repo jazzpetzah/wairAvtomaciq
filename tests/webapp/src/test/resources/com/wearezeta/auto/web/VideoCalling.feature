@@ -414,24 +414,24 @@ Feature: VideoCalling
   Scenario Outline: Verify I get missed call indication when someone called (video)
     Given My browser supports calling
     Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given <Contact> starts instance using <CallBackend>
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I am signed in properly
-    And I open self profile
-    Then <Contact> starts a video call to me
-    Then I see the incoming call controls for conversation <Contact>
-    And I see accept video call button for conversation <Contact>
-    When <Contact> stops calling me
-    Then I do not see the call controls for conversation <Contact>
-    And <Contact> verifies that call status to <Name> is changed to DESTROYED in <Timeout> seconds
-    And I do not see accept video call button for conversation <Contact>
-    And I see missed call notification in the conversation list for conversation <Contact>
-    When I open conversation with <Contact>
-    Then I do not see missed call notification in the conversation list for conversation <Contact>
-    And I see <Action> action for <Contact> in conversation
+    And I open conversation with <Contact2>
+    And <Contact1> starts a video call to me
+    Then I see the incoming call controls for conversation <Contact1>
+    And I see accept video call button for conversation <Contact1>
+    When <Contact1> stops calling me
+    Then I do not see the call controls for conversation <Contact1>
+    And <Contact1> verifies that call status to <Name> is changed to DESTROYED in <Timeout> seconds
+    And I do not see accept video call button for conversation <Contact1>
+    And I see missed call notification in the conversation list for conversation <Contact1>
+    When I open conversation with <Contact1>
+    Then I do not see missed call notification in the conversation list for conversation <Contact1>
+    And I see <Action> action for <Contact1> in conversation
     
     Examples:
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout | Action |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      | called |
+      | Login      | Password      | Name      | Contact1  | CallBackend | Timeout | Action | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      | called | user3Name |
