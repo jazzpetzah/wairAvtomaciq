@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 public class PickleJarJUnitProvider implements PickleJar {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PickleJarJUnitProvider.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PickleJarJUnitProvider.class.getSimpleName());
 
     private PickleExecutor executor;
     private List<String> featureFiles = new ArrayList<>();

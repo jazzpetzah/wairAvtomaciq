@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 public class PickleJarTest {
     
-    private static final Logger LOG = LoggerFactory.getLogger(PickleJarTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PickleJarTest.class.getSimpleName());
     
     private static final AtomicInteger TEST_COUNTER = new AtomicInteger(0);
     private final PickleJar pickle = new PickleJarJUnitProvider();

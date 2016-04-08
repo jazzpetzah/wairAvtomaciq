@@ -117,14 +117,6 @@ public class TestClassGenerator {
     }
 
     public static void main(String[] args) throws IOException {
-
-        for (Map.Entry<Object, Object> entry : System.getProperties().entrySet()) {
-            Object key = entry.getKey();
-            Object value = entry.getValue();
-            LOG.debug(key + "=" + value);
-
-        }
-
         TestClassGenerator generator = new TestClassGenerator();
 
         for (TestCase generateTestCase : generator.generateTestCases()) {

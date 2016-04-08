@@ -1,6 +1,8 @@
 package com.wire.picklejar.execution;
 
 import com.wire.picklejar.Config;
+import com.wire.picklejar.execution.exception.StepNotExecutableException;
+import com.wire.picklejar.execution.exception.StepNotFoundException;
 import com.wire.picklejar.scan.PickleAnnotationSeeker;
 import com.wire.picklejar.scan.JavaSeeker;
 import cucumber.api.java.en.And;
@@ -21,13 +23,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import org.apache.logging.log4j.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PickleExecutor {
-    
-    private static final Logger LOG = LoggerFactory.getLogger(PickleExecutor.class);
+
+    private static final Logger LOG = LoggerFactory.getLogger(PickleExecutor.class.getSimpleName());
 
     private static final String CUCUMBER_ANNOTATION_REGEX_METHOD_NAME = "value";
     private static final Class<? extends Annotation>[] CUCUMBER_STEP_ANNOTATIONS = new Class[]{
@@ -66,7 +67,7 @@ public class PickleExecutor {
     }
 
     public void invokeMethodForStep(String rawStep, Map<String, String> exampleParams, Object... constructorParams) throws
-            Exception {
+            StepNotFoundException, StepNotExecutableException {
         boolean match = false;
         final String step = replaceExampleOccurences(rawStep, exampleParams);
 
@@ -78,7 +79,7 @@ public class PickleExecutor {
             final Matcher matcher = pattern.matcher(step);
 
             if (matcher.matches()) {
-                LOG.info("Method {} matches", method.getName());
+                LOG.debug("Method {} matches", method.getName());
 
                 if (matcher.groupCount() == method.getParameterTypes().length) {
                     LOG.debug("Number of Regex groups and number of method paramaters match");
@@ -99,20 +100,30 @@ public class PickleExecutor {
                 LOG.debug("Actual parameters: \n{}", new Object[]{params});
 
                 try {
+                    LOG.info("\n"
+                            + ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n"
+                            + "::          {}\n"
+                            + "''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''", step);
                     if (params.isEmpty()) {
                         method.invoke(getOrAddCachedDeclaringClassForMethod(method, constructorParams));
                     } else {
                         method.invoke(getOrAddCachedDeclaringClassForMethod(method, constructorParams), params.toArray());
                     }
-                } catch (InvocationTargetException ite) {
-                    throw new Exception(ite.getCause());
+                } catch (IllegalArgumentException | InvocationTargetException | IllegalAccessException | InstantiationException |
+                        NoSuchMethodException ite) {
+                    throw new StepNotExecutableException(String.format("\n"
+                            + ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n"
+                            + "::   Execution of step\n"
+                            + "::   '%s'\n"
+                            + "::   FAILED\n"
+                            + "''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''", step), ite.getCause());
                 }
                 match = true;
                 break;
             }
         }
         if (!match) {
-            LOG.error("Could not find any match for step '{}'", rawStep);
+            throw new StepNotFoundException(String.format("Could not find any match for step '{}'", rawStep));
         }
     }
 
@@ -122,7 +133,7 @@ public class PickleExecutor {
         final Object declaringClassObject;
         final String declaringClassName = method.getDeclaringClass().getName();
         if (classInstanceCache.containsKey(declaringClassName)) {
-            LOG.info("Using cached decalred class {}", declaringClassName);
+            LOG.debug("Using cached decalred class {}", declaringClassName);
             declaringClassObject = classInstanceCache.get(declaringClassName);
         } else {
             final List<Object> constructorParamsList = Arrays.asList(constructorParams);
@@ -130,7 +141,7 @@ public class PickleExecutor {
                     collect(Collectors.toList());
             LOG.debug("Step constructor param list size: {}", constructorParamsList.size());
             LOG.debug("Step constructor param type list size: {}", constructorParamTypesList.size());
-            
+
             final Constructor<?> ctor = method.getDeclaringClass().getConstructor(constructorParamTypesList.toArray(
                     new Class<?>[constructorParamTypesList.size()]));
             declaringClassObject = method.getDeclaringClass().cast(ctor.newInstance(constructorParamsList.toArray()));
