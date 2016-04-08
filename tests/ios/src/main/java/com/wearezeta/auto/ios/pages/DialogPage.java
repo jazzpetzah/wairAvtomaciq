@@ -99,7 +99,7 @@ public class DialogPage extends IOSPage {
             "//UIAImage[following-sibling::UIATextView[@name='ConversationTextInputField'] and @visible='true']");
 
     public static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
-            "//UIAStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
+            "//UIAStaticText[@name='%s' and @shown='true']", name);
 
     public static final Function<String, String> xpathStrConnectedToUserLabelByName = name -> String.format(
             "//UIAStaticText[contains(@name, 'CONNECTED TO %s')]", name.toUpperCase());
