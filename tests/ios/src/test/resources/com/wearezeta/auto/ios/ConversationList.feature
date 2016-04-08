@@ -507,6 +507,7 @@ Feature: Conversation List
     Given I dismiss alert
     Given I dismiss settings warning
     When I see conversations list
+    And I open search UI
     And I tap Invite more people button
     Then I see Share Contacts settings warning
     And I dismiss settings warning
