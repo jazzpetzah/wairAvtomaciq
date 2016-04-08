@@ -48,6 +48,7 @@ Feature: Offline Mode
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
+    And I scroll to the bottom of the conversation view
     And I see unsent indicator next to new picture in the conversation view
 
     Examples:
