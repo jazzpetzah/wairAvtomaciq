@@ -308,7 +308,7 @@ Feature: Conversation List
     When I remember the state of conversation item number 1
     And I tap on conversation item number 2
     And I navigate back to conversations list
-    Then I see the state of conversation item number 1 is changed
+    Then I see the state of conversation item number 1 is not changed
     
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -325,9 +325,8 @@ Feature: Conversation List
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
-    And I do not see conversation <Contact1> in conversations list
-    And I open archived conversations
     Then I do not see conversation <Contact1> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  |
@@ -347,8 +346,7 @@ Feature: Conversation List
     And I click delete menu button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
-    And I open archived conversations
-    Then I do not see conversation <Contact1> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  |
