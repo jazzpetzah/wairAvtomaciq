@@ -34,5 +34,7 @@ public class ConnectToPage extends IOSPage {
             clickKeyboardCommitButton();
             getElement(xpathConnectOtherUserButton).click();
         }
+        // Wait for animation
+        Thread.sleep(2000);
     }
 }
