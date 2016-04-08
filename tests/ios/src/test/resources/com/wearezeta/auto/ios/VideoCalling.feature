@@ -31,7 +31,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C12101 @calling_basic @video_calling @AUDIO-868
+  @C12101 @calling_basic @video_calling @AUDIO-868 @rc
   Scenario Outline: Verify accepting video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -204,7 +204,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 30      |
 
-  @C28861 @calling_basic @video_calling @AUDIO-868
+  @C28861 @calling_basic @video_calling @AUDIO-868 @rc
   Scenario Outline: Verify video call continues after rejecting 2nd incoming video call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
