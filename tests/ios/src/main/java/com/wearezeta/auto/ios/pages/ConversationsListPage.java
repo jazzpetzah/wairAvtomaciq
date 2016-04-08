@@ -56,12 +56,10 @@ public class ConversationsListPage extends IOSPage {
             String.format("%s/UIACollectionView[1]/UIACollectionCell[@name='%s']", xpathStrMainWindow, name);
 
     private static final Function<String, String> xpathStrActionMenuXButtonByName = name ->
-            String.format("//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAButton[@name='%s']",
-                    name.toUpperCase());
+            String.format("//UIAButton[@name='%s' and @visible='true']", name.toUpperCase());
 
     private static final Function<String, String> xpathStrActionMenuByConversationName = name ->
-            String.format("//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAStaticText[@name='%s']",
-                    name.toUpperCase());
+            String.format("//UIAStaticText[@name='%s' and @visible='true']", name.toUpperCase());
 
 
     public ConversationsListPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -217,8 +215,7 @@ public class ConversationsListPage extends IOSPage {
         getElement(nameCancelButton).click();
     }
 
-    public Optional<String> getSelectedConversationCellValue(String conversation)
-            throws Exception {
+    public Optional<String> getSelectedConversationCellValue(String conversation) throws Exception {
         final By locator = By.xpath(xpathStrSelectedConversationEntryByName.apply(conversation));
         final Optional<WebElement> cell = getElementIfDisplayed(locator);
         if (cell.isPresent()) {

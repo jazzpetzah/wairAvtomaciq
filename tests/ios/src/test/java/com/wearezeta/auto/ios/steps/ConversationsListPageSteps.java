@@ -350,13 +350,10 @@ public class ConversationsListPageSteps {
      * [Ll]ist$
      */
     @And("^I see conversation (.*) name in action menu in [Cc]ontact [Ll]ist$")
-    public void ISeeConversationNameInActionMenu(String conversation)
-            throws Exception {
-        conversation = usrMgr.replaceAliasesOccurences(conversation,
-                FindBy.NAME_ALIAS);
-        Assert.assertTrue("There is no conversation name " + conversation
-                + " in opened action menu.", getConversationsListPage()
-                .isActionMenuVisibleForConversation(conversation));
+    public void ISeeConversationNameInActionMenu(String conversation) throws Exception {
+        conversation = usrMgr.replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("There is no conversation name %s in opened action menu.",
+                conversation), getConversationsListPage().isActionMenuVisibleForConversation(conversation));
     }
 
     /**
@@ -370,8 +367,7 @@ public class ConversationsListPageSteps {
     @And("^I see (Silence|Delete|Leave|Archive|Block|Cancel Request|Cancel) button in action menu in [Cc]ontact [Ll]ist$")
     public void ISeeXButtonInActionMenu(String buttonTitle) throws Exception {
         Assert.assertTrue("There is no button " + buttonTitle.toUpperCase()
-                + " in opened action menu.", getConversationsListPage()
-                .isButtonVisibleInActionMenu(buttonTitle));
+                + " in opened action menu.", getConversationsListPage().isButtonVisibleInActionMenu(buttonTitle));
     }
 
     /**
