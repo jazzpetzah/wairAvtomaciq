@@ -91,7 +91,11 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void tapOnPeoplePickerClearBtn() throws Exception {
-        DriverUtils.tapByCoordinates(getDriver(), getElement(xpathPickerClearButton));
+        final WebElement closeButton = getElement(xpathPickerClearButton);
+        DriverUtils.tapByCoordinates(getDriver(), closeButton);
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathPickerClearButton, 5)) {
+            DriverUtils.tapByCoordinates(getDriver(), closeButton);
+        }
     }
 
     public void fillTextInPeoplePickerSearch(String text) throws Exception {
@@ -140,10 +144,6 @@ public class PeoplePickerPage extends IOSPage {
 
     public boolean isTopPeopleLabelVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), namePeoplePickerTopPeopleLabel, 2);
-    }
-
-    public boolean isConnectLabelVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), namePeopleYouMayKnowLabel);
     }
 
     public boolean isUserSelected(String name) throws Exception {

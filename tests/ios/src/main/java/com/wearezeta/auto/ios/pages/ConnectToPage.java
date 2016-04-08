@@ -26,7 +26,7 @@ public class ConnectToPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathConnectOtherUserButton);
     }
 
-    public void sendInvitation() throws Exception {
+    public void tapConnectButton() throws Exception {
         final Optional<WebElement> connectOtherUserButton = getElementIfDisplayed(xpathConnectOtherUserButton);
         if (connectOtherUserButton.isPresent()) {
             connectOtherUserButton.get().click();
