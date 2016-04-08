@@ -386,9 +386,8 @@ Feature: People View
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
-    And I do not see conversation <GroupChatName> in conversations list
-    And I open archived conversations
-    Then I see conversation <GroupChatName> in conversations list
+    Then I do not see conversation <GroupChatName> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
