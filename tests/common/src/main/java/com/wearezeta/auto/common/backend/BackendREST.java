@@ -48,8 +48,7 @@ import org.glassfish.jersey.client.ClientConfig;
 // Backend API calls should be invoked indirectly via API Wrappers class
 final class BackendREST {
 
-    private static final Logger log = ZetaLogger.getLog(BackendREST.class
-            .getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(BackendREST.class.getSimpleName());
 
     private static final int MAX_REQUEST_RETRY_COUNT = 3;
 
@@ -59,7 +58,7 @@ final class BackendREST {
     private static String backendUrl = null;
     private static Client client;
 
-    private static String DEFAULT_ISO8601_TIME = "1970-01-01T00:00:00.000Z";
+    private static final String DEFAULT_ISO8601_TIME = "1970-01-01T00:00:00.000Z";
 
     static {
         java.security.Security.setProperty("networkaddress.cache.ttl", "10800");
