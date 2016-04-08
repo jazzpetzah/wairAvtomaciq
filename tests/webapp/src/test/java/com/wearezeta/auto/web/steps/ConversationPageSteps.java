@@ -256,38 +256,6 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Checks action message (e.g. you left, etc.) appear in conversation
-     *
-     * @param message  constant part of the system message
-     * @throws Exception
-     * @throws AssertionError if action message did not appear in conversation
-     * @step. ^I see (.*) action in conversation$
-     */
-    @Then("^I( do not)? see (.*) action in conversation$")
-    public void ThenISeeActionInConversation(String doNot, String message) throws Exception {
-        ThenISeeActionInConversation(doNot, message, 1);
-    }
-
-    /**
-     * Checks action message (e.g. you left, etc.) appear in conversation
-     *
-     * @param message  constant part of the system message
-     * @param times  number of times the message appears
-     * @throws Exception
-     * @throws AssertionError if action message did not appear in conversation
-     * @step. ^I see (.*) action in conversation$
-     */
-    @Then("^I( do not)? see (.*) action (\\d+) times in conversation$")
-    public void ThenISeeActionInConversation(String doNot, String message, int times) throws Exception {
-        if (doNot == null) {
-            assertThat(message + " action", webappPagesCollection.getPage(ConversationPage.class)
-                    .waitForNumberOfMessageHeadersContain(message), equalTo(times));
-        } else {
-            Assert.assertTrue(webappPagesCollection.getPage(ConversationPage.class).isActionMessageNotSent(message));
-        }
-    }
-
-    /**
      * Verifies whether people button tool tip is correct or not.
      *
      * @step. ^I see correct people button tool tip$
@@ -318,6 +286,40 @@ public class ConversationPageSteps {
     /**
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
+     * @param doNot if not null, checks if the action message does not display
+     * @param message  constant part of the system message
+     * @throws Exception
+     * @throws AssertionError if action message did not appear in conversation
+     * @step. ^I see (.*) action in conversation$
+     */
+    @Then("^I( do not)? see (.*) action in conversation$")
+    public void ThenISeeActionInConversation(String doNot, String message) throws Exception {
+        if (doNot == null) {
+            ThenISeeActionInConversation(message, 1);
+        } else {
+            ThenISeeActionInConversation(message, 0);
+        }
+    }
+
+    /**
+     * Checks action message (e.g. you left, etc.) appear in conversation
+     *
+     * @param message  constant part of the system message
+     * @param times  number of times the message appears
+     * @throws Exception
+     * @throws AssertionError if action message did not appear in conversation
+     * @step. ^I see (.*) action in conversation$
+     */
+    @Then("^I see (.*) action (\\d+) times in conversation$")
+    public void ThenISeeActionInConversation(String message, int times) throws Exception {
+        assertThat(message + " action", webappPagesCollection.getPage(ConversationPage.class)
+                .waitForNumberOfMessageHeadersContain(message), equalTo(times));
+    }
+
+    /**
+     * Checks action message (e.g. you left, etc.) appear in conversation
+     *
+     * @param doNot if not null, checks if the action message does not display
      * @param message  constant part of the system message
      * @param contacts list of comma separated contact names/aliases
      * @throws AssertionError if action message did not appear in conversation
@@ -326,7 +328,11 @@ public class ConversationPageSteps {
      */
     @Then("^I( do not)? see (.*) action for (.*) in conversation$")
     public void ThenISeeActionForContactInConversation(String doNot, String message, String contacts) throws Exception {
-        ThenISeeActionForContactInConversation(doNot, message, 1, contacts);
+        if (doNot == null) {
+            ThenISeeActionForContactInConversation(message, 1, contacts);
+        } else {
+            ThenISeeActionForContactInConversation(message, 0, contacts);
+        }
     }
 
     /**
@@ -339,23 +345,14 @@ public class ConversationPageSteps {
      * @throws Exception
      * @step. ^I see (.*) action for (.*) in conversation$
      */
-    @Then("^I( do not)? see (.*) action (\\d+) times for (.*) in conversation$")
-    public void ThenISeeActionForContactInConversation(String doNot, String message, int times, String contacts) throws Exception {
+    @Then("^I see (.*) action (\\d+) times for (.*) in conversation$")
+    public void ThenISeeActionForContactInConversation(String message, int times, String contacts) throws Exception {
         contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
         Set<String> parts = new HashSet<String>();
         parts.add(message);
         parts.addAll(CommonSteps.splitAliases(contacts));
-        if (doNot == null) {
-            if(times > 1) {
-                assertThat(message + " action for " + contacts, webappPagesCollection.getPage(ConversationPage.class)
-                        .waitForNumberOfMessageHeadersContain(parts), equalTo(times));
-            } else {
-                webappPagesCollection.getPage(ConversationPage.class).waitForMessageHeaderContains(parts);
-            }
-        } else {
-            assertThat(message + " action for " + contacts, webappPagesCollection.getPage(ConversationPage.class)
-                    .waitForNumberOfMessageHeadersContain(parts), equalTo(0));
-        }
+        assertThat(message + " action for " + contacts, webappPagesCollection.getPage(ConversationPage.class)
+                .waitForNumberOfMessageHeadersContain(parts), equalTo(times));
     }
 
     /**

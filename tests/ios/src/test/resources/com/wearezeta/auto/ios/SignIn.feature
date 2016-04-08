@@ -96,7 +96,7 @@ Feature: Sign In
     And I verify registration address
     And I dismiss settings warning
     Then I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     Then I see email <Email> on Personal page
 
     Examples:

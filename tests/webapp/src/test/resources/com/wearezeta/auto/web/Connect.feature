@@ -469,36 +469,3 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user1Email    | user1Password    | user3Name |
-
-  @C1791 @staging
-  Scenario Outline: I want to cancel a pending request from 1:1 conversation
-    Given There are 3 users where <Name> is me
-    Given I sent connection request to <Contact1>
-    Given Myself is connected to <Contact2>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
-    When I open conversation with <Contact1>
-    Then I see CONNECTING TO action for <Contact1> in conversation
-    And I click on pending user avatar
-    And I see Pending Outgoing Connection popover
-    When I click Cancel request on Pending Outgoing Connection popover
-    Then I see Cancel request confirmation popover
-    When I click No button on Cancel request confirmation popover
-    Then I see Pending Outgoing Connection popover
-    When I click Cancel request on Pending Outgoing Connection popover
-    Then I see Cancel request confirmation popover
-    When I click Yes button on Cancel request confirmation popover
-    Then I do not see Pending Outgoing Connection popover
-    Then I do not see Contact list with name <Contact1>
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Log out menu item on self profile page
-    And User <Contact1> is me
-    And I Sign in using login <Contact1Email> and password <Contact1Password>
-    Then I see my avatar on top of Contact list
-    And I do not see Contact list with name <Name>
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user1Email    | user1Password    | user3Name |

@@ -140,7 +140,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I type the default message
     And I type the default message
-    When I tap my avatar
+    When I tap settings gear button
     And I close self profile
     And I tap on text input
     And I press Enter key in Simulator window

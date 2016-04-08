@@ -537,8 +537,7 @@ public class CommonIOSSteps {
     @When("^(.*) archived conversation with (.*)$")
     public void ArchiveConversationWithUser(String userToNameAlias,
                                             String archivedUserNameAlias) throws Exception {
-        commonSteps.ArchiveConversationWithUser(userToNameAlias,
-                archivedUserNameAlias);
+        commonSteps.ArchiveConversationWithUser(userToNameAlias, archivedUserNameAlias);
     }
 
     /**

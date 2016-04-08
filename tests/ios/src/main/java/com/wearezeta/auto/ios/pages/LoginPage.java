@@ -52,8 +52,6 @@ public class LoginPage extends IOSPage {
 
     private static final By nameNotNowButton = MobileBy.AccessibilityId("NOT NOW");
 
-    public static final String nameSelfButton = "SelfButton";
-
     public String message;
 
     public LoginPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -114,8 +112,8 @@ public class LoginPage extends IOSPage {
         }
     }
 
-    public Boolean isSelfAvatarVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(nameSelfButton),
+    public Boolean isContactsButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationsListPage.nameContactsButton,
                 LOGIN_TIMEOUT_SECONDS);
     }
 

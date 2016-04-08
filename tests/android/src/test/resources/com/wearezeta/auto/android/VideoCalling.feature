@@ -188,7 +188,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C36363 @calling_advanced
+  @C36363 @calling_advanced @rc
   Scenario Outline: Verify I can start Video call from Start UI
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

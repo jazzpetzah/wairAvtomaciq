@@ -6,7 +6,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
@@ -26,7 +26,7 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap on Search input on People picker page
@@ -555,7 +555,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I see the conversation "<Contact3>" exists in Search results
@@ -580,7 +580,7 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact3>
     And I see the conversation "<Contact3>" exists in Search results
     And I click close button to dismiss people view
@@ -597,7 +597,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
   @C2738 @regression @id3958
-  Scenario Outline: (ZIOS-6284) Verify that deleted conversation via participant view isn't going to archive [PORTRAIT]
+  Scenario Outline: Verify that deleted conversation via participant view is not going to archive [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -611,16 +611,15 @@ Feature: People View
     And I click delete menu button
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I do not see conversation <GroupChatName> in conversations list
-    And I open archived conversations
-    Then I see conversation <GroupChatName> in conversations list
+    Then I do not see conversation <GroupChatName> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C2739 @rc @regression @id3959
-  Scenario Outline: (ZIOS-6284) Verify that deleted conversation via participant view isn't going to archive [LANDSCAPE]
+  Scenario Outline: Verify that deleted conversation via participant view is not going to archive [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -635,15 +634,14 @@ Feature: People View
     And I click delete menu button
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I do not see conversation <GroupChatName> in conversations list
-    And I open archived conversations
-    Then I see conversation <GroupChatName> in conversations list
+    Then I do not see conversation <GroupChatName> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C2740 @regression @id3977 @ZIOS-5247
+  @C2740 @regression @id3977
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -658,19 +656,18 @@ Feature: People View
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
-    And I do not see conversation <GroupChatName> in conversations list
-    And I open archived conversations
-    Then I see conversation <GroupChatName> in conversations list
+    Then I do not see conversation <GroupChatName> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C2741 @rc @regression @id3978 @ZIOS-5247
+  @C2741 @rc @regression @id3978
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -686,19 +683,18 @@ Feature: People View
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
-    And I do not see conversation <GroupChatName> in conversations list
-    And I open archived conversations
-    Then I see conversation <GroupChatName> in conversations list
+    Then I do not see conversation <GroupChatName> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C1833 @regression @id3975 @ZIOS-5063
+  @C1833 @regression @id3975
   Scenario Outline: Verify removing the content from the group conversation via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -715,7 +711,7 @@ Feature: People View
     And I click delete menu button
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -742,7 +738,7 @@ Feature: People View
     And I click delete menu button
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -767,7 +763,7 @@ Feature: People View
     And I click delete menu button
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
@@ -794,7 +790,7 @@ Feature: People View
     And I click delete menu button
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page

@@ -271,6 +271,30 @@ Feature: Calling Matrix
       | user1Name | user2Name | autocall:2.2   | 20      |
 
   @calling_matrix
+  Scenario Outline: Put app into background after initiating call with user <WaitBackend>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <WaitBackend>
+    Given <Contact> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I tap Audio Call button from top toolbar
+    And I minimize the application
+    And I wait for 5 seconds
+    And I restore the application
+    Then I see ongoing call
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+
+    Examples:
+      | Name      | Contact   | WaitBackend         | Timeout |
+      | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
+      | user1Name | user2Name | chrome:47.0.2526.73 | 20      |
+      | user1Name | user2Name | firefox:44.0.2      | 20      |
+      | user1Name | user2Name | firefox:43.0        | 20      |
+
+  @calling_matrix
   Scenario Outline: Lock device screen when in call with user <WaitBackend>
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

@@ -6,7 +6,7 @@ Feature: Search
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Call action button on People picker page
@@ -23,7 +23,7 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Call action button on People picker page
@@ -40,7 +40,7 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    When I open search by taping on it
+    When I open search UI
     And I see top people list on People picker page
     Then I tap on first 3 top connections
     And I tap Send image action button on People picker page
@@ -64,7 +64,7 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    When I open search by taping on it
+    When I open search UI
     And I see top people list on People picker page
     Then I tap on first 3 top connections
     And I tap Send image action button on People picker page
@@ -87,7 +87,7 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    When I open search by taping on it
+    When I open search UI
     And I see top people list on People picker page
     And I tap on first 1 top connections
     Then I see Open conversation action button on People picker page
@@ -103,7 +103,7 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I see Open conversation action button on People picker page
@@ -120,7 +120,7 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    When I open search by taping on it
+    When I open search UI
     And I see top people list on People picker page
     When I tap on 1st top connection contact
     Then I see Open conversation action button on People picker page
@@ -139,7 +139,7 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    When I open search by taping on it
+    When I open search UI
     And I see top people list on People picker page
     When I tap on 1st top connection contact
     Then I see Open conversation action button on People picker page
@@ -158,7 +158,7 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    When I open search by taping on it
+    When I open search UI
     And I see top people list on People picker page
     And I tap on 1st top connection contact
     And I see Open conversation action button on People picker page
@@ -182,7 +182,7 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    When I open search by taping on it
+    When I open search UI
     And I see top people list on People picker page
     And I tap on 1st top connection contact
     And I tap Open conversation action button on People picker page
@@ -200,7 +200,7 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    When I open search by taping on it
+    When I open search UI
     And I see top people list on People picker page
     And I tap on 1st top connection contact
     And I tap Open conversation action button on People picker page
@@ -218,17 +218,17 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    When I open search by taping on it
+    When I open search UI
     And I see Invite more people button
     And I tap on 1st top connection contact
-    And I DONT see Invite more people button
+    And I do not see Invite more people button
     And I see Open conversation action button on People picker page
     And I tap on 1st top connection contact
     And I do not see Open conversation action button on People picker page
     And I see Invite more people button
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I DONT see Invite more people button
+    And I do not see Invite more people button
     And I see Open conversation action button on People picker page
     And I press backspace button
     And I press backspace button

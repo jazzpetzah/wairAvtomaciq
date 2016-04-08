@@ -16,7 +16,7 @@ public class GroupChatPage extends DialogPage {
     private static final By nameYouLeftMessage = MobileBy.AccessibilityId("YOU LEFT");
 
     private static final Function<String, String> xpathStrYouAddedToGroupChatMessageByName =
-            name -> String.format("//UIAStaticText[contains(@name, 'YOU ADDED %s')]", name.toUpperCase());
+            name -> String.format("//UIAStaticText[starts-with(@name,'YOU ADDED %s')]", name.toUpperCase());
 
     public GroupChatPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);

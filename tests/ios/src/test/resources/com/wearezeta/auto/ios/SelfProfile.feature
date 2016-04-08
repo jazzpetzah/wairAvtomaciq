@@ -5,7 +5,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     # This is usually enough to have the profile picture loaded
     And I wait for 10 seconds
     And I remember my current profile picture
@@ -24,7 +24,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I tap to edit my name
     And I attempt to input an empty name and press return
     And I see error message asking for more characters
@@ -40,7 +40,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I tap to edit my name
     And I attempt to enter <username> and press return
     And I see error message asking for more characters
@@ -56,14 +56,14 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I tap to edit my name
     And I attempt to input an empty name and press return
     And I see error message asking for more characters
     And I change my name to <NewUsername>
     And I close self profile
     And I see conversations list
-    And I tap my avatar
+    And I tap settings gear button
     Then I see my new name <NewUsername>
 
     Examples:
@@ -78,7 +78,7 @@ Feature: Self Profile
     Given I accept First Time overlay if it is visible
     Given I dismiss settings warning
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I tap to add my phone number
     And I enter phone number and verification code
     Then I see phone number attached to profile
@@ -96,7 +96,7 @@ Feature: Self Profile
     Given I accept First Time overlay if it is visible
     Given I dismiss settings warning
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I tap to add my phone number
     Then I enter 5 digits phone number and expect no commit button
 
@@ -115,7 +115,7 @@ Feature: Self Profile
     Given I accept alert
     Given I dismiss settings warning
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I tap to add my phone number
     And I input phone number <Number> with code <Code>
     Then I see already registered phone number alert
@@ -129,7 +129,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     Then I see theme switcher button on self profile page
 
     Examples:
@@ -141,7 +141,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I remember my current profile picture
     And I tap on personal screen
     And I tap Lens button

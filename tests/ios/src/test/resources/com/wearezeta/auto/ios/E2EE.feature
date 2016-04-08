@@ -42,15 +42,15 @@ Feature: E2EE
     Given User Myself removes his avatar picture
     Given I sign in using my email
     Given I see conversations list
-    When I remember the state of my avatar
+    When I remember the state of settings gear
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
-    Then I wait until my avatar is changed
-    When I tap my avatar
+    Then I wait until settings gear is changed
+    When I tap settings gear button
     Then I verify the alert contains text <DeviceName>
     When I accept alert
     And I close self profile
-    Then I wait until my avatar is not changed
-    When I tap my avatar
+    Then I wait until settings gear is not changed
+    When I tap settings gear button
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     And I select settings item Privacy & Security
@@ -189,7 +189,7 @@ Feature: E2EE
     Given I sign in using my email
     Given I see conversations list
     And User Myself adds new devices <DeviceName>
-    When I tap my avatar
+    When I tap settings gear button
     And I accept alert
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
@@ -210,7 +210,7 @@ Feature: E2EE
     Given I sign in using my email
     Given I see conversations list
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
-    When I tap my avatar
+    When I tap settings gear button
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     And I select settings item Privacy & Security
@@ -396,7 +396,7 @@ Feature: E2EE
     Given There is 1 user where <Name> is me
     Given I sign in using my email
     Given I see conversations list
-    And I tap my avatar
+    And I tap settings gear button
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     And I select settings item Privacy & Security
@@ -417,7 +417,7 @@ Feature: E2EE
     Given I sign in using my email
     Given I see conversations list
     And User Myself adds new device <DeviceName>
-    When I tap my avatar
+    When I tap settings gear button
     And I accept alert
     And I click on Settings button on personal page
     And I click on Settings button from the options menu

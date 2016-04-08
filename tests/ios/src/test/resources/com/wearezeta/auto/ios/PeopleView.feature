@@ -331,7 +331,7 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact3>
     And I see the conversation "<Contact3>" exists in Search results
     And I click close button to dismiss people view
@@ -348,7 +348,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | user3Name | OnlyConnected |
 
   @C1829 @regression @id3957
-  Scenario Outline: Verify that deleted conversation via participant view isn't going to archive
+  Scenario Outline: Verify that deleted conversation via participant view is not going to archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -361,9 +361,8 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I do not see conversation <GroupChatName> in conversations list
-    And I open archived conversations
-    Then I see conversation <GroupChatName> in conversations list
+    Then I do not see conversation <GroupChatName> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -383,7 +382,7 @@ Feature: People View
     And I click delete menu button
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
@@ -411,7 +410,7 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -436,7 +435,7 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
@@ -535,7 +534,9 @@ Feature: People View
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     And I tap on conversation <Contact3> in search result
-    And I click on Go button
+    And I click on Add to conversation button
+    #Wait needed because jenkins needs a bit more time to display the YOU ADDED message
+    And I wait for 5 seconds
     Then I can see You Added <Contact3> message
 
     Examples:

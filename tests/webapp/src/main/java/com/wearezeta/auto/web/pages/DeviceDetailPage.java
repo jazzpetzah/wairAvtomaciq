@@ -24,6 +24,9 @@ public class DeviceDetailPage extends WebPage {
 	@FindBy(css = ".self-settings-section [data-uie-name='do-remove-device']")
 	WebElement removeButton;
 
+	@FindBy(css = ".self-settings-section .self-settings-reset-session-button-label")
+	WebElement resetSessionButton;
+
 	public DeviceDetailPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -50,4 +53,7 @@ public class DeviceDetailPage extends WebPage {
 		removeButton.click();
 	}
 
+	public void clickResetSessionButton() {
+		resetSessionButton.click();
+	}
 }

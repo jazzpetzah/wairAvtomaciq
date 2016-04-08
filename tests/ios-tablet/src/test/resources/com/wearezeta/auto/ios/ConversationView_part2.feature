@@ -351,7 +351,7 @@ Feature: Conversation View
     And I click delete menu button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page

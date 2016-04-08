@@ -18,7 +18,7 @@ public class CallingSteps {
     private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2.getInstance();
 
     {
-        commonCallingSteps.setAutocallVersion("2.1");
+        commonCallingSteps.setAutocallVersion("2.2");
     }
 
     /**

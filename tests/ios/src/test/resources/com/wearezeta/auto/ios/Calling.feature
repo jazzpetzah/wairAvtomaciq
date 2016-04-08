@@ -443,7 +443,7 @@ Feature: Calling
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And <Contact1>,<Contact2> calls <GroupChatName>
-    And I see call status message contains "<GroupChatName> RINGING"
+    And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
     And I see Calling overlay
     # FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
