@@ -264,4 +264,12 @@ public class ConversationsListPage extends IOSPage {
     public void openArchivedConversations() throws Exception {
         getElement(nameOpenArchiveButton).click();
     }
+
+    public boolean isArchiveButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameOpenArchiveButton);
+    }
+
+    public boolean isArchiveButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameOpenArchiveButton);
+    }
 }

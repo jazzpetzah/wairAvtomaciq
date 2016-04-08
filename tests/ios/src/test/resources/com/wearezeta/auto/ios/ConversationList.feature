@@ -451,8 +451,7 @@ Feature: Conversation List
     And I press menu Block button
     And I confirm blocking alert
     Then I do not see conversation <Contact> in conversations list
-    And I open archived conversations
-    And I do not see conversation <Contact> in conversations list
+    And I do not see Archive button at the bottom of conversations list
     And I open search UI
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
@@ -478,21 +477,6 @@ Feature: Conversation List
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @C108 @regression @id4103
-  Scenario Outline: Verify 'Invite more people' is hidden after 6 connections
-    Given There are <Number> users where <Name> is me
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I see Invite more people button
-    And Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>
-    And I see Invite more people button
-    And Myself is connected to <Contact7>
-    Then I do not see Invite more people button
-
-    Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Number |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | 8      |
 
   @C854 @regression
   Scenario Outline: Verify action menu is opened on swipe right on outgoing connection request
