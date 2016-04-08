@@ -3,6 +3,8 @@ package com.wearezeta.auto.common.backend;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.ws.rs.core.GenericType;
@@ -527,6 +529,16 @@ final class BackendREST {
         restHandlers.httpPut(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK});
     }
 
+    private static String getCurrentISO8601Time() {
+        final TimeZone tz = TimeZone.getTimeZone("UTC");
+        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mmZ");
+        df.setTimeZone(tz);
+        return df.format(new Date());
+    }
+
+    private static Set<String> archivedIds = new HashSet<>();
+    private static Set<String> mutedIds = new HashSet<>();
+
     public static void updateConvSelfInfo(AuthToken token, String convId, Optional<Boolean> muted,
                                           Optional<Boolean> archived) throws Exception {
         Builder webResource = buildDefaultRequestWithAuth(String.format("conversations/%s/self", convId),
@@ -534,11 +546,21 @@ final class BackendREST {
         JSONObject requestBody = new JSONObject();
         if (muted.isPresent()) {
             requestBody.put("otr_muted", muted.get());
-            requestBody.put("otr_muted_ref", BackendREST.DEFAULT_ISO8601_TIME);
+            if (mutedIds.contains(convId)) {
+                requestBody.put("otr_muted_ref", getCurrentISO8601Time());
+            } else {
+                requestBody.put("otr_muted_ref", DEFAULT_ISO8601_TIME);
+                mutedIds.add(convId);
+            }
         }
         if (archived.isPresent()) {
             requestBody.put("otr_archived", archived.get());
-            requestBody.put("otr_archived_ref", BackendREST.DEFAULT_ISO8601_TIME);
+            if (archivedIds.contains(convId)) {
+                requestBody.put("otr_archived_ref", getCurrentISO8601Time());
+            } else {
+                requestBody.put("otr_archived_ref", DEFAULT_ISO8601_TIME);
+                archivedIds.add(convId);
+            }
         }
         restHandlers.httpPut(webResource, requestBody.toString(), new int[]{HttpStatus.SC_OK, HttpStatus.SC_CREATED});
     }
