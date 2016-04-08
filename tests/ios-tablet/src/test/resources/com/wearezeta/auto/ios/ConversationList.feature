@@ -225,9 +225,8 @@ Feature: Conversation List
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
-    And I do not see conversation <Contact1> in conversations list
-    And I open archived conversations
     Then I do not see conversation <Contact1> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  |
@@ -248,8 +247,7 @@ Feature: Conversation List
     And I click delete menu button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
-    And I open archived conversations
-    Then I do not see conversation <Contact1> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  |
@@ -364,8 +362,7 @@ Feature: Conversation List
     And I click delete menu button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
-    And I open archived conversations
-    Then I do not see conversation <GroupChatName> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -382,8 +379,7 @@ Feature: Conversation List
     And I press menu Block button
     And I confirm blocking alert
     Then I do not see conversation <Contact> in conversations list
-    And I open archived conversations
-    And I do not see conversation <Contact> in conversations list
+    And I do not see Archive button at the bottom of conversations list
     And I open search UI
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results

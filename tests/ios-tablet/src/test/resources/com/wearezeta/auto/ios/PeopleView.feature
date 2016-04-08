@@ -611,9 +611,8 @@ Feature: People View
     And I click delete menu button
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I do not see conversation <GroupChatName> in conversations list
-    And I open archived conversations
     Then I do not see conversation <GroupChatName> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -635,9 +634,8 @@ Feature: People View
     And I click delete menu button
     And I confirm delete conversation content
     And I wait until popover is closed
-    And I do not see conversation <GroupChatName> in conversations list
-    And I open archived conversations
     Then I do not see conversation <GroupChatName> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
