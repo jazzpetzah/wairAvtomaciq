@@ -300,7 +300,7 @@ Feature: E2EE
       | Name      | Contact1  | Message1 |
       | user1Name | user2Name | Msg1     |
 
-  @C3238 @regression
+  @C3238 @regression @rc
   Scenario Outline: Verify you see an alert in verified 1:1 conversation when the other participants types something from non-verified device
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -409,7 +409,7 @@ Feature: E2EE
       | Name      | Contact1  | Contact2  | Message1 | GroupChatName |
       | user1Name | user2Name | user3Name | Msg1     | GroupConvo    |
 
-  @C12066 @C3239 @regression
+  @C12066 @C3239 @regression @rc
   Scenario Outline: Verify I see system message when verify all other user's device in group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
