@@ -641,7 +641,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C2740 @regression @id3977 @ZIOS-5247
+  @C2740 @regression @id3977
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -660,15 +660,14 @@ Feature: People View
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
-    And I do not see conversation <GroupChatName> in conversations list
-    And I open archived conversations
-    Then I see conversation <GroupChatName> in conversations list
+    Then I do not see conversation <GroupChatName> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C2741 @rc @regression @id3978 @ZIOS-5247
+  @C2741 @rc @regression @id3978
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -688,15 +687,14 @@ Feature: People View
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
-    And I do not see conversation <GroupChatName> in conversations list
-    And I open archived conversations
-    Then I see conversation <GroupChatName> in conversations list
+    Then I do not see conversation <GroupChatName> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C1833 @regression @id3975 @ZIOS-5063
+  @C1833 @regression @id3975
   Scenario Outline: Verify removing the content from the group conversation via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
