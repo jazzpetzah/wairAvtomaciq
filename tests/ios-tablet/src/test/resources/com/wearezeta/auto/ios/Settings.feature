@@ -15,7 +15,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C2906 @regression @id3022 @rc
+  @C2906 @regression @id3022
   Scenario Outline: Attempt to open About screen in settings [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
