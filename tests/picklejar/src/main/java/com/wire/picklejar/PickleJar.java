@@ -33,11 +33,8 @@ public interface PickleJar {
      * - deal with multiple tags for tests (maybe AND, OR relations)<br>
      * - (maybe) run tests by category<br>
      * - (maybe) run tests by id<br>
-     * - Improve surefire parallelism -> because of fork caches are useless<br>
-     * - Nicer test class names
-     * - Move Scenario instantiation to the user side
-     * - Remove Roaster dependencies
      * - (maybe) Remove Cucumber dependency by introducing own annotations
+     * - Handle PendingException properly (atm it's failing instead of skipping)
      */
     
     public static Collection<Object[]> getTestcases() {

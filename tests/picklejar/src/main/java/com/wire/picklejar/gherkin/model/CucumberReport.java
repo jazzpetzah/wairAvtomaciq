@@ -7,13 +7,15 @@ import java.util.ArrayList;
 
 public class CucumberReport extends ArrayList<Feature> implements Serializable {
 
-	@Override
-	public String toString() {
-		try {
-			return new ObjectMapper().writeValueAsString(this);
-		} catch (JsonProcessingException ex) {
-			return super.toString();
-		}
-	}
+    static final ObjectMapper MAPPER = new ObjectMapper();
+
+    @Override
+    public String toString() {
+        try {
+            return MAPPER.writeValueAsString(this);
+        } catch (JsonProcessingException ex) {
+            return super.toString();
+        }
+    }
 
 }

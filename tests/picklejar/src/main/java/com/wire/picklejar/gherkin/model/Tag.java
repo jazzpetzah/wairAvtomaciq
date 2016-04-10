@@ -9,15 +9,19 @@ import java.io.Serializable;
 @JsonPropertyOrder({"line", "name"})
 public class Tag implements Serializable {
 
-	@JsonProperty("line")
-	private long line;
-	@JsonProperty("name")
-	private String name;
+    @JsonProperty("line")
+    private long line;
+    @JsonProperty("name")
+    private String name;
 
-	@Override
-	public String toString() {
-		return "Tag{" + "line=" + line + ", name=" + name + '}';
-	}
+    public Tag(String name) {
+        this.line = 1;
+        this.name = name;
+    }
 
+    @Override
+    public String toString() {
+        return "Tag{" + "line=" + line + ", name=" + name + '}';
+    }
 
 }

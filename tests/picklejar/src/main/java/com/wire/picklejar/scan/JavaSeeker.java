@@ -61,8 +61,7 @@ public class JavaSeeker {
     }
 
     public static List<Class<?>> getLoadedClasses()
-            throws NoSuchFieldException, SecurityException,
-            IllegalArgumentException, IllegalAccessException {
+            throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         ClassLoader classLoader = getClassLoader();
         Class classLoaderClass = classLoader.getClass();
         while (classLoaderClass != java.lang.ClassLoader.class) {

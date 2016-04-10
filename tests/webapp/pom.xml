@@ -139,6 +139,7 @@
                 <picklejar.parallel.max>2</picklejar.parallel.max>
                 <picklejar.steps.package>com.wearezeta.auto.web.steps</picklejar.steps.package>
                 <picklejar.feature.package>com.wearezeta.auto.web</picklejar.feature.package>
+                <picklejar.cucumber.report.path>target/</picklejar.cucumber.report.path>
             </properties>
 
             <build>
@@ -197,11 +198,18 @@
                                 <exclude>**/PickleJarStandaloneTest.java</exclude>
                             </excludes>
                             <argLine>-Djava.library.path=../common/native_lib</argLine>
+                            <properties>
+                                <property>
+                                    <name>listener</name>
+                                    <value>com.wire.picklejar.execution.GenerateCucumberReportListener</value>
+                                </property>
+                            </properties>
                             <systemPropertyVariables>
                                 <picklejar.tag>${picklejar.tag}</picklejar.tag>
                                 <picklejar.steps.package>${picklejar.steps.package}</picklejar.steps.package>
                                 <picklejar.feature.package>${picklejar.feature.package}</picklejar.feature.package>
                                 <picklejar.parallel.max>${picklejar.parallel.max}</picklejar.parallel.max>
+                                <picklejar.cucumber.report.path>${picklejar.cucumber.report.path}</picklejar.cucumber.report.path>
                                 <java.awt.headless>true</java.awt.headless>
                                 <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
                                 <org.apache.commons.logging.simplelog.log.org.apache.http>warn</org.apache.commons.logging.simplelog.log.org.apache.http>

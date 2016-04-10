@@ -7,13 +7,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.logging.log4j.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PickleFeatureReader {
     
-    private static final Logger LOG = LoggerFactory.getLogger(PickleAnnotationSeeker.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PickleFeatureReader.class.getSimpleName());
 
     public static List<String> readFolders(File[] files) throws IOException {
         List<String> features = new ArrayList<>();

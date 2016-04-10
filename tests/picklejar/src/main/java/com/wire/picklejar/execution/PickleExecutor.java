@@ -14,12 +14,16 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -66,9 +70,11 @@ public class PickleExecutor {
         }
     }
 
-    public void invokeMethodForStep(String rawStep, Map<String, String> exampleParams, Object... constructorParams) throws
+    public long invokeMethodForStep(String rawStep, Map<String, String> exampleParams, Object... constructorParams) throws
             StepNotFoundException, StepNotExecutableException {
         boolean match = false;
+        Instant startTime = null;
+        Instant endTime = null;
         final String step = replaceExampleOccurences(rawStep, exampleParams);
 
         for (Map.Entry<String, Method> entrySet : methodCache.entrySet()) {
@@ -99,6 +105,7 @@ public class PickleExecutor {
                 }
                 LOG.debug("Actual parameters: \n{}", new Object[]{params});
 
+                startTime = Instant.now();
                 try {
                     LOG.info("\n"
                             + ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n"
@@ -116,15 +123,17 @@ public class PickleExecutor {
                             + "::   Execution of step\n"
                             + "::   '%s'\n"
                             + "::   FAILED\n"
-                            + "''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''", step), ite.getCause());
+                            + "''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''", step), ite);
                 }
+                endTime = Instant.now();
                 match = true;
                 break;
             }
         }
         if (!match) {
-            throw new StepNotFoundException(String.format("Could not find any match for step '{}'", rawStep));
+            throw new StepNotFoundException(String.format("Could not find any match for step '%s'", rawStep));
         }
+        return Duration.between(startTime, endTime).toNanos();
     }
 
     private Object getOrAddCachedDeclaringClassForMethod(final Method method, Object... constructorParams) throws

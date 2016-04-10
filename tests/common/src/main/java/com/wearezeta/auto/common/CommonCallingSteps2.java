@@ -22,7 +22,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 
 import java.util.concurrent.CompletableFuture;
@@ -31,6 +30,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 import javax.management.InstanceNotFoundException;
 
 public final class CommonCallingSteps2 {
@@ -68,7 +68,7 @@ public final class CommonCallingSteps2 {
     // Request timeout of 180 secs is set by callingservice, we add additional
     // 10 seconds on the client side to actually get a timeout response to
     // recocgnize a failed instances creation for retry mechanisms
-    private static final int INSTANCE_START_TIMEOUT_SECONDS = 230;
+    private static final int INSTANCE_START_TIMEOUT_SECONDS = 190;
     private static final int INSTANCE_CREATION_RETRIES = 3;
     private static final long POLLING_FREQUENCY_MILLISECONDS = 1000;
     private static CommonCallingSteps2 singleton = null;
@@ -291,18 +291,25 @@ public final class CommonCallingSteps2 {
             ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
             createTasks.put(calleeName, CompletableFuture.supplyAsync(() -> {
                 try {
-                    final Instance instance = client.startInstance(userAs, convertTypeStringToTypeObject(instanceType),
-                            ZetaFormatter.getScenario());
-                    addInstance(instance, userAs);
-                    return instance;
-                } catch (CallingServiceInstanceException ex) {
+                    return CompletableFuture.supplyAsync(() -> {
+                        try {
+                            final Instance instance = client.startInstance(userAs, convertTypeStringToTypeObject(instanceType),
+                                    ZetaFormatter.getScenario());
+                            addInstance(instance, userAs);
+                            return instance;
+                        } catch (CallingServiceInstanceException ex) {
+                            throw new IllegalStateException(String.format("Could not start instance for user '%s'", 
+                                    userAs.getName()), ex);
+                        }
+                    }).get(POLLING_FREQUENCY_MILLISECONDS, TimeUnit.SECONDS);
+                } catch (InterruptedException | ExecutionException | TimeoutException ex) {
                     throw new IllegalStateException(String.format("Could not start instance for user '%s'", userAs.getName()),
                             ex);
                 }
             }));
         }
         CompletableFuture.allOf(createTasks.values().toArray(new CompletableFuture[createTasks.size()])).get(
-                INSTANCE_START_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+                INSTANCE_START_TIMEOUT_SECONDS * 2, TimeUnit.SECONDS);
     }
 
     /**

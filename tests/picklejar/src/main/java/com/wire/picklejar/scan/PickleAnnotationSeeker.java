@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 public class PickleAnnotationSeeker {
     
+    @SuppressWarnings("unused")
     private static final Logger LOG = LoggerFactory.getLogger(PickleAnnotationSeeker.class.getSimpleName());
 
     public static List<Method> getMethodsAnnotatedWith(final Class<?> type, final Class<? extends Annotation> annotation) {

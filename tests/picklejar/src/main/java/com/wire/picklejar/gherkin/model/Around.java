@@ -9,15 +9,19 @@ import java.io.Serializable;
 @JsonPropertyOrder({"result", "match"})
 public class Around implements Serializable {
 
-	@JsonProperty("result")
-	private Result result;
+    @JsonProperty("result")
+    private Result result;
 
-	@JsonProperty("match")
-	private Match match;
+    @JsonProperty("match")
+    private Match match;
 
+    public Around() {
+        this.result = new Result(1L, "passed", null);
+        this.match = new Match();
+    }
 
-	@Override
-	public String toString() {
-		return "Around{" + "result=" + result + ", match=" + match + '}';
-	}
+    @Override
+    public String toString() {
+        return "Around{" + "result=" + result + ", match=" + match + '}';
+    }
 }

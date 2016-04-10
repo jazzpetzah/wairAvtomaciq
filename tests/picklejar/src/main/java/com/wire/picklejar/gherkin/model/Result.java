@@ -9,15 +9,21 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Result implements Serializable {
 
-	@JsonProperty("duration")
-	private Long duration;
-	@JsonProperty("status")
-	private String status;
-	@JsonProperty("error_message")
-	private String error_message;
+    @JsonProperty("duration")
+    private Long duration;
+    @JsonProperty("status")
+    private String status;
+    @JsonProperty("error_message")
+    private String error_message;
 
-	@Override
-	public String toString() {
-		return "Result{" + "duration=" + duration + ", status=" + status + ", error_message=" + error_message + '}';
-	}
+    public Result(Long duration, String status, String error_message) {
+        this.duration = duration;
+        this.status = status;
+        this.error_message = error_message;
+    }
+    
+    @Override
+    public String toString() {
+        return "Result{" + "duration=" + duration + ", status=" + status + ", error_message=" + error_message + '}';
+    }
 }

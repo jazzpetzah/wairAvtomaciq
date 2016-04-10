@@ -9,14 +9,19 @@ import java.io.Serializable;
 @JsonPropertyOrder({"data", "mime_type"})
 public class Embeddings implements Serializable {
 
-	@JsonProperty("data")
-	private String data;
+    @JsonProperty("data")
+    private String data;
 
-	@JsonProperty("mime_type")
-	private String mime_type;
+    @JsonProperty("mime_type")
+    private String mime_type;
 
-	@Override
-	public String toString() {
-		return "Embeddings{" + "data=" + data + ", mime_type=" + mime_type + '}';
-	}
+    public Embeddings(String data, String mime_type) {
+        this.data = data;
+        this.mime_type = mime_type;
+    }
+
+    @Override
+    public String toString() {
+        return "Embeddings{" + "data=" + data + ", mime_type=" + mime_type + '}';
+    }
 }

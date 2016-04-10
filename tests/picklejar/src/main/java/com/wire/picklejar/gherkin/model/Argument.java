@@ -9,14 +9,17 @@ import java.io.Serializable;
 @JsonPropertyOrder({"val", "offset"})
 public class Argument implements Serializable {
 
-	@JsonProperty("val")
-	private String val;
+    @JsonProperty("val")
+    private String val;
 
-	@JsonProperty("offset")
-	private Long offset;
+    @JsonProperty("offset")
+    private Long offset;
 
-	@Override
-	public String toString() {
-		return "Argument{" + "val=" + val + ", offset=" + offset + '}';
-	}
+    public Argument() {
+    }
+
+    @Override
+    public String toString() {
+        return "Argument{" + "val=" + val + ", offset=" + offset + '}';
+    }
 }

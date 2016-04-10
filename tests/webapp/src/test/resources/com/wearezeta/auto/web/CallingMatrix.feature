@@ -1,6 +1,6 @@
 Feature: Calling_Matrix
 
-  @C5359 @calling_matrix @calling
+  @C5359 @calling_matrix @calling @torun
   Scenario Outline: Verify I can make 1:1 call to <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -195,8 +195,8 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | WaitBackend         | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:49.0.2623.75 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:48.0.2564.97 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:47.0.2526.73 | 30      |
+#      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:48.0.2564.97 | 30      |
+#      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:47.0.2526.73 | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.0.1      | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:44.0.2      | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:43.0        | 30      |
@@ -324,7 +324,7 @@ Feature: Calling_Matrix
     When I open conversation with <ChatName1>
     And <Contact1> calls <ChatName1>
     When I accept the incoming call
-    Then <Contact2>verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName1> is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName1>
     And I hang up call with conversation <ChatName1>

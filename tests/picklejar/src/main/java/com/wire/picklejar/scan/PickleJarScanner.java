@@ -14,14 +14,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PickleJarScanner {
-    
-    private static final Logger LOG = LoggerFactory.getLogger(PickleJarScanner.class);
-    
+
+    private static final Logger LOG = LoggerFactory.getLogger(PickleJarScanner.class.getSimpleName());
+
     public static Collection<Object[]> getTestcases() {
         return getTestcases(Config.EXECUTION_TAG);
     }
@@ -34,7 +33,7 @@ public class PickleJarScanner {
         LOG.info("Found {} Scenarios", params.size());
         return params;
     }
-    
+
     /**
      * 0 - Feature name<br>
      * 1 - Scenario name<br>
@@ -49,80 +48,73 @@ public class PickleJarScanner {
     private static Collection<Object[]> mapAndFlatFeature(Feature feature, String[] tagFilter) {
         Collection<Object[]> scenarios = new ArrayList<>();
         List<ScenarioDefinition> filteredScenarios = GherkinParser.getFilteredScenarios(feature, tagFilter);
-        if (!filteredScenarios.isEmpty()) {
+        for (ScenarioDefinition scenarioDefinition : filteredScenarios) {
 
-            for (ScenarioDefinition scenarioDefinition : filteredScenarios) {
+            List<String> steps = new ArrayList<>();
+            for (Step step : scenarioDefinition.getSteps()) {
+                steps.add(step.getText());
+            }
 
-                List<String> steps = new ArrayList<>();
-                for (Step step : scenarioDefinition.getSteps()) {
-                    steps.add(step.getText());
-                }
+            // When the scenario is an instance of ScenarioOutline we have examples otherwise it's of type Scenario
+            try {
+                ScenarioOutline scenarioOutline = (ScenarioOutline) scenarioDefinition;
 
-                // When the scenario is an instance of ScenarioOutline we have examples otherwise it's of type Scenario
-                try {
-                    ScenarioOutline scenarioOutline = (ScenarioOutline) scenarioDefinition;
+                for (int i = 0; i < scenarioOutline.getExamples().size(); i++) {
+                    TableRow tableHeader = scenarioOutline.getExamples().get(i).getTableHeader();
+                    List<TableRow> tableRows = scenarioOutline.getExamples().get(i).getTableBody();
 
-                    for (int i = 0; i < scenarioOutline.getExamples().size(); i++) {
-                        TableRow tableHeader = scenarioOutline.getExamples().get(i).getTableHeader();
-                        List<TableRow> tableRows = scenarioOutline.getExamples().get(i).getTableBody();
+                    for (int j = 0; j < tableRows.size(); j++) {
+                        TableRow tableRow = tableRows.get(j);
+                        Object[] scenarioArray = new Object[5];
 
-                        for (int j = 0; j < tableRows.size(); j++) {
-                            TableRow tableRow = tableRows.get(j);
-                            Object[] scenarioArray = new Object[5];
-
-                            Map<String, String> exampleRowWithHeader = new HashMap<>();
-                            for (int k = 0; k < tableRow.getCells().size(); k++) {
-                                String key = tableHeader.getCells().get(k).getValue();
-                                String value = tableRow.getCells().get(k).getValue();
-                                exampleRowWithHeader.put(key, value);
-                            }
-
-                            scenarioArray[0] = feature.getName();
-                            // replacing placeholders with examples in scenario name
-                            // Pattern quote escapes characters that are dangerous in regexes
-                            scenarioArray[1] = quote(PickleExecutor.replaceExampleOccurences(scenarioDefinition.
-                                    getName(), exampleRowWithHeader));
-                            scenarioArray[2] = new Integer(j + 1);
-                            scenarioArray[3] = steps;
-                            scenarioArray[4] = exampleRowWithHeader;
-
-                            LOG.debug("Adding scenario with example\n"
-                                    + "FeatureName: " + feature.getName() + "\n"
-                                    + "ScenarioName: " + scenarioDefinition.getName() + "\n"
-                                    + "ExampleNumber: " + scenarioArray[2] + "\n"
-                                    + "Steps: " + Arrays.toString(steps.toArray()) + "\n"
-                                    + "Examples: " + Arrays.toString(exampleRowWithHeader.keySet().toArray()) + "\n"
-                                    + "Examples: " + Arrays.toString(exampleRowWithHeader.values().toArray()));
-
-                            scenarios.add(scenarioArray);
+                        Map<String, String> exampleRowWithHeader = new HashMap<>();
+                        for (int k = 0; k < tableRow.getCells().size(); k++) {
+                            String key = tableHeader.getCells().get(k).getValue();
+                            String value = tableRow.getCells().get(k).getValue();
+                            exampleRowWithHeader.put(key, value);
                         }
 
-                    }
-                } catch (Exception e) {
-                    Object[] scenarioArray = new Object[5];
-                    scenarioArray[0] = feature.getName();
-                    scenarioArray[1] = quote(scenarioDefinition.getName());
-                    // if we don't have examples we default to example row number 0
-                    scenarioArray[2] = new Integer(0);
-                    scenarioArray[3] = steps;
-                    scenarioArray[4] = new HashMap<String, String>();
-                    
-                    LOG.debug("Adding scenario without example\n"
-                                    + "FeatureName: " + feature.getName() + "\n"
-                                    + "ScenarioName: " + scenarioDefinition.getName() + "\n"
-                                    + "ExampleNumber: " + scenarioArray[2] + "\n"
-                                    + "Steps: " + Arrays.toString(steps.toArray()) + "\n"
-                                    + "Examples: " + scenarioArray[4]);
+                        scenarioArray[0] = feature.getName();
+                        // replacing placeholders with examples in scenario name
+                        // Pattern quote escapes characters that are dangerous in regexes
+                        scenarioArray[1] = PickleExecutor.replaceExampleOccurences(scenarioDefinition.
+                                getName(), exampleRowWithHeader);
+                        scenarioArray[2] = new Integer(j + 1);
+                        scenarioArray[3] = steps;
+                        scenarioArray[4] = exampleRowWithHeader;
 
-                    scenarios.add(scenarioArray);
+                        LOG.debug("Adding scenario with example\n"
+                                + "FeatureName: " + feature.getName() + "\n"
+                                + "ScenarioName: " + scenarioDefinition.getName() + "\n"
+                                + "ExampleNumber: " + scenarioArray[2] + "\n"
+                                + "Steps: " + Arrays.toString(steps.toArray()) + "\n"
+                                + "Examples: " + Arrays.toString(exampleRowWithHeader.keySet().toArray()) + "\n"
+                                + "Examples: " + Arrays.toString(exampleRowWithHeader.values().toArray()));
+
+                        scenarios.add(scenarioArray);
+                    }
+
                 }
+            } catch (Exception e) {
+                Object[] scenarioArray = new Object[5];
+                scenarioArray[0] = feature.getName();
+                scenarioArray[1] = scenarioDefinition.getName();
+                // if we don't have examples we default to example row number 0
+                scenarioArray[2] = new Integer(0);
+                scenarioArray[3] = steps;
+                scenarioArray[4] = new HashMap<String, String>();
+
+                LOG.debug("Adding scenario without example\n"
+                        + "FeatureName: " + feature.getName() + "\n"
+                        + "ScenarioName: " + scenarioDefinition.getName() + "\n"
+                        + "ExampleNumber: " + scenarioArray[2] + "\n"
+                        + "Steps: " + Arrays.toString(steps.toArray()) + "\n"
+                        + "Examples: " + scenarioArray[4]);
+
+                scenarios.add(scenarioArray);
             }
         }
         return scenarios;
-    }
-    
-    private static String quote(String string){
-        return string;//.replaceAll(" ", "_");
     }
 
 }

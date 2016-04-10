@@ -53,6 +53,12 @@ public class Lifecycle {
 
     @Before("~@performance")
     public void setUp(Scenario scenario) throws Exception {
+        String id = scenario.getId().substring(
+                scenario.getId().lastIndexOf(";") + 1);
+        setUp(scenario.getName()+"_"+id);
+    }
+    
+    public void setUp(String testname) throws Exception {
 
         String platform = WebAppExecutionContext.getPlatform();
         String osName = WebAppExecutionContext.getOsName();
@@ -60,13 +66,12 @@ public class Lifecycle {
         String browserName = WebAppExecutionContext.getBrowserName();
         String browserVersion = WebAppExecutionContext.getBrowserVersion();
 
-        // create unique name for saucelabs and webdriver instances
-        String uniqueName = getUniqueTestName(scenario);
-        log.debug("Unique name for this test: " + uniqueName);
+        String uniqueTestname = getUniqueTestName(testname);
+        log.debug("Unique name for this test: " + uniqueTestname);
 
         // get custom capabilities
         DesiredCapabilities capabilities = getCustomCapabilities(platform,
-                osName, osVersion, browserName, browserVersion, uniqueName);
+                osName, osVersion, browserName, browserVersion, uniqueTestname);
 
         final String hubHost = System.getProperty("hubHost");
         final String hubPort = System.getProperty("hubPort");
@@ -135,8 +140,7 @@ public class Lifecycle {
         final Future<ZetaWebAppDriver> lazyWebDriver = pool.submit(callableWebAppDriver);
 
         /**
-         * #### START ############################################################
-         * COMPATIBILITY INSTRUCTIONS
+         * #### START ############################################################ COMPATIBILITY INSTRUCTIONS
          */
         TestContext.COMPAT_WEB_DRIVER = lazyWebDriver;
         TestContext compatContext = new TestContext();
@@ -149,11 +153,10 @@ public class Lifecycle {
         compatContext.getDriver().get(url);
         compatContext.getPagesCollection().setFirstPage(new RegistrationPage(lazyWebDriver, url));
         /**
-         * #### END ##############################################################
-         * COMPATIBILITY INSTRUCTIONS
+         * #### END ############################################################## COMPATIBILITY INSTRUCTIONS
          */
 
-        context = new TestContext(uniqueName, lazyWebDriver);
+        context = new TestContext(testname, lazyWebDriver);
         context.startPinging();
 
         try {
@@ -170,6 +173,10 @@ public class Lifecycle {
 
     @After
     public void tearDown(Scenario scenario) throws Exception {
+        tearDown();
+    }
+
+    public void tearDown() throws Exception {
         try {
             context.stopPinging();
             ZetaWebAppDriver driver = (ZetaWebAppDriver) context.getDriver();
@@ -305,16 +312,13 @@ public class Lifecycle {
         log.debug("Browser logging level has been set to '" + level.getName()
                 + "'");
     }
-
-    private String getUniqueTestName(Scenario scenario) {
+    
+    private String getUniqueTestName(String testname) {
         String browserName = WebAppExecutionContext.getBrowserName();
         String browserVersion = WebAppExecutionContext.getBrowserVersion();
         String platform = WebAppExecutionContext.getPlatform();
 
-        String id = scenario.getId().substring(
-                scenario.getId().lastIndexOf(";") + 1);
-
-        return scenario.getName() + " (" + id + ") on " + platform + " with "
+        return testname +" on " + platform + " with "
                 + browserName + " " + browserVersion;
     }
 
