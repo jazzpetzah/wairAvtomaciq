@@ -435,3 +435,31 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout | Action |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      | called |
+
+  @C87624 @videocalling @staging
+  Scenario Outline: Verify I see notification when I start a second video call
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> start instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I am signed in properly
+    And I open conversation with <Contact1>
+    And I start a video call
+    Then I see the outgoing call controls for conversation <Contact1>
+    When I open conversation with <Contact2>
+    And I start a video call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    And I see the outgoing call controls for conversation <Contact1>
+    When I start a video call
+    Then I see another call warning modal
+    When I click on "Hang Up" button in another call warning modal
+    Then I do not see another call warning modal
+    And I see the outgoing call controls for conversation <Contact2>
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      |
