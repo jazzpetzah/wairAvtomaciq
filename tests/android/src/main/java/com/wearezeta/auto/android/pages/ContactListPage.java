@@ -1,9 +1,11 @@
 package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -29,6 +31,9 @@ public class ContactListPage extends AndroidPage {
 
     public static final Function<String, String> xpathStrContactByName = name ->
             String.format("%s[@value='%s' and @shown='true']", xpathStrConvoListNames, name);
+
+    public static final Function<String, String> xpathStrContactByExpr = expr ->
+            String.format("%s[%s and @shown='true']", xpathStrConvoListNames, expr);
 
     private static final Function<Integer, String> xpathStrContactByIndex = index ->
             String.format("(%s)[%s]", xpathStrConvoListNames, index);
@@ -315,5 +320,21 @@ public class ContactListPage extends AndroidPage {
 
     public void tapThreeDotOptionMenuButton() throws Exception {
         getElement(idThreeDotsOptionMenuButton).click();
+    }
+
+    public boolean isConversationItemExist(List<String> users) throws Exception {
+        final String xpathExpr = String.join(" and ", users.stream().map(
+                x -> String.format("contains(@value, '%s')", x)
+        ).collect(Collectors.toList()));
+        final By locator = By.xpath(xpathStrContactByExpr.apply(xpathExpr));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isConversationItemNotExist(List<String> users) throws Exception {
+        final String xpathExpr = String.join(" and ", users.stream().map(
+                x -> String.format("contains(@value, '%s')", x)
+        ).collect(Collectors.toList()));
+        final By locator = By.xpath(xpathStrContactByExpr.apply(xpathExpr));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 }

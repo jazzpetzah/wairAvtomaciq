@@ -93,7 +93,7 @@ Feature: Conversation View
     And I click on Add to conversation button
     Then I see group chat page with users <Contact1>,<Contact2>
     And I navigate back from dialog page
-    And I see <Contact1> and <Contact2> chat in contact list
+    And I see group conversation with <Contact1>,<Contact2> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  |
