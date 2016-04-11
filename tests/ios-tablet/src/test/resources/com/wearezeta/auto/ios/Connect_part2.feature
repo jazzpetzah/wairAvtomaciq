@@ -37,7 +37,7 @@ Feature: Connect
       | user1Name | user2Name |
 
   @C2462 @regression @id3228
-  Scenario Outline: Verify sending connection request after disconnecting [PORTRAIT]
+  Scenario Outline: (ZIOS-6323) Verify sending connection request after disconnecting [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
     Given I Sign in on tablet using my email
@@ -46,7 +46,6 @@ Feature: Connect
     And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
-    And I navigate back to conversations list
     And I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
