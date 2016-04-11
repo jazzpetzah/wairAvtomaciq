@@ -469,7 +469,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
   @C42 @regression @id583
-  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (People view)
+  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending user (People view)
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact3>,<Contact2>,<Name>
     Given <Contact1> has group chat <GroupChatName> with <Contact3>,<Contact2>,<Name>
@@ -480,7 +480,7 @@ Feature: People View
     And I open group conversation details
     And I select participant <Contact3>
     Then I see <Contact3> user pending profile page
-    Then I see remove from group conversation button
+    And I see Remove From Group button on pending profile page
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
