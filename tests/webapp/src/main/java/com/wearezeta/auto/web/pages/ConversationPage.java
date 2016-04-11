@@ -694,7 +694,7 @@ public class ConversationPage extends WebPage {
 	}
 
 	public boolean isFileTransferDisplayed(String fileName) throws Exception {
-		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFile,fileName));
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFile, fileName));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
@@ -704,17 +704,31 @@ public class ConversationPage extends WebPage {
 	}
 
 	public String getFileNameOf(String fileName) throws Exception {
-		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileName,fileName));
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileName, fileName));
 		return getDriver().findElement(locator).getText();
 	}
 
 	public String getFileSizeOf(String fileName) throws Exception {
-		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileSize,fileName));
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileSize, fileName));
 		return getDriver().findElement(locator).getText();
 	}
 
 	public String getFileStatusOf(String fileName) throws Exception {
-		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileStatus,fileName));
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileStatus, fileName));
+		assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No file status element found for locator " +
+				locator;
 		return getDriver().findElement(locator).getText();
+	}
+
+	public String getFileTypeOf(String fileType) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileType, fileType));
+		assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No file type element found for locator " + locator;
+		return getDriver().findElement(locator).getText();
+	}
+
+	public void cancelFileUpload(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileCancelUpload, fileName));
+		assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No cancel element found for locator " + locator;
+		getDriver().findElement(locator).click();
 	}
 }

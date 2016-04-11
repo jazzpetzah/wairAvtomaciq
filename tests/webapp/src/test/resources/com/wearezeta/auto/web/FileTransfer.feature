@@ -1,7 +1,7 @@
 Feature: File Transfer
 
   @C82815 @filetransfer
-  Scenario Outline: Verify a file from filesystem is sent and received successfully in 1:1
+  Scenario Outline: Verify file can be uploaded and re-downloaded by sender himself in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -10,18 +10,74 @@ Feature: File Transfer
     Given I see Contact list with name <Contact>
     When I open conversation with <Contact>
     Then I see file transfer button in conversation input
-    When I send file <File> to the current conversation
-    # Verify receiver is notified on upload start (might be moved to a second test)
+    When I send <Size> sized file with name <File> to the current conversation
+    Then I verify icon of file <File> in the conversation view
+    And I see file transfer for file <File> in the conversation view
+    And I verify size of file <File> in the conversation view
+    And I verify type of file <File> is <Type> in the conversation view
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | File        | Size    | Type  |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 0       | PLAIN |
+    #  | user1Email | user1Password | user1Name | user2Name | example.zip | 512KB   | ZIP   |
+
+  @C82816 @filetransfer
+  Scenario Outline: Verify big file can be uploaded and re-downloaded by sender himself in 1:1
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Given I see Contact list with name <Contact>
+    When I open conversation with <Contact>
+    Then I see file transfer button in conversation input
+    When I send <Size> sized file with name <File> to the current conversation
     Then I verify icon of file <File> in the conversation view
     And I see file transfer for file <File> in the conversation view
     And I verify size of file <File> in the conversation view
     And I verify status of file <File> is UPLOADING in the conversation view
-    # Verify file info (icon, name, size) is shown on receiver side
-    # Verify receiver is notified when upload is finished (might be moved to a second test)
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        |
-      | user1Email | user1Password | user1Name | user2Name | example.txt |
+      | Login      | Password      | Name      | Contact   | File        | Size    |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 25600KB |
+
+  @C82817 @filetransfer
+  Scenario Outline: Verify warning is shown if file size is too big
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Given I see Contact list with name <Contact>
+    When I open conversation with <Contact>
+    Then I see file transfer button in conversation input
+    When I send <Size> sized file with name <File> to the current conversation
+    Then I verify icon of file <File> in the conversation view
+    And I see file transfer for file <File> in the conversation view
+    And I verify size of file <File> in the conversation view
+    And I verify status of file <File> is UPLOAD FAILED in the conversation view
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | File        | Size    |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 25700KB |
+
+  @C82822 @filetransfer
+  Scenario Outline: Verify sender is able to cancel upload
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Given I see Contact list with name <Contact>
+    When I open conversation with <Contact>
+    Then I see file transfer button in conversation input
+    When I send <Size> sized file with name <File> to the current conversation
+    And I cancel file upload of file <File>
+    And I verify status of file <File> is CANCELED in the conversation view
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | File        | Size    |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 25600KB |
 
   @C82823 @filetransfer
   Scenario Outline: Verify gifs are inlined if shared via file transfer

@@ -343,6 +343,10 @@ public final class WebAppLocators {
 
         public static final String cssFileStatus = cssFile + " [data-uie-name='file-status']";
 
+        public static final String cssFileType = cssFile + " [data-uie-name='file-type']";
+
+        public static final String cssFileCancelUpload = cssFile + " [data-uie-name='file-cancel']";
+
         public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']:not(.image-loading)";
 
         public static final String cssPingMessage = ".pinged";
