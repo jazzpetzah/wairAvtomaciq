@@ -93,8 +93,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
-    Given User <Contact1> securely pings conversation <GroupChatName>
-    When I wait for 3 seconds
+    When User <Contact1> securely pings conversation <GroupChatName>
     Then I see "<Contact1> PINGED" system message in the conversation view
 
     Examples:
