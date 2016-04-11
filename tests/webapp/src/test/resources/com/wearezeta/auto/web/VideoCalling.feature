@@ -441,7 +441,7 @@ Feature: VideoCalling
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts instance using <CallBackend>
+    Given <Contact1>,<Contact2> start instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I am signed in properly
