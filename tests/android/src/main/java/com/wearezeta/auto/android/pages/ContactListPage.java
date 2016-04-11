@@ -7,7 +7,6 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.*;
@@ -324,7 +323,7 @@ public class ContactListPage extends AndroidPage {
     }
 
     public boolean isConversationItemExist(List<String> users) throws Exception {
-        final String xpathExpr = StringUtils.join(" and ", users.stream().map(
+        final String xpathExpr = String.join(" and ", users.stream().map(
                 x -> String.format("contains(@value, '%s')", x)
         ).collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrContactByExpr.apply(xpathExpr));
@@ -332,7 +331,7 @@ public class ContactListPage extends AndroidPage {
     }
 
     public boolean isConversationItemNotExist(List<String> users) throws Exception {
-        final String xpathExpr = StringUtils.join(" and ", users.stream().map(
+        final String xpathExpr = String.join(" and ", users.stream().map(
                 x -> String.format("contains(@value, '%s')", x)
         ).collect(Collectors.toList()));
         final By locator = By.xpath(xpathStrContactByExpr.apply(xpathExpr));
