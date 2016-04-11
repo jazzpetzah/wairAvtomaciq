@@ -733,10 +733,12 @@ Feature: Conversation View
     Given There are <UsersAmount> users where <Name> is me
     Given Myself is connected to all other
     Given Myself has group chat <GroupChatName> with all other
-    Given Me leave group chat <GroupChatName>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
+    When I leave group chat <GroupChatName>
+    And I do not see conversation <GroupChatName> in conversations list
+    And I open archived conversations
+    And I tap on group chat with name <GroupChatName>
     Then I do not see Audio call button on Upper Toolbar
 
     Examples:
