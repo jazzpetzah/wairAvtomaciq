@@ -19,6 +19,12 @@ public interface IDevice extends IRemoteEntity {
 
 	void sendPing(String convId) throws Exception;
 
+	void clearConversation(String convId) throws Exception;
+
+	// TODO: void sendAsset(String convId, byte[] data, String mime, String filename) throws Exception;
+
+	void sendFile(String convId, String path, String mime) throws Exception;
+
     void setLabel(String label) throws Exception;
 
     String getId() throws Exception;

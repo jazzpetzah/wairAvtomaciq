@@ -375,6 +375,30 @@ public final class CommonSteps {
         }
     }
 
+    public void UserSentFileToConversation(String msgFromUserNameAlias, String dstConversationName, String path, String mime,
+                                           String deviceName, boolean isGroup) throws Exception {
+        ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        if (!isGroup) {
+            ClientUser msgToUser = usrMgr.findUserByNameOrNameAlias(dstConversationName);
+            SEBridge.getInstance().sendFile(msgFromUser, msgToUser.getId(), path, mime, deviceName);
+        } else {
+            String dstConvId = BackendAPIWrappers.getConversationIdByName(msgFromUser, dstConversationName);
+            SEBridge.getInstance().sendFile(msgFromUser, dstConvId, path, mime, deviceName);
+        }
+    }
+
+    public void UserClearsConversation(String msgFromUserNameAlias, String dstConversationName, String deviceName, boolean
+            isGroup) throws Exception {
+        ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        if (!isGroup) {
+            ClientUser msgToUser = usrMgr.findUserByNameOrNameAlias(dstConversationName);
+            SEBridge.getInstance().clearConversation(msgFromUser, msgToUser.getId(), deviceName);
+        } else {
+            String dstConvId = BackendAPIWrappers.getConversationIdByName(msgFromUser, dstConversationName);
+            SEBridge.getInstance().clearConversation(msgFromUser, dstConvId, deviceName);
+        }
+    }
+
     public void IChangeUserAvatarPicture(String userNameAlias,
                                          String picturePath) throws Exception {
         final ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(userNameAlias);
