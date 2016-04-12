@@ -79,6 +79,8 @@ public class DialogPage extends AndroidPage {
 
     private static final By idVideoCall = By.id("action_video_call");
 
+    private static final By idFile = By.id("cursor_menu_item_file");
+
     private static final String xpathStrConversationToolbar = "//*[@id='t_conversation_toolbar']";
 
     private static final By xpathToolbar = By.xpath(xpathStrConversationToolbar);
@@ -234,6 +236,10 @@ public class DialogPage extends AndroidPage {
         getElement(idPeopleCursorButton, "People button is not visible").click();
     }
 
+    public void tapFileBtn() throws Exception {
+        getElement(idFile, "File button is not visible").click();
+    }
+
     public boolean isPingButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idPing);
     }
@@ -248,6 +254,10 @@ public class DialogPage extends AndroidPage {
 
     public boolean isPeopleButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idPeopleCursorButton);
+    }
+
+    public boolean isFileButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idFile);
     }
 
     public void tapAudioCallBtn() throws Exception {
