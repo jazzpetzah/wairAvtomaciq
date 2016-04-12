@@ -9,7 +9,7 @@ import org.openqa.selenium.By;
 
 public class CallIncomingPage extends AndroidPage {
     private static final By xpathIncomingCallContainer =
-            By.xpath("//*[@id='ttv__calling__header__duration' and contains(@value, 'CALLING')]");
+            By.xpath("//*[@id='ttv__calling__header__subtitle' and @value='CALLING']");
     public static final By idMainContent = By.id("iccv__incoming_call_controls");
     
     private static final Function<String, String> xpathCallingHeaderByName = name -> String
