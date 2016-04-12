@@ -8,9 +8,8 @@ Feature: Connect
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I click Cancel request button
-    Then I see Cancel request confirmation page
-    And I confirm Cancel request by click on Yes button
+    And I tap Cancel Request button on pending profile page
+    And I confirm Cancel Request action on pending profile page
     When I navigate back to conversations list
     Then I do not see conversation <Contact1> in conversations list
 
@@ -27,9 +26,8 @@ Feature: Connect
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I click Cancel request button
-    Then I see Cancel request confirmation page
-    And I confirm Cancel request by click on Yes button
+    And I tap Cancel Request button on pending profile page
+    And I confirm Cancel Request action on pending profile page
     Then I do not see conversation <Contact1> in conversations list
 
     Examples: 
@@ -44,8 +42,8 @@ Feature: Connect
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I click Cancel request button
-    And I confirm Cancel request by click on Yes button
+    And I tap Cancel Request button on pending profile page
+    And I confirm Cancel Request action on pending profile page
     And I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -68,8 +66,8 @@ Feature: Connect
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I click Cancel request button
-    And I confirm Cancel request by click on Yes button
+    And I tap Cancel Request button on pending profile page
+    And I confirm Cancel Request action on pending profile page
     And I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -92,9 +90,8 @@ Feature: Connect
     When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
-    And I click Cancel request button
-    And I see Cancel request confirmation page
-    And I confirm Cancel request by click on Yes button
+    And I tap Cancel Request button on pending profile page
+    And I confirm Cancel Request action on pending profile page
     Then I see the conversation "<Contact1>" exists in Search results
 
     Examples: 
@@ -111,9 +108,8 @@ Feature: Connect
     When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
-    And I click Cancel request button
-    And I see Cancel request confirmation page
-    And I confirm Cancel request by click on Yes button
+    And I tap Cancel Request button on pending profile page
+    And I confirm Cancel Request action on pending profile page
     Then I see the conversation "<Contact1>" exists in Search results
 
     Examples: 
@@ -245,3 +241,26 @@ Feature: Connect
     Examples: 
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
+
+  @C2436 @staging
+  Scenario Outline: Verify accepting a connection request from another person (People view) [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Contact2>,Me
+    Given <Contact1> has group chat <GroupChatName> with <Contact2>,Me
+    Given <Contact2> sent connection request to Me
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    When I see Pending request link in conversations list
+    And I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I select participant <Contact2>
+    And I tap Connect button on pending profile page
+    And I confirm Connect action on pending profile page
+    And I dismiss popover on iPad
+    Then I see conversation <Contact2> in conversations list
+    And I do not see Pending request link in conversations list
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | TESTCHAT      |
