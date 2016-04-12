@@ -388,3 +388,21 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
+  @C2536 @staging
+  Scenario Outline: Verify messages are marked read after opening a conversation [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given User Myself removes his avatar picture
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    When I tap on contact name <Contact1>
+    And I remember the left side state of <Contact1> conversation item on iPad
+    And I tap on contact name <Contact2>
+    And User <Contact1> sends 10 encrypted messages to user Myself
+    And I tap on contact name <Contact1>
+    Then I see the state of <Contact1> conversation item is not changed on iPad
+
+    Examples:
+      | Name      | Contact1  | Contact2 |
+      | user1Name | user2Name | user3Name |
