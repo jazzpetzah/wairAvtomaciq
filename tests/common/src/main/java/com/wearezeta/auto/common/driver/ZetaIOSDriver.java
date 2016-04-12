@@ -98,7 +98,6 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
     private static final String LOG_DECORATION_PREFIX = "*************APPIUM SERVER LOG START**************";
     private static final String LOG_DECORATION_SUFFIX = "*************APPIUM SERVER LOG END****************";
 
-
     @Override
     public Response execute(String driverCommand, Map<String, ?> parameters) {
         if (this.isSessionLost() && !driverCommand.equals(DriverCommand.SCREENSHOT)) {
