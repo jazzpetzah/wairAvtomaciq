@@ -60,7 +60,7 @@ public class OtherUserOnPendingPersonalInfoPageSteps {
      *
      * @param btnName one of possible button names
      * @throws Exception
-     * @step. ^I tap (Start Conversation|Connect) button on pending profile page$
+     * @step. ^I tap (Start Conversation|Connect|Cancel Request) button on pending profile page$
      */
     @When("^I tap (Start Conversation|Connect|Cancel Request) button on pending profile page$")
     public void ITapButton(String btnName) throws Exception {
