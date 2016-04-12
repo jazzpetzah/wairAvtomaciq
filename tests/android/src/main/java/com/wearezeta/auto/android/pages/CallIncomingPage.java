@@ -23,12 +23,12 @@ public class CallIncomingPage extends AndroidPage {
     private static final int VISIBILITY_TIMEOUT_SECONDS = 20;
 
     public boolean waitUntilVisible(String subtitle) throws Exception {
-        By by = By.xpath(xpathIncomingCallContainerByName.apply(subtitle));
+        final By by = By.xpath(xpathIncomingCallContainerByName.apply(subtitle));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), by, VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilNotVisible(String subtitle) throws Exception {
-        By by = By.xpath(xpathIncomingCallContainerByName.apply(subtitle));
+        final By by = By.xpath(xpathIncomingCallContainerByName.apply(subtitle));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), by);
     }
     
