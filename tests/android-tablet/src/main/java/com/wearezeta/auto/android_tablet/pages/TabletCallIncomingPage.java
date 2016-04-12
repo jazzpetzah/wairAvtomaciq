@@ -17,12 +17,12 @@ public class TabletCallIncomingPage extends AndroidTabletPage {
         return this.getAndroidPageInstance(CallIncomingPage.class);
     }
 
-    public boolean waitUntilVisible() throws Exception {
-        return getPage().waitUntilVisible();
+    public boolean waitUntilVisible(String subtitle) throws Exception {
+        return getPage().waitUntilVisible(subtitle);
     }
 
-    public boolean waitUntilNotVisible() throws Exception {
-        return getPage().waitUntilNotVisible();
+    public boolean waitUntilNotVisible(String subtitle) throws Exception {
+        return getPage().waitUntilNotVisible(subtitle);
     }
 
     public boolean waitUntilNameAppearsOnCallingBarCaption(String name) throws Exception {
