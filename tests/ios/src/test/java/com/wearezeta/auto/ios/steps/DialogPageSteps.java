@@ -440,16 +440,15 @@ public class DialogPageSteps {
     }
 
     /**
-     * Checks if the copied content from send an invite via mail is correct
+     * Checks if the pasted message contains the particular email
      *
-     * @param mail Email thats the invite sent from
+     * @param mail email address/alias
      * @throws Exception
-     * @step. ^I check copied content from (.*)$
+     * @step. ^I verify that pasted content contains (.*)$
      */
-    @Then("^I check copied content from (.*)$")
+    @Then("^I verify that pasted message contains (.*)$")
     public void ICheckCopiedContentFrom(String mail) throws Exception {
-        final String finalString = String.format("I’m on Wire. Search for %s",
-                usrMgr.findUserByNameOrNameAlias(mail).getEmail());
+        final String finalString = usrMgr.replaceAliasesOccurences(mail, FindBy.EMAIL_ALIAS);
         Assert.assertTrue(String.format("The last message in the chat does not contain '%s' part",
                 finalString), getDialogPage().isLastMessageContain(finalString));
     }
