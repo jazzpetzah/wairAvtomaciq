@@ -131,7 +131,7 @@ Feature: Conversation View
 
   @C2647 @regression @id2737
   Scenario Outline: Send Message to contact after navigating away from chat page [LANDSCAPE]
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
     Given Me is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
