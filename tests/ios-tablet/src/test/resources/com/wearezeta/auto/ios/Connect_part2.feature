@@ -13,7 +13,7 @@ Feature: Connect
     When I navigate back to conversations list
     Then I do not see conversation <Contact1> in conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -30,7 +30,7 @@ Feature: Connect
     And I confirm Cancel Request action on pending profile page
     Then I do not see conversation <Contact1> in conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -53,7 +53,7 @@ Feature: Connect
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -77,7 +77,7 @@ Feature: Connect
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -94,7 +94,7 @@ Feature: Connect
     And I confirm Cancel Request action on pending profile page
     Then I see the conversation "<Contact1>" exists in Search results
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -112,7 +112,7 @@ Feature: Connect
     And I confirm Cancel Request action on pending profile page
     Then I see the conversation "<Contact1>" exists in Search results
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -136,7 +136,7 @@ Feature: Connect
     And I navigate back to conversations list
     Then I do not see Pending request link in conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
@@ -160,7 +160,7 @@ Feature: Connect
     And I dismiss popover on iPad
     Then I do not see Pending request link in conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
@@ -176,7 +176,7 @@ Feature: Connect
     When I click on Pending request link in conversations list
     Then I see Pending request page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
@@ -191,7 +191,7 @@ Feature: Connect
     And I see Pending request page
     Then I see Hello connect message from user <NewName> on Pending request page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | NewName  |
       | user1Name | user2Name | New Name |
 
@@ -207,7 +207,7 @@ Feature: Connect
     And I see Pending request page
     Then I see Hello connect message from user <NewName> on Pending request page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | NewName  |
       | user1Name | user2Name | New Name |
 
@@ -222,7 +222,7 @@ Feature: Connect
     And <Contact> cancel all outgoing connection requests
     Then I do not see Pending request link in conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -238,7 +238,7 @@ Feature: Connect
     And <Contact> cancel all outgoing connection requests
     Then I do not see Pending request link in conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -264,3 +264,26 @@ Feature: Connect
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
+
+  @C2470 @staging
+  Scenario Outline: Verify copying invitation to the clipboard [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    When I open search UI
+    And I press the send an invite button
+    And I press invite others button
+    And I press the copy button
+    And I click close Invite list button
+    And I click clear button
+    And I tap on contact name <Contact>
+    And I tap on text input
+    And I tap and hold on message input
+    And I paste and commit the text
+    Then I verify that pasted message contains MyEmail
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |

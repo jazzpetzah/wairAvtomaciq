@@ -308,7 +308,7 @@ Feature: Connect
     And I tap on text input
     And I tap and hold on message input
     And I paste and commit the text
-    Then I check copied content from <Name>
+    Then I verify that pasted message contains MyEmail
 
     Examples: 
       | Name      | Contact   |
