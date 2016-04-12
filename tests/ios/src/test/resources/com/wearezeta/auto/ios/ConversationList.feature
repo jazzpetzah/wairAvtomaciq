@@ -308,7 +308,7 @@ Feature: Conversation List
     When I remember the state of conversation item number 1
     And I tap on conversation item number 2
     And I navigate back to conversations list
-    Then I see the state of conversation item number 1 is changed
+    Then I see the state of conversation item number 1 is not changed
     
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -325,9 +325,8 @@ Feature: Conversation List
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
-    And I do not see conversation <Contact1> in conversations list
-    And I open archived conversations
     Then I do not see conversation <Contact1> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  |
@@ -347,14 +346,13 @@ Feature: Conversation List
     And I click delete menu button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
-    And I open archived conversations
-    Then I do not see conversation <Contact1> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C18 @regression @id1481
+  @C841 @regression @id3316
   Scenario Outline: Verify removing the content and leaving from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -419,8 +417,7 @@ Feature: Conversation List
     And I click delete menu button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
-    And I open archived conversations
-    Then I do not see conversation <GroupChatName> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -451,8 +448,7 @@ Feature: Conversation List
     And I press menu Block button
     And I confirm blocking alert
     Then I do not see conversation <Contact> in conversations list
-    And I open archived conversations
-    And I do not see conversation <Contact> in conversations list
+    And I do not see Archive button at the bottom of conversations list
     And I open search UI
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
@@ -478,21 +474,6 @@ Feature: Conversation List
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @C108 @regression @id4103
-  Scenario Outline: Verify 'Invite more people' is hidden after 6 connections
-    Given There are <Number> users where <Name> is me
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I see Invite more people button
-    And Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>
-    And I see Invite more people button
-    And Myself is connected to <Contact7>
-    Then I do not see Invite more people button
-
-    Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Number |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | 8      |
 
   @C854 @regression
   Scenario Outline: Verify action menu is opened on swipe right on outgoing connection request
@@ -524,6 +505,7 @@ Feature: Conversation List
     Given I dismiss alert
     Given I dismiss settings warning
     When I see conversations list
+    And I open search UI
     And I tap Invite more people button
     Then I see Share Contacts settings warning
     And I dismiss settings warning

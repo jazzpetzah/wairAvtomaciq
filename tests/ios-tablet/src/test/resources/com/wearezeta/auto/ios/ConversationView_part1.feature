@@ -93,8 +93,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I tap on group chat with name <GroupChatName>
-    Given User <Contact1> securely pings conversation <GroupChatName>
-    When I wait for 3 seconds
+    When User <Contact1> securely pings conversation <GroupChatName>
     Then I see "<Contact1> PINGED" system message in the conversation view
 
     Examples:
@@ -132,23 +131,22 @@ Feature: Conversation View
 
   @C2647 @regression @id2737
   Scenario Outline: Send Message to contact after navigating away from chat page [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 3 users where <Name> is me
+    Given Me is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I see conversations list
-    When I tap on contact name <Contact>
+    Given I see conversations list
+    When I tap on contact name <Contact1>
     And I type the default message
-    And I type the default message
-    When I tap settings gear button
-    And I close self profile
+    And I tap on contact name <Contact2>
+    And I tap on contact name <Contact1>
     And I tap on text input
     And I press Enter key in Simulator window
     Then I see 1 default message in the dialog
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C2655 @regression @id2745
   Scenario Outline: Copy and paste to send the message [LANDSCAPE]

@@ -37,6 +37,8 @@ public final class WebAppLocators {
         public static final String xpathChangePasswordButton = "//*[@data-uie-name='go-forgot-password']";
 
         public static final String cssLoginErrorText = "[data-uie-name='status-error'] .error";
+        
+        public static final String cssSessionExpiredErrorText = "[data-uie-name='status-expired']";
 
         public static final String errorMarkedEmailField = "#form-account-login .input-error[data-uie-name='enter-email']";
 

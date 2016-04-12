@@ -9,7 +9,7 @@ Feature: VideoCalling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact> starts a video call to me
-    And I see incoming call
+    And I see incoming video call
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
@@ -31,10 +31,10 @@ Feature: VideoCalling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact> starts a video call to me
-    And I see incoming call
+    And I see incoming video call
     And I swipe to ignore the call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
-    And I do not see incoming call
+    And I do not see incoming video call
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
@@ -72,14 +72,14 @@ Feature: VideoCalling
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given <Contact1> starts a video call to me
-    Given I see incoming call
+    Given I see incoming video call
     Given I swipe to accept the call
     Given <Contact1> verifies that call status to me is changed to active in <Timeout> seconds
     Given I see ongoing video call
     Given I hang up ongoing video call
     Given <Contact1> verifies that call status to me is changed to destroyed in <Timeout> seconds
     When <Contact1> starts a video call to me
-    And I see incoming call
+    And I see incoming video call
     And I swipe to accept the call
     Then <Contact1> verifies that call status to me is changed to active in <Timeout> seconds
     When I see ongoing video call
@@ -87,7 +87,7 @@ Feature: VideoCalling
     Then <Contact1> verifies that call status to me is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
     When <Contact2> starts a video call to me
-    And I see incoming call
+    And I see incoming video call
     And I swipe to accept the call
     Then <Contact2> verifies that call status to me is changed to active in <Timeout> seconds
     When I see ongoing video call
@@ -111,10 +111,10 @@ Feature: VideoCalling
     When I lock the device
     And <Contact> starts a video call to me
     And I wait for 10 seconds
-    And I see incoming call
+    And I see incoming video call
     And I swipe to ignore the call
     And I unlock the device
-    Then I do not see incoming call
+    Then I do not see incoming video call
 
     Examples:
       | Name      | Contact   | CallBackend |
@@ -153,7 +153,7 @@ Feature: VideoCalling
     Given I see Contact list with no contacts
     When <Contact> starts a video call to me
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
-    And I do not see incoming call
+    And I do not see incoming video call
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
@@ -168,7 +168,7 @@ Feature: VideoCalling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact> starts a video call to me
-    And I see incoming call
+    And I see incoming video call
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
@@ -176,7 +176,7 @@ Feature: VideoCalling
     Then <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
     When <Contact> starts a video call to me
-    And I see incoming call
+    And I see incoming video call
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
@@ -188,7 +188,7 @@ Feature: VideoCalling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C36363 @calling_advanced
+  @C36363 @calling_advanced @rc
   Scenario Outline: Verify I can start Video call from Start UI
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -221,10 +221,10 @@ Feature: VideoCalling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact> starts a video call to me
-    And I see incoming call
+    And I see incoming video call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
     And <Contact> stops calling me
-    And I do not see incoming call
+    And I do not see incoming video call
     When I tap on contact name <Contact>
     Then I see dialog with missed call from <Contact>
 
@@ -265,7 +265,7 @@ Feature: VideoCalling
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
     When <Contact> starts a video call to me
-    And I see incoming call
+    And I see incoming video call
     And I swipe to ignore the call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
     When I tap Audio Call button from top toolbar
@@ -326,7 +326,7 @@ Feature: VideoCalling
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
     When <Contact> calls me
-    And I see incoming call
+    And I see incoming video call
     And I swipe to ignore the call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
     When I tap Video Call button from top toolbar
@@ -346,7 +346,7 @@ Feature: VideoCalling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact> starts a video call to me
-    And I see incoming call
+    And I see incoming video call
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
@@ -372,7 +372,7 @@ Feature: VideoCalling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact> starts a video call to me
-    And I see incoming call
+    And I see incoming video call
     And I swipe to accept the call
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And I see ongoing video call
@@ -400,7 +400,7 @@ Feature: VideoCalling
     And <Contact> starts a video call to me
     # Wait for a while until the call is established with UI
     And I wait for 7 seconds
-    And I see incoming call
+    And I see incoming video call
     And I swipe to accept the call
     Then I see ongoing video call
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
@@ -421,7 +421,7 @@ Feature: VideoCalling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And <Contact> starts a video call to me
-    And I see incoming call
+    And I see incoming video call
     And I swipe to accept the call
     And I see ongoing video call
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
@@ -444,7 +444,7 @@ Feature: VideoCalling
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And <Contact> starts a video call to me
-    And I see incoming call
+    And I see incoming video call
     And I swipe to accept the call
     And I see ongoing video call
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
@@ -489,7 +489,7 @@ Feature: VideoCalling
     And <Contact> starts a video call to me
     # Wait until the call is shown in the UI
     And I wait for 10 seconds
-    And I see incoming call
+    And I see incoming video call
     And I swipe to ignore the call
     And I restore the application
     Then I do not see ongoing video call

@@ -9,7 +9,7 @@ import org.openqa.selenium.By;
 public class CallOutgoingPage extends CallingOverlayPage {
 
     private static final By xpathOngoingCallContainer =
-            By.xpath("//*[@id='ttv__calling__header__duration' and contains(@value, 'RINGING') and //*[@id='ccbv__calling_controls__hangup']]");
+            By.xpath("//*[@id='ttv__calling__header__avatar__subtitle' and contains(@value, 'ringing') and //*[@id='ccbv__calling_controls__hangup']]");
     
     private static final By idParticipants = By.id("chv__calling__participants_grid__chathead");
 

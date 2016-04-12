@@ -40,3 +40,14 @@ Feature: Sign Out
     Examples:
       | Email      | Password      | Name      | Contact1  | Contact2  | Contact3  | Email3     | Password3     | GroupChatName | Message         |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user4Email | user4Password | User1Chat     | Hello User1Chat |
+
+  @C87934 @staging
+  Scenario Outline: Verify session expired info is visible on login page
+    Given I open <Language> session expired login page
+    Then I verify session expired message is visible
+    And I verify session expired message is equal to <SessionExpiredMessage>
+
+    Examples:
+      | Language | SessionExpiredMessage                                                                |
+      | english  | You were signed out because your session expired. Please log in again.               |
+      | german   | Du wurdest abgemeldet, da deine Session abgelaufen ist. Bitte logge dich erneut ein. |

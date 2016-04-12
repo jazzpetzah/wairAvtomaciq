@@ -433,7 +433,7 @@ Feature: Calling
       | Name      | GroupChatName  | UsersAmount |
       | user1Name | StartGROUPCALL | 11          |
 
-  @C2040 @staging
+  @C2040 @calling_basic
   Scenario Outline: Verify initiator is not a host for the call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -457,7 +457,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | NumberOfAvatars |
       | user1Name | user2Name | user3Name | AcceptingGROUPCALL | autocall    | 2               |
 
-  @C2101 @staging
+  @C2101 @calling_basic
   Scenario Outline: Verify message about your missed call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

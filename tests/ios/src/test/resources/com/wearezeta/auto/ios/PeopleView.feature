@@ -361,16 +361,15 @@ Feature: People View
     And I press conversation menu button
     And I click delete menu button
     And I confirm delete conversation content
-    And I do not see conversation <GroupChatName> in conversations list
-    And I open archived conversations
     Then I do not see conversation <GroupChatName> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C1831 @rc @regression @id3972
-  Scenario Outline: Verify removing the content and leaving from the group conversation via participant view
+  Scenario Outline: (ZIOS-6334) Verify removing the content and leaving from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -387,9 +386,8 @@ Feature: People View
     And I input in People picker search field conversation name <GroupChatName>
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
-    And I do not see conversation <GroupChatName> in conversations list
-    And I open archived conversations
-    Then I see conversation <GroupChatName> in conversations list
+    Then I do not see conversation <GroupChatName> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -471,7 +469,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
   @C42 @regression @id583
-  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (People view)
+  Scenario Outline: Verify impossibility of starting 1:1 conversation with pending user (People view)
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact3>,<Contact2>,<Name>
     Given <Contact1> has group chat <GroupChatName> with <Contact3>,<Contact2>,<Name>
@@ -482,7 +480,7 @@ Feature: People View
     And I open group conversation details
     And I select participant <Contact3>
     Then I see <Contact3> user pending profile page
-    Then I see remove from group conversation button
+    And I see Remove From Group button on pending profile page
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
@@ -523,7 +521,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
       | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
 
-  @C80775 @staging
+  @C80775 @regression
   Scenario Outline: Verify adding people in group conversation via ADD PEOPLE button in the beginning of the conversation
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -544,7 +542,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
 
-  @C80774 @staging
+  @C80774 @regression
   Scenario Outline: Verify system message and add people button appears for newly created group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

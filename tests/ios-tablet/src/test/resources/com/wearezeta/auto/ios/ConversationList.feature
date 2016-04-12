@@ -101,18 +101,20 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
       | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
 
-  @C2502 @regression @id2360
-  Scenario Outline: Get invitation message from user [PORTRAIT]
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact2>
-    Given <Contact> sent connection request to Me
+  @C2509 @staging
+  Scenario Outline: (ZIOS-6338) Verify inbox area displaying in case of new incoming connection requests [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see conversations list
-    And I see Pending request link in conversations list
+    Given I see conversations list
+    And I do not see Pending request link in conversations list
+    When <Contact> sent connection request to Me
+    Then I see Pending request link in conversations list
+    And I see Hello connect message from user <Contact> on Pending request page
 
     Examples:
-      | Name      | Contact   | Contact2  |
-      | user1Name | user2Name | user3Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C2532 @regression @id2368
   Scenario Outline: Verify missed call indicator appearance in conversation list [PORTRAIT]
@@ -225,9 +227,8 @@ Feature: Conversation List
     When I swipe right on a <Contact1>
     And I click delete menu button
     And I confirm delete conversation content
-    And I do not see conversation <Contact1> in conversations list
-    And I open archived conversations
     Then I do not see conversation <Contact1> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  |
@@ -248,8 +249,7 @@ Feature: Conversation List
     And I click delete menu button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
-    And I open archived conversations
-    Then I do not see conversation <Contact1> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  |
@@ -364,8 +364,7 @@ Feature: Conversation List
     And I click delete menu button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
-    And I open archived conversations
-    Then I do not see conversation <GroupChatName> in conversations list
+    And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -382,8 +381,7 @@ Feature: Conversation List
     And I press menu Block button
     And I confirm blocking alert
     Then I do not see conversation <Contact> in conversations list
-    And I open archived conversations
-    And I do not see conversation <Contact> in conversations list
+    And I do not see Archive button at the bottom of conversations list
     And I open search UI
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
@@ -392,18 +390,21 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2515 @regression @id4105
-  Scenario Outline: Verify 'Invite more people' is hidden after 6 connections [LANDSCAPE]
-    Given There are <Number> users where <Name> is me
+  @C2536 @staging
+  Scenario Outline: Verify messages are marked read after opening a conversation [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given User Myself removes his avatar picture
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see conversations list
-    And I see Invite more people button
-    And Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>
-    And I see Invite more people button
-    And Myself is connected to <Contact7>
-    Then I do not see Invite more people button
+    Given I see conversations list
+    When I tap on contact name <Contact1>
+    And I remember the left side state of <Contact1> conversation item on iPad
+    And I tap on contact name <Contact2>
+    And User <Contact1> sends 10 encrypted messages to user Myself
+    And I tap on contact name <Contact1>
+    Then I see the state of <Contact1> conversation item is not changed on iPad
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Number |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | 8      |
+      | Name      | Contact1  | Contact2 |
+      | user1Name | user2Name | user3Name |

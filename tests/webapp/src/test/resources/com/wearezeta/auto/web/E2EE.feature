@@ -72,6 +72,41 @@ Feature: E2EE
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
+  @C87649 @e2ee @smoke
+  Scenario Outline: Verify I can not break sessions with temporary devices
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Myself
+    Given I switch to Sign In page
+    When I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then I see the history info page
+    When I click confirm on history info page
+    Then I am signed in properly
+    When I open Sign In page
+    And User <Name> removes all his registered OTR clients
+    And user <Contact> adds a new device Device1 with label Label1
+    And I switch to Sign In page
+    And I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then I see the history info page
+    When Contact <Contact> sends encrypted message <EncryptedMessage1> to user Myself
+    And I wait for 5 seconds
+    And I click confirm on history info page
+    And I am signed in properly
+    And Contact <Contact> sends encrypted message <EncryptedMessage2> to user Myself
+    And I wait for 5 seconds
+    And I open conversation with <Contact>
+    And I write message <Message>
+    And I send message
+    And I see text message <EncryptedMessage1>
+    And I see text message <EncryptedMessage2>
+
+    Examples:
+      | Email      | Password      | Name      | Contact    | EncryptedMessage1 | EncryptedMessage2 | Message |
+      | user1Email | user1Password | user1Name | user2Name  | EncryptedYo1      | EncryptedYo2      | yo      |
+
   @C2100 @e2ee @regression
   Scenario Outline: Login as temporary device after device limit is reached
     Given There is 1 user where <Name> is me
