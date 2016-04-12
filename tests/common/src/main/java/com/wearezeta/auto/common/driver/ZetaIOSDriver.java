@@ -122,13 +122,11 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
                 if (isSessionLostBecause(e.getCause())) {
                     setSessionLost(true);
                 }
-                log.debug(LOG_DECORATION_PREFIX + "\n" + AppiumServer.getLog().orElse("") + "\n" + LOG_DECORATION_SUFFIX);
                 Throwables.propagate(e.getCause());
             } else {
                 if (e instanceof TimeoutException) {
                     setSessionLost(true);
                 }
-                log.debug(LOG_DECORATION_PREFIX + "\n" + AppiumServer.getLog().orElse("") + "\n" + LOG_DECORATION_SUFFIX);
                 Throwables.propagate(e);
             }
         }
