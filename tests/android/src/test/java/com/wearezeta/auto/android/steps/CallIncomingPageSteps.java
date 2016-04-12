@@ -16,10 +16,12 @@ public class CallIncomingPageSteps {
     }
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    
-     /**
+
+    /**
      * Verifies presence of incoming call
      *
+     * @param not         equals to null means should see incoming call
+     * @param isVideoCall equals to null means it is the video incoming call view
      * @throws Exception
      * @step. ^I (do not )?see incoming (video )?call$
      */
