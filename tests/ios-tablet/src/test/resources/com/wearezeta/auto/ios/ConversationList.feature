@@ -101,18 +101,20 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
       | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
 
-  @C2502 @regression @id2360
-  Scenario Outline: Get invitation message from user [PORTRAIT]
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact2>
-    Given <Contact> sent connection request to Me
+  @C2509 @staging
+  Scenario Outline: (ZIOS-6338) Verify inbox area displaying in case of new incoming connection requests [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    When I see conversations list
-    And I see Pending request link in conversations list
+    Given I see conversations list
+    And I do not see Pending request link in conversations list
+    When <Contact> sent connection request to Me
+    Then I see Pending request link in conversations list
+    And I see Hello connect message from user <Contact> on Pending request page
 
     Examples:
-      | Name      | Contact   | Contact2  |
-      | user1Name | user2Name | user3Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @C2532 @regression @id2368
   Scenario Outline: Verify missed call indicator appearance in conversation list [PORTRAIT]
