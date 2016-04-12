@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import java.io.RandomAccessFile;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -784,6 +785,24 @@ public class CommonWebAppSteps {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
         String deviceId = SEBridge.getInstance().getDeviceId(user, deviceName);
         webappPagesCollection.getPage(WebPage.class).breakSession(deviceId);
+    }
+
+    @When("^(.*) sends? (.*) sized file with name (.*) via device (.*) to (user|group conversation) (.*)$")
+    public void WhenIXSizedSendFile(String contact, String size, String fileName, String deviceName, String convoType,
+                                    String dstConvoName) throws Exception {
+        String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
+        RandomAccessFile f = new RandomAccessFile(path + "/" + fileName, "rws");
+        int fileSize = Integer.valueOf(size.replaceAll("\\D+","").trim());
+        if (size.contains("MB")) {
+            f.setLength(fileSize * 1024 * 1024);
+        } else if (size.contains("KB")) {
+            f.setLength(fileSize * 1024);
+        } else {
+            f.setLength(fileSize);
+        }
+        f.close();
+        boolean isGroup = convoType.equals("user") ? false : true;
+        commonSteps.UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "plain/text", deviceName, isGroup);
     }
 
     /**

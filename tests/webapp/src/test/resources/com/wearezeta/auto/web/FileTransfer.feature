@@ -114,3 +114,23 @@ Feature: File Transfer
       | user1Email | user1Password | user1Name | user2Name | example.jpg  |
       | user1Email | user1Password | user1Name | user2Name | example.jpeg |
       | user1Email | user1Password | user1Name | user2Name | example.png  |
+
+  @C87933 @filetransfer
+  Scenario Outline: Verify file can be downloaded and decrypted by receiver in 1:1
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Given I see Contact list with name <Contact>
+    When I open conversation with <Contact>
+    When <Contact> sends <Size> sized file with name <File> via device Device1 to user <Name>
+    Then I verify icon of file <File> in the conversation view
+    And I see file transfer for file <File> in the conversation view
+    And I verify size of file <File> in the conversation view
+    And I verify type of file <File> is <Type> in the conversation view
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | File        | Size    | Type  |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 12      | PLAIN |
