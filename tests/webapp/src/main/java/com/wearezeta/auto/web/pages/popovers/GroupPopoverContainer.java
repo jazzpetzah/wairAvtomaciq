@@ -135,8 +135,12 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		return this.participantsListPopoverPage.getAddPeopleButtonToolTip();
 	}
 
-	public boolean isParticipantVisible(String name) throws Exception {
-		return this.participantsListPopoverPage.isParticipantVisible(name);
+    public boolean isParticipantVisible(String name) throws Exception {
+        return this.participantsListPopoverPage.isParticipantVisible(name);
+    }
+
+    public boolean isParticipantVerified(String name) throws Exception {
+		return this.participantsListPopoverPage.isParticipantVerified(name);
 	}
 
 	public boolean isEveryoneAlreadyAddedMessageShown() throws Exception {

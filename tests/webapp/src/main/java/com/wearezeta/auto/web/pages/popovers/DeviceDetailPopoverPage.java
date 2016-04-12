@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.pages.popovers;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -41,7 +42,9 @@ public class DeviceDetailPopoverPage extends AbstractPopoverContainer {
         return fingerprint.getText();
     }
 
-    public void verifyDevice() {
+    public void verifyDevice() throws Exception {
+        DriverUtils.waitUntilElementClickable(this.getDriver(),
+                verificationToggle);
         verificationToggle.click();
     }
 

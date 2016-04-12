@@ -142,6 +142,7 @@ public class GroupPopoverPageSteps {
 	@When("^I click on participant (.*) on Group Participants popover$")
 	public void IClickOnParticipant(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+System.out.println(name);
 		webappPagesCollection.getPage(GroupPopoverContainer.class)
 				.clickOnParticipant(name);
 	}
@@ -370,6 +371,32 @@ public class GroupPopoverPageSteps {
 					GroupPopoverContainer.class).isParticipantVisible(contact));
 		}
 	}
+
+    /**
+     * Verifies that contact is displayed in the verified section
+     *
+     * @param contactsAliases
+	 * @param donot
+	 *
+     * @throws Exception
+     * @step. ^I( do not)? see (.*) in verified section$
+     */
+    @When("^I( do not)? see user (.*) in verified section$")
+    public void ISeeUserInVerifiedSection(String donot, String contactsAliases) throws Exception {
+        List<String> contacts = CommonSteps.splitAliases(contactsAliases);
+        for (String contact : contacts) {
+            contact = usrMgr.replaceAliasesOccurences(contact,
+                    FindBy.NAME_ALIAS);
+            if (donot == null) {
+System.out.println(contact);
+                Assert.assertTrue(webappPagesCollection.getPage(
+                        GroupPopoverContainer.class).isParticipantVerified(contact));
+            } else {
+                Assert.assertFalse(webappPagesCollection.getPage(
+                        GroupPopoverContainer.class).isParticipantVerified(contact));
+            }
+        }
+    }
 
 	/**
 	 * Set new title for conversation on Group Participants popover

@@ -314,7 +314,7 @@ Feature: E2EE
     | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
 
-  @C12055 @regression
+  @C12055 @regression @torun
   Scenario Outline: Verify it is possible to verify group conversation participants
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
@@ -334,28 +334,37 @@ Feature: E2EE
     And I click on device Device1 of user <Contact1> on Single User Profile popover
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
-    Then I see device Device1 of user <Contact1> is verified on Single User Profile popover
+    #Then I see device Device1 of user <Contact1> is verified on Single User Profile popover
     Then I do not see user verified icon on Single User Profile popover
+    And I click back button on Group Participants popover
+      #   And I do not see user <Contact1> in verified section
+    And I click on participant <Contact1> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
     And I click on device Device2 of user <Contact1> on Single User Profile popover
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
-    Then I see device Device2 of user <Contact1> is verified on Single User Profile popover
+    #Then I see device Device2 of user <Contact1> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
-    When I click People button in group conversation
-    And I click People button in group conversation
+    And I click back button on Group Participants popover
+    #  And I can see verified seperator
+        And I see user <Contact1> in verified section
     When I click on participant <Contact2> on Group Participants popover
     And I switch to Devices tab on Single User Profile popover
     And I click on device Device1 of user <Contact2> on Single User Profile popover
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
-    Then I see device Device1 of user <Contact2> is verified on Single User Profile popover
+    #Then I see device Device1 of user <Contact2> is verified on Single User Profile popover
     Then I do not see user verified icon on Single User Profile popover
+    And I click back button on Group Participants popover
+      #   And I do not see user <Contact2> in verified section
+    And I click on participant <Contact2> on Group Participants popover
     And I click on device Device2 of user <Contact2> on Single User Profile popover
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
-    Then I see device Device2 of user <Contact2> is verified on Single User Profile popover
+    #Then I see device Device2 of user <Contact2> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
-    When I click People button in group conversation
+    When I click back button on Group Participants popover
+      #  Then I see user <Contact2> in verified section
     # Not yet implemented on webapp:
     #And I see <ALL_VERIFIED> action in conversation
     #And I see verified icon in conversation

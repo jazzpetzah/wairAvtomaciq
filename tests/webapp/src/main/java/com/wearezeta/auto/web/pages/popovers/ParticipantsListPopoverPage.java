@@ -88,6 +88,14 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
 	}
 
+    public boolean isParticipantVerified(String name) throws Exception {
+        final By locator = By
+                .xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xPathVerifiedParticipant
+                        .apply(name));
+        System.out.println(locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
+    }
+
 	public String getConversationTitle() {
 		return conversationTitle.getText();
 	}
