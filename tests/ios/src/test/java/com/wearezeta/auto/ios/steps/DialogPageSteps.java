@@ -4,6 +4,7 @@ import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
@@ -113,7 +114,7 @@ public class DialogPageSteps {
      */
     @When("^I paste and commit the text$")
     public void IClickPopupPasteAndCommitText() throws Exception {
-       getDialogPage().pasteAndCommit();
+        getDialogPage().pasteAndCommit();
     }
 
     /**
@@ -950,7 +951,26 @@ public class DialogPageSteps {
      */
     @Then("^I see You Called message and button$")
     public void iSeeYouCalledMessageAndButton() throws Exception {
-        Assert.assertTrue("YOU CALLED and phone button is not shown",getDialogPage().
+        Assert.assertTrue("YOU CALLED and phone button is not shown", getDialogPage().
                 isYouCalledMessageAndButtonVisible());
+    }
+
+    private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
+
+    /**
+     * Verify whether the particular picture is animated
+     *
+     * @throws Exception
+     * @step. ^I see the picture in the (preview|conversation view) is animated$"
+     */
+    @Then("^I see the picture in the conversation view is animated$")
+    public void ISeePictureIsAnimated() throws Exception {
+        // no need to wait, since screenshoting procedure itself is quite long
+        final long screenshotingDelay = 0;
+        final int maxFrames = 4;
+        final double avgThreshold = ImageUtil.getAnimationThreshold(getDialogPage()::getRecentPictureScreenshot,
+                maxFrames, screenshotingDelay);
+        Assert.assertTrue(String.format("The picture in the conversation view seems to be static (%.2f >= %.2f)",
+                avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
     }
 }

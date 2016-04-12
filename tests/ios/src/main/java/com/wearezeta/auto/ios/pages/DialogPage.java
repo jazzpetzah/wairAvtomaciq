@@ -607,4 +607,8 @@ public class DialogPage extends IOSPage {
     public boolean isYouCalledMessageAndButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrMissedCallButtonByYourself);
     }
+
+    public Optional<BufferedImage> getRecentPictureScreenshot() throws Exception {
+        return getElementScreenshot(getElement(xpathLastImageCell));
+    }
 }
