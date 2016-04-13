@@ -45,9 +45,21 @@ public class ConversationsListPage extends IOSPage {
 
     private static final By nameMuteCallButton = MobileBy.AccessibilityId("MuteVoiceButton");
 
-    private static final By nameLeaveConversationButton = MobileBy.AccessibilityId("LEAVE");
+    private static final By nameSilenceActionButton = MobileBy.AccessibilityId("SILENCE");
 
-    public static final By nameCancelButton = MobileBy.AccessibilityId("CANCEL");
+    private static final By nameArchiveActionButton = MobileBy.AccessibilityId("ARCHIVE");
+
+    private static final By nameUnarchiveActionButton = MobileBy.AccessibilityId("UNARCHIVE");
+
+    private static final By nameDeleteActionButton = MobileBy.AccessibilityId("DELETE");
+
+    private static final By nameLeaveActionButton = MobileBy.AccessibilityId("LEAVE");
+
+    private static final By nameBlockActionButton = MobileBy.AccessibilityId("BLOCK");
+
+    public static final By nameCancelRequestActionButton = MobileBy.AccessibilityId("CANCEL REQUEST");
+
+    public static final By nameCancelActionButton = MobileBy.AccessibilityId("CANCEL");
 
     private static final By nameSendAnInviteButton = MobileBy.AccessibilityId("INVITE MORE PEOPLE");
 
@@ -68,8 +80,6 @@ public class ConversationsListPage extends IOSPage {
 
     private static final By nameEmptyConversationMessage = MobileBy.AccessibilityId(
             "NO CONVERSATIONS TAP ON CONTACTS TO START A NEW CONVERSATION");
-
-    private static final By nameUnarchiveActionButton = MobileBy.AccessibilityId("UNARCHIVE");
 
     private static final By nameCloseArchiveButton = MobileBy.AccessibilityId("archiveCloseButton");
 
@@ -170,7 +180,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     private boolean isCancelActionButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCancelButton);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCancelActionButton);
     }
 
     public void clickArchiveConversationButton() throws Exception {
@@ -211,10 +221,30 @@ public class ConversationsListPage extends IOSPage {
     }
 
     private final By getActionButtonByName(String buttonTitle) {
-        return  By.xpath(xpathStrActionMenuXButtonByName.apply(buttonTitle));
+        switch (buttonTitle) {
+            case "Silence":
+                return nameSilenceActionButton;
+            case "Archive":
+                return nameArchiveActionButton;
+            case "Unarchive":
+                return nameUnarchiveActionButton;
+            case "Delete":
+                return nameDeleteActionButton;
+            case "Leave":
+                return nameLeaveActionButton;
+            case "Cancel Request":
+                return nameCancelRequestActionButton;
+            case "Block":
+                return nameBlockActionButton;
+            case "Cancel":
+                return nameCancelActionButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown action button name: '%s'", buttonTitle));
+        }
     }
 
     public boolean isButtonVisibleInActionMenu(String buttonTitle) throws Exception {
+        //final By locator = By.xpath(xpathStrActionMenuXButtonByName.apply(buttonTitle));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getActionButtonByName(buttonTitle));
     }
 
@@ -228,11 +258,11 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public void clickLeaveButtonInActionMenu() throws Exception {
-        getElement(nameLeaveConversationButton).click();
+        getElement(nameLeaveActionButton).click();
     }
 
     public void clickCancelButtonInActionMenu() throws Exception {
-        getElement(nameCancelButton).click();
+        getElement(nameCancelActionButton).click();
     }
 
     public Optional<String> getSelectedConversationCellValue(String conversation) throws Exception {

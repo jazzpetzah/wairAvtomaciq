@@ -408,7 +408,7 @@ public class ConversationsListPageSteps {
      * @step. ^I tap (Silence|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel) button in
      * action menu in [Cc]ontact [Ll]ist$
      */
-    @And("^I tap (Silence|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel) button in action menu in [Cc]ontact [Ll]ist$")
+    @And("^I tap (Silence|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel) action button$")
     public void ITapXButtonInActionMenu(String buttonTitle) throws Exception {
         getConversationsListPage().tapButtonInActionMenu(buttonTitle);
     }

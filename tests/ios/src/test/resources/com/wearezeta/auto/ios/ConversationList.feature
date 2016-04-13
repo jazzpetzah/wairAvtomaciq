@@ -526,7 +526,7 @@ Feature: Conversation List
     Given I see Contacts label at the bottom of conversations list
     Given I do not see Archive button at the bottom of conversations list
     When I swipe right on a <ArchivedUser>
-    And I click archive button for conversation
+    And I tap Archive action button
     Then I do not see conversation <ArchivedUser> in conversations list
     And I do not see Contacts label at the bottom of conversations list
     And I see Archive button at the bottom of conversations list
@@ -534,13 +534,13 @@ Feature: Conversation List
     When I open archived conversations
     Then I see conversation <ArchivedUser> in conversations list
     When I swipe right on a <ArchivedUser>
-    And I tap Unarchive button in action menu
+    And I tap Unarchive action button
     Then I do not see conversation <ArchivedUser> in conversations list
     When I tap close Archive page button
     Then I see conversation <ArchivedUser> in conversations list
     And I do not see Archive button at the bottom of conversations list
     When I swipe right on a <ArchivedUser>
-    And I click archive button for conversation
+    And I tap Archive action button
     And I do not see conversation <ArchivedUser> in conversations list
     And I see Archive button at the bottom of conversations list
     And User <ArchivedUser> sends 1 encrypted messages to user Myself
