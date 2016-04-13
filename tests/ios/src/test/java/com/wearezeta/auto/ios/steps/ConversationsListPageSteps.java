@@ -271,6 +271,36 @@ public class ConversationsListPageSteps {
         }
     }
 
+    /**
+     * Verify whether Contacts label is visible at the bottom of conversations list
+     *
+     * @param shouldNotSee equals to null if Contacts label should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see Archive button at the bottom of conversations list$
+     */
+    @Then("^I (do not )?see Contacts label at the bottom of conversations list$")
+    public void ISeeContactsLabel(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("Contacts label should be visible, but it's hidden",
+                    getConversationsListPage().contactsLabelisVisible());
+        } else {
+            Assert.assertTrue("Contacts label should be invisible, but it's visible",
+                    getConversationsListPage().contactLabelisNotVisible());
+        }
+    }
+
+    /**
+     * Verify visibility of NO CONVERSATION message in conversation list
+     *
+     * @throws Exception
+     * @step. ^I see NO CONVERSATION message in conversation list$
+     */
+    @Then("^I see NO CONVERSATION message in conversation list$")
+    public void ISeeNoConversationMessage() throws Exception {
+        Assert.assertTrue("NO CONVERSATION message is not visible",
+                getConversationsListPage().noConversationMessageIsVisible());
+    }
+
     @When("I tap play/pause button in conversations list next to (.*)")
     public void ITapPlayPauseButtonInContactListNextTo(String contact) throws Exception {
         String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
@@ -500,5 +530,27 @@ public class ConversationsListPageSteps {
     @When("^I tap Invite more people button$")
     public void ITapInviteMorePeopleButton() throws Exception {
         getPeoplePickerPage().tapSendInviteButton();
+    }
+
+    /**
+     * Tap Unarchive button in action menu
+     *
+     * @throws Exception
+     * @step. ^I press Unarchive button in action menu in Contact List$
+     */
+    @When("^I press Unarchive button in action menu in Contact List$")
+    public void IClickUnarchiveActionButton() throws Exception {
+        getConversationsListPage().clickUnarchinveActionButton();
+    }
+
+    /**
+     * Tap close button on Archive page
+     *
+     * @throws Exception
+     * @step. ^I press close Archive page button$
+     */
+    @When("^I press close Archive page button$")
+    public void IClickCloseArchivePageButton() throws Exception {
+        getConversationsListPage().clickCloseArchivePageButton();
     }
 }

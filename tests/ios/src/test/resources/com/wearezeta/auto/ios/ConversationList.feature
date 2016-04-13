@@ -516,3 +516,37 @@ Feature: Conversation List
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @C82827 @staging
+  Scenario Outline: Verify archive behaviour when one archive/unarchive a conversation
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <ArchivedUser>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I see Contacts label at the bottom of conversations list
+    Given I do not see Archive button at the bottom of conversations list
+    When I swipe right on a <ArchivedUser>
+    And I click archive button for conversation
+    Then I do not see conversation <ArchivedUser> in conversations list
+    And I do not see Contacts label at the bottom of conversations list
+    And I see Archive button at the bottom of conversations list
+    And I see NO CONVERSATION message in conversation list
+    When I open archived conversations
+    Then I see conversation <ArchivedUser> in conversations list
+    When I swipe right on a <ArchivedUser>
+    And I press Unarchive button in action menu in Contact List
+    Then I do not see conversation <ArchivedUser> in conversations list
+    When I press close Archive page button
+    Then I see conversation <ArchivedUser> in conversations list
+    And I do not see Archive button at the bottom of conversations list
+    When I swipe right on a <ArchivedUser>
+    And I click archive button for conversation
+    And I do not see conversation <ArchivedUser> in conversations list
+    And I see Archive button at the bottom of conversations list
+    And User <ArchivedUser> sends 1 encrypted messages to user Myself
+    Then I see conversation <ArchivedUser> in conversations list
+    And I do not see Archive button at the bottom of conversations list
+
+    Examples:
+      | Name      | ArchivedUser|
+      | user1Name | user2Name   |

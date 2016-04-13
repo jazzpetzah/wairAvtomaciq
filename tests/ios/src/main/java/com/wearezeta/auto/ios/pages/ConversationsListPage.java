@@ -33,7 +33,12 @@ public class ConversationsListPage extends IOSPage {
     private static final Function<String, String> xpathStrFirstConversationEntryByName = name ->
             String.format("%s[1]/UIAStaticText[@value='%s']", xpathStrContactListItems, name);
 
-    public static final By nameContactsButton = MobileBy.AccessibilityId("bottomBarContactsButton");
+    private static final String contactsButtonName = "bottomBarContactsButton";
+
+    public static final By nameContactsButton = MobileBy.AccessibilityId(contactsButtonName);
+
+    protected static final By xpathContactsLabel = By.xpath(String.format("//UIAButton[@name='%s' and @label='CONTACTS']",
+            contactsButtonName));
 
     private static final By xpathPendingRequest =
             By.xpath("//UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]");
@@ -60,6 +65,13 @@ public class ConversationsListPage extends IOSPage {
 
     private static final Function<String, String> xpathStrActionMenuByConversationName = name ->
             String.format("//UIAStaticText[@name='%s' and @visible='true']", name.toUpperCase());
+
+    private static final By nameEmptyConversationMessage = MobileBy.AccessibilityId(
+            "NO CONVERSATIONS TAP ON CONTACTS TO START A NEW CONVERSATION");
+
+    private static final By nameUnarchiveActionButton = MobileBy.AccessibilityId("UNARCHIVE");
+
+    private static final By nameCloseArchiveButton = MobileBy.AccessibilityId("archiveCloseButton");
 
 
     public ConversationsListPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -170,7 +182,8 @@ public class ConversationsListPage extends IOSPage {
         final By locator = By.xpath(xpathStrConvoListEntryByIdx.apply(idx));
         final WebElement el = getElement(locator,
                 String.format("Conversation list entry number '%s' is not visible", idx));
-        // ImageIO.write(takeScreenshot().get(), "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() + ".png"));
+        // ImageIO.write(takeScreenshot().get(), "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() +
+        // ".png"));
         return this.getElementScreenshot(el).orElseThrow(IllegalStateException::new);
         // ImageIO.write(scr, "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() + ".png"));
         // return scr;
@@ -268,5 +281,25 @@ public class ConversationsListPage extends IOSPage {
 
     public boolean isArchiveButtonInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameOpenArchiveButton);
+    }
+
+    public boolean contactsLabelisVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathContactsLabel);
+    }
+
+    public boolean contactLabelisNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathContactsLabel);
+    }
+
+    public boolean noConversationMessageIsVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEmptyConversationMessage);
+    }
+
+    public void clickUnarchinveActionButton() throws Exception {
+        getElement(nameUnarchiveActionButton).click();
+    }
+
+    public void clickCloseArchivePageButton() throws Exception {
+        getElement(nameCloseArchiveButton).click();
     }
 }
