@@ -67,15 +67,15 @@ Feature: E2EE
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And User <Contact1> sends encrypted message <Message1> to user Myself
-    Then Last message is <Message1>
+    Then I see the most recent conversation message is "<Message1>"
     When I enable Airplane mode on the device
     And User <Contact1> sends encrypted image <Picture> to single user conversation Myself
     Then I do not see new picture in the dialog
     When User <Contact1> sends encrypted message <Message2> to user Myself
-    Then Last message is <Message1>
+    Then I see the most recent conversation message is "<Message1>"
     When I disable Airplane mode on the device
     And I scroll to the bottom of conversation view
-    Then Last message is <Message2>
+    Then I see the most recent conversation message is "<Message2>"
     And I see new picture in the dialog
 
     Examples: 
@@ -92,15 +92,15 @@ Feature: E2EE
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And User <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
-    Then Last message is <Message1>
+    Then I see the most recent conversation message is "<Message1>"
     When I enable Airplane mode on the device
     And User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
     Then I do not see new picture in the dialog
     When User <Contact2> sends encrypted message <Message2> to group conversation <GroupChatName>
-    Then Last message is <Message1>
+    Then I see the most recent conversation message is "<Message1>"
     When I disable Airplane mode on the device
     And I scroll to the bottom of conversation view
-    Then Last message is <Message2>
+    Then I see the most recent conversation message is "<Message2>"
     And I see new picture in the dialog
 
     Examples: 

@@ -413,7 +413,7 @@ Feature: Connect
     And User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     And User <Contact> sends encrypted message to user <Name>
     And User <Contact> securely pings conversation Myself
-    Then Last message is <Message>
+    Then I see the most recent conversation message is "<Message>"
 
     Examples:
       | Name      | Contact   | Message          | Picture     |
