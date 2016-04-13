@@ -41,7 +41,7 @@ public class TabletContactListPageSteps {
         );
     }
 
-    private static final double MIN_CONVO_SIMILARITY_SCORE = 0.9;
+    private static final double MIN_CONVO_SIMILARITY_SCORE = 0.8;
 
     /**
      * Verify whether the previous conversation state is the same or different to the current state

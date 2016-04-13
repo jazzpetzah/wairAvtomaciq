@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -12,8 +11,6 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
-
-import javax.imageio.ImageIO;
 
 
 public class TabletConversationsListPage extends ConversationsListPage {
@@ -56,8 +53,8 @@ public class TabletConversationsListPage extends ConversationsListPage {
         final WebElement titleElement = getElement(titleLocator);
         final Point titleLocation = titleElement.getLocation();
         final Dimension titleDimension = titleElement.getSize();
-        ImageIO.write(entryScreenshot, "png", new File(System.getProperty("user.home")
-                + "/Desktop/screen_" + System.currentTimeMillis() + ".png"));
+//        ImageIO.write(entryScreenshot, "png", new File(System.getProperty("user.home")
+//                + "/Desktop/screen_" + System.currentTimeMillis() + ".png"));
         switch (side) {
             case LEFT:
                 return entryScreenshot.getSubimage(
@@ -70,7 +67,5 @@ public class TabletConversationsListPage extends ConversationsListPage {
             default:
                 throw new IllegalArgumentException(String.format("Unsupported side value '%s'", side.name()));
         }
-        //ImageIO.write(resultImage, "png", new File("/Users/elf/Desktop/screen_" + System.currentTimeMillis() + ".png"));
-        // return resultImage;
     }
 }

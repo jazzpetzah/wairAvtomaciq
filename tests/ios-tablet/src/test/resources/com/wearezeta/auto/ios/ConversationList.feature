@@ -390,7 +390,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2536 @staging @torun
+  @C2536 @staging
   Scenario Outline: Verify messages are marked read after opening a conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
