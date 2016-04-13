@@ -530,13 +530,13 @@ Feature: Conversation List
     Then I do not see conversation <ArchivedUser> in conversations list
     And I do not see Contacts label at the bottom of conversations list
     And I see Archive button at the bottom of conversations list
-    And I see NO CONVERSATION message in conversation list
+    And I see NO CONVERSATIONS message in conversations list
     When I open archived conversations
     Then I see conversation <ArchivedUser> in conversations list
     When I swipe right on a <ArchivedUser>
-    And I press Unarchive button in action menu in Contact List
+    And I tap Unarchive button in action menu
     Then I do not see conversation <ArchivedUser> in conversations list
-    When I press close Archive page button
+    When I tap close Archive page button
     Then I see conversation <ArchivedUser> in conversations list
     And I do not see Archive button at the bottom of conversations list
     When I swipe right on a <ArchivedUser>

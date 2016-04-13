@@ -33,12 +33,12 @@ public class ConversationsListPage extends IOSPage {
     private static final Function<String, String> xpathStrFirstConversationEntryByName = name ->
             String.format("%s[1]/UIAStaticText[@value='%s']", xpathStrContactListItems, name);
 
-    private static final String contactsButtonName = "bottomBarContactsButton";
+    private static final String strNameContactsButton = "bottomBarContactsButton";
 
-    public static final By nameContactsButton = MobileBy.AccessibilityId(contactsButtonName);
+    public static final By nameContactsButton = MobileBy.AccessibilityId(strNameContactsButton);
 
     protected static final By xpathContactsLabel = By.xpath(String.format("//UIAButton[@name='%s' and @label='CONTACTS']",
-            contactsButtonName));
+            strNameContactsButton));
 
     private static final By xpathPendingRequest =
             By.xpath("//UIACollectionCell[contains(@name,' waiting')]/UIAStaticText[1]");
@@ -283,11 +283,11 @@ public class ConversationsListPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameOpenArchiveButton);
     }
 
-    public boolean contactsLabelisVisible() throws Exception {
+    public boolean contactsLabelIsVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathContactsLabel);
     }
 
-    public boolean contactLabelisNotVisible() throws Exception {
+    public boolean contactLabelIsNotVisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathContactsLabel);
     }
 
@@ -295,7 +295,7 @@ public class ConversationsListPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEmptyConversationMessage);
     }
 
-    public void clickUnarchinveActionButton() throws Exception {
+    public void clickUnarchiveActionButton() throws Exception {
         getElement(nameUnarchiveActionButton).click();
     }
 
