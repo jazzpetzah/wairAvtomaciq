@@ -242,7 +242,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C2436 @staging
+  @C2436 @regression @rc
   Scenario Outline: Verify accepting a connection request from another person (People view) [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>,Me
@@ -265,7 +265,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @C2470 @staging
+  @C2470 @regression @rc
   Scenario Outline: Verify copying invitation to the clipboard [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
