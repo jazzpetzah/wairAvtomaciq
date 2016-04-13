@@ -13,61 +13,60 @@ import scala.concurrent.duration.FiniteDuration;
 
 abstract class RemoteEntity implements IRemoteEntity {
 
-	protected FiniteDuration actorTimeout;
+    protected FiniteDuration actorTimeout;
 
-	private String name = null;
+    private String name = null;
 
-	private ActorRef ref = null;
+    private ActorRef ref = null;
 
-	public RemoteEntity(String name, FiniteDuration actorTimeout) {
-		this.actorTimeout = actorTimeout;
+    public RemoteEntity(String name, FiniteDuration actorTimeout) {
+        this.actorTimeout = actorTimeout;
         this.name = name;
-	}
+    }
 
-	@Override
-	public String name() {
-		return name;
-	}
+    @Override
+    public String name() {
+        return name;
+    }
 
-	protected void setName(String name) {
-		this.name = name;
-	}
+    protected void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public ActorRef ref() {
-		return ref;
-	}
+    @Override
+    public ActorRef ref() {
+        return ref;
+    }
 
-	protected void setRef(ActorRef ref) {
-		this.ref = ref;
-	}
+    protected void setRef(ActorRef ref) {
+        this.ref = ref;
+    }
 
-	@Override
-	public boolean isConnected() {
-		if (this.ref == null) {
-			return false;
-		}
-		Object resp;
-		try {
-			resp = askActor(ref, new ActorMessage.Echo("test", "test"), 5000);
-		} catch (Exception e) {
-			return false;
-		}
-		return (resp instanceof ActorMessage.Echo && ((ActorMessage.Echo) resp).msg().equals("test"));
-	}
+    @Override
+    public boolean isConnected() {
+        if (this.ref == null) {
+            return false;
+        }
+        Object resp;
+        try {
+            resp = askActor(ref, new ActorMessage.Echo("test", "test"), 5000);
+        } catch (Exception e) {
+            return false;
+        }
+        return (resp instanceof ActorMessage.Echo && ((ActorMessage.Echo) resp).msg().equals("test"));
+    }
 
-	/**
-	 * The method is synchronous
-	 * 
-	 */
-	protected Object askActor(ActorRef actorRef, ActorMessage message) throws Exception {
-		Future<Object> future = Patterns.ask(actorRef, message, actorTimeout.toMillis());
-		return Await.result(future, actorTimeout);
-	}
+    /**
+     * The method is synchronous
+     */
+    protected Object askActor(ActorRef actorRef, ActorMessage message) throws Exception {
+        Future<Object> future = Patterns.ask(actorRef, message, actorTimeout.toMillis());
+        return Await.result(future, actorTimeout);
+    }
 
-	protected Object askActor(ActorRef actorRef, ActorMessage message, long timeoutMilliseconds) throws Exception {
-		final FiniteDuration timeotObj = new FiniteDuration(timeoutMilliseconds, TimeUnit.MILLISECONDS);
-		Future<Object> future = Patterns.ask(actorRef, message, timeotObj.toMillis());
-		return Await.result(future, timeotObj);
-	}
+    protected Object askActor(ActorRef actorRef, ActorMessage message, long timeoutMilliseconds) throws Exception {
+        final FiniteDuration timeotObj = new FiniteDuration(timeoutMilliseconds, TimeUnit.MILLISECONDS);
+        Future<Object> future = Patterns.ask(actorRef, message, timeotObj.toMillis());
+        return Await.result(future, timeotObj);
+    }
 }

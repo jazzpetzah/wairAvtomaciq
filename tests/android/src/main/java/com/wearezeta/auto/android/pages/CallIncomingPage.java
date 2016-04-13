@@ -8,8 +8,9 @@ import java.util.function.Function;
 import org.openqa.selenium.By;
 
 public class CallIncomingPage extends AndroidPage {
-    private static final By xpathIncomingCallContainer =
-            By.xpath("//*[@id='ttv__calling__header__subtitle' and @value='CALLING']");
+    private static final Function<String, String> xpathIncomingCallContainerByName = name -> String
+            .format("//*[@id='ttv__calling__header__subtitle' and @value='%s']", name);
+
     public static final By idMainContent = By.id("iccv__incoming_call_controls");
     
     private static final Function<String, String> xpathCallingHeaderByName = name -> String
@@ -21,13 +22,14 @@ public class CallIncomingPage extends AndroidPage {
 
     private static final int VISIBILITY_TIMEOUT_SECONDS = 20;
 
-    public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathIncomingCallContainer,
-                VISIBILITY_TIMEOUT_SECONDS);
+    public boolean waitUntilVisible(String subtitle) throws Exception {
+        final By by = By.xpath(xpathIncomingCallContainerByName.apply(subtitle));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), by, VISIBILITY_TIMEOUT_SECONDS);
     }
 
-    public boolean waitUntilNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathIncomingCallContainer);
+    public boolean waitUntilNotVisible(String subtitle) throws Exception {
+        final By by = By.xpath(xpathIncomingCallContainerByName.apply(subtitle));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), by);
     }
     
     public boolean waitUntilNameAppearsOnCallingBarCaption(String name) throws Exception {

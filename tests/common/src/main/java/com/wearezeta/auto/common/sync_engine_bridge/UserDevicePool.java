@@ -20,6 +20,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
 public class UserDevicePool {
+
     private ActorRef coordinatorActorRef;
     private static final FiniteDuration ACTOR_DURATION = new FiniteDuration(60, TimeUnit.SECONDS);
     private static final Logger LOG = ZetaLogger.getLog(UserDevicePool.class.getSimpleName());
