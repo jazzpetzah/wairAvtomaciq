@@ -210,9 +210,16 @@ public class ConversationsListPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
+    private final By getActionButtonByName(String buttonTitle) {
+        return  By.xpath(xpathStrActionMenuXButtonByName.apply(buttonTitle));
+    }
+
     public boolean isButtonVisibleInActionMenu(String buttonTitle) throws Exception {
-        final By locator = By.xpath(xpathStrActionMenuXButtonByName.apply(buttonTitle));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getActionButtonByName(buttonTitle));
+    }
+
+    public void tapButtonInActionMenu(String buttonTitle) throws Exception {
+        getElement(getActionButtonByName(buttonTitle)).click();
     }
 
     public void clickArchiveButtonInActionMenu() throws Exception {
