@@ -23,7 +23,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <Contact>
-    And I click archive button for conversation
+    And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
@@ -41,7 +41,7 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I press menu silence button
     When I swipe right on a <Contact>
-    And I press Archive button in action menu in Contact List
+    And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
     And I do not see conversation <Contact> in conversations list
@@ -86,7 +86,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <GroupChatName>
-    And I click archive button for conversation
+    And I tap Archive action button
     Then I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
     Then I see conversation <GroupChatName> in conversations list
@@ -176,7 +176,7 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I see conversation <Contact> name in action menu in Contact List
     And I see Archive button in action menu in Contact List
-    And I press Archive button in action menu in Contact List
+    And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
@@ -195,7 +195,7 @@ Feature: Conversation List
     When I swipe right on a <GroupChatName>
     And I see conversation <GroupChatName> name in action menu in Contact List
     And I see Leave button in action menu in Contact List
-    And I press Leave button in action menu in Contact List
+    And I tap Leave action button
     And I see leave conversation alert
     And I press leave
     Then I do not see conversation <GroupChatName> in conversations list
@@ -269,7 +269,7 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     Then I see conversation <Contact> name in action menu in Contact List
     And I see Cancel button in action menu in Contact List
-    And I press Cancel button in action menu in Contact List
+    And I tap Cancel action button
     Then I see conversations list
 
     Examples:
@@ -339,7 +339,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <Contact1>
-    And I press Archive button in action menu in Contact List
+    And I tap Archive action button
     And I do not see conversation <Contact1> in conversations list
     And I open archived conversations
     And I swipe right on a <Contact1>

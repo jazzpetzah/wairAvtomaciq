@@ -8,7 +8,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I swipe right on a <Contact>
-    And I click archive button for conversation
+    And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
@@ -26,7 +26,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I swipe right on a <GroupChatName>
-    And I click archive button for conversation
+    And I tap Archive action button
     Then I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
     Then I see conversation <GroupChatName> in conversations list
@@ -225,7 +225,7 @@ Feature: Conversation List
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
     And I do not see Archive button at the bottom of conversations list
@@ -242,7 +242,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see conversations list
     When I swipe right on a <Contact1>
-    And I press Archive button in action menu in Contact List
+    And I tap Archive action button
     And I do not see conversation <Contact1> in conversations list
     And I open archived conversations
     And I swipe right on a <Contact1>
@@ -308,7 +308,7 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I press menu silence button
     When I swipe right on a <Contact>
-    And I click archive button for conversation
+    And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
     And I do not see conversation <Contact> in conversations list

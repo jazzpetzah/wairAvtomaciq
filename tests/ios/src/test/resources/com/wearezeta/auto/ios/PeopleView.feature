@@ -359,7 +359,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
     And I do not see Archive button at the bottom of conversations list

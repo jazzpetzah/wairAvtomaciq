@@ -103,17 +103,6 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     /**
-     * Click archive menu button in ellipsis menu
-     *
-     * @throws Exception
-     * @step. ^I click archive menu button$
-     */
-    @When("^I click archive menu button$")
-    public void IClickArchiveMenu() throws Exception {
-        getOtherUserPersonalInfoPage().clickArchiveMenuButton();
-    }
-
-    /**
      * Click delete menu button in ellipsis menu
      *
      * @throws Exception

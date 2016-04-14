@@ -327,7 +327,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I open conversation details
     And I open ellipsis menu
-    And I click archive menu button
+    And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     Then I see conversation <Contact> in conversations list

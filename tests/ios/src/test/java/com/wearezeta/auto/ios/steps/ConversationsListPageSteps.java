@@ -338,17 +338,6 @@ public class ConversationsListPageSteps {
     }
 
     /**
-     * Click on archive button for a conversation
-     *
-     * @throws Exception if conversation is not found
-     * @step. ^I click archive button for conversation$
-     */
-    @When("^I click archive button for conversation$")
-    public void IClickArchiveConversationButton() throws Exception {
-        getConversationsListPage().clickArchiveConversationButton();
-    }
-
-    /**
      * Verify that mute call button is shown in conversation list
      *
      * @throws Exception
@@ -411,39 +400,6 @@ public class ConversationsListPageSteps {
     @And("^I tap (Silence|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel) action button$")
     public void ITapXButtonInActionMenu(String buttonTitle) throws Exception {
         getConversationsListPage().tapButtonInActionMenu(buttonTitle);
-    }
-
-    /**
-     * Clicks the Archive button in action menu of contact list
-     *
-     * @throws Throwable
-     * @step. ^I press Archive button in action menu in Contact List$
-     */
-    @When("^I press Archive button in action menu in Contact List$")
-    public void IPressArchiveButtonInActionMenuInContactList() throws Throwable {
-        getConversationsListPage().clickArchiveButtonInActionMenu();
-    }
-
-    /**
-     * Clicks the Leave button in action menu of contact list
-     *
-     * @throws Throwable
-     * @step. ^I press Leave button in action menu in Contact List$
-     */
-    @When("^I press Leave button in action menu in Contact List$")
-    public void IPressLeaveButtonInActionMenuInContactList() throws Throwable {
-        getConversationsListPage().clickLeaveButtonInActionMenu();
-    }
-
-    /**
-     * Clicks the Cancel button in action menu of contact list
-     *
-     * @throws Throwable
-     * @step. ^I press Cancel button in action menu in Contact list$
-     */
-    @Then("^I press Cancel button in action menu in Contact List$")
-    public void IPressCancelButtonInActionMenuInContactList() throws Throwable {
-        getConversationsListPage().clickCancelButtonInActionMenu();
     }
 
     /**
@@ -543,17 +499,6 @@ public class ConversationsListPageSteps {
     @When("^I tap Invite more people button$")
     public void ITapInviteMorePeopleButton() throws Exception {
         getPeoplePickerPage().tapSendInviteButton();
-    }
-
-    /**
-     * Tap Unarchive button in action menu
-     *
-     * @throws Exception
-     * @step. ^I tap Unarchive button in action menu$
-     */
-    @When("^I tap Unarchive button in action menu$")
-    public void IClickUnarchiveActionButton() throws Exception {
-        getConversationsListPage().clickUnarchiveActionButton();
     }
 
     /**
