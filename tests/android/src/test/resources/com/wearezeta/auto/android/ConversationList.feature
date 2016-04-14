@@ -89,7 +89,7 @@ Feature: Conversation List
     When User Myself adds new device <DeviceName>
     And User <Contact> sends encrypted message blabla to user Myself
     And User Myself deletes single user conversation <Contact> using device <DeviceName>
-    And I wait up to <Timeout> seconds until conversation <Contact> disappears from the list
+    Then I wait up to <Timeout> seconds until conversation <Contact> disappears from the list
 
     Examples:
       | Name      | Contact   | DeviceName | Timeout |
