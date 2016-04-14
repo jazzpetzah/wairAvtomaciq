@@ -18,8 +18,8 @@ Feature: File Transfer
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size    | Type  |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 0       | PLAIN |
-    #  | user1Email | user1Password | user1Name | user2Name | example.zip | 512KB   | ZIP   |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 0B      | PLAIN |
+      | user1Email | user1Password | user1Name | user2Name | example.zip | 512KB   | ZIP   |
 
   @C82816 @filetransfer
   Scenario Outline: Verify big file can be uploaded and re-downloaded by sender himself in 1:1

@@ -371,7 +371,7 @@ public class ConversationPageSteps {
         String fileSize = "";
         // Get length of file in bytes
         if(file.length() < 1024) {
-            fileSize = String.format("%sKB", String.valueOf(file.length()));
+            fileSize = String.format("%sB", String.valueOf(file.length()));
         } else if (file.length() < 1024*1024) {
             fileSize = String.format("%sKB", String.valueOf(file.length() / 1024));
         } else {
