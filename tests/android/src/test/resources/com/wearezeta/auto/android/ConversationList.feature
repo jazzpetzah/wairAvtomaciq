@@ -89,13 +89,11 @@ Feature: Conversation List
     When User Myself adds new device <DeviceName>
     And User <Contact> sends encrypted message blabla to user Myself
     And User Myself deletes single user conversation <Contact> using device <DeviceName>
-    # Let the stuff to sync up
-    And I wait for 7 seconds
-    Then I do not see contact list with name <Contact>
+    And I wait up to <Timeout> seconds until conversation <Contact> disappears from the list
 
     Examples:
-      | Name      | Contact   | DeviceName |
-      | user1Name | user2Name | device1    |
+      | Name      | Contact   | DeviceName | Timeout |
+      | user1Name | user2Name | device1    | 15      |
 
   @C444 @id4043 @regression
   Scenario Outline: (AN-2875) Verify I can delete a group conversation from conversation list
