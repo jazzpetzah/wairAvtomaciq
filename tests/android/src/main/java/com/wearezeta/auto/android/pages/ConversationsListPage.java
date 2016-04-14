@@ -16,7 +16,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
-public class ContactListPage extends AndroidPage {
+public class ConversationsListPage extends AndroidPage {
 
     private static final String LOADING_CONVERSATION_NAME = "…";
 
@@ -77,9 +77,9 @@ public class ContactListPage extends AndroidPage {
 
     private static final By idThreeDotsOptionMenuButton = By.id("v__row_conversation__menu_indicator__second_dot");
 
-    private static final Logger log = ZetaLogger.getLog(ContactListPage.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(ConversationsListPage.class.getSimpleName());
 
-    public ContactListPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+    public ConversationsListPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
