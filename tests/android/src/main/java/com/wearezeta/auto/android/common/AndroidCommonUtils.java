@@ -575,12 +575,12 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static void pushRandomFileToSdcardDownload(String fileName, String size) throws Exception {
         String basePath = getAndroidToolsPathFromConfig(AndroidCommonUtils.class);
-        CommonUtils.createRandomAccessFile(basePath + "/" + fileName, size);
+        CommonUtils.createRandomAccessFile(basePath + File.separator + fileName, size);
         AndroidCommonUtils.pushFileToSdcardDownload(basePath, fileName);
     }
 
     public static void pushFileToSdcardDownload(String basePath, String fileName) throws Exception {
-        String sourceFilePath = basePath + "/" + fileName;
+        String sourceFilePath = basePath + File.separator + fileName;
         String destinationFilePath = FILE_TRANSFER_SOURCE_LOCATION + fileName;
         executeAdb(String.format("shell rm %s", destinationFilePath));
         executeAdb(String.format("push %s %s", sourceFilePath, destinationFilePath));

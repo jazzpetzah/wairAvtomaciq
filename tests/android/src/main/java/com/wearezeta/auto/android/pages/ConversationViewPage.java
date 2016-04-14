@@ -135,6 +135,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final String FILE_UPLOADING_MESSAGE = "UPLOADING...";
 
+    private static final String FILE_UPLOADING_MESSAGE_SEPARATOR = " · ";
+
     public ConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -613,9 +615,9 @@ public class ConversationViewPage extends AndroidPage {
         return isElementABelowElementB(getElement(xpathMediaBar), getElement(xpathToolbar), LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR);
     }
 
-    public void waitForFileUploadingComplete(int timeoutSeconds, String size, String extension) throws Exception {
-        String fileInfo = StringUtils.isEmpty(extension) ? size : size + " · " + extension.toUpperCase();
-        fileInfo = fileInfo + " · " + FILE_UPLOADING_MESSAGE;
+    public void waitUntilFileUploadIsCompleted(int timeoutSeconds, String size, String extension) throws Exception {
+        String fileInfo = StringUtils.isEmpty(extension) ? size : size + FILE_UPLOADING_MESSAGE_SEPARATOR + extension.toUpperCase();
+        fileInfo = fileInfo + FILE_UPLOADING_MESSAGE_SEPARATOR + FILE_UPLOADING_MESSAGE;
         DriverUtils.waitUntilLocatorDissapears(getDriver(), By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeoutSeconds);
     }
 

@@ -633,19 +633,24 @@ public class CommonUtils {
      * Create Random Access File
      *
      * @param filePath the file path include the file name
-     * @param size     the expected file size, such as 5MB, 10KB
+     * @param size     the expected file size, such as 5MB, 10KB, or 4.00MB or 10.00KB or 10kb, 10Kb
      * @throws Exception
      */
     public static void createRandomAccessFile(String filePath, String size) throws Exception {
-        RandomAccessFile file = new RandomAccessFile(filePath, "rws");
-        int fileSize = Integer.valueOf(size.replaceAll("\\D+", "").trim());
-        if (size.contains("MB")) {
-            file.setLength(fileSize * 1024 * 1024);
-        } else if (size.contains("KB")) {
-            file.setLength(fileSize * 1024);
-        } else {
-            file.setLength(fileSize);
+        try (RandomAccessFile file = new RandomAccessFile(filePath, "rws")) {
+            String[] sizeParts = size.split("(?<=\\d)(?=[a-zA-Z])");
+            int fileSize = Double.valueOf(sizeParts[0]).intValue();
+            String type = sizeParts.length > 1 ? sizeParts[1].toUpperCase() : "";
+            switch (type) {
+                case "MB":
+                    file.setLength(fileSize * 1024 * 1024);
+                    break;
+                case "KB":
+                    file.setLength(fileSize * 1024);
+                    break;
+                default:
+                    file.setLength(fileSize);
+            }
         }
-        file.close();
     }
 }

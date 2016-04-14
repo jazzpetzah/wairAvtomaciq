@@ -500,16 +500,16 @@ Feature: Conversation View
   Scenario Outline: Verify placeholder is shown for the sender
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given I push 4MB file having name "<FileName>" to the device
+    Given I push <FileSize> file having name "<FileName>" to the device
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I tap plus button in text input
     And I tap File button from input tools
-    And I wait up to 10 seconds until 4.00MB file with extension "TXT" is uploaded
-    Then I see the result of 4.00MB file upload having name "<FileName>" and extension "TXT"
+    And I wait up to 10 seconds until <FileSize> file with extension "<FileExtension>" is uploaded
+    Then I see the result of <FileSize> file upload having name "<FileName>" and extension "<FileExtension>"
 
     Examples:
-      | Name      | Contact1  | FileName   |
-      | user1Name | user2Name | random.txt |
+      | Name      | Contact1  | FileName   | FileExtension | FileSize |
+      | user1Name | user2Name | random.txt | TXT           | 4.00MB   |

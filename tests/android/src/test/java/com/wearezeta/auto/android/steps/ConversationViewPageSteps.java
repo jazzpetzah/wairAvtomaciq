@@ -544,7 +544,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I wait up to (\\d+) seconds? until (.*) file with extension \"(\\w+)\" is uploaded$")
     public void IWaitFileUploadingComplete(int timeoutSeconds, String size, String extension) throws Exception {
-        getConversationViewPage().waitForFileUploadingComplete(timeoutSeconds, size, extension);
+        getConversationViewPage().waitUntilFileUploadIsCompleted(timeoutSeconds, size, extension);
     }
 
     /**
@@ -849,7 +849,7 @@ public class ConversationViewPageSteps {
      * @step. ^I see the result of (.*) file upload having name "(.*)" and extension "(.*)"$
      */
     @Then("^I see the result of (.*) file upload having name \"(.*)\" and extension \"(.*)\"$")
-    public void ThenISeePlaceholderOfSendingFile(String size, String fileName, String extension) throws Exception {
+    public void ThenISeeTheResultOfXFileUpload(String size, String fileName, String extension) throws Exception {
         Assert.assertTrue("The placeholder of sending file should be visible",
                 getConversationViewPage().isFileSenderPlaceHolderVisible(fileName, size, extension));
     }
