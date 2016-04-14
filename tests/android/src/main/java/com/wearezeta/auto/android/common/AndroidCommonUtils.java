@@ -574,14 +574,14 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     public static void pushRandomFileToSdcardDownload(String fileName, String size) throws Exception {
-        String sourceFilePath = AndroidCommonUtils.class.getResource("/filetransfer/").getPath() + "/" + fileName;
-        CommonUtils.createRandomAccessFile(sourceFilePath, size);
-        AndroidCommonUtils.pushFileToSdcardDownload(fileName);
+        String basePath = getAndroidToolsPathFromConfig(AndroidCommonUtils.class);
+        CommonUtils.createRandomAccessFile(basePath + "/" + fileName, size);
+        AndroidCommonUtils.pushFileToSdcardDownload(basePath, fileName);
     }
 
-    public static void pushFileToSdcardDownload(String fileName) throws Exception {
-        String sourceFilePath = AndroidCommonUtils.class.getResource("/filetransfer/").getPath() + "/" + fileName;
-        String destinationFilePath =  FILE_TRANSFER_SOURCE_LOCATION + fileName;
+    public static void pushFileToSdcardDownload(String basePath, String fileName) throws Exception {
+        String sourceFilePath = basePath + "/" + fileName;
+        String destinationFilePath = FILE_TRANSFER_SOURCE_LOCATION + fileName;
         executeAdb(String.format("shell rm %s", destinationFilePath));
         executeAdb(String.format("push %s %s", sourceFilePath, destinationFilePath));
         executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
