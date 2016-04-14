@@ -7,18 +7,18 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.GroupChatPage;
+import com.wearezeta.auto.ios.pages.GroupConversationViewPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class GroupChatPageSteps {
+public class GroupConversationViewPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private GroupChatPage getGroupChatPage() throws Exception {
-        return pagesCollection.getPage(GroupChatPage.class);
+    private GroupConversationViewPage getGroupConversationViewPage() throws Exception {
+        return pagesCollection.getPage(GroupConversationViewPage.class);
     }
 
     @Then("^I see group chat page with users (.*)$")
@@ -35,7 +35,7 @@ public class GroupChatPageSteps {
                 }).collect(Collectors.toList());
         Assert.assertTrue(
                 String.format("Users '%s' are not visible in the group conversation", participantNameAliases),
-                getGroupChatPage().isChatMessageContainsStringsExist(participantNames));
+                getGroupConversationViewPage().isChatMessageContainsStringsExist(participantNames));
     }
 
     /**
@@ -51,25 +51,25 @@ public class GroupChatPageSteps {
 
     @When("^I swipe up on group chat page$")
     public void ISwipeUpOnGroupChatPage() throws Exception {
-        getGroupChatPage().swipeUp(1000);
+        getGroupConversationViewPage().swipeUp(1000);
     }
 
     @When("^I see You Renamed Conversation message shown in conversation view$")
     public void ISeeYouRenamedMessageInGroupChat() throws Exception {
         Assert.assertTrue("You Renamed Conversation message is not visible in the conversation view",
-                getGroupChatPage().isYouRenamedConversationMessageVisible());
+                getGroupConversationViewPage().isYouRenamedConversationMessageVisible());
     }
 
     @Then("^I see You Left message in group chat$")
     public void ISeeYouLeftMessage() throws Exception {
-        Assert.assertTrue("You Left message is not shown",getGroupChatPage().isYouLeftMessageShown());
+        Assert.assertTrue("You Left message is not shown", getGroupConversationViewPage().isYouLeftMessageShown());
     }
 
     @When("^I can see You Added (.*) message$")
     public void ICanSeeYouAddedContact(String contact) throws Throwable {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         Assert.assertTrue("YOU ADDED contact to group is not shown",
-                getGroupChatPage().isYouAddedUserMessageShown(contact));
+                getGroupConversationViewPage().isYouAddedUserMessageShown(contact));
     }
 
 }
