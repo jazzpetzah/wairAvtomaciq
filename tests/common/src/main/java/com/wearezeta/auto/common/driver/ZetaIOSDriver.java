@@ -123,6 +123,8 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
                     if (!isSessionLost()) {
                         try {
                             super.execute(DriverCommand.QUIT);
+                        } catch (Exception eq) {
+                            // ignore
                         } finally {
                             setSessionLost(true);
                         }
@@ -134,6 +136,8 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
                     if (!isSessionLost()) {
                         try {
                             super.execute(DriverCommand.QUIT);
+                        } catch (Exception eq) {
+                            // ignore
                         } finally {
                             setSessionLost(true);
                         }
