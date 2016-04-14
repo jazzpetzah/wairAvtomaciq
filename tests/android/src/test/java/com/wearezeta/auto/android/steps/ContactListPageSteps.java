@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.misc.ElementState;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 
@@ -209,11 +208,31 @@ public class ContactListPageSteps {
         getContactListPage().verifyContactListIsFullyLoaded();
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The conversation '%s' is not visible in the list",
-                    userName), getContactListPage().isContactExists(userName));
+                    userName), getContactListPage().isConversationVisible(userName));
         } else {
             Assert.assertTrue(String.format("The conversation '%s' is  visible in the list, but should be hidden",
-                    userName), getContactListPage().waitUntilContactDisappears(
-                    userName));
+                    userName), getContactListPage().waitUntilConversationDisappears(userName));
+        }
+    }
+
+    /**
+     * Check to see that a given username appears in the contact list
+     *
+     * @param timeoutSeconds conversation visibility timeout
+     * @param convoName      conversation name/alias
+     * @param expectedAction either 'appears in' or 'disappears from'
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until conversation (.*) (appears in|disappears from) the list$
+     */
+    @Then("^I wait up to (\\d+) seconds? until conversation (.*) (appears in|disappears from) the list$")
+    public void IWaitForConvo(int timeoutSeconds, String convoName, String expectedAction) throws Exception {
+        convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
+        if (expectedAction.equals("appears in")) {
+            Assert.assertTrue(String.format("The conversation '%s' is not visible in the list",
+                    convoName), getContactListPage().isConversationVisible(convoName, timeoutSeconds));
+        } else {
+            Assert.assertTrue(String.format("The conversation '%s' is  visible in the list, but should be hidden",
+                    convoName), getContactListPage().waitUntilConversationDisappears(convoName, timeoutSeconds));
         }
     }
 

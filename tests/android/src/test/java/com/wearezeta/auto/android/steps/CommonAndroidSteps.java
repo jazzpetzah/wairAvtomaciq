@@ -1113,4 +1113,21 @@ public class CommonAndroidSteps {
         Assert.assertTrue(String.format("An alert containing text '%s' is not visible", expectedMsg),
                 pagesCollection.getCommonPage().isAlertMessageVisible(expectedMsg));
     }
+
+    /**
+     * Execute Delete Conversation action on the particular device registered for this user
+     *
+     * @step. ^User (.*) deletes? (single user|group) conversation (.*) using device (.*)
+     *
+     * @param userAs user name/alias
+     * @param convoType either 'group' or 'single user'
+     * @param convoName conversation name
+     * @param deviceName device name (this one should already exist)
+     * @throws Exception
+     */
+    @Given("^User (.*) deletes? (single user|group) conversation (.*) using device (.*)")
+    public void UserDeletedConversation(String userAs, String convoType, String convoName, String deviceName)
+            throws Exception {
+        commonSteps.UserClearsConversation(userAs, convoName, deviceName, convoType.equals("group"));
+    }
 }

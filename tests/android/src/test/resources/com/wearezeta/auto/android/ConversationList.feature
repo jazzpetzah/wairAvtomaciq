@@ -62,7 +62,7 @@ Feature: Conversation List
     Given User <Contact1> sends encrypted message <Message> to user Myself
     And I tap on contact name <Contact1>
     And I scroll to the bottom of conversation view
-    And Last message is <Message>
+    And I see the most recent conversation message is "<Message>"
     And I navigate back from dialog page
     And I swipe right on a <Contact1>
     And I select DELETE from conversation settings menu
@@ -78,6 +78,23 @@ Feature: Conversation List
       | Name      | Contact1  | Message    | Image       | SpotifyLink                                           |
       | user1Name | user2Name | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |
 
+  @C95626 @staging
+  Scenario Outline: (CM-882) Verify deleting a conversation is synchronised to all devices
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    And I see contact list with name <Contact>
+    When User Myself adds new device <DeviceName>
+    And User <Contact> sends encrypted message blabla to user Myself
+    And User Myself deletes single user conversation <Contact> using device <DeviceName>
+    And I wait up to <Timeout> seconds until conversation <Contact> disappears from the list
+
+    Examples:
+      | Name      | Contact   | DeviceName | Timeout |
+      | user1Name | user2Name | device1    | 15      |
+
   @C444 @id4043 @regression
   Scenario Outline: (AN-2875) Verify I can delete a group conversation from conversation list
     Given There are 3 users where <Name> is me
@@ -91,7 +108,7 @@ Feature: Conversation List
     Given User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
     When I tap on contact name <GroupChatName>
     And I scroll to the bottom of conversation view
-    And Last message is <Message>
+    And I see the most recent conversation message is "<Message>"
     And I navigate back from dialog page
     And I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
