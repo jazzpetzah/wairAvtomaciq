@@ -171,11 +171,11 @@ Feature: Conversation List
     And I see conversations list
     When I swipe right on a <GroupChatName>
     Then I see conversation <GroupChatName> name in action menu in Contact List
-    And I see Silence button in action menu in Contact List
-    And I see Archive button in action menu in Contact List
-    And I see Delete button in action menu in Contact List
-    And I see Leave button in action menu in Contact List
-    And I see Cancel button in action menu in Contact List
+    And I see Silence action button
+    And I see Archive action button
+    And I see Delete action button
+    And I see Leave action button
+    And I see Cancel action button
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
@@ -190,11 +190,11 @@ Feature: Conversation List
     And I see conversations list
     When I swipe right on a <Contact>
     Then I see conversation <Contact> name in action menu in Contact List
-    And I see Silence button in action menu in Contact List
-    And I see Archive button in action menu in Contact List
-    And I see Delete button in action menu in Contact List
-    And I see Block button in action menu in Contact List
-    And I see Cancel button in action menu in Contact List
+    And I see Silence action button
+    And I see Archive action button
+    And I see Delete action button
+    And I see Block action button
+    And I see Cancel action button
 
     Examples:
       | Name      | Contact   |
@@ -358,9 +358,9 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see conversations list
     When I swipe right on a <GroupChatName>
-    And I see Archive button in action menu in Contact List
-    And I see Delete button in action menu in Contact List
-    And I see Cancel button in action menu in Contact List
+    And I see Archive action button
+    And I see Delete action button
+    And I see Cancel action button
     And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list

@@ -380,10 +380,9 @@ public class ConversationsListPageSteps {
      *
      * @param buttonTitle Silence | Delete | Leave | Archive | Block | Cancel Request | Cancel
      * @throws Exception
-     * @step. ^I see (Silence|Delete|Leave|Archive|Block|Cancel Request|Cancel) button in
-     * action menu in [Cc]ontact [Ll]ist$
+     * @step. ^I see (Silence|Delete|Leave|Archive|Block|Cancel Request|Cancel) action button$
      */
-    @And("^I see (Silence|Delete|Leave|Archive|Block|Cancel Request|Cancel) button in action menu in [Cc]ontact [Ll]ist$")
+    @And("^I see (Silence|Delete|Leave|Archive|Block|Cancel Request|Cancel) action button$")
     public void ISeeXButtonInActionMenu(String buttonTitle) throws Exception {
         Assert.assertTrue("There is no button " + buttonTitle.toUpperCase()
                 + " in opened action menu.", getConversationsListPage().isButtonVisibleInActionMenu(buttonTitle));
