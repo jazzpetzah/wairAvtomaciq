@@ -403,6 +403,17 @@ public class ConversationsListPageSteps {
     }
 
     /**
+     * Confirms the blocking alert by clicking block
+     *
+     * @throws Exception
+     * @step. ^I confirm blocking alert$
+     */
+    @When("^I confirm blocking alert$")
+    public void IConfirmBlockingAlert() throws Exception {
+        ITapXButtonInActionMenu("Block");
+    }
+
+    /**
      * Verifies that next conversation is selected in list
      *
      * @param conversation that is selected now

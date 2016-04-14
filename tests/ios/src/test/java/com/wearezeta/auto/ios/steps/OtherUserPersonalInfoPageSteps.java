@@ -136,28 +136,6 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     /**
-     * Clicks on the Block button in the profile menu
-     *
-     * @throws Exception
-     * @step. ^I press menu Block button$
-     */
-    @When("^I press menu Block button$")
-    public void IPressMenuBlockButton() throws Exception {
-        getOtherUserPersonalInfoPage().clickBlockMenuButton();
-    }
-
-    /**
-     * Confirms the blocking alert by clicking block
-     *
-     * @throws Exception
-     * @step. ^I confirm blocking alert$
-     */
-    @When("^I confirm blocking alert$")
-    public void IConfirmBlockingAlert() throws Exception {
-        getOtherUserPersonalInfoPage().clickBlockMenuButton();
-    }
-
-    /**
      * Click on cancel button
      *
      * @throws Exception

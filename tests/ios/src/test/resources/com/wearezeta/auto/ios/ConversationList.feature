@@ -430,7 +430,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <Contact1>
-    And I press menu Block button
+    And I tap Block action button
     And I click Cancel button
     Then I see conversation action menu
 
@@ -445,7 +445,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <Contact>
-    And I press menu Block button
+    And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact> in conversations list
     And I do not see Archive button at the bottom of conversations list

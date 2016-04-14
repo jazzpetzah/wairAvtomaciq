@@ -51,8 +51,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     private static final By nameUnsilenceConversationButton = MobileBy.AccessibilityId("NOTIFY");
 
-    private static final By nameBlockMenuButton = MobileBy.AccessibilityId("BLOCK");
-
     private static final By nameCancelButton = MobileBy.AccessibilityId("CANCEL");
 
     private static final By xpathActionMenu = By
@@ -166,10 +164,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public void clickNotifyMenuButton() throws Exception {
         getElement(nameUnsilenceConversationButton).click();
-    }
-
-    public void clickBlockMenuButton() throws Exception {
-        getElement(nameBlockMenuButton).click();
     }
 
     public void clickCancelButton() throws Exception {

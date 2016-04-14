@@ -479,7 +479,7 @@ Feature: People View
     And I open conversation details
     And I see <Contact1> user profile page
     And I press conversation menu button
-    And I press menu Block button
+    And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact1> in conversations list
     Then I see conversation <Contact2> is selected in list
@@ -499,7 +499,7 @@ Feature: People View
     And I open conversation details
     And I see <Contact1> user profile page
     And I press conversation menu button
-    And I press menu Block button
+    And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact1> in conversations list
     Then I see conversation <Contact2> is selected in list
@@ -897,7 +897,7 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I press conversation menu button
-    And I press menu Block button
+    And I tap Block action button
     And I click Cancel button
     Then I see conversation action menu
 
@@ -915,7 +915,7 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I press conversation menu button
-    And I press menu Block button
+    And I tap Block action button
     And I click Cancel button
     Then I see conversation action menu
 

@@ -290,7 +290,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see conversations list
     When I swipe right on a <Contact1>
-    And I press menu Block button
+    And I tap Block action button
     And I click Cancel button
     Then I see conversation action menu
 
@@ -378,7 +378,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see conversations list
     When I swipe right on a <Contact>
-    And I press menu Block button
+    And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact> in conversations list
     And I do not see Archive button at the bottom of conversations list
