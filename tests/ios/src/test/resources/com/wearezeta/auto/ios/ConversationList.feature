@@ -528,9 +528,8 @@ Feature: Conversation List
     And User <Contact1> sends 1 encrypted message to user Myself
     And User Myself deletes single user conversation <Contact1> using device <DeviceName>
     # Let the stuff to sync up
-    And I wait for 7 seconds
-    Then I do not see conversation <Contact1> in conversations list
+    Then I wait up to <Timeout> seconds until conversation <Contact1> disappears from the list
 
     Examples:
-      | Name      | Contact1  | DeviceName |
-      | user1Name | user2Name | device1    |
+      | Name      | Contact1  | DeviceName | Timeout |
+      | user1Name | user2Name | device1    | 15      |
