@@ -103,17 +103,6 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     /**
-     * Click on cancel button
-     *
-     * @throws Exception
-     * @step. I click Cancel button
-     */
-    @When("^I click Cancel button$")
-    public void IClickCancelButton() throws Exception {
-        getOtherUserPersonalInfoPage().clickCancelButton();
-    }
-
-    /**
      * Verify if conversation action menu is visible
      *
      * @throws Exception

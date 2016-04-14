@@ -45,8 +45,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
 
-    private static final By nameCancelButton = MobileBy.AccessibilityId("CANCEL");
-
     private static final By xpathActionMenu = By
         .xpath("//UIAStaticText[following-sibling::UIAButton[@name='CANCEL'] and @visible='true']");
 
@@ -146,10 +144,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         } else {
             getElement(nameOtherUserConversationMenu).click();
         }
-    }
-
-    public void clickCancelButton() throws Exception {
-        getElement(nameCancelButton).click();
     }
 
     public boolean isActionMenuVisible() throws Exception {

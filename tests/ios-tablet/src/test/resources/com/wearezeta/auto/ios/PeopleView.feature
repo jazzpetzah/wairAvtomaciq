@@ -898,7 +898,7 @@ Feature: People View
     And I open conversation details
     And I press conversation menu button
     And I tap Block action button
-    And I click Cancel button
+    And I tap Cancel action button
     Then I see conversation action menu
 
     Examples:
@@ -916,7 +916,7 @@ Feature: People View
     And I open conversation details
     And I press conversation menu button
     And I tap Block action button
-    And I click Cancel button
+    And I tap Cancel action button
     Then I see conversation action menu
 
     Examples:

@@ -291,7 +291,7 @@ Feature: Conversation List
     And I see conversations list
     When I swipe right on a <Contact1>
     And I tap Block action button
-    And I click Cancel button
+    And I tap Cancel action button
     Then I see conversation action menu
 
     Examples:
