@@ -605,14 +605,14 @@ public class CommonUtils {
             try {
                 System.setProperty("java.net.preferIPv4Stack", "true");
             } catch (Exception e) {
-                e.printStackTrace();
+                // skip silently
             }
             return InetAddress.getLocalHost().getHostAddress().startsWith("192.168.2.");
         } finally {
             try {
                 System.setProperty("java.net.preferIPv4Stack", prevPropValue);
             } catch (Exception e) {
-                e.printStackTrace();
+                // skip silently
             }
         }
     }

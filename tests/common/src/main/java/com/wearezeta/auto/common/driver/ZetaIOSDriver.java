@@ -120,12 +120,24 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
                     return response;
                 }
                 if (isSessionLostBecause(e.getCause())) {
-                    setSessionLost(true);
+                    if (!isSessionLost()) {
+                        try {
+                            super.execute(DriverCommand.QUIT);
+                        } finally {
+                            setSessionLost(true);
+                        }
+                    }
                 }
                 Throwables.propagate(e.getCause());
             } else {
                 if (e instanceof TimeoutException) {
-                    setSessionLost(true);
+                    if (!isSessionLost()) {
+                        try {
+                            super.execute(DriverCommand.QUIT);
+                        } finally {
+                            setSessionLost(true);
+                        }
+                    }
                 }
                 Throwables.propagate(e);
             }
