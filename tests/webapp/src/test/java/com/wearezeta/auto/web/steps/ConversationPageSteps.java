@@ -290,6 +290,7 @@ public class ConversationPageSteps {
     @When("^I send (.*) sized file with name (.*) to the current conversation$")
     public void WhenIXSizedSendFile(String size, String fileName) throws Exception {
         String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
+        path = path.replace("%40","@");
         RandomAccessFile f = new RandomAccessFile(path + "/" + fileName, "rws");
         int fileSize = Integer.valueOf(size.replaceAll("\\D+","").trim());
         if (size.contains("MB")) {

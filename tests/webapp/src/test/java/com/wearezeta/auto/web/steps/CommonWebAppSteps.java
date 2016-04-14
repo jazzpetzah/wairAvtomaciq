@@ -791,6 +791,7 @@ public class CommonWebAppSteps {
     public void WhenIXSizedSendFile(String contact, String size, String fileName, String deviceName, String convoType,
                                     String dstConvoName) throws Exception {
         String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
+        path = path.replace("%40","@");
         RandomAccessFile f = new RandomAccessFile(path + "/" + fileName, "rws");
         int fileSize = Integer.valueOf(size.replaceAll("\\D+","").trim());
         if (size.contains("MB")) {
