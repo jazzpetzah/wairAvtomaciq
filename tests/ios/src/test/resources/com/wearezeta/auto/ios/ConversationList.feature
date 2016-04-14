@@ -521,12 +521,14 @@ Feature: Conversation List
   Scenario Outline: Verify archive behaviour when one archive/unarchive a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
+    Given Myself archived conversation with <ArchivedUser>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given I see Contacts label at the bottom of conversations list
-    Given I do not see Archive button at the bottom of conversations list
-    When I swipe right on a <ArchivedUser>
-    And I tap Archive action button
+    When User <ArchivedUser> sends 1 message to user Myself
+    Then I see conversation <ArchivedUser> in conversations list
+    And I see Contacts label at the bottom of conversations list
+    And I do not see Archive button at the bottom of conversations list
+    When Myself archived conversation with <ArchivedUser>
     Then I do not see conversation <ArchivedUser> in conversations list
     And I do not see Contacts label at the bottom of conversations list
     And I see Archive button at the bottom of conversations list
@@ -543,7 +545,7 @@ Feature: Conversation List
     And I tap Archive action button
     And I do not see conversation <ArchivedUser> in conversations list
     And I see Archive button at the bottom of conversations list
-    And User <ArchivedUser> sends 1 encrypted messages to user Myself
+    And User <ArchivedUser> sends 1 messages to user Myself
     Then I see conversation <ArchivedUser> in conversations list
     And I do not see Archive button at the bottom of conversations list
 
