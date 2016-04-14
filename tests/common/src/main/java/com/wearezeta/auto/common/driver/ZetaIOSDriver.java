@@ -109,7 +109,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
         final Callable<Response> task = () -> super.execute(driverCommand, parameters);
         final Future<Response> future = getPool().submit(task);
         try {
-            return future.get(MAX_COMMAND_DURATION, TimeUnit.SECONDS);
+            return future.get((Integer) getCapabilities().getCapability("launchTimeout"), TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             if (e instanceof ExecutionException) {
                 if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD) && (e.getCause() instanceof WebDriverException)) {
