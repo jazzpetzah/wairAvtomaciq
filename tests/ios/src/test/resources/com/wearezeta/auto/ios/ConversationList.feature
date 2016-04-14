@@ -309,7 +309,7 @@ Feature: Conversation List
     And I tap on conversation item number 2
     And I navigate back to conversations list
     Then I see the state of conversation item number 1 is not changed
-    
+
     Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
@@ -490,7 +490,7 @@ Feature: Conversation List
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
- 
+
   @C109 @noAcceptAlert @regression
   Scenario Outline: Verify share contacts dialogue is shown each time on invite more friends click
     Given There are 3 users where <Name> is me
@@ -516,3 +516,20 @@ Feature: Conversation List
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @C95627 @staging
+  Scenario Outline: (CM-882) Verify deleting a conversation is synchronised to all devices
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    And I see conversation <Contact1> in conversations list
+    When User Myself adds new device <DeviceName>
+    And User <Contact1> sends 1 encrypted message to user Myself
+    And User Myself deletes single user conversation <Contact1> using device <DeviceName>
+    # Let the stuff to sync up
+    Then I wait up to <Timeout> seconds until conversation <Contact1> disappears from the list
+
+    Examples:
+      | Name      | Contact1  | DeviceName | Timeout |
+      | user1Name | user2Name | device1    | 15      |

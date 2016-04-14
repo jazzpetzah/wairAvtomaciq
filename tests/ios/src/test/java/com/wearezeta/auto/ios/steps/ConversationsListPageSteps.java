@@ -214,13 +214,36 @@ public class ConversationsListPageSteps {
         value = usrMgr.replaceAliasesOccurences(value, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The conversation '%s' is not visible in the conversation list",
-                    value), getConversationsListPage().isChatInContactList(value));
+                    value), getConversationsListPage().isConversationInList(value));
         } else {
             Assert.assertTrue(
                     String.format("The conversation '%s' is visible in the conversation list, but should be hidden",
-                            value), getConversationsListPage().contactIsNotDisplayed(value));
+                            value), getConversationsListPage().isConversationNotInList(value));
         }
     }
+
+    /**
+     * Verifies the visibility of a specific item in the conversations list
+     *
+     * @param timeoutSeconds equals to null if the item should be visible
+     * @param convoName      conversation name/alias
+     * @param expectedState  either 'appears in' or 'disappears from'
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until conversation (.*) (appears in|disappears from) the list$
+     */
+    @Then("^I wait up to (\\d+) seconds? until conversation (.*) (appears in|disappears from) the list$")
+    public void IWaitForConvo(int timeoutSeconds, String convoName, String expectedState) throws Exception {
+        convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
+        if (expectedState.equals("appears in")) {
+            Assert.assertTrue(String.format("The conversation '%s' is not visible in the conversation list",
+                    convoName), getConversationsListPage().isConversationInList(convoName, timeoutSeconds));
+        } else {
+            Assert.assertTrue(
+                    String.format("The conversation '%s' is still visible in the conversation list, but should be hidden",
+                            convoName), getConversationsListPage().isConversationNotInList(convoName, timeoutSeconds));
+        }
+    }
+
 
     @When("^I create group chat with (.*) and (.*)$")
     public void ICreateGroupChat(String contact1, String contact2) throws Exception {
