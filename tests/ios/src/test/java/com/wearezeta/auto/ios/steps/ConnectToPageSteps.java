@@ -24,7 +24,7 @@ public class ConnectToPageSteps {
 
 	@When("I click Connect button on connect to dialog")
 	public void IClickConnectButtonConnectDialog() throws Exception {
-		getConnectToPage().sendInvitation();
+		getConnectToPage().tapConnectButton();
 	}
 
 	/**

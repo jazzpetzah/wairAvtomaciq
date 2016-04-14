@@ -537,8 +537,7 @@ public class CommonIOSSteps {
     @When("^(.*) archived conversation with (.*)$")
     public void ArchiveConversationWithUser(String userToNameAlias,
                                             String archivedUserNameAlias) throws Exception {
-        commonSteps.ArchiveConversationWithUser(userToNameAlias,
-                archivedUserNameAlias);
+        commonSteps.ArchiveConversationWithUser(userToNameAlias, archivedUserNameAlias);
     }
 
     /**
@@ -960,5 +959,22 @@ public class CommonIOSSteps {
     @When("^I confirm my choice$")
     public void IConfirmImageSelection() throws Exception {
         pagesCollection.getCommonPage().pressConfirmButton();
+    }
+
+    /**
+     * Execute Delete Conversation action on the particular device registered for this user
+     *
+     * @step. ^User (.*) deletes? (single user|group) conversation (.*) using device (.*)
+     *
+     * @param userAs user name/alias
+     * @param convoType either 'group' or 'single user'
+     * @param convoName conversation name
+     * @param deviceName device name (this one should already exist)
+     * @throws Exception
+     */
+    @Given("^User (.*) deletes? (single user|group) conversation (.*) using device (.*)")
+    public void UserDeletedConversation(String userAs, String convoType, String convoName, String deviceName)
+            throws Exception {
+        commonSteps.UserClearsConversation(userAs, convoName, deviceName, convoType.equals("group"));
     }
 }

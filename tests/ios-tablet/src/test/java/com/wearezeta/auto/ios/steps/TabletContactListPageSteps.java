@@ -41,6 +41,8 @@ public class TabletContactListPageSteps {
         );
     }
 
+    private static final double MIN_CONVO_SIMILARITY_SCORE = 0.8;
+
     /**
      * Verify whether the previous conversation state is the same or different to the current state
      *
@@ -56,14 +58,13 @@ public class TabletContactListPageSteps {
             throw new IllegalStateException(String.format(
                     "Please take a screenshot of '%s' conversation entry first", name));
         }
-        final double minScore = 0.999;
         final int timeoutSeconds = 35;
         if (shouldNotBeChanged == null) {
             Assert.assertTrue(String.format("The state of '%s' conversation item seems to be the same", name),
-                    this.savedConvoItemStates.get(name).isChanged(timeoutSeconds, minScore));
+                    this.savedConvoItemStates.get(name).isChanged(timeoutSeconds, MIN_CONVO_SIMILARITY_SCORE));
         } else {
             Assert.assertTrue(String.format("The state of '%s' conversation item seems to be changed", name),
-                    this.savedConvoItemStates.get(name).isNotChanged(timeoutSeconds, minScore));
+                    this.savedConvoItemStates.get(name).isNotChanged(timeoutSeconds, MIN_CONVO_SIMILARITY_SCORE));
         }
     }
 

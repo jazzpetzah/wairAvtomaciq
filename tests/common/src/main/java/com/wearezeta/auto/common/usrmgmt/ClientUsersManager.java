@@ -334,8 +334,7 @@ public class ClientUsersManager {
         generateUsers(this.users.subList(0, count), strategy);
     }
 
-    private static String[] SELF_USER_NAME_ALISES = new String[]{"I", "Me",
-            "Myself"};
+    private static String[] SELF_USER_NAME_ALISES = new String[]{"I", "Me", "Myself"};
     private static String[] SELF_USER_PASSWORD_ALISES = new String[]{"myPassword"};
     private static String[] SELF_USER_EMAIL_ALISES = new String[]{"myEmail"};
     private static String[] SELF_USER_PHONE_NUMBER_ALISES = new String[]{"myPhoneNumber"};

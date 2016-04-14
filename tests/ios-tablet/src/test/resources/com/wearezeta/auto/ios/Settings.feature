@@ -6,7 +6,7 @@ Feature: Settings
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     Then I see settings page
@@ -15,13 +15,13 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C2906 @regression @id3022 @rc
+  @C2906 @regression @id3022
   Scenario Outline: Attempt to open About screen in settings [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I click on Settings button on personal page
     And I click on About button on personal page
     Then I see About page
@@ -38,7 +38,7 @@ Feature: Settings
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     And I select settings item Account
@@ -56,7 +56,7 @@ Feature: Settings
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     And I select settings item Alerts
@@ -72,7 +72,7 @@ Feature: Settings
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I click on Settings button on personal page
     And I click on Help button from the options menu
     Then I see Support web page
@@ -88,7 +88,7 @@ Feature: Settings
     Given I Sign in on tablet using my email
     Given I rotate UI to landscape
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I click on Settings button on personal page
     And I click on About button on personal page
     Then I see About page

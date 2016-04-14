@@ -72,6 +72,41 @@ Feature: E2EE
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
+  @C87649 @e2ee @smoke
+  Scenario Outline: Verify I can not break sessions with temporary devices
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Myself
+    Given I switch to Sign In page
+    When I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then I see the history info page
+    When I click confirm on history info page
+    Then I am signed in properly
+    When I open Sign In page
+    And User <Name> removes all his registered OTR clients
+    And user <Contact> adds a new device Device1 with label Label1
+    And I switch to Sign In page
+    And I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then I see the history info page
+    When Contact <Contact> sends encrypted message <EncryptedMessage1> to user Myself
+    And I wait for 5 seconds
+    And I click confirm on history info page
+    And I am signed in properly
+    And Contact <Contact> sends encrypted message <EncryptedMessage2> to user Myself
+    And I wait for 5 seconds
+    And I open conversation with <Contact>
+    And I write message <Message>
+    And I send message
+    And I see text message <EncryptedMessage1>
+    And I see text message <EncryptedMessage2>
+
+    Examples:
+      | Email      | Password      | Name      | Contact    | EncryptedMessage1 | EncryptedMessage2 | Message |
+      | user1Email | user1Password | user1Name | user2Name  | EncryptedYo1      | EncryptedYo2      | yo      |
+
   @C2100 @e2ee @regression
   Scenario Outline: Login as temporary device after device limit is reached
     Given There is 1 user where <Name> is me
@@ -314,6 +349,55 @@ Feature: E2EE
     | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
 
+  @C95628 @staging
+  Scenario Outline: Verify device list is updated in people popover if participant deletes or adds new devices in 1:1
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given user <Contact> adds a new device Device2 with label Label2
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    When I open conversation with <Contact>
+    And I click People button in one to one conversation
+    Then I see Single User Profile popover
+    When I switch to Devices tab on Single User Profile popover
+    And I click on device Device2 of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    Then I see device Device2 of user <Contact> is verified on Single User Profile popover
+    Then I do not see user verified icon on Single User Profile popover
+    Then User <Contact> only keeps his 1 most recent OTR clients
+    # We have to close and reopen the people popover to update the device list
+    When I click People button in one to one conversation
+    And I wait for 1 seconds
+    When I click People button in one to one conversation
+    When I switch to Devices tab on Single User Profile popover
+    Then I see user verified icon on Single User Profile popover
+    When I click People button in one to one conversation
+#   Then I see <ALL_VERIFIED> action in conversation
+#   And I see verified icon in conversation
+    Then user <Contact> adds a new device Device3 with label Label3
+    When I click People button in one to one conversation
+    Then I see Single User Profile popover
+    When I switch to Devices tab on Single User Profile popover
+    Then I do not see user verified icon on Single User Profile popover
+#   And I do not see verified icon in conversation
+    When I switch to Devices tab on Single User Profile popover
+    And I click on device Device3 of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    Then I see device Device3 of user <Contact> is verified on Single User Profile popover
+    Then I see user verified icon on Single User Profile popover
+#   When I click People button in one to one conversation
+    # Not yet implemented on webapp:
+#   Then I see <ALL_VERIFIED> action in conversation
+#   And I see verified icon in conversation
+
+  Examples:
+    | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
+    | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
+
   @C12055 @regression
   Scenario Outline: Verify it is possible to verify group conversation participants
     Given There are 3 users where <Name> is me
@@ -497,7 +581,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  | NEW_DEVICE                 | Message          |
       | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified | started using a new device | Unverified hello |
 
-  @C82513 @e2ee @staging
+  @C82513 @e2ee @regression
   Scenario Outline: Verify you can recover from a broken session
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -524,7 +608,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT | Message1    | Message2     | Message3    |
       | user1Email | user1Password | user1Name | user2Name | UNABLE TO DECRYPT | First hello | Second hello | Third hello |
 
-  @C82813 @e2ee @staging
+  @C82813 @e2ee @regression
   Scenario Outline: Verify you can recover from a broken session between your own devices
     Given There are 2 users where <Name> is me
     Given user <Name> adds a new device Device1 with label Label1

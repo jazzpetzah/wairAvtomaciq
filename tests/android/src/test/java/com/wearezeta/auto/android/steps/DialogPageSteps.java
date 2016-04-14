@@ -480,14 +480,20 @@ public class DialogPageSteps {
     /**
      * Used once to check that the last message sent is the same as what is expected
      *
-     * @param message the text of convo message
+     * @param message the text of convo
+     * @param not     equals to null if the message should be visible
      * @throws Exception
-     * @step. ^Last message is (.*)$
+     * @step. ^^I see the most recent conversation message is (not )?"(.*)"
      */
-    @Then("^Last message is (.*)$")
-    public void ThenLastMessageIs(String message) throws Exception {
-        Assert.assertTrue(String.format("The last conversation message is not equal to '%s'", message),
-                getDialogPage().isLastMessageEqualTo(message, 30));
+    @Then("^I see the most recent conversation message is (not )?\"(.*)\"")
+    public void ISeeLastMessage(String not, String message) throws Exception {
+        if (not == null) {
+            Assert.assertTrue(String.format("The most recent conversation message is not equal to '%s'", message),
+                    getDialogPage().isLastMessageEqualTo(message, 30));
+        } else {
+            Assert.assertFalse(String.format("The most recent conversation message should not be equal to '%s'", message),
+                    getDialogPage().isLastMessageEqualTo(message, 5));
+        }
     }
 
     /**
@@ -730,7 +736,7 @@ public class DialogPageSteps {
      * Checks to see that upper toolbar is visible
      *
      * @throws Exception
-     * @step.  ^I see the upper toolbar$
+     * @step. ^I see the upper toolbar$
      */
     @Then("^I see the upper toolbar$")
     public void ThenISeeTopToolbar() throws Exception {
@@ -801,16 +807,17 @@ public class DialogPageSteps {
     }
 
     /**
-     * Check the cursor bar only contains ping, sketch, add picture and people buttons in cursor bar
+     * Check the cursor bar only contains ping, sketch, add picture, people and file buttons in cursor bar
      *
      * @throws Exception
-     * @step. ^I only see ping, sketch, camera and people buttons in cursor menu
+     * @step. ^I only see ping, sketch, camera, people and file buttons in cursor menu
      */
-    @Then("^I only see ping, sketch, camera and people buttons in cursor menu")
+    @Then("^I only see ping, sketch, camera, people and file buttons in cursor menu")
     public void ThenIOnlySeePingSketchAddPicturePeopleButton() throws Exception {
         Assert.assertTrue("Ping button should be visible in cursor menu", getDialogPage().isPingButtonVisible());
         Assert.assertTrue("Sketch button should be visible in cursor menu", getDialogPage().isSketchButtonVisible());
         Assert.assertTrue("Camera button should be visible in cursor menu", getDialogPage().isCameraButtonVisible());
         Assert.assertTrue("People button should be visible in cursor menu", getDialogPage().isPeopleButtonVisible());
+        Assert.assertTrue("File button should be visible in cursor menu", getDialogPage().isFileButtonVisible());
     }
 }

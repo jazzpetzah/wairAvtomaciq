@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.Platform;
+import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
@@ -18,9 +19,6 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.ios.pages.keyboard.IOSKeyboard;
-import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.PlatformDrivers;
-import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public abstract class IOSPage extends BasePage {
     private static final Logger log = ZetaLogger.getLog(IOSPage.class.getSimpleName());
@@ -54,7 +52,8 @@ public abstract class IOSPage extends BasePage {
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
-        return IOS_DRIVER_INIT_TIMEOUT * DRIVER_CREATION_RETRIES_COUNT;
+        return IOS_DRIVER_INIT_TIMEOUT * DRIVER_CREATION_RETRIES_COUNT +
+                ZetaDriver.RECREATE_DELAY_SECONDS * (DRIVER_CREATION_RETRIES_COUNT - 1);
     }
 
     public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {

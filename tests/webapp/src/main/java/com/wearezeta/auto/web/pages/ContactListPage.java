@@ -345,7 +345,7 @@ public class ContactListPage extends WebPage {
                 .waitUntilLocatorIsDisplayed(
                         this.getDriver(),
                         By.xpath(WebAppLocators.ContactListPage.xpathMuteIconByContactName
-                                .apply(conversationName)), 5);
+                                .apply(conversationName)));
     }
 
     public boolean isConversationNotMuted(String conversationName)

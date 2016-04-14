@@ -34,7 +34,7 @@ public class CallingSteps {
     }
 
     /**
-     * Make audio or video call(s) to one specific conversation.
+     * Make video call(s) to one specific conversation.
      *
      * @step. ^(.*) start(?:s|ing) a video call to (.*)$
      *
@@ -62,7 +62,7 @@ public class CallingSteps {
     }
 
     /**
-     * Stop call on the other side
+     * Stop call (audio and video) on the other side
      *
      * @step. ^(.*) stops? calls( to (.*))$
      *

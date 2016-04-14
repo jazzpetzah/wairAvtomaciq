@@ -5,7 +5,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     Then I see settings page
@@ -19,7 +19,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I click on Settings button on personal page
     And I click on About button on personal page
     Then I see About page
@@ -36,7 +36,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     And I select settings item Account
@@ -53,7 +53,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     And I select settings item Alerts
@@ -68,7 +68,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    And I tap my avatar
+    And I tap settings gear button
     And I click on Settings button on personal page
     When I click on Help button from the options menu
     And I wait for 4 seconds
@@ -84,7 +84,7 @@ Feature: Settings
     Given User me change accent color to <Color>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I click on Settings button on personal page
     And I click on About button on personal page
     Then I see About page
@@ -112,7 +112,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap my avatar
+    When I tap settings gear button
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     And I select settings item Account

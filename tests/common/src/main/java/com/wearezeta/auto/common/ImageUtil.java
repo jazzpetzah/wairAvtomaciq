@@ -20,6 +20,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 public class ImageUtil {
+
     public static final int RESIZE_NORESIZE = 0;
     public static final int RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION = 1;
     public static final int RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION = 2;

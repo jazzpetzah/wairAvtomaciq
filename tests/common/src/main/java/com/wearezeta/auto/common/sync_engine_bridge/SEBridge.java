@@ -126,6 +126,14 @@ public class SEBridge {
         getOrAddRandomDevice(userFrom).sendPing(convId);
     }
 
+    public void clearConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).clearConversation(convId);
+    }
+
+    public void sendFile(ClientUser userFrom, String convId, String path, String mime, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).sendFile(convId, path, mime);
+    }
+
     private void shutdown() {
         try {
             getDevicePool().shutdown();

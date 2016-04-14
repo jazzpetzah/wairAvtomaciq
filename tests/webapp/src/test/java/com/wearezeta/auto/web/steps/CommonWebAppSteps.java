@@ -739,5 +739,30 @@ public class CommonWebAppSteps {
         context.getPagesCollection().getPage(RegistrationPage.class)
                 .openSignInPage();
     }
+    
+    /**
+     * Remove all registered OTR clients for the particular user
+     *
+     * @param userAs user name/alias
+     * @throws Exception
+     * @step. ^User (.*) removes all his registered OTR clients$
+     */
+    @Given("^User (.*) removes all his registered OTR clients$")
+    public void UserRemovesAllRegisteredOtrClients(String userAs) throws Exception {
+        context.getCommonSteps().UserRemovesAllRegisteredOtrClients(userAs);
+    }
+    
+    /**
+     * Remove all registered OTR clients for the particular user except of the X most recent ones
+     *
+     * @param userAs       user name/alias
+     * @param clientsCount the count of recents OTR clients to keep
+     * @throws Exception
+     * @step. ^User (.*) only keeps his (\d+) most recent OTR clients$
+     */
+    @Given("^User (.*) only keeps his (\\d+) most recent OTR clients$")
+    public void UserKeepsXOtrClients(String userAs, int clientsCount) throws Exception {
+        context.getCommonSteps().UserKeepsXOtrClients(userAs, clientsCount);
+    }
 
 }

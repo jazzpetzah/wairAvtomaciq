@@ -95,9 +95,13 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
         return this.execute(command, ImmutableMap.<String, Object>of());
     }
 
+    private static final String LOG_DECORATION_PREFIX = "*************APPIUM SERVER LOG START**************";
+    private static final String LOG_DECORATION_SUFFIX = "*************APPIUM SERVER LOG END****************";
+
     @Override
     public Response execute(String driverCommand, Map<String, ?> parameters) {
         if (this.isSessionLost() && !driverCommand.equals(DriverCommand.SCREENSHOT)) {
+            log.debug(LOG_DECORATION_PREFIX + "\n" + AppiumServer.getLog().orElse("") + "\n" + LOG_DECORATION_SUFFIX);
             throw new IllegalStateException(
                     String.format("Appium session is dead. Skipping execution of '%s' command...", driverCommand));
         }
@@ -116,12 +120,28 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
                     return response;
                 }
                 if (isSessionLostBecause(e.getCause())) {
-                    setSessionLost(true);
+                    if (!isSessionLost()) {
+                        try {
+                            super.execute(DriverCommand.QUIT);
+                        } catch (Exception eq) {
+                            // ignore
+                        } finally {
+                            setSessionLost(true);
+                        }
+                    }
                 }
                 Throwables.propagate(e.getCause());
             } else {
                 if (e instanceof TimeoutException) {
-                    setSessionLost(true);
+                    if (!isSessionLost()) {
+                        try {
+                            super.execute(DriverCommand.QUIT);
+                        } catch (Exception eq) {
+                            // ignore
+                        } finally {
+                            setSessionLost(true);
+                        }
+                    }
                 }
                 Throwables.propagate(e);
             }

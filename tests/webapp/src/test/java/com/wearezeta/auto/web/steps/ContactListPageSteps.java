@@ -390,7 +390,7 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Verify whether missed call notification is present for the given
+     * Verify whether missed call notification in the conversation list is present for the given
      * conversation.
      *
      * @param conversationName   name of the conversation
@@ -398,7 +398,7 @@ public class ContactListPageSteps {
      * @throws Exception
      * @step. I(do not)? see missed call notification for conversation (.*)
      */
-    @Then("^I( do not)? see missed call notification for conversation (.*)$")
+    @Then("^I( do not)? see missed call notification in the conversation list for conversation (.*)$")
     public void isCallMissedVisibleForContact(String shouldNotBeVisible,
                                               String conversationName) throws Exception {
         conversationName = context.getUserManager().replaceAliasesOccurences(conversationName,

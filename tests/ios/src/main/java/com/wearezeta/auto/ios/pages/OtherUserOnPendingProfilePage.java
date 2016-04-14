@@ -26,7 +26,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 
     private static final By nameOtherProfilePageCloseButton = MobileBy.AccessibilityId("OtherUserProfileCloseButton");
 
-    private static final By nameCancelRequestConfirmationLabel = MobileBy.AccessibilityId("Cancel Request?");
+    private static final By nameConnectConfirmButton = MobileBy.AccessibilityId("CONNECT");
 
     public OtherUserOnPendingProfilePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -40,15 +40,11 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOtherProfileCancelRequestButton);
     }
 
-    public void clickCancelRequestButton() throws Exception {
+    public void tapCancelRequestButton() throws Exception {
         getElement(xpathOtherProfileCancelRequestButton).click();
     }
 
-    public boolean isCancelRequestConfirmationVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCancelRequestConfirmationLabel, 3);
-    }
-
-    public void clickConfirmCancelRequestButton() throws Exception {
+    public void confirmCancelRequest() throws Exception {
         getElement(xpathCancelRequestYesButton).click();
     }
 
@@ -56,7 +52,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathOtherProfilePageCancelRequestLabel);
     }
 
-    public void clickStartConversationButton() throws Exception {
+    public void tapStartConversationButton() throws Exception {
         getElement(nameLeftActionButton).click();
     }
 
@@ -66,5 +62,13 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 
     public boolean isRemoveFromGroupConversationVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameRightActionButton);
+    }
+
+    public void tapConnectButton() throws Exception {
+        getElement(nameLeftActionButton).click();
+    }
+
+    public void confirmConnect() throws Exception {
+        getElement(nameConnectConfirmButton).click();
     }
 }

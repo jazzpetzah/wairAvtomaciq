@@ -1,9 +1,13 @@
 package com.wearezeta.auto.android.steps;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.misc.ElementState;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
@@ -144,21 +148,28 @@ public class ContactListPageSteps {
      * Asserts that two given contact names exist in the conversation list
      * (should this maybe be set to a list?)
      *
-     * @param contact1 The first contact to check in the conversation list
-     * @param contact2 The second contact to check in the conversation list
+     * @param shouldNotSee equals to null if the conversation should be present
+     * @param contacts     The list of comma-separated contact names/aliases
      * @throws Exception
-     * @step. ^I see (.*) and (.*) chat in contact list$
+     * @step. ^I see group conversation with (.*) in conversations list$
      */
-    @Then("^I see (.*) and (.*) chat in contact list$")
-    public void ISeeGroupChatInContactList(String contact1, String contact2)
-            throws Exception {
-        contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
-        contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
-        // FIXME: the step should be more universal
-        Assert.assertTrue(getContactListPage().isContactExists(
-                contact1 + ", " + contact2)
-                || getContactListPage().isContactExists(
-                contact2 + ", " + contact1));
+    @Then("^I (do not )?see group conversation with (.*) in conversations list$")
+    public void ISeeGroupChatInContactList(String shouldNotSee, String contacts) throws Exception {
+        final List<String> users = new ArrayList<>();
+        for (String alias : CommonSteps.splitAliases(contacts)) {
+            users.add(usrMgr.findUserByNameOrNameAlias(alias).getName());
+        }
+        if (shouldNotSee == null) {
+            Assert.assertTrue(
+                    String.format("The is no group conversation with users '%s' in the list",
+                            StringUtils.join(",", users)),
+                    getContactListPage().isConversationItemExist(users));
+        } else {
+            Assert.assertTrue(
+                    String.format("The group conversation with users '%s' in present the list, but it should not",
+                            StringUtils.join(",", users)),
+                    getContactListPage().isConversationItemNotExist(users));
+        }
     }
 
     /**
@@ -170,9 +181,11 @@ public class ContactListPageSteps {
     @Then("^I( do not)? see contact hint banner$")
     public void ISeeContactsHintBanner(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
-            Assert.assertTrue(String.format("The contact hint banner is not visible in the list"), getContactListPage().isContactsBannerVisible());
+            Assert.assertTrue("The contact hint banner is not visible in the list",
+                    getContactListPage().isContactsBannerVisible());
         } else {
-            Assert.assertTrue(String.format("The contact hint banner is visible in the list, but should be hidden"), getContactListPage().isContactsBannerNotVisible());
+            Assert.assertTrue("The contact hint banner is visible in the list, but should be hidden",
+                    getContactListPage().isContactsBannerNotVisible());
         }
     }
 
@@ -195,11 +208,31 @@ public class ContactListPageSteps {
         getContactListPage().verifyContactListIsFullyLoaded();
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The conversation '%s' is not visible in the list",
-                    userName), getContactListPage().isContactExists(userName));
+                    userName), getContactListPage().isConversationVisible(userName));
         } else {
             Assert.assertTrue(String.format("The conversation '%s' is  visible in the list, but should be hidden",
-                    userName), getContactListPage().waitUntilContactDisappears(
-                    userName));
+                    userName), getContactListPage().waitUntilConversationDisappears(userName));
+        }
+    }
+
+    /**
+     * Check to see that a given username appears in the contact list
+     *
+     * @param timeoutSeconds conversation visibility timeout
+     * @param convoName      conversation name/alias
+     * @param expectedAction either 'appears in' or 'disappears from'
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until conversation (.*) (appears in|disappears from) the list$
+     */
+    @Then("^I wait up to (\\d+) seconds? until conversation (.*) (appears in|disappears from) the list$")
+    public void IWaitForConvo(int timeoutSeconds, String convoName, String expectedAction) throws Exception {
+        convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
+        if (expectedAction.equals("appears in")) {
+            Assert.assertTrue(String.format("The conversation '%s' is not visible in the list",
+                    convoName), getContactListPage().isConversationVisible(convoName, timeoutSeconds));
+        } else {
+            Assert.assertTrue(String.format("The conversation '%s' is  visible in the list, but should be hidden",
+                    convoName), getContactListPage().waitUntilConversationDisappears(convoName, timeoutSeconds));
         }
     }
 

@@ -18,6 +18,7 @@ Feature: Upgrade
     And I see 1 image in the conversation view
     When User <Contact> sends encrypted image <Picture> to single user conversation Myself
     And I wait for 10 seconds
+    And I scroll to the bottom of conversation view
     Then I see 2 images in the conversation view
     When I scroll to the bottom of conversation view
     And I tap on text input

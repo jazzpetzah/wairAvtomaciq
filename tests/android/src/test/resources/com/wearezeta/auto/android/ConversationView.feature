@@ -93,7 +93,7 @@ Feature: Conversation View
     And I click on Add to conversation button
     Then I see group chat page with users <Contact1>,<Contact2>
     And I navigate back from dialog page
-    And I see <Contact1> and <Contact2> chat in contact list
+    And I see group conversation with <Contact1>,<Contact2> in conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -297,7 +297,7 @@ Feature: Conversation View
     Then I see giphy preview page
     When I click on the giphy send button
     Then I see new photo in the dialog
-    And Last message is <Message> · via giphy.com
+    And I see the most recent conversation message is "<Message> · via giphy.com"
 
     Examples:
       | Name      | Contact   | Message |
@@ -359,7 +359,7 @@ Feature: Conversation View
     Then I see giphy preview page
     When I click on the giphy send button
     Then I see new photo in the dialog
-    And Last message is <Message> · via giphy.com
+    And I see the most recent conversation message is "<Message> · via giphy.com"
 
     Examples:
       | Name      | Contact   | Message |
@@ -432,7 +432,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |  Message1 | Message2 |
       | user1Name | user2Name | user3Name |  Msg1     | Msg2     |
 
-  @C77966 @regression
+  @C77966 @regression @staging @C87626
   Scenario Outline: Verify there are no video and audio calling icons under the + button bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -441,7 +441,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I tap plus button in text input
-    Then I only see ping, sketch, camera and people buttons in cursor menu
+    Then I only see ping, sketch, camera, people and file buttons in cursor menu
 
     Examples:
       | Name      | Contact1  |
@@ -457,7 +457,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I tap plus button in text input
     And I tap Add people button from input tools
-    And the toolbar title in People picker page should be "CREATE GROUP"
+    And the toolbar title in People picker page should be "Create group"
     Then I do not see No matching result placeholder on People picker page
     When I input in People picker search field user name <Contact2>
     And I tap on user name found on People picker page <Contact2>
@@ -483,7 +483,7 @@ Feature: Conversation View
     When I tap on contact name <GroupChatName>
     And I tap plus button in text input
     And I tap Add people button from input tools
-    And the toolbar title in People picker page should be "ADD PEOPLE"
+    And the toolbar title in People picker page should be "Add people"
     Then I do not see No matching result placeholder on People picker page
     When I input in People picker search field user name <Contact3>
     And I tap on user name found on People picker page <Contact3>

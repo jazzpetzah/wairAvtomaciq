@@ -351,7 +351,7 @@ Feature: Conversation View
     And I click delete menu button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
@@ -464,3 +464,21 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C2624 @regression @rc
+  Scenario Outline: Verify sending GIF format pic [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    Given User <Contact> sends encrypted image <GifPicture> to single user conversation Myself
+    When I tap on contact name <Contact>
+    Then I see 1 photo in the dialog
+    And I see the picture in the conversation view is animated
+    When I tap and hold image to open full screen
+    Then I see the picture on image fullscreen page is animated
+
+    Examples:
+      | Name      | Contact   | GifPicture   |
+      | user1Name | user2Name | animated.gif |

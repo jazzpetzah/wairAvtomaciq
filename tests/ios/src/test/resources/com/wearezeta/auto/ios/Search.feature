@@ -5,7 +5,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user email <ContactEmail>
     Then I see the conversation "<ContactName>" exists in Search results
 
@@ -18,7 +18,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 
@@ -33,7 +33,7 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    And I open search by taping on it
+    And I open search UI
     And I see top people list on People picker page
     Then I tap on first 1 top connections
     And I tap Open conversation action button on People picker page
@@ -51,7 +51,7 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    And I open search by taping on it
+    And I open search UI
     And I see top people list on People picker page
     Then I tap on first 2 top connections
     When I tap Create conversation action button on People picker page
@@ -68,7 +68,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field conversation name <UnconnectedUser>
     And I tap on conversation <UnconnectedUser> in search result
     Then I see connect to <UnconnectedUser> dialog
@@ -89,7 +89,7 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    And I open search by taping on it
+    And I open search UI
     And I tap on 3 top connections but not <Contact>
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -107,7 +107,7 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     When I do not see conversation <Contact> in conversations list
-    And I open search by taping on it
+    And I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user
@@ -124,7 +124,7 @@ Feature: Search
     Given <Contact> is connected to <Name>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I wait until <Contact> exists in backend search results
     And I input in People picker search field first 5 letters of user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
@@ -139,7 +139,7 @@ Feature: Search
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Call action button on People picker page
@@ -156,7 +156,7 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    When I open search by taping on it
+    When I open search UI
     And I see top people list on People picker page
     Then I tap on first 3 top connections
     When I see Send image action button on People picker page
@@ -180,7 +180,7 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    When I open search by taping on it
+    When I open search UI
     And I see top people list on People picker page
     When I tap on first 1 top connections
     Then I see Open conversation action button on People picker page
@@ -195,7 +195,7 @@ Feature: Search
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I open search by taping on it
+    When I open search UI
     And I input in People picker search field user name <Contact>
     When I tap on conversation <Contact> in search result
     Then I see Open conversation action button on People picker page
@@ -211,7 +211,7 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    When I open search by taping on it
+    When I open search UI
     And I see top people list on People picker page
     When I tap on 1st top connection contact
     Then I see Open conversation action button on People picker page
@@ -229,7 +229,7 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    When I open search by taping on it
+    When I open search UI
     And I see top people list on People picker page
     When I tap on 1st top connection contact
     Then I see Open conversation action button on People picker page
@@ -247,7 +247,7 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    When I open search by taping on it
+    When I open search UI
     And I see top people list on People picker page
     And I tap on 1st top connection contact
     And I see Open conversation action button on People picker page
@@ -271,7 +271,7 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    When I open search by taping on it
+    When I open search UI
     And I see top people list on People picker page
     And I tap on 1st top connection contact
     And I tap Open conversation action button on People picker page
@@ -288,17 +288,17 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    When I open search by taping on it
+    When I open search UI
     And I see Invite more people button
     And I tap on 1st top connection contact
-    And I DONT see Invite more people button
+    And I do not see Invite more people button
     And I see Open conversation action button on People picker page
     And I tap on 1st top connection contact
     And I do not see Open conversation action button on People picker page
     And I see Invite more people button
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I DONT see Invite more people button
+    And I do not see Invite more people button
     And I see Open conversation action button on People picker page
     And I press backspace button
     And I press backspace button

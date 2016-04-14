@@ -137,6 +137,7 @@ Feature: People View
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
+    Given Myself wait until 2 people are in the Top People list on the backend
     Given I see the conversations list with conversations
     And I open Search UI
     And I tap <Contact1> avatar in Top People

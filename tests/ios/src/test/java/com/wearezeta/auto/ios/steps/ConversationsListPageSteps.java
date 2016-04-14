@@ -19,7 +19,7 @@ public class ConversationsListPageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private ConversationsListPage getContactListPage() throws Exception {
+    private ConversationsListPage getConversationsListPage() throws Exception {
         return pagesCollection.getPage(ConversationsListPage.class);
     }
 
@@ -33,7 +33,7 @@ public class ConversationsListPageSteps {
 
     @Given("^I see conversations list$")
     public void GivenISeeConversationsList() throws Exception {
-        Assert.assertTrue("Conversations list is not visible after the timeout", getLoginPage().isSelfAvatarVisible());
+        Assert.assertTrue("Conversations list is not visible after the timeout", getLoginPage().isContactsButtonVisible());
     }
 
     private Map<String, ElementState> savedConvoItemStates = new HashMap<>();
@@ -49,7 +49,7 @@ public class ConversationsListPageSteps {
     public void IRememberConvoItemState(String nameAlias) throws Exception {
         final String name = usrMgr.replaceAliasesOccurences(nameAlias, FindBy.NAME_ALIAS);
         this.savedConvoItemStates.put(name,
-                new ElementState(() -> getContactListPage().getConversationEntryScreenshot(name)).remember()
+                new ElementState(() -> getConversationsListPage().getConversationEntryScreenshot(name)).remember()
         );
     }
 
@@ -91,7 +91,7 @@ public class ConversationsListPageSteps {
     @When("^I remember the state of conversation item number (\\d+)$")
     public void IRememberConvoItemStateByIdx(int convoIdx) throws Exception {
         this.savedConvoItemStatesByIdx.put(convoIdx,
-                new ElementState(() -> getContactListPage().getConversationEntryScreenshot(convoIdx)).remember()
+                new ElementState(() -> getConversationsListPage().getConversationEntryScreenshot(convoIdx)).remember()
         );
     }
 
@@ -131,15 +131,21 @@ public class ConversationsListPageSteps {
         getLoginPage().dismissSettingsWarning();
     }
 
-    @When("^I tap my avatar$")
-    public void WhenITapOnMyName() throws Exception {
-        getContactListPage().tapMyAvatar();
+    /**
+     * Tap the settings gear button
+     *
+     * @throws Exception
+     * @step. ^I tap settings gear button$
+     */
+    @When("^I tap settings gear button$")
+    public void ITapSettingsGear() throws Exception {
+        getConversationsListPage().tapSettingsGearButton();
     }
 
     @When("^I tap on contact name (.*)")
     public void WhenITapOnContactName(String name) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        getContactListPage().tapOnName(name);
+        getConversationsListPage().tapOnName(name);
     }
 
     /**
@@ -151,7 +157,7 @@ public class ConversationsListPageSteps {
      */
     @When("^I tap on conversation item number (\\d+)$")
     public void WhenITapOnConvoByIdx(int idx) throws Exception {
-        getContactListPage().tapConvoItemByIdx(idx);
+        getConversationsListPage().tapConvoItemByIdx(idx);
     }
 
     @When("^I tap on group chat with name (.*)")
@@ -160,14 +166,14 @@ public class ConversationsListPageSteps {
     }
 
     /**
-     * Open search by taping on search field
+     * Open search by taping Contacts button
      *
      * @throws Exception
-     * @step. ^I open search by taping on it$
+     * @step. ^I open search UI$
      */
-    @When("^I open search by taping on it$")
+    @When("^I open search UI$")
     public void IOpenSearchByTap() throws Exception {
-        getContactListPage().openSearch();
+        getConversationsListPage().tapContactsButton();
     }
 
     private final static long CONVO_LIST_UPDATE_TIMEOUT = 10000; // milliseconds
@@ -185,7 +191,7 @@ public class ConversationsListPageSteps {
         final long millisecondsStarted = System.currentTimeMillis();
         do {
             Thread.sleep(500);
-            if (getContactListPage().isFirstConversationName(convoName)) {
+            if (getConversationsListPage().isFirstConversationName(convoName)) {
                 return;
             }
         } while (System.currentTimeMillis() - millisecondsStarted <= CONVO_LIST_UPDATE_TIMEOUT);
@@ -199,7 +205,7 @@ public class ConversationsListPageSteps {
      * verifies the visibility of a specific item in the conversations list
      *
      * @param shouldNotSee equals to null if the item should be visible
-     * @param value conversation name/alias
+     * @param value        conversation name/alias
      * @throws Exception
      * @step. ^I (do not )?see conversation (.*) in conversations list$
      */
@@ -208,13 +214,36 @@ public class ConversationsListPageSteps {
         value = usrMgr.replaceAliasesOccurences(value, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The conversation '%s' is not visible in the conversation list",
-                    value), getContactListPage().isChatInContactList(value));
+                    value), getConversationsListPage().isConversationInList(value));
         } else {
             Assert.assertTrue(
                     String.format("The conversation '%s' is visible in the conversation list, but should be hidden",
-                            value), getContactListPage().contactIsNotDisplayed(value));
+                            value), getConversationsListPage().isConversationNotInList(value));
         }
     }
+
+    /**
+     * Verifies the visibility of a specific item in the conversations list
+     *
+     * @param timeoutSeconds equals to null if the item should be visible
+     * @param convoName      conversation name/alias
+     * @param expectedState  either 'appears in' or 'disappears from'
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until conversation (.*) (appears in|disappears from) the list$
+     */
+    @Then("^I wait up to (\\d+) seconds? until conversation (.*) (appears in|disappears from) the list$")
+    public void IWaitForConvo(int timeoutSeconds, String convoName, String expectedState) throws Exception {
+        convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
+        if (expectedState.equals("appears in")) {
+            Assert.assertTrue(String.format("The conversation '%s' is not visible in the conversation list",
+                    convoName), getConversationsListPage().isConversationInList(convoName, timeoutSeconds));
+        } else {
+            Assert.assertTrue(
+                    String.format("The conversation '%s' is still visible in the conversation list, but should be hidden",
+                            convoName), getConversationsListPage().isConversationNotInList(convoName, timeoutSeconds));
+        }
+    }
+
 
     @When("^I create group chat with (.*) and (.*)$")
     public void ICreateGroupChat(String contact1, String contact2) throws Exception {
@@ -239,33 +268,51 @@ public class ConversationsListPageSteps {
     @When("^I swipe right on a (.*)$")
     public void ISwipeRightOnContact(String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        getContactListPage().swipeRightConversationToRevealActionButtons(contact);
+        getConversationsListPage().swipeRightConversationToRevealActionButtons(contact);
     }
 
     @Then("^I open archived conversations$")
     public void IOpenArchivedConversations() throws Exception {
-        getContactListPage().openArchivedConversations();
+        getConversationsListPage().openArchivedConversations();
+    }
+
+    /**
+     * Verify whether Archive button is visible at the bottom of conversations list
+     *
+     * @param shouldNotSee equals to null if Archive button should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see Archive button at the bottom of conversations list$
+     */
+    @Then("^I (do not )?see Archive button at the bottom of conversations list$")
+    public void ISeeArchiveButton(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("Archive button should be visible, but it's hidden",
+                    getConversationsListPage().isArchiveButtonVisible());
+        } else {
+            Assert.assertTrue("Archive button should be invisible, but it's visible",
+                    getConversationsListPage().isArchiveButtonInvisible());
+        }
     }
 
     @When("I tap play/pause button in conversations list next to (.*)")
     public void ITapPlayPauseButtonInContactListNextTo(String contact) throws Exception {
         String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        getContactListPage().tapPlayPauseButtonNextTo(name);
+        getConversationsListPage().tapPlayPauseButtonNextTo(name);
     }
 
     @When("I click on Pending request link in conversations list")
     public void IClickPendingRequestLinkContactList() throws Exception {
-        getContactListPage().clickPendingRequest();
+        getConversationsListPage().clickPendingRequest();
     }
 
     @When("I (do not )?see Pending request link in conversations list")
     public void ISeePendingRequestLinkInContacts(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue("Pending request link is not in conversations list",
-                    getContactListPage().isPendingRequestInContactList());
+                    getConversationsListPage().isPendingRequestInContactList());
         } else {
             Assert.assertTrue("Pending request link is shown in conversations list",
-                    getContactListPage().pendingRequestInContactListIsNotShown());
+                    getConversationsListPage().pendingRequestInContactListIsNotShown());
         }
     }
 
@@ -276,10 +323,10 @@ public class ConversationsListPageSteps {
         final List<String> participantNames = CommonSteps.splitAliases(participantNameAliases);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("There is no conversation with '%s' in the list", participantNames),
-                    getContactListPage().isConversationWithUsersExist(participantNames, 5));
+                    getConversationsListPage().isConversationWithUsersExist(participantNames, 5));
         } else {
             Assert.assertFalse(String.format("There is conversation with '%s' in the list, which should be hidden",
-                    participantNames), getContactListPage().isConversationWithUsersExist(participantNames, 2));
+                    participantNames), getConversationsListPage().isConversationWithUsersExist(participantNames, 2));
         }
     }
 
@@ -291,7 +338,7 @@ public class ConversationsListPageSteps {
      */
     @When("^I click archive button for conversation$")
     public void IClickArchiveConversationButton() throws Exception {
-        getContactListPage().clickArchiveConversationButton();
+        getConversationsListPage().clickArchiveConversationButton();
     }
 
     /**
@@ -303,7 +350,7 @@ public class ConversationsListPageSteps {
     @Then("^I see mute call button in conversation list$")
     public void ISeeMuteCallButtonInConversationList() throws Exception {
         Assert.assertTrue("Mute call button is not shown in conversation list",
-                getContactListPage().isMuteCallButtonVisible());
+                getConversationsListPage().isMuteCallButtonVisible());
     }
 
     /**
@@ -314,7 +361,7 @@ public class ConversationsListPageSteps {
      */
     @Then("^I click mute call button in conversation list$")
     public void IClickMuteCallButtonInConversationList() throws Exception {
-        getContactListPage().clickMuteCallButton();
+        getConversationsListPage().clickMuteCallButton();
     }
 
     /**
@@ -326,13 +373,10 @@ public class ConversationsListPageSteps {
      * [Ll]ist$
      */
     @And("^I see conversation (.*) name in action menu in [Cc]ontact [Ll]ist$")
-    public void ISeeConversationNameInActionMenu(String conversation)
-            throws Exception {
-        conversation = usrMgr.replaceAliasesOccurences(conversation,
-                FindBy.NAME_ALIAS);
-        Assert.assertTrue("There is no conversation name " + conversation
-                + " in opened action menu.", getContactListPage()
-                .isActionMenuVisibleForConversation(conversation));
+    public void ISeeConversationNameInActionMenu(String conversation) throws Exception {
+        conversation = usrMgr.replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
+        Assert.assertTrue(String.format("There is no conversation name %s in opened action menu.",
+                conversation), getConversationsListPage().isActionMenuVisibleForConversation(conversation));
     }
 
     /**
@@ -346,8 +390,7 @@ public class ConversationsListPageSteps {
     @And("^I see (Silence|Delete|Leave|Archive|Block|Cancel Request|Cancel) button in action menu in [Cc]ontact [Ll]ist$")
     public void ISeeXButtonInActionMenu(String buttonTitle) throws Exception {
         Assert.assertTrue("There is no button " + buttonTitle.toUpperCase()
-                + " in opened action menu.", getContactListPage()
-                .isButtonVisibleInActionMenu(buttonTitle));
+                + " in opened action menu.", getConversationsListPage().isButtonVisibleInActionMenu(buttonTitle));
     }
 
     /**
@@ -358,7 +401,7 @@ public class ConversationsListPageSteps {
      */
     @When("^I press Archive button in action menu in Contact List$")
     public void IPressArchiveButtonInActionMenuInContactList() throws Throwable {
-        getContactListPage().clickArchiveButtonInActionMenu();
+        getConversationsListPage().clickArchiveButtonInActionMenu();
     }
 
     /**
@@ -369,7 +412,7 @@ public class ConversationsListPageSteps {
      */
     @When("^I press Leave button in action menu in Contact List$")
     public void IPressLeaveButtonInActionMenuInContactList() throws Throwable {
-        getContactListPage().clickLeaveButtonInActionMenu();
+        getConversationsListPage().clickLeaveButtonInActionMenu();
     }
 
     /**
@@ -380,7 +423,7 @@ public class ConversationsListPageSteps {
      */
     @Then("^I press Cancel button in action menu in Contact List$")
     public void IPressCancelButtonInActionMenuInContactList() throws Throwable {
-        getContactListPage().clickCancelButtonInActionMenu();
+        getConversationsListPage().clickCancelButtonInActionMenu();
     }
 
     /**
@@ -396,71 +439,65 @@ public class ConversationsListPageSteps {
         conversation = usrMgr.replaceAliasesOccurences(conversation,
                 FindBy.NAME_ALIAS);
         Assert.assertEquals("Conversation is not selected", "1",
-                getContactListPage().getSelectedConversationCellValue(conversation).
+                getConversationsListPage().getSelectedConversationCellValue(conversation).
                         orElseThrow(() -> new IllegalStateException("No conversations are selected in the list")));
     }
 
     /**
-     * Verify if Invite more people button is shown in contact list
+     * Verify if Invite more people button is shown or not in contact list
      *
+     * @param shouldNotBeVisible equals to null if the button should not be visible
      * @throws Exception
-     * @step. ^I see Invite more people button$
+     * @step. ^I (do not )?see Invite more people button$
      */
-    @When("^I see Invite more people button$")
-    public void ISeeInviteMorePeopleButton() throws Exception {
-        Assert.assertTrue("Invite more people button is not shown",
-                getContactListPage().isInviteMorePeopleButtonVisible());
+    @When("^I (do not )?see Invite more people button$")
+    public void ISeeInviteMorePeopleButton(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("Invite more people button is not shown",
+                    getConversationsListPage().isInviteMorePeopleButtonVisible());
+        } else {
+            Assert.assertTrue("Invite more people button is shown",
+                    getConversationsListPage().isInviteMorePeopleButtonNotVisible());
+        }
     }
 
-    /**
-     * Verify if Invite more people button is NOT shown in contact list
-     *
-     * @throws Exception
-     * @step. ^I DONT see Invite more people button$
-     */
-    @When("^I DONT see Invite more people button$")
-    public void IDontSeeInviteMorePeopleButton() throws Exception {
-        Assert.assertTrue("Invite more people button is shown",
-                getContactListPage().isInviteMorePeopleButtonNotVisible());
-    }
-
-    private ElementState previousSelfAvatarState = new ElementState(
-            () -> getContactListPage().getAvatarStateScreenshot()
+    private ElementState previousSettingsGearState = new ElementState(
+            () -> getConversationsListPage().getSettingsGearStateScreenshot()
     );
 
     /**
-     * Remember the current state of self avatar
+     * Remember the current state of settings gear
      *
      * @throws Exception
-     * @step. ^I remember the state of my self avatar$
+     * @step. ^I remember the state of settings gear$
      */
-    @When("^I remember the state of my avatar$")
-    public void IRememberAvatarState() throws Exception {
-        previousSelfAvatarState.remember();
+    @When("^I remember the state of settings gear$")
+    public void IRememberGearState() throws Exception {
+        previousSettingsGearState.remember();
     }
 
     /**
-     * Verify whether avatar state is changed within the timeout
+     * Verify whether settings gear state is changed within the timeout
      *
      * @param shouldNotChange equals to null if the state should be changed
      * @throws Exception
-     * @step. ^I wait until my avatar is (not )?changed$
+     * @step. ^I wait until settings gear is (not )?changed$
      */
-    @Then("^I wait until my avatar is (not )?changed$")
-    public void IWaitUntilAvatarIsChanged(String shouldNotChange) throws Exception {
-        if (previousSelfAvatarState == null) {
-            throw new IllegalStateException("Please take the initial screenshot of the avatar first");
+    @Then("^I wait until settings gear is (not )?changed$")
+    public void IWaitUntilGearIsChanged(String shouldNotChange) throws Exception {
+        if (previousSettingsGearState == null) {
+            throw new IllegalStateException("Please take the initial screenshot of settings gear first");
         }
         final int timeoutSeconds = 10;
         final double minScore = 0.97;
         if (shouldNotChange == null) {
-            Assert.assertTrue(String.format("The previous and the current state of self avatar " +
+            Assert.assertTrue(String.format("The previous and the current state of settings gear " +
                             "icon seems to be equal after %s seconds", timeoutSeconds),
-                    previousSelfAvatarState.isChanged(timeoutSeconds, minScore));
+                    previousSettingsGearState.isChanged(timeoutSeconds, minScore));
         } else {
-            Assert.assertTrue(String.format("The previous and the current state of self avatar " +
+            Assert.assertTrue(String.format("The previous and the current state of settings gear " +
                             "icon seems to be different after %s seconds", timeoutSeconds),
-                    previousSelfAvatarState.isNotChanged(timeoutSeconds, minScore));
+                    previousSettingsGearState.isNotChanged(timeoutSeconds, minScore));
         }
     }
 
@@ -474,7 +511,7 @@ public class ConversationsListPageSteps {
     @When("^I tap on chat I am in a call with name (.*)$")
     public void ITapOnChatIAmInACallWithName(String name) throws Exception {
         name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        getContactListPage().tapOnNameYourInCallWith(name);
+        getConversationsListPage().tapOnNameYourInCallWith(name);
     }
 
     /**

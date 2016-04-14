@@ -28,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 import static akka.pattern.Patterns.gracefulStop;
 
 class RemoteProcess extends RemoteEntity implements IRemoteProcess {
+
     private static final Logger LOG = ZetaLogger.getLog(RemoteProcess.class.getSimpleName());
 
     private static final FiniteDuration ACTOR_DURATION = new FiniteDuration(90, TimeUnit.SECONDS);
