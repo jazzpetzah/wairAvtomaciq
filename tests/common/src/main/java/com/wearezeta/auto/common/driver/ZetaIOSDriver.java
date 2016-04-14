@@ -25,6 +25,8 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 
 
 public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
+    public static final long MAX_COMMAND_DURATION_MILLIS = 150000;
+
     private static final Logger log = ZetaLogger.getLog(ZetaIOSDriver.class.getSimpleName());
 
     private volatile boolean isSessionLost = false;
@@ -109,7 +111,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
         final Callable<Response> task = () -> super.execute(driverCommand, parameters);
         final Future<Response> future = getPool().submit(task);
         try {
-            return future.get((Integer) getCapabilities().getCapability("launchTimeout"), TimeUnit.MILLISECONDS);
+            return future.get(MAX_COMMAND_DURATION_MILLIS, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             if (e instanceof ExecutionException) {
                 if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD) && (e.getCause() instanceof WebDriverException)) {

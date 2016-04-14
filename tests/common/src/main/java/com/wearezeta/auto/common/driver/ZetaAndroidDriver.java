@@ -276,7 +276,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
                 parameters);
         final Future<Response> future = getPool().submit(task);
         try {
-            return future.get(MAX_COMMAND_DURATION, TimeUnit.SECONDS);
+            return future.get(DEFAULT_MAX_COMMAND_DURATION, TimeUnit.SECONDS);
         } catch (Exception e) {
             if (e instanceof ExecutionException) {
                 if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD)) {

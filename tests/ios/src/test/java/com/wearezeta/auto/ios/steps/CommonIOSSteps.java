@@ -111,7 +111,7 @@ public class CommonIOSSteps {
             ));
         }
         capabilities.setCapability("platformVersion", getPlatformVersion());
-        capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT);
+        capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT_MILLIS);
         final String backendType = getBackendType(this.getClass());
         capabilities.setCapability("processArguments",
                 String.join(" ", new String[]{
