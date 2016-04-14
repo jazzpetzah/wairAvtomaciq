@@ -574,17 +574,8 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     public static void pushRandomFileToSdcardDownload(String fileName, String size) throws Exception {
-        String fileTrnasferResourcePath = AndroidCommonUtils.class.getResource("/filetransfer/").getPath();
-        RandomAccessFile file = new RandomAccessFile(fileTrnasferResourcePath + "/" + fileName, "rws");
-        int fileSize = Integer.valueOf(size.replaceAll("\\D+","").trim());
-        if (size.contains("MB")) {
-            file.setLength(fileSize * 1024 * 1024);
-        } else if (size.contains("KB")) {
-            file.setLength(fileSize * 1024);
-        } else {
-            file.setLength(fileSize);
-        }
-        file.close();
+        String sourceFilePath = AndroidCommonUtils.class.getResource("/filetransfer/").getPath() + "/" + fileName;
+        CommonUtils.createRandomAccessFile(sourceFilePath, size);
         AndroidCommonUtils.pushFileToSdcardDownload(fileName);
     }
 

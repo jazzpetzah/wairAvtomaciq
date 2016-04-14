@@ -628,4 +628,24 @@ public class CommonUtils {
                 "tell application \"System Events\" to keystroke \"v\" using {command down}"
         }).get(DEFAULT_COMMAND_TIMEOUT, TimeUnit.SECONDS);
     }
+
+    /**
+     * Create Random Access File
+     *
+     * @param filePath the file path include the file name
+     * @param size     the expected file size, such as 5MB, 10KB
+     * @throws Exception
+     */
+    public static void createRandomAccessFile(String filePath, String size) throws Exception {
+        RandomAccessFile file = new RandomAccessFile(filePath, "rws");
+        int fileSize = Integer.valueOf(size.replaceAll("\\D+", "").trim());
+        if (size.contains("MB")) {
+            file.setLength(fileSize * 1024 * 1024);
+        } else if (size.contains("KB")) {
+            file.setLength(fileSize * 1024);
+        } else {
+            file.setLength(fileSize);
+        }
+        file.close();
+    }
 }
