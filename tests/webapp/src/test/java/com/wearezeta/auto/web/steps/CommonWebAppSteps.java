@@ -1167,5 +1167,18 @@ public class CommonWebAppSteps {
     public void UserRemovesAllRegisteredOtrClients(String userAs) throws Exception {
         commonSteps.UserRemovesAllRegisteredOtrClients(userAs);
     }
+    
+    /**
+     * Remove all registered OTR clients for the particular user except of the X most recent ones
+     *
+     * @param userAs       user name/alias
+     * @param clientsCount the count of recents OTR clients to keep
+     * @throws Exception
+     * @step. ^User (.*) only keeps his (\d+) most recent OTR clients$
+     */
+    @Given("^User (.*) only keeps his (\\d+) most recent OTR clients$")
+    public void UserKeepsXOtrClients(String userAs, int clientsCount) throws Exception {
+        commonSteps.UserKeepsXOtrClients(userAs, clientsCount);
+    }
 
 }
