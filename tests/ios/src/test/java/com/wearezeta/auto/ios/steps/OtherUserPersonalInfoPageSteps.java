@@ -70,17 +70,6 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     /**
-     * Presses the silence button in the conversation detail menu
-     *
-     * @throws Exception
-     * @step. ^I press menu silence button$
-     */
-    @When("^I press menu silence button$")
-    public void IPressMenuSilenceButton() throws Exception {
-        getOtherUserPersonalInfoPage().clickSilenceMenuButton();
-    }
-
-    /**
      * Presses the notify button in the conversation detail menu
      *
      * @throws Exception
