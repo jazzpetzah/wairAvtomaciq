@@ -17,7 +17,7 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class DialogPage extends AndroidPage {
+public class ConversationViewPage extends AndroidPage {
 
     public static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
 
@@ -133,7 +133,7 @@ public class DialogPage extends AndroidPage {
 
     private static final double LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR = 0.01;
 
-    public DialogPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+    public ConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -402,7 +402,7 @@ public class DialogPage extends AndroidPage {
     }
 
     /**
-     * Navigates back by swipe and initialize ContactListPage
+     * Navigates back by swipe and initialize ConversationsListPage
      *
      * @throws Exception
      */

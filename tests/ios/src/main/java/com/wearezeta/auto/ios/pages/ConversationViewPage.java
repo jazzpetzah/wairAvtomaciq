@@ -21,7 +21,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 
-public class DialogPage extends IOSPage {
+public class ConversationViewPage extends IOSPage {
     private static final By nameConversationBackButton = MobileBy.AccessibilityId("ConversationBackButton");
 
     private static final By nameConversationCursorInput = MobileBy.AccessibilityId("ConversationTextInputField");
@@ -133,9 +133,9 @@ public class DialogPage extends IOSPage {
     private static final Function<String, String> xpathStrUserNameInUpperToolbar = text ->
             String.format("%s/UIAButton[contains(@name, '%s')]", xpathStrConversationViewTopBar, text.toUpperCase());
 
-    private static final Logger log = ZetaLogger.getLog(DialogPage.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
-    public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+    public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 

@@ -7,11 +7,11 @@ import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-public class TabletDialogPage extends DialogPage {
+public class TabletConversationViewPage extends ConversationViewPage {
 
 	public static final By nameOpenConversationDetails = MobileBy.AccessibilityId("ComposeControllerConversationDetailButton");
 	
-	public TabletDialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+	public TabletConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 	

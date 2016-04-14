@@ -409,7 +409,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
-  @C12076 @videocalling @staging
+  @C12076 @videocalling @regression
   Scenario Outline: Verify I get missed call indication when someone called (video)
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -435,7 +435,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout | Action |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      | called |
 
-  @C87624 @videocalling @staging
+  @C87624 @videocalling @regression
   Scenario Outline: Verify I see notification when I start a second video call
     Given My browser supports calling
     Given There are 3 users where <Name> is me

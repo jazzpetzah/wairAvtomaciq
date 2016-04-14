@@ -3,11 +3,10 @@ package com.wearezeta.auto.android_tablet.pages.camera;
 import java.util.Optional;
 import java.util.concurrent.Future;
 
-import gherkin.lexer.Th;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.android.pages.DialogPage;
+import com.wearezeta.auto.android.pages.ConversationViewPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.android_tablet.pages.AndroidTabletPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -46,7 +45,7 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
 
     public void confirmPictureSelection() throws Exception {
         Thread.sleep(1500);
-        final Optional<WebElement> confirmButton = getElementIfDisplayed(DialogPage.xpathConfirmOKButton);
+        final Optional<WebElement> confirmButton = getElementIfDisplayed(ConversationViewPage.xpathConfirmOKButton);
         if (confirmButton.isPresent()) {
             confirmButton.get().click();
         } else {
@@ -59,7 +58,7 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
                 } else {
                     takePhotoButton.get().click();
                 }
-                getElement(DialogPage.xpathConfirmOKButton,
+                getElement(ConversationViewPage.xpathConfirmOKButton,
                         "Picture selection confirmation has not been shown after the timeout", 5).click();
             } else {
                 final Optional<WebElement> lensButton = getElementIfDisplayed(getLensButtonLocator());
@@ -71,7 +70,7 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
                     } else {
                         tapTakePhotoButton();
                     }
-                    getElement(DialogPage.xpathConfirmOKButton,
+                    getElement(ConversationViewPage.xpathConfirmOKButton,
                             "Picture selection confirmation has not been shown after the timeout", 5).click();
                 }
             }

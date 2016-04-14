@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriverException;
 
 import com.wearezeta.auto.ios.pages.ConversationsListPage;
-import com.wearezeta.auto.ios.pages.DialogPage;
+import com.wearezeta.auto.ios.pages.ConversationViewPage;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.reporter.IOSPerfReportModel;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
@@ -31,8 +31,8 @@ public class PerformanceSteps {
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_MSGS_IN_CONVO_WINDOW = 50;
 
-    private DialogPage getDialogPage() throws Exception {
-        return pagesCollection.getPage(DialogPage.class);
+    private ConversationViewPage getDialogPage() throws Exception {
+        return pagesCollection.getPage(ConversationViewPage.class);
     }
 
     private ConversationsListPage getContactListPage() throws Exception {
@@ -124,7 +124,7 @@ public class PerformanceSteps {
     public void WhenIStartTestCycleForNMinutes(int timeout, String fromContact) throws Exception {
         // FIXME: Rewrite this #$@$#@
 //        if (getDialogPage().waitForCursorInputVisible()) {
-//            DialogPageSteps steps = new DialogPageSteps();
+//            ConversationViewPageSteps steps = new ConversationViewPageSteps();
 //            steps.INavigateToConversationsList();
 //        }
 //        getContactListPage().waitForContactListToLoad();

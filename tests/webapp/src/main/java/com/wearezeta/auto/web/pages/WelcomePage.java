@@ -60,18 +60,13 @@ public class WelcomePage extends WebPage {
 									+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
 									+ "\").css({'left': '0', 'opacity': '100', 'z-index': '100'});");
 		}
-		if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
-			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
-					.getNodeIp());
-		} else {
-			chooseYourOwnInput.sendKeys(picturePath);
-			// manually trigger change event on input
-			this.getDriver()
-					.executeScript(
-							"e = $.Event('change');$(\""
-									+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
-									+ "\").trigger(e);");
-		}
+		chooseYourOwnInput.sendKeys(picturePath);
+		// manually trigger change event on input
+		this.getDriver()
+				.executeScript(
+						"e = $.Event('change');$(\""
+								+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
+								+ "\").trigger(e);");
 	}
 
 	public void keepPicture() throws Exception {

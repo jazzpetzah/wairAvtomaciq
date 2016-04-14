@@ -248,7 +248,7 @@ public class ConversationsListPageSteps {
     @When("^I create group chat with (.*) and (.*)$")
     public void ICreateGroupChat(String contact1, String contact2) throws Exception {
         WhenITapOnContactName(contact1);
-        DialogPageSteps dialogSteps = new DialogPageSteps();
+        ConversationViewPageSteps dialogSteps = new ConversationViewPageSteps();
         dialogSteps.IOpenConversationDetails();
 
         OtherUserPersonalInfoPageSteps infoPageSteps = new OtherUserPersonalInfoPageSteps();
@@ -260,7 +260,7 @@ public class ConversationsListPageSteps {
         pickerSteps.ITapOnConversationFromSearch(contact2);
         pickerSteps.WhenIClickOnAddToConversationButton();
 
-        GroupChatPageSteps groupChatSteps = new GroupChatPageSteps();
+        GroupConversationViewPageSteps groupChatSteps = new GroupConversationViewPageSteps();
         groupChatSteps.ThenISeeGroupChatPage(String.format("%s%s%s",
                 contact1, CommonSteps.ALIASES_SEPARATOR, contact2));
     }
