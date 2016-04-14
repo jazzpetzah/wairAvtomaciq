@@ -70,17 +70,6 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     /**
-     * Presses the notify button in the conversation detail menu
-     *
-     * @throws Exception
-     * @step. ^I press menu notify button$
-     */
-    @When("^I press menu notify button$")
-    public void IPressMenuNotifyButton() throws Exception {
-        getOtherUserPersonalInfoPage().clickNotifyMenuButton();
-    }
-
-    /**
      * Open ellipsis menu in conversation details
      *
      * @throws Exception

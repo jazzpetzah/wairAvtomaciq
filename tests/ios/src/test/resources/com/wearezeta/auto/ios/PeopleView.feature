@@ -274,7 +274,7 @@ Feature: People View
     And I tap on contact name <Contact>
     And I open conversation details
     And I press conversation menu button
-    And I press menu notify button
+    And I tap Notify action button
     And I click close user profile page button
     And I navigate back to conversations list
     And I see conversations list

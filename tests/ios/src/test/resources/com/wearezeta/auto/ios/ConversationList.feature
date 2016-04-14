@@ -291,7 +291,7 @@ Feature: Conversation List
     Then I see the state of <Contact> conversation item is changed
     When I remember the state of <Contact> conversation item
     And I swipe right on a <Contact>
-    And I press menu notify button
+    And I tap Notify action button
     Then I see the state of <Contact> conversation item is changed
 
     Examples:
