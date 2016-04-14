@@ -572,7 +572,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Name> sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
     And I open search UI

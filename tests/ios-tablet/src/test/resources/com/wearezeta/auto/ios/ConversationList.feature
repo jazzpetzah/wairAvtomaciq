@@ -246,7 +246,7 @@ Feature: Conversation List
     And I do not see conversation <Contact1> in conversations list
     And I open archived conversations
     And I swipe right on a <Contact1>
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
     And I do not see Archive button at the bottom of conversations list
@@ -268,7 +268,7 @@ Feature: Conversation List
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
     When I open search UI
@@ -333,7 +333,7 @@ Feature: Conversation List
     Given I see conversations list
     Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
-    And I click delete menu button
+    And I tap Delete action button
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
     And I open search UI
@@ -361,7 +361,7 @@ Feature: Conversation List
     And I see Archive button in action menu in Contact List
     And I see Delete button in action menu in Contact List
     And I see Cancel button in action menu in Contact List
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
     And I do not see Archive button at the bottom of conversations list

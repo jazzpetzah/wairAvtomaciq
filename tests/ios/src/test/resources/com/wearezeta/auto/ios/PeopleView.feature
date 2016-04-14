@@ -379,7 +379,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
-    And I click delete menu button
+    And I tap Delete action button
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
     And I open search UI
@@ -407,7 +407,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
@@ -432,7 +432,7 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I press conversation menu button
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     And I open search UI
     And I input in People picker search field user name <Contact1>

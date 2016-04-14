@@ -81,17 +81,6 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     /**
-     * Click delete menu button in ellipsis menu
-     *
-     * @throws Exception
-     * @step. ^I click delete menu button$
-     */
-    @When("^I click delete menu button$")
-    public void IClickDeleteMenu() throws Exception {
-        getOtherUserPersonalInfoPage().clickDeleteMenuButton();
-    }
-
-    /**
      * Click delete to confirm conversation content deletion
      *
      * @throws Exception

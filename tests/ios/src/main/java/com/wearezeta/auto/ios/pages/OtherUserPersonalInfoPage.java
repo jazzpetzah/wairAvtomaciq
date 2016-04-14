@@ -25,8 +25,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     private static final By nameExitOtherUserPersonalInfoPageButton = MobileBy.AccessibilityId("OtherUserProfileCloseButton");
 
-    private static final By xpathDeleteConversationButton = By.xpath("//UIAButton[@name='DELETE' and @visible='true']");
-
     private static final By xpathConfirmDeleteButton = By
         .xpath("//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']");
 
@@ -79,10 +77,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public void openEllipsisMenu() throws Exception {
         openConversationMenu();
-    }
-
-    public void clickDeleteMenuButton() throws Exception {
-        getElement(xpathDeleteConversationButton).click();
     }
 
     public void clickConfirmDeleteButton() throws Exception {

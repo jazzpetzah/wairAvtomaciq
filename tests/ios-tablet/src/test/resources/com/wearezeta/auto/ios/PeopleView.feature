@@ -608,7 +608,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     And I wait until popover is closed
     Then I do not see conversation <GroupChatName> in conversations list
@@ -631,7 +631,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     And I wait until popover is closed
     Then I do not see conversation <GroupChatName> in conversations list
@@ -652,7 +652,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
-    And I click delete menu button
+    And I tap Delete action button
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
     And I wait until popover is closed
@@ -679,7 +679,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
-    And I click delete menu button
+    And I tap Delete action button
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
     And I wait until popover is closed
@@ -708,7 +708,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     And I wait until popover is closed
     And I open search UI
@@ -735,7 +735,7 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     And I wait until popover is closed
     And I open search UI
@@ -760,7 +760,7 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I press conversation menu button
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     And I wait until popover is closed
     And I open search UI
@@ -787,7 +787,7 @@ Feature: People View
     When I tap on contact name <Contact1>
     And I open conversation details
     And I press conversation menu button
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     And I wait until popover is closed
     And I open search UI
