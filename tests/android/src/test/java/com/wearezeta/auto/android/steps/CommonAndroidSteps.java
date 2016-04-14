@@ -1130,4 +1130,16 @@ public class CommonAndroidSteps {
             throws Exception {
         commonSteps.UserClearsConversation(userAs, convoName, deviceName, convoType.equals("group"));
     }
+
+    /**
+     * Prepare file in /mnt/sdcard/Download/
+     * @param size such as 5MB, 30MB
+     * @param fileName the name of the file you want to push
+     * @throws Exception
+     * @step. ^I push (.*) sized file with name "(.*)" to device$
+     */
+    @Given("^I push (.*) sized file with name \"(.*)\" to device$")
+    public void IPushXSizedFileWithNameYToDevice(String size, String fileName) throws Exception {
+        AndroidCommonUtils.pushRandomFileToSdcardDownload(fileName, size);
+    }
 }

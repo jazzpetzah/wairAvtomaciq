@@ -136,12 +136,13 @@ public class DialogPageSteps {
 
     /**
      * Press the corresponding button in the input controls
+     * Tap file button will send file directly when you installed testing_gallery-debug.apk
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Add people|Ping|Add Picture|Sketch) button$ from input tools$
+     * @step. ^I tap (Add people|Ping|Add Picture|Sketch|File) button$ from input tools$
      */
-    @When("^I tap (Add people|Ping|Add Picture|Sketch) button from input tools$")
+    @When("^I tap (Add people|Ping|Add Picture|Sketch|File) button from input tools$")
     public void WhenITapInputToolButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "ping":
@@ -155,6 +156,9 @@ public class DialogPageSteps {
                 break;
             case "add people":
                 getDialogPage().tapPeopleBtn();
+                break;
+            case "file":
+                getDialogPage().tapFileBtn();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
@@ -530,6 +534,19 @@ public class DialogPageSteps {
     }
 
     /**
+     * Wait until the file uploading completely
+     *
+     * @param size should be good formated value, such as 5.00MB rather tha 5MB
+     * @param extension
+     * @throws Exception
+     * @step. ^I wait the (.*) sized file with extension \"(.*)\" uploading completely$"
+     */
+    @When("^I wait the (.*) sized file with extension \"(.*)\" uploading completely$")
+    public void IWaitFileUploadingComplete(String size, String extension) throws Exception {
+        getDialogPage().waitForFileUploadingComplete(size, extension);
+    }
+
+    /**
      * Verify the current state of media control button has been changed since the last snapshot was made
      *
      * @throws Exception
@@ -819,5 +836,19 @@ public class DialogPageSteps {
         Assert.assertTrue("Camera button should be visible in cursor menu", getDialogPage().isCameraButtonVisible());
         Assert.assertTrue("People button should be visible in cursor menu", getDialogPage().isPeopleButtonVisible());
         Assert.assertTrue("File button should be visible in cursor menu", getDialogPage().isFileButtonVisible());
+    }
+
+    /**
+     * Check the expected placehoder is visible
+     *
+     * @param size the expected size displayed, value should be good formatted, such as 3.00MB rather than 3MB
+     * @param fileName the expected file name displayed
+     * @throws Exception
+     * @step. ^I see placeholder of sending (.*) sized file with name "(.*)"$
+     */
+    @Then("^I see placeholder of sending (.*) sized file with name \"(.*)\" and extension \"(.*)\"$")
+    public void ThenISeePlaceholderOfSendingFile(String size, String fileName, String extendsion) throws Exception {
+        Assert.assertTrue("The placeholder of sending file should be visible",
+                getDialogPage().isFileSenderPlaceHolderVisible(fileName, size, extendsion));
     }
 }

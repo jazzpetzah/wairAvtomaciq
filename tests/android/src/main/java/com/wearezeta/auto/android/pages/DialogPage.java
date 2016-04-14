@@ -8,6 +8,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.driver.DummyElement;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -119,6 +120,12 @@ public class DialogPage extends AndroidPage {
 
     private static Function<String, String> xpathConversationTitleByValue = value -> String
             .format("//*[@id='tv__conversation_toolbar__title' and @value='%s']", value);
+
+    private static Function<String, String> xpathFileNamePlaceHolderByValue = value -> String
+            .format("//*[@id='ttv__row_conversation__file__filename' and @value='%s']", value);
+
+    private static Function<String, String> xpathFileInfoPlaceHolderByValue = value -> String
+            .format("//*[@id='ttv__row_conversation__file__fileinfo' and @value='%s']", value);
 
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_SWIPE_RETRIES = 5;
@@ -602,6 +609,22 @@ public class DialogPage extends AndroidPage {
 
     public boolean isMediaBarBelowUptoolbar() throws Exception {
         return isElementABelowElementB(getElement(xpathMediaBar), getElement(xpathToolbar), LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR);
+    }
+
+    public void waitForFileUploadingComplete(String size, String extension) throws Exception {
+        String fileInfo = StringUtils.isEmpty(extension) ? size : size + " · " + extension.toUpperCase();
+        fileInfo = fileInfo + " · UPLOADING...";
+        DriverUtils.waitUntilLocatorDissapears(getDriver(), By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)));
+    }
+
+    public boolean isFileSenderPlaceHolderVisible(String fileName, String size, String extension) throws Exception {
+        size = size.toUpperCase();
+        final String fileInfo = StringUtils.isEmpty(extension) ? size : size + " · " + extension.toUpperCase();
+
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathFileNamePlaceHolderByValue.apply(fileName))) &&
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                        By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)));
     }
 
 }
