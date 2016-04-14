@@ -29,6 +29,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements ZetaDriver, HasTouchScreen {
+    public static final long MAX_COMMAND_DURATION_MILLIS = 120000;
 
     private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class
             .getSimpleName());
@@ -276,7 +277,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
                 parameters);
         final Future<Response> future = getPool().submit(task);
         try {
-            return future.get(DEFAULT_MAX_COMMAND_DURATION, TimeUnit.SECONDS);
+            return future.get(MAX_COMMAND_DURATION_MILLIS, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             if (e instanceof ExecutionException) {
                 if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD)) {
