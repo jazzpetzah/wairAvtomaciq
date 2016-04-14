@@ -500,7 +500,7 @@ Feature: Conversation View
   Scenario Outline: Verify placeholder is shown for the sender
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given I push 4MB sized file with name "<fileName>" to device
+    Given I push 4MB file having name "<fileName>" to the device
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
@@ -508,8 +508,8 @@ Feature: Conversation View
     And I tap plus button in text input
     And I tap File button from input tools
     And I wait the 4.00MB sized file with extension "TXT" uploading completely
-    Then I see placeholder of sending 4.00MB sized file with name "<fileName>" and extension "TXT"
+    Then I see placeholder of sending 4.00MB sized file with name "<FileName>" and extension "TXT"
 
     Examples:
-      | Name      | Contact1  |  fileName   |
-      | user1Name | user2Name | random.txt  |
+      | Name      | Contact1  | FileName   |
+      | user1Name | user2Name | random.txt |

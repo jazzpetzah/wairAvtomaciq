@@ -158,7 +158,7 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().tapPeopleBtn();
                 break;
             case "file":
-                getDialogPage().tapFileBtn();
+                getConversationViewPage().tapFileBtn();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
@@ -543,7 +543,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I wait the (.*) sized file with extension \"(.*)\" uploading completely$")
     public void IWaitFileUploadingComplete(String size, String extension) throws Exception {
-        getDialogPage().waitForFileUploadingComplete(size, extension);
+        getConversationViewPage().waitForFileUploadingComplete(size, extension);
     }
 
     /**
@@ -849,6 +849,6 @@ public class ConversationViewPageSteps {
     @Then("^I see placeholder of sending (.*) sized file with name \"(.*)\" and extension \"(.*)\"$")
     public void ThenISeePlaceholderOfSendingFile(String size, String fileName, String extendsion) throws Exception {
         Assert.assertTrue("The placeholder of sending file should be visible",
-                getDialogPage().isFileSenderPlaceHolderVisible(fileName, size, extendsion));
+                getConversationViewPage().isFileSenderPlaceHolderVisible(fileName, size, extendsion));
     }
 }

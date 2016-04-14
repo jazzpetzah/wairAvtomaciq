@@ -592,8 +592,6 @@ public class AndroidCommonUtils extends CommonUtils {
         String sourceFilePath = AndroidCommonUtils.class.getResource("/filetransfer/").getPath() + "/" + fileName;
         String destinationFilePath =  FILE_TRANSFER_SOURCE_LOCATION + fileName;
         executeAdb(String.format("shell rm %s", destinationFilePath));
-        executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
-                destinationFilePath));
         executeAdb(String.format("push %s %s", sourceFilePath, destinationFilePath));
         executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
                 destinationFilePath));
