@@ -8,8 +8,13 @@ import org.openqa.selenium.By;
 
 public class CallOutgoingPage extends CallingOverlayPage {
 
-    private static final By xpathOngoingCallContainer =
-            By.xpath("//*[@id='ttv__calling__header__avatar__subtitle' and contains(@value, 'ringing') and //*[@id='ccbv__calling_controls__hangup']]");
+    private static final By xpathOngoingVideoCallContainer =
+            By.xpath("//*[@id='ttv__calling__header__avatar__subtitle' and contains(@value, 'ringing') " +
+                    "and //*[@id='ccbv__calling_controls__hangup']]");
+
+    private static final By xpathOngoingAudioCallContainer =
+            By.xpath("//*[@id='ttv__calling__header__subtitle' and contains(@value, 'RINGING') " +
+                    "and //*[@id='ccbv__calling_controls__hangup']]");
     
     private static final By idParticipants = By.id("chv__calling__participants_grid__chathead");
 
@@ -19,13 +24,16 @@ public class CallOutgoingPage extends CallingOverlayPage {
 
     private static final int VISIBILITY_TIMEOUT_SECONDS = 20;
 
-    public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOngoingCallContainer,
+    public boolean waitUntilVisible(boolean isVideoCall) throws Exception {
+
+        return isVideoCall ? DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOngoingVideoCallContainer,
+                VISIBILITY_TIMEOUT_SECONDS) : DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOngoingAudioCallContainer,
                 VISIBILITY_TIMEOUT_SECONDS);
     }
 
-    public boolean waitUntilNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOngoingCallContainer);
+    public boolean waitUntilNotVisible(boolean isVideoCall) throws Exception {
+        return isVideoCall ? DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOngoingVideoCallContainer)
+                : DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOngoingAudioCallContainer);
     }
 
     public int getNumberOfParticipants() throws Exception {

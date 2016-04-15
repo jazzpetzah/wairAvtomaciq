@@ -37,15 +37,18 @@ public class CallOutgoingPageSteps {
     /**
      * Verifies presence of outgoing call
      *
+     * @param not       equals null means that should see outgoing call
+     * @param videoCall true means it is outgoing video call, otherwise is outgoing audio all
      * @throws Exception
-     * @step. ^I (do not )?see outgoing call$
+     * @step. ^I (do not )?see outgoing (video )?call$
      */
-    @When("^I (do not )?see outgoing call$")
-    public void ISeeOutgoingCall(String not) throws Exception {
+    @When("^I (do not )?see outgoing (video )?call$")
+    public void ISeeOutgoingCall(String not, String videoCall) throws Exception {
+        final boolean isVideoCall = videoCall != null;
         if (not == null) {
-            assertTrue("Outgoing call not visible", getPage().waitUntilVisible());
+            assertTrue("Outgoing call not visible", getPage().waitUntilVisible(isVideoCall));
         } else {
-            assertTrue("Outgoing call should not be visible", getPage().waitUntilNotVisible());
+            assertTrue("Outgoing call should not be visible", getPage().waitUntilNotVisible(isVideoCall));
         }
     }
 

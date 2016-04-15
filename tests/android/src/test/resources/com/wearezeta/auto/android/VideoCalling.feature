@@ -130,7 +130,7 @@ Feature: VideoCalling
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I tap Video Call button from top toolbar
-    Then I see outgoing call
+    Then I see outgoing video call
     When <Contact> accepts next incoming video call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see ongoing video call
@@ -200,7 +200,7 @@ Feature: VideoCalling
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I tap Video Call action button on People Picker page
-    Then I see outgoing call
+    Then I see outgoing video call
     When <Contact> accepts next incoming video call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see ongoing video call
@@ -286,7 +286,7 @@ Feature: VideoCalling
     Given I see Contact list with contacts
     And I tap on contact name <Contact1>
     When I tap Video Call button from top toolbar
-    And I see outgoing call
+    And I see outgoing video call
     And <Contact1> accepts next incoming video call automatically
     And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see ongoing video call
@@ -294,7 +294,7 @@ Feature: VideoCalling
     And <Contact1> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
     When I tap Video Call button from top toolbar
-    And I see outgoing call
+    And I see outgoing video call
     And <Contact1> accepts next incoming video call automatically
     And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see ongoing video call
@@ -304,7 +304,7 @@ Feature: VideoCalling
     When I navigate back from dialog page
     And I tap on contact name <Contact2>
     When I tap Video Call button from top toolbar
-    And I see outgoing call
+    And I see outgoing video call
     And <Contact2> accepts next incoming video call automatically
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see ongoing video call
