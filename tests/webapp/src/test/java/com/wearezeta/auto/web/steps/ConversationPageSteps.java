@@ -294,9 +294,9 @@ public class ConversationPageSteps {
         RandomAccessFile f = new RandomAccessFile(path + "/" + fileName, "rws");
         int fileSize = Integer.valueOf(size.replaceAll("\\D+","").trim());
         if (size.contains("MB")) {
-            f.setLength(fileSize * 1024 * 1024);
+            f.setLength(fileSize * 1000 * 1000);
         } else if (size.contains("KB")) {
-            f.setLength(fileSize * 1024);
+            f.setLength(fileSize * 1000);
         } else {
             f.setLength(fileSize);
         }
@@ -364,22 +364,10 @@ public class ConversationPageSteps {
      * @throws Exception
      * @step. ^I verify size of file (.*) in the conversation view$
      */
-    @Then("^I verify size of file (.*) in the conversation view$")
-    public void IVerifySizeOfFile(String fileName) throws Exception {
-        final String filePath = WebCommonUtils.getFullFilePath("filetransfer/" + fileName);
-        File file = new File(filePath);
-        String fileSize = "";
-        // Get length of file in bytes
-        if(file.length() < 1024) {
-            fileSize = String.format("%sB", String.valueOf(file.length()));
-        } else if (file.length() < 1024*1024) {
-            fileSize = String.format("%sKB", String.valueOf(file.length() / 1024));
-        } else {
-            fileSize = String.format("%sMB", String.valueOf(file.length() / 1024 / 1024));
-        }
-
+    @Then("^I verify size of file (.*) is (.*) in the conversation view$")
+    public void IVerifySizeOfFile(String fileName, String size) throws Exception {
         assertThat("Wrong file size for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
-                .getFileSizeOf(fileName), equalTo(fileSize));
+                .getFileSizeOf(fileName), equalTo(size));
     }
 
     /**
@@ -391,7 +379,7 @@ public class ConversationPageSteps {
      * @step. ^I verify status of file (.*) is (.*) in the conversation view$
      */
     @Then("^I verify status of file (.*) is (.*) in the conversation view$")
-    public void IVerifySizeOfFile(String fileName, String status) throws Exception {
+    public void IVerifyStatusOfFile(String fileName, String status) throws Exception {
         assertThat("Wrong file status for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
                 .getFileStatusOf(fileName), equalTo(status));
     }
