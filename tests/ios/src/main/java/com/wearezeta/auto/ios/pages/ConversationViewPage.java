@@ -194,8 +194,8 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConversationCursorInput, 10);
     }
 
-    public boolean isCursorInputVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConversationCursorInput);
+    public boolean waitForCursorInputInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConversationCursorInput);
     }
 
     public void clickOnCallButtonForContact(String contact) throws Exception {

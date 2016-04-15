@@ -33,7 +33,7 @@ public class ConversationViewPageSteps {
 
     @When("^I see conversation view page$")
     public void WhenISeePage() throws Exception {
-        Assert.assertTrue("Cursor input is not visible", getConversationViewPage().waitForCursorInputVisible());
+        ISeeTextInput(null);
     }
 
     @When("^I tap on text input$")
@@ -57,14 +57,20 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify that text input is not allowed
+     * Verify that text input is visible or not
      *
+     * @param shouldNotSee equals to null if text input should be visible
      * @throws Exception
-     * @step. I see text input in dialog is not allowed
+     * @step. ^I (do not )?see text input in conversation view$
      */
-    @When("I see text input in dialog is not allowed")
-    public void ISeeTextInputIsNotAllowed() throws Exception {
-        Assert.assertFalse("Text input is allowed", getConversationViewPage().isCursorInputVisible());
+    @When("^I (do not )?see text input in conversation view$")
+    public void ISeeTextInput(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("Cursor input is not visible", getConversationViewPage().waitForCursorInputVisible());
+        } else {
+            Assert.assertTrue("Cursor input is visible, but should be hidden",
+                    getConversationViewPage().waitForCursorInputInvisible());
+        }
     }
 
     @When("^I type the (default|\".*\") message$")
@@ -798,13 +804,13 @@ public class ConversationViewPageSteps {
      * Verify that conversation is scrolled to the end by verifying that plus
      * button and text input is visible
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I see conversation is scrolled to the end$
      */
     @When("^I see conversation is scrolled to the end$")
-    public void ISeeConversationIsScrolledToEnd() throws Throwable {
+    public void ISeeConversationIsScrolledToEnd() throws Exception {
         Assert.assertTrue("The input field state looks incorrect",
-                getConversationViewPage().isPlusButtonVisible() && getConversationViewPage().isCursorInputVisible());
+                getConversationViewPage().isPlusButtonVisible() && getConversationViewPage().waitForCursorInputVisible());
     }
 
     /**
