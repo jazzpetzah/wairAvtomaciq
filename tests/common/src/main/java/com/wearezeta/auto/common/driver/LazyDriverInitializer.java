@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.driver;
 
 import java.net.URL;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -88,7 +89,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
 
                 log.debug(String.format("Successfully created driver instance for platform '%s'", this.platform.name()));
                 return platformDriver;
-            } catch (WebDriverException e) {
+            } catch (WebDriverException|ExecutionException e) {
                 if (ntry >= this.maxRetryCount) {
                     throw e;
                 }
