@@ -381,9 +381,9 @@ Feature: Calling
     And I wait for 1 seconds
     And <Contact1> stops calling me
     And I wait for 1 seconds
-    Then I see missed call notification for conversation <Contact1>
+    Then I see missed call notification in the conversation list for conversation <Contact1>
     When I open conversation with <Contact1>
-    Then I do not see missed call notification for conversation <Contact1>
+    Then I do not see missed call notification in the conversation list for conversation <Contact1>
     Then I see <MISSED> action for <Contact1> in conversation
 
     Examples:

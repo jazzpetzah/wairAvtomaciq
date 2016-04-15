@@ -194,7 +194,7 @@ Feature: Connect
     And I see conversation <Contact> in conversations list
     When I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message on Dialog page
-    Then I see text input in dialog is not allowed
+    Then I do not see text input in conversation view
 
     Examples: 
       | Name      | Contact   | Contact2  |
@@ -211,7 +211,7 @@ Feature: Connect
     And I see conversation <Contact> in conversations list
     When I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message on Dialog page
-    Then I see text input in dialog is not allowed
+    Then I do not see text input in conversation view
 
     Examples: 
       | Name      | Contact   | Contact2  |

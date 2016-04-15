@@ -38,7 +38,7 @@ Feature: Search
     Then I tap on first 1 top connections
     And I tap Open conversation action button on People picker page
     And I wait for 2 seconds
-    And I see dialog page
+    And I see conversation view page
 
     Examples:
       | Name      | UserCount |
@@ -55,7 +55,7 @@ Feature: Search
     And I see top people list on People picker page
     Then I tap on first 2 top connections
     When I tap Create conversation action button on People picker page
-    And I see dialog page
+    And I see conversation view page
     And I open group conversation details
     Then I see <ParticipantsCount> participant avatars
 
@@ -275,7 +275,7 @@ Feature: Search
     And I see top people list on People picker page
     And I tap on 1st top connection contact
     And I tap Open conversation action button on People picker page
-    Then I see dialog page
+    Then I see conversation view page
 
     Examples:
       | Name      |
@@ -320,7 +320,7 @@ Feature: Search
     And I tap on message "<Link>"
     And I wait for 10 seconds
     And I press Enter key in Simulator window
-    And I see dialog page
+    And I see conversation view page
     And I navigate back to conversations list
     Then I see first item in contact list named <Contact2>
     And I tap on contact name <Contact2>

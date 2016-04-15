@@ -49,7 +49,7 @@ Feature: Conversation List
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     And I tap on contact name <Contact>
-    And I see dialog page
+    And I see conversation view page
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -105,7 +105,7 @@ Feature: Conversation List
     Given I see conversations list
     When I open archived conversations
     And I tap on contact name <GroupChatName>
-    And I see dialog page
+    And I see conversation view page
     And I navigate back to conversations list
     Then I see first item in contact list named <GroupChatName>
 
@@ -253,7 +253,7 @@ Feature: Conversation List
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
-    Then I see dialog page
+    Then I see conversation view page
     And I see 0 conversation entries
 
     Examples:
@@ -467,7 +467,7 @@ Feature: Conversation List
     Given User <Contact> sends 1 encrypted messages to user Myself
     When I remember the state of <Contact> conversation item
     And I tap on contact name <Contact>
-    And I see dialog page
+    And I see conversation view page
     And I navigate back to conversations list
     Then I see the state of <Contact> conversation item is changed
 

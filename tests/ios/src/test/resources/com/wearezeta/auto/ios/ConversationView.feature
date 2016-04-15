@@ -50,7 +50,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
@@ -237,7 +237,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
@@ -398,7 +398,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I click plus button next to text input
-    And I tap on sketch button in cursor
+    And I tap Sketch button from input tools
     And I draw a random sketch
     And I send my sketch
     Then I see 1 photo in the dialog
@@ -435,12 +435,12 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I click plus button next to text input
-    Then I see no other conversation tools buttons except of Details
+    Then I see no other conversation tools buttons except of People
     And I click Close input options button
     And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
-    Then I see no other conversation tools buttons except of Details
+    Then I see no other conversation tools buttons except of People
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
@@ -474,7 +474,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I press sketch button on camera roll page
@@ -579,7 +579,7 @@ Feature: Conversation View
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
-    Then I see dialog page
+    Then I see conversation view page
     And I type the default message and send it
     And I see 1 default message in the dialog
 
@@ -623,7 +623,7 @@ Feature: Conversation View
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
@@ -674,7 +674,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I tap Camera Shutter button
     And I confirm my choice
     Then I see 1 photo in the dialog
@@ -691,7 +691,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I tap Toggle Camera button
     And I tap Camera Shutter button
     And I confirm my choice

@@ -31,9 +31,9 @@ public class ConversationViewPageSteps {
         return pagesCollection.getPage(OtherUserPersonalInfoPage.class);
     }
 
-    @When("^I see dialog page$")
-    public void WhenISeeDialogPage() throws Exception {
-        Assert.assertTrue("Cursor input is not visible", getConversationViewPage().waitForCursorInputVisible());
+    @When("^I see conversation view page$")
+    public void WhenISeePage() throws Exception {
+        ISeeTextInput(null);
     }
 
     @When("^I tap on text input$")
@@ -57,14 +57,20 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify that text input is not allowed
+     * Verify that text input is visible or not
      *
+     * @param shouldNotSee equals to null if text input should be visible
      * @throws Exception
-     * @step. I see text input in dialog is not allowed
+     * @step. ^I (do not )?see text input in conversation view$
      */
-    @When("I see text input in dialog is not allowed")
-    public void ISeeTextInputIsNotAllowed() throws Exception {
-        Assert.assertFalse("Text input is allowed", getConversationViewPage().isCursorInputVisible());
+    @When("^I (do not )?see text input in conversation view$")
+    public void ISeeTextInput(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("Cursor input is not visible", getConversationViewPage().waitForCursorInputVisible());
+        } else {
+            Assert.assertTrue("Cursor input is visible, but should be hidden",
+                    getConversationViewPage().waitForCursorInputInvisible());
+        }
     }
 
     @When("^I type the (default|\".*\") message$")
@@ -131,11 +137,6 @@ public class ConversationViewPageSteps {
     @When("^I send the message$")
     public void WhenISendTheMessage() throws Throwable {
         getConversationViewPage().clickKeyboardCommitButton();
-    }
-
-    @When("^I swipe up on dialog page to open other user personal page$")
-    public void WhenISwipeUpOnDialogPage() throws Exception {
-        getConversationViewPage().swipeUp(1000);
     }
 
     @Then("^I see (\\d+) (default )?messages? in the dialog$")
@@ -215,9 +216,28 @@ public class ConversationViewPageSteps {
         getConversationViewPage().swipeRightToShowConversationTools();
     }
 
-    @When("^I press Add Picture button$")
-    public void IPressAddPictureButton() throws Exception {
-        getConversationViewPage().pressAddPictureButton();
+    /**
+     * Tap the corresponding button from input tools palette
+     *
+     * @param btnName one of available button names
+     * @throws Exception
+     * @step. ^I tap (Add Picture|Ping|Sketch) button from input tools$
+     */
+    @When("^I tap (Add Picture|Ping|Sketch) button from input tools$")
+    public void IPressAddPictureButton(String btnName) throws Exception {
+        switch (btnName.toLowerCase()) {
+            case "add picture":
+                getConversationViewPage().pressAddPictureButton();
+                break;
+            case "ping":
+                getConversationViewPage().tapPingButton();
+                break;
+            case "sketch":
+                getConversationViewPage().openSketch();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
+        }
     }
 
     /**
@@ -234,11 +254,6 @@ public class ConversationViewPageSteps {
         } else {
             getConversationViewPage().tapVideoCallButton();
         }
-    }
-
-    @When("^I click Ping button$")
-    public void IPressPingButton() throws Exception {
-        getConversationViewPage().tapPingButton();
     }
 
     @Then("^I see Pending Connect to (.*) message on Dialog page$")
@@ -531,17 +546,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Opens the sketch feature
-     *
-     * @throws Exception
-     * @step. ^I tap on sketch button in cursor$
-     */
-    @When("^I tap on sketch button in cursor$")
-    public void ITapSketchButton() throws Exception {
-        getConversationViewPage().openSketch();
-    }
-
-    /**
      * Verify my user name in conversation view
      *
      * @param name String name - my user name
@@ -573,33 +577,16 @@ public class ConversationViewPageSteps {
      * Verify is plus button is visible
      *
      * @throws Exception
-     * @step. ^I see plus button next to text input$
+     * @param shouldNotBeVisible equals to null if the button should not be visible
+     * @step. ^I (do not )?see plus button next to text input$
      */
-    @When("^I see plus button next to text input$")
-    public void ISeePlusButtonNextInput() throws Exception {
-        Assert.assertTrue("Plus button is not visible", getConversationViewPage().isPlusButtonVisible());
-    }
-
-    /**
-     * Verify is plus button is not visible
-     *
-     * @throws Exception
-     * @step. ^I see plus button is not shown$
-     */
-    @When("^I see plus button is not shown$")
-    public void ISeePlusButtonNotShown() throws Exception {
-        Assert.assertTrue("Plus button is still shown", getConversationViewPage().waitPlusButtonNotVisible());
-    }
-
-    /**
-     * Verify Details button is visible
-     *
-     * @throws Exception
-     * @step. ^I see Details button is visible$
-     */
-    @When("^I see Details button is visible$")
-    public void ISeeDetailsButtonShown() throws Exception {
-        Assert.assertTrue("Details button is not visible", getConversationViewPage().isOpenConversationDetailsButtonVisible());
+    @When("^I (do not )?see plus button next to text input$")
+    public void ISeePlusButtonNextInput(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("Plus button is not visible", getConversationViewPage().isPlusButtonVisible());
+        } else {
+            Assert.assertTrue("Plus button is still shown", getConversationViewPage().waitPlusButtonNotVisible());
+        }
     }
 
     /**
@@ -609,21 +596,22 @@ public class ConversationViewPageSteps {
      * @step. ^I see conversation tools buttons$
      */
     @When("^I see conversation tools buttons$")
-    public void ISeeButtonsDetailsCameraSketchPing() throws Exception {
-        ISeeDetailsButtonShown();
-        Assert.assertTrue("Some of expected input tools buttons are not visible", getConversationViewPage().areInputToolsVisible());
+    public void ISeeToolsButtons() throws Exception {
+        Assert.assertTrue("People button is not visible", getConversationViewPage().isPeopleButtonVisible());
+        Assert.assertTrue("Some of expected input tools buttons are not visible",
+                getConversationViewPage().areInputToolsVisible());
     }
 
     /**
-     * Verify that only Details button is shown. Rest button should not be
+     * Verify that only People button is shown. Rest button should not be
      * visible
      *
      * @throws Exception
      * @step. ^I see no other conversation tools buttons except of Details$
      */
-    @When("^I see no other conversation tools buttons except of Details$")
-    public void ISeeOnlyDetailsButtonRestNotShown() throws Exception {
-        ISeeDetailsButtonShown();
+    @When("^I see no other conversation tools buttons except of People")
+    public void ISeeOnlyPeopleButtonRestNotShown() throws Exception {
+        Assert.assertTrue("People button is not visible", getConversationViewPage().isPeopleButtonVisible());
         Assert.assertTrue("Some of input tools buttons are still visible",
                 getConversationViewPage().areInputToolsInvisible());
     }
@@ -798,13 +786,13 @@ public class ConversationViewPageSteps {
      * Verify that conversation is scrolled to the end by verifying that plus
      * button and text input is visible
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I see conversation is scrolled to the end$
      */
     @When("^I see conversation is scrolled to the end$")
-    public void ISeeConversationIsScrolledToEnd() throws Throwable {
+    public void ISeeConversationIsScrolledToEnd() throws Exception {
         Assert.assertTrue("The input field state looks incorrect",
-                getConversationViewPage().isPlusButtonVisible() && getConversationViewPage().isCursorInputVisible());
+                getConversationViewPage().isPlusButtonVisible() && getConversationViewPage().waitForCursorInputVisible());
     }
 
     /**
