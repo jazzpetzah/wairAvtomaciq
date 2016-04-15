@@ -44,7 +44,7 @@ public class CallOutgoingPageSteps {
      */
     @When("^I (do not )?see outgoing (video )?call$")
     public void ISeeOutgoingCall(String not, String videoCall) throws Exception {
-        boolean isVideoCall = videoCall != null;
+        boolean isVideoCall = (videoCall != null);
         if (not == null) {
             assertTrue(String.format("%s Outgoing call not visible", isVideoCall ? "Video" : "Audio"),
                     getPage().waitUntilVisible(isVideoCall));
