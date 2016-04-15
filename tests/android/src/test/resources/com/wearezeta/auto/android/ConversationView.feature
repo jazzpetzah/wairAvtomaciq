@@ -495,3 +495,21 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | Group Chat    |
+
+  @staging @C87628
+  Scenario Outline: Verify placeholder is shown for the sender
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I push <FileSize> file having name "<FileName>" to the device
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And I tap plus button in text input
+    And I tap File button from input tools
+    And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
+    Then I see the result of <FileSize> file upload having name "<FileName>" and extension "<FileExtension>"
+
+    Examples:
+      | Name      | Contact1  | FileName   | FileExtension | FileSize | UploadingTimeout |
+      | user1Name | user2Name | random.txt | TXT           | 3.00MB   | 10               |

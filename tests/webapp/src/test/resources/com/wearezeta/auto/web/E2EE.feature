@@ -606,7 +606,7 @@ Feature: E2EE
 
     Examples:
       | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT | Message1    | Message2     | Message3    |
-      | user1Email | user1Password | user1Name | user2Name | UNABLE TO DECRYPT | First hello | Second hello | Third hello |
+      | user1Email | user1Password | user1Name | user2Name | WAS NOT RECEIVED  | First hello | Second hello | Third hello |
 
   @C82813 @e2ee @regression
   Scenario Outline: Verify you can recover from a broken session between your own devices
@@ -641,7 +641,7 @@ Feature: E2EE
 
     Examples:
       | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT | Message1    | Message2     | Message3    |
-      | user1Email | user1Password | user1Name | user2Name | UNABLE TO DECRYPT | First hello | Second hello | Third hello |
+      | user1Email | user1Password | user1Name | user2Name | WAS NOT RECEIVED  | First hello | Second hello | Third hello |
 
   @C82514 @e2ee @staging
   Scenario Outline: Verify you get no decryption errors when receiving messages on load
@@ -695,4 +695,4 @@ Feature: E2EE
 
     Examples:
       | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT | StartMessage | PREFIX1 | PREFIX2 | PREFIX3 | PREFIX4 |
-      | user1Email | user1Password | user1Name | user2Name | UNABLE TO DECRYPT | Let's start  | First   | Second  | Third   | Four    |
+      | user1Email | user1Password | user1Name | user2Name | WAS NOT RECEIVED  | Let's start  | First   | Second  | Third   | Four    |

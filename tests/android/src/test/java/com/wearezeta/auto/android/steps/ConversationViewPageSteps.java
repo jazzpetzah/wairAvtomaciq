@@ -136,12 +136,13 @@ public class ConversationViewPageSteps {
 
     /**
      * Press the corresponding button in the input controls
+     * Tap file button will send file directly when you installed testing_gallery-debug.apk
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Add people|Ping|Add Picture|Sketch) button$ from input tools$
+     * @step. ^I tap (Add people|Ping|Add Picture|Sketch|File) button$ from input tools$
      */
-    @When("^I tap (Add people|Ping|Add Picture|Sketch) button from input tools$")
+    @When("^I tap (Add people|Ping|Add Picture|Sketch|File) button from input tools$")
     public void WhenITapInputToolButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "ping":
@@ -155,6 +156,9 @@ public class ConversationViewPageSteps {
                 break;
             case "add people":
                 getConversationViewPage().tapPeopleBtn();
+                break;
+            case "file":
+                getConversationViewPage().tapFileBtn();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
@@ -530,6 +534,20 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Wait until the file uploading completely
+     *
+     * @param timeoutSeconds the timeout in seconds for uploading
+     * @param size should be good formated value, such as 5.00MB rather tha 5MB
+     * @param extension
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until (.*) file with extension "(\w+)" is uploaded$"
+     */
+    @When("^I wait up to (\\d+) seconds? until (.*) file with extension \"(\\w+)\" is uploaded$")
+    public void IWaitFileUploadingComplete(int timeoutSeconds, String size, String extension) throws Exception {
+        getConversationViewPage().waitUntilFileUploadIsCompleted(timeoutSeconds, size, extension);
+    }
+
+    /**
      * Verify the current state of media control button has been changed since the last snapshot was made
      *
      * @throws Exception
@@ -819,5 +837,20 @@ public class ConversationViewPageSteps {
         Assert.assertTrue("Camera button should be visible in cursor menu", getConversationViewPage().isCameraButtonVisible());
         Assert.assertTrue("People button should be visible in cursor menu", getConversationViewPage().isPeopleButtonVisible());
         Assert.assertTrue("File button should be visible in cursor menu", getConversationViewPage().isFileButtonVisible());
+    }
+
+    /**
+     * Check the expected placehoder is visible
+     *
+     * @param size the expected size displayed, value should be good formatted, such as 3.00MB rather than 3MB
+     * @param fileName the expected file name displayed
+     * @param extension the extension of the file uploaded
+     * @throws Exception
+     * @step. ^I see the result of (.*) file upload having name "(.*)" and extension "(.*)"$
+     */
+    @Then("^I see the result of (.*) file upload having name \"(.*)\" and extension \"(.*)\"$")
+    public void ThenISeeTheResultOfXFileUpload(String size, String fileName, String extension) throws Exception {
+        Assert.assertTrue("The placeholder of sending file should be visible",
+                getConversationViewPage().isFileSenderPlaceHolderVisible(fileName, size, extension));
     }
 }

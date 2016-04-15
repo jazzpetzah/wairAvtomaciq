@@ -426,6 +426,7 @@ public class ContactListPageSteps {
      * @step. ^I( do not)? see joined group call notification for conversation
      * (.*)$
      */
+    //TODO: rename to "^I( do not)? see joined group call notification in the conversation list for conversation (.*)$"
     @Then("^I( do not)? see joined group call notification for conversation (.*)$")
     public void isJoinedGroupCallNotificationVisibleForConversation(
             String shouldNotBeVisible, String conversationName)
@@ -463,6 +464,7 @@ public class ContactListPageSteps {
      * @step. ^I( do not)? see unjoined group call notification for conversation
      * (.*)$
      */
+    //TODO: rename to "^I( do not)? see unjoined group call notification in the conversation list for conversation (.*)$"
     @Then("^I( do not)? see unjoined group call notification for conversation (.*)$")
     public void isUnjoinedGroupCallNotificationVisibleForConversation(
             String shouldNotBeVisible, String conversationName)

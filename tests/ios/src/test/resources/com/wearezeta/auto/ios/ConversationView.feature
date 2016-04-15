@@ -327,7 +327,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I open conversation details
     And I open ellipsis menu
-    And I click archive menu button
+    And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
@@ -572,7 +572,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Name> sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
     And I open search UI
