@@ -46,9 +46,11 @@ public class CallOutgoingPageSteps {
     public void ISeeOutgoingCall(String not, String videoCall) throws Exception {
         boolean isVideoCall = videoCall != null;
         if (not == null) {
-            assertTrue("Outgoing call not visible", getPage().waitUntilVisible(isVideoCall));
+            assertTrue(String.format("%s Outgoing call not visible", isVideoCall ? "Video" : "Audio"),
+                    getPage().waitUntilVisible(isVideoCall));
         } else {
-            assertTrue("Outgoing call should not be visible", getPage().waitUntilNotVisible(isVideoCall));
+            assertTrue(String.format("%s Outgoing call should not be visible", isVideoCall ? "Video" : "Audio"),
+                    getPage().waitUntilNotVisible(isVideoCall));
         }
     }
     /**
