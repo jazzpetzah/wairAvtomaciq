@@ -294,6 +294,36 @@ public class ConversationsListPageSteps {
         }
     }
 
+    /**
+     * Verify whether Contacts label is visible at the bottom of conversations list
+     *
+     * @param shouldNotSee equals to null if Contacts label should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see Archive button at the bottom of conversations list$
+     */
+    @Then("^I (do not )?see Contacts label at the bottom of conversations list$")
+    public void ISeeContactsLabel(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("Contacts label should be visible, but it's hidden",
+                    getConversationsListPage().contactsLabelIsVisible());
+        } else {
+            Assert.assertTrue("Contacts label should be invisible, but it's visible",
+                    getConversationsListPage().contactLabelIsNotVisible());
+        }
+    }
+
+    /**
+     * Verify visibility of NO CONVERSATIONS message in conversation list
+     *
+     * @throws Exception
+     * @step. ^I see NO CONVERSATIONS message in conversations list$
+     */
+    @Then("^I see NO CONVERSATIONS message in conversations list$")
+    public void ISeeNoConversationMessage() throws Exception {
+        Assert.assertTrue("NO CONVERSATION message is not visible",
+                getConversationsListPage().noConversationMessageIsVisible());
+    }
+
     @When("I tap play/pause button in conversations list next to (.*)")
     public void ITapPlayPauseButtonInContactListNextTo(String contact) throws Exception {
         String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
@@ -328,17 +358,6 @@ public class ConversationsListPageSteps {
             Assert.assertFalse(String.format("There is conversation with '%s' in the list, which should be hidden",
                     participantNames), getConversationsListPage().isConversationWithUsersExist(participantNames, 2));
         }
-    }
-
-    /**
-     * Click on archive button for a conversation
-     *
-     * @throws Exception if conversation is not found
-     * @step. ^I click archive button for conversation$
-     */
-    @When("^I click archive button for conversation$")
-    public void IClickArchiveConversationButton() throws Exception {
-        getConversationsListPage().clickArchiveConversationButton();
     }
 
     /**
@@ -384,46 +403,35 @@ public class ConversationsListPageSteps {
      *
      * @param buttonTitle Silence | Delete | Leave | Archive | Block | Cancel Request | Cancel
      * @throws Exception
-     * @step. ^I see (Silence|Delete|Leave|Archive|Block|Cancel Request|Cancel) button in
-     * action menu in [Cc]ontact [Ll]ist$
+     * @step. ^I see (Silence|Delete|Leave|Archive|Block|Cancel Request|Cancel) action button$
      */
-    @And("^I see (Silence|Delete|Leave|Archive|Block|Cancel Request|Cancel) button in action menu in [Cc]ontact [Ll]ist$")
+    @And("^I see (Silence|Delete|Leave|Archive|Block|Cancel Request|Cancel) action button$")
     public void ISeeXButtonInActionMenu(String buttonTitle) throws Exception {
         Assert.assertTrue("There is no button " + buttonTitle.toUpperCase()
                 + " in opened action menu.", getConversationsListPage().isButtonVisibleInActionMenu(buttonTitle));
     }
 
     /**
-     * Clicks the Archive button in action menu of contact list
+     * Tap specified button in action menu
      *
-     * @throws Throwable
-     * @step. ^I press Archive button in action menu in Contact List$
+     * @param buttonTitle Silence|Notify|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel
+     * @throws Exception
+     * @step. ^I tap (Silence|Notify|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel) action button$
      */
-    @When("^I press Archive button in action menu in Contact List$")
-    public void IPressArchiveButtonInActionMenuInContactList() throws Throwable {
-        getConversationsListPage().clickArchiveButtonInActionMenu();
+    @And("^I tap (Silence|Notify|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel) action button$")
+    public void ITapXButtonInActionMenu(String buttonTitle) throws Exception {
+        getConversationsListPage().tapButtonInActionMenu(buttonTitle);
     }
 
     /**
-     * Clicks the Leave button in action menu of contact list
+     * Confirms the blocking alert by clicking block
      *
-     * @throws Throwable
-     * @step. ^I press Leave button in action menu in Contact List$
+     * @throws Exception
+     * @step. ^I confirm blocking alert$
      */
-    @When("^I press Leave button in action menu in Contact List$")
-    public void IPressLeaveButtonInActionMenuInContactList() throws Throwable {
-        getConversationsListPage().clickLeaveButtonInActionMenu();
-    }
-
-    /**
-     * Clicks the Cancel button in action menu of contact list
-     *
-     * @throws Throwable
-     * @step. ^I press Cancel button in action menu in Contact list$
-     */
-    @Then("^I press Cancel button in action menu in Contact List$")
-    public void IPressCancelButtonInActionMenuInContactList() throws Throwable {
-        getConversationsListPage().clickCancelButtonInActionMenu();
+    @When("^I confirm blocking alert$")
+    public void IConfirmBlockingAlert() throws Exception {
+        ITapXButtonInActionMenu("Block");
     }
 
     /**
@@ -523,5 +531,16 @@ public class ConversationsListPageSteps {
     @When("^I tap Invite more people button$")
     public void ITapInviteMorePeopleButton() throws Exception {
         getPeoplePickerPage().tapSendInviteButton();
+    }
+
+    /**
+     * Tap close button on Archive page
+     *
+     * @throws Exception
+     * @step. ^I tap close Archive page button$
+     */
+    @When("^I tap close Archive page button$")
+    public void IClickCloseArchivePageButton() throws Exception {
+        getConversationsListPage().clickCloseArchivePageButton();
     }
 }

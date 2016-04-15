@@ -70,28 +70,6 @@ public class OtherUserPersonalInfoPageSteps {
     }
 
     /**
-     * Presses the silence button in the conversation detail menu
-     *
-     * @throws Exception
-     * @step. ^I press menu silence button$
-     */
-    @When("^I press menu silence button$")
-    public void IPressMenuSilenceButton() throws Exception {
-        getOtherUserPersonalInfoPage().clickSilenceMenuButton();
-    }
-
-    /**
-     * Presses the notify button in the conversation detail menu
-     *
-     * @throws Exception
-     * @step. ^I press menu notify button$
-     */
-    @When("^I press menu notify button$")
-    public void IPressMenuNotifyButton() throws Exception {
-        getOtherUserPersonalInfoPage().clickNotifyMenuButton();
-    }
-
-    /**
      * Open ellipsis menu in conversation details
      *
      * @throws Exception
@@ -100,28 +78,6 @@ public class OtherUserPersonalInfoPageSteps {
     @When("^I open ellipsis menu$")
     public void IOpenEllipsisMenu() throws Exception {
         getOtherUserPersonalInfoPage().openEllipsisMenu();
-    }
-
-    /**
-     * Click archive menu button in ellipsis menu
-     *
-     * @throws Exception
-     * @step. ^I click archive menu button$
-     */
-    @When("^I click archive menu button$")
-    public void IClickArchiveMenu() throws Exception {
-        getOtherUserPersonalInfoPage().clickArchiveMenuButton();
-    }
-
-    /**
-     * Click delete menu button in ellipsis menu
-     *
-     * @throws Exception
-     * @step. ^I click delete menu button$
-     */
-    @When("^I click delete menu button$")
-    public void IClickDeleteMenu() throws Exception {
-        getOtherUserPersonalInfoPage().clickDeleteMenuButton();
     }
 
     /**
@@ -144,39 +100,6 @@ public class OtherUserPersonalInfoPageSteps {
     @When("^I select Also Leave option on Delete conversation dialog$")
     public void ISelectAlsoLeaveOptionOnDeleteDialog() throws Exception {
         getOtherUserPersonalInfoPage().clickAlsoLeaveButton();
-    }
-
-    /**
-     * Clicks on the Block button in the profile menu
-     *
-     * @throws Exception
-     * @step. ^I press menu Block button$
-     */
-    @When("^I press menu Block button$")
-    public void IPressMenuBlockButton() throws Exception {
-        getOtherUserPersonalInfoPage().clickBlockMenuButton();
-    }
-
-    /**
-     * Confirms the blocking alert by clicking block
-     *
-     * @throws Exception
-     * @step. ^I confirm blocking alert$
-     */
-    @When("^I confirm blocking alert$")
-    public void IConfirmBlockingAlert() throws Exception {
-        getOtherUserPersonalInfoPage().clickBlockMenuButton();
-    }
-
-    /**
-     * Click on cancel button
-     *
-     * @throws Exception
-     * @step. I click Cancel button
-     */
-    @When("^I click Cancel button$")
-    public void IClickCancelButton() throws Exception {
-        getOtherUserPersonalInfoPage().clickCancelButton();
     }
 
     /**

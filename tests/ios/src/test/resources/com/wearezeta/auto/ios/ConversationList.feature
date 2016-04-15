@@ -23,7 +23,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <Contact>
-    And I click archive button for conversation
+    And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
@@ -39,9 +39,9 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <Contact>
-    And I press menu silence button
+    And I tap Silence action button
     When I swipe right on a <Contact>
-    And I press Archive button in action menu in Contact List
+    And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
     And I do not see conversation <Contact> in conversations list
@@ -86,7 +86,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <GroupChatName>
-    And I click archive button for conversation
+    And I tap Archive action button
     Then I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
     Then I see conversation <GroupChatName> in conversations list
@@ -139,11 +139,11 @@ Feature: Conversation List
     Given I see conversations list
     When I swipe right on a <GroupChatName>
     Then I see conversation <GroupChatName> name in action menu in Contact List
-    And I see Silence button in action menu in Contact List
-    And I see Archive button in action menu in Contact List
-    And I see Delete button in action menu in Contact List
-    And I see Leave button in action menu in Contact List
-    And I see Cancel button in action menu in Contact List
+    And I see Silence action button
+    And I see Archive action button
+    And I see Delete action button
+    And I see Leave action button
+    And I see Cancel action button
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
@@ -157,11 +157,11 @@ Feature: Conversation List
     Given I see conversations list
     When I swipe right on a <Contact>
     Then I see conversation <Contact> name in action menu in Contact List
-    And I see Silence button in action menu in Contact List
-    And I see Archive button in action menu in Contact List
-    And I see Delete button in action menu in Contact List
-    And I see Block button in action menu in Contact List
-    And I see Cancel button in action menu in Contact List
+    And I see Silence action button
+    And I see Archive action button
+    And I see Delete action button
+    And I see Block action button
+    And I see Cancel action button
 
     Examples:
       | Name      | Contact   |
@@ -175,8 +175,8 @@ Feature: Conversation List
     Given I see conversations list
     When I swipe right on a <Contact>
     And I see conversation <Contact> name in action menu in Contact List
-    And I see Archive button in action menu in Contact List
-    And I press Archive button in action menu in Contact List
+    And I see Archive action button
+    And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
@@ -194,8 +194,8 @@ Feature: Conversation List
     Given I see conversations list
     When I swipe right on a <GroupChatName>
     And I see conversation <GroupChatName> name in action menu in Contact List
-    And I see Leave button in action menu in Contact List
-    And I press Leave button in action menu in Contact List
+    And I see Leave action button
+    And I tap Leave action button
     And I see leave conversation alert
     And I press leave
     Then I do not see conversation <GroupChatName> in conversations list
@@ -222,7 +222,7 @@ Feature: Conversation List
     Then I see 1 photo in the dialog
     When I navigate back to conversations list
     And I swipe right on a <GroupChatName>
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
@@ -247,7 +247,7 @@ Feature: Conversation List
     Then I see 1 photo in the dialog
     When I navigate back to conversations list
     And I swipe right on a <Contact1>
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     And I open search UI
     And I input in People picker search field conversation name <Contact1>
@@ -268,8 +268,8 @@ Feature: Conversation List
     Given I see conversations list
     When I swipe right on a <Contact>
     Then I see conversation <Contact> name in action menu in Contact List
-    And I see Cancel button in action menu in Contact List
-    And I press Cancel button in action menu in Contact List
+    And I see Cancel action button
+    And I tap Cancel action button
     Then I see conversations list
 
     Examples:
@@ -287,11 +287,11 @@ Feature: Conversation List
     And I tap on contact name <Contact>
     And I navigate back to conversations list
     When I swipe right on a <Contact>
-    And I press menu silence button
+    And I tap Silence action button
     Then I see the state of <Contact> conversation item is changed
     When I remember the state of <Contact> conversation item
     And I swipe right on a <Contact>
-    And I press menu notify button
+    And I tap Notify action button
     Then I see the state of <Contact> conversation item is changed
 
     Examples:
@@ -323,7 +323,7 @@ Feature: Conversation List
     Given User <Contact1> sends 1 encrypted message to user <Name>
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
     And I do not see Archive button at the bottom of conversations list
@@ -339,11 +339,11 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <Contact1>
-    And I press Archive button in action menu in Contact List
+    And I tap Archive action button
     And I do not see conversation <Contact1> in conversations list
     And I open archived conversations
     And I swipe right on a <Contact1>
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
     And I do not see Archive button at the bottom of conversations list
@@ -361,7 +361,7 @@ Feature: Conversation List
     Given I see conversations list
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
-    And I click delete menu button
+    And I tap Delete action button
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
     And I open search UI
@@ -388,7 +388,7 @@ Feature: Conversation List
     Given User Myself sends encrypted image <Picture> to group conversation <GroupChatName>
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
     When I open search UI
@@ -411,10 +411,10 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <GroupChatName>
-    And I see Archive button in action menu in Contact List
-    And I see Delete button in action menu in Contact List
-    And I see Cancel button in action menu in Contact List
-    And I click delete menu button
+    And I see Archive action button
+    And I see Delete action button
+    And I see Cancel action button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
     And I do not see Archive button at the bottom of conversations list
@@ -430,8 +430,8 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <Contact1>
-    And I press menu Block button
-    And I click Cancel button
+    And I tap Block action button
+    And I tap Cancel action button
     Then I see conversation action menu
 
     Examples:
@@ -445,7 +445,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <Contact>
-    And I press menu Block button
+    And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact> in conversations list
     And I do not see Archive button at the bottom of conversations list
@@ -484,8 +484,8 @@ Feature: Conversation List
     Given I see first item in contact list named <Contact>
     When I swipe right on a <Contact>
     Then I see conversation <Contact> name in action menu in Contact List
-    And I see Archive button in action menu in Contact List
-    And I see Cancel button in action menu in Contact List
+    And I see Archive action button
+    And I see Cancel action button
 
     Examples:
       | Name      | Contact   |
@@ -533,3 +533,39 @@ Feature: Conversation List
     Examples:
       | Name      | Contact1  | DeviceName | Timeout |
       | user1Name | user2Name | device1    | 15      |
+
+  @C82827 @staging
+  Scenario Outline: Verify archive behaviour when one archive/unarchive a conversation
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <ArchivedUser>
+    Given Myself archived conversation with <ArchivedUser>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When User <ArchivedUser> sends 1 message to user Myself
+    Then I see conversation <ArchivedUser> in conversations list
+    And I see Contacts label at the bottom of conversations list
+    And I do not see Archive button at the bottom of conversations list
+    When Myself archived conversation with <ArchivedUser>
+    Then I do not see conversation <ArchivedUser> in conversations list
+    And I do not see Contacts label at the bottom of conversations list
+    And I see Archive button at the bottom of conversations list
+    And I see NO CONVERSATIONS message in conversations list
+    When I open archived conversations
+    Then I see conversation <ArchivedUser> in conversations list
+    When I swipe right on a <ArchivedUser>
+    And I tap Unarchive action button
+    Then I do not see conversation <ArchivedUser> in conversations list
+    When I tap close Archive page button
+    Then I see conversation <ArchivedUser> in conversations list
+    And I do not see Archive button at the bottom of conversations list
+    When I swipe right on a <ArchivedUser>
+    And I tap Archive action button
+    And I do not see conversation <ArchivedUser> in conversations list
+    And I see Archive button at the bottom of conversations list
+    And User <ArchivedUser> sends 1 messages to user Myself
+    Then I see conversation <ArchivedUser> in conversations list
+    And I do not see Archive button at the bottom of conversations list
+
+    Examples:
+      | Name      | ArchivedUser|
+      | user1Name | user2Name   |
