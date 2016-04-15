@@ -101,7 +101,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
       | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
 
-  @C2509 @staging
+  @C2509 @regression @rc
   Scenario Outline: (ZIOS-6338) Verify inbox area displaying in case of new incoming connection requests [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -390,7 +390,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2536 @staging
+  @C2536 @regression @rc
   Scenario Outline: Verify messages are marked read after opening a conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture
