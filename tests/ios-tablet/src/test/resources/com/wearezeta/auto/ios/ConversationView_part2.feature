@@ -23,7 +23,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
@@ -52,7 +52,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
@@ -116,7 +116,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
@@ -177,7 +177,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I click plus button next to text input
     Then I see conversation tools buttons
-    And I see plus button is not shown
+    And I do not see plus button next to text input
     And I swipe left on options buttons
     And I see Close input options button is not visible
     And I click plus button next to text input
@@ -201,12 +201,12 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I click plus button next to text input
-    Then I see no other conversation tools buttons except of Details
+    Then I see no other conversation tools buttons except of People
     And I click Close input options button
     And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
-    Then I see no other conversation tools buttons except of Details
+    Then I see no other conversation tools buttons except of People
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
@@ -224,11 +224,11 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I click plus button next to text input
-    Then I see no other conversation tools buttons except of Details
+    Then I see no other conversation tools buttons except of People
     And I click Close input options button
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
-    Then I see no other conversation tools buttons except of Details
+    Then I see no other conversation tools buttons except of People
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
@@ -377,7 +377,7 @@ Feature: Conversation View
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
@@ -402,7 +402,7 @@ Feature: Conversation View
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     When I confirm my choice
@@ -442,7 +442,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap on text input to scroll to the end
     When I scroll to the beginning of the conversation
-    Then I see plus button is not shown
+    Then I do not see plus button next to text input
 
     Examples:
       | Name      | Contact   | Picture     |

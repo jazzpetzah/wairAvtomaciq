@@ -305,7 +305,7 @@ Feature: Connect
     And I type the default message and send it
     Then I see 1 default message in the dialog
     When I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice

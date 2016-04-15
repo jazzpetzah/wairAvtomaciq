@@ -28,7 +28,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By namePlusButton = MobileBy.AccessibilityId("plusButton");
 
-    private static final By nameOpenConversationDetails = MobileBy.AccessibilityId("ComposeControllerConversationDetailButton");
+    private static final By namePeopleButton = MobileBy.AccessibilityId("ComposeControllerConversationDetailButton");
 
     protected static final By nameYouRenamedConversation = MobileBy.AccessibilityId("YOU RENAMED THE CONVERSATION");
 
@@ -495,8 +495,8 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), namePlusButton);
     }
 
-    public boolean isOpenConversationDetailsButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameOpenConversationDetails);
+    public boolean isPeopleButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), namePeopleButton);
     }
 
     public boolean verifyInputOptionsCloseButtonNotVisible() throws Exception {

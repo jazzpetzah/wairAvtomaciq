@@ -201,7 +201,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I click plus button next to text input
-    And I tap on sketch button in cursor
+    And I tap Sketch button from input tools
     And I draw a random sketch
     And I send my sketch
     Then I see 1 photo in the dialog
@@ -219,7 +219,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I click plus button next to text input
-    And I tap on sketch button in cursor
+    And I tap Sketch button from input tools
     And I draw a random sketch
     And I send my sketch
     Then I see 1 photo in the dialog
@@ -237,7 +237,7 @@ Feature: Conversation View
     And I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I click Ping button
+    And I tap Ping button from input tools
     Then I see "<PingMsg>" system message in the conversation view
 
     Examples:
