@@ -634,16 +634,15 @@ public class CommonWebAppSteps {
     /**
      * Mute conversation
      *
-     * @param userToNameAlias user who want to mute conversation
+     * @param userToNameAlias   user who want to mute conversation
      * @param muteUserNameAlias conversation or user to be muted
      * @throws Exception
      * @step. ^(.*) muted conversation with (.*)$
      */
-    @When("^(.*) muted conversation with (.*)$")
-    public void MuteConversationWithUser(String userToNameAlias,
-            String muteUserNameAlias) throws Exception {
-        commonSteps
-                .MuteConversationWithUser(userToNameAlias, muteUserNameAlias);
+    @When("^(.*) muted conversation with (user|group) (.*) on device (.*)$")
+    public void MuteConversationWithUser(String userToNameAlias, String convType,
+                                         String muteUserNameAlias, String deviceName) throws Exception {
+        commonSteps.UserMutesConversation(userToNameAlias, muteUserNameAlias, deviceName, convType.equals("group"));
     }
 
     /**

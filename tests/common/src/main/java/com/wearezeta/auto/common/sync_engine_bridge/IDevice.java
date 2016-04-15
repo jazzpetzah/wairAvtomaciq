@@ -22,6 +22,10 @@ public interface IDevice extends IRemoteEntity {
 
     void clearConversation(String convId) throws Exception;
 
+    void muteConversation(String convId) throws Exception;
+
+    void unmuteConversation(String convId) throws Exception;
+
     // TODO: void sendAsset(String convId, byte[] data, String mime, String filename) throws Exception;
 
     void sendFile(String convId, String path, String mime) throws Exception;
