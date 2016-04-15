@@ -2,7 +2,6 @@ package com.wearezeta.auto.common.driver;
 
 import java.net.URL;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -37,6 +36,12 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
         this.maxRetryCount = maxRetryCount;
         this.initCompletedCallback = initCompletedCallback;
         this.beforeInitCallback = beforeInitCallback;
+    }
+
+    private static final class UnknownPlatformError extends Exception {
+        public UnknownPlatformError(String message) {
+            super(message);
+        }
     }
 
     @Override
@@ -78,7 +83,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                         platformDriver.manage().window().setPosition(new Point(0, 0));
                         break;
                     default:
-                        throw new RuntimeException(String.format("Platform '%s' is unknown", this.platform.name()));
+                        throw new UnknownPlatformError(String.format("Platform '%s' is unknown", this.platform.name()));
                 }
 
                 if (initCompletedCallback != null) {
@@ -89,7 +94,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
 
                 log.debug(String.format("Successfully created driver instance for platform '%s'", this.platform.name()));
                 return platformDriver;
-            } catch (WebDriverException|ExecutionException e) {
+            } catch (RuntimeException e) {
                 if (ntry >= this.maxRetryCount) {
                     throw e;
                 }
