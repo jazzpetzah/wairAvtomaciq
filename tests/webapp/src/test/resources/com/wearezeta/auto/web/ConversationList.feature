@@ -38,11 +38,11 @@ Feature: Conversation List
   Scenario Outline: Unmute 1on1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I muted conversation with <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     Given I see Contact list with name <Contact>
+    Given I muted conversation with <Contact>
     And I see that conversation <Contact> is muted
     When I set unmuted state for conversation <Contact>
     And I open self profile

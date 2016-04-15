@@ -16,7 +16,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
-public class ContactListPage extends AndroidPage {
+public class ConversationsListPage extends AndroidPage {
 
     private static final String LOADING_CONVERSATION_NAME = "…";
 
@@ -77,9 +77,9 @@ public class ContactListPage extends AndroidPage {
 
     private static final By idThreeDotsOptionMenuButton = By.id("v__row_conversation__menu_indicator__second_dot");
 
-    private static final Logger log = ZetaLogger.getLog(ContactListPage.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(ConversationsListPage.class.getSimpleName());
 
-    public ContactListPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+    public ConversationsListPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -116,7 +116,7 @@ public class ContactListPage extends AndroidPage {
     }
 
     public void tapOnName(final String name) throws Exception {
-        findInContactList(name).orElseThrow(
+        findConversationInList(name).orElseThrow(
                 () -> new IllegalStateException(String.format(
                         "The conversation '%s' does not exist in the conversations list", name))
         ).click();
@@ -127,8 +127,12 @@ public class ContactListPage extends AndroidPage {
         DriverUtils.swipeElementPointToPoint(getDriver(), getElement(idConversationListFrame), 1000, 15, 20, 15, -80);
     }
 
-    public Optional<WebElement> findInContactList(String name) throws Exception {
+    public Optional<WebElement> findConversationInList(String name) throws Exception {
         return getElementIfDisplayed(By.xpath(xpathStrContactByName.apply(name)));
+    }
+
+    public Optional<WebElement> findConversationInList(String name, int timeoutSeconds) throws Exception {
+        return getElementIfDisplayed(By.xpath(xpathStrContactByName.apply(name)), timeoutSeconds);
     }
 
     public void swipeRightOnConversation(int durationMilliseconds, String name)
@@ -161,13 +165,22 @@ public class ContactListPage extends AndroidPage {
         getElement(idListActionsAvatar).click();
     }
 
-    public boolean isContactExists(String name) throws Exception {
-        return findInContactList(name).isPresent();
+    public boolean isConversationVisible(String name, int timeoutSeconds) throws Exception {
+        return findConversationInList(name, timeoutSeconds).isPresent();
     }
 
-    public boolean waitUntilContactDisappears(String name) throws Exception {
-        final By nameLocator = By.xpath(xpathStrContactByName.apply(name));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLocator);
+    public boolean isConversationVisible(String name) throws Exception {
+        return findConversationInList(name).isPresent();
+    }
+
+    public boolean waitUntilConversationDisappears(String name) throws Exception {
+        final By locator = By.xpath(xpathStrContactByName.apply(name));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public boolean waitUntilConversationDisappears(String name, int timeoutSeconds) throws Exception {
+        final By locator = By.xpath(xpathStrContactByName.apply(name));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, timeoutSeconds);
     }
 
     public boolean isPlayPauseMediaButtonVisible(String convoName) throws Exception {

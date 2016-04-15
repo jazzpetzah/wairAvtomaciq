@@ -40,7 +40,7 @@ public class CallOngoingPageSteps {
      * @step. ^I (do not )?see ongoing call$
      */
     @When("^I (do not )?see ongoing call$")
-    public void ISeeOutgoingCall(String not) throws Exception {
+    public void ISeeOngoingCall(String not) throws Exception {
         if (not == null) {
             assertTrue("Ongoing call not visible", getPage().waitUntilVisible());
         } else {

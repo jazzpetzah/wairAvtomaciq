@@ -2,6 +2,7 @@ package com.wearezeta.auto.common;
 
 import com.wearezeta.auto.common.backend.*;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -13,8 +14,12 @@ import java.io.IOException;
 import java.util.*;
 
 import static javax.xml.bind.DatatypeConverter.parseDateTime;
+import org.apache.log4j.Logger;
 
 public final class CommonSteps {
+    
+    private static final Logger log = ZetaLogger.getLog(CommonSteps.class.getSimpleName());
+    
     public static final String CONNECTION_NAME = "CONNECT TO ";
     public static final String CONNECTION_MESSAGE = "Hello!";
     private static final int BACKEND_USER_SYNC_TIMEOUT = 180; // seconds
@@ -573,8 +578,10 @@ public final class CommonSteps {
                         parseDateTime(c1.getTime().orElse(defaultDateStr)).getTime()
                 )
         );
+        log.debug(String.format("Clients considered for removal %s", allOtrClients));
         if (allOtrClients.size() > clientsCountToKeep) {
-            for (OtrClient c : allOtrClients.subList(clientsCountToKeep + 1, allOtrClients.size())) {
+            for (OtrClient c : allOtrClients.subList(clientsCountToKeep, allOtrClients.size())) {
+                log.debug(String.format("Removing client with ID %s", c.getId()));
                 BackendAPIWrappers.removeOtrClient(usr, c);
             }
         }

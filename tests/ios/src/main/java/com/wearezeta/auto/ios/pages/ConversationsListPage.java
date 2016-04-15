@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.common.CommonUtils;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.*;
@@ -91,22 +92,32 @@ public class ConversationsListPage extends IOSPage {
         Thread.sleep(1000);
     }
 
-    private Optional<WebElement> findNameInContactList(String name) throws Exception {
+    private Optional<WebElement> findNameInContactList(String name, int timeoutSeconds) throws Exception {
         final By locator = By.xpath(xpathStrConvoListEntryByName.apply(name));
-        final Optional<WebElement> contactCell = getElementIfDisplayed(locator);
+        final Optional<WebElement> contactCell = getElementIfDisplayed(locator, timeoutSeconds);
         if (contactCell.isPresent()) {
             return contactCell;
         } else {
             try {
-                return Optional.of(((IOSElement) getElement(xpathContactListRoot)).scrollToExact(name));
+                return Optional.of(((IOSElement) getElement(xpathContactListRoot, "Conversations list is not visible",
+                        timeoutSeconds)).scrollToExact(name));
             } catch (WebDriverException e) {
                 return Optional.empty();
             }
         }
     }
 
-    public boolean isChatInContactList(String name) throws Exception {
+    private Optional<WebElement> findNameInContactList(String name) throws Exception {
+        return findNameInContactList(name,
+                Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(getClass())));
+    }
+
+    public boolean isConversationInList(String name) throws Exception {
         return findNameInContactList(name).isPresent();
+    }
+
+    public boolean isConversationInList(String name, int timeoutSeconds) throws Exception {
+        return findNameInContactList(name, timeoutSeconds).isPresent();
     }
 
     public void swipeRightOnContact(String contact) throws Exception {
@@ -138,8 +149,12 @@ public class ConversationsListPage extends IOSPage {
         getElement(xpathPendingRequest).click();
     }
 
-    public boolean contactIsNotDisplayed(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), MobileBy.AccessibilityId(name), 5);
+    public boolean isConversationNotInList(String name, int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), MobileBy.AccessibilityId(name), timeoutSeconds);
+    }
+
+    public boolean isConversationNotInList(String name) throws Exception {
+        return isConversationNotInList(name, 5);
     }
 
     @Override

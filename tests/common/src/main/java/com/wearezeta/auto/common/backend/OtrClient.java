@@ -184,4 +184,9 @@ public class OtrClient {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "OtrClient{id=" + id + '}';
+    }
 }

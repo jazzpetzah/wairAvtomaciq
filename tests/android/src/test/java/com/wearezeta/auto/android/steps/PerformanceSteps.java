@@ -2,9 +2,9 @@ package com.wearezeta.auto.android.steps;
 
 import java.util.List;
 
+import com.wearezeta.auto.android.pages.ConversationsListPage;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
@@ -12,8 +12,7 @@ import com.wearezeta.auto.android.common.logging.AndroidLogListener;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.common.reporter.AndroidBatteryPerfReportModel;
 import com.wearezeta.auto.android.common.reporter.AndroidPerfReportModel;
-import com.wearezeta.auto.android.pages.ContactListPage;
-import com.wearezeta.auto.android.pages.DialogPage;
+import com.wearezeta.auto.android.pages.ConversationViewPage;
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.CommonCallingSteps2;
@@ -43,12 +42,12 @@ public class PerformanceSteps {
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_MSGS_IN_CONVO_WINDOW = 100;
 
-    private ContactListPage getContactListPage() throws Exception {
-        return pagesCollection.getPage(ContactListPage.class);
+    private ConversationsListPage getContactListPage() throws Exception {
+        return pagesCollection.getPage(ConversationsListPage.class);
     }
 
-    private DialogPage getDialogPage() throws Exception {
-        return pagesCollection.getPage(DialogPage.class);
+    private ConversationViewPage getDialogPage() throws Exception {
+        return pagesCollection.getPage(ConversationViewPage.class);
     }
 
     private EmailSignInPage getEmailSignInPage() throws Exception {

@@ -12,13 +12,13 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-public class GroupChatPage extends DialogPage {
+public class GroupConversationViewPage extends ConversationViewPage {
     private static final By nameYouLeftMessage = MobileBy.AccessibilityId("YOU LEFT");
 
     private static final Function<String, String> xpathStrYouAddedToGroupChatMessageByName =
             name -> String.format("//UIAStaticText[starts-with(@name,'YOU ADDED %s')]", name.toUpperCase());
 
-    public GroupChatPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+    public GroupConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 

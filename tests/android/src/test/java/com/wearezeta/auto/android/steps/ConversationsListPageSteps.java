@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.misc.ElementState;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 
@@ -21,11 +20,11 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class ContactListPageSteps {
+public class ConversationsListPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
-    private ContactListPage getContactListPage() throws Exception {
-        return pagesCollection.getPage(ContactListPage.class);
+    private ConversationsListPage getConversationsListPage() throws Exception {
+        return pagesCollection.getPage(ConversationsListPage.class);
     }
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -38,15 +37,15 @@ public class ContactListPageSteps {
      */
     @Given("^I see Contact list with (no )?contacts$")
     public void GivenISeeContactList(String shouldNotBeVisible) throws Exception {
-        getContactListPage().verifyContactListIsFullyLoaded();
+        getConversationsListPage().verifyContactListIsFullyLoaded();
         if (shouldNotBeVisible == null) {
             Assert.assertTrue(
                     "No conversations are visible in the conversations list, but some are expected",
-                    getContactListPage().isAnyConversationVisible());
+                    getConversationsListPage().isAnyConversationVisible());
         } else {
             Assert.assertTrue(
                     "Some conversations are visible in the conversations list, but zero is expected",
-                    getContactListPage().isNoConversationsVisible());
+                    getConversationsListPage().isNoConversationsVisible());
 
         }
     }
@@ -59,7 +58,7 @@ public class ContactListPageSteps {
      */
     @Given("^I see Contact list$")
     public void GivenISeeContactList() throws Exception {
-        getContactListPage().verifyContactListIsFullyLoaded();
+        getConversationsListPage().verifyContactListIsFullyLoaded();
     }
 
     /**
@@ -76,7 +75,7 @@ public class ContactListPageSteps {
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
-        getContactListPage().tapOnName(contactName);
+        getConversationsListPage().tapOnName(contactName);
     }
 
     /**
@@ -87,7 +86,7 @@ public class ContactListPageSteps {
      */
     @When("^I tap conversations list settings button$")
     public void ITapConvoSettings() throws Exception {
-        getContactListPage().tapListSettingsButton();
+        getConversationsListPage().tapListSettingsButton();
     }
 
     /**
@@ -106,7 +105,7 @@ public class ContactListPageSteps {
         } catch (NoSuchUserException e) {
             // Ignore silently - seems bad...
         }
-        getContactListPage().swipeRightOnConversation(1000, contact);
+        getConversationsListPage().swipeRightOnConversation(1000, contact);
     }
 
     /**
@@ -119,7 +118,7 @@ public class ContactListPageSteps {
     @When("^I short swipe right on a (.*)$")
     public void IShortSwipeRightOnAUser(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        getContactListPage().swipeShortRightOnConversation(1000, contact);
+        getConversationsListPage().swipeShortRightOnConversation(1000, contact);
 
     }
 
@@ -131,7 +130,7 @@ public class ContactListPageSteps {
      */
     @When("^I open [Ss]earch UI$")
     public void IOpenSearchUI() throws Exception {
-        getContactListPage().tapListActionsAvatar();
+        getConversationsListPage().tapListActionsAvatar();
     }
 
     /**
@@ -142,7 +141,7 @@ public class ContactListPageSteps {
      */
     @When("^I swipe up contact list$")
     public void ISwipeUpContactList() throws Exception {
-        getContactListPage().doLongSwipeUp();
+        getConversationsListPage().doLongSwipeUp();
     }
 
     /**
@@ -164,12 +163,12 @@ public class ContactListPageSteps {
             Assert.assertTrue(
                     String.format("The is no group conversation with users '%s' in the list",
                             StringUtils.join(",", users)),
-                    getContactListPage().isConversationItemExist(users));
+                    getConversationsListPage().isConversationItemExist(users));
         } else {
             Assert.assertTrue(
                     String.format("The group conversation with users '%s' in present the list, but it should not",
                             StringUtils.join(",", users)),
-                    getContactListPage().isConversationItemNotExist(users));
+                    getConversationsListPage().isConversationItemNotExist(users));
         }
     }
 
@@ -183,10 +182,10 @@ public class ContactListPageSteps {
     public void ISeeContactsHintBanner(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue("The contact hint banner is not visible in the list",
-                    getContactListPage().isContactsBannerVisible());
+                    getConversationsListPage().isContactsBannerVisible());
         } else {
             Assert.assertTrue("The contact hint banner is visible in the list, but should be hidden",
-                    getContactListPage().isContactsBannerNotVisible());
+                    getConversationsListPage().isContactsBannerNotVisible());
         }
     }
 
@@ -206,14 +205,34 @@ public class ContactListPageSteps {
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
-        getContactListPage().verifyContactListIsFullyLoaded();
+        getConversationsListPage().verifyContactListIsFullyLoaded();
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The conversation '%s' is not visible in the list",
-                    userName), getContactListPage().isContactExists(userName));
+                    userName), getConversationsListPage().isConversationVisible(userName));
         } else {
             Assert.assertTrue(String.format("The conversation '%s' is  visible in the list, but should be hidden",
-                    userName), getContactListPage().waitUntilContactDisappears(
-                    userName));
+                    userName), getConversationsListPage().waitUntilConversationDisappears(userName));
+        }
+    }
+
+    /**
+     * Check to see that a given username appears in the contact list
+     *
+     * @param timeoutSeconds conversation visibility timeout
+     * @param convoName      conversation name/alias
+     * @param expectedAction either 'appears in' or 'disappears from'
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until conversation (.*) (appears in|disappears from) the list$
+     */
+    @Then("^I wait up to (\\d+) seconds? until conversation (.*) (appears in|disappears from) the list$")
+    public void IWaitForConvo(int timeoutSeconds, String convoName, String expectedAction) throws Exception {
+        convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
+        if (expectedAction.equals("appears in")) {
+            Assert.assertTrue(String.format("The conversation '%s' is not visible in the list",
+                    convoName), getConversationsListPage().isConversationVisible(convoName, timeoutSeconds));
+        } else {
+            Assert.assertTrue(String.format("The conversation '%s' is  visible in the list, but should be hidden",
+                    convoName), getConversationsListPage().waitUntilConversationDisappears(convoName, timeoutSeconds));
         }
     }
 
@@ -232,11 +251,11 @@ public class ContactListPageSteps {
         if (shouldNotBeMuted == null) {
             Assert.assertTrue(
                     String.format("The conversation '%s' is supposed to be muted, but it is not", contact),
-                    getContactListPage().isContactMuted(contact));
+                    getConversationsListPage().isContactMuted(contact));
         } else {
             Assert.assertTrue(String.format(
                     "The conversation '%s' is supposed to be not muted, but it is", contact),
-                    getContactListPage().waitUntilContactNotMuted(contact));
+                    getConversationsListPage().waitUntilContactNotMuted(contact));
         }
     }
 
@@ -256,7 +275,7 @@ public class ContactListPageSteps {
             throws Exception {
         final String name = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         previousPlayPauseBtnState = new ElementState(
-                () -> getContactListPage().getScreenshotOfPlayPauseButtonNextTo(name).orElseThrow(
+                () -> getConversationsListPage().getScreenshotOfPlayPauseButtonNextTo(name).orElseThrow(
                         IllegalStateException::new)).remember();
     }
 
@@ -297,7 +316,7 @@ public class ContactListPageSteps {
             throws Exception {
         convoName = usrMgr.replaceAliasesOccurences(convoName,
                 FindBy.NAME_ALIAS);
-        Assert.assertTrue(getContactListPage().isPlayPauseMediaButtonVisible(
+        Assert.assertTrue(getConversationsListPage().isPlayPauseMediaButtonVisible(
                 convoName));
     }
 
@@ -312,7 +331,7 @@ public class ContactListPageSteps {
     public void ITapPlayPauseButton(String convoName) throws Exception {
         convoName = usrMgr.replaceAliasesOccurences(convoName,
                 FindBy.NAME_ALIAS);
-        getContactListPage().tapPlayPauseMediaButton(convoName);
+        getConversationsListPage().tapPlayPauseMediaButton(convoName);
     }
 
     /**
@@ -324,7 +343,7 @@ public class ContactListPageSteps {
      */
     @And("^I select (.*) from conversation settings menu$")
     public void ISelectConvoSettingsMenuItem(String itemName) throws Exception {
-        getContactListPage().selectConvoSettingsMenuItem(itemName);
+        getConversationsListPage().selectConvoSettingsMenuItem(itemName);
     }
 
     private Map<String, ElementState> previousUnreadIndicatorState = new HashMap<>();
@@ -341,7 +360,7 @@ public class ContactListPageSteps {
     public void IRememberUnreadIndicatorState(String name) throws Exception {
         final String convoName = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         this.previousUnreadIndicatorState.put(convoName,
-                new ElementState(() -> getContactListPage().getMessageIndicatorScreenshot(convoName)).remember()
+                new ElementState(() -> getConversationsListPage().getMessageIndicatorScreenshot(convoName)).remember()
         );
     }
 
@@ -379,7 +398,7 @@ public class ContactListPageSteps {
      */
     @When("^I press DELETE on the confirm alert$")
     public void IPressDELETEOnTheConfirmAlert() throws Exception {
-        getContactListPage().confirmDeleteConversationAlert();
+        getConversationsListPage().confirmDeleteConversationAlert();
     }
 
     /**
@@ -390,7 +409,7 @@ public class ContactListPageSteps {
      */
     @When("^I click the Leave check box$")
     public void IClickLeave() throws Exception {
-        getContactListPage().checkLeaveWhileDeleteCheckbox();
+        getConversationsListPage().checkLeaveWhileDeleteCheckbox();
     }
 
     /**
@@ -403,7 +422,7 @@ public class ContactListPageSteps {
     @Then("^I see (.*) button in conversation settings menu$")
     public void ISeeButtonInConversationSettingsMenuAtPosition(String name) throws Exception {
         Assert.assertTrue("The converastion settings menu item is not visible",
-                getContactListPage().isConvSettingsMenuItemVisible(name));
+                getConversationsListPage().isConvSettingsMenuItemVisible(name));
     }
 
     /**
@@ -416,9 +435,9 @@ public class ContactListPageSteps {
     @Then("^I( do not)? see the Leave check box$")
     public void ISeeTheLeaveCheckBox(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
-            Assert.assertTrue(getContactListPage().isLeaveCheckBoxVisible());
+            Assert.assertTrue(getConversationsListPage().isLeaveCheckBoxVisible());
         } else {
-            Assert.assertFalse(getContactListPage().isLeaveCheckBoxVisible());
+            Assert.assertFalse(getConversationsListPage().isLeaveCheckBoxVisible());
         }
     }
 
@@ -431,7 +450,7 @@ public class ContactListPageSteps {
     @When("^I see three dots option menu button$")
     public void ISeeThreeDotsOptionMenuButton() throws Exception {
         Assert.assertTrue("Three dot button is not visible",
-                getContactListPage().isThreeDotButtonVisible());
+                getConversationsListPage().isThreeDotButtonVisible());
     }
 
     /**
@@ -442,7 +461,7 @@ public class ContactListPageSteps {
      */
     @When("^I press the three dots option menu button$")
     public void IPressTheThreeDotsOptionMenuButton() throws Exception {
-        getContactListPage().tapThreeDotOptionMenuButton();
+        getConversationsListPage().tapThreeDotOptionMenuButton();
     }
 
 }

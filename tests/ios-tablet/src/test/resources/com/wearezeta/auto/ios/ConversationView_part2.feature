@@ -465,7 +465,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2624 @staging
+  @C2624 @regression @rc
   Scenario Outline: Verify sending GIF format pic [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

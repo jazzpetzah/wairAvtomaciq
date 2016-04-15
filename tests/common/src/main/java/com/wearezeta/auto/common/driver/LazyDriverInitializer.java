@@ -38,6 +38,12 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
         this.beforeInitCallback = beforeInitCallback;
     }
 
+    private static final class UnknownPlatformError extends Exception {
+        public UnknownPlatformError(String message) {
+            super(message);
+        }
+    }
+
     @Override
     public RemoteWebDriver call() throws Exception {
         if (this.beforeInitCallback != null) {
@@ -77,7 +83,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                         platformDriver.manage().window().setPosition(new Point(0, 0));
                         break;
                     default:
-                        throw new RuntimeException(String.format("Platform '%s' is unknown", this.platform.name()));
+                        throw new UnknownPlatformError(String.format("Platform '%s' is unknown", this.platform.name()));
                 }
 
                 if (initCompletedCallback != null) {
@@ -88,7 +94,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
 
                 log.debug(String.format("Successfully created driver instance for platform '%s'", this.platform.name()));
                 return platformDriver;
-            } catch (WebDriverException e) {
+            } catch (RuntimeException e) {
                 if (ntry >= this.maxRetryCount) {
                     throw e;
                 }

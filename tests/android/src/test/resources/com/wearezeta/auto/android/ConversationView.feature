@@ -297,7 +297,7 @@ Feature: Conversation View
     Then I see giphy preview page
     When I click on the giphy send button
     Then I see new photo in the dialog
-    And Last message is <Message> · via giphy.com
+    And I see the most recent conversation message is "<Message> · via giphy.com"
 
     Examples:
       | Name      | Contact   | Message |
@@ -359,7 +359,7 @@ Feature: Conversation View
     Then I see giphy preview page
     When I click on the giphy send button
     Then I see new photo in the dialog
-    And Last message is <Message> · via giphy.com
+    And I see the most recent conversation message is "<Message> · via giphy.com"
 
     Examples:
       | Name      | Contact   | Message |
