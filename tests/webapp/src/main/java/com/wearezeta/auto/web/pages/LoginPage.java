@@ -131,7 +131,7 @@ public class LoginPage extends WebPage {
 		boolean noSignIn = waitForLoginButtonDisappearance();
 		boolean noSignInSpinner = DriverUtils.waitUntilLocatorDissapears(
 				this.getDriver(),
-				By.className(WebAppLocators.LoginPage.classNameSpinner),
+				By.className(WebAppLocators.LoginPage.classNameProgressBar),
 				TIMEOUT_SIGNED_IN_PROPERLY);
 		return noSignIn && noSignInSpinner;
 	}

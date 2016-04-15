@@ -24,7 +24,7 @@ public final class WebAppLocators {
 
         public static final String cssPasswordInput = "#form-account-login [data-uie-name='enter-password']";
 
-        public static final String classNameSpinner = "spin";
+        public static final String classNameProgressBar = "progress-bar";
 
         public static final String xpathCreateAccountButton = "//*[@data-uie-name='do-register']";
 
