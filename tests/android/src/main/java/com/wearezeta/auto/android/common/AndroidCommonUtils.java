@@ -1,11 +1,6 @@
 package com.wearezeta.auto.android.common;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +36,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
     private static final String BACKEND_JSON = "customBackend.json";
     private static final String BACKEND_FILE_LOCATION = "/mnt/sdcard/customBackend.json";
+    private static final String FILE_TRANSFER_SOURCE_LOCATION = "/mnt/sdcard/Download/";
 
     public static void executeAdb(final String cmdline) throws Exception {
         executeOsXCommand(new String[]{"/bin/bash", "-c",
@@ -159,6 +155,10 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static String getAndroidToolsPathFromConfig(Class<?> c) throws Exception {
         return CommonUtils.getValueFromConfig(c, "androidToolsPath");
+    }
+
+    public static String getBuildPathFromConfig(Class<?> c) throws Exception {
+        return CommonUtils.getValueFromConfig(c, "projectBuildPath");
     }
 
     public static void deployBackendFile(String fileName) throws Exception {
@@ -576,4 +576,23 @@ public class AndroidCommonUtils extends CommonUtils {
     public static void uninstallPackage(String packageName) throws Exception {
         executeAdb(String.format("uninstall %s", packageName));
     }
+
+    public static void pushRandomFileToSdcardDownload(String fileName, String size) throws Exception {
+        String basePath = getBuildPathFromConfig(AndroidCommonUtils.class);
+        CommonUtils.createRandomAccessFile(basePath + File.separator + fileName, size);
+        AndroidCommonUtils.pushFileToSdcardDownload(basePath, fileName);
+    }
+
+    public static void pushFileToSdcardDownload(String basePath, String fileName) throws Exception {
+        String sourceFilePath = basePath + File.separator + fileName;
+        String destinationFilePath = FILE_TRANSFER_SOURCE_LOCATION + fileName;
+        executeAdb(String.format("shell rm %s", destinationFilePath));
+        executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
+                destinationFilePath));
+        executeAdb(String.format("push %s %s", sourceFilePath, destinationFilePath));
+        executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
+                destinationFilePath));
+    }
+
+
 }
