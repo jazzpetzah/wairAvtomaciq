@@ -1,6 +1,6 @@
 Feature: Localization
 
-  @C77945 @regression
+  @C77945 @regression @torun
   Scenario Outline: Verify registration screen has German-localized strings
     When I switch language to <Language>
     Then I see a string <CreateAccountLink> on the page

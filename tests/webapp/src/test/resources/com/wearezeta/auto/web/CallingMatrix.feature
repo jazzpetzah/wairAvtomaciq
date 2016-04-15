@@ -1,6 +1,6 @@
 Feature: Calling_Matrix
 
-  @C5359 @calling_matrix @calling @torun
+  @C5359 @calling_matrix @calling
   Scenario Outline: Verify I can make 1:1 call to <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me

@@ -16,6 +16,7 @@ import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
@@ -28,6 +29,9 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertTrue;
 import org.openqa.selenium.logging.LogEntry;
 
@@ -77,6 +81,26 @@ public class CommonWebAppSteps {
                     .toString()
                     + " does support calling but this test is just for browsers without support.");
         }
+    }
+    
+    @Given("^I switch language to (.*)$")
+    public void ISwitchLanguageTo(String language) throws Exception {
+        WebappPagesCollection.getInstance().getPage(WebPage.class).switchLanguage(language);
+    }
+
+    @Then("^I see a string (.*) on the page$")
+    public void ISeeAStringOnPage(String string) throws Throwable {
+        assertThat(WebappPagesCollection.getInstance().getPage(WebPage.class).getText(), containsString(string));
+    }
+
+    @Then("^I see a placeholder (.*) on the page$")
+    public void ISeeAPlaceholderOnPage(String placeholder) throws Throwable {
+        assertThat(WebappPagesCollection.getInstance().getPage(WebPage.class).getPlaceholders(), hasItem(placeholder));
+    }
+
+    @Then("^I see a button with (.*) on the page$")
+    public void ISeeAButtonOnPage(String value) throws Throwable {
+        assertThat(WebappPagesCollection.getInstance().getPage(WebPage.class).getButtonValues(), hasItem(value));
     }
 
     /**
