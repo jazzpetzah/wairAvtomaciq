@@ -512,4 +512,4 @@ Feature: Conversation View
 
     Examples:
       | Name      | Contact1  | FileName   | FileExtension | FileSize | UploadingTimeout |
-      | user1Name | user2Name | random.txt | TXT           | 4.00MB   | 10               |
+      | user1Name | user2Name | random.txt | TXT           | 3.00MB   | 10               |

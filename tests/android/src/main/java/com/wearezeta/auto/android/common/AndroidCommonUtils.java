@@ -157,6 +157,10 @@ public class AndroidCommonUtils extends CommonUtils {
         return CommonUtils.getValueFromConfig(c, "androidToolsPath");
     }
 
+    public static String getBuildPathFromConfig(Class<?> c) throws Exception {
+        return CommonUtils.getValueFromConfig(c, "projectBuildPath");
+    }
+
     public static void deployBackendFile(String fileName) throws Exception {
         executeAdb(String.format("push %s %s", fileName, BACKEND_FILE_LOCATION));
     }
@@ -574,7 +578,7 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     public static void pushRandomFileToSdcardDownload(String fileName, String size) throws Exception {
-        String basePath = getAndroidToolsPathFromConfig(AndroidCommonUtils.class);
+        String basePath = getBuildPathFromConfig(AndroidCommonUtils.class);
         CommonUtils.createRandomAccessFile(basePath + File.separator + fileName, size);
         AndroidCommonUtils.pushFileToSdcardDownload(basePath, fileName);
     }
@@ -583,6 +587,8 @@ public class AndroidCommonUtils extends CommonUtils {
         String sourceFilePath = basePath + File.separator + fileName;
         String destinationFilePath = FILE_TRANSFER_SOURCE_LOCATION + fileName;
         executeAdb(String.format("shell rm %s", destinationFilePath));
+        executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
+                destinationFilePath));
         executeAdb(String.format("push %s %s", sourceFilePath, destinationFilePath));
         executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
                 destinationFilePath));
