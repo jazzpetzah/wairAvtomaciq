@@ -612,18 +612,22 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isMediaBarBelowUptoolbar() throws Exception {
-        return isElementABelowElementB(getElement(xpathMediaBar), getElement(xpathToolbar), LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR);
+        return isElementABelowElementB(getElement(xpathMediaBar), getElement(xpathToolbar),
+                LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR);
     }
 
     public void waitUntilFileUploadIsCompleted(int timeoutSeconds, String size, String extension) throws Exception {
-        String fileInfo = StringUtils.isEmpty(extension) ? size : size + FILE_UPLOADING_MESSAGE_SEPARATOR + extension.toUpperCase();
+        String fileInfo = StringUtils.isEmpty(extension) ? size :
+                size + FILE_UPLOADING_MESSAGE_SEPARATOR + extension.toUpperCase();
         fileInfo = String.format("%s%s%s",fileInfo, FILE_UPLOADING_MESSAGE_SEPARATOR, FILE_UPLOADING_MESSAGE);
-        DriverUtils.waitUntilLocatorDissapears(getDriver(), By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeoutSeconds);
+        DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeoutSeconds);
     }
 
     public boolean isFileSenderPlaceHolderVisible(String fileName, String size, String extension) throws Exception {
         size = size.toUpperCase();
-        final String fileInfo = StringUtils.isEmpty(extension) ? size : String.format("%s%s%s", size, FILE_UPLOADING_MESSAGE_SEPARATOR, extension.toUpperCase());
+        final String fileInfo = StringUtils.isEmpty(extension) ? size :
+                String.format("%s%s%s", size, FILE_UPLOADING_MESSAGE_SEPARATOR, extension.toUpperCase());
 
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(xpathFileNamePlaceHolderByValue.apply(fileName))) &&
