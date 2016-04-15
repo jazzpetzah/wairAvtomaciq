@@ -18,12 +18,12 @@ public class TabletCallOutgoingPage extends AndroidTabletPage {
         return this.getAndroidPageInstance(CallOutgoingPage.class);
     }
 
-    public boolean waitUntilVisible() throws Exception {
-        return getPage().waitUntilVisible();
+    public boolean waitUntilVisible(boolean isVideoCall) throws Exception {
+        return getPage().waitUntilVisible(isVideoCall);
     }
 
-    public boolean waitUntilNotVisible() throws Exception {
-        return getPage().waitUntilNotVisible();
+    public boolean waitUntilNotVisible(boolean isVideoCall) throws Exception {
+        return getPage().waitUntilNotVisible(isVideoCall);
     }
     
     public void toggleMute() throws Exception {
