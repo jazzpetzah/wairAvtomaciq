@@ -617,13 +617,13 @@ public class ConversationViewPage extends AndroidPage {
 
     public void waitUntilFileUploadIsCompleted(int timeoutSeconds, String size, String extension) throws Exception {
         String fileInfo = StringUtils.isEmpty(extension) ? size : size + FILE_UPLOADING_MESSAGE_SEPARATOR + extension.toUpperCase();
-        fileInfo = fileInfo + FILE_UPLOADING_MESSAGE_SEPARATOR + FILE_UPLOADING_MESSAGE;
+        fileInfo = String.format("%s%s%s",fileInfo, FILE_UPLOADING_MESSAGE_SEPARATOR, FILE_UPLOADING_MESSAGE);
         DriverUtils.waitUntilLocatorDissapears(getDriver(), By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeoutSeconds);
     }
 
     public boolean isFileSenderPlaceHolderVisible(String fileName, String size, String extension) throws Exception {
         size = size.toUpperCase();
-        final String fileInfo = StringUtils.isEmpty(extension) ? size : size + " · " + extension.toUpperCase();
+        final String fileInfo = StringUtils.isEmpty(extension) ? size : String.format("%s%s%s", size, FILE_UPLOADING_MESSAGE_SEPARATOR, extension.toUpperCase());
 
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(xpathFileNamePlaceHolderByValue.apply(fileName))) &&

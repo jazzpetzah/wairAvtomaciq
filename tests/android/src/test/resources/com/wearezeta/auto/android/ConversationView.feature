@@ -507,9 +507,9 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I tap plus button in text input
     And I tap File button from input tools
-    And I wait up to 10 seconds until <FileSize> file with extension "<FileExtension>" is uploaded
+    And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     Then I see the result of <FileSize> file upload having name "<FileName>" and extension "<FileExtension>"
 
     Examples:
-      | Name      | Contact1  | FileName   | FileExtension | FileSize |
-      | user1Name | user2Name | random.txt | TXT           | 4.00MB   |
+      | Name      | Contact1  | FileName   | FileExtension | FileSize | UploadingTimeout |
+      | user1Name | user2Name | random.txt | TXT           | 4.00MB   | 10               |

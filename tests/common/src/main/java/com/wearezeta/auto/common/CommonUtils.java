@@ -640,8 +640,8 @@ public class CommonUtils {
         try (RandomAccessFile file = new RandomAccessFile(filePath, "rws")) {
             String[] sizeParts = size.split("(?<=\\d)(?=[a-zA-Z])");
             int fileSize = Double.valueOf(sizeParts[0]).intValue();
-            String type = sizeParts.length > 1 ? sizeParts[1].toUpperCase() : "";
-            switch (type) {
+            String type = sizeParts.length > 1 ? sizeParts[1] : "";
+            switch (type.toUpperCase()) {
                 case "MB":
                     file.setLength(fileSize * 1024 * 1024);
                     break;
