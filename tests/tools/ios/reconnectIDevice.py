@@ -9,6 +9,16 @@ NODE_USER = os.getenv("NODE_USER", 'jenkins')
 NODE_PASSWORD = os.getenv('NODE_PASSWORD', '123456')
 MAX_NODES_PER_HOST = 5
 OPERATION_TIMEOUT = 40
+CURRENT_HOST_IP = socket.gethostbyname(socket.gethostname())
+
+
+def get_current_vm_number():
+    ip_as_list = CURRENT_HOST_IP.split('.')
+    # Must be IPv4
+    assert len(ip_as_list) == 4
+    last_digit = int(ip_as_list[-1])
+    return last_digit % MAX_NODES_PER_HOST
+
 
 APPLE_SCRIPT = """tell application "System Events" to tell application process "Parallels Desktop"
                     set frontmost to false
@@ -19,7 +29,7 @@ APPLE_SCRIPT = """tell application "System Events" to tell application process "
                     tell process "Parallels Desktop"
                         tell menu bar item "Window" of menu bar 1
                             click
-                            click (menu item 1 where its name contains "Real") of menu 1
+                            click (menu item 1 where its name contains "Real {}") of menu 1
                         end tell
                         delay 1
                         repeat 2 times
@@ -31,7 +41,7 @@ APPLE_SCRIPT = """tell application "System Events" to tell application process "
                             delay 10
                         end repeat
                     end tell
-                end tell"""
+                end tell""".format(get_current_vm_number())
 
 
 def format_apple_script_as_command():
@@ -42,8 +52,7 @@ def format_apple_script_as_command():
 
 
 def calc_vm_master_host_ip():
-    current_ip = socket.gethostbyname(socket.gethostname())
-    ip_as_list = current_ip.split('.')
+    ip_as_list = CURRENT_HOST_IP.split('.')
     # Must be IPv4
     assert len(ip_as_list) == 4
     last_digit = int(ip_as_list[-1])
