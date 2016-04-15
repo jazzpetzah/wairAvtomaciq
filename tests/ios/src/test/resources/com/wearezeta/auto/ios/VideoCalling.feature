@@ -66,7 +66,7 @@ Feature: Video Calling
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see Mute button on Video Calling overlay
     And I tap Leave button on Video Calling overlay
-    Then I see dialog page
+    Then I see conversation view page
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |

@@ -31,8 +31,8 @@ public class ConversationViewPageSteps {
         return pagesCollection.getPage(OtherUserPersonalInfoPage.class);
     }
 
-    @When("^I see dialog page$")
-    public void WhenISeeDialogPage() throws Exception {
+    @When("^I see conversation view page$")
+    public void WhenISeePage() throws Exception {
         Assert.assertTrue("Cursor input is not visible", getConversationViewPage().waitForCursorInputVisible());
     }
 

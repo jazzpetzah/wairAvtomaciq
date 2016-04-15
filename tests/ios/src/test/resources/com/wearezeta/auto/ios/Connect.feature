@@ -327,7 +327,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user
-    Then I see dialog page
+    Then I see conversation view page
     When I navigate back to conversations list
     Then I see conversation <Contact> in conversations list
 

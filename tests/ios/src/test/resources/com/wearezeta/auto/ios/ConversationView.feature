@@ -579,7 +579,7 @@ Feature: Conversation View
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
-    Then I see dialog page
+    Then I see conversation view page
     And I type the default message and send it
     And I see 1 default message in the dialog
 
