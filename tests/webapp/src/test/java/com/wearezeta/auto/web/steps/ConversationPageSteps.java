@@ -34,7 +34,7 @@ import org.openqa.selenium.Keys;
 
 public class ConversationPageSteps {
 
-    private static final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.70;
+    private static final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.69;
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
