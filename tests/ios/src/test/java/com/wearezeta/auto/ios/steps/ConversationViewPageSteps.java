@@ -139,11 +139,6 @@ public class ConversationViewPageSteps {
         getConversationViewPage().clickKeyboardCommitButton();
     }
 
-    @When("^I swipe up on dialog page to open other user personal page$")
-    public void WhenISwipeUpOnDialogPage() throws Exception {
-        getConversationViewPage().swipeUp(1000);
-    }
-
     @Then("^I see (\\d+) (default )?messages? in the dialog$")
     public void ThenISeeMessageInTheDialog(int expectedCount, String isDefault) throws Exception {
         int actualCount;
