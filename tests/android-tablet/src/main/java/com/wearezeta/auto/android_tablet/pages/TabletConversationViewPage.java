@@ -8,7 +8,7 @@ import java.util.function.Function;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.android.pages.DialogPage;
+import com.wearezeta.auto.android.pages.ConversationViewPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.openqa.selenium.WebElement;
@@ -41,12 +41,12 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         super(lazyDriver);
     }
 
-    private DialogPage getDialogPage() throws Exception {
-        return this.getAndroidPageInstance(DialogPage.class);
+    private ConversationViewPage getDialogPage() throws Exception {
+        return this.getAndroidPageInstance(ConversationViewPage.class);
     }
 
     public boolean waitUntilVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), DialogPage.idDialogRoot);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idDialogRoot);
     }
 
     public boolean waitForSystemMessageContains(String expectedMessage) throws Exception {
@@ -91,7 +91,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilAPictureAppears() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), DialogPage.idDialogImages);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idDialogImages);
     }
 
     public void tapShowInstrumentsButton() throws Exception {
@@ -157,11 +157,11 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), DialogPage.idDialogRoot);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idDialogRoot);
     }
 
     public boolean waitUntilPicturesNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), DialogPage.idDialogImages);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationViewPage.idDialogImages);
     }
 
     public boolean waitUntilUnsentIndicatorIsVisible(String msg) throws Exception {

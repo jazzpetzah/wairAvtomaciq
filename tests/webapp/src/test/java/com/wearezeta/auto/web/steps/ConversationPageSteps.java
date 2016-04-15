@@ -32,7 +32,7 @@ import org.openqa.selenium.Keys;
 
 public class ConversationPageSteps {
 
-    private static final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.70;
+    private static final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.69;
 
     private static final String TOOLTIP_PING = "Ping";
     private static final String SHORTCUT_PING_WIN = "(Ctrl + Alt + K)";

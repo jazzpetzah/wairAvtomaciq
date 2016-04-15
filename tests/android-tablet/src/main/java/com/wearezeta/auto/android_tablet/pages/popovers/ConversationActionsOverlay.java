@@ -2,7 +2,7 @@ package com.wearezeta.auto.android_tablet.pages.popovers;
 
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.android.pages.ContactListPage;
+import com.wearezeta.auto.android.pages.ConversationsListPage;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -54,10 +54,10 @@ public class ConversationActionsOverlay extends AbstractPopoverContainer {
     }
 
     public void confirmDeleteConversationAlert() throws Exception {
-        this.getAndroidPageInstance(ContactListPage.class).confirmDeleteConversationAlert();
+        this.getAndroidPageInstance(ConversationsListPage.class).confirmDeleteConversationAlert();
     }
 
     public void clickLeaveCheckBox() throws Exception {
-        this.getAndroidPageInstance(ContactListPage.class).checkLeaveWhileDeleteCheckbox();
+        this.getAndroidPageInstance(ConversationsListPage.class).checkLeaveWhileDeleteCheckbox();
     }
 }

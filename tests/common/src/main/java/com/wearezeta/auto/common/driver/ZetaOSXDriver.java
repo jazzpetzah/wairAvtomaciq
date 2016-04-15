@@ -82,7 +82,7 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
 		final Callable<Response> task = () -> super.execute(driverCommand, parameters);
 		final Future<Response> future = getPool().submit(task);
 		try {
-			return future.get(MAX_COMMAND_DURATION, TimeUnit.SECONDS);
+			return future.get(DEFAULT_MAX_COMMAND_DURATION, TimeUnit.SECONDS);
 		} catch (Exception e) {
 			if (e instanceof ExecutionException) {
 				if ((e.getCause() instanceof UnreachableBrowserException)

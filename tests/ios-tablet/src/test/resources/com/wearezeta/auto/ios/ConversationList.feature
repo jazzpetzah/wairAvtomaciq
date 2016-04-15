@@ -8,7 +8,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I swipe right on a <Contact>
-    And I click archive button for conversation
+    And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
@@ -26,7 +26,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I swipe right on a <GroupChatName>
-    And I click archive button for conversation
+    And I tap Archive action button
     Then I do not see conversation <GroupChatName> in conversations list
     And I open archived conversations
     Then I see conversation <GroupChatName> in conversations list
@@ -101,7 +101,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
       | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
 
-  @C2509 @staging
+  @C2509 @regression @rc
   Scenario Outline: (ZIOS-6338) Verify inbox area displaying in case of new incoming connection requests [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -171,11 +171,11 @@ Feature: Conversation List
     And I see conversations list
     When I swipe right on a <GroupChatName>
     Then I see conversation <GroupChatName> name in action menu in Contact List
-    And I see Silence button in action menu in Contact List
-    And I see Archive button in action menu in Contact List
-    And I see Delete button in action menu in Contact List
-    And I see Leave button in action menu in Contact List
-    And I see Cancel button in action menu in Contact List
+    And I see Silence action button
+    And I see Archive action button
+    And I see Delete action button
+    And I see Leave action button
+    And I see Cancel action button
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
@@ -190,11 +190,11 @@ Feature: Conversation List
     And I see conversations list
     When I swipe right on a <Contact>
     Then I see conversation <Contact> name in action menu in Contact List
-    And I see Silence button in action menu in Contact List
-    And I see Archive button in action menu in Contact List
-    And I see Delete button in action menu in Contact List
-    And I see Block button in action menu in Contact List
-    And I see Cancel button in action menu in Contact List
+    And I see Silence action button
+    And I see Archive action button
+    And I see Delete action button
+    And I see Block action button
+    And I see Cancel action button
 
     Examples:
       | Name      | Contact   |
@@ -225,7 +225,7 @@ Feature: Conversation List
     Given User <Contact1> sends 1 encrypted message to user Myself
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
     And I do not see Archive button at the bottom of conversations list
@@ -242,11 +242,11 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see conversations list
     When I swipe right on a <Contact1>
-    And I press Archive button in action menu in Contact List
+    And I tap Archive action button
     And I do not see conversation <Contact1> in conversations list
     And I open archived conversations
     And I swipe right on a <Contact1>
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
     And I do not see Archive button at the bottom of conversations list
@@ -268,7 +268,7 @@ Feature: Conversation List
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends encrypted image <Image> to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
     When I open search UI
@@ -290,8 +290,8 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see conversations list
     When I swipe right on a <Contact1>
-    And I press menu Block button
-    And I click Cancel button
+    And I tap Block action button
+    And I tap Cancel action button
     Then I see conversation action menu
 
     Examples:
@@ -306,9 +306,9 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see conversations list
     When I swipe right on a <Contact>
-    And I press menu silence button
+    And I tap Silence action button
     When I swipe right on a <Contact>
-    And I click archive button for conversation
+    And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
     And I do not see conversation <Contact> in conversations list
@@ -333,7 +333,7 @@ Feature: Conversation List
     Given I see conversations list
     Given User <Name> sends 1 encrypted message to group conversation <GroupChatName>
     When I swipe right on a <GroupChatName>
-    And I click delete menu button
+    And I tap Delete action button
     And I select Also Leave option on Delete conversation dialog
     And I confirm delete conversation content
     And I open search UI
@@ -358,10 +358,10 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see conversations list
     When I swipe right on a <GroupChatName>
-    And I see Archive button in action menu in Contact List
-    And I see Delete button in action menu in Contact List
-    And I see Cancel button in action menu in Contact List
-    And I click delete menu button
+    And I see Archive action button
+    And I see Delete action button
+    And I see Cancel action button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
     And I do not see Archive button at the bottom of conversations list
@@ -378,7 +378,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see conversations list
     When I swipe right on a <Contact>
-    And I press menu Block button
+    And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact> in conversations list
     And I do not see Archive button at the bottom of conversations list
@@ -390,7 +390,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2536 @staging
+  @C2536 @regression @rc
   Scenario Outline: Verify messages are marked read after opening a conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given User Myself removes his avatar picture

@@ -1,14 +1,14 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.ios.pages.TabletDialogPage;
+import com.wearezeta.auto.ios.pages.TabletConversationViewPage;
 
 import cucumber.api.java.en.When;
 
 public class TabletDialogPageSteps {
 	private final IOSPagesCollection pagesCollecton = IOSPagesCollection.getInstance();
 
-	private TabletDialogPage getTabletDialogPage() throws Exception {
-		return pagesCollecton.getPage(TabletDialogPage.class);
+	private TabletConversationViewPage getTabletDialogPage() throws Exception {
+		return pagesCollecton.getPage(TabletConversationViewPage.class);
 	}
 	
 	/**

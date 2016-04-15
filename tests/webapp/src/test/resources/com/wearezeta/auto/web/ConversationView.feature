@@ -221,7 +221,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | ExpectedMessage                   |
       | user1Email | user1Password | user1Name | user2Name | ('a' * 100)('LF' * 10)('b' * 100) |
 
-  @C49977 @regression
+  @C49977 @staging
   Scenario Outline: Send a really long message to group conversation
     Given I switch to Sign In page
     Given I Sign in temporary using login <Login> and password <Password>

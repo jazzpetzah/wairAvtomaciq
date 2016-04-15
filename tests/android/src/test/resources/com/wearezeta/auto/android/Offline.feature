@@ -41,6 +41,7 @@ Feature: Offline
     And I tap Add Picture button from input tools
     And I press "Take Photo" button
     And I press "Confirm" button
+    And I scroll to the bottom of conversation view
     Then I see unsent indicator next to new picture in the dialog
 
     Examples:
