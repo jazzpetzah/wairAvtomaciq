@@ -94,7 +94,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
 
                 log.debug(String.format("Successfully created driver instance for platform '%s'", this.platform.name()));
                 return platformDriver;
-            } catch (RuntimeException e) {
+            } catch (WebDriverException e) {
                 if (ntry >= this.maxRetryCount) {
                     throw e;
                 }
