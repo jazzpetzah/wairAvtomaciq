@@ -592,6 +592,8 @@ public class AndroidCommonUtils extends CommonUtils {
         executeAdb(String.format("push %s %s", sourceFilePath, destinationFilePath));
         executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
                 destinationFilePath));
+
+        executeAdb("adb shell ls -l /mnt/sdcard/Download/");
     }
 
 
