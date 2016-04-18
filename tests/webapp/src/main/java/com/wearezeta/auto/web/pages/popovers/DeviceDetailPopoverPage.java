@@ -43,8 +43,8 @@ public class DeviceDetailPopoverPage extends AbstractPopoverContainer {
     }
 
     public void verifyDevice() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-                verificationToggle);;
+        assert(DriverUtils.waitUntilElementClickable(this.getDriver(),
+                verificationToggle)): "Verify button not clickable";
         verificationToggle.click();
     }
 

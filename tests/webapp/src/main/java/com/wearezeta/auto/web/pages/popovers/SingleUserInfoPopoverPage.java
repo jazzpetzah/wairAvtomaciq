@@ -85,7 +85,8 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
     }
 
     public void switchToDevicesTab() throws Exception{
-        assert DriverUtils.waitUntilElementClickable(this.getDriver(), devicesTab);
+        assert DriverUtils.waitUntilElementClickable(this.getDriver(), devicesTab):
+            "Not able to switch to devices";
         devicesTab.click();
     }
 
