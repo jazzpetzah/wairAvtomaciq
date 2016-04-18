@@ -46,8 +46,8 @@ Feature: Sign In
     And I see 0 devices in the devices section
 
     Examples:
-      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1   | Message2     | ImageName1               |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | Hello 1:1! | Hello Group! | userpicture_portrait.jpg |
+      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1   | Message2     | ImageName1                |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | Hello 1:1! | Hello Group! | userpicture_landscape.jpg |
 
   @C2099 @e2ee @regression
   Scenario Outline: Verify current browser is set as temporary device
