@@ -807,11 +807,11 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I see file button
+    And I see file sharing button
     Then I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
-    And I see file button
+    And I see file sharing button
 
     Examples:
       | Name      | Contact   | GroupChatName  | UsersAmount |
