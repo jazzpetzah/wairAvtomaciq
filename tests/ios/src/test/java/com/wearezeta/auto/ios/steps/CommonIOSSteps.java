@@ -146,6 +146,7 @@ public class CommonIOSSteps {
             RealDeviceHelpers.uninstallApp(udid.orElseThrow(
                     () -> new IllegalStateException("Cannot detect any connected iDevice")
             ), cachedBundleIds.get(ipaPath));
+            capabilities.setCapability("fullReset", false);
         }
 
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
@@ -593,7 +594,7 @@ public class CommonIOSSteps {
      * @param oldConversationName old conversation name string
      * @param newConversationName new conversation name string
      * @throws Exception
-     * @step.^User (.*) renames? conversation (.*) to (.*)$
+     * @step. ^User (.*) renames? conversation (.*) to (.*)$
      */
     @When("^User (.*) renames? conversation (.*) to (.*)$")
     public void UserChangeGruopChatName(String user, String oldConversationName, String newConversationName)
