@@ -797,3 +797,22 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
+
+  @C82517 @staging
+  Scenario Outline: Verify file transfer icon exists in cursor area in 1-to-1 and group conversations
+    Given There are <UsersAmount> users where <Name> is me
+    Given Myself is connected to all other
+    Given Myself has group chat <GroupChatName> with all other
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I click plus button next to text input
+    And I see file button
+    Then I navigate back to conversations list
+    When I tap on group chat with name <GroupChatName>
+    And I click plus button next to text input
+    And I see file button
+
+    Examples:
+      | Name      | Contact   | GroupChatName  | UsersAmount |
+      | user1Name | user2Name | GroupChat      | 3           |

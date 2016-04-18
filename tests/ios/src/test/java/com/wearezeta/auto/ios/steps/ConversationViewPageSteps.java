@@ -960,4 +960,16 @@ public class ConversationViewPageSteps {
         Assert.assertTrue(String.format("The picture in the conversation view seems to be static (%.2f >= %.2f)",
                 avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
     }
+
+    /**
+     * Verify whether the file sharing button picture is visible
+     *
+     * @throws Exception
+     * @step. ^I see file button$"
+     */
+    @When("^I see file button$")
+    public void i_see_file_button() throws Exception {
+        Assert.assertTrue("File sharing button is not shown", getConversationViewPage().
+                isFileButtonVisible());
+    }
 }

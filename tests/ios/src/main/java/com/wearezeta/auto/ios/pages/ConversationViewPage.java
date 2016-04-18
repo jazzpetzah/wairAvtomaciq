@@ -115,6 +115,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameCursorSketchButton = MobileBy.AccessibilityId("ComposeControllerSketchButton");
     protected static final By nameAddPictureButton = MobileBy.AccessibilityId("ComposeControllerPictureButton");
     private static final By namePingButton = MobileBy.AccessibilityId("ComposeControllerPingButton");
+    private static final By nameFileButton = MobileBy.AccessibilityId("ComposeControllerDocUploadButton");
 
 
     private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[@name='ConversationView']";
@@ -126,7 +127,7 @@ public class ConversationViewPage extends IOSPage {
             "/UIAButton[@name='Back']/following-sibling::" +
             "UIAButton[not(@name='ConversationBackButton') and boolean(string(@label))]");
 
-    private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton};
+    private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton, nameFileButton};
 
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
@@ -610,5 +611,9 @@ public class ConversationViewPage extends IOSPage {
 
     public Optional<BufferedImage> getRecentPictureScreenshot() throws Exception {
         return getElementScreenshot(getElement(xpathLastImageCell));
+    }
+
+    public boolean isFileButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileButton);
     }
 }
