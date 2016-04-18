@@ -84,7 +84,8 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
         unblockButton.click();
     }
 
-    public void switchToDevicesTab() {
+    public void switchToDevicesTab() throws Exception{
+        assert DriverUtils.waitUntilElementClickable(this.getDriver(), devicesTab);
         devicesTab.click();
     }
 
