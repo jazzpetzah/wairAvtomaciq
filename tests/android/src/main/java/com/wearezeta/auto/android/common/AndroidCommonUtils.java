@@ -596,7 +596,13 @@ public class AndroidCommonUtils extends CommonUtils {
                 "--uri content://media/external/file " +
                 "--bind _display_name:s:'%s' " +
                 "--bind date_added:i:%s " +
-                "--where 'title=\\\"%s\\\"'", fileName, String.valueOf(futureDate.getTime()).substring(0,10), fileNameWithoutExtension));
+                "--where 'title=\\\"%s\\\"'", fileName, String.valueOf(futureDate.getTime()).substring(0, 10), fileNameWithoutExtension));
+        executeAdb(String.format("shell content update " +
+                "--uri content://media/external/file " +
+                "--bind _display_name:s:'%s' " +
+                "--bind date_added:i:%s " +
+                "--where 'title=\"%s\"'", fileName, String.valueOf(futureDate.getTime()).substring(0, 10), fileNameWithoutExtension));
+
     }
 
 }
