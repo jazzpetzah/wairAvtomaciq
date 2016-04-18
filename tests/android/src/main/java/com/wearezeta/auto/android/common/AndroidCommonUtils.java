@@ -1,10 +1,7 @@
 package com.wearezeta.auto.android.common;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -586,15 +583,20 @@ public class AndroidCommonUtils extends CommonUtils {
     public static void pushFileToSdcardDownload(String basePath, String fileName) throws Exception {
         String sourceFilePath = basePath + File.separator + fileName;
         String destinationFilePath = FILE_TRANSFER_SOURCE_LOCATION + fileName;
+        String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+        long t= Calendar.getInstance().getTimeInMillis();
+        Date futureDate = new Date(t + (10 * 60000));
+
         executeAdb(String.format("shell rm %s", destinationFilePath));
-        executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
-                destinationFilePath));
         executeAdb(String.format("push %s %s", sourceFilePath, destinationFilePath));
         executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
                 destinationFilePath));
 
-        executeAdb("shell ls -l /mnt/sdcard/Download/");
+        executeAdb(String.format("shell content update " +
+                "--uri content://media/external/file " +
+                "--bind _display_name:s:'%s' " +
+                "--bind date_added:i:%s " +
+                "--where 'title=\\\"%s\\\"'", fileName, String.valueOf(futureDate.getTime()).substring(0,10), fileNameWithoutExtension));
     }
-
 
 }

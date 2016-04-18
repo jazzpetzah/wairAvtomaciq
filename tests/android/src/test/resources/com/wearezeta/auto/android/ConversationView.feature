@@ -512,8 +512,8 @@ Feature: Conversation View
     Then I see the result of <FileSize> file upload having name "<FileName>" and extension "<FileExtension>"
 
     Examples:
-      | Name      | Contact1  | FileName   | FileExtension | FileSize | UploadingTimeout |
-      | user1Name | user2Name | random.txt | TXT           | 3.00MB   | 10               |
+      | Name      | Contact1  | FileName      | FileExtension | FileSize | UploadingTimeout |
+      | user1Name | user2Name | qa_random.txt | TXT           | 3.00MB   | 20               |
 
   @staging @C87636 @torun
   Scenario Outline: Verify warning is shown for file size more than 25Mb
@@ -527,9 +527,8 @@ Feature: Conversation View
     And I tap plus button in text input
     And I tap File button from input tools
     And I wait for 2 seconds
-    And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     Then I see the warning of uploading file too large
 
     Examples:
-      | Name      | Contact1  | FileName   | FileExtension | FileSize  | UploadingTimeout |
-      | user1Name | user2Name | random.txt | TXT           | 26.00MB   | 30               |
+      | Name      | Contact1  | FileName      |   FileSize  |
+      | user1Name | user2Name | qa_random.txt |   26.00MB   |
