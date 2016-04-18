@@ -613,7 +613,7 @@ public class ConversationViewPage extends IOSPage {
         return getElementScreenshot(getElement(xpathLastImageCell));
     }
 
-    public boolean isFileButtonVisible() throws Exception {
+    public boolean isFileSharingButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileSharingButton);
     }
 }
