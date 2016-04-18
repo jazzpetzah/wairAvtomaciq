@@ -775,3 +775,25 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | GroupChatName  | UsersAmount | NewChatName |
       | user1Name | user2Name | RenameChatName | 4           | NewName     |
+
+  @C95637 @staging
+  Scenario Outline: Verify opening the image twice in the raw
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    When I tap on contact name <Contact>
+    Then I see 1 photo in the dialog
+    When I tap and hold image to open full screen
+    Then I see Full Screen Page opened
+    And I tap close fullscreen page button
+    When I tap and hold image to open full screen
+    Then I see Full Screen Page opened
+    And I tap close fullscreen page button
+    When I tap and hold image to open full screen
+    Then I see Full Screen Page opened
+
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
