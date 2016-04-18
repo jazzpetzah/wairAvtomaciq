@@ -584,25 +584,27 @@ public class AndroidCommonUtils extends CommonUtils {
         String sourceFilePath = basePath + File.separator + fileName;
         String destinationFilePath = FILE_TRANSFER_SOURCE_LOCATION + fileName;
         String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
-        long t= Calendar.getInstance().getTimeInMillis();
-        Date futureDate = new Date(t + (10 * 60000));
+
+        Date futureDate = new Date(Calendar.getInstance().getTimeInMillis() + (10 * 60000));
+        String futureTimestamp = String.valueOf(futureDate.getTime()).substring(0, 10);
 
         executeAdb(String.format("shell rm %s", destinationFilePath));
         executeAdb(String.format("push %s %s", sourceFilePath, destinationFilePath));
         executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
                 destinationFilePath));
 
+        // The reason way do 2 times(workaround), is because in different env of adb, it handle the '"' in different way
+        // Need to handle all conditions
         executeAdb(String.format("shell content update " +
                 "--uri content://media/external/file " +
                 "--bind _display_name:s:'%s' " +
                 "--bind date_added:i:%s " +
-                "--where 'title=\\\"%s\\\"'", fileName, String.valueOf(futureDate.getTime()).substring(0, 10), fileNameWithoutExtension));
+                "--where 'title=\\\"%s\\\"'", fileName, futureTimestamp, fileNameWithoutExtension));
         executeAdb(String.format("shell content update " +
                 "--uri content://media/external/file " +
                 "--bind _display_name:s:'%s' " +
                 "--bind date_added:i:%s " +
-                "--where 'title=\"%s\"'", fileName, String.valueOf(futureDate.getTime()).substring(0, 10), fileNameWithoutExtension));
-
+                "--where 'title=\"%s\"'", fileName, futureTimestamp, fileNameWithoutExtension));
     }
 
 }
