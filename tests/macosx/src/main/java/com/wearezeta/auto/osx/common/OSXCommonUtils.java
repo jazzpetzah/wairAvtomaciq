@@ -196,6 +196,9 @@ public class OSXCommonUtils extends CommonUtils {
             " \"%s/Library/Application Support/Wire/\"",
             OSXExecutionContext.USER_HOME)
             + String.format(
+            " \"%s/Library/Application Support/WireInternal/\"",
+            OSXExecutionContext.USER_HOME)
+            + String.format(
             " \"%s/Library/Containers/com.wearezeta.zclient.mac/Data/Library/Application Support/Wire/\"",
             OSXExecutionContext.USER_HOME)
         };
@@ -219,10 +222,16 @@ public class OSXCommonUtils extends CommonUtils {
             String.format("killall %s", "Electron")};
         LOG.debug("executing command: " + Arrays.toString(command));
         int returnCode1 = executeOsXCommand(command);
+        
         command = new String[]{"/bin/sh", "-c",
             String.format("killall %s", "Wire Helper")};
         LOG.debug("executing command: " + Arrays.toString(command));
         int returnCode2 = executeOsXCommand(command);
+        
+        command = new String[]{"/bin/sh", "-c",
+            String.format("killall %s", "chromedriver")};
+        LOG.debug("executing command: " + Arrays.toString(command));
+        int returnCode3 = executeOsXCommand(command);
         return returnCode1;//we ignore returnCode2 for now
     }
 
