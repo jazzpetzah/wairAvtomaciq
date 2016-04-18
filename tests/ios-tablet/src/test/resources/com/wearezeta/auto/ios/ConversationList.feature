@@ -408,3 +408,21 @@ Feature: Conversation List
     Examples:
       | Name      | Contact1  | Contact2 |
       | user1Name | user2Name | user3Name |
+
+  @C95633 @staging
+  Scenario Outline: Verify hint is not shown anymore after tapping on it once [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    Given I see Conversations hint text
+    When I tap on Conversations hint text
+    Then I see People Picker page
+    When I click close button to dismiss people view
+    Then I see conversations list
+    And I do not see Conversations hint text
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |

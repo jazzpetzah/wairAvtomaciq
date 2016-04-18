@@ -65,6 +65,8 @@ public class ConversationsListPage extends IOSPage {
 
     private static final By nameCloseArchiveButton = MobileBy.AccessibilityId("archiveCloseButton");
 
+    private static final By nameConversationsHintTextLabel = MobileBy.AccessibilityId("Any conversation starts here");
+
     public ConversationsListPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -291,5 +293,17 @@ public class ConversationsListPage extends IOSPage {
 
     public void clickCloseArchivePageButton() throws Exception {
         getElement(nameCloseArchiveButton).click();
+    }
+
+    public boolean hintTextIsVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConversationsHintTextLabel);
+    }
+
+    public boolean hintTextIsNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConversationsHintTextLabel);
+    }
+
+    public void tapHintText() throws Exception {
+        getElement(nameConversationsHintTextLabel).click();
     }
 }
