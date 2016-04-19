@@ -13,6 +13,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 public class SEBridge {
+
     private volatile UserDevicePool devicePool;
     private static SEBridge instance = null;
 
@@ -103,7 +104,8 @@ public class SEBridge {
         getOrAddRandomDevice(userFrom).sendMessage(convId, message);
     }
 
-    public void sendConversationMessage(ClientUser userFrom, String convId, String message, String deviceName) throws Exception {
+    public void sendConversationMessage(ClientUser userFrom, String convId, String message, String deviceName) throws
+            Exception {
         if (deviceName == null) {
             sendConversationMessage(userFrom, convId, message);
         } else {
