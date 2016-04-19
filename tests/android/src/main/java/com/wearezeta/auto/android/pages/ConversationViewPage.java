@@ -632,13 +632,13 @@ public class ConversationViewPage extends AndroidPage {
                 By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeoutSeconds);
     }
 
-    public boolean isFilePlaceHolderVisible(String fileFullName, String size, String extension, boolean isUpload, boolean isSuccess,  int timeout)
-            throws Exception {
+    public boolean isFilePlaceHolderVisible(String fileFullName, String size, String extension,
+                                            boolean isUpload, boolean isSuccess, int timeout) throws Exception {
         size = size.toUpperCase();
         String fileInfo = StringUtils.isEmpty(extension) ? size :
                 String.format("%s%s%s", size, FILE_MESSAGE_SEPARATOR, extension.toUpperCase());
 
-        if(!isSuccess) {
+        if (!isSuccess) {
             fileInfo = String.format("%s%s%s", fileInfo, FILE_MESSAGE_SEPARATOR,
                     isUpload ? FILE_UPLOAD_FAILED : FILE_DOWNLOADING_MESSAGE);
         }
