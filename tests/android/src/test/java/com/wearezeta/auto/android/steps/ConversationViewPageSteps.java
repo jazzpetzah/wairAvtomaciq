@@ -843,14 +843,14 @@ public class ConversationViewPageSteps {
      * Check the expected placehoder is visible
      *
      * @param size the expected size displayed, value should be good formatted, such as 3.00MB rather than 3MB
-     * @param fileName the expected file name displayed
+     * @param fileFullName the expected file name displayed
      * @param extension the extension of the file uploaded
      * @throws Exception
-     * @step. ^I see the result of (.*) file upload having name "(.*)" and extension "(.*)"$
+     * @step. ^I see the result of (.*) file upload having name "(.*)" and extension "(\w+)"$
      */
-    @Then("^I see the result of (.*) file upload having name \"(.*)\" and extension \"(.*)\"$")
-    public void ThenISeeTheResultOfXFileUpload(String size, String fileName, String extension) throws Exception {
+    @Then("^I see the result of (.*) file upload having name \"(.*)\" and extension \"(\\w+)\"$")
+    public void ThenISeeTheResultOfXFileUpload(String size, String fileFullName, String extension) throws Exception {
         Assert.assertTrue("The placeholder of sending file should be visible",
-                getConversationViewPage().isFileSenderPlaceHolderVisible(fileName, size, extension));
+                getConversationViewPage().isFileSenderPlaceHolderVisible(fileFullName, size, extension));
     }
 }
