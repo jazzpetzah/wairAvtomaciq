@@ -634,8 +634,11 @@ public class ConversationViewPage extends AndroidPage {
         final String fileInfo = StringUtils.isEmpty(extension) ? size :
                 String.format("%s%s%s", size, FILE_UPLOADING_MESSAGE_SEPARATOR, extension.toUpperCase());
 
+        final String fileFullName = StringUtils.isEmpty(extension) ? fileName.toUpperCase()
+                : String.format("%s.%s", fileName, extension.toLowerCase());
+
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathFileNamePlaceHolderByValue.apply(fileName))) &&
+                By.xpath(xpathFileNamePlaceHolderByValue.apply(fileFullName))) &&
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                         By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)));
     }

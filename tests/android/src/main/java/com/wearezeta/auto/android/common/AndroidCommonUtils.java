@@ -574,16 +574,25 @@ public class AndroidCommonUtils extends CommonUtils {
         executeAdb(String.format("uninstall %s", packageName));
     }
 
-    public static void pushRandomFileToSdcardDownload(String fileName, String size) throws Exception {
+    /**
+     *
+     * @param fileName the name without extension
+     * @param size the expected size of file
+     * @param extension the name of extension should be such as .txt .pdf or empty
+     * @throws Exception
+     */
+    public static void pushRandomFileToSdcardDownload(String fileName, String size, String extension)
+            throws Exception {
         String basePath = getBuildPathFromConfig(AndroidCommonUtils.class);
-        CommonUtils.createRandomAccessFile(basePath + File.separator + fileName, size);
-        AndroidCommonUtils.pushFileToSdcardDownload(basePath, fileName);
+        extension = extension.startsWith(".") ? extension.toLowerCase() : String.format(".%s", extension.toLowerCase());
+
+        CommonUtils.createRandomAccessFile(basePath + File.separator + fileName + extension, size);
+        AndroidCommonUtils.pushFileToSdcardDownload(basePath, fileName, extension);
     }
 
-    public static void pushFileToSdcardDownload(String basePath, String fileName) throws Exception {
-        String sourceFilePath = basePath + File.separator + fileName;
-        String destinationFilePath = FILE_TRANSFER_SOURCE_LOCATION + fileName;
-        String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.'));
+    public static void pushFileToSdcardDownload(String basePath, String fileName, String extension) throws Exception {
+        String sourceFilePath = basePath + File.separator + fileName + extension;
+        String destinationFilePath = FILE_TRANSFER_SOURCE_LOCATION + fileName + extension;
 
         Date futureDate = new Date(Calendar.getInstance().getTimeInMillis() + (10 * 60000));
         String futureTimestamp = String.valueOf(futureDate.getTime()).substring(0, 10);
@@ -597,14 +606,14 @@ public class AndroidCommonUtils extends CommonUtils {
         // Need to handle all conditions
         executeAdb(String.format("shell content update " +
                 "--uri content://media/external/file " +
-                "--bind _display_name:s:'%s' " +
+                "--bind _display_name:s:'%s%s' " +
                 "--bind date_added:i:%s " +
-                "--where 'title=\\\"%s\\\"'", fileName, futureTimestamp, fileNameWithoutExtension));
+                "--where 'title=\\\"%s\\\"'", fileName, extension, futureTimestamp, fileName));
         executeAdb(String.format("shell content update " +
                 "--uri content://media/external/file " +
-                "--bind _display_name:s:'%s' " +
+                "--bind _display_name:s:'%s%s' " +
                 "--bind date_added:i:%s " +
-                "--where 'title=\"%s\"'", fileName, futureTimestamp, fileNameWithoutExtension));
+                "--where 'title=\"%s\"'", fileName, extension, futureTimestamp, fileName));
     }
 
 }

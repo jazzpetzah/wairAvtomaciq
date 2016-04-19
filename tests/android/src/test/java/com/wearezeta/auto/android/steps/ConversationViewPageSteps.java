@@ -846,9 +846,9 @@ public class ConversationViewPageSteps {
      * @param fileName the expected file name displayed
      * @param extension the extension of the file uploaded
      * @throws Exception
-     * @step. ^I see the result of (.*) file upload having name "(.*)" and extension "(.*)"$
+     * @step. ^I see the result of (.*) file upload having name "(.*)" and extension "(\w+)"$
      */
-    @Then("^I see the result of (.*) file upload having name \"(.*)\" and extension \"(.*)\"$")
+    @Then("^I see the result of (.*) file upload having name \"(.*)\" and extension \"(\\w+)\"$")
     public void ThenISeeTheResultOfXFileUpload(String size, String fileName, String extension) throws Exception {
         Assert.assertTrue("The placeholder of sending file should be visible",
                 getConversationViewPage().isFileSenderPlaceHolderVisible(fileName, size, extension));
@@ -858,10 +858,11 @@ public class ConversationViewPageSteps {
      * Check the File too large alert popup visible
      *
      * @throws Exception
-     * @step. ^I see the warning of file size$"
+     * @step. I see "The file is too large" warning
      */
-    @Then("^I see the warning of uploading file too large$")
+    @Then("^I see \"The file is too large\" warning$")
     public void ThenISeeTheUploadingFile() throws Exception {
-        Assert.assertTrue("The warning of file size more than 25Mb should be visible", getConversationViewPage().isFileSizeWarningVisible());
+        Assert.assertTrue("The warning of 'The file is too large' should be visible",
+                getConversationViewPage().isFileSizeWarningVisible());
     }
 }

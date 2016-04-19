@@ -496,39 +496,37 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | Group Chat    |
 
-  @staging @C87628
+  @staging @C87628 @torun
   Scenario Outline: Verify placeholder is shown for the sender
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I push <FileSize> file having name "<FileName>" to the device
+    Given I push <FileSize> file having name "<FileName>" and extension "<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I tap plus button in text input
     And I tap File button from input tools
-    And I wait for 2 seconds
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     Then I see the result of <FileSize> file upload having name "<FileName>" and extension "<FileExtension>"
 
     Examples:
-      | Name      | Contact1  | FileName      | FileExtension | FileSize | UploadingTimeout |
-      | user1Name | user2Name | qa_random.txt | TXT           | 3.00MB   | 20               |
+      | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout |
+      | user1Name | user2Name | qa_random | TXT           | 9.00MB   | 20               |
 
-  @staging @C87636
+  @staging @C87636 @torun
   Scenario Outline: Verify warning is shown for file size more than 25Mb
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I push <FileSize> file having name "<FileName>" to the device
+    Given I push <FileSize> file having name "<FileName>" and extension "<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I tap plus button in text input
     And I tap File button from input tools
-    And I wait for 2 seconds
-    Then I see the warning of uploading file too large
+    Then I see "The file is too large" warning
 
     Examples:
-      | Name      | Contact1  | FileName      |   FileSize  |
-      | user1Name | user2Name | qa_random.txt |   26.00MB   |
+      | Name      | Contact1  | FileName  | FileExtension | FileSize |
+      | user1Name | user2Name | qa_random | TXT           | 26.00MB  |
