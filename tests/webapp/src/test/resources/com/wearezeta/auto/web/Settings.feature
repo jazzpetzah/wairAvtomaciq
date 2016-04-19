@@ -5,6 +5,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
     And I click gear button on self profile page
     And I select Settings menu item on self profile page
     Then I see Settings dialog
@@ -18,6 +19,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
     And I click gear button on self profile page
     And I select Settings menu item on self profile page
     And I see Settings dialog
@@ -57,6 +59,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
     Given I click gear button on self profile page
     When I select Settings menu item on self profile page
     And I see Settings dialog
