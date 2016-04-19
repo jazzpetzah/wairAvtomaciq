@@ -546,7 +546,7 @@ Feature: Conversation View
       | Name      | Contact1  | FileName  | FileSize | FileExtension | MimeType   |
       | user1Name | user2Name | qa_random | 3.00MB   | txt           | text/plain |
 
-  @staging @C87639 @torun
+  @staging @C87639
   Scenario Outline: Verify retry sending a file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

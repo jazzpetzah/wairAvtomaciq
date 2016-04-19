@@ -854,22 +854,24 @@ public class ConversationViewPageSteps {
     /**
      * Check the expected placehoder is visible
      *
-     * @param size the expected size displayed, value should be good formatted, such as 3.00MB rather than 3MB
+     * @param size          the expected size displayed, value should be good formatted, such as 3.00MB rather than 3MB
      * @param loadDirection could be upload or received
-     * @param actionFailed equals null means current action successfully
-     * @param fileFullName the expected file name displayed
-     * @param extension the extension of the file uploaded
-     * @param timeout (optional) to define the validation should be complete within timeout
+     * @param actionFailed  equals null means current action successfully
+     * @param fileFullName  the expected file name displayed
+     * @param extension     the extension of the file uploaded
+     * @param timeout       (optional) to define the validation should be complete within timeout
      * @throws Exception
      * @step. ^I see the result of (.*) file (upload|received)?( failed)? having name "(.*)" and extension "(\w+)"( in \d+ seconds)?$
      */
     @Then("^I see the result of (.*) file (upload|received)?( failed)? having name \"(.*)\" and extension \"(\\w+)\"( in \\d+ seconds)?$")
-    public void ThenISeeTheResultOfXFileUpload(String size, String loadDirection, String actionFailed, String fileFullName, String extension, String timeout) throws Exception {
-        int lookUpTimeoutSeconds = (timeout == null) ?  DriverUtils.getDefaultLookupTimeoutSeconds()
+    public void ThenISeeTheResultOfXFileUpload(String size, String loadDirection, String actionFailed,
+                                               String fileFullName, String extension, String timeout) throws Exception {
+        int lookUpTimeoutSeconds = (timeout == null) ? DriverUtils.getDefaultLookupTimeoutSeconds()
                 : Integer.parseInt(timeout.replaceAll("[\\D]", ""));
         boolean isUpload = loadDirection.equals("upload");
         boolean isSuccess = (actionFailed == null);
         Assert.assertTrue("The placeholder of sending file should be visible",
-                getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload, isSuccess, lookUpTimeoutSeconds));
+                getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload,
+                        isSuccess, lookUpTimeoutSeconds));
     }
 }
