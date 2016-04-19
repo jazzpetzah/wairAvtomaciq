@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -254,6 +255,8 @@ public class ConversationViewPage extends AndroidPage {
 
     public void tapFileBtn() throws Exception {
         getElement(idFile, "File button is not visible").click();
+        //wait for 2 seconds for animation
+        Thread.sleep(2000);
     }
 
     public boolean isPingButtonVisible() throws Exception {
@@ -629,13 +632,10 @@ public class ConversationViewPage extends AndroidPage {
                 By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeoutSeconds);
     }
 
-    public boolean isFileSenderPlaceHolderVisible(String fileName, String size, String extension) throws Exception {
+    public boolean isFileSenderPlaceHolderVisible(String fileFullName, String size, String extension) throws Exception {
         size = size.toUpperCase();
         final String fileInfo = StringUtils.isEmpty(extension) ? size :
                 String.format("%s%s%s", size, FILE_UPLOADING_MESSAGE_SEPARATOR, extension.toUpperCase());
-
-        final String fileFullName = StringUtils.isEmpty(extension) ? fileName.toUpperCase()
-                : String.format("%s.%s", fileName, extension.toLowerCase());
 
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(xpathFileNamePlaceHolderByValue.apply(fileFullName))) &&

@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ScreenOrientation;
@@ -576,23 +577,24 @@ public class AndroidCommonUtils extends CommonUtils {
 
     /**
      *
-     * @param fileName the name without extension
+     * @param fileFullName the name with extension
      * @param size the expected size of file
-     * @param extension the name of extension should be such as .txt .pdf or empty
      * @throws Exception
      */
-    public static void pushRandomFileToSdcardDownload(String fileName, String size, String extension)
+    public static void pushRandomFileToSdcardDownload(String fileFullName, String size)
             throws Exception {
         String basePath = getBuildPathFromConfig(AndroidCommonUtils.class);
-        extension = extension.startsWith(".") ? extension.toLowerCase() : String.format(".%s", extension.toLowerCase());
+        String extension = FilenameUtils.getExtension(fileFullName);
+        String fileName = FilenameUtils.getBaseName(fileFullName);
 
-        CommonUtils.createRandomAccessFile(basePath + File.separator + fileName + extension, size);
+        CommonUtils.createRandomAccessFile(basePath + File.separator + fileFullName, size);
         AndroidCommonUtils.pushFileToSdcardDownload(basePath, fileName, extension);
     }
 
     public static void pushFileToSdcardDownload(String basePath, String fileName, String extension) throws Exception {
-        String sourceFilePath = basePath + File.separator + fileName + extension;
-        String destinationFilePath = FILE_TRANSFER_SOURCE_LOCATION + fileName + extension;
+        String fileFullName = String.format("%s.%s", fileName, extension);
+        String sourceFilePath = basePath + File.separator + fileFullName;
+        String destinationFilePath = FILE_TRANSFER_SOURCE_LOCATION + fileFullName;
 
         Date futureDate = new Date(Calendar.getInstance().getTimeInMillis() + (10 * 60000));
         String futureTimestamp = String.valueOf(futureDate.getTime()).substring(0, 10);
@@ -606,14 +608,14 @@ public class AndroidCommonUtils extends CommonUtils {
         // Need to handle all conditions
         executeAdb(String.format("shell content update " +
                 "--uri content://media/external/file " +
-                "--bind _display_name:s:'%s%s' " +
+                "--bind _display_name:s:'%s' " +
                 "--bind date_added:i:%s " +
-                "--where 'title=\\\"%s\\\"'", fileName, extension, futureTimestamp, fileName));
+                "--where 'title=\\\"%s\\\"'", fileFullName, futureTimestamp, fileName));
         executeAdb(String.format("shell content update " +
                 "--uri content://media/external/file " +
-                "--bind _display_name:s:'%s%s' " +
+                "--bind _display_name:s:'%s' " +
                 "--bind date_added:i:%s " +
-                "--where 'title=\"%s\"'", fileName, extension, futureTimestamp, fileName));
+                "--where 'title=\"%s\"'", fileFullName, futureTimestamp, fileName));
     }
 
 }
