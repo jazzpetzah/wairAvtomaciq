@@ -968,8 +968,8 @@ public class ConversationViewPageSteps {
      * @step. ^I see file button$"
      */
     @When("^I see file sharing button$")
-    public void i_see_file_sharing_button() throws Exception {
-        Assert.assertTrue("File sharing button is not shown", getConversationViewPage().
-                isFileSharingButtonVisible());
+    public void iSeeFileSharingButton() throws Exception {
+        Assert.assertTrue("File sharing button is not shown",
+                getConversationViewPage().isFileSharingButtonVisible());
     }
 }
