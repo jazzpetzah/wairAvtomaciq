@@ -4,6 +4,7 @@ import java.text.Normalizer;
 import java.text.Normalizer.Form;
 
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
@@ -12,33 +13,33 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.ios.pages.DialogPage;
+import com.wearezeta.auto.ios.pages.ConversationViewPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class DialogPageSteps {
+public class ConversationViewPageSteps {
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private DialogPage getDialogPage() throws Exception {
-        return pagesCollection.getPage(DialogPage.class);
+    private ConversationViewPage getConversationViewPage() throws Exception {
+        return pagesCollection.getPage(ConversationViewPage.class);
     }
 
     private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage() throws Exception {
         return pagesCollection.getPage(OtherUserPersonalInfoPage.class);
     }
 
-    @When("^I see dialog page$")
-    public void WhenISeeDialogPage() throws Exception {
-        Assert.assertTrue("Cursor input is not visible", getDialogPage().waitForCursorInputVisible());
+    @When("^I see conversation view page$")
+    public void WhenISeePage() throws Exception {
+        ISeeTextInput(null);
     }
 
     @When("^I tap on text input$")
     public void WhenITapOnTextInput() throws Exception {
-        getDialogPage().tapOnCursorInput();
-        if (CommonUtils.getIsSimulatorFromConfig(getClass()) && !getDialogPage().isKeyboardVisible()) {
+        getConversationViewPage().tapOnCursorInput();
+        if (CommonUtils.getIsSimulatorFromConfig(getClass()) && !getConversationViewPage().isKeyboardVisible()) {
             IOSSimulatorHelper.toggleSoftwareKeyboard();
         }
     }
@@ -51,27 +52,33 @@ public class DialogPageSteps {
      */
     @When("^I tap on text input to scroll to the end$")
     public void WhenITapOnTextInputToScroll() throws Exception {
-        getDialogPage().tapOnCursorInput();
-        getDialogPage().hideKeyboard();
+        getConversationViewPage().tapOnCursorInput();
+        getConversationViewPage().hideKeyboard();
     }
 
     /**
-     * Verify that text input is not allowed
+     * Verify that text input is visible or not
      *
+     * @param shouldNotSee equals to null if text input should be visible
      * @throws Exception
-     * @step. I see text input in dialog is not allowed
+     * @step. ^I (do not )?see text input in conversation view$
      */
-    @When("I see text input in dialog is not allowed")
-    public void ISeeTextInputIsNotAllowed() throws Exception {
-        Assert.assertFalse("Text input is allowed", getDialogPage().isCursorInputVisible());
+    @When("^I (do not )?see text input in conversation view$")
+    public void ISeeTextInput(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("Cursor input is not visible", getConversationViewPage().waitForCursorInputVisible());
+        } else {
+            Assert.assertTrue("Cursor input is visible, but should be hidden",
+                    getConversationViewPage().waitForCursorInputInvisible());
+        }
     }
 
     @When("^I type the (default|\".*\") message$")
     public void WhenITypeTheMessage(String msg) throws Exception {
         if (msg.equals("default")) {
-            getDialogPage().typeMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+            getConversationViewPage().typeMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
         } else {
-            getDialogPage().typeMessage(msg.replaceAll("^\"|\"$", ""));
+            getConversationViewPage().typeMessage(msg.replaceAll("^\"|\"$", ""));
         }
     }
 
@@ -86,22 +93,22 @@ public class DialogPageSteps {
     public void ISeeSystemMessage(String expectedMsg) throws Exception {
         expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("The expected system message '%s' is not visible in the conversation",
-                expectedMsg), getDialogPage().isSystemMessageVisible(expectedMsg));
+                expectedMsg), getConversationViewPage().isSystemMessageVisible(expectedMsg));
     }
 
     @Then("^I see User (.*) Pinged message in the conversation$")
     public void ISeeUserPingedMessageTheDialog(String user) throws Throwable {
         String username = usrMgr.findUserByNameOrNameAlias(user).getName();
         String expectedPingMessage = username.toUpperCase() + " PINGED";
-        Assert.assertTrue(getDialogPage().isPartOfTextMessageVisible(expectedPingMessage));
+        Assert.assertTrue(getConversationViewPage().isPartOfTextMessageVisible(expectedPingMessage));
     }
 
     @When("^I type the (default|\".*\") message and send it$")
     public void ITypeTheMessageAndSendIt(String msg) throws Exception {
         if (msg.equals("default")) {
-            getDialogPage().typeAndSendConversationMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+            getConversationViewPage().typeAndSendConversationMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
         } else {
-            getDialogPage().typeAndSendConversationMessage(msg.replaceAll("^\"|\"$", ""));
+            getConversationViewPage().typeAndSendConversationMessage(msg.replaceAll("^\"|\"$", ""));
         }
     }
 
@@ -113,7 +120,7 @@ public class DialogPageSteps {
      */
     @When("^I paste and commit the text$")
     public void IClickPopupPasteAndCommitText() throws Exception {
-       getDialogPage().pasteAndCommit();
+        getConversationViewPage().pasteAndCommit();
     }
 
     /**
@@ -124,26 +131,21 @@ public class DialogPageSteps {
      */
     @When("^I open (?:group |\\s*)conversation details$")
     public void IOpenConversationDetails() throws Exception {
-        getDialogPage().openConversationDetails();
+        getConversationViewPage().openConversationDetails();
     }
 
     @When("^I send the message$")
     public void WhenISendTheMessage() throws Throwable {
-        getDialogPage().clickKeyboardCommitButton();
-    }
-
-    @When("^I swipe up on dialog page to open other user personal page$")
-    public void WhenISwipeUpOnDialogPage() throws Exception {
-        getDialogPage().swipeUp(1000);
+        getConversationViewPage().clickKeyboardCommitButton();
     }
 
     @Then("^I see (\\d+) (default )?messages? in the dialog$")
     public void ThenISeeMessageInTheDialog(int expectedCount, String isDefault) throws Exception {
         int actualCount;
         if (isDefault == null) {
-            actualCount = getDialogPage().getMessagesCount();
+            actualCount = getConversationViewPage().getMessagesCount();
         } else {
-            actualCount = getDialogPage().getMessagesCount(
+            actualCount = getConversationViewPage().getMessagesCount(
                     CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
         }
         Assert.assertTrue(
@@ -160,11 +162,11 @@ public class DialogPageSteps {
         if (operation.equals("is")) {
             Assert.assertTrue(
                     String.format("The last message in the conversation is different from the expected one '%s'",
-                            msg), getDialogPage().isLastMessageEqual(msg));
+                            msg), getConversationViewPage().isLastMessageEqual(msg));
         } else {
             Assert.assertTrue(
                     String.format("The last message in the conversation does not contain the expected one '%s'",
-                            msg), getDialogPage().isLastMessageContain(msg));
+                            msg), getConversationViewPage().isLastMessageContain(msg));
         }
     }
 
@@ -182,11 +184,11 @@ public class DialogPageSteps {
         if (shouldNot == null) {
             Assert.assertTrue(
                     String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
-                    getDialogPage().isPartOfTextMessageVisible(expectedMsg));
+                    getConversationViewPage().isPartOfTextMessageVisible(expectedMsg));
         } else {
             Assert.assertTrue(
                     String.format("The expected message '%s' is not visible in the conversation view", expectedMsg),
-                    getDialogPage().waitUntilPartOfTextMessageIsNotVisible(expectedMsg));
+                    getConversationViewPage().waitUntilPartOfTextMessageIsNotVisible(expectedMsg));
         }
     }
 
@@ -198,7 +200,7 @@ public class DialogPageSteps {
      */
     @When("^I swipe left on options buttons$")
     public void ISwipeLeftTextInput() throws Exception {
-        getDialogPage().swipeLeftToShowInputCursor();
+        getConversationViewPage().swipeLeftToShowInputCursor();
     }
 
     /**
@@ -211,12 +213,31 @@ public class DialogPageSteps {
      */
     @When("^I swipe right text input to reveal option buttons$")
     public void ISwipeTheTextInputCursor() throws Exception {
-        getDialogPage().swipeRightToShowConversationTools();
+        getConversationViewPage().swipeRightToShowConversationTools();
     }
 
-    @When("^I press Add Picture button$")
-    public void IPressAddPictureButton() throws Exception {
-        getDialogPage().pressAddPictureButton();
+    /**
+     * Tap the corresponding button from input tools palette
+     *
+     * @param btnName one of available button names
+     * @throws Exception
+     * @step. ^I tap (Add Picture|Ping|Sketch) button from input tools$
+     */
+    @When("^I tap (Add Picture|Ping|Sketch) button from input tools$")
+    public void IPressAddPictureButton(String btnName) throws Exception {
+        switch (btnName.toLowerCase()) {
+            case "add picture":
+                getConversationViewPage().pressAddPictureButton();
+                break;
+            case "ping":
+                getConversationViewPage().tapPingButton();
+                break;
+            case "sketch":
+                getConversationViewPage().openSketch();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
+        }
     }
 
     /**
@@ -229,33 +250,28 @@ public class DialogPageSteps {
     @When("^I tap (Audio|Video) Call button$")
     public void ITapCallButton(String btnType) throws Exception {
         if (btnType.equals("Audio")) {
-            getDialogPage().tapAudioCallButton();
+            getConversationViewPage().tapAudioCallButton();
         } else {
-            getDialogPage().tapVideoCallButton();
+            getConversationViewPage().tapVideoCallButton();
         }
-    }
-
-    @When("^I click Ping button$")
-    public void IPressPingButton() throws Exception {
-        getDialogPage().tapPingButton();
     }
 
     @Then("^I see Pending Connect to (.*) message on Dialog page$")
     public void ISeePendingConnectMessage(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         Assert.assertTrue(String.format("Connecting to %s is not visible", contact),
-                getDialogPage().isConnectingToUserConversationLabelVisible(contact));
+                getConversationViewPage().isConnectingToUserConversationLabelVisible(contact));
     }
 
     private static final long IMAGE_VISIBILITY_TIMEOUT = 10000; //milliseconds
 
     @Then("^I see (\\d+) photos? in the dialog$")
     public void ISeeNewPhotoInTheDialog(int expectedCount) throws Exception {
-        int actualCount = getDialogPage().getCountOfImages();
+        int actualCount = getConversationViewPage().getCountOfImages();
         if (actualCount > 0 && expectedCount > 1 && actualCount < expectedCount) {
             final long millisecondsStarted = System.currentTimeMillis();
             do {
-                actualCount = getDialogPage().getCountOfImages();
+                actualCount = getConversationViewPage().getCountOfImages();
                 if (actualCount >= expectedCount) {
                     break;
                 }
@@ -268,12 +284,12 @@ public class DialogPageSteps {
 
     @When("I click video container for the first time")
     public void IPlayVideoFirstTime() throws Exception {
-        getDialogPage().clickOnPlayVideoButton();
+        getConversationViewPage().clickOnPlayVideoButton();
     }
 
     @When("^I post media link (.*)$")
     public void IPostMediaLink(String link) throws Throwable {
-        getDialogPage().typeAndSendConversationMessage(link);
+        getConversationViewPage().typeAndSendConversationMessage(link);
     }
 
     /**
@@ -294,18 +310,18 @@ public class DialogPageSteps {
 
     @When("^I tap media container$")
     public void ITapMediaContainer() throws Throwable {
-        getDialogPage().startMediaContent();
+        getConversationViewPage().startMediaContent();
     }
 
     @When("^I scroll media out of sight until media bar appears$")
     public void IScrollMediaOutOfSightUntilMediaBarAppears() throws Exception {
         Assert.assertTrue("Media bar is not displayed after the view has been scrolled to the top",
-                getDialogPage().scrollDownTillMediaBarAppears());
+                getConversationViewPage().scrollDownTillMediaBarAppears());
     }
 
     @When("^I pause playing the media in media bar$")
     public void IPausePlayingTheMediaInMediaBar() throws Exception {
-        getDialogPage().pauseMediaContent();
+        getConversationViewPage().pauseMediaContent();
     }
 
     /**
@@ -319,7 +335,7 @@ public class DialogPageSteps {
     public void IVerifyMediaBarIsNotVisible(int timeoutSeconds) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         do {
-            if (getDialogPage().isMediaBarNotVisibled()) {
+            if (getConversationViewPage().isMediaBarNotVisibled()) {
                 return;
             }
         } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
@@ -329,16 +345,16 @@ public class DialogPageSteps {
 
     @When("^I press play in media bar$")
     public void IPressPlayInMediaBar() throws Exception {
-        getDialogPage().playMediaContent();
+        getConversationViewPage().playMediaContent();
     }
 
     @When("^I stop media in media bar$")
     public void IStopMediaInMediaBar() throws Exception {
-        getDialogPage().stopMediaContent();
+        getConversationViewPage().stopMediaContent();
     }
 
     private ElementState previousMediaContainerState = new ElementState(
-            () -> getDialogPage().getMediaContainerStateGlyphScreenshot()
+            () -> getConversationViewPage().getMediaContainerStateGlyphScreenshot()
     );
 
     /**
@@ -383,10 +399,10 @@ public class DialogPageSteps {
         final long millisecondsStarted = System.currentTimeMillis();
         String currentState;
         do {
-            currentState = getDialogPage().getMediaStateFromMediaBar();
-            if (expectedState.equals("playing") && currentState.equals(DialogPage.MEDIA_STATE_PLAYING) ||
-                    expectedState.equals("stopped") && currentState.equals(DialogPage.MEDIA_STATE_STOPPED) ||
-                    expectedState.equals("paused") && currentState.equals(DialogPage.MEDIA_STATE_PAUSED)) {
+            currentState = getConversationViewPage().getMediaStateFromMediaBar();
+            if (expectedState.equals("playing") && currentState.equals(ConversationViewPage.MEDIA_STATE_PLAYING) ||
+                    expectedState.equals("stopped") && currentState.equals(ConversationViewPage.MEDIA_STATE_STOPPED) ||
+                    expectedState.equals("paused") && currentState.equals(ConversationViewPage.MEDIA_STATE_PAUSED)) {
                 return;
             }
             Thread.sleep(500);
@@ -397,60 +413,59 @@ public class DialogPageSteps {
 
     @Then("^I see media bar on dialog page$")
     public void ISeeMediaBarInDialog() throws Exception {
-        Assert.assertTrue(getDialogPage().isMediaBarDisplayed());
+        Assert.assertTrue(getConversationViewPage().isMediaBarDisplayed());
     }
 
     @Then("^I dont see media bar on dialog page$")
     public void ISeeMediaBarDisappear() throws Exception {
-        Assert.assertTrue(getDialogPage().waitMediabarClose());
+        Assert.assertTrue(getConversationViewPage().waitMediabarClose());
     }
 
     @When("^I tap on the media bar$")
     public void ITapOnMediaBar() throws Exception {
-        getDialogPage().tapOnMediaBar();
+        getConversationViewPage().tapOnMediaBar();
     }
 
     @Then("^I see conversation view is scrolled back to the playing media link (.*)")
     public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link) throws Throwable {
         Assert.assertTrue(String.format("The last conversation message does not contain text '%s'", link),
-                getDialogPage().isLastMessageContain(link));
-        Assert.assertTrue("View did not scroll back", getDialogPage()
+                getConversationViewPage().isLastMessageContain(link));
+        Assert.assertTrue("View did not scroll back", getConversationViewPage()
                 .isMediaContainerVisible());
     }
 
     @When("I tap and hold image to open full screen")
     public void ITapImageToOpenFullScreen() throws Throwable {
-        getDialogPage().tapImageToOpen();
+        getConversationViewPage().tapImageToOpen();
     }
 
     @Then("^I navigate back to conversations list")
     public void INavigateToConversationsList() throws Exception {
-        getDialogPage().returnToConversationsList();
+        getConversationViewPage().returnToConversationsList();
     }
 
     @When("I tap and hold on message input")
     public void ITapHoldTextInput() throws Exception {
-        getDialogPage().tapHoldTextInput();
+        getConversationViewPage().tapHoldTextInput();
     }
 
     @When("^I scroll to the beginning of the conversation$")
     public void IScrollToTheBeginningOfTheConversation() throws Throwable {
-        getDialogPage().scrollToBeginningOfConversation();
+        getConversationViewPage().scrollToBeginningOfConversation();
     }
 
     /**
-     * Checks if the copied content from send an invite via mail is correct
+     * Checks if the pasted message contains the particular email
      *
-     * @param mail Email thats the invite sent from
+     * @param mail email address/alias
      * @throws Exception
-     * @step. ^I check copied content from (.*)$
+     * @step. ^I verify that pasted content contains (.*)$
      */
-    @Then("^I check copied content from (.*)$")
+    @Then("^I verify that pasted message contains (.*)$")
     public void ICheckCopiedContentFrom(String mail) throws Exception {
-        final String finalString = String.format("I’m on Wire. Search for %s",
-                usrMgr.findUserByNameOrNameAlias(mail).getEmail());
+        final String finalString = usrMgr.replaceAliasesOccurences(mail, FindBy.EMAIL_ALIAS);
         Assert.assertTrue(String.format("The last message in the chat does not contain '%s' part",
-                finalString), getDialogPage().isLastMessageContain(finalString));
+                finalString), getConversationViewPage().isLastMessageContain(finalString));
     }
 
     /**
@@ -464,7 +479,7 @@ public class DialogPageSteps {
     public void ISeeMissedCall(String contact) throws Exception {
         String username = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Missed call message for '%s' is missing in conversation view", username),
-                getDialogPage().isMissedCallButtonVisibleFor(username));
+                getConversationViewPage().isMissedCallButtonVisibleFor(username));
     }
 
     /**
@@ -477,7 +492,7 @@ public class DialogPageSteps {
     @When("^I click missed call button to call contact (.*)$")
     public void IClickMissedCallButton(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        getDialogPage().clickOnCallButtonForContact(contact.toUpperCase());
+        getConversationViewPage().clickOnCallButtonForContact(contact.toUpperCase());
     }
 
     public static final String TAP_OR_SLIDE = "TAP OR SLIDE";
@@ -490,7 +505,7 @@ public class DialogPageSteps {
      */
     @Then("^I see TAPORSLIDE text$")
     public void ISeeTapOrSlideText() throws Exception {
-        boolean result = getDialogPage().isTypeOrSlideExists(TAP_OR_SLIDE);
+        boolean result = getConversationViewPage().isTypeOrSlideExists(TAP_OR_SLIDE);
         Assert.assertTrue(result);
     }
 
@@ -502,7 +517,7 @@ public class DialogPageSteps {
      */
     @When("I click play video button")
     public void IClickPlayButton() throws Exception {
-        getDialogPage().clickOnPlayVideoButton();
+        getConversationViewPage().clickOnPlayVideoButton();
     }
 
     /**
@@ -514,8 +529,8 @@ public class DialogPageSteps {
      */
     @When("^I type tag for giphy preview (.*) and open preview overlay$")
     public void ITypeGiphyTagAndOpenPreview(String message) throws Exception {
-        getDialogPage().typeMessage(message);
-        getDialogPage().openGifPreviewPage();
+        getConversationViewPage().typeMessage(message);
+        getConversationViewPage().openGifPreviewPage();
     }
 
     /**
@@ -526,19 +541,8 @@ public class DialogPageSteps {
      */
     @When("I see giphy in conversation")
     public void ISeeGiphyInConversation() throws Exception {
-        Assert.assertTrue("There is no giphy in conversation", getDialogPage()
+        Assert.assertTrue("There is no giphy in conversation", getConversationViewPage()
                 .isGiphyImageVisible());
-    }
-
-    /**
-     * Opens the sketch feature
-     *
-     * @throws Exception
-     * @step. ^I tap on sketch button in cursor$
-     */
-    @When("^I tap on sketch button in cursor$")
-    public void ITapSketchButton() throws Exception {
-        getDialogPage().openSketch();
     }
 
     /**
@@ -551,7 +555,7 @@ public class DialogPageSteps {
     @When("I see my user name (.*) in conversation")
     public void ISeeMyNameInDialog(String name) throws Exception {
         Assert.assertTrue("My name: " + name + " is not displayed in dialog",
-                getDialogPage().isMyNameInDialogDisplayed(name));
+                getConversationViewPage().isMyNameInDialogDisplayed(name));
     }
 
     /**
@@ -565,7 +569,7 @@ public class DialogPageSteps {
     @When("^I see dialog page with contact (.*)$")
     public void ISeeDialogPageWithContact(String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        Assert.assertTrue("Dialog with user is not visible", getDialogPage()
+        Assert.assertTrue("Dialog with user is not visible", getConversationViewPage()
                 .isConnectedToUserStartedConversationLabelVisible(contact));
     }
 
@@ -573,33 +577,16 @@ public class DialogPageSteps {
      * Verify is plus button is visible
      *
      * @throws Exception
-     * @step. ^I see plus button next to text input$
+     * @param shouldNotBeVisible equals to null if the button should not be visible
+     * @step. ^I (do not )?see plus button next to text input$
      */
-    @When("^I see plus button next to text input$")
-    public void ISeePlusButtonNextInput() throws Exception {
-        Assert.assertTrue("Plus button is not visible", getDialogPage().isPlusButtonVisible());
-    }
-
-    /**
-     * Verify is plus button is not visible
-     *
-     * @throws Exception
-     * @step. ^I see plus button is not shown$
-     */
-    @When("^I see plus button is not shown$")
-    public void ISeePlusButtonNotShown() throws Exception {
-        Assert.assertTrue("Plus button is still shown", getDialogPage().waitPlusButtonNotVisible());
-    }
-
-    /**
-     * Verify Details button is visible
-     *
-     * @throws Exception
-     * @step. ^I see Details button is visible$
-     */
-    @When("^I see Details button is visible$")
-    public void ISeeDetailsButtonShown() throws Exception {
-        Assert.assertTrue("Details button is not visible", getDialogPage().isOpenConversationDetailsButtonVisible());
+    @When("^I (do not )?see plus button next to text input$")
+    public void ISeePlusButtonNextInput(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("Plus button is not visible", getConversationViewPage().isPlusButtonVisible());
+        } else {
+            Assert.assertTrue("Plus button is still shown", getConversationViewPage().waitPlusButtonNotVisible());
+        }
     }
 
     /**
@@ -609,23 +596,24 @@ public class DialogPageSteps {
      * @step. ^I see conversation tools buttons$
      */
     @When("^I see conversation tools buttons$")
-    public void ISeeButtonsDetailsCameraSketchPing() throws Exception {
-        ISeeDetailsButtonShown();
-        Assert.assertTrue("Some of expected input tools buttons are not visible", getDialogPage().areInputToolsVisible());
+    public void ISeeToolsButtons() throws Exception {
+        Assert.assertTrue("People button is not visible", getConversationViewPage().isPeopleButtonVisible());
+        Assert.assertTrue("Some of expected input tools buttons are not visible",
+                getConversationViewPage().areInputToolsVisible());
     }
 
     /**
-     * Verify that only Details button is shown. Rest button should not be
+     * Verify that only People button is shown. Rest button should not be
      * visible
      *
      * @throws Exception
      * @step. ^I see no other conversation tools buttons except of Details$
      */
-    @When("^I see no other conversation tools buttons except of Details$")
-    public void ISeeOnlyDetailsButtonRestNotShown() throws Exception {
-        ISeeDetailsButtonShown();
+    @When("^I see no other conversation tools buttons except of People")
+    public void ISeeOnlyPeopleButtonRestNotShown() throws Exception {
+        Assert.assertTrue("People button is not visible", getConversationViewPage().isPeopleButtonVisible());
         Assert.assertTrue("Some of input tools buttons are still visible",
-                getDialogPage().areInputToolsInvisible());
+                getConversationViewPage().areInputToolsInvisible());
     }
 
     /**
@@ -637,7 +625,7 @@ public class DialogPageSteps {
     @When("^I see Close input options button is not visible$")
     public void ISeeCloseButtonInputOptionsNotVisible() throws Exception {
         Assert.assertTrue("Close input options button is visible",
-                getDialogPage().verifyInputOptionsCloseButtonNotVisible());
+                getConversationViewPage().verifyInputOptionsCloseButtonNotVisible());
     }
 
     /**
@@ -648,7 +636,7 @@ public class DialogPageSteps {
      */
     @When("^I click plus button next to text input$")
     public void IClickPlusButton() throws Exception {
-        getDialogPage().clickPlusButton();
+        getConversationViewPage().clickPlusButton();
     }
 
     /**
@@ -659,7 +647,7 @@ public class DialogPageSteps {
      */
     @When("^I click Close input options button$")
     public void IClickCloseButtonInputOptions() throws Exception {
-        getDialogPage().clickInputOptionsCloseButton();
+        getConversationViewPage().clickInputOptionsCloseButton();
     }
 
     /**
@@ -671,10 +659,10 @@ public class DialogPageSteps {
      */
     @Then("^I see vimeo link (.*) but NO media player$")
     public void ISeeVimeoLinkButNOMediaPlayer(String link) throws Exception {
-        Assert.assertFalse("Media player is shown in dialog", getDialogPage()
+        Assert.assertFalse("Media player is shown in dialog", getConversationViewPage()
                 .isYoutubeContainerVisible());
         Assert.assertTrue(String.format("The last conversation message does not contain %s link", link),
-                getDialogPage().isLastMessageContain(link));
+                getConversationViewPage().isLastMessageContain(link));
     }
 
     /**
@@ -686,10 +674,10 @@ public class DialogPageSteps {
      */
     @Then("^I see vimeo link (.*) and media in dialog$")
     public void ISeeVimeoLinkAndMediaInDialog(String link) throws Exception {
-        Assert.assertTrue("Media is missing in dialog", getDialogPage()
+        Assert.assertTrue("Media is missing in dialog", getConversationViewPage()
                 .isYoutubeContainerVisible());
         Assert.assertTrue(String.format("The last conversation message does not contain %s link", link),
-                getDialogPage().isLastMessageContain(link));
+                getConversationViewPage().isLastMessageContain(link));
     }
 
     /**
@@ -702,7 +690,7 @@ public class DialogPageSteps {
     @When("^I see (\\d+) conversation (?:entries|entry)$")
     public void ISeeXConvoEntries(int expectedCount) throws Exception {
         Assert.assertEquals("The expected count of conversation entries is not equal to the actual count",
-                expectedCount, getDialogPage().getNumberOfMessageEntries());
+                expectedCount, getConversationViewPage().getNumberOfMessageEntries());
     }
 
     /**
@@ -716,7 +704,7 @@ public class DialogPageSteps {
      */
     @When("^I tap on message \"(.*)\"$")
     public void ITapOnLink(String msgStartingWithLink) throws Exception {
-        getDialogPage().tapMessage(msgStartingWithLink);
+        getConversationViewPage().tapMessage(msgStartingWithLink);
     }
 
     /**
@@ -728,7 +716,7 @@ public class DialogPageSteps {
     @When("^I see the default message in input field$")
     public void WhenISeeMessageInInputField() throws Exception {
         Assert.assertTrue("Input field has incorrect message or empty",
-                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE.equals(getDialogPage().getStringFromInput()));
+                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE.equals(getConversationViewPage().getStringFromInput()));
     }
 
     /**
@@ -744,7 +732,7 @@ public class DialogPageSteps {
     public void ISeeLastMessageIsSystem(String username) throws Exception {
         username = usrMgr.findUserByNameOrNameAlias(username).getName();
         Assert.assertTrue(String.format("The 'CONNECTED' TO %s' system message is not visible in the conversation view",
-                username), getDialogPage().isConnectedToUserStartedConversationLabelVisible(username));
+                username), getConversationViewPage().isConnectedToUserStartedConversationLabelVisible(username));
     }
 
     /**
@@ -755,7 +743,7 @@ public class DialogPageSteps {
      */
     @When("^I longpress on image in the conversation$")
     public void ILongPressOnImage() throws Exception {
-        getDialogPage().tapHoldImage();
+        getConversationViewPage().tapHoldImage();
     }
 
     /**
@@ -766,7 +754,7 @@ public class DialogPageSteps {
      */
     @When("^I tap on copy badge$")
     public void ITapCopyBadge() throws Exception {
-        getDialogPage().clickPopupCopyButton();
+        getConversationViewPage().clickPopupCopyButton();
     }
 
     /**
@@ -777,9 +765,9 @@ public class DialogPageSteps {
      */
     @When("^I see plus icon is changed to user avatar icon$")
     public void ISeePluseIconChangedToUserAvatar() throws Exception {
-        Assert.assertFalse("Plus icon is still visible", getDialogPage()
+        Assert.assertFalse("Plus icon is still visible", getConversationViewPage()
                 .isPlusButtonVisible());
-        Assert.assertTrue("User avatar is not visible", getDialogPage()
+        Assert.assertTrue("User avatar is not visible", getConversationViewPage()
                 .isUserAvatarNextToInputVisible());
     }
 
@@ -791,20 +779,20 @@ public class DialogPageSteps {
      */
     @When("^I clear conversation text input$")
     public void IClearConversationTextInput() throws Exception {
-        getDialogPage().clearTextInput();
+        getConversationViewPage().clearTextInput();
     }
 
     /**
      * Verify that conversation is scrolled to the end by verifying that plus
      * button and text input is visible
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I see conversation is scrolled to the end$
      */
     @When("^I see conversation is scrolled to the end$")
-    public void ISeeConversationIsScrolledToEnd() throws Throwable {
+    public void ISeeConversationIsScrolledToEnd() throws Exception {
         Assert.assertTrue("The input field state looks incorrect",
-                getDialogPage().isPlusButtonVisible() && getDialogPage().isCursorInputVisible());
+                getConversationViewPage().isPlusButtonVisible() && getConversationViewPage().waitForCursorInputVisible());
     }
 
     /**
@@ -815,7 +803,7 @@ public class DialogPageSteps {
      */
     @When("^I click send button on keyboard$")
     public void iClickSendButtonOnKeyboard() throws Exception {
-        getDialogPage().clickKeyboardCommitButton();
+        getConversationViewPage().clickKeyboardCommitButton();
     }
 
     /**
@@ -829,10 +817,10 @@ public class DialogPageSteps {
     public void ISeeShieldIconNextNextToInputField(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue("The shield icon is not visible next to the convo input field",
-                    getDialogPage().isShieldIconVisibleNextToInputField());
+                    getConversationViewPage().isShieldIconVisibleNextToInputField());
         } else {
             Assert.assertTrue("The shield icon is visible next to the convo input field, but should be hidden",
-                    getDialogPage().isShieldIconInvisibleNextToInputField());
+                    getConversationViewPage().isShieldIconInvisibleNextToInputField());
         }
     }
 
@@ -844,7 +832,7 @@ public class DialogPageSteps {
      */
     @When("^I tap on THIS DEVICE link$")
     public void ITapThisDeviceLink() throws Exception {
-        //getDialogPage().clickThisDeviceLink();
+        //getConversationViewPage().clickThisDeviceLink();
         //this is the fix because it can not locate system message label
         getOtherUserPersonalInfoPage().openDeviceDetailsPage(1);
     }
@@ -857,7 +845,7 @@ public class DialogPageSteps {
      */
     @When("^I resend the last message in the conversation with Resend button$")
     public void IResendTheLastMessageToUserInDialog() throws Exception {
-        getDialogPage().resendLastMessageInDialogToUser();
+        getConversationViewPage().resendLastMessageInDialogToUser();
     }
 
     /**
@@ -868,7 +856,7 @@ public class DialogPageSteps {
      */
     @Then("^I see Upper Toolbar on dialog page$")
     public void ISeeUpperToolbar() throws Exception {
-        Assert.assertTrue(getDialogPage().isUpperToolbarVisible());
+        Assert.assertTrue(getConversationViewPage().isUpperToolbarVisible());
     }
 
     /**
@@ -884,34 +872,34 @@ public class DialogPageSteps {
             switch (buttonName) {
                 case "Audio call":
                     Assert.assertTrue("Audio call button is not visible on Upper Toolbar",
-                            getDialogPage().isAudioCallButtonOnToolbarVisible());
+                            getConversationViewPage().isAudioCallButtonOnToolbarVisible());
                     break;
                 case "Video call":
                     Assert.assertTrue("Video call button is not visible on Upper Toolbar",
-                            getDialogPage().isVideoCallButtonOnToolbarVisible());
+                            getConversationViewPage().isVideoCallButtonOnToolbarVisible());
                     break;
                 case "Calling":
                     Assert.assertTrue("Audio call button is not visible on Upper Toolbar",
-                            getDialogPage().isAudioCallButtonOnToolbarVisible());
+                            getConversationViewPage().isAudioCallButtonOnToolbarVisible());
                     Assert.assertTrue("Video call button is not visible on Upper Toolbar",
-                            getDialogPage().isVideoCallButtonOnToolbarVisible());
+                            getConversationViewPage().isVideoCallButtonOnToolbarVisible());
                     break;
             }
         } else {
             switch (buttonName) {
                 case "Audio call":
                     Assert.assertTrue("Audio call button is visible on Upper Toolbar",
-                            getDialogPage().isAudioCallButtonOnToolbarNotVisible());
+                            getConversationViewPage().isAudioCallButtonOnToolbarNotVisible());
                     break;
                 case "Video call":
                     Assert.assertTrue("Video call button is visible on Upper Toolbar",
-                            getDialogPage().isVideoCallButtonOnToolbarNotVisible());
+                            getConversationViewPage().isVideoCallButtonOnToolbarNotVisible());
                     break;
                 case "Calling":
                     Assert.assertTrue("Audio call button is visible on Upper Toolbar",
-                            getDialogPage().isAudioCallButtonOnToolbarNotVisible());
+                            getConversationViewPage().isAudioCallButtonOnToolbarNotVisible());
                     Assert.assertTrue("Video call button is visible on Upper Toolbar",
-                            getDialogPage().isVideoCallButtonOnToolbarNotVisible());
+                            getConversationViewPage().isVideoCallButtonOnToolbarNotVisible());
                     break;
             }
         }
@@ -925,7 +913,7 @@ public class DialogPageSteps {
      */
     @Then("^I see Too many people alert$")
     public void ISee10PeopleAlert() throws Exception {
-        Assert.assertTrue(getDialogPage().isTooManyPeopleAlertVisible());
+        Assert.assertTrue(getConversationViewPage().isTooManyPeopleAlertVisible());
     }
 
     /**
@@ -939,7 +927,7 @@ public class DialogPageSteps {
     public void ISeeUsernameInUpperToolbar(String convoName) throws Exception {
         convoName = usrMgr.replaceAliasesOccurences(convoName, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Conversation name '%s' is not displayed on Upper Toolbar", convoName),
-                getDialogPage().isUserNameInUpperToolbarVisible(convoName));
+                getConversationViewPage().isUserNameInUpperToolbarVisible(convoName));
     }
 
     /**
@@ -950,7 +938,38 @@ public class DialogPageSteps {
      */
     @Then("^I see You Called message and button$")
     public void iSeeYouCalledMessageAndButton() throws Exception {
-        Assert.assertTrue("YOU CALLED and phone button is not shown",getDialogPage().
+        Assert.assertTrue("YOU CALLED and phone button is not shown", getConversationViewPage().
                 isYouCalledMessageAndButtonVisible());
+    }
+
+    private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
+
+    /**
+     * Verify whether the particular picture is animated
+     *
+     * @throws Exception
+     * @step. ^I see the picture in the (preview|conversation view) is animated$"
+     */
+    @Then("^I see the picture in the conversation view is animated$")
+    public void ISeePictureIsAnimated() throws Exception {
+        // no need to wait, since screenshoting procedure itself is quite long
+        final long screenshotingDelay = 0;
+        final int maxFrames = 4;
+        final double avgThreshold = ImageUtil.getAnimationThreshold(getConversationViewPage()::getRecentPictureScreenshot,
+                maxFrames, screenshotingDelay);
+        Assert.assertTrue(String.format("The picture in the conversation view seems to be static (%.2f >= %.2f)",
+                avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
+    }
+
+    /**
+     * Verify whether the file sharing button picture is visible
+     *
+     * @throws Exception
+     * @step. ^I see file button$"
+     */
+    @When("^I see file sharing button$")
+    public void i_see_file_sharing_button() throws Exception {
+        Assert.assertTrue("File sharing button is not shown", getConversationViewPage().
+                isFileSharingButtonVisible());
     }
 }

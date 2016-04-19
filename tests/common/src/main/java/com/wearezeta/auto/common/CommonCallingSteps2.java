@@ -22,7 +22,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 
 import java.util.concurrent.CompletableFuture;
@@ -63,7 +62,7 @@ public final class CommonCallingSteps2 {
     }
 
     private static final String FIREFOX_DEFAULT_VERSION = "44.0.2";
-    private static final String CHROME_DEFAULT_VERSION = "49.0.2623.75";
+    private static final String CHROME_DEFAULT_VERSION = "50.0.2661.75";
 
     // Request timeout of 180 secs is set by callingservice, we add additional
     // 10 seconds on the client side to actually get a timeout response to

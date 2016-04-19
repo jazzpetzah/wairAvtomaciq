@@ -194,7 +194,7 @@ Feature: Connect
     And I see conversation <Contact> in conversations list
     When I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message on Dialog page
-    Then I see text input in dialog is not allowed
+    Then I do not see text input in conversation view
 
     Examples: 
       | Name      | Contact   | Contact2  |
@@ -211,7 +211,7 @@ Feature: Connect
     And I see conversation <Contact> in conversations list
     When I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message on Dialog page
-    Then I see text input in dialog is not allowed
+    Then I do not see text input in conversation view
 
     Examples: 
       | Name      | Contact   | Contact2  |
@@ -308,7 +308,7 @@ Feature: Connect
     And I tap on text input
     And I tap and hold on message input
     And I paste and commit the text
-    Then I check copied content from <Name>
+    Then I verify that pasted message contains MyEmail
 
     Examples: 
       | Name      | Contact   |

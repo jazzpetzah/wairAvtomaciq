@@ -546,15 +546,9 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void clickOnBlackBorder() throws Exception {
-		if (WebAppExecutionContext.getBrowser()
-				.equals(Browser.InternetExplorer)
-				|| WebAppExecutionContext.getBrowser().equals(Browser.Chrome)) {
-			Actions builder = new Actions(getDriver());
-			builder.moveToElement(fullscreenImage, -10, -10).click().build()
-					.perform();
-		} else {
-			blackBorder.click();
-		}
+		Actions builder = new Actions(getDriver());
+		builder.moveToElement(fullscreenImage, -10, -10).click().build()
+				.perform();
 	}
 
 	public void clickGIFButton() throws Exception {

@@ -1,5 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -24,8 +26,10 @@ public class ImageFullScreenPage extends IOSPage {
 
     private static final By nameFullScreenSketchButton = MobileBy.AccessibilityId("sketchButton");
 
-    public ImageFullScreenPage(Future<ZetaIOSDriver> lazyDriver)
-            throws Exception {
+    private static final By xpathFullScreenImage =
+            By.xpath("//UIAScrollView[@name='fullScreenPage']/UIAImage[@visible='true']");
+
+    public ImageFullScreenPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -72,5 +76,9 @@ public class ImageFullScreenPage extends IOSPage {
 
     public boolean isSentTimeInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameFullScreenTimeStamp);
+    }
+
+    public Optional<BufferedImage> getPreviewPictureScreenshot() throws Exception {
+        return getElementScreenshot(getElement(xpathFullScreenImage));
     }
 }

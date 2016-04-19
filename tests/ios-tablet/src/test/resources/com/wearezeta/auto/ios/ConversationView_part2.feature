@@ -23,7 +23,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
@@ -52,7 +52,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
@@ -116,7 +116,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
@@ -139,7 +139,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I open conversation details
     And I open ellipsis menu
-    And I click archive menu button
+    And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
@@ -158,7 +158,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I open conversation details
     And I open ellipsis menu
-    And I click archive menu button
+    And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
@@ -177,7 +177,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I click plus button next to text input
     Then I see conversation tools buttons
-    And I see plus button is not shown
+    And I do not see plus button next to text input
     And I swipe left on options buttons
     And I see Close input options button is not visible
     And I click plus button next to text input
@@ -201,12 +201,12 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I click plus button next to text input
-    Then I see no other conversation tools buttons except of Details
+    Then I see no other conversation tools buttons except of People
     And I click Close input options button
     And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
-    Then I see no other conversation tools buttons except of Details
+    Then I see no other conversation tools buttons except of People
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
@@ -224,11 +224,11 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I click plus button next to text input
-    Then I see no other conversation tools buttons except of Details
+    Then I see no other conversation tools buttons except of People
     And I click Close input options button
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
-    Then I see no other conversation tools buttons except of Details
+    Then I see no other conversation tools buttons except of People
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
@@ -348,7 +348,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
     And I open search UI
@@ -377,7 +377,7 @@ Feature: Conversation View
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
@@ -402,7 +402,7 @@ Feature: Conversation View
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     When I confirm my choice
@@ -442,7 +442,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap on text input to scroll to the end
     When I scroll to the beginning of the conversation
-    Then I see plus button is not shown
+    Then I do not see plus button next to text input
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -464,3 +464,21 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C2624 @regression @rc
+  Scenario Outline: Verify sending GIF format pic [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    Given User <Contact> sends encrypted image <GifPicture> to single user conversation Myself
+    When I tap on contact name <Contact>
+    Then I see 1 photo in the dialog
+    And I see the picture in the conversation view is animated
+    When I tap and hold image to open full screen
+    Then I see the picture on image fullscreen page is animated
+
+    Examples:
+      | Name      | Contact   | GifPicture   |
+      | user1Name | user2Name | animated.gif |

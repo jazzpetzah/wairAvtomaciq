@@ -4,7 +4,7 @@ Feature: Sign In
   Scenario Outline: Sign in to ZClient
     Given There is 1 user where <Name> is me
     Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
+    When I switch to Log In tab
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
@@ -19,7 +19,7 @@ Feature: Sign In
   @C1133 @regression @rc @clumsy @id1398 @noAcceptAlert
   Scenario Outline: Notification if SignIn credentials are wrong
     Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
+    When I switch to Log In tab
     And I enter wrong email <WrongMail>
     And I enter wrong password <WrongPassword>
     And I attempt to press Login button

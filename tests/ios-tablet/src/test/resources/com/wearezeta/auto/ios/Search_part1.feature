@@ -41,7 +41,7 @@ Feature: Search
     #And I click Go button to create 1:1 conversation
     And I tap Open conversation action button on People picker page
     And I wait for 2 seconds
-    And I see dialog page
+    And I see conversation view page
 
     Examples: 
       | Name      | UserCount |
@@ -61,7 +61,7 @@ Feature: Search
     #And I click Go button to create 1:1 conversation
     And I tap Open conversation action button on People picker page
     And I wait for 2 seconds
-    And I see dialog page
+    And I see conversation view page
 
     Examples: 
       | Name      | UserCount |

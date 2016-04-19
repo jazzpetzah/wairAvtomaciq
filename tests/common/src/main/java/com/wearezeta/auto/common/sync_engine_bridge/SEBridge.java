@@ -132,6 +132,14 @@ public class SEBridge {
         getOrAddDevice(userFrom, deviceName).clearConversation(convId);
     }
 
+    public void muteConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).muteConversation(convId);
+    }
+
+    public void unmuteConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).unmuteConversation(convId);
+    }
+
     public void sendFile(ClientUser userFrom, String convId, String path, String mime, String deviceName) throws Exception {
         getOrAddDevice(userFrom, deviceName).sendFile(convId, path, mime);
     }

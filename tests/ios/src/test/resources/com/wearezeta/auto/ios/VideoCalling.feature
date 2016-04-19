@@ -31,7 +31,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C12101 @calling_basic @video_calling @AUDIO-868
+  @C12101 @calling_basic @video_calling @AUDIO-868 @rc
   Scenario Outline: Verify accepting video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -66,7 +66,7 @@ Feature: Video Calling
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see Mute button on Video Calling overlay
     And I tap Leave button on Video Calling overlay
-    Then I see dialog page
+    Then I see conversation view page
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
@@ -204,7 +204,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 30      |
 
-  @C28861 @calling_basic @video_calling @AUDIO-868
+  @C28861 @calling_basic @video_calling @AUDIO-868 @rc
   Scenario Outline: Verify video call continues after rejecting 2nd incoming video call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>

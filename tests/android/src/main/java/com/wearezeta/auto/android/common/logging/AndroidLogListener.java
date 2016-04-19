@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.common.logging;
 
 import java.util.*;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -56,6 +57,7 @@ public final class AndroidLogListener {
             log.warn("Restarting Android log listener...");
             this.stop();
         }
+        AndroidCommonUtils.executeAdb("logcat -c");
         String adbCmd;
         if (this.tags == null) {
             adbCmd = ADB_PREFIX + "adb logcat -v time";

@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
+import com.wearezeta.auto.common.CommonUtils;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
@@ -56,6 +57,9 @@ public class LoginPage extends WebPage {
 
 	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssLoginErrorText)
 	private WebElement loginErrorText;
+        
+        @FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssSessionExpiredErrorText)
+	private WebElement sessionExpiredErrorText;
 
 	@FindBy(css = WebAppLocators.LoginPage.errorMarkedEmailField)
 	private WebElement redDotOnEmailField;
@@ -127,7 +131,7 @@ public class LoginPage extends WebPage {
 		boolean noSignIn = waitForLoginButtonDisappearance();
 		boolean noSignInSpinner = DriverUtils.waitUntilLocatorDissapears(
 				this.getDriver(),
-				By.className(WebAppLocators.LoginPage.classNameSpinner),
+				By.className(WebAppLocators.LoginPage.classNameProgressBar),
 				TIMEOUT_SIGNED_IN_PROPERLY);
 		return noSignIn && noSignInSpinner;
 	}
@@ -165,6 +169,21 @@ public class LoginPage extends WebPage {
 						getDriver(),
 						By.cssSelector(WebAppLocators.LoginPage.errorMarkedPasswordField));
 	}
+        
+    public void visitSessionExpiredPage(String langKey) throws Exception {
+        getDriver().get(CommonUtils.getWebAppApplicationPathFromConfig(LoginPage.class) + "auth/?expired&hl=" + langKey+"#login");
+    }
+
+    public String getSessionExpiredErrorMessage() throws Exception {
+        DriverUtils.waitUntilLocatorAppears(getDriver(),
+                By.xpath(WebAppLocators.LoginPage.cssSessionExpiredErrorText));
+        return sessionExpiredErrorText.getText();
+    }
+
+    public boolean isSessionExpiredErrorMessageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.cssSelector(WebAppLocators.LoginPage.cssSessionExpiredErrorText));
+    }
 
 	public void switchToPhoneNumberLoginPage() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), phoneSignInButton);

@@ -78,7 +78,7 @@ Feature: Registration
       | Name      | ArabicName |
       | user1Name | عبد العزيز |
 
-  @C1004 @staging
+  @C1004 @regression
   Scenario Outline: Verify resending code
     Given I see sign in screen
     When I enter phone number for user <Name>

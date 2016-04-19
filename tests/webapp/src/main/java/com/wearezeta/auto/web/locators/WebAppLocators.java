@@ -24,7 +24,7 @@ public final class WebAppLocators {
 
         public static final String cssPasswordInput = "#form-account-login [data-uie-name='enter-password']";
 
-        public static final String classNameSpinner = "loading-spinner";
+        public static final String classNameProgressBar = "progress-bar";
 
         public static final String xpathCreateAccountButton = "//*[@data-uie-name='do-register']";
 
@@ -37,6 +37,8 @@ public final class WebAppLocators {
         public static final String xpathChangePasswordButton = "//*[@data-uie-name='go-forgot-password']";
 
         public static final String cssLoginErrorText = "[data-uie-name='status-error'] .error";
+        
+        public static final String cssSessionExpiredErrorText = "[data-uie-name='status-expired']";
 
         public static final String errorMarkedEmailField = "#form-account-login .input-error[data-uie-name='enter-email']";
 

@@ -28,15 +28,18 @@ public class CallIncomingPageSteps {
     /**
      * Verifies presence of incoming call
      *
+     * @param not         equals to null means should see incoming call
+     * @param isVideoCall equals to null means it is the video incoming call view
      * @throws Exception
-     * @step. ^I (do not )?see incoming call$
+     * @step. ^I (do not )?see incoming (video )?call$
      */
-    @When("^I (do not )?see incoming call$")
-    public void ISeeIncomingCall(String not) throws Exception {
+    @When("^I (do not )?see incoming (video )?call$")
+    public void ISeeIncomingCall(String not, String isVideoCall) throws Exception {
+        String subtitle = isVideoCall == null ? "CALLING" : "VIDEO CALLING";
         if (not == null) {
-            assertTrue("Incoming call not visible", getPage().waitUntilVisible());
+            assertTrue("Incoming call not visible", getPage().waitUntilVisible(subtitle));
         } else {
-            assertTrue("Incoming call should not be visible", getPage().waitUntilNotVisible());
+            assertTrue("Incoming call should not be visible", getPage().waitUntilNotVisible(subtitle));
         }
     }
 

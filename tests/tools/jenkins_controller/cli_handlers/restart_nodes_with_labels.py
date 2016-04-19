@@ -37,31 +37,31 @@ class RestartNodesWithLabels(CliHandlerBase):
         finally:
             client.close()
         seconds_started = time.time()
-        while (time.time() - seconds_started <= OFFLINE_TIMEOUT_SECONDS):
+        while time.time() - seconds_started <= OFFLINE_TIMEOUT_SECONDS:
             if node.is_online():
                 time.sleep(5)
             else:
-                sys.stderr.write('Node "{}" has been successfully transitioned to offline state after {} seconds\n' \
+                sys.stderr.write('Node "{}" has been successfully transitioned to offline state after {} seconds\n'
                                  .format(node.name, int(time.time() - seconds_started)))
                 break
         if node.is_online():
-            sys.stderr.write('!!! Node "{}" is still online after {} seconds timeout\n'. \
+            sys.stderr.write('!!! Node "{}" is still online after {} seconds timeout\n'.
                              format(node.name, OFFLINE_TIMEOUT_SECONDS))
         seconds_started = time.time()
-        while (time.time() - seconds_started <= ONLINE_TIMEOUT_SECONDS):
+        while time.time() - seconds_started <= ONLINE_TIMEOUT_SECONDS:
             if not node.is_online():
                 time.sleep(5)
             else:
-                sys.stderr.write('Node "{}" has been successfully restarted after {} seconds\n'. \
+                sys.stderr.write('Node "{}" has been successfully restarted after {} seconds\n'.
                                  format(node.name, int(time.time() - seconds_started)))
                 return node.name
         if not node.is_online():
-            sys.stderr.write('!!! Node "{}" is still offline after {} seconds timeout\n'. \
+            sys.stderr.write('!!! Node "{}" is still offline after {} seconds timeout\n'.
                              format(node.name, ONLINE_TIMEOUT_SECONDS))
 
     @staticmethod
     def _is_alive(host):
-        return (os.system('ping -c1 {}'.format(host)) == 0)
+        return os.system('ping -c1 {}'.format(host)) == 0
 
     def _invoke(self):
         parser = self._get_parser()
@@ -72,16 +72,20 @@ class RestartNodesWithLabels(CliHandlerBase):
         for _, node in self._jenkins.get_nodes().iteritems():
             response = node.jenkins.requester.get_and_confirm_status("%(baseurl)s/config.xml" % node.__dict__)
             et = ET.fromstring(response.text)
-            hostname = et.find('.//host').text
-            if not self._is_alive(hostname):
-                sys.stderr.write('The host {} seems to be already offline\n'.format(hostname))
-                continue
             node_labels_str = et.find('label').text
             if node_labels_str:
                 node_labels = self._normalize_labels(node_labels_str.split(' '))
             else:
                 node_labels = set()
             if expected_labels.issubset(node_labels):
+                try:
+                    hostname = et.find('.//host').text
+                except Exception:
+                    sys.stderr.write('Cannot read hostname property of "{}" node! Skipping it...\n'.format(node.name))
+                    continue
+                if not self._is_alive(hostname):
+                    sys.stderr.write('The host {} seems to be already offline\n'.format(hostname))
+                    continue
                 sys.stderr.write('Found matching node "{}". Restarting...\n'.format(node.name))
                 workers.append(Process(target=self._restart_node_and_wait,
                                        args=(node, hostname, args.node_user, args.node_password)))

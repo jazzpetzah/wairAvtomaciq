@@ -186,7 +186,7 @@ Feature: Search
     And I see top people list on People picker page
     And I tap on 1st top connection contact
     And I tap Open conversation action button on People picker page
-    Then I see dialog page
+    Then I see conversation view page
 
     Examples: 
       | Name      |
@@ -204,7 +204,7 @@ Feature: Search
     And I see top people list on People picker page
     And I tap on 1st top connection contact
     And I tap Open conversation action button on People picker page
-    Then I see dialog page
+    Then I see conversation view page
 
     Examples: 
       | Name      |

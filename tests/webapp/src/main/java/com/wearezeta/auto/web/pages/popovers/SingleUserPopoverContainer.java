@@ -99,7 +99,7 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		this.singleUserPopoverPage.clickUnblockButton();
 	}
 
-	public void switchToDevicesTab() {
+	public void switchToDevicesTab() throws Exception {
 		this.singleUserPopoverPage.switchToDevicesTab();
 	}
 
@@ -119,7 +119,7 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		return this.singleUserPopoverPage.getDeviceIds();
 	}
 
-	public List<String> getVerifiedDeviceIds() {
+	public List<String> getVerifiedDeviceIds() throws Exception {
 		return this.singleUserPopoverPage.getVerifiedDeviceIds();
 	}
 

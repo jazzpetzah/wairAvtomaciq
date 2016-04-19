@@ -5,7 +5,7 @@ import java.util.concurrent.Future;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.android.pages.AndroidPage;
-import com.wearezeta.auto.android.pages.DialogPage;
+import com.wearezeta.auto.android.pages.ConversationViewPage;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class ProfilePicturePage extends AndroidPage {
@@ -22,6 +22,6 @@ public class ProfilePicturePage extends AndroidPage {
     }
 
     public void confirmPicture() throws Exception {
-        getElement(DialogPage.xpathConfirmOKButton, "Confirm button is not visible").click();
+        getElement(ConversationViewPage.xpathConfirmOKButton, "Confirm button is not visible").click();
     }
 }

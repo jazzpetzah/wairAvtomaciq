@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.web.pages.HistoryInfoPage;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -251,4 +250,34 @@ public class LoginPageSteps {
 		webappPagesCollection.getPage(LoginPage.class)
 				.switchToPhoneNumberLoginPage();
 	}
+        
+    @Given("^I open (.*) session expired login page$")
+    public void i_open_session_expired_login_page(String lang) throws Throwable {
+        String langKey;
+        switch (lang) {
+            case "english":
+                langKey = "en";
+                break;
+            case "german":
+                langKey = "de";
+                break;
+            default:
+                throw new IllegalArgumentException("Please specify a language for the session expired login page");
+        }
+        webappPagesCollection.getPage(LoginPage.class)
+                .visitSessionExpiredPage(langKey);
+    }
+
+    @Then("^I verify session expired message is visible$")
+    public void i_verify_session_expired_message_is_visible() throws Throwable {
+        Assert.assertTrue("session expired message is not visible", webappPagesCollection.getPage(LoginPage.class)
+                .isSessionExpiredErrorMessageVisible());
+    }
+
+    @Then("^I verify session expired message is equal to (.*)$")
+    public void i_verify_session_expired_message_is_x(String sessionExpiredMessage) throws Throwable {
+        Assert.assertEquals("session expired message does not match expected value", sessionExpiredMessage,
+                webappPagesCollection.getPage(LoginPage.class)
+                .getSessionExpiredErrorMessage());
+    }
 }

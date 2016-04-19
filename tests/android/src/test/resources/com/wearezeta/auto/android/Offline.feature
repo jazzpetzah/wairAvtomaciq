@@ -9,15 +9,15 @@ Feature: Offline
     Given I see Contact list with contacts
     And I tap on contact name <Contact>
     When User <Contact> sends encrypted message <Message1> to user Myself
-    Then Last message is <Message1>
+    Then I see the most recent conversation message is "<Message1>"
     When I enable Airplane mode on the device
     And User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     Then I do not see new picture in the dialog
     When User <Contact> sends encrypted message <Message2> to user Myself
-    Then Last message is <Message1>
+    Then I see the most recent conversation message is "<Message1>"
     When I disable Airplane mode on the device
     And I scroll to the bottom of conversation view
-    Then Last message is <Message2>
+    Then I see the most recent conversation message is "<Message2>"
     And I see new picture in the dialog
 
     Examples:
@@ -41,6 +41,7 @@ Feature: Offline
     And I tap Add Picture button from input tools
     And I press "Take Photo" button
     And I press "Confirm" button
+    And I scroll to the bottom of conversation view
     Then I see unsent indicator next to new picture in the dialog
 
     Examples:

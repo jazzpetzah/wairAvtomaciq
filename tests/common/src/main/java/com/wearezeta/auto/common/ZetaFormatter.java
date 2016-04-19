@@ -72,7 +72,7 @@ public class ZetaFormatter implements Formatter, Reporter {
     @Override
     public void feature(Feature arg0) {
         feature = arg0.getName();
-        log.debug("\n\n-----------------------Feature: " + feature + "\n-----------------------");
+        log.debug("\n\n-----------------------\nFeature: " + feature + "\n-----------------------");
     }
 
     private static String formatTags(List<Tag> tags) {

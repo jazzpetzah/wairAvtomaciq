@@ -57,6 +57,7 @@ Feature: Registration
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
     Then I do not see Welcome page
+    And I am signed in properly
     And I verify that current profile picture snapshot of Myself differs from the previous one
 
     Examples: 

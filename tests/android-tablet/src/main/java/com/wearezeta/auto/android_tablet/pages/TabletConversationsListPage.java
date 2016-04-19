@@ -5,14 +5,14 @@ import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.android.pages.DialogPage;
+import com.wearezeta.auto.android.pages.ConversationViewPage;
+import com.wearezeta.auto.android.pages.ConversationsListPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
@@ -20,15 +20,15 @@ public class TabletConversationsListPage extends AndroidTabletPage {
     private static final int PLAY_PAUSE_BUTTON_WIDTH_PERCENTAGE = 15;
 
     private static final By xpathStrConvoViewOrSelfProfile = By.xpath(String.format("//*[@id='%s' or @id='%s']",
-            TabletSelfProfilePage.idStrSelfProfileView, DialogPage.idStrDialogRoot));
+            TabletSelfProfilePage.idStrSelfProfileView, ConversationViewPage.idStrDialogRoot));
 
     public TabletConversationsListPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
     }
 
-    private ContactListPage getContactListPage() throws Exception {
-        return this.getAndroidPageInstance(ContactListPage.class);
+    private ConversationsListPage getContactListPage() throws Exception {
+        return this.getAndroidPageInstance(ConversationsListPage.class);
     }
 
     private static final int LOAD_TIMEOUT = 15; // seconds
@@ -43,11 +43,11 @@ public class TabletConversationsListPage extends AndroidTabletPage {
                 final Optional<WebElement> selfProfileEl =
                         getElementIfDisplayed(TabletSelfProfilePage.idSelfProfileView, 1);
                 do {
-                    if (DriverUtils.waitUntilLocatorDissapears(getDriver(), ContactListPage.idListActionsAvatar, 2)
+                    if (DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationsListPage.idListActionsAvatar, 2)
                             || (selfProfileEl.isPresent() && selfProfileEl.get().getLocation().getX() < leftBorderWidth)) {
                         DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90, 50);
                         // FIXME: Self profile could switch to full colour instead of being swiped
-                        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ContactListPage.idListActionsAvatar, 1)
+                        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationsListPage.idListActionsAvatar, 1)
                                 && (selfProfileEl.isPresent()
                                 && selfProfileEl.get().getLocation().getX() > leftBorderWidth)) {
                             break;
@@ -73,28 +73,28 @@ public class TabletConversationsListPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilConversationIsVisible(String name) throws Exception {
-        final By locator = By.xpath(ContactListPage.xpathStrContactByName.apply(name));
+        final By locator = By.xpath(ConversationsListPage.xpathStrContactByName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 40);
     }
 
     public boolean waitUntilConversationIsInvisible(String name) throws Exception {
-        final By locator = By.xpath(ContactListPage.xpathStrContactByName.apply(name));
+        final By locator = By.xpath(ConversationsListPage.xpathStrContactByName.apply(name));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public void tapConversation(String name) throws Exception {
-        final By locator = By.xpath(ContactListPage.xpathStrContactByName.apply(name));
+        final By locator = By.xpath(ConversationsListPage.xpathStrContactByName.apply(name));
         getElement(locator,
                 String.format("The conversation '%s' does not exist in the conversations list", name)).click();
     }
 
     public boolean waitUntilConversationIsSilenced(String name) throws Exception {
-        final By locator = By.xpath(ContactListPage.xpathStrMutedIconByConvoName.apply(name));
+        final By locator = By.xpath(ConversationsListPage.xpathStrMutedIconByConvoName.apply(name));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean waitUntilConversationIsNotSilenced(String name) throws Exception {
-        final By locator = By.xpath(ContactListPage.xpathStrMutedIconByConvoName.apply(name));
+        final By locator = By.xpath(ConversationsListPage.xpathStrMutedIconByConvoName.apply(name));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
@@ -140,7 +140,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 
     public Rectangle calcPlayPauseButtonCoordinates(String convoName) throws Exception {
         final Rectangle result = new Rectangle();
-        final WebElement convoElement = getElement(By.xpath(ContactListPage.xpathStrContactByName.apply(convoName)));
+        final WebElement convoElement = getElement(By.xpath(ConversationsListPage.xpathStrContactByName.apply(convoName)));
         final int playPauseButtonWidth = convoElement.getSize().width * PLAY_PAUSE_BUTTON_WIDTH_PERCENTAGE / 100;
         result.setLocation(convoElement.getLocation().x + convoElement.getSize().width
                 - playPauseButtonWidth, convoElement.getLocation().y);
@@ -153,7 +153,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
     }
 
     public void swipeRightListItem(String name) throws Exception {
-        final By locator = By.xpath(ContactListPage.xpathStrContactByName.apply(name));
+        final By locator = By.xpath(ConversationsListPage.xpathStrContactByName.apply(name));
         DriverUtils.swipeElementPointToPoint(getDriver(), getElement(locator), 1000, 20, 50, 100, 50);
     }
 

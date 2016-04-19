@@ -41,11 +41,12 @@ Feature: Archive
   Scenario Outline: Verify that Ping event cannot unarchive muted conversation automatically
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I muted conversation with <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I see my avatar on top of Contact list
-    When I archive conversation <Contact>
+    When I see Contact list with name <Contact>
+    And I set muted state for conversation <Contact>
+    And I archive conversation <Contact>
     And User <Contact> pinged in the conversation with me
     Then I do not see Contact list with name <Contact>
     And I see Archive button at the bottom of my Contact list

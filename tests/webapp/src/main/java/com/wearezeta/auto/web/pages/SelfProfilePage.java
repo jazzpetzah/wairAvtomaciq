@@ -19,6 +19,9 @@ import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class SelfProfilePage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.SelfProfilePage.cssGearButton)
@@ -64,12 +67,40 @@ public class SelfProfilePage extends WebPage {
 				By.cssSelector(WebAppLocators.SelfProfilePage.cssGearButton));
 	}
 
-	public void clickGearButton() throws Exception {
-		// Wait until no modal is shown
-		DriverUtils.waitUntilLocatorDissapears(getDriver(), By.className("modal-show"));
-		DriverUtils.waitUntilElementClickable(this.getDriver(), gearButton);
-		gearButton.click();
-	}
+    public void clickGearButton() throws Exception {
+        // Wait until no modal is shown
+        DriverUtils.waitUntilLocatorDissapears(getDriver(), By.className("modal-show"));
+        // wait for the element to stop animation
+        waitForHalt(10000, 1000, ExpectedConditions.presenceOfElementLocated(By.cssSelector(
+                WebAppLocators.SelfProfilePage.cssGearButton)));
+        DriverUtils.waitUntilElementClickable(this.getDriver(), gearButton);
+        gearButton.click();
+    }
+    
+    private WebElement waitForHalt(int timeoutInMillisForHalt, int timeoutInMillisForElement,
+            ExpectedCondition<WebElement> innerConditionForElementDetection) throws Exception {
+        final ZetaWebAppDriver driver = getDriver();
+        return new WebDriverWait(driver, 1, timeoutInMillisForElement).withTimeout(timeoutInMillisForHalt,
+                TimeUnit.MILLISECONDS).until(new ExpectedCondition<WebElement>() {
+                    int x;
+                    int y;
+
+                    @Override
+                    public WebElement apply(WebDriver input) {
+                        final WebElement element = new WebDriverWait(driver, 1).withTimeout(timeoutInMillisForElement,
+                                TimeUnit.MILLISECONDS).until(innerConditionForElementDetection);
+                        if (element == null) {
+                            return null;
+                        }
+                        if (x == element.getLocation().getX() && y == element.getLocation().getY()) {
+                            return element;
+                        }
+                        x = element.getLocation().getX();
+                        y = element.getLocation().getY();
+                        return null;
+                    }
+                });
+    }
 
 	public void selectGearMenuItem(String name) throws Exception {
 		final String menuXPath = WebAppLocators.SelfProfilePage.xpathGearMenuRoot;

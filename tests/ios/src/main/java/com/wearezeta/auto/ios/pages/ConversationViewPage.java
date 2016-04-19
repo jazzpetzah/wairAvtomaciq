@@ -21,14 +21,14 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 
-public class DialogPage extends IOSPage {
+public class ConversationViewPage extends IOSPage {
     private static final By nameConversationBackButton = MobileBy.AccessibilityId("ConversationBackButton");
 
     private static final By nameConversationCursorInput = MobileBy.AccessibilityId("ConversationTextInputField");
 
     private static final By namePlusButton = MobileBy.AccessibilityId("plusButton");
 
-    private static final By nameOpenConversationDetails = MobileBy.AccessibilityId("ComposeControllerConversationDetailButton");
+    private static final By namePeopleButton = MobileBy.AccessibilityId("ComposeControllerConversationDetailButton");
 
     protected static final By nameYouRenamedConversation = MobileBy.AccessibilityId("YOU RENAMED THE CONVERSATION");
 
@@ -115,6 +115,7 @@ public class DialogPage extends IOSPage {
     private static final By nameCursorSketchButton = MobileBy.AccessibilityId("ComposeControllerSketchButton");
     protected static final By nameAddPictureButton = MobileBy.AccessibilityId("ComposeControllerPictureButton");
     private static final By namePingButton = MobileBy.AccessibilityId("ComposeControllerPingButton");
+    private static final By nameFileSharingButton = MobileBy.AccessibilityId("ComposeControllerDocUploadButton");
 
 
     private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[@name='ConversationView']";
@@ -126,16 +127,16 @@ public class DialogPage extends IOSPage {
             "/UIAButton[@name='Back']/following-sibling::" +
             "UIAButton[not(@name='ConversationBackButton') and boolean(string(@label))]");
 
-    private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton};
+    private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton, nameFileSharingButton};
 
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
     private static final Function<String, String> xpathStrUserNameInUpperToolbar = text ->
             String.format("%s/UIAButton[contains(@name, '%s')]", xpathStrConversationViewTopBar, text.toUpperCase());
 
-    private static final Logger log = ZetaLogger.getLog(DialogPage.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
-    public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+    public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -194,8 +195,8 @@ public class DialogPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConversationCursorInput, 10);
     }
 
-    public boolean isCursorInputVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConversationCursorInput);
+    public boolean waitForCursorInputInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConversationCursorInput);
     }
 
     public void clickOnCallButtonForContact(String contact) throws Exception {
@@ -495,8 +496,8 @@ public class DialogPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), namePlusButton);
     }
 
-    public boolean isOpenConversationDetailsButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameOpenConversationDetails);
+    public boolean isPeopleButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), namePeopleButton);
     }
 
     public boolean verifyInputOptionsCloseButtonNotVisible() throws Exception {
@@ -606,5 +607,13 @@ public class DialogPage extends IOSPage {
 
     public boolean isYouCalledMessageAndButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrMissedCallButtonByYourself);
+    }
+
+    public Optional<BufferedImage> getRecentPictureScreenshot() throws Exception {
+        return getElementScreenshot(getElement(xpathLastImageCell));
+    }
+
+    public boolean isFileSharingButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileSharingButton);
     }
 }

@@ -2,7 +2,6 @@ package com.wearezeta.auto.common.driver;
 
 import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
-import static com.wearezeta.auto.common.driver.ZetaDriver.MAX_COMMAND_DURATION;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import java.net.URL;
 import java.util.List;
@@ -105,7 +104,7 @@ public class ZetaWinDriver extends AppiumDriver<WebElement> implements ZetaDrive
 		final Callable<Response> task = () -> super.execute(driverCommand, parameters);
 		final Future<Response> future = getPool().submit(task);
 		try {
-			return future.get(MAX_COMMAND_DURATION, TimeUnit.SECONDS);
+			return future.get(DEFAULT_MAX_COMMAND_DURATION, TimeUnit.SECONDS);
 		} catch (Exception e) {
 			if (e instanceof ExecutionException) {
 				if ((e.getCause() instanceof UnreachableBrowserException)

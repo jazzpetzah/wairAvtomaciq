@@ -63,7 +63,7 @@ Feature: Archive
     Given I sign in using my email or phone number
     Given I see conversations list
     When I swipe right on a <GroupChatName>
-    And I press Leave button in action menu in Contact List
+    And I tap Leave action button
     And I press leave
     Then I do not see conversation <GroupChatName> in conversations list
     When <Contact1> added me to group chat <GroupChatName>
