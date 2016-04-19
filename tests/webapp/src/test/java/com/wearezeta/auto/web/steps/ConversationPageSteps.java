@@ -311,13 +311,18 @@ public class ConversationPageSteps {
      * @throws Exception
      * @step. ^I see file transfer for file (.*) in the conversation view$
      */
-    @Then("^I see file transfer for file (.*) in the conversation view$")
-    public void ISeeFileTransferOfFile(String fileName) throws Exception {
-        assertThat("Could not find file transfer for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
-                .isFileTransferDisplayed(fileName));
-        String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.')).toUpperCase();
-        assertThat("Wrong file name for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
-                .getFileNameOf(fileName), equalTo(fileNameWithoutExtension));
+    @Then("^I (do not )?see file transfer for file (.*) in the conversation view$")
+    public void ISeeFileTransferOfFile(String doNot, String fileName) throws Exception {
+        if(doNot == null) {
+            assertThat("Could not find file transfer for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+                    .isFileTransferDisplayed(fileName));
+            String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.')).toUpperCase();
+            assertThat("Wrong file name for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+                    .getFileNameOf(fileName), equalTo(fileNameWithoutExtension));
+        } else {
+            assertThat("File transfer displayed for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+                    .isFileTransferInvisible(fileName));
+        }
     }
 
     /**

@@ -650,6 +650,10 @@ public final class WebAppLocators {
                 .format("%s//div[@data-uie-name='modal-call-voice-channel-full' and contains(@class, 'modal-show')" +
                                 "]//div[contains(@class, 'button') and text()='%s']",
                         xpathWarningModalRootDiv, name);
+
+        public static final String cssFileTransferLimitWarningModal = ".modal-asset-upload-too-large";
+        public static final String cssFileTransferLimitWarningModalButton = cssFileTransferLimitWarningModal + " " +
+                "[data-uie-name='do-close']";
     }
 
     public static final class PhoneNumberVerificationPage {

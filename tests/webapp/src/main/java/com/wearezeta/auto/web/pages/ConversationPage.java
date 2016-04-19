@@ -698,6 +698,11 @@ public class ConversationPage extends WebPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
+	public boolean isFileTransferInvisible(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFile, fileName));
+		return !DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
 	public boolean getFileIcon(String fileName) throws Exception {
 		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileIcon, fileName));
 		return getDriver().findElement(locator).isDisplayed();

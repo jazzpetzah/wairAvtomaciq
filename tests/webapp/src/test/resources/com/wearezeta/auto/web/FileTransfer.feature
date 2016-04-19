@@ -35,11 +35,11 @@ Feature: File Transfer
     Then I verify icon of file <File> in the conversation view
     And I see file transfer for file <File> in the conversation view
     And I verify size of file <File> is <Size> in the conversation view
-    And I verify status of file <File> is UPLOADING in the conversation view
+    And I verify status of file <File> is UPLOADING… in the conversation view
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Size    |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 25600KB |
+      | Login      | Password      | Name      | Contact   | File        | Size |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 25MB |
 
   @C82817 @filetransfer
   Scenario Outline: Verify warning is shown if file size is too big
@@ -52,14 +52,14 @@ Feature: File Transfer
     When I open conversation with <Contact>
     Then I see file transfer button in conversation input
     When I send <Size> sized file with name <File> to the current conversation
-    Then I verify icon of file <File> in the conversation view
-    And I see file transfer for file <File> in the conversation view
-    And I verify size of file <File> is <Size> in the conversation view
-    And I verify status of file <File> is UPLOAD FAILED in the conversation view
+    Then I see file transfer limit warning modal
+    When I click on "Ok" button in file transfer limit warning modal
+    Then I do not see file transfer limit warning modal
+    And I do not see file transfer for file <File> in the conversation view
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Size    |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 25700KB |
+      | Login      | Password      | Name      | Contact   | File        | Size |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 26MB |
 
   @C82822 @filetransfer
   Scenario Outline: Verify sender is able to cancel upload
