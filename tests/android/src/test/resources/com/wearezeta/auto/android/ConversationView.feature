@@ -560,6 +560,7 @@ Feature: Conversation View
     And I tap File button from input tools
     Then I see the result of <FileSize> file upload failed having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
     When I disable Airplane mode on the device
+    And I wait for 3 seconds
     And I tap on file retry send button
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
