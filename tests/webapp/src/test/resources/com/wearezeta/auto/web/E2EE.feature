@@ -73,39 +73,122 @@ Feature: E2EE
       | user1Email | user1Password | user1Name |
 
   @C87649 @e2ee @smoke
-  Scenario Outline: Verify I can not break sessions with temporary devices
+  Scenario Outline: Verify I'm automatically logged out when the used temporary device is deleted
     Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
     When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
-    Then I see the history info page
-    When I click confirm on history info page
-    Then I am signed in properly
-    When I open Sign In page
+    And I see the history info page
+    And I click confirm on history info page
+    And I am signed in properly
+    And Contact <Contact> sends encrypted message <OldMessage> to user Myself
+    And I see text message <OldMessage>
     And User <Name> removes all his registered OTR clients
-    And user <Contact> adds a new device Device1 with label Label1
-    And I switch to Sign In page
+    Then I see Sign In page
     And I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page
-    When Contact <Contact> sends encrypted message <EncryptedMessage1> to user Myself
+    When Contact <Contact> sends encrypted message <Message1> to user Myself
     And I wait for 5 seconds
     And I click confirm on history info page
     And I am signed in properly
-    And Contact <Contact> sends encrypted message <EncryptedMessage2> to user Myself
+    And Contact <Contact> sends encrypted message <Message2> to user Myself
     And I wait for 5 seconds
     And I open conversation with <Contact>
-    And I write message <Message>
+    And I write message <Message3>
     And I send message
-    And I see text message <EncryptedMessage1>
-    And I see text message <EncryptedMessage2>
+    And I do not see text message <OldMessage>
+    And I see text message <Message1>
+    And I see text message <Message2>
+    And I see text message <Message3>
 
     Examples:
-      | Email      | Password      | Name      | Contact    | EncryptedMessage1 | EncryptedMessage2 | Message |
-      | user1Email | user1Password | user1Name | user2Name  | EncryptedYo1      | EncryptedYo2      | yo      |
+      | Email      | Password      | Name      | Contact    | OldMessage | Message1 | Message2 | Message3 |
+      | user1Email | user1Password | user1Name | user2Name  | Old1       | New1     | New2     | New3     |
+
+  @C95642 @e2ee @staging
+  Scenario Outline: Verify I still can login but have no history if my former temporary device was deleted remotely
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given <Contact> is connected to Myself
+    Given I switch to Sign In page
+    When I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    And I see the history info page
+    And I click confirm on history info page
+    And I am signed in properly
+    And Contact <Contact> sends encrypted message <OldMessage> to user Myself
+    And I see text message <OldMessage>
+    And I remember current page
+    And I navigate to download page
+    And User <Name> removes all his registered OTR clients
+    And I navigate to previously remembered page
+    And I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then I see the history info page
+    When Contact <Contact> sends encrypted message <Message1> to user Myself
+    And I wait for 5 seconds
+    And I click confirm on history info page
+    And I am signed in properly
+    And Contact <Contact> sends encrypted message <Message2> to user Myself
+    And I wait for 5 seconds
+    And I open conversation with <Contact>
+    And I write message <Message3>
+    And I send message
+    And I do not see text message <OldMessage>
+    And I see text message <Message1>
+    And I see text message <Message2>
+    And I see text message <Message3>
+
+    Examples:
+      | Email      | Password      | Name      | Contact    | OldMessage | Message1 | Message2 | Message3 |
+      | user1Email | user1Password | user1Name | user2Name  | Old1       | New1     | New2     | New3     |
+
+  @C95643 @e2ee @staging
+  Scenario Outline: Verify I still can login from auth page even if my former device was deleted
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given <Contact> is connected to Myself
+    Given I switch to Sign In page
+    Given I remember current page
+    When I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    And I see the history info page
+    And I click confirm on history info page
+    And I am signed in properly
+    And Contact <Contact> sends encrypted message <OldMessage> to user Myself
+    And I see text message <OldMessage>
+    And I navigate to download page
+    And User <Name> removes all his registered OTR clients
+    And I navigate to previously remembered page
+    And I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then I see the history info page
+    When Contact <Contact> sends encrypted message <Message1> to user Myself
+    And I wait for 5 seconds
+    And I click confirm on history info page
+    And I am signed in properly
+    And Contact <Contact> sends encrypted message <Message2> to user Myself
+    And I wait for 5 seconds
+    And I open conversation with <Contact>
+    And I write message <Message3>
+    And I send message
+    And I do not see text message <OldMessage>
+    And I see text message <Message1>
+    And I see text message <Message2>
+    And I see text message <Message3>
+
+    Examples:
+      | Email      | Password      | Name      | Contact    | OldMessage | Message1 | Message2 | Message3 |
+      | user1Email | user1Password | user1Name | user2Name  | Old1       | New1     | New2     | New3     |
 
   @C2100 @e2ee @regression
   Scenario Outline: Login as temporary device after device limit is reached
