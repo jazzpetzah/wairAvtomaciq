@@ -294,9 +294,9 @@ public class ConversationPageSteps {
         RandomAccessFile f = new RandomAccessFile(path + "/" + fileName, "rws");
         int fileSize = Integer.valueOf(size.replaceAll("\\D+","").trim());
         if (size.contains("MB")) {
-            f.setLength(fileSize * 1000 * 1000);
+            f.setLength(fileSize * 1024 * 1024);
         } else if (size.contains("KB")) {
-            f.setLength(fileSize * 1000);
+            f.setLength(fileSize * 1024);
         } else {
             f.setLength(fileSize);
         }
