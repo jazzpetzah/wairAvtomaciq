@@ -1,6 +1,6 @@
 Feature: File Upload
 
-  @C82519 @staging @torun
+  @C82519 @staging
   Scenario Outline: Verify placeholder is shown for the receiver
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

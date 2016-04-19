@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -132,6 +133,12 @@ public class ConversationViewPage extends IOSPage {
 
     private static final Function<String, String> xpathStrUserNameInUpperToolbar = text ->
             String.format("%s/UIAButton[contains(@name, '%s')]", xpathStrConversationViewTopBar, text.toUpperCase());
+
+    private static final Function<String, String> xpathTransferTopLabelByFileName = name ->
+            String.format("//UIAStaticText[@name='FileTransferTopLabel' and @value='%s']", name.toUpperCase());
+
+    private static final Function<String, String> xpathTransferBottomLabelByExpr = expr ->
+            String.format("//UIAStaticText[@name='FileTransferBottomLabel' and %s]", expr);
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -614,6 +621,26 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean waitUntilDownloadFinishedPlaceholderVisible(String expectedFileName, String expectedSize,
                                                                int timeoutSeconds) throws Exception {
-        return true;
+        final String nameWOExtension = FilenameUtils.getBaseName(expectedFileName);
+        final String extension = FilenameUtils.getExtension(expectedFileName);
+
+        final By topLabelLocator = By.xpath(xpathTransferTopLabelByFileName.apply(nameWOExtension));
+        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), topLabelLocator, timeoutSeconds)) {
+            return false;
+        }
+
+        final By bottomLabelLocator = By.xpath(xpathTransferBottomLabelByExpr.apply(
+                String.join(" and ",
+                        String.format("starts-with(@value, '%s')", expectedSize.toUpperCase()),
+                        String.format("contains(@value, '%s')", extension.toUpperCase())
+                )
+        ));
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), bottomLabelLocator, 5)) {
+                return true;
+            }
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        return false;
     }
 }

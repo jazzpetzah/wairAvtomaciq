@@ -636,9 +636,9 @@ public class CommonUtils {
      */
     public static void createRandomAccessFile(String filePath, String size) throws Exception {
         try (RandomAccessFile file = new RandomAccessFile(filePath, "rws")) {
-            String[] sizeParts = size.split("(?<=\\d)(?=[a-zA-Z])");
-            int fileSize = Double.valueOf(sizeParts[0]).intValue();
-            String type = sizeParts.length > 1 ? sizeParts[1] : "";
+            final String[] sizeParts = size.split("(?<=\\d)\\s*(?=[a-zA-Z])");
+            final int fileSize = Double.valueOf(sizeParts[0]).intValue();
+            final String type = sizeParts.length > 1 ? sizeParts[1] : "";
             switch (type.toUpperCase()) {
                 case "MB":
                     file.setLength(fileSize * 1024 * 1024);
