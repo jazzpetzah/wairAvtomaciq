@@ -70,6 +70,8 @@ public class LoginPageSteps {
             // Ignore silently
         }
 
+        getLoginPage().switchToLogin();
+
         if (getLoginPage().isEmailInputFieldInvisible()) {
             getLoginPage().switchToEmailLogin();
         }
@@ -245,7 +247,7 @@ public class LoginPageSteps {
      */
     @When("^I tap I HAVE AN ACCOUNT button$")
     public void ITapHaveAnAccount() throws Exception {
-        getLoginPage().switchToEmailLogin();
+        getLoginPage().switchToLogin();
     }
 
     /**

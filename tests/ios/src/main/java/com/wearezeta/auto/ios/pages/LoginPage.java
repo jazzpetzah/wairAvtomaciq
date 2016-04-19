@@ -12,9 +12,12 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class LoginPage extends IOSPage {
-    private static final By nameSwitchToEmailLogin = MobileBy.AccessibilityId("I HAVE AN ACCOUNT");
 
-    private static final By nameSwitchToPhoneLogin = MobileBy.AccessibilityId("LOG IN BY PHONE");
+    private static final By nameSwitchToLoginButton = MobileBy.AccessibilityId("LOG IN");
+
+    private static final By nameSwitchToEmailLogin = MobileBy.AccessibilityId("EMAIL");
+
+    private static final By nameSwitchToPhoneLogin = MobileBy.AccessibilityId("PHONE");
 
     private static final By nameLoginButton = MobileBy.AccessibilityId("RegistrationConfirmButton");
 
@@ -179,5 +182,9 @@ public class LoginPage extends IOSPage {
 
     public void dismissSettingsWarningIfVisible(int timeoutSeconds) throws Exception {
         getElementIfDisplayed(nameMaybeLater, timeoutSeconds).orElseGet(DummyElement::new).click();
+    }
+
+    public void switchToLogin() throws Exception {
+        getElement(nameSwitchToLoginButton).click();
     }
 }
