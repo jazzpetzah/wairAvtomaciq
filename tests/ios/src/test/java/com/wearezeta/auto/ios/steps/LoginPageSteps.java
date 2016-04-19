@@ -246,7 +246,7 @@ public class LoginPageSteps {
      * @step. ^I switch to Log In tab$
      */
     @When("^I switch to Log In tab$")
-    public void ITapHaveAnAccount() throws Exception {
+    public void ISwitchToLogInTab() throws Exception {
         getLoginPage().switchToLogin();
     }
 
