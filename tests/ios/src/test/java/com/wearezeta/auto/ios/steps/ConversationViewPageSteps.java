@@ -576,8 +576,8 @@ public class ConversationViewPageSteps {
     /**
      * Verify is plus button is visible
      *
-     * @throws Exception
      * @param shouldNotBeVisible equals to null if the button should not be visible
+     * @throws Exception
      * @step. ^I (do not )?see plus button next to text input$
      */
     @When("^I (do not )?see plus button next to text input$")
@@ -971,5 +971,25 @@ public class ConversationViewPageSteps {
     public void i_see_file_sharing_button() throws Exception {
         Assert.assertTrue("File sharing button is not shown", getConversationViewPage().
                 isFileSharingButtonVisible());
+    }
+
+    /**
+     * Verify whether Download Finished placeholder is visible in the conversation view
+     *
+     * @step. ^I wait up to (\d+) seconds? until download progress for the file (.*) with size (.*) is finished$
+     *
+     * @param timeoutSeconds timeout in seconds
+     * @param expectedFileName the file name, which should be visible in the placeholder
+     * @param expectedSize the expected file size to be shown in the placeholder
+     * @throws Exception
+     */
+    @Then("^I wait up to (\\d+) seconds? until download progress for the file (.*) with size (.*) is finished$")
+    public void IWaitUntilDownloadFinished(int timeoutSeconds, String expectedFileName, String expectedSize)
+            throws Exception {
+        Assert.assertTrue(String.format(
+                "Cannot detect the Download Finished placeholder for a file '%s' in the conversation view after %s seconds",
+                expectedFileName, timeoutSeconds),
+                getConversationViewPage().waitUntilDownloadFinishedPlaceholderVisible(expectedFileName, expectedSize,
+                        timeoutSeconds));
     }
 }

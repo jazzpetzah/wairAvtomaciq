@@ -412,18 +412,16 @@ public class CommonUtils {
         return getValueFromCommonConfig(c, "syncIsAutomated").toLowerCase().equals("true");
     }
 
+    public static String getBuildPathFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "projectBuildPath");
+    }
+
     public static boolean getSyncIsMuted(Class<?> c) throws Exception {
         return getValueFromCommonConfig(c, "syncIsMuted").toLowerCase().equals("true");
     }
 
     public static Optional<String> getAdbPrefixFromConfig(Class<?> c) throws Exception {
         return getOptionalValueFromConfig(c, "adbPrefix");
-    }
-
-    public static String generateRandomXdigits(int i) {
-        Random rand = new Random();
-        long random = (long) (Math.pow(10, i - 1)) * (rand.nextInt(8) + 1) + (long) rand.nextInt((int) (Math.pow(10, i - 1)));
-        return Long.toString(Math.abs(random));
     }
 
     public static String getPlatformVersionFromConfig(Class<?> cls) throws Exception {

@@ -18,3 +18,4 @@ backendType=${backendType}
 rcNotificationsRecepients=${rcNotificationsRecepients}
 testrailUser=smoketester+ios@wire.com
 testrailToken=3ss3NdlIsbkVZ/qjARyZ-t42ldIdkAFdZzbPgC3o0
+projectBuildPath=${project.build.directory}

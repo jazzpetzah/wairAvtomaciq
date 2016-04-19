@@ -380,7 +380,7 @@ public class CommonIOSSteps {
         }
     }
 
-     /**
+    /**
      * Closes the app for a certain amount of time in seconds
      *
      * @param seconds time in seconds to close the app
@@ -590,7 +590,7 @@ public class CommonIOSSteps {
     /**
      * Rename conversation in backend
      *
-     * @param user username who renames
+     * @param user                username who renames
      * @param oldConversationName old conversation name string
      * @param newConversationName new conversation name string
      * @throws Exception
@@ -965,17 +965,53 @@ public class CommonIOSSteps {
     /**
      * Execute Delete Conversation action on the particular device registered for this user
      *
-     * @step. ^User (.*) deletes? (single user|group) conversation (.*) using device (.*)
-     *
-     * @param userAs user name/alias
-     * @param convoType either 'group' or 'single user'
-     * @param convoName conversation name
+     * @param userAs     user name/alias
+     * @param convoType  either 'group' or 'single user'
+     * @param convoName  conversation name
      * @param deviceName device name (this one should already exist)
      * @throws Exception
+     * @step. ^User (.*) deletes? (single user|group) conversation (.*) using device (.*)
      */
     @Given("^User (.*) deletes? (single user|group) conversation (.*) using device (.*)")
     public void UserDeletedConversation(String userAs, String convoType, String convoName, String deviceName)
             throws Exception {
         commonSteps.UserClearsConversation(userAs, convoName, deviceName, convoType.equals("group"));
+    }
+
+    /**
+     * Send an existing file to a conversation
+     *
+     * @param sender     user name/alias
+     * @param fileName   the name of the file. The file should be already created in project.build.directory
+     * @param mimeType   MIME type of the file, for example text/plain. Check
+     *                   http://www.freeformatter.com/mime-types-list.html to get the full list of available MIME
+     *                   types
+     * @param convoType  either 'single user' or 'group'
+     * @param convoName  conversation name
+     * @param deviceName the name of user device. The device will be created automatically if it does not exist yet
+     * @throws Exception
+     * @step. ^User (.*) sends? file (.*) having MIME type (.*) to (single user|group) conversation (.*) using device (.*)
+     */
+    @When("^User (.*) sends? file (.*) having MIME type (.*) to (single user|group) conversation (.*) using device (.*)")
+    public void UserSendsFile(String sender, String fileName, String mimeType, String convoType, String convoName,
+                              String deviceName) throws Exception {
+        final String tmpFilesRoot = CommonUtils.getBuildPathFromConfig(getClass());
+        commonSteps.UserSentFileToConversation(sender, convoName, tmpFilesRoot + File.separator + fileName, mimeType,
+                deviceName, convoType.equals("group"));
+    }
+
+    /**
+     * Create random file in project.build.directory folder for further usage
+     *
+     * @param size file size. Can be float value. Example: 1MB, 2.00KB
+     * @param name file name without extension
+     * @param ext  file extension
+     * @throws Exception
+     * @step. ^I create temporary file (.*) in size with name "(.*)" and extension "(.*)"
+     */
+    @Given("^I create temporary file (.*) in size with name \"(.*)\" and extension \"(.*)\"")
+    public void ICreateTemporaryFile(String size, String name, String ext) throws Exception {
+        final String tmpFilesRoot = CommonUtils.getBuildPathFromConfig(getClass());
+        CommonUtils.createRandomAccessFile(tmpFilesRoot + File.separator + name + "." + ext, size);
     }
 }
