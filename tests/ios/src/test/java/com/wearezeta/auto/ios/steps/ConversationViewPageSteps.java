@@ -227,22 +227,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap (Add Picture|Ping|Sketch|File Transfer) button from input tools$")
     public void IPressAddPictureButton(String btnName) throws Exception {
-        switch (btnName.toLowerCase()) {
-            case "add picture":
-                getConversationViewPage().pressAddPictureButton();
-                break;
-            case "ping":
-                getConversationViewPage().tapPingButton();
-                break;
-            case "sketch":
-                getConversationViewPage().openSketch();
-                break;
-            case "file transfer":
-                getConversationViewPage().tapFileTransferButton();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
-        }
+        getConversationViewPage().clickElementByLocator(getConversationViewPage().getInputToolButtonByName(btnName));
     }
 
     /**

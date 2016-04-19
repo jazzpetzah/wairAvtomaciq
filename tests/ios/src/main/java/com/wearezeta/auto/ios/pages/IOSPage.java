@@ -477,4 +477,8 @@ public abstract class IOSPage extends BasePage {
     public boolean isElementByInvisible(By locator) throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
+
+    public void clickElementByLocator(By locator) throws Exception {
+        getElement(locator).click();
+    }
 }
