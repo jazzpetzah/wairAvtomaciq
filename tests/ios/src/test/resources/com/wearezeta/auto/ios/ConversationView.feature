@@ -807,11 +807,11 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I see file transfer button
+    And I see File Transfer button in input tools palette
     Then I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
-    And I see file transfer button
+    And I see File Transfer button in input tools palette
 
     Examples:
       | Name      | Contact   | GroupChatName  | UsersAmount |
@@ -825,7 +825,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I tap file transfer button
+    And I tap File Transfer button from input tools
     And I tap file transfer menu item <ItemName>
     Then I see file transfer placeholder
 

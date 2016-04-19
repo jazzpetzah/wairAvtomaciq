@@ -617,10 +617,6 @@ public class ConversationViewPage extends IOSPage {
         return getElementScreenshot(getElement(xpathLastImageCell));
     }
 
-    public boolean isFileTransferButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferButton);
-    }
-
     public void tapFileTransferButton() throws Exception {
         getElement(nameFileTransferButton).click();
     }
@@ -635,5 +631,26 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean fileTransferBottomLabelIsVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferBottomLabel);
+    }
+
+    public By getInputToolButtonByName(String btnName) {
+        By resultBtn;
+        switch (btnName.toLowerCase()) {
+            case "add picture":
+                resultBtn = nameAddPictureButton;
+                break;
+            case "ping":
+                resultBtn = namePingButton;
+                break;
+            case "sketch":
+                resultBtn = nameCursorSketchButton;
+                break;
+            case "file transfer":
+                resultBtn = nameFileTransferButton;
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
+        }
+        return resultBtn;
     }
 }

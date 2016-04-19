@@ -223,9 +223,9 @@ public class ConversationViewPageSteps {
      *
      * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I tap (Add Picture|Ping|Sketch) button from input tools$
+     * @step. ^I tap (Add Picture|Ping|Sketch|File Transfer) button from input tools$
      */
-    @When("^I tap (Add Picture|Ping|Sketch) button from input tools$")
+    @When("^I tap (Add Picture|Ping|Sketch|File Transfer) button from input tools$")
     public void IPressAddPictureButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "add picture":
@@ -237,9 +237,32 @@ public class ConversationViewPageSteps {
             case "sketch":
                 getConversationViewPage().openSketch();
                 break;
+            case "file transfer":
+                getConversationViewPage().tapFileTransferButton();
+                break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
         }
+    }
+
+    /**
+     * Verify visibility of the corresponding button in input tools palette
+     *
+     * @param btnName one of available button names
+     * @throws Exception
+     * @step. ^I (do not)?see (Add Picture|Ping|Sketch|File Transfer) button in input tools palette$
+     */
+    @When("^I (do not)?see (Add Picture|Ping|Sketch|File Transfer) button in input tools palette$")
+    public void VeirfyButtonVisibilityInInputTools(String shouldNot, String btnName) throws Exception {
+        if (shouldNot == null) {
+            Assert.assertTrue(btnName + "button in input tools palette is not visible",
+                    getConversationViewPage().isElementByVisible(getConversationViewPage().getInputToolButtonByName(btnName)));
+        } else {
+            Assert.assertTrue(btnName + "button in input tools palette is  visible",
+                    getConversationViewPage().isElementByInvisible(getConversationViewPage().getInputToolButtonByName
+                            (btnName)));
+        }
+
     }
 
     /**
@@ -578,8 +601,8 @@ public class ConversationViewPageSteps {
     /**
      * Verify is plus button is visible
      *
-     * @throws Exception
      * @param shouldNotBeVisible equals to null if the button should not be visible
+     * @throws Exception
      * @step. ^I (do not )?see plus button next to text input$
      */
     @When("^I (do not )?see plus button next to text input$")
@@ -964,29 +987,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify whether the file transfer button picture is visible
-     *
-     * @throws Exception
-     * @step. ^I see file transfer button$
-     */
-    @When("^I see file transfer button$")
-    public void iSeeFileTransferButton() throws Exception {
-        Assert.assertTrue("File transfer button is not shown",
-                getConversationViewPage().isFileTransferButtonVisible());
-    }
-
-    /**
-     * Tap on file transfer button
-     *
-     * @throws Exception
-     * @step. I tap file transfer button$
-     */
-    @When("^I tap file transfer button$")
-    public void ITapFileTransferButton() throws Exception {
-        getConversationViewPage().tapFileTransferButton();
-    }
-
-    /**
      * Tap on file transfer menu item by name
      *
      * @param itemName name of the item
@@ -1010,7 +1010,7 @@ public class ConversationViewPageSteps {
     @When("^I see file transfer placeholder$")
     public void ISeeFileTransferPlaceHolder() throws Exception {
         Assert.assertTrue("File transfer placeholder is not visible",
-                getConversationViewPage().fileTransferTopLabelIsVisible()&
+                getConversationViewPage().fileTransferTopLabelIsVisible() &&
                         getConversationViewPage().fileTransferBottomLabelIsVisible());
     }
 }

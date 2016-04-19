@@ -469,4 +469,12 @@ public abstract class IOSPage extends BasePage {
         }
         return result;
     }
+
+    public boolean isElementByVisible(By locator) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isElementByInvisible(By locator) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
 }
