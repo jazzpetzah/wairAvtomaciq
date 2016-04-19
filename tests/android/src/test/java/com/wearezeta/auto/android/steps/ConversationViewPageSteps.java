@@ -4,6 +4,7 @@ import com.wearezeta.auto.android.pages.ConversationViewPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -846,11 +847,13 @@ public class ConversationViewPageSteps {
      * @param fileFullName the expected file name displayed
      * @param extension the extension of the file uploaded
      * @throws Exception
-     * @step. ^I see the result of (.*) file upload having name "(.*)" and extension "(\w+)"$
+     * @step. ^I see the result of (.*) file (?:upload|received) having name "(.*)" and extension "(\w+)"( in \d+ seconds)?$
      */
-    @Then("^I see the result of (.*) file upload having name \"(.*)\" and extension \"(\\w+)\"$")
-    public void ThenISeeTheResultOfXFileUpload(String size, String fileFullName, String extension) throws Exception {
+    @Then("^I see the result of (.*) file (?:upload|received) having name \"(.*)\" and extension \"(\\w+)\"( in \\d+ seconds)?$")
+    public void ThenISeeTheResultOfXFileUpload(String size, String fileFullName, String extension, String timeout) throws Exception {
+        int lookUpTimeoutSeconds = (timeout == null) ?  DriverUtils.getDefaultLookupTimeoutSeconds()
+                : Integer.parseInt(timeout.replaceAll("[\\D]", ""));
         Assert.assertTrue("The placeholder of sending file should be visible",
-                getConversationViewPage().isFileSenderPlaceHolderVisible(fileFullName, size, extension));
+                getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, lookUpTimeoutSeconds));
     }
 }
