@@ -127,9 +127,6 @@ public class ConversationViewPage extends AndroidPage {
     private static Function<String, String> xpathFileInfoPlaceHolderByValue = value -> String
             .format("//*[@id='ttv__row_conversation__file__fileinfo' and @value='%s']", value);
 
-    private static Function<String, String> xpathDialogAlertByValue = value -> String
-            .format("//*[@id='alertTitle' and @value='%s']", value);
-
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_SWIPE_RETRIES = 5;
     private static final int MAX_CLICK_RETRIES = 5;
@@ -139,8 +136,6 @@ public class ConversationViewPage extends AndroidPage {
     private static final String FILE_UPLOADING_MESSAGE = "UPLOADING...";
 
     private static final String FILE_UPLOADING_MESSAGE_SEPARATOR = " · ";
-
-    private static final String ALERT_FILE_TOO_LARGE = "File too large";
 
     public ConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -641,11 +636,6 @@ public class ConversationViewPage extends AndroidPage {
                 By.xpath(xpathFileNamePlaceHolderByValue.apply(fileFullName))) &&
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                         By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)));
-    }
-
-    public boolean isFileSizeWarningVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathDialogAlertByValue.apply(ALERT_FILE_TOO_LARGE)));
     }
 
 }

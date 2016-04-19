@@ -853,16 +853,4 @@ public class ConversationViewPageSteps {
         Assert.assertTrue("The placeholder of sending file should be visible",
                 getConversationViewPage().isFileSenderPlaceHolderVisible(fileFullName, size, extension));
     }
-
-    /**
-     * Check the File too large alert popup visible
-     *
-     * @throws Exception
-     * @step. I see "The file is too large" warning
-     */
-    @Then("^I see \"The file is too large\" warning$")
-    public void ThenISeeTheUploadingFile() throws Exception {
-        Assert.assertTrue("The warning of 'The file is too large' should be visible",
-                getConversationViewPage().isFileSizeWarningVisible());
-    }
 }

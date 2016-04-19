@@ -525,8 +525,8 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I tap plus button in text input
     And I tap File button from input tools
-    Then I see "The file is too large" warning
+    Then I see alert message containing "<AlertMessage>"
 
     Examples:
-      | Name      | Contact1  | FileFullName      |  FileSize |
-      | user1Name | user2Name | qa_random.txt     |  26.00MB  |
+      | Name      | Contact1  | FileFullName  | FileSize | AlertMessage                                       |
+      | user1Name | user2Name | qa_random.txt | 26.00MB  | Uploading files larger than 25MB is not supported. |
