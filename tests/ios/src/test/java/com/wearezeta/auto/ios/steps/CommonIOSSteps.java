@@ -21,6 +21,7 @@ import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import com.wearezeta.auto.ios.tools.RealDeviceHelpers;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
 import org.apache.commons.io.FileUtils;
@@ -959,5 +960,20 @@ public class CommonIOSSteps {
     @When("^I confirm my choice$")
     public void IConfirmImageSelection() throws Exception {
         pagesCollection.getCommonPage().pressConfirmButton();
+    }
+
+    /**
+     * Locks screen without any time limit on real device
+     *
+     * @throws Exception
+     * @step. ^I lock screen on real device$
+     */
+    @When("^I lock screen on real device$")
+    public void ILockScreenOnRealDevice() throws Exception {
+        pagesCollection.getCommonPage().lockScreenOnRealDevice();
+    }
+
+    @When("^I answer call from APNS$")
+    public void IAnswerCallFromAPNS() throws Exception {
     }
 }

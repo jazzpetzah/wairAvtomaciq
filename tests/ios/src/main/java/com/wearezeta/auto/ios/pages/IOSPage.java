@@ -335,6 +335,12 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
+    public void lockScreenOnRealDevice() throws Exception {
+        //IOSSimulatorHelper.lock();
+        //IOSSimulatorHelper.goHome();
+        this.getDriver().lockScreen(10);
+    }
+
     public void clickElementWithRetryIfStillDisplayed(By locator, int retryCount) throws Exception {
         WebElement el = getElement(locator);
         int counter = 0;

@@ -297,3 +297,24 @@ Feature: Calling Matrix
       | user1Name | user2Name | chrome:47.0.2526.73 | 20      |
       | user1Name | user2Name | firefox:44.0.2      | 20      |
       | user1Name | user2Name | firefox:43.0        | 20      |
+
+  @torun @calling_matrix
+  Scenario Outline: Answer 1-to-1 call <CallBackend> from APNS
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I lock screen on real device
+    And <Contact> calls me
+    And I wait for 10 seconds
+    And I answer call from APNS
+    Then I see Calling overlay
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+
+    Examples:
+      | Name      | Contact   | CallBackend   | Timeout |
+      | user1Name | user2Name | autocall:1.12 | 20      |
+      #| user1Name | user2Name | autocall:2.1  | 20      |
+      #| user1Name | user2Name | autocall:2.2  | 20      |
