@@ -851,7 +851,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see the result of (.*) file (?:upload|received) having name \"(.*)\" and extension \"(\\w+)\"( in \\d+ seconds)?$")
     public void ThenISeeTheResultOfXFileUpload(String size, String fileFullName, String extension, String timeout) throws Exception {
-        int lookUpTimeoutSeconds = timeout == null ?  DriverUtils.getDefaultLookupTimeoutSeconds()
+        int lookUpTimeoutSeconds = (timeout == null) ?  DriverUtils.getDefaultLookupTimeoutSeconds()
                 : Integer.parseInt(timeout.replaceAll("[\\D]", ""));
         Assert.assertTrue("The placeholder of sending file should be visible",
                 getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, lookUpTimeoutSeconds));
