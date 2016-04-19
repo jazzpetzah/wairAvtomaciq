@@ -1134,12 +1134,12 @@ public class CommonAndroidSteps {
     /**
      * Prepare file in /mnt/sdcard/Download/
      * @param size such as 5MB, 30MB
-     * @param fileName the name of the file you want to push
+     * @param fileFullName the name of the file with extension
      * @throws Exception
      * @step. ^I push (.*) file having name \"(.*)\" to the device$
      */
     @Given("^I push (.*) file having name \"(.*)\" to the device$")
-    public void IPushXFileHavingNameYToDevice(String size, String fileName) throws Exception {
-        AndroidCommonUtils.pushRandomFileToSdcardDownload(fileName, size);
+    public void IPushXFileHavingNameYToDevice(String size, String fileFullName) throws Exception {
+        AndroidCommonUtils.pushRandomFileToSdcardDownload(fileFullName, size);
     }
 }

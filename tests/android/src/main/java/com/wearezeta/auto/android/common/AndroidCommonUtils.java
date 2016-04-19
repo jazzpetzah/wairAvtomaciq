@@ -1,16 +1,14 @@
 package com.wearezeta.auto.android.common;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ScreenOrientation;
@@ -577,22 +575,47 @@ public class AndroidCommonUtils extends CommonUtils {
         executeAdb(String.format("uninstall %s", packageName));
     }
 
-    public static void pushRandomFileToSdcardDownload(String fileName, String size) throws Exception {
+    /**
+     *
+     * @param fileFullName the name with extension
+     * @param size the expected size of file
+     * @throws Exception
+     */
+    public static void pushRandomFileToSdcardDownload(String fileFullName, String size)
+            throws Exception {
         String basePath = getBuildPathFromConfig(AndroidCommonUtils.class);
-        CommonUtils.createRandomAccessFile(basePath + File.separator + fileName, size);
-        AndroidCommonUtils.pushFileToSdcardDownload(basePath, fileName);
+        String extension = FilenameUtils.getExtension(fileFullName);
+        String fileName = FilenameUtils.getBaseName(fileFullName);
+
+        CommonUtils.createRandomAccessFile(basePath + File.separator + fileFullName, size);
+        AndroidCommonUtils.pushFileToSdcardDownload(basePath, fileName, extension);
     }
 
-    public static void pushFileToSdcardDownload(String basePath, String fileName) throws Exception {
-        String sourceFilePath = basePath + File.separator + fileName;
-        String destinationFilePath = FILE_TRANSFER_SOURCE_LOCATION + fileName;
+    public static void pushFileToSdcardDownload(String basePath, String fileName, String extension) throws Exception {
+        String fileFullName = String.format("%s.%s", fileName, extension);
+        String sourceFilePath = basePath + File.separator + fileFullName;
+        String destinationFilePath = FILE_TRANSFER_SOURCE_LOCATION + fileFullName;
+
+        Date futureDate = new Date(Calendar.getInstance().getTimeInMillis() + (10 * 60000));
+        String futureTimestamp = String.valueOf(futureDate.getTime()).substring(0, 10);
+
         executeAdb(String.format("shell rm %s", destinationFilePath));
-        executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
-                destinationFilePath));
         executeAdb(String.format("push %s %s", sourceFilePath, destinationFilePath));
         executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
                 destinationFilePath));
-    }
 
+        // The reason way do 2 times(workaround), is because in different env of adb, it handle the '"' in different way
+        // Need to handle all conditions
+        executeAdb(String.format("shell content update " +
+                "--uri content://media/external/file " +
+                "--bind _display_name:s:'%s' " +
+                "--bind date_added:i:%s " +
+                "--where 'title=\\\"%s\\\"'", fileFullName, futureTimestamp, fileName));
+        executeAdb(String.format("shell content update " +
+                "--uri content://media/external/file " +
+                "--bind _display_name:s:'%s' " +
+                "--bind date_added:i:%s " +
+                "--where 'title=\"%s\"'", fileFullName, futureTimestamp, fileName));
+    }
 
 }

@@ -249,6 +249,8 @@ public class ConversationViewPage extends AndroidPage {
 
     public void tapFileBtn() throws Exception {
         getElement(idFile, "File button is not visible").click();
+        //wait for 2 seconds for animation
+        Thread.sleep(2000);
     }
 
     public boolean isPingButtonVisible() throws Exception {
@@ -624,13 +626,14 @@ public class ConversationViewPage extends AndroidPage {
                 By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeoutSeconds);
     }
 
-    public boolean isFileSenderPlaceHolderVisible(String fileName, String size, String extension) throws Exception {
+    public boolean isFileSenderPlaceHolderVisible(String fileFullName, String size, String extension)
+            throws Exception {
         size = size.toUpperCase();
         final String fileInfo = StringUtils.isEmpty(extension) ? size :
                 String.format("%s%s%s", size, FILE_UPLOADING_MESSAGE_SEPARATOR, extension.toUpperCase());
 
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathFileNamePlaceHolderByValue.apply(fileName))) &&
+                By.xpath(xpathFileNamePlaceHolderByValue.apply(fileFullName))) &&
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                         By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)));
     }
