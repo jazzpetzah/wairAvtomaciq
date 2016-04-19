@@ -634,23 +634,17 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public By getInputToolButtonByName(String btnName) {
-        By resultBtn;
         switch (btnName.toLowerCase()) {
             case "add picture":
-                resultBtn = nameAddPictureButton;
-                break;
+                return nameAddPictureButton;
             case "ping":
-                resultBtn = namePingButton;
-                break;
+                return namePingButton;
             case "sketch":
-                resultBtn = nameCursorSketchButton;
-                break;
+                return nameCursorSketchButton;
             case "file transfer":
-                resultBtn = nameFileTransferButton;
-                break;
+                return nameFileTransferButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
         }
-        return resultBtn;
     }
 }
