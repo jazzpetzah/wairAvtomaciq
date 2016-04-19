@@ -240,12 +240,12 @@ public class LoginPageSteps {
     }
 
     /**
-     * Tap I HAVE AN ACCOUNT button
+     * Switch to Log In tab
      *
      * @throws Exception
-     * @step. ^I tap I HAVE AN ACCOUNT button$
+     * @step. ^I switch to Log In tab$
      */
-    @When("^I tap I HAVE AN ACCOUNT button$")
+    @When("^I switch to Log In tab$")
     public void ITapHaveAnAccount() throws Exception {
         getLoginPage().switchToLogin();
     }

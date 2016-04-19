@@ -496,7 +496,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I see sign in screen
-    Given I tap I HAVE AN ACCOUNT button
+    Given I switch to Log In tab
     Given I have entered login <Login>
     Given I have entered password <Password>
     Given I press Login button
