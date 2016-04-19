@@ -398,6 +398,63 @@ Feature: E2EE
     | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
 
+  @C95638 @staging
+  Scenario Outline: Verify device list is updated in people popover if participant deletes or adds new devices in group chat
+    Given There are 3 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given user <Contact> adds a new device Device2 with label Label2
+    Given user <Contact2> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>,<Contact2>
+    Given Myself has group chat GROUPCHAT with <Contact>,<Contact2>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    When I open conversation with GROUPCHAT
+    And I click People button in group conversation
+    Then I see Group Participants popover
+    When I click on participant <Contact> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
+    And I click on device Device2 of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    Then I see device Device2 of user <Contact> is verified on Single User Profile popover
+    Then I do not see user verified icon on Single User Profile popover
+    Then User <Contact> only keeps his 1 most recent OTR clients
+  # We have to close and reopen the people popover to update the device list
+    When I click People button in one to one conversation
+    And I wait for 1 seconds
+    When I click People button in group conversation
+    Then I see Group Participants popover
+    When I click on participant <Contact> on Group Participants popover
+    When I switch to Devices tab on Single User Profile popover
+    Then I see user verified icon on Single User Profile popover
+    When I click People button in group conversation
+#   Then I see <ALL_VERIFIED> action in conversation
+#   And I see verified icon in conversation
+    Then user <Contact> adds a new device Device3 with label Label3
+    When I click People button in group conversation
+    Then I see Group Participants popover
+    When I click on participant <Contact> on Group Participants popover
+    Then I see Single User Profile popover
+    When I switch to Devices tab on Single User Profile popover
+    And I wait for 1 seconds
+    Then I do not see user verified icon on Single User Profile popover
+#   And I do not see verified icon in conversation
+    When I switch to Devices tab on Single User Profile popover
+    And I click on device Device3 of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    Then I see device Device3 of user <Contact> is verified on Single User Profile popover
+    Then I see user verified icon on Single User Profile popover
+#   When I click People button in one to one conversation
+  # Not yet implemented on webapp:
+#   Then I see <ALL_VERIFIED> action in conversation
+#   And I see verified icon in conversation
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | Contact2  | ALL_VERIFIED                  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | All fingerprints are verified |
+
   @C12055 @regression
   Scenario Outline: Verify it is possible to verify group conversation participants
     Given There are 3 users where <Name> is me
