@@ -332,12 +332,13 @@ Feature: E2EE
     When I click on participant <Contact1> on Group Participants popover
     And I switch to Devices tab on Single User Profile popover
     And I click on device Device1 of user <Contact1> on Single User Profile popover
+      And I wait for 1 seconds
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
     #Then I see device Device1 of user <Contact1> is verified on Single User Profile popover
     Then I do not see user verified icon on Single User Profile popover
     And I click back button on Group Participants popover
-      #   And I do not see user <Contact1> in verified section
+         And I do not see user <Contact1> in verified section
     And I click on participant <Contact1> on Group Participants popover
     And I switch to Devices tab on Single User Profile popover
     And I click on device Device2 of user <Contact1> on Single User Profile popover
@@ -346,25 +347,28 @@ Feature: E2EE
     #Then I see device Device2 of user <Contact1> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     And I click back button on Group Participants popover
-    #  And I can see verified seperator
         And I see user <Contact1> in verified section
     When I click on participant <Contact2> on Group Participants popover
     And I switch to Devices tab on Single User Profile popover
+      And I wait for 1 seconds
     And I click on device Device1 of user <Contact2> on Single User Profile popover
+      And I wait for 1 seconds
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
     #Then I see device Device1 of user <Contact2> is verified on Single User Profile popover
     Then I do not see user verified icon on Single User Profile popover
     And I click back button on Group Participants popover
-      #   And I do not see user <Contact2> in verified section
+         And I do not see user <Contact2> in verified section
     And I click on participant <Contact2> on Group Participants popover
+      And I wait for 1 seconds
     And I click on device Device2 of user <Contact2> on Single User Profile popover
+      And I wait for 1 seconds
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
     #Then I see device Device2 of user <Contact2> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
     When I click back button on Group Participants popover
-      #  Then I see user <Contact2> in verified section
+        Then I see user <Contact2> in verified section
     # Not yet implemented on webapp:
     #And I see <ALL_VERIFIED> action in conversation
     #And I see verified icon in conversation

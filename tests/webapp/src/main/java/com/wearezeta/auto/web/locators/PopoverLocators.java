@@ -107,7 +107,7 @@ public final class PopoverLocators {
 
 			public static final String xpathPageRootLocator = "//div[contains(@class, 'participants-group')]";
 
-            public static final String xpathVerifiedSection = "//user-list*[@params='user: participants_verified']";
+            public static final String xpathVerifiedSection = "//*[@params='user: participants_verified, click: show_participant, mode: z.components.UserListMode.COMPACT']";
 
 			private static final String xpathHeaderDiv = xpathRootLocator
 					+ xpathPageRootLocator
