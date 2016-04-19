@@ -558,10 +558,10 @@ Feature: Conversation View
     And I tap on contact name <Contact1>
     And I tap plus button in text input
     And I tap File button from input tools
-    Then I see the result of <FileSize> file upload failed having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
+    Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>" failed
     When I disable Airplane mode on the device
-    And I wait for 3 seconds
-    And I tap on file retry send button
+    And I wait for 5 seconds
+    And I tap Retry button on file upload placeholder
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
 

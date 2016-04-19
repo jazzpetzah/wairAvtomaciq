@@ -552,9 +552,9 @@ public class ConversationViewPageSteps {
      * Tap on file action button within File placeholder
      *
      * @throws Exception
-     * @step. ^I tap on file (?:retry send|download|view) button$
+     * @step. ^I tap (?:Retry|Download|View) button on (?:upload|download) file placeholder$
      */
-    @When("^I tap on file (?:retry send|download|view) button$")
+    @When("^I tap (?:Retry|Download|View) button on file (?:upload|download) placeholder$")
     public void ITapOnFileActionButton() throws Exception {
         getConversationViewPage().tapFileActionButton();
     }
@@ -856,16 +856,16 @@ public class ConversationViewPageSteps {
      *
      * @param size          the expected size displayed, value should be good formatted, such as 3.00MB rather than 3MB
      * @param loadDirection could be upload or received
-     * @param actionFailed  equals null means current action successfully
      * @param fileFullName  the expected file name displayed
      * @param extension     the extension of the file uploaded
      * @param timeout       (optional) to define the validation should be complete within timeout
+     * @param actionFailed  equals null means current action successfully
      * @throws Exception
      * @step. ^I see the result of (.*) file (upload|received)?( failed)? having name "(.*)" and extension "(\w+)"( in \d+ seconds)?$
      */
-    @Then("^I see the result of (.*) file (upload|received)?( failed)? having name \"(.*)\" and extension \"(\\w+)\"( in \\d+ seconds)?$")
-    public void ThenISeeTheResultOfXFileUpload(String size, String loadDirection, String actionFailed,
-                                               String fileFullName, String extension, String timeout) throws Exception {
+    @Then("^I see the result of (.*) file (upload|received)? having name \"(.*)\" and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
+    public void ThenISeeTheResultOfXFileUpload(String size, String loadDirection, String fileFullName,
+                                               String extension, String timeout, String actionFailed) throws Exception {
         int lookUpTimeoutSeconds = (timeout == null) ? DriverUtils.getDefaultLookupTimeoutSeconds()
                 : Integer.parseInt(timeout.replaceAll("[\\D]", ""));
         boolean isUpload = loadDirection.equals("upload");
