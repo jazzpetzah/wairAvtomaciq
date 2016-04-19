@@ -533,7 +533,7 @@ Feature: Conversation View
 
   @staging @C87629
   Scenario Outline: Verify placeholder is shown for the receiver
-    Given There are 2 users where <Name>  is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
@@ -546,4 +546,25 @@ Feature: Conversation View
       | Name      | Contact1  | FileName  | FileSize | FileExtension | MimeType   |
       | user1Name | user2Name | qa_random | 3.00MB   | txt           | text/plain |
 
+  @staging @C87639 @torun
+  Scenario Outline: Verify retry sending a file
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I push <FileSize> file having name "<FileFullName>" to the device
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I enable Airplane mode on the device
+    And I tap on contact name <Contact1>
+    And I tap plus button in text input
+    And I tap File button from input tools
+    Then I see the result of <FileSize> file upload failed having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
+    When I disable Airplane mode on the device
+    And I tap on file retry send button
+    And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
+    Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
+
+    Examples:
+      | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout |
+      | user1Name | user2Name | qa_random | txt           | 9.00MB   | 20               |
 
