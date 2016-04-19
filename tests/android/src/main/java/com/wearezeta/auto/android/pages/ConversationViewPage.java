@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
-import java.util.concurrent.ThreadFactory;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -632,7 +631,8 @@ public class ConversationViewPage extends AndroidPage {
                 By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeoutSeconds);
     }
 
-    public boolean isFileSenderPlaceHolderVisible(String fileFullName, String size, String extension) throws Exception {
+    public boolean isFileSenderPlaceHolderVisible(String fileFullName, String size, String extension)
+            throws Exception {
         size = size.toUpperCase();
         final String fileInfo = StringUtils.isEmpty(extension) ? size :
                 String.format("%s%s%s", size, FILE_UPLOADING_MESSAGE_SEPARATOR, extension.toUpperCase());

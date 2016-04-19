@@ -496,7 +496,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | Group Chat    |
 
-  @staging @C87628 @torun
+  @staging @C87628
   Scenario Outline: Verify placeholder is shown for the sender
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -514,7 +514,7 @@ Feature: Conversation View
       | Name      | Contact1  | FileFullName      | FileExtension | FileSize | UploadingTimeout |
       | user1Name | user2Name | qa_random.txt     | TXT           | 9.00MB   | 20               |
 
-  @staging @C87636 @torun
+  @staging @C87636
   Scenario Outline: Verify warning is shown for file size more than 25Mb
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
