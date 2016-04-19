@@ -13,4 +13,4 @@ Feature: File Upload
 
     Examples:
       | Name      | Contact   | TmpFileName | TmpFileExt | TmpFileSize | TmpFileMIME | ContactDevice | Timeout |
-      | user1Name | user1Name | test        | txt        | 500.00KB    | text/plain  | device1       | 20      |
+      | user1Name | user2Name | test        | txt        | 500 KB      | text/plain  | device1       | 20      |
