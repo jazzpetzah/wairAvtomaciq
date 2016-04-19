@@ -551,7 +551,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I push <FileSize> file having name "<FileFullName>" to the device
+    Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I enable Airplane mode on the device
