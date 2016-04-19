@@ -38,6 +38,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class ConversationPage extends WebPage {
 
 	private static final int TIMEOUT_IMAGE_MESSAGE_UPLOAD = 40; // seconds
+	private static final int TIMEOUT_FILE_UPLOAD = 100; // seconds
 
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
@@ -735,5 +736,10 @@ public class ConversationPage extends WebPage {
 		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileCancelUpload, fileName));
 		assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No cancel element found for locator " + locator;
 		getDriver().findElement(locator).click();
+	}
+
+	public boolean waitUntilFileUploaded(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileStatus, fileName));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, TIMEOUT_FILE_UPLOAD);
 	}
 }

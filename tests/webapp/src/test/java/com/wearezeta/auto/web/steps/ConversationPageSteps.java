@@ -4,15 +4,12 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-import java.io.File;
 import java.io.RandomAccessFile;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.CommonSteps;
-
-import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -401,6 +398,12 @@ public class ConversationPageSteps {
     public void IVerifyTypeOfFile(String fileName, String type) throws Exception {
         assertThat("Wrong file status for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
                 .getFileTypeOf(fileName), equalTo(type));
+    }
+
+    @Then("^I wait until file (.*) is uploaded completely$")
+    public void IWaitUntilFileUploaded(String fileName) throws Exception {
+        assertThat("Upload still not finished for file " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+                .waitUntilFileUploaded(fileName));
     }
 
     /**

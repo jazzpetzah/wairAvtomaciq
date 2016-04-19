@@ -127,11 +127,13 @@ Feature: File Transfer
     When I open conversation with <Contact>
     When <Contact> sends <Size> sized file with name <File> via device Device1 to user <Name>
     Then I see file transfer for file <File> in the conversation view
+    And I verify status of file <File> is UPLOADING… in the conversation view
     And I verify icon of file <File> in the conversation view
     And I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
-    And I verify status of file <File> is UPLOADING… in the conversation view
+    And I wait until file <File> is uploaded completely
+    When I click to download file <File> in the conversation view
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size | Type |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 12B  | TEXT |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 15MB | TEXT |
