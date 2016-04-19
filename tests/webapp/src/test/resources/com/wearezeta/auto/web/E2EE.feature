@@ -72,7 +72,7 @@ Feature: E2EE
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C87649 @e2ee @smoke
+  @C87649 @e2ee @staging
   Scenario Outline: Verify I'm automatically logged out when the used temporary device is deleted
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
