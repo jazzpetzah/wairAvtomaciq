@@ -1149,14 +1149,15 @@ public class CommonAndroidSteps {
      * @param contact contact Alias which could be a user alias
      * @param size the expected file size such as be 20MB or 30KB
      * @param fileFullName the full file name with extension such as abc.txt
+     * @param mimeType the mimeType of file sent
      * @param deviceName such as Device1
      * @param convoType user/group
      * @param dstConvoName Destination name could be a user alias or group name
      * @throws Exception
-     * @step. ^(.*) sends (.*) file having name "(.*)" via device (.*) to (user|group conversation) (.*)$
+     * @step. ^(.*) sends (.*) file having name "(.*)" and mime type "(.*)" via device (.*) to (user|group conversation) (.*)$
      */
-    @When("^(.*) sends (.*) file having name \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
-    public void ContactSendsXFileFromSE(String contact, String size, String fileFullName,
+    @When("^(.*) sends (.*) file having name \"(.*)\" and mime type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
+    public void ContactSendsXFileFromSE(String contact, String size, String fileFullName, String mimeType,
                                         String deviceName, String convoType, String dstConvoName) throws Exception {
         String basePath = AndroidCommonUtils.getBuildPathFromConfig(AndroidCommonUtils.class);
         String sourceFilePath = basePath + File.separator + fileFullName;
@@ -1165,6 +1166,6 @@ public class CommonAndroidSteps {
 
         boolean isGroup = convoType.equals("group conversation");
         commonSteps.UserSentFileToConversation(contact, dstConvoName, sourceFilePath,
-                CommonUtils.getFileMimeType(fileFullName), deviceName, isGroup);
+                mimeType, deviceName, isGroup);
     }
 }

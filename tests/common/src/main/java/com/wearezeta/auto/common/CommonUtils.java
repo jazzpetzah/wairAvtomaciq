@@ -654,8 +654,4 @@ public class CommonUtils {
             }
         }
     }
-
-    public static String getFileMimeType(String fileName) {
-        return URLConnection.guessContentTypeFromName(fileName);
-    }
 }

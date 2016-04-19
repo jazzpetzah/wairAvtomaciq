@@ -539,11 +539,11 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And <Contact1> sends <FileSize> file having name "<FileName>.<FileExtension>" via device Device1 to user Myself
+    And <Contact1> sends <FileSize> file having name "<FileName>.<FileExtension>" and mime type "<MimeType>" via device Device1 to user Myself
     Then I see the result of <FileSize> file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in 60 seconds
 
     Examples:
-      | Name      | Contact1  | FileName      | FileSize | FileExtension |
-      | user1Name | user2Name | qa_random     | 3.00MB   | txt           |
+      | Name      | Contact1  | FileName  | FileSize | FileExtension | MimeType   |
+      | user1Name | user2Name | qa_random | 3.00MB   | txt           | text/plain |
 
 
