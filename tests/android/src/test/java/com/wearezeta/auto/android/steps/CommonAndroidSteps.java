@@ -1163,7 +1163,7 @@ public class CommonAndroidSteps {
 
         CommonUtils.createRandomAccessFile(sourceFilePath, size);
 
-        boolean isGroup = convoType.equals("user") ? false : true;
+        boolean isGroup = convoType.equals("group conversation");
         commonSteps.UserSentFileToConversation(contact, dstConvoName, sourceFilePath,
                 CommonUtils.getFileMimeType(fileFullName), deviceName, isGroup);
     }
