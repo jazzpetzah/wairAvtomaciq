@@ -543,4 +543,34 @@ public class ConversationsListPageSteps {
     public void IClickCloseArchivePageButton() throws Exception {
         getConversationsListPage().clickCloseArchivePageButton();
     }
+
+
+    /**
+     * Verify visibility of Conversations hint text
+     *
+     * @param shouldNotBeVisible equals to null if the button should not be visible
+     * @throws Exception
+     * @step. ^I (do not )?see Conversations hint text$
+     */
+    @When("^I (do not )?see Conversations hint text$")
+    public void ISeeHintText(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("Conversations hint is not shown",
+                    getConversationsListPage().hintTextIsVisible());
+        } else {
+            Assert.assertTrue("Conversations hint is is shown",
+                    getConversationsListPage().hintTextIsNotVisible());
+        }
+    }
+
+    /**
+     * Tap on Conversations hint label
+     *
+     * @throws Exception
+     * @step. ^I tap on Conversations hint text$
+     */
+    @When("^I tap on Conversations hint text$")
+    public void ITapHintText() throws Exception {
+        getConversationsListPage().tapHintText();
+    }
 }
