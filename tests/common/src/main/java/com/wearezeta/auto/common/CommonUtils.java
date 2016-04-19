@@ -3,6 +3,7 @@ package com.wearezeta.auto.common;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.InetAddress;
+import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.util.*;
@@ -652,5 +653,9 @@ public class CommonUtils {
                     file.setLength(fileSize);
             }
         }
+    }
+
+    public static String getFileMimeType(String fileName) {
+        return URLConnection.guessContentTypeFromName(fileName);
     }
 }

@@ -626,16 +626,16 @@ public class ConversationViewPage extends AndroidPage {
                 By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeoutSeconds);
     }
 
-    public boolean isFileSenderPlaceHolderVisible(String fileFullName, String size, String extension)
+    public boolean isFilePlaceHolderVisible(String fileFullName, String size, String extension, int timeout)
             throws Exception {
         size = size.toUpperCase();
         final String fileInfo = StringUtils.isEmpty(extension) ? size :
                 String.format("%s%s%s", size, FILE_UPLOADING_MESSAGE_SEPARATOR, extension.toUpperCase());
 
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathFileNamePlaceHolderByValue.apply(fileFullName))) &&
+                By.xpath(xpathFileNamePlaceHolderByValue.apply(fileFullName)), timeout) &&
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                        By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)));
+                        By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeout);
     }
 
 }

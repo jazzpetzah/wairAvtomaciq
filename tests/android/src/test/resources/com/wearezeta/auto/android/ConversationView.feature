@@ -530,3 +530,20 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | FileFullName  | FileSize | AlertMessage                                       |
       | user1Name | user2Name | qa_random.txt | 26.00MB  | Uploading files larger than 25MB is not supported. |
+
+  @staging @C87629 @torun
+  Scenario Outline: Verify placeholder is shown for the receiver
+    Given There are 2 users where <Name>  is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And <Contact1> sends <FileSize> file having name "<FileFullName>" via device Device1 to user Myself
+    Then I see the result of <FileSize> file received having name "<FileFullName>" and extension "<FileExtension>" in 60 seconds
+
+    Examples:
+      | Name      | Contact1  | FileFullName  | FileSize | FileExtension |
+      | user1Name | user2Name | qa_random.txt | 3.00MB   | TXT           |
+
+

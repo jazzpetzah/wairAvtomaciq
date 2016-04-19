@@ -340,8 +340,8 @@ public class CommonAndroidSteps {
     /**
      * Sends the application into back stack and displays the home screen or vice versa
      *
-     * @throws Exception
      * @param action either minimize or restore
+     * @throws Exception
      * @step. ^I (minimize|restore) the application$
      */
     @When("^I (minimize|restore) the application$")
@@ -1117,13 +1117,12 @@ public class CommonAndroidSteps {
     /**
      * Execute Delete Conversation action on the particular device registered for this user
      *
-     * @step. ^User (.*) deletes? (single user|group) conversation (.*) using device (.*)
-     *
-     * @param userAs user name/alias
-     * @param convoType either 'group' or 'single user'
-     * @param convoName conversation name
+     * @param userAs     user name/alias
+     * @param convoType  either 'group' or 'single user'
+     * @param convoName  conversation name
      * @param deviceName device name (this one should already exist)
      * @throws Exception
+     * @step. ^User (.*) deletes? (single user|group) conversation (.*) using device (.*)
      */
     @Given("^User (.*) deletes? (single user|group) conversation (.*) using device (.*)")
     public void UserDeletedConversation(String userAs, String convoType, String convoName, String deviceName)
@@ -1133,7 +1132,8 @@ public class CommonAndroidSteps {
 
     /**
      * Prepare file in /mnt/sdcard/Download/
-     * @param size such as 5MB, 30MB
+     *
+     * @param size         such as 5MB, 30MB
      * @param fileFullName the name of the file with extension
      * @throws Exception
      * @step. ^I push (.*) file having name \"(.*)\" to the device$
@@ -1141,5 +1141,30 @@ public class CommonAndroidSteps {
     @Given("^I push (.*) file having name \"(.*)\" to the device$")
     public void IPushXFileHavingNameYToDevice(String size, String fileFullName) throws Exception {
         AndroidCommonUtils.pushRandomFileToSdcardDownload(fileFullName, size);
+    }
+
+    /**
+     * Send file from SE to user/group
+     *
+     * @param contact contact Alias which could be a user alias
+     * @param size the expected file size such as be 20MB or 30KB
+     * @param fileFullName the full file name with extension such as abc.txt
+     * @param deviceName such as Device1
+     * @param convoType user/group
+     * @param dstConvoName Destination name could be a user alias or group name
+     * @throws Exception
+     * @step. ^(.*) sends (.*) file having name "(.*)" via device (.*) to (user|group conversation) (.*)$
+     */
+    @When("^(.*) sends (.*) file having name \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
+    public void ContactSendsXFileFromSE(String contact, String size, String fileFullName,
+                                        String deviceName, String convoType, String dstConvoName) throws Exception {
+        String basePath = AndroidCommonUtils.getBuildPathFromConfig(AndroidCommonUtils.class);
+        String sourceFilePath = basePath + File.separator + fileFullName;
+
+        CommonUtils.createRandomAccessFile(sourceFilePath, size);
+
+        boolean isGroup = convoType.equals("user") ? false : true;
+        commonSteps.UserSentFileToConversation(contact, dstConvoName, sourceFilePath,
+                CommonUtils.getFileMimeType(fileFullName), deviceName, isGroup);
     }
 }
