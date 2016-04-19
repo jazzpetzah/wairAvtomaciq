@@ -115,7 +115,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameCursorSketchButton = MobileBy.AccessibilityId("ComposeControllerSketchButton");
     protected static final By nameAddPictureButton = MobileBy.AccessibilityId("ComposeControllerPictureButton");
     private static final By namePingButton = MobileBy.AccessibilityId("ComposeControllerPingButton");
-    private static final By nameFileSharingButton = MobileBy.AccessibilityId("ComposeControllerDocUploadButton");
+    private static final By nameFileTransferButton = MobileBy.AccessibilityId("ComposeControllerDocUploadButton");
 
 
     private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[@name='ConversationView']";
@@ -127,12 +127,16 @@ public class ConversationViewPage extends IOSPage {
             "/UIAButton[@name='Back']/following-sibling::" +
             "UIAButton[not(@name='ConversationBackButton') and boolean(string(@label))]");
 
-    private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton, nameFileSharingButton};
+    private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton, nameFileTransferButton};
 
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
     private static final Function<String, String> xpathStrUserNameInUpperToolbar = text ->
             String.format("%s/UIAButton[contains(@name, '%s')]", xpathStrConversationViewTopBar, text.toUpperCase());
+
+    private static final By nameFileTransferTopLabel = MobileBy.AccessibilityId("FileTransferTopLabel");
+
+    private static final By nameFileTransferBottomLabel = MobileBy.AccessibilityId("FileTransferBottomLabel");
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -613,7 +617,23 @@ public class ConversationViewPage extends IOSPage {
         return getElementScreenshot(getElement(xpathLastImageCell));
     }
 
-    public boolean isFileSharingButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileSharingButton);
+    public boolean isFileTransferButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferButton);
+    }
+
+    public void tapFileTransferButton() throws Exception {
+        getElement(nameFileTransferButton).click();
+    }
+
+    public void tapFileTransferMenuItem(String itemName) throws Exception {
+        getElement(MobileBy.AccessibilityId(itemName)).click();
+    }
+
+    public boolean fileTransferTopLabelIsVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferTopLabel);
+    }
+
+    public boolean fileTransferBottomLabelIsVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferBottomLabel);
     }
 }

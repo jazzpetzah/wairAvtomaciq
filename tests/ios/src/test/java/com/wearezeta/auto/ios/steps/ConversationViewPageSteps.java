@@ -23,6 +23,8 @@ public class ConversationViewPageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
+    public static final String DEFAULT_PNG = "group-icon@3x.png";
+
     private ConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(ConversationViewPage.class);
     }
@@ -962,14 +964,53 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify whether the file sharing button picture is visible
+     * Verify whether the file transfer button picture is visible
      *
      * @throws Exception
-     * @step. ^I see file button$"
+     * @step. ^I see file transfer button$
      */
-    @When("^I see file sharing button$")
-    public void iSeeFileSharingButton() throws Exception {
-        Assert.assertTrue("File sharing button is not shown",
-                getConversationViewPage().isFileSharingButtonVisible());
+    @When("^I see file transfer button$")
+    public void iSeeFileTransferButton() throws Exception {
+        Assert.assertTrue("File transfer button is not shown",
+                getConversationViewPage().isFileTransferButtonVisible());
+    }
+
+    /**
+     * Tap on file transfer button
+     *
+     * @throws Exception
+     * @step. I tap file transfer button$
+     */
+    @When("^I tap file transfer button$")
+    public void ITapFileTransferButton() throws Exception {
+        getConversationViewPage().tapFileTransferButton();
+    }
+
+    /**
+     * Tap on file transfer menu item by name
+     *
+     * @param itemName name of the item
+     * @throws Exception
+     * @step. ^I tap file transfer menu item (.*)$
+     */
+    @When("^I tap file transfer menu item (.*)$")
+    public void ITapFileTransferMenuItem(String itemName) throws Exception {
+        if (itemName.equals("DEFAULT_PNG")) {
+            itemName = DEFAULT_PNG;
+        }
+        getConversationViewPage().tapFileTransferMenuItem(itemName);
+    }
+
+    /**
+     * Verify file transfer placeholder visibility
+     *
+     * @throws Exception
+     * @step. ^I see file transfer placeholder$
+     */
+    @When("^I see file transfer placeholder$")
+    public void ISeeFileTransferPlaceHolder() throws Exception {
+        Assert.assertTrue("File transfer placeholder is not visible",
+                getConversationViewPage().fileTransferTopLabelIsVisible()&
+                        getConversationViewPage().fileTransferBottomLabelIsVisible());
     }
 }
