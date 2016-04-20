@@ -298,7 +298,7 @@ Feature: Calling Matrix
       | user1Name | user2Name | firefox:44.0.2      | 20      |
       | user1Name | user2Name | firefox:43.0        | 20      |
 
-  @torun @calling_matrix
+  @calling_matrix
   Scenario Outline: Answer 1-to-1 call <CallBackend> from APNS
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

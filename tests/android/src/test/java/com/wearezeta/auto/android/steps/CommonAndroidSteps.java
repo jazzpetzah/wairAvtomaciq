@@ -1113,4 +1113,15 @@ public class CommonAndroidSteps {
         Assert.assertTrue(String.format("An alert containing text '%s' is not visible", expectedMsg),
                 pagesCollection.getCommonPage().isAlertMessageVisible(expectedMsg));
     }
+
+    /**
+     * Answers a incoming call from the push notification (GCM)
+     *
+     * @throws Exception
+     * @step. ^I answer call from GCM
+     */
+    @And("^I answer call from GCM$")
+    public void IAnswerCallFromGCM() throws Exception {
+        System.out.print("I will answer the call from GCM");
+    }
 }
