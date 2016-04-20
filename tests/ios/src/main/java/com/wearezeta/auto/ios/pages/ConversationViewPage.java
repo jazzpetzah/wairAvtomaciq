@@ -633,7 +633,7 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferBottomLabel);
     }
 
-    public By getInputToolButtonByName(String btnName) {
+    private By getInputToolButtonByName(String btnName) {
         switch (btnName.toLowerCase()) {
             case "add picture":
                 return nameAddPictureButton;
@@ -646,5 +646,17 @@ public class ConversationViewPage extends IOSPage {
             default:
                 throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
         }
+    }
+
+    public void clickInputToolButtonByName(String name) throws Exception {
+        getElement(getInputToolButtonByName(name)).click();
+    }
+
+    public boolean inputToolButtonByNameIsVisible(String name) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getInputToolButtonByName(name));
+    }
+
+    public boolean inputToolButtonByNameIsNotVisible(String name) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), getInputToolButtonByName(name));
     }
 }

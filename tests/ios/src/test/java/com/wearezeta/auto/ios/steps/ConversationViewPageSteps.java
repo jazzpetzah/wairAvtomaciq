@@ -227,7 +227,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap (Add Picture|Ping|Sketch|File Transfer) button from input tools$")
     public void IPressAddPictureButton(String btnName) throws Exception {
-        getConversationViewPage().clickElementByLocator(getConversationViewPage().getInputToolButtonByName(btnName));
+        getConversationViewPage().clickInputToolButtonByName(btnName);
     }
 
     /**
@@ -241,11 +241,10 @@ public class ConversationViewPageSteps {
     public void VeirfyButtonVisibilityInInputTools(String shouldNot, String btnName) throws Exception {
         if (shouldNot == null) {
             Assert.assertTrue(btnName + "button in input tools palette is not visible",
-                    getConversationViewPage().isElementByVisible(getConversationViewPage().getInputToolButtonByName(btnName)));
+                    getConversationViewPage().inputToolButtonByNameIsVisible(btnName));
         } else {
             Assert.assertTrue(btnName + "button in input tools palette is  visible",
-                    getConversationViewPage().isElementByInvisible(getConversationViewPage().getInputToolButtonByName
-                            (btnName)));
+                    getConversationViewPage().inputToolButtonByNameIsNotVisible((btnName)));
         }
 
     }
