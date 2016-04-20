@@ -998,6 +998,18 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Tap the most recent visible transfer placeholder
+     *
+     * @step. ^I tap file transfer placeholder$
+     *
+     * @throws Exception
+     */
+    @When("^I tap file transfer placeholder$")
+    public void ITapFileTransferPlaceholder() throws Exception {
+        getConversationViewPage().tapFileTransferPlaceholder();
+    }
+
+    /**
      * Verify whether File Transfer placeholder is visible in the conversation view
      *
      * @step. ^I wait up to (\d+) seconds? until the file (.*) with size (.*) is ready for download from conversation view$

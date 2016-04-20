@@ -664,4 +664,8 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), topLabelLocator, timeoutSeconds) &&
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), bottomLabelLocator, timeoutSeconds);
     }
+
+    public void tapFileTransferPlaceholder() throws Exception {
+        getElement(nameFileTransferBottomLabel).click();
+    }
 }

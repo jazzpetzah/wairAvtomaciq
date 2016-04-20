@@ -1016,7 +1016,7 @@ public class CommonIOSSteps {
      * @throws Exception
      * @step. ^I create temporary file (.*) in size with name "(.*)" and extension "(.*)"
      */
-    @Given("^I create temporary file (.*) in size with name \"(.*)\" and extension \"(.*)\"")
+    @Given("^I create temporary file (.*) in size with name \"(.*)\" and extension \"(.*)\"$")
     public void ICreateTemporaryFile(String size, String name, String ext) throws Exception {
         final String tmpFilesRoot = CommonUtils.getBuildPathFromConfig(getClass());
         CommonUtils.createRandomAccessFile(tmpFilesRoot + File.separator + name + "." + ext, size);
