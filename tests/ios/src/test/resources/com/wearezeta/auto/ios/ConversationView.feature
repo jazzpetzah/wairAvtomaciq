@@ -350,7 +350,7 @@ Feature: Conversation View
     And I wait for 1 second
     And I tap play/pause button in conversations list next to <Contact>
     And I tap on contact name <Contact>
-    Then I see media container state is changed
+    Then I see media container state is not changed
     When I remember media container state
     And I navigate back to conversations list
     And I wait for 1 second
