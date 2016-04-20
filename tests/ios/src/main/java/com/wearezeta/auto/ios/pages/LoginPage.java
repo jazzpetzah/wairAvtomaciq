@@ -185,6 +185,11 @@ public class LoginPage extends IOSPage {
     }
 
     public void switchToLogin() throws Exception {
-        getElement(nameSwitchToLoginButton).click();
+        final WebElement switchToLoginButton = getElement(nameSwitchToLoginButton);
+        switchToLoginButton.click();
+        // sometimes switch does not work if clicked too early
+        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLoginField, 5)) {
+            switchToLoginButton.click();
+        }
     }
 }

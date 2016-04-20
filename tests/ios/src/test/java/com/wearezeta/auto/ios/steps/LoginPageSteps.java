@@ -94,7 +94,9 @@ public class LoginPageSteps {
     }
 
     private void phoneLoginSequence(final PhoneNumber number) throws Exception {
-        if (!getRegistrationPage().isCountryPickerButtonVisible()) {
+        getLoginPage().switchToLogin();
+
+        if (getRegistrationPage().isCountryPickerButtonInvisible()) {
             getLoginPage().switchToPhoneLogin();
         }
         getRegistrationPage().inputPhoneNumber(number);
