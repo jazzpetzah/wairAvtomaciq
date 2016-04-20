@@ -538,7 +538,7 @@ public class ConversationViewPageSteps {
      * Wait until the file uploading completely
      *
      * @param timeoutSeconds the timeout in seconds for uploading
-     * @param size should be good formated value, such as 5.00MB rather tha 5MB
+     * @param size           should be good formated value, such as 5.00MB rather tha 5MB
      * @param extension
      * @throws Exception
      * @step. ^I wait up to (\d+) seconds? until (.*) file with extension "(\w+)" is uploaded$"
@@ -546,6 +546,17 @@ public class ConversationViewPageSteps {
     @When("^I wait up to (\\d+) seconds? until (.*) file with extension \"(\\w+)\" is uploaded$")
     public void IWaitFileUploadingComplete(int timeoutSeconds, String size, String extension) throws Exception {
         getConversationViewPage().waitUntilFileUploadIsCompleted(timeoutSeconds, size, extension);
+    }
+
+    /**
+     * Tap on file action button within File placeholder
+     *
+     * @throws Exception
+     * @step. ^I tap (?:Retry|Download|View) button on (?:upload|download) file placeholder$
+     */
+    @When("^I tap (?:Retry|Download|View) button on file (?:upload|download) placeholder$")
+    public void ITapOnFileActionButton() throws Exception {
+        getConversationViewPage().tapFileActionButton();
     }
 
     /**
@@ -843,17 +854,24 @@ public class ConversationViewPageSteps {
     /**
      * Check the expected placehoder is visible
      *
-     * @param size the expected size displayed, value should be good formatted, such as 3.00MB rather than 3MB
-     * @param fileFullName the expected file name displayed
-     * @param extension the extension of the file uploaded
+     * @param size          the expected size displayed, value should be good formatted, such as 3.00MB rather than 3MB
+     * @param loadDirection could be upload or received
+     * @param fileFullName  the expected file name displayed
+     * @param extension     the extension of the file uploaded
+     * @param timeout       (optional) to define the validation should be complete within timeout
+     * @param actionFailed  equals null means current action successfully
      * @throws Exception
-     * @step. ^I see the result of (.*) file (?:upload|received) having name "(.*)" and extension "(\w+)"( in \d+ seconds)?$
+     * @step. ^I see the result of (.*) file (upload|received)?( failed)? having name "(.*)" and extension "(\w+)"( in \d+ seconds)?$
      */
-    @Then("^I see the result of (.*) file (?:upload|received) having name \"(.*)\" and extension \"(\\w+)\"( in \\d+ seconds)?$")
-    public void ThenISeeTheResultOfXFileUpload(String size, String fileFullName, String extension, String timeout) throws Exception {
-        int lookUpTimeoutSeconds = (timeout == null) ?  DriverUtils.getDefaultLookupTimeoutSeconds()
+    @Then("^I see the result of (.*) file (upload|received)? having name \"(.*)\" and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
+    public void ThenISeeTheResultOfXFileUpload(String size, String loadDirection, String fileFullName,
+                                               String extension, String timeout, String actionFailed) throws Exception {
+        int lookUpTimeoutSeconds = (timeout == null) ? DriverUtils.getDefaultLookupTimeoutSeconds()
                 : Integer.parseInt(timeout.replaceAll("[\\D]", ""));
+        boolean isUpload = loadDirection.equals("upload");
+        boolean isSuccess = (actionFailed == null);
         Assert.assertTrue("The placeholder of sending file should be visible",
-                getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, lookUpTimeoutSeconds));
+                getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload,
+                        isSuccess, lookUpTimeoutSeconds));
     }
 }
