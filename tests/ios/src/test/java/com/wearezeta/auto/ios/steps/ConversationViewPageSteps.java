@@ -998,14 +998,24 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Tap the most recent visible transfer placeholder
+     *
+     * @throws Exception
+     * @step. ^I tap file transfer placeholder$
+     */
+    @When("^I tap file transfer placeholder$")
+    public void ITapFileTransferPlaceholder() throws Exception {
+        getConversationViewPage().tapFileTransferPlaceholder();
+    }
+
+    /**
      * Verify whether File Transfer placeholder is visible in the conversation view
      *
-     * @step. ^I wait up to (\d+) seconds? until the file (.*) with size (.*) is ready for download from conversation view$
-     *
-     * @param timeoutSeconds timeout in seconds
+     * @param timeoutSeconds   timeout in seconds
      * @param expectedFileName the file name, which should be visible in the placeholder
-     * @param expectedSize the expected file size to be shown in the placeholder
+     * @param expectedSize     the expected file size to be shown in the placeholder
      * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until the file (.*) with size (.*) is ready for download from conversation view$
      */
     @Then("^I wait up to (\\d+) seconds? until the file (.*) with size (.*) is ready for download from conversation view$")
     public void IWaitUntilDownloadFinished(int timeoutSeconds, String expectedFileName, String expectedSize)
@@ -1015,5 +1025,20 @@ public class ConversationViewPageSteps {
                 expectedFileName, timeoutSeconds),
                 getConversationViewPage().waitUntilDownloadReadyPlaceholderVisible(expectedFileName, expectedSize,
                         timeoutSeconds));
+    }
+
+    /**
+     * Verify whether file preview is shown after the timeout
+     *
+     * @param secondsTimeout   timeout in seconds
+     * @param expectedFileName file name in preview header
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until I see a preview of the file named "(.*)"$
+     */
+    @Then("^I wait up to (\\d+) seconds? until I see a preview of the file named \"(.*)\"$")
+    public void IWaitForFilePreview(int secondsTimeout, String expectedFileName) throws Exception {
+        Assert.assertTrue(String.format("The preview was not shown for '%s' after %s seconds timeout", expectedFileName,
+                secondsTimeout),
+                getConversationViewPage().waitUntilFilePreviewIsVisible(secondsTimeout, expectedFileName));
     }
 }

@@ -147,6 +147,9 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
 
+    private static final Function<String, String> xpathStrFilePreviewByFileName = fileName ->
+            String.format("//UIANavigationBar[@name='%s']", fileName);
+
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -663,5 +666,14 @@ public class ConversationViewPage extends IOSPage {
         ));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), topLabelLocator, timeoutSeconds) &&
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), bottomLabelLocator, timeoutSeconds);
+    }
+
+    public void tapFileTransferPlaceholder() throws Exception {
+        getElement(nameFileTransferBottomLabel).click();
+    }
+
+    public boolean waitUntilFilePreviewIsVisible(int secondsTimeout, String expectedFileName) throws Exception {
+        final By locator = By.xpath(xpathStrFilePreviewByFileName.apply(expectedFileName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, secondsTimeout);
     }
 }
