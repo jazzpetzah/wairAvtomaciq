@@ -505,7 +505,7 @@ public class CommonWebAppSteps {
         }
         f.close();
         boolean isGroup = convoType.equals("user") ? false : true;
-        commonSteps.UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "plain/text", deviceName, isGroup);
+        context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "plain/text", deviceName, isGroup);
     }
 
     /**
