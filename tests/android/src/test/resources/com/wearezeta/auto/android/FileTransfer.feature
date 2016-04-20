@@ -35,7 +35,7 @@ Feature: File transfer
       | Name      | Contact1  | FileFullName  | FileSize | AlertMessage                                       |
       | user1Name | user2Name | qa_random.txt | 26.00MB  | Uploading files larger than 25MB is not supported. |
 
-  @staging @C87629 @C87632 @torun
+  @staging @C87629 @C87632
   Scenario Outline: Verify placeholder is shown for the receiver
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
