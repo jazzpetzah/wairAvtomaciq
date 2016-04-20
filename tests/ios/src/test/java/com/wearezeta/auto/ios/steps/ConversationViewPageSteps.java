@@ -227,7 +227,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap (Add Picture|Ping|Sketch|File Transfer) button from input tools$")
     public void IPressAddPictureButton(String btnName) throws Exception {
-        getConversationViewPage().clickInputToolButtonByName(btnName);
+        getConversationViewPage().tapInputToolButtonByName(btnName);
     }
 
     /**
@@ -995,5 +995,25 @@ public class ConversationViewPageSteps {
         Assert.assertTrue("File transfer placeholder is not visible",
                 getConversationViewPage().fileTransferTopLabelIsVisible() &&
                         getConversationViewPage().fileTransferBottomLabelIsVisible());
+    }
+
+    /**
+     * Verify whether Download Finished placeholder is visible in the conversation view
+     *
+     * @step. ^I wait up to (\d+) seconds? until download progress for the file (.*) with size (.*) is finished$
+     *
+     * @param timeoutSeconds timeout in seconds
+     * @param expectedFileName the file name, which should be visible in the placeholder
+     * @param expectedSize the expected file size to be shown in the placeholder
+     * @throws Exception
+     */
+    @Then("^I wait up to (\\d+) seconds? until download progress for the file (.*) with size (.*) is finished$")
+    public void IWaitUntilDownloadFinished(int timeoutSeconds, String expectedFileName, String expectedSize)
+            throws Exception {
+        Assert.assertTrue(String.format(
+                "Cannot detect the Download Finished placeholder for a file '%s' in the conversation view after %s seconds",
+                expectedFileName, timeoutSeconds),
+                getConversationViewPage().waitUntilDownloadFinishedPlaceholderVisible(expectedFileName, expectedSize,
+                        timeoutSeconds));
     }
 }

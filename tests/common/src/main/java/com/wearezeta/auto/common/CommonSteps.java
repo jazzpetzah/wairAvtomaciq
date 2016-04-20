@@ -14,12 +14,13 @@ import java.io.IOException;
 import java.util.*;
 
 import static javax.xml.bind.DatatypeConverter.parseDateTime;
+
 import org.apache.log4j.Logger;
 
 public final class CommonSteps {
-    
+
     private static final Logger log = ZetaLogger.getLog(CommonSteps.class.getSimpleName());
-    
+
     public static final String CONNECTION_NAME = "CONNECT TO ";
     public static final String CONNECTION_MESSAGE = "Hello!";
     private static final int BACKEND_USER_SYNC_TIMEOUT = 180; // seconds
@@ -380,9 +381,13 @@ public final class CommonSteps {
         }
     }
 
-    public void UserSentFileToConversation(String msgFromUserNameAlias, String dstConversationName, String path, String mime,
-                                           String deviceName, boolean isGroup) throws Exception {
+    public void UserSentFileToConversation(String msgFromUserNameAlias, String dstConversationName, String path,
+                                           String mime, String deviceName, boolean isGroup) throws Exception {
         ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        if (!new File(path).exists()) {
+            throw new IllegalArgumentException(String.format("Please make sure the file %s exists and is accessible",
+                    path));
+        }
         if (!isGroup) {
             ClientUser msgToUser = usrMgr.findUserByNameOrNameAlias(dstConversationName);
             SEBridge.getInstance().sendFile(msgFromUser, msgToUser.getId(), path, mime, deviceName);

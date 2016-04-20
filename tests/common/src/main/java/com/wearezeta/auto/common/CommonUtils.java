@@ -412,18 +412,16 @@ public class CommonUtils {
         return getValueFromCommonConfig(c, "syncIsAutomated").toLowerCase().equals("true");
     }
 
+    public static String getBuildPathFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "projectBuildPath");
+    }
+
     public static boolean getSyncIsMuted(Class<?> c) throws Exception {
         return getValueFromCommonConfig(c, "syncIsMuted").toLowerCase().equals("true");
     }
 
     public static Optional<String> getAdbPrefixFromConfig(Class<?> c) throws Exception {
         return getOptionalValueFromConfig(c, "adbPrefix");
-    }
-
-    public static String generateRandomXdigits(int i) {
-        Random rand = new Random();
-        long random = (long) (Math.pow(10, i - 1)) * (rand.nextInt(8) + 1) + (long) rand.nextInt((int) (Math.pow(10, i - 1)));
-        return Long.toString(Math.abs(random));
     }
 
     public static String getPlatformVersionFromConfig(Class<?> cls) throws Exception {
@@ -638,9 +636,9 @@ public class CommonUtils {
      */
     public static void createRandomAccessFile(String filePath, String size) throws Exception {
         try (RandomAccessFile file = new RandomAccessFile(filePath, "rws")) {
-            String[] sizeParts = size.split("(?<=\\d)(?=[a-zA-Z])");
-            int fileSize = Double.valueOf(sizeParts[0]).intValue();
-            String type = sizeParts.length > 1 ? sizeParts[1] : "";
+            final String[] sizeParts = size.split("(?<=\\d)\\s*(?=[a-zA-Z])");
+            final int fileSize = Double.valueOf(sizeParts[0]).intValue();
+            final String type = sizeParts.length > 1 ? sizeParts[1] : "";
             switch (type.toUpperCase()) {
                 case "MB":
                     file.setLength(fileSize * 1024 * 1024);

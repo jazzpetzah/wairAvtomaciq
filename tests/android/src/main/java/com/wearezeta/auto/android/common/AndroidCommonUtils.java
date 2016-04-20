@@ -155,10 +155,6 @@ public class AndroidCommonUtils extends CommonUtils {
         return CommonUtils.getValueFromConfig(c, "androidToolsPath");
     }
 
-    public static String getBuildPathFromConfig(Class<?> c) throws Exception {
-        return CommonUtils.getValueFromConfig(c, "projectBuildPath");
-    }
-
     public static void deployBackendFile(String fileName) throws Exception {
         executeAdb(String.format("push %s %s", fileName, BACKEND_FILE_LOCATION));
     }

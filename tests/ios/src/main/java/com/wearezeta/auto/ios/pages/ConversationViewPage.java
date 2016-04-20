@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -19,7 +20,6 @@ import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-
 
 public class ConversationViewPage extends IOSPage {
     private static final By nameConversationBackButton = MobileBy.AccessibilityId("ConversationBackButton");
@@ -127,16 +127,23 @@ public class ConversationViewPage extends IOSPage {
             "/UIAButton[@name='Back']/following-sibling::" +
             "UIAButton[not(@name='ConversationBackButton') and boolean(string(@label))]");
 
-    private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton, nameFileTransferButton};
+    private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton,
+            nameFileTransferButton};
 
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
     private static final Function<String, String> xpathStrUserNameInUpperToolbar = text ->
             String.format("%s/UIAButton[contains(@name, '%s')]", xpathStrConversationViewTopBar, text.toUpperCase());
 
-    private static final By nameFileTransferTopLabel = MobileBy.AccessibilityId("FileTransferTopLabel");
+    private static final String nameStrFileTransferTopLabel = "FileTransferTopLabel";
+    private static final By nameFileTransferTopLabel = MobileBy.AccessibilityId(nameStrFileTransferTopLabel);
+    private static final Function<String, String> xpathTransferTopLabelByFileName = name ->
+            String.format("//UIAStaticText[@name='%s' and @value='%s']", nameStrFileTransferTopLabel, name.toUpperCase());
 
-    private static final By nameFileTransferBottomLabel = MobileBy.AccessibilityId("FileTransferBottomLabel");
+    private static final String nameStrFileTransferBottomLabel = "FileTransferBottomLabel";
+    private static final By nameFileTransferBottomLabel = MobileBy.AccessibilityId(nameStrFileTransferBottomLabel);
+    private static final Function<String, String> xpathTransferBottomLabelByExpr = expr ->
+            String.format("//UIAStaticText[@name='%s' and %s]", nameStrFileTransferBottomLabel, expr);
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -152,10 +159,6 @@ public class ConversationViewPage extends IOSPage {
     public boolean waitUntilPartOfTextMessageIsNotVisible(String msg) throws Exception {
         final By locator = By.xpath(xpathStrMessageByTextPart.apply(msg));
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
-    }
-
-    public void tapPingButton() throws Exception {
-        getElement(namePingButton).click();
     }
 
     public void tapVideoCallButton() throws Exception {
@@ -270,10 +273,6 @@ public class ConversationViewPage extends IOSPage {
                     (btnLocation.y + btnSize.height / 2) * 100 / windowSize.height, (btnLocation.x - btnSize.width * 7) * 100
                             / windowSize.width, (btnLocation.y + btnSize.height / 2) * 100 / windowSize.height);
         }
-    }
-
-    public void pressAddPictureButton() throws Exception {
-        getElement(nameAddPictureButton).click();
     }
 
     public int getCountOfImages() throws Exception {
@@ -463,10 +462,6 @@ public class ConversationViewPage extends IOSPage {
         getElement(nameGifButton).click();
     }
 
-    public void openSketch() throws Exception {
-        getElement(nameCursorSketchButton).click();
-    }
-
     public boolean isMyNameInDialogDisplayed(String name) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(name.toUpperCase()));
     }
@@ -479,10 +474,6 @@ public class ConversationViewPage extends IOSPage {
     public boolean isConnectingToUserConversationLabelVisible(String username) throws Exception {
         final By locator = By.xpath(xpathStrConnectingToUserLabelByName.apply(username));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public void navigateBack(int timeMilliseconds) throws Exception {
-        swipeRight(timeMilliseconds, DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 30);
     }
 
     public void clickPlusButton() throws Exception {
@@ -617,10 +608,6 @@ public class ConversationViewPage extends IOSPage {
         return getElementScreenshot(getElement(xpathLastImageCell));
     }
 
-    public void tapFileTransferButton() throws Exception {
-        getElement(nameFileTransferButton).click();
-    }
-
     public void tapFileTransferMenuItem(String itemName) throws Exception {
         getElement(MobileBy.AccessibilityId(itemName)).click();
     }
@@ -648,15 +635,40 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    public void clickInputToolButtonByName(String name) throws Exception {
-        getElement(getInputToolButtonByName(name)).click();
-    }
-
     public boolean inputToolButtonByNameIsVisible(String name) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getInputToolButtonByName(name));
     }
 
     public boolean inputToolButtonByNameIsNotVisible(String name) throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), getInputToolButtonByName(name));
+    }
+
+    public void tapInputToolButtonByName(String name) throws Exception {
+        getElement(getInputToolButtonByName(name)).click();
+    }
+
+    public boolean waitUntilDownloadFinishedPlaceholderVisible(String expectedFileName, String expectedSize,
+                                                               int timeoutSeconds) throws Exception {
+        final String nameWOExtension = FilenameUtils.getBaseName(expectedFileName);
+        final String extension = FilenameUtils.getExtension(expectedFileName);
+
+        final By topLabelLocator = By.xpath(xpathTransferTopLabelByFileName.apply(nameWOExtension));
+        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), topLabelLocator, timeoutSeconds)) {
+            return false;
+        }
+
+        final By bottomLabelLocator = By.xpath(xpathTransferBottomLabelByExpr.apply(
+                String.join(" and ",
+                        String.format("starts-with(@value, '%s')", expectedSize.toUpperCase()),
+                        String.format("contains(@value, '%s')", extension.toUpperCase())
+                )
+        ));
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), bottomLabelLocator, 5)) {
+                return true;
+            }
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        return false;
     }
 }
