@@ -35,7 +35,7 @@ Feature: File transfer
       | Name      | Contact1  | FileFullName  | FileSize | AlertMessage                                       |
       | user1Name | user2Name | qa_random.txt | 26.00MB  | Uploading files larger than 25MB is not supported. |
 
-  @staging @C87629
+  @staging @C87629 @C87632 @torun
   Scenario Outline: Verify placeholder is shown for the receiver
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -44,7 +44,9 @@ Feature: File transfer
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And <Contact1> sends <FileSize> file having name "<FileName>.<FileExtension>" and MIME type "<MimeType>" via device Device1 to user Myself
-    Then I see the result of <FileSize> file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in 60 seconds
+    Then I see new message notification "Shared a file"
+    And I see the result of <FileSize> file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in 60 seconds
+
 
     Examples:
       | Name      | Contact1  | FileName  | FileSize | FileExtension | MimeType   |
