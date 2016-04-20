@@ -6,7 +6,11 @@ import com.wearezeta.common.process.UnixProcessHelpers;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.util.Optional;
 
 public class AppiumServer {
     private static final Logger log = ZetaLogger.getLog(AppiumServer.class.getSimpleName());
@@ -130,5 +134,17 @@ public class AppiumServer {
 
     public static boolean isRunning() throws Exception {
         return waitUntilIsRunning(1);
+    }
+
+    public static Optional<String> getLog() {
+        final File logFile = new File(LOG_PATH);
+        if (logFile.exists()) {
+            try {
+                return Optional.of(new String(Files.readAllBytes(logFile.toPath()), Charset.forName("UTF-8")));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return Optional.empty();
     }
 }

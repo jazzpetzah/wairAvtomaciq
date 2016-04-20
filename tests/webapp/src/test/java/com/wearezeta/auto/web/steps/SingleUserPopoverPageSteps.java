@@ -479,7 +479,7 @@ public class SingleUserPopoverPageSteps {
 		String id = SEBridge.getInstance().getDeviceId(user, deviceName);
 		webappPagesCollection.getPage(SingleUserPopoverContainer.class).waitForDevices();
 		List<String> devices = webappPagesCollection.getPage(SingleUserPopoverContainer.class).getVerifiedDeviceIds();
-		assertThat("Device id is in verified devices", devices, hasItem(id.toUpperCase()));
+		assertThat("Device id is NOT in verified devices", devices, hasItem(id.toUpperCase()));
 	}
 
 	@When("^I click on device (.*) of user (.*) on Single User Profile popover$")

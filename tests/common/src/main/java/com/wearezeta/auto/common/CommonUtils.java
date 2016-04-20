@@ -103,8 +103,8 @@ public class CommonUtils {
         return getValueFromConfig(c, "deviceName");
     }
 
-    public static String getImagePath(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "defaultImagesPath") + USER_IMAGE;
+    public static String getDefaultUserImagePath(Class<?> c) throws Exception {
+        return getImagesPath(c) + USER_IMAGE;
     }
 
     public static String getImagesPath(Class<?> c) throws Exception {
@@ -303,10 +303,6 @@ public class CommonUtils {
         return getValueFromConfig(c, "oldAppPath");
     }
 
-    public static String getSimulatorImagesPathFromConfig(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "iosImagesPath");
-    }
-
     public static String getAndroidPackageFromConfig(Class<?> c) {
         try {
             return getValueFromConfig(c, "package");
@@ -412,18 +408,16 @@ public class CommonUtils {
         return getValueFromCommonConfig(c, "syncIsAutomated").toLowerCase().equals("true");
     }
 
+    public static String getBuildPathFromConfig(Class<?> c) throws Exception {
+        return getValueFromConfig(c, "projectBuildPath");
+    }
+
     public static boolean getSyncIsMuted(Class<?> c) throws Exception {
         return getValueFromCommonConfig(c, "syncIsMuted").toLowerCase().equals("true");
     }
 
     public static Optional<String> getAdbPrefixFromConfig(Class<?> c) throws Exception {
         return getOptionalValueFromConfig(c, "adbPrefix");
-    }
-
-    public static String generateRandomXdigits(int i) {
-        Random rand = new Random();
-        long random = (long) (Math.pow(10, i - 1)) * (rand.nextInt(8) + 1) + (long) rand.nextInt((int) (Math.pow(10, i - 1)));
-        return Long.toString(Math.abs(random));
     }
 
     public static String getPlatformVersionFromConfig(Class<?> cls) throws Exception {
@@ -605,14 +599,14 @@ public class CommonUtils {
             try {
                 System.setProperty("java.net.preferIPv4Stack", "true");
             } catch (Exception e) {
-                e.printStackTrace();
+                // skip silently
             }
             return InetAddress.getLocalHost().getHostAddress().startsWith("192.168.2.");
         } finally {
             try {
                 System.setProperty("java.net.preferIPv4Stack", prevPropValue);
             } catch (Exception e) {
-                e.printStackTrace();
+                // skip silently
             }
         }
     }
@@ -627,5 +621,30 @@ public class CommonUtils {
         CommonUtils.executeUIAppleScript(new String[]{
                 "tell application \"System Events\" to keystroke \"v\" using {command down}"
         }).get(DEFAULT_COMMAND_TIMEOUT, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Create Random Access File
+     *
+     * @param filePath the file path include the file name
+     * @param size     the expected file size, such as 5MB, 10KB, or 4.00MB or 10.00KB or 10kb, 10Kb
+     * @throws Exception
+     */
+    public static void createRandomAccessFile(String filePath, String size) throws Exception {
+        try (RandomAccessFile file = new RandomAccessFile(filePath, "rws")) {
+            final String[] sizeParts = size.split("(?<=\\d)\\s*(?=[a-zA-Z])");
+            final int fileSize = Double.valueOf(sizeParts[0]).intValue();
+            final String type = sizeParts.length > 1 ? sizeParts[1] : "";
+            switch (type.toUpperCase()) {
+                case "MB":
+                    file.setLength(fileSize * 1024 * 1024);
+                    break;
+                case "KB":
+                    file.setLength(fileSize * 1024);
+                    break;
+                default:
+                    file.setLength(fileSize);
+            }
+        }
     }
 }

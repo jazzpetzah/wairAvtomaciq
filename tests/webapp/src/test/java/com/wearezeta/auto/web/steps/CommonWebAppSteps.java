@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import java.io.RandomAccessFile;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -634,16 +635,15 @@ public class CommonWebAppSteps {
     /**
      * Mute conversation
      *
-     * @param userToNameAlias user who want to mute conversation
+     * @param userToNameAlias   user who want to mute conversation
      * @param muteUserNameAlias conversation or user to be muted
      * @throws Exception
      * @step. ^(.*) muted conversation with (.*)$
      */
-    @When("^(.*) muted conversation with (.*)$")
-    public void MuteConversationWithUser(String userToNameAlias,
-            String muteUserNameAlias) throws Exception {
-        commonSteps
-                .MuteConversationWithUser(userToNameAlias, muteUserNameAlias);
+    @When("^(.*) muted conversation with (user|group) (.*) on device (.*)$")
+    public void MuteConversationWithUser(String userToNameAlias, String convType,
+                                         String muteUserNameAlias, String deviceName) throws Exception {
+        commonSteps.UserMutesConversation(userToNameAlias, muteUserNameAlias, deviceName, convType.equals("group"));
     }
 
     /**
@@ -784,6 +784,25 @@ public class CommonWebAppSteps {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
         String deviceId = SEBridge.getInstance().getDeviceId(user, deviceName);
         webappPagesCollection.getPage(WebPage.class).breakSession(deviceId);
+    }
+
+    @When("^(.*) sends? (.*) sized file with name (.*) via device (.*) to (user|group conversation) (.*)$")
+    public void WhenIXSizedSendFile(String contact, String size, String fileName, String deviceName, String convoType,
+                                    String dstConvoName) throws Exception {
+        String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
+        path = path.replace("%40","@");
+        RandomAccessFile f = new RandomAccessFile(path + "/" + fileName, "rws");
+        int fileSize = Integer.valueOf(size.replaceAll("\\D+","").trim());
+        if (size.contains("MB")) {
+            f.setLength(fileSize * 1024 * 1024);
+        } else if (size.contains("KB")) {
+            f.setLength(fileSize * 1024);
+        } else {
+            f.setLength(fileSize);
+        }
+        f.close();
+        boolean isGroup = convoType.equals("user") ? false : true;
+        commonSteps.UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "plain/text", deviceName, isGroup);
     }
 
     /**
@@ -1154,6 +1173,31 @@ public class CommonWebAppSteps {
     public void IOpenSignInPage() throws Exception {
         WebappPagesCollection.getInstance().getPage(RegistrationPage.class)
                 .openSignInPage();
+    }
+    
+    /**
+     * Remove all registered OTR clients for the particular user
+     *
+     * @param userAs user name/alias
+     * @throws Exception
+     * @step. ^User (.*) removes all his registered OTR clients$
+     */
+    @Given("^User (.*) removes all his registered OTR clients$")
+    public void UserRemovesAllRegisteredOtrClients(String userAs) throws Exception {
+        commonSteps.UserRemovesAllRegisteredOtrClients(userAs);
+    }
+    
+    /**
+     * Remove all registered OTR clients for the particular user except of the X most recent ones
+     *
+     * @param userAs       user name/alias
+     * @param clientsCount the count of recents OTR clients to keep
+     * @throws Exception
+     * @step. ^User (.*) only keeps his (\d+) most recent OTR clients$
+     */
+    @Given("^User (.*) only keeps his (\\d+) most recent OTR clients$")
+    public void UserKeepsXOtrClients(String userAs, int clientsCount) throws Exception {
+        commonSteps.UserKeepsXOtrClients(userAs, clientsCount);
     }
 
 }

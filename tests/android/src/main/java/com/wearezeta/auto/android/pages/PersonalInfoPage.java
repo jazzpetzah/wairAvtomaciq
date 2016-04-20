@@ -66,7 +66,8 @@ public class PersonalInfoPage extends AndroidPage {
 
     public void tapConfirmButton() throws Exception {
         this.hideKeyboard();
-        final WebElement confirmBtn = getElement(DialogPage.xpathConfirmOKButton, "Confirmation button is not visible");
+        final WebElement confirmBtn = getElement(ConversationViewPage.xpathConfirmOKButton,
+                "Confirmation button is not visible");
         // Wait for animation
         Thread.sleep(1000);
         confirmBtn.click();
@@ -87,8 +88,8 @@ public class PersonalInfoPage extends AndroidPage {
     }
 
     public void tapOnMyName(String name) throws Exception {
-        final By nameFieldlocator = By.xpath(xpathStrNameFieldByValue.apply(name));
-        getDriver().findElement(nameFieldlocator).click();
+        final By locator = By.xpath(xpathStrNameFieldByValue.apply(name));
+        getDriver().findElement(locator).click();
     }
 
     public boolean waitUntilNameEditIsVisible(String name) throws Exception {

@@ -35,7 +35,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I click Ping button
+    And I tap Ping button from input tools
     Then I see "<PingMsg>" system message in the conversation view
 
     Examples:
@@ -50,7 +50,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
@@ -191,7 +191,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
+    When I switch to Log In tab
     And I have entered login <Text>
     And I tap and hold on Email input
     And I click on popup SelectAll item
@@ -237,7 +237,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
@@ -327,7 +327,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I open conversation details
     And I open ellipsis menu
-    And I click archive menu button
+    And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
@@ -350,7 +350,7 @@ Feature: Conversation View
     And I wait for 1 second
     And I tap play/pause button in conversations list next to <Contact>
     And I tap on contact name <Contact>
-    Then I see media container state is changed
+    Then I see media container state is not changed
     When I remember media container state
     And I navigate back to conversations list
     And I wait for 1 second
@@ -398,7 +398,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I click plus button next to text input
-    And I tap on sketch button in cursor
+    And I tap Sketch button from input tools
     And I draw a random sketch
     And I send my sketch
     Then I see 1 photo in the dialog
@@ -435,12 +435,12 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I click plus button next to text input
-    Then I see no other conversation tools buttons except of Details
+    Then I see no other conversation tools buttons except of People
     And I click Close input options button
     And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
     And I click plus button next to text input
-    Then I see no other conversation tools buttons except of Details
+    Then I see no other conversation tools buttons except of People
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
@@ -474,7 +474,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I press sketch button on camera roll page
@@ -572,14 +572,14 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Name> sends 1 encrypted message to user <Contact1>
     When I swipe right on a <Contact1>
-    And I click delete menu button
+    And I tap Delete action button
     And I confirm delete conversation content
     Then I do not see conversation <Contact1> in conversations list
     And I open search UI
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
-    Then I see dialog page
+    Then I see conversation view page
     And I type the default message and send it
     And I see 1 default message in the dialog
 
@@ -623,7 +623,7 @@ Feature: Conversation View
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
@@ -674,7 +674,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I tap Camera Shutter button
     And I confirm my choice
     Then I see 1 photo in the dialog
@@ -691,7 +691,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I tap Toggle Camera button
     And I tap Camera Shutter button
     And I confirm my choice
@@ -733,10 +733,12 @@ Feature: Conversation View
     Given There are <UsersAmount> users where <Name> is me
     Given Myself is connected to all other
     Given Myself has group chat <GroupChatName> with all other
-    Given Me leave group chat <GroupChatName>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
+    When I leave group chat <GroupChatName>
+    And I do not see conversation <GroupChatName> in conversations list
+    And I open archived conversations
+    And I tap on group chat with name <GroupChatName>
     Then I do not see Audio call button on Upper Toolbar
 
     Examples:
@@ -773,3 +775,25 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | GroupChatName  | UsersAmount | NewChatName |
       | user1Name | user2Name | RenameChatName | 4           | NewName     |
+
+  @C95637 @staging
+  Scenario Outline: Verify opening the image twice in the raw
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    When I tap on contact name <Contact>
+    Then I see 1 photo in the dialog
+    When I tap and hold image to open full screen
+    Then I see Full Screen Page opened
+    And I tap close fullscreen page button
+    When I tap and hold image to open full screen
+    Then I see Full Screen Page opened
+    And I tap close fullscreen page button
+    When I tap and hold image to open full screen
+    Then I see Full Screen Page opened
+
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |

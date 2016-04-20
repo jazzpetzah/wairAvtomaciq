@@ -171,6 +171,62 @@ class Device extends RemoteEntity implements IDevice {
     }
 
     @Override
+    public void clearConversation(String convId) throws Exception {
+        try {
+            askActor(this.ref(), new ActorMessage.ClearConversation(new RConvId(convId)));
+        } catch (TimeoutException e) {
+            // recreate process and retry
+            respawn();
+            if (hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+            }
+            askActor(this.ref(), new ActorMessage.ClearConversation(new RConvId(convId)));
+        }
+    }
+
+    @Override
+    public void muteConversation(String convId) throws Exception {
+        try {
+            askActor(this.ref(), new ActorMessage.MuteConv(new RConvId(convId)));
+        } catch (TimeoutException e) {
+            // recreate process and retry
+            respawn();
+            if (hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+            }
+            askActor(this.ref(), new ActorMessage.MuteConv(new RConvId(convId)));
+        }
+    }
+
+    @Override
+    public void unmuteConversation(String convId) throws Exception {
+        try {
+            askActor(this.ref(), new ActorMessage.UnmuteConv(new RConvId(convId)));
+        } catch (TimeoutException e) {
+            // recreate process and retry
+            respawn();
+            if (hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+            }
+            askActor(this.ref(), new ActorMessage.UnmuteConv(new RConvId(convId)));
+        }
+    }
+
+    @Override
+    public void sendFile(String convId, String path, String mime) throws Exception {
+        try {
+            askActor(this.ref(), new ActorMessage.SendFile(new RConvId(convId), path, mime));
+        } catch (TimeoutException e) {
+            // recreate process and retry
+            respawn();
+            if (hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+            }
+            askActor(this.ref(), new ActorMessage.SendFile(new RConvId(convId), path, mime));
+        }
+    }
+
+    @Override
     public String getId() throws Exception {
         if (!this.id.isPresent()) {
             Object resp;

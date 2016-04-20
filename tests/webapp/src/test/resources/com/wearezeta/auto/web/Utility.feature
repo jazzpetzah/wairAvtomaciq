@@ -96,7 +96,7 @@ Feature: Utility
       | osx     |
       | windows |
         
-  @C5232 @utility
+  @C5232 @utility @useSpecialEmail
   Scenario Outline: Check password reset utility page for all agents
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -144,7 +144,7 @@ Feature: Utility
       | smoketester+sm0k3t3st3r@wire.com | osx     |
       | smoketester+sm0k3t3st3r@wire.com | windows |
 
-  @C5234 @utility
+  @C5234 @utility @useSpecialEmail
   Scenario Outline: Check password reset with wrong checksum for all agents
     Given There is 1 user where <Name> is me
     Given I switch to sign in page

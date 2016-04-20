@@ -413,8 +413,31 @@ Feature: Connect
     And User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     And User <Contact> sends encrypted message to user <Name>
     And User <Contact> securely pings conversation Myself
-    Then Last message is <Message>
+    Then I see the most recent conversation message is "<Message>"
 
     Examples:
       | Name      | Contact   | Message          | Picture     |
       | user1Name | user2Name | Hello my friend! | testing.jpg |
+
+  @C82540 @staging
+  Scenario Outline: Verify you cannot create a new group conversation with a person who blocked you
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given User <Contact1> blocks user Myself
+    Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact2>
+    And I tap plus button in text input
+    And I tap Add people button from input tools
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I tap on user name found on People picker page <Contact1>
+    And I click on Add to conversation button
+    Then I see Unable to Create Group Conversation overlay
+    When I accept Unable to Create Group Conversation overlay
+    Then I see Contact list with contacts
+    And I do not see group conversation with <Contact1>,<Contact2> in conversations list
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |

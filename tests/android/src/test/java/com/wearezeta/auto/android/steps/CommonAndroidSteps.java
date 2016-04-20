@@ -340,8 +340,8 @@ public class CommonAndroidSteps {
     /**
      * Sends the application into back stack and displays the home screen or vice versa
      *
-     * @throws Exception
      * @param action either minimize or restore
+     * @throws Exception
      * @step. ^I (minimize|restore) the application$
      */
     @When("^I (minimize|restore) the application$")
@@ -1112,6 +1112,62 @@ public class CommonAndroidSteps {
         expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, ClientUsersManager.FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("An alert containing text '%s' is not visible", expectedMsg),
                 pagesCollection.getCommonPage().isAlertMessageVisible(expectedMsg));
+    }
+
+    /**
+     * Execute Delete Conversation action on the particular device registered for this user
+     *
+     * @param userAs     user name/alias
+     * @param convoType  either 'group' or 'single user'
+     * @param convoName  conversation name
+     * @param deviceName device name (this one should already exist)
+     * @throws Exception
+     * @step. ^User (.*) deletes? (single user|group) conversation (.*) using device (.*)
+     */
+    @Given("^User (.*) deletes? (single user|group) conversation (.*) using device (.*)")
+    public void UserDeletedConversation(String userAs, String convoType, String convoName, String deviceName)
+            throws Exception {
+        commonSteps.UserClearsConversation(userAs, convoName, deviceName, convoType.equals("group"));
+    }
+
+    /**
+     * Prepare file in /mnt/sdcard/Download/
+     *
+     * @param size         such as 5MB, 30MB
+     * @param fileFullName the name of the file with extension
+     * @throws Exception
+     * @step. ^I push (.*) file having name \"(.*)\" to the device$
+     */
+    @Given("^I push (.*) file having name \"(.*)\" to the device$")
+    public void IPushXFileHavingNameYToDevice(String size, String fileFullName) throws Exception {
+        AndroidCommonUtils.pushRandomFileToSdcardDownload(fileFullName, size);
+    }
+
+    /**
+     * Send file from SE to user/group
+     *
+     * @param contact      which could be a user alias
+     * @param size         the expected file size such as be 20MB or 30KB
+     * @param fileFullName the full file name with extension such as abc.txt,
+     *                     which will be created and expected in root/target folder automatically
+     * @param mimeType     the MIME type of file sent
+     * @param deviceName   such as Device1, this device will be created automatically if it doesn't exist
+     * @param convoType    user/group conversation
+     * @param dstConvoName destination name could be a user alias or group name
+     * @throws Exception
+     * @step. ^(.*) sends (.*) file having name "(.*)" and MIME type "(.*)" via device (.*) to (user|group conversation) (.*)$
+     */
+    @When("^(.*) sends (.*) file having name \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
+    public void ContactSendsXFileFromSE(String contact, String size, String fileFullName, String mimeType,
+                                        String deviceName, String convoType, String dstConvoName) throws Exception {
+        String basePath = AndroidCommonUtils.getBuildPathFromConfig(AndroidCommonUtils.class);
+        String sourceFilePath = basePath + File.separator + fileFullName;
+
+        CommonUtils.createRandomAccessFile(sourceFilePath, size);
+
+        boolean isGroup = convoType.equals("group conversation");
+        commonSteps.UserSentFileToConversation(contact, dstConvoName, sourceFilePath,
+                mimeType, deviceName, isGroup);
     }
 
     /**

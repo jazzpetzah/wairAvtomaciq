@@ -112,7 +112,7 @@ public class CommonIOSSteps {
             ));
         }
         capabilities.setCapability("platformVersion", getPlatformVersion());
-        capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT);
+        capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT_MILLIS);
         final String backendType = getBackendType(this.getClass());
         capabilities.setCapability("processArguments",
                 String.join(" ", new String[]{
@@ -147,6 +147,7 @@ public class CommonIOSSteps {
             RealDeviceHelpers.uninstallApp(udid.orElseThrow(
                     () -> new IllegalStateException("Cannot detect any connected iDevice")
             ), cachedBundleIds.get(ipaPath));
+            capabilities.setCapability("fullReset", false);
         }
 
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
@@ -380,7 +381,7 @@ public class CommonIOSSteps {
         }
     }
 
-     /**
+    /**
      * Closes the app for a certain amount of time in seconds
      *
      * @param seconds time in seconds to close the app
@@ -590,11 +591,11 @@ public class CommonIOSSteps {
     /**
      * Rename conversation in backend
      *
-     * @param user username who renames
+     * @param user                username who renames
      * @param oldConversationName old conversation name string
      * @param newConversationName new conversation name string
      * @throws Exception
-     * @step.^User (.*) renames? conversation (.*) to (.*)$
+     * @step. ^User (.*) renames? conversation (.*) to (.*)$
      */
     @When("^User (.*) renames? conversation (.*) to (.*)$")
     public void UserChangeGruopChatName(String user, String oldConversationName, String newConversationName)
@@ -699,7 +700,7 @@ public class CommonIOSSteps {
     @When("^User (\\w+) changes? avatar picture to (.*)$")
     public void IChangeUserAvatarPicture(String userNameAlias, String name)
             throws Exception {
-        final String rootPath = getSimulatorImagesPathFromConfig(getClass());
+        final String rootPath = getImagesPath(getClass());
         commonSteps.IChangeUserAvatarPicture(userNameAlias, rootPath
                 + "/"
                 + (name.toLowerCase().equals("default") ? DEFAULT_USER_AVATAR
@@ -747,7 +748,7 @@ public class CommonIOSSteps {
                                                String isEncrypted,
                                                String imageFileName, String conversationType,
                                                String dstConversationName) throws Exception {
-        final String imagePath = CommonUtils.getSimulatorImagesPathFromConfig(this.getClass()) + "/" + imageFileName;
+        final String imagePath = CommonUtils.getImagesPath(this.getClass()) + File.separator + imageFileName;
         final boolean isGroup = conversationType.equals("group");
         if (isEncrypted == null) {
             commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
@@ -960,6 +961,66 @@ public class CommonIOSSteps {
     @When("^I confirm my choice$")
     public void IConfirmImageSelection() throws Exception {
         pagesCollection.getCommonPage().pressConfirmButton();
+    }
+
+    /**
+     * Execute Delete Conversation action on the particular device registered for this user
+     *
+     * @param userAs     user name/alias
+     * @param convoType  either 'group' or 'single user'
+     * @param convoName  conversation name
+     * @param deviceName device name (this one should already exist)
+     * @throws Exception
+     * @step. ^User (.*) deletes? (single user|group) conversation (.*) using device (.*)
+     */
+    @Given("^User (.*) deletes? (single user|group) conversation (.*) using device (.*)")
+    public void UserDeletedConversation(String userAs, String convoType, String convoName, String deviceName)
+            throws Exception {
+        commonSteps.UserClearsConversation(userAs, convoName, deviceName, convoType.equals("group"));
+    }
+
+    /**
+     * Send an existing file to a conversation
+     *
+     * @param sender      user name/alias
+     * @param isTemporary equals to null if the file is located in images directory. Otherwise it should belocated in
+     *                    project.build.directory folder
+     * @param fileName    the name of an existing file
+     * @param mimeType    MIME type of the file, for example text/plain. Check
+     *                    http://www.freeformatter.com/mime-types-list.html to get the full list of available MIME
+     *                    types
+     * @param convoType   either 'single user' or 'group'
+     * @param convoName   conversation name
+     * @param deviceName  the name of user device. The device will be created automatically if it does not exist yet
+     * @throws Exception
+     * @step. ^User (.*) sends? file (.*) having MIME type (.*) to (single user|group) conversation (.*) using device (.*)
+     */
+    @When("^User (.*) sends? (temporary )?file (.*) having MIME type (.*) to (single user|group) conversation (.*) using device (.*)")
+    public void UserSendsFile(String sender, String isTemporary, String fileName, String mimeType, String convoType,
+                              String convoName, String deviceName) throws Exception {
+        String root;
+        if (isTemporary == null) {
+            root = CommonUtils.getImagesPath(getClass());
+        } else {
+            root = CommonUtils.getBuildPathFromConfig(getClass());
+        }
+        commonSteps.UserSentFileToConversation(sender, convoName, root + File.separator + fileName, mimeType,
+                deviceName, convoType.equals("group"));
+    }
+
+    /**
+     * Create random file in project.build.directory folder for further usage
+     *
+     * @param size file size. Can be float value. Example: 1MB, 2.00KB
+     * @param name file name without extension
+     * @param ext  file extension
+     * @throws Exception
+     * @step. ^I create temporary file (.*) in size with name "(.*)" and extension "(.*)"
+     */
+    @Given("^I create temporary file (.*) in size with name \"(.*)\" and extension \"(.*)\"")
+    public void ICreateTemporaryFile(String size, String name, String ext) throws Exception {
+        final String tmpFilesRoot = CommonUtils.getBuildPathFromConfig(getClass());
+        CommonUtils.createRandomAccessFile(tmpFilesRoot + File.separator + name + "." + ext, size);
     }
 
     /**

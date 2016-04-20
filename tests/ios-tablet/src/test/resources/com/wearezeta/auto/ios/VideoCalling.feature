@@ -34,7 +34,7 @@ Feature: Video Calling
     And <Contact> verify that all flows have greater than 0 bytes
     And I tap Leave button on Video Calling overlay
     And I do not see Calling overlay
-    Then I see dialog page
+    Then I see conversation view page
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
@@ -55,7 +55,7 @@ Feature: Video Calling
     And I see Calling overlay
     And I tap Leave button on Calling overlay
     And I do not see Calling overlay
-    Then I see dialog page
+    Then I see conversation view page
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |

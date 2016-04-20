@@ -13,6 +13,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 public class SEBridge {
+
     private volatile UserDevicePool devicePool;
     private static SEBridge instance = null;
 
@@ -103,7 +104,8 @@ public class SEBridge {
         getOrAddRandomDevice(userFrom).sendMessage(convId, message);
     }
 
-    public void sendConversationMessage(ClientUser userFrom, String convId, String message, String deviceName) throws Exception {
+    public void sendConversationMessage(ClientUser userFrom, String convId, String message, String deviceName) throws
+            Exception {
         if (deviceName == null) {
             sendConversationMessage(userFrom, convId, message);
         } else {
@@ -124,6 +126,22 @@ public class SEBridge {
 
     public void sendPing(ClientUser userFrom, String convId) throws Exception {
         getOrAddRandomDevice(userFrom).sendPing(convId);
+    }
+
+    public void clearConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).clearConversation(convId);
+    }
+
+    public void muteConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).muteConversation(convId);
+    }
+
+    public void unmuteConversation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).unmuteConversation(convId);
+    }
+
+    public void sendFile(ClientUser userFrom, String convId, String path, String mime, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).sendFile(convId, path, mime);
     }
 
     private void shutdown() {

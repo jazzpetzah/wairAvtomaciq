@@ -3,11 +3,13 @@ package com.wearezeta.auto.osx.pages.osx;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 import java.util.Map;
 import java.util.concurrent.Future;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 
 import org.openqa.selenium.Dimension;
@@ -15,6 +17,8 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 public abstract class OSXPage extends BasePage {
+    public static final Logger LOG = ZetaLogger.getLog(OSXPage.class
+			.getName());
 
 	private static final String MENU_ITEM_VERSION = "Version";
 	private static final String MENUBAR_ITEM_HELP = "Help";

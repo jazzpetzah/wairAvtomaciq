@@ -37,12 +37,15 @@ Feature: Conversation List
   @C1758 @regression
   Scenario Outline: Unmute 1on1 conversation
     Given There are 2 users where <Name> is me
+    Given user <Name> adds a new device SecondDevice with label Label1
     Given Myself is connected to <Contact>
-    Given I muted conversation with <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
     Given I am signed in properly
     Given I see Contact list with name <Contact>
+    Given I muted conversation with user <Contact> on device SecondDevice
     And I see that conversation <Contact> is muted
     When I set unmuted state for conversation <Contact>
     And I open self profile

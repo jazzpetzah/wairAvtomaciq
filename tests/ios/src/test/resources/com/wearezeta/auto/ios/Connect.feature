@@ -22,7 +22,7 @@ Feature: Connect
       | user1Name | user2Name | user2Email   | user3Name |
 
   @C102 @rc @clumsy @regression @id1475
-  Scenario Outline: (ZIOS-5508 Simulator issue)Get invitation message from user
+  Scenario Outline: Get invitation message from user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given <Contact> sent connection request to Me
@@ -117,7 +117,7 @@ Feature: Connect
     And I click Connect button on connect to dialog
     And I tap on conversation <Contact> in search result
     And I see <Contact> user pending profile page
-    And I see cancel request button on pending profile page
+    And I see Cancel Request button on pending profile page
 
     Examples: 
       | Name      | Contact   | Contact2  |
@@ -166,7 +166,7 @@ Feature: Connect
     When I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    Then I see cancel request button on pending profile page
+    Then I see Cancel Request button on pending profile page
 
     Examples: 
       | Name      | Contact   | ContactEmail |
@@ -188,7 +188,7 @@ Feature: Connect
     And I tap on text input
     And I tap and hold on message input
     And I paste and commit the text
-    Then I check copied content from <Name>
+    Then I verify that pasted message contains MyEmail
 
     Examples:
       | Name      | Contact   |
@@ -221,9 +221,8 @@ Feature: Connect
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I click Cancel request button
-    Then I see Cancel request confirmation page
-    And I confirm Cancel request by click on Yes button
+    And I tap Cancel Request button on pending profile page
+    And I confirm Cancel Request action on pending profile page
     Then I do not see conversation <Contact1> in conversations list
 
     Examples: 
@@ -239,8 +238,8 @@ Feature: Connect
     Given I see conversations list
     When I tap on contact name <Contact1>
     And I open conversation details
-    And I click Cancel request button
-    And I confirm Cancel request by click on Yes button
+    And I tap Cancel Request button on pending profile page
+    And I confirm Cancel Request action on pending profile page
     And I navigate back to conversations list
     And I open search UI
     And I input in People picker search field user name <Contact1>
@@ -263,8 +262,8 @@ Feature: Connect
     When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
-    And I click Cancel request button
-    And I confirm Cancel request by click on Yes button
+    And I tap Cancel Request button on pending profile page
+    And I confirm Cancel Request action on pending profile page
     Then I see the conversation "<Contact1>" exists in Search results
 
     Examples: 
@@ -285,7 +284,7 @@ Feature: Connect
     And I open group conversation details
     And I select participant <Contact3>
     And I see <Contact3> user pending profile page
-    And I click on start conversation button on pending profile page
+    And I tap Start Conversation button on pending profile page
     And I click on Ignore button on Pending requests page
     And I close group info page
     And I navigate back to conversations list
@@ -306,7 +305,7 @@ Feature: Connect
     And I type the default message and send it
     Then I see 1 default message in the dialog
     When I click plus button next to text input
-    And I press Add Picture button
+    And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
@@ -328,7 +327,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user
-    Then I see dialog page
+    Then I see conversation view page
     When I navigate back to conversations list
     Then I see conversation <Contact> in conversations list
 

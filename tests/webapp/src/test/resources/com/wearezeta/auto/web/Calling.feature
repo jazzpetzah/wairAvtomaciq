@@ -381,9 +381,9 @@ Feature: Calling
     And I wait for 1 seconds
     And <Contact1> stops calling me
     And I wait for 1 seconds
-    Then I see missed call notification for conversation <Contact1>
+    Then I see missed call notification in the conversation list for conversation <Contact1>
     When I open conversation with <Contact1>
-    Then I do not see missed call notification for conversation <Contact1>
+    Then I do not see missed call notification in the conversation list for conversation <Contact1>
     Then I see <MISSED> action for <Contact1> in conversation
 
     Examples:
@@ -443,7 +443,7 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     Given <Contact> starts instance using <CallBackend>
     And I see my avatar on top of Contact list
-    And I muted conversation with <Contact>
+    And I set muted state for conversation <Contact>
     When <Contact> calls me
     Then <Contact> verifies that call status to Myself is changed to connecting in <Timeout> seconds
     And I see the incoming call controls for conversation <Contact>

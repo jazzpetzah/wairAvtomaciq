@@ -38,6 +38,12 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
         this.beforeInitCallback = beforeInitCallback;
     }
 
+    private static final class UnknownPlatformError extends Exception {
+        public UnknownPlatformError(String message) {
+            super(message);
+        }
+    }
+
     @Override
     public RemoteWebDriver call() throws Exception {
         if (this.beforeInitCallback != null) {
@@ -77,7 +83,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                         platformDriver.manage().window().setPosition(new Point(0, 0));
                         break;
                     default:
-                        throw new RuntimeException(String.format("Platform '%s' is unknown", this.platform.name()));
+                        throw new UnknownPlatformError(String.format("Platform '%s' is unknown", this.platform.name()));
                 }
 
                 if (initCompletedCallback != null) {
@@ -96,6 +102,9 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                 e.printStackTrace();
                 log.debug(String.format("Driver initialization failed. Trying to recreate (%d of %d)...",
                         ntry, this.maxRetryCount));
+                log.debug(String.format("Sleeping %s seconds before driver restart...",
+                        ZetaDriver.RECREATE_DELAY_SECONDS));
+                Thread.sleep(ZetaDriver.RECREATE_DELAY_SECONDS * 1000);
             }
         } while (ntry <= this.maxRetryCount);
         throw new WebDriverException(

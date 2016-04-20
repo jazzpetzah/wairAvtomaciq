@@ -78,6 +78,10 @@ public class RegistrationPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCountryPickerButton, 2);
     }
 
+    public boolean isCountryPickerButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCountryPickerButton, 2);
+    }
+
     private static final String WIRE_COUNTRY_NAME = "Wirestan";
 
     private void selectWirestan() throws Exception {

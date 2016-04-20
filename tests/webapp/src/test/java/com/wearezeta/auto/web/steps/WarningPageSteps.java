@@ -181,4 +181,22 @@ public class WarningPageSteps {
 								buttonCaption));
 	}
 
+	@Then("^I( do not)? see file transfer limit warning modal$")
+	public void ISeeFileTransferLimitWarningModal(String doNot) throws Exception {
+		if (doNot == null) {
+			Assert.assertTrue("File transfer limit warning modal is not visible",
+					webappPagesCollection.getPage(WarningPage.class)
+							.isFileTransferLimitWarningModalVisible());
+		} else {
+			Assert.assertTrue("File transfer limit warning modal is visible",
+					webappPagesCollection.getPage(WarningPage.class)
+							.isFileTransferLimitWarningModalInvisible());
+		}
+	}
+
+	@Then("^I click on \"(.*)\" button in file transfer limit warning modal$")
+	public void IClickButtonInFileTransferLimitWarningModal(String buttonCaption)
+			throws Exception {
+		webappPagesCollection.getPage(WarningPage.class).clickOKInFileTransferLimitWarningModal();
+	}
 }

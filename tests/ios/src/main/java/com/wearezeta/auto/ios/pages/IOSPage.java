@@ -8,6 +8,7 @@ import java.util.function.Function;
 
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.Platform;
+import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
@@ -18,14 +19,11 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.ios.pages.keyboard.IOSKeyboard;
-import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.PlatformDrivers;
-import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public abstract class IOSPage extends BasePage {
     private static final Logger log = ZetaLogger.getLog(IOSPage.class.getSimpleName());
 
-    public final static long IOS_DRIVER_INIT_TIMEOUT = 1000 * 30 * 5;
+    public final static long IOS_DRIVER_INIT_TIMEOUT_MILLIS = ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS;
     public static final int DRIVER_CREATION_RETRIES_COUNT = 2;
 
     private static final int DEFAULT_RETRY_COUNT = 2;
@@ -54,7 +52,8 @@ public abstract class IOSPage extends BasePage {
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
-        return IOS_DRIVER_INIT_TIMEOUT * DRIVER_CREATION_RETRIES_COUNT;
+        return IOS_DRIVER_INIT_TIMEOUT_MILLIS * DRIVER_CREATION_RETRIES_COUNT +
+                ZetaDriver.RECREATE_DELAY_SECONDS * (DRIVER_CREATION_RETRIES_COUNT - 1);
     }
 
     public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
@@ -210,23 +209,35 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void acceptAlertIfVisible() throws Exception {
-        final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver());
-        if (alert.isPresent()) {
-            alert.get().accept();
+        try {
+            final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver());
+            if (alert.isPresent()) {
+                alert.get().accept();
+            }
+        } catch (WebDriverException e) {
+            // ignore
         }
     }
 
     public void acceptAlertIfVisible(int timeoutSeconds) throws Exception {
-        final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver(), timeoutSeconds);
-        if (alert.isPresent()) {
-            alert.get().accept();
+        try {
+            final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver(), timeoutSeconds);
+            if (alert.isPresent()) {
+                alert.get().accept();
+            }
+        } catch (WebDriverException e) {
+            // ignore
         }
     }
 
     public void dismissAlertIfVisible() throws Exception {
-        final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver());
-        if (alert.isPresent()) {
-            alert.get().dismiss();
+        try {
+            final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver());
+            if (alert.isPresent()) {
+                alert.get().dismiss();
+            }
+        } catch (WebDriverException e) {
+            // ignore
         }
     }
 

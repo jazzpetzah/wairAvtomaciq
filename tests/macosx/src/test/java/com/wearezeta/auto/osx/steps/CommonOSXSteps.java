@@ -7,7 +7,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ZetaFormatter;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.driver.ZetaOSXWebAppDriver;
@@ -16,7 +15,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
-import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAddressbookPermission;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.getSizeOfAppInMB;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.startAppium4Mac;
@@ -26,12 +24,10 @@ import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.APPIUM_HUB_URL;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
 
-import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
-import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.steps.CommonWebAppSteps;
 
@@ -50,7 +46,6 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -62,7 +57,6 @@ import java.util.logging.Level;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogEntry;
@@ -77,7 +71,6 @@ public class CommonOSXSteps {
 			.getName());
 
 	private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
-	private static final int WRAPPER_STARTUP_TIMEOUT_SECONDS = 10;
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
@@ -169,7 +162,7 @@ public class CommonOSXSteps {
 		logs.enable(LogType.BROWSER, level);
 		// logs.enable(LogType.CLIENT, Level.ALL);
 		// logs.enable(LogType.DRIVER, Level.ALL);
-		logs.enable(LogType.PERFORMANCE, Level.ALL);
+		// logs.enable(LogType.PERFORMANCE, Level.ALL);
 		// logs.enable(LogType.PROFILER, Level.ALL);
 		// logs.enable(LogType.SERVER, Level.ALL);
 		capabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
@@ -177,36 +170,34 @@ public class CommonOSXSteps {
 				+ "'");
 	}
 
-	private void startApp() throws Exception {
-		Future<ZetaOSXDriver> osxDriverFuture;
-		Future<ZetaWebAppDriver> webDriverFuture;
+    private void startApp() throws Exception {
+        Future<ZetaOSXDriver> osxDriverFuture;
+        Future<ZetaWebAppDriver> webDriverFuture;
 
-		clearDrivers();
-		osxDriverFuture = createOSXDriver();
-		webDriverFuture = createWebDriver(osxDriverFuture);
+        clearDrivers();
+        LOG.debug("Create OS X Driver");
+        osxDriverFuture = createOSXDriver();
+        LOG.debug("Init OS X Driver");
+        final ZetaOSXDriver osxDriver = osxDriverFuture.get();
+        LOG.debug("Create Chrome Driver");
+        webDriverFuture = createWebDriver(osxDriverFuture);
+        LOG.debug("Init Chrome Driver");
+        final ZetaWebAppDriver webappDriver = webDriverFuture.get();
 
-		// get drivers instantly
-		final ZetaOSXDriver osxDriver = osxDriverFuture.get();
-		final ZetaWebAppDriver webappDriver = webDriverFuture.get();
-		LOG.debug("Opening app");
-		osxDriver.navigate().to(WIRE_APP_PATH);// open app
-                Thread.sleep(20000);
+        LOG.debug("Waiting for OS X App to be started");
 
-		ZetaFormatter.setLazyDriver(osxDriverFuture);
+        LOG.debug("Setting formatter");
+        ZetaFormatter.setLazyDriver(osxDriverFuture);
 
-		osxPagesCollection.setFirstPage(new MainWirePage(osxDriverFuture));
-		MainWirePage mainWirePage = osxPagesCollection
-				.getPage(MainWirePage.class);
-
-		LOG.debug("Activating app");
-		osxDriver.navigate().to(WIRE_APP_PATH);// activate app
-		waitForAppStartup(osxDriver);
-		mainWirePage.focusApp();
-
-		waitForWebappLoaded(webappDriver);
-		webappPagesCollection
-				.setFirstPage(new RegistrationPage(webDriverFuture));
-	}
+        LOG.debug("Setting first OS X Page");
+        osxPagesCollection.setFirstPage(new MainWirePage(osxDriverFuture));
+        LOG.debug("Setting first Webapp Page");
+        webappPagesCollection
+                .setFirstPage(new RegistrationPage(webDriverFuture));
+        LOG.debug("Opening app");
+        // necessary to enable the driver
+        osxDriver.navigate().to(WIRE_APP_PATH);// open app
+    }
 
 	@Before("~@performance")
 	public void setUp() throws Exception {
@@ -215,36 +206,12 @@ public class CommonOSXSteps {
 			killAllApps();
                         Thread.sleep(5000);
 			clearAppData();
-                        Thread.sleep(5000);
-			clearAddressbookPermission();
+                        // Disabled addressbook permission revoke
+//			clearAddressbookPermission();
 		} catch (Exception e) {
 			LOG.error(e);
 		}
 		startApp();
-	}
-
-	private void waitForAppStartup(ZetaOSXDriver osxdriver) throws Exception {
-		assert DriverUtils.waitUntilLocatorAppears(osxdriver,
-				By.xpath(OSXLocators.MainWirePage.xpathWindow),
-				WRAPPER_STARTUP_TIMEOUT_SECONDS) : "Application did not started properly";
-		LOG.debug("Application started");
-	}
-
-	private boolean waitForWebappLoaded(ZetaWebAppDriver webdriver)
-			throws Exception {
-		boolean started = DriverUtils
-				.waitUntilLocatorAppears(
-						webdriver,
-						By.cssSelector(WebAppLocators.RegistrationPage.cssSwitchToSignInButton
-								+ ","
-								+ WebAppLocators.ContactListPage.cssSelfProfileAvatar),
-						WRAPPER_STARTUP_TIMEOUT_SECONDS);
-		if (started) {
-			LOG.debug("Wrapper Webapp loaded");
-		} else {
-			LOG.warn("Wrapper Webapp did not load properly");
-		}
-		return started;
 	}
 
 	/**
@@ -844,12 +811,9 @@ public class CommonOSXSteps {
 			// do not fail if smt fails here
 			e.printStackTrace();
 		}
-
+                log.debug("Resetting users");
 		commonSteps.getUserManager().resetUsers();
-		try {
-			osxPagesCollection.getPage(MainWirePage.class).closeWindow();
-		} catch (Exception e) {
-		}
+                log.debug("clearing drivers");
 		clearDrivers();
 	}
 
@@ -872,31 +836,7 @@ public class CommonOSXSteps {
 
 	private List<LogEntry> getBrowserLog(RemoteWebDriver driver) {
 		List<LogEntry> logs = new ArrayList<LogEntry>();
-
-		Iterator<LogEntry> browserIter = driver.manage().logs().get(LogType.BROWSER).iterator();
-		Iterator<LogEntry> performanceIter = driver.manage().logs().get(LogType.PERFORMANCE).iterator();
-		LogEntry performanceEntry = performanceIter.next();
-		LogEntry browserEntry = browserIter.next();
-		do {
-			if (performanceEntry.getTimestamp() < browserEntry.getTimestamp()) {
-				logs.add(performanceEntry);
-				if (performanceIter.hasNext()) {
-					performanceEntry = performanceIter.next();
-				} else {
-					browserEntry = browserIter.next();
-				}
-			} else {
-				logs.add(browserEntry);
-				if (browserIter.hasNext()) {
-					browserEntry = browserIter.next();
-				} else {
-					performanceEntry = performanceIter.next();
-				}
-			}
-		} while (performanceIter.hasNext() || browserIter.hasNext());
-
-		//logs.addAll(driver.manage().logs().get(LogType.BROWSER).getAll());
-		//logs.addAll(driver.manage().logs().get(LogType.PERFORMANCE).getAll());
+		logs.addAll(driver.manage().logs().get(LogType.BROWSER).getAll());
 		return logs;
 	}
 

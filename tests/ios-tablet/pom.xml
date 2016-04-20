@@ -22,7 +22,7 @@
         <isSimulator>true</isSimulator>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
         <pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
-        <iosImagesPath>${project.basedir}/../tools/img/</iosImagesPath>
+        <defaultImagesPath>${project.basedir}/../tools/img/</defaultImagesPath>
         <iOSToolsRoot>${project.basedir}/../tools/ios</iOSToolsRoot>
         <defaultEmail>smoketester@wire.com</defaultEmail>
         <specialEmail>smoketester.android@wire.com</specialEmail>

@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.pages;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -28,7 +27,6 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -40,6 +38,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class ConversationPage extends WebPage {
 
 	private static final int TIMEOUT_IMAGE_MESSAGE_UPLOAD = 40; // seconds
+	private static final int TIMEOUT_FILE_UPLOAD = 100; // seconds
 
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
@@ -62,6 +61,9 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssSendImageInput)
 	private WebElement imagePathInput;
+
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssSendFileInput)
+	private WebElement filePathInput;
 
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssPingButton)
 	private WebElement pingButton;
@@ -321,11 +323,8 @@ public class ConversationPage extends WebPage {
 	public void sendPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
-		DriverUtils.addClass(getDriver(), conversation, "hover");
-		final String showPathInputJScript = "$(\""
-				+ WebAppLocators.ConversationPage.cssSendImageInput
-				+ "\").css({'left': -200});";
-		this.getDriver().executeScript(showPathInputJScript);
+		hoverOverConversationInput();
+		moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendImageInput);
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
@@ -336,6 +335,26 @@ public class ConversationPage extends WebPage {
 		} else {
 			imagePathInput.sendKeys(picturePath);
 		}
+	}
+
+	public void hoverOverConversationInput() throws Exception {
+		DriverUtils.addClass(getDriver(), conversation, "hover");
+	}
+
+	public void moveCssSelectorIntoViewport(String selector) throws Exception {
+		final String showPathInputJScript = "$(\"" + selector + "\").css({'left': -200});";
+		getDriver().executeScript(showPathInputJScript);
+	}
+
+	public void sendFile(String fileName) throws Exception {
+		final String filePath = WebCommonUtils.getFullFilePath("filetransfer/" + fileName);
+		hoverOverConversationInput();
+		moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendFileInput);
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssSendFileInput));
+		filePathInput.sendKeys(filePath);
 	}
 
 	public double getOverlapScoreOfLastImage(String pictureName)
@@ -527,15 +546,9 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void clickOnBlackBorder() throws Exception {
-		if (WebAppExecutionContext.getBrowser()
-				.equals(Browser.InternetExplorer)
-				|| WebAppExecutionContext.getBrowser().equals(Browser.Chrome)) {
-			Actions builder = new Actions(getDriver());
-			builder.moveToElement(fullscreenImage, -10, -10).click().build()
-					.perform();
-		} else {
-			blackBorder.click();
-		}
+		Actions builder = new Actions(getDriver());
+		builder.moveToElement(fullscreenImage, -10, -10).click().build()
+				.perform();
 	}
 
 	public void clickGIFButton() throws Exception {
@@ -667,5 +680,60 @@ public class ConversationPage extends WebPage {
 	public boolean isConversationVerified() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage
 				.cssConversationVerifiedIcon));
+	}
+
+	public boolean isFileButtonDisplayed() throws Exception {
+		hoverOverConversationInput();
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+				.cssSendFileButton));
+	}
+
+	public boolean isFileTransferDisplayed(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFile, fileName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean isFileTransferInvisible(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFile, fileName));
+		return !DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean getFileIcon(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileIcon, fileName));
+		return getDriver().findElement(locator).isDisplayed();
+	}
+
+	public String getFileNameOf(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileName, fileName));
+		return getDriver().findElement(locator).getText();
+	}
+
+	public String getFileSizeOf(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileSize, fileName));
+		return getDriver().findElement(locator).getText();
+	}
+
+	public String getFileStatusOf(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileStatus, fileName));
+		assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No file status element found for locator " +
+				locator;
+		return getDriver().findElement(locator).getText();
+	}
+
+	public String getFileTypeOf(String fileType) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileType, fileType));
+		assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No file type element found for locator " + locator;
+		return getDriver().findElement(locator).getText();
+	}
+
+	public void cancelFileUpload(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileCancelUpload, fileName));
+		assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No cancel element found for locator " + locator;
+		getDriver().findElement(locator).click();
+	}
+
+	public boolean waitUntilFileUploaded(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileStatus, fileName));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, TIMEOUT_FILE_UPLOAD);
 	}
 }

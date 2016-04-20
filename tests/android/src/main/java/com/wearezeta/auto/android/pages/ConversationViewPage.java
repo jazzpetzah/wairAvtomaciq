@@ -8,6 +8,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.driver.DummyElement;
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -16,7 +17,7 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class DialogPage extends AndroidPage {
+public class ConversationViewPage extends AndroidPage {
 
     public static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
 
@@ -79,6 +80,10 @@ public class DialogPage extends AndroidPage {
 
     private static final By idVideoCall = By.id("action_video_call");
 
+    private static final By idFile = By.id("cursor_menu_item_file");
+
+    private static final By idFileActionBtn = By.id("gtv__row_conversation__file__action");
+
     private static final String xpathStrConversationToolbar = "//*[@id='t_conversation_toolbar']";
 
     private static final By xpathToolbar = By.xpath(xpathStrConversationToolbar);
@@ -118,13 +123,27 @@ public class DialogPage extends AndroidPage {
     private static Function<String, String> xpathConversationTitleByValue = value -> String
             .format("//*[@id='tv__conversation_toolbar__title' and @value='%s']", value);
 
+    private static Function<String, String> xpathFileNamePlaceHolderByValue = value -> String
+            .format("//*[@id='ttv__row_conversation__file__filename' and @value='%s']", value);
+
+    private static Function<String, String> xpathFileInfoPlaceHolderByValue = value -> String
+            .format("//*[@id='ttv__row_conversation__file__fileinfo' and @value='%s']", value);
+
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_SWIPE_RETRIES = 5;
     private static final int MAX_CLICK_RETRIES = 5;
 
     private static final double LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR = 0.01;
 
-    public DialogPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+    private static final String FILE_UPLOADING_MESSAGE = "UPLOADING...";
+
+    private static final String FILE_DOWNLOADING_MESSAGE = "DOWNLOADING...";
+
+    private static final String FILE_UPLOAD_FAILED = "UPLOAD FAILED";
+
+    private static final String FILE_MESSAGE_SEPARATOR = " · ";
+
+    public ConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -234,6 +253,12 @@ public class DialogPage extends AndroidPage {
         getElement(idPeopleCursorButton, "People button is not visible").click();
     }
 
+    public void tapFileBtn() throws Exception {
+        getElement(idFile, "File button is not visible").click();
+        //wait for 2 seconds for animation
+        Thread.sleep(2000);
+    }
+
     public boolean isPingButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idPing);
     }
@@ -248,6 +273,10 @@ public class DialogPage extends AndroidPage {
 
     public boolean isPeopleButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idPeopleCursorButton);
+    }
+
+    public boolean isFileButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idFile);
     }
 
     public void tapAudioCallBtn() throws Exception {
@@ -385,7 +414,7 @@ public class DialogPage extends AndroidPage {
     }
 
     /**
-     * Navigates back by swipe and initialize ContactListPage
+     * Navigates back by swipe and initialize ConversationsListPage
      *
      * @throws Exception
      */
@@ -591,7 +620,37 @@ public class DialogPage extends AndroidPage {
     }
 
     public boolean isMediaBarBelowUptoolbar() throws Exception {
-        return isElementABelowElementB(getElement(xpathMediaBar), getElement(xpathToolbar), LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR);
+        return isElementABelowElementB(getElement(xpathMediaBar), getElement(xpathToolbar),
+                LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR);
+    }
+
+    public void waitUntilFileUploadIsCompleted(int timeoutSeconds, String size, String extension) throws Exception {
+        String fileInfo = StringUtils.isEmpty(extension) ? size :
+                size + FILE_MESSAGE_SEPARATOR + extension.toUpperCase();
+        fileInfo = String.format("%s%s%s",fileInfo, FILE_MESSAGE_SEPARATOR, FILE_UPLOADING_MESSAGE);
+        DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeoutSeconds);
+    }
+
+    public boolean isFilePlaceHolderVisible(String fileFullName, String size, String extension,
+                                            boolean isUpload, boolean isSuccess, int timeout) throws Exception {
+        size = size.toUpperCase();
+        String fileInfo = StringUtils.isEmpty(extension) ? size :
+                String.format("%s%s%s", size, FILE_MESSAGE_SEPARATOR, extension.toUpperCase());
+
+        if (!isSuccess) {
+            fileInfo = String.format("%s%s%s", fileInfo, FILE_MESSAGE_SEPARATOR,
+                    isUpload ? FILE_UPLOAD_FAILED : FILE_DOWNLOADING_MESSAGE);
+        }
+
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(xpathFileNamePlaceHolderByValue.apply(fileFullName)), timeout) &&
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                        By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeout);
+    }
+
+    public void tapFileActionButton() throws Exception {
+        getElement(idFileActionBtn).click();
     }
 
 }

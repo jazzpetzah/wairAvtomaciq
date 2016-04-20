@@ -1,9 +1,10 @@
 package com.wearezeta.auto.android.steps;
 
-import com.wearezeta.auto.android.pages.DialogPage;
+import com.wearezeta.auto.android.pages.ConversationViewPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -18,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DialogPageSteps {
+public class ConversationViewPageSteps {
 
     private static final String ANDROID_LONG_MESSAGE = CommonUtils.generateRandomString(300);
     private static final String LONG_MESSAGE_ALIAS = "LONG_MESSAGE";
@@ -36,13 +37,13 @@ public class DialogPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final ElementState mediaButtonState = new ElementState(
-            () -> getDialogPage().getMediaButtonState());
+            () -> getConversationViewPage().getMediaButtonState());
     private final ElementState conversationViewState = new ElementState(
-            () -> getDialogPage().getConvoViewStateScreenshot());
+            () -> getConversationViewPage().getConvoViewStateScreenshot());
     private final ElementState verifiedConversationShieldState = new ElementState(
-            () -> getDialogPage().getShieldStateScreenshot());
+            () -> getConversationViewPage().getShieldStateScreenshot());
     private final ElementState topToolbarState = new ElementState(
-            () -> getDialogPage().getTopToolbarState());
+            () -> getConversationViewPage().getTopToolbarState());
     private Boolean wasShieldVisible = null;
 
     private static String expandMessage(String message) {
@@ -55,8 +56,8 @@ public class DialogPageSteps {
         }
     }
 
-    private DialogPage getDialogPage() throws Exception {
-        return pagesCollection.getPage(DialogPage.class);
+    private ConversationViewPage getConversationViewPage() throws Exception {
+        return pagesCollection.getPage(ConversationViewPage.class);
     }
 
     /**
@@ -69,10 +70,10 @@ public class DialogPageSteps {
     public void WhenISeeDialogPage(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue("The cursor is not visible in the conversation view",
-                    getDialogPage().waitForCursorInputVisible());
+                    getConversationViewPage().waitForCursorInputVisible());
         } else {
             Assert.assertTrue("The cursor in the conversation view is still visible",
-                    getDialogPage().waitForCursorInputNotVisible());
+                    getConversationViewPage().waitForCursorInputNotVisible());
         }
     }
 
@@ -84,7 +85,7 @@ public class DialogPageSteps {
      */
     @When("^I tap on text input$")
     public void WhenITapOnTextInput() throws Exception {
-        getDialogPage().tapOnCursorInput();
+        getConversationViewPage().tapOnCursorInput();
     }
 
     /**
@@ -97,7 +98,7 @@ public class DialogPageSteps {
      */
     @When("^I type the message \"(.*)\" and send it( without hiding keyboard)?$")
     public void ITypeMessageAndSendIt(String msg, String doNotHideKeyboard) throws Exception {
-        getDialogPage().typeAndSendMessage(expandMessage(msg), doNotHideKeyboard == null);
+        getConversationViewPage().typeAndSendMessage(expandMessage(msg), doNotHideKeyboard == null);
     }
 
     /**
@@ -109,7 +110,7 @@ public class DialogPageSteps {
      */
     @When("^I type the message \"(.*)\"$")
     public void ITypeMessage(String msg) throws Exception {
-        getDialogPage().typeMessage(expandMessage(msg));
+        getConversationViewPage().typeMessage(expandMessage(msg));
     }
 
     /**
@@ -120,7 +121,7 @@ public class DialogPageSteps {
      */
     @When("^I swipe on text input$")
     public void WhenISwipeOnTextInput() throws Exception {
-        getDialogPage().swipeRightOnCursorInput();
+        getConversationViewPage().swipeRightOnCursorInput();
     }
 
     /**
@@ -131,30 +132,34 @@ public class DialogPageSteps {
      */
     @When("^I tap plus( button)? i?o?n text input$")
     public void WhenITapPlusInTextInput(String ignore) throws Exception {
-        getDialogPage().pressPlusButtonOnDialogPage();
+        getConversationViewPage().pressPlusButtonOnDialogPage();
     }
 
     /**
      * Press the corresponding button in the input controls
+     * Tap file button will send file directly when you installed testing_gallery-debug.apk
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Add people|Ping|Add Picture|Sketch) button$ from input tools$
+     * @step. ^I tap (Add people|Ping|Add Picture|Sketch|File) button$ from input tools$
      */
-    @When("^I tap (Add people|Ping|Add Picture|Sketch) button from input tools$")
+    @When("^I tap (Add people|Ping|Add Picture|Sketch|File) button from input tools$")
     public void WhenITapInputToolButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "ping":
-                getDialogPage().tapPingBtn();
+                getConversationViewPage().tapPingBtn();
                 break;
             case "add picture":
-                getDialogPage().tapAddPictureBtn();
+                getConversationViewPage().tapAddPictureBtn();
                 break;
             case "sketch":
-                getDialogPage().tapSketchBtn();
+                getConversationViewPage().tapSketchBtn();
                 break;
             case "add people":
-                getDialogPage().tapPeopleBtn();
+                getConversationViewPage().tapPeopleBtn();
+                break;
+            case "file":
+                getConversationViewPage().tapFileBtn();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
@@ -172,10 +177,10 @@ public class DialogPageSteps {
     public void WhenITapTopToolbarButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "audio call":
-                getDialogPage().tapAudioCallBtn();
+                getConversationViewPage().tapAudioCallBtn();
                 break;
             case "video call":
-                getDialogPage().tapVideoCallBtn();
+                getConversationViewPage().tapVideoCallBtn();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
@@ -190,7 +195,7 @@ public class DialogPageSteps {
      */
     @When("^I close input options$")
     public void ICloseInputOptions() throws Exception {
-        getDialogPage().closeInputOptions();
+        getConversationViewPage().closeInputOptions();
     }
 
     /**
@@ -201,7 +206,7 @@ public class DialogPageSteps {
      */
     @When("^I scroll to the bottom of conversation view$")
     public void IScrollToTheBottom() throws Exception {
-        getDialogPage().scrollToTheBottom();
+        getConversationViewPage().scrollToTheBottom();
     }
 
     /**
@@ -212,7 +217,7 @@ public class DialogPageSteps {
      */
     @When("^I tap conversation name from top toolbar$")
     public void WhenITapConversationDetailsBottom() throws Exception {
-        getDialogPage().tapTopToolbarTitle();
+        getConversationViewPage().tapTopToolbarTitle();
     }
 
     /**
@@ -223,7 +228,7 @@ public class DialogPageSteps {
      */
     @When("^I press PlayPause media item button$")
     public void WhenIPressPlayPauseButton() throws Exception {
-        getDialogPage().tapPlayPauseBtn();
+        getConversationViewPage().tapPlayPauseBtn();
     }
 
     /**
@@ -235,7 +240,7 @@ public class DialogPageSteps {
     @When("^I see Play button on [Yy]outube container$")
     public void ISeePlayButtonOnYoutubeContainer() throws Exception {
         Assert.assertTrue("Youtube Play button is not visible, but it should be",
-                getDialogPage().waitUntilYoutubePlayButtonVisible());
+                getConversationViewPage().waitUntilYoutubePlayButtonVisible());
     }
 
     /**
@@ -246,7 +251,7 @@ public class DialogPageSteps {
      */
     @When("^I press PlayPause on Mediabar button$")
     public void WhenIPressPlayPauseOnMediaBarButton() throws Exception {
-        getDialogPage().tapPlayPauseMediaBarBtn();
+        getConversationViewPage().tapPlayPauseMediaBarBtn();
     }
 
     /**
@@ -260,25 +265,25 @@ public class DialogPageSteps {
     public void WhenIPressButton(String buttonName) throws Exception {
         switch (buttonName.toLowerCase()) {
             case "take photo":
-                getDialogPage().takePhoto();
+                getConversationViewPage().takePhoto();
                 break;
             case "confirm":
-                getDialogPage().confirm();
+                getConversationViewPage().confirm();
                 break;
             case "gallery":
-                getDialogPage().openGallery();
+                getConversationViewPage().openGallery();
                 break;
             case "image close":
-                getDialogPage().closeFullScreenImage();
+                getConversationViewPage().closeFullScreenImage();
                 break;
             case "switch camera":
-                if (!getDialogPage().tapSwitchCameraButton()) {
+                if (!getConversationViewPage().tapSwitchCameraButton()) {
                     throw new PendingException(
                             "Device under test does not have front camera. " + "Skipping all the further verification...");
                 }
                 break;
             case "sketch image paint":
-                getDialogPage().tapSketchOnImageButton();
+                getConversationViewPage().tapSketchOnImageButton();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name: '%s'", buttonName));
@@ -296,7 +301,7 @@ public class DialogPageSteps {
     public void ThenISeePingMessageInTheDialog(String message) throws Exception {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Ping message '%s' is not visible after the timeout", message),
-                getDialogPage().waitForPingMessageWithText(message));
+                getConversationViewPage().waitForPingMessageWithText(message));
     }
 
     /**
@@ -308,7 +313,7 @@ public class DialogPageSteps {
     @Then("^I see my message \"(.*)\" in the dialog$")
     public void ThenISeeMyMessageInTheDialog(String msg) throws Exception {
         Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", msg),
-                getDialogPage().waitForMessage(expandMessage(msg)));
+                getConversationViewPage().waitForMessage(expandMessage(msg)));
     }
 
     /**
@@ -321,10 +326,10 @@ public class DialogPageSteps {
     @Then("^I (do not )?see new (?:photo|picture) in the dialog$")
     public void ThenISeeNewPhotoInTheDialog(String shouldNotSee) throws Throwable {
         if (shouldNotSee == null) {
-            Assert.assertTrue("No new photo is present in the chat", getDialogPage().isImageExists());
+            Assert.assertTrue("No new photo is present in the chat", getConversationViewPage().isImageExists());
         } else {
             Assert.assertTrue("A photo is present in the chat, but it should not be vivible",
-                    getDialogPage().isImageInvisible());
+                    getConversationViewPage().isImageInvisible());
         }
     }
 
@@ -336,7 +341,7 @@ public class DialogPageSteps {
      */
     @When("^I select last photo in dialog$")
     public void WhenISelectLastPhotoInDialog() throws Throwable {
-        getDialogPage().clickLastImageFromDialog();
+        getConversationViewPage().clickLastImageFromDialog();
     }
 
     /**
@@ -345,7 +350,7 @@ public class DialogPageSteps {
      */
     @When("^I swipe up on dialog page$")
     public void WhenISwipeUpOnDialogPage() throws Exception {
-        getDialogPage().dialogsPagesSwipeUp(SWIPE_DURATION_MILLISECONDS);
+        getConversationViewPage().dialogsPagesSwipeUp(SWIPE_DURATION_MILLISECONDS);
     }
 
     /**
@@ -356,7 +361,7 @@ public class DialogPageSteps {
      */
     @When("^I swipe down on dialog page$")
     public void WhenISwipedownOnDialogPage() throws Exception {
-        getDialogPage().dialogsPagesSwipeDown(SWIPE_DURATION_MILLISECONDS);
+        getConversationViewPage().dialogsPagesSwipeDown(SWIPE_DURATION_MILLISECONDS);
     }
 
     /**
@@ -367,7 +372,7 @@ public class DialogPageSteps {
      */
     @When("^I swipe down on dialog page until Mediabar appears$")
     public void ISwipedownOnDialogPageUntilMediaBarAppears() throws Exception {
-        Assert.assertTrue("Media Bar is not visible", getDialogPage().scrollUpUntilMediaBarVisible(MAX_SWIPES));
+        Assert.assertTrue("Media Bar is not visible", getConversationViewPage().scrollUpUntilMediaBarVisible(MAX_SWIPES));
     }
 
     /**
@@ -378,7 +383,7 @@ public class DialogPageSteps {
      */
     @When("^I navigate back from dialog page$")
     public void WhenINavigateBackFromDialogPage() throws Exception {
-        getDialogPage().navigateBack(1000);
+        getConversationViewPage().navigateBack(1000);
     }
 
     /**
@@ -390,7 +395,7 @@ public class DialogPageSteps {
      */
     @When("^I tap new message notification \"(.*)\"$")
     public void WhenIChangeConversationByClickMessageNotification(String message) throws Exception {
-        getDialogPage().tapMessageNotification(message);
+        getConversationViewPage().tapMessageNotification(message);
     }
 
     /**
@@ -402,7 +407,8 @@ public class DialogPageSteps {
      */
     @Then("^I see new message notification \"(.*)\"$")
     public void WhenISeeNewMessageNotification(String message) throws Exception {
-        getDialogPage().waitForMessageNotification(message);
+        Assert.assertTrue(String.format("The notification message of '%s' should be visible", message ),
+                getConversationViewPage().waitForMessageNotification(message));
     }
 
     /**
@@ -419,7 +425,7 @@ public class DialogPageSteps {
             participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias).getName());
         }
         Assert.assertTrue(String.format("Group chat view with names %s is not visible", participantNames),
-                getDialogPage().isConversationMessageContainsNames(participantNames));
+                getConversationViewPage().isConversationMessageContainsNames(participantNames));
     }
 
     /**
@@ -435,7 +441,7 @@ public class DialogPageSteps {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         final String expectedMsg = message + " " + contact;
         Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", expectedMsg),
-                getDialogPage().waitForMessage(expectedMsg));
+                getConversationViewPage().waitForMessage(expectedMsg));
     }
 
     /**
@@ -449,7 +455,7 @@ public class DialogPageSteps {
     public void ThenISeeMessageInformingGroupRename(String newConversationName) throws Exception {
         Assert.assertTrue(
                 String.format("The new conversation name '%s' has not been shown in the conversation view", newConversationName),
-                getDialogPage().waitForConversationNameChangedMessage(newConversationName));
+                getConversationViewPage().waitForConversationNameChangedMessage(newConversationName));
     }
 
     /**
@@ -464,15 +470,15 @@ public class DialogPageSteps {
     public void ThenISeeVerifiedConversationMessage(String nonVerified, String userName) throws Exception {
         if (nonVerified == null) {
             Assert.assertTrue("The otr verified conversation message has not been shown in the conversation view",
-                    getDialogPage().waitForOtrVerifiedMessage());
+                    getConversationViewPage().waitForOtrVerifiedMessage());
         } else if (userName == null) {
             Assert.assertTrue("The otr non verified conversation message has been shown in the conversation view",
-                    getDialogPage().waitForOtrNonVerifiedMessage());
+                    getConversationViewPage().waitForOtrNonVerifiedMessage());
         } else {
             userName = usrMgr.findUserByNameOrNameAlias(userName).getName();
             Assert.assertTrue(String.format(
                     "The otr non verified conversation message caused by user '%s' has been shown in the conversation view",
-                    userName), getDialogPage().waitForOtrNonVerifiedMessageCausedByUser(userName));
+                    userName), getConversationViewPage().waitForOtrNonVerifiedMessageCausedByUser(userName));
         }
 
     }
@@ -480,14 +486,20 @@ public class DialogPageSteps {
     /**
      * Used once to check that the last message sent is the same as what is expected
      *
-     * @param message the text of convo message
+     * @param message the text of convo
+     * @param not     equals to null if the message should be visible
      * @throws Exception
-     * @step. ^Last message is (.*)$
+     * @step. ^^I see the most recent conversation message is (not )?"(.*)"
      */
-    @Then("^Last message is (.*)$")
-    public void ThenLastMessageIs(String message) throws Exception {
-        Assert.assertTrue(String.format("The last conversation message is not equal to '%s'", message),
-                getDialogPage().isLastMessageEqualTo(message, 30));
+    @Then("^I see the most recent conversation message is (not )?\"(.*)\"")
+    public void ISeeLastMessage(String not, String message) throws Exception {
+        if (not == null) {
+            Assert.assertTrue(String.format("The most recent conversation message is not equal to '%s'", message),
+                    getConversationViewPage().isLastMessageEqualTo(message, 30));
+        } else {
+            Assert.assertFalse(String.format("The most recent conversation message should not be equal to '%s'", message),
+                    getConversationViewPage().isLastMessageEqualTo(message, 5));
+        }
     }
 
     /**
@@ -520,7 +532,32 @@ public class DialogPageSteps {
      */
     @When("^I tap back button in upper toolbar$")
     public void TapBackbuttonInUpperToolbar() throws Exception {
-        getDialogPage().tapTopToolbarBackButton();
+        getConversationViewPage().tapTopToolbarBackButton();
+    }
+
+    /**
+     * Wait until the file uploading completely
+     *
+     * @param timeoutSeconds the timeout in seconds for uploading
+     * @param size           should be good formated value, such as 5.00MB rather tha 5MB
+     * @param extension
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until (.*) file with extension "(\w+)" is uploaded$"
+     */
+    @When("^I wait up to (\\d+) seconds? until (.*) file with extension \"(\\w+)\" is uploaded$")
+    public void IWaitFileUploadingComplete(int timeoutSeconds, String size, String extension) throws Exception {
+        getConversationViewPage().waitUntilFileUploadIsCompleted(timeoutSeconds, size, extension);
+    }
+
+    /**
+     * Tap on file action button within File placeholder
+     *
+     * @throws Exception
+     * @step. ^I tap (?:Retry|Download|View) button on (?:upload|download) file placeholder$
+     */
+    @When("^I tap (?:Retry|Download|View) button on file (?:upload|download) placeholder$")
+    public void ITapOnFileActionButton() throws Exception {
+        getConversationViewPage().tapFileActionButton();
     }
 
     /**
@@ -559,7 +596,7 @@ public class DialogPageSteps {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         final String expectedMessage = contact + " CALLED";
         Assert.assertTrue(String.format("Missed call message '%s' is not visible in the conversation view", expectedMessage),
-                getDialogPage().waitUntilMissedCallMessageIsVisible(expectedMessage));
+                getConversationViewPage().waitUntilMissedCallMessageIsVisible(expectedMessage));
     }
 
     /**
@@ -578,13 +615,13 @@ public class DialogPageSteps {
         final int maxFrames = 4;
         switch (dst) {
             case DIALOG:
-                avgThreshold = ImageUtil.getAnimationThreshold(getDialogPage()::getRecentPictureScreenshot, maxFrames,
+                avgThreshold = ImageUtil.getAnimationThreshold(getConversationViewPage()::getRecentPictureScreenshot, maxFrames,
                         screenshotingDelay);
                 Assert.assertTrue(String.format("The picture in the conversation view seems to be static (%.2f >= %.2f)",
                         avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
                 break;
             case PREVIEW:
-                avgThreshold = ImageUtil.getAnimationThreshold(getDialogPage()::getPreviewPictureScreenshot, maxFrames,
+                avgThreshold = ImageUtil.getAnimationThreshold(getConversationViewPage()::getPreviewPictureScreenshot, maxFrames,
                         screenshotingDelay);
                 Assert.assertTrue(String.format("The picture in the image preview view seems to be static (%.2f >= %.2f)",
                         avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
@@ -601,7 +638,7 @@ public class DialogPageSteps {
     @Then("^I see unsent indicator next to new picture in the dialog$")
     public void ISeeUnsentIndictatorNextToAPicture() throws Exception {
         Assert.assertTrue("There is no unsent indicator next to a picture in the conversation view",
-                getDialogPage().waitForAPictureWithUnsentIndicator());
+                getConversationViewPage().waitForAPictureWithUnsentIndicator());
     }
 
     /**
@@ -612,7 +649,7 @@ public class DialogPageSteps {
      */
     @Then("^I see there is no content in the conversation$")
     public void ISeeThereIsNoContentInTheConversation() throws Exception {
-        int actualValue = getDialogPage().getCurrentNumberOfItemsInDialog();
+        int actualValue = getConversationViewPage().getCurrentNumberOfItemsInDialog();
         Assert.assertEquals("It looks like the conversation has some content", actualValue, 0);
     }
 
@@ -657,7 +694,7 @@ public class DialogPageSteps {
     public void ISeeMessageXTimes(String msg, int times) throws Exception {
         Assert.assertTrue(
                 String.format("Message '%s' is not present in the conversation view %s time(s)", msg, times),
-                getDialogPage().waitForXMessages(msg, times));
+                getConversationViewPage().waitForXMessages(msg, times));
     }
 
     /**
@@ -670,7 +707,7 @@ public class DialogPageSteps {
     @Then("^I see (\\d+) images? in the conversation view$")
     public void ISeeXImages(int expectedCount) throws Exception {
         Assert.assertTrue(String.format("There are less then %s images in the conversation view", expectedCount),
-                getDialogPage().waitForXImages(expectedCount));
+                getConversationViewPage().waitForXImages(expectedCount));
     }
 
     /**
@@ -719,7 +756,7 @@ public class DialogPageSteps {
     public void ThenISeeUnsentIndicatorNextToTheMessage(String msg) throws Exception {
         Assert.assertTrue(String.format(
                 "Unsent indicator has not been shown next to the '%s' message in the conversation view", msg),
-                getDialogPage().waitForUnsentIndicator(msg));
+                getConversationViewPage().waitForUnsentIndicator(msg));
     }
 
     private enum PictureDestination {
@@ -730,11 +767,11 @@ public class DialogPageSteps {
      * Checks to see that upper toolbar is visible
      *
      * @throws Exception
-     * @step.  ^I see the upper toolbar$
+     * @step. ^I see the upper toolbar$
      */
     @Then("^I see the upper toolbar$")
     public void ThenISeeTopToolbar() throws Exception {
-        Assert.assertTrue("The upper toolbar is invisible", getDialogPage().isTopToolbarVisible());
+        Assert.assertTrue("The upper toolbar is invisible", getConversationViewPage().isTopToolbarVisible());
     }
 
     /**
@@ -749,11 +786,11 @@ public class DialogPageSteps {
             switch (callType) {
                 case "audio":
                     Assert.assertTrue("The audio call button should be visible in upper toolbar",
-                            getDialogPage().isAudioCallIconInToptoolbarVisible());
+                            getConversationViewPage().isAudioCallIconInToptoolbarVisible());
                     break;
                 case "video":
                     Assert.assertTrue("The video call button should be visible in upper toolbar",
-                            getDialogPage().isVideoCallIconInToptoolbarVisible());
+                            getConversationViewPage().isVideoCallIconInToptoolbarVisible());
                     break;
                 default:
                     throw new IllegalArgumentException(String.format("Unknown button name '%s'", callType));
@@ -762,11 +799,11 @@ public class DialogPageSteps {
             switch (callType) {
                 case "audio":
                     Assert.assertTrue("The audio call button should be visible in upper toolbar",
-                            getDialogPage().isAudioCallIconInToptoolbarInvisible());
+                            getConversationViewPage().isAudioCallIconInToptoolbarInvisible());
                     break;
                 case "video":
                     Assert.assertTrue("The video call button should be visible in upper toolbar",
-                            getDialogPage().isVideoCallIconInToptoolbarInvisible());
+                            getConversationViewPage().isVideoCallIconInToptoolbarInvisible());
                     break;
                 default:
                     throw new IllegalArgumentException(String.format("Unknown button name '%s'", callType));
@@ -786,7 +823,7 @@ public class DialogPageSteps {
         String expectedConversationNames = usrMgr.replaceAliasesOccurences(conversationNameAliases, FindBy.NAME_ALIAS)
                 .replaceAll(",", ", ");
         Assert.assertTrue(String.format("The conversation title should be %s", expectedConversationNames),
-                getDialogPage().isConversationTitleVisible(expectedConversationNames));
+                getConversationViewPage().isConversationTitleVisible(expectedConversationNames));
     }
 
     /**
@@ -797,20 +834,45 @@ public class DialogPageSteps {
      */
     @Then("^I see the media bar is below the upper toolbar$")
     public void ThenISeeTheMediaBarIsBelowUpperToolbar() throws Exception {
-        Assert.assertTrue("The media bar should below the upper toolbar", getDialogPage().isMediaBarBelowUptoolbar());
+        Assert.assertTrue("The media bar should below the upper toolbar", getConversationViewPage().isMediaBarBelowUptoolbar());
     }
 
     /**
-     * Check the cursor bar only contains ping, sketch, add picture and people buttons in cursor bar
+     * Check the cursor bar only contains ping, sketch, add picture, people and file buttons in cursor bar
      *
      * @throws Exception
-     * @step. ^I only see ping, sketch, camera and people buttons in cursor menu
+     * @step. ^I only see ping, sketch, camera, people and file buttons in cursor menu
      */
-    @Then("^I only see ping, sketch, camera and people buttons in cursor menu")
+    @Then("^I only see ping, sketch, camera, people and file buttons in cursor menu")
     public void ThenIOnlySeePingSketchAddPicturePeopleButton() throws Exception {
-        Assert.assertTrue("Ping button should be visible in cursor menu", getDialogPage().isPingButtonVisible());
-        Assert.assertTrue("Sketch button should be visible in cursor menu", getDialogPage().isSketchButtonVisible());
-        Assert.assertTrue("Camera button should be visible in cursor menu", getDialogPage().isCameraButtonVisible());
-        Assert.assertTrue("People button should be visible in cursor menu", getDialogPage().isPeopleButtonVisible());
+        Assert.assertTrue("Ping button should be visible in cursor menu", getConversationViewPage().isPingButtonVisible());
+        Assert.assertTrue("Sketch button should be visible in cursor menu", getConversationViewPage().isSketchButtonVisible());
+        Assert.assertTrue("Camera button should be visible in cursor menu", getConversationViewPage().isCameraButtonVisible());
+        Assert.assertTrue("People button should be visible in cursor menu", getConversationViewPage().isPeopleButtonVisible());
+        Assert.assertTrue("File button should be visible in cursor menu", getConversationViewPage().isFileButtonVisible());
+    }
+
+    /**
+     * Check the expected placehoder is visible
+     *
+     * @param size          the expected size displayed, value should be good formatted, such as 3.00MB rather than 3MB
+     * @param loadDirection could be upload or received
+     * @param fileFullName  the expected file name displayed
+     * @param extension     the extension of the file uploaded
+     * @param timeout       (optional) to define the validation should be complete within timeout
+     * @param actionFailed  equals null means current action successfully
+     * @throws Exception
+     * @step. ^I see the result of (.*) file (upload|received)?( failed)? having name "(.*)" and extension "(\w+)"( in \d+ seconds)?$
+     */
+    @Then("^I see the result of (.*) file (upload|received)? having name \"(.*)\" and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
+    public void ThenISeeTheResultOfXFileUpload(String size, String loadDirection, String fileFullName,
+                                               String extension, String timeout, String actionFailed) throws Exception {
+        int lookUpTimeoutSeconds = (timeout == null) ? DriverUtils.getDefaultLookupTimeoutSeconds()
+                : Integer.parseInt(timeout.replaceAll("[\\D]", ""));
+        boolean isUpload = loadDirection.equals("upload");
+        boolean isSuccess = (actionFailed == null);
+        Assert.assertTrue("The placeholder of sending file should be visible",
+                getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload,
+                        isSuccess, lookUpTimeoutSeconds));
     }
 }

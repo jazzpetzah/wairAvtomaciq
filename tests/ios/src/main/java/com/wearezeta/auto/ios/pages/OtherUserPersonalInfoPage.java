@@ -25,10 +25,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     private static final By nameExitOtherUserPersonalInfoPageButton = MobileBy.AccessibilityId("OtherUserProfileCloseButton");
 
-    private static final By xpathArchiveButton = By.xpath("//UIAButton[@name='ARCHIVE']");
-
-    private static final By xpathDeleteConversationButton = By.xpath("//UIAButton[@name='DELETE' and @visible='true']");
-
     private static final By xpathConfirmDeleteButton = By
         .xpath("//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']");
 
@@ -48,14 +44,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
     protected static final By nameOtherUserConversationMenu = MobileBy.AccessibilityId("OtherUserMetaControllerRightButton");
 
     private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
-
-    private static final By xpathSilenceConversationButton = By.xpath(xpathStrMainWindow + "/UIAButton[@name='SILENCE']");
-
-    private static final By nameUnsilenceConversationButton = MobileBy.AccessibilityId("NOTIFY");
-
-    private static final By nameBlockMenuButton = MobileBy.AccessibilityId("BLOCK");
-
-    private static final By nameCancelButton = MobileBy.AccessibilityId("CANCEL");
 
     private static final By xpathActionMenu = By
         .xpath("//UIAStaticText[following-sibling::UIAButton[@name='CANCEL'] and @visible='true']");
@@ -87,14 +75,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
     public void openEllipsisMenu() throws Exception {
         openConversationMenu();
-    }
-
-    public void clickArchiveMenuButton() throws Exception {
-        getElement(xpathArchiveButton).click();
-    }
-
-    public void clickDeleteMenuButton() throws Exception {
-        getElement(xpathDeleteConversationButton).click();
     }
 
     public void clickConfirmDeleteButton() throws Exception {
@@ -164,22 +144,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
         } else {
             getElement(nameOtherUserConversationMenu).click();
         }
-    }
-
-    public void clickSilenceMenuButton() throws Exception {
-        getElement(xpathSilenceConversationButton).click();
-    }
-
-    public void clickNotifyMenuButton() throws Exception {
-        getElement(nameUnsilenceConversationButton).click();
-    }
-
-    public void clickBlockMenuButton() throws Exception {
-        getElement(nameBlockMenuButton).click();
-    }
-
-    public void clickCancelButton() throws Exception {
-        getElement(nameCancelButton).click();
     }
 
     public boolean isActionMenuVisible() throws Exception {

@@ -13,7 +13,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
     private static final By idVideoSelfPreview = By.id("spv__self_preview");
 
     private static final By xpathOngoingCallContainer =
-            By.xpath("//*[@id='tcfl__calling__container' and //*[@id='spv__self_preview']]");
+            By.xpath("//*[@id='fl__calling__container' and //*[@id='spv__self_preview']]");
 
     public CallOngoingVideoPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);

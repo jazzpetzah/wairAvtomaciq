@@ -218,7 +218,6 @@ Feature: VideoCalling
     And I do not see mute call button for conversation <Contact>
     And I do not see video button for conversation <Contact>
 
-
     Examples:
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
@@ -410,7 +409,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
-  @C12076 @videocalling @staging
+  @C12076 @videocalling @regression
   Scenario Outline: Verify I get missed call indication when someone called (video)
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -435,3 +434,59 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout | Action |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      | called |
+
+  @C87624 @videocalling @regression
+  Scenario Outline: Verify I see notification when I start a second video call
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> start instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I am signed in properly
+    And I open conversation with <Contact1>
+    And I start a video call
+    Then I see the outgoing call controls for conversation <Contact1>
+    When I open conversation with <Contact2>
+    And I start a video call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    And I see the outgoing call controls for conversation <Contact1>
+    When I start a video call
+    Then I see another call warning modal
+    When I click on "Hang Up" button in another call warning modal
+    Then I do not see another call warning modal
+    And I see the outgoing call controls for conversation <Contact2>
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      |
+
+  @C77946 @videocalling @staging
+  Scenario Outline: Verify I can start an audio call back after declining a video call
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I am signed in properly
+    And <Contact> starts a video call to me
+    Then I see the incoming call controls for conversation <Contact>
+    And I see decline call button for conversation <Contact>
+    When I ignore the call from conversation <Contact>
+    Then I do not see the call controls for conversation <Contact>
+    And I do not see my self video view
+    When I open conversation with <Contact>
+    And I call
+    Then I see the outgoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact> verifies to have 1 flows
+    And <Contact> verifies that all flows have greater than 0 bytes
+    When I hang up call with conversation <Contact>
+    Then I do not see the call controls for conversation <Contact>
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |

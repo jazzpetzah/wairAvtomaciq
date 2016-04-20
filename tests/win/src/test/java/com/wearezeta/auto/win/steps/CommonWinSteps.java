@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 import com.wearezeta.auto.common.CommonSteps;
 import static com.wearezeta.auto.common.CommonUtils.executeOsXCommand;
 import com.wearezeta.auto.common.ZetaFormatter;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.driver.ZetaWinDriver;
@@ -17,7 +16,6 @@ import com.wearezeta.auto.win.common.WinExecutionContext;
 import com.wearezeta.auto.win.pages.win.MainWirePage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
-import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.steps.CommonWebAppSteps;
@@ -28,7 +26,6 @@ import static com.wearezeta.auto.win.common.WinCommonUtils.killAllApps;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WINIUM_URL;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_FOLDER;
 import static com.wearezeta.auto.win.common.WinExecutionContext.WIRE_APP_PATH;
-import com.wearezeta.auto.win.locators.WinLocators;
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -56,7 +53,6 @@ import java.util.logging.Level;
 import org.apache.commons.collections.IteratorUtils;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
-import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogEntry;
@@ -71,7 +67,6 @@ public class CommonWinSteps {
     public static final Logger LOG = ZetaLogger.getLog(CommonWinSteps.class.getName());
 
     private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
-    private static final int WRAPPER_STARTUP_TIMEOUT_SECONDS = 10;
     private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
     private final WinPagesCollection winPagesCollection = WinPagesCollection.getInstance();
     private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -100,16 +95,20 @@ public class CommonWinSteps {
             // do not fail if smt fails here
             e.printStackTrace();
         }
+        log.debug("Resetting users");
         commonSteps.getUserManager().resetUsers();
+        log.debug("Clearing drivers");
         clearDrivers();
     }
 
     private void startApp() throws Exception {
+        LOG.debug("Creating Win Driver");
         final Future<ZetaWinDriver> winDriverFuture = createWinDriver();
-        final Future<ZetaWebAppDriver> webDriverFuture = createWebDriver(winDriverFuture);
-
-        // get drivers instantly
+        LOG.debug("Init Win Driver");
         final ZetaWinDriver winDriver = winDriverFuture.get();
+        LOG.debug("Creating Webapp Driver");
+        final Future<ZetaWebAppDriver> webDriverFuture = createWebDriver(winDriverFuture);
+        LOG.debug("Init Webapp Driver");
         final ZetaWebAppDriver webappDriver = webDriverFuture.get();
 
         // reducing the timeout to fail fast with
@@ -120,12 +119,11 @@ public class CommonWinSteps {
 
         ZetaFormatter.setLazyDriver(winDriverFuture);
 
+        LOG.debug("Setting first Win Page");
         winPagesCollection.setFirstPage(new MainWirePage(winDriverFuture));
-        waitForAppStartup(winDriver);
         winPagesCollection.getPage(MainWirePage.class).focusApp();
-        waitForWebappLoaded(webappDriver);
-        webappPagesCollection
-                .setFirstPage(new RegistrationPage(webDriverFuture));
+        LOG.debug("Setting first Webapp Page");
+        webappPagesCollection.setFirstPage(new RegistrationPage(webDriverFuture));
     }
 
     private Future<ZetaWebAppDriver> createWebDriver(
@@ -141,11 +139,9 @@ public class CommonWinSteps {
         options.addArguments("enable-logging");
         options.setBinary(WIRE_APP_FOLDER + WIRE_APP_PATH);
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-        capabilities.setCapability("platformName",
-                WinExecutionContext.CURRENT_SECONDARY_PLATFORM.name());
+        capabilities.setCapability("platformName", WinExecutionContext.CURRENT_SECONDARY_PLATFORM.name());
 
-        setExtendedLoggingLevel(capabilities,
-                WinExecutionContext.EXTENDED_LOGGING_LEVEL);
+        setExtendedLoggingLevel(capabilities, WinExecutionContext.EXTENDED_LOGGING_LEVEL);
 
         service = new ChromeDriverService.Builder()
                 .usingDriverExecutable(
@@ -162,8 +158,7 @@ public class CommonWinSteps {
         PlatformDrivers
                 .getInstance()
                 .getDrivers()
-                .put(WinExecutionContext.CURRENT_SECONDARY_PLATFORM,
-                        lazyWebDriver);
+                .put(WinExecutionContext.CURRENT_SECONDARY_PLATFORM, lazyWebDriver);
         return lazyWebDriver;
     }
 
@@ -183,10 +178,8 @@ public class CommonWinSteps {
         Callable<ZetaWinDriver> callableWinDriver = () -> new ZetaWinDriver(
                 new URL(WINIUM_URL), capabilities);
 
-        final Future<ZetaWinDriver> lazyWinDriver = pool
-                .submit(callableWinDriver);
-        PlatformDrivers.getInstance().getDrivers()
-                .put(WinExecutionContext.CURRENT_PLATFORM, lazyWinDriver);
+        final Future<ZetaWinDriver> lazyWinDriver = pool.submit(callableWinDriver);
+        PlatformDrivers.getInstance().getDrivers().put(WinExecutionContext.CURRENT_PLATFORM, lazyWinDriver);
         return lazyWinDriver;
     }
 
@@ -208,21 +201,16 @@ public class CommonWinSteps {
         // logs.enable(LogType.PROFILER, Level.ALL);
         // logs.enable(LogType.SERVER, Level.ALL);
         capabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
-        log.debug("Browser logging level has been set to '" + level.getName()
-                + "'");
+        log.debug("Browser logging level has been set to '" + level.getName() + "'");
     }
 
     public void clearDrivers() throws Exception {
         WinPagesCollection.getInstance().clearAllPages();
-        if (PlatformDrivers.getInstance().hasDriver(
-                WinExecutionContext.CURRENT_PLATFORM)) {
-            PlatformDrivers.getInstance().quitDriver(
-                    WinExecutionContext.CURRENT_PLATFORM);
+        if (PlatformDrivers.getInstance().hasDriver(WinExecutionContext.CURRENT_PLATFORM)) {
+            PlatformDrivers.getInstance().quitDriver(WinExecutionContext.CURRENT_PLATFORM);
         }
-        if (PlatformDrivers.getInstance().hasDriver(
-                WinExecutionContext.CURRENT_SECONDARY_PLATFORM)) {
-            PlatformDrivers.getInstance().quitDriver(
-                    WinExecutionContext.CURRENT_SECONDARY_PLATFORM);
+        if (PlatformDrivers.getInstance().hasDriver(WinExecutionContext.CURRENT_SECONDARY_PLATFORM)) {
+            PlatformDrivers.getInstance().quitDriver(WinExecutionContext.CURRENT_SECONDARY_PLATFORM);
         }
         if (service != null && service.isRunning()) {
             service.stop();
@@ -244,24 +232,6 @@ public class CommonWinSteps {
             }
             log.debug("--- END OF LOG ---");
         }
-
-    }
-
-    private void waitForAppStartup(ZetaWinDriver winDriver) throws Exception {
-        assert DriverUtils.waitUntilLocatorAppears(winDriver,
-                By.xpath(WinLocators.MainWirePage.xpathWindow),
-                WRAPPER_STARTUP_TIMEOUT_SECONDS) : "Application did not started properly";
-        LOG.debug("Application started");
-    }
-
-    private void waitForWebappLoaded(ZetaWebAppDriver webdriver)
-            throws Exception {
-        assert DriverUtils
-                .waitUntilLocatorAppears(
-                        webdriver,
-                        By.cssSelector(WebAppLocators.RegistrationPage.cssSwitchToSignInButton),
-                        WRAPPER_STARTUP_TIMEOUT_SECONDS);
-        LOG.debug("Webapp started");
 
     }
 
@@ -306,8 +276,7 @@ public class CommonWinSteps {
      * @throws Exception
      */
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
-    public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
-            throws Exception {
+    public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMe(
                 WinExecutionContext.CURRENT_PLATFORM, count, myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "default");

@@ -4,7 +4,7 @@ Feature: Sign In
   Scenario Outline: Sign in to ZClient [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
+    When I switch to Log In tab
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
@@ -21,7 +21,7 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
+    When I switch to Log In tab
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
@@ -37,7 +37,7 @@ Feature: Sign In
   Scenario Outline: Notification if SignIn credentials are wrong [LANDSCAPE]
     Given I see sign in screen
     Given I rotate UI to landscape
-    When I tap I HAVE AN ACCOUNT button
+    When I switch to Log In tab
     And I enter wrong email <WrongMail>
     And I enter wrong password <WrongPassword>
     And I attempt to press Login button
@@ -52,7 +52,7 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
+    When I switch to Log In tab
     Then I see PHONE SIGN IN button
     When I tap on PHONE SIGN IN button
     Then I see country picker button on Sign in screen
@@ -71,7 +71,7 @@ Feature: Sign In
     Given There is 1 user where <Name> is me with phone number only
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
+    When I switch to Log In tab
     Then I see PHONE SIGN IN button
     When I tap on PHONE SIGN IN button
     Then I see country picker button on Sign in screen
@@ -96,7 +96,7 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
+    When I switch to Log In tab
     Then I see PHONE SIGN IN button
     And I tap on PHONE SIGN IN button
     And I see country picker button on Sign in screen
@@ -114,7 +114,7 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
+    When I switch to Log In tab
     Then I see PHONE SIGN IN button
     And I tap on PHONE SIGN IN button
     And I see country picker button on Sign in screen
@@ -132,7 +132,7 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
+    When I switch to Log In tab
     And I see PHONE SIGN IN button
     And I tap on PHONE SIGN IN button
     And I see country picker button on Sign in screen
@@ -148,7 +148,7 @@ Feature: Sign In
     Given There is 1 user where <Name> is me with phone number only
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
+    When I switch to Log In tab
     And I see PHONE SIGN IN button
     And I tap on PHONE SIGN IN button
     And I see country picker button on Sign in screen
@@ -176,7 +176,7 @@ Feature: Sign In
     Given There is 1 user where <Name> is me with phone number only
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
+    When I switch to Log In tab
     And I tap on PHONE SIGN IN button
     Then I see country picker button on Sign in screen
     When I enter phone number for user <Name>

@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -20,15 +21,14 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-
-public class DialogPage extends IOSPage {
+public class ConversationViewPage extends IOSPage {
     private static final By nameConversationBackButton = MobileBy.AccessibilityId("ConversationBackButton");
 
     private static final By nameConversationCursorInput = MobileBy.AccessibilityId("ConversationTextInputField");
 
     private static final By namePlusButton = MobileBy.AccessibilityId("plusButton");
 
-    private static final By nameOpenConversationDetails = MobileBy.AccessibilityId("ComposeControllerConversationDetailButton");
+    private static final By namePeopleButton = MobileBy.AccessibilityId("ComposeControllerConversationDetailButton");
 
     protected static final By nameYouRenamedConversation = MobileBy.AccessibilityId("YOU RENAMED THE CONVERSATION");
 
@@ -115,6 +115,7 @@ public class DialogPage extends IOSPage {
     private static final By nameCursorSketchButton = MobileBy.AccessibilityId("ComposeControllerSketchButton");
     protected static final By nameAddPictureButton = MobileBy.AccessibilityId("ComposeControllerPictureButton");
     private static final By namePingButton = MobileBy.AccessibilityId("ComposeControllerPingButton");
+    private static final By nameFileTransferButton = MobileBy.AccessibilityId("ComposeControllerDocUploadButton");
 
 
     private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[@name='ConversationView']";
@@ -126,16 +127,29 @@ public class DialogPage extends IOSPage {
             "/UIAButton[@name='Back']/following-sibling::" +
             "UIAButton[not(@name='ConversationBackButton') and boolean(string(@label))]");
 
-    private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton};
+    private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton,
+            nameFileTransferButton};
 
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
     private static final Function<String, String> xpathStrUserNameInUpperToolbar = text ->
             String.format("%s/UIAButton[contains(@name, '%s')]", xpathStrConversationViewTopBar, text.toUpperCase());
 
-    private static final Logger log = ZetaLogger.getLog(DialogPage.class.getSimpleName());
+    private static final String nameStrFileTransferTopLabel = "FileTransferTopLabel";
+    private static final By nameFileTransferTopLabel = MobileBy.AccessibilityId(nameStrFileTransferTopLabel);
+    private static final Function<String, String> xpathTransferTopLabelByFileName = name ->
+            String.format("//UIAStaticText[@name='%s' and @value='%s']", nameStrFileTransferTopLabel, name.toUpperCase());
 
-    public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+    private static final String nameStrFileTransferBottomLabel = "FileTransferBottomLabel";
+    private static final By nameFileTransferBottomLabel = MobileBy.AccessibilityId(nameStrFileTransferBottomLabel);
+    private static final Function<String, String> xpathTransferBottomLabelByExpr = expr ->
+            String.format("//UIAStaticText[@name='%s' and %s]", nameStrFileTransferBottomLabel, expr);
+
+    private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
+
+    private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
+
+    public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -147,10 +161,6 @@ public class DialogPage extends IOSPage {
     public boolean waitUntilPartOfTextMessageIsNotVisible(String msg) throws Exception {
         final By locator = By.xpath(xpathStrMessageByTextPart.apply(msg));
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
-    }
-
-    public void tapPingButton() throws Exception {
-        getElement(namePingButton).click();
     }
 
     public void tapVideoCallButton() throws Exception {
@@ -194,8 +204,8 @@ public class DialogPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConversationCursorInput, 10);
     }
 
-    public boolean isCursorInputVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConversationCursorInput);
+    public boolean waitForCursorInputInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConversationCursorInput);
     }
 
     public void clickOnCallButtonForContact(String contact) throws Exception {
@@ -265,10 +275,6 @@ public class DialogPage extends IOSPage {
                     (btnLocation.y + btnSize.height / 2) * 100 / windowSize.height, (btnLocation.x - btnSize.width * 7) * 100
                             / windowSize.width, (btnLocation.y + btnSize.height / 2) * 100 / windowSize.height);
         }
-    }
-
-    public void pressAddPictureButton() throws Exception {
-        getElement(nameAddPictureButton).click();
     }
 
     public int getCountOfImages() throws Exception {
@@ -458,10 +464,6 @@ public class DialogPage extends IOSPage {
         getElement(nameGifButton).click();
     }
 
-    public void openSketch() throws Exception {
-        getElement(nameCursorSketchButton).click();
-    }
-
     public boolean isMyNameInDialogDisplayed(String name) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(name.toUpperCase()));
     }
@@ -474,10 +476,6 @@ public class DialogPage extends IOSPage {
     public boolean isConnectingToUserConversationLabelVisible(String username) throws Exception {
         final By locator = By.xpath(xpathStrConnectingToUserLabelByName.apply(username));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public void navigateBack(int timeMilliseconds) throws Exception {
-        swipeRight(timeMilliseconds, DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 30);
     }
 
     public void clickPlusButton() throws Exception {
@@ -495,8 +493,8 @@ public class DialogPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), namePlusButton);
     }
 
-    public boolean isOpenConversationDetailsButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameOpenConversationDetails);
+    public boolean isPeopleButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), namePeopleButton);
     }
 
     public boolean verifyInputOptionsCloseButtonNotVisible() throws Exception {
@@ -606,5 +604,64 @@ public class DialogPage extends IOSPage {
 
     public boolean isYouCalledMessageAndButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrMissedCallButtonByYourself);
+    }
+
+    public Optional<BufferedImage> getRecentPictureScreenshot() throws Exception {
+        return getElementScreenshot(getElement(xpathLastImageCell));
+    }
+
+    public void tapFileTransferMenuItem(String itemName) throws Exception {
+        getElement(MobileBy.AccessibilityId(itemName)).click();
+    }
+
+    public boolean fileTransferTopLabelIsVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferTopLabel);
+    }
+
+    public boolean fileTransferBottomLabelIsVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferBottomLabel);
+    }
+
+    private By getInputToolButtonByName(String btnName) {
+        switch (btnName.toLowerCase()) {
+            case "add picture":
+                return nameAddPictureButton;
+            case "ping":
+                return namePingButton;
+            case "sketch":
+                return nameCursorSketchButton;
+            case "file transfer":
+                return nameFileTransferButton;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
+        }
+    }
+
+    public boolean inputToolButtonByNameIsVisible(String name) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getInputToolButtonByName(name));
+    }
+
+    public boolean inputToolButtonByNameIsNotVisible(String name) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), getInputToolButtonByName(name));
+    }
+
+    public void tapInputToolButtonByName(String name) throws Exception {
+        getElement(getInputToolButtonByName(name)).click();
+    }
+
+    public boolean waitUntilDownloadReadyPlaceholderVisible(String expectedFileName, String expectedSize,
+                                                            int timeoutSeconds) throws Exception {
+        final String nameWOExtension = FilenameUtils.getBaseName(expectedFileName);
+        final String extension = FilenameUtils.getExtension(expectedFileName);
+
+        final By topLabelLocator = By.xpath(xpathTransferTopLabelByFileName.apply(nameWOExtension));
+        final By bottomLabelLocator = By.xpath(xpathTransferBottomLabelByExpr.apply(
+                String.join(" and ",
+                        String.format("starts-with(@value, '%s')", expectedSize.toUpperCase()),
+                        String.format("contains(@value, '%s')", extension.toUpperCase())
+                )
+        ));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), topLabelLocator, timeoutSeconds) &&
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), bottomLabelLocator, timeoutSeconds);
     }
 }

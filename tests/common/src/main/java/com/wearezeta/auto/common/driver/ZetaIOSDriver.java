@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.TimeoutException;
 
-import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -25,6 +24,8 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 
 
 public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
+    public static final long MAX_COMMAND_DURATION_MILLIS = 150000;
+
     private static final Logger log = ZetaLogger.getLog(ZetaIOSDriver.class.getSimpleName());
 
     private volatile boolean isSessionLost = false;
@@ -73,6 +74,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
     private void setSessionLost(boolean isSessionLost) {
         if (isSessionLost != this.isSessionLost) {
             log.warn(String.format("Changing isSessionLost to %s", isSessionLost));
+            log.debug(LOG_DECORATION_PREFIX + "\n" + AppiumServer.getLog().orElse("") + "\n" + LOG_DECORATION_SUFFIX);
         }
         this.isSessionLost = isSessionLost;
     }
@@ -95,6 +97,9 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
         return this.execute(command, ImmutableMap.<String, Object>of());
     }
 
+    private static final String LOG_DECORATION_PREFIX = "*************APPIUM SERVER LOG START**************";
+    private static final String LOG_DECORATION_SUFFIX = "*************APPIUM SERVER LOG END****************";
+
     @Override
     public Response execute(String driverCommand, Map<String, ?> parameters) {
         if (this.isSessionLost() && !driverCommand.equals(DriverCommand.SCREENSHOT)) {
@@ -105,7 +110,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
         final Callable<Response> task = () -> super.execute(driverCommand, parameters);
         final Future<Response> future = getPool().submit(task);
         try {
-            return future.get(MAX_COMMAND_DURATION, TimeUnit.SECONDS);
+            return future.get(MAX_COMMAND_DURATION_MILLIS, TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             if (e instanceof ExecutionException) {
                 if (driverCommand.equals(MobileCommand.HIDE_KEYBOARD) && (e.getCause() instanceof WebDriverException)) {
@@ -116,18 +121,32 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
                     return response;
                 }
                 if (isSessionLostBecause(e.getCause())) {
-                    setSessionLost(true);
+                    if (!isSessionLost()) {
+                        try {
+                            super.execute(DriverCommand.QUIT);
+                        } catch (Exception eq) {
+                            // ignore
+                        } finally {
+                            setSessionLost(true);
+                        }
+                    }
                 }
-                Throwables.propagate(e.getCause());
+                throw new WebDriverException(e.getCause());
             } else {
                 if (e instanceof TimeoutException) {
-                    setSessionLost(true);
+                    if (!isSessionLost()) {
+                        try {
+                            super.execute(DriverCommand.QUIT);
+                        } catch (Exception eq) {
+                            // ignore
+                        } finally {
+                            setSessionLost(true);
+                        }
+                    }
                 }
-                Throwables.propagate(e);
+                throw new WebDriverException(e);
             }
         }
-        // This should never happen
-        return super.execute(driverCommand, parameters);
     }
 
 }
