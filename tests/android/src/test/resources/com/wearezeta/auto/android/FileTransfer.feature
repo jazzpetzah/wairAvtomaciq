@@ -45,12 +45,12 @@ Feature: File transfer
     When I tap on contact name <Contact1>
     And <Contact1> sends <FileSize> file having name "<FileName>.<FileExtension>" and MIME type "<MimeType>" via device Device1 to user Myself
     Then I see new message notification "Shared a file"
-    And I see the result of <FileSize> file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in 60 seconds
+    And I see the result of <FileSize> file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <ReceiveTimeout> seconds
 
 
     Examples:
-      | Name      | Contact1  | FileName  | FileSize | FileExtension | MimeType   |
-      | user1Name | user2Name | qa_random | 3.00MB   | txt           | text/plain |
+      | Name      | Contact1  | FileName  | FileSize | FileExtension | MimeType   | ReceiveTimeout |
+      | user1Name | user2Name | qa_random | 3.00MB   | txt           | text/plain | 60             |
 
   @staging @C87639
   Scenario Outline: Verify retry sending a file
@@ -74,3 +74,24 @@ Feature: File transfer
     Examples:
       | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout |
       | user1Name | user2Name | qa_random | txt           | 9.00MB   | 20               |
+
+  @staging @C87643
+  Scenario Outline: Verify notification on sender side if upload has failed
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And I tap plus button in text input
+    And I tap File button from input tools
+    And I tap back button in upper toolbar
+    And I tap on contact name <Contact2>
+    And I enable Airplane mode on the device
+    Then I see new message notification "File upload failed"
+    And I disable Airplane mode on the device
+
+    Examples:
+      | Name      | Contact1  | Contact2  | FileName  | FileExtension | FileSize  |
+      | user1Name | user2Name | user3Name | qa_random | txt           | 24.00MB   |

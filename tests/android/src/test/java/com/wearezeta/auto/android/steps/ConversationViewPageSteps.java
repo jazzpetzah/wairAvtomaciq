@@ -407,7 +407,8 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see new message notification \"(.*)\"$")
     public void WhenISeeNewMessageNotification(String message) throws Exception {
-        getConversationViewPage().waitForMessageNotification(message);
+        Assert.assertTrue(String.format("The notification message of '%s' should be visible", message ),
+                getConversationViewPage().waitForMessageNotification(message));
     }
 
     /**
