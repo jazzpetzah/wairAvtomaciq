@@ -8,7 +8,7 @@ Feature: File Transfer
     Given I see conversations list
     When I tap on contact name <Contact>
     And User <Contact> sends file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Then I wait up to <Timeout> seconds until the file <FileName>.<FileExt> with size <FileSize> is ready for download
+    Then I wait up to <Timeout> seconds until the file <FileName>.<FileExt> with size <FileSize> is ready for download from conversation view
 
     Examples:
       | Name      | Contact   | FileName | FileExt | FileSize | FileMIME   | ContactDevice | Timeout |
