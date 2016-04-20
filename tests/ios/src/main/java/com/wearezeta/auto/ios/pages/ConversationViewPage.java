@@ -668,4 +668,9 @@ public class ConversationViewPage extends IOSPage {
     public void tapFileTransferPlaceholder() throws Exception {
         getElement(nameFileTransferBottomLabel).click();
     }
+
+    public boolean waitUntilPreviewIsVisible(int secondsTimeout, String expectedFileName) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(expectedFileName),
+                secondsTimeout);
+    }
 }
