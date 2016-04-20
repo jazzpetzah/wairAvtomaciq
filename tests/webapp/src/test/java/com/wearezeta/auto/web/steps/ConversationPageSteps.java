@@ -268,7 +268,7 @@ public class ConversationPageSteps {
      */
     @Then("^I see file transfer button in conversation input$")
     public void ISeeFileButton() throws Exception {
-        assertThat("No button found", webappPagesCollection.getPage(ConversationPage.class).isFileButtonDisplayed());
+        assertThat("No button found", context.getPagesCollection().getPage(ConversationPage.class).isFileButtonDisplayed());
     }
 
     /**
@@ -280,7 +280,7 @@ public class ConversationPageSteps {
      */
     @When("^I send file (.*) to the current conversation$")
     public void WhenISendFile(String fileName) throws Exception {
-        webappPagesCollection.getPage(ConversationPage.class).sendFile(fileName);
+        context.getPagesCollection().getPage(ConversationPage.class).sendFile(fileName);
     }
 
     /**
@@ -304,7 +304,7 @@ public class ConversationPageSteps {
             f.setLength(fileSize);
         }
         f.close();
-        webappPagesCollection.getPage(ConversationPage.class).sendFile(fileName);
+        context.getPagesCollection().getPage(ConversationPage.class).sendFile(fileName);
     }
 
     /**
@@ -317,13 +317,13 @@ public class ConversationPageSteps {
     @Then("^I (do not )?see file transfer for file (.*) in the conversation view$")
     public void ISeeFileTransferOfFile(String doNot, String fileName) throws Exception {
         if(doNot == null) {
-            assertThat("Could not find file transfer for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+            assertThat("Could not find file transfer for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                     .isFileTransferDisplayed(fileName));
             String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.')).toUpperCase();
-            assertThat("Wrong file name for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+            assertThat("Wrong file name for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                     .getFileNameOf(fileName), equalTo(fileNameWithoutExtension));
         } else {
-            assertThat("File transfer displayed for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+            assertThat("File transfer displayed for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                     .isFileTransferInvisible(fileName));
         }
     }
@@ -337,7 +337,7 @@ public class ConversationPageSteps {
      */
     @When("^I cancel file upload of file (.*)$")
     public void WhenICancelFileUpload(String fileName) throws Exception {
-        webappPagesCollection.getPage(ConversationPage.class).cancelFileUpload(fileName);
+        context.getPagesCollection().getPage(ConversationPage.class).cancelFileUpload(fileName);
     }
 
     /**
@@ -361,7 +361,7 @@ public class ConversationPageSteps {
      */
     @Then("^I verify icon of file (.*) in the conversation view$")
     public void IVerifyIconOfFile(String fileName) throws Exception {
-        assertThat("No file icon for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+        assertThat("No file icon for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                 .getFileIcon(fileName));
     }
 
@@ -374,7 +374,7 @@ public class ConversationPageSteps {
      */
     @Then("^I verify size of file (.*) is (.*) in the conversation view$")
     public void IVerifySizeOfFile(String fileName, String size) throws Exception {
-        assertThat("Wrong file size for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+        assertThat("Wrong file size for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                 .getFileSizeOf(fileName), equalTo(size));
     }
 
@@ -388,7 +388,7 @@ public class ConversationPageSteps {
      */
     @Then("^I verify status of file (.*) is (.*) in the conversation view$")
     public void IVerifyStatusOfFile(String fileName, String status) throws Exception {
-        assertThat("Wrong file status for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+        assertThat("Wrong file status for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                 .getFileStatusOf(fileName), equalTo(status));
     }
 
@@ -402,13 +402,13 @@ public class ConversationPageSteps {
      */
     @Then("^I verify type of file (.*) is (.*) in the conversation view$")
     public void IVerifyTypeOfFile(String fileName, String type) throws Exception {
-        assertThat("Wrong file status for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+        assertThat("Wrong file status for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                 .getFileTypeOf(fileName), equalTo(type));
     }
 
     @Then("^I wait until file (.*) is uploaded completely$")
     public void IWaitUntilFileUploaded(String fileName) throws Exception {
-        assertThat("Upload still not finished for file " + fileName, webappPagesCollection.getPage(ConversationPage.class)
+        assertThat("Upload still not finished for file " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                 .waitUntilFileUploaded(fileName));
     }
 
