@@ -1039,6 +1039,6 @@ public class ConversationViewPageSteps {
     public void IWaitForFilePreview(int secondsTimeout, String expectedFileName) throws Exception {
         Assert.assertTrue(String.format("The preview was not shown for '%s' after %s seconds timeout", expectedFileName,
                 secondsTimeout),
-                getConversationViewPage().waitUntilPreviewIsVisible(secondsTimeout, expectedFileName));
+                getConversationViewPage().waitUntilFilePreviewIsVisible(secondsTimeout, expectedFileName));
     }
 }
