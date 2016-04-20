@@ -43,7 +43,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static void uploadPhotoToAndroid(String photoPathOnDevice)
             throws Exception {
-        executeAdb(String.format("push %s %s", getImagePath(CommonUtils.class), photoPathOnDevice));
+        executeAdb(String.format("push %s %s", getDefaultUserImagePath(CommonUtils.class), photoPathOnDevice));
         executeAdb("shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d "
                 + "file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }");
     }

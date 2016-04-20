@@ -103,8 +103,8 @@ public class CommonUtils {
         return getValueFromConfig(c, "deviceName");
     }
 
-    public static String getImagePath(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "defaultImagesPath") + USER_IMAGE;
+    public static String getDefaultUserImagePath(Class<?> c) throws Exception {
+        return getImagesPath(c) + USER_IMAGE;
     }
 
     public static String getImagesPath(Class<?> c) throws Exception {
@@ -301,10 +301,6 @@ public class CommonUtils {
 
     public static String getOldAppPathFromConfig(Class<?> c) throws Exception {
         return getValueFromConfig(c, "oldAppPath");
-    }
-
-    public static String getSimulatorImagesPathFromConfig(Class<?> c) throws Exception {
-        return getValueFromConfig(c, "iosImagesPath");
     }
 
     public static String getAndroidPackageFromConfig(Class<?> c) {

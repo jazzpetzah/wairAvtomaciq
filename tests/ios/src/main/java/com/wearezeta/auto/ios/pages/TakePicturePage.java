@@ -11,7 +11,7 @@ import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
-import static com.wearezeta.auto.common.CommonUtils.getSimulatorImagesPathFromConfig;
+import static com.wearezeta.auto.common.CommonUtils.getImagesPath;
 
 public class TakePicturePage extends IOSPage {
     private static final String TESTING_IMAGE_NAME = "testing.jpg";
@@ -38,7 +38,7 @@ public class TakePicturePage extends IOSPage {
 
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
             IOSSimulatorHelper.uploadImage(new File(
-                    getSimulatorImagesPathFromConfig(getClass()) + File.separator + TESTING_IMAGE_NAME));
+                    getImagesPath(getClass()) + File.separator + TESTING_IMAGE_NAME));
             // Let Simulator to update the lib
             Thread.sleep(3000);
         }

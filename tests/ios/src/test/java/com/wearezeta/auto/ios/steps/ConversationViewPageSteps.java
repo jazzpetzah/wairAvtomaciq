@@ -998,22 +998,22 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify whether Download Finished placeholder is visible in the conversation view
+     * Verify whether File Transfer placeholder is visible in the conversation view
      *
-     * @step. ^I wait up to (\d+) seconds? until download progress for the file (.*) with size (.*) is finished$
+     * @step. ^I wait up to (\d+) seconds? until the file (.*) with size (.*) is ready for download$
      *
      * @param timeoutSeconds timeout in seconds
      * @param expectedFileName the file name, which should be visible in the placeholder
      * @param expectedSize the expected file size to be shown in the placeholder
      * @throws Exception
      */
-    @Then("^I wait up to (\\d+) seconds? until download progress for the file (.*) with size (.*) is finished$")
+    @Then("^I wait up to (\\d+) seconds? until the file (.*) with size (.*) is ready for download$")
     public void IWaitUntilDownloadFinished(int timeoutSeconds, String expectedFileName, String expectedSize)
             throws Exception {
         Assert.assertTrue(String.format(
                 "Cannot detect the Download Finished placeholder for a file '%s' in the conversation view after %s seconds",
                 expectedFileName, timeoutSeconds),
-                getConversationViewPage().waitUntilDownloadFinishedPlaceholderVisible(expectedFileName, expectedSize,
+                getConversationViewPage().waitUntilDownloadReadyPlaceholderVisible(expectedFileName, expectedSize,
                         timeoutSeconds));
     }
 }
