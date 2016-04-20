@@ -24,7 +24,7 @@ public final class WebAppLocators {
 
         public static final String cssPasswordInput = "#form-account-login [data-uie-name='enter-password']";
 
-        public static final String classNameSpinner = "spin";
+        public static final String classNameProgressBar = "progress-bar";
 
         public static final String xpathCreateAccountButton = "//*[@data-uie-name='do-register']";
 
@@ -335,6 +335,20 @@ public final class WebAppLocators {
 
         public static final String cssLastAction = cssLastMessage + " .action";
 
+        public static final String cssFile = "[data-uie-name='file'][data-uie-value='%s']";
+
+        public static final String cssFileIcon = cssFile + " .icon-file";
+
+        public static final String cssFileName = cssFile + " [data-uie-name='file-name']";
+
+        public static final String cssFileSize = cssFile + " [data-uie-name='file-size']";
+
+        public static final String cssFileStatus = cssFile + " [data-uie-name='file-status']";
+
+        public static final String cssFileType = cssFile + " [data-uie-name='file-type']";
+
+        public static final String cssFileCancelUpload = cssFile + " [data-uie-name='file-cancel']";
+
         public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']:not(.image-loading)";
 
         public static final String cssPingMessage = ".pinged";
@@ -362,6 +376,10 @@ public final class WebAppLocators {
         public static final String cssRightControlsPanel = "div.controls-right";
 
         public static final String cssSendImageInput = "input[data-uie-name=do-share-image]";
+
+        public static final String cssSendFileButton = "#conversation-input-files";
+
+        public static final String cssSendFileInput = "input[data-uie-name=do-share-file]";
 
         public static final String cssPingButton = "[data-uie-name='do-ping'], [data-uie-name='do-hot-ping']";
 
@@ -634,6 +652,10 @@ public final class WebAppLocators {
                 .format("%s//div[@data-uie-name='modal-call-voice-channel-full' and contains(@class, 'modal-show')" +
                                 "]//div[contains(@class, 'button') and text()='%s']",
                         xpathWarningModalRootDiv, name);
+
+        public static final String cssFileTransferLimitWarningModal = ".modal-asset-upload-too-large";
+        public static final String cssFileTransferLimitWarningModalButton = cssFileTransferLimitWarningModal + " " +
+                "[data-uie-name='do-close']";
     }
 
     public static final class PhoneNumberVerificationPage {

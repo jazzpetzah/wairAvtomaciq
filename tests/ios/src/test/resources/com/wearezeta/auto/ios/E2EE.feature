@@ -172,7 +172,7 @@ Feature: E2EE
     Given There are 1 user where <Name> is me
     Given User Myself adds a new device <DeviceName> with label <DeviceLabel>
     Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
+    When I switch to Log In tab
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button

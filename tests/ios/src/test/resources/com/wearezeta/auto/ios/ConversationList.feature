@@ -496,7 +496,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I see sign in screen
-    Given I tap I HAVE AN ACCOUNT button
+    Given I switch to Log In tab
     Given I have entered login <Login>
     Given I have entered password <Password>
     Given I press Login button
@@ -569,3 +569,20 @@ Feature: Conversation List
     Examples:
       | Name      | ArchivedUser|
       | user1Name | user2Name   |
+
+  @C95634 @staging
+  Scenario Outline: Verify hint is not shown anymore after tapping on it once
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I see Conversations hint text
+    When I tap on Conversations hint text
+    Then I see People Picker page
+    When I click close button to dismiss people view
+    Then I see conversations list
+    And I do not see Conversations hint text
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |

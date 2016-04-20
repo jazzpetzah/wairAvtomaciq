@@ -443,7 +443,7 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     Given <Contact> starts instance using <CallBackend>
     And I see my avatar on top of Contact list
-    And I muted conversation with <Contact>
+    And I set muted state for conversation <Contact>
     When <Contact> calls me
     Then <Contact> verifies that call status to Myself is changed to connecting in <Timeout> seconds
     And I see the incoming call controls for conversation <Contact>

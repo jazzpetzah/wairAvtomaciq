@@ -23,6 +23,8 @@ public class ConversationViewPageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
+    public static final String DEFAULT_PNG = "group-icon@3x.png";
+
     private ConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(ConversationViewPage.class);
     }
@@ -221,22 +223,28 @@ public class ConversationViewPageSteps {
      *
      * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I tap (Add Picture|Ping|Sketch) button from input tools$
+     * @step. ^I tap (Add Picture|Ping|Sketch|File Transfer) button from input tools$
      */
-    @When("^I tap (Add Picture|Ping|Sketch) button from input tools$")
+    @When("^I tap (Add Picture|Ping|Sketch|File Transfer) button from input tools$")
     public void IPressAddPictureButton(String btnName) throws Exception {
-        switch (btnName.toLowerCase()) {
-            case "add picture":
-                getConversationViewPage().pressAddPictureButton();
-                break;
-            case "ping":
-                getConversationViewPage().tapPingButton();
-                break;
-            case "sketch":
-                getConversationViewPage().openSketch();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
+        getConversationViewPage().tapInputToolButtonByName(btnName);
+    }
+
+    /**
+     * Verify visibility of the corresponding button in input tools palette
+     *
+     * @param btnName one of available button names
+     * @throws Exception
+     * @step. ^I (do not)?see (Add Picture|Ping|Sketch|File Transfer) button in input tools palette$
+     */
+    @When("^I (do not)?see (Add Picture|Ping|Sketch|File Transfer) button in input tools palette$")
+    public void VeirfyButtonVisibilityInInputTools(String shouldNot, String btnName) throws Exception {
+        if (shouldNot == null) {
+            Assert.assertTrue(btnName + "button in input tools palette is not visible",
+                    getConversationViewPage().inputToolButtonByNameIsVisible(btnName));
+        } else {
+            Assert.assertTrue(btnName + "button in input tools palette is  visible",
+                    getConversationViewPage().inputToolButtonByNameIsNotVisible((btnName)));
         }
     }
 
@@ -576,8 +584,8 @@ public class ConversationViewPageSteps {
     /**
      * Verify is plus button is visible
      *
-     * @throws Exception
      * @param shouldNotBeVisible equals to null if the button should not be visible
+     * @throws Exception
      * @step. ^I (do not )?see plus button next to text input$
      */
     @When("^I (do not )?see plus button next to text input$")
@@ -959,5 +967,53 @@ public class ConversationViewPageSteps {
                 maxFrames, screenshotingDelay);
         Assert.assertTrue(String.format("The picture in the conversation view seems to be static (%.2f >= %.2f)",
                 avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
+    }
+
+    /**
+     * Tap on file transfer menu item by name
+     *
+     * @param itemName name of the item
+     * @throws Exception
+     * @step. ^I tap file transfer menu item (.*)$
+     */
+    @When("^I tap file transfer menu item (.*)$")
+    public void ITapFileTransferMenuItem(String itemName) throws Exception {
+        if (itemName.equals("DEFAULT_PNG")) {
+            itemName = DEFAULT_PNG;
+        }
+        getConversationViewPage().tapFileTransferMenuItem(itemName);
+    }
+
+    /**
+     * Verify file transfer placeholder visibility
+     *
+     * @throws Exception
+     * @step. ^I see file transfer placeholder$
+     */
+    @When("^I see file transfer placeholder$")
+    public void ISeeFileTransferPlaceHolder() throws Exception {
+        Assert.assertTrue("File transfer placeholder is not visible",
+                getConversationViewPage().fileTransferTopLabelIsVisible() &&
+                        getConversationViewPage().fileTransferBottomLabelIsVisible());
+    }
+
+    /**
+     * Verify whether File Transfer placeholder is visible in the conversation view
+     *
+     * @step. ^I wait up to (\d+) seconds? until the file (.*) with size (.*) is ready for download from conversation view$
+     *
+     * @param timeoutSeconds timeout in seconds
+     * @param expectedFileName the file name, which should be visible in the placeholder
+     * @param expectedSize the expected file size to be shown in the placeholder
+     * @throws Exception
+     */
+    @Then("^I wait up to (\\d+) seconds? until the file (.*) with size (.*) is ready for download from conversation view$")
+    public void IWaitUntilDownloadFinished(int timeoutSeconds, String expectedFileName, String expectedSize)
+            throws Exception {
+        Assert.assertTrue(String.format(
+                "Cannot detect the Download Finished placeholder for a file '%s' in the conversation view after %s seconds",
+                expectedFileName, timeoutSeconds),
+                getConversationViewPage().waitUntilDownloadReadyPlaceholderVisible(expectedFileName, expectedSize,
+                        timeoutSeconds));
     }
 }

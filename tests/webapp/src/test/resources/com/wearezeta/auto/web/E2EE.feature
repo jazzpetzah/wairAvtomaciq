@@ -72,40 +72,123 @@ Feature: E2EE
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C87649 @e2ee @smoke
-  Scenario Outline: Verify I can not break sessions with temporary devices
+  @C87649 @e2ee @staging
+  Scenario Outline: Verify I'm automatically logged out when the used temporary device is deleted
     Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
     Given <Contact> is connected to Myself
     Given I switch to Sign In page
     When I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
-    Then I see the history info page
-    When I click confirm on history info page
-    Then I am signed in properly
-    When I open Sign In page
+    And I see the history info page
+    And I click confirm on history info page
+    And I am signed in properly
+    And Contact <Contact> sends encrypted message <OldMessage> to user Myself
+    And I see text message <OldMessage>
     And User <Name> removes all his registered OTR clients
-    And user <Contact> adds a new device Device1 with label Label1
-    And I switch to Sign In page
+    Then I see Sign In page
     And I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page
-    When Contact <Contact> sends encrypted message <EncryptedMessage1> to user Myself
+    When Contact <Contact> sends encrypted message <Message1> to user Myself
     And I wait for 5 seconds
     And I click confirm on history info page
     And I am signed in properly
-    And Contact <Contact> sends encrypted message <EncryptedMessage2> to user Myself
+    And Contact <Contact> sends encrypted message <Message2> to user Myself
     And I wait for 5 seconds
     And I open conversation with <Contact>
-    And I write message <Message>
+    And I write message <Message3>
     And I send message
-    And I see text message <EncryptedMessage1>
-    And I see text message <EncryptedMessage2>
+    And I do not see text message <OldMessage>
+    And I see text message <Message1>
+    And I see text message <Message2>
+    And I see text message <Message3>
 
     Examples:
-      | Email      | Password      | Name      | Contact    | EncryptedMessage1 | EncryptedMessage2 | Message |
-      | user1Email | user1Password | user1Name | user2Name  | EncryptedYo1      | EncryptedYo2      | yo      |
+      | Email      | Password      | Name      | Contact    | OldMessage | Message1 | Message2 | Message3 |
+      | user1Email | user1Password | user1Name | user2Name  | Old1       | New1     | New2     | New3     |
+
+  @C95642 @e2ee @staging
+  Scenario Outline: Verify I still can login but have no history if my former temporary device was deleted remotely
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given <Contact> is connected to Myself
+    Given I switch to Sign In page
+    When I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    And I see the history info page
+    And I click confirm on history info page
+    And I am signed in properly
+    And Contact <Contact> sends encrypted message <OldMessage> to user Myself
+    And I see text message <OldMessage>
+    And I remember current page
+    And I navigate to download page
+    And User <Name> removes all his registered OTR clients
+    And I navigate to previously remembered page
+    And I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then I see the history info page
+    When Contact <Contact> sends encrypted message <Message1> to user Myself
+    And I wait for 5 seconds
+    And I click confirm on history info page
+    And I am signed in properly
+    And Contact <Contact> sends encrypted message <Message2> to user Myself
+    And I wait for 5 seconds
+    And I open conversation with <Contact>
+    And I write message <Message3>
+    And I send message
+    And I do not see text message <OldMessage>
+    And I see text message <Message1>
+    And I see text message <Message2>
+    And I see text message <Message3>
+
+    Examples:
+      | Email      | Password      | Name      | Contact    | OldMessage | Message1 | Message2 | Message3 |
+      | user1Email | user1Password | user1Name | user2Name  | Old1       | New1     | New2     | New3     |
+
+  @C95643 @e2ee @staging
+  Scenario Outline: Verify I still can login from auth page even if my former device was deleted
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given <Contact> is connected to Myself
+    Given I switch to Sign In page
+    Given I remember current page
+    When I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    And I see the history info page
+    And I click confirm on history info page
+    And I am signed in properly
+    And Contact <Contact> sends encrypted message <OldMessage> to user Myself
+    And I see text message <OldMessage>
+    And I navigate to download page
+    And User <Name> removes all his registered OTR clients
+    And I navigate to previously remembered page
+    And I enter email "<Email>"
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then I see the history info page
+    When Contact <Contact> sends encrypted message <Message1> to user Myself
+    And I wait for 5 seconds
+    And I click confirm on history info page
+    And I am signed in properly
+    And Contact <Contact> sends encrypted message <Message2> to user Myself
+    And I wait for 5 seconds
+    And I open conversation with <Contact>
+    And I write message <Message3>
+    And I send message
+    And I do not see text message <OldMessage>
+    And I see text message <Message1>
+    And I see text message <Message2>
+    And I see text message <Message3>
+
+    Examples:
+      | Email      | Password      | Name      | Contact    | OldMessage | Message1 | Message2 | Message3 |
+      | user1Email | user1Password | user1Name | user2Name  | Old1       | New1     | New2     | New3     |
 
   @C2100 @e2ee @regression
   Scenario Outline: Login as temporary device after device limit is reached
@@ -397,6 +480,63 @@ Feature: E2EE
   Examples:
     | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
+
+  @C95638 @staging
+  Scenario Outline: Verify device list is updated in people popover if participant deletes or adds new devices in group chat
+    Given There are 3 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given user <Contact> adds a new device Device2 with label Label2
+    Given user <Contact2> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>,<Contact2>
+    Given Myself has group chat GROUPCHAT with <Contact>,<Contact2>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    When I open conversation with GROUPCHAT
+    And I click People button in group conversation
+    Then I see Group Participants popover
+    When I click on participant <Contact> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
+    And I click on device Device2 of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    Then I see device Device2 of user <Contact> is verified on Single User Profile popover
+    Then I do not see user verified icon on Single User Profile popover
+    Then User <Contact> only keeps his 1 most recent OTR clients
+  # We have to close and reopen the people popover to update the device list
+    When I click People button in one to one conversation
+    And I wait for 1 seconds
+    When I click People button in group conversation
+    Then I see Group Participants popover
+    When I click on participant <Contact> on Group Participants popover
+    When I switch to Devices tab on Single User Profile popover
+    Then I see user verified icon on Single User Profile popover
+    When I click People button in group conversation
+#   Then I see <ALL_VERIFIED> action in conversation
+#   And I see verified icon in conversation
+    Then user <Contact> adds a new device Device3 with label Label3
+    When I click People button in group conversation
+    Then I see Group Participants popover
+    When I click on participant <Contact> on Group Participants popover
+    Then I see Single User Profile popover
+    When I switch to Devices tab on Single User Profile popover
+    And I wait for 1 seconds
+    Then I do not see user verified icon on Single User Profile popover
+#   And I do not see verified icon in conversation
+    When I switch to Devices tab on Single User Profile popover
+    And I click on device Device3 of user <Contact> on Single User Profile popover
+    And I verify device on Device Detail popover
+    And I click back button on the Device Detail popover
+    Then I see device Device3 of user <Contact> is verified on Single User Profile popover
+    Then I see user verified icon on Single User Profile popover
+#   When I click People button in one to one conversation
+  # Not yet implemented on webapp:
+#   Then I see <ALL_VERIFIED> action in conversation
+#   And I see verified icon in conversation
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | Contact2  | ALL_VERIFIED                  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | All fingerprints are verified |
 
   @C12055 @regression
   Scenario Outline: Verify it is possible to verify group conversation participants

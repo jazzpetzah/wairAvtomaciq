@@ -70,6 +70,8 @@ public class LoginPageSteps {
             // Ignore silently
         }
 
+        getLoginPage().switchToLogin();
+
         if (getLoginPage().isEmailInputFieldInvisible()) {
             getLoginPage().switchToEmailLogin();
         }
@@ -92,7 +94,9 @@ public class LoginPageSteps {
     }
 
     private void phoneLoginSequence(final PhoneNumber number) throws Exception {
-        if (!getRegistrationPage().isCountryPickerButtonVisible()) {
+        getLoginPage().switchToLogin();
+
+        if (getRegistrationPage().isCountryPickerButtonInvisible()) {
             getLoginPage().switchToPhoneLogin();
         }
         getRegistrationPage().inputPhoneNumber(number);
@@ -238,14 +242,14 @@ public class LoginPageSteps {
     }
 
     /**
-     * Tap I HAVE AN ACCOUNT button
+     * Switch to Log In tab
      *
      * @throws Exception
-     * @step. ^I tap I HAVE AN ACCOUNT button$
+     * @step. ^I switch to Log In tab$
      */
-    @When("^I tap I HAVE AN ACCOUNT button$")
-    public void ITapHaveAnAccount() throws Exception {
-        getLoginPage().switchToEmailLogin();
+    @When("^I switch to Log In tab$")
+    public void ISwitchToLogInTab() throws Exception {
+        getLoginPage().switchToLogin();
     }
 
     /**

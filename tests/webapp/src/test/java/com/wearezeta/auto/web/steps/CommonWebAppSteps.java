@@ -1,5 +1,21 @@
 package com.wearezeta.auto.web.steps;
 
+import java.io.RandomAccessFile;
+import java.net.URI;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+
 import com.wearezeta.auto.common.email.AccountDeletionMessage;
 import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.WireMessage;
@@ -471,6 +487,25 @@ public class CommonWebAppSteps {
         ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
         String deviceId = context.getDeviceManager().getDeviceId(user, deviceName);
         context.getPagesCollection().getPage(WebPage.class).breakSession(deviceId);
+    }
+
+    @When("^(.*) sends? (.*) sized file with name (.*) via device (.*) to (user|group conversation) (.*)$")
+    public void WhenIXSizedSendFile(String contact, String size, String fileName, String deviceName, String convoType,
+                                    String dstConvoName) throws Exception {
+        String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
+        path = path.replace("%40","@");
+        RandomAccessFile f = new RandomAccessFile(path + "/" + fileName, "rws");
+        int fileSize = Integer.valueOf(size.replaceAll("\\D+","").trim());
+        if (size.contains("MB")) {
+            f.setLength(fileSize * 1024 * 1024);
+        } else if (size.contains("KB")) {
+            f.setLength(fileSize * 1024);
+        } else {
+            f.setLength(fileSize);
+        }
+        f.close();
+        boolean isGroup = convoType.equals("user") ? false : true;
+        commonSteps.UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "plain/text", deviceName, isGroup);
     }
 
     /**

@@ -99,7 +99,7 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		this.singleUserPopoverPage.clickUnblockButton();
 	}
 
-	public void switchToDevicesTab() {
+	public void switchToDevicesTab() throws Exception {
 		this.singleUserPopoverPage.switchToDevicesTab();
 	}
 

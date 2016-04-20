@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.TimeoutException;
 
-import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -75,6 +74,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
     private void setSessionLost(boolean isSessionLost) {
         if (isSessionLost != this.isSessionLost) {
             log.warn(String.format("Changing isSessionLost to %s", isSessionLost));
+            log.debug(LOG_DECORATION_PREFIX + "\n" + AppiumServer.getLog().orElse("") + "\n" + LOG_DECORATION_SUFFIX);
         }
         this.isSessionLost = isSessionLost;
     }
@@ -103,7 +103,6 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
     @Override
     public Response execute(String driverCommand, Map<String, ?> parameters) {
         if (this.isSessionLost() && !driverCommand.equals(DriverCommand.SCREENSHOT)) {
-            log.debug(LOG_DECORATION_PREFIX + "\n" + AppiumServer.getLog().orElse("") + "\n" + LOG_DECORATION_SUFFIX);
             throw new IllegalStateException(
                     String.format("Appium session is dead. Skipping execution of '%s' command...", driverCommand));
         }
@@ -132,7 +131,7 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
                         }
                     }
                 }
-                Throwables.propagate(e.getCause());
+                throw new WebDriverException(e.getCause());
             } else {
                 if (e instanceof TimeoutException) {
                     if (!isSessionLost()) {
@@ -145,11 +144,9 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
                         }
                     }
                 }
-                Throwables.propagate(e);
+                throw new WebDriverException(e);
             }
         }
-        // This should never happen
-        return super.execute(driverCommand, parameters);
     }
 
 }

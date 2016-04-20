@@ -61,7 +61,9 @@ public class LoginPageSteps {
 				+ password);
 		this.IEnterEmail(login);
 		this.IEnterPassword(password);
+                Thread.sleep(1000);
 		this.IPressSignInButton();
+                Thread.sleep(1000);
 	}
 
 	/**
@@ -74,7 +76,7 @@ public class LoginPageSteps {
 	 */
 	@When("^I press Sign In button$")
 	public void IPressSignInButton() throws Exception {
-            Thread.sleep(5000);
+            Thread.sleep(1000);
 		webappPagesCollection.getPage(LoginPage.class).clickSignInButton();
 	}
 

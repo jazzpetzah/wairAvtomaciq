@@ -32,7 +32,7 @@ public final class OSXLocators {
 
 	public static final class MainWirePage {
 
-		public static final String xpathWindow = "//AXApplication[@AXTitle='Wire']//AXWindow[contains(@AXTitle,'Wire')]";
+		public static final String xpathWindow = "//AXApplication[contains(@AXTitle='Wire')]//AXWindow[contains(@AXTitle,'Wire')]";
 
 		public static final String xpathCloseButton = xpathWindow
 				+ "//AXButton[@AXRoleDescription='close button']";
@@ -46,7 +46,7 @@ public final class OSXLocators {
 
 	public static final class AboutPage {
 
-		public static final String xpathWindow = "//AXApplication[@AXTitle='Wire']//AXWindow[@AXTitle='']";
+		public static final String xpathWindow = "//AXApplication[contains(@AXTitle='Wire')]//AXWindow[@AXTitle='']";
 
 		public static final String xpathCloseButton = xpathWindow
 				+ "//AXButton[@AXRoleDescription='close button']";
@@ -63,7 +63,8 @@ public final class OSXLocators {
 				+ "//AXMenuItem[@AXTitle='Silence']";
 		public static final String xpathContextDelete = xpathWindow
 				+ "//AXMenuItem[@AXTitle='Delete']";
-		public static final String xpathContextBlock = "//AXApplication[@AXTitle='Wire']//AXMenuItem[@AXTitle='Block']";
+		public static final String xpathContextBlock = xpathWindow 
+                                + "//AXMenuItem[@AXTitle='Block']";
 	}
 
 	public static final class ChoosePicturePage {

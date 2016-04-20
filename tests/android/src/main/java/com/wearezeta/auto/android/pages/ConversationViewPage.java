@@ -82,6 +82,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idFile = By.id("cursor_menu_item_file");
 
+    private static final By idFileActionBtn = By.id("gtv__row_conversation__file__action");
+
     private static final String xpathStrConversationToolbar = "//*[@id='t_conversation_toolbar']";
 
     private static final By xpathToolbar = By.xpath(xpathStrConversationToolbar);
@@ -135,7 +137,11 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final String FILE_UPLOADING_MESSAGE = "UPLOADING...";
 
-    private static final String FILE_UPLOADING_MESSAGE_SEPARATOR = " · ";
+    private static final String FILE_DOWNLOADING_MESSAGE = "DOWNLOADING...";
+
+    private static final String FILE_UPLOAD_FAILED = "UPLOAD FAILED";
+
+    private static final String FILE_MESSAGE_SEPARATOR = " · ";
 
     public ConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -249,6 +255,8 @@ public class ConversationViewPage extends AndroidPage {
 
     public void tapFileBtn() throws Exception {
         getElement(idFile, "File button is not visible").click();
+        //wait for 2 seconds for animation
+        Thread.sleep(2000);
     }
 
     public boolean isPingButtonVisible() throws Exception {
@@ -618,21 +626,31 @@ public class ConversationViewPage extends AndroidPage {
 
     public void waitUntilFileUploadIsCompleted(int timeoutSeconds, String size, String extension) throws Exception {
         String fileInfo = StringUtils.isEmpty(extension) ? size :
-                size + FILE_UPLOADING_MESSAGE_SEPARATOR + extension.toUpperCase();
-        fileInfo = String.format("%s%s%s",fileInfo, FILE_UPLOADING_MESSAGE_SEPARATOR, FILE_UPLOADING_MESSAGE);
+                size + FILE_MESSAGE_SEPARATOR + extension.toUpperCase();
+        fileInfo = String.format("%s%s%s",fileInfo, FILE_MESSAGE_SEPARATOR, FILE_UPLOADING_MESSAGE);
         DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeoutSeconds);
     }
 
-    public boolean isFileSenderPlaceHolderVisible(String fileName, String size, String extension) throws Exception {
+    public boolean isFilePlaceHolderVisible(String fileFullName, String size, String extension,
+                                            boolean isUpload, boolean isSuccess, int timeout) throws Exception {
         size = size.toUpperCase();
-        final String fileInfo = StringUtils.isEmpty(extension) ? size :
-                String.format("%s%s%s", size, FILE_UPLOADING_MESSAGE_SEPARATOR, extension.toUpperCase());
+        String fileInfo = StringUtils.isEmpty(extension) ? size :
+                String.format("%s%s%s", size, FILE_MESSAGE_SEPARATOR, extension.toUpperCase());
+
+        if (!isSuccess) {
+            fileInfo = String.format("%s%s%s", fileInfo, FILE_MESSAGE_SEPARATOR,
+                    isUpload ? FILE_UPLOAD_FAILED : FILE_DOWNLOADING_MESSAGE);
+        }
 
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                By.xpath(xpathFileNamePlaceHolderByValue.apply(fileName))) &&
+                By.xpath(xpathFileNamePlaceHolderByValue.apply(fileFullName)), timeout) &&
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                        By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)));
+                        By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeout);
+    }
+
+    public void tapFileActionButton() throws Exception {
+        getElement(idFileActionBtn).click();
     }
 
 }

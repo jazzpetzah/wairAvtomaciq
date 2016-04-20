@@ -35,7 +35,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I click plus button next to text input
-    And I click Ping button
+    And I tap Ping button from input tools
     Then I see "<PingMsg>" system message in the conversation view
 
     Examples:
@@ -191,7 +191,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I see sign in screen
-    When I tap I HAVE AN ACCOUNT button
+    When I switch to Log In tab
     And I have entered login <Text>
     And I tap and hold on Email input
     And I click on popup SelectAll item
@@ -350,7 +350,7 @@ Feature: Conversation View
     And I wait for 1 second
     And I tap play/pause button in conversations list next to <Contact>
     And I tap on contact name <Contact>
-    Then I see media container state is changed
+    Then I see media container state is not changed
     When I remember media container state
     And I navigate back to conversations list
     And I wait for 1 second
@@ -775,3 +775,25 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | GroupChatName  | UsersAmount | NewChatName |
       | user1Name | user2Name | RenameChatName | 4           | NewName     |
+
+  @C95637 @staging
+  Scenario Outline: Verify opening the image twice in the raw
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
+    When I tap on contact name <Contact>
+    Then I see 1 photo in the dialog
+    When I tap and hold image to open full screen
+    Then I see Full Screen Page opened
+    And I tap close fullscreen page button
+    When I tap and hold image to open full screen
+    Then I see Full Screen Page opened
+    And I tap close fullscreen page button
+    When I tap and hold image to open full screen
+    Then I see Full Screen Page opened
+
+    Examples:
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
