@@ -246,7 +246,6 @@ public class ConversationViewPageSteps {
             Assert.assertTrue(btnName + "button in input tools palette is  visible",
                     getConversationViewPage().inputToolButtonByNameIsNotVisible((btnName)));
         }
-
     }
 
     /**
