@@ -34,6 +34,8 @@ Feature: File Transfer
     Examples:
       | Name      | Contact   | GroupChatName | UsersAmount |
       | user1Name | user2Name | GroupChat     | 3           |
+      | Name      | Contact   | GroupChatName | UsersAmount |
+      | user1Name | user2Name | GroupChat     | 3           |
 
   @C82518 @staging
   Scenario Outline: Verify placeholder is shown for the sender
@@ -68,3 +70,21 @@ Feature: File Transfer
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | Timeout |
       | user1Name | user2Name | user3Name | FTransfer     | testing  | tmp     | 240 KB   | application/octet-stream | device1       | 20      |
+
+  @С95960 @staging
+  Scenario Outline: Verify sending file in the empty conversation and text after it
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I click plus button next to text input
+    And I tap File Transfer button from input tools
+    And I tap file transfer menu item <ItemName>
+    Then I see file transfer placeholder
+    When I type the default message and send it
+    Then I see 1 default message in the dialog
+
+    Examples:
+      | Name      | Contact   | ItemName    |
+      | user1Name | user2Name | DEFAULT_PNG |
