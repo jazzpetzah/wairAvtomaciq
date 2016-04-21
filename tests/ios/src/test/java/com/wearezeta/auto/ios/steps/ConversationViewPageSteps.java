@@ -1047,7 +1047,7 @@ public class ConversationViewPageSteps {
      *
      * @param timeoutSeconds timeout in seconds
      * @throws Exception
-     * @step. ^I see generic file share menu$
+     * @step. ^I wait up to (\d+) seconds until I see generic file share menu$
      */
     @Then("^I wait up to (\\d+) seconds until I see generic file share menu$")
     public void ISeeGenericFileShareMenu(int timeoutSeconds) throws Exception {
