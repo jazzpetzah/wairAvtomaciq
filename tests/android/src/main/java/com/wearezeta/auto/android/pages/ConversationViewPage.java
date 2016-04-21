@@ -664,6 +664,7 @@ public class ConversationViewPage extends AndroidPage {
                 break;
             case "open":
                 getElement(idFileDialogActionOpenBtn).click();
+                break;
             default:
                 throw new Exception(String.format("Cannot identify the action '%s' in File dialog", action));
 
