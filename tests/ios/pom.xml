@@ -22,7 +22,7 @@
         <useNativeInstrumentsLib>true</useNativeInstrumentsLib>
         <isSimulator>true</isSimulator>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
-        <iosImagesPath>${project.basedir}/../tools/img/</iosImagesPath>
+        <defaultImagesPath>${project.basedir}/../tools/img/</defaultImagesPath>
         <pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
         <iOSToolsRoot>${project.basedir}/../tools/ios</iOSToolsRoot>
         <defaultEmail>smoketester@wire.com</defaultEmail>

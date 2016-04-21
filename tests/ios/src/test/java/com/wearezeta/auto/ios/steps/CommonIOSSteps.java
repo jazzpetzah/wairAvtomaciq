@@ -699,7 +699,7 @@ public class CommonIOSSteps {
     @When("^User (\\w+) changes? avatar picture to (.*)$")
     public void IChangeUserAvatarPicture(String userNameAlias, String name)
             throws Exception {
-        final String rootPath = getSimulatorImagesPathFromConfig(getClass());
+        final String rootPath = getImagesPath(getClass());
         commonSteps.IChangeUserAvatarPicture(userNameAlias, rootPath
                 + "/"
                 + (name.toLowerCase().equals("default") ? DEFAULT_USER_AVATAR
@@ -747,7 +747,7 @@ public class CommonIOSSteps {
                                                String isEncrypted,
                                                String imageFileName, String conversationType,
                                                String dstConversationName) throws Exception {
-        final String imagePath = CommonUtils.getSimulatorImagesPathFromConfig(this.getClass()) + "/" + imageFileName;
+        final String imagePath = CommonUtils.getImagesPath(this.getClass()) + File.separator + imageFileName;
         final boolean isGroup = conversationType.equals("group");
         if (isEncrypted == null) {
             commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
@@ -981,22 +981,29 @@ public class CommonIOSSteps {
     /**
      * Send an existing file to a conversation
      *
-     * @param sender     user name/alias
-     * @param fileName   the name of the file. The file should be already created in project.build.directory
-     * @param mimeType   MIME type of the file, for example text/plain. Check
-     *                   http://www.freeformatter.com/mime-types-list.html to get the full list of available MIME
-     *                   types
-     * @param convoType  either 'single user' or 'group'
-     * @param convoName  conversation name
-     * @param deviceName the name of user device. The device will be created automatically if it does not exist yet
+     * @param sender      user name/alias
+     * @param isTemporary equals to null if the file is located in images directory. Otherwise it should belocated in
+     *                    project.build.directory folder
+     * @param fileName    the name of an existing file
+     * @param mimeType    MIME type of the file, for example text/plain. Check
+     *                    http://www.freeformatter.com/mime-types-list.html to get the full list of available MIME
+     *                    types
+     * @param convoType   either 'single user' or 'group'
+     * @param convoName   conversation name
+     * @param deviceName  the name of user device. The device will be created automatically if it does not exist yet
      * @throws Exception
      * @step. ^User (.*) sends? file (.*) having MIME type (.*) to (single user|group) conversation (.*) using device (.*)
      */
-    @When("^User (.*) sends? file (.*) having MIME type (.*) to (single user|group) conversation (.*) using device (.*)")
-    public void UserSendsFile(String sender, String fileName, String mimeType, String convoType, String convoName,
-                              String deviceName) throws Exception {
-        final String tmpFilesRoot = CommonUtils.getBuildPathFromConfig(getClass());
-        commonSteps.UserSentFileToConversation(sender, convoName, tmpFilesRoot + File.separator + fileName, mimeType,
+    @When("^User (.*) sends? (temporary )?file (.*) having MIME type (.*) to (single user|group) conversation (.*) using device (.*)")
+    public void UserSendsFile(String sender, String isTemporary, String fileName, String mimeType, String convoType,
+                              String convoName, String deviceName) throws Exception {
+        String root;
+        if (isTemporary == null) {
+            root = CommonUtils.getImagesPath(getClass());
+        } else {
+            root = CommonUtils.getBuildPathFromConfig(getClass());
+        }
+        commonSteps.UserSentFileToConversation(sender, convoName, root + File.separator + fileName, mimeType,
                 deviceName, convoType.equals("group"));
     }
 
@@ -1009,7 +1016,7 @@ public class CommonIOSSteps {
      * @throws Exception
      * @step. ^I create temporary file (.*) in size with name "(.*)" and extension "(.*)"
      */
-    @Given("^I create temporary file (.*) in size with name \"(.*)\" and extension \"(.*)\"")
+    @Given("^I create temporary file (.*) in size with name \"(.*)\" and extension \"(.*)\"$")
     public void ICreateTemporaryFile(String size, String name, String ext) throws Exception {
         final String tmpFilesRoot = CommonUtils.getBuildPathFromConfig(getClass());
         CommonUtils.createRandomAccessFile(tmpFilesRoot + File.separator + name + "." + ext, size);

@@ -145,6 +145,13 @@ public class ConversationViewPage extends IOSPage {
     private static final Function<String, String> xpathTransferBottomLabelByExpr = expr ->
             String.format("//UIAStaticText[@name='%s' and %s]", nameStrFileTransferBottomLabel, expr);
 
+//    private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
+
+    private static final Function<String, String> xpathStrFilePreviewByFileName = fileName ->
+            String.format("//UIANavigationBar[@name='%s']", fileName);
+
+    private static final By nameGenericFileShareMenu = MobileBy.AccessibilityId("ActivityListView");
+
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -647,28 +654,32 @@ public class ConversationViewPage extends IOSPage {
         getElement(getInputToolButtonByName(name)).click();
     }
 
-    public boolean waitUntilDownloadFinishedPlaceholderVisible(String expectedFileName, String expectedSize,
-                                                               int timeoutSeconds) throws Exception {
+    public boolean waitUntilDownloadReadyPlaceholderVisible(String expectedFileName, String expectedSize,
+                                                            int timeoutSeconds) throws Exception {
         final String nameWOExtension = FilenameUtils.getBaseName(expectedFileName);
         final String extension = FilenameUtils.getExtension(expectedFileName);
 
         final By topLabelLocator = By.xpath(xpathTransferTopLabelByFileName.apply(nameWOExtension));
-        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), topLabelLocator, timeoutSeconds)) {
-            return false;
-        }
-
         final By bottomLabelLocator = By.xpath(xpathTransferBottomLabelByExpr.apply(
                 String.join(" and ",
                         String.format("starts-with(@value, '%s')", expectedSize.toUpperCase()),
                         String.format("contains(@value, '%s')", extension.toUpperCase())
                 )
         ));
-        final long millisecondsStarted = System.currentTimeMillis();
-        do {
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), bottomLabelLocator, 5)) {
-                return true;
-            }
-        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
-        return false;
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), topLabelLocator, timeoutSeconds) &&
+                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), bottomLabelLocator, timeoutSeconds);
+    }
+
+    public void tapFileTransferPlaceholder() throws Exception {
+        getElement(nameFileTransferBottomLabel).click();
+    }
+
+    public boolean waitUntilFilePreviewIsVisible(int secondsTimeout, String expectedFileName) throws Exception {
+        final By locator = By.xpath(xpathStrFilePreviewByFileName.apply(expectedFileName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, secondsTimeout);
+    }
+
+    public boolean isGenericFileShareMenuVisible(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameGenericFileShareMenu, timeoutSeconds);
     }
 }

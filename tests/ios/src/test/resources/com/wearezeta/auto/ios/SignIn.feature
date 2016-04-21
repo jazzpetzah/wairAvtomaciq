@@ -33,9 +33,10 @@ Feature: Sign In
   Scenario Outline: Verify phone sign in when email is assigned
     Given There is 1 user where <Name> is me
     Given I see sign in screen
-    Given I see country picker button on Sign in screen
+    Given I switch to Log In tab
+    Given I switch to Phone Log In tab
     When I enter phone number for user <Name>
-    When I enter verification code for user <Name>
+    And I enter verification code for user <Name>
     And I dismiss settings warning
     Then I see conversations list
 
@@ -47,7 +48,8 @@ Feature: Sign In
   Scenario Outline: Verify impossibility to login with the wrong code
     Given There is 1 user where <Name> is me
     Given I see sign in screen
-    And I see country picker button on Sign in screen
+    Given I switch to Log In tab
+    Given I switch to Phone Log In tab
     And I enter phone number for user Myself
     When I enter random verification code
     Then I see already registered phone number alert
@@ -60,7 +62,8 @@ Feature: Sign In
   Scenario Outline: Verify impossibility to resend code within 10 min
     Given There is 1 user where <Name> is me
     Given I see sign in screen
-    And I see country picker button on Sign in screen
+    Given I switch to Log In tab
+    Given I switch to Phone Log In tab
     And I enter phone number for user <Name>
     When I tap RESEND code button
     Then I see Resend will be possible after 10 min alert
@@ -71,22 +74,23 @@ Feature: Sign In
 
   @C1143 @regression @id2724 @noAcceptAlert
   Scenario Outline: Verify impossibility to login with unregistered phone number
-    Given There is 1 user where <Name> is me
     Given I see sign in screen
-    When I see country picker button on Sign in screen
-    And I enter 10 digits phone number
+    Given I switch to Log In tab
+    Given I switch to Phone Log In tab
+    When I enter <Count> digits phone number
     Then I see something went wrong alert
 
     Examples:
-      | Name      |
-      | user1Name |
+      | Count |
+      | 10    |
 
   @C1136 @rc @regression @id3851 @ZIOS-5585 @useSpecialEmail
   Scenario Outline: Verify first time phone sign in when email is not assigned
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
-    And I see country picker button on Sign in screen
-    And I enter phone number for user <Name>
+    Given I switch to Log In tab
+    Given I switch to Phone Log In tab
+    When I enter phone number for user <Name>
     And I enter verification code for user <Name>
     And I have entered login <Email>
     And I start activation email monitoring
@@ -107,7 +111,8 @@ Feature: Sign In
   Scenario Outline: Verify error message appears in case of registering already taken email
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
-    Then I see country picker button on Sign in screen
+    Given I switch to Log In tab
+    Given I switch to Phone Log In tab
     When I enter phone number for user <Name>
     Then I see verification code page
     When I enter verification code for user <Name>
@@ -126,7 +131,8 @@ Feature: Sign In
   Scenario Outline: Verify error message appears in case of registering already taken email
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
-    Then I see country picker button on Sign in screen
+    Given I switch to Log In tab
+    Given I switch to Phone Log In tab
     When I enter phone number for user <Name>
     Then I see verification code page
     When I enter verification code for user <Name>

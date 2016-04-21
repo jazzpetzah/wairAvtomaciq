@@ -290,18 +290,25 @@ public final class CommonCallingSteps2 {
             ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
             createTasks.put(calleeName, CompletableFuture.supplyAsync(() -> {
                 try {
-                    final Instance instance = client.startInstance(userAs, convertTypeStringToTypeObject(instanceType),
-                            ZetaFormatter.getScenario());
-                    addInstance(instance, userAs);
-                    return instance;
-                } catch (CallingServiceInstanceException ex) {
+                    return CompletableFuture.supplyAsync(() -> {
+                        try {
+                            final Instance instance = client.startInstance(userAs, convertTypeStringToTypeObject(instanceType),
+                                    ZetaFormatter.getScenario());
+                            addInstance(instance, userAs);
+                            return instance;
+                        } catch (CallingServiceInstanceException ex) {
+                            throw new IllegalStateException(String.format("Could not start instance for user '%s'", 
+                                    userAs.getName()), ex);
+                        }
+                    }).get(POLLING_FREQUENCY_MILLISECONDS, TimeUnit.SECONDS);
+                } catch (InterruptedException | ExecutionException | TimeoutException ex) {
                     throw new IllegalStateException(String.format("Could not start instance for user '%s'", userAs.getName()),
                             ex);
                 }
             }));
         }
         CompletableFuture.allOf(createTasks.values().toArray(new CompletableFuture[createTasks.size()])).get(
-                INSTANCE_START_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+                INSTANCE_START_TIMEOUT_SECONDS * 2, TimeUnit.SECONDS);
     }
 
     /**

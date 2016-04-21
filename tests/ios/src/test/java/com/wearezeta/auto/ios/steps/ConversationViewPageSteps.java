@@ -998,22 +998,60 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify whether Download Finished placeholder is visible in the conversation view
+     * Tap the most recent visible transfer placeholder
      *
-     * @step. ^I wait up to (\d+) seconds? until download progress for the file (.*) with size (.*) is finished$
-     *
-     * @param timeoutSeconds timeout in seconds
-     * @param expectedFileName the file name, which should be visible in the placeholder
-     * @param expectedSize the expected file size to be shown in the placeholder
      * @throws Exception
+     * @step. ^I tap file transfer placeholder$
      */
-    @Then("^I wait up to (\\d+) seconds? until download progress for the file (.*) with size (.*) is finished$")
+    @When("^I tap file transfer placeholder$")
+    public void ITapFileTransferPlaceholder() throws Exception {
+        getConversationViewPage().tapFileTransferPlaceholder();
+    }
+
+    /**
+     * Verify whether File Transfer placeholder is visible in the conversation view
+     *
+     * @param timeoutSeconds   timeout in seconds
+     * @param expectedFileName the file name, which should be visible in the placeholder
+     * @param expectedSize     the expected file size to be shown in the placeholder
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until the file (.*) with size (.*) is ready for download from conversation view$
+     */
+    @Then("^I wait up to (\\d+) seconds? until the file (.*) with size (.*) is ready for download from conversation view$")
     public void IWaitUntilDownloadFinished(int timeoutSeconds, String expectedFileName, String expectedSize)
             throws Exception {
         Assert.assertTrue(String.format(
                 "Cannot detect the Download Finished placeholder for a file '%s' in the conversation view after %s seconds",
                 expectedFileName, timeoutSeconds),
-                getConversationViewPage().waitUntilDownloadFinishedPlaceholderVisible(expectedFileName, expectedSize,
+                getConversationViewPage().waitUntilDownloadReadyPlaceholderVisible(expectedFileName, expectedSize,
                         timeoutSeconds));
+    }
+
+    /**
+     * Verify whether file preview is shown after the timeout
+     *
+     * @param secondsTimeout   timeout in seconds
+     * @param expectedFileName file name in preview header
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until I see a preview of the file named "(.*)"$
+     */
+    @Then("^I wait up to (\\d+) seconds? until I see a preview of the file named \"(.*)\"$")
+    public void IWaitForFilePreview(int secondsTimeout, String expectedFileName) throws Exception {
+        Assert.assertTrue(String.format("The preview was not shown for '%s' after %s seconds timeout", expectedFileName,
+                secondsTimeout),
+                getConversationViewPage().waitUntilFilePreviewIsVisible(secondsTimeout, expectedFileName));
+    }
+
+    /**
+     * Verify whether generic file share menu is shown
+     *
+     * @param timeoutSeconds timeout in seconds
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds until I see generic file share menu$
+     */
+    @Then("^I wait up to (\\d+) seconds until I see generic file share menu$")
+    public void ISeeGenericFileShareMenu(int timeoutSeconds) throws Exception {
+        Assert.assertTrue("Generic file share menu has not been shown",
+                getConversationViewPage().isGenericFileShareMenuVisible(timeoutSeconds));
     }
 }
