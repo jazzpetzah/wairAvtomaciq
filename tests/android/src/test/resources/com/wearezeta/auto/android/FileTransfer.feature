@@ -114,6 +114,6 @@ Feature: File transfer
     Then I wait up <DownloadTimeout> seconds until <FileExactSize> file having name "<FileName>.<FileExtension>.1" and MIME type "<MIMEType>" is downloaded to the device
 
     Examples:
-      | Name      | Contact1  | FileName         | FileExtension | FileSize | UploadingTimeout | MIMEType  | DownloadTimeout | FileExactSize |
-      | user1Name | user2Name | filetransfer_img | gif           | 26.59KB  | 20               | image/gif | 10              | 27225B        |
+      | Name      | Contact1  | FileName | FileExtension | FileSize | UploadingTimeout | MIMEType  | DownloadTimeout | FileExactSize |
+      | user1Name | user2Name | animated | gif           | 440KB    | 20               | image/gif | 10              | 451009B       |
 

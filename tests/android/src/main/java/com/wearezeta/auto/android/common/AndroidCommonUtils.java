@@ -43,7 +43,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static void uploadPhotoToAndroid(String photoPathOnDevice)
             throws Exception {
-        executeAdb(String.format("push %s %s", getImagePath(CommonUtils.class), photoPathOnDevice));
+        executeAdb(String.format("push %s %s", getUserImagePath(CommonUtils.class), photoPathOnDevice));
         executeAdb("shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d "
                 + "file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }");
     }
@@ -589,13 +589,13 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     /**
-     * Push the file from Android Tools Path to Sdcard
+     * Push the file from defaultImagesPath (/tools/img/)
      *
      * @param fileFullName fileName should be the name of file which located in Android Tools Path
      * @throws Exception
      */
     public static void pushLocalFileToSdcardDownload(String fileFullName) throws Exception{
-        String basePath = getAndroidToolsPathFromConfig(AndroidCommonUtils.class);
+        String basePath = getImagesPath(AndroidCommonUtils.class);
         String extension = FilenameUtils.getExtension(fileFullName);
         String fileName = FilenameUtils.getBaseName(fileFullName);
 

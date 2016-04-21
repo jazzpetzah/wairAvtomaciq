@@ -104,7 +104,7 @@ public class CommonUtils {
         return getValueFromConfig(c, "deviceName");
     }
 
-    public static String getImagePath(Class<?> c) throws Exception {
+    public static String getUserImagePath(Class<?> c) throws Exception {
         return getValueFromConfig(c, "defaultImagesPath") + USER_IMAGE;
     }
 
@@ -693,7 +693,7 @@ public class CommonUtils {
         final long millisecondsStarted = System.currentTimeMillis();
         do {
             try {
-                return Optional.of(function.call());
+                return Optional.ofNullable(function.call());
             } catch (Exception e) {
                 // Ignore silently
             }
