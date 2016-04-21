@@ -28,6 +28,7 @@ public class MigrationSteps {
 
     private static final int IS_RUNNING_CHECK_INTERVAL = 20; // milliseconds
     private Path temp;
+    private Process gruntProcess;
 
     private void createProcessLogger(Process process) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
@@ -53,21 +54,37 @@ public class MigrationSteps {
         createProcessLogger(process);
     }
 
+    private Process runCommandUnattached(Path temp, String[] command) throws IOException {
+        ProcessBuilder builder = new ProcessBuilder(command);
+        builder.directory(temp.toFile());
+        builder.redirectErrorStream(true); //merge error and input steam into one stream
+        return builder.start();
+    }
+
     @When("^I deploy latest production version$")
     public void IDeployProduction() throws Exception {
         temp = Files.createTempDirectory("webapp");
         log.info("Created temp directory: " + temp.toAbsolutePath());
         runCommand(temp, new String[]{"git", "clone", "git@github.com:wearezeta/mars.git", "."});
         runCommand(temp, new String[]{"git", "checkout", "tags/2016-04-21-11-59"});
+        runCommand(temp, new String[]{"npm", "install"});
         runCommand(temp, new String[]{"grunt", "init", "prepare_staging"});
-        runCommand(temp, new String[]{"grunt", "connect", "watch"});
+        gruntProcess = runCommandUnattached(temp, new String[]{"grunt", "connect", "watch"});
+        HttpClient client = HttpClientBuilder.create().build();
+        HttpResponse response = client.execute(new HttpGet("http://localhost:8888"));
+        int statusCode = response.getStatusLine().getStatusCode();
+        if (statusCode == 200) {
+            log.info("yeah!");
+        }
     }
 
     @When("^I deploy latest staging version$")
     public void IDeployStaging() throws Exception {
+        gruntProcess.destroy();
+        log.info("Process exited with " + gruntProcess.exitValue());
         runCommand(temp, new String[]{"git", "checkout", "staging"});
         runCommand(temp, new String[]{"grunt", "init", "prepare_staging"});
-        runCommand(temp, new String[]{"grunt", "connect", "watch"});
+        runCommandUnattached(temp, new String[]{"grunt", "connect", "watch"});
     }
 
     @When("^I wait until latest staging version is deployed$")
