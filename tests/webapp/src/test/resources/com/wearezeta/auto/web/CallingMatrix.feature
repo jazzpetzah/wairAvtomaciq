@@ -81,7 +81,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend    | Timeout |
       | user1Email | user1Password | user1Name | user2Name | zcall:2.2.46   | 20      |
-      | user1Email | user1Password | user1Name | user2Name | zcall:2.1      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:2.2.38   | 20      |
 
   @C5362 @calling_matrix @calling
   Scenario Outline: Verify I can receive 1:1 call from <CallBackend>
@@ -163,7 +163,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend      | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall:2.2.46  | 20      |
-      | user1Email | user1Password | user1Name | user2Name | autocall:2.1     | 20      |
+      | user1Email | user1Password | user1Name | user2Name | autocall:2.2.38  | 20      |
 
   @C5365 @calling_matrix @calling
   Scenario Outline: Verify I can make group call with multiple <WaitBackend>
@@ -222,7 +222,7 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend    | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.2.46   | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.1      | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.2.38   | 30      |
 
   @C5367 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with multiple <Backend>
@@ -302,12 +302,12 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.46 | firefox:45.0.1      | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.46 | firefox:44.0.2      | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.46 | firefox:43.0        | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.1    | chrome:50.0.2661.75 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.1    | chrome:49.0.2623.75 | 30      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.1    | chrome:47.0.2526.73 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.1    | firefox:45.0.1      | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.1    | firefox:44.0.2      | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.1    | firefox:43.0        | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | chrome:50.0.2661.75 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | chrome:49.0.2623.75 | 30      |
+#      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | chrome:47.0.2526.73 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | firefox:45.0.1      | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | firefox:44.0.2      | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | firefox:43.0        | 30      |
 
   @C5369 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
@@ -335,6 +335,6 @@ Feature: Calling_Matrix
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend          | WaitBackend  | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.46  | zcall:2.2.46 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.46  | zcall:2.1    | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1     | zcall:2.1    | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.1     | zcall:2.2.46 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.46  | zcall:2.2.38 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.38  | zcall:2.2.38 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.38  | zcall:2.2.46 | 30      |
