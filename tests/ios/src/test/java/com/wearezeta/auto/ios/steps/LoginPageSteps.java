@@ -4,6 +4,8 @@ import com.wearezeta.auto.ios.pages.FirstTimeOverlay;
 import org.junit.Assert;
 
 import java.io.IOException;
+import java.util.Random;
+
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
@@ -12,7 +14,6 @@ import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.RegistrationPage;
 
 import cucumber.api.java.en.*;
-import org.openqa.selenium.WebDriverException;
 
 /**
  * Contains steps to work with Login/Welcome page
@@ -72,33 +73,25 @@ public class LoginPageSteps {
 
         getLoginPage().switchToLogin();
 
-        if (getLoginPage().isEmailInputFieldInvisible()) {
-            getLoginPage().switchToEmailLogin();
-        }
+//        if (getLoginPage().isEmailInputFieldInvisible()) {
+//            getLoginPage().switchToEmailLogin();
+//        }
         getLoginPage().setLogin(login);
         getLoginPage().setPassword(password);
         getLoginPage().clickLoginButton();
         getLoginPage().waitForLoginToFinish();
-        try {
-            getLoginPage().acceptAlertIfVisible(5);
-        } catch (WebDriverException e) {
-            // pass silently
-        }
+        getLoginPage().acceptAlertIfVisible(5);
         getFirstTimeOverlayPage().acceptIfVisible(2);
-        try {
-            getLoginPage().acceptAlertIfVisible(5);
-        } catch (WebDriverException e) {
-            // pass silently
-        }
+        getLoginPage().acceptAlertIfVisible(5);
         getLoginPage().dismissSettingsWarningIfVisible(5);
     }
 
     private void phoneLoginSequence(final PhoneNumber number) throws Exception {
         getLoginPage().switchToLogin();
 
-        if (getRegistrationPage().isCountryPickerButtonInvisible()) {
-            getLoginPage().switchToPhoneLogin();
-        }
+//        if (getRegistrationPage().isCountryPickerButtonInvisible()) {
+        getLoginPage().switchToPhoneLogin();
+//        }
         getRegistrationPage().inputPhoneNumber(number);
         getRegistrationPage().inputActivationCode(number);
         getLoginPage().waitForLoginToFinish();
@@ -178,26 +171,14 @@ public class LoginPageSteps {
     }
 
     /**
-     * Tap on PHONE SIGN IN button is visible
+     * Tap PHONE tab caption on log in screen
      *
      * @throws Exception
-     * @step. I tap on PHONE SIGN IN button
+     * @step. ^I switch to Phone Log In tab$
      */
-    @When("I tap on PHONE SIGN IN button")
-    public void ITapPhoneSignInButton() throws Exception {
+    @When("^I switch to Phone Log In tab$")
+    public void ITapPhoneButton() throws Exception {
         getLoginPage().switchToPhoneLogin();
-    }
-
-    /**
-     * Verify country picker button presented
-     *
-     * @throws Exception
-     * @step. ^I see country picker button on Sign in screen$
-     */
-    @When("^I see country picker button on Sign in screen$")
-    public void ISeeCountryPickerButton() throws Exception {
-        Assert.assertTrue("Country picker button is not visible",
-                getLoginPage().isCountryPickerButtonVisible());
     }
 
     /**
@@ -223,6 +204,7 @@ public class LoginPageSteps {
     }
 
     private static final int BY_PHONE_NUMBER_LOGIN_PROBABILITY = 25;
+    private static final Random rand = new Random();
 
     /**
      * Sign in with email/password (20%) or phone number (80%)
@@ -232,13 +214,12 @@ public class LoginPageSteps {
      */
     @Given("^I sign in using my email or phone number$")
     public void GivenISignInUsingEmailOrPhone() throws Exception {
-        // FIXME: iOS wants to reregister if login by phone
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
-//        if (CommonUtils.trueInPercents(BY_PHONE_NUMBER_LOGIN_PROBABILITY)) {
-//        phoneLoginSequence(self.getPhoneNumber());
-//        } else {
-        emailLoginSequence(self.getEmail(), self.getPassword());
-//        }
+        if (rand.nextInt(100) < BY_PHONE_NUMBER_LOGIN_PROBABILITY) {
+            phoneLoginSequence(self.getPhoneNumber());
+        } else {
+            emailLoginSequence(self.getEmail(), self.getPassword());
+        }
     }
 
     /**
