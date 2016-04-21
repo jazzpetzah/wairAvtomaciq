@@ -1204,11 +1204,12 @@ public class CommonAndroidSteps {
     @Then("^I wait up (\\d+) seconds? until (.*) file having name \"(.*)\" and MIME type \"(.*)\" is downloaded to the device$")
     public void TheXFileSavedInDownloadFolder(int timeoutSeconds, String size, String fileFullName, String mimeType) throws Exception {
 
-        Optional<FileInfo> fileInfo =  AndroidCommonUtils.waitUntil(timeoutSeconds, 1000, () -> {
-            AndroidCommonUtils.pullFileFromSdcardDownload(fileFullName);
-            return CommonUtils.retrieveFileInfo(AndroidCommonUtils.getBuildPathFromConfig(CommonAndroidSteps.class)
-                    + File.separator + fileFullName);
-        });
+        Optional<FileInfo> fileInfo = CommonUtils.waitUntil(timeoutSeconds,
+                CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS, () -> {
+                    AndroidCommonUtils.pullFileFromSdcardDownload(fileFullName);
+                    return CommonUtils.retrieveFileInfo(AndroidCommonUtils.getBuildPathFromConfig(CommonAndroidSteps.class)
+                            + File.separator + fileFullName);
+                });
 
         Assert.assertTrue(String.format("File '%s' doesn't exist after %s seconds", fileFullName, timeoutSeconds),
                 fileInfo.isPresent());
