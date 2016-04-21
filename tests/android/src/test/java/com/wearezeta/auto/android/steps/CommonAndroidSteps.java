@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.steps;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener;
