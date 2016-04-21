@@ -23,9 +23,9 @@ public class FirstTimeOverlaySteps {
     @Then("^I (do not )?see First Time overlay$")
     public void ISeeFirstTimeOverlay(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
-            Assert.assertTrue("First time overlay is not visible", getFirstTimeOverlay().waitUntiVisible());
+            Assert.assertTrue("First time overlay is not visible", getFirstTimeOverlay().waitUntilVisible());
         } else {
-            Assert.assertTrue("First time overlay is not visible", getFirstTimeOverlay().waitUntiInvisible());
+            Assert.assertTrue("First time overlay is not visible", getFirstTimeOverlay().waitUntilInvisible());
         }
     }
 
