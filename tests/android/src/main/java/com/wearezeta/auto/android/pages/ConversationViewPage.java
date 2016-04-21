@@ -658,8 +658,16 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void tapFileDialogActionButton(String action) throws Exception {
-        By actionElement = action.equals("save") ? idFileDialogActionSaveBtn : idFileDialogActionOpenBtn;
-        getElement(actionElement).click();
+        switch (action) {
+            case "save":
+                getElement(idFileDialogActionSaveBtn).click();
+                break;
+            case "open":
+                getElement(idFileDialogActionOpenBtn).click();
+            default:
+                throw new Exception(String.format("Cannot identify the action '%s' in File dialog", action));
+
+        }
     }
 
 }
