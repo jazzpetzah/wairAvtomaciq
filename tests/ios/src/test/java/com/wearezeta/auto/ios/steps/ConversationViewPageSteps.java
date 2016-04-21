@@ -1041,4 +1041,17 @@ public class ConversationViewPageSteps {
                 secondsTimeout),
                 getConversationViewPage().waitUntilFilePreviewIsVisible(secondsTimeout, expectedFileName));
     }
+
+    /**
+     * Verify whether generic file share menu is shown
+     *
+     * @param timeoutSeconds timeout in seconds
+     * @throws Exception
+     * @step. ^I see generic file share menu$
+     */
+    @Then("^I wait up to (\\d+) seconds until I see generic file share menu$")
+    public void ISeeGenericFileShareMenu(int timeoutSeconds) throws Exception {
+        Assert.assertTrue("Generic file share menu has not been shown",
+                getConversationViewPage().isGenericFileShareMenuVisible(timeoutSeconds));
+    }
 }
