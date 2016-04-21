@@ -34,8 +34,6 @@ Feature: File Transfer
     Examples:
       | Name      | Contact   | GroupChatName | UsersAmount |
       | user1Name | user2Name | GroupChat     | 3           |
-      | Name      | Contact   | GroupChatName | UsersAmount |
-      | user1Name | user2Name | GroupChat     | 3           |
 
   @C82518 @staging
   Scenario Outline: Verify placeholder is shown for the sender
