@@ -84,6 +84,10 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idFileActionBtn = By.id("gtv__row_conversation__file__action");
 
+    private static final By idFileDialogActionOpenBtn = By.id("ttv__file_action_dialog__open");
+
+    private static final By idFileDialogActionSaveBtn = By.id("ttv__file_action_dialog__save");
+
     private static final String xpathStrConversationToolbar = "//*[@id='t_conversation_toolbar']";
 
     private static final By xpathToolbar = By.xpath(xpathStrConversationToolbar);
@@ -135,9 +139,9 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final double LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR = 0.01;
 
-    private static final String FILE_UPLOADING_MESSAGE = "UPLOADING...";
+    private static final String FILE_UPLOADING_MESSAGE = "UPLOADING…";
 
-    private static final String FILE_DOWNLOADING_MESSAGE = "DOWNLOADING...";
+    private static final String FILE_DOWNLOADING_MESSAGE = "DOWNLOADING…";
 
     private static final String FILE_UPLOAD_FAILED = "UPLOAD FAILED";
 
@@ -651,6 +655,11 @@ public class ConversationViewPage extends AndroidPage {
 
     public void tapFileActionButton() throws Exception {
         getElement(idFileActionBtn).click();
+    }
+
+    public void tapFileDialogActionButton(String action) throws Exception {
+        By actionElement = action.equals("save") ? idFileDialogActionSaveBtn : idFileDialogActionOpenBtn;
+        getElement(actionElement).click();
     }
 
 }

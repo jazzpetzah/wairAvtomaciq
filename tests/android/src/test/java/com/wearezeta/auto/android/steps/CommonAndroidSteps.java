@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener;
@@ -42,10 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class CommonAndroidSteps {
     static {
@@ -1144,6 +1142,28 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * Prepare file in /mnt/sdcard/Download/
+     *
+     * @param fileFullName the name of file that located in Android Tool Path
+     * @throws Exception
+     */
+    @Given("^I push local file named \"(.*)\" to the device")
+    public void IPushLocalFileNamedYToDevice(String fileFullName) throws Exception {
+        AndroidCommonUtils.pushLocalFileToSdcardDownload(fileFullName);
+    }
+
+    /**
+     * Remove file from /mnt/sdcard/Download/
+     *
+     * @param fileFullName
+     * @throws Exception
+     */
+    @Given("^I remove sdcard download file having name \"(.*)\" from the device$")
+    public void IRemoveRemoteFile(String fileFullName) throws Exception {
+        AndroidCommonUtils.removeFileFromSdcardDownload(fileFullName);
+    }
+
+    /**
      * Send file from SE to user/group
      *
      * @param contact      which could be a user alias
@@ -1168,5 +1188,32 @@ public class CommonAndroidSteps {
         boolean isGroup = convoType.equals("group conversation");
         commonSteps.UserSentFileToConversation(contact, dstConvoName, sourceFilePath,
                 mimeType, deviceName, isGroup);
+    }
+
+    /**
+     * Verify the downloaded file are saved correctly
+     *
+     * @param size
+     * @param fileFullName
+     * @param mimeType
+     * @throws Exception
+     */
+    @Then("^I wait up (\\d+) seconds? until (.*) file having name \"(.*)\" and MIME type \"(.*)\" is downloaded to device$")
+    public void TheXFileSavedInDownloadFolder(int timeoutSeconds, String size, String fileFullName, String mimeType) throws Exception {
+        @SuppressWarnings("unchecked")
+        HashMap<String, Object> fileInfo = (HashMap<String, Object>) AndroidCommonUtils.waitUntil(timeoutSeconds, () -> {
+            AndroidCommonUtils.pullFileFromSdcardDownload(fileFullName);
+            return CommonUtils.retrieveFileInfo(AndroidCommonUtils.getBuildPathFromConfig(CommonAndroidSteps.class)
+                    + File.separator + fileFullName);
+        });
+
+        long expectedSize = CommonUtils.getFileSizeFromString(size);
+        long actualSize = (Long) fileInfo.get("FileSize");
+
+        Assert.assertNotNull("File not exist", fileInfo);
+        Assert.assertEquals(String.format("File name should be %s", fileFullName), fileFullName, fileInfo.get("FileName"));
+        Assert.assertTrue(String.format("File size should around %s bytes, but it is %s", expectedSize, actualSize),
+                Math.abs(expectedSize - actualSize) < 100);
+        Assert.assertEquals(String.format("File MIME type should be %s", mimeType), mimeType, fileInfo.get("MIMEType"));
     }
 }

@@ -561,6 +561,17 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Save or Open file from File dialog
+     * @param action
+     * @throws Exception
+     * @step. ^I (save|open) file from file dialog$
+     */
+    @When("^I (save|open) file from file dialog$")
+    public void ISaveOrOpenFile(String action) throws Exception {
+        getConversationViewPage().tapFileDialogActionButton(action);
+    }
+
+    /**
      * Verify the current state of media control button has been changed since the last snapshot was made
      *
      * @throws Exception

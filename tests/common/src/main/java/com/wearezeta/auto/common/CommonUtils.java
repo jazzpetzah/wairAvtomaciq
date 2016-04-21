@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
 
 import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
@@ -636,19 +637,70 @@ public class CommonUtils {
      */
     public static void createRandomAccessFile(String filePath, String size) throws Exception {
         try (RandomAccessFile file = new RandomAccessFile(filePath, "rws")) {
-            final String[] sizeParts = size.split("(?<=\\d)\\s*(?=[a-zA-Z])");
-            final int fileSize = Double.valueOf(sizeParts[0]).intValue();
-            final String type = sizeParts.length > 1 ? sizeParts[1] : "";
-            switch (type.toUpperCase()) {
-                case "MB":
-                    file.setLength(fileSize * 1024 * 1024);
-                    break;
-                case "KB":
-                    file.setLength(fileSize * 1024);
-                    break;
-                default:
-                    file.setLength(fileSize);
-            }
+            final long fileSize = getFileSizeFromString(size);
+            file.setLength(fileSize);
         }
+    }
+
+    /**
+     * Convert formatted file size such as 50KB, 30.00MB into bytes
+     *
+     * @param size
+     * @return file size in bytes
+     */
+    public static long getFileSizeFromString(String size){
+        final String[] sizeParts = size.split("(?<=\\d)\\s*(?=[a-zA-Z])");
+        final int fileSize = Double.valueOf(sizeParts[0]).intValue();
+        final String type = sizeParts.length > 1 ? sizeParts[1] : "";
+        switch (type.toUpperCase()) {
+            case "MB":
+                return fileSize * 1024 * 1024;
+            case "KB":
+                return fileSize * 1024;
+            default:
+                return fileSize;
+        }
+    }
+
+    /**
+     * Retrieve File Info
+     *
+     * @param fileFullPath, the full path of file such as /User/admin/abc.txt
+     * @return the Hashmap contains key FileName, MIMEType and FileSize in bytes
+     * @throws Exception
+     */
+    public static HashMap<String,Object> retrieveFileInfo(String fileFullPath) throws Exception {
+        File file = new File(fileFullPath);
+
+        if(!file.exists())
+        {
+            throw new Exception("File doesn't exist");
+        }
+        HashMap<String,Object> fileInfo = new HashMap<>();
+        fileInfo.put("FileName", file.getName());
+        fileInfo.put("MIMEType", new MimetypesFileTypeMap().getContentType(file));
+        fileInfo.put("FileSize", file.length());
+        return fileInfo;
+    }
+
+    /**
+     * Wait until the block do not throw exception or timeout
+     *
+     * @param timeoutSeconds
+     * @param function the callable block
+     * @return anytype
+     * @throws Exception
+     */
+    public static Object waitUntil(int timeoutSeconds, Callable<Object> function) throws Exception {
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            try {
+                return function.call();
+            } catch (Exception e) {
+                // Ignore silently
+            }
+            Thread.sleep(100);
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        return null;
     }
 }
