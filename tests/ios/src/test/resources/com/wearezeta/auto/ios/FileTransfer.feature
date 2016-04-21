@@ -86,3 +86,21 @@ Feature: File Transfer
     Examples:
       | Name      | Contact   | ItemName    |
       | user1Name | user2Name | DEFAULT_PNG |
+
+  @C82523 @staging @noAcceptAlert
+  Scenario Outline: Verify notification is shown if file size is more than 25 MB
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I click plus button next to text input
+    And I tap File Transfer button from input tools
+    And I tap file transfer menu item <ItemName>
+    Then I verify the alert contains text <ExpectedAlertText>
+    When I accept alert
+    Then I do not see file transfer placeholder
+
+    Examples:
+      | Name      | Contact   | ItemName | ExpectedAlertText        |
+      | user1Name | user2Name | TOO_BIG  | You can send files up to |

@@ -623,6 +623,10 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferTopLabel);
     }
 
+    public boolean fileTransferTopLabelIsInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameFileTransferTopLabel);
+    }
+
     public boolean fileTransferBottomLabelIsVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferBottomLabel);
     }
