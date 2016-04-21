@@ -32,8 +32,8 @@ Feature: File Transfer
     And I see File Transfer button in input tools palette
 
     Examples:
-      | Name      | Contact   | GroupChatName  | UsersAmount |
-      | user1Name | user2Name | GroupChat      | 3           |
+      | Name      | Contact   | GroupChatName | UsersAmount |
+      | user1Name | user2Name | GroupChat     | 3           |
 
   @C82518 @staging
   Scenario Outline: Verify placeholder is shown for the sender
@@ -50,3 +50,21 @@ Feature: File Transfer
     Examples:
       | Name      | Contact   | ItemName    |
       | user1Name | user2Name | DEFAULT_PNG |
+
+  @C82529 @staging
+  Scenario Outline: Verify not supported file has no preview and share menu is opened
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <GroupChatName>
+    And User <Contact1> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to group conversation <GroupChatName> using device <ContactDevice>
+    Then I wait up to <Timeout> seconds until the file <FileName>.<FileExt> with size <FileSize> is ready for download from conversation view
+    When I tap file transfer placeholder
+    Then I wait up to <Timeout> seconds until I see generic file share menu
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | Timeout |
+      | user1Name | user2Name | user3Name | FTransfer     | testing  | tmp     | 240 KB   | application/octet-stream | device1       | 20      |

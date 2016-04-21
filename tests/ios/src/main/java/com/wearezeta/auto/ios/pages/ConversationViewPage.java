@@ -145,10 +145,12 @@ public class ConversationViewPage extends IOSPage {
     private static final Function<String, String> xpathTransferBottomLabelByExpr = expr ->
             String.format("//UIAStaticText[@name='%s' and %s]", nameStrFileTransferBottomLabel, expr);
 
-    private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
+//    private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
 
     private static final Function<String, String> xpathStrFilePreviewByFileName = fileName ->
             String.format("//UIANavigationBar[@name='%s']", fileName);
+
+    private static final By nameGenericFileShareMenu = MobileBy.AccessibilityId("ActivityListView");
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -675,5 +677,9 @@ public class ConversationViewPage extends IOSPage {
     public boolean waitUntilFilePreviewIsVisible(int secondsTimeout, String expectedFileName) throws Exception {
         final By locator = By.xpath(xpathStrFilePreviewByFileName.apply(expectedFileName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, secondsTimeout);
+    }
+
+    public boolean isGenericFileShareMenuVisible(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameGenericFileShareMenu, timeoutSeconds);
     }
 }
