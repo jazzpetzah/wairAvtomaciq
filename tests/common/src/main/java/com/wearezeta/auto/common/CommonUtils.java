@@ -12,6 +12,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.log4j.Logger;
@@ -666,41 +667,39 @@ public class CommonUtils {
      * Retrieve File Info
      *
      * @param fileFullPath, the full path of file such as /User/admin/abc.txt
-     * @return the Hashmap contains key FileName, MIMEType and FileSize in bytes
-     * @throws Exception
+     * @return the FileInfo
+     * @throws IOException
      */
-    public static HashMap<String,Object> retrieveFileInfo(String fileFullPath) throws Exception {
+    public static FileInfo retrieveFileInfo(String fileFullPath) throws IOException {
         File file = new File(fileFullPath);
 
-        if(!file.exists())
-        {
-            throw new Exception("File doesn't exist");
+        if (!file.exists()) {
+            throw new IOException(String.format("File '%s' doesn't exist", fileFullPath));
         }
-        HashMap<String,Object> fileInfo = new HashMap<>();
-        fileInfo.put("FileName", file.getName());
-        fileInfo.put("MIMEType", new MimetypesFileTypeMap().getContentType(file));
-        fileInfo.put("FileSize", file.length());
-        return fileInfo;
+        return new FileInfo(file.getName(), file.length(), new MimetypesFileTypeMap().getContentType(file));
     }
+
 
     /**
      * Wait until the block do not throw exception or timeout
      *
      * @param timeoutSeconds
-     * @param function the callable block
-     * @return anytype
+     * @param interval
+     * @param function
+     * @param <T>
+     * @return
      * @throws Exception
      */
-    public static Object waitUntil(int timeoutSeconds, Callable<Object> function) throws Exception {
+    public static <T> Optional<T> waitUntil(int timeoutSeconds, int interval, Callable<T> function) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         do {
             try {
-                return function.call();
+                return Optional.of(function.call());
             } catch (Exception e) {
                 // Ignore silently
             }
-            Thread.sleep(100);
+            Thread.sleep(interval);
         } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
-        return null;
+        return Optional.empty();
     }
 }

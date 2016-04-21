@@ -1146,8 +1146,9 @@ public class CommonAndroidSteps {
      *
      * @param fileFullName the name of file that located in Android Tool Path
      * @throws Exception
+     * @step. ^I push local file named \"(.*)\" to the device$
      */
-    @Given("^I push local file named \"(.*)\" to the device")
+    @Given("^I push local file named \"(.*)\" to the device$")
     public void IPushLocalFileNamedYToDevice(String fileFullName) throws Exception {
         AndroidCommonUtils.pushLocalFileToSdcardDownload(fileFullName);
     }
@@ -1155,10 +1156,11 @@ public class CommonAndroidSteps {
     /**
      * Remove file from /mnt/sdcard/Download/
      *
-     * @param fileFullName
+     * @param fileFullName the name of file that located in /mnt/sdcard/Download/
      * @throws Exception
+     * @step. ^I remove the file "(.*)" from device's sdcard$
      */
-    @Given("^I remove sdcard download file having name \"(.*)\" from the device$")
+    @Given("^I remove the file \"(.*)\" from device's sdcard$")
     public void IRemoveRemoteFile(String fileFullName) throws Exception {
         AndroidCommonUtils.removeFileFromSdcardDownload(fileFullName);
     }
@@ -1197,23 +1199,26 @@ public class CommonAndroidSteps {
      * @param fileFullName
      * @param mimeType
      * @throws Exception
+     * @step. ^I wait up (\d+) seconds? until (.*) file having name "(.*)" and MIME type "(.*)" is downloaded to the device$
      */
-    @Then("^I wait up (\\d+) seconds? until (.*) file having name \"(.*)\" and MIME type \"(.*)\" is downloaded to device$")
+    @Then("^I wait up (\\d+) seconds? until (.*) file having name \"(.*)\" and MIME type \"(.*)\" is downloaded to the device$")
     public void TheXFileSavedInDownloadFolder(int timeoutSeconds, String size, String fileFullName, String mimeType) throws Exception {
-        @SuppressWarnings("unchecked")
-        HashMap<String, Object> fileInfo = (HashMap<String, Object>) AndroidCommonUtils.waitUntil(timeoutSeconds, () -> {
+
+        Optional<FileInfo> fileInfo =  AndroidCommonUtils.waitUntil(timeoutSeconds, 1000, () -> {
             AndroidCommonUtils.pullFileFromSdcardDownload(fileFullName);
             return CommonUtils.retrieveFileInfo(AndroidCommonUtils.getBuildPathFromConfig(CommonAndroidSteps.class)
                     + File.separator + fileFullName);
         });
 
-        long expectedSize = CommonUtils.getFileSizeFromString(size);
-        long actualSize = (Long) fileInfo.get("FileSize");
+        Assert.assertTrue(String.format("File '%s' doesn't exist after %s seconds", fileFullName, timeoutSeconds),
+                fileInfo.isPresent());
 
-        Assert.assertNotNull("File not exist", fileInfo);
-        Assert.assertEquals(String.format("File name should be %s", fileFullName), fileFullName, fileInfo.get("FileName"));
+        long expectedSize = CommonUtils.getFileSizeFromString(size);
+        long actualSize = fileInfo.get().getFileSize();
+
+        Assert.assertEquals(String.format("File name should be %s", fileFullName), fileFullName, fileInfo.get().getFileName());
         Assert.assertTrue(String.format("File size should around %s bytes, but it is %s", expectedSize, actualSize),
                 Math.abs(expectedSize - actualSize) < 100);
-        Assert.assertEquals(String.format("File MIME type should be %s", mimeType), mimeType, fileInfo.get("MIMEType"));
+        Assert.assertEquals(String.format("File MIME type should be %s", mimeType), mimeType, fileInfo.get().getMimeType());
     }
 }
