@@ -564,9 +564,9 @@ public class ConversationViewPageSteps {
      * Save or Open file from File dialog
      * @param action
      * @throws Exception
-     * @step. ^I (save|open) file from file dialog$
+     * @step. ^I (save|open) file (?:in|from) file dialog$
      */
-    @When("^I (save|open) file from file dialog$")
+    @When("^I (save|open) file (?:in|from) file dialog$")
     public void ISaveOrOpenFile(String action) throws Exception {
         getConversationViewPage().tapFileDialogActionButton(action);
     }

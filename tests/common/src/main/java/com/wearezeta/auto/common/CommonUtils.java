@@ -689,13 +689,13 @@ public class CommonUtils {
      * @return
      * @throws Exception
      */
-    public static <T> Optional<T> waitUntil(int timeoutSeconds, int interval, Callable<T> function) throws Exception {
+    public static <T> Optional<T> waitUntil(int timeoutSeconds, long interval, Callable<T> function) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         do {
             try {
                 return Optional.ofNullable(function.call());
             } catch (Exception e) {
-                // Ignore silently
+                log.debug(String.format("Wait until block catch exception : %s", e.getMessage()));
             }
             Thread.sleep(interval);
         } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);

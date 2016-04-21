@@ -1201,24 +1201,27 @@ public class CommonAndroidSteps {
      * @step. ^I wait up (\d+) seconds? until (.*) file having name "(.*)" and MIME type "(.*)" is downloaded to the device$
      */
     @Then("^I wait up (\\d+) seconds? until (.*) file having name \"(.*)\" and MIME type \"(.*)\" is downloaded to the device$")
-    public void TheXFileSavedInDownloadFolder(int timeoutSeconds, String size, String fileFullName, String mimeType) throws Exception {
-
+    public void TheXFileSavedInDownloadFolder(int timeoutSeconds, String size, String fileFullName, String mimeType)
+            throws Exception {
         Optional<FileInfo> fileInfo = CommonUtils.waitUntil(timeoutSeconds,
                 CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS, () -> {
                     AndroidCommonUtils.pullFileFromSdcardDownload(fileFullName);
-                    return CommonUtils.retrieveFileInfo(AndroidCommonUtils.getBuildPathFromConfig(CommonAndroidSteps.class)
+                    return CommonUtils.retrieveFileInfo(
+                            AndroidCommonUtils.getBuildPathFromConfig(CommonAndroidSteps.class)
                             + File.separator + fileFullName);
                 });
 
-        Assert.assertTrue(String.format("File '%s' doesn't exist after %s seconds", fileFullName, timeoutSeconds),
-                fileInfo.isPresent());
+        fileInfo.orElseThrow(() -> new IllegalStateException(String.format("File '%s' doesn't exist after %s seconds",
+                fileFullName, timeoutSeconds)));
 
         long expectedSize = CommonUtils.getFileSizeFromString(size);
         long actualSize = fileInfo.get().getFileSize();
 
-        Assert.assertEquals(String.format("File name should be %s", fileFullName), fileFullName, fileInfo.get().getFileName());
+        Assert.assertEquals(String.format("File name should be %s", fileFullName),
+                fileFullName, fileInfo.get().getFileName());
         Assert.assertTrue(String.format("File size should around %s bytes, but it is %s", expectedSize, actualSize),
                 Math.abs(expectedSize - actualSize) < 100);
-        Assert.assertEquals(String.format("File MIME type should be %s", mimeType), mimeType, fileInfo.get().getMimeType());
+        Assert.assertEquals(String.format("File MIME type should be %s", mimeType),
+                mimeType, fileInfo.get().getMimeType());
     }
 }
