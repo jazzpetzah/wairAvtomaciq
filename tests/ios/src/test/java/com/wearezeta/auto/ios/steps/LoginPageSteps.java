@@ -215,11 +215,11 @@ public class LoginPageSteps {
     @Given("^I sign in using my email or phone number$")
     public void GivenISignInUsingEmailOrPhone() throws Exception {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
-        if (rand.nextInt(100) < BY_PHONE_NUMBER_LOGIN_PROBABILITY) {
-            phoneLoginSequence(self.getPhoneNumber());
-        } else {
-            emailLoginSequence(self.getEmail(), self.getPassword());
-        }
+//        if (rand.nextInt(100) < BY_PHONE_NUMBER_LOGIN_PROBABILITY) {
+//            phoneLoginSequence(self.getPhoneNumber());
+//        } else {
+        emailLoginSequence(self.getEmail(), self.getPassword());
+//        }
     }
 
     /**
