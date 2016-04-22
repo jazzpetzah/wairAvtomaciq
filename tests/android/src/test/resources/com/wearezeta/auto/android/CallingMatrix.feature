@@ -330,7 +330,7 @@ Feature: Calling Matrix
     When I tap on contact name <Contact>
     And I lock the device
     And <Contact> calls me
-    And I answer call from GCM
+    And I swipe to accept the call
     Then I see ongoing call
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
