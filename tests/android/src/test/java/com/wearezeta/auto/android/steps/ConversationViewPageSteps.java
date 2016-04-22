@@ -425,7 +425,7 @@ public class ConversationViewPageSteps {
             participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias).getName());
         }
         Assert.assertTrue(String.format("Group chat view with names %s is not visible", participantNames),
-                getConversationViewPage().isConversationMessageContainsNames(participantNames));
+                getConversationViewPage().isConversationPeopleChangedMessageContainsNames(participantNames));
     }
 
     /**

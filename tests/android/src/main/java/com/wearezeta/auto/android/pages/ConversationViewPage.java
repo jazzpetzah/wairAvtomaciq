@@ -139,8 +139,8 @@ public class ConversationViewPage extends AndroidPage {
     private static Function<String, String> xpathFileInfoPlaceHolderByValue = value -> String
             .format("//*[@id='ttv__row_conversation__file__fileinfo' and @value='%s']", value);
 
-    private static Function<String, String> xpathConversationPeopleChangedByValue = value -> String
-            .format("//*[@id='ttv__row_conversation__people_changed__text' and contains(@value, '%s')]", value.toUpperCase());
+    private static Function<String, String> xpathConversationPeopleChangedByExp = exp -> String
+            .format("//*[@id='ttv__row_conversation__people_changed__text' and %s]", exp);
 
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_SWIPE_RETRIES = 5;
@@ -472,10 +472,13 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public boolean isConversationMessageContainsNames(List<String> names) throws Exception {
-        String nameString = String.join(", ", names.subList(0, names.size() - 1));
-        nameString =  String.format("%s AND %s", nameString, names.get(names.size() - 1));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathConversationPeopleChangedByValue.apply(nameString)));
+    public boolean isConversationPeopleChangedMessageContainsNames(List<String> names) throws Exception {
+        final String xpathExpr = String.join(" and ", names.stream().map(
+                name -> String.format("contains(@value, '%s')", name.toUpperCase())
+        ).collect(Collectors.toList()));
+
+        final By locator = By.xpath(xpathConversationPeopleChangedByExp.apply(xpathExpr));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isTopToolbarVisible() throws Exception {
