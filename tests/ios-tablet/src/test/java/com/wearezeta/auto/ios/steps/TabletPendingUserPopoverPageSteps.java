@@ -27,11 +27,11 @@ public class TabletPendingUserPopoverPageSteps {
      * @step ^I see (.*) user pending profile popover on iPad$
      */
     @When("^I see (.*) user pending profile popover on iPad$")
-    public void IseeUserPendingPopoverOnIpad(String user) throws Exception {
+    public void ISeeUserPendingPopoverOnIpad(String user) throws Exception {
         Assert.assertTrue("User name is not displayed",
                 getTabletPendingUserPopoverPage().isUserNameDisplayed(usrMgr.findUserByNameOrNameAlias(user).getName()));
         Assert.assertTrue("Cancel Request label is not displayed",
-                getTabletPendingUserPopoverPage().isCancelRequestLabelVisible());
+                getTabletPendingUserPopoverPage().isCancelRequestButtonVisible());
     }
 
     /**
