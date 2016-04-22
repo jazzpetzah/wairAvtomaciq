@@ -345,25 +345,22 @@ public abstract class IOSPage extends BasePage {
             IOSSimulatorHelper.swipeRight();
             Thread.sleep(2000);
         } else {
-            final ZetaIOSDriver driver = this.getDriver();
-            final Callable callable = new Callable<Boolean>(){
-
-                @Override
-                public Boolean call() throws Exception {
-                    driver.lockScreen(timeSeconds);
-                    return true;
-                }
-            };
-            ExecutorService executor = Executors.newSingleThreadExecutor();
-            executor.submit(callable);
-            //this.getDriver().lockScreen(timeSeconds);
+            this.getDriver().lockScreen(timeSeconds);
         }
     }
 
     public void lockScreenOnRealDevice() throws Exception {
-        //IOSSimulatorHelper.lock();
-        //IOSSimulatorHelper.goHome();
-        this.getDriver().lockScreen(10);
+        final ZetaIOSDriver driver = this.getDriver();
+        final Callable callable = new Callable<Boolean>(){
+
+            @Override
+            public Boolean call() throws Exception {
+                driver.lockScreen(20);
+                return true;
+            }
+        };
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(callable);
     }
 
     public void clickElementWithRetryIfStillDisplayed(By locator, int retryCount) throws Exception {
