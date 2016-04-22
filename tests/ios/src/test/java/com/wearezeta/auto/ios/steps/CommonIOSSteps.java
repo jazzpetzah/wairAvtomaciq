@@ -1040,8 +1040,4 @@ public class CommonIOSSteps {
     public void ILockScreenOnRealDevice() throws Exception {
         pagesCollection.getCommonPage().lockScreenOnRealDevice();
     }
-
-    @When("^I answer call from APNS$")
-    public void IAnswerCallFromAPNS() throws Exception {
-    }
 }
