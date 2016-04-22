@@ -892,8 +892,9 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Check the expected placehoder is visible
+     * Check whether the file transfer placeholder of expected filew is visible
      *
+     * @param doNotSee      equal null means should see the place holder
      * @param size          the expected size displayed, value should be good formatted, such as 3.00MB rather than 3MB
      * @param loadDirection could be upload or received
      * @param fileFullName  the expected file name displayed
@@ -901,31 +902,25 @@ public class ConversationViewPageSteps {
      * @param timeout       (optional) to define the validation should be complete within timeout
      * @param actionFailed  equals null means current action successfully
      * @throws Exception
-     * @step. ^I see the result of (.*) file (upload|received)?( failed)? having name "(.*)" and extension "(\w+)"( in \d+ seconds)?$
+     * @step. ^I( do not)? see the result of (.*) file (upload|received)?( failed)? having name "(.*)" and extension "(\w+)"( in \d+ seconds)?$
      */
-    @Then("^I see the result of (.*) file (upload|received)? having name \"(.*)\" and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
-    public void ThenISeeTheResultOfXFileUpload(String size, String loadDirection, String fileFullName,
+    @Then("^I( do not)? see the result of (.*) file (upload|received)? having name \"(.*)\" and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
+    public void ThenISeeTheResultOfXFileUpload(String doNotSee, String size, String loadDirection, String fileFullName,
                                                String extension, String timeout, String actionFailed) throws Exception {
         int lookUpTimeoutSeconds = (timeout == null) ? DriverUtils.getDefaultLookupTimeoutSeconds()
                 : Integer.parseInt(timeout.replaceAll("[\\D]", ""));
         boolean isUpload = loadDirection.equals("upload");
         boolean isSuccess = (actionFailed == null);
-        Assert.assertTrue("The placeholder of sending file should be visible",
-                getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload,
-                        isSuccess, lookUpTimeoutSeconds));
-    }
+        if(doNotSee == null) {
+            Assert.assertTrue("The placeholder of sending file should be visible",
+                    getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload,
+                            isSuccess, lookUpTimeoutSeconds));
+        }else {
+            Assert.assertTrue("The placeholder of sending file should be invisible",
+                    getConversationViewPage().isFilePlaceHolderInvisible(fileFullName, size, extension, isUpload,
+                            isSuccess, lookUpTimeoutSeconds));
+        }
 
-    /**
-     * Check whether the file transfer canceled
-     *
-     * @param fileFullName
-     * @throws Exception
-     * @step. ^I do not see the file having name "(.*)"$
-     */
-    @Then("^I do not see the file having name \"(.*)\"$")
-    public void ThenIDoNotSeeFileTransferPlaceholder(String fileFullName) throws Exception {
-        Assert.assertTrue(String.format("The placeholder named '%s' should be invisible", fileFullName),
-                getConversationViewPage().isFilePlaceHolderInvisible(fileFullName));
     }
 
 }

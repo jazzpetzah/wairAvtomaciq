@@ -151,7 +151,7 @@ Feature: File transfer
     And I tap plus button in text input
     And I tap File button from input tools
     And I tap Cancel button on file upload placeholder
-    Then I do not see the file having name "<FileName>.<FileExtension>"
+    Then I do not see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
 
     Examples:
       | Name      | Contact1  | FileName  | FileExtension | FileSize |
