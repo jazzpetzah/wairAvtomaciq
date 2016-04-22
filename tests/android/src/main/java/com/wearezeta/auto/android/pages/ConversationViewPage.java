@@ -35,6 +35,9 @@ public class ConversationViewPage extends AndroidPage {
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
             .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
 
+    private static final Function<String, String> xpathStrConversationPeopleMessageByText = text -> String
+            .format("//*[@id='ttv__row_conversation__people_changed__text' and @value='%s']", text);
+
     private static final Function<String, String> xpathStrUnsentIndicatorByText = text -> String
             .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']",
                     xpathStrConversationMessageByText.apply(text));
@@ -109,15 +112,18 @@ public class ConversationViewPage extends AndroidPage {
             .xpath("//*[@id='ttv__otr_added_new_device__message' and contains(@value,'STARTED USING A NEW DEVICE')]");
 
     private static final Function<String, String> xpathStrOtrNonVerifiedMessageByValue = value -> String.format(
-            "//*[@id='ttv__otr_added_new_device__message' and @value='%s STARTED USING A NEW DEVICE']", value.toUpperCase());
+            "//*[@id='ttv__otr_added_new_device__message' and @value='%s STARTED USING A NEW DEVICE']", value
+                    .toUpperCase());
 
-    private static final By xpathLastConversationMessage = By.xpath("(//*[@id='ltv__row_conversation__message'])[last()]");
+    private static final By xpathLastConversationMessage = By.xpath("(//*[@id='ltv__row_conversation__message'])[last" +
+            "()]");
 
     public static final String idStrDialogRoot = "clv__conversation_list_view";
     public static final By idDialogRoot = By.id(idStrDialogRoot);
     private static final By xpathDialogContent = By.xpath("//*[@id='" + idStrDialogRoot + "']/*/*/*");
 
-    public static Function<String, String> xpathStrInputFieldByValue = value -> String.format("//*[@value='%s']", value);
+    public static Function<String, String> xpathStrInputFieldByValue = value -> String.format("//*[@value='%s']",
+            value);
 
     private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__back_camera");
 
@@ -202,13 +208,15 @@ public class ConversationViewPage extends AndroidPage {
             if (cursorBtn.getLocation().getX() < 0 && cursorBtn.getLocation().getX() != locationX) {
                 return;
             }
-            log.debug(String.format("Failed to open control buttons by tap on plus button. Retrying (%s of %s)...", ntry,
+            log.debug(String.format("Failed to open control buttons by tap on plus button. Retrying (%s of %s)...",
+                    ntry,
                     MAX_SWIPE_RETRIES));
             ntry++;
             Thread.sleep(500);
         } while (ntry <= MAX_SWIPE_RETRIES);
         throw new RuntimeException(
-                String.format("Failed to open control buttons by tap on plus button after %s retries!", MAX_SWIPE_RETRIES));
+                String.format("Failed to open control buttons by tap on plus button after %s retries!",
+                        MAX_SWIPE_RETRIES));
     }
 
     public void swipeRightOnCursorInput() throws Exception {
@@ -223,7 +231,8 @@ public class ConversationViewPage extends AndroidPage {
             if (currentCursorOffset > getDriver().manage().window().getSize().getWidth() / 2) {
                 return;
             }
-            log.debug(String.format("Failed to swipe the text cursor. Retrying (%s of %s)...", ntry, MAX_SWIPE_RETRIES));
+            log.debug(String.format("Failed to swipe the text cursor. Retrying (%s of %s)...", ntry,
+                    MAX_SWIPE_RETRIES));
             ntry++;
             Thread.sleep(1000);
         } while (ntry <= MAX_SWIPE_RETRIES);
@@ -313,11 +322,13 @@ public class ConversationViewPage extends AndroidPage {
             cursorInput.sendKeys(message);
             ntry++;
         }
-        while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathStrInputFieldByValue.apply(message)), 2)
+        while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathStrInputFieldByValue.apply
+                (message)), 2)
                 && ntry < maxTries);
         if (ntry >= maxTries) {
             throw new IllegalStateException(String.format(
-                    "The string '%s' was autocorrected. Please disable autocorrection on the device and restart the test.",
+                    "The string '%s' was autocorrected. Please disable autocorrection on the device and restart the " +
+                            "test.",
                     message));
         }
         pressKeyboardSendButton();
@@ -328,8 +339,10 @@ public class ConversationViewPage extends AndroidPage {
 
     public void typeMessage(String message) throws Exception {
         getElement(idEditText).sendKeys(message);
-        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathStrInputFieldByValue.apply(message)), 2)) {
-            log.warn(String.format("The message '%s' was autocorrected. This might cause unpredicted test results", message));
+        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathStrInputFieldByValue.apply(message)),
+                2)) {
+            log.warn(String.format("The message '%s' was autocorrected. This might cause unpredicted test results",
+                    message));
         }
     }
 
@@ -365,6 +378,11 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean waitForMessage(String text) throws Exception {
         final By locator = By.xpath(xpathStrConversationMessageByText.apply(text));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    }
+
+    public boolean waitForPeopleMessage(String text) throws Exception {
+        final By locator = By.xpath(xpathStrConversationPeopleMessageByText.apply(text));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
@@ -452,7 +470,8 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isConversationMessageContainsNames(List<String> names) throws Exception {
-        final String convoText = getElement(xpathLastConversationMessage, "No messages are visible in the conversation view")
+        final String convoText = getElement(xpathLastConversationMessage, "No messages are visible in the " +
+                "conversation view")
                 .getText();
         for (String name : names) {
             if (!convoText.toLowerCase().contains(name.toLowerCase())) {
@@ -501,7 +520,8 @@ public class ConversationViewPage extends AndroidPage {
         do {
             final BufferedImage currentState = getElementScreenshot(playPauseBtn)
                     .orElseThrow(() -> new AssertionError("Failed to get a screenshot of Play/Pause button"));
-            final double overlapScore = ImageUtil.getOverlapScore(currentState, initialState, ImageUtil.RESIZE_TO_MAX_SCORE);
+            final double overlapScore = ImageUtil.getOverlapScore(currentState, initialState, ImageUtil
+                    .RESIZE_TO_MAX_SCORE);
             if (overlapScore < MAX_BUTTON_STATE_OVERLAP) {
                 return;
             } else {
@@ -631,7 +651,7 @@ public class ConversationViewPage extends AndroidPage {
     public void waitUntilFileUploadIsCompleted(int timeoutSeconds, String size, String extension) throws Exception {
         String fileInfo = StringUtils.isEmpty(extension) ? size :
                 size + FILE_MESSAGE_SEPARATOR + extension.toUpperCase();
-        fileInfo = String.format("%s%s%s",fileInfo, FILE_MESSAGE_SEPARATOR, FILE_UPLOADING_MESSAGE);
+        fileInfo = String.format("%s%s%s", fileInfo, FILE_MESSAGE_SEPARATOR, FILE_UPLOADING_MESSAGE);
         DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeoutSeconds);
     }
