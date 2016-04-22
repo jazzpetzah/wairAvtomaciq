@@ -838,9 +838,16 @@ public class CommonIOSSteps {
         commonSteps.UserDeletesAvatarPicture(nameAlias);
     }
 
+    /**
+     * Verify whether currently visible alert contains particular text
+     *
+     * @param expectedText the text (or part of it) to verify
+     * @throws Exception
+     * @step. ^I verify the alert contains text (.*)
+     */
     @Then("^I verify the alert contains text (.*)")
     public void IVerifyAlertContains(String expectedText) throws Exception {
-        Assert.assertTrue(String.format("there is not '%s' on the alert", expectedText),
+        Assert.assertTrue(String.format("There is no '%s' text on the alert", expectedText),
                 pagesCollection.getCommonPage().isAlertContainsText(expectedText));
     }
 
@@ -1017,7 +1024,7 @@ public class CommonIOSSteps {
      * @throws Exception
      * @step. ^I create temporary file (.*) in size with name "(.*)" and extension "(.*)"
      */
-    @Given("^I create temporary file (.*) in size with name \"(.*)\" and extension \"(.*)\"")
+    @Given("^I create temporary file (.*) in size with name \"(.*)\" and extension \"(.*)\"$")
     public void ICreateTemporaryFile(String size, String name, String ext) throws Exception {
         final String tmpFilesRoot = CommonUtils.getBuildPathFromConfig(getClass());
         CommonUtils.createRandomAccessFile(tmpFilesRoot + File.separator + name + "." + ext, size);

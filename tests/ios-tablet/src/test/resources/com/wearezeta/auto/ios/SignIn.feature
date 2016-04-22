@@ -52,10 +52,8 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I switch to Log In tab
-    Then I see PHONE SIGN IN button
-    When I tap on PHONE SIGN IN button
-    Then I see country picker button on Sign in screen
+    Given I switch to Log In tab
+    Given I switch to Phone Log In tab
     When I enter phone number for user <Name>
     Then I see verification code page
     When I enter verification code for user <Name>
@@ -71,10 +69,8 @@ Feature: Sign In
     Given There is 1 user where <Name> is me with phone number only
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I switch to Log In tab
-    Then I see PHONE SIGN IN button
-    When I tap on PHONE SIGN IN button
-    Then I see country picker button on Sign in screen
+    Given I switch to Log In tab
+    Given I switch to Phone Log In tab
     When I enter phone number for user <Name>
     Then I see verification code page
     When I enter verification code for user <Name>
@@ -96,10 +92,8 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I switch to Log In tab
-    Then I see PHONE SIGN IN button
-    And I tap on PHONE SIGN IN button
-    And I see country picker button on Sign in screen
+    Given I switch to Log In tab
+    Given I switch to Phone Log In tab
     And I enter phone number for user <Name>
     And I see verification code page
     When I enter random verification code
@@ -114,10 +108,8 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I switch to Log In tab
-    Then I see PHONE SIGN IN button
-    And I tap on PHONE SIGN IN button
-    And I see country picker button on Sign in screen
+    Given I switch to Log In tab
+    Given I switch to Phone Log In tab
     And I enter phone number for user <Name>
     And I see verification code page
     When I tap RESEND code button
@@ -132,10 +124,8 @@ Feature: Sign In
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I switch to Log In tab
-    And I see PHONE SIGN IN button
-    And I tap on PHONE SIGN IN button
-    And I see country picker button on Sign in screen
+    Given I switch to Log In tab
+    Given I switch to Phone Log In tab
     And I enter 10 digits phone number
     Then I see invalid phone number alert
 
@@ -148,10 +138,8 @@ Feature: Sign In
     Given There is 1 user where <Name> is me with phone number only
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I switch to Log In tab
-    And I see PHONE SIGN IN button
-    And I tap on PHONE SIGN IN button
-    And I see country picker button on Sign in screen
+    Given I switch to Log In tab
+    Given I switch to Phone Log In tab
     And I enter phone number for user <Name>
     And I see verification code page
     And I enter verification code for user <Name>
@@ -176,9 +164,8 @@ Feature: Sign In
     Given There is 1 user where <Name> is me with phone number only
     Given I rotate UI to landscape
     Given I see sign in screen
-    When I switch to Log In tab
-    And I tap on PHONE SIGN IN button
-    Then I see country picker button on Sign in screen
+    Given I switch to Log In tab
+    Given I switch to Phone Log In tab
     When I enter phone number for user <Name>
     Then I see verification code page
     When I enter verification code for user <Name>

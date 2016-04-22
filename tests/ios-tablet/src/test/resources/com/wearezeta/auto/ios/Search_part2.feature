@@ -163,11 +163,11 @@ Feature: Search
     And I tap on 1st top connection contact
     And I see Open conversation action button on People picker page
     And I tap on 2nd top connection contact
-    And I see Create conversation action button on People picker page
+    Then I see Create conversation action button on People picker page
+    When I tap on Search input on People picker page
     And I press backspace button
-    And I press backspace button
-    Then I see Open conversation action button on People picker page
-    And I press backspace button
+    Then I do not see Create conversation action button on People picker page
+    When I tap on Search input on People picker page
     And I press backspace button
     Then I do not see Open conversation action button on People picker page
 

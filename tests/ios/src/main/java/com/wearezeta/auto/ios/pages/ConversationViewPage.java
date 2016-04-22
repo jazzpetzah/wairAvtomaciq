@@ -145,7 +145,12 @@ public class ConversationViewPage extends IOSPage {
     private static final Function<String, String> xpathTransferBottomLabelByExpr = expr ->
             String.format("//UIAStaticText[@name='%s' and %s]", nameStrFileTransferBottomLabel, expr);
 
-    private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
+//    private static final By nameFileTransferActionButton = MobileBy.AccessibilityId("FileTransferActionButton");
+
+    private static final Function<String, String> xpathStrFilePreviewByFileName = fileName ->
+            String.format("//UIANavigationBar[@name='%s']", fileName);
+
+    private static final By nameGenericFileShareMenu = MobileBy.AccessibilityId("ActivityListView");
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -614,11 +619,15 @@ public class ConversationViewPage extends IOSPage {
         getElement(MobileBy.AccessibilityId(itemName)).click();
     }
 
-    public boolean fileTransferTopLabelIsVisible() throws Exception {
+    public boolean isFileTransferTopLabelVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferTopLabel);
     }
 
-    public boolean fileTransferBottomLabelIsVisible() throws Exception {
+    public boolean isFileTransferTopLabelInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameFileTransferTopLabel);
+    }
+
+    public boolean isFileTransferBottomLabelVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferBottomLabel);
     }
 
@@ -637,11 +646,11 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    public boolean inputToolButtonByNameIsVisible(String name) throws Exception {
+    public boolean isInputToolButtonByNameVisible(String name) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getInputToolButtonByName(name));
     }
 
-    public boolean inputToolButtonByNameIsNotVisible(String name) throws Exception {
+    public boolean isInputToolButtonByNameNotVisible(String name) throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), getInputToolButtonByName(name));
     }
 
@@ -663,5 +672,18 @@ public class ConversationViewPage extends IOSPage {
         ));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), topLabelLocator, timeoutSeconds) &&
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), bottomLabelLocator, timeoutSeconds);
+    }
+
+    public void tapFileTransferPlaceholder() throws Exception {
+        getElement(nameFileTransferBottomLabel).click();
+    }
+
+    public boolean waitUntilFilePreviewIsVisible(int secondsTimeout, String expectedFileName) throws Exception {
+        final By locator = By.xpath(xpathStrFilePreviewByFileName.apply(expectedFileName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, secondsTimeout);
+    }
+
+    public boolean isGenericFileShareMenuVisible(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameGenericFileShareMenu, timeoutSeconds);
     }
 }

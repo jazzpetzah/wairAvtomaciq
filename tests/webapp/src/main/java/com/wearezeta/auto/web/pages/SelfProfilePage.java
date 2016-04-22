@@ -12,6 +12,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Function;
+import com.sun.corba.se.impl.orbutil.threadpool.TimeoutException;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -19,7 +20,10 @@ import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.InvalidElementStateException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -87,8 +91,13 @@ public class SelfProfilePage extends WebPage {
 
                     @Override
                     public WebElement apply(WebDriver input) {
-                        final WebElement element = new WebDriverWait(driver, 1).withTimeout(timeoutInMillisForElement,
-                                TimeUnit.MILLISECONDS).until(innerConditionForElementDetection);
+                        final WebElement element = new WebDriverWait(driver, 1)
+                                .withTimeout(timeoutInMillisForElement,TimeUnit.MILLISECONDS)
+                                .ignoring(TimeoutException.class)
+                                .ignoring(NoSuchElementException.class)
+                                .ignoring(StaleElementReferenceException.class)
+                                .ignoring(InvalidElementStateException.class)
+                                .until(innerConditionForElementDetection);
                         if (element == null) {
                             return null;
                         }

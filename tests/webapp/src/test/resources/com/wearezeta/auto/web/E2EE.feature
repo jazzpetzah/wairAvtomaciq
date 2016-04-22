@@ -432,7 +432,7 @@ Feature: E2EE
     | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
 
-  @C95628 @staging
+  @C95628 @regression
   Scenario Outline: Verify device list is updated in people popover if participant deletes or adds new devices in 1:1
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -481,7 +481,7 @@ Feature: E2EE
     | Email      | Password      | Name      | Contact   | ALL_VERIFIED                  |
     | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified |
 
-  @C95638 @staging
+  @C95638 @regression
   Scenario Outline: Verify device list is updated in people popover if participant deletes or adds new devices in group chat
     Given There are 3 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1

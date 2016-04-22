@@ -518,7 +518,7 @@ Feature: Conversation List
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   @C95627 @staging
-  Scenario Outline: (CM-882) Verify deleting a conversation is synchronised to all devices
+  Scenario Outline: Verify deleting a conversation is synchronised to all devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number

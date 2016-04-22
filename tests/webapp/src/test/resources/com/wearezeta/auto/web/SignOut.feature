@@ -44,7 +44,8 @@ Feature: Sign Out
   @C87934 @regression
   Scenario Outline: Verify session expired info is visible on login page
     Given I open <Language> session expired login page
-    Then I verify session expired message is visible
+    Then I see Sign In page
+    And I verify session expired message is visible
     And I verify session expired message is equal to <SessionExpiredMessage>
 
     Examples:
