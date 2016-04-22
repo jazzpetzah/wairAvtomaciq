@@ -23,7 +23,8 @@ public class ConversationViewPageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    public static final String DEFAULT_PNG = "group-icon@3x.png";
+    private static final String FTRANSFER_MENU_DEFAULT_PNG = "group-icon@3x.png";
+    private static final String FTRANSFER_MENU_TOO_BIG = "Big file";
 
     private ConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(ConversationViewPage.class);
@@ -241,10 +242,10 @@ public class ConversationViewPageSteps {
     public void VeirfyButtonVisibilityInInputTools(String shouldNot, String btnName) throws Exception {
         if (shouldNot == null) {
             Assert.assertTrue(btnName + "button in input tools palette is not visible",
-                    getConversationViewPage().inputToolButtonByNameIsVisible(btnName));
+                    getConversationViewPage().isInputToolButtonByNameVisible(btnName));
         } else {
             Assert.assertTrue(btnName + "button in input tools palette is  visible",
-                    getConversationViewPage().inputToolButtonByNameIsNotVisible((btnName)));
+                    getConversationViewPage().isInputToolButtonByNameNotVisible((btnName)));
         }
     }
 
@@ -974,27 +975,39 @@ public class ConversationViewPageSteps {
      *
      * @param itemName name of the item
      * @throws Exception
-     * @step. ^I tap file transfer menu item (.*)$
+     * @step. ^I tap file transfer menu item (.*)
      */
-    @When("^I tap file transfer menu item (.*)$")
+    @When("^I tap file transfer menu item (.*)")
     public void ITapFileTransferMenuItem(String itemName) throws Exception {
-        if (itemName.equals("DEFAULT_PNG")) {
-            itemName = DEFAULT_PNG;
+        String realName = itemName;
+        switch (itemName) {
+            case "FTRANSFER_MENU_DEFAULT_PNG":
+                realName = FTRANSFER_MENU_DEFAULT_PNG;
+                break;
+            case "TOO_BIG":
+                realName = FTRANSFER_MENU_TOO_BIG;
+                break;
         }
-        getConversationViewPage().tapFileTransferMenuItem(itemName);
+        getConversationViewPage().tapFileTransferMenuItem(realName);
     }
 
     /**
      * Verify file transfer placeholder visibility
      *
      * @throws Exception
-     * @step. ^I see file transfer placeholder$
+     * @param shouldNotBeVisible equals to null if the placeholder should be visible
+     * @step. ^I (do not )?see file transfer placeholder$
      */
-    @When("^I see file transfer placeholder$")
-    public void ISeeFileTransferPlaceHolder() throws Exception {
-        Assert.assertTrue("File transfer placeholder is not visible",
-                getConversationViewPage().fileTransferTopLabelIsVisible() &&
-                        getConversationViewPage().fileTransferBottomLabelIsVisible());
+    @When("^I (do not )?see file transfer placeholder$")
+    public void ISeeFileTransferPlaceHolder(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("File transfer placeholder is not visible",
+                    getConversationViewPage().isFileTransferTopLabelVisible() &&
+                            getConversationViewPage().isFileTransferBottomLabelVisible());
+        } else {
+            Assert.assertTrue("File transfer placeholder is visible, but should be hidden",
+                    getConversationViewPage().isFileTransferTopLabelInvisible());
+        }
     }
 
     /**
