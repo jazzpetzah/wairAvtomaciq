@@ -438,7 +438,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see message (.*) contact (.*) on group page$")
     public void ThenISeeMessageContactOnGroupPage(String message, String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName().toUpperCase();
+        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         final String expectedMsg = message + " " + contact;
         Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", expectedMsg),
                 getConversationViewPage().waitForPeopleMessage(expectedMsg));

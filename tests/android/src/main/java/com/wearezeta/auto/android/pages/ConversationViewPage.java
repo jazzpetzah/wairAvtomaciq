@@ -35,9 +35,6 @@ public class ConversationViewPage extends AndroidPage {
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
             .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
 
-    private static final Function<String, String> xpathStrConversationPeopleMessageByText = text -> String
-            .format("//*[@id='ttv__row_conversation__people_changed__text' and @value='%s']", text);
-
     private static final Function<String, String> xpathStrUnsentIndicatorByText = text -> String
             .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']",
                     xpathStrConversationMessageByText.apply(text));
@@ -385,7 +382,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean waitForPeopleMessage(String text) throws Exception {
-        final By locator = By.xpath(xpathStrConversationPeopleMessageByText.apply(text));
+        final By locator = By.xpath(xpathConversationPeopleChangedByValue.apply(text));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
