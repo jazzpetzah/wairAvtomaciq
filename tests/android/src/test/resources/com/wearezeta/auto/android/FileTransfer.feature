@@ -117,3 +117,24 @@ Feature: File transfer
       | Name      | Contact1  | FileName | FileExtension | FileSize | UploadingTimeout | MIMEType  | DownloadTimeout | FileExactSize |
       | user1Name | user2Name | animated | gif           | 440KB    | 20               | image/gif | 10              | 451009B       |
 
+  @staging @C87634
+  Scenario Outline: Verify downloading file by receiver
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I remove the file "<FileName>.<FileExtension>" from device's sdcard
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And <Contact1> sends local file named "<FileName>.<FileExtension>" and MIME type "<MIMEType>" via device Device1 to user Myself
+    And I see the result of <FileSize> file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <ReceivingTimeout> seconds
+    And I remember the state of Download button on file download placeholder
+    And I tap Download button on file download placeholder
+    And I wait up to <DownloadTimeout> seconds until the state of Download button on file download placeholder is changed
+    And I tap View button on file download placeholder
+    And I save file from file dialog
+    Then I wait up <DownloadTimeout> seconds until <FileExactSize> file having name "<FileName>.<FileExtension>" and MIME type "<MIMEType>" is downloaded to the device
+
+    Examples:
+      | Name      | Contact1  | FileName   | FileExtension | FileSize | MIMEType  | DownloadTimeout | FileExactSize | ReceivingTimeout |
+      | user1Name | user2Name | avatarTest | png           | 5.68KB   | image/png | 10              | 5813B         | 60               |

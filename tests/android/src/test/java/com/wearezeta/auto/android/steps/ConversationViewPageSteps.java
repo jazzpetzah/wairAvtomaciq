@@ -34,6 +34,7 @@ public class ConversationViewPageSteps {
     private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
     private static final int TOP_TOOLBAR_STATE_CHANGE_TIMEOUT = 15;
     private static final double TOP_TOOLBAR_MIN_SIMILARITY_SCORE = 0.97;
+    private static final double FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE = 0.4;
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final ElementState mediaButtonState = new ElementState(
@@ -44,6 +45,8 @@ public class ConversationViewPageSteps {
             () -> getConversationViewPage().getShieldStateScreenshot());
     private final ElementState topToolbarState = new ElementState(
             () -> getConversationViewPage().getTopToolbarState());
+    private final ElementState filePlaceHolderActionButtonState = new ElementState(
+            () -> getConversationViewPage().getFilePlaceholderActionButtonState());
     private Boolean wasShieldVisible = null;
 
     private static String expandMessage(String message) {
@@ -525,6 +528,31 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Store the screenshot of current file placeholder action button
+     *
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder is changed$
+     */
+    @When("^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder$")
+    public void IRememberFileTransferActionBtnState() throws Exception {
+        filePlaceHolderActionButtonState.remember();
+    }
+
+    /**
+     * Wait to check whether the file placeholder action button is changed
+     *
+     * @param timeout
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder is changed$
+     */
+    @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder is changed$")
+    public void IWaitFileTransferActionButtonChanged(int timeout) throws Exception {
+        Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
+                timeout),
+                filePlaceHolderActionButtonState.isChanged(timeout, FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
+    }
+
+    /**
      * Tap back arrow button in upper toolbar
      *
      * @throws Exception
@@ -555,7 +583,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I tap (?:Retry|Download|View) button on (?:upload|download) file placeholder$
      */
-    @When("^I tap (?:Retry|Download|View) button on file (?:upload|download) placeholder$")
+    @When("^I tap (?:Retry|Download|View|Cancel) button on file (?:upload|download) placeholder$")
     public void ITapOnFileActionButton() throws Exception {
         getConversationViewPage().tapFileActionButton();
     }
