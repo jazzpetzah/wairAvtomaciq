@@ -1195,12 +1195,14 @@ public class CommonAndroidSteps {
     /**
      * Send a local file from SE
      *
-     * @param contact
-     * @param fileFullName
-     * @param mimeType
-     * @param deviceName
-     * @param convoType
-     * @param dstConvoName
+     * @param contact      user name/alias
+     * @param fileFullName the name of an existing file
+     * @param mimeType     MIME type of the file, for example text/plain. Check
+     *                     http://www.freeformatter.com/mime-types-list.html to get the full list of available MIME
+     *                     types
+     * @param convoType    either 'single user' or 'group'
+     * @param dstConvoName conversation name
+     * @param deviceName   the name of user device. The device will be created automatically if it does not exist yet
      * @throws Exception
      * @step. ^(.*) sends local file named "(.*)" and MIME type "(.*)" via device (.*) to (user|group conversation) (.*)$
      */

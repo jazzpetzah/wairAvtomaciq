@@ -531,8 +531,9 @@ public class ConversationViewPageSteps {
      * Store the screenshot of current file placeholder action button
      *
      * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder is changed$
      */
-    @When("^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder")
+    @When("^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder$")
     public void IRememberFileTransferActionBtnState() throws Exception {
         filePlaceHolderActionButtonState.remember();
     }
@@ -542,10 +543,12 @@ public class ConversationViewPageSteps {
      *
      * @param timeout
      * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder is changed$
      */
     @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder is changed$")
     public void IWaitFileTransferActionButtonChanged(int timeout) throws Exception {
-        Assert.assertTrue("State of latest file transfer action button has bit changed",
+        Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
+                timeout),
                 filePlaceHolderActionButtonState.isChanged(timeout, FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
     }
 
@@ -580,7 +583,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I tap (?:Retry|Download|View) button on (?:upload|download) file placeholder$
      */
-    @When("^I tap (?:Retry|Download|View) button on file (?:upload|download) placeholder$")
+    @When("^I tap (?:Retry|Download|View|Cancel) button on file (?:upload|download) placeholder$")
     public void ITapOnFileActionButton() throws Exception {
         getConversationViewPage().tapFileActionButton();
     }
