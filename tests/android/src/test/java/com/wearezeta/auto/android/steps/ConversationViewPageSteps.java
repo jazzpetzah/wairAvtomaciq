@@ -438,10 +438,10 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see message (.*) contact (.*) on group page$")
     public void ThenISeeMessageContactOnGroupPage(String message, String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+        contact = usrMgr.findUserByNameOrNameAlias(contact).getName().toUpperCase();
         final String expectedMsg = message + " " + contact;
         Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", expectedMsg),
-                getConversationViewPage().waitForMessage(expectedMsg));
+                getConversationViewPage().waitForPeopleMessage(expectedMsg));
     }
 
     /**
@@ -558,6 +558,17 @@ public class ConversationViewPageSteps {
     @When("^I tap (?:Retry|Download|View) button on file (?:upload|download) placeholder$")
     public void ITapOnFileActionButton() throws Exception {
         getConversationViewPage().tapFileActionButton();
+    }
+
+    /**
+     * Save or Open file from File dialog
+     * @param action
+     * @throws Exception
+     * @step. ^I (save|open) file (?:in|from) file dialog$
+     */
+    @When("^I (save|open) file (?:in|from) file dialog$")
+    public void ISaveOrOpenFile(String action) throws Exception {
+        getConversationViewPage().tapFileDialogActionButton(action);
     }
 
     /**

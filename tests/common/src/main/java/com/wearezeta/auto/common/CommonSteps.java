@@ -23,6 +23,8 @@ public final class CommonSteps {
 
     public static final String CONNECTION_NAME = "CONNECT TO ";
     public static final String CONNECTION_MESSAGE = "Hello!";
+    public static final long DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS = 1000;
+
     private static final int BACKEND_USER_SYNC_TIMEOUT = 180; // seconds
     private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 90; // seconds
 
