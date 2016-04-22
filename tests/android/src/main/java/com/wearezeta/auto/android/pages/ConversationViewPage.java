@@ -35,9 +35,6 @@ public class ConversationViewPage extends AndroidPage {
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
             .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
 
-    private static final Function<String, String> xpathStrConversationPeopleMessageByText = text -> String
-            .format("//*[@id='ttv__row_conversation__people_changed__text' and @value='%s']", text);
-
     private static final Function<String, String> xpathStrUnsentIndicatorByText = text -> String
             .format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']",
                     xpathStrConversationMessageByText.apply(text));
@@ -51,7 +48,7 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final String idStrMissedCallMesage = "ttv__row_conversation__missed_call";
     private static final Function<String, String> xpathStrMissedCallMesageByText = text -> String
-            .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text);
+            .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text.toUpperCase());
 
     private static final By idCursorFrame = By.id("cursor_layout");
 
@@ -138,6 +135,9 @@ public class ConversationViewPage extends AndroidPage {
 
     private static Function<String, String> xpathFileInfoPlaceHolderByValue = value -> String
             .format("//*[@id='ttv__row_conversation__file__fileinfo' and @value='%s']", value);
+
+    private static Function<String, String> xpathConversationPeopleChangedByExp = exp -> String
+            .format("//*[@id='ttv__row_conversation__people_changed__text' and %s]", exp);
 
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_SWIPE_RETRIES = 5;
@@ -382,7 +382,8 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean waitForPeopleMessage(String text) throws Exception {
-        final By locator = By.xpath(xpathStrConversationPeopleMessageByText.apply(text));
+        final By locator = By.xpath(xpathConversationPeopleChangedByExp.apply(String.format("contains(@value, '%s')",
+                text.toUpperCase())));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
@@ -469,16 +470,12 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public boolean isConversationMessageContainsNames(List<String> names) throws Exception {
-        final String convoText = getElement(xpathLastConversationMessage, "No messages are visible in the " +
-                "conversation view")
-                .getText();
-        for (String name : names) {
-            if (!convoText.toLowerCase().contains(name.toLowerCase())) {
-                return false;
-            }
-        }
-        return true;
+    public boolean isConversationPeopleChangedMessageContainsNames(List<String> names) throws Exception {
+        final String xpathExpr = String.join(" and ", names.stream().map(
+                name -> String.format("contains(@value, '%s')", name.toUpperCase())
+        ).collect(Collectors.toList()));
+        final By locator = By.xpath(xpathConversationPeopleChangedByExp.apply(xpathExpr));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isTopToolbarVisible() throws Exception {
