@@ -61,7 +61,7 @@ Feature: People View
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
-      | user1Name | user2Name | user3Name | RemoveFromGroupChat | You removed |
+      | user1Name | user2Name | user3Name | RemoveFromGroupChat | YOU REMOVED |
 
   @C697 @id594 @regression @rc
   Scenario Outline: Verify correct group info page information

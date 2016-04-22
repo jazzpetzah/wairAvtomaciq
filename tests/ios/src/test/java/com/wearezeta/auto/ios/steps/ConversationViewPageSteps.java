@@ -23,7 +23,8 @@ public class ConversationViewPageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    public static final String DEFAULT_PNG = "group-icon@3x.png";
+    private static final String FTRANSFER_MENU_DEFAULT_PNG = "group-icon@3x.png";
+    private static final String FTRANSFER_MENU_TOO_BIG = "Big file";
 
     private ConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(ConversationViewPage.class);
@@ -241,10 +242,10 @@ public class ConversationViewPageSteps {
     public void VeirfyButtonVisibilityInInputTools(String shouldNot, String btnName) throws Exception {
         if (shouldNot == null) {
             Assert.assertTrue(btnName + "button in input tools palette is not visible",
-                    getConversationViewPage().inputToolButtonByNameIsVisible(btnName));
+                    getConversationViewPage().isInputToolButtonByNameVisible(btnName));
         } else {
             Assert.assertTrue(btnName + "button in input tools palette is  visible",
-                    getConversationViewPage().inputToolButtonByNameIsNotVisible((btnName)));
+                    getConversationViewPage().isInputToolButtonByNameNotVisible((btnName)));
         }
     }
 
@@ -974,38 +975,60 @@ public class ConversationViewPageSteps {
      *
      * @param itemName name of the item
      * @throws Exception
-     * @step. ^I tap file transfer menu item (.*)$
+     * @step. ^I tap file transfer menu item (.*)
      */
-    @When("^I tap file transfer menu item (.*)$")
+    @When("^I tap file transfer menu item (.*)")
     public void ITapFileTransferMenuItem(String itemName) throws Exception {
-        if (itemName.equals("DEFAULT_PNG")) {
-            itemName = DEFAULT_PNG;
+        String realName = itemName;
+        switch (itemName) {
+            case "FTRANSFER_MENU_DEFAULT_PNG":
+                realName = FTRANSFER_MENU_DEFAULT_PNG;
+                break;
+            case "TOO_BIG":
+                realName = FTRANSFER_MENU_TOO_BIG;
+                break;
         }
-        getConversationViewPage().tapFileTransferMenuItem(itemName);
+        getConversationViewPage().tapFileTransferMenuItem(realName);
     }
 
     /**
      * Verify file transfer placeholder visibility
      *
      * @throws Exception
-     * @step. ^I see file transfer placeholder$
+     * @param shouldNotBeVisible equals to null if the placeholder should be visible
+     * @step. ^I (do not )?see file transfer placeholder$
      */
-    @When("^I see file transfer placeholder$")
-    public void ISeeFileTransferPlaceHolder() throws Exception {
-        Assert.assertTrue("File transfer placeholder is not visible",
-                getConversationViewPage().fileTransferTopLabelIsVisible() &&
-                        getConversationViewPage().fileTransferBottomLabelIsVisible());
+    @When("^I (do not )?see file transfer placeholder$")
+    public void ISeeFileTransferPlaceHolder(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("File transfer placeholder is not visible",
+                    getConversationViewPage().isFileTransferTopLabelVisible() &&
+                            getConversationViewPage().isFileTransferBottomLabelVisible());
+        } else {
+            Assert.assertTrue("File transfer placeholder is visible, but should be hidden",
+                    getConversationViewPage().isFileTransferTopLabelInvisible());
+        }
+    }
+
+    /**
+     * Tap the most recent visible transfer placeholder
+     *
+     * @throws Exception
+     * @step. ^I tap file transfer placeholder$
+     */
+    @When("^I tap file transfer placeholder$")
+    public void ITapFileTransferPlaceholder() throws Exception {
+        getConversationViewPage().tapFileTransferPlaceholder();
     }
 
     /**
      * Verify whether File Transfer placeholder is visible in the conversation view
      *
-     * @step. ^I wait up to (\d+) seconds? until the file (.*) with size (.*) is ready for download from conversation view$
-     *
-     * @param timeoutSeconds timeout in seconds
+     * @param timeoutSeconds   timeout in seconds
      * @param expectedFileName the file name, which should be visible in the placeholder
-     * @param expectedSize the expected file size to be shown in the placeholder
+     * @param expectedSize     the expected file size to be shown in the placeholder
      * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until the file (.*) with size (.*) is ready for download from conversation view$
      */
     @Then("^I wait up to (\\d+) seconds? until the file (.*) with size (.*) is ready for download from conversation view$")
     public void IWaitUntilDownloadFinished(int timeoutSeconds, String expectedFileName, String expectedSize)
@@ -1015,5 +1038,33 @@ public class ConversationViewPageSteps {
                 expectedFileName, timeoutSeconds),
                 getConversationViewPage().waitUntilDownloadReadyPlaceholderVisible(expectedFileName, expectedSize,
                         timeoutSeconds));
+    }
+
+    /**
+     * Verify whether file preview is shown after the timeout
+     *
+     * @param secondsTimeout   timeout in seconds
+     * @param expectedFileName file name in preview header
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until I see a preview of the file named "(.*)"$
+     */
+    @Then("^I wait up to (\\d+) seconds? until I see a preview of the file named \"(.*)\"$")
+    public void IWaitForFilePreview(int secondsTimeout, String expectedFileName) throws Exception {
+        Assert.assertTrue(String.format("The preview was not shown for '%s' after %s seconds timeout", expectedFileName,
+                secondsTimeout),
+                getConversationViewPage().waitUntilFilePreviewIsVisible(secondsTimeout, expectedFileName));
+    }
+
+    /**
+     * Verify whether generic file share menu is shown
+     *
+     * @param timeoutSeconds timeout in seconds
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds until I see generic file share menu$
+     */
+    @Then("^I wait up to (\\d+) seconds until I see generic file share menu$")
+    public void ISeeGenericFileShareMenu(int timeoutSeconds) throws Exception {
+        Assert.assertTrue("Generic file share menu has not been shown",
+                getConversationViewPage().isGenericFileShareMenuVisible(timeoutSeconds));
     }
 }

@@ -45,12 +45,11 @@ Feature: File transfer
     When I tap on contact name <Contact1>
     And <Contact1> sends <FileSize> file having name "<FileName>.<FileExtension>" and MIME type "<MimeType>" via device Device1 to user Myself
     Then I see new message notification "Shared a file"
-    And I see the result of <FileSize> file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <ReceiveTimeout> seconds
-
+    And I see the result of <FileSize> file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
 
     Examples:
-      | Name      | Contact1  | FileName  | FileSize | FileExtension | MimeType   | ReceiveTimeout |
-      | user1Name | user2Name | qa_random | 3.00MB   | txt           | text/plain | 60             |
+      | Name      | Contact1  | FileName  | FileSize | FileExtension | MimeType   |
+      | user1Name | user2Name | qa_random | 3.00MB   | txt           | text/plain |
 
   @staging @C87639
   Scenario Outline: Verify retry sending a file
@@ -95,3 +94,26 @@ Feature: File transfer
     Examples:
       | Name      | Contact1  | Contact2  | FileName  | FileExtension | FileSize  |
       | user1Name | user2Name | user3Name | qa_random | txt           | 24.00MB   |
+
+
+  @staging @C87635
+  Scenario Outline: Verify downloading file by sender
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I push local file named "<FileName>.<FileExtension>" to the device
+    Given I remove the file "1_<FileName>.<FileExtension>" from device's sdcard
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And I tap plus button ion text input
+    And I tap File button from input tools
+    And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
+    And I tap View button on file upload placeholder
+    And I save file from file dialog
+    Then I wait up <DownloadTimeout> seconds until <FileExactSize> file having name "1_<FileName>.<FileExtension>" and MIME type "<MIMEType>" is downloaded to the device
+
+    Examples:
+      | Name      | Contact1  | FileName | FileExtension | FileSize | UploadingTimeout | MIMEType  | DownloadTimeout | FileExactSize |
+      | user1Name | user2Name | animated | gif           | 440KB    | 20               | image/gif | 10              | 451009B       |
+
