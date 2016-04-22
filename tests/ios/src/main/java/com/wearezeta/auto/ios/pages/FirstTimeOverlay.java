@@ -10,22 +10,22 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 
 public class FirstTimeOverlay extends IOSPage {
-    private static final By nameGotItButton = MobileBy.AccessibilityId("GOT IT");
+    private static final By nameOKButton = MobileBy.AccessibilityId("OK");
 
     public FirstTimeOverlay(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
-    public boolean waitUntiVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameGotItButton);
+    public boolean waitUntilVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameOKButton);
     }
 
-    public boolean waitUntiInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameGotItButton);
+    public boolean waitUntilInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameOKButton);
     }
 
     public void acceptIfVisible(int timeoutSeconds) throws Exception {
-        final Optional<WebElement> gotItButton = getElementIfDisplayed(nameGotItButton, timeoutSeconds);
+        final Optional<WebElement> gotItButton = getElementIfDisplayed(nameOKButton, timeoutSeconds);
         if (gotItButton.isPresent()) {
             gotItButton.get().click();
         }

@@ -20,22 +20,22 @@ public class TabletOtherUserInfoPageSteps {
     /**
      * Clicks remove button on the other user info popover
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I click Remove on iPad$
      */
     @When("^I click Remove on iPad$")
-    public void IClickRemoveOniPad() throws Throwable {
+    public void IClickRemoveOniPad() throws Exception {
         getTabletOtherUserInfoPage().removeFromConversationOniPad();
     }
 
     /**
      * Clicks the confirm REMOVE button
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I confirm remove on iPad$
      */
     @When("^I confirm remove on iPad$")
-    public void IConfirmRemoveOniPad() throws Throwable {
+    public void IConfirmRemoveOniPad() throws Exception {
         getTabletOtherUserInfoPage().confirmRemove();
     }
 
@@ -66,7 +66,7 @@ public class TabletOtherUserInfoPageSteps {
     @Then("I see Connect label on Other user profile popover")
     public void ISeeConnectLabelOnOtherUserProfilePopover() throws Exception {
         Assert.assertTrue("Connect label is not shown",
-                getTabletOtherUserInfoPage().isConnectLabelVisible());
+                getTabletOtherUserInfoPage().isConnectButtonVisible());
     }
 
     /**
@@ -88,8 +88,7 @@ public class TabletOtherUserInfoPageSteps {
      * @step. ^I click Connect button on not connected user profile popover$
      */
     @When("^I click Connect button on not connected user profile popover$")
-    public void IClickConnectButtonOnNotConnectedUserProfilePopover()
-            throws Exception {
+    public void IClickConnectButtonOnNotConnectedUserProfilePopover() throws Exception {
         getTabletOtherUserInfoPage().clickConnectButton();
     }
 
@@ -100,8 +99,7 @@ public class TabletOtherUserInfoPageSteps {
      * @step. ^I click Go back button on user profile popover$
      */
     @When("^I click Go back button on user profile popover$")
-    public void IClickGOButtonOnUserProfilePopover()
-            throws Exception {
+    public void IClickGOButtonOnUserProfilePopover() throws Exception {
         getTabletOtherUserInfoPage().clickGoBackButton();
     }
 
