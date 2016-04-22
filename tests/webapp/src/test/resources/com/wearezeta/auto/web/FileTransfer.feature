@@ -15,6 +15,8 @@ Feature: File Transfer
     And I see file transfer for file <File> in the conversation view
     And I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
+    And I wait until file <File> is uploaded completely
+    #When I click to download file <File> in the conversation view
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size    | Type  |
