@@ -96,13 +96,13 @@ Feature: File transfer
       | user1Name | user2Name | user3Name | qa_random | txt           | 24.00MB   |
 
 
-  @staging @C87635 @torun
+  @staging @C87635
   Scenario Outline: Verify downloading file by sender
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I push local file named "<FileName>.<FileExtension>" to the device
-    Given I remove the file "<FileName>.<FileExtension>.1" from device's sdcard
+    Given I remove the file "1_<FileName>.<FileExtension>" from device's sdcard
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
@@ -111,7 +111,7 @@ Feature: File transfer
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     And I tap View button on file upload placeholder
     And I save file from file dialog
-    Then I wait up <DownloadTimeout> seconds until <FileExactSize> file having name "<FileName>.<FileExtension>.1" and MIME type "<MIMEType>" is downloaded to the device
+    Then I wait up <DownloadTimeout> seconds until <FileExactSize> file having name "1_<FileName>.<FileExtension>" and MIME type "<MIMEType>" is downloaded to the device
 
     Examples:
       | Name      | Contact1  | FileName | FileExtension | FileSize | UploadingTimeout | MIMEType  | DownloadTimeout | FileExactSize |
