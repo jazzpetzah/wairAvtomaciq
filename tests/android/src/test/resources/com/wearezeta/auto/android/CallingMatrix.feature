@@ -320,7 +320,7 @@ Feature: Calling Matrix
       #| user1Name | user2Name | firefox:44.0.2      | 20      |
 
   @calling_matrix
-  Scenario Outline: Answer 1-to-1 call <CallBackend> from APNS
+  Scenario Outline: Answer 1-to-1 call <CallBackend> from GCM
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
@@ -329,12 +329,12 @@ Feature: Calling Matrix
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I lock the device
-    And I wait for 10 seconds
     And <Contact> calls me
     And I answer call from GCM
     Then I see ongoing call
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
     Examples:
-      | Name      | Contact   | CallBackend   | Timeout |
-      | user1Name | user2Name | autocall:1.12 | 20      |
+      | Name      | Contact   | CallBackend     | Timeout |
+      | user1Name | user2Name | autocall:2.2.38 | 20      |
+      | user1Name | user2Name | autocall:2.2.46 | 20      |
