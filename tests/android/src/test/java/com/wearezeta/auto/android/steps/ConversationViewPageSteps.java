@@ -34,6 +34,7 @@ public class ConversationViewPageSteps {
     private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
     private static final int TOP_TOOLBAR_STATE_CHANGE_TIMEOUT = 15;
     private static final double TOP_TOOLBAR_MIN_SIMILARITY_SCORE = 0.97;
+    private static final double FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE = 0.4;
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final ElementState mediaButtonState = new ElementState(
@@ -44,6 +45,8 @@ public class ConversationViewPageSteps {
             () -> getConversationViewPage().getShieldStateScreenshot());
     private final ElementState topToolbarState = new ElementState(
             () -> getConversationViewPage().getTopToolbarState());
+    private final ElementState filePlaceHolderActionButtonState = new ElementState(
+            () -> getConversationViewPage().getFilePlaceholderActionButtonState());
     private Boolean wasShieldVisible = null;
 
     private static String expandMessage(String message) {
@@ -522,6 +525,28 @@ public class ConversationViewPageSteps {
     @When("^I remember the state of upper toolbar$")
     public void IRememberUpperToolbarState() throws Exception {
         topToolbarState.remember();
+    }
+
+    /**
+     * Store the screenshot of current file placeholder action button
+     *
+     * @throws Exception
+     */
+    @When("^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder")
+    public void IRememberFileTransferActionBtnState() throws Exception {
+        filePlaceHolderActionButtonState.remember();
+    }
+
+    /**
+     * Wait to check whether the file placeholder action button is changed
+     *
+     * @param timeout
+     * @throws Exception
+     */
+    @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder is changed$")
+    public void IWaitFileTransferActionButtonChanged(int timeout) throws Exception {
+        Assert.assertTrue("State of latest file transfer action button has bit changed",
+                filePlaceHolderActionButtonState.isChanged(timeout, FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
     }
 
     /**

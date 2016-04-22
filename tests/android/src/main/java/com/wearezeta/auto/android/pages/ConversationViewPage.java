@@ -182,6 +182,12 @@ public class ConversationViewPage extends AndroidPage {
         );
     }
 
+    public BufferedImage getFilePlaceholderActionButtonState() throws Exception {
+        return this.getElementScreenshot(getElement(idFileActionBtn)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot of file place holder action button")
+        );
+    }
+
     public boolean waitForCursorInputVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorArea);
     }
