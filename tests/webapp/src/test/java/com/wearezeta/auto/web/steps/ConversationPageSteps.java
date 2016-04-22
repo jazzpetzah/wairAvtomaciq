@@ -407,6 +407,19 @@ public class ConversationPageSteps {
     }
 
     /**
+     * Clicks on download button to download certain file
+     *
+     * @param fileName the name of a file
+     * @throws Exception
+     * @step. ^II click to download file (.*) in the conversation view$
+     */
+    @Then("^I click to download file (.*) in the conversation view$")
+    public void IDownloadFile(String fileName) throws Exception {
+        webappPagesCollection.getPage(ConversationPage.class).downloadFile(fileName);
+    }
+
+
+    /**
      * Verifies whether people button tool tip is correct or not.
      *
      * @step. ^I see correct people button tool tip$

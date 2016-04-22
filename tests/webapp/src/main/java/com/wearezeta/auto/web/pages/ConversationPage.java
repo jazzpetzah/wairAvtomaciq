@@ -736,4 +736,10 @@ public class ConversationPage extends WebPage {
 		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileStatus, fileName));
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, TIMEOUT_FILE_UPLOAD);
 	}
+
+	public void downloadFile(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileDownload, fileName));
+		assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+		getDriver().findElement(locator).click();
+	}
 }

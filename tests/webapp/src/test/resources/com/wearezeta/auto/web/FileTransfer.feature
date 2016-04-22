@@ -140,7 +140,7 @@ Feature: File Transfer
       | Login      | Password      | Name      | Contact   | File        | Size | Type |
       | user1Email | user1Password | user1Name | user2Name | example.txt | 15MB | TEXT |
 
-  @C82815 @filetransfer @torun
+  @C82815 @filetransfer
   Scenario Outline: Verify file can be uploaded and re-downloaded by sender himself in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -157,7 +157,7 @@ Feature: File Transfer
     And I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
     And I wait until file <File> is uploaded completely
-    #When I click to download file <File> in the conversation view
+    When I click to download file <File> in the conversation view
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | File        | Size    | Type  | ChatName          |

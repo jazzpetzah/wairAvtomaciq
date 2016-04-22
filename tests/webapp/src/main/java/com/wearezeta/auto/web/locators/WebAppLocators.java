@@ -349,6 +349,8 @@ public final class WebAppLocators {
 
         public static final String cssFileCancelUpload = cssFile + " [data-uie-name='file-cancel']";
 
+        public static final String cssFileDownload = cssFile + " [data-uie-name='file-download']";
+
         public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']:not(.image-loading)";
 
         public static final String cssPingMessage = ".pinged";
