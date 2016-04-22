@@ -572,6 +572,7 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     /**
+     * Create random access file with predefined size and name , and push it into sdcard
      *
      * @param fileFullName the name with extension
      * @param size the expected size of file
@@ -584,6 +585,20 @@ public class AndroidCommonUtils extends CommonUtils {
         String fileName = FilenameUtils.getBaseName(fileFullName);
 
         CommonUtils.createRandomAccessFile(basePath + File.separator + fileFullName, size);
+        AndroidCommonUtils.pushFileToSdcardDownload(basePath, fileName, extension);
+    }
+
+    /**
+     * Push the file from defaultImagesPath (/tools/img/)
+     *
+     * @param fileFullName fileName should be the name of file which located in Android Tools Path
+     * @throws Exception
+     */
+    public static void pushLocalFileToSdcardDownload(String fileFullName) throws Exception{
+        String basePath = getImagesPath(AndroidCommonUtils.class);
+        String extension = FilenameUtils.getExtension(fileFullName);
+        String fileName = FilenameUtils.getBaseName(fileFullName);
+
         AndroidCommonUtils.pushFileToSdcardDownload(basePath, fileName, extension);
     }
 
@@ -613,5 +628,32 @@ public class AndroidCommonUtils extends CommonUtils {
                 "--bind date_added:i:%s " +
                 "--where 'title=\"%s\"'", fileFullName, futureTimestamp, fileName));
     }
+
+
+    public static void pullFileFromSdcardDownload(String fileFullName) throws Exception {
+        pullFileFromSdcard(FILE_TRANSFER_SOURCE_LOCATION, fileFullName);
+    }
+
+    public static void removeFileFromSdcardDownload(String fileFullName) throws Exception {
+        removeFileFromSdcard(FILE_TRANSFER_SOURCE_LOCATION, fileFullName);
+    }
+
+    private static void pullFileFromSdcard(String sdcardBasePath, String fileFullName) throws Exception {
+        String sourceFilePath = sdcardBasePath + fileFullName;
+        String destinationFilePath = getBuildPathFromConfig(AndroidCommonUtils.class) + File.separator + fileFullName;
+        File destinationFile = new File(destinationFilePath);
+        if(destinationFile.exists()) {
+            destinationFile.delete();
+        }
+        executeAdb(String.format("pull %s %s", sourceFilePath, destinationFilePath));
+    }
+
+    private static void removeFileFromSdcard(String sdcardBasePath, String fileFullName) throws Exception {
+        String sourceFilePath = sdcardBasePath + fileFullName;
+        executeAdb(String.format("shell rm %s", sourceFilePath));
+        executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
+                sourceFilePath));
+    }
+
 
 }

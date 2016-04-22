@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
 
 import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
@@ -632,19 +633,68 @@ public class CommonUtils {
      */
     public static void createRandomAccessFile(String filePath, String size) throws Exception {
         try (RandomAccessFile file = new RandomAccessFile(filePath, "rws")) {
-            final String[] sizeParts = size.split("(?<=\\d)\\s*(?=[a-zA-Z])");
-            final int fileSize = Double.valueOf(sizeParts[0]).intValue();
-            final String type = sizeParts.length > 1 ? sizeParts[1] : "";
-            switch (type.toUpperCase()) {
-                case "MB":
-                    file.setLength(fileSize * 1024 * 1024);
-                    break;
-                case "KB":
-                    file.setLength(fileSize * 1024);
-                    break;
-                default:
-                    file.setLength(fileSize);
-            }
+            final long fileSize = getFileSizeFromString(size);
+            file.setLength(fileSize);
         }
+    }
+
+    /**
+     * Convert formatted file size such as 50KB, 30.00MB into bytes
+     *
+     * @param size
+     * @return file size in bytes
+     */
+    public static long getFileSizeFromString(String size){
+        final String[] sizeParts = size.split("(?<=\\d)\\s*(?=[a-zA-Z])");
+        final int fileSize = Double.valueOf(sizeParts[0]).intValue();
+        final String type = sizeParts.length > 1 ? sizeParts[1] : "";
+        switch (type.toUpperCase()) {
+            case "MB":
+                return fileSize * 1024 * 1024;
+            case "KB":
+                return fileSize * 1024;
+            default:
+                return fileSize;
+        }
+    }
+
+    /**
+     * Retrieve File Info
+     *
+     * @param fileFullPath, the full path of file such as /User/admin/abc.txt
+     * @return the FileInfo
+     * @throws IOException
+     */
+    public static FileInfo retrieveFileInfo(String fileFullPath) throws IOException {
+        File file = new File(fileFullPath);
+
+        if (!file.exists()) {
+            throw new IOException(String.format("File '%s' doesn't exist", fileFullPath));
+        }
+        return new FileInfo(file.getName(), file.length(), new MimetypesFileTypeMap().getContentType(file));
+    }
+
+
+    /**
+     * Wait until the block do not throw exception or timeout
+     *
+     * @param timeoutSeconds
+     * @param interval
+     * @param function
+     * @param <T>
+     * @return
+     * @throws Exception
+     */
+    public static <T> Optional<T> waitUntil(int timeoutSeconds, long interval, Callable<T> function) throws Exception {
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            try {
+                return Optional.ofNullable(function.call());
+            } catch (Exception e) {
+                log.debug(String.format("Wait until block catch exception : %s", e.getMessage()));
+            }
+            Thread.sleep(interval);
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+        return Optional.empty();
     }
 }
