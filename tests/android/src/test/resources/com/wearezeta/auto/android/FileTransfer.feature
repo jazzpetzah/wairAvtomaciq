@@ -96,7 +96,7 @@ Feature: File transfer
       | user1Name | user2Name | user3Name | qa_random | txt           | 24.00MB   |
 
 
-  @staging @C87635 @torun
+  @staging @C87635
   Scenario Outline: Verify downloading file by sender
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
