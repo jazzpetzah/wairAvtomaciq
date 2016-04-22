@@ -8,7 +8,6 @@ public interface PickleJar {
     
     /**
      * Info:<br>
-     * - (deprecated) Convention: step classes must have a no-args constructor<br>
      * - Generates testclasses based on a template and maven-ant-plugin
      * - Test classes are generated on a per-scenario/per-example basis (enables live results)<br>
      *
