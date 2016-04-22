@@ -619,15 +619,15 @@ public class ConversationViewPage extends IOSPage {
         getElement(MobileBy.AccessibilityId(itemName)).click();
     }
 
-    public boolean fileTransferTopLabelIsVisible() throws Exception {
+    public boolean isFileTransferTopLabelVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferTopLabel);
     }
 
-    public boolean fileTransferTopLabelIsInvisible() throws Exception {
+    public boolean isFileTransferTopLabelInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameFileTransferTopLabel);
     }
 
-    public boolean fileTransferBottomLabelIsVisible() throws Exception {
+    public boolean isFileTransferBottomLabelVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameFileTransferBottomLabel);
     }
 
@@ -646,11 +646,11 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    public boolean inputToolButtonByNameIsVisible(String name) throws Exception {
+    public boolean isInputToolButtonByNameVisible(String name) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getInputToolButtonByName(name));
     }
 
-    public boolean inputToolButtonByNameIsNotVisible(String name) throws Exception {
+    public boolean isInputToolButtonByNameNotVisible(String name) throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), getInputToolButtonByName(name));
     }
 

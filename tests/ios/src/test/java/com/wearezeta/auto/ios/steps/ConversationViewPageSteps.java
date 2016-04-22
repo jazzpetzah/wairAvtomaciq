@@ -242,10 +242,10 @@ public class ConversationViewPageSteps {
     public void VeirfyButtonVisibilityInInputTools(String shouldNot, String btnName) throws Exception {
         if (shouldNot == null) {
             Assert.assertTrue(btnName + "button in input tools palette is not visible",
-                    getConversationViewPage().inputToolButtonByNameIsVisible(btnName));
+                    getConversationViewPage().isInputToolButtonByNameVisible(btnName));
         } else {
             Assert.assertTrue(btnName + "button in input tools palette is  visible",
-                    getConversationViewPage().inputToolButtonByNameIsNotVisible((btnName)));
+                    getConversationViewPage().isInputToolButtonByNameNotVisible((btnName)));
         }
     }
 
@@ -1002,11 +1002,11 @@ public class ConversationViewPageSteps {
     public void ISeeFileTransferPlaceHolder(String shouldNotBeVisible) throws Exception {
         if (shouldNotBeVisible == null) {
             Assert.assertTrue("File transfer placeholder is not visible",
-                    getConversationViewPage().fileTransferTopLabelIsVisible() &&
-                            getConversationViewPage().fileTransferBottomLabelIsVisible());
+                    getConversationViewPage().isFileTransferTopLabelVisible() &&
+                            getConversationViewPage().isFileTransferBottomLabelVisible());
         } else {
             Assert.assertTrue("File transfer placeholder is visible, but should be hidden",
-                    getConversationViewPage().fileTransferTopLabelIsInvisible());
+                    getConversationViewPage().isFileTransferTopLabelInvisible());
         }
     }
 
