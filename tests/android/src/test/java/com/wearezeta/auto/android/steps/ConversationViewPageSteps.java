@@ -914,4 +914,18 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload,
                         isSuccess, lookUpTimeoutSeconds));
     }
+
+    /**
+     * Check whether the file transfer canceled
+     *
+     * @param fileFullName
+     * @throws Exception
+     * @step. ^I do not see the file having name "(.*)"$
+     */
+    @Then("^I do not see the file having name \"(.*)\"$")
+    public void ThenIDoNotSeeFileTransferPlaceholder(String fileFullName) throws Exception {
+        Assert.assertTrue(String.format("The placeholder named '%s' should be invisible", fileFullName),
+                getConversationViewPage().isFilePlaceHolderInvisible(fileFullName));
+    }
+
 }

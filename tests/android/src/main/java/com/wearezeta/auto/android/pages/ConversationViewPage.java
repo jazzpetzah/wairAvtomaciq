@@ -676,6 +676,11 @@ public class ConversationViewPage extends AndroidPage {
                         By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeout);
     }
 
+    public boolean isFilePlaceHolderInvisible(String fileFullName) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.xpath(xpathFileNamePlaceHolderByValue.apply(fileFullName)));
+    }
+
     public void tapFileActionButton() throws Exception {
         getElement(idFileActionBtn).click();
     }
