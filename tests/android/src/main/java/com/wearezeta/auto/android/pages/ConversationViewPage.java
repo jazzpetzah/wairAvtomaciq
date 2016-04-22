@@ -51,7 +51,7 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final String idStrMissedCallMesage = "ttv__row_conversation__missed_call";
     private static final Function<String, String> xpathStrMissedCallMesageByText = text -> String
-            .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text);
+            .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text.toUpperCase());
 
     private static final By idCursorFrame = By.id("cursor_layout");
 
@@ -140,7 +140,7 @@ public class ConversationViewPage extends AndroidPage {
             .format("//*[@id='ttv__row_conversation__file__fileinfo' and @value='%s']", value);
 
     private static Function<String, String> xpathConversationPeopleChangedByValue = value -> String
-            .format("//*[@id='ttv__row_conversation__people_changed__text' and contains(@value, '%s')]", value);
+            .format("//*[@id='ttv__row_conversation__people_changed__text' and contains(@value, '%s')]", value.toUpperCase());
 
     private static final int DEFAULT_SWIPE_TIME = 500;
     private static final int MAX_SWIPE_RETRIES = 5;
@@ -473,11 +473,9 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isConversationMessageContainsNames(List<String> names) throws Exception {
-        boolean result = true;
-        for (String name : names) {
-            result =  result & DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathConversationPeopleChangedByValue.apply(name.toUpperCase())));
-        }
-        return result;
+        String nameString = String.join(", ", names.subList(0, names.size() - 1));
+        nameString =  String.format("%s AND %s", nameString, names.get(names.size() - 1));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(xpathConversationPeopleChangedByValue.apply(nameString)));
     }
 
     public boolean isTopToolbarVisible() throws Exception {
@@ -546,7 +544,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean waitUntilMissedCallMessageIsVisible(String expectedMessage) throws Exception {
-        final By locator = By.xpath(xpathStrMissedCallMesageByText.apply(expectedMessage.toUpperCase()));
+        final By locator = By.xpath(xpathStrMissedCallMesageByText.apply(expectedMessage));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
