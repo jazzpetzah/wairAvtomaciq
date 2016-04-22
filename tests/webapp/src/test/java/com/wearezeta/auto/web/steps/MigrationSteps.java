@@ -7,13 +7,18 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.pages.WebPage;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.When;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
@@ -26,7 +31,12 @@ public class MigrationSteps {
 
     public static final Logger log = ZetaLogger.getLog(MigrationSteps.class.getSimpleName());
 
+    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
+
     private static final int IS_RUNNING_CHECK_INTERVAL = 20; // milliseconds
+    private static final int MAX_RETRY = 3;
+    private static final int RETRY_TIMEOUT = 20000; // milliseconds
+
     private Path temp;
     private Process gruntProcess;
 
@@ -35,7 +45,7 @@ public class MigrationSteps {
             while (process.isAlive()) {
                 String line = reader.readLine();
                 while (line != null) {
-                    log.info(String.format("%s\n", line));
+                    log.info(String.format("%s", line));
                     line = reader.readLine();
                 }
                 Thread.sleep(IS_RUNNING_CHECK_INTERVAL);
@@ -58,7 +68,29 @@ public class MigrationSteps {
         ProcessBuilder builder = new ProcessBuilder(command);
         builder.directory(temp.toFile());
         builder.redirectErrorStream(true); //merge error and input steam into one stream
-        return builder.start();
+        Process process = builder.start();
+        Thread unattachedLogger = new Thread(() -> createProcessLogger(process));
+        unattachedLogger.start();
+        return process;
+    }
+
+    private void waitUntilReachable(String url) throws IOException, InterruptedException {
+        int statusCode = 0;
+        HttpClient client = HttpClientBuilder.create().build();
+        int retry = 0;
+        while (statusCode != 200 && retry < MAX_RETRY) {
+            try {
+                HttpResponse response = client.execute(new HttpGet(url));
+                statusCode = response.getStatusLine().getStatusCode();
+                if (statusCode == 200) {
+                    log.info("yeah!");
+                }
+            } catch (HttpHostConnectException e) {
+                log.info("Caught HttpHostConnectException, will retry..." + e.getMessage());
+            }
+            retry++;
+            Thread.sleep(RETRY_TIMEOUT);
+        }
     }
 
     @When("^I deploy latest production version$")
@@ -68,14 +100,14 @@ public class MigrationSteps {
         runCommand(temp, new String[]{"git", "clone", "git@github.com:wearezeta/mars.git", "."});
         runCommand(temp, new String[]{"git", "checkout", "tags/2016-04-21-11-59"});
         runCommand(temp, new String[]{"npm", "install"});
-        runCommand(temp, new String[]{"grunt", "init", "prepare_staging"});
+        runCommand(temp, new String[]{"grunt", "init", "prepare_dist", "gitinfo", "set_version:staging"});
         gruntProcess = runCommandUnattached(temp, new String[]{"grunt", "connect", "watch"});
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpResponse response = client.execute(new HttpGet("http://localhost:8888"));
-        int statusCode = response.getStatusLine().getStatusCode();
-        if (statusCode == 200) {
-            log.info("yeah!");
-        }
+        final String backend = CommonUtils.getBackendType(MigrationSteps.class);
+        final String url = "http://localhost:8888/?env=" + backend;
+        waitUntilReachable(url);
+        WebPage page = webappPagesCollection.getPage(WebPage.class);
+        page.setUrl(url);
+        page.navigateTo();
     }
 
     @When("^I deploy latest staging version$")
@@ -83,17 +115,10 @@ public class MigrationSteps {
         gruntProcess.destroy();
         log.info("Process exited with " + gruntProcess.exitValue());
         runCommand(temp, new String[]{"git", "checkout", "staging"});
-        runCommand(temp, new String[]{"grunt", "init", "prepare_staging"});
+        runCommand(temp, new String[]{"grunt", "init", "prepare_dist", "gitinfo", "set_version:staging"});
         runCommandUnattached(temp, new String[]{"grunt", "connect", "watch"});
-    }
-
-    @When("^I wait until latest staging version is deployed$")
-    public void IWaitUntilStagingIsDeployed() throws Exception {
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpResponse response = client.execute(new HttpGet("http://localhost:8888"));
-        int statusCode = response.getStatusLine().getStatusCode();
-        if(statusCode == 200) {
-            log.info("yeah!");
-        }
+        final String backend = CommonUtils.getBackendType(MigrationSteps.class);
+        final String url = "http://localhost:8888/?env=" + backend;
+        waitUntilReachable(url);
     }
 }

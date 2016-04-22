@@ -10,7 +10,6 @@ Feature: Migration
     Given I am signed in properly
     Then I see Contact list with name <Contact>
     When I deploy latest staging version
-    And I wait until latest staging version is deployed
     Then I refresh page
 
   Examples:
