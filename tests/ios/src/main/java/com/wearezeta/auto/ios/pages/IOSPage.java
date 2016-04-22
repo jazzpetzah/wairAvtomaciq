@@ -3,6 +3,9 @@ package com.wearezeta.auto.ios.pages;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -342,7 +345,18 @@ public abstract class IOSPage extends BasePage {
             IOSSimulatorHelper.swipeRight();
             Thread.sleep(2000);
         } else {
-            this.getDriver().lockScreen(timeSeconds);
+            final ZetaIOSDriver driver = this.getDriver();
+            final Callable callable = new Callable<Boolean>(){
+
+                @Override
+                public Boolean call() throws Exception {
+                    driver.lockScreen(timeSeconds);
+                    return true;
+                }
+            };
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.submit(callable);
+            //this.getDriver().lockScreen(timeSeconds);
         }
     }
 
