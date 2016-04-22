@@ -1224,15 +1224,4 @@ public class CommonAndroidSteps {
         Assert.assertEquals(String.format("File MIME type should be %s", mimeType),
                 mimeType, fileInfo.get().getMimeType());
     }
-
-    /**
-     * Answers a incoming call from the push notification (GCM)
-     *
-     * @throws Exception
-     * @step. ^I answer call from GCM
-     */
-    @And("^I answer call from GCM$")
-    public void IAnswerCallFromGCM() throws Exception {
-        System.out.print("I will answer the call from GCM");
-    }
 }

@@ -71,4 +71,15 @@ public class CallIncomingPageSteps {
                 "The current caller name differs from the expected value '%s'", expectedCallerName),
                 getPage().waitUntilNameAppearsOnCallingBarCaption(expectedCallerName));
     }
+
+    /**
+     * Answers a incoming call from the push notification (GCM)
+     *
+     * @throws Exception
+     * @step. ^I answer call from GCM
+     */
+    @When("^I answer call from GCM$")
+    public void IAnswerCallFromGCM() throws Exception {
+        getPage().acceptCall();
+    }
 }
