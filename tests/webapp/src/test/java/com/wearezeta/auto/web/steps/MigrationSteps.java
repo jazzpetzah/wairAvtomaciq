@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.Inet4Address;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -78,12 +79,13 @@ public class MigrationSteps {
         int statusCode = 0;
         HttpClient client = HttpClientBuilder.create().build();
         int retry = 0;
-        while (statusCode != 200 && retry < MAX_RETRY) {
+        while (retry < MAX_RETRY) {
             try {
                 HttpResponse response = client.execute(new HttpGet(url));
                 statusCode = response.getStatusLine().getStatusCode();
                 if (statusCode == 200) {
                     log.info("yeah!");
+                    break;
                 }
             } catch (HttpHostConnectException e) {
                 log.info("Caught HttpHostConnectException, will retry..." + e.getMessage());
@@ -103,7 +105,8 @@ public class MigrationSteps {
         runCommand(temp, new String[]{"grunt", "init", "prepare_dist", "gitinfo", "set_version:staging"});
         gruntProcess = runCommandUnattached(temp, new String[]{"grunt", "connect", "watch"});
         final String backend = CommonUtils.getBackendType(MigrationSteps.class);
-        final String url = "http://localhost:8888/?env=" + backend;
+        final String ip = Inet4Address.getLocalHost().getHostAddress();
+        final String url = String.format("http://%s:8888/?env=%s", ip, backend);
         waitUntilReachable(url);
         WebPage page = webappPagesCollection.getPage(WebPage.class);
         page.setUrl(url);
@@ -112,13 +115,19 @@ public class MigrationSteps {
 
     @When("^I deploy latest staging version$")
     public void IDeployStaging() throws Exception {
-        gruntProcess.destroy();
-        log.info("Process exited with " + gruntProcess.exitValue());
+        try {
+            gruntProcess.destroy();
+            log.info("Process exited with " + gruntProcess.exitValue());
+        } catch (IllegalThreadStateException e) {
+            log.error(e.getMessage());
+            gruntProcess.destroyForcibly();
+        }
         runCommand(temp, new String[]{"git", "checkout", "staging"});
         runCommand(temp, new String[]{"grunt", "init", "prepare_dist", "gitinfo", "set_version:staging"});
         runCommandUnattached(temp, new String[]{"grunt", "connect", "watch"});
         final String backend = CommonUtils.getBackendType(MigrationSteps.class);
-        final String url = "http://localhost:8888/?env=" + backend;
+        final String ip = Inet4Address.getLocalHost().getHostAddress();
+        final String url = String.format("http://%s:8888/?env=%s", ip, backend);
         waitUntilReachable(url);
     }
 }
