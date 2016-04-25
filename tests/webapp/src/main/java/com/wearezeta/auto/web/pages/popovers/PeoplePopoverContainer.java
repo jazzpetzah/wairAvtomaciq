@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.pages.popovers;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
@@ -34,7 +35,9 @@ public abstract class PeoplePopoverContainer extends AbstractPopoverContainer {
 		return backButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
 
-	public void clickBackButton() {
-		backButton.click();
-	}
+    public void clickBackButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(this.getDriver(),
+                backButton);
+        backButton.click();
+    }
 }
