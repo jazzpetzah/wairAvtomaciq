@@ -146,8 +146,8 @@ Feature: File Transfer
     # Then I verify the downloaded file is the same as the uploaded file <File>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Size |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 24MB |
+      | Login      | Password      | Name      | Contact   | File        | Size | Type |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 24MB | TXT  |
 
   @C82822 @filetransfer
   Scenario Outline: Verify sender is able to cancel upload
@@ -206,6 +206,36 @@ Feature: File Transfer
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
   # And I verify the downloaded file is the same as the uploaded file <File>
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | File        | Size | Type |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 15MB | TXT  |
+
+  @C95630 @filetransfer
+  Scenario Outline: Verify file can be downloaded and decrypted by sender on second device
+    Given There are 2 users where <Name> is me
+    Given user <Name> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    Given I see Contact list with name <Contact>
+    When I open conversation with <Contact>
+    When <Name> sends <Size> sized file with name <File> via device Device1 to user <Contact>
+    Then I see file transfer for file <File> in the conversation view
+    And I verify status of file <File> is UPLOADING… in the conversation view
+    And I verify icon of file <File> in the conversation view
+    And I verify size of file <File> is <Size> in the conversation view
+    When I wait until file <File> is uploaded completely
+    Then I verify size of file <File> is <Size> in the conversation view
+    And I verify type of file <File> is <Type> in the conversation view
+    When I click to download file <File> in the conversation view
+    And I wait until file <File> is downloaded completely
+    Then I verify size of file <File> is <Size> in the conversation view
+    And I verify type of file <File> is <Type> in the conversation view
+# And I verify the downloaded file is the same as the uploaded file <File>
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size | Type |
