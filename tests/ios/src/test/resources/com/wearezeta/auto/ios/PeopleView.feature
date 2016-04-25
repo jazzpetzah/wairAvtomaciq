@@ -267,7 +267,7 @@ Feature: People View
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
     Given <Contact> is connected to Myself
-    Given Myself silenced conversation with <Contact>
+    Given User Myself silences single user conversation <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I remember the state of <Contact> conversation item
