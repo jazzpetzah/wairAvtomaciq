@@ -126,7 +126,7 @@ Feature: File Transfer
       | user1Email | user1Password | user1Name | user2Name | example.jpg | 24MB |
 
   @C82819 @filetransfer
-  Scenario Outline: Verify error on sender side is shown if download breaks
+  Scenario Outline: Verify re-download is possible on sender side if download is interrupted
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
