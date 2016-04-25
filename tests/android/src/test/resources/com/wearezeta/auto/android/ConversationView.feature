@@ -447,7 +447,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C77973 @rc @regression
+  @C77973 @rc @regression @rc42
   Scenario Outline: (AN-3688) Verify I can create group conversation from 1:1 using profile button from + button bar
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -472,7 +472,7 @@ Feature: Conversation View
       | user1Name | user2Name | user3Name |
 
 
-  @C77974 @rc @regression
+  @C77974 @rc @regression @rc42
   Scenario Outline: (AN-3688) Verify I can add people to group conversation using profile button from + button bar
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
