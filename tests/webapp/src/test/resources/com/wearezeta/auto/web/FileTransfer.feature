@@ -14,14 +14,46 @@ Feature: File Transfer
     Then I verify icon of file <File> in the conversation view
     And I see file transfer for file <File> in the conversation view
     And I verify size of file <File> is <Size> in the conversation view
-    And I verify type of file <File> is <Type> in the conversation view
     And I wait until file <File> is uploaded completely
-    #When I click to download file <File> in the conversation view
+    And I verify size of file <File> is <Size> in the conversation view
+    And I verify type of file <File> is <Type> in the conversation view
+    When I click to download file <File> in the conversation view
+    And I wait until file <File> is downloaded completely
+    Then I verify type of file <File> is <Type> in the conversation view
+    # And I verify the downloaded file is the same as the uploaded file <File>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Size    | Type  |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 0B      | PLAIN |
-      | user1Email | user1Password | user1Name | user2Name | example.zip | 512KB   | ZIP   |
+      | Login      | Password      | Name      | Contact   | File        | Size    | Type |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 0B      | TXT  |
+      | user1Email | user1Password | user1Name | user2Name | example.zip | 512KB   | ZIP  |
+
+  @C95632 @filetransfer
+  Scenario Outline: Verify file can be uploaded and re-downloaded by sender himself in group
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Given I see Contact list with name <ChatName>
+    When I open conversation with <ChatName>
+    Then I see file transfer button in conversation input
+    When I send <Size> sized file with name <File> to the current conversation
+    Then I verify icon of file <File> in the conversation view
+    And I see file transfer for file <File> in the conversation view
+    And I verify size of file <File> is <Size> in the conversation view
+    And I wait until file <File> is uploaded completely
+    And I verify size of file <File> is <Size> in the conversation view
+    And I verify type of file <File> is <Type> in the conversation view
+    When I click to download file <File> in the conversation view
+    And I wait until file <File> is downloaded completely
+    Then I verify type of file <File> is <Type> in the conversation view
+  # And I verify the downloaded file is the same as the uploaded file <File>
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | File        | Size    | Type | ChatName          |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | example.txt | 0B      | TXT  | SendFileGroupChat |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | example.zip | 512KB   | ZIP  | SendFileGroupChat |
 
   @C82816 @filetransfer
   Scenario Outline: Verify big file can be uploaded and re-downloaded by sender himself in 1:1
@@ -139,27 +171,3 @@ Feature: File Transfer
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size | Type |
       | user1Email | user1Password | user1Name | user2Name | example.txt | 15MB | TEXT |
-
-  @C82815 @filetransfer
-  Scenario Outline: Verify file can be uploaded and re-downloaded by sender himself in group
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>, <Contact2>
-    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    Given I am signed in properly
-    Given I see Contact list with name <ChatName>
-    When I open conversation with <ChatName>
-    Then I see file transfer button in conversation input
-    When I send <Size> sized file with name <File> to the current conversation
-    Then I verify icon of file <File> in the conversation view
-    And I see file transfer for file <File> in the conversation view
-    And I verify size of file <File> is <Size> in the conversation view
-    And I verify type of file <File> is <Type> in the conversation view
-    And I wait until file <File> is uploaded completely
-    When I click to download file <File> in the conversation view
-
-    Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | File        | Size    | Type  | ChatName          |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | example.txt | 0B      | PLAIN | SendFileGroupChat |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | example.zip | 512KB   | ZIP   | SendFileGroupChat |

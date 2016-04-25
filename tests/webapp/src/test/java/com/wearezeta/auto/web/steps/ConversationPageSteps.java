@@ -400,8 +400,8 @@ public class ConversationPageSteps {
                 .getFileTypeOf(fileName), equalTo(type));
     }
 
-    @Then("^I wait until file (.*) is uploaded completely$")
-    public void IWaitUntilFileUploaded(String fileName) throws Exception {
+    @Then("^I wait until file (.*) is (uploaded|downloaded) completely$")
+    public void IWaitUntilFileUploaded(String fileName, String downloadType) throws Exception {
         assertThat("Upload still not finished for file " + fileName, webappPagesCollection.getPage(ConversationPage.class)
                 .waitUntilFileUploaded(fileName));
     }
