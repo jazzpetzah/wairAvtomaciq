@@ -85,6 +85,13 @@ public final class CommonCallingSteps2 {
         return singleton;
     }
 
+    /**
+     * We break the singleton pattern here and make the constructor public to have multiple instances of this class for parallel
+     * test executions. This means this class is not suitable as singleton and it should be changed to a non-singleton class. In
+     * order to stay downward compatible we chose to just change the constructor.
+     *
+     * @return
+     */
     public CommonCallingSteps2(ClientUsersManager usrMgr) {
         this.callMapping = new ConcurrentHashMap<>();
         this.instanceMapping = new ConcurrentHashMap<>();

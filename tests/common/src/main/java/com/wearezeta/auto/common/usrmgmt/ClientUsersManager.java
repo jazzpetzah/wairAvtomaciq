@@ -112,6 +112,13 @@ public class ClientUsersManager {
 
     private static ClientUsersManager instance = null;
 
+    /**
+     * We break the singleton pattern here and make the constructor public to have multiple instances of this class for parallel
+     * test executions. This means this class is not suitable as singleton and it should be changed to a non-singleton class. In
+     * order to stay downward compatible we chose to just change the constructor.
+     *
+     * @return
+     */
     public ClientUsersManager() throws Exception {
         resetClientsList(this.users, MAX_USERS);
     }
