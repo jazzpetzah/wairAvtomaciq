@@ -310,10 +310,15 @@ public class ConversationPageSteps {
      */
     @Then("^I (do not )?see file transfer for file (.*) in the conversation view$")
     public void ISeeFileTransferOfFile(String doNot, String fileName) throws Exception {
-        if(doNot == null) {
+        if (doNot == null) {
             assertThat("Could not find file transfer for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
                     .isFileTransferDisplayed(fileName));
-            String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.')).toUpperCase();
+            String fileNameWithoutExtension = null;
+            if (fileName.substring(fileName.length() - 7).equalsIgnoreCase(".tar.gz")) {
+                fileNameWithoutExtension = fileName.substring(0, fileName.length() - 7).toUpperCase();
+            } else {
+                fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.')).toUpperCase();
+            }
             assertThat("Wrong file name for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
                     .getFileNameOf(fileName), equalTo(fileNameWithoutExtension));
         } else {
