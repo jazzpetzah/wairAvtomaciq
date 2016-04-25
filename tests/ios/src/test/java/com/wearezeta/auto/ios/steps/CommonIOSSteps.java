@@ -1028,4 +1028,14 @@ public class CommonIOSSteps {
         final String tmpFilesRoot = CommonUtils.getBuildPathFromConfig(getClass());
         CommonUtils.createRandomAccessFile(tmpFilesRoot + File.separator + name + "." + ext, size);
     }
+
+    /**
+     * Taps cancel button
+     * @step. ^I tap Cancel button$
+     * @throws Exception
+     */
+    @When("^I tap Cancel button$")
+    public void ITapCancelButton() throws Exception {
+        pagesCollection.getCommonPage().tapCancelButton();
+    }
 }

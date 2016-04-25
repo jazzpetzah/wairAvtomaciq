@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.steps;
 import com.wearezeta.auto.ios.pages.TakePicturePage;
 
 import cucumber.api.java.en.When;
+import org.junit.Assert;
 
 public class TakePicturePageSteps {
 
@@ -68,4 +69,20 @@ public class TakePicturePageSteps {
     public void ITapToggleCameraButton() throws Exception {
         getTakePicturePage().tapToggleCameraButton();
     }
+
+	@When("^I see (\\d+) images? in gallery$")
+	public void ISeeXImagesInGallery(int x) throws Exception {
+		Assert.assertTrue(String.format("There are not %s images in gallery", x),
+				getTakePicturePage().getImageInGalleryCount() == x);
+	}
+
+	@When("^I tap close camera button$")
+	public void ITapCloseCameraButton() throws Exception {
+		getTakePicturePage().clickCloseCameraButton();
+	}
+
+	@When("^I select Camera Roll view$")
+	public void ISelectCameraRollView() throws Exception {
+		getTakePicturePage().clickCamerRollView();
+	}
 }

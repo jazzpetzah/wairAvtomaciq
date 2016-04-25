@@ -509,7 +509,7 @@ Feature: Conversation List
     And I tap Invite more people button
     Then I see Share Contacts settings warning
     And I dismiss settings warning
-    And I tap Cancel button to not Invite more people
+    And I tap Cancel button
     And I tap Invite more people button
     Then I see Share Contacts settings warning
 

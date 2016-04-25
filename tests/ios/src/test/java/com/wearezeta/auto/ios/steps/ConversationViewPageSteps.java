@@ -1067,4 +1067,25 @@ public class ConversationViewPageSteps {
         Assert.assertTrue("Generic file share menu has not been shown",
                 getConversationViewPage().isGenericFileShareMenuVisible(timeoutSeconds));
     }
+
+    @When("I wait up to (\\d+) seconds file to upload")
+    public void IWaitFileToUpload(int timeoutSeconds) throws Exception {
+        Assert.assertTrue(String.format("File is still uploading after %s seconds", timeoutSeconds),
+                getConversationViewPage().fileUploadingLabelNotVisible(timeoutSeconds));
+    }
+
+    @When("^I tap Share button$")
+    public void ITapShareButton() throws Exception {
+        getConversationViewPage().tapShareButton();
+    }
+
+    @When("^I tap (Save Image|Copy) share menu item$")
+    public void ITapShareMenuItem(String itemName) throws Exception {
+        getConversationViewPage().tapShareMenuItem(itemName);
+    }
+
+    @When("I tap Done button")
+    public void ITapDoneButton() throws Exception {
+        getConversationViewPage().tapDoneButton();
+    }
 }
