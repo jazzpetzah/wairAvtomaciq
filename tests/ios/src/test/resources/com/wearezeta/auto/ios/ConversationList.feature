@@ -517,7 +517,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @C95627 @staging
+  @C95627 @regression
   Scenario Outline: Verify deleting a conversation is synchronised to all devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -534,7 +534,7 @@ Feature: Conversation List
       | Name      | Contact1  | DeviceName | Timeout |
       | user1Name | user2Name | device1    | 15      |
 
-  @C82827 @staging
+  @C82827 @regression
   Scenario Outline: Verify archive behaviour when one archive/unarchive a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -570,7 +570,7 @@ Feature: Conversation List
       | Name      | ArchivedUser|
       | user1Name | user2Name   |
 
-  @C95634 @staging
+  @C95634 @regression
   Scenario Outline: Verify hint is not shown anymore after tapping on it once
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
