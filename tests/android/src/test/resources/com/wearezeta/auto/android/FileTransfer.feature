@@ -32,8 +32,8 @@ Feature: File transfer
     Then I see alert message containing "<AlertMessage>"
 
     Examples:
-      | Name      | Contact1  | FileFullName  | FileSize | AlertMessage                                       |
-      | user1Name | user2Name | qa_random.txt | 26.00MB  | Uploading files larger than 25MB is not supported. |
+      | Name      | Contact1  | FileFullName  | FileSize | AlertMessage                   |
+      | user1Name | user2Name | qa_random.txt | 26.00MB  | You can send files up to 25MB. |
 
   @staging @C87629 @C87632
   Scenario Outline: Verify placeholder is shown for the receiver
@@ -65,7 +65,7 @@ Feature: File transfer
     And I tap File button from input tools
     Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>" failed
     When I disable Airplane mode on the device
-    And I wait for 5 seconds
+    And I wait for 10 seconds
     And I tap Retry button on file upload placeholder
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
@@ -75,7 +75,7 @@ Feature: File transfer
       | user1Name | user2Name | qa_random | txt           | 9.00MB   | 20               |
 
   @staging @C87643
-  Scenario Outline: Verify notification on sender side if upload has failed
+  Scenario Outline: Verify notification on sender side if upload has failed (Not implement)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
