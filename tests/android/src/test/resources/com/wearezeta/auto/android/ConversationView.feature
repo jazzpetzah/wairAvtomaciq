@@ -432,7 +432,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |  Message1 | Message2 |
       | user1Name | user2Name | user3Name |  Msg1     | Msg2     |
 
-  @C77966 @regression @C87626
+  @C77966 @regression @C87626 @rc @rc42
   Scenario Outline: Verify there are no video and audio calling icons under the + button bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
