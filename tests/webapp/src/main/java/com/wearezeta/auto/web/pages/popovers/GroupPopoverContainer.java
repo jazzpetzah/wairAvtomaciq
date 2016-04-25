@@ -139,6 +139,10 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		return this.participantsListPopoverPage.isParticipantVisible(name);
 	}
 
+	public boolean isParticipantVerified(String name) throws Exception {
+		return this.participantsListPopoverPage.isParticipantVerified(name);
+	}
+
 	public boolean isEveryoneAlreadyAddedMessageShown() throws Exception {
 		return this.participantsListPopoverPage.isEveryoneAlreadyAddedMessageShown();
 	}
