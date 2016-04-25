@@ -676,6 +676,23 @@ public class ConversationViewPage extends AndroidPage {
                         By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeout);
     }
 
+    public boolean isFilePlaceHolderInvisible(String fileFullName, String size, String extension,
+                                              boolean isUpload, boolean isSuccess, int timeout) throws Exception {
+        size = size.toUpperCase();
+        String fileInfo = StringUtils.isEmpty(extension) ? size :
+                String.format("%s%s%s", size, FILE_MESSAGE_SEPARATOR, extension.toUpperCase());
+
+        if (!isSuccess) {
+            fileInfo = String.format("%s%s%s", fileInfo, FILE_MESSAGE_SEPARATOR,
+                    isUpload ? FILE_UPLOAD_FAILED : FILE_DOWNLOADING_MESSAGE);
+        }
+
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.xpath(xpathFileNamePlaceHolderByValue.apply(fileFullName)), timeout) &&
+                DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                        By.xpath(xpathFileInfoPlaceHolderByValue.apply(fileInfo)), timeout);
+    }
+
     public void tapFileActionButton() throws Exception {
         getElement(idFileActionBtn).click();
     }
