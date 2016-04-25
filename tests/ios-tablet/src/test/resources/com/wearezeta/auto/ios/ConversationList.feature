@@ -39,7 +39,7 @@ Feature: Conversation List
   Scenario Outline: Unarchive conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
-    Given Myself archived conversation with <ArchivedUser>
+    Given User Myself archives single user conversation <ArchivedUser>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list

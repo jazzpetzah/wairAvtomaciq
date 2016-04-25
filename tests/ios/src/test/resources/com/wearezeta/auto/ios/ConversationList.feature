@@ -4,7 +4,7 @@ Feature: Conversation List
   Scenario Outline: Unarchive conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
-    Given Myself archived conversation with <ArchivedUser>
+    Given User Myself archives single user conversation <ArchivedUser>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open archived conversations
@@ -100,7 +100,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given Myself archived conversation having groupname <GroupChatName>
+    Given User Myself archives group conversation <GroupChatName>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open archived conversations
@@ -534,43 +534,7 @@ Feature: Conversation List
       | Name      | Contact1  | DeviceName | Timeout |
       | user1Name | user2Name | device1    | 15      |
 
-  @C82827 @regression
-  Scenario Outline: Verify archive behaviour when one archive/unarchive a conversation
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <ArchivedUser>
-    Given Myself archived conversation with <ArchivedUser>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When User <ArchivedUser> sends 1 message to user Myself
-    Then I see conversation <ArchivedUser> in conversations list
-    And I see Contacts label at the bottom of conversations list
-    And I do not see Archive button at the bottom of conversations list
-    When Myself archived conversation with <ArchivedUser>
-    Then I do not see conversation <ArchivedUser> in conversations list
-    And I do not see Contacts label at the bottom of conversations list
-    And I see Archive button at the bottom of conversations list
-    And I see NO CONVERSATIONS message in conversations list
-    When I open archived conversations
-    Then I see conversation <ArchivedUser> in conversations list
-    When I swipe right on a <ArchivedUser>
-    And I tap Unarchive action button
-    Then I do not see conversation <ArchivedUser> in conversations list
-    When I tap close Archive page button
-    Then I see conversation <ArchivedUser> in conversations list
-    And I do not see Archive button at the bottom of conversations list
-    When I swipe right on a <ArchivedUser>
-    And I tap Archive action button
-    And I do not see conversation <ArchivedUser> in conversations list
-    And I see Archive button at the bottom of conversations list
-    And User <ArchivedUser> sends 1 messages to user Myself
-    Then I see conversation <ArchivedUser> in conversations list
-    And I do not see Archive button at the bottom of conversations list
-
-    Examples:
-      | Name      | ArchivedUser|
-      | user1Name | user2Name   |
-
-  @C95634 @regression
+  @C95634 @staging
   Scenario Outline: Verify hint is not shown anymore after tapping on it once
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
