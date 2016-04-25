@@ -152,22 +152,36 @@ Feature: File Transfer
   @C82822 @filetransfer
   Scenario Outline: Verify sender is able to cancel upload
     Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    # TODO: login with user 2
+    Given <Name> is connected to <Contact2>
     Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using login <Login2> and password <Password2>
     Given I am signed in properly
-    Given I see Contact list with name <Contact>
-    When I open conversation with <Contact>
+    Given I see Welcome page
+    Given I confirm keeping picture on Welcome page
+    When I see Contact list with name <Name>
+    Then I open self profile
+    When I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    Then I see the clear data dialog
+    And I click Logout button on clear data dialog
+    When I switch to Sign In page
+    And I Sign in using login <Login> and password <Password>
+    Then I am signed in properly
+    And I see Contact list with name <Contact2>
+    When I open conversation with <Contact2>
     Then I see file transfer button in conversation input
     When I send <Size> sized file with name <File> to the current conversation
     And I cancel file upload of file <File>
     And I verify status of file <File> is CANCELED in the conversation view
-    # TODO: login with user 2
+    When I switch to Sign In page
+    Then I Sign in using login <Login2> and password <Password2>
+    And I am signed in properly
+    When I open conversation with <Name>
+    And I do not see file transfer for file <File> in the conversation view
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Size |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 24MB |
+      | Login      | Password      | Name      | Contact2  | File        | Size | Login2     | Password2     |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 24MB | user2Email | user2Password |
 
   @C87933 @filetransfer
   Scenario Outline: Verify file can be downloaded and decrypted by receiver in 1:1
