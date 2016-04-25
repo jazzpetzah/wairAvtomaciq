@@ -83,8 +83,8 @@ Feature: File Transfer
   # And I verify the downloaded file is the same as the uploaded file <File>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Type | Size |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | TXT  | 25MB |
+      | Login      | Password      | Name      | Contact   | File        | Type | Size |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | TXT  | 24MB |
 
   @C82817 @filetransfer
   Scenario Outline: Verify warning is shown if file size is too big
@@ -106,6 +106,49 @@ Feature: File Transfer
       | Login      | Password      | Name      | Contact   | File        | Size |
       | user1Email | user1Password | user1Name | user2Name | example.txt | 26MB |
 
+  @C82818 @filetransfer
+  Scenario Outline: Verify error on sender side is shown if upload breaks
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Given I see Contact list with name <Contact>
+    When I open conversation with <Contact>
+    Then I see file transfer button in conversation input
+    When I send <Size> sized file with name <File> to the current conversation
+    And I verify status of file <File> is UPLOADING… in the conversation view
+    When I refresh page
+    Then I verify status of file <File> is UPLOAD FAILED in the conversation view
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | File        | Size |
+      | user1Email | user1Password | user1Name | user2Name | example.jpg | 24MB |
+
+  @C82819 @filetransfer
+  Scenario Outline: Verify re-download is possible on sender side if download is interrupted
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Given I see Contact list with name <Contact>
+    When I open conversation with <Contact>
+    Then I see file transfer button in conversation input
+    When I send <Size> sized file with name <File> to the current conversation
+    And I wait until file <File> is uploaded completely
+    When I click to download file <File> in the conversation view
+    And I verify status of file <File> is DOWNLOADING… in the conversation view
+    And I refresh page
+    Then I verify type of file <File> is <Type> in the conversation view
+    When I click to download file <File> in the conversation view
+    And I wait until file <File> is downloaded completely
+    # Then I verify the downloaded file is the same as the uploaded file <File>
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | File        | Size |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 24MB |
+
   @C82822 @filetransfer
   Scenario Outline: Verify sender is able to cancel upload
     Given There are 2 users where <Name> is me
@@ -124,7 +167,7 @@ Feature: File Transfer
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 25MB |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 24MB |
 
   @C87933 @filetransfer
   Scenario Outline: Verify file can be downloaded and decrypted by receiver in 1:1
@@ -152,4 +195,4 @@ Feature: File Transfer
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size | Type |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 15MB | TEXT |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 15MB | TXT  |
