@@ -14,12 +14,13 @@ Feature: File Transfer
     Then I verify icon of file <File> in the conversation view
     And I see file transfer for file <File> in the conversation view
     And I verify size of file <File> is <Size> in the conversation view
-    And I wait until file <File> is uploaded completely
-    And I verify size of file <File> is <Size> in the conversation view
+    When I wait until file <File> is uploaded completely
+    Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
     When I click to download file <File> in the conversation view
     And I wait until file <File> is downloaded completely
-    Then I verify type of file <File> is <Type> in the conversation view
+    Then I verify size of file <File> is <Size> in the conversation view
+    And I verify type of file <File> is <Type> in the conversation view
     # And I verify the downloaded file is the same as the uploaded file <File>
 
     Examples:
@@ -42,12 +43,13 @@ Feature: File Transfer
     Then I verify icon of file <File> in the conversation view
     And I see file transfer for file <File> in the conversation view
     And I verify size of file <File> is <Size> in the conversation view
-    And I wait until file <File> is uploaded completely
-    And I verify size of file <File> is <Size> in the conversation view
+    When I wait until file <File> is uploaded completely
+    Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
     When I click to download file <File> in the conversation view
     And I wait until file <File> is downloaded completely
-    Then I verify type of file <File> is <Type> in the conversation view
+    Then I verify size of file <File> is <Size> in the conversation view
+    And I verify type of file <File> is <Type> in the conversation view
   # And I verify the downloaded file is the same as the uploaded file <File>
 
     Examples:
