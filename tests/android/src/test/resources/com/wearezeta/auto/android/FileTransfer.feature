@@ -60,6 +60,7 @@ Feature: File transfer
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I enable Airplane mode on the device
+    And I wait for 5 seconds
     And I tap on contact name <Contact1>
     And I tap plus button in text input
     And I tap File button from input tools
