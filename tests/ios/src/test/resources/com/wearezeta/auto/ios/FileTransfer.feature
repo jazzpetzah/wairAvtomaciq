@@ -48,8 +48,8 @@ Feature: File Transfer
     Then I see file transfer placeholder
 
     Examples:
-      | Name      | Contact   | ItemName    |
-      | user1Name | user2Name | DEFAULT_PNG |
+      | Name      | Contact   | ItemName                   |
+      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
   @C82529 @regression
   Scenario Outline: Verify not supported file has no preview and share menu is opened
@@ -84,8 +84,8 @@ Feature: File Transfer
     Then I see 1 default message in the dialog
 
     Examples:
-      | Name      | Contact   | ItemName    |
-      | user1Name | user2Name | DEFAULT_PNG |
+      | Name      | Contact   | ItemName                   |
+      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
   @C82523 @staging @noAcceptAlert
   Scenario Outline: Verify notification is shown if file size is more than 25 MB
