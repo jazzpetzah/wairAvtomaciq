@@ -119,7 +119,7 @@ Feature: File Transfer
     When I send <Size> sized file with name <File> to the current conversation
     And I verify status of file <File> is UPLOADING… in the conversation view
     When I refresh page
-    When I verify status of file <File> is UPLOAD FAILED in the conversation view
+    Then I verify status of file <File> is UPLOAD FAILED in the conversation view
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size |
