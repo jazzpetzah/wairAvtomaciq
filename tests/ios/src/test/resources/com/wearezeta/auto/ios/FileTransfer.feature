@@ -124,7 +124,7 @@ Feature: File Transfer
     And I tap file transfer menu item <ItemName>
     And I wait up to <Timeout> seconds file to upload
     And I tap file transfer placeholder
-    And I tap Share button
+    And I tap Share button on file preview page
     And I tap Save Image share menu item
     And I tap Done button
     And I click plus button next to text input

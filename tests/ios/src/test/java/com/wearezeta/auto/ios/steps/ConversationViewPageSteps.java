@@ -1082,13 +1082,13 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap Share button
+     * Tap Share button on file preview
      *
      * @throws Exception
-     * @step. ^I tap Share button$
+     * @step. ^I tap Share button on file preview page$
      */
-    @When("^I tap Share button$")
-    public void ITapShareButton() throws Exception {
+    @When("^I tap Share button on file preview page$")
+    public void ITapShareButtonOnPreview() throws Exception {
         getConversationViewPage().tapShareButton();
     }
 
