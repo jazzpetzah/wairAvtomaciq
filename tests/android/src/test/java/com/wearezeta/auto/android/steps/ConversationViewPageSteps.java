@@ -302,7 +302,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see Ping message (.*) in the dialog$")
     public void ThenISeePingMessageInTheDialog(String message) throws Exception {
-        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
+        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS).toUpperCase();
         Assert.assertTrue(String.format("Ping message '%s' is not visible after the timeout", message),
                 getConversationViewPage().waitForPingMessageWithText(message));
     }
