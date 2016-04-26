@@ -1073,9 +1073,9 @@ public class ConversationViewPageSteps {
      *
      * @param timeoutSeconds seconds to wait label to disappear
      * @throws Exception
-     * @step. ^I wait up to (\\d+) seconds file to upload$
+     * @step. ^I wait up to (\\d+) seconds until the file is uploaded$
      */
-    @When("^I wait up to (\\d+) seconds file to upload$")
+    @When("^I wait up to (\\d+) seconds until the file is uploaded$")
     public void IWaitFileToUpload(int timeoutSeconds) throws Exception {
         Assert.assertTrue(String.format("File is still uploading after %s seconds", timeoutSeconds),
                 getConversationViewPage().fileUploadingLabelNotVisible(timeoutSeconds));
