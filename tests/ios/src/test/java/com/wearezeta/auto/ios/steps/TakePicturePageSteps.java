@@ -70,17 +70,36 @@ public class TakePicturePageSteps {
         getTakePicturePage().tapToggleCameraButton();
     }
 
+	/**
+	 * Verify images amount in gallery
+	 *
+	 * @param x expected images amount in gallery
+	 * @throws Exception
+	 * @step. ^I see (\\d+) images? in gallery$
+     */
 	@When("^I see (\\d+) images? in gallery$")
 	public void ISeeXImagesInGallery(int x) throws Exception {
 		Assert.assertTrue(String.format("There are not %s images in gallery", x),
 				getTakePicturePage().getImageInGalleryCount() == x);
 	}
 
+	/**
+	 * Tap close camera button
+	 *
+	 * @throws Exception
+	 * @step. ^I tap close camera button$
+     */
 	@When("^I tap close camera button$")
 	public void ITapCloseCameraButton() throws Exception {
 		getTakePicturePage().clickCloseCameraButton();
 	}
 
+	/**
+	 * Tap Camera Roll view
+	 *
+	 * @throws Exception
+	 * @step. ^I select Camera Roll view$
+     */
 	@When("^I select Camera Roll view$")
 	public void ISelectCameraRollView() throws Exception {
 		getTakePicturePage().clickCamerRollView();

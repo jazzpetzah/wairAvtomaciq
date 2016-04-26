@@ -1031,8 +1031,9 @@ public class CommonIOSSteps {
 
     /**
      * Taps cancel button
-     * @step. ^I tap Cancel button$
+     *
      * @throws Exception
+     * @step. ^I tap Cancel button$
      */
     @When("^I tap Cancel button$")
     public void ITapCancelButton() throws Exception {
