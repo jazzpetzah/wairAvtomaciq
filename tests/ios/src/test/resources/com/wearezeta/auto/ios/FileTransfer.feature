@@ -16,7 +16,7 @@ Feature: File Transfer
       | Name      | Contact   | FileName | FileExt | FileSize | FileMIME   | ContactDevice | Timeout |
       | user1Name | user2Name | testing  | jpg     | 240 KB   | image/jpeg | device1       | 20      |
 
-  @C82517 @staging
+  @C82517 @regression
   Scenario Outline: Verify file transfer icon exists in cursor area in 1-to-1 and group conversations
     Given There are <UsersAmount> users where <Name> is me
     Given Myself is connected to all other
@@ -35,7 +35,7 @@ Feature: File Transfer
       | Name      | Contact   | GroupChatName | UsersAmount |
       | user1Name | user2Name | GroupChat     | 3           |
 
-  @C82518 @staging
+  @C82518 @regression
   Scenario Outline: Verify placeholder is shown for the sender
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -48,10 +48,10 @@ Feature: File Transfer
     Then I see file transfer placeholder
 
     Examples:
-      | Name      | Contact   | ItemName    |
-      | user1Name | user2Name | DEFAULT_PNG |
+      | Name      | Contact   | ItemName                   |
+      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C82529 @staging
+  @C82529 @regression
   Scenario Outline: Verify not supported file has no preview and share menu is opened
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -69,7 +69,7 @@ Feature: File Transfer
       | Name      | Contact1  | Contact2  | GroupChatName | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | Timeout |
       | user1Name | user2Name | user3Name | FTransfer     | testing  | tmp     | 240 KB   | application/octet-stream | device1       | 20      |
 
-  @С95960 @staging
+  @C95960 @regression
   Scenario Outline: Verify sending file in the empty conversation and text after it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -84,8 +84,8 @@ Feature: File Transfer
     Then I see 1 default message in the dialog
 
     Examples:
-      | Name      | Contact   | ItemName    |
-      | user1Name | user2Name | DEFAULT_PNG |
+      | Name      | Contact   | ItemName                   |
+      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
   @C82523 @staging @noAcceptAlert
   Scenario Outline: Verify notification is shown if file size is more than 25 MB

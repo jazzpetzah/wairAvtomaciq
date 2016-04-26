@@ -310,10 +310,15 @@ public class ConversationPageSteps {
      */
     @Then("^I (do not )?see file transfer for file (.*) in the conversation view$")
     public void ISeeFileTransferOfFile(String doNot, String fileName) throws Exception {
-        if(doNot == null) {
+        if (doNot == null) {
             assertThat("Could not find file transfer for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
                     .isFileTransferDisplayed(fileName));
-            String fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.')).toUpperCase();
+            String fileNameWithoutExtension = null;
+            if (fileName.substring(fileName.length() - 7).equalsIgnoreCase(".tar.gz")) {
+                fileNameWithoutExtension = fileName.substring(0, fileName.length() - 7).toUpperCase();
+            } else {
+                fileNameWithoutExtension = fileName.substring(0, fileName.lastIndexOf('.')).toUpperCase();
+            }
             assertThat("Wrong file name for " + fileName, webappPagesCollection.getPage(ConversationPage.class)
                     .getFileNameOf(fileName), equalTo(fileNameWithoutExtension));
         } else {
@@ -400,11 +405,24 @@ public class ConversationPageSteps {
                 .getFileTypeOf(fileName), equalTo(type));
     }
 
-    @Then("^I wait until file (.*) is uploaded completely$")
-    public void IWaitUntilFileUploaded(String fileName) throws Exception {
+    @Then("^I wait until file (.*) is (uploaded|downloaded) completely$")
+    public void IWaitUntilFileUploaded(String fileName, String downloadType) throws Exception {
         assertThat("Upload still not finished for file " + fileName, webappPagesCollection.getPage(ConversationPage.class)
                 .waitUntilFileUploaded(fileName));
     }
+
+    /**
+     * Clicks on download button to download certain file
+     *
+     * @param fileName the name of a file
+     * @throws Exception
+     * @step. ^II click to download file (.*) in the conversation view$
+     */
+    @Then("^I click to download file (.*) in the conversation view$")
+    public void IDownloadFile(String fileName) throws Exception {
+        webappPagesCollection.getPage(ConversationPage.class).downloadFile(fileName);
+    }
+
 
     /**
      * Verifies whether people button tool tip is correct or not.

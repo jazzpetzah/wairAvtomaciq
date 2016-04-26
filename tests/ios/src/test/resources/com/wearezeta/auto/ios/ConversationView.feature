@@ -776,7 +776,7 @@ Feature: Conversation View
       | Name      | Contact   | GroupChatName  | UsersAmount | NewChatName |
       | user1Name | user2Name | RenameChatName | 4           | NewName     |
 
-  @C95637 @staging
+  @C95637 @regression
   Scenario Outline: Verify opening the image twice in the raw
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
