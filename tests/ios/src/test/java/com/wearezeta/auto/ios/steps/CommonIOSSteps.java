@@ -1039,4 +1039,15 @@ public class CommonIOSSteps {
     public void ITapCancelButton() throws Exception {
         pagesCollection.getCommonPage().tapCancelButton();
     }
+
+    /**
+     * Tap Done button
+     *
+     * @throws Exception
+     * @step. ^I tap Done button$
+     */
+    @When("^I tap Done button$")
+    public void ITapDoneButton() throws Exception {
+        pagesCollection.getCommonPage().tapDoneButton();
+    }
 }

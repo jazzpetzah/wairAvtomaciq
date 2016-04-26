@@ -51,6 +51,8 @@ public abstract class IOSPage extends BasePage {
 
     private static final By nameCancelButton = MobileBy.AccessibilityId("Cancel");
 
+    private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
+
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
@@ -474,5 +476,9 @@ public abstract class IOSPage extends BasePage {
 
     public void tapCancelButton() throws Exception {
         getElement(nameCancelButton).click();
+    }
+
+    public void tapDoneButton() throws Exception {
+        getElement(nameDoneButton).click();
     }
 }

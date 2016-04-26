@@ -1103,15 +1103,4 @@ public class ConversationViewPageSteps {
     public void ITapShareMenuItem(String itemName) throws Exception {
         getConversationViewPage().tapShareMenuItem(itemName);
     }
-
-    /**
-     * Tap Done button
-     *
-     * @throws Exception
-     * @step. ^I tap Done button$
-     */
-    @When("^I tap Done button$")
-    public void ITapDoneButton() throws Exception {
-        getConversationViewPage().tapDoneButton();
-    }
 }

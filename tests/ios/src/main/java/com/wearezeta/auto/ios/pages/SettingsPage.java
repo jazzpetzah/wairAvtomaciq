@@ -20,8 +20,6 @@ public class SettingsPage extends IOSPage {
 
     private static final By nameBackButton = MobileBy.AccessibilityId("Back");
 
-    private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
-
     private static final By xpathAllSoundAlertsButton = By.xpath("//UIATableCell[@name='All']");
 
     private static final By nameEditButton = MobileBy.AccessibilityId("Edit");
@@ -61,10 +59,6 @@ public class SettingsPage extends IOSPage {
 
     public void goBack() throws Exception {
         getElement(nameBackButton).click();
-    }
-
-    public void apply() throws Exception {
-        getElement(nameDoneButton).click();
     }
 
     public boolean isSoundAlertsSetToDefault() throws Exception {

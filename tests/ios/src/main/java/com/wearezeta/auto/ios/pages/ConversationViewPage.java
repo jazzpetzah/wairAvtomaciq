@@ -156,8 +156,6 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameShareButton = MobileBy.AccessibilityId("Share");
 
-    private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
-
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -703,9 +701,5 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapShareMenuItem(String itemName) throws Exception {
         getElement(MobileBy.AccessibilityId(itemName)).click();
-    }
-
-    public void tapDoneButton() throws Exception {
-        getElement(nameDoneButton).click();
     }
 }
