@@ -59,8 +59,8 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given <Contact> starts a video call to me
     When I am signed in properly
+    And <Contact> starts a video call to me
     Then I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>
     And I see decline call button for conversation <Contact>
