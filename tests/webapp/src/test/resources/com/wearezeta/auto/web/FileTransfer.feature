@@ -202,6 +202,7 @@ Feature: File Transfer
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
     When I click to download file <File> in the conversation view
+    And I verify status of file <File> is DOWNLOADING… in the conversation view
     And I wait until file <File> is downloaded completely
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
@@ -215,7 +216,7 @@ Feature: File Transfer
   Scenario Outline: Verify file can be downloaded and decrypted by receiver in group
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
-    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -231,6 +232,7 @@ Feature: File Transfer
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
     When I click to download file <File> in the conversation view
+    And I verify status of file <File> is DOWNLOADING… in the conversation view
     And I wait until file <File> is downloaded completely
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
