@@ -534,7 +534,7 @@ Feature: Conversation List
       | Name      | Contact1  | DeviceName | Timeout |
       | user1Name | user2Name | device1    | 15      |
 
-  @C95634 @staging
+  @C95634 @regression
   Scenario Outline: Verify hint is not shown anymore after tapping on it once
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
