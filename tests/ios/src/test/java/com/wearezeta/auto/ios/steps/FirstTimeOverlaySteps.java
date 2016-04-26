@@ -30,13 +30,24 @@ public class FirstTimeOverlaySteps {
     }
 
     /**
-     * Wait for a while and accept First Time Usage overlay if it is viisble
+     * Wait for a while and accept First Time Usage overlay if it is visisble
      *
      * @throws Exception
      * @step. ^I accept First Time overlay if it is visible
      */
-    @And("^I accept First Time overlay if it is visible")
+    @And("^I accept First Time overlay if it is visible$")
     public void IAcceptFirstTimeOverlayIfVisible() throws Exception {
         getFirstTimeOverlay().acceptIfVisible(7);
+    }
+
+    /**
+     * Accept First Time Usage overlay when it is visisble
+     *
+     * @throws Exception
+     * @step. ^I accept First Time overlay$
+     */
+    @And("^I accept First Time overlay$")
+    public void IAcceptFirstTimeOverlay() throws Exception {
+        getFirstTimeOverlay().accept();
     }
 }
