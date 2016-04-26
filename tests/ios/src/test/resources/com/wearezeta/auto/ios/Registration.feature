@@ -11,7 +11,7 @@ Feature: Registration
     And I press Choose Photo button
     And I choose a picture from camera roll
     And I tap Share Contacts button on Share Contacts overlay
-    Then I see People picker page
+    Then I see conversations list
 
     Examples:
       | Name      |
@@ -69,9 +69,8 @@ Feature: Registration
     And I input Non-English name <ArabicName> and hit Enter
     And I press Keep This One button
     When I tap Not Now button on Share Contacts overlay
-    Then I see People picker page
-    And I click clear button
-    And I tap settings gear button
+    Then I see conversations list
+    When I tap settings gear button
     Then I see my new name <ArabicName>
 
     Examples:
