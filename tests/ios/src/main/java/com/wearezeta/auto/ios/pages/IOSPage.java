@@ -350,6 +350,17 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void lockScreenOnRealDevice() throws Exception {
+        /*
+        this method can return the future itself, so you have more control over execution.
+        Also, it might come in handy to pass timeout as a parameter.
+        This can be done more efficiently with Java8:
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(() -> {
+        String threadName = Thread.currentThread().getName();
+        System.out.println("Hello " + threadName);
+        });
+         */
         final ZetaIOSDriver driver = this.getDriver();
         final Callable callable = new Callable<Boolean>(){
 

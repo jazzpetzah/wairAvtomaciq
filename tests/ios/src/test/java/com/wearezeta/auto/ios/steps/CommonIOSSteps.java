@@ -1009,6 +1009,7 @@ public class CommonIOSSteps {
 
     /**
      * Locks screen without any time limit on real device
+     * This is a asynchronous step.
      *
      * @throws Exception
      * @step. ^I lock screen on real device$
