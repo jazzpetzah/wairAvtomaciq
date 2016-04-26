@@ -70,17 +70,37 @@ public class TakePicturePageSteps {
         getTakePicturePage().tapToggleCameraButton();
     }
 
+	private Integer imagesInGalleryRememberedCount;
+
 	/**
-	 * Verify images amount in gallery
+	 * Save the count of images in gallery in local variable imagesInGalleryRememberedCount
 	 *
-	 * @param x expected images amount in gallery
 	 * @throws Exception
-	 * @step. ^I see (\\d+) images? in gallery$
+	 * @step. ^I remember the count of images in gallery$
      */
-	@When("^I see (\\d+) images? in gallery$")
-	public void ISeeXImagesInGallery(int x) throws Exception {
-		Assert.assertTrue(String.format("There are not %s images in gallery", x),
-				getTakePicturePage().getImageInGalleryCount() == x);
+	@When("^I remember the count of images in gallery$")
+	public void RememeberCountImagesInGallery() throws Exception {
+		imagesInGalleryRememberedCount = getTakePicturePage().getImageInGalleryCount();
+	}
+
+	/**
+	 * Verify that the count of images in gallery has increased by pointed value.
+	 * 'I remember the count of images in gallery' step should be called before this step.
+	 *
+	 * @param count images increase value
+	 * @throws Exception
+	 *@step. ^I see the count of images in gallery has increased by (\d+)$
+     */
+	@When("^I see the count of images in gallery has increased by (\\d+)$")
+	public void ISeeCountOfImagesInGalleryIncreased(int count) throws Exception {
+		if (imagesInGalleryRememberedCount ==null) {
+			throw new IllegalStateException("Call 'I remember the count of images in gallery' step first");
+		}
+		int actualCount = getTakePicturePage().getImageInGalleryCount();
+		int diff = actualCount - imagesInGalleryRememberedCount;
+		Assert.assertEquals(String.format("Actual images count in gallery is '%s' but expected count is '%s'",
+				actualCount, imagesInGalleryRememberedCount + count),
+				diff, count);
 	}
 
 	/**
