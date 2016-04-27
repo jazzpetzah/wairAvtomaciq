@@ -195,12 +195,12 @@ Feature: People View
     And I see the correct number of participants in the title <ParticipantNumber>
     When I close participants page by UI button
     Then I do not see participants page
-    And I see conversation page
+    And I see conversation view
     When I tap conversation name from top toolbar
     Then I see participants page
     When I press back button
     Then I do not see participants page
-    And I see conversation page
+    And I see conversation view
     When I tap conversation name from top toolbar
     And I swipe right
     And I swipe up
@@ -229,7 +229,7 @@ Feature: People View
     When I tap conversation name from top toolbar
     Then I see <Contact1> user name and email
     When I close participants page by UI button
-    Then I see conversation page
+    Then I see conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |

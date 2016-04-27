@@ -46,7 +46,8 @@ public class ConversationViewPage extends AndroidPage {
 
     public static final By idCursorEditText = By.id(idStrCursorEditText);
 
-    public static Function<String, String> xpathCurosrEditTextByValue = value -> String.format("//*[@id='%s' and @value='%s']", idCursorEditText, value);
+    public static Function<String, String> xpathCurosrEditTextByValue = value ->
+            String.format("//*[@id='%s' and @value='%s']", idCursorEditText, value);
 
     private static final String idStrMissedCallMesage = "ttv__row_conversation__missed_call";
     private static final Function<String, String> xpathStrMissedCallMesageByText = text -> String

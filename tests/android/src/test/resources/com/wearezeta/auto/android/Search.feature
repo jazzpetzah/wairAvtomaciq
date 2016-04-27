@@ -140,7 +140,7 @@ Feature: Search
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
     And I tap on create conversation
-    Then I see conversation page
+    Then I see conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -175,7 +175,7 @@ Feature: Search
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I tap Open Conversation action button on People Picker page
-    Then I see conversation page
+    Then I see conversation view
 
     Examples:
       | Name      | Contact1  |

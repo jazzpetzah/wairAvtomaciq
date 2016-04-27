@@ -67,9 +67,9 @@ public class ConversationViewPageSteps {
      * Waits for the conversation page to appear
      *
      * @throws Exception
-     * @step. ^I see conversation page$
+     * @step. ^I see conversation view$
      */
-    @When("^I see conversation page$")
+    @When("^I see conversation view$")
     //TODO : Refactory See dialog page,
     public void WhenISeeConversationPage() throws Exception {
         Assert.assertTrue("The cursor is not visible in the conversation view",

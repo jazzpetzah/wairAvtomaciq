@@ -135,7 +135,7 @@ Feature: Connect
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
     And I wait for 5 seconds
-    Then I see conversation page
+    Then I see conversation view
 
     Examples:
       | Name      | Contact   | WaitingMess      |
@@ -221,7 +221,7 @@ Feature: Connect
     And I press Clear button
     Then I see contact list with name <Contact>
     And I tap on contact name <Contact>
-    And I see conversation page
+    And I see conversation view
 
     Examples:
       | Name      | Contact   |
@@ -369,7 +369,7 @@ Feature: Connect
     And I tap on user name found on People picker page <Contact1>
     And User info should be shown with Unblock button
     When I click Unblock button
-    Then I see conversation page
+    Then I see conversation view
     And I navigate back from dialog page
     And I see contact list with name <Contact1>
 

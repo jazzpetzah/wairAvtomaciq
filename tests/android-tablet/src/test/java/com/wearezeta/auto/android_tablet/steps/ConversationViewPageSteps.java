@@ -233,7 +233,7 @@ public class ConversationViewPageSteps {
 				getConversationViewPage().tapPingButton();
 				break;
 			case "camera":
-				getConversationViewCameraPage().tapCameraButton();
+				getConversationViewCameraPage().tapLensButton();
 				break;
 			case "sketch":
 				getConversationViewPage().tapSketchButton();

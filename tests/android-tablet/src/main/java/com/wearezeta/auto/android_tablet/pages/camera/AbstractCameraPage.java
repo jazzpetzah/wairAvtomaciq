@@ -29,7 +29,7 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
                 getLensButtonLocator(), 20);
     }
 
-    public void tapCameraButton() throws Exception {
+    public void tapLensButton() throws Exception {
         this.getDriver().findElement(getLensButtonLocator()).click();
     }
 
