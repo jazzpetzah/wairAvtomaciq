@@ -9,8 +9,7 @@ Feature: File transfer
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap plus button in text input
-    And I tap File button from input tools
+    And I tap File button from cursor toolbar
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
 
@@ -27,8 +26,7 @@ Feature: File transfer
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap plus button in text input
-    And I tap File button from input tools
+    And I tap File button from cursor toolbar
     Then I see alert message containing "<AlertMessage>"
 
     Examples:
@@ -62,8 +60,7 @@ Feature: File transfer
     When I enable Airplane mode on the device
     And I wait for 5 seconds
     And I tap on contact name <Contact1>
-    And I tap plus button in text input
-    And I tap File button from input tools
+    And I tap File button from cursor toolbar
     Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>" failed
     When I disable Airplane mode on the device
     And I wait for 10 seconds
@@ -84,8 +81,7 @@ Feature: File transfer
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap plus button in text input
-    And I tap File button from input tools
+    And I tap File button from cursor toolbar
     And I tap back button in upper toolbar
     And I tap on contact name <Contact2>
     And I enable Airplane mode on the device
@@ -107,8 +103,7 @@ Feature: File transfer
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap plus button ion text input
-    And I tap File button from input tools
+    And I tap File button from cursor toolbar
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     And I tap View button on file upload placeholder
     And I save file from file dialog
@@ -149,8 +144,7 @@ Feature: File transfer
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap plus button in text input
-    And I tap File button from input tools
+    And I tap File button from cursor toolbar
     And I tap Cancel button on file upload placeholder
     Then I do not see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
 

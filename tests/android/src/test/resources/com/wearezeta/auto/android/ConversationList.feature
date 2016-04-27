@@ -72,7 +72,7 @@ Feature: Conversation List
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I tap Open Conversation action button on People Picker page
-    Then I see dialog page
+    Then I see conversation page
 
     Examples:
       | Name      | Contact1  | Message    | Image       | SpotifyLink                                           |

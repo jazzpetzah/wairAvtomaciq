@@ -150,7 +150,7 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I tap Change Picture button on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
 	public void ITapChangePictureButton() throws Exception {
-		getSelfProfileCameraPage().tapLensButton();
+		getSelfProfileCameraPage().tapCameraButton();
 	}
 
 	/**

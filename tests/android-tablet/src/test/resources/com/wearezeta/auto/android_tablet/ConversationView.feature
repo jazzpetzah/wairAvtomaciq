@@ -9,7 +9,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    And I tap the text input in the conversation view
+    And I tap on text input
     When I type the message "<Message>" in the conversation view
     And I send the typed message in the conversation view
     Then I see the message "<Message>" in the conversation view
@@ -27,7 +27,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    And I tap the text input in the conversation view
+    And I tap on text input
     When I type the message "<Message>" in the conversation view
     And I send the typed message in the conversation view
     Then I see the message "<Message>" in the conversation view
@@ -46,8 +46,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    And I swipe right on text input in the conversation view
-    When I tap Add Picture button in the conversation view
+    When I tap Camera button from cursor toolbar
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
@@ -65,8 +64,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    And I swipe right on text input in the conversation view
-    When I tap Add Picture button in the conversation view
+    When I tap Camera button from cursor toolbar
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
@@ -131,7 +129,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
-    And I tap the text input in the conversation view
+    And I tap on text input
     When I type the message "<Message>" in the conversation view
     And I send the typed message in the conversation view
     Then I see the message "<Message>" in the conversation view
@@ -150,7 +148,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
-    And I tap the text input in the conversation view
+    And I tap on text input
     When I type the message "<Message>" in the conversation view
     And I send the typed message in the conversation view
     Then I see the message "<Message>" in the conversation view
@@ -179,7 +177,7 @@ Feature: Conversation View
     Then I see the Single user popover
     When I tap outside of Single user popover
     Then I do not see the Single user popover
-    And I tap the text input in the conversation view
+    And I tap on text input
     When I tap conversation name from top toolbar
     Then I see the Single user popover
     When I navigate back
@@ -199,7 +197,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    When I tap the text input in the conversation view
+    When I tap on text input
     Then I do not see the Single user popover
     When I tap conversation name from top toolbar
     Then I see the Single user popover
@@ -224,8 +222,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
-    And I swipe right on text input in the conversation view
-    When I tap Add Picture button in the conversation view
+    When I tap Camera button from cursor toolbar
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
@@ -244,8 +241,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
-    And I swipe right on text input in the conversation view
-    When I tap Add Picture button in the conversation view
+    When I tap Camera button from cursor toolbar
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
@@ -263,8 +259,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    And I swipe right on text input in the conversation view
-    When I tap Add Picture button in the conversation view
+    When I tap Camera button from cursor toolbar
     And I tap Gallery button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
@@ -282,8 +277,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    And I swipe right on text input in the conversation view
-    When I tap Add Picture button in the conversation view
+    When I tap Camera button from cursor toolbar
     And I tap Gallery button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
@@ -343,8 +337,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact1>
-    And I tap Show Tools button on conversation view page
-    And I tap Sketch button on conversation view page
+    And I tap Sketch button from cursor toolbar
     And I draw a sketch with <NumColors> colors on Sketch page
     When I tap Send button on Sketch page
     Then I see a new picture in the conversation view
@@ -363,8 +356,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact1>
-    And I tap Show Tools button on conversation view page
-    When I tap Add Picture button in the conversation view
+    When I tap Camera button from cursor toolbar
     And I tap Gallery button in the conversation view
     And I tap Sketch button on the picture preview
     And I draw a sketch with <NumColors> colors on Sketch page

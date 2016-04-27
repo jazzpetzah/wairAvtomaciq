@@ -221,7 +221,7 @@ public class RegistrationSteps {
      */
     @And("^I tap Camera button on (?:the |\\s*)[Tt]ake [Rr]egistration [Pp]icture page$")
     public void ITapCameraButton() throws Exception {
-        getRegistrationCameraPage().tapLensButton();
+        getRegistrationCameraPage().tapCameraButton();
     }
 
     /**

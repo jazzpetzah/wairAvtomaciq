@@ -49,30 +49,6 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
-	 * Tap the Show Tools button on conversation view
-	 * 
-	 * @step. ^I tap Show Tools button on [Cc]onversation view page$
-	 * 
-	 * @throws Exception
-	 */
-	@And("^I tap Show Tools button on [Cc]onversation view page$")
-	public void ITapShowToolsButton() throws Exception {
-		getConversationViewPage().tapShowInstrumentsButton();
-	}
-
-	/**
-	 * Tap the Close Tools button on conversation view
-	 * 
-	 * @step. ^I tap Close Tools button on [Cc]onversation view page$
-	 * 
-	 * @throws Exception
-	 */
-	@And("^I tap Close Tools button on [Cc]onversation view page$")
-	public void ITapCloseToolsButton() throws Exception {
-		getConversationViewPage().tapCloseInstrumentsButton();
-	}
-
-	/**
 	 * Tap in Dialog page on converstaion title to open participants view
 	 *
 	 * @throws Exception
@@ -175,12 +151,10 @@ public class ConversationViewPageSteps {
 	/**
 	 * Tap the text input field in the conversation view to start typing
 	 * 
-	 * @step. ^I tap (?:the |\\s*)text input in (?:the |\\s*)[Cc]onversation
-	 *        view$
-	 * 
 	 * @throws Exception
+	 * @step. ^I tap on text input$
 	 */
-	@And("^I tap (?:the |\\s*)text input in (?:the |\\s*)[Cc]onversation view$")
+	@And("^I tap on text input$")
 	public void ITapTheTextInput() throws Exception {
 		getConversationViewPage().tapTextInput();
 	}
@@ -245,49 +219,39 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
-	 * Swipe on the text input field to show the available instruments
-	 * 
-	 * @step. ^I swipe right on text input in (?:the |\\s*)[Cc]onversation view$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I swipe right on text input in (?:the |\\s*)[Cc]onversation view$")
-	public void ISwipeOnTextInput() throws Exception {
-		getConversationViewPage().swipeOnTextInput();
-	}
-
-	/**
-	 * Tap the Ping button to send Ping/Ping Again event from the currently
-	 * opened conversation
+	 * Press the corresponding button in the input controls
+	 * Tap file button will send file directly when you installed testing_gallery-debug.apk
 	 *
-	 * @step. ^I tap Ping button in (?:the |\\s*)[Cc]onversation view$
-	 *
+	 * @param btnName button name
 	 * @throws Exception
+	 * @step. ^I tap (Ping|Camera|Sketch|File) button$ from cursor toolbar$
 	 */
-	@And("^I tap Ping button in (?:the |\\s*)[Cc]onversation view$")
-	public void ITapPingButton() throws Exception {
-		getConversationViewPage().tapPingButton();
+	@When("^I tap (Ping|Camera|Sketch|File) button from cursor toolbar$")
+	public void WhenITapCursorToolButton(String btnName) throws Exception {
+		switch (btnName.toLowerCase()) {
+			case "ping":
+				getConversationViewPage().tapPingButton();
+				break;
+			case "camera":
+				getConversationViewCameraPage().tapCameraButton();
+				break;
+			case "sketch":
+				getConversationViewPage().tapSketchButton();
+				break;
+			case "file":
+				getConversationViewPage().tapFileButton();
+				break;
+			default:
+				throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
+		}
 	}
 
 	/**
-	 * Tap the Add Picture button. The input field slider should be already
-	 * opened
-	 * 
-	 * @step. ^I tap Add Picture button in (?:the |\\s*)[Cc]onversation view$
-	 * 
-	 * @throws Exception
-	 */
-	@And("^I tap Add Picture button in (?:the |\\s*)[Cc]onversation view$")
-	public void ITapAddPicture() throws Exception {
-		getConversationViewCameraPage().tapLensButton();
-	}
-
-	/**
-	 * Tap the Take Photo button. The Add Picture button should be already
+	 * In Camera view, Tap the Take Photo button. The Add Picture button should be already
 	 * clicked
-	 * 
+	 *
 	 * @step. ^I tap Take Photo button in (?:the |\\s*)[Cc]onversation view$
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@And("^I tap Take Photo button in (?:the |\\s*)[Cc]onversation view$")
@@ -296,7 +260,7 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
-	 * Tap the Select From Gallery button. The Add Picture button should be
+	 * In Camera view, Tap the Select From Gallery button. The Add Picture button should be
 	 * already clicked
 	 * 
 	 * @step. ^I tap Gallery button in (?:the |\\s*)[Cc]onversation view$
@@ -309,7 +273,7 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
-	 * Confirm the taken photo or selected picture
+	 * In Camera view, Confirm the taken photo or selected picture
 	 * 
 	 * @step. ^I confirm the picture for (?:the |\\s*)[Cc]onversation view$
 	 * 
@@ -595,18 +559,6 @@ public class ConversationViewPageSteps {
 	@When("^I tap Giphy button in the [Cc]onversation view$")
 	public void ITapGiphyButton() throws Exception {
 		getConversationViewPage().tapGiphyButton();
-	}
-
-	/**
-	 * Tap Sketch button
-	 * 
-	 * @step. ^I tap Sketch button on [Cc]onversation view page$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I tap Sketch button on [Cc]onversation view page$")
-	public void ITapSketchButton() throws Exception {
-		getConversationViewPage().tapSketchButton();
 	}
 
 	/**

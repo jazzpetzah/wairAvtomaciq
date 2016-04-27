@@ -19,7 +19,7 @@ Feature: Archive
     And I see contact list with name <Contact1>
     And I swipe right on a <Contact1>
     And I select UNARCHIVE from conversation settings menu
-    And I see dialog page
+    And I see conversation page
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -45,7 +45,7 @@ Feature: Archive
     And I see contact list with name <GroupChatName>
     And I swipe right on a <GroupChatName>
     And I select UNARCHIVE from conversation settings menu
-    And I see dialog page
+    And I see conversation page
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName     |

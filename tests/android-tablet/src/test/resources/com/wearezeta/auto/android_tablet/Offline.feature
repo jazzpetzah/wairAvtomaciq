@@ -37,14 +37,13 @@ Feature: Offline Mode
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
     When I enable Airplane mode on the device
-    And I tap the text input in the conversation view
+    And I tap on text input
     And I type the message "<Message>" in the conversation view
     And I send the typed message in the conversation view
     Then I see the message "<Message>" in the conversation view
     And I see unsent indicator next to the message "<Message>" in the conversation view
     When I hide keyboard
-    And I swipe right on text input in the conversation view
-    And I tap Add Picture button in the conversation view
+    And I tap Camera button from cursor toolbar
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view

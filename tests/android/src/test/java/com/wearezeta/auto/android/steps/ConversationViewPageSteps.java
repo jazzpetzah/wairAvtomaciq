@@ -64,20 +64,16 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Waits for the dialog page to appear This step makes no assertions and doesn't fail if the dialog page doesn't appear.
+     * Waits for the conversation page to appear
      *
      * @throws Exception
-     * @step. ^I see dialog page$
+     * @step. ^I see conversation page$
      */
-    @When("^I( do not)? see dialog page$")
-    public void WhenISeeDialogPage(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue("The cursor is not visible in the conversation view",
-                    getConversationViewPage().waitForCursorInputVisible());
-        } else {
-            Assert.assertTrue("The cursor in the conversation view is still visible",
-                    getConversationViewPage().waitForCursorInputNotVisible());
-        }
+    @When("^I see conversation page$")
+    //TODO : Refactory See dialog page,
+    public void WhenISeeConversationPage() throws Exception {
+        Assert.assertTrue("The cursor is not visible in the conversation view",
+                getConversationViewPage().isCursorViewVisible());
     }
 
     /**
@@ -88,8 +84,9 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap on text input$")
     public void WhenITapOnTextInput() throws Exception {
-        getConversationViewPage().tapOnCursorInput();
+        getConversationViewPage().tapOnTextInput();
     }
+
 
     /**
      * Send message to the chat
@@ -117,49 +114,24 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Swipes the text input area to reveal the different input options
-     *
-     * @throws Exception
-     * @step. ^I swipe on text input$
-     */
-    @When("^I swipe on text input$")
-    public void WhenISwipeOnTextInput() throws Exception {
-        getConversationViewPage().swipeRightOnCursorInput();
-    }
-
-    /**
-     * Tap on plus button in the text input area to reveal the different input options
-     *
-     * @throws Exception
-     * @step. ^I tap plus( button)? i?o?n text input$
-     */
-    @When("^I tap plus( button)? i?o?n text input$")
-    public void WhenITapPlusInTextInput(String ignore) throws Exception {
-        getConversationViewPage().pressPlusButtonOnDialogPage();
-    }
-
-    /**
      * Press the corresponding button in the input controls
      * Tap file button will send file directly when you installed testing_gallery-debug.apk
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Add people|Ping|Add Picture|Sketch|File) button$ from input tools$
+     * @step. ^I tap (Ping|Camera|Sketch|File) button$ from cursor toolbar$
      */
-    @When("^I tap (Add people|Ping|Add Picture|Sketch|File) button from input tools$")
-    public void WhenITapInputToolButton(String btnName) throws Exception {
+    @When("^I tap (Ping|Camera|Sketch|File) button from cursor toolbar$")
+    public void WhenITapCursorToolButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "ping":
                 getConversationViewPage().tapPingBtn();
                 break;
-            case "add picture":
-                getConversationViewPage().tapAddPictureBtn();
+            case "camera":
+                getConversationViewPage().tapCameraBtn();
                 break;
             case "sketch":
                 getConversationViewPage().tapSketchBtn();
-                break;
-            case "add people":
-                getConversationViewPage().tapPeopleBtn();
                 break;
             case "file":
                 getConversationViewPage().tapFileBtn();
@@ -880,14 +852,13 @@ public class ConversationViewPageSteps {
      * Check the cursor bar only contains ping, sketch, add picture, people and file buttons in cursor bar
      *
      * @throws Exception
-     * @step. ^I only see ping, sketch, camera, people and file buttons in cursor menu
+     * @step. ^I only see ping, sketch, camera and file buttons in cursor menu
      */
-    @Then("^I only see ping, sketch, camera, people and file buttons in cursor menu")
+    @Then("^I only see ping, sketch, camera and file buttons in cursor toolbar")
     public void ThenIOnlySeePingSketchAddPicturePeopleButton() throws Exception {
         Assert.assertTrue("Ping button should be visible in cursor menu", getConversationViewPage().isPingButtonVisible());
         Assert.assertTrue("Sketch button should be visible in cursor menu", getConversationViewPage().isSketchButtonVisible());
         Assert.assertTrue("Camera button should be visible in cursor menu", getConversationViewPage().isCameraButtonVisible());
-        Assert.assertTrue("People button should be visible in cursor menu", getConversationViewPage().isPeopleButtonVisible());
         Assert.assertTrue("File button should be visible in cursor menu", getConversationViewPage().isFileButtonVisible());
     }
 

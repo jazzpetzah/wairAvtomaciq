@@ -135,7 +135,7 @@ Feature: Connect
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
     And I wait for 5 seconds
-    Then I see dialog page
+    Then I see conversation page
 
     Examples:
       | Name      | Contact   | WaitingMess      |
@@ -221,7 +221,7 @@ Feature: Connect
     And I press Clear button
     Then I see contact list with name <Contact>
     And I tap on contact name <Contact>
-    And I see dialog page
+    And I see conversation page
 
     Examples:
       | Name      | Contact   |
@@ -315,7 +315,7 @@ Feature: Connect
     And I click ellipsis button
     And I click Block button
     And I confirm block on connect to page
-    Then I do not see dialog page
+    Then I see Contact list with contacts
     Then I do not see contact list with name <Contact2>
     And I wait until <Contact2> exists in backend search results
     And I open Search UI
@@ -369,7 +369,7 @@ Feature: Connect
     And I tap on user name found on People picker page <Contact1>
     And User info should be shown with Unblock button
     When I click Unblock button
-    Then I see dialog page
+    Then I see conversation page
     And I navigate back from dialog page
     And I see contact list with name <Contact1>
 
@@ -428,8 +428,8 @@ Feature: Connect
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact2>
-    And I tap plus button in text input
-    And I tap Add people button from input tools
+    And I tap conversation name from top toolbar
+    And I press create group button
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I click on Add to conversation button

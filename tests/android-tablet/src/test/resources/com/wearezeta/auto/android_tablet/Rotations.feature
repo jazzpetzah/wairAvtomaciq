@@ -95,8 +95,7 @@ Feature: Rotations
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    And I swipe right on text input in the conversation view
-    When I tap Add Picture button in the conversation view
+    When I tap Camera button from cursor toolbar
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
