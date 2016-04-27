@@ -235,7 +235,7 @@ public class PeoplePickerPageSteps {
         }
     }
 
-    @When("I click close button to dismiss people view")
+    @When("^I click close button to dismiss people view$")
     public void IClickCloseButtonDismissPeopleView() throws Exception {
         getPeoplePickerPage().tapOnPeoplePickerClearBtn();
     }

@@ -285,20 +285,6 @@ public abstract class IOSPage extends BasePage {
                 String.format("%.3f", DriverUtils.LONG_TAP_DURATION / 1000.0));
     }
 
-    public void dismissAllAlerts() throws Exception {
-        int count = 0;
-        final int NUMBER_OF_RETRIES = 3;
-        final int ALERT_WAITING_TIMEOUT = 3;
-        do {
-            try {
-                this.getDriver().switchTo().alert().dismiss();
-            } catch (Exception e) {
-                // do nothing
-            }
-        } while (DriverUtils.waitUntilAlertAppears(this.getDriver(),
-                ALERT_WAITING_TIMEOUT) && count++ < NUMBER_OF_RETRIES);
-    }
-
     public void rotateScreen(ScreenOrientation orientation) throws Exception {
         switch (orientation) {
             case LANDSCAPE:
