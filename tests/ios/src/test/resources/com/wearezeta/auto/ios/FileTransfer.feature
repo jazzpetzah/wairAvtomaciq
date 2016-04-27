@@ -118,7 +118,7 @@ Feature: File Transfer
     And I select Camera Roll view
     And I remember the count of images in gallery
     And I tap Cancel button
-    And I tap close camera button
+    And I tap Close camera button
     And I click plus button next to text input
     And I tap File Transfer button from input tools
     And I tap file transfer menu item <ItemName>
@@ -131,7 +131,7 @@ Feature: File Transfer
     And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I select Camera Roll view
-    And I see the count of images in gallery has increased by 1
+    And I see the count of images in gallery has been increased by 1
 
     Examples:
       | Name      | Contact   | ItemName                   | Timeout |

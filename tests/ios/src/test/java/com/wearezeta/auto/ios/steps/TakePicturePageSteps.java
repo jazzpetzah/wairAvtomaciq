@@ -87,9 +87,9 @@ public class TakePicturePageSteps {
      *
      * @param count images increase value
      * @throws Exception
-     * @step. ^I see the count of images in gallery has increased by (\d+)$
+     * @step. ^I see the count of images in gallery has been increased by (\\d+)$
      */
-    @When("^I see the count of images in gallery has increased by (\\d+)$")
+    @When("^I see the count of images in gallery has been increased by (\\d+)$")
     public void ISeeCountOfImagesInGalleryIncreased(int count) throws Exception {
         if (imagesInGalleryRememberedCount == null) {
             throw new IllegalStateException("Call 'I remember the count of images in gallery' step first");
@@ -105,9 +105,9 @@ public class TakePicturePageSteps {
      * Tap close camera button
      *
      * @throws Exception
-     * @step. ^I tap close camera button$
+     * @step. ^I tap Close camera button$
      */
-    @When("^I tap close camera button$")
+    @When("^I tap Close camera button$")
     public void ITapCloseCameraButton() throws Exception {
         getTakePicturePage().clickCloseCameraButton();
     }
