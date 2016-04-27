@@ -491,7 +491,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C109 @noAcceptAlert @regression
+  @С111308 @noAcceptAlert @regression
   Scenario Outline: Verify share contacts dialogue is shown each time on invite more friends click
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
