@@ -560,33 +560,44 @@ Feature: E2EE
     And I click back button on the Device Detail popover
     Then I see device Device1 of user <Contact1> is verified on Single User Profile popover
     Then I do not see user verified icon on Single User Profile popover
+    And I click back button on Group Participants popover
+    And I do not see user <Contact1> in verified section
+    And I click on participant <Contact1> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
     And I click on device Device2 of user <Contact1> on Single User Profile popover
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
     Then I see device Device2 of user <Contact1> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
-    When I click People button in group conversation
-    And I click People button in group conversation
+    And I click back button on Group Participants popover
+    And I see user <Contact1> in verified section
     When I click on participant <Contact2> on Group Participants popover
     And I switch to Devices tab on Single User Profile popover
     And I click on device Device1 of user <Contact2> on Single User Profile popover
+    And I wait for 1 seconds
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
     Then I see device Device1 of user <Contact2> is verified on Single User Profile popover
     Then I do not see user verified icon on Single User Profile popover
+    And I click back button on Group Participants popover
+    And I do not see user <Contact2> in verified section
+    And I click on participant <Contact2> on Group Participants popover
+    And I switch to Devices tab on Single User Profile popover
     And I click on device Device2 of user <Contact2> on Single User Profile popover
+    And I wait for 1 seconds
     And I verify device on Device Detail popover
     And I click back button on the Device Detail popover
     Then I see device Device2 of user <Contact2> is verified on Single User Profile popover
     Then I see user verified icon on Single User Profile popover
-    When I click People button in group conversation
+    When I click back button on Group Participants popover
+    Then I see user <Contact2> in verified section
     # Not yet implemented on webapp:
     #And I see <ALL_VERIFIED> action in conversation
     #And I see verified icon in conversation
 
-  Examples:
-    | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | ALL_VERIFIED                  |
-    | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | All fingerprints are verified |
+    Examples:
+      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | ALL_VERIFIED                  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | All fingerprints are verified |
 
   @C12056 @mute
   Scenario Outline: Verify you get an alert if group conversation participant sends a message from non-verified device

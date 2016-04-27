@@ -107,6 +107,8 @@ public final class PopoverLocators {
 
 			public static final String xpathPageRootLocator = "//div[contains(@class, 'participants-group')]";
 
+			public static final String xpathVerifiedSection = "//*[@params='user: participants_verified, click: show_participant, mode: z.components.UserListMode.COMPACT']";
+
 			private static final String xpathHeaderDiv = xpathRootLocator
 					+ xpathPageRootLocator
 					+ "//div[contains(@class, 'participants-group-header')]";
@@ -126,6 +128,11 @@ public final class PopoverLocators {
 					name) -> String.format(
 					"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
 					xpathRootLocator + xpathPageRootLocator, name);
+
+			public static final Function<String, String> xPathVerifiedParticipant = (
+					name) -> String.format(
+					"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
+					xpathRootLocator + xpathVerifiedSection, name);
 
 			public static final String cssPeopleCount = ".participants-group-header .people";
 

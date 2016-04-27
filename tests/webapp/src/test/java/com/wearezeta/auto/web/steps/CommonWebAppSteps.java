@@ -601,7 +601,9 @@ public class CommonWebAppSteps {
     @Given("^(\\w+) waits? until (.*) exists in backend search results$")
     public void UserWaitsUntilContactExistsInHisSearchResults(
             String searchByNameAlias, String query) throws Exception {
+        startPinging();
         commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
+        stopPinging();
     }
 
     /**
@@ -615,8 +617,10 @@ public class CommonWebAppSteps {
     @Given("^(\\w+) waits? until (\\d+) people in backend top people results$")
     public void UserWaitsUntilContactExistsInTopPeopleResults(
             String searchByNameAlias, int size) throws Exception {
+        startPinging();
         commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
                 searchByNameAlias, size);
+        stopPinging();
     }
 
     /**

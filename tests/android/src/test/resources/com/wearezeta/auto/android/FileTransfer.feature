@@ -1,6 +1,6 @@
 Feature: File transfer
 
-  @staging @C87628
+  @C87628 @rc @regression
   Scenario Outline: Verify placeholder is shown for the sender
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -18,7 +18,7 @@ Feature: File transfer
       | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout |
       | user1Name | user2Name | qa_random | txt           | 9.00MB   | 20               |
 
-  @staging @C87636
+  @C87636 @rc @regression
   Scenario Outline: Verify warning is shown for file size more than 25Mb
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -35,7 +35,7 @@ Feature: File transfer
       | Name      | Contact1  | FileFullName  | FileSize | AlertMessage                   |
       | user1Name | user2Name | qa_random.txt | 26.00MB  | You can send files up to 25MB. |
 
-  @staging @C87629 @C87632
+  @C87629 @C87632 @rc @regression
   Scenario Outline: Verify placeholder is shown for the receiver
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -51,7 +51,7 @@ Feature: File transfer
       | Name      | Contact1  | FileName  | FileSize | FileExtension | MimeType   |
       | user1Name | user2Name | qa_random | 3.00MB   | txt           | text/plain |
 
-  @staging @C87639
+  @C87639 @rc @regression
   Scenario Outline: Verify retry sending a file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -97,7 +97,7 @@ Feature: File transfer
       | user1Name | user2Name | user3Name | qa_random | txt           | 24.00MB   |
 
 
-  @staging @C87635
+  @C87635 @rc @regression
   Scenario Outline: Verify downloading file by sender
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -118,8 +118,8 @@ Feature: File transfer
       | Name      | Contact1  | FileName | FileExtension | FileSize | UploadingTimeout | MIMEType  | DownloadTimeout | FileExactSize |
       | user1Name | user2Name | animated | gif           | 440KB    | 20               | image/gif | 10              | 451009B       |
 
-  @staging @C87634
-  Scenario Outline: Verify downloading file by receiver
+  @C87634 @rc @regression
+  Scenario Outline: (AN-3792) Verify downloading file by receiver
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -140,7 +140,7 @@ Feature: File transfer
       | Name      | Contact1  | FileName   | FileExtension | FileSize | MIMEType  | DownloadTimeout | FileExactSize | ReceivingTimeout |
       | user1Name | user2Name | avatarTest | png           | 5.68KB   | image/png | 10              | 5813B         | 60               |
 
-  @staging @C87638
+  @C87638 @rc @regression
   Scenario Outline: Verify canceling sending a file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

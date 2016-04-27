@@ -30,4 +30,8 @@ public class FirstTimeOverlay extends IOSPage {
             gotItButton.get().click();
         }
     }
+
+    public void accept() throws Exception {
+        getElement(nameOKButton).click();
+    }
 }

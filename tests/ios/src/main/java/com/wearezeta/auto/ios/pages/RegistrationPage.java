@@ -203,8 +203,7 @@ public class RegistrationPage extends IOSPage {
     }
 
     public boolean isInvalidCodeAlertShown() throws Exception {
-        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidCode);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidCode);
     }
 
     public void clickChooseOwnPicButton() throws Exception {

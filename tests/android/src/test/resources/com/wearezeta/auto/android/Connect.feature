@@ -419,7 +419,7 @@ Feature: Connect
       | Name      | Contact   | Message          | Picture     |
       | user1Name | user2Name | Hello my friend! | testing.jpg |
 
-  @C82540 @staging
+  @C82540 @regression
   Scenario Outline: Verify you cannot create a new group conversation with a person who blocked you
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
