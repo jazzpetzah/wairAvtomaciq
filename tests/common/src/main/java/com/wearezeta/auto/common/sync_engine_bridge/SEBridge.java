@@ -28,7 +28,7 @@ public class SEBridge {
         }
     }
 
-    public SEBridge() throws Exception {
+    private SEBridge() throws Exception {
         this.devicePool = new UserDevicePool(CommonUtils.getBackendType(CommonUtils.class),
                 CommonUtils.getOtrOnly(CommonUtils.class));
     }
