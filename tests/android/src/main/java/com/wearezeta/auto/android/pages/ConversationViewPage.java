@@ -289,6 +289,22 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorFile);
     }
 
+    public boolean isPingButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorPing);
+    }
+
+    public boolean isSketchButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorSketch);
+    }
+
+    public boolean isCameraButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorCamera);
+    }
+
+    public boolean isFileButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorFile);
+    }
+
     //endregion
 
     // NOTE: This method is required to scroll conversation to the end.

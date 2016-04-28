@@ -433,7 +433,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    Then I only see ping, sketch, camera and file buttons in cursor toolbar
+    Then I see ping, sketch, camera and file buttons in cursor toolbar
     And I see text input
 
     Examples:
@@ -460,6 +460,27 @@ Feature: Conversation View
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
+  @C111631 @staging
+  Scenario Outline: Verify cursor and toolbar are not shown on left/removed from conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <GroupChatName>
+    And I tap conversation name from top toolbar
+    And I press options menu button
+    And I press LEAVE conversation menu button
+    And I confirm leaving
+    And I see Contact list
+    And I open Search UI
+    And I enter "<GroupChatName>" into Search input on People Picker page
+    And I tap on group found on People picker page <GroupChatName>
+    Then I see the upper toolbar
+    And I do not see text input
+    And I do not see ping, sketch, camera and file buttons in cursor toolbar
 
-
-
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Name | user2Name | user3Name | LeaveGroupChat |
