@@ -350,3 +350,26 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @C9999 @staging
+  Scenario Outline: Verify conversation scrolls to first unread message while being online
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I open conversation with <Contact>
+    And Contact <Contact> sends 35 encrypted messages with prefix <READ> via device Device1 to user <Name>
+    Then I see text message <READ>34
+    When I open self profile
+    And Contact <Contact> sends 35 encrypted messages with prefix <UNREAD> via device Device1 to user <Name>
+    When I open conversation with <Contact>
+    Then I do not see text message <READ>34
+    And I do not see text message <READ>0
+    And I do not see text message <READ>34
+    And I see text message <UNREAD>0
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | READ | UNREAD |
+      | user1Email | user1Password | user1Name | user2Name | Read | Unread |

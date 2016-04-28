@@ -30,6 +30,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -149,7 +150,7 @@ public class ConversationPage extends WebPage {
 	private static List<String> getTextOfDisplayedElements(By locator,
 			WebDriver driver) throws Exception {
 		final List<WebElement> headers = driver.findElements(locator);
-		return headers.stream().filter(a -> a.isDisplayed())
+		return headers.stream().filter(a -> DriverUtils.isElementPresentAndDisplayed((RemoteWebDriver)driver, a))
 				.map(a -> a.getText().replace("\n", ""))
 				.collect(Collectors.toList());
 	}
