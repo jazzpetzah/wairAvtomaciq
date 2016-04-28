@@ -440,7 +440,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C111622 @C111623 @C111624 @staging
+  @C111622 @C111623 @C111624 @C111625 @staging
   Scenario Outline: Verify tooltip is shown in different condition
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -452,6 +452,7 @@ Feature: Conversation View
     Then I see tooltip of text input
     When I tap on text input
     Then I see tooltip of text input
+    And I see self avatar on text input
     When I type the message "<Message>"
     And I do not see tooltip of text input
 

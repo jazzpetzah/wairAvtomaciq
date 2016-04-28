@@ -929,4 +929,16 @@ public class ConversationViewPageSteps {
         }
     }
 
+    /**
+     * Check the self avatar on text input
+     *
+     * @throws Exception
+     * @step. ^I see self avatar on text input$
+     */
+    @Then("^I see self avatar on text input$")
+    public void ThenISeeSelfAvatarOnTextInput() throws Exception {
+        Assert.assertTrue("The self avatar should be visible on text input",
+                getConversationViewPage().isSelfAvatarOnTextInputVisible());
+    }
+
 }

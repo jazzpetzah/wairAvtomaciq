@@ -32,6 +32,8 @@ public class ConversationViewPage extends AndroidPage {
 
     public static final By idCursorView = By.id("cal__cursor");
 
+    public static final By idCursorSelfAvatar = By.id("civ__cursor__self_avatar");
+
     public static final String CURSOR_EDIT_TOOLTIP = "TYPE A MESSAGE";
 
     public static final By xpathCursorEditHint = By.xpath(
@@ -210,6 +212,10 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isTooltipOfTextInputInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathCursorEditHint);
+    }
+
+    public boolean isSelfAvatarOnTextInputVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorSelfAvatar);
     }
 
     public void tapOnTextInput() throws Exception {
