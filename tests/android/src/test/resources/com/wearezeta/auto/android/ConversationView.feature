@@ -460,7 +460,7 @@ Feature: Conversation View
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
-  @C111631 @staging
+  @C111631 @staging @C111634
   Scenario Outline: Verify cursor and toolbar are not shown on left/removed from conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -480,6 +480,9 @@ Feature: Conversation View
     Then I see the upper toolbar
     And I do not see text input
     And I do not see ping, sketch, camera and file buttons in cursor toolbar
+    When User <Contact1> adds user Myself to group chat <GroupChatName>
+    Then I see text input
+    And I see ping, sketch, camera and file buttons in cursor toolbar
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
