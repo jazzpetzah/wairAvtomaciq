@@ -857,12 +857,12 @@ public class ConversationViewPageSteps {
      */
     @Then("^I( do not)? see ping, sketch, add picture and file buttons in cursor toolbar")
     public void ThenIOnlySeePingSketchAddPictureFileButton(String doNotSee) throws Exception {
-        if(doNotSee == null) {
+        if (doNotSee == null) {
             Assert.assertTrue("Ping button should be visible in cursor menu", getConversationViewPage().isPingButtonVisible());
             Assert.assertTrue("Sketch button should be visible in cursor menu", getConversationViewPage().isSketchButtonVisible());
             Assert.assertTrue("Add picture button should be visible in cursor menu", getConversationViewPage().isAddPictureButtonVisible());
             Assert.assertTrue("File button should be visible in cursor menu", getConversationViewPage().isFileButtonVisible());
-        }else {
+        } else {
             Assert.assertTrue("Ping button should be invisible in cursor menu", getConversationViewPage().isPingButtonInvisible());
             Assert.assertTrue("Sketch button should be invisible in cursor menu", getConversationViewPage().isSketchButtonInvisible());
             Assert.assertTrue("Add picture button should be invisible in cursor menu", getConversationViewPage().isAddPictureButtonInvisible());
