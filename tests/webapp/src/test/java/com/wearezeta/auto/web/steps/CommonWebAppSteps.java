@@ -100,9 +100,9 @@ public class CommonWebAppSteps {
     private static final Runnable PINGER = new Runnable() {
         @Override
         public void run() {
-            for (Map.Entry<String, Future<ZetaWebAppDriver>> entry : webdrivers.entrySet()) {
+            for (Map.Entry<Platform, Future<? extends RemoteWebDriver>> entry : PlatformDrivers.getInstance().getDrivers().entrySet()) {
                 try {
-                    ZetaWebAppDriver driver = entry.getValue().get(1, TimeUnit.SECONDS);
+                    RemoteWebDriver driver = entry.getValue().get(1, TimeUnit.SECONDS);
                     log.debug(String.format("Pinging driver for \"%s\"",entry.getKey()));
                     driver.getPageSource();
                 } catch (InterruptedException | ExecutionException | TimeoutException ex) {
