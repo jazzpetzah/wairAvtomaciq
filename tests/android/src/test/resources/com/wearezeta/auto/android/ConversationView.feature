@@ -487,3 +487,22 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
+
+  @C111635 @staging
+  Scenario Outline: Verify the cursor is not shown on the new device after you leave the group from another device
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Myself leave group chat <GroupChatName>
+    Given Myself is unarchived group chat <GroupChatName>
+    When I sign in using my email or phone number
+    And I accept First Time overlay as soon as it is visible
+    And I see Contact list with contacts
+    And I tap on contact name <GroupChatName>
+    Then I do not see text input
+    And I do not see ping, sketch, add picture and file buttons in cursor toolbar
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Name | user2Name | user3Name | LeaveGroupChat |
+
