@@ -361,14 +361,14 @@ Feature: Conversation View
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And Contact <Contact> sends 35 encrypted messages with prefix <READ> via device Device1 to user <Name>
-    Then I see text message <READ>34
+    Then I see text message <READ>34 in view port
     When I open self profile
     And Contact <Contact> sends 35 encrypted messages with prefix <UNREAD> via device Device1 to user <Name>
     When I open conversation with <Contact>
-    Then I do not see text message <READ>34
-    And I do not see text message <READ>0
-    And I do not see text message <READ>34
-    And I see text message <UNREAD>0
+    Then I do not see text message <READ>34 in view port
+    And I do not see text message <READ>0 in view port
+    And I do not see text message <READ>34 in view port
+    And I see text message <UNREAD>0 in view port
 
     Examples: 
       | Login      | Password      | Name      | Contact   | READ | UNREAD |

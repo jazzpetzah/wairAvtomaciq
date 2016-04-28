@@ -30,6 +30,9 @@ import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ConversationPageSteps {
 
@@ -561,7 +564,19 @@ public class ConversationPageSteps {
      */
     @Then("^I see text message (.*)")
     public void ISeeTextMessage(String message) throws Exception {
-        webappPagesCollection.getPage(ConversationPage.class).waitForMessageContains(message);
+        webappPagesCollection.getPage(ConversationPage.class).waitForPresentMessageContains(message);
+    }
+    
+    /**
+     * Verify a text message is visible in conversation.
+     *
+     * @param message
+     * @throws Exception
+     * @step. ^I see text message (.*)
+     */
+    @Then("^I see text message (.*) in view port")
+    public void ISeeTextMessageInViewPort(String message) throws Exception {
+        webappPagesCollection.getPage(ConversationPage.class).waitForDisplayedMessageContains(message);
     }
 
     private static String expandPattern(final String originalStr) {
