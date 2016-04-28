@@ -351,7 +351,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C9999 @regression
+  @C111934 @regression
   Scenario Outline: Verify conversation scrolls to first unread message while being online
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
