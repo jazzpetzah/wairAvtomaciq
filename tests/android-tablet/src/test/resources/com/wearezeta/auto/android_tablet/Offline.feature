@@ -43,7 +43,7 @@ Feature: Offline Mode
     Then I see the message "<Message>" in the conversation view
     And I see unsent indicator next to the message "<Message>" in the conversation view
     When I hide keyboard
-    And I tap Camera button from cursor toolbar
+    And I tap Add picture button from cursor toolbar
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view

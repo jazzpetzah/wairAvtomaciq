@@ -255,8 +255,8 @@ public class ConversationViewPage extends AndroidPage {
         }
     }
 
-    public void tapCameraBtn() throws Exception {
-        getElement(idCursorCamera, "Camera button is not visible").click();
+    public void tapAddPictureBtn() throws Exception {
+        getElement(idCursorCamera, "Add picture button is not visible").click();
     }
 
     public void tapPingBtn() throws Exception {
@@ -281,7 +281,7 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorSketch);
     }
 
-    public boolean isCameraButtonVisible() throws Exception {
+    public boolean isAddPictureButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorCamera);
     }
 
@@ -297,7 +297,7 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorSketch);
     }
 
-    public boolean isCameraButtonInvisible() throws Exception {
+    public boolean isAddPictureButtonInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorCamera);
     }
 

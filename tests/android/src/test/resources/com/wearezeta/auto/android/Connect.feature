@@ -179,7 +179,7 @@ Feature: Connect
     And I press Clear button
     Then I tap on contact name <Contact>
     And I see that connection is pending
-    And I do not see ping, sketch, camera and file buttons in cursor toolbar
+    And I do not see ping, sketch, add picture and file buttons in cursor toolbar
     And I do not see text input
 
     Examples:

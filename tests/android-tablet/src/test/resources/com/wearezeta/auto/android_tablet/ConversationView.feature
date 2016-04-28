@@ -46,7 +46,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    When I tap Camera button from cursor toolbar
+    When I tap Add picture button from cursor toolbar
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
@@ -64,7 +64,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    When I tap Camera button from cursor toolbar
+    When I tap Add picture button from cursor toolbar
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
@@ -222,7 +222,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
-    When I tap Camera button from cursor toolbar
+    When I tap Add picture button from cursor toolbar
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
@@ -241,7 +241,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
-    When I tap Camera button from cursor toolbar
+    When I tap Add picture button from cursor toolbar
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
@@ -259,7 +259,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    When I tap Camera button from cursor toolbar
+    When I tap Add picture button from cursor toolbar
     And I tap Gallery button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
@@ -277,7 +277,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    When I tap Camera button from cursor toolbar
+    When I tap Add picture button from cursor toolbar
     And I tap Gallery button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
@@ -356,7 +356,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact1>
-    When I tap Camera button from cursor toolbar
+    When I tap Add picture button from cursor toolbar
     And I tap Gallery button in the conversation view
     And I tap Sketch button on the picture preview
     And I draw a sketch with <NumColors> colors on Sketch page

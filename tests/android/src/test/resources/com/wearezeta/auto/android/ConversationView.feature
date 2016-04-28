@@ -64,7 +64,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I tap Camera button from cursor toolbar
+    And I tap Add picture button from cursor toolbar
     And I press "Take Photo" button
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -186,7 +186,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I tap Camera button from cursor toolbar
+    And I tap Add picture button from cursor toolbar
     And I press "Gallery" button
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -203,7 +203,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I tap Camera button from cursor toolbar
+    And I tap Add picture button from cursor toolbar
     And I press "Gallery" button
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -247,7 +247,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap Camera button from cursor toolbar
+    And I tap Add picture button from cursor toolbar
     And I press "Gallery" button
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
@@ -266,7 +266,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap Camera button from cursor toolbar
+    And I tap Add picture button from cursor toolbar
     And I press "Take Photo" button
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
@@ -324,7 +324,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I tap Camera button from cursor toolbar
+    And I tap Add picture button from cursor toolbar
     And I press "Switch Camera" button
     And I press "Take Photo" button
     And I press "Confirm" button
@@ -433,14 +433,14 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    Then I see ping, sketch, camera and file buttons in cursor toolbar
+    Then I see ping, sketch, add picture and file buttons in cursor toolbar
     And I see text input
 
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C111622 @C111623 @C111624 @C111625 @staging
+  @C111622 @staging
   Scenario Outline: Verify tooltip is shown in different condition
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -479,10 +479,10 @@ Feature: Conversation View
     And I tap on group found on People picker page <GroupChatName>
     Then I see the upper toolbar
     And I do not see text input
-    And I do not see ping, sketch, camera and file buttons in cursor toolbar
+    And I do not see ping, sketch, add picture and file buttons in cursor toolbar
     When User <Contact1> adds user Myself to group chat <GroupChatName>
     Then I see text input
-    And I see ping, sketch, camera and file buttons in cursor toolbar
+    And I see ping, sketch, add picture and file buttons in cursor toolbar
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
