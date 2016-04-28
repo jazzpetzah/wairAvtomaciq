@@ -50,17 +50,6 @@ public class SettingsPageSteps {
     }
 
     /**
-     * Apply current settings and close the view
-     *
-     * @throws Exception
-     * @step. ^I accept current settings$
-     */
-    @And("^I accept current settings$")
-    public void IAcceptCurrentSettings() throws Exception {
-        getSettingsPage().apply();
-    }
-
-    /**
      * Tap back button on settings page
      *
      * @throws Exception

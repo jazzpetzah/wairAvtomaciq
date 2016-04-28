@@ -1191,6 +1191,32 @@ public class CommonAndroidSteps {
                 mimeType, deviceName, isGroup);
     }
 
+
+    /**
+     * Send a local file from SE
+     *
+     * @param contact      user name/alias
+     * @param fileFullName the name of an existing file
+     * @param mimeType     MIME type of the file, for example text/plain. Check
+     *                     http://www.freeformatter.com/mime-types-list.html to get the full list of available MIME
+     *                     types
+     * @param convoType    either 'single user' or 'group'
+     * @param dstConvoName conversation name
+     * @param deviceName   the name of user device. The device will be created automatically if it does not exist yet
+     * @throws Exception
+     * @step. ^(.*) sends local file named "(.*)" and MIME type "(.*)" via device (.*) to (user|group conversation) (.*)$
+     */
+    @When("^(.*) sends local file named \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
+    public void ContactSendsXLocalFileFromSE(String contact,  String fileFullName, String mimeType,
+                                        String deviceName, String convoType, String dstConvoName) throws Exception {
+        String basePath = AndroidCommonUtils.getImagesPath(AndroidCommonUtils.class);
+        String sourceFilePath = basePath + File.separator + fileFullName;
+
+        boolean isGroup = convoType.equals("group conversation");
+        commonSteps.UserSentFileToConversation(contact, dstConvoName, sourceFilePath,
+                mimeType, deviceName, isGroup);
+    }
+
     /**
      * Verify the downloaded file are saved correctly
      *

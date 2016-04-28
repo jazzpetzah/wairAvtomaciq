@@ -304,7 +304,9 @@ public class CommonWebAppSteps {
     @Given("^(\\w+) waits? until (.*) exists in backend search results$")
     public void UserWaitsUntilContactExistsInHisSearchResults(
             String searchByNameAlias, String query) throws Exception {
+        context.startPinging();
         context.getCommonSteps().WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
+        context.stopPinging();
     }
 
     /**
@@ -318,8 +320,9 @@ public class CommonWebAppSteps {
     @Given("^(\\w+) waits? until (\\d+) people in backend top people results$")
     public void UserWaitsUntilContactExistsInTopPeopleResults(
             String searchByNameAlias, int size) throws Exception {
-        context.getCommonSteps().WaitUntilTopPeopleContactsIsFoundInSearch(
-                searchByNameAlias, size);
+        context.startPinging();
+        context.getCommonSteps().WaitUntilTopPeopleContactsIsFoundInSearch(searchByNameAlias, size);
+        context.stopPinging();
     }
 
     /**

@@ -30,6 +30,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -145,11 +146,19 @@ public class ConversationPage extends WebPage {
 				locator);
 		return actionElements.get(actionElements.size() - 1).getText();
 	}
+        
+        private static List<String> getTextOfPresentElements(By locator,
+			WebDriver driver) throws Exception {
+		final List<WebElement> headers = driver.findElements(locator);
+		return headers.stream().filter(a -> a.isDisplayed())
+				.map(a -> a.getText().replace("\n", ""))
+				.collect(Collectors.toList());
+	}
 
 	private static List<String> getTextOfDisplayedElements(By locator,
 			WebDriver driver) throws Exception {
 		final List<WebElement> headers = driver.findElements(locator);
-		return headers.stream().filter(a -> a.isDisplayed())
+		return headers.stream().filter(a -> DriverUtils.isElementPresentAndDisplayed((RemoteWebDriver)driver, a))
 				.map(a -> a.getText().replace("\n", ""))
 				.collect(Collectors.toList());
 	}
@@ -178,11 +187,15 @@ public class ConversationPage extends WebPage {
 		wait.until(visibilityOfTextInElementsLocated(locator, parts));
 	}
 
-	public boolean waitForMessageContains(String text) throws Exception {
-		final By locator = By
-				.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
-		WebDriverWait wait = new WebDriverWait(getDriver(),
-				DriverUtils.getDefaultLookupTimeoutSeconds());
+	public boolean waitForPresentMessageContains(String text) throws Exception {
+		final By locator = By.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
+		WebDriverWait wait = new WebDriverWait(getDriver(), DriverUtils.getDefaultLookupTimeoutSeconds());
+		return wait.until(presenceOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
+	}
+        
+        public boolean waitForDisplayedMessageContains(String text) throws Exception {
+		final By locator = By.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
+		WebDriverWait wait = new WebDriverWait(getDriver(), DriverUtils.getDefaultLookupTimeoutSeconds());
 		return wait.until(visibilityOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
 	}
 
@@ -218,6 +231,45 @@ public class ConversationPage extends WebPage {
 			public Boolean apply(WebDriver driver) {
 				try {
 					lastElements = getTextOfDisplayedElements(locator, driver);
+					for (String element : lastElements) {
+						if (containsAllCaseInsensitive(element, expectedTexts)) {
+							return true;
+						}
+					}
+					return false;
+				} catch (Exception e) {
+					return false;
+				}
+			}
+
+			@Override
+			public String toString() {
+				return "visibility of text '" + expectedTexts
+						+ "' in elements " + lastElements + " located by "
+						+ locator;
+			}
+		};
+	}
+        
+        /**
+	 * An expectation for checking that a system message is present in the dom that
+	 * contains all strings of the expected strings.
+	 *
+	 * @param locator
+	 *            used to find the element
+	 * @param expectedTexts
+	 *            the strings that should be found in a certain system message
+	 * @return returns true if found
+	 */
+	public static ExpectedCondition<Boolean> presenceOfTextInElementsLocated(
+			final By locator, final Set<String> expectedTexts) {
+		return new ExpectedCondition<Boolean>() {
+			List<String> lastElements = new ArrayList<String>();
+
+			@Override
+			public Boolean apply(WebDriver driver) {
+				try {
+					lastElements = getTextOfPresentElements(locator, driver);
 					for (String element : lastElements) {
 						if (containsAllCaseInsensitive(element, expectedTexts)) {
 							return true;
@@ -735,5 +787,10 @@ public class ConversationPage extends WebPage {
 	public boolean waitUntilFileUploaded(String fileName) throws Exception {
 		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileStatus, fileName));
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, TIMEOUT_FILE_UPLOAD);
+	}
+
+	public void downloadFile(String fileName) throws Exception {
+		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileDownload, fileName));
+		getDriver().findElement(locator).click();
 	}
 }

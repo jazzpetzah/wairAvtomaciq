@@ -1,6 +1,6 @@
 Feature: File Transfer
 
-  @C82524 @staging
+  @C82524 @regression
   Scenario Outline: Verify placeholder is shown for the receiver
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -16,7 +16,7 @@ Feature: File Transfer
       | Name      | Contact   | FileName | FileExt | FileSize | FileMIME   | ContactDevice | Timeout |
       | user1Name | user2Name | testing  | jpg     | 240 KB   | image/jpeg | device1       | 20      |
 
-  @C82517 @staging
+  @C82517 @regression
   Scenario Outline: Verify file transfer icon exists in cursor area in 1-to-1 and group conversations
     Given There are <UsersAmount> users where <Name> is me
     Given Myself is connected to all other
@@ -35,7 +35,7 @@ Feature: File Transfer
       | Name      | Contact   | GroupChatName | UsersAmount |
       | user1Name | user2Name | GroupChat     | 3           |
 
-  @C82518 @staging
+  @C82518 @regression
   Scenario Outline: Verify placeholder is shown for the sender
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -48,10 +48,10 @@ Feature: File Transfer
     Then I see file transfer placeholder
 
     Examples:
-      | Name      | Contact   | ItemName    |
-      | user1Name | user2Name | DEFAULT_PNG |
+      | Name      | Contact   | ItemName                   |
+      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C82529 @staging
+  @C82529 @regression
   Scenario Outline: Verify not supported file has no preview and share menu is opened
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -69,7 +69,7 @@ Feature: File Transfer
       | Name      | Contact1  | Contact2  | GroupChatName | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | Timeout |
       | user1Name | user2Name | user3Name | FTransfer     | testing  | tmp     | 240 KB   | application/octet-stream | device1       | 20      |
 
-  @С95960 @staging
+  @C95960 @regression
   Scenario Outline: Verify sending file in the empty conversation and text after it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -84,10 +84,10 @@ Feature: File Transfer
     Then I see 1 default message in the dialog
 
     Examples:
-      | Name      | Contact   | ItemName    |
-      | user1Name | user2Name | DEFAULT_PNG |
+      | Name      | Contact   | ItemName                   |
+      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C82523 @staging @noAcceptAlert
+  @C82523 @regression @noAcceptAlert
   Scenario Outline: Verify notification is shown if file size is more than 25 MB
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -104,3 +104,35 @@ Feature: File Transfer
     Examples:
       | Name      | Contact   | ItemName | ExpectedAlertText        |
       | user1Name | user2Name | TOO_BIG  | You can send files up to |
+
+  @C82525 @staging
+  Scenario Outline: Verify downloading file by sender
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I click plus button next to text input
+    And I tap Add Picture button from input tools
+    And I press Camera Roll button
+    And I select Camera Roll view
+    Then I remember the count of images in gallery
+    When I tap Cancel button
+    And I tap Close camera button
+    And I click plus button next to text input
+    And I tap File Transfer button from input tools
+    And I tap file transfer menu item <ItemName>
+    And I wait up to <Timeout> seconds until the file is uploaded
+    And I tap file transfer placeholder
+    And I tap Share button on file preview page
+    And I tap Save Image share menu item
+    And I tap Done button
+    And I click plus button next to text input
+    And I tap Add Picture button from input tools
+    And I press Camera Roll button
+    And I select Camera Roll view
+    Then I see the count of images in gallery has been increased by 1
+
+    Examples:
+      | Name      | Contact   | ItemName                   | Timeout |
+      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG | 60      |

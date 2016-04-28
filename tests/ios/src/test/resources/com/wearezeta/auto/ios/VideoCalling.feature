@@ -246,3 +246,38 @@ Feature: Video Calling
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
+
+  @C48232 @staging
+  Scenario Outline: Verify starting two video calls in a row
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I tap Video Call button
+    Then I see call status message contains "<Contact> ringing"
+    When I tap Leave button on Video Calling overlay
+    And I see missed call from contact YOU
+    And I tap Video Call button
+    Then I see call status message contains "<Contact> ringing"
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C48235 @staging
+  Scenario Outline: Verify making audio call after cancelled video call
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I tap Video Call button
+    Then I see call status message contains "<Contact> ringing"
+    When I tap Leave button on Video Calling overlay
+    And I tap Audio Call button
+    Then I see Calling overlay
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |

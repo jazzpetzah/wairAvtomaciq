@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
-import io.appium.java_client.android.AndroidDriver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -52,17 +51,13 @@ public class DriverUtils {
     public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver, final WebElement element) {
         try {
             final boolean result = element.isDisplayed();
-            if (driver instanceof AndroidDriver) {
                 return result && isElementInScreenRect(driver, element);
-            } else {
-                return result;
-            }
         } catch (NoSuchElementException e) {
             return false;
         }
     }
 
-    private static boolean isElementInScreenRect(RemoteWebDriver driver, final WebElement el) {
+    private static boolean isElementInScreenRect(WebDriver driver, final WebElement el) {
         final Rectangle elementRect = new Rectangle(el.getLocation().x, el.getLocation().y,
                 el.getSize().width, el.getSize().height);
         final Dimension dim = driver.manage().window().getSize();

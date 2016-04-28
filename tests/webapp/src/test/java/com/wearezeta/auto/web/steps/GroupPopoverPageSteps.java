@@ -378,6 +378,30 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
+	 * Verifies that contact is displayed in the verified section
+	 *
+	 * @param contactsAliases
+	 * @param donot
+	 * @throws Exception
+	 * @step. ^I( do not)? see (.*) in verified section$
+	 */
+	@When("^I( do not)? see user (.*) in verified section$")
+	public void ISeeUserInVerifiedSection(String donot, String contactsAliases) throws Exception {
+		List<String> contacts = CommonSteps.splitAliases(contactsAliases);
+		for (String contact : contacts) {
+			contact = context.getUserManager().replaceAliasesOccurences(contact,
+					FindBy.NAME_ALIAS);
+			if (donot == null) {
+				Assert.assertTrue(context.getPagesCollection().getPage(
+						GroupPopoverContainer.class).isParticipantVerified(contact));
+			} else {
+				Assert.assertFalse(context.getPagesCollection().getPage(
+						GroupPopoverContainer.class).isParticipantVerified(contact));
+			}
+		}
+	}
+
+	/**
 	 * Set new title for conversation on Group Participants popover
 	 *
 	 * @step. I change group conversation title to (.*) on Group Participants

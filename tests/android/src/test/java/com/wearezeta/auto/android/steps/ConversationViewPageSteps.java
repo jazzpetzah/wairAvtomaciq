@@ -34,6 +34,7 @@ public class ConversationViewPageSteps {
     private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
     private static final int TOP_TOOLBAR_STATE_CHANGE_TIMEOUT = 15;
     private static final double TOP_TOOLBAR_MIN_SIMILARITY_SCORE = 0.97;
+    private static final double FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE = 0.4;
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final ElementState mediaButtonState = new ElementState(
@@ -44,6 +45,8 @@ public class ConversationViewPageSteps {
             () -> getConversationViewPage().getShieldStateScreenshot());
     private final ElementState topToolbarState = new ElementState(
             () -> getConversationViewPage().getTopToolbarState());
+    private final ElementState filePlaceHolderActionButtonState = new ElementState(
+            () -> getConversationViewPage().getFilePlaceholderActionButtonState());
     private Boolean wasShieldVisible = null;
 
     private static String expandMessage(String message) {
@@ -299,7 +302,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see Ping message (.*) in the dialog$")
     public void ThenISeePingMessageInTheDialog(String message) throws Exception {
-        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
+        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS).toUpperCase();
         Assert.assertTrue(String.format("Ping message '%s' is not visible after the timeout", message),
                 getConversationViewPage().waitForPingMessageWithText(message));
     }
@@ -425,7 +428,7 @@ public class ConversationViewPageSteps {
             participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias).getName());
         }
         Assert.assertTrue(String.format("Group chat view with names %s is not visible", participantNames),
-                getConversationViewPage().isConversationMessageContainsNames(participantNames));
+                getConversationViewPage().isConversationPeopleChangedMessageContainsNames(participantNames));
     }
 
     /**
@@ -438,7 +441,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see message (.*) contact (.*) on group page$")
     public void ThenISeeMessageContactOnGroupPage(String message, String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName().toUpperCase();
+        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         final String expectedMsg = message + " " + contact;
         Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", expectedMsg),
                 getConversationViewPage().waitForPeopleMessage(expectedMsg));
@@ -525,6 +528,31 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Store the screenshot of current file placeholder action button
+     *
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder is changed$
+     */
+    @When("^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder$")
+    public void IRememberFileTransferActionBtnState() throws Exception {
+        filePlaceHolderActionButtonState.remember();
+    }
+
+    /**
+     * Wait to check whether the file placeholder action button is changed
+     *
+     * @param timeout
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder is changed$
+     */
+    @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder is changed$")
+    public void IWaitFileTransferActionButtonChanged(int timeout) throws Exception {
+        Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
+                timeout),
+                filePlaceHolderActionButtonState.isChanged(timeout, FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
+    }
+
+    /**
      * Tap back arrow button in upper toolbar
      *
      * @throws Exception
@@ -555,7 +583,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I tap (?:Retry|Download|View) button on (?:upload|download) file placeholder$
      */
-    @When("^I tap (?:Retry|Download|View) button on file (?:upload|download) placeholder$")
+    @When("^I tap (?:Retry|Download|View|Cancel) button on file (?:upload|download) placeholder$")
     public void ITapOnFileActionButton() throws Exception {
         getConversationViewPage().tapFileActionButton();
     }
@@ -864,8 +892,9 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Check the expected placehoder is visible
+     * Check whether the file transfer placeholder of expected filew is visible
      *
+     * @param doNotSee      equal null means should see the place holder
      * @param size          the expected size displayed, value should be good formatted, such as 3.00MB rather than 3MB
      * @param loadDirection could be upload or received
      * @param fileFullName  the expected file name displayed
@@ -873,17 +902,25 @@ public class ConversationViewPageSteps {
      * @param timeout       (optional) to define the validation should be complete within timeout
      * @param actionFailed  equals null means current action successfully
      * @throws Exception
-     * @step. ^I see the result of (.*) file (upload|received)?( failed)? having name "(.*)" and extension "(\w+)"( in \d+ seconds)?$
+     * @step. ^I( do not)? see the result of (.*) file (upload|received)?( failed)? having name "(.*)" and extension "(\w+)"( in \d+ seconds)?$
      */
-    @Then("^I see the result of (.*) file (upload|received)? having name \"(.*)\" and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
-    public void ThenISeeTheResultOfXFileUpload(String size, String loadDirection, String fileFullName,
+    @Then("^I( do not)? see the result of (.*) file (upload|received)? having name \"(.*)\" and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
+    public void ThenISeeTheResultOfXFileUpload(String doNotSee, String size, String loadDirection, String fileFullName,
                                                String extension, String timeout, String actionFailed) throws Exception {
         int lookUpTimeoutSeconds = (timeout == null) ? DriverUtils.getDefaultLookupTimeoutSeconds()
                 : Integer.parseInt(timeout.replaceAll("[\\D]", ""));
         boolean isUpload = loadDirection.equals("upload");
         boolean isSuccess = (actionFailed == null);
-        Assert.assertTrue("The placeholder of sending file should be visible",
-                getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload,
-                        isSuccess, lookUpTimeoutSeconds));
+        if(doNotSee == null) {
+            Assert.assertTrue("The placeholder of sending file should be visible",
+                    getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload,
+                            isSuccess, lookUpTimeoutSeconds));
+        }else {
+            Assert.assertTrue("The placeholder of sending file should be invisible",
+                    getConversationViewPage().isFilePlaceHolderInvisible(fileFullName, size, extension, isUpload,
+                            isSuccess, lookUpTimeoutSeconds));
+        }
+
     }
+
 }

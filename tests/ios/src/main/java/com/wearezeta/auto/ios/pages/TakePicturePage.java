@@ -21,7 +21,7 @@ public class TakePicturePage extends IOSPage {
 
     private static final By nameCameraShutterButton = MobileBy.AccessibilityId("cameraShutterButton");
 
-    // private static final By nameCameraCloseButton = MobileBy.AccessibilityId("cameraCloseButton");
+    private static final By nameCameraCloseButton = MobileBy.AccessibilityId("cameraCloseButton");
 
     private static final By xpathCameraLibraryFirstFolder = By.xpath("(//UIATableView)[last()]/UIATableCell");
 
@@ -32,6 +32,10 @@ public class TakePicturePage extends IOSPage {
     private static final By nameCameraButton = MobileBy.AccessibilityId("cameraButton");
 
     private static final By nameToggleCameraButton = MobileBy.AccessibilityId("toggleCameraButton");
+
+    private static final By xpathImageInGalleryCell = By.xpath("//UIACollectionCell");
+
+    private static final By nameCamerRollView = MobileBy.AccessibilityId("Camera Roll");
 
     public TakePicturePage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -82,5 +86,17 @@ public class TakePicturePage extends IOSPage {
 
     public void tapToggleCameraButton() throws Exception {
         getElement(nameToggleCameraButton).click();
+    }
+
+    public int getImageInGalleryCount() throws Exception {
+        return getElements(xpathImageInGalleryCell).size();
+    }
+
+    public void clickCloseCameraButton() throws Exception {
+        getElement(nameCameraCloseButton).click();
+    }
+
+    public void clickCamerRollView() throws Exception {
+        getElement(nameCamerRollView).click();
     }
 }

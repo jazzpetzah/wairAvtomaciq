@@ -318,3 +318,23 @@ Feature: Calling Matrix
       | user1Name | user2Name | firefox:45.0.1      | 20      |
       # Due to not working firefox
       #| user1Name | user2Name | firefox:44.0.2      | 20      |
+
+  @calling_matrix
+  Scenario Outline: Answer 1-to-1 call <CallBackend> from GCM
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I lock the device
+    And <Contact> calls me
+    And I swipe to accept the call
+    Then I see ongoing call
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+
+    Examples:
+      | Name      | Contact   | CallBackend     | Timeout |
+      | user1Name | user2Name | autocall:2.2.38 | 20      |
+      | user1Name | user2Name | autocall:2.2.46 | 20      |
