@@ -191,6 +191,14 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorView);
     }
 
+    public boolean isTextInputVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorEditText);
+    }
+
+    public boolean isTextInputInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorEditText);
+    }
+
     public void tapOnTextInput() throws Exception {
         getElement(idCursorEditText).click();
     }

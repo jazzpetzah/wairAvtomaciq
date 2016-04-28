@@ -425,7 +425,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |  Message1 | Message2 |
       | user1Name | user2Name | user3Name |  Msg1     | Msg2     |
 
-  @C77966 @regression @C87626 @rc @rc42
+  @C77966 @regression @C87626 @rc @rc42 @C111617
   Scenario Outline: Verify there are no video and audio calling icons under the + button bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -434,9 +434,9 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     Then I only see ping, sketch, camera and file buttons in cursor toolbar
+    And I see text input
 
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
-
 

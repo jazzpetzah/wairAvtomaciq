@@ -894,4 +894,21 @@ public class ConversationViewPageSteps {
 
     }
 
+    /**
+     * Check whether the text input is visible
+     *
+     * @param doNotSee equals null means should the text input should be visible
+     * @throws Exception
+     * @step. ^I( do not)? see text input$
+     */
+    @Then("^I( do not)? see text input$")
+    public void ThenISeeTextInput(String doNotSee) throws Exception {
+        if(doNotSee == null){
+            Assert.assertTrue("The text input should be visible", getConversationViewPage().isTextInputVisible());
+        }else
+        {
+            Assert.assertTrue("The text input should be invisible", getConversationViewPage().isTextInputInvisible());
+        }
+    }
+
 }
