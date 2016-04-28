@@ -564,6 +564,7 @@ public class ConversationPageSteps {
      */
     @Then("^I see text message (.*)")
     public void ISeeTextMessage(String message) throws Exception {
+        System.out.println(message);
         webappPagesCollection.getPage(ConversationPage.class).waitForPresentMessageContains(message);
     }
     
@@ -572,10 +573,11 @@ public class ConversationPageSteps {
      *
      * @param message
      * @throws Exception
-     * @step. ^I see text message (.*)
+     * @step. ^I really see text message (.*)
      */
-    @Then("^I see text message (.*) in view port")
+    @Then("^I really see text message (.*)")
     public void ISeeTextMessageInViewPort(String message) throws Exception {
+        System.out.println(message);
         webappPagesCollection.getPage(ConversationPage.class).waitForDisplayedMessageContains(message);
     }
 

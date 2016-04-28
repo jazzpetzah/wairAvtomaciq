@@ -188,18 +188,14 @@ public class ConversationPage extends WebPage {
 	}
 
 	public boolean waitForPresentMessageContains(String text) throws Exception {
-		final By locator = By
-				.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
-		WebDriverWait wait = new WebDriverWait(getDriver(),
-				DriverUtils.getDefaultLookupTimeoutSeconds());
+		final By locator = By.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
+		WebDriverWait wait = new WebDriverWait(getDriver(), DriverUtils.getDefaultLookupTimeoutSeconds());
 		return wait.until(presenceOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
 	}
         
         public boolean waitForDisplayedMessageContains(String text) throws Exception {
-		final By locator = By
-				.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
-		WebDriverWait wait = new WebDriverWait(getDriver(),
-				DriverUtils.getDefaultLookupTimeoutSeconds());
+		final By locator = By.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
+		WebDriverWait wait = new WebDriverWait(getDriver(), DriverUtils.getDefaultLookupTimeoutSeconds());
 		return wait.until(visibilityOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
 	}
 

@@ -351,7 +351,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C9999 @staging
+  @C9999 @regression
   Scenario Outline: Verify conversation scrolls to first unread message while being online
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -361,14 +361,14 @@ Feature: Conversation View
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And Contact <Contact> sends 35 encrypted messages with prefix <READ> via device Device1 to user <Name>
-    Then I see text message <READ>34 in view port
+    Then I really see text message <READ>34
     When I open self profile
     And Contact <Contact> sends 35 encrypted messages with prefix <UNREAD> via device Device1 to user <Name>
     When I open conversation with <Contact>
-    Then I do not see text message <READ>34 in view port
-    And I do not see text message <READ>0 in view port
-    And I do not see text message <READ>34 in view port
-    And I see text message <UNREAD>0 in view port
+    Then I do not see text message <READ>34
+    And I do not see text message <READ>0
+    And I do not see text message <READ>34
+    And I really see text message <UNREAD>0
 
     Examples: 
       | Login      | Password      | Name      | Contact   | READ | UNREAD |
