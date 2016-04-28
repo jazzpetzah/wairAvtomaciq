@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Spliterator;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -26,8 +27,9 @@ public class JavaSeeker {
     public static Collection<Class> getClasses(final String pack) throws IOException {
         final StandardJavaFileManager fileManager = ToolProvider.getSystemJavaCompiler().
                 getStandardFileManager(null, null, null);
-        return StreamSupport.stream(fileManager.list(StandardLocation.CLASS_PATH, pack, Collections.singleton(
-                JavaFileObject.Kind.CLASS), true).spliterator(), false)
+        final Spliterator<JavaFileObject> classesSpliterator = fileManager.list(StandardLocation.CLASS_PATH, pack, Collections.
+                singleton(JavaFileObject.Kind.CLASS), true).spliterator();
+        return StreamSupport.stream(classesSpliterator, false)
                 .map(javaFileObject -> {
                     try {
                         final String packagePath = pack.
@@ -51,11 +53,10 @@ public class JavaSeeker {
     public static Collection<File> getResource(final String pack, String extension) throws IOException {
         final StandardJavaFileManager fileManager = ToolProvider.getSystemJavaCompiler().
                 getStandardFileManager(null, null, null);
-        return StreamSupport.stream(fileManager.list(StandardLocation.CLASS_PATH, pack, Collections.singleton(
-                JavaFileObject.Kind.OTHER), true).spliterator(), false)
-                .map(javaFileObject -> {
-                    return new File(javaFileObject.getName());
-                })
+        final Spliterator<JavaFileObject> resourcesSpliterator = fileManager.list(StandardLocation.CLASS_PATH, pack,
+                Collections.singleton(JavaFileObject.Kind.OTHER), true).spliterator();
+        return StreamSupport.stream(resourcesSpliterator, false)
+                .map(javaFileObject -> new File(javaFileObject.getName()))
                 .filter((file) -> getFileExtension(file.getName()).equalsIgnoreCase(extension))
                 .collect(Collectors.toList());
     }
@@ -67,8 +68,7 @@ public class JavaSeeker {
         while (classLoaderClass != java.lang.ClassLoader.class) {
             classLoaderClass = classLoaderClass.getSuperclass();
         }
-        Field classLoaderClassesField = classLoaderClass
-                .getDeclaredField(CLASS_LOADER_CLASSES_FIELD_NAME);
+        Field classLoaderClassesField = classLoaderClass.getDeclaredField(CLASS_LOADER_CLASSES_FIELD_NAME);
         classLoaderClassesField.setAccessible(true);
         ArrayList<Class<?>> classesList = new ArrayList((List) classLoaderClassesField.get(classLoader));
         return classesList;

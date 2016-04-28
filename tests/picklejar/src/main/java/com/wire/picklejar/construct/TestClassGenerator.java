@@ -5,6 +5,7 @@ import com.wire.picklejar.PickleJar;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticListener;
 import javax.tools.JavaCompiler;
@@ -126,14 +128,12 @@ public class TestClassGenerator {
     }
 
     public List<TestCase> generateTestCases() throws IOException {
-        List<TestCase> testObjects = new ArrayList<>();
         Collection<Object[]> testcases = PickleJar.getTestcases();
-        String template = new String(Files.readAllBytes(Paths.get(TEST_TEMPLATE_LOCATION + TEST_TEMPLATE_NAME)));
+        String template = new String(Files.readAllBytes(Paths.get(TEST_TEMPLATE_LOCATION + TEST_TEMPLATE_NAME)), StandardCharsets.UTF_8);
 
-        for (Object[] testcase : testcases) {
-            testObjects.add(new TestCase(testcase, template));
-        }
-        return testObjects;
+        return testcases.stream()
+                .map((testcase) -> new TestCase(testcase, template))
+                .collect(Collectors.toList());
     }
 
     private boolean compile(String testName, String source) {

@@ -25,9 +25,8 @@ public class GherkinParser {
     
     private static final Logger LOG = LoggerFactory.getLogger(GherkinParser.class);
 
-    private static final Map<String, String> featureContents;
     private static final Parser<Feature> parser = new Parser<>(new AstBuilder());
-    
+    private static final Map<String, String> featureContents;
     static {
         featureContents = getFeatureContents(getFeatureFiles());
     }
