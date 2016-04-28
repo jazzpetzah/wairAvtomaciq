@@ -23,6 +23,7 @@ import javax.tools.JavaFileObject.Kind;
 import javax.tools.SimpleJavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,7 +80,7 @@ public class TestClassGenerator {
             this.template = template
                     .replaceAll("\\$\\(TESTNAME\\)", toClassName())
                     .replaceAll("\\$\\(TESTPACKAGE\\)", Config.GENERATED_TEST_PACKAGE)
-                    .replaceAll("\\$\\(DATA\\)", toData());
+                    .replace("$(DATA)", toData());
         }
 
         public String toClassName() {
@@ -111,7 +112,7 @@ public class TestClassGenerator {
         private String buildStepList() {
             StringBuilder listString = new StringBuilder("List<String> steps = new ArrayList<>();\n");
             for (String step : steps) {
-                listString.append(String.format("steps.add(\"%s\");\n", step));
+                listString.append(String.format("steps.add(\"%s\");\n", StringEscapeUtils.escapeJava(step)));
             }
             return listString.toString();
         }
