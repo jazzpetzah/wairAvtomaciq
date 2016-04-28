@@ -161,7 +161,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @C388 @id547 @regression
+  @C388 @id547 @regression @C111632
   Scenario Outline: I would not know other person has ignored my connection request
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -177,6 +177,8 @@ Feature: Connect
     And I press Clear button
     Then I tap on contact name <Contact>
     And I see that connection is pending
+    And I do not see ping, sketch, camera and file buttons in cursor toolbar
+    And I do not see text input
 
     Examples:
       | Name      | Contact   |
