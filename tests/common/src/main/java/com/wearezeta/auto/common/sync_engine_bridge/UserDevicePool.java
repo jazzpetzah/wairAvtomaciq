@@ -37,7 +37,7 @@ public class UserDevicePool {
         }
     }
 
-    private static final int MAX_POOL_SIZE = 20;
+    private static final int MAX_POOL_SIZE = 10;
 
     private static final int PROCESS_CREATION_TIMEOUT = 90; // seconds
 

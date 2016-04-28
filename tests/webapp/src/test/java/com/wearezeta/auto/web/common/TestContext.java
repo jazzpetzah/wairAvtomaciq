@@ -41,7 +41,7 @@ public class TestContext {
         this.testname = uniqueTestname;
         this.driver = driver;
         this.userManager = new ClientUsersManager();
-        this.deviceManager = SEBridge.getInstance();
+        this.deviceManager = new SEBridge();
         this.commonSteps = new CommonSteps(userManager, deviceManager);
         this.callingManager = new CommonCallingSteps2(userManager);
         this.pagesCollection = new WebappPagesCollection();
