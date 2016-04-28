@@ -32,6 +32,11 @@ public class ConversationViewPage extends AndroidPage {
 
     public static final By idCursorView = By.id("cal__cursor");
 
+    public static final String CURSOR_EDIT_TOOLTIP = "TYPE A MESSAGE";
+
+    public static final By xpathCursorEditHint = By.xpath(
+            String.format("//*[@id='ttv__cursor_hint' and contains(@value, '%s')]", CURSOR_EDIT_TOOLTIP));
+
     private static final Function<String, String> xpathStrConversationMessageByText = text -> String
             .format("//*[@id='ltv__row_conversation__message' and @value='%s']", text);
 
@@ -197,6 +202,14 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isTextInputInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorEditText);
+    }
+
+    public boolean isTooltipOfTextInputVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathCursorEditHint);
+    }
+
+    public boolean isTooltipOfTextInputInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathCursorEditHint);
     }
 
     public void tapOnTextInput() throws Exception {

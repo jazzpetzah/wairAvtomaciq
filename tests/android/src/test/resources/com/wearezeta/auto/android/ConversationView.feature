@@ -440,3 +440,25 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
+  @C111622 @C111623 @C111624 @staging
+  Scenario Outline: Verify tooltip is shown in different condition
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And I tap Ping button from cursor toolbar
+    Then I see tooltip of text input
+    When I tap on text input
+    Then I see tooltip of text input
+    When I type the message "<Message>"
+    And I do not see tooltip of text input
+
+    Examples:
+      | Name      | Contact1  | Message |
+      | user1Name | user2Name | testing |
+
+
+
+

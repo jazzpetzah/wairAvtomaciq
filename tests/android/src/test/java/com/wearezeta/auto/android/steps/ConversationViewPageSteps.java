@@ -382,7 +382,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see new message notification \"(.*)\"$")
     public void WhenISeeNewMessageNotification(String message) throws Exception {
-        Assert.assertTrue(String.format("The notification message of '%s' should be visible", message ),
+        Assert.assertTrue(String.format("The notification message of '%s' should be visible", message),
                 getConversationViewPage().waitForMessageNotification(message));
     }
 
@@ -562,6 +562,7 @@ public class ConversationViewPageSteps {
 
     /**
      * Save or Open file from File dialog
+     *
      * @param action
      * @throws Exception
      * @step. ^I (save|open) file (?:in|from) file dialog$
@@ -882,11 +883,11 @@ public class ConversationViewPageSteps {
                 : Integer.parseInt(timeout.replaceAll("[\\D]", ""));
         boolean isUpload = loadDirection.equals("upload");
         boolean isSuccess = (actionFailed == null);
-        if(doNotSee == null) {
+        if (doNotSee == null) {
             Assert.assertTrue("The placeholder of sending file should be visible",
                     getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload,
                             isSuccess, lookUpTimeoutSeconds));
-        }else {
+        } else {
             Assert.assertTrue("The placeholder of sending file should be invisible",
                     getConversationViewPage().isFilePlaceHolderInvisible(fileFullName, size, extension, isUpload,
                             isSuccess, lookUpTimeoutSeconds));
@@ -897,17 +898,34 @@ public class ConversationViewPageSteps {
     /**
      * Check whether the text input is visible
      *
-     * @param doNotSee equals null means should the text input should be visible
+     * @param doNotSee equals null means that the text input should be visible
      * @throws Exception
      * @step. ^I( do not)? see text input$
      */
     @Then("^I( do not)? see text input$")
     public void ThenISeeTextInput(String doNotSee) throws Exception {
-        if(doNotSee == null){
+        if (doNotSee == null) {
             Assert.assertTrue("The text input should be visible", getConversationViewPage().isTextInputVisible());
-        }else
-        {
+        } else {
             Assert.assertTrue("The text input should be invisible", getConversationViewPage().isTextInputInvisible());
+        }
+    }
+
+    /**
+     * Check whether the tooltip of text input is visible
+     *
+     * @param doNotSee equals null means that the tooltip of text input should be visible
+     * @throws Exception
+     * @step. ^I( do not)? see tooltip of text input$
+     */
+    @Then("^I( do not)? see tooltip of text input$")
+    public void ThenISeeTooltipOfTextInput(String doNotSee) throws Exception {
+        if (doNotSee == null) {
+            Assert.assertTrue("The tooltip of text input should be visible",
+                    getConversationViewPage().isTooltipOfTextInputVisible());
+        } else {
+            Assert.assertTrue("The tooltip of text input should be invisible",
+                    getConversationViewPage().isTooltipOfTextInputInvisible());
         }
     }
 
