@@ -141,7 +141,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @C385 @id542 @regression
+  @C385 @id542 @regression @C111633
   Scenario Outline: Accept incoming connection request from search
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
@@ -154,6 +154,8 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
+    And I do not see text input
+    And I do not see ping, sketch, camera and file buttons in cursor toolbar
     And I Connect with contact by pressing button
     Then I see contact list with name <Contact>
 
