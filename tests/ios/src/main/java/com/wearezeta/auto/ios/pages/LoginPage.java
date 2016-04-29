@@ -83,7 +83,7 @@ public class LoginPage extends IOSPage {
     }
 
     public void waitForLoginToFinish() throws Exception {
-        if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), nameLoginButton, 40)) {
+        if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), nameSwitchToLoginButton, 40)) {
             throw new IllegalStateException("Login button is still visible after the timeout");
         }
     }
