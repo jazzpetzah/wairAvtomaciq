@@ -105,7 +105,7 @@ Feature: File Transfer
       | Name      | Contact   | ItemName | ExpectedAlertText        |
       | user1Name | user2Name | TOO_BIG  | You can send files up to |
 
-  @C82525 @staging
+  @C82525 @regression
   Scenario Outline: Verify downloading file by sender
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
