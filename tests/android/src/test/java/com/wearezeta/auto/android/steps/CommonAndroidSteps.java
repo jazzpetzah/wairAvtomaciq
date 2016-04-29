@@ -293,6 +293,19 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * User leaves group chat
+     *
+     * @param userName name of the user who leaves
+     * @param chatName chat name that user leaves
+     * @throws Exception
+     * @step. ^(.*) leave(s) group chat (.*)$
+     */
+    @Given("^(.*) leave[s]* group chat (.*)$")
+    public void UserLeavesGroupChat(String userName, String chatName) throws Exception {
+        commonSteps.UserXLeavesGroupChat(userName, chatName);
+    }
+
+    /**
      * Hides the system keyboard
      *
      * @throws Exception

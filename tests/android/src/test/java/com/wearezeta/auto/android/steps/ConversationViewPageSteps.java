@@ -64,20 +64,16 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Waits for the dialog page to appear This step makes no assertions and doesn't fail if the dialog page doesn't appear.
+     * Waits for the conversation page to appear
      *
      * @throws Exception
-     * @step. ^I see dialog page$
+     * @step. ^I see conversation view$
      */
-    @When("^I( do not)? see dialog page$")
-    public void WhenISeeDialogPage(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue("The cursor is not visible in the conversation view",
-                    getConversationViewPage().waitForCursorInputVisible());
-        } else {
-            Assert.assertTrue("The cursor in the conversation view is still visible",
-                    getConversationViewPage().waitForCursorInputNotVisible());
-        }
+    @When("^I see conversation view$")
+    //TODO : Refactory See dialog page,
+    public void WhenISeeConversationPage() throws Exception {
+        Assert.assertTrue("The cursor is not visible in the conversation view",
+                getConversationViewPage().isCursorViewVisible());
     }
 
     /**
@@ -88,8 +84,9 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap on text input$")
     public void WhenITapOnTextInput() throws Exception {
-        getConversationViewPage().tapOnCursorInput();
+        getConversationViewPage().tapOnTextInput();
     }
+
 
     /**
      * Send message to the chat
@@ -117,37 +114,15 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Swipes the text input area to reveal the different input options
-     *
-     * @throws Exception
-     * @step. ^I swipe on text input$
-     */
-    @When("^I swipe on text input$")
-    public void WhenISwipeOnTextInput() throws Exception {
-        getConversationViewPage().swipeRightOnCursorInput();
-    }
-
-    /**
-     * Tap on plus button in the text input area to reveal the different input options
-     *
-     * @throws Exception
-     * @step. ^I tap plus( button)? i?o?n text input$
-     */
-    @When("^I tap plus( button)? i?o?n text input$")
-    public void WhenITapPlusInTextInput(String ignore) throws Exception {
-        getConversationViewPage().pressPlusButtonOnDialogPage();
-    }
-
-    /**
      * Press the corresponding button in the input controls
      * Tap file button will send file directly when you installed testing_gallery-debug.apk
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Add people|Ping|Add Picture|Sketch|File) button$ from input tools$
+     * @step. ^I tap (Ping|Add picture|Sketch|File) button$ from cursor toolbar$
      */
-    @When("^I tap (Add people|Ping|Add Picture|Sketch|File) button from input tools$")
-    public void WhenITapInputToolButton(String btnName) throws Exception {
+    @When("^I tap (Ping|Add picture|Sketch|File) button from cursor toolbar$")
+    public void WhenITapCursorToolButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "ping":
                 getConversationViewPage().tapPingBtn();
@@ -157,9 +132,6 @@ public class ConversationViewPageSteps {
                 break;
             case "sketch":
                 getConversationViewPage().tapSketchBtn();
-                break;
-            case "add people":
-                getConversationViewPage().tapPeopleBtn();
                 break;
             case "file":
                 getConversationViewPage().tapFileBtn();
@@ -410,7 +382,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see new message notification \"(.*)\"$")
     public void WhenISeeNewMessageNotification(String message) throws Exception {
-        Assert.assertTrue(String.format("The notification message of '%s' should be visible", message ),
+        Assert.assertTrue(String.format("The notification message of '%s' should be visible", message),
                 getConversationViewPage().waitForMessageNotification(message));
     }
 
@@ -590,6 +562,7 @@ public class ConversationViewPageSteps {
 
     /**
      * Save or Open file from File dialog
+     *
      * @param action
      * @throws Exception
      * @step. ^I (save|open) file (?:in|from) file dialog$
@@ -880,15 +853,21 @@ public class ConversationViewPageSteps {
      * Check the cursor bar only contains ping, sketch, add picture, people and file buttons in cursor bar
      *
      * @throws Exception
-     * @step. ^I only see ping, sketch, camera, people and file buttons in cursor menu
+     * @step. ^I( do not)? see ping, sketch, add picture and file buttons in cursor menu
      */
-    @Then("^I only see ping, sketch, camera, people and file buttons in cursor menu")
-    public void ThenIOnlySeePingSketchAddPicturePeopleButton() throws Exception {
-        Assert.assertTrue("Ping button should be visible in cursor menu", getConversationViewPage().isPingButtonVisible());
-        Assert.assertTrue("Sketch button should be visible in cursor menu", getConversationViewPage().isSketchButtonVisible());
-        Assert.assertTrue("Camera button should be visible in cursor menu", getConversationViewPage().isCameraButtonVisible());
-        Assert.assertTrue("People button should be visible in cursor menu", getConversationViewPage().isPeopleButtonVisible());
-        Assert.assertTrue("File button should be visible in cursor menu", getConversationViewPage().isFileButtonVisible());
+    @Then("^I( do not)? see ping, sketch, add picture and file buttons in cursor toolbar")
+    public void ThenIOnlySeePingSketchAddPictureFileButton(String doNotSee) throws Exception {
+        if (doNotSee == null) {
+            Assert.assertTrue("Ping button should be visible in cursor menu", getConversationViewPage().isPingButtonVisible());
+            Assert.assertTrue("Sketch button should be visible in cursor menu", getConversationViewPage().isSketchButtonVisible());
+            Assert.assertTrue("Add picture button should be visible in cursor menu", getConversationViewPage().isAddPictureButtonVisible());
+            Assert.assertTrue("File button should be visible in cursor menu", getConversationViewPage().isFileButtonVisible());
+        } else {
+            Assert.assertTrue("Ping button should be invisible in cursor menu", getConversationViewPage().isPingButtonInvisible());
+            Assert.assertTrue("Sketch button should be invisible in cursor menu", getConversationViewPage().isSketchButtonInvisible());
+            Assert.assertTrue("Add picture button should be invisible in cursor menu", getConversationViewPage().isAddPictureButtonInvisible());
+            Assert.assertTrue("File button should be invisible in cursor menu", getConversationViewPage().isFileButtonInvisible());
+        }
     }
 
     /**
@@ -911,16 +890,62 @@ public class ConversationViewPageSteps {
                 : Integer.parseInt(timeout.replaceAll("[\\D]", ""));
         boolean isUpload = loadDirection.equals("upload");
         boolean isSuccess = (actionFailed == null);
-        if(doNotSee == null) {
+        if (doNotSee == null) {
             Assert.assertTrue("The placeholder of sending file should be visible",
                     getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload,
                             isSuccess, lookUpTimeoutSeconds));
-        }else {
+        } else {
             Assert.assertTrue("The placeholder of sending file should be invisible",
                     getConversationViewPage().isFilePlaceHolderInvisible(fileFullName, size, extension, isUpload,
                             isSuccess, lookUpTimeoutSeconds));
         }
 
+    }
+
+    /**
+     * Check whether the text input is visible
+     *
+     * @param doNotSee equals null means that the text input should be visible
+     * @throws Exception
+     * @step. ^I( do not)? see text input$
+     */
+    @Then("^I( do not)? see text input$")
+    public void ThenISeeTextInput(String doNotSee) throws Exception {
+        if (doNotSee == null) {
+            Assert.assertTrue("The text input should be visible", getConversationViewPage().isTextInputVisible());
+        } else {
+            Assert.assertTrue("The text input should be invisible", getConversationViewPage().isTextInputInvisible());
+        }
+    }
+
+    /**
+     * Check whether the tooltip of text input is visible
+     *
+     * @param doNotSee equals null means that the tooltip of text input should be visible
+     * @throws Exception
+     * @step. ^I( do not)? see tooltip of text input$
+     */
+    @Then("^I( do not)? see tooltip of text input$")
+    public void ThenISeeTooltipOfTextInput(String doNotSee) throws Exception {
+        if (doNotSee == null) {
+            Assert.assertTrue("The tooltip of text input should be visible",
+                    getConversationViewPage().isTooltipOfTextInputVisible());
+        } else {
+            Assert.assertTrue("The tooltip of text input should be invisible",
+                    getConversationViewPage().isTooltipOfTextInputInvisible());
+        }
+    }
+
+    /**
+     * Check the self avatar on text input
+     *
+     * @throws Exception
+     * @step. ^I see self avatar on text input$
+     */
+    @Then("^I see self avatar on text input$")
+    public void ThenISeeSelfAvatarOnTextInput() throws Exception {
+        Assert.assertTrue("The self avatar should be visible on text input",
+                getConversationViewPage().isSelfAvatarOnTextInputVisible());
     }
 
 }

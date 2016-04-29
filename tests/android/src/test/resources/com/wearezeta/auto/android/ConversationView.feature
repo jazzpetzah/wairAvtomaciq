@@ -64,8 +64,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I swipe on text input
-    And I tap Add Picture button from input tools
+    And I tap Add picture button from cursor toolbar
     And I press "Take Photo" button
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -187,8 +186,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I swipe on text input
-    And I tap Add Picture button from input tools
+    And I tap Add picture button from cursor toolbar
     And I press "Gallery" button
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -205,8 +203,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I swipe on text input
-    And I tap Add Picture button from input tools
+    And I tap Add picture button from cursor toolbar
     And I press "Gallery" button
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -233,8 +230,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I swipe on text input
-    And I tap Sketch button from input tools
+    And I tap Sketch button from cursor toolbar
     And I draw a sketch with <NumColors> colors
     And I send my sketch
     And I select last photo in dialog
@@ -251,8 +247,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I swipe on text input
-    And I tap Add Picture button from input tools
+    And I tap Add picture button from cursor toolbar
     And I press "Gallery" button
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
@@ -271,8 +266,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I swipe on text input
-    And I tap Add Picture button from input tools
+    And I tap Add picture button from cursor toolbar
     And I press "Take Photo" button
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
@@ -330,8 +324,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I swipe on text input
-    And I tap Add Picture button from input tools
+    And I tap Add picture button from cursor toolbar
     And I press "Switch Camera" button
     And I press "Take Photo" button
     And I press "Confirm" button
@@ -432,7 +425,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |  Message1 | Message2 |
       | user1Name | user2Name | user3Name |  Msg1     | Msg2     |
 
-  @C77966 @regression @C87626 @rc @rc42
+  @C77966 @regression @C87626 @rc @rc42 @C111617
   Scenario Outline: Verify there are no video and audio calling icons under the + button bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -440,59 +433,76 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap plus button in text input
-    Then I only see ping, sketch, camera, people and file buttons in cursor menu
+    Then I see ping, sketch, add picture and file buttons in cursor toolbar
+    And I see text input
 
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C77973 @rc @regression @rc42
-  Scenario Outline: (AN-3688) Verify I can create group conversation from 1:1 using profile button from + button bar
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
+  @C111622 @staging
+  Scenario Outline: Verify tooltip is shown in different condition
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap plus button in text input
-    And I tap Add people button from input tools
-    And the toolbar title in People picker page should be "Create group"
-    Then I do not see No matching result placeholder on People picker page
-    When I input in People picker search field user name <Contact2>
-    And I tap on user name found on People picker page <Contact2>
-    And I click on Create conversation button
-    Then I see group chat page with users <Contact1>,<Contact2>
-    And the conversation title should be "<Contact1>,<Contact2>"
-    And I do not see the video call button in upper toolbar
-    And I see the audio call button in upper toolbar
+    And I tap Ping button from cursor toolbar
+    Then I see tooltip of text input
+    When I tap on text input
+    Then I see tooltip of text input
+    And I see self avatar on text input
+    When I type the message "<Message>"
+    And I do not see tooltip of text input
 
     Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Message |
+      | user1Name | user2Name | testing |
 
-
-  @C77974 @rc @regression @rc42
-  Scenario Outline: (AN-3688) Verify I can add people to group conversation using profile button from + button bar
-    Given There are 4 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+  @C111631 @staging @C111634
+  Scenario Outline: Verify cursor and toolbar are not shown on left/removed from conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     When I tap on contact name <GroupChatName>
-    And I tap plus button in text input
-    And I tap Add people button from input tools
-    And the toolbar title in People picker page should be "Add people"
-    Then I do not see No matching result placeholder on People picker page
-    When I input in People picker search field user name <Contact3>
-    And I tap on user name found on People picker page <Contact3>
-    And I click on Add to conversation button
     And I tap conversation name from top toolbar
-    Then I see the correct participant avatars for <Contact1>,<Contact2>,<Contact3>
-
+    And I press options menu button
+    And I press LEAVE conversation menu button
+    And I confirm leaving
+    And I see Contact list
+    And I open Search UI
+    And I enter "<GroupChatName>" into Search input on People Picker page
+    And I tap on group found on People picker page <GroupChatName>
+    Then I see the upper toolbar
+    And I do not see text input
+    And I do not see ping, sketch, add picture and file buttons in cursor toolbar
+    When User <Contact1> adds user Myself to group chat <GroupChatName>
+    Then I see text input
+    And I see ping, sketch, add picture and file buttons in cursor toolbar
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
-      | user1Name | user2Name | user3Name | user4Name | Group Chat    |
+      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Name | user2Name | user3Name | LeaveGroupChat |
+
+  @C111635 @staging
+  Scenario Outline: Verify the cursor is not shown on the new device after you leave the group from another device
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given Myself leave group chat <GroupChatName>
+    Given Myself is unarchived group chat <GroupChatName>
+    When I sign in using my email or phone number
+    And I accept First Time overlay as soon as it is visible
+    And I see Contact list with contacts
+    And I tap on contact name <GroupChatName>
+    Then I do not see text input
+    And I do not see ping, sketch, add picture and file buttons in cursor toolbar
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Name | user2Name | user3Name | LeaveGroupChat |
 
