@@ -491,7 +491,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @С111308 @noAcceptAlert @regression
+  @C111308 @noAcceptAlert @regression
   Scenario Outline: Verify share contacts dialogue is shown each time on invite more friends click
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -511,7 +511,7 @@ Feature: Conversation List
     And I tap Invite more people button
     Then I see Share Contacts settings warning
     When I dismiss settings warning
-    And I tap Cancel button to not Invite more people
+    And I tap Cancel button
     And I tap Invite more people button
     Then I see Share Contacts settings warning
 

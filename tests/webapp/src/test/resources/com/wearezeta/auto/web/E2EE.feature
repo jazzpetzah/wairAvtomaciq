@@ -72,7 +72,7 @@ Feature: E2EE
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C87649 @e2ee @staging
+  @C87649 @e2ee @regression
   Scenario Outline: Verify I'm automatically logged out when the used temporary device is deleted
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -110,7 +110,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact    | OldMessage | Message1 | Message2 | Message3 |
       | user1Email | user1Password | user1Name | user2Name  | Old1       | New1     | New2     | New3     |
 
-  @C95642 @e2ee @staging
+  @C95642 @e2ee @regression
   Scenario Outline: Verify I still can login but have no history if my former temporary device was deleted remotely
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
@@ -150,7 +150,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact    | OldMessage | Message1 | Message2 | Message3 |
       | user1Email | user1Password | user1Name | user2Name  | Old1       | New1     | New2     | New3     |
 
-  @C95643 @e2ee @staging
+  @C95643 @e2ee @regression
   Scenario Outline: Verify I still can login from auth page even if my former device was deleted
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
