@@ -440,7 +440,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C111622 @staging
+  @C111622 @staging @C111625
   Scenario Outline: Verify tooltip is shown in different condition
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
