@@ -96,7 +96,7 @@ Feature: Conversation List
       | user1Name | user2Name | device1    | 15      |
 
   @C444 @id4043 @regression
-  Scenario Outline: (AN-2875) Verify I can delete a group conversation from conversation list
+  Scenario Outline: Verify I can delete a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -116,8 +116,12 @@ Feature: Conversation List
     Then I do not see contact list with name <GroupChatName>
     And I open Search UI
     And I enter "<GroupChatName>" into Search input on People Picker page
-    And I tap on group found on People picker page <GroupChatName>
-    Then I see group chat page with users <Contact1>,<Contact2>
+    And I see group <GroupChatName> in People Picker
+    When I press Clear button
+    And User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
+    Then I see contact list with name <GroupChatName>
+    When I tap on contact name <GroupChatName>
+    Then I see the most recent conversation message is "<Message>"
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Message    | Image       | SpotifyLink                                           |
