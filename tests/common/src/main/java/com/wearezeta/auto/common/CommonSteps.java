@@ -308,6 +308,10 @@ public final class CommonSteps {
         }
     }
 
+    public void UserDeleteMessage() throws Exception {
+
+    }
+
     public void UserSentMessageToUser(String msgFromUserNameAlias,
                                       String dstUserNameAlias, String message) throws Exception {
         ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);

@@ -30,6 +30,8 @@ public interface IDevice extends IRemoteEntity {
 
 	void sendFile(String convId, String path, String mime) throws Exception;
 
+    void deleteMessage(String convId, String messageId) throws Exception;
+
     void setLabel(String label) throws Exception;
 
     String getId() throws Exception;

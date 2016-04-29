@@ -7,6 +7,7 @@ import java.util.concurrent.TimeoutException;
 import akka.actor.ActorRef;
 
 import akka.actor.PoisonPill;
+import com.waz.model.MessageId;
 import com.waz.model.RConvId;
 import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -223,6 +224,20 @@ class Device extends RemoteEntity implements IDevice {
                 logInWithUser(this.loggedInUser.get());
             }
             askActor(this.ref(), new ActorMessage.SendFile(new RConvId(convId), path, mime));
+        }
+    }
+
+    @Override
+    public void deleteMessage(String convId, String messageId) throws Exception {
+        try {
+            askActor(this.ref(), new ActorMessage.DeleteMessage(new RConvId(convId), new MessageId(messageId)));
+        }catch (TimeoutException e) {
+            // recreate process and retry
+            respawn();
+            if(hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+                askActor(this.ref(), new ActorMessage.DeleteMessage(new RConvId(convId), new MessageId(messageId)));
+            }
         }
     }
 

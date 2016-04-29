@@ -144,6 +144,10 @@ public class SEBridge {
         getOrAddDevice(userFrom, deviceName).sendFile(convId, path, mime);
     }
 
+    public void deleteMessage(ClientUser userFrom, String convId, String messageId, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).deleteMessage(convId, messageId);
+    }
+
     private void shutdown() {
         try {
             getDevicePool().shutdown();
