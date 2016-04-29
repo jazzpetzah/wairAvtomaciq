@@ -104,8 +104,6 @@ public class DriverUtils {
                 });
             } catch (TimeoutException e) {
                 return false;
-            } catch (Exception e2) {
-                return false;
             }
         } finally {
             restoreImplicitWait(driver);
