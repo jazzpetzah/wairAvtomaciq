@@ -99,7 +99,6 @@ public class DriverUtils {
                     }catch (Exception e) {
                         return false;
                     }
-
                     return false;
                 });
             } catch (TimeoutException e) {
