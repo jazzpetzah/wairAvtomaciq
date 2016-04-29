@@ -165,10 +165,10 @@ Feature: Search
     And I see Open conversation action button on People picker page
     And I tap on 2nd top connection contact
     Then I see Create conversation action button on People picker page
-    And I press backspace button
+    When I press backspace button
     And I press backspace button
     Then I do not see Create conversation action button on People picker page
-    And I press backspace button
+    When I press backspace button
     And I press backspace button
     Then I do not see Open conversation action button on People picker page
 
