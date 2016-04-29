@@ -409,7 +409,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2 |
       | user1Name | user2Name | user3Name |
 
-  @C95633 @staging
+  @C95633 @regression
   Scenario Outline: Verify hint is not shown anymore after tapping on it once [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
