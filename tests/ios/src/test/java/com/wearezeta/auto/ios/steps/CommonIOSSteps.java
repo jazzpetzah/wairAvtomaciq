@@ -21,7 +21,6 @@ import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import com.wearezeta.auto.ios.tools.RealDeviceHelpers;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
 import org.apache.commons.io.FileUtils;
@@ -32,7 +31,6 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 
@@ -333,17 +331,6 @@ public class CommonIOSSteps {
     @When("^I dismiss alert$")
     public void IDismissAlert() throws Exception {
         pagesCollection.getCommonPage().dismissAlertIfVisible();
-    }
-
-    /**
-     * Dismiss all alerts that appears before timeout
-     *
-     * @throws Exception
-     * @step. ^I dismiss all alerts$
-     */
-    @When("^I dismiss all alerts$")
-    public void IDismissAllAlerts() throws Exception {
-        pagesCollection.getCommonPage().dismissAllAlerts();
     }
 
     /**
@@ -1018,5 +1005,27 @@ public class CommonIOSSteps {
     @When("^I lock screen on real device$")
     public void ILockScreenOnRealDevice() throws Exception {
         pagesCollection.getCommonPage().lockScreenOnRealDevice();
+    }
+
+    /**
+     * Taps cancel button
+     *
+     * @throws Exception
+     * @step. ^I tap Cancel button$
+     */
+    @When("^I tap Cancel button$")
+    public void ITapCancelButton() throws Exception {
+        pagesCollection.getCommonPage().tapCancelButton();
+    }
+
+    /**
+     * Tap Done button
+     *
+     * @throws Exception
+     * @step. ^I tap Done button$
+     */
+    @When("^I tap Done button$")
+    public void ITapDoneButton() throws Exception {
+        pagesCollection.getCommonPage().tapDoneButton();
     }
 }

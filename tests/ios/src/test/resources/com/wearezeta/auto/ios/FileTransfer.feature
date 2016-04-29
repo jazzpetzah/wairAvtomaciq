@@ -104,3 +104,35 @@ Feature: File Transfer
     Examples:
       | Name      | Contact   | ItemName | ExpectedAlertText        |
       | user1Name | user2Name | TOO_BIG  | You can send files up to |
+
+  @C82525 @staging
+  Scenario Outline: Verify downloading file by sender
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I click plus button next to text input
+    And I tap Add Picture button from input tools
+    And I press Camera Roll button
+    And I select Camera Roll view
+    Then I remember the count of images in gallery
+    When I tap Cancel button
+    And I tap Close camera button
+    And I click plus button next to text input
+    And I tap File Transfer button from input tools
+    And I tap file transfer menu item <ItemName>
+    And I wait up to <Timeout> seconds until the file is uploaded
+    And I tap file transfer placeholder
+    And I tap Share button on file preview page
+    And I tap Save Image share menu item
+    And I tap Done button
+    And I click plus button next to text input
+    And I tap Add Picture button from input tools
+    And I press Camera Roll button
+    And I select Camera Roll view
+    Then I see the count of images in gallery has been increased by 1
+
+    Examples:
+      | Name      | Contact   | ItemName                   | Timeout |
+      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG | 60      |

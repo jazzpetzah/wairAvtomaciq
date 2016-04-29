@@ -52,6 +52,10 @@ public abstract class IOSPage extends BasePage {
 
     private static final By xpathConfirmButton = By.xpath("//UIAButton[@name='OK' and @visible='true']");
 
+    private static final By nameCancelButton = MobileBy.AccessibilityId("Cancel");
+
+    private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
+
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
@@ -285,20 +289,6 @@ public abstract class IOSPage extends BasePage {
                 String.format("%.3f", DriverUtils.LONG_TAP_DURATION / 1000.0));
     }
 
-    public void dismissAllAlerts() throws Exception {
-        int count = 0;
-        final int NUMBER_OF_RETRIES = 3;
-        final int ALERT_WAITING_TIMEOUT = 3;
-        do {
-            try {
-                this.getDriver().switchTo().alert().dismiss();
-            } catch (Exception e) {
-                // do nothing
-            }
-        } while (DriverUtils.waitUntilAlertAppears(this.getDriver(),
-                ALERT_WAITING_TIMEOUT) && count++ < NUMBER_OF_RETRIES);
-    }
-
     public void rotateScreen(ScreenOrientation orientation) throws Exception {
         switch (orientation) {
             case LANDSCAPE:
@@ -496,5 +486,13 @@ public abstract class IOSPage extends BasePage {
             }
         }
         return result;
+    }
+
+    public void tapCancelButton() throws Exception {
+        getElement(nameCancelButton).click();
+    }
+
+    public void tapDoneButton() throws Exception {
+        getElement(nameDoneButton).click();
     }
 }

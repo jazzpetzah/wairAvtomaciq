@@ -1060,11 +1060,47 @@ public class ConversationViewPageSteps {
      *
      * @param timeoutSeconds timeout in seconds
      * @throws Exception
-     * @step. ^I wait up to (\d+) seconds until I see generic file share menu$
+     * @step. ^I wait up to (\\d+) seconds until I see generic file share menu$
      */
     @Then("^I wait up to (\\d+) seconds until I see generic file share menu$")
     public void ISeeGenericFileShareMenu(int timeoutSeconds) throws Exception {
         Assert.assertTrue("Generic file share menu has not been shown",
                 getConversationViewPage().isGenericFileShareMenuVisible(timeoutSeconds));
+    }
+
+    /**
+     * Wait until Uploading label disappears
+     *
+     * @param timeoutSeconds seconds to wait label to disappear
+     * @throws Exception
+     * @step. ^I wait up to (\\d+) seconds until the file is uploaded$
+     */
+    @When("^I wait up to (\\d+) seconds until the file is uploaded$")
+    public void IWaitFileToUpload(int timeoutSeconds) throws Exception {
+        Assert.assertTrue(String.format("File is still uploading after %s seconds", timeoutSeconds),
+                getConversationViewPage().fileUploadingLabelNotVisible(timeoutSeconds));
+    }
+
+    /**
+     * Tap Share button on file preview
+     *
+     * @throws Exception
+     * @step. ^I tap Share button on file preview page$
+     */
+    @When("^I tap Share button on file preview page$")
+    public void ITapShareButtonOnPreview() throws Exception {
+        getConversationViewPage().tapShareButton();
+    }
+
+    /**
+     * Tap share menu item by name
+     *
+     * @param itemName title in Share menu
+     * @throws Exception
+     * @step. ^I tap (Save Image|Copy) share menu item$
+     */
+    @When("^I tap (Save Image|Copy) share menu item$")
+    public void ITapShareMenuItem(String itemName) throws Exception {
+        getConversationViewPage().tapShareMenuItem(itemName);
     }
 }

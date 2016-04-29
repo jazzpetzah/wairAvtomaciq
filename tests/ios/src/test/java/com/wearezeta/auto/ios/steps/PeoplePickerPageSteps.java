@@ -235,7 +235,7 @@ public class PeoplePickerPageSteps {
         }
     }
 
-    @When("I click close button to dismiss people view")
+    @When("^I click close button to dismiss people view$")
     public void IClickCloseButtonDismissPeopleView() throws Exception {
         getPeoplePickerPage().tapOnPeoplePickerClearBtn();
     }
@@ -350,15 +350,5 @@ public class PeoplePickerPageSteps {
     public void ISeeShareContactsSettingsWarning() throws Exception {
         Assert.assertTrue("Share Contacts settings warning is not visible",
                 getPeoplePickerPage().isShareContactsSettingsWarningShown());
-    }
-
-    /**
-     * Taps cancel button to stop invite more people
-     * @step. ^I tap Cancel button to not Invite more people$
-     * @throws Exception
-     */
-    @When("^I tap Cancel button to not Invite more people$")
-    public void iTapCancelButtonToNotInviteMorePeople() throws Exception {
-        getPeoplePickerPage().tapCancelInvitePeopleButton();
     }
 }

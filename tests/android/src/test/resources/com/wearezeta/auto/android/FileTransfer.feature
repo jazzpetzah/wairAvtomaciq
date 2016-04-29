@@ -9,9 +9,12 @@ Feature: File transfer
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    And I tap File button from cursor toolbar
+    And I tap plus button in text input
+    And I tap File button from input tools
+    And I remember the state of View button on file upload placeholder
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
-    Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
+    And I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
+    Then I wait up to <UploadingTimeout> seconds until the state of View button on file upload placeholder is changed
 
     Examples:
       | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout |

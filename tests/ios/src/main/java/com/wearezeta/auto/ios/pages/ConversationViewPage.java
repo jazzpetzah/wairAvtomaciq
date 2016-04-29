@@ -152,6 +152,10 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameGenericFileShareMenu = MobileBy.AccessibilityId("ActivityListView");
 
+    private static final By xpathFileUploadingLabel = By.xpath("//UIAStaticText[contains(@value,'UPLOADING…')]");
+
+    private static final By nameShareButton = MobileBy.AccessibilityId("Share");
+
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -685,5 +689,17 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isGenericFileShareMenuVisible(int timeoutSeconds) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameGenericFileShareMenu, timeoutSeconds);
+    }
+
+    public boolean fileUploadingLabelNotVisible(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathFileUploadingLabel, timeoutSeconds);
+    }
+
+    public void tapShareButton() throws Exception {
+        getElement(nameShareButton).click();
+    }
+
+    public void tapShareMenuItem(String itemName) throws Exception {
+        getElement(MobileBy.AccessibilityId(itemName)).click();
     }
 }
