@@ -56,8 +56,8 @@ public class RegistrationPageSteps {
     /**
      * Input in phone number field page a random X digits
      *
-     * @throws Exception
      * @param digitsCount count of digits in the phone number
+     * @throws Exception
      * @step. ^I enter (\\d+) digits phone number
      */
     @When("^I enter (\\d+) digits phone number$")
@@ -68,9 +68,9 @@ public class RegistrationPageSteps {
     /**
      * Enter a phone number and then verify that no commit button is shown
      *
-     * @step. ^I enter (\d+) digits phone number and expect no commit button$
      * @param digitsCount count of digits in the phone number
      * @throws Exception
+     * @step. ^I enter (\d+) digits phone number and expect no commit button$
      */
     @Then("^I enter (\\d+) digits phone number and expect no commit button$")
     public void IEnterDigitsAndExpectNoCommit(int digitsCount) throws Exception {
@@ -124,35 +124,13 @@ public class RegistrationPageSteps {
 
     @When("^I enter email (.*)$")
     public void IEnterEmail(String email) throws Exception {
-        boolean isRealEmail = false;
-        try {
-            String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
-                    .getEmail();
-            this.userToRegister.setEmail(realEmail);
-        } catch (NoSuchUserException e) {
-            if (this.userToRegister == null) {
-                this.userToRegister = new ClientUser();
-            }
-            isRealEmail = true;
-        }
-
-        if (isRealEmail) {
-            getRegistrationPage().setEmail(email);
-        } else {
-            getRegistrationPage().setEmail(
-                    this.userToRegister.getEmail());
-        }
+        this.userToRegister = usrMgr.findUserByEmailOrEmailAlias(email);
+        getRegistrationPage().setEmail(this.userToRegister.getEmail());
     }
 
     @When("^I enter password (.*)$")
     public void IEnterPassword(String password) throws Exception {
-        try {
-            this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
-                    password).getPassword());
-        } catch (NoSuchUserException e) {
-            this.userToRegister.setPassword(password);
-            this.userToRegister.addPasswordAlias(password);
-        }
+        this.userToRegister = usrMgr.findUserByPasswordAlias(password);
         getRegistrationPage().setPassword(this.userToRegister.getPassword());
     }
 
@@ -163,8 +141,8 @@ public class RegistrationPageSteps {
 
     @Then("^I see confirmation page$")
     public void ISeeConfirmationPage() throws Exception {
-        Assert.assertTrue("Confirmation message is not shown or not correct", getRegistrationPage()
-                .isConfirmationShown());
+        Assert.assertTrue("Confirmation message is not shown or not correct",
+                getRegistrationPage().isConfirmationShown());
     }
 
     /**
