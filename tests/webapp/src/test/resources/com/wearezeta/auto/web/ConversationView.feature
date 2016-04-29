@@ -361,9 +361,11 @@ Feature: Conversation View
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And Contact <Contact> sends 35 encrypted messages with prefix <READ> via device Device1 to user <Name>
+    And I wait for 5 seconds
     Then I really see text message <READ>34
     When I open self profile
     And Contact <Contact> sends 35 encrypted messages with prefix <UNREAD> via device Device1 to user <Name>
+    And I wait for 5 seconds
     When I open conversation with <Contact>
     Then I do not see text message <READ>34
     And I do not see text message <READ>0
