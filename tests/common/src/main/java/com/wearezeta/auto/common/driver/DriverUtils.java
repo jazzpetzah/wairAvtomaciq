@@ -26,6 +26,10 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 public class DriverUtils {
     public static final int DEFAULT_PERCENTAGE = 50;
 
+    private static final int TIMEOUT_FOR_WAIT_INVALID_ELEMENT_STATE_EXCEPTION = 2;
+
+    private static final long INTERVAL_FOR_WAIT_INVALID_ELEMENT_STATE_EXCEPTION = 500;
+
     private static final Logger log = ZetaLogger.getLog(DriverUtils.class
             .getSimpleName());
 
@@ -80,17 +84,27 @@ public class DriverUtils {
                     .ignoring(InvalidElementStateException.class);
             try {
                 return wait.until(drv -> {
-                    final List<WebElement> foundElements = drv.findElements(by);
-                    if (foundElements.size() > 0) {
-                        for (WebElement element : foundElements) {
-                            if (isElementPresentAndDisplayed(driver, element)) {
-                                return true;
+                    try {
+                        Optional<List<WebElement>> foundElements = CommonUtils.waitUntil(
+                                TIMEOUT_FOR_WAIT_INVALID_ELEMENT_STATE_EXCEPTION,
+                                INTERVAL_FOR_WAIT_INVALID_ELEMENT_STATE_EXCEPTION,
+                                () -> drv.findElements(by));
+                        if (foundElements.isPresent()) {
+                            for (WebElement element : foundElements.get()) {
+                                if (isElementPresentAndDisplayed(driver, element)) {
+                                    return true;
+                                }
                             }
                         }
+                    }catch (Exception e) {
+                        return false;
                     }
+
                     return false;
                 });
             } catch (TimeoutException e) {
+                return false;
+            } catch (Exception e2) {
                 return false;
             }
         } finally {
