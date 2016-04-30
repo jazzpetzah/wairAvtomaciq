@@ -23,6 +23,7 @@ import com.wearezeta.auto.osx.common.OSXExecutionContext;
 
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.APPIUM_HUB_URL;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
+import com.wearezeta.auto.osx.locators.OSXLocators;
 
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
@@ -64,6 +65,7 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import static org.junit.Assert.assertEquals;
+import org.openqa.selenium.By;
 
 public class CommonOSXSteps {
 
@@ -138,8 +140,12 @@ public class CommonOSXSteps {
 
 		final ExecutorService pool = Executors.newFixedThreadPool(1);
 
-		Callable<ZetaOSXDriver> callableOSXDriver = () -> new ZetaOSXDriver(
-				new URL(APPIUM_HUB_URL), capabilities);
+                Callable<ZetaOSXDriver> callableOSXDriver = () -> {
+                    ZetaOSXDriver zetaOSXDriver = new ZetaOSXDriver(new URL(APPIUM_HUB_URL), capabilities);
+                    // necessary for calculating the size of the window etc. because this is not supported by AppiumForMac
+                    zetaOSXDriver.setWindowLocator(By.xpath(OSXLocators.MainWirePage.xpathWindow));
+                    return zetaOSXDriver;
+                };
 
 		final Future<ZetaOSXDriver> lazyOSXDriver = pool
 				.submit(callableOSXDriver);

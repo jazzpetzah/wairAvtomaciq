@@ -239,6 +239,7 @@ Feature: People View
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
+    Then I see Sign In page
     And I Sign in using login <KnownContact> and password <KnownContactPassword>
     And I open conversation with <ChatName>
     Then I see <MessageLeft> action for <Name> in conversation
