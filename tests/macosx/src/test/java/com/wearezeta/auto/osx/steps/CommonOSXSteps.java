@@ -13,6 +13,7 @@ import com.wearezeta.auto.common.driver.ZetaOSXWebAppDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.osx.common.OSXCommonUtils;
 
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.getSizeOfAppInMB;
@@ -203,6 +204,14 @@ public class CommonOSXSteps {
         LOG.debug("Opening app");
         // necessary to enable the driver
         osxDriver.navigate().to(WIRE_APP_PATH);// open app
+        int numWireProcesses = 0;
+        int retry = 10;
+        do {            
+            Thread.sleep(1000);
+            retry--;
+            numWireProcesses = OSXCommonUtils.getNumberOfWireProcesses();
+            LOG.debug(numWireProcesses+" Wire processes");
+        } while (numWireProcesses != 3 && retry >= 0);
     }
 
 	@Before("~@performance")
