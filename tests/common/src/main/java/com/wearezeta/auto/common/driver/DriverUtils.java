@@ -61,7 +61,8 @@ public class DriverUtils {
         final Rectangle elementRect = new Rectangle(el.getLocation().x, el.getLocation().y,
                 el.getSize().width, el.getSize().height);
         final Dimension dim = driver.manage().window().getSize();
-        return elementRect.intersects(new Rectangle(dim.getWidth(), dim.getHeight()));
+        final Rectangle windowRect = new Rectangle(dim.getWidth(), dim.getHeight());
+        return elementRect.intersects(windowRect);
     }
 
     public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver, By by) throws Exception {

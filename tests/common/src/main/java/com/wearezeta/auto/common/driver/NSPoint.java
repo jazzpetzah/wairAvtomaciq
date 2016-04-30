@@ -1,8 +1,11 @@
 package com.wearezeta.auto.common.driver;
 
+import com.wearezeta.auto.common.log.ZetaLogger;
 import java.util.regex.Matcher;
+import org.apache.log4j.Logger;
 
 public class NSPoint {
+    private static final Logger log = ZetaLogger.getLog(NSPoint.class.getSimpleName());
 	private int x;
 	private int y;
 
