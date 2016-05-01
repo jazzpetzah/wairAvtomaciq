@@ -369,7 +369,7 @@ Feature: Conversation View
     When I open conversation with <Contact>
     Then I do not see text message <READ>34
     And I do not see text message <READ>0
-    And I do not see text message <READ>34
+    And I do not see text message <UNREAD>34
     And I really see text message <UNREAD>0
 
     Examples: 
