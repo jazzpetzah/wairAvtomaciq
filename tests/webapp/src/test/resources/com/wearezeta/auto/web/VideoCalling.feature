@@ -331,7 +331,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @C77944 @videocalling @staging
+  @C77944 @videocalling @regression
   Scenario Outline: Verify I can start Video call after declining an audio call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -347,7 +347,7 @@ Feature: VideoCalling
     Then I do not see the call controls for conversation <Contact>
     And I open conversation with <Contact>
     When I start a video call
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     When I end the video call
@@ -463,7 +463,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      |
 
-  @C77946 @videocalling @staging
+  @C77946 @videocalling @regression
   Scenario Outline: Verify I can start an audio call back after declining a video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
