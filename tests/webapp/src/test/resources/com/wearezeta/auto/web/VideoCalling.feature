@@ -22,7 +22,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C12070 @videocalling @smoke
   Scenario Outline: Verify I can accept Video call
@@ -49,7 +49,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C12072 @videocalling @regression
   Scenario Outline: Verify I can decline Video call
@@ -93,7 +93,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout | OtherContact |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      | user3Name    |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      | user3Name    |
 
   @C12079 @videocalling @regression
   Scenario Outline: Verify I can make a Video call one after another
@@ -123,7 +123,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C12097 @videocalling
   Scenario Outline: Verify I can have video call more than 15 mins
@@ -196,7 +196,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C12075 @videocalling @regression
   Scenario Outline: Verify I can cancel the outgoing video call (as a caller)
@@ -248,7 +248,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C49971 @videocalling @regression
   Scenario Outline: Verify I can mute Video call before the call is established
@@ -276,7 +276,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C48229 @videocalling @regression
   Scenario Outline: Verify I can start 1:1 Video Call from Start UI
@@ -305,7 +305,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C48230 @videocalling @regression
   Scenario Outline: Verify you don't see video call button when you're creating group from Start UI
@@ -356,7 +356,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C77975 @videocalling @regression
   Scenario Outline: Verify I see the timer/duration of the video call
@@ -379,7 +379,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C78099 @videocalling @regression
   Scenario Outline: Verify I can see the incoming video call when I just login
@@ -407,7 +407,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C12076 @videocalling @regression
   Scenario Outline: Verify I get missed call indication when someone called (video)
@@ -433,7 +433,7 @@ Feature: VideoCalling
     
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout | Action |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      | called |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      | called |
 
   @C87624 @videocalling @regression
   Scenario Outline: Verify I see notification when I start a second video call
@@ -489,4 +489,4 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
