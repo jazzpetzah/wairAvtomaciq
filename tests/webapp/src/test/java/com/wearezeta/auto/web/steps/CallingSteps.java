@@ -5,6 +5,8 @@ import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import static com.wearezeta.auto.web.common.Pinger.startPinging;
+import static com.wearezeta.auto.web.common.Pinger.stopPinging;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -122,8 +124,10 @@ public class CallingSteps {
     @When("(.*) starts? instances? using (.*)$")
     public void UserXStartsInstance(String callees,
             String callingServiceBackend) throws Exception {
+        startPinging();
         commonCallingSteps.startInstances(splitAliases(callees),
                 callingServiceBackend);
+        stopPinging();
     }
 
     /**

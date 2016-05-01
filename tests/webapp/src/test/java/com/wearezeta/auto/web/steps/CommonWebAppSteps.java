@@ -49,6 +49,8 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.Browser;
+import static com.wearezeta.auto.web.common.Pinger.startPinging;
+import static com.wearezeta.auto.web.common.Pinger.stopPinging;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
@@ -63,9 +65,6 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeoutException;
 
 import org.openqa.selenium.WebDriverException;
 
@@ -93,42 +92,6 @@ public class CommonWebAppSteps {
     private String rememberedPage = null;
 
     private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
-
-    private static final int DRIVER_COMMAND_TIMEOUT_SECONDS = 30;
-    private static final ScheduledExecutorService PING_EXECUTOR = Executors.newSingleThreadScheduledExecutor();
-    private static ScheduledFuture<?> RUNNING_PINGER;
-    private static final Runnable PINGER = new Runnable() {
-        @Override
-        public void run() {
-            for (Map.Entry<Platform, Future<? extends RemoteWebDriver>> entry : PlatformDrivers.getInstance().getDrivers().entrySet()) {
-                try {
-                    RemoteWebDriver driver = entry.getValue().get(1, TimeUnit.SECONDS);
-                    log.debug(String.format("Pinging driver for \"%s\"",entry.getKey()));
-                    driver.getPageSource();
-                } catch (InterruptedException | ExecutionException | TimeoutException ex) {
-                    log.warn(String.format("Could not ping driver: %s", ex.getMessage()));
-                }
-
-            }
-        }
-    };
-
-    private static void startPinging() {
-        if (RUNNING_PINGER != null) {
-            log.warn("Driver pinger is already running - Please stop the driver pinger before starting it again");
-            return;
-        }
-        RUNNING_PINGER = PING_EXECUTOR.scheduleAtFixedRate(PINGER, 30, DRIVER_COMMAND_TIMEOUT_SECONDS, TimeUnit.SECONDS);
-    }
-
-    private static void stopPinging() {
-        if (RUNNING_PINGER != null) {
-            if (!RUNNING_PINGER.cancel(true)) {
-                log.warn("Could not stop driver pinger");
-            }
-            RUNNING_PINGER = null;
-        }
-    }
 
     private static void setCustomChromeProfile(DesiredCapabilities capabilities)
             throws Exception {
@@ -298,6 +261,7 @@ public class CommonWebAppSteps {
 
         final Future<ZetaWebAppDriver> lazyWebDriver = pool
                 .submit(callableWebAppDriver);
+        PlatformDrivers.getInstance().getDrivers().put(CURRENT_PLATFORM, lazyWebDriver);
         webdrivers.put(uniqueName, lazyWebDriver);
         lazyWebDriver.get(DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS).get(url);
         WebappPagesCollection.getInstance().setFirstPage(
