@@ -28,7 +28,7 @@ Feature: File Transfer
       | user1Email | user1Password | user1Name | user2Name | example.txt | 0B    | TXT  |
       | user1Email | user1Password | user1Name | user2Name | example.zip | 512KB | ZIP  |
 
-  @C95632 @filetransfer @staging
+  @C95632 @filetransfer @regression
   Scenario Outline: Verify file can be uploaded and re-downloaded by sender himself in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
