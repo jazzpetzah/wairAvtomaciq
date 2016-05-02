@@ -506,3 +506,17 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
 
+  @torun
+  Scenario Outline: Verify long tap on the message shows menu "Copy,Delete"
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    When I sign in using my email or phone number
+    And I accept First Time overlay as soon as it is visible
+    And I see Contact list with contacts
+    And I tap on contact name <Contact1>
+    And I type the message "<Message>" and send it
+    And I long tap on text message "<Message>"
+
+    Examples:
+      | Name      | Contact1  | Message      |
+      | user1Name | user2Name | Text Message |

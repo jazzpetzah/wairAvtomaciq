@@ -252,4 +252,8 @@ public abstract class AndroidPage extends BasePage {
         return difference >= 0
                 && difference / getDriver().manage().window().getSize().getHeight() <= locationDifferencePercentage;
     }
+
+    public void longTapOnElement(WebElement element, int durationMilliseconds) throws Exception {
+        getDriver().longTap(element, durationMilliseconds);
+    }
 }

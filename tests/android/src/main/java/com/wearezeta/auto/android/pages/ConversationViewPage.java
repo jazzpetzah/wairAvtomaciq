@@ -696,4 +696,9 @@ public class ConversationViewPage extends AndroidPage {
         }
     }
 
+    public void longTapOnMessageWithText(String text) throws Exception {
+        final By locator = By.xpath(xpathStrConversationMessageByText.apply(text));
+        longTapOnElement(getElement(locator), 4000);
+    }
+
 }

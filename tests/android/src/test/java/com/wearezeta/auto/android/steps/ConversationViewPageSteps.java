@@ -12,6 +12,7 @@ import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Assert;
 
 import java.util.ArrayList;
@@ -570,6 +571,17 @@ public class ConversationViewPageSteps {
     @When("^I (save|open) file (?:in|from) file dialog$")
     public void ISaveOrOpenFile(String action) throws Exception {
         getConversationViewPage().tapFileDialogActionButton(action);
+    }
+
+    @When("^I long tap on (text|ping|media|call|file|image) message \"(.*)\"$")
+    public void ILongTapMessage(String messageType,String message) throws Exception {
+        switch (messageType) {
+            case "text" :
+                getConversationViewPage().longTapOnMessageWithText(message);
+                break;
+            default:
+                throw new NotImplementedException("Only could long tap on text message");
+        }
     }
 
     /**
