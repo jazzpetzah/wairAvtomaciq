@@ -125,6 +125,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact1>
+    And I navigate back to conversations list
     And I remember the left side state of <Contact> conversation item on iPad
     And <Contact> calls me
     And <Contact> stops calling me
