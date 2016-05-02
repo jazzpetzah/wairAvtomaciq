@@ -326,7 +326,7 @@ Feature: VideoCalling
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
     When <Contact> calls me
-    And I see incoming video call
+    And I see incoming call
     And I swipe to ignore the call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
     When I tap Video Call button from top toolbar
