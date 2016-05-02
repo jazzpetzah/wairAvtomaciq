@@ -205,7 +205,7 @@ Feature: Utility
       | osx     |
       | windows |
 
-  @C14580 @utility
+  @C14580 @utility @useSpecialEmail
   Scenario Outline: Verify you can delete account on <Agent>
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -232,7 +232,7 @@ Feature: Utility
       | user1Email | user1Password | user1Name | Please verify your details and try again. | osx     |
       | user1Email | user1Password | user1Name | Please verify your details and try again. | windows |
 
-  @C14581 @utility
+  @C14581 @utility @useSpecialEmail
   Scenario Outline: Change key checksum on <Agent>
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -255,7 +255,7 @@ Feature: Utility
       | user1Email | user1Password | user1Name | osx     |
       | user1Email | user1Password | user1Name | windows |
 
-  @C14582 @utility
+  @C14582 @utility @useSpecialEmail
   Scenario Outline: Change code checksum on <Agent>
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -278,7 +278,7 @@ Feature: Utility
       | user1Email | user1Password | user1Name | osx     |
       | user1Email | user1Password | user1Name | windows |
 
-  @C14583 @utility
+  @C14583 @utility @useSpecialEmail
   Scenario Outline: Remove checksums on <Agent>
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
