@@ -258,6 +258,18 @@ public class ConversationPageSteps {
     }
 
     /**
+     * Verifies that x messages are in the conversation
+     *
+     * @param x the amount of sent messages
+     * @step. ^I see (\\d+) messages in conversation$
+     */
+    @Then("^I see (\\d+) messages in conversation$")
+    public void ISeeXMessagesInConversation(int x) throws Exception {
+        assertThat("Number of messages int the conversation", webappPagesCollection.getPage(ConversationPage.class)
+                .getNumberOfMessagesInCurrentConversation(), equalTo(x));
+    }
+
+    /**
      * Verifies if file transfer button is shown in the cursor
      *
      * @throws Exception

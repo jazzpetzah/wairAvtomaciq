@@ -51,6 +51,9 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssImageEntries)
 	private List<WebElement> imageEntries;
 
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssMessageAmount)
+	private List<WebElement> messageAmount;
+
 	@FindBy(id = WebAppLocators.ConversationPage.idConversation)
 	private WebElement conversation;
 
@@ -445,6 +448,10 @@ public class ConversationPage extends WebPage {
 
 	public int getNumberOfImagesInCurrentConversation() {
 		return imageEntries.size();
+	}
+
+	public int getNumberOfMessagesInCurrentConversation() {
+		return messageAmount.size();
 	}
 
 	public void clickPingButton() throws Exception {
