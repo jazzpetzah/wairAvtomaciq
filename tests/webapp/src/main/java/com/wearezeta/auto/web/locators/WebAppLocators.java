@@ -353,6 +353,8 @@ public final class WebAppLocators {
 
         public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']:not(.image-loading)";
 
+        public static final String cssMessageAmount = "[data-uie-name='item-message']";
+
         public static final String cssPingMessage = ".pinged";
 
         // special message identifier

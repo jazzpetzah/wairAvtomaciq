@@ -8,15 +8,28 @@ Feature: Conversation List
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     Given I see Contact list with name <Contact>
-    When I archive conversation <Contact>
+    When I open conversation with <Contact>
+    And I send picture <PictureName> to the current conversation
+    And I write random message
+    And I send message
+    And I click ping button
+    And I send 24MB sized file with name <File> to the current conversation
+    And I wait until file <File> is uploaded completely
+    And I archive conversation <Contact>
     Then I do not see Contact list with name <Contact>
     When I open archive
     And I unarchive conversation <Contact>
     Then I see Contact list with name <Contact>
+    When I open conversation with <Contact>
+    Then I see random message in conversation
+    And I see only 1 picture in the conversation
+    And I see <PING> action 1 times in conversation
+    And I see file transfer for file <File> in the conversation view
+    And I see 4 messages in conversation
 
-    Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+    Examples:
+      | Login      | Password      | Name      | Contact   | PictureName               | PING       | File        |
+      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | you pinged | example.txt |
 
   @C1757 @smoke
   Scenario Outline: Mute 1on1 conversation
