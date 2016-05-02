@@ -71,7 +71,7 @@ Feature: Utility
     When I navigate to start page for <Agent>
     When I navigate to start page for <Agent>
     And I change language to german
-    And <Page> page for <Agent> is german
+    And start page for <Agent> is german
     Then I can see no dead links
 
     Examples:
@@ -86,7 +86,7 @@ Feature: Utility
     When I navigate to privacy page for <Agent>
     When I navigate to privacy page for <Agent>
     And I change language to german
-    And <Page> page for <Agent> is german
+    And privacy page for <Agent> is german
     Then I can see no dead links
 
     Examples:
