@@ -8,6 +8,7 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import cucumber.api.PendingException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -324,8 +325,12 @@ public class ConversationViewPageSteps {
 
     @When("^I scroll media out of sight until media bar appears$")
     public void IScrollMediaOutOfSightUntilMediaBarAppears() throws Exception {
-        Assert.assertTrue("Media bar is not displayed after the view has been scrolled to the top",
-                getConversationViewPage().scrollDownTillMediaBarAppears());
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            throw new PendingException("Known Bug: Media bar disappears unexpectedly on Simulator");
+        } else {
+            Assert.assertTrue("Media bar is not displayed after the view has been scrolled to the top",
+                    getConversationViewPage().scrollDownTillMediaBarAppears());
+        }
     }
 
     @When("^I pause playing the media in media bar$")
@@ -994,8 +999,8 @@ public class ConversationViewPageSteps {
     /**
      * Verify file transfer placeholder visibility
      *
-     * @throws Exception
      * @param shouldNotBeVisible equals to null if the placeholder should be visible
+     * @throws Exception
      * @step. ^I (do not )?see file transfer placeholder$
      */
     @When("^I (do not )?see file transfer placeholder$")
