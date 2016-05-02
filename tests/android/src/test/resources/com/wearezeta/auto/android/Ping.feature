@@ -8,8 +8,7 @@ Feature: Ping
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I tap plus button in text input
-    And I tap Ping button from input tools
+    And I tap Ping button from cursor toolbar
     Then I see Ping message <Msg> in the dialog
 
     Examples:
@@ -25,11 +24,9 @@ Feature: Ping
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And I tap plus button in text input
-    And I tap Ping button from input tools
+    And I tap Ping button from cursor toolbar
     Then I see Ping message <Msg1> in the dialog
-    When I tap plus button in text input
-    And I tap Ping button from input tools
+    And I tap Ping button from cursor toolbar
     Then I see Ping message <Msg2> in the dialog
 
     Examples:

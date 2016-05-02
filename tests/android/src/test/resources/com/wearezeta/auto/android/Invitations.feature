@@ -44,7 +44,7 @@ Feature: Invitations
     And User <Contact> is me without picture
     Then I see Contact list with contacts
     When I tap on contact name <Name>
-    Then I see dialog page
+    Then I see conversation view
 
     Examples:
       | Name      | Contact   | ContactEmail | ContactPassword | Message |

@@ -48,8 +48,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
             By.xpath("//OtrSwitch[@id='os__single_otr_client__verify']//TypefaceTextView[contains(@value, 'erified')]");
 
     private static final Function<String, String> xpathParticipantAvatarByName = name -> String
-            .format("//*[@id='cv__group__adapter' and ./parent::*/*[@value='%s']]",
-                    name.split("\\s+")[0]);
+            .format("//*[@id='cv__chathead' and ./parent::*/*[@value='%s']]",
+                    name.toUpperCase());
 
     // TODO: Improve locator
     private static final Function<String, String> xpathVerifiedParticipantAvatarByName = name -> String

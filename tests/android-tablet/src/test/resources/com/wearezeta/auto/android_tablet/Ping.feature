@@ -9,11 +9,9 @@ Feature: Ping
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    And I swipe right on text input in the conversation view
-    When I tap Ping button in the conversation view
+    When I tap Ping button from cursor toolbar
     Then I see the ping message "<Message1>" in the conversation view
-    When I swipe right on text input in the conversation view
-    And I tap Ping button in the conversation view
+    When I tap Ping button from cursor toolbar
     Then I see the ping message "<Message2>" in the conversation view
 
     Examples:
@@ -29,11 +27,9 @@ Feature: Ping
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    And I swipe right on text input in the conversation view
-    When I tap Ping button in the conversation view
+    When I tap Ping button from cursor toolbar
     Then I see the ping message "<Message1>" in the conversation view
-    When I swipe right on text input in the conversation view
-    And I tap Ping button in the conversation view
+    And I tap Ping button from cursor toolbar
     Then I see the ping message "<Message2>" in the conversation view
 
     Examples:

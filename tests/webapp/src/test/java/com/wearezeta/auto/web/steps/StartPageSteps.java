@@ -90,7 +90,18 @@ public class StartPageSteps {
             assertThat("Tested URL: " + href,statusCode, lessThan(400));
         }
 	}
-	
+
+	/**
+	 * Verifies that the language button is visible
+	 *
+	 * @step ^I can see language switch button for (.*) on (.*) for (.*)
+	 *
+	 * @param language the sites current language
+	 * @param page the current utility page
+	 * @param agent the used agent (iphone/android/osx/windows)
+	 *
+	 * @throws Exception
+     */
 	@Then("^I can see language switch button for (.*) on (.*) for (.*)$")
 	public void ICanSeeLanguageSwitchButton(String language, String page, String agent) throws Exception {
 		String url = "";
@@ -113,7 +124,18 @@ public class StartPageSteps {
 	public void IChangeLanguageTo(String language) throws Exception {
 		webappPagesCollection.getPage(StartPage.class).changeLanguageTo(language);
 	}
-	
+
+	/**
+	 * Verifies that an utility page is in the given language
+	 *
+	 * @step ^(.*) page for (.*) is (.*)
+	 *
+	 * @param page the current utility page
+	 * @param agent the used agent (iphone/android/osx/windows)
+	 * @param language the expected language
+	 *
+	 * @throws Exception
+     */
 	@Then("^(.*) page for (.*) is (.*)$")
 	public void StartPageIs(String page, String agent, String language) throws Exception {
 		StartPage startPage = WebappPagesCollection.getInstance()

@@ -20,10 +20,6 @@ public abstract class AndroidPage extends BasePage {
 
     protected static final By idGiphyPreviewButton = By.id("cursor_button_giphy");
 
-    protected static final By idEditText = By.id("cursor_edit_text");
-
-    protected static final By idCursorArea = By.id("caret");
-
     protected static final By idGalleryBtn = By.id("gtv__camera_control__pick_from_gallery");
 
     protected static final By idCloseImageBtn = By.id("gtv__single_image_message__close");

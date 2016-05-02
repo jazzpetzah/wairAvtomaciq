@@ -37,8 +37,7 @@ Feature: Offline
     And I type the message "<Message>" and send it
     Then I see unsent indicator next to "<Message>" in the conversation view
     When I hide keyboard
-    And I swipe on text input
-    And I tap Add Picture button from input tools
+    And I tap Add picture button from cursor toolbar
     And I press "Take Photo" button
     And I press "Confirm" button
     And I scroll to the bottom of conversation view
