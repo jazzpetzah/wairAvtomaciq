@@ -46,7 +46,7 @@ Feature: Utility
     When I navigate to start page for <Agent>
     Then I can see no dead links
 
-    Examples: 
+    Examples:
       | Agent   |
       | iphone  |
       | android |
@@ -65,7 +65,7 @@ Feature: Utility
       | android |
       | osx     |
       | windows |
-  
+
   @C12086 @utility
   Scenario Outline: Verify that there are no dead links on german start page for <Agent>
     When I navigate to start page for <Agent>
@@ -74,7 +74,7 @@ Feature: Utility
     And <Page> page for <Agent> is german
     Then I can see no dead links
 
-    Examples: 
+    Examples:
       | Agent   |
       | iphone  |
       | android |
@@ -95,7 +95,7 @@ Feature: Utility
       | android |
       | osx     |
       | windows |
-        
+
   @C5232 @utility @useSpecialEmail
   Scenario Outline: Check password reset utility page for all agents
     Given There is 1 user where <Name> is me
@@ -122,7 +122,7 @@ Feature: Utility
     And I press Sign In button
     Then I am signed in properly
 
-    Examples: 
+    Examples:
       | Email      | OldPassword   | Name      | NewPassword | LoginErr                                  | Agent   |
       | user1Email | user1Password | user1Name | aqa654321#  | Please verify your details and try again. | iphone  |
       | user1Email | user1Password | user1Name | aqa654321#  | Please verify your details and try again. | android |
@@ -137,7 +137,7 @@ Feature: Utility
     And I click Change Password button on Password Change Request page
     Then I see unused mail message
 
-    Examples: 
+    Examples:
       | UnregisteredMail                 | Agent   |
       | smoketester+sm0k3t3st3r@wire.com | iphone  |
       | smoketester+sm0k3t3st3r@wire.com | android |
@@ -160,7 +160,7 @@ Feature: Utility
     And I click Change Password button on Password Change page
     Then I dont see Password Change Succeeded page
 
-    Examples: 
+    Examples:
       | Email      | Name      | NewPassword | Agent   |
       | user1Email | user1Name | aqa654321#  | ios     |
       | user1Email | user1Name | aqa654321#  | android |
@@ -174,31 +174,31 @@ Feature: Utility
     When I navigate to verify page for <Agent>
     Then I see download button for <Agent>
 
-    Examples: 
+    Examples:
       | Agent   |
       | iphone  |
       | android |
 
   @C3277 @utility
   Scenario: Verify buttons from verification link for osx
-  When I go to verify page for osx
-  When I go to verify page for osx
-  Then I see download button for osx
-  And I see webapp button
+    When I go to verify page for osx
+    When I go to verify page for osx
+    Then I see download button for osx
+    And I see webapp button
 
   @C3278 @utility
   Scenario: Verify buttons from verification link for windows
-  When I go to verify page for windows
-  When I go to verify page for windows
-  Then I see download button for windows
+    When I go to verify page for windows
+    When I go to verify page for windows
+    Then I see download button for windows
 
   @C5236 @utility
   Scenario Outline: Verify error message by broken verification link for <Agent>
-  When I go to broken verify page for <Agent>
-  When I go to broken verify page for <Agent>
-  Then I see error message
+    When I go to broken verify page for <Agent>
+    When I go to broken verify page for <Agent>
+    Then I see error message
 
-  Examples: 
+    Examples:
       | Agent   |
       | iphone  |
       | android |
@@ -231,7 +231,7 @@ Feature: Utility
       | user1Email | user1Password | user1Name | Please verify your details and try again. | android |
       | user1Email | user1Password | user1Name | Please verify your details and try again. | osx     |
       | user1Email | user1Password | user1Name | Please verify your details and try again. | windows |
-      
+
   @C14581 @utility
   Scenario Outline: Change key checksum on <Agent>
     Given There is 1 user where <Name> is me
@@ -247,14 +247,14 @@ Feature: Utility
     And I navigate to delete account page of user <Name> on <Agent> with changed key checksum
     And I click delete account button
     Then I see error message for wrong key checksum
-    
+
     Examples:
       | Email      | Password      | Name      | Agent   |
       | user1Email | user1Password | user1Name | iphone  |
       | user1Email | user1Password | user1Name | android |
       | user1Email | user1Password | user1Name | osx     |
       | user1Email | user1Password | user1Name | windows |
-      
+
   @C14582 @utility
   Scenario Outline: Change code checksum on <Agent>
     Given There is 1 user where <Name> is me
@@ -270,16 +270,16 @@ Feature: Utility
     Then I navigate to delete account page of user <Name> on <Agent> with changed code checksum
     And I click delete account button
     Then I see error message for wrong code checksum
-        
+
     Examples:
       | Email      | Password      | Name      | Agent   |
       | user1Email | user1Password | user1Name | iphone  |
       | user1Email | user1Password | user1Name | android |
       | user1Email | user1Password | user1Name | osx     |
       | user1Email | user1Password | user1Name | windows |
-            
+
   @C14583 @utility
-    Scenario Outline: Remove checksums on <Agent>
+  Scenario Outline: Remove checksums on <Agent>
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
@@ -300,22 +300,22 @@ Feature: Utility
 
     Examples:
       | Email      | Password      | Name      | Agent   |
-      | user1Email | user1Password | user1Name | iphone  |      
+      | user1Email | user1Password | user1Name | iphone  |
       | user1Email | user1Password | user1Name | android |
       | user1Email | user1Password | user1Name | osx     |
-      | user1Email | user1Password | user1Name | windows |  
+      | user1Email | user1Password | user1Name | windows |
 
   @C49970 @utility
-    Scenario Outline: Verify that language switch works for <Agent>
+  Scenario Outline: Verify that language switch works for <Agent>
     When I navigate to <Page> page for <Agent>
     When I navigate to <Page> page for <Agent>
     And I can see language switch button for english on <Page> for <Agent>
     Then I change language to german
-    And <Page> page for <Agent> is german 
+    And <Page> page for <Agent> is german
     And I can see language switch button for german on <Page> for <Agent>
     Then I change language to english
     Then <Page> page for <Agent> is english
-    
+
     Examples:
       | Agent   | Page     |
       | iphone  | start    |
@@ -323,7 +323,7 @@ Feature: Utility
       | iphone  | legal    |
       | iphone  | job      |
       | iphone  | download |
-      | iphone  | forgot   |     
+      | iphone  | forgot   |
       | android | start    |
       | android | privacy  |
       | android | legal    |
