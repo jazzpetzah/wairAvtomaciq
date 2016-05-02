@@ -440,7 +440,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C111622 @staging @C111625
+  @C111622 @C111625 @rc @regression
   Scenario Outline: Verify tooltip is shown in different condition
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -460,7 +460,7 @@ Feature: Conversation View
       | Name      | Contact1  | Message |
       | user1Name | user2Name | testing |
 
-  @C111631 @staging @C111634
+  @C111631 @C111634 @rc @regression
   Scenario Outline: Verify cursor and toolbar are not shown on left/removed from conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -488,7 +488,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @C111635 @staging
+  @C111635 @rc @regression
   Scenario Outline: Verify the cursor is not shown on the new device after you leave the group from another device
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
