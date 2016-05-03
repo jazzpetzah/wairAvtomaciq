@@ -88,7 +88,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C1817 @regression
+  @C1817 @regression @WEBAPP-2685
   Scenario Outline: Verify sending a connection request to user from conversation view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>

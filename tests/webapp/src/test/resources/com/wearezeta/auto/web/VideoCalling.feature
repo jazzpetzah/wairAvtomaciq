@@ -339,9 +339,9 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given <Contact> calls me
     When I am signed in properly
-    Then I see the incoming call controls for conversation <Contact>
+    Then <Contact> calls me
+    And I see the incoming call controls for conversation <Contact>
     And I see decline call button for conversation <Contact>
     When I ignore the call from conversation <Contact>
     Then I do not see the call controls for conversation <Contact>
