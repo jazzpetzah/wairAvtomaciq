@@ -8,7 +8,7 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I call
     Then I see the outgoing call controls for conversation <Contact>
@@ -37,7 +37,7 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     And I call
     And <Contact> accepts next incoming call automatically
@@ -61,7 +61,7 @@ Feature: Calling
     Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact1>
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
@@ -88,7 +88,7 @@ Feature: Calling
     Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact1>
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
@@ -116,7 +116,7 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     And I call
     Then <Contact> accepts next incoming call automatically
@@ -149,7 +149,7 @@ Feature: Calling
     Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -212,7 +212,7 @@ Feature: Calling
     Given <Contact1>,<Contact2> starts instance using <CallBackend>    
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact1>
     Then <Contact1>,<Contact2> accept next incoming call automatically
     And <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
@@ -256,7 +256,7 @@ Feature: Calling
     Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact1>
     When <Contact2> accepts next incoming call automatically
     Then <Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
@@ -302,7 +302,7 @@ Feature: Calling
     Given <Contact1> starts instance using <WaitBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    Then I am signed in properly
     When I open conversation with <ChatName1>
     And <Contact1> accept next incoming call automatically
     Then <Contact1> verify that waiting instance status is changed to waiting in <Timeout> seconds
@@ -338,7 +338,7 @@ Feature: Calling
     Given <Contact4> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    Then I am signed in properly
     When I open conversation with <ChatName1>
     And <Contact1>,<Contact2> accept next incoming call automatically
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
@@ -390,7 +390,7 @@ Feature: Calling
     Given <Contact> is connected to <Name>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I call
     Then I wait for 5 seconds
@@ -408,7 +408,7 @@ Feature: Calling
     Given <Contact1> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open self profile
     When <Contact1> calls me
     And I wait for 1 seconds
@@ -431,7 +431,7 @@ Feature: Calling
     Given <Contact1>,<Contact2> starts instance using <CallWaitBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When <Contact1> calls me
     And I see the incoming call controls for conversation <Contact1>
     When I ignore the call from conversation <Contact1>
@@ -458,7 +458,7 @@ Feature: Calling
     Given Myself blocked <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When <Contact> calls me
     Then <Contact> verifies that call status to Myself is changed to connecting in <Timeout> seconds
     And I do not see the call controls for conversation <Contact>
@@ -475,7 +475,7 @@ Feature: Calling
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given <Contact> starts instance using <CallBackend>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I set muted state for conversation <Contact>
     When <Contact> calls me
     Then <Contact> verifies that call status to Myself is changed to connecting in <Timeout> seconds
@@ -492,7 +492,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I call
     And I see the outgoing call controls for conversation <Contact>
@@ -513,7 +513,7 @@ Feature: Calling
     Given <Contact1>,<Contact2> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     When I call
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
@@ -537,7 +537,7 @@ Feature: Calling
     Given <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     When <Contact1> calls <ChatName>
     And <Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
@@ -566,7 +566,7 @@ Feature: Calling
     Given <Contact2>,<Contact3>,<Contact4>,<Contact5> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     When <Contact1> calls <ChatName> using <CallBackend>
     And <Contact2>,<Contact3>,<Contact4>,<Contact5> verify that waiting instance status is changed to active in <Timeout> seconds
@@ -595,7 +595,7 @@ Feature: Calling
     Given <Contact1>,<Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     When I call
     And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
@@ -619,7 +619,7 @@ Feature: Calling
     Given <Contact2> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When <Contact1> calls <ChatName>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
@@ -642,7 +642,7 @@ Feature: Calling
     Given <Contact1>,<Contact2> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     When I call
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
@@ -673,7 +673,7 @@ Feature: Calling
     Given <Contact2> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When <Contact1> calls <ChatName>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
@@ -701,7 +701,7 @@ Feature: Calling
     Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     Then I call 100 times for 1 minutes with <Contact1>,<Contact2>,<Contact3>,<Contact4>
 
@@ -718,7 +718,7 @@ Feature: Calling
     Given <Contact1>,<Contact2> starts instance using <WaitBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     Then I call 10 times for 5 minutes with <Contact1>,<Contact2>
 
@@ -738,7 +738,7 @@ Feature: Calling
     Given <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    Then I am signed in properly
     When I open conversation with <ChatName1>
     And I call
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
