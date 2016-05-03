@@ -158,9 +158,9 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final String FILE_MESSAGE_SEPARATOR = " · ";
 
-    private static final int SCROLL_TO_BOTTOM_TIMEOUT_SECOND = 60;
+    private static final int SCROLL_TO_BOTTOM_TIMEOUT_SECONDS = 60;
 
-    private static final long SCROLL_TO_BOTTOM_INTERVAL_MILLISECOND =1000;
+    private static final int SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS =1000;
 
     private static final double SCROLL_TO_BOTTOM_MIN_SIMILARITY_SCORE = 0.97;
 
@@ -320,14 +320,13 @@ public class ConversationViewPage extends AndroidPage {
                 () -> getConvoViewStateScreenshot());
         do {
             initState.remember();
-            swipeByCoordinates(1000, 50, 75, 50, 40);
-            Thread.sleep(SCROLL_TO_BOTTOM_INTERVAL_MILLISECOND);
-        } while (System.currentTimeMillis() - millisecondsStarted <= SCROLL_TO_BOTTOM_TIMEOUT_SECOND * 1000
+            swipeByCoordinates(SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS, 50, 75, 50, 40);
+        } while (System.currentTimeMillis() - millisecondsStarted <= SCROLL_TO_BOTTOM_TIMEOUT_SECONDS * 1000
                 && initState.isChanged(1, SCROLL_TO_BOTTOM_MIN_SIMILARITY_SCORE));
 
-        if (System.currentTimeMillis() - millisecondsStarted > SCROLL_TO_BOTTOM_TIMEOUT_SECOND * 1000) {
+        if (System.currentTimeMillis() - millisecondsStarted > SCROLL_TO_BOTTOM_TIMEOUT_SECONDS * 1000) {
             throw new IllegalStateException(String.format("Cannot scroll to the conversation bottom in %d seconds",
-                    SCROLL_TO_BOTTOM_TIMEOUT_SECOND));
+                    SCROLL_TO_BOTTOM_TIMEOUT_SECONDS));
         }
     }
 
