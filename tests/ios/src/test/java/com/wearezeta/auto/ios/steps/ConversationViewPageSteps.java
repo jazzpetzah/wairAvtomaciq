@@ -497,7 +497,7 @@ public class ConversationViewPageSteps {
             Assert.assertTrue("Input placeholder text is not visible",
                     getConversationViewPage().isInputPlaceholderTextVisible());
         } else {
-            Assert.assertTrue("Input placeholder text is not visible",
+            Assert.assertTrue("Input placeholder text is visible",
                     getConversationViewPage().isInputPlaceholderTextInvisible());
         }
     }
@@ -567,28 +567,21 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify tools Buttons are presented after text input swipe
+     * Verify that all buttons in toolbar are visible or not
      *
+     * @param shouldNotBeVisible equals to null if the toolbar should be visible
      * @throws Exception
-     * @step. ^I see conversation tools buttons$
+     * @step. ^I (do not )?see conversation tools buttons$
      */
-    @When("^I see conversation tools buttons$")
-    public void ISeeToolsButtons() throws Exception {
-        Assert.assertTrue("Some of expected input tools buttons are not visible",
-                getConversationViewPage().areInputToolsVisible());
-    }
-
-    /**
-     * Verify that only People button is shown. Rest button should not be
-     * visible
-     *
-     * @throws Exception
-     * @step. ^I see no conversation tools buttons$
-     */
-    @When("^I see no conversation tools buttons$")
-    public void ISeeOnlyPeopleButtonRestNotShown() throws Exception {
-        Assert.assertTrue("Some of input tools buttons are still visible",
-                getConversationViewPage().areInputToolsInvisible());
+    @When("^I (do not )?see conversation tools buttons$")
+    public void ISeeOnlyPeopleButtonRestNotShown(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("Some of input tools buttons are not visible",
+                    getConversationViewPage().areInputToolsVisible());
+        } else {
+            Assert.assertTrue("Some of input tools buttons are still visible",
+                    getConversationViewPage().areInputToolsInvisible());
+        }
     }
 
     /**
