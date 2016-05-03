@@ -487,13 +487,19 @@ public class ConversationViewPageSteps {
     /**
      * Check whether text input placeholder text is visible
      *
+     * @param shouldNotBeVisible equals to null if the placeholder should be visible
      * @throws Exception
      * @step. ^I see input placeholder text$
      */
-    @Then("^I see input placeholder text$")
-    public void ISeeInputPlaceholderText() throws Exception {
-        Assert.assertTrue("Input placeholder text is not visible",
-                getConversationViewPage().isInputPlaceholderTextVisible());
+    @Then("^I (do not )?see input placeholder text$")
+    public void ISeeInputPlaceholderText(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("Input placeholder text is not visible",
+                    getConversationViewPage().isInputPlaceholderTextVisible());
+        } else {
+            Assert.assertTrue("Input placeholder text is not visible",
+                    getConversationViewPage().isInputPlaceholderTextInvisible());
+        }
     }
 
     /**
