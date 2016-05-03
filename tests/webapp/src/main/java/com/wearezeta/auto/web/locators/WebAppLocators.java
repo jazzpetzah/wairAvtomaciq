@@ -267,7 +267,7 @@ public final class WebAppLocators {
 
     public static final class SelfProfilePage {
 
-        public static final String cssGearButton = "#self-profile:not(.self-profile-transition-in) #show-settings";
+        public static final String cssGearButton = "[data-uie-name='do-settings-menu']";
 
         public static final String xpathGearMenuRoot = "//div[@id='setting-bubble' and contains(@class, 'bubble-show')]";
 
