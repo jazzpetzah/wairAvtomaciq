@@ -775,3 +775,24 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
+
+  @C111318 @staging
+  Scenario Outline: Verify cursor and toolbar appear after adding person back
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other
+    Given Myself has group chat <GroupChatName> with all other
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    And I see input placeholder text
+    And I see Add Picture button in input tools palette
+    When <Contact> removed <Name> from group chat <GroupChatName>
+    Then I see no conversation tools buttons
+    And I do not see text input in conversation view
+    When User <Contact> adds user <Name> to group chat <GroupChatName>
+    Then I see Add Picture button in input tools palette
+    And I see input placeholder text
+
+    Examples:
+      | Name      | Contact   | GroupChatName  |
+      | user1Name | user2Name | CURSOR TOOLBAR |
