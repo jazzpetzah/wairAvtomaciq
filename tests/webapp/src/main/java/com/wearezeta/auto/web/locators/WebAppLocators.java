@@ -316,6 +316,10 @@ public final class WebAppLocators {
         // messages (including images, text, missed call notifications, pings)
         public static final String cssMessage = "[data-uie-name='item-message']";
 
+        public static final String cssDeleteLastMessageButton = "[data-uie-name='item-message']:last-child [data-uie-name='do-message-delete']";
+
+        public static final String cssAcceptDeleteMsg = "[data-uie-name='do-delete']";
+
         // message header contains action description
         public static String cssMessageHeader = cssMessage + " .message-header";
 
