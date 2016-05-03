@@ -63,7 +63,7 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idCursorFrame = By.id("cursor_layout");
 
     public static final Function<String, String> xpathStrPingMessageByText = text -> String
-            .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']", text);
+            .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']", text.toUpperCase());
 
     private static final By xpathDialogTakePhotoButton = By
             .xpath("//*[@id='gtv__camera_control__take_a_picture' and @shown='true']");
