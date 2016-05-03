@@ -24,16 +24,12 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class ConversationViewPage extends IOSPage {
     private static final By nameConversationBackButton = MobileBy.AccessibilityId("ConversationBackButton");
 
-    // TODO: Use Accessibility Id
-    private static final By xpathConversationInput =
-            By.xpath(xpathStrMainWindow + "/UIATableView//following-sibling::UIATextView[1]");
+    private static final By nameConversationInput = MobileBy.AccessibilityId("inputField");
 
     private static final Function<String, String> xpathStrConversationInputByValue = value ->
             String.format(xpathStrMainWindow + "/UIATableView//following-sibling::UIATextView[1][@value='%s']", value);
 
-    // TODO: Use Accessibility Id
-    private static final By xpathConversationInputAvatar =
-            By.xpath(xpathStrMainWindow + "/UIATableView/following-sibling::UIAImage[1]");
+    private static final By nameConversationInputAvatar = MobileBy.AccessibilityId("authorImage");
 
     private static final By nameInputPlaceholderText = MobileBy.AccessibilityId("TYPE A MESSAGE …");
 
@@ -212,11 +208,11 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean waitForCursorInputVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathConversationInput, 10);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConversationInput, 10);
     }
 
     public boolean waitForCursorInputInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConversationInput);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConversationInput);
     }
 
     public void clickOnCallButtonForContact(String contact) throws Exception {
@@ -225,11 +221,11 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapOnCursorInput() throws Exception {
-        getElement(xpathConversationInput).click();
+        getElement(nameConversationInput).click();
     }
 
     public void clearTextInput() throws Exception {
-        getElement(xpathConversationInput).clear();
+        getElement(nameConversationInput).clear();
     }
 
     public boolean isCurrentInputTextEqualTo(String expectedMsg) throws Exception {
@@ -390,7 +386,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapHoldTextInput() throws Exception {
-        final WebElement textInput = getElement(xpathConversationInput);
+        final WebElement textInput = getElement(nameConversationInput);
         this.getDriver().tap(1, textInput, DriverUtils.LONG_TAP_DURATION);
     }
 
@@ -408,7 +404,7 @@ public class ConversationViewPage extends IOSPage {
     private static final long KEYBOARD_OPEN_ANIMATION_DURATION = 5500; // milliseconds
 
     public void typeAndSendConversationMessage(String message) throws Exception {
-        final WebElement convoInput = getElement(xpathConversationInput,
+        final WebElement convoInput = getElement(nameConversationInput,
                 "Conversation input is not visible after the timeout");
         convoInput.click();
         // Wait for animation
@@ -422,7 +418,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void typeMessage(String message) throws Exception {
-        final WebElement convoInput = getElement(xpathConversationInput,
+        final WebElement convoInput = getElement(nameConversationInput,
                 "Conversation input is not visible after the timeout");
         convoInput.click();
         // Wait for animation
@@ -469,11 +465,11 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isUserAvatarNextToInputVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathConversationInputAvatar);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConversationInputAvatar);
     }
 
     public boolean isUserAvatarNextToInputInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConversationInputAvatar);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConversationInputAvatar);
     }
 
     public void tapMessage(String expectedLink) throws Exception {
@@ -508,7 +504,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void pasteAndCommit() throws Exception {
-        final WebElement convoInput = getElement(xpathConversationInput,
+        final WebElement convoInput = getElement(nameConversationInput,
                 "Conversation input is not visible after the timeout");
         convoInput.click();
         // Wait for animation
@@ -651,6 +647,10 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isInputPlaceholderTextVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInputPlaceholderText);
+    }
+
+    public boolean isInputPlaceholderTextInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameInputPlaceholderText);
     }
 
     public void scrollToTheBottom() throws Exception {
