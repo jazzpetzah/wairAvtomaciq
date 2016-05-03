@@ -1,13 +1,17 @@
 Feature: Conversation View
 
   @C3182 @regression @id855
-  Scenario Outline: Verify swipe right tutorial appearance
+  Scenario Outline: Verify tooltip is shown when cursor area is empty and in/not in focus
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
     Then I see input placeholder text
+    When I tap on text input
+    Then I see input placeholder text
+    When I type the default message
+    Then I do not see input placeholder text
 
     Examples:
       | Name      | Contact   |
