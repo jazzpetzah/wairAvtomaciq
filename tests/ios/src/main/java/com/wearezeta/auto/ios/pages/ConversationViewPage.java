@@ -24,10 +24,12 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class ConversationViewPage extends IOSPage {
     private static final By nameConversationBackButton = MobileBy.AccessibilityId("ConversationBackButton");
 
-    private static final By nameConversationInput = MobileBy.AccessibilityId("inputField");
+    private static final String nameStrConversationInputField = "inputField";
+
+    private static final By nameConversationInput = MobileBy.AccessibilityId(nameStrConversationInputField);
 
     private static final Function<String, String> xpathStrConversationInputByValue = value ->
-            String.format("//UIATextView[@name='inputField'and @value='%s']", value);
+            String.format("//UIATextView[@name='%s' and @value='%s']", nameStrConversationInputField, value);
 
     private static final By nameConversationInputAvatar = MobileBy.AccessibilityId("authorImage");
 
