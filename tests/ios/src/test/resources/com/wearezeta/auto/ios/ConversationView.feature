@@ -785,14 +785,14 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I see input placeholder text
-    And I see Add Picture button in input tools palette
+    And I see conversation tools buttons
     When <Contact> removed <Name> from group chat <GroupChatName>
-    Then I see no conversation tools buttons
+    Then I do not see conversation tools buttons
     And I do not see text input in conversation view
     When User <Contact> adds user <Name> to group chat <GroupChatName>
-    Then I see Add Picture button in input tools palette
+    Then I see conversation tools buttons
     And I see input placeholder text
 
     Examples:
-      | Name      | Contact   | GroupChatName  |
-      | user1Name | user2Name | CURSOR TOOLBAR |
+      | Name      | Contact   | GroupChatName |
+      | user1Name | user2Name | CURSORTOOLBAR |
