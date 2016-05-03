@@ -209,8 +209,7 @@ Feature: Calling
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts instance using <CallBackend>
-    
+    Given <Contact1>,<Contact2> starts instance using <CallBackend>    
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -293,6 +292,40 @@ Feature: Calling
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    | chrome      | 20      |
+
+  @C119432 @staging @calling @group
+  Scenario Outline: Verify I can not make a call in group chat with more than 10 participants
+    Given My browser supports calling
+    Given There are 11 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10>
+    Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10>
+    Given <Contact1> starts instance using <WaitBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see my avatar on top of Contact list
+    When I open conversation with <ChatName1>
+    And <Contact1> accept next incoming call automatically
+    Then <Contact1> verify that waiting instance status is changed to waiting in <Timeout> seconds
+    And I call
+    Then I see full call conversation warning modal
+    Then I click on "Ok" button in full call conversation warning modal
+    Then I do not see the ongoing call controls for conversation <ChatName1>
+    And <Contact1> verify that waiting instance status is changed to waiting in <Timeout> seconds
+    And I click People button in group conversation
+    And I see Group Participants popover
+    When I click on participant <Contact10> on Group Participants popover
+    And I click Remove button on Group Participants popover
+    And I confirm remove from group chat on Group Participants popover
+    When I call
+    Then I do not see full call conversation warning modal
+    Then <Contact1> verify that waiting instance status is changed to active in <Timeout> seconds
+    Then I see the ongoing call controls for conversation <ChatName1>
+    
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | Contact10  | ChatName1 | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | GC1       | chrome      | 20      |
+
 
   @staging @calling @group @calling_debug
   Scenario Outline: Verify receiving group call during group call
