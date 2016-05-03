@@ -393,24 +393,6 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
 
-  @C2602 @regression @id4086
-  Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User Myself sends 40 encrypted messages to user <Contact>
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    When I tap on contact name <Contact>
-    And I tap on text input to scroll to the end
-    When I scroll to the beginning of the conversation
-    Then I do not see plus button next to text input
-
-    Examples:
-      | Name      | Contact   | Picture     |
-      | user1Name | user2Name | testing.jpg |
-
   @C2603 @regression @id4087
   Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back [LANDSCAPE]
     Given There are 2 users where <Name> is me
