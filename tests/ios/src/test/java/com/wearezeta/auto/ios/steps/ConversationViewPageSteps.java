@@ -650,8 +650,9 @@ public class ConversationViewPageSteps {
      */
     @When("^I see the default message in input field$")
     public void WhenISeeMessageInInputField() throws Exception {
-        Assert.assertTrue("Input field has incorrect message or empty",
-                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE.equals(getConversationViewPage().getStringFromInput()));
+        Assert.assertTrue(String.format("The text input field contain content, which is different from '%s'",
+                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE),
+                getConversationViewPage().isCurrentInputTextEqualTo(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE));
     }
 
     /**

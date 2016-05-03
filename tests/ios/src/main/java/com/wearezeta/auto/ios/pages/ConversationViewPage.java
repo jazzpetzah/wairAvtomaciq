@@ -25,8 +25,11 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameConversationBackButton = MobileBy.AccessibilityId("ConversationBackButton");
 
     // TODO: Use Accessibility Id
-    private static final By xpathConversationCursorInput =
+    private static final By xpathConversationInput =
             By.xpath(xpathStrMainWindow + "/UIATableView//following-sibling::UIATextView[1]");
+
+    private static final Function<String, String> xpathStrConversationInputByValue = value ->
+            String.format(xpathStrMainWindow + "/UIATableView//following-sibling::UIATextView[1][@value='%s']", value);
 
     // TODO: Use Accessibility Id
     private static final By xpathConversationInputAvatar =
@@ -208,11 +211,11 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean waitForCursorInputVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathConversationCursorInput, 10);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathConversationInput, 10);
     }
 
     public boolean waitForCursorInputInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConversationCursorInput);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConversationInput);
     }
 
     public void clickOnCallButtonForContact(String contact) throws Exception {
@@ -221,15 +224,16 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapOnCursorInput() throws Exception {
-        getElement(xpathConversationCursorInput).click();
+        getElement(xpathConversationInput).click();
     }
 
     public void clearTextInput() throws Exception {
-        getElement(xpathConversationCursorInput).clear();
+        getElement(xpathConversationInput).clear();
     }
 
-    public String getStringFromInput() throws Exception {
-        return getElement(xpathConversationCursorInput).getText();
+    public boolean isCurrentInputTextEqualTo(String expectedMsg) throws Exception {
+        final By locator = By.xpath(xpathStrConversationInputByValue.apply(expectedMsg));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
     }
 
     public boolean isLastMessageContain(String expectedText) throws Exception {
@@ -385,7 +389,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapHoldTextInput() throws Exception {
-        final WebElement textInput = getElement(xpathConversationCursorInput);
+        final WebElement textInput = getElement(xpathConversationInput);
         this.getDriver().tap(1, textInput, DriverUtils.LONG_TAP_DURATION);
     }
 
@@ -403,7 +407,7 @@ public class ConversationViewPage extends IOSPage {
     private static final long KEYBOARD_OPEN_ANIMATION_DURATION = 5500; // milliseconds
 
     public void typeAndSendConversationMessage(String message) throws Exception {
-        final WebElement convoInput = getElement(xpathConversationCursorInput,
+        final WebElement convoInput = getElement(xpathConversationInput,
                 "Conversation input is not visible after the timeout");
         convoInput.click();
         // Wait for animation
@@ -417,7 +421,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void typeMessage(String message) throws Exception {
-        final WebElement convoInput = getElement(xpathConversationCursorInput,
+        final WebElement convoInput = getElement(xpathConversationInput,
                 "Conversation input is not visible after the timeout");
         convoInput.click();
         // Wait for animation
@@ -503,7 +507,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void pasteAndCommit() throws Exception {
-        final WebElement convoInput = getElement(xpathConversationCursorInput,
+        final WebElement convoInput = getElement(xpathConversationInput,
                 "Conversation input is not visible after the timeout");
         convoInput.click();
         // Wait for animation
