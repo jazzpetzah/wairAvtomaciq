@@ -57,7 +57,6 @@ public class ConversationViewPageSteps {
     @When("^I tap on text input to scroll to the end$")
     public void WhenITapOnTextInputToScroll() throws Exception {
         getConversationViewPage().tapOnCursorInput();
-        getConversationViewPage().hideKeyboard();
     }
 
     /**
@@ -694,15 +693,20 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify plus icon is replaced with user avatar icon
+     * Verify whether user avatar is visible near convo input field
      *
+     * @param shouldNotBeVisible equals to nuill is the avatar should be invisible
      * @throws Exception
-     * @step. ^I see plus icon is changed to user avatar icon$
+     * @step. ^I (do not )?see plus icon is changed to user avatar icon$
      */
-    @When("^I see plus icon is changed to user avatar icon$")
-    public void ISeePlusIconChangedToUserAvatar() throws Exception {
-        Assert.assertTrue("User avatar is not visible", getConversationViewPage()
-                .isUserAvatarNextToInputVisible());
+    @When("^I (do not )?see user avatar icon near the conversation input field$")
+    public void ISeeUserAvatar(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("User avatar is not visible", getConversationViewPage().isUserAvatarNextToInputVisible());
+        } else {
+            Assert.assertTrue("User avatar is visible, but should be hidden",
+                    getConversationViewPage().isUserAvatarNextToInputInvisible());
+        }
     }
 
     /**

@@ -24,9 +24,13 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class ConversationViewPage extends IOSPage {
     private static final By nameConversationBackButton = MobileBy.AccessibilityId("ConversationBackButton");
 
+    // TODO: Use Accessibility Id
     private static final By xpathConversationCursorInput =
-            By.xpath("//UIAButton[@name='gifButton']/preceding-sibling::" +
-                    "UIATextView[@visible='true']/UIAStaticText[@visible='true']");
+            By.xpath(xpathStrMainWindow + "/UIATableView//following-sibling::UIATextView[1]");
+
+    // TODO: Use Accessibility Id
+    private static final By xpathConversationInputAvatar =
+            By.xpath(xpathStrMainWindow + "/UIATableView/following-sibling::UIAImage[1]");
 
     private static final By nameInputPlaceholderText = MobileBy.AccessibilityId("TYPE A MESSAGE …");
 
@@ -92,9 +96,6 @@ public class ConversationViewPage extends IOSPage {
 
     public static final By xpathStrMissedCallButtonByYourself =
             By.xpath("//UIATableCell[.//*[@name='YOU CALLED']]/UIAButton[@name='ConversationMissedCallButton']");
-
-    private static final By xpathUserAvatarNextToInput = By.xpath(
-            "//UIAImage[following-sibling::UIATextView[@name='ConversationTextInputField'] and @visible='true']");
 
     public static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
             "//UIAStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
@@ -463,7 +464,11 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isUserAvatarNextToInputVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathUserAvatarNextToInput);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathConversationInputAvatar);
+    }
+
+    public boolean isUserAvatarNextToInputInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConversationInputAvatar);
     }
 
     public void tapMessage(String expectedLink) throws Exception {

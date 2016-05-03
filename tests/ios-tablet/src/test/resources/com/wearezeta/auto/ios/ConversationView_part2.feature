@@ -395,20 +395,23 @@ Feature: Conversation View
 
   @C2603 @regression @id4087
   Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I type the default message
-    And I see plus icon is changed to user avatar icon
-    And I clear conversation text input
-    Then I see plus button next to text input
+    Then I do not see user avatar icon near the conversation input field
+    When I tap on text input
+    Then I see user avatar icon near the conversation input field
+    # This is to hide keyboard
+    When I tap on contact name <Contact1>
+    And I tap on contact name <Contact>
+    Then I do not see user avatar icon near the conversation input field
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | Contact1  |
+      | user1Name | user2Name | user3Name |
 
   @C2624 @regression @rc
   Scenario Outline: Verify sending GIF format pic [LANDSCAPE]

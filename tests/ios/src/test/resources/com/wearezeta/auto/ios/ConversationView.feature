@@ -630,9 +630,13 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I type the default message
-    And I see plus icon is changed to user avatar icon
-    And I clear conversation text input
+    Then I do not see user avatar icon near the conversation input field
+    When I tap on text input
+    Then I see user avatar icon near the conversation input field
+    # This is to hide keyboard
+    When I navigate back to conversations list
+    And I tap on contact name <Contact>
+    Then I do not see user avatar icon near the conversation input field
 
     Examples:
       | Name      | Contact   |
@@ -725,7 +729,7 @@ Feature: Conversation View
     And I see conversation name <Contact> in Upper Toolbar
     And User <Contact> changes name to <NewName>
     Then I see conversation name <NewName> in Upper Toolbar
-    
+
     Examples:
       | Name      | Contact   | NewName |
       | user1Name | user2Name | NewName |

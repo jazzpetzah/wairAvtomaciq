@@ -333,18 +333,7 @@ public class CommonIOSSteps {
         pagesCollection.getCommonPage().dismissAlertIfVisible();
     }
 
-    /**
-     * Hide keyboard using mobile command
-     *
-     * @throws Exception
-     * @step. ^I hide keyboard$
-     */
-    @When("^I hide keyboard$")
-    public void IHideKeyboard() throws Exception {
-        pagesCollection.getCommonPage().hideKeyboard();
-    }
-
-    /**
+     /**
      * click the corresponding on-screen keyboard button
      *
      * @param btnName button name, either Space or Hide or Done
