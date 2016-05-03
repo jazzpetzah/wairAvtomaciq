@@ -21,8 +21,7 @@ Feature: Upgrade
     And I navigate back to conversations list
     When I tap on contact name <Contact>
     Then I see 2 default messages in the dialog
-    When I click plus button next to text input
-    And I tap Add Picture button from input tools
+    When I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice

@@ -197,30 +197,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Swipe left on text input to close options buttons
-     *
-     * @throws Exception
-     * @step. ^I swipe left on options buttons$
-     */
-    @When("^I swipe left on options buttons$")
-    public void ISwipeLeftTextInput() throws Exception {
-        getConversationViewPage().swipeLeftToShowInputCursor();
-    }
-
-    /**
-     * Swipe right text input to reveal option buttons
-     * <p>
-     * !!! The step is unstable on Simulator
-     *
-     * @throws Exception
-     * @step. ^I swipe right text input to reveal option buttons$
-     */
-    @When("^I swipe right text input to reveal option buttons$")
-    public void ISwipeTheTextInputCursor() throws Exception {
-        getConversationViewPage().swipeRightToShowConversationTools();
-    }
-
-    /**
      * Tap the corresponding button from input tools palette
      *
      * @param btnName one of available button names
@@ -509,18 +485,16 @@ public class ConversationViewPageSteps {
         getConversationViewPage().clickOnCallButtonForContact(contact.toUpperCase());
     }
 
-    public static final String TAP_OR_SLIDE = "TAP OR SLIDE";
-
     /**
-     * Observing tutorial "swipe right" aka "tap or slide"
+     * Check whether text input placeholder text is visible
      *
      * @throws Exception
-     * @step. ^I see TAPORSLIDE text$
+     * @step. ^I see input placeholder text$
      */
-    @Then("^I see TAPORSLIDE text$")
-    public void ISeeTapOrSlideText() throws Exception {
-        boolean result = getConversationViewPage().isTypeOrSlideExists(TAP_OR_SLIDE);
-        Assert.assertTrue(result);
+    @Then("^I see input placeholder text$")
+    public void ISeeInputPlaceholderText() throws Exception {
+        Assert.assertTrue("Input placeholder text is not visible",
+                getConversationViewPage().isInputPlaceholderTextVisible());
     }
 
     /**
@@ -588,22 +562,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify is plus button is visible
-     *
-     * @param shouldNotBeVisible equals to null if the button should not be visible
-     * @throws Exception
-     * @step. ^I (do not )?see plus button next to text input$
-     */
-    @When("^I (do not )?see plus button next to text input$")
-    public void ISeePlusButtonNextInput(String shouldNotBeVisible) throws Exception {
-        if (shouldNotBeVisible == null) {
-            Assert.assertTrue("Plus button is not visible", getConversationViewPage().isPlusButtonVisible());
-        } else {
-            Assert.assertTrue("Plus button is still shown", getConversationViewPage().waitPlusButtonNotVisible());
-        }
-    }
-
-    /**
      * Verify tools Buttons are presented after text input swipe
      *
      * @throws Exception
@@ -611,7 +569,6 @@ public class ConversationViewPageSteps {
      */
     @When("^I see conversation tools buttons$")
     public void ISeeToolsButtons() throws Exception {
-        Assert.assertTrue("People button is not visible", getConversationViewPage().isPeopleButtonVisible());
         Assert.assertTrue("Some of expected input tools buttons are not visible",
                 getConversationViewPage().areInputToolsVisible());
     }
@@ -621,47 +578,12 @@ public class ConversationViewPageSteps {
      * visible
      *
      * @throws Exception
-     * @step. ^I see no other conversation tools buttons except of Details$
+     * @step. ^I see no conversation tools buttons$
      */
-    @When("^I see no other conversation tools buttons except of People")
+    @When("^I see no conversation tools buttons$")
     public void ISeeOnlyPeopleButtonRestNotShown() throws Exception {
-        Assert.assertTrue("People button is not visible", getConversationViewPage().isPeopleButtonVisible());
         Assert.assertTrue("Some of input tools buttons are still visible",
                 getConversationViewPage().areInputToolsInvisible());
-    }
-
-    /**
-     * Verify Close button in options is NOT shown
-     *
-     * @throws Exception
-     * @step. ^I see Close input options button is not visible$
-     */
-    @When("^I see Close input options button is not visible$")
-    public void ISeeCloseButtonInputOptionsNotVisible() throws Exception {
-        Assert.assertTrue("Close input options button is visible",
-                getConversationViewPage().verifyInputOptionsCloseButtonNotVisible());
-    }
-
-    /**
-     * Click on plus button next to text input
-     *
-     * @throws Exception
-     * @step. ^I click plus button next to text input$
-     */
-    @When("^I click plus button next to text input$")
-    public void IClickPlusButton() throws Exception {
-        getConversationViewPage().clickPlusButton();
-    }
-
-    /**
-     * Click on close button in input options
-     *
-     * @throws Exception
-     * @step. ^I click close button next to text input$
-     */
-    @When("^I click Close input options button$")
-    public void IClickCloseButtonInputOptions() throws Exception {
-        getConversationViewPage().clickInputOptionsCloseButton();
     }
 
     /**
@@ -778,9 +700,7 @@ public class ConversationViewPageSteps {
      * @step. ^I see plus icon is changed to user avatar icon$
      */
     @When("^I see plus icon is changed to user avatar icon$")
-    public void ISeePluseIconChangedToUserAvatar() throws Exception {
-        Assert.assertFalse("Plus icon is still visible", getConversationViewPage()
-                .isPlusButtonVisible());
+    public void ISeePlusIconChangedToUserAvatar() throws Exception {
         Assert.assertTrue("User avatar is not visible", getConversationViewPage()
                 .isUserAvatarNextToInputVisible());
     }
@@ -806,7 +726,7 @@ public class ConversationViewPageSteps {
     @When("^I see conversation is scrolled to the end$")
     public void ISeeConversationIsScrolledToEnd() throws Exception {
         Assert.assertTrue("The input field state looks incorrect",
-                getConversationViewPage().isPlusButtonVisible() && getConversationViewPage().waitForCursorInputVisible());
+                getConversationViewPage().waitForCursorInputVisible());
     }
 
     /**

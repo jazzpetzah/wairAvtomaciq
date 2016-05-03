@@ -24,11 +24,11 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 public class ConversationViewPage extends IOSPage {
     private static final By nameConversationBackButton = MobileBy.AccessibilityId("ConversationBackButton");
 
-    private static final By nameConversationCursorInput = MobileBy.AccessibilityId("ConversationTextInputField");
+    private static final By xpathConversationCursorInput =
+            By.xpath("//UIAButton[@name='gifButton']/preceding-sibling::" +
+                    "UIATextView[@visible='true']/UIAStaticText[@visible='true']");
 
-    private static final By namePlusButton = MobileBy.AccessibilityId("plusButton");
-
-    private static final By namePeopleButton = MobileBy.AccessibilityId("ComposeControllerConversationDetailButton");
+    private static final By nameInputPlaceholderText = MobileBy.AccessibilityId("TYPE A MESSAGE …");
 
     protected static final By nameYouRenamedConversation = MobileBy.AccessibilityId("YOU RENAMED THE CONVERSATION");
 
@@ -80,8 +80,6 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameMediaBarCloseButton = MobileBy.AccessibilityId("mediabarCloseButton");
 
-    private static final By nameInputOptionsCloseButton = MobileBy.AccessibilityId("closeButton");
-
     private static final By nameTitle = MobileBy.AccessibilityId("playingMediaTitle");
 
     private static final By nameGifButton = MobileBy.AccessibilityId("rightMenuButton");
@@ -112,11 +110,10 @@ public class ConversationViewPage extends IOSPage {
 
     public static final String MEDIA_STATE_STOPPED = "ended";
 
-    private static final By nameCursorSketchButton = MobileBy.AccessibilityId("ComposeControllerSketchButton");
-    protected static final By nameAddPictureButton = MobileBy.AccessibilityId("ComposeControllerPictureButton");
-    private static final By namePingButton = MobileBy.AccessibilityId("ComposeControllerPingButton");
-    private static final By nameFileTransferButton = MobileBy.AccessibilityId("ComposeControllerDocUploadButton");
-
+    private static final By nameCursorSketchButton = MobileBy.AccessibilityId("sketchButton");
+    protected static final By nameAddPictureButton = MobileBy.AccessibilityId("photoButton");
+    private static final By namePingButton = MobileBy.AccessibilityId("pingButton");
+    private static final By nameFileTransferButton = MobileBy.AccessibilityId("uploadFileButton");
 
     private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[@name='ConversationView']";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
@@ -210,11 +207,11 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean waitForCursorInputVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameConversationCursorInput, 10);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathConversationCursorInput, 10);
     }
 
     public boolean waitForCursorInputInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameConversationCursorInput);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConversationCursorInput);
     }
 
     public void clickOnCallButtonForContact(String contact) throws Exception {
@@ -223,15 +220,15 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapOnCursorInput() throws Exception {
-        getElement(nameConversationCursorInput).click();
+        getElement(xpathConversationCursorInput).click();
     }
 
     public void clearTextInput() throws Exception {
-        getElement(nameConversationCursorInput).clear();
+        getElement(xpathConversationCursorInput).clear();
     }
 
     public String getStringFromInput() throws Exception {
-        return getElement(nameConversationCursorInput).getText();
+        return getElement(xpathConversationCursorInput).getText();
     }
 
     public boolean isLastMessageContain(String expectedText) throws Exception {
@@ -254,36 +251,6 @@ public class ConversationViewPage extends IOSPage {
             locator = By.xpath(xpathStrMessageByTextPart.apply(expectedMessage));
         }
         return selectVisibleElements(locator).size();
-    }
-
-    public void swipeRightToShowConversationTools() throws Exception {
-        final WebElement convoInput = getElement(nameConversationCursorInput);
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            final Point inputLocation = convoInput.getLocation();
-            final Dimension inputSize = convoInput.getSize();
-            final Dimension windowSize = getDriver().manage().window().getSize();
-            IOSSimulatorHelper.swipe((inputLocation.x + inputSize.width / 10.0) / windowSize.width,
-                    (inputLocation.y + inputSize.height / 2.0) / windowSize.height, (inputLocation.x + inputSize.width) * 1.0
-                            / windowSize.width, (inputLocation.y + inputSize.height / 2.0) / windowSize.height);
-        } else {
-            DriverUtils.swipeRight(this.getDriver(), convoInput, 1000);
-        }
-    }
-
-    public void swipeLeftToShowInputCursor() throws Exception {
-        final WebElement closeButton = getElement(nameInputOptionsCloseButton);
-        final Point btnLocation = closeButton.getLocation();
-        final Dimension btnSize = closeButton.getSize();
-        final Dimension windowSize = getDriver().manage().window().getSize();
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            IOSSimulatorHelper.swipe(btnLocation.x * 1.0 / windowSize.width, (btnLocation.y + btnSize.height / 2.0)
-                            / windowSize.height, (btnLocation.x - btnSize.width * 7.0) / windowSize.width,
-                    (btnLocation.y + btnSize.height / 2.0) / windowSize.height);
-        } else {
-            DriverUtils.swipeByCoordinates(this.getDriver(), 1000, btnLocation.x * 100 / windowSize.width,
-                    (btnLocation.y + btnSize.height / 2) * 100 / windowSize.height, (btnLocation.x - btnSize.width * 7) * 100
-                            / windowSize.width, (btnLocation.y + btnSize.height / 2) * 100 / windowSize.height);
-        }
     }
 
     public int getCountOfImages() throws Exception {
@@ -417,7 +384,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapHoldTextInput() throws Exception {
-        final WebElement textInput = getElement(nameConversationCursorInput);
+        final WebElement textInput = getElement(xpathConversationCursorInput);
         this.getDriver().tap(1, textInput, DriverUtils.LONG_TAP_DURATION);
     }
 
@@ -435,7 +402,7 @@ public class ConversationViewPage extends IOSPage {
     private static final long KEYBOARD_OPEN_ANIMATION_DURATION = 5500; // milliseconds
 
     public void typeAndSendConversationMessage(String message) throws Exception {
-        final WebElement convoInput = getElement(nameConversationCursorInput,
+        final WebElement convoInput = getElement(xpathConversationCursorInput,
                 "Conversation input is not visible after the timeout");
         convoInput.click();
         // Wait for animation
@@ -449,7 +416,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void typeMessage(String message) throws Exception {
-        final WebElement convoInput = getElement(nameConversationCursorInput,
+        final WebElement convoInput = getElement(xpathConversationCursorInput,
                 "Conversation input is not visible after the timeout");
         convoInput.click();
         // Wait for animation
@@ -459,10 +426,6 @@ public class ConversationViewPage extends IOSPage {
         } else {
             convoInput.sendKeys(message);
         }
-    }
-
-    public boolean isTypeOrSlideExists(String msg) throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(), MobileBy.AccessibilityId(msg), 5);
     }
 
     public void clickOnPlayVideoButton() throws Exception {
@@ -485,33 +448,6 @@ public class ConversationViewPage extends IOSPage {
     public boolean isConnectingToUserConversationLabelVisible(String username) throws Exception {
         final By locator = By.xpath(xpathStrConnectingToUserLabelByName.apply(username));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public void clickPlusButton() throws Exception {
-        getElement(namePlusButton).click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), namePlusButton)) {
-            throw new IllegalStateException("The Details plus button is still visible");
-        }
-    }
-
-    public boolean isPlusButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), namePlusButton);
-    }
-
-    public boolean waitPlusButtonNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), namePlusButton);
-    }
-
-    public boolean isPeopleButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), namePeopleButton);
-    }
-
-    public boolean verifyInputOptionsCloseButtonNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameInputOptionsCloseButton);
-    }
-
-    public void clickInputOptionsCloseButton() throws Exception {
-        getElement(nameInputOptionsCloseButton, "Close input options button is not visible").click();
     }
 
     public boolean isGiphyImageVisible() throws Exception {
@@ -562,7 +498,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void pasteAndCommit() throws Exception {
-        final WebElement convoInput = getElement(nameConversationCursorInput,
+        final WebElement convoInput = getElement(xpathConversationCursorInput,
                 "Conversation input is not visible after the timeout");
         convoInput.click();
         // Wait for animation
@@ -701,5 +637,9 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapShareMenuItem(String itemName) throws Exception {
         getElement(MobileBy.AccessibilityId(itemName)).click();
+    }
+
+    public boolean isInputPlaceholderTextVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInputPlaceholderText);
     }
 }

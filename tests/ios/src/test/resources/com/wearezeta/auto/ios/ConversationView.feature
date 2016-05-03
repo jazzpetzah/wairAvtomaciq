@@ -7,7 +7,7 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    Then I see TAPORSLIDE text
+    Then I see input placeholder text
 
     Examples:
       | Name      | Contact   |
@@ -34,7 +34,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Ping button from input tools
     Then I see "<PingMsg>" system message in the conversation view
 
@@ -49,7 +48,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -236,7 +234,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -397,28 +394,10 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I click plus button next to text input
     And I tap Sketch button from input tools
     And I draw a random sketch
     And I send my sketch
     Then I see 1 photo in the dialog
-
-    Examples:
-      | Name      | Contact1  |
-      | user1Name | user2Name |
-
-  @C888 @rc @regression
-  Scenario Outline: Verify opening and closing input options by buttons click
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact1>
-    And I click plus button next to text input
-    Then I see conversation tools buttons
-    When I click Close input options button
-    Then I see Close input options button is not visible
-    And I see plus button next to text input
 
     Examples:
       | Name      | Contact1  |
@@ -434,13 +413,10 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I click plus button next to text input
-    Then I see no other conversation tools buttons except of People
-    And I click Close input options button
+    Then I see no conversation tools buttons
     And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
-    And I click plus button next to text input
-    Then I see no other conversation tools buttons except of People
+    Then I see no conversation tools buttons
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
@@ -473,7 +449,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -557,8 +532,7 @@ Feature: Conversation View
     When I tap on contact name <Contact2>
     And I navigate back to conversations list
     And I tap on contact name <Contact1>
-    Then I see Close input options button is not visible
-    And I see the default message in input field
+    Then I see the default message in input field
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -622,7 +596,6 @@ Feature: Conversation View
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -660,7 +633,6 @@ Feature: Conversation View
     And I type the default message
     And I see plus icon is changed to user avatar icon
     And I clear conversation text input
-    Then I see plus button next to text input
 
     Examples:
       | Name      | Contact   |
@@ -673,7 +645,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I tap Camera Shutter button
     And I confirm my choice
@@ -690,7 +661,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I tap Toggle Camera button
     And I tap Camera Shutter button
