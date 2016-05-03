@@ -1220,8 +1220,8 @@ public class CommonAndroidSteps {
      * @step. ^(.*) sends local file named "(.*)" and MIME type "(.*)" via device (.*) to (user|group conversation) (.*)$
      */
     @When("^(.*) sends local file named \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
-    public void ContactSendsXLocalFileFromSE(String contact,  String fileFullName, String mimeType,
-                                        String deviceName, String convoType, String dstConvoName) throws Exception {
+    public void ContactSendsXLocalFileFromSE(String contact, String fileFullName, String mimeType,
+                                             String deviceName, String convoType, String dstConvoName) throws Exception {
         String basePath = AndroidCommonUtils.getImagesPath(AndroidCommonUtils.class);
         String sourceFilePath = basePath + File.separator + fileFullName;
 
@@ -1247,7 +1247,7 @@ public class CommonAndroidSteps {
                     AndroidCommonUtils.pullFileFromSdcardDownload(fileFullName);
                     return CommonUtils.retrieveFileInfo(
                             AndroidCommonUtils.getBuildPathFromConfig(CommonAndroidSteps.class)
-                            + File.separator + fileFullName);
+                                    + File.separator + fileFullName);
                 });
 
         fileInfo.orElseThrow(() -> new IllegalStateException(String.format("File '%s' doesn't exist after %s seconds",
@@ -1262,5 +1262,17 @@ public class CommonAndroidSteps {
                 Math.abs(expectedSize - actualSize) < 100);
         Assert.assertEquals(String.format("File MIME type should be %s", mimeType),
                 mimeType, fileInfo.get().getMimeType());
+    }
+
+    /**
+     * Tap the corresponding button on alert message
+     *
+     * @param caption button caption as it is shown in @value property
+     * @throws Exception
+     * @step. ^I tap (.*) button on the alert$
+     */
+    @And("^I tap (.*) button on the alert$")
+    public void ITapAlertButton(String caption) throws Exception {
+        pagesCollection.getCommonPage().tapAlertButton(caption);
     }
 }

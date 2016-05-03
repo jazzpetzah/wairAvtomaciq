@@ -60,10 +60,8 @@ public class ConversationViewPage extends AndroidPage {
     private static final Function<String, String> xpathStrMissedCallMesageByText = text -> String
             .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text.toUpperCase());
 
-    private static final By idCursorFrame = By.id("cursor_layout");
-
     public static final Function<String, String> xpathStrPingMessageByText = text -> String
-            .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']", text);
+            .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']", text.toUpperCase());
 
     private static final By xpathDialogTakePhotoButton = By
             .xpath("//*[@id='gtv__camera_control__take_a_picture' and @shown='true']");
@@ -145,6 +143,10 @@ public class ConversationViewPage extends AndroidPage {
 
     private static Function<String, String> xpathConversationPeopleChangedByExp = exp -> String
             .format("//*[@id='ttv__row_conversation__people_changed__text' and %s]", exp);
+
+    private static By idActionModeBarDeleteButton = By.id("action_delete");
+    private static By idActionModeBarCopyButton = By.id("action_copy");
+    private static By idActionModeBarCloseButton = By.id("action_mode_close_button");
 
     private static final int MAX_CLICK_RETRIES = 5;
 
@@ -709,4 +711,49 @@ public class ConversationViewPage extends AndroidPage {
         }
     }
 
+    public boolean isMessageInvisible(String msg) throws Exception {
+        final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public void tapDeleteActionModeBarButton() throws Exception {
+        getElement(idActionModeBarDeleteButton).click();
+    }
+
+    public void tapCopyTopActionModeBarButton() throws Exception {
+        getElement(idActionModeBarCopyButton).click();
+    }
+
+    public void tapCloseTopActionModeBarButton() throws Exception {
+        getElement(idActionModeBarCloseButton).click();
+    }
+
+    public boolean isDeleteActionModeBarButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idActionModeBarDeleteButton);
+    }
+
+    public boolean isDeleteActionModeBarButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idActionModeBarDeleteButton);
+    }
+
+    public boolean isCopyActionModeBarButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idActionModeBarCopyButton);
+    }
+
+    public boolean isCopyActionModeBarButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idActionModeBarCopyButton);
+    }
+
+    public boolean isCloseActionModeBarButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idActionModeBarCloseButton);
+    }
+
+    public boolean isCloseActionModeBarButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idActionModeBarCloseButton);
+    }
+
+    public void longTapMessage(String msg) throws Exception {
+        final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
+        getDriver().longTap(getElement(locator), DriverUtils.LONG_TAP_DURATION);
+    }
 }
