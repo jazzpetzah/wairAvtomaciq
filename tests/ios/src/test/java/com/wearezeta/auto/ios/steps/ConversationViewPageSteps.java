@@ -485,11 +485,11 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Check whether text input placeholder text is visible
+     * Check whether text input placeholder text is visible or not
      *
      * @param shouldNotBeVisible equals to null if the placeholder should be visible
      * @throws Exception
-     * @step. ^I see input placeholder text$
+     * @step. ^I (do not )?see input placeholder text$
      */
     @Then("^I (do not )?see input placeholder text$")
     public void ISeeInputPlaceholderText(String shouldNotBeVisible) throws Exception {
