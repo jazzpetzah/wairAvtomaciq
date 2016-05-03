@@ -27,7 +27,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameConversationInput = MobileBy.AccessibilityId("inputField");
 
     private static final Function<String, String> xpathStrConversationInputByValue = value ->
-            String.format(xpathStrMainWindow + "/UIATableView//following-sibling::UIATextView[1][@value='%s']", value);
+            String.format("//UIATextView[@name='inputField'and @value='%s']", value);
 
     private static final By nameConversationInputAvatar = MobileBy.AccessibilityId("authorImage");
 
