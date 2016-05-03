@@ -73,7 +73,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | MessageToGroup |
 
-  @C3210 @regression @IPv6 @id1468 @rc
+  @C3210 @regression @IPv6 @id1468
   Scenario Outline: (MediaBar disappears on Simulator) Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
