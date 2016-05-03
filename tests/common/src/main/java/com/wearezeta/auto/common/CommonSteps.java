@@ -308,8 +308,19 @@ public final class CommonSteps {
         }
     }
 
-    public void UserDeleteMessage() throws Exception {
+    public void UserDeleteMessage(String userNameAlias, String dstConversationName, String messageId, String deviceName) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(userNameAlias);
+        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
+        seBridge.deleteMessage(user, dstConvId, messageId, deviceName);
+    }
 
+    public void UserDeleteLatestMessage(String userNameAlias, String dstConversationName, String deviceName) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(userNameAlias);
+        dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
+        //seBridge.getConversationMessages(user);
+        //seBridge.deleteMessage(user, dstConvId, messageId, deviceName);
     }
 
     public void UserSentMessageToUser(String msgFromUserNameAlias,

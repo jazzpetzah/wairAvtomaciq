@@ -148,6 +148,10 @@ public class SEBridge {
         getOrAddDevice(userFrom, deviceName).deleteMessage(convId, messageId);
     }
 
+    public ActorMessage.ConvMessages getConversationMessages(ClientUser userFrom, String convId, String deviceName) throws Exception {
+        return getOrAddDevice(userFrom, deviceName).getConversationMessages(convId);
+    }
+
     private void shutdown() {
         try {
             getDevicePool().shutdown();

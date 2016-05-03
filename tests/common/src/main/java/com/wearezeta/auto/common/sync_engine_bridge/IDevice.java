@@ -1,5 +1,6 @@
 package com.wearezeta.auto.common.sync_engine_bridge;
 
+import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
 import java.util.Optional;
@@ -31,6 +32,8 @@ public interface IDevice extends IRemoteEntity {
 	void sendFile(String convId, String path, String mime) throws Exception;
 
     void deleteMessage(String convId, String messageId) throws Exception;
+
+    ActorMessage.MessageInfo[] getConversationMessages(String convId) throws Exception;
 
     void setLabel(String label) throws Exception;
 
