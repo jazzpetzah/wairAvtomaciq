@@ -105,7 +105,7 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
-    And I tap on text input to scroll to the end
+    And I scroll to the bottom of the conversation
     And I tap media container
     And I scroll media out of sight until media bar appears
     And I tap on the media bar
@@ -124,7 +124,7 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     And I tap on contact name <Contact>
-    And I tap on text input to scroll to the end
+    And I scroll to the bottom of the conversation
     When I tap media container
     And I scroll media out of sight until media bar appears
     Then I wait up to 35 seconds for media bar to disappear
@@ -142,10 +142,10 @@ Feature: Conversation View
     Given User <Name> sends 40 encrypted messages to user <Contact1>
     Given User <Name> sends encrypted message "<SoundCloudLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I tap on text input to scroll to the end
+    And I scroll to the bottom of the conversation
     And I tap media container
     When I scroll media out of sight until media bar appears
-    And I tap on text input to scroll to the end
+    And I scroll to the bottom of the conversation
     Then I dont see media bar on dialog page
 
     Examples:

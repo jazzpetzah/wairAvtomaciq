@@ -44,6 +44,7 @@ public class ConversationViewPage extends IOSPage {
      */
     private static final String xpathStrAllEntries = xpathStrMainWindow + "/UIATableView/UIATableCell";
     private static final By xpathAllEntries = By.xpath(xpathStrAllEntries);
+    private static final By xpathFirstEntry = By.xpath(xpathStrAllEntries + "[1]");
 
     private static final String xpathStrAllTextMessages = xpathStrAllEntries + "/UIATextView[boolean(string(@value))]";
     private static final By xpathAllTextMessages = By.xpath(xpathStrAllTextMessages);
@@ -340,7 +341,7 @@ public class ConversationViewPage extends IOSPage {
         getElement(nameTitle).click();
     }
 
-    private static final int TEXT_INPUT_HEIGHT = 150;
+    private static final int TEXT_INPUT_HEIGHT = 300;
     private static final int TOP_BORDER_WIDTH = 40;
 
     public void openConversationDetails() throws Exception {
@@ -650,5 +651,21 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isInputPlaceholderTextVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInputPlaceholderText);
+    }
+
+    public void scrollToTheBottom() throws Exception {
+        final int maxActions = 5;
+        int actionIdx = 0;
+        do {
+            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathFirstEntry, 1)) {
+                return;
+            }
+            swipeUp(1000);
+            actionIdx++;
+        } while (actionIdx < maxActions);
+        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathFirstEntry, 1)) {
+            throw new IllegalStateException(String.format("The veru first conversation entry is not visible after %s " +
+                    "scrolling retries", actionIdx));
+        }
     }
 }

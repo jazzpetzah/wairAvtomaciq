@@ -49,14 +49,14 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap on text input to scroll to the end of conversation
+     * Scroll to the bottom of the current conversation view
      *
      * @throws Exception
-     * @step. ^I tap on text input to scroll to the end$
+     * @step. ^I scroll to the bottom of the conversation$$
      */
-    @When("^I tap on text input to scroll to the end$")
-    public void WhenITapOnTextInputToScroll() throws Exception {
-        getConversationViewPage().tapOnCursorInput();
+    @When("^I scroll to the bottom of the conversation$")
+    public void ScrollToTheBottom() throws Exception {
+        getConversationViewPage().scrollToTheBottom();
     }
 
     /**
