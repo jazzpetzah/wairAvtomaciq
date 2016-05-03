@@ -141,7 +141,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @C1810 @regression
+  @C1810 @regression @WEBAPP-2420
   Scenario Outline: Verify I can delete a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
