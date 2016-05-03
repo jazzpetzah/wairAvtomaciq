@@ -493,7 +493,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 20      |
 
-  @C1799 @smoke @calling @group @calling_debug
+  @C1799 @regression @calling @group @calling_debug
   Scenario Outline: Verify accepting group call
     Given My browser supports calling
     Given There are 5 users where <Name> is me
