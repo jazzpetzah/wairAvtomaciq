@@ -7,7 +7,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.wearezeta.auto.common.driver.DummyElement;
+import com.wearezeta.auto.common.misc.ElementState;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
@@ -158,6 +158,12 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final String FILE_MESSAGE_SEPARATOR = " · ";
 
+    private static final int SCROLL_TO_BOTTOM_TIMEOUT_SECONDS = 60;
+
+    private static final int SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS =1000;
+
+    private static final double SCROLL_TO_BOTTOM_MIN_SIMILARITY_SCORE = 0.97;
+
     public ConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -307,14 +313,21 @@ public class ConversationViewPage extends AndroidPage {
 
     //endregion
 
-    // NOTE: This method is required to scroll conversation to the end.
-    // NOTE: Click happens on the text input area if participants button is not
-    // NOTE: visible
     public void scrollToTheBottom() throws Exception {
         this.hideKeyboard();
-        swipeByCoordinates(1000, 50, 75, 50, 40);
-        getElementIfDisplayed(idCursorFrame, 3).orElseGet(DummyElement::new).click();
-        this.hideKeyboard();
+        final long millisecondsStarted = System.currentTimeMillis();
+        ElementState initState = new ElementState(
+                () -> getConvoViewStateScreenshot());
+        do {
+            initState.remember();
+            swipeByCoordinates(SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS, 50, 75, 50, 40);
+        } while (System.currentTimeMillis() - millisecondsStarted <= SCROLL_TO_BOTTOM_TIMEOUT_SECONDS * 1000
+                && initState.isChanged(1, SCROLL_TO_BOTTOM_MIN_SIMILARITY_SCORE));
+
+        if (System.currentTimeMillis() - millisecondsStarted > SCROLL_TO_BOTTOM_TIMEOUT_SECONDS * 1000) {
+            throw new IllegalStateException(String.format("Cannot scroll to the conversation bottom in %d seconds",
+                    SCROLL_TO_BOTTOM_TIMEOUT_SECONDS));
+        }
     }
 
     public void tapAudioCallBtn() throws Exception {
