@@ -89,7 +89,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameTitle = MobileBy.AccessibilityId("playingMediaTitle");
 
-    private static final By nameGifButton = MobileBy.AccessibilityId("rightMenuButton");
+    private static final By nameGifButton = MobileBy.AccessibilityId("gifButton");
 
     private static final By nameSoundCloudButton = MobileBy.AccessibilityId("soundcloud");
 
