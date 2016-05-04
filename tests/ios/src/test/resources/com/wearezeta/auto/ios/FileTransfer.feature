@@ -1,6 +1,6 @@
 Feature: File Transfer
 
-  @C82524 @regression
+  @C82524 @regression @rc
   Scenario Outline: Verify placeholder is shown for the receiver
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
