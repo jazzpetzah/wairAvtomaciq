@@ -22,7 +22,7 @@ Feature: Connect
       | user1Name | user2Name | user2Email   | user3Name |
 
   @C102 @rc @clumsy @regression @id1475
-  Scenario Outline: Get invitation message from user
+  Scenario Outline: (ZIOS-6515) Get invitation message from user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given <Contact> sent connection request to Me

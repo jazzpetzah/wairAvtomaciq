@@ -270,7 +270,7 @@ Feature: Calling
       | user1Name | user2Name | user3Name | IgnoringGROUPCALL | autocall    |
 
   @C2050 @rc @calling_advanced @id2686
-  Scenario Outline: (ZIOS-5587)Verify receiving group call during 1-to-1 call (and accepting it)
+  Scenario Outline: (ZIOS-6010) Verify receiving group call during 1-to-1 call (and accepting it)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
