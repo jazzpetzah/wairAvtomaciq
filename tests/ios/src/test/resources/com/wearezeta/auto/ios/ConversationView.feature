@@ -417,10 +417,10 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    Then I see no conversation tools buttons
+    Then I do not see conversation tools buttons
     And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
-    Then I see no conversation tools buttons
+    Then I do not see conversation tools buttons
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
