@@ -34,6 +34,9 @@ public abstract class AndroidPage extends BasePage {
 
     protected static final By idPager = By.id("conversation_pager");
 
+    private static Function<String, String> xpathStrAlertButtonByCaption = caption ->
+            String.format("//*[starts-with(@id, 'button') and @value='%s']", caption);
+
     @Override
     protected ZetaAndroidDriver getDriver() throws Exception {
         return (ZetaAndroidDriver) super.getDriver();
@@ -251,5 +254,10 @@ public abstract class AndroidPage extends BasePage {
         int difference = elementA.getLocation().getY() - elementB.getSize().getHeight() - elementB.getLocation().getY();
         return difference >= 0
                 && difference / getDriver().manage().window().getSize().getHeight() <= locationDifferencePercentage;
+    }
+
+    public void tapAlertButton(String caption) throws Exception {
+        final By locator = By.xpath(xpathStrAlertButtonByCaption.apply(caption));
+        getElement(locator).click();
     }
 }

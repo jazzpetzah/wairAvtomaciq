@@ -526,7 +526,7 @@ Feature: E2EE
     When I see takeover screen from user "<Contact1>"
     Then I tap send anyway button
     And I do not see takeover screen
-    Then I see my message "<Message2>" in the dialog
+    Then I see the message "<Message2>" in the conversation view
 
     Examples: 
       | Name      | Contact1  | Device  | Message1 | Message2        |
