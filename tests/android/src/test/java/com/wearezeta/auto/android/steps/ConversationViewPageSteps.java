@@ -1014,14 +1014,19 @@ public class ConversationViewPageSteps {
     /**
      * Long tap an existing conversation message
      *
-     * @param msg the message to tap
+     * @param msg       the message to tap
+     * @param isLongTap equals to null if the tap should be simple tap
      * @throws Exception
-     * @step. ^I long tap the message "(.*)" in the conversation view$
+     * @step. ^I (long )?tap the message "(.*)" in the conversation view$
      */
-    @When("^I long tap the message \"(.*)\" in the conversation view$")
-    public void ILongTapTheMessage(String msg) throws Exception {
+    @When("^I (long )?tap the message \"(.*)\" in the conversation view$")
+    public void ITapTheMessage(String isLongTap, String msg) throws Exception {
         msg = usrMgr.replaceAliasesOccurences(msg, FindBy.NAME_ALIAS);
-        getConversationViewPage().longTapMessage(msg);
+        if (isLongTap == null) {
+            getConversationViewPage().tapMessage(msg);
+        } else {
+            getConversationViewPage().longTapMessage(msg);
+        }
     }
 
 }

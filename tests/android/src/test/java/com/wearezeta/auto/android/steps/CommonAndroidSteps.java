@@ -1117,11 +1117,21 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. ^I see alert message containing \"(.*)\"$
      */
-    @Then("^I see alert message containing \"(.*)\"$")
-    public void ISeeAlertMessage(String expectedMsg) throws Exception {
+    @Then("^I see alert message containing \"(.*)\" in the (title|body)$")
+    public void ISeeAlertMessage(String expectedMsg, String location) throws Exception {
         expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, ClientUsersManager.FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("An alert containing text '%s' is not visible", expectedMsg),
-                pagesCollection.getCommonPage().isAlertMessageVisible(expectedMsg));
+        switch (location.toLowerCase()) {
+            case "body":
+                Assert.assertTrue(String.format("An alert containing text '%s' in body is not visible", expectedMsg),
+                        pagesCollection.getCommonPage().isAlertMessageVisible(expectedMsg));
+                break;
+            case "title":
+                Assert.assertTrue(String.format("An alert containing text '%s' is title not visible", expectedMsg),
+                        pagesCollection.getCommonPage().isAlertTitleVisible(expectedMsg));
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("'%s' location is unknown", location));
+        }
     }
 
     /**
