@@ -244,14 +244,16 @@ class Device extends RemoteEntity implements IDevice {
     @Override
     public ActorMessage.MessageInfo[] getConversationMessages(String convId) throws Exception {
         try {
-            ActorMessage.ConvMessages convMessages = (ActorMessage.ConvMessages) askActor(this.ref(), new ActorMessage.GetMessages(new RConvId(convId)));
+            ActorMessage.ConvMessages convMessages = (ActorMessage.ConvMessages) askActor(this.ref(),
+                    new ActorMessage.GetMessages(new RConvId(convId)));
             return convMessages.msgs();
         } catch (TimeoutException e) {
             // recreate process and retry
             respawn();
             if (hasLoggedInUser()) {
                 logInWithUser(this.loggedInUser.get());
-                ActorMessage.ConvMessages convMessages = (ActorMessage.ConvMessages) askActor(this.ref(), new ActorMessage.GetMessages(new RConvId(convId)));
+                ActorMessage.ConvMessages convMessages = (ActorMessage.ConvMessages) askActor(this.ref(),
+                        new ActorMessage.GetMessages(new RConvId(convId)));
                 return convMessages.msgs();
             }
         }

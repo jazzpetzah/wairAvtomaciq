@@ -1242,18 +1242,18 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * User X delete message with User/Group via specified device
-     * Note : The last message means the last message sent from specified device, the device should online.
+     * User X delete message from User/Group via specified device
+     * Note : The recent message means the recent message sent from specified device by SE, the device should online.
      *
      * @param userNameAlias
      * @param convoType
      * @param dstNameAlias
      * @param deviceName
      * @throws Exception
-     * @step. ^User (.*) delete last message from (user|group conversation) (.*) via device (.*)$
+     * @step. ^User (.*) deletes? the recent message from (user|group conversation) (.*) via device (.*)$
      */
-    @When("^User (.*) delete last message from (user|group conversation) (.*) via device (.*)$")
-    public void test(String userNameAlias, String convoType, String dstNameAlias, String deviceName) throws Exception {
+    @When("^User (.*) deletes? the recent message from (user|group conversation) (.*) via device (.*)$")
+    public void UserXDeleteLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName) throws Exception {
         boolean isGroup = convoType.equals("group conversation");
         commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup);
     }

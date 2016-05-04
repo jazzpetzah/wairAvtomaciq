@@ -141,15 +141,18 @@ public class SEBridge {
         getOrAddDevice(userFrom, deviceName).unmuteConversation(convId);
     }
 
-    public void sendFile(ClientUser userFrom, String convId, String path, String mime, String deviceName) throws Exception {
+    public void sendFile(ClientUser userFrom, String convId, String path, String mime, String deviceName)
+            throws Exception {
         getOrAddDevice(userFrom, deviceName).sendFile(convId, path, mime);
     }
 
-    public void deleteMessage(ClientUser userFrom, String convId, MessageId messageId, String deviceName) throws Exception {
+    public void deleteMessage(ClientUser userFrom, String convId, MessageId messageId, String deviceName)
+            throws Exception {
         getOrAddDevice(userFrom, deviceName).deleteMessage(convId, messageId);
     }
 
-    public ActorMessage.MessageInfo[] getConversationMessages(ClientUser userFrom, String convId, String deviceName) throws Exception {
+    public ActorMessage.MessageInfo[] getConversationMessages(ClientUser userFrom, String convId, String deviceName)
+            throws Exception {
         return getOrAddDevice(userFrom, deviceName).getConversationMessages(convId);
     }
 
