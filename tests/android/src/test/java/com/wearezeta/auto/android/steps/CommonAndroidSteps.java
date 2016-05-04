@@ -126,6 +126,7 @@ public class CommonAndroidSteps {
         AndroidCommonUtils.disableHints();
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidSteps.class);
+        AndroidCommonUtils.installClipperApp(CommonAndroidSteps.class);
         final String backendJSON =
                 AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
         AndroidCommonUtils.deployBackendFile(backendJSON);
@@ -1284,5 +1285,19 @@ public class CommonAndroidSteps {
     @And("^I tap (.*) button on the alert$")
     public void ITapAlertButton(String caption) throws Exception {
         pagesCollection.getCommonPage().tapAlertButton(caption);
+    }
+
+    /**
+     * Verify whether Android clipboard content equals to the expected one
+     *
+     * @param expectedMsg the message to verify
+     * @throws Exception
+     * @step. ^I verify that Android clipboard content equals to "(.*)"$
+     */
+    @Then("^I verify that Android clipboard content equals to \"(.*)\"$")
+    public void IVerifyClipboardContent(String expectedMsg) throws Exception {
+        final Optional<String> currentContent = AndroidCommonUtils.getClipboardContent();
+        Assert.assertEquals("The expected and the current clipboard contents are different",
+                expectedMsg, currentContent.orElse(""));
     }
 }
