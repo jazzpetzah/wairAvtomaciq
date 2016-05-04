@@ -387,11 +387,6 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
-    public boolean waitForMessageDissapears(String text) throws Exception {
-        final By locator = By.xpath(xpathStrConversationMessageByText.apply(text));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
-    }
-
     public boolean waitForPeopleMessage(String text) throws Exception {
         final By locator = By.xpath(xpathConversationPeopleChangedByExp.apply(String.format("contains(@value, '%s')",
                 text.toUpperCase())));

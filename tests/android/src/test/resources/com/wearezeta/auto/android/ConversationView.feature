@@ -518,15 +518,15 @@ Feature: Conversation View
     And I see Contact list with contacts
     And I tap on contact name <Contact1>
     And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
-    Then I see my message "<Message>" in the dialog
+    Then I see the message "<Message>" in the conversation view
     When User Myself delete last message from user <Contact1> via device <Device>
-    Then I do not see my message "<Message>" in the dialog
+    Then I do not see the message "<Message>" in the conversation view
     When I tap back button in upper toolbar
     And I tap on contact name <GroupChatName>
     And User Myself send encrypted message "<Message>" via device <Device> to group conversation <GroupChatName>
-    Then I see my message "<Message>" in the dialog
+    Then I see the message "<Message>" in the conversation view
     When User Myself delete last message from group conversation <GroupChatName> via device <Device>
-    Then I do not see my message "<Message>" in the dialog
+    Then I do not see the message "<Message>" in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName |
