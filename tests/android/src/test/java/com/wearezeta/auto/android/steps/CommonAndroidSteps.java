@@ -126,6 +126,7 @@ public class CommonAndroidSteps {
         AndroidCommonUtils.disableHints();
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidSteps.class);
+        AndroidCommonUtils.installClipperApp(CommonAndroidSteps.class);
         final String backendJSON =
                 AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
         AndroidCommonUtils.deployBackendFile(backendJSON);
@@ -1117,11 +1118,21 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. ^I see alert message containing \"(.*)\"$
      */
-    @Then("^I see alert message containing \"(.*)\"$")
-    public void ISeeAlertMessage(String expectedMsg) throws Exception {
+    @Then("^I see alert message containing \"(.*)\" in the (title|body)$")
+    public void ISeeAlertMessage(String expectedMsg, String location) throws Exception {
         expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, ClientUsersManager.FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("An alert containing text '%s' is not visible", expectedMsg),
-                pagesCollection.getCommonPage().isAlertMessageVisible(expectedMsg));
+        switch (location.toLowerCase()) {
+            case "body":
+                Assert.assertTrue(String.format("An alert containing text '%s' in body is not visible", expectedMsg),
+                        pagesCollection.getCommonPage().isAlertMessageVisible(expectedMsg));
+                break;
+            case "title":
+                Assert.assertTrue(String.format("An alert containing text '%s' is title not visible", expectedMsg),
+                        pagesCollection.getCommonPage().isAlertTitleVisible(expectedMsg));
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("'%s' location is unknown", location));
+        }
     }
 
     /**
@@ -1279,5 +1290,31 @@ public class CommonAndroidSteps {
                 Math.abs(expectedSize - actualSize) < 100);
         Assert.assertEquals(String.format("File MIME type should be %s", mimeType),
                 mimeType, fileInfo.get().getMimeType());
+    }
+
+    /**
+     * Tap the corresponding button on alert message
+     *
+     * @param caption button caption as it is shown in @value property
+     * @throws Exception
+     * @step. ^I tap (.*) button on the alert$
+     */
+    @And("^I tap (.*) button on the alert$")
+    public void ITapAlertButton(String caption) throws Exception {
+        pagesCollection.getCommonPage().tapAlertButton(caption);
+    }
+
+    /**
+     * Verify whether Android clipboard content equals to the expected one
+     *
+     * @param expectedMsg the message to verify
+     * @throws Exception
+     * @step. ^I verify that Android clipboard content equals to "(.*)"$
+     */
+    @Then("^I verify that Android clipboard content equals to \"(.*)\"$")
+    public void IVerifyClipboardContent(String expectedMsg) throws Exception {
+        final Optional<String> currentContent = AndroidCommonUtils.getClipboardContent();
+        Assert.assertEquals("The expected and the current clipboard contents are different",
+                expectedMsg, currentContent.orElse(""));
     }
 }

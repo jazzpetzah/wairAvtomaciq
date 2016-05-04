@@ -295,13 +295,9 @@ public class AndroidCommonUtils extends CommonUtils {
         return output.contains(androidPackage);
     }
 
-    private static final String TESTING_GALLERY_PACKAGE_ID = "com.wire.testinggallery";
-
     public static void installTestingGalleryApp(Class<?> c) throws Exception {
-        if (!isPackageInstalled(TESTING_GALLERY_PACKAGE_ID)) {
-            executeAdb(String.format("install %s/testing_gallery-debug.apk",
-                    getAndroidToolsPathFromConfig(c)));
-        }
+        executeAdb(String.format("install -r %s/testing_gallery-debug.apk",
+                getAndroidToolsPathFromConfig(c)));
     }
 
     public static boolean isAppInForeground(String packageId) throws Exception {
@@ -575,7 +571,7 @@ public class AndroidCommonUtils extends CommonUtils {
      * Create random access file with predefined size and name , and push it into sdcard
      *
      * @param fileFullName the name with extension
-     * @param size the expected size of file
+     * @param size         the expected size of file
      * @throws Exception
      */
     public static void pushRandomFileToSdcardDownload(String fileFullName, String size)
@@ -594,7 +590,7 @@ public class AndroidCommonUtils extends CommonUtils {
      * @param fileFullName fileName should be the name of file which located in Android Tools Path
      * @throws Exception
      */
-    public static void pushLocalFileToSdcardDownload(String fileFullName) throws Exception{
+    public static void pushLocalFileToSdcardDownload(String fileFullName) throws Exception {
         String basePath = getImagesPath(AndroidCommonUtils.class);
         String extension = FilenameUtils.getExtension(fileFullName);
         String fileName = FilenameUtils.getBaseName(fileFullName);
@@ -642,7 +638,7 @@ public class AndroidCommonUtils extends CommonUtils {
         String sourceFilePath = sdcardBasePath + fileFullName;
         String destinationFilePath = getBuildPathFromConfig(AndroidCommonUtils.class) + File.separator + fileFullName;
         File destinationFile = new File(destinationFilePath);
-        if(destinationFile.exists()) {
+        if (destinationFile.exists()) {
             destinationFile.delete();
         }
         executeAdb(String.format("pull %s %s", sourceFilePath, destinationFilePath));
@@ -655,5 +651,31 @@ public class AndroidCommonUtils extends CommonUtils {
                 sourceFilePath));
     }
 
+    // *** Read https://github.com/majido/clipper for more details
 
+    public static void installClipperApp(Class<?> c) throws Exception {
+        executeAdb(String.format("install -r %s/clipper.apk", getAndroidToolsPathFromConfig(c)));
+    }
+
+    private static void ensureClipperServiceIsRunning() throws Exception {
+        executeAdb("shell am startservice ca.zgrs.clipper/.ClipboardService");
+    }
+
+    public static Optional<String> getClipboardContent() throws Exception {
+        ensureClipperServiceIsRunning();
+        final String output = getAdbOutput("shell am broadcast -a clipper.get");
+        final Pattern pattern = Pattern.compile("data=\"(.*)\"$");
+        final Matcher matcher = pattern.matcher(output);
+        if (matcher.find()) {
+            return Optional.of(matcher.group(1));
+        }
+        return Optional.empty();
+    }
+
+    public static void setClipboardContent(String content) throws Exception {
+        ensureClipperServiceIsRunning();
+        executeAdb(String.format("shell am broadcast -a clipper.set -e text \"%s\"", content));
+    }
+
+    // ***
 }

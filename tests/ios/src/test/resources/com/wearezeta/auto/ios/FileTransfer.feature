@@ -1,6 +1,6 @@
 Feature: File Transfer
 
-  @C82524 @regression
+  @C82524 @regression @rc
   Scenario Outline: Verify placeholder is shown for the receiver
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -24,11 +24,9 @@ Feature: File Transfer
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I see File Transfer button in input tools palette
     Then I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
-    And I click plus button next to text input
     And I see File Transfer button in input tools palette
 
     Examples:
@@ -42,7 +40,6 @@ Feature: File Transfer
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap File Transfer button from input tools
     And I tap file transfer menu item <ItemName>
     Then I see file transfer placeholder
@@ -76,7 +73,6 @@ Feature: File Transfer
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap File Transfer button from input tools
     And I tap file transfer menu item <ItemName>
     Then I see file transfer placeholder
@@ -94,7 +90,6 @@ Feature: File Transfer
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap File Transfer button from input tools
     And I tap file transfer menu item <ItemName>
     Then I verify the alert contains text <ExpectedAlertText>
@@ -112,14 +107,12 @@ Feature: File Transfer
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I select Camera Roll view
     Then I remember the count of images in gallery
     When I tap Cancel button
     And I tap Close camera button
-    And I click plus button next to text input
     And I tap File Transfer button from input tools
     And I tap file transfer menu item <ItemName>
     And I wait up to <Timeout> seconds until the file is uploaded
@@ -127,7 +120,6 @@ Feature: File Transfer
     And I tap Share button on file preview page
     And I tap Save Image share menu item
     And I tap Done button
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I select Camera Roll view

@@ -12,7 +12,6 @@ import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Assert;
 
 import java.util.ArrayList;
@@ -275,7 +274,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see Ping message (.*) in the dialog$")
     public void ThenISeePingMessageInTheDialog(String message) throws Exception {
-        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS).toUpperCase();
+        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         Assert.assertTrue(String.format("Ping message '%s' is not visible after the timeout", message),
                 getConversationViewPage().waitForPingMessageWithText(message));
     }
@@ -283,30 +282,33 @@ public class ConversationViewPageSteps {
     /**
      * Checks to see that a message that has been sent appears in the chat history
      *
+     * @param shouldNotSee equals to null if the message should be visible
+     * @param msg          the expected message
      * @throws Exception
-     * @step. ^I see my message \"(.*)\" in the dialog$
+     * @step. ^I (do not )?see the message "(.*)" in the conversation view$
      */
-    @Then("^I( do not)? see my message \"(.*)\" in the dialog$")
-    public void ThenISeeMyMessageInTheDialog(String doNotSee, String msg) throws Exception {
-        if (doNotSee == null) {
+    @Then("^I (do not )?see the message \"(.*)\" in the conversation view$")
+    public void ThenISeeMyMessageInTheDialog(String shouldNotSee, String msg) throws Exception {
+        msg = expandMessage(msg);
+        if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", msg),
-                    getConversationViewPage().waitForMessage(expandMessage(msg)));
+                    getConversationViewPage().waitForMessage(msg));
         } else {
-            Assert.assertTrue(String.format("The message '%s' is visible in the conversation view", msg),
-                    getConversationViewPage().waitForMessageDissapears(expandMessage(msg)));
+            Assert.assertTrue(
+                    String.format("The message '%s' is still visible in the conversation view, but should be hidden", msg),
+                    getConversationViewPage().isMessageInvisible(msg));
         }
-
     }
 
     /**
      * Checks to see that a photo exists in the chat history. Does not check which photo though
      *
      * @param shouldNotSee equals to null if 'do not' part does not exist
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I (do not )?see new (?:photo|picture) in the dialog$
      */
     @Then("^I (do not )?see new (?:photo|picture) in the dialog$")
-    public void ThenISeeNewPhotoInTheDialog(String shouldNotSee) throws Throwable {
+    public void ThenISeeNewPhotoInTheDialog(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue("No new photo is present in the chat", getConversationViewPage().isImageExists());
         } else {
@@ -318,11 +320,11 @@ public class ConversationViewPageSteps {
     /**
      * Selects the last picture sent in a conversation view dialog
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I select last photo in dialog$
      */
     @When("^I select last photo in dialog$")
-    public void WhenISelectLastPhotoInDialog() throws Throwable {
+    public void WhenISelectLastPhotoInDialog() throws Exception {
         getConversationViewPage().clickLastImageFromDialog();
     }
 
@@ -577,17 +579,6 @@ public class ConversationViewPageSteps {
     @When("^I (save|open) file (?:in|from) file dialog$")
     public void ISaveOrOpenFile(String action) throws Exception {
         getConversationViewPage().tapFileDialogActionButton(action);
-    }
-
-    @When("^I long tap on (text|ping|media|call|file|image) message \"(.*)\"$")
-    public void ILongTapMessage(String messageType, String message) throws Exception {
-        switch (messageType) {
-            case "text":
-                getConversationViewPage().longTapOnMessageWithText(message);
-                break;
-            default:
-                throw new NotImplementedException("Only could long tap on text message");
-        }
     }
 
     /**
@@ -964,6 +955,78 @@ public class ConversationViewPageSteps {
     public void ThenISeeSelfAvatarOnTextInput() throws Exception {
         Assert.assertTrue("The self avatar should be visible on text input",
                 getConversationViewPage().isSelfAvatarOnTextInputVisible());
+    }
+
+    /**
+     * Check the corresponding action mode bar button. The toolbar appears upon long tap on conversation item
+     *
+     * @param name one of possible toolbar button names
+     * @throws Exception
+     * @step. ^I (do not )?see (Delete|Copy|Close) button on the action mode bar$
+     */
+    @Then("^I (do not )?see (Delete|Copy|Close) button on the action mode bar$")
+    public void ITapTopToolbarButton(String shouldNotSee, String name) throws Exception {
+        boolean condition;
+        switch (name.toLowerCase()) {
+            case "delete":
+                condition = (shouldNotSee == null) ? getConversationViewPage().isDeleteActionModeBarButtonVisible() :
+                        getConversationViewPage().isDeleteActionModeBarButtonInvisible();
+                break;
+            case "copy":
+                condition = (shouldNotSee == null) ? getConversationViewPage().isCopyActionModeBarButtonVisible() :
+                        getConversationViewPage().isCopyActionModeBarButtonInvisible();
+                break;
+            case "close":
+                condition = (shouldNotSee == null) ? getConversationViewPage().isCloseActionModeBarButtonVisible() :
+                        getConversationViewPage().isCloseActionModeBarButtonInvisible();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("There is no '%s' button on the action bar", name));
+        }
+        Assert.assertTrue(String.format("The top toolbar button '%s' should be %s", name,
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Tap the corresponding action mode bar button. The toolbar appears upon long tap on conversation item
+     *
+     * @param name one of possible toolbar button names
+     * @throws Exception
+     * @step. ^I tap (Delete|Copy|Close) button on the action mode bar$
+     */
+    @When("^I tap (Delete|Copy|Close) button on the action mode bar$")
+    public void ITapTopToolbarButton(String name) throws Exception {
+        switch (name.toLowerCase()) {
+            case "delete":
+                getConversationViewPage().tapDeleteActionModeBarButton();
+                break;
+            case "copy":
+                getConversationViewPage().tapCopyTopActionModeBarButton();
+                break;
+            case "close":
+                getConversationViewPage().tapCloseTopActionModeBarButton();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("There is no '%s' button on the top toolbar", name));
+        }
+    }
+
+    /**
+     * Long tap an existing conversation message
+     *
+     * @param msg       the message to tap
+     * @param isLongTap equals to null if the tap should be simple tap
+     * @throws Exception
+     * @step. ^I (long )?tap the message "(.*)" in the conversation view$
+     */
+    @When("^I (long )?tap the message \"(.*)\" in the conversation view$")
+    public void ITapTheMessage(String isLongTap, String msg) throws Exception {
+        msg = usrMgr.replaceAliasesOccurences(msg, FindBy.NAME_ALIAS);
+        if (isLongTap == null) {
+            getConversationViewPage().tapMessage(msg);
+        } else {
+            getConversationViewPage().longTapMessage(msg);
+        }
     }
 
 }

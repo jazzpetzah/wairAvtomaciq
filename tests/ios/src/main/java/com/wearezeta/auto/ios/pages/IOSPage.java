@@ -211,10 +211,6 @@ public abstract class IOSPage extends BasePage {
                 .executeScript(script);
     }
 
-    public void hideKeyboard() throws Exception {
-        this.getDriver().hideKeyboard();
-    }
-
     public void acceptAlertIfVisible() throws Exception {
         try {
             final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver());

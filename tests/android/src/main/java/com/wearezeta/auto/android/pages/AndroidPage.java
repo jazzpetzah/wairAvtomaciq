@@ -18,6 +18,9 @@ public abstract class AndroidPage extends BasePage {
     private static final Function<String, String> xpathStrAlertMessageByText =
             text -> String.format("//*[@id='message' and contains(@value, '%s')]", text);
 
+    private static final Function<String, String>  xpathStrAlertTitleByTextPart =
+            text -> String.format("//*[@id='alertTitle' and contains(@value, '%s')]", text);
+
     protected static final By idGiphyPreviewButton = By.id("cursor_button_giphy");
 
     protected static final By idGalleryBtn = By.id("gtv__camera_control__pick_from_gallery");
@@ -33,6 +36,9 @@ public abstract class AndroidPage extends BasePage {
     protected static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
 
     protected static final By idPager = By.id("conversation_pager");
+
+    private static Function<String, String> xpathStrAlertButtonByCaption = caption ->
+            String.format("//*[starts-with(@id, 'button') and @value='%s']", caption);
 
     @Override
     protected ZetaAndroidDriver getDriver() throws Exception {
@@ -253,7 +259,13 @@ public abstract class AndroidPage extends BasePage {
                 && difference / getDriver().manage().window().getSize().getHeight() <= locationDifferencePercentage;
     }
 
-    public void longTapOnElement(WebElement element, int durationMilliseconds) throws Exception {
-        getDriver().longTap(element, durationMilliseconds);
+    public void tapAlertButton(String caption) throws Exception {
+        final By locator = By.xpath(xpathStrAlertButtonByCaption.apply(caption));
+        getElement(locator).click();
+    }
+
+    public boolean isAlertTitleVisible(String expectedMsg) throws Exception {
+        final By locator = By.xpath(xpathStrAlertTitleByTextPart.apply(expectedMsg));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }

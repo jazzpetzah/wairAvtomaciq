@@ -50,7 +50,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap on text input
     And I type the message "<Message>" and send it
-    Then I see my message "<Message>" in the dialog
+    Then I see the message "<Message>" in the conversation view
 
     Examples:
       | Name      | Contact   | Message |
@@ -124,7 +124,7 @@ Feature: Conversation View
     When I tap on contact name <GroupChatName>
     And I tap on text input
     And I type the message "<Message>" and send it
-    Then I see my message "<Message>" in the dialog
+    Then I see the message "<Message>" in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName     | Message |
@@ -140,7 +140,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap on text input
     And I type the message "LONG_MESSAGE" and send it
-    Then I see my message "LONG_MESSAGE" in the dialog
+    Then I see the message "LONG_MESSAGE" in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -156,7 +156,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap on text input
     And I type the message "<Message>" and send it
-    Then I see my message "<Message>" in the dialog
+    Then I see the message "<Message>" in the conversation view
 
     Examples:
       | Name      | Contact   | Message  |
@@ -172,7 +172,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap on text input
     And I type the message "<Message>" and send it
-    Then I see my message "<Message>" in the dialog
+    Then I see the message "<Message>" in the conversation view
 
     Examples:
       | Name      | Contact   | Message  |
@@ -411,7 +411,7 @@ Feature: Conversation View
     And the conversation title should be "<Contact1>"
     And User <Contact2> send message "<Message1>" to user Myself
     And I tap new message notification "<Message1>"
-    Then I see my message "<Message1>" in the dialog
+    Then I see the message "<Message1>" in the conversation view
     And the conversation title should be "<Contact2>"
     And I tap conversation name from top toolbar
     And I press back button
