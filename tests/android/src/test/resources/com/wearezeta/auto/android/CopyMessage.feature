@@ -9,7 +9,7 @@ Feature: Copy Message
     Given I see Contact list with contacts
     And I tap on contact name <Contact>
     And I tap on text input
-    And I type the message "<Message∂>" and send it
+    And I type the message "<Message>" and send it
     When I long tap the message "<Message>" in the conversation view
     And I tap Copy button on the action mode bar
     Then I verify that Android clipboard content equals to "<Message>"
