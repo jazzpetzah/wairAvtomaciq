@@ -352,16 +352,8 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idCursorCloseButton, "Close cursor button is not visible").click();
     }
 
-    public void clickLastImageFromDialog() throws Exception {
-        final WebElement lastPicture = getElement(xpathLastPicture);
-        lastPicture.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathLastPicture, 3)) {
-            try {
-                lastPicture.click();
-            } catch (WebDriverException e) {
-                // silently ignore
-            }
-        }
+    public void tapRecentImage() throws Exception {
+        getElement(xpathLastPicture).click();
     }
 
     public boolean waitForConversationNameChangedMessage(String expectedName) throws Exception {
