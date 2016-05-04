@@ -1,5 +1,7 @@
 package com.wearezeta.auto.common;
 
+import com.waz.model.MessageId;
+import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.backend.*;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -306,6 +308,29 @@ public final class CommonSteps {
             seBridge.sendPing(pingFromUser, convId);
             Thread.sleep(500);
         }
+    }
+
+    public void UserDeleteMessage(String msgFromuserNameAlias, String dstConversationName, MessageId messageId,
+                                  String deviceName, boolean isGroup) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromuserNameAlias);
+        if (!isGroup) {
+            dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        }
+        String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
+        seBridge.deleteMessage(user, dstConvId, messageId, deviceName);
+    }
+
+    public void UserDeleteLatestMessage(String msgFromuserNameAlias, String dstConversationName, String deviceName,
+                                        boolean isGroup) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromuserNameAlias);
+        if(!isGroup) {
+            dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        }
+        String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
+        ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+        ActorMessage.MessageInfo lastMessage = messageInfos[messageInfos.length - 1];
+
+        seBridge.deleteMessage(user, dstConvId, lastMessage.id(), deviceName);
     }
 
     public void UserSentMessageToUser(String msgFromUserNameAlias,

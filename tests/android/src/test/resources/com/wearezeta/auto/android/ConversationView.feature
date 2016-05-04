@@ -505,4 +505,3 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
-
