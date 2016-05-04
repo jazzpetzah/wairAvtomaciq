@@ -240,7 +240,7 @@ Feature: File Transfer
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | File        | Size | Type | ChatName  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | example.txt | 15MB | TXT  | GroupChat |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | example.txt | 24MB | TXT  | GroupChat |
 
   @C95630 @filetransfer @regression
   Scenario Outline: Verify file can be downloaded and decrypted by sender on second device
