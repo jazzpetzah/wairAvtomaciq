@@ -43,6 +43,8 @@ public class PersonalInfoPage extends AndroidPage {
 
     private static final By idLightBulbButton = By.id("gtv__profile__theme_button");
 
+    public static final By idApproveDeviceOk = By.id("zb__approve_devices__ok");
+
     public PersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -71,6 +73,10 @@ public class PersonalInfoPage extends AndroidPage {
         // Wait for animation
         Thread.sleep(1000);
         confirmBtn.click();
+    }
+
+    public void closeFoundNewDeviceNotification() throws Exception {
+        getElement(idApproveDeviceOk).click();
     }
 
     public void tapEllipsisButton() throws Exception {

@@ -68,17 +68,6 @@ public class SEBridge {
         return dstDevice;
     }
 
-    public void loginDevice(ClientUser user, String deviceName) throws Exception {
-        getOrAddDevice(user, deviceName);
-    }
-
-    public void logoutDevice(ClientUser user, String deviceName) throws Exception {
-        IDevice device = getDevicePool().getDevice(user, deviceName).orElseThrow(() ->
-                new IllegalStateException(
-                        String.format("Cannot logout from the offline device %s, please login at first", deviceName)));
-        device.destroy();
-    }
-
     public List<String> getDeviceIds(ClientUser user) throws Exception {
         List<IDevice> devices = getDevicePool().getDevices(user);
         List<String> ids = new ArrayList<>();

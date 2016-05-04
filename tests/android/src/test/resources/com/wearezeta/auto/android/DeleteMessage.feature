@@ -58,10 +58,33 @@ Feature: Delete Message
     Given I accept First Time overlay as soon as it is visible
     When User Myself adds new device <Device>
     And User <Contact1> adds new device <ContactDevice>
-    And I see contact list with contacts
+    And I see Contact list with contacts
     And I tap on contact name <Contact1>
     And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
-    And User Myself
+    Then I see the message "<Message>" in the conversation view
+    When I tap back button in upper toolbar
+    And I tap on contact name <GroupChatName>
+    And User Myself send encrypted message "<Message>" via device <Device> to group conversation <GroupChatName>
+    Then I see the message "<Message>" in the conversation view
+    And I tap back button in upper toolbar
+    And I tap conversations list settings button
+    And I close the new device found notification
+    And I tap options button
+    And I tap settings button
+    And I select "Account" settings menu item
+    And I select "Log out" settings menu item
+    And I confirm sign out
+    And I see welcome screen
+    And User Myself delete the recent message from user <Contact1> via device <Device>
+    And User Myself delete the recent message from group conversation <GroupChatName> via device <Device>
+    And I sign in using my email
+    And I do not see First Time overlay
+    And I see Contact list with contacts
+    And I tap on contact name <Contact1>
+    Then I do not see the message "<Message>" in the conversation view
+    When I tap back button in upper toolbar
+    And I tap on contact name <GroupChatName>
+    Then I do not see the message "<Message>" in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName |
