@@ -14,7 +14,7 @@ public class ParticipantsPage extends AbstractConversationDetailsPage {
 
     public static final Function<String, String> xpathStrParticipantAvatarByName = name -> String
             .format("//*[@id='pgv__participants']//*[@id='ttv__group__adapter' and @value='%s']/parent::*/parent::*",
-                    name.split("\\s+")[0]);
+                    name.split("\\s+")[0].toUpperCase());
 
     private static final String idStrConvoNameInput = "taet__participants__header__editable";
     private static final By idConvoNameInput = By.id(idStrConvoNameInput);
