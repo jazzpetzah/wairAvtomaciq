@@ -10,7 +10,8 @@ Feature: Migration
     Given I am signed in properly
     Then I see Contact list with name <Contact>
     When I deploy latest staging version
-    Then I refresh page
+    And I refresh page
+    Then I am signed in properly
 
   Examples:
   | Login      | Password      | Name      | Contact   |

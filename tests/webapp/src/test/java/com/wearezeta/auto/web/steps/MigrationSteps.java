@@ -36,7 +36,7 @@ public class MigrationSteps {
 
     private static final int IS_RUNNING_CHECK_INTERVAL = 20; // milliseconds
     private static final int MAX_RETRY = 3;
-    private static final int RETRY_TIMEOUT = 20000; // milliseconds
+    private static final int RETRY_TIMEOUT = 10000; // milliseconds
 
     private Path temp;
     private Process gruntProcess;
@@ -100,12 +100,13 @@ public class MigrationSteps {
         temp = Files.createTempDirectory("webapp");
         log.info("Created temp directory: " + temp.toAbsolutePath());
         runCommand(temp, new String[]{"git", "clone", "git@github.com:wearezeta/mars.git", "."});
-        runCommand(temp, new String[]{"git", "checkout", "tags/2016-04-21-11-59"});
+        runCommand(temp, new String[]{"git", "checkout", "tags/2016-04-29-12-36"});
         runCommand(temp, new String[]{"npm", "install"});
         runCommand(temp, new String[]{"grunt", "init", "prepare_dist", "gitinfo", "set_version:staging"});
         gruntProcess = runCommandUnattached(temp, new String[]{"grunt", "connect", "watch"});
         final String backend = CommonUtils.getBackendType(MigrationSteps.class);
-        final String ip = Inet4Address.getLocalHost().getHostAddress();
+        // TODO: final String ip = Inet4Address.getLocalHost().getHostAddress();
+        final String ip = "localhost";
         final String url = String.format("http://%s:8888/?env=%s", ip, backend);
         waitUntilReachable(url);
         WebPage page = webappPagesCollection.getPage(WebPage.class);
@@ -126,7 +127,8 @@ public class MigrationSteps {
         runCommand(temp, new String[]{"grunt", "init", "prepare_dist", "gitinfo", "set_version:staging"});
         runCommandUnattached(temp, new String[]{"grunt", "connect", "watch"});
         final String backend = CommonUtils.getBackendType(MigrationSteps.class);
-        final String ip = Inet4Address.getLocalHost().getHostAddress();
+        // TODO: final String ip = Inet4Address.getLocalHost().getHostAddress();
+        final String ip = "localhost";
         final String url = String.format("http://%s:8888/?env=%s", ip, backend);
         waitUntilReachable(url);
     }
