@@ -321,11 +321,11 @@ public class ConversationViewPageSteps {
      * Selects the last picture sent in a conversation view dialog
      *
      * @throws Exception
-     * @step. ^I select last photo in dialog$
+     * @step. ^I tap the recent image in the conversation view$
      */
-    @When("^I select last photo in dialog$")
-    public void WhenISelectLastPhotoInDialog() throws Exception {
-        getConversationViewPage().clickLastImageFromDialog();
+    @When("^I tap the recent (?:image|picture) in the conversation view$")
+    public void ITapRecentImage() throws Exception {
+        getConversationViewPage().tapRecentImage();
     }
 
     /**
