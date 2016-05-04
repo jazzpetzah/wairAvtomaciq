@@ -30,10 +30,10 @@ Feature: Delete Message
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    When User Myself adds new device <Device>
-    And User <Contact1> adds new device <ContactDevice>
-    And I see Contact list with contacts
-    And I tap on contact name <Contact1>
+    Given User Myself adds new device <Device>
+    Given User <Contact1> adds new device <ContactDevice>
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
     And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
     Then I see the message "<Message>" in the conversation view
     When User Myself delete the recent message from user <Contact1> via device <Device>
