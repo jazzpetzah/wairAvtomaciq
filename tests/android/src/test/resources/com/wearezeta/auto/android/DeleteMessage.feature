@@ -48,3 +48,21 @@ Feature: Delete Message
     Examples:
       | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName |
       | user1Name | user2Name | user3Name | DeleteTextMessage | Device1 | Device2       | MyGroup       |
+
+  @C111645 @staging
+  Scenario Outline: Verify deleting is synchronised across own devices when one of them was offline
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    When User Myself adds new device <Device>
+    And User <Contact1> adds new device <ContactDevice>
+    And I see contact list with contacts
+    And I tap on contact name <Contact1>
+    And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
+    And User Myself
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName |
+      | user1Name | user2Name | user3Name | DeleteTextMessage | Device1 | Device2       | MyGroup       |
