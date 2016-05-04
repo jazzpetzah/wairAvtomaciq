@@ -228,15 +228,15 @@ class Device extends RemoteEntity implements IDevice {
     }
 
     @Override
-    public void deleteMessage(String convId, String messageId) throws Exception {
+    public void deleteMessage(String convId, MessageId messageId) throws Exception {
         try {
-            askActor(this.ref(), new ActorMessage.DeleteMessage(new RConvId(convId), new MessageId(messageId)));
-        }catch (TimeoutException e) {
+            askActor(this.ref(), new ActorMessage.DeleteMessage(new RConvId(convId), messageId));
+        } catch (TimeoutException e) {
             // recreate process and retry
             respawn();
-            if(hasLoggedInUser()) {
+            if (hasLoggedInUser()) {
                 logInWithUser(this.loggedInUser.get());
-                askActor(this.ref(), new ActorMessage.DeleteMessage(new RConvId(convId), new MessageId(messageId)));
+                askActor(this.ref(), new ActorMessage.DeleteMessage(new RConvId(convId), messageId));
             }
         }
     }
@@ -244,15 +244,15 @@ class Device extends RemoteEntity implements IDevice {
     @Override
     public ActorMessage.MessageInfo[] getConversationMessages(String convId) throws Exception {
         try {
-            ActorMessage.ConvMessages convMessages =  (ActorMessage.ConvMessages)askActor(this.ref(), new ActorMessage.GetMessages(new RConvId(convId)));
+            ActorMessage.ConvMessages convMessages = (ActorMessage.ConvMessages) askActor(this.ref(), new ActorMessage.GetMessages(new RConvId(convId)));
             return convMessages.msgs();
-        }catch (TimeoutException e) {
+        } catch (TimeoutException e) {
             // recreate process and retry
             respawn();
-            if(hasLoggedInUser()) {
+            if (hasLoggedInUser()) {
                 logInWithUser(this.loggedInUser.get());
-                ActorMessage.ConvMessages convMessages =  (ActorMessage.ConvMessages)askActor(this.ref(), new ActorMessage.GetMessages(new RConvId(convId)));
-                return  convMessages.msgs();
+                ActorMessage.ConvMessages convMessages = (ActorMessage.ConvMessages) askActor(this.ref(), new ActorMessage.GetMessages(new RConvId(convId)));
+                return convMessages.msgs();
             }
         }
         return null;

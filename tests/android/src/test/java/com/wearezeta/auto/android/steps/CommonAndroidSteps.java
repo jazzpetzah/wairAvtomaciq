@@ -1220,14 +1220,31 @@ public class CommonAndroidSteps {
      * @step. ^(.*) sends local file named "(.*)" and MIME type "(.*)" via device (.*) to (user|group conversation) (.*)$
      */
     @When("^(.*) sends local file named \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
-    public void ContactSendsXLocalFileFromSE(String contact,  String fileFullName, String mimeType,
-                                        String deviceName, String convoType, String dstConvoName) throws Exception {
+    public void ContactSendsXLocalFileFromSE(String contact, String fileFullName, String mimeType,
+                                             String deviceName, String convoType, String dstConvoName) throws Exception {
         String basePath = AndroidCommonUtils.getImagesPath(AndroidCommonUtils.class);
         String sourceFilePath = basePath + File.separator + fileFullName;
 
         boolean isGroup = convoType.equals("group conversation");
         commonSteps.UserSentFileToConversation(contact, dstConvoName, sourceFilePath,
                 mimeType, deviceName, isGroup);
+    }
+
+    /**
+     * User X delete message with User/Group via specified device
+     * Note : The last message means the last message sent from specified device, the device should online.
+     *
+     * @param userNameAlias
+     * @param convoType
+     * @param dstNameAlias
+     * @param deviceName
+     * @throws Exception
+     * @step. ^User (.*) delete last message from (user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) delete last message from (user|group conversation) (.*) via device (.*)$")
+    public void test(String userNameAlias, String convoType, String dstNameAlias, String deviceName) throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup);
     }
 
     /**
@@ -1247,7 +1264,7 @@ public class CommonAndroidSteps {
                     AndroidCommonUtils.pullFileFromSdcardDownload(fileFullName);
                     return CommonUtils.retrieveFileInfo(
                             AndroidCommonUtils.getBuildPathFromConfig(CommonAndroidSteps.class)
-                            + File.separator + fileFullName);
+                                    + File.separator + fileFullName);
                 });
 
         fileInfo.orElseThrow(() -> new IllegalStateException(String.format("File '%s' doesn't exist after %s seconds",

@@ -286,10 +286,16 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I see my message \"(.*)\" in the dialog$
      */
-    @Then("^I see my message \"(.*)\" in the dialog$")
-    public void ThenISeeMyMessageInTheDialog(String msg) throws Exception {
-        Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", msg),
-                getConversationViewPage().waitForMessage(expandMessage(msg)));
+    @Then("^I( do not)? see my message \"(.*)\" in the dialog$")
+    public void ThenISeeMyMessageInTheDialog(String doNotSee, String msg) throws Exception {
+        if (doNotSee == null) {
+            Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", msg),
+                    getConversationViewPage().waitForMessage(expandMessage(msg)));
+        } else {
+            Assert.assertTrue(String.format("The message '%s' is visible in the conversation view", msg),
+                    getConversationViewPage().waitForMessageDissapears(expandMessage(msg)));
+        }
+
     }
 
     /**
@@ -574,9 +580,9 @@ public class ConversationViewPageSteps {
     }
 
     @When("^I long tap on (text|ping|media|call|file|image) message \"(.*)\"$")
-    public void ILongTapMessage(String messageType,String message) throws Exception {
+    public void ILongTapMessage(String messageType, String message) throws Exception {
         switch (messageType) {
-            case "text" :
+            case "text":
                 getConversationViewPage().longTapOnMessageWithText(message);
                 break;
             default:
