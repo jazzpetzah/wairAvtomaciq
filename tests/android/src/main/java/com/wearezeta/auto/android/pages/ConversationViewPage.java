@@ -756,4 +756,9 @@ public class ConversationViewPage extends AndroidPage {
         final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
         getDriver().longTap(getElement(locator), DriverUtils.LONG_TAP_DURATION);
     }
+
+    public void tapMessage(String msg) throws Exception {
+        final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
+        getElement(locator).click();
+    }
 }
