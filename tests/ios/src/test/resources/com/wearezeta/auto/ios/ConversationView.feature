@@ -566,7 +566,7 @@ Feature: Conversation View
       | user1Name | user2Name |
 
   @C879 @regression @id1158 @ZIOS-6517
-  Scenario Outline: Verify possibility to copy image in the conversation view
+  Scenario Outline: (BUG-ZIOS-6517) Verify possibility to copy image in the conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
