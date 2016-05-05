@@ -776,7 +776,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C111318 @staging
+  @C111318 @regression
   Scenario Outline: Verify cursor and toolbar appear after adding person back
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other
