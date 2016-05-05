@@ -565,7 +565,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C879 @regression @id1158
+  @C879 @regression @id1158 @ZIOS-6517
   Scenario Outline: Verify possibility to copy image in the conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
