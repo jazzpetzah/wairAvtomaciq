@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import com.wearezeta.auto.common.misc.ElementState;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.ImageUtil;
@@ -318,8 +317,7 @@ public class ConversationViewPage extends AndroidPage {
     public void scrollToTheBottom() throws Exception {
         this.hideKeyboard();
         final long millisecondsStarted = System.currentTimeMillis();
-        ElementState initState = new ElementState(
-                () -> getConvoViewStateScreenshot());
+        ElementState initState = new ElementState(this::getConvoViewStateScreenshot);
         do {
             initState.remember();
             swipeByCoordinates(SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS, 50, 75, 50, 40);
