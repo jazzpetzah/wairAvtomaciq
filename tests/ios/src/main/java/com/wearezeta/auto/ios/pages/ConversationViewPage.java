@@ -670,4 +670,9 @@ public class ConversationViewPage extends IOSPage {
                     "scrolling retries", actionIdx));
         }
     }
+
+    public void tapAndHoldLastTextMessageByText(String msg) throws Exception {
+        final WebElement lastMessage = getElement(By.xpath(xpathStrLastMessageByExactText.apply(msg)));
+        this.getDriver().tap(1, lastMessage, DriverUtils.LONG_TAP_DURATION);
+    }
 }

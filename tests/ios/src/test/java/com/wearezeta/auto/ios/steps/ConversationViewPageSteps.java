@@ -692,6 +692,26 @@ public class ConversationViewPageSteps {
         getConversationViewPage().clickPopupCopyButton();
     }
 
+    @When("^I tap on (Select All|Copy|Delete|Paste) badge item$")
+    public void ITapCopyBadge(String badgeItem) throws Exception {
+        switch (badgeItem) {
+            case ("Select All"):
+                getConversationViewPage().clickPopupSelectAllButton();
+                break;
+            case ("Copy"):
+                getConversationViewPage().clickPopupCopyButton();
+                break;
+            case ("Delete"):
+                getConversationViewPage().clickPopupDeleteButton();
+                break;
+            case ("Paste"):
+                getConversationViewPage().clickPopupPasteButton();
+                break;
+            default:
+                throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste) are allowed options");
+        }
+    }
+
     /**
      * Verify whether user avatar is visible near convo input field
      *
@@ -1032,4 +1052,16 @@ public class ConversationViewPageSteps {
     public void ITapShareMenuItem(String itemName) throws Exception {
         getConversationViewPage().tapShareMenuItem(itemName);
     }
+
+    @When("^I longpress last message (.*) in conversation view$")
+    public void ITapAndHoldLastMessage(String msg) throws Exception {
+        getConversationViewPage().tapAndHoldLastTextMessageByText(msg);
+    }
+
+    @When("^I longpress last default message in conversation view$")
+    public void ITapAndHoldLastDefaultMessage() throws Exception {
+        ITapAndHoldLastMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+    }
+
+
 }

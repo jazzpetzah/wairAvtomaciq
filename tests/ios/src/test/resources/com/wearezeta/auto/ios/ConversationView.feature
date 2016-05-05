@@ -796,3 +796,20 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | GroupChatName |
       | user1Name | user2Name | CURSORTOOLBAR |
+
+  @C111321 @staging
+  Scenario Outline: Verify deleting own text message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I type the default message and send it
+    Then I see 1 default message in the dialog
+    When I longpress last default message in conversation view
+    And I tap on Delete badge item
+    Then I see 0 default messages in the dialog
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |

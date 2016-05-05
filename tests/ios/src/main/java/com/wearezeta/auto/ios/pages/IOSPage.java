@@ -41,6 +41,8 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By nameEditingItemCopy = MobileBy.AccessibilityId("Copy");
 
+    protected static final By nameEditingItemDelete = MobileBy.AccessibilityId("Delete");
+
     protected static final By nameEditingItemPaste = MobileBy.AccessibilityId("Paste");
 
     private static final Function<String, String> xpathStrAlertByText = text ->
@@ -103,6 +105,10 @@ public abstract class IOSPage extends BasePage {
 
     public void clickPopupCopyButton() throws Exception {
         getElement(nameEditingItemCopy, "Copy popup is not visible").click();
+    }
+
+    public void clickPopupDeleteButton() throws Exception {
+        getElement(nameEditingItemDelete, "Delete popup is not visible").click();
     }
 
     public void clickPopupPasteButton() throws Exception {
