@@ -108,14 +108,14 @@ Feature: Delete Message
     When I tap on contact name <Contact>
     And I tap Ping button from cursor toolbar
     And User <Contact> securely pings conversation Myself
-    And I see Ping message <Contact> pinged in the conversation view
+    And I see Ping message "<Message2>" in the conversation view
     And I long tap the Ping message "<Message1>" in the conversation view
-    And I tap the Ping message "<Contact> pinged" in the conversation view
+    And I tap the Ping message "<Message2>" in the conversation view
     And I tap Delete button on the action mode bar
     And I tap Delete button on the alert
-    Then I do not see Ping message <Message1> in the conversation view
-    And I do not see Ping message <Contact> pinged in the conversation view
+    Then I do not see Ping message "<Message1>" in the conversation view
+    And I do not see Ping message "<Message2>" in the conversation view
 
     Examples:
-      | Name      | Contact   | Message1       |
-      | user1Name | user2Name | You pinged     |
+      | Name      | Contact   | Message1       | CallBackend | Message2         |
+      | user1Name | user2Name | You pinged     | autocall    | user2Name pinged |

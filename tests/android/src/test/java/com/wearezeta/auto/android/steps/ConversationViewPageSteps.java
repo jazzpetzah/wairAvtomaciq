@@ -271,9 +271,9 @@ public class ConversationViewPageSteps {
      * @param doNotSee
      * @param message  message text
      * @throws Exception
-     * @step. ^I (do not )?see Ping message (.*) in the conversation view
+     * @step. ^I (do not )?see Ping message \"(.*)\" in the conversation view
      */
-    @Then("^I (do not )?see Ping message (.*) in the conversation view")
+    @Then("^I (do not )?see Ping message \"(.*)\" in the conversation view")
     public void ThenISeePingMessageInTheDialog(String doNotSee, String message) throws Exception {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         if (doNotSee == null) {
@@ -283,7 +283,6 @@ public class ConversationViewPageSteps {
             Assert.assertTrue(String.format("Ping message '%s' is visible after the timeout", message),
                     getConversationViewPage().waitForPingMessageWithTextDisappears(message));
         }
-
     }
 
     /**
