@@ -691,16 +691,16 @@ public class ConversationViewPageSteps {
     @When("^I tap on (Select All|Copy|Delete|Paste) badge item$")
     public void ITapCopyBadge(String badgeItem) throws Exception {
         switch (badgeItem) {
-            case ("Select All"):
+            case "Select All":
                 getConversationViewPage().tapPopupSelectAllButton();
                 break;
-            case ("Copy"):
+            case "Copy":
                 getConversationViewPage().tapPopupCopyButton();
                 break;
-            case ("Delete"):
+            case "Delete":
                 getConversationViewPage().tapPopupDeleteButton();
                 break;
-            case ("Paste"):
+            case "Paste":
                 getConversationViewPage().tapPopupPasteButton();
                 break;
             default:
@@ -1060,7 +1060,8 @@ public class ConversationViewPageSteps {
     public void ITapAndHoldTextMessage(String msg) throws Exception {
         if (msg.equals("default")) {
             getConversationViewPage().tapAndHoldTextMessageByText(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
-        } else
+        } else {
             getConversationViewPage().tapAndHoldTextMessageByText(msg);
+        }
     }
 }
