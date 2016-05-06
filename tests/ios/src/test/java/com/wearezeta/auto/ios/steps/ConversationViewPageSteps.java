@@ -1050,13 +1050,13 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Longpress on pointed text in conversation view
+     * long tap on pointed text in conversation view
      *
      * @param msg message text
      * @throws Exception
-     * @step. ^I longpress last (default\".*\") message in conversation view$
+     * @step. ^I long tap last (default\".*\") message in conversation view$
      */
-    @When("^I longpress last (default|\".*\") message in conversation view$")
+    @When("^I long tap last (default|\".*\") message in conversation view$")
     public void ITapAndHoldLastMessage(String msg) throws Exception {
         if (msg.equals("default")) {
             getConversationViewPage().tapAndHoldLastTextMessageByText(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);

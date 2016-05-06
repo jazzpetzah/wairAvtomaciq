@@ -806,7 +806,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I type the default message and send it
     Then I see 1 default message in the dialog
-    When I longpress last default message in conversation view
+    When I long tap last default message in conversation view
     And I tap on Delete badge item
     Then I see 0 default messages in the dialog
 
@@ -823,7 +823,7 @@ Feature: Conversation View
     Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
     Then I see 1 default message in the dialog
-    When I longpress last default message in conversation view
+    When I long tap last default message in conversation view
     And I tap on Delete badge item
     Then I see 0 default messages in the dialog
 
