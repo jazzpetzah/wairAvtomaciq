@@ -682,14 +682,30 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Clicking on copy badge/icon/window in conversation
+     * Tap on pointed badge item
      *
+     * @param badgeItem
      * @throws Exception
-     * @step. ^I tap on copy badge$
+     * @step. ^I tap on (Select All|Copy|Delete|Paste) badge item$
      */
-    @When("^I tap on copy badge$")
-    public void ITapCopyBadge() throws Exception {
-        getConversationViewPage().clickPopupCopyButton();
+    @When("^I tap on (Select All|Copy|Delete|Paste) badge item$")
+    public void ITapCopyBadge(String badgeItem) throws Exception {
+        switch (badgeItem) {
+            case "Select All":
+                getConversationViewPage().tapPopupSelectAllButton();
+                break;
+            case "Copy":
+                getConversationViewPage().tapPopupCopyButton();
+                break;
+            case "Delete":
+                getConversationViewPage().tapPopupDeleteButton();
+                break;
+            case "Paste":
+                getConversationViewPage().tapPopupPasteButton();
+                break;
+            default:
+                throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste) are allowed options");
+        }
     }
 
     /**
@@ -1031,5 +1047,21 @@ public class ConversationViewPageSteps {
     @When("^I tap (Save Image|Copy) share menu item$")
     public void ITapShareMenuItem(String itemName) throws Exception {
         getConversationViewPage().tapShareMenuItem(itemName);
+    }
+
+    /**
+     * long tap on pointed text in conversation view
+     *
+     * @param msg message text
+     * @throws Exception
+     * @step. ^I long tap last (default\".*\") message in conversation view$
+     */
+    @When("^I long tap (default|\".*\") message in conversation view$")
+    public void ITapAndHoldTextMessage(String msg) throws Exception {
+        if (msg.equals("default")) {
+            getConversationViewPage().tapAndHoldTextMessageByText(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+        } else {
+            getConversationViewPage().tapAndHoldTextMessageByText(msg);
+        }
     }
 }

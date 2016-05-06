@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import cucumber.api.PendingException;
@@ -268,15 +269,21 @@ public class ConversationViewPageSteps {
     /**
      * Used to check that a ping has been sent Not very clear what this step does
      *
-     * @param message message text
+     * @param doNotSee
+     * @param message  message text
      * @throws Exception
-     * @step. ^I see Ping message (.*) in the dialog$
+     * @step. ^I (do not )?see Ping message \"(.*)\" in the conversation view
      */
-    @Then("^I see Ping message (.*) in the dialog$")
-    public void ThenISeePingMessageInTheDialog(String message) throws Exception {
+    @Then("^I (do not )?see Ping message \"(.*)\" in the conversation view")
+    public void ThenISeePingMessageInTheDialog(String doNotSee, String message) throws Exception {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("Ping message '%s' is not visible after the timeout", message),
-                getConversationViewPage().waitForPingMessageWithText(message));
+        if (doNotSee == null) {
+            Assert.assertTrue(String.format("Ping message '%s' is not visible after the timeout", message),
+                    getConversationViewPage().waitForPingMessageWithText(message));
+        } else {
+            Assert.assertTrue(String.format("Ping message '%s' is visible after the timeout", message),
+                    getConversationViewPage().waitForPingMessageWithTextDisappears(message));
+        }
     }
 
     /**
@@ -331,8 +338,8 @@ public class ConversationViewPageSteps {
     /**
      * Scroll the content of conversation view
      *
-     * @throws Exception
      * @param swipeDirection either up or down
+     * @throws Exception
      * @step. ^I scroll (up|down) the conversation view$
      */
     @When("^I scroll (up|down) the conversation view$")
@@ -1015,18 +1022,37 @@ public class ConversationViewPageSteps {
     /**
      * Long tap an existing conversation message
      *
-     * @param msg       the message to tap
-     * @param isLongTap equals to null if the tap should be simple tap
+     * @param msg         the message to tap
+     * @param messageType the type of message which could be Ping or Text
+     * @param isLongTap   equals to null if the tap should be simple tap
      * @throws Exception
-     * @step. ^I (long )?tap the message "(.*)" in the conversation view$
+     * @step. ^I (long )?tap the (Ping|Text) message "(.*)" in the conversation view
      */
-    @When("^I (long )?tap the message \"(.*)\" in the conversation view$")
-    public void ITapTheMessage(String isLongTap, String msg) throws Exception {
-        msg = usrMgr.replaceAliasesOccurences(msg, FindBy.NAME_ALIAS);
+    @When("^I (long )?tap the (Ping|Text) message \"(.*)\" in the conversation view$")
+    public void ITapTheNonTextMessage(String isLongTap, String messageType, String message) throws Exception {
+        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         if (isLongTap == null) {
-            getConversationViewPage().tapMessage(msg);
+            switch (messageType.toLowerCase()) {
+                case "ping":
+                    getConversationViewPage().tapPingMessage(message);
+                    break;
+                case "text":
+                    getConversationViewPage().tapMessage(message);
+                    break;
+                default:
+                    throw new IllegalStateException(String.format("Cannot tap on %s message", messageType));
+            }
         } else {
-            getConversationViewPage().longTapMessage(msg);
+            switch (messageType.toLowerCase()) {
+                case "ping":
+                    getConversationViewPage().longTapPingMessage(message);
+                    break;
+                case "text":
+                    getConversationViewPage().longTapMessage(message);
+                    break;
+                default:
+                    throw new IllegalStateException(String.format("Cannot long tap on %s message", messageType));
+            }
         }
     }
 
@@ -1034,45 +1060,42 @@ public class ConversationViewPageSteps {
      * Verify whether container is visible in the conversation
      *
      * @param shouldNotSee  equals to null if the container should be visible
-     * @param containerType euiter Youtube or Soundcloud
+     * @param containerType euiter Youtube or Soundcloud or File Upload
      * @throws Exception
-     * @step. ^I (do not )?see (Youtube|Soundcloud) container in the conversation view$
+     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload) container in the conversation view$
      */
-    @Then("^I (do not )?see (Youtube|Soundcloud) container in the conversation view$")
+    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload) container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (containerType.toLowerCase()) {
             case "youtube":
-                if (shouldNotSee == null) {
-                    Assert.assertTrue("Youtube container is not visible in the conversation",
-                            getConversationViewPage().isYoutubeContainerVisible());
-                } else {
-                    Assert.assertTrue("Youtube container should not be visible in the conversation",
-                            getConversationViewPage().isYoutubeContainerInvisible());
-                }
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isYoutubeContainerVisible :
+                        getConversationViewPage()::isYoutubeContainerInvisible;
                 break;
             case "soundcloud":
-                if (shouldNotSee == null) {
-                    Assert.assertTrue("Soundcloud container is not visible in the conversation",
-                            getConversationViewPage().isSoundcloudContainerVisible());
-                } else {
-                    Assert.assertTrue("Soundcloud container should not be visible in the conversation",
-                            getConversationViewPage().isSoundcloudContainerInvisible());
-                }
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isSoundcloudContainerVisible :
+                        getConversationViewPage()::isSoundcloudContainerInvisible;
+                break;
+            case "file upload":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isFileUploadContainerVisible :
+                        getConversationViewPage()::isFileUploadContainerInvisible;
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
         }
+        Assert.assertTrue(String.format("%s should be %s in the conversation view", containerType,
+                (shouldNotSee == null) ? "visible" : "invisible"), verificationFunc.call());
     }
 
     /**
      * Tap container
      *
      * @param isLongTap     equals to null if this should be ordinary single tap
-     * @param containerType euiter Youtube or Soundcloud
+     * @param containerType euiter Youtube or Soundcloud or File Upload
      * @throws Exception
-     * @step. ^I (long )?tap (Youtube|Soundcloud) container in the conversation view$
+     * @step. ^I (long )?tap (Youtube|Soundcloud|File Upload) container in the conversation view$
      */
-    @When("^I (long )?tap (Youtube|Soundcloud) container in the conversation view$")
+    @When("^I (long )?tap (Youtube|Soundcloud|File Upload) container in the conversation view$")
     public void ITapContainer(String isLongTap, String containerType) throws Exception {
         switch (containerType.toLowerCase()) {
             case "youtube":
@@ -1087,6 +1110,13 @@ public class ConversationViewPageSteps {
                     getConversationViewPage().tapSoundcloudContainer();
                 } else {
                     getConversationViewPage().longTapSoundcloudContainer();
+                }
+                break;
+            case "file upload":
+                if (isLongTap == null) {
+                    getConversationViewPage().tapFileUploadContainer();
+                } else {
+                    getConversationViewPage().longTapFileUploadContainer();
                 }
                 break;
             default:
