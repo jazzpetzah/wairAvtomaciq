@@ -682,17 +682,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Clicking on copy badge/icon/window in conversation
-     *
-     * @throws Exception
-     * @step. ^I tap on copy badge$
-     */
-    @When("^I tap on copy badge$")
-    public void ITapCopyBadge() throws Exception {
-        getConversationViewPage().clickPopupCopyButton();
-    }
-
-    /**
      * Tap on pointed badge item
      *
      * @param badgeItem
