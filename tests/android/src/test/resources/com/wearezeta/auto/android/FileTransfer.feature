@@ -29,7 +29,7 @@ Feature: File transfer
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I tap File button from cursor toolbar
-    Then I see alert message containing "<AlertMessage>" body
+    Then I see alert message containing "<AlertMessage>" in the body
 
     Examples:
       | Name      | Contact1  | FileFullName  | FileSize | AlertMessage                   |
