@@ -1056,11 +1056,11 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I long tap last (default\".*\") message in conversation view$
      */
-    @When("^I long tap last (default|\".*\") message in conversation view$")
-    public void ITapAndHoldLastMessage(String msg) throws Exception {
+    @When("^I long tap (default|\".*\") message in conversation view$")
+    public void ITapAndHoldTextMessage(String msg) throws Exception {
         if (msg.equals("default")) {
-            getConversationViewPage().tapAndHoldLastTextMessageByText(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+            getConversationViewPage().tapAndHoldTextMessageByText(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
         } else
-            getConversationViewPage().tapAndHoldLastTextMessageByText(msg);
+            getConversationViewPage().tapAndHoldTextMessageByText(msg);
     }
 }

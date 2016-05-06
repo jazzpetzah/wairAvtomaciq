@@ -671,8 +671,8 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    public void tapAndHoldLastTextMessageByText(String msg) throws Exception {
-        final WebElement lastMessage = getElement(By.xpath(xpathStrLastMessageByExactText.apply(msg)));
+    public void tapAndHoldTextMessageByText(String msg) throws Exception {
+        final WebElement lastMessage = getElement(By.xpath(xpathStrMessageByTextPart.apply(msg)));
         DriverUtils.tapOnPercentOfElement(getDriver(), lastMessage, 10, 50, 1000);
     }
 }
