@@ -268,15 +268,22 @@ public class ConversationViewPageSteps {
     /**
      * Used to check that a ping has been sent Not very clear what this step does
      *
-     * @param message message text
+     * @param doNotSee
+     * @param message  message text
      * @throws Exception
-     * @step. ^I see Ping message (.*) in the dialog$
+     * @step. ^I (do not )?see Ping message (.*) in the conversation view
      */
-    @Then("^I see Ping message (.*) in the dialog$")
-    public void ThenISeePingMessageInTheDialog(String message) throws Exception {
+    @Then("^I (do not )?see Ping message (.*) in the conversation view")
+    public void ThenISeePingMessageInTheDialog(String doNotSee, String message) throws Exception {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("Ping message '%s' is not visible after the timeout", message),
-                getConversationViewPage().waitForPingMessageWithText(message));
+        if (doNotSee == null) {
+            Assert.assertTrue(String.format("Ping message '%s' is not visible after the timeout", message),
+                    getConversationViewPage().waitForPingMessageWithText(message));
+        } else {
+            Assert.assertTrue(String.format("Ping message '%s' is visible after the timeout", message),
+                    getConversationViewPage().waitForPingMessageWithTextDisappears(message));
+        }
+
     }
 
     /**
@@ -1015,18 +1022,37 @@ public class ConversationViewPageSteps {
     /**
      * Long tap an existing conversation message
      *
-     * @param msg       the message to tap
-     * @param isLongTap equals to null if the tap should be simple tap
+     * @param msg         the message to tap
+     * @param messageType the type of message which could be Ping or Text
+     * @param isLongTap   equals to null if the tap should be simple tap
      * @throws Exception
-     * @step. ^I (long )?tap the message "(.*)" in the conversation view$
+     * @step. ^I (long )?tap the (Ping|Text) message "(.*)" in the conversation view
      */
-    @When("^I (long )?tap the message \"(.*)\" in the conversation view$")
-    public void ITapTheMessage(String isLongTap, String msg) throws Exception {
-        msg = usrMgr.replaceAliasesOccurences(msg, FindBy.NAME_ALIAS);
+    @When("^I (long )?tap the (Ping|Text) message \"(.*)\" in the conversation view$")
+    public void ITapTheNonTextMessage(String isLongTap, String messageType, String message) throws Exception {
+        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         if (isLongTap == null) {
-            getConversationViewPage().tapMessage(msg);
+            switch (messageType.toLowerCase()) {
+                case "ping":
+                    getConversationViewPage().tapPingMessage(message);
+                    break;
+                case "text":
+                    getConversationViewPage().tapMessage(message);
+                    break;
+                default:
+                    throw new IllegalStateException(String.format("Cannot tap on %s message", messageType));
+            }
         } else {
-            getConversationViewPage().longTapMessage(msg);
+            switch (messageType.toLowerCase()) {
+                case "ping":
+                    getConversationViewPage().longTapPingMessage(message);
+                    break;
+                case "text":
+                    getConversationViewPage().longTapMessage(message);
+                    break;
+                default:
+                    throw new IllegalStateException(String.format("Cannot long tap on %s message", messageType));
+            }
         }
     }
 

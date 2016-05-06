@@ -11,10 +11,10 @@ Feature: Delete Message
     And I tap on text input
     And I type the message "<Message1>" and send it
     And I type the message "<Message2>" and send it
-    When I long tap the message "<Message1>" in the conversation view
+    When I long tap the Text message "<Message1>" in the conversation view
     Then I see Copy button on the action mode bar
     And I see Delete button on the action mode bar
-    When I tap the message "<Message2>" in the conversation view
+    When I tap the Text message "<Message2>" in the conversation view
     Then I do not see Copy button on the action mode bar
     When I tap Delete button on the action mode bar
     And I see alert message containing "<AlertText>" in the title
@@ -78,3 +78,26 @@ Feature: Delete Message
     Examples:
       | Name      | Contact   | YoutubeLink                                 | SoundcloudLink                                                      |
       | user1Name | user2Name | https://www.youtube.com/watch?v=gIQS9uUVmgk | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi |
+
+  @C111643 @staging
+  Scenario Outline: Verfiy deleting ping
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I tap Ping button from cursor toolbar
+    And User <Contact> securely pings conversation Myself
+    And I see Ping message <Contact> pinged in the conversation view
+    And I long tap the Ping message "<Message1>" in the conversation view
+    And I tap the Ping message "<Contact> pinged" in the conversation view
+    And I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    Then I do not see Ping message <Message1> in the conversation view
+    And I do not see Ping message <Contact> pinged in the conversation view
+
+    Examples:
+      | Name      | Contact   | Message1       |
+      | user1Name | user2Name | You pinged     |

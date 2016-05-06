@@ -787,4 +787,14 @@ public class ConversationViewPage extends AndroidPage {
     public void longTapSoundcloudContainer() throws Exception {
         getDriver().longTap(getElement(idSoundcloudContainer), DriverUtils.LONG_TAP_DURATION);
     }
+
+    public void tapPingMessage(String message) throws Exception {
+        getElement(By.xpath(xpathStrPingMessageByText.apply(message))).click();
+    }
+
+    public void longTapPingMessage(String message) throws Exception {
+        getDriver().longTap(getElement(By.xpath(xpathStrPingMessageByText.apply(message))),
+                DriverUtils.LONG_TAP_DURATION);
+    }
+
 }
