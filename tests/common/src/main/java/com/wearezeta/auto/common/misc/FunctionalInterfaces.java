@@ -14,4 +14,9 @@ public interface FunctionalInterfaces {
         BufferedImage getState() throws Exception;
     }
 
+    @FunctionalInterface
+    public interface ISupplierWithException<T> {
+        T call() throws Exception;
+    }
+
 }

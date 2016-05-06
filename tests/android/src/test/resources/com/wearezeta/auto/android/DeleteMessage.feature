@@ -119,3 +119,22 @@ Feature: Delete Message
     Examples:
       | Name      | Contact   | Message1       | CallBackend | Message2         |
       | user1Name | user2Name | You pinged     | autocall    | user2Name pinged |
+  @C111642 @staging
+  Scenario Outline: Verify deleting the shared file
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    And I tap on contact name <Contact1>
+    And I tap File button from cursor toolbar
+    And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
+    When I long tap File Upload container in the conversation view
+    And I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    Then I do not see File Upload container in the conversation view
+
+    Examples:
+      | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout |
+      | user1Name | user2Name | qa_random | txt           | 1.00MB   | 20               |

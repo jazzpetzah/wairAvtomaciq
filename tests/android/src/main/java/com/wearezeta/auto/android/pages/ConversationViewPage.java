@@ -151,6 +151,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idSoundcloudContainer = By.id("mpv__row_conversation__message_media_player");
 
+    private static final By idFileTransferContainer = By.id("ll__row_conversation__file__message_container");
+
     private static final int MAX_CLICK_RETRIES = 5;
 
     private static final double LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR = 0.01;
@@ -786,6 +788,22 @@ public class ConversationViewPage extends AndroidPage {
 
     public void longTapSoundcloudContainer() throws Exception {
         getDriver().longTap(getElement(idSoundcloudContainer), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public boolean isFileUploadContainerVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idFileTransferContainer);
+    }
+
+    public boolean isFileUploadContainerInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idFileTransferContainer);
+    }
+
+    public void tapFileUploadContainer() throws Exception {
+        getElement(idFileTransferContainer).click();
+    }
+
+    public void longTapFileUploadContainer() throws Exception {
+        getDriver().longTap(getElement(idFileTransferContainer), DriverUtils.LONG_TAP_DURATION);
     }
 
     public void tapPingMessage(String message) throws Exception {

@@ -575,7 +575,7 @@ Feature: Conversation View
     And I tap on contact name <Contact>
     And I see 1 photo in the dialog
     And I longpress on image in the conversation
-    And I tap on copy badge
+    And I tap on Copy badge item
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
@@ -796,3 +796,37 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | GroupChatName |
       | user1Name | user2Name | CURSORTOOLBAR |
+
+  @C111321 @staging
+  Scenario Outline: Verify deleting own text message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I type the default message and send it
+    Then I see 1 default message in the dialog
+    When I long tap default message in conversation view
+    And I tap on Delete badge item
+    Then I see 0 default messages in the dialog
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C111322 @staging
+  Scenario Outline: Verify deleting received text message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User <Contact> sends 1 encrypted message to user Myself
+    When I tap on contact name <Contact>
+    Then I see 1 default message in the dialog
+    When I long tap default message in conversation view
+    And I tap on Delete badge item
+    Then I see 0 default messages in the dialog
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
