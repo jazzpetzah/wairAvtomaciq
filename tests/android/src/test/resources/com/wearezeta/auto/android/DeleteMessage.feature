@@ -61,12 +61,10 @@ Feature: Delete Message
     And I see Contact list with contacts
     And I tap on contact name <Contact1>
     And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
-    Then I see the message "<Message>" in the conversation view
-    When I tap back button in upper toolbar
+    And I tap back button in upper toolbar
     And I tap on contact name <GroupChatName>
     And User Myself send encrypted message "<Message>" via device <Device> to group conversation <GroupChatName>
-    Then I see the message "<Message>" in the conversation view
-    When I enable Airplane mode on the device
+    And I enable Airplane mode on the device
     And User Myself delete the recent message from user <Contact1> via device <Device>
     And User Myself delete the recent message from group conversation <GroupChatName> via device <Device>
     And I disable Airplane mode on the device
