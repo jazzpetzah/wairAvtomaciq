@@ -96,8 +96,8 @@ Feature: Delete Message
     And I tap on contact name <GroupChatName>
     And User Myself send encrypted message "<Message>" via device <Device> to group conversation <GroupChatName>
     And I enable Airplane mode on the device
-    And User Myself delete the recent message from user <Contact1> via device <Device>
-    And User Myself delete the recent message from group conversation <GroupChatName> via device <Device>
+    And User Myself deletes the recent message from user <Contact1> via device <Device>
+    And User Myself deletes the recent message from group conversation <GroupChatName> via device <Device>
     And I disable Airplane mode on the device
     Then I do not see the message "<Message>" in the conversation view
     When I tap back button in upper toolbar

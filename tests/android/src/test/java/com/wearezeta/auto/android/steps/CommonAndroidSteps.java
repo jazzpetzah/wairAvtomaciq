@@ -60,7 +60,7 @@ public class CommonAndroidSteps {
             )
     );
 
-    private static String RecentMessageId = "";
+    private static Optional<String> recentMessageId;
 
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -1270,17 +1270,14 @@ public class CommonAndroidSteps {
      * @param dstNameAlias
      * @param deviceName
      * @throws Exception
+     * @step. ^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$
      */
-    @When("^User (.*) remember the recent message from (user|group conversation) (.*) via device (.*)$")
+    @When("^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$")
     public void UserXRemeberLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
-        RecentMessageId = "";
+        recentMessageId = Optional.empty();
         boolean isGroup = convoType.equals("group conversation");
-        Optional<String> messageId = commonSteps.UserGetLastestMessageId(userNameAlias, dstNameAlias, deviceName, isGroup);
-
-        if(messageId.isPresent()){
-            RecentMessageId = messageId.get();
-        }
+        recentMessageId = commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup);
     }
 
     /**
@@ -1291,21 +1288,20 @@ public class CommonAndroidSteps {
      * @param dstNameAlias
      * @param deviceName
      * @throws Exception
+     * @step. ^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed$
      */
     @Then("^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed$")
     public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
             throws Exception {
-        String actualMessageId = "";
-        boolean isGroup = convoType.equals("group conversation");
-        Optional<String> messageId = commonSteps.UserGetLastestMessageId(userNameAlias, dstNameAlias, deviceName, isGroup);
-
-        if(messageId.isPresent()) {
-            actualMessageId = messageId.get();
+        if (recentMessageId.equals(Optional.empty())) {
+            throw new IllegalStateException("You should remember the recent message befor you check it");
         }
 
-        Assert.assertTrue(String.format("Remembered message Id should not equal to '%s'", actualMessageId),
-                actualMessageId != RecentMessageId);
+        boolean isGroup = convoType.equals("group conversation");
+        Optional<String> actualMessageId = commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup);
 
+        Assert.assertTrue(String.format("Remembered message Id should not equal to '%s'", actualMessageId),
+                actualMessageId.get() != recentMessageId.get());
     }
 
     /**
