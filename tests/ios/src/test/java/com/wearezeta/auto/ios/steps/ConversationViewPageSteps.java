@@ -692,6 +692,13 @@ public class ConversationViewPageSteps {
         getConversationViewPage().clickPopupCopyButton();
     }
 
+    /**
+     * Tap on pointed badge item
+     *
+     * @param badgeItem
+     * @throws Exception
+     * @step. ^I tap on (Select All|Copy|Delete|Paste) badge item$
+     */
     @When("^I tap on (Select All|Copy|Delete|Paste) badge item$")
     public void ITapCopyBadge(String badgeItem) throws Exception {
         switch (badgeItem) {
@@ -1053,15 +1060,18 @@ public class ConversationViewPageSteps {
         getConversationViewPage().tapShareMenuItem(itemName);
     }
 
-    @When("^I longpress last message (.*) in conversation view$")
+    /**
+     * Longpress on pointed text in conversation view
+     *
+     * @param msg message text
+     * @throws Exception
+     * @step. ^I longpress last (default\".*\") message in conversation view$
+     */
+    @When("^I longpress last (default|\".*\") message in conversation view$")
     public void ITapAndHoldLastMessage(String msg) throws Exception {
-        getConversationViewPage().tapAndHoldLastTextMessageByText(msg);
+        if (msg.equals("default")) {
+            getConversationViewPage().tapAndHoldLastTextMessageByText(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+        } else
+            getConversationViewPage().tapAndHoldLastTextMessageByText(msg);
     }
-
-    @When("^I longpress last default message in conversation view$")
-    public void ITapAndHoldLastDefaultMessage() throws Exception {
-        ITapAndHoldLastMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
-    }
-
-
 }

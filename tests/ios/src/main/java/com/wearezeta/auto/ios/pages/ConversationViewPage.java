@@ -673,6 +673,6 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapAndHoldLastTextMessageByText(String msg) throws Exception {
         final WebElement lastMessage = getElement(By.xpath(xpathStrLastMessageByExactText.apply(msg)));
-        this.getDriver().tap(1, lastMessage, DriverUtils.LONG_TAP_DURATION);
+        DriverUtils.tapOnPercentOfElement(getDriver(), lastMessage, 10, 50, 1000);
     }
 }
