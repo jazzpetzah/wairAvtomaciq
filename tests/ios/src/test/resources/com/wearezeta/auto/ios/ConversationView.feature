@@ -813,3 +813,20 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C111322 @staging
+  Scenario Outline: Verify deleting received text message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User <Contact> sends 1 encrypted message to user Myself
+    When I tap on contact name <Contact>
+    Then I see 1 default message in the dialog
+    When I longpress last default message in conversation view
+    And I tap on Delete badge item
+    Then I see 0 default messages in the dialog
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
