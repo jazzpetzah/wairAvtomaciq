@@ -32,17 +32,6 @@ public class PersonalInfoPageSteps {
     }
 
     /**
-     * Taps on OK button when there is new device notification
-     *
-     * @throws Exception
-     * @step. ^I close the new device found notification$
-     */
-    @When("^I close the new device found notification$")
-    public void WhenICloseNewDeviceNotification() throws Exception {
-        getPersonalInfoPage().closeFoundNewDeviceNotification();
-    }
-
-    /**
      * Taps on the current users name
      *
      * @throws Exception
