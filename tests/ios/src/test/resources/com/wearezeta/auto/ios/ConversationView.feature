@@ -565,8 +565,8 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C879 @regression @id1158
-  Scenario Outline: Verify possibility to copy image in the conversation view
+  @C879 @regression @id1158 @ZIOS-6517
+  Scenario Outline: (BUG-ZIOS-6517) Verify possibility to copy image in the conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -776,7 +776,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C111318 @staging
+  @C111318 @regression
   Scenario Outline: Verify cursor and toolbar appear after adding person back
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other

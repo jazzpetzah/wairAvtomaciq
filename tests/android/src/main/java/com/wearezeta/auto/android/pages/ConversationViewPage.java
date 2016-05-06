@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import com.wearezeta.auto.common.misc.ElementState;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.ImageUtil;
@@ -129,24 +128,28 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__back_camera");
 
-    private static Function<String, String> xpathMessageNotificationByValue = value -> String
+    private static final Function<String, String> xpathMessageNotificationByValue = value -> String
             .format("//*[starts-with(@id,'ttv_message_notification_chathead__label') and @value='%s']", value);
 
-    private static Function<String, String> xpathConversationTitleByValue = value -> String
+    private static final Function<String, String> xpathConversationTitleByValue = value -> String
             .format("//*[@id='tv__conversation_toolbar__title' and @value='%s']", value);
 
-    private static Function<String, String> xpathFileNamePlaceHolderByValue = value -> String
+    private static final Function<String, String> xpathFileNamePlaceHolderByValue = value -> String
             .format("//*[@id='ttv__row_conversation__file__filename' and @value='%s']", value);
 
-    private static Function<String, String> xpathFileInfoPlaceHolderByValue = value -> String
+    private static final Function<String, String> xpathFileInfoPlaceHolderByValue = value -> String
             .format("//*[@id='ttv__row_conversation__file__fileinfo' and @value='%s']", value);
 
-    private static Function<String, String> xpathConversationPeopleChangedByExp = exp -> String
+    private static final Function<String, String> xpathConversationPeopleChangedByExp = exp -> String
             .format("//*[@id='ttv__row_conversation__people_changed__text' and %s]", exp);
 
-    private static By idActionModeBarDeleteButton = By.id("action_delete");
-    private static By idActionModeBarCopyButton = By.id("action_copy");
-    private static By idActionModeBarCloseButton = By.id("action_mode_close_button");
+    private static final By idActionModeBarDeleteButton = By.id("action_delete");
+    private static final By idActionModeBarCopyButton = By.id("action_copy");
+    private static final By idActionModeBarCloseButton = By.id("action_mode_close_button");
+
+    private static final By idYoutubeContainer = By.id("fl__youtube_image_container");
+
+    private static final By idSoundcloudContainer = By.id("mpv__row_conversation__message_media_player");
 
     private static final int MAX_CLICK_RETRIES = 5;
 
@@ -318,8 +321,7 @@ public class ConversationViewPage extends AndroidPage {
     public void scrollToTheBottom() throws Exception {
         this.hideKeyboard();
         final long millisecondsStarted = System.currentTimeMillis();
-        ElementState initState = new ElementState(
-                () -> getConvoViewStateScreenshot());
+        ElementState initState = new ElementState(this::getConvoViewStateScreenshot);
         do {
             initState.remember();
             swipeByCoordinates(SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS, 50, 75, 50, 40);
@@ -352,16 +354,8 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idCursorCloseButton, "Close cursor button is not visible").click();
     }
 
-    public void clickLastImageFromDialog() throws Exception {
-        final WebElement lastPicture = getElement(xpathLastPicture);
-        lastPicture.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathLastPicture, 3)) {
-            try {
-                lastPicture.click();
-            } catch (WebDriverException e) {
-                // silently ignore
-            }
-        }
+    public void tapRecentImage() throws Exception {
+        getElement(xpathLastPicture).click();
     }
 
     public boolean waitForConversationNameChangedMessage(String expectedName) throws Exception {
@@ -760,5 +754,37 @@ public class ConversationViewPage extends AndroidPage {
     public void tapMessage(String msg) throws Exception {
         final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
         getElement(locator).click();
+    }
+
+    public boolean isYoutubeContainerVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idYoutubeContainer);
+    }
+
+    public boolean isYoutubeContainerInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idYoutubeContainer);
+    }
+
+    public void tapYoutubeContainer() throws Exception {
+        getElement(idYoutubeContainer).click();
+    }
+
+    public void longTapYoutubeContainer() throws Exception {
+        getDriver().longTap(getElement(idYoutubeContainer), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public boolean isSoundcloudContainerVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idSoundcloudContainer);
+    }
+
+    public boolean isSoundcloudContainerInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idSoundcloudContainer);
+    }
+
+    public void tapSoundcloudContainer() throws Exception {
+        getElement(idSoundcloudContainer).click();
+    }
+
+    public void longTapSoundcloudContainer() throws Exception {
+        getDriver().longTap(getElement(idSoundcloudContainer), DriverUtils.LONG_TAP_DURATION);
     }
 }

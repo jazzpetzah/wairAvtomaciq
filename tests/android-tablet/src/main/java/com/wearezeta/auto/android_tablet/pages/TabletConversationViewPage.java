@@ -116,7 +116,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public void tapRecentPicture() throws Exception {
-        getConversationViewPage().clickLastImageFromDialog();
+        getConversationViewPage().tapRecentImage();
     }
 
     public boolean waitForSystemConnectionMessageContains(String expectedMessage)

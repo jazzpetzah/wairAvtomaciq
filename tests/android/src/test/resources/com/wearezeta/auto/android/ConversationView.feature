@@ -207,11 +207,11 @@ Feature: Conversation View
     And I press "Gallery" button
     And I press "Confirm" button
     Then I see new photo in the dialog
-    And I select last photo in dialog
+    And I tap the recent picture in the conversation view
     And I rotate UI to landscape
-    And I swipe down on dialog page
+    And I scroll down the conversation view
     And I rotate UI to portrait
-    Then I select last photo in dialog
+    Then I tap the recent picture in the conversation view
     And I rotate UI to landscape
     And I press "Image Close" button
     Then I rotate UI to portrait
@@ -233,7 +233,7 @@ Feature: Conversation View
     And I tap Sketch button from cursor toolbar
     And I draw a sketch with <NumColors> colors
     And I send my sketch
-    And I select last photo in dialog
+    And I tap the recent picture in the conversation view
 
     Examples:
       | Name      | Contact1  | NumColors |
@@ -252,7 +252,7 @@ Feature: Conversation View
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
     Then I send my sketch
-    And I select last photo in dialog
+    And I tap the recent picture in the conversation view
 
     Examples:
       | Name      | Contact1  | NumColors |
@@ -271,7 +271,7 @@ Feature: Conversation View
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
     And I send my sketch
-    And I select last photo in dialog
+    And I tap the recent picture in the conversation view
 
     Examples:
       | Name      | Contact1  | NumColors |
@@ -309,7 +309,7 @@ Feature: Conversation View
     And I scroll to the bottom of conversation view
     Then I see new picture in the dialog
     And I see the picture in the dialog is animated
-    When I select last photo in dialog
+    When I tap the recent picture in the conversation view
     Then I see the picture in the preview is animated
 
     Examples:

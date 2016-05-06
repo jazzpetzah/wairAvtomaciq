@@ -5,15 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.log.ZetaLogger;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.Alert;
 
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
 public class WebPage extends BasePage {
+
+    private static final Logger log = ZetaLogger.getLog(WebPage.class.getSimpleName());
 
     @Override
     protected ZetaWebAppDriver getDriver() throws Exception {
@@ -81,11 +84,12 @@ public class WebPage extends BasePage {
      */
     public void switchLanguage(String language) throws Exception {
         String currentUrl = this.getDriver().getCurrentUrl();
+        log.info("Current URL: " + currentUrl);
         URL url = new URL(currentUrl);
         if (url.getQuery() == null) {
-            this.getDriver().navigate().to(currentUrl + "?hl=" + language);
+            this.getDriver().get(currentUrl + "?hl=" + language);
         } else {
-            this.getDriver().navigate().to(currentUrl + "&hl=" + language);
+            this.getDriver().get(currentUrl + "&hl=" + language);
         }
     }
 

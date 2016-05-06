@@ -321,31 +321,32 @@ public class ConversationViewPageSteps {
      * Selects the last picture sent in a conversation view dialog
      *
      * @throws Exception
-     * @step. ^I select last photo in dialog$
+     * @step. ^I tap the recent image in the conversation view$
      */
-    @When("^I select last photo in dialog$")
-    public void WhenISelectLastPhotoInDialog() throws Exception {
-        getConversationViewPage().clickLastImageFromDialog();
+    @When("^I tap the recent (?:image|picture) in the conversation view$")
+    public void ITapRecentImage() throws Exception {
+        getConversationViewPage().tapRecentImage();
     }
 
     /**
-     * @throws Exception
-     * @step. ^I swipe up on dialog page
-     */
-    @When("^I swipe up on dialog page$")
-    public void WhenISwipeUpOnDialogPage() throws Exception {
-        getConversationViewPage().dialogsPagesSwipeUp(SWIPE_DURATION_MILLISECONDS);
-    }
-
-    /**
-     * Swipe down on dialog page
+     * Scroll the content of conversation view
      *
      * @throws Exception
-     * @step. ^I swipe down on dialog page$
+     * @param swipeDirection either up or down
+     * @step. ^I scroll (up|down) the conversation view$
      */
-    @When("^I swipe down on dialog page$")
-    public void WhenISwipedownOnDialogPage() throws Exception {
-        getConversationViewPage().dialogsPagesSwipeDown(SWIPE_DURATION_MILLISECONDS);
+    @When("^I scroll (up|down) the conversation view$")
+    public void WhenIScroll(String swipeDirection) throws Exception {
+        switch (swipeDirection.toLowerCase()) {
+            case "up":
+                getConversationViewPage().dialogsPagesSwipeUp(SWIPE_DURATION_MILLISECONDS);
+                break;
+            case "down":
+                getConversationViewPage().dialogsPagesSwipeDown(SWIPE_DURATION_MILLISECONDS);
+                break;
+            default:
+                throw new IllegalArgumentException((String.format("Unknonwn swipe direction '%s'", swipeDirection)));
+        }
     }
 
     /**
@@ -1029,4 +1030,67 @@ public class ConversationViewPageSteps {
         }
     }
 
+    /**
+     * Verify whether container is visible in the conversation
+     *
+     * @param shouldNotSee  equals to null if the container should be visible
+     * @param containerType euiter Youtube or Soundcloud
+     * @throws Exception
+     * @step. ^I (do not )?see (Youtube|Soundcloud) container in the conversation view$
+     */
+    @Then("^I (do not )?see (Youtube|Soundcloud) container in the conversation view$")
+    public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
+        switch (containerType.toLowerCase()) {
+            case "youtube":
+                if (shouldNotSee == null) {
+                    Assert.assertTrue("Youtube container is not visible in the conversation",
+                            getConversationViewPage().isYoutubeContainerVisible());
+                } else {
+                    Assert.assertTrue("Youtube container should not be visible in the conversation",
+                            getConversationViewPage().isYoutubeContainerInvisible());
+                }
+                break;
+            case "soundcloud":
+                if (shouldNotSee == null) {
+                    Assert.assertTrue("Soundcloud container is not visible in the conversation",
+                            getConversationViewPage().isSoundcloudContainerVisible());
+                } else {
+                    Assert.assertTrue("Soundcloud container should not be visible in the conversation",
+                            getConversationViewPage().isSoundcloudContainerInvisible());
+                }
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
+        }
+    }
+
+    /**
+     * Tap container
+     *
+     * @param isLongTap     equals to null if this should be ordinary single tap
+     * @param containerType euiter Youtube or Soundcloud
+     * @throws Exception
+     * @step. ^I (long )?tap (Youtube|Soundcloud) container in the conversation view$
+     */
+    @When("^I (long )?tap (Youtube|Soundcloud) container in the conversation view$")
+    public void ITapContainer(String isLongTap, String containerType) throws Exception {
+        switch (containerType.toLowerCase()) {
+            case "youtube":
+                if (isLongTap == null) {
+                    getConversationViewPage().tapYoutubeContainer();
+                } else {
+                    getConversationViewPage().longTapYoutubeContainer();
+                }
+                break;
+            case "soundcloud":
+                if (isLongTap == null) {
+                    getConversationViewPage().tapSoundcloudContainer();
+                } else {
+                    getConversationViewPage().longTapSoundcloudContainer();
+                }
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
+        }
+    }
 }

@@ -65,7 +65,7 @@ public class ConversationsListPage extends IOSPage {
 
     private static final By nameCloseArchiveButton = MobileBy.AccessibilityId("archiveCloseButton");
 
-    private static final By nameConversationsHintTextLabel = MobileBy.AccessibilityId("Any conversation starts here");
+    private static final By nameConversationsHintTextLabel = MobileBy.AccessibilityId("Conversations start here");
 
     public ConversationsListPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
