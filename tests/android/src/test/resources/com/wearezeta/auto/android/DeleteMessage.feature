@@ -88,7 +88,7 @@ Feature: Delete Message
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And User <Contact> send encrypted message "<Message>" to user Myself
-    And I long tap the message "<Message>" in the conversation view
+    And I long tap the Text message "<Message>" in the conversation view
     And I tap Delete button on the action mode bar
     And I tap Delete button on the alert
     Then I do not see the message "<Message>" in the conversation view
