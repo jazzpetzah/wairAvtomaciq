@@ -209,7 +209,7 @@ Feature: Conversation View
     Then I see new photo in the dialog
     And I tap the recent picture in the conversation view
     And I rotate UI to landscape
-    And I swipe down on dialog page
+    And I scroll down the conversation view
     And I rotate UI to portrait
     Then I tap the recent picture in the conversation view
     And I rotate UI to landscape

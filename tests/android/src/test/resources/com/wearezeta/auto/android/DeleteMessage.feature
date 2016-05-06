@@ -48,3 +48,30 @@ Feature: Delete Message
     Examples:
       | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName |
       | user1Name | user2Name | user3Name | DeleteTextMessage | Device1 | Device2       | MyGroup       |
+
+  @C111641 @staging
+  Scenario Outline: Verify deleting the media file (sound could, youtube)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    And I tap on contact name <Contact>
+    And I tap on text input
+    And I type the message "<YoutubeLink>" and send it
+    And I type the message "<SoundcloudLink>" and send it
+    And I hide keyboard
+    When I scroll down the conversation view
+    And I long tap Youtube container in the conversation view
+    And I scroll up the conversation view
+    And I tap Soundcloud container in the conversation view
+    And I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    Then I do not see the message "<YoutubeLink>" in the conversation view
+    And I do not see Youtube container in the conversation view
+    And I do not see the message "<SoundcloudLink>" in the conversation view
+    And I do not see Soundcloud container in the conversation view
+
+    Examples:
+      | Name      | Contact   | YoutubeLink                                 | SoundcloudLink                                                      |
+      | user1Name | user2Name | https://www.youtube.com/watch?v=gIQS9uUVmgk | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi |
