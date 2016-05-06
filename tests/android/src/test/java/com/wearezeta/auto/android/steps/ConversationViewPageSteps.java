@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import cucumber.api.PendingException;
@@ -331,8 +332,8 @@ public class ConversationViewPageSteps {
     /**
      * Scroll the content of conversation view
      *
-     * @throws Exception
      * @param swipeDirection either up or down
+     * @throws Exception
      * @step. ^I scroll (up|down) the conversation view$
      */
     @When("^I scroll (up|down) the conversation view$")
@@ -1034,45 +1035,42 @@ public class ConversationViewPageSteps {
      * Verify whether container is visible in the conversation
      *
      * @param shouldNotSee  equals to null if the container should be visible
-     * @param containerType euiter Youtube or Soundcloud
+     * @param containerType euiter Youtube or Soundcloud or File Upload
      * @throws Exception
-     * @step. ^I (do not )?see (Youtube|Soundcloud) container in the conversation view$
+     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload) container in the conversation view$
      */
-    @Then("^I (do not )?see (Youtube|Soundcloud) container in the conversation view$")
+    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload) container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (containerType.toLowerCase()) {
             case "youtube":
-                if (shouldNotSee == null) {
-                    Assert.assertTrue("Youtube container is not visible in the conversation",
-                            getConversationViewPage().isYoutubeContainerVisible());
-                } else {
-                    Assert.assertTrue("Youtube container should not be visible in the conversation",
-                            getConversationViewPage().isYoutubeContainerInvisible());
-                }
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isYoutubeContainerVisible :
+                        getConversationViewPage()::isYoutubeContainerInvisible;
                 break;
             case "soundcloud":
-                if (shouldNotSee == null) {
-                    Assert.assertTrue("Soundcloud container is not visible in the conversation",
-                            getConversationViewPage().isSoundcloudContainerVisible());
-                } else {
-                    Assert.assertTrue("Soundcloud container should not be visible in the conversation",
-                            getConversationViewPage().isSoundcloudContainerInvisible());
-                }
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isSoundcloudContainerVisible :
+                        getConversationViewPage()::isSoundcloudContainerInvisible;
+                break;
+            case "file upload":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isFileUploadContainerVisible :
+                        getConversationViewPage()::isFileUploadContainerInvisible;
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
         }
+        Assert.assertTrue(String.format("%s should be %s in the conversation view", containerType,
+                (shouldNotSee == null) ? "visible" : "invisible"), verificationFunc.call());
     }
 
     /**
      * Tap container
      *
      * @param isLongTap     equals to null if this should be ordinary single tap
-     * @param containerType euiter Youtube or Soundcloud
+     * @param containerType euiter Youtube or Soundcloud or File Upload
      * @throws Exception
-     * @step. ^I (long )?tap (Youtube|Soundcloud) container in the conversation view$
+     * @step. ^I (long )?tap (Youtube|Soundcloud|File Upload) container in the conversation view$
      */
-    @When("^I (long )?tap (Youtube|Soundcloud) container in the conversation view$")
+    @When("^I (long )?tap (Youtube|Soundcloud|File Upload) container in the conversation view$")
     public void ITapContainer(String isLongTap, String containerType) throws Exception {
         switch (containerType.toLowerCase()) {
             case "youtube":
@@ -1087,6 +1085,13 @@ public class ConversationViewPageSteps {
                     getConversationViewPage().tapSoundcloudContainer();
                 } else {
                     getConversationViewPage().longTapSoundcloudContainer();
+                }
+                break;
+            case "file upload":
+                if (isLongTap == null) {
+                    getConversationViewPage().tapFileUploadContainer();
+                } else {
+                    getConversationViewPage().longTapFileUploadContainer();
                 }
                 break;
             default:

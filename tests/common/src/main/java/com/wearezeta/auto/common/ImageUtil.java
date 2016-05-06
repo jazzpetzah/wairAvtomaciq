@@ -9,9 +9,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.opencv.core.Core;
 import org.opencv.core.Core.MinMaxLocResult;
 import org.opencv.core.CvType;
@@ -193,7 +195,7 @@ public class ImageUtil {
      * Calculates average similarity value between 'maxFrames' image frames
      * taken with help of elementStateScreenshoter method
      *
-     * @param elementStateScreenshoter
+     * @param elementStateScreenshoter the function, which implements screenshoting
      * @param maxFrames                count of frames to compare. Is recommended to set this to 3 or
      *                                 greater
      * @param millisecondsDelay        minimum delay value between each screenshot. This delay can be
@@ -203,12 +205,12 @@ public class ImageUtil {
      * @throws Exception
      */
     public static double getAnimationThreshold(
-            ISupplierWithException elementStateScreenshoter,
+            FunctionalInterfaces.ISupplierWithException<Optional<BufferedImage>> elementStateScreenshoter,
             final int maxFrames, final long millisecondsDelay) throws Exception {
         assert maxFrames >= 3 : "Please set maxFrames value to 3 or greater";
         final List<BufferedImage> timelineScreenshots = new ArrayList<>();
         do {
-            timelineScreenshots.add(elementStateScreenshoter.getScreenshot()
+            timelineScreenshots.add(elementStateScreenshoter.call()
                     .orElseThrow(IllegalStateException::new));
             Thread.sleep(millisecondsDelay);
         } while (timelineScreenshots.size() < maxFrames);
