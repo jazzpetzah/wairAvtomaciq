@@ -245,7 +245,7 @@ public class IOSSimulatorHelper {
     }
 
     public static void installApp(File appPath) throws Exception {
-        executeSimctl(new String[]{"install", getId(), appPath.getCanonicalPath()});
+        executeSimctl(new String[]{"install", "booted", appPath.getCanonicalPath()});
     }
 
     public static void installIpa(File ipaPath) throws Exception {
@@ -258,7 +258,7 @@ public class IOSSimulatorHelper {
     }
 
     public static void launchApp(String bundleId) throws Exception {
-        executeSimctl(new String[]{"launch", getId(), bundleId});
+        executeSimctl(new String[]{"launch", "booted", bundleId});
     }
 
     public static void uploadImage(File img) throws Exception {
@@ -267,8 +267,7 @@ public class IOSSimulatorHelper {
                     "Please make sure the image %s exists and is accessible", img.getCanonicalPath()
             ));
         }
-        executeSimctl(new String[]{
-                "addphoto", getId(), img.getCanonicalPath()
+        executeSimctl(new String[]{"addphoto", "booted", img.getCanonicalPath()
         });
     }
 
