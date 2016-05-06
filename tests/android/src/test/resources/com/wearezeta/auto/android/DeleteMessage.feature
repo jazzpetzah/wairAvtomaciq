@@ -166,7 +166,7 @@ Feature: Delete Message
     When I type the message "<Message2>" and send it
     And User Myself remember the recent message from user <Contact1> via device <Device>
     And I enable Airplane mode on the device
-    And I long tap the message "<Message2>" in the conversation view
+    And I long tap the Text message "<Message2>" in the conversation view
     And I tap Delete button on the action mode bar
     And I tap Delete button on the alert
     Then I do not see the message "<Message2>" in the conversation view
