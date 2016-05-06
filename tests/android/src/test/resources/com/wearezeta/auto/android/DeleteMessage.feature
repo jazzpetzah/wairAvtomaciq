@@ -80,7 +80,7 @@ Feature: Delete Message
       | user1Name | user2Name | https://www.youtube.com/watch?v=gIQS9uUVmgk | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi |
 
 
-  @C111645 @staging
+  @C111645 @staging @C111647
   Scenario Outline: Verify deleting is synchronised across own devices when one of them was offline
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -103,7 +103,18 @@ Feature: Delete Message
     When I tap back button in upper toolbar
     And I tap on contact name <Contact1>
     Then I do not see the message "<Message>" in the conversation view
+    When I type the message "<Message2>" and send it
+    And User Myself remember the recent message from user <Contact1> via device <Device>
+    And I enable Airplane mode on the device
+    And I long tap the message "<Message2>" in the conversation view
+    And I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    Then I do not see the message "<Message2>" in the conversation view
+    When I disable Airplane mode on the device
+    And I wait for 10 seconds
+    Then User Myself see the recent message from user <Contact1> via device <Device> is changed
+
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName |
-      | user1Name | user2Name | user3Name | DeleteTextMessage | Device1 | Device2       | MyGroup       |
+      | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName | Message2  |
+      | user1Name | user2Name | user3Name | DeleteTextMessage | Device1 | Device2       | MyGroup       | MyMessage |
