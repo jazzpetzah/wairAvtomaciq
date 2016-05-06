@@ -99,19 +99,19 @@ public abstract class IOSPage extends BasePage {
         this.getDriver().swipe(10, 220, 10, 200, 500);
     }
 
-    public void clickPopupSelectAllButton() throws Exception {
+    public void tapPopupSelectAllButton() throws Exception {
         getElement(nameEditingItemSelectAll, "Select All popup is not visible").click();
     }
 
-    public void clickPopupCopyButton() throws Exception {
+    public void tapPopupCopyButton() throws Exception {
         getElement(nameEditingItemCopy, "Copy popup is not visible").click();
     }
 
-    public void clickPopupDeleteButton() throws Exception {
+    public void tapPopupDeleteButton() throws Exception {
         getElement(nameEditingItemDelete, "Delete popup is not visible").click();
     }
 
-    public void clickPopupPasteButton() throws Exception {
+    public void tapPopupPasteButton() throws Exception {
         getElement(nameEditingItemPaste, "Paste popup is not visible").click();
         final int popupVisibilityTimeoutSeconds = 10;
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemPaste, popupVisibilityTimeoutSeconds)) {

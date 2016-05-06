@@ -309,7 +309,7 @@ public class LoginPageSteps {
      */
     @When("I click on popup SelectAll item")
     public void IClickPopupSelectAll() throws Exception {
-        getLoginPage().clickPopupSelectAllButton();
+        getLoginPage().tapPopupSelectAllButton();
     }
 
     /**
@@ -320,7 +320,7 @@ public class LoginPageSteps {
      */
     @When("I click on popup Copy item")
     public void IClickPopupCopy() throws Exception {
-        getLoginPage().clickPopupCopyButton();
+        getLoginPage().tapPopupCopyButton();
     }
 
     /**
@@ -331,7 +331,7 @@ public class LoginPageSteps {
      */
     @When("^I click on popup Paste item$")
     public void IClickPopupPaste() throws Exception {
-        getLoginPage().clickPopupPasteButton();
+        getLoginPage().tapPopupPasteButton();
     }
 
     /**

@@ -692,16 +692,16 @@ public class ConversationViewPageSteps {
     public void ITapCopyBadge(String badgeItem) throws Exception {
         switch (badgeItem) {
             case ("Select All"):
-                getConversationViewPage().clickPopupSelectAllButton();
+                getConversationViewPage().tapPopupSelectAllButton();
                 break;
             case ("Copy"):
-                getConversationViewPage().clickPopupCopyButton();
+                getConversationViewPage().tapPopupCopyButton();
                 break;
             case ("Delete"):
-                getConversationViewPage().clickPopupDeleteButton();
+                getConversationViewPage().tapPopupDeleteButton();
                 break;
             case ("Paste"):
-                getConversationViewPage().clickPopupPasteButton();
+                getConversationViewPage().tapPopupPasteButton();
                 break;
             default:
                 throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste) are allowed options");
