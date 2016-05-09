@@ -77,7 +77,7 @@ Feature: Archive
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveArchive  |
 
-  @C95635 @staging
+  @C95635 @regression
   Scenario Outline: Verify archive behaviour when one archive/unarchive a conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
