@@ -138,3 +138,43 @@ Feature: Delete Message
     Examples:
       | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout |
       | user1Name | user2Name | qa_random | txt           | 1.00MB   | 20               |
+
+
+  @C111645 @staging @C111647
+  Scenario Outline: Verify deleting is synchronised across own devices when one of them was offline
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    When User Myself adds new device <Device>
+    And User <Contact1> adds new device <ContactDevice>
+    And I see Contact list with contacts
+    And I tap on contact name <Contact1>
+    And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
+    And I tap back button in upper toolbar
+    And I tap on contact name <GroupChatName>
+    And User Myself send encrypted message "<Message>" via device <Device> to group conversation <GroupChatName>
+    And I enable Airplane mode on the device
+    And User Myself deletes the recent message from user <Contact1> via device <Device>
+    And User Myself deletes the recent message from group conversation <GroupChatName> via device <Device>
+    And I disable Airplane mode on the device
+    Then I do not see the message "<Message>" in the conversation view
+    When I tap back button in upper toolbar
+    And I tap on contact name <Contact1>
+    Then I do not see the message "<Message>" in the conversation view
+    When I type the message "<Message2>" and send it
+    And User Myself remember the recent message from user <Contact1> via device <Device>
+    And I enable Airplane mode on the device
+    And I long tap the Text message "<Message2>" in the conversation view
+    And I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    Then I do not see the message "<Message2>" in the conversation view
+    When I disable Airplane mode on the device
+    And I wait for 10 seconds
+    Then User Myself see the recent message from user <Contact1> via device <Device> is changed
+
+
+    Examples:
+      | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName | Message2  |
+      | user1Name | user2Name | user3Name | DeleteTextMessage | Device1 | Device2       | MyGroup       | MyMessage |
