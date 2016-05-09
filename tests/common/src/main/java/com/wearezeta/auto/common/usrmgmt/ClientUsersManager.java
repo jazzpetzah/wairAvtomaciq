@@ -285,17 +285,16 @@ public class ClientUsersManager {
                     } catch (BackendRequestException e) {
                         e.printStackTrace();
                         if (e.getReturnCode() == HttpStatus.SC_METHOD_FAILURE) {
-                            sleepInterval = (intervalSeconds + random
-                                    .nextInt(BackendAPIWrappers.ACTIVATION_TIMEOUT)) * 2000;
+                            sleepInterval = (intervalSeconds +
+                                    random.nextInt(BackendAPIWrappers.ACTIVATION_TIMEOUT)) * 2000;
                             intervalSeconds *= 2;
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    log.debug(String
-                            .format("Failed to create user '%s'. Retrying (%d of %d)...",
-                                    userToCreate.getName(), retryNumber,
-                                    NUMBER_OF_REGISTRATION_RETRIES));
+                    log.debug(String.format("Failed to create user '%s'. Retrying (%d of %d)...",
+                            userToCreate.getName(), retryNumber, NUMBER_OF_REGISTRATION_RETRIES));
+                    userToCreate.forceTokenExpiration();
                     try {
                         Thread.sleep(sleepInterval);
                     } catch (InterruptedException ex) {
@@ -316,8 +315,7 @@ public class ClientUsersManager {
                             usersCreationTimeout));
         }
         if (createdClientsCount.get() != usersToCreate.size()) {
-            throw new RuntimeException(
-                    "Failed to create new users or contacts on the backend");
+            throw new RuntimeException("Failed to create new users or contacts on the backend");
         }
     }
 

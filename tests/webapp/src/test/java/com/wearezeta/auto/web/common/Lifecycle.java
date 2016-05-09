@@ -157,7 +157,6 @@ public class Lifecycle {
          */
 
         context = new TestContext(testname, lazyWebDriver);
-        context.startPinging();
 
         try {
             context.getDeviceManager().reset();
@@ -178,7 +177,6 @@ public class Lifecycle {
 
     public void tearDown() throws Exception {
         try {
-            context.stopPinging();
             ZetaWebAppDriver driver = (ZetaWebAppDriver) context.getDriver();
 
             // save browser console if possible

@@ -107,7 +107,8 @@ public class ClientUser {
     }
 
     private void refreshTokenInfoIfExpired() throws Exception {
-        if (lastTokenRequestTimestamp < 0 ||
+        if (!this.id.isPresent() || !this.tokenType.isPresent() || !this.token.isPresent() ||
+                lastTokenRequestTimestamp < 0 ||
                 System.currentTimeMillis() - lastTokenRequestTimestamp >= TOKEN_TIMEOUT * 1000) {
             final ClientToken clientToken = BackendAPIWrappers.login(
                     this.getEmail(), this.getPassword(), this.getPhoneNumber()
@@ -174,12 +175,12 @@ public class ClientUser {
         this.phoneNumberAliases.clear();
     }
 
-    private static String generateUniqName() {
+    private static String generateUniqueName() {
         return CommonUtils.generateGUID().replace("-", "").substring(0, 8);
     }
 
     public ClientUser() throws Exception {
-        this.name = generateUniqName();
+        this.name = generateUniqueName();
         this.phoneNumber = new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX);
         this.password = CommonUtils.getDefaultPasswordFromConfig(ClientUser.class);
         this.email = MessagingUtils.generateEmail(MessagingUtils.getDefaultAccountName(), name);

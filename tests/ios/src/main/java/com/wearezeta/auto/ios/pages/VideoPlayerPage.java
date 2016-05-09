@@ -12,7 +12,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class VideoPlayerPage extends IOSPage {
-    private static final By xpathVideoMainPage = By.xpath("//UIAWebView/UIAButton[@name='Home']");
+    private static final By xpathVideoMainPage = By.xpath("//UIAWebView");
 
     private static final By nameVideoDoneButton = MobileBy.AccessibilityId("Done");
 

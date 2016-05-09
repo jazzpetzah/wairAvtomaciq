@@ -28,7 +28,7 @@ Feature: File Transfer
       | user1Email | user1Password | user1Name | user2Name | example.txt | 0B    | TXT  |
       | user1Email | user1Password | user1Name | user2Name | example.zip | 512KB | ZIP  |
 
-  @C95632 @filetransfer @staging
+  @C95632 @filetransfer @regression
   Scenario Outline: Verify file can be uploaded and re-downloaded by sender himself in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -68,10 +68,10 @@ Feature: File Transfer
     When I open conversation with <Contact>
     Then I see file transfer button in conversation input
     When I send <Size> sized file with name <File> to the current conversation
-    Then I verify icon of file <File> in the conversation view
+    Then I verify status of file <File> is UPLOADING… in the conversation view
+    And I verify icon of file <File> in the conversation view
     And I see file transfer for file <File> in the conversation view
     And I verify size of file <File> is <Size> in the conversation view
-    And I verify status of file <File> is UPLOADING… in the conversation view
     When I wait until file <File> is uploaded completely
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
@@ -240,7 +240,7 @@ Feature: File Transfer
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | File        | Size | Type | ChatName  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | example.txt | 15MB | TXT  | GroupChat |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | example.txt | 24MB | TXT  | GroupChat |
 
   @C95630 @filetransfer @regression
   Scenario Outline: Verify file can be downloaded and decrypted by sender on second device

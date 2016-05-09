@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common.sync_engine_bridge;
 
 import com.google.common.base.Throwables;
+import com.waz.model.MessageId;
 import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -140,8 +141,19 @@ public class SEBridge {
         getOrAddDevice(userFrom, deviceName).unmuteConversation(convId);
     }
 
-    public void sendFile(ClientUser userFrom, String convId, String path, String mime, String deviceName) throws Exception {
+    public void sendFile(ClientUser userFrom, String convId, String path, String mime, String deviceName)
+            throws Exception {
         getOrAddDevice(userFrom, deviceName).sendFile(convId, path, mime);
+    }
+
+    public void deleteMessage(ClientUser userFrom, String convId, MessageId messageId, String deviceName)
+            throws Exception {
+        getOrAddDevice(userFrom, deviceName).deleteMessage(convId, messageId);
+    }
+
+    public ActorMessage.MessageInfo[] getConversationMessages(ClientUser userFrom, String convId, String deviceName)
+            throws Exception {
+        return getOrAddDevice(userFrom, deviceName).getConversationMessages(convId);
     }
 
     private void shutdown() {

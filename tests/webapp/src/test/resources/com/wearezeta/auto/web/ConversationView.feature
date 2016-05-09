@@ -1,5 +1,38 @@
 Feature: Conversation View
 
+  @C119438 @staging
+  Scenario Outline: Verify group conversation history is loaded properly
+    Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Name> adds a new device Device1 with label Label1
+    Given <Contact1> is connected to Myself,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I see the history info page
+    Then I click confirm on history info page
+    When I am signed in properly
+    Then I open self profile
+    When I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    Then I see Sign In page
+    And <Contact1> has group chat <ChatName> with Myself,<Contact2>
+    And Contact <Name> sends 35 encrypted messages with prefix <OtherDeviceMsg> via device Device1 to group conversation <ChatName>
+    And I wait for 10 seconds
+    And Contact <Contact1> sends 100 encrypted messages with prefix <OfflineMsg> via device Device1 to group conversation <ChatName>
+    When I Sign in using login <Login> and password <Password>
+    And I wait for 10 seconds
+    And I am signed in properly
+    And I open conversation with <ChatName>
+    And Contact <Contact1> sends 10 encrypted messages with prefix <OnlineMsg> via device Device1 to group conversation <ChatName>
+    And I wait for 5 seconds
+    Then I verify all remembered messages are present in conversation <ChatName>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2  | ChatName                | OfflineMsg | OnlineMsg | OtherDeviceMsg |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | HistoryOfflineGroupChat | OFFLINE    | ONLINE    | OTHERDEVICE    |
+
   @C1703 @smoke
   Scenario Outline: Send message in 1on1
     Given There are 2 users where <Name> is me
@@ -7,7 +40,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I write random message
     And I send message
@@ -35,7 +68,7 @@ Feature: Conversation View
     Given I click Logout button on clear data dialog
     Given I see Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
@@ -48,7 +81,7 @@ Feature: Conversation View
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
-    Then I see my avatar on top of Contact list
+    Then I am signed in properly
     And I open conversation with <ChatName>
     Then I see sent picture <PictureName> in the conversation view
     And I see only 1 picture in the conversation
@@ -66,7 +99,7 @@ Feature: Conversation View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     When I write random message
     And I send message
@@ -82,7 +115,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     And I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
@@ -99,7 +132,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I write message <Youtubelink1>
     And I send message
@@ -125,7 +158,7 @@ Feature: Conversation View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
@@ -207,7 +240,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I write 10 new lines
     And I write message aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -227,7 +260,7 @@ Feature: Conversation View
     Given I Sign in temporary using login <Login> and password <Password>
     Given I see the history info page
     Given I click confirm on history info page
-    Given I see my avatar on top of Contact list
+    Given I am signed in properly
     When I open conversation with <ChatName>
     And I paste message from file <File>
     And I send message
@@ -243,7 +276,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     And I send picture <PictureName> to the current conversation
     And I see sent picture <PictureName> in the conversation view
@@ -266,7 +299,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I write message <Message>
     And I click GIF button
@@ -288,7 +321,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I write message <Message>
     And I refresh page
@@ -305,7 +338,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I type shortcut combination to open search
     Then I see Search is opened
@@ -321,7 +354,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I hover ping button
     Then I see correct ping button tooltip
@@ -339,7 +372,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     And I see calling button
     When I hover call button
@@ -358,16 +391,18 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And Contact <Contact> sends 35 encrypted messages with prefix <READ> via device Device1 to user <Name>
+    And I wait for 5 seconds
     Then I really see text message <READ>34
     When I open self profile
     And Contact <Contact> sends 35 encrypted messages with prefix <UNREAD> via device Device1 to user <Name>
+    And I wait for 5 seconds
     When I open conversation with <Contact>
     Then I do not see text message <READ>34
     And I do not see text message <READ>0
-    And I do not see text message <READ>34
+    And I do not see text message <UNREAD>34
     And I really see text message <UNREAD>0
 
     Examples: 

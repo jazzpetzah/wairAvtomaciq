@@ -1,13 +1,17 @@
 Feature: Conversation View
 
   @C3182 @regression @id855
-  Scenario Outline: Verify swipe right tutorial appearance
+  Scenario Outline: Verify tooltip is shown when cursor area is empty and in/not in focus
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    Then I see TAPORSLIDE text
+    Then I see input placeholder text
+    When I tap on text input
+    Then I see input placeholder text
+    When I type the default message
+    Then I do not see input placeholder text
 
     Examples:
       | Name      | Contact   |
@@ -34,7 +38,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Ping button from input tools
     Then I see "<PingMsg>" system message in the conversation view
 
@@ -49,7 +52,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -75,7 +77,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | MessageToGroup |
 
-  @C3210 @regression @IPv6 @id1468 @rc
+  @C3210 @regression @IPv6 @id1468
   Scenario Outline: (MediaBar disappears on Simulator) Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -107,7 +109,7 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
-    And I tap on text input to scroll to the end
+    And I scroll to the bottom of the conversation
     And I tap media container
     And I scroll media out of sight until media bar appears
     And I tap on the media bar
@@ -126,7 +128,7 @@ Feature: Conversation View
     Given User Myself sends 40 encrypted messages to user <Contact>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     And I tap on contact name <Contact>
-    And I tap on text input to scroll to the end
+    And I scroll to the bottom of the conversation
     When I tap media container
     And I scroll media out of sight until media bar appears
     Then I wait up to 35 seconds for media bar to disappear
@@ -144,10 +146,10 @@ Feature: Conversation View
     Given User <Name> sends 40 encrypted messages to user <Contact1>
     Given User <Name> sends encrypted message "<SoundCloudLink>" to user <Contact1>
     When I tap on contact name <Contact1>
-    And I tap on text input to scroll to the end
+    And I scroll to the bottom of the conversation
     And I tap media container
     When I scroll media out of sight until media bar appears
-    And I tap on text input to scroll to the end
+    And I scroll to the bottom of the conversation
     Then I dont see media bar on dialog page
 
     Examples:
@@ -236,7 +238,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -397,28 +398,10 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I click plus button next to text input
     And I tap Sketch button from input tools
     And I draw a random sketch
     And I send my sketch
     Then I see 1 photo in the dialog
-
-    Examples:
-      | Name      | Contact1  |
-      | user1Name | user2Name |
-
-  @C888 @rc @regression
-  Scenario Outline: Verify opening and closing input options by buttons click
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact1>
-    And I click plus button next to text input
-    Then I see conversation tools buttons
-    When I click Close input options button
-    Then I see Close input options button is not visible
-    And I see plus button next to text input
 
     Examples:
       | Name      | Contact1  |
@@ -434,13 +417,10 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I click plus button next to text input
-    Then I see no other conversation tools buttons except of People
-    And I click Close input options button
+    Then I do not see conversation tools buttons
     And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
-    And I click plus button next to text input
-    Then I see no other conversation tools buttons except of People
+    Then I do not see conversation tools buttons
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
@@ -473,7 +453,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -557,8 +536,7 @@ Feature: Conversation View
     When I tap on contact name <Contact2>
     And I navigate back to conversations list
     And I tap on contact name <Contact1>
-    Then I see Close input options button is not visible
-    And I see the default message in input field
+    Then I see the default message in input field
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -587,8 +565,8 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C879 @regression @id1158
-  Scenario Outline: Verify possibility to copy image in the conversation view
+  @C879 @regression @id1158 @ZIOS-6517
+  Scenario Outline: (BUG-ZIOS-6517) Verify possibility to copy image in the conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -597,7 +575,7 @@ Feature: Conversation View
     And I tap on contact name <Contact>
     And I see 1 photo in the dialog
     And I longpress on image in the conversation
-    And I tap on copy badge
+    And I tap on Copy badge item
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
@@ -622,7 +600,6 @@ Feature: Conversation View
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -657,10 +634,13 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I type the default message
-    And I see plus icon is changed to user avatar icon
-    And I clear conversation text input
-    Then I see plus button next to text input
+    Then I do not see user avatar icon near the conversation input field
+    When I tap on text input
+    Then I see user avatar icon near the conversation input field
+    # This is to hide keyboard
+    When I navigate back to conversations list
+    And I tap on contact name <Contact>
+    Then I do not see user avatar icon near the conversation input field
 
     Examples:
       | Name      | Contact   |
@@ -673,7 +653,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I tap Camera Shutter button
     And I confirm my choice
@@ -690,7 +669,6 @@ Feature: Conversation View
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I tap Toggle Camera button
     And I tap Camera Shutter button
@@ -755,7 +733,7 @@ Feature: Conversation View
     And I see conversation name <Contact> in Upper Toolbar
     And User <Contact> changes name to <NewName>
     Then I see conversation name <NewName> in Upper Toolbar
-    
+
     Examples:
       | Name      | Contact   | NewName |
       | user1Name | user2Name | NewName |
@@ -797,3 +775,58 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
+
+  @C111318 @regression
+  Scenario Outline: Verify cursor and toolbar appear after adding person back
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other
+    Given Myself has group chat <GroupChatName> with all other
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    And I see input placeholder text
+    And I see conversation tools buttons
+    When <Contact> removed <Name> from group chat <GroupChatName>
+    Then I do not see conversation tools buttons
+    And I do not see text input in conversation view
+    When User <Contact> adds user <Name> to group chat <GroupChatName>
+    Then I see conversation tools buttons
+    And I see input placeholder text
+
+    Examples:
+      | Name      | Contact   | GroupChatName |
+      | user1Name | user2Name | CURSORTOOLBAR |
+
+  @C111321 @regression
+  Scenario Outline: Verify deleting own text message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I type the default message and send it
+    Then I see 1 default message in the dialog
+    When I long tap default message in conversation view
+    And I tap on Delete badge item
+    Then I see 0 default messages in the dialog
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C111322 @regression
+  Scenario Outline: Verify deleting received text message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User <Contact> sends 1 encrypted message to user Myself
+    When I tap on contact name <Contact>
+    Then I see 1 default message in the dialog
+    When I long tap default message in conversation view
+    And I tap on Delete badge item
+    Then I see 0 default messages in the dialog
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |

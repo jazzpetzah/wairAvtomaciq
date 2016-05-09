@@ -26,8 +26,7 @@ public class TestContext {
     static Future<ZetaWebAppDriver> COMPAT_WEB_DRIVER;
 
     private final Platform currentPlatform = Platform.Web;
-    private final ScheduledExecutorService ping = Executors.newScheduledThreadPool(1);
-    private ScheduledFuture<?> pinger;
+    private Pinger pinger;
 
     private final String testname;
     private final CommonSteps commonSteps;
@@ -36,6 +35,7 @@ public class TestContext {
     private final CommonCallingSteps2 callingManager;
     private final WebappPagesCollection pagesCollection;
     private final Future<? extends RemoteWebDriver> driver;
+    private final ConversationStates conversationStates;
 
     public TestContext(String uniqueTestname, Future<? extends RemoteWebDriver> driver) throws Exception {
         this.testname = uniqueTestname;
@@ -45,6 +45,8 @@ public class TestContext {
         this.commonSteps = new CommonSteps(userManager, deviceManager);
         this.callingManager = new CommonCallingSteps2(userManager);
         this.pagesCollection = new WebappPagesCollection();
+        this.conversationStates = new ConversationStates();
+        this.pinger = new Pinger();
     }
 
     /**
@@ -58,26 +60,8 @@ public class TestContext {
         this.commonSteps = CommonSteps.getInstance();
         this.callingManager = CommonCallingSteps2.getInstance();
         this.pagesCollection = WebappPagesCollection.getInstance();
-    }
-
-    public void startPinging() {
-        pinger = ping.scheduleAtFixedRate(() -> {
-            try {
-                if (driver.isCancelled()) {
-                    pinger.cancel(true);
-                }
-                if (driver.isDone()) {
-                    LOG.info("Ping");
-                    driver.get(10, TimeUnit.SECONDS).getPageSource();
-                }
-            } catch (InterruptedException | ExecutionException | TimeoutException ex) {
-                LOG.warn("Could not ping driver because it's not initialized yet");
-            }
-        }, 0, 30, TimeUnit.SECONDS);
-    }
-
-    public void stopPinging() {
-        pinger.cancel(true);
+        this.conversationStates = new ConversationStates();
+        this.pinger = new Pinger();
     }
 
     public String getTestname() {
@@ -115,4 +99,16 @@ public class TestContext {
     public Platform getCurrentPlatform() {
         return currentPlatform;
     }
+
+    public ConversationStates getConversationStates() {
+        return conversationStates;
+    }
+    
+    public void startPinging() {
+        pinger.startPinging();
+    }
+    public void stopPinging() {
+        pinger.stopPinging();
+    }
+    
 }

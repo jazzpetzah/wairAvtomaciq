@@ -130,8 +130,9 @@ public class CallingSteps {
     @When("(.*) starts? instances? using (.*)$")
     public void UserXStartsInstance(String callees,
             String callingServiceBackend) throws Exception {
-        context.getCallingManager().startInstances(splitAliases(callees),
-                callingServiceBackend);
+        context.startPinging();
+        context.getCallingManager().startInstances(splitAliases(callees), callingServiceBackend);
+        context.stopPinging();
     }
 
     /**

@@ -90,7 +90,7 @@ Feature: People View
 
     Examples:
       | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName       |
-      | user1Name | user3Name | user2Name | 2                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | aqaPictureContact | aqaAvatar TestContact |
+      | user1Name | user3Name | user2Name | 2                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | aqaPictureContact | aqaAvatarTestContact  |
 
   @C715 @id1507 @regression @rc @rc42
   Scenario Outline: Verify editing the conversation name
@@ -195,12 +195,12 @@ Feature: People View
     And I see the correct number of participants in the title <ParticipantNumber>
     When I close participants page by UI button
     Then I do not see participants page
-    And I see dialog page
+    And I see conversation view
     When I tap conversation name from top toolbar
     Then I see participants page
     When I press back button
     Then I do not see participants page
-    And I see dialog page
+    And I see conversation view
     When I tap conversation name from top toolbar
     And I swipe right
     And I swipe up
@@ -229,7 +229,7 @@ Feature: People View
     When I tap conversation name from top toolbar
     Then I see <Contact1> user name and email
     When I close participants page by UI button
-    Then I see dialog page
+    Then I see conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |

@@ -89,7 +89,7 @@ Feature: Archive
     Then I do not see conversation <ArchivedUser> in conversations list
     And I do not see Contacts label at the bottom of conversations list
     And I see Archive button at the bottom of conversations list
-    And I see NO CONVERSATIONS message in conversations list
+    And I see NO ACTIVE CONVERSATIONS message in conversations list
     When I open archived conversations
     Then I see conversation <ArchivedUser> in conversations list
     When I swipe right on a <ArchivedUser>

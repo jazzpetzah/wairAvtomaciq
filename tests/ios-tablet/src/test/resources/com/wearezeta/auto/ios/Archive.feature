@@ -77,7 +77,7 @@ Feature: Archive
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveArchive  |
 
-  @C95635 @staging
+  @C95635 @regression
   Scenario Outline: Verify archive behaviour when one archive/unarchive a conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -93,7 +93,7 @@ Feature: Archive
     Then I do not see conversation <ArchivedUser> in conversations list
     And I do not see Contacts label at the bottom of conversations list
     And I see Archive button at the bottom of conversations list
-    And I see NO CONVERSATIONS message in conversations list
+    And I see NO ACTIVE CONVERSATIONS message in conversations list
     When I open archived conversations
     Then I see conversation <ArchivedUser> in conversations list
     When I swipe right on a <ArchivedUser>

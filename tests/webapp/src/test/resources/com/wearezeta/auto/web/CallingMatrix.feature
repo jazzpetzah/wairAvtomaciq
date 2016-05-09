@@ -8,7 +8,7 @@ Feature: Calling_Matrix
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I call
     Then <Contact> accepts next incoming call automatically
@@ -38,7 +38,7 @@ Feature: Calling_Matrix
     Given <Contact> accepts next incoming video call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     And I start a video call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -67,7 +67,7 @@ Feature: Calling_Matrix
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     When I call
     Then <Contact> accepts next incoming call automatically
@@ -91,7 +91,7 @@ Feature: Calling_Matrix
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     And <Contact> calls me
     When I accept the call from conversation <Contact>
@@ -120,7 +120,7 @@ Feature: Calling_Matrix
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     And <Contact> starts a video call to me
     When I accept the call from conversation <Contact>
@@ -149,7 +149,7 @@ Feature: Calling_Matrix
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     And <Contact> calls me
     When I accept the call from conversation <Contact>
@@ -176,7 +176,7 @@ Feature: Calling_Matrix
     Given <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    Then I am signed in properly
     When I open conversation with <ChatName1>
     And I call
     Then <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
@@ -211,7 +211,7 @@ Feature: Calling_Matrix
     Given <Contact1>,<Contact2> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    Then I am signed in properly
     When I open conversation with <ChatName1>
     And I call
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
@@ -235,7 +235,7 @@ Feature: Calling_Matrix
     Given <Contact1> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    Then I am signed in properly
     When I open conversation with <ChatName1>
     And <Contact2> calls <ChatName1>
     Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -275,7 +275,7 @@ Feature: Calling_Matrix
     Given <Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    Then I am signed in properly
     When I open conversation with <ChatName1>
     And <Contact1> calls <ChatName1>
     When I accept the call from conversation <ChatName1>
@@ -320,7 +320,7 @@ Feature: Calling_Matrix
     Given <Contact2> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    Then I am signed in properly
     When I open conversation with <ChatName1>
     And <Contact1> calls <ChatName1>
     When I accept the incoming call

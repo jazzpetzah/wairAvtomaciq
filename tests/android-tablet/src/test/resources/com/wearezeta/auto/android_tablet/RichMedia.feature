@@ -50,7 +50,7 @@ Feature: Rich Media
     Given I see the conversations list with conversations
     And I remember the coordinates of conversation item <Contact>
     And I tap the conversation <Contact>
-    And I tap the text input in the conversation view
+    And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
     And I send the typed message in the conversation view
     And I scroll to the bottom of the conversation view
@@ -75,7 +75,7 @@ Feature: Rich Media
     Given I see the conversations list with conversations
     And I remember the coordinates of conversation item <Contact>
     And I tap the conversation <Contact>
-    And I tap the text input in the conversation view
+    And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
     And I send the typed message in the conversation view
     And I scroll to the bottom of the conversation view
@@ -98,7 +98,7 @@ Feature: Rich Media
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    When I tap the text input in the conversation view
+    When I tap on text input
     Then I do not see Giphy button in the conversation view
     When I type the message "<Message>" in the conversation view
     Then I see Giphy button in the conversation view
@@ -123,7 +123,7 @@ Feature: Rich Media
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    When I tap the text input in the conversation view
+    When I tap on text input
     Then I do not see Giphy button in the conversation view
     When I type the message "<Message>" in the conversation view
     Then I see Giphy button in the conversation view
@@ -150,7 +150,7 @@ Feature: Rich Media
     Given I see the conversations list with conversations
     Given User <Contact> sends <MsgsInConvo> encrypted messages to user Myself
     And I tap the conversation <Contact>
-    And I tap the text input in the conversation view
+    And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
     And I send the typed message in the conversation view
     And I scroll to the bottom of the conversation view

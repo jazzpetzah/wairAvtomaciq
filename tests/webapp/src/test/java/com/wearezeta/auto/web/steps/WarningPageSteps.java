@@ -187,6 +187,62 @@ public class WarningPageSteps {
 						.clickButtonWithCaptionInFullCallWarningModal(
 								buttonCaption));
 	}
+        
+        /**
+	 * Verifies whether the 'full call conversation warning modal' is visible
+	 *
+	 * @param doNot
+	 *            is null when 'do not' part is not present
+	 * @step. ^I( do not)? see full call conversation warning modal$
+	 *
+	 * @throws Exception
+	 *             if the 'full call conversation warning modal' is not currently visible
+	 */
+	@Then("^I( do not)? see full call conversation warning modal$")
+	public void ISeeFullCallConversationWarningModal(String doNot) throws Exception {
+		if (doNot == null) {
+			Assert.assertTrue("Full call conversation warning modal is not visible",
+					context.getPagesCollection().getPage(WarningPage.class)
+							.isFullConversationWarningModalVisible());
+		} else {
+			Assert.assertTrue("Full call conversation warning modal is visible",
+					context.getPagesCollection().getPage(WarningPage.class)
+							.isFullConversationWarningModalInvisible());
+		}
+	}
+
+	/**
+	 * Closes the 'full call conversation warning modal'.
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I close the full call conversation warning modal$
+	 *
+	 */
+	@Then("^I close the full call conversation warning modal$")
+	public void IClickCloseFullCallConversationWarningModal() throws Exception {
+		context.getPagesCollection().getPage(WarningPage.class)
+				.clickCloseFullConversationWarningModal();
+	}
+
+	/**
+	 * Ends the current call, closes the 'full call conversation warning modal' and initiates
+	 * the new call.
+	 *
+	 * @param buttonCaption
+	 *            the caption of the button to click
+	 * @throws java.lang.Exception
+	 * @step. ^I click on \"(.*)\" button in full call conversation warning modal$
+	 *
+	 */
+	@Then("^I click on \"(.*)\" button in full call conversation warning modal$")
+	public void IClickButtonInFullCallConversationWarningModal(String buttonCaption)
+			throws Exception {
+		Assert.assertTrue(
+				"Button '" + buttonCaption
+						+ "' in full call conversation warning modal was not clickable",
+				context.getPagesCollection().getPage(WarningPage.class)
+						.clickButtonWithCaptionInFullConversationWarningModal(buttonCaption));
+	}
 
 	@Then("^I( do not)? see file transfer limit warning modal$")
 	public void ISeeFileTransferLimitWarningModal(String doNot) throws Exception {

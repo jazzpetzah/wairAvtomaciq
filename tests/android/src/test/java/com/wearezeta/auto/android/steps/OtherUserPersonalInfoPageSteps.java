@@ -97,9 +97,9 @@ public class OtherUserPersonalInfoPageSteps {
      * profile
      *
      * @throws Exception
-     * @step. ^I press add contact button$
+     * @step. ^I press (?:add contact|create group) button$
      */
-    @When("^I press add contact button$")
+    @When("^I press (?:add contact|create group) button$")
     public void WhenIPressAddContactButton() throws Exception {
         getOtherUserPersonalInfoPage().tapLeftActionBtn();
     }

@@ -59,6 +59,9 @@ public class CommonAndroidSteps {
                     () -> new IllegalStateException("Cannot take a screenshot of the whole screen")
             )
     );
+
+    private static Optional<String> recentMessageId;
+
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     public static final Platform CURRENT_PLATFORM = Platform.Android;
@@ -126,6 +129,7 @@ public class CommonAndroidSteps {
         AndroidCommonUtils.disableHints();
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidSteps.class);
+        AndroidCommonUtils.installClipperApp(CommonAndroidSteps.class);
         final String backendJSON =
                 AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
         AndroidCommonUtils.deployBackendFile(backendJSON);
@@ -290,6 +294,19 @@ public class CommonAndroidSteps {
     public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias, int size) throws Exception {
         commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
                 searchByNameAlias, size);
+    }
+
+    /**
+     * User leaves group chat
+     *
+     * @param userName name of the user who leaves
+     * @param chatName chat name that user leaves
+     * @throws Exception
+     * @step. ^(.*) leave(s) group chat (.*)$
+     */
+    @Given("^(.*) leave[s]* group chat (.*)$")
+    public void UserLeavesGroupChat(String userName, String chatName) throws Exception {
+        commonSteps.UserXLeavesGroupChat(userName, chatName);
     }
 
     /**
@@ -1104,11 +1121,21 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. ^I see alert message containing \"(.*)\"$
      */
-    @Then("^I see alert message containing \"(.*)\"$")
-    public void ISeeAlertMessage(String expectedMsg) throws Exception {
+    @Then("^I see alert message containing \"(.*)\" in the (title|body)$")
+    public void ISeeAlertMessage(String expectedMsg, String location) throws Exception {
         expectedMsg = usrMgr.replaceAliasesOccurences(expectedMsg, ClientUsersManager.FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("An alert containing text '%s' is not visible", expectedMsg),
-                pagesCollection.getCommonPage().isAlertMessageVisible(expectedMsg));
+        switch (location.toLowerCase()) {
+            case "body":
+                Assert.assertTrue(String.format("An alert containing text '%s' in body is not visible", expectedMsg),
+                        pagesCollection.getCommonPage().isAlertMessageVisible(expectedMsg));
+                break;
+            case "title":
+                Assert.assertTrue(String.format("An alert containing text '%s' is title not visible", expectedMsg),
+                        pagesCollection.getCommonPage().isAlertTitleVisible(expectedMsg));
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("'%s' location is unknown", location));
+        }
     }
 
     /**
@@ -1207,14 +1234,74 @@ public class CommonAndroidSteps {
      * @step. ^(.*) sends local file named "(.*)" and MIME type "(.*)" via device (.*) to (user|group conversation) (.*)$
      */
     @When("^(.*) sends local file named \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
-    public void ContactSendsXLocalFileFromSE(String contact,  String fileFullName, String mimeType,
-                                        String deviceName, String convoType, String dstConvoName) throws Exception {
+    public void ContactSendsXLocalFileFromSE(String contact, String fileFullName, String mimeType,
+                                             String deviceName, String convoType, String dstConvoName) throws Exception {
         String basePath = AndroidCommonUtils.getImagesPath(AndroidCommonUtils.class);
         String sourceFilePath = basePath + File.separator + fileFullName;
 
         boolean isGroup = convoType.equals("group conversation");
         commonSteps.UserSentFileToConversation(contact, dstConvoName, sourceFilePath,
                 mimeType, deviceName, isGroup);
+    }
+
+    /**
+     * User X delete message from User/Group via specified device
+     * Note : The recent message means the recent message sent from specified device by SE, the device should online.
+     *
+     * @param userNameAlias
+     * @param convoType
+     * @param dstNameAlias
+     * @param deviceName
+     * @throws Exception
+     * @step. ^User (.*) deletes? the recent message from (user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) deletes? the recent message from (user|group conversation) (.*) via device (.*)$")
+    public void UserXDeleteLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup);
+    }
+
+    /**
+     * Remember the recent message Id
+     *
+     * @param userNameAlias
+     * @param convoType
+     * @param dstNameAlias
+     * @param deviceName
+     * @throws Exception
+     * @step. ^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$")
+    public void UserXRemeberLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        recentMessageId = Optional.empty();
+        boolean isGroup = convoType.equals("group conversation");
+        recentMessageId = commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup);
+    }
+
+    /**
+     * Check the rememberd message is changed
+     *
+     * @param userNameAlias
+     * @param convoType
+     * @param dstNameAlias
+     * @param deviceName
+     * @throws Exception
+     * @step. ^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed$
+     */
+    @Then("^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed$")
+    public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        if (recentMessageId.equals(Optional.empty())) {
+            throw new IllegalStateException("You should remember the recent message befor you check it");
+        }
+
+        boolean isGroup = convoType.equals("group conversation");
+        Optional<String> actualMessageId = commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup);
+
+        Assert.assertTrue(String.format("Remembered message Id should not equal to '%s'", actualMessageId),
+                actualMessageId.get() != recentMessageId.get());
     }
 
     /**
@@ -1234,7 +1321,7 @@ public class CommonAndroidSteps {
                     AndroidCommonUtils.pullFileFromSdcardDownload(fileFullName);
                     return CommonUtils.retrieveFileInfo(
                             AndroidCommonUtils.getBuildPathFromConfig(CommonAndroidSteps.class)
-                            + File.separator + fileFullName);
+                                    + File.separator + fileFullName);
                 });
 
         fileInfo.orElseThrow(() -> new IllegalStateException(String.format("File '%s' doesn't exist after %s seconds",
@@ -1249,5 +1336,31 @@ public class CommonAndroidSteps {
                 Math.abs(expectedSize - actualSize) < 100);
         Assert.assertEquals(String.format("File MIME type should be %s", mimeType),
                 mimeType, fileInfo.get().getMimeType());
+    }
+
+    /**
+     * Tap the corresponding button on alert message
+     *
+     * @param caption button caption as it is shown in @value property
+     * @throws Exception
+     * @step. ^I tap (.*) button on the alert$
+     */
+    @And("^I tap (.*) button on the alert$")
+    public void ITapAlertButton(String caption) throws Exception {
+        pagesCollection.getCommonPage().tapAlertButton(caption);
+    }
+
+    /**
+     * Verify whether Android clipboard content equals to the expected one
+     *
+     * @param expectedMsg the message to verify
+     * @throws Exception
+     * @step. ^I verify that Android clipboard content equals to "(.*)"$
+     */
+    @Then("^I verify that Android clipboard content equals to \"(.*)\"$")
+    public void IVerifyClipboardContent(String expectedMsg) throws Exception {
+        final Optional<String> currentContent = AndroidCommonUtils.getClipboardContent();
+        Assert.assertEquals("The expected and the current clipboard contents are different",
+                expectedMsg, currentContent.orElse(""));
     }
 }

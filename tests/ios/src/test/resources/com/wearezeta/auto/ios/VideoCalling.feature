@@ -247,7 +247,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C48232 @staging
+  @C48232 @calling_basic @video_calling @rc
   Scenario Outline: Verify starting two video calls in a row
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -265,7 +265,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C48235 @staging
+  @C48235 @calling_basic @video_calling @rc
   Scenario Outline: Verify making audio call after cancelled video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

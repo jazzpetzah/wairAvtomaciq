@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
@@ -107,9 +108,9 @@ public class ConversationPageSteps {
     public void IPasteMessageFromFile(String file) throws Exception {
         String s = WebCommonUtils.getTextFromFile(file);
         String message = "";
-        for (int i = 0; i < s.length(); i++){
+        for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if(c == '\n') {
+            if (c == '\n') {
                 message = message + Keys.chord(Keys.SHIFT, Keys.ENTER);
             } else {
                 message = message + c;
@@ -261,6 +262,18 @@ public class ConversationPageSteps {
     public void ISeeOnlyXPicturesInConversation(int x) throws Exception {
         assertThat("Number of images in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                 .getNumberOfImagesInCurrentConversation(), equalTo(x));
+    }
+
+    /**
+     * Verifies that x messages are in the conversation
+     *
+     * @param x the amount of sent messages
+     * @step. ^I see (\\d+) messages in conversation$
+     */
+    @Then("^I see (\\d+) messages in conversation$")
+    public void ISeeXMessagesInConversation(int x) throws Exception {
+        assertThat("Number of messages int the conversation", context.getPagesCollection().getPage(ConversationPage.class)
+                .getNumberOfMessagesInCurrentConversation(), equalTo(x));
     }
 
     /**
@@ -465,7 +478,7 @@ public class ConversationPageSteps {
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
      * @param doNot if not null, checks if the action message does not display
-     * @param message  constant part of the system message
+     * @param message constant part of the system message
      * @throws Exception
      * @throws AssertionError if action message did not appear in conversation
      * @step. ^I see (.*) action in conversation$
@@ -482,8 +495,8 @@ public class ConversationPageSteps {
     /**
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
-     * @param message  constant part of the system message
-     * @param times  number of times the message appears
+     * @param message constant part of the system message
+     * @param times number of times the message appears
      * @throws Exception
      * @throws AssertionError if action message did not appear in conversation
      * @step. ^I see (.*) action in conversation$
@@ -498,7 +511,7 @@ public class ConversationPageSteps {
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
      * @param doNot if not null, checks if the action message does not display
-     * @param message  constant part of the system message
+     * @param message constant part of the system message
      * @param contacts list of comma separated contact names/aliases
      * @throws AssertionError if action message did not appear in conversation
      * @throws Exception
@@ -516,8 +529,8 @@ public class ConversationPageSteps {
     /**
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
-     * @param message  constant part of the system message
-     * @param times  number of times the message appears
+     * @param message constant part of the system message
+     * @param times number of times the message appears
      * @param contacts list of comma separated contact names/aliases
      * @throws AssertionError if action message did not appear in conversation
      * @throws Exception
@@ -915,6 +928,59 @@ public class ConversationPageSteps {
     @When("^I start a video call$")
     public void IMakeVideoCallToUser() throws Throwable {
         context.getPagesCollection().getPage(ConversationPage.class).clickVideoCallButton();
+    }
+
+    /**
+     * Verifies all remembered messages are present in the given conversation
+     *
+     * @step. I verify all remembered messages are present in conversation (.*)
+     */
+    @When("^I verify all remembered messages are present in conversation (.*)$")
+    public void IVerifyAllRememberedMessages(String conversation) throws Exception {
+        SortedSet<Message> processedMessages = new TreeSet<>();
+        SortedSet<Message> chunkedActualMessages = context.getPagesCollection().getPage(ConversationPage.class).getAllLoadedMessages();
+        SortedSet<Message> rememberedMessages = context.getConversationStates().getAllMessages(conversation);
+
+        //DEBUG ON
+        for (Message rememberedMessage : rememberedMessages) {
+            log.info(rememberedMessage);
+        }
+        log.info("###");
+        for (Message chunkedMessage : chunkedActualMessages) {
+            log.info(chunkedMessage);
+        }
+        log.info("###");
+        //DEBUG OFF
+
+        Iterator<Message> iterator = chunkedActualMessages.iterator();
+        Message currentMessage = null;
+        for (Message rememberedMessage : rememberedMessages) {
+            try {
+                currentMessage = iterator.next();
+            } catch (NoSuchElementException e) {
+                try {
+                    // reached end of loaded message list. We try to scroll up the conversation and continue 
+                    // unless scrolling up does not deliver new messages
+                    context.getPagesCollection().getPage(ConversationPage.class).scrollUp();
+                    chunkedActualMessages = context.getPagesCollection().getPage(ConversationPage.class).
+                            getAllLoadedMessages();
+                    // removing already processed messages
+                    chunkedActualMessages.removeAll(processedMessages);
+                    log.info("###");
+                    for (Message chunkedMessage : chunkedActualMessages) {
+                        log.info(chunkedMessage);
+                    }
+                    iterator = chunkedActualMessages.iterator();
+                    currentMessage = iterator.next();
+                } catch (NoSuchElementException ex) {
+                    throw new NoSuchElementException("Could not find " + rememberedMessage + " in actual message list");
+                }
+            }
+            boolean isEquals = rememberedMessage.equals(currentMessage);
+            log.info("Comparing " + rememberedMessage + " <> " + currentMessage + " = " + isEquals);
+            //TODO comparision, correct timestamps. alternatively compare IDs
+            processedMessages.add(currentMessage);
+        }
     }
 
 }

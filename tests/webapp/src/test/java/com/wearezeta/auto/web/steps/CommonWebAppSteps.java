@@ -1,20 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
 import java.io.RandomAccessFile;
-import java.net.URI;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 import com.wearezeta.auto.common.email.AccountDeletionMessage;
 import com.wearezeta.auto.common.email.MessagingUtils;
@@ -25,6 +11,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.Lifecycle;
 import static com.wearezeta.auto.web.common.Lifecycle.DRIVER_INIT_TIMEOUT;
 import com.wearezeta.auto.web.common.TestContext;
@@ -429,12 +416,15 @@ public class CommonWebAppSteps {
     @When("^Contact (.*) sends? (\\d+) encrypted messages with prefix (.*) via device (.*) to (user|group conversation) (.*)$")
     public void UserSendAmountOfMessages(String msgFromUserNameAlias, int amount, String prefix, String deviceName,
                                          String convoType, String dstConvoName) throws Exception {
+        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(msgFromUserNameAlias);
         if (convoType.equals("user")) {
             for (int i = 0; i < amount; i++) {
+                context.getConversationStates().addMessage(dstConvoName, new Message(prefix + i, user.getId()));
                 context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, prefix + i, deviceName);
             }
         } else {
             for (int i = 0; i < amount; i++) {
+                context.getConversationStates().addMessage(dstConvoName, new Message(prefix + i, user.getId()));
                 context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, prefix + i, deviceName);
             }
         }

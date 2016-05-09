@@ -313,15 +313,15 @@ public class ConversationsListPageSteps {
     }
 
     /**
-     * Verify visibility of NO CONVERSATIONS message in conversation list
+     * Verify visibility of NO ACTIVE CONVERSATIONS message in conversation list
      *
      * @throws Exception
-     * @step. ^I see NO CONVERSATIONS message in conversations list$
+     * @step. ^I see NO ACTIVE CONVERSATIONS message in conversations list$
      */
-    @Then("^I see NO CONVERSATIONS message in conversations list$")
+    @Then("^I see NO ACTIVE CONVERSATIONS message in conversations list$")
     public void ISeeNoConversationMessage() throws Exception {
-        Assert.assertTrue("NO CONVERSATION message is not visible",
-                getConversationsListPage().noConversationMessageIsVisible());
+        Assert.assertTrue("NO ACTIVE CONVERSATION message is not visible",
+                getConversationsListPage().noConversationsMessageIsVisible());
     }
 
     @When("I tap play/pause button in conversations list next to (.*)")

@@ -266,7 +266,6 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     /**
      * This is workaround for some Selendroid issues when driver just generates unknown error when some transition in AUT is
      * currently in progress. Retry helps
-     *
      */
     @Override
     public Response execute(String driverCommand, Map<String, ?> parameters) {
@@ -314,7 +313,11 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
                 if (isSessionLostBecause(e.getCause())) {
                     setSessionLost(true);
                 }
-                throw new WebDriverException(e.getCause());
+                if (e.getCause() instanceof WebDriverException) {
+                    throw (WebDriverException) e.getCause();
+                } else {
+                    throw new WebDriverException(e.getCause());
+                }
             } else {
                 // if !(e instanceof ExecutionException)
                 if (e instanceof TimeoutException) {

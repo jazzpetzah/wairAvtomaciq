@@ -60,12 +60,12 @@ public class ConversationsListPage extends IOSPage {
     private static final Function<String, String> xpathStrActionMenuByConversationName = name ->
             String.format("//UIAStaticText[@name='%s' and @visible='true']", name.toUpperCase());
 
-    private static final By nameEmptyConversationMessage = MobileBy.AccessibilityId(
-            "NO CONVERSATIONS TAP ON CONTACTS TO START A NEW CONVERSATION");
+    private static final By nameEmptyConversationsListMessage = MobileBy.AccessibilityId(
+            "NO ACTIVE CONVERSATIONS TAP CONTACTS TO START A CONVERSATION");
 
     private static final By nameCloseArchiveButton = MobileBy.AccessibilityId("archiveCloseButton");
 
-    private static final By nameConversationsHintTextLabel = MobileBy.AccessibilityId("Any conversation starts here");
+    private static final By nameConversationsHintTextLabel = MobileBy.AccessibilityId("Conversations start here");
 
     public ConversationsListPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -287,8 +287,8 @@ public class ConversationsListPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathContactsLabel);
     }
 
-    public boolean noConversationMessageIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEmptyConversationMessage);
+    public boolean noConversationsMessageIsVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEmptyConversationsListMessage);
     }
 
     public void clickCloseArchivePageButton() throws Exception {

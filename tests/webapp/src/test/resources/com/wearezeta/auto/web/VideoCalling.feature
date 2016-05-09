@@ -22,7 +22,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C12070 @videocalling @smoke
   Scenario Outline: Verify I can accept Video call
@@ -49,7 +49,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C12072 @videocalling @regression
   Scenario Outline: Verify I can decline Video call
@@ -93,7 +93,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout | OtherContact |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      | user3Name    |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      | user3Name    |
 
   @C12079 @videocalling @regression
   Scenario Outline: Verify I can make a Video call one after another
@@ -123,7 +123,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C12097 @videocalling
   Scenario Outline: Verify I can have video call more than 15 mins
@@ -196,7 +196,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C12075 @videocalling @regression
   Scenario Outline: Verify I can cancel the outgoing video call (as a caller)
@@ -248,7 +248,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C49971 @videocalling @regression
   Scenario Outline: Verify I can mute Video call before the call is established
@@ -276,7 +276,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C48229 @videocalling @regression
   Scenario Outline: Verify I can start 1:1 Video Call from Start UI
@@ -305,7 +305,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C48230 @videocalling @regression
   Scenario Outline: Verify you don't see video call button when you're creating group from Start UI
@@ -331,7 +331,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @C77944 @videocalling @staging
+  @C77944 @videocalling @regression @WEBAPP-2462
   Scenario Outline: Verify I can start Video call after declining an audio call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -339,15 +339,15 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given <Contact> calls me
     When I am signed in properly
-    Then I see the incoming call controls for conversation <Contact>
+    Then <Contact> calls me
+    And I see the incoming call controls for conversation <Contact>
     And I see decline call button for conversation <Contact>
     When I ignore the call from conversation <Contact>
     Then I do not see the call controls for conversation <Contact>
     And I open conversation with <Contact>
     When I start a video call
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     When I end the video call
@@ -356,7 +356,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C77975 @videocalling @regression
   Scenario Outline: Verify I see the timer/duration of the video call
@@ -379,7 +379,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C78099 @videocalling @regression
   Scenario Outline: Verify I can see the incoming video call when I just login
@@ -407,7 +407,7 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
   @C12076 @videocalling @regression
   Scenario Outline: Verify I get missed call indication when someone called (video)
@@ -433,7 +433,7 @@ Feature: VideoCalling
     
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout | Action |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      | called |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      | called |
 
   @C87624 @videocalling @regression
   Scenario Outline: Verify I see notification when I start a second video call
@@ -463,7 +463,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      |
 
-  @C77946 @videocalling @staging
+  @C77946 @videocalling @regression @WEBAPP-2463
   Scenario Outline: Verify I can start an audio call back after declining a video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -489,4 +489,4 @@ Feature: VideoCalling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
