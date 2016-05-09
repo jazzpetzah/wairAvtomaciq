@@ -312,10 +312,10 @@ public class ConversationViewPageSteps {
      *
      * @param shouldNotSee equals to null if 'do not' part does not exist
      * @throws Exception
-     * @step. ^I (do not )?see new (?:photo|picture) in the dialog$
+     * @step. ^I (do not )?see (?:any|a) (?:photos?|pictures?)in the dialog$
      */
-    @Then("^I (do not )?see new (?:photo|picture) in the dialog$")
-    public void ThenISeeNewPhotoInTheDialog(String shouldNotSee) throws Exception {
+    @Then("^I (do not )?see (?:any|a) (?:photos?|pictures?) in the conversation view$")
+    public void ISeeNewPhotoInTheDialog(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue("No new photo is present in the chat", getConversationViewPage().isImageExists());
         } else {
@@ -327,12 +327,17 @@ public class ConversationViewPageSteps {
     /**
      * Selects the last picture sent in a conversation view dialog
      *
+     * @param isLogTap equals to null if it should be simple tap
      * @throws Exception
-     * @step. ^I tap the recent image in the conversation view$
+     * @step. ^I (long )?tap the recent image in the conversation view$
      */
-    @When("^I tap the recent (?:image|picture) in the conversation view$")
-    public void ITapRecentImage() throws Exception {
-        getConversationViewPage().tapRecentImage();
+    @When("^I (long )?tap the recent (?:image|picture) in the conversation view$")
+    public void ITapRecentImage(String isLogTap) throws Exception {
+        if (isLogTap == null) {
+            getConversationViewPage().tapRecentImage();
+        } else {
+            getConversationViewPage().longTapRecentImage();
+        }
     }
 
     /**

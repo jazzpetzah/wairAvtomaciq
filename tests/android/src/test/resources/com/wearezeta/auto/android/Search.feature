@@ -195,7 +195,7 @@ Feature: Search
     And I tap Send Image action button on People Picker page
     And I press "Gallery" button
     And I press "Confirm" button
-    Then I see new photo in the dialog
+    Then I see a picture in the conversation view
 
     Examples:
       | Name      | Contact1  |
@@ -236,7 +236,7 @@ Feature: Search
     And I tap Send Image action button on People Picker page
     And I press "Gallery" button
     And I press "Confirm" button
-    Then I see new photo in the dialog
+    Then I see a picture in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  |

@@ -70,13 +70,13 @@ Feature: E2EE
     Then I see the most recent conversation message is "<Message1>"
     When I enable Airplane mode on the device
     And User <Contact1> sends encrypted image <Picture> to single user conversation Myself
-    Then I do not see new picture in the dialog
+    Then I do not see any pictures in the conversation view
     When User <Contact1> sends encrypted message <Message2> to user Myself
     Then I see the most recent conversation message is "<Message1>"
     When I disable Airplane mode on the device
     And I scroll to the bottom of conversation view
     Then I see the most recent conversation message is "<Message2>"
-    And I see new picture in the dialog
+    And I see a picture in the conversation view
 
     Examples: 
       | Name      | Contact1  | Message1 | Message2 | Picture     |
@@ -95,13 +95,13 @@ Feature: E2EE
     Then I see the most recent conversation message is "<Message1>"
     When I enable Airplane mode on the device
     And User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
-    Then I do not see new picture in the dialog
+    Then I do not see any pictures in the conversation view
     When User <Contact2> sends encrypted message <Message2> to group conversation <GroupChatName>
     Then I see the most recent conversation message is "<Message1>"
     When I disable Airplane mode on the device
     And I scroll to the bottom of conversation view
     Then I see the most recent conversation message is "<Message2>"
-    And I see new picture in the dialog
+    And I see a picture in the conversation view
 
     Examples: 
       | Name      | Contact1  | Contact2  | Message1 | Message2 | Picture     | GroupChatName |

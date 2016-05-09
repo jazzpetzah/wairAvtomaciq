@@ -12,13 +12,13 @@ Feature: Offline
     Then I see the most recent conversation message is "<Message1>"
     When I enable Airplane mode on the device
     And User <Contact> sends encrypted image <Picture> to single user conversation <Name>
-    Then I do not see new picture in the dialog
+    Then I do not see any pictures in the conversation view
     When User <Contact> sends encrypted message <Message2> to user Myself
     Then I see the most recent conversation message is "<Message1>"
     When I disable Airplane mode on the device
     And I scroll to the bottom of conversation view
     Then I see the most recent conversation message is "<Message2>"
-    And I see new picture in the dialog
+    And I see a picture in the conversation view
 
     Examples:
       | Name      | Contact   | Message1 | Message2 | Picture     |

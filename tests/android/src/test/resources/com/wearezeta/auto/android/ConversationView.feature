@@ -67,7 +67,7 @@ Feature: Conversation View
     And I tap Add picture button from cursor toolbar
     And I press "Take Photo" button
     And I press "Confirm" button
-    Then I see new photo in the dialog
+    Then I see a picture in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -189,7 +189,7 @@ Feature: Conversation View
     And I tap Add picture button from cursor toolbar
     And I press "Gallery" button
     And I press "Confirm" button
-    Then I see new photo in the dialog
+    Then I see a picture in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -206,7 +206,7 @@ Feature: Conversation View
     And I tap Add picture button from cursor toolbar
     And I press "Gallery" button
     And I press "Confirm" button
-    Then I see new photo in the dialog
+    Then I see a picture in the conversation view
     And I tap the recent picture in the conversation view
     And I rotate UI to landscape
     And I scroll down the conversation view
@@ -290,7 +290,7 @@ Feature: Conversation View
     And I click on the GIF button
     Then I see giphy preview page
     When I click on the giphy send button
-    Then I see new photo in the dialog
+    Then I see a picture in the conversation view
     And I see the most recent conversation message is "<Message> · via giphy.com"
 
     Examples:
@@ -307,7 +307,7 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <GifName> to single user conversation Myself
     When I tap on contact name <Contact>
     And I scroll to the bottom of conversation view
-    Then I see new picture in the dialog
+    Then I see a picture in the conversation view
     And I see the picture in the dialog is animated
     When I tap the recent picture in the conversation view
     Then I see the picture in the preview is animated
@@ -328,7 +328,7 @@ Feature: Conversation View
     And I press "Switch Camera" button
     And I press "Take Photo" button
     And I press "Confirm" button
-    Then I see new photo in the dialog
+    Then I see a picture in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -351,7 +351,7 @@ Feature: Conversation View
     Then I select a random gif from the grid preview
     Then I see giphy preview page
     When I click on the giphy send button
-    Then I see new photo in the dialog
+    Then I see a picture in the conversation view
     And I see the most recent conversation message is "<Message> · via giphy.com"
 
     Examples:
