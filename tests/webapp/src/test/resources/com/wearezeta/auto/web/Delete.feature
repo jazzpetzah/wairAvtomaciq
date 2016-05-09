@@ -19,7 +19,8 @@ Feature: Delete
     And I send message
     And I write message <SoundCloudLink>
     And I send message
-    And I write message cat
+    And I click ping button
+    And I write message car
     And I send message
     And I write message cat
     And I click GIF button
@@ -29,10 +30,9 @@ Feature: Delete
     And I click send button in Giphy popup
     And I see sent gif in the conversation view
     And I wait for 2 seconds
-    And I send 10MB sized file with name <File> to the current conversation
+    And I send 10MB sized file with name example.txt to the current conversation
     And I wait until file <File> is uploaded completely
-    #And I click ping button
-    # Videomessage
+    # Video-message
       #second sending of messages, these will be deleted
       Then I send picture <PictureName> to the current conversation
       And I write message <YouTubeLink>
@@ -41,7 +41,8 @@ Feature: Delete
       And I send message
       And I write message <SoundCloudLink>
       And I send message
-      And I write message cat
+      And I click ping button
+      And I write message car
       And I send message
       And I write message cat
       And I click GIF button
@@ -51,46 +52,16 @@ Feature: Delete
       And I click send button in Giphy popup
       Then I see sent gif in the conversation view
       And I wait for 2 seconds
-      And I send 10MB sized file with name <File> to the current conversation
+      And I send 10MB sized file with name example.txt to the current conversation
       And I wait until file <File> is uploaded completely
-      #And I click ping button
-      # Videomessage
-    And I wait for 10 seconds
-    And I see 16 messages in conversation
-      # With pings there are 18 messages and with video message 20
+      # Video-message
+    And I wait for 1 seconds
+    # With video-messages there are 20 messages
+    And I see 18 messages in conversation
+    When User Myself delete the recent 9 messages from user <Contact> via device SecondDevice
+    And I wait for 2 seconds
+    Then I see 9 messages in conversation
 
     Examples:
-      | Login      | Password      | Name      | Contact   | PictureName               | YouTubeLink                                | SpotifyLink                                           | SoundCloudLink                                           | File        |
-      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | http://www.youtube.com/watch?v=JOCtdw9FG-s | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss | https://soundcloud.com/wearegalantis/peanut-butter-jelly | example.txt |
-    
-    
-    @C1
-    Scenario Outline: TEST
-      Given There are 2 users where <Name> is me
-      Given Myself is connected to <Contact>
-      Given I switch to Sign In page
-      Given I Sign in using login <Login> and password <Password>
-      Given I am signed in properly
-      When I open conversation with <Contact>
-      And I write message Message_1
-      And I send message
-      And I write message Message_2
-      And I send message
-      And I write message Message_3
-      And I send message
-      And I wait for 1 seconds
-      Then I see 3 messages in conversation
-      When I delete and accept deletion of last message
-      #And I wait for 5 second
-      #And I accept message deletion
-      And I wait for 2 seconds
-      And I delete and accept deletion of last message
-      #And I wait for 5 second
-      #And I accept message deletion
-      And I wait for 2 seconds
-      Then I see 1 messages in conversation
-      And I verify the last text message equals to Message_1
-
-      Examples: 
-        | Login      | Password      | Name      | Contact   |
-        | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | PictureName               | YouTubeLink                                | SpotifyLink                                           | SoundCloudLink                                           |
+      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | http://www.youtube.com/watch?v=JOCtdw9FG-s | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss | https://soundcloud.com/wearegalantis/peanut-butter-jelly |

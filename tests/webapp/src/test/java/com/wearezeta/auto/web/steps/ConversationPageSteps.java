@@ -138,22 +138,6 @@ public class ConversationPageSteps {
         webappPagesCollection.getPage(ConversationPage.class).sendNewMessage();
     }
 
-    @When("^I delete last message$")
-    public void IDeleteLastMessage() throws Exception {
-        webappPagesCollection.getPage(ConversationPage.class).deleteLastTextMessage();
-    }
-
-    @When("^I delete and accept deletion of last message$")
-    public void IDeleteAndAccept() throws Exception {
-        webappPagesCollection.getPage(ConversationPage.class).deleteLastTextMessage();
-        webappPagesCollection.getPage(ConversationPage.class).acceptMessageDeletion();
-    }
-
-    @When("^I accept message deletion$")
-    public void IAcceptMessageDeletion() throws Exception {
-        webappPagesCollection.getPage(ConversationPage.class).acceptMessageDeletion();
-    }
-
     /**
      * Checks that last sent random message appear in conversation
      *

@@ -90,12 +90,6 @@ public class ConversationPage extends WebPage {
 	@FindBy(css = WebAppLocators.ConversationPage.cssSecondLastTextMessage)
 	private WebElement secondLastTextMessage;
 
-	@FindBy(css = WebAppLocators.ConversationPage.cssDeleteLastMessageButton)
-	private WebElement deleteLastMsgButton;
-
-	@FindBy(css = WebAppLocators.ConversationPage.cssAcceptDeleteMsg)
-	private WebElement acceptDeletionButton;
-
 	@FindBy(css = WebAppLocators.ConversationPage.cssImageEntries)
 	private WebElement lastPicture;
 
@@ -579,20 +573,6 @@ public class ConversationPage extends WebPage {
 						getDriver(),
 						By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastTextMessage));
 		return secondLastTextMessage.getText();
-	}
-
-	public void deleteLastTextMessage() throws Exception {
-		assert DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						getDriver(),By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
-		deleteLastMsgButton.click();
-	}
-
-	public void acceptMessageDeletion() throws Exception {
-		assert DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						getDriver(),By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
-		acceptDeletionButton.click();
 	}
 
 	public void clickOnPicture() throws Exception {
