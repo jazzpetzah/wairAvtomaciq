@@ -815,4 +815,7 @@ public class ConversationViewPage extends AndroidPage {
                 DriverUtils.LONG_TAP_DURATION);
     }
 
+    public void longTapRecentImage() throws Exception {
+        getDriver().longTap(getElement(xpathLastPicture), DriverUtils.LONG_TAP_DURATION);
+    }
 }

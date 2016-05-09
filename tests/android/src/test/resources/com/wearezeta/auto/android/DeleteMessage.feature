@@ -119,6 +119,7 @@ Feature: Delete Message
     Examples:
       | Name      | Contact   | Message1       | CallBackend | Message2         |
       | user1Name | user2Name | You pinged     | autocall    | user2Name pinged |
+
   @C111642 @staging
   Scenario Outline: Verify deleting the shared file
     Given There are 2 users where <Name> is me
@@ -138,7 +139,6 @@ Feature: Delete Message
     Examples:
       | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout |
       | user1Name | user2Name | qa_random | txt           | 1.00MB   | 20               |
-
 
   @C111645 @staging @C111647
   Scenario Outline: Verify deleting is synchronised across own devices when one of them was offline
@@ -174,7 +174,31 @@ Feature: Delete Message
     And I wait for 10 seconds
     Then User Myself see the recent message from user <Contact1> via device <Device> is changed
 
-
     Examples:
       | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName | Message2  |
       | user1Name | user2Name | user3Name | DeleteTextMessage | Device1 | Device2       | MyGroup       | MyMessage |
+
+  @C111640 @staging
+  Scenario Outline: (AN-3908) Verify deleting the picture, gif from Giphy
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I tap on text input
+    And I type the message "<Message>"
+    And I click on the GIF button
+    Then I see giphy preview page
+    When I click on the giphy send button
+    Then I see a picture in the conversation view
+    When I long tap the recent picture in the conversation view
+    And I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    Then I do not see any pictures in the conversation view
+    # Blocked by AN-3908
+    # And I do not see the message "<Message> · via giphy.com" in the conversation view
+
+    Examples:
+      | Name      | Contact   | Message |
+      | user1Name | user2Name | Yo      |
