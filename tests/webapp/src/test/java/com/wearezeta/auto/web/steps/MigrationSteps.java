@@ -38,8 +38,8 @@ public class MigrationSteps {
     private static final int MAX_RETRY = 3;
     private static final int RETRY_TIMEOUT = 10000; // milliseconds
 
-    private Path temp;
-    private Process gruntProcess;
+    private Path temp = null;
+    private Process gruntProcess = null;
 
     private void createProcessLogger(Process process) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
@@ -71,6 +71,7 @@ public class MigrationSteps {
         builder.redirectErrorStream(true); //merge error and input steam into one stream
         Process process = builder.start();
         Thread unattachedLogger = new Thread(() -> createProcessLogger(process));
+        unattachedLogger.setDaemon(true);
         unattachedLogger.start();
         return process;
     }
@@ -84,7 +85,7 @@ public class MigrationSteps {
                 HttpResponse response = client.execute(new HttpGet(url));
                 statusCode = response.getStatusLine().getStatusCode();
                 if (statusCode == 200) {
-                    log.info("yeah!");
+                    log.info(String.format("Webserver is reachable via %s!", url));
                     break;
                 }
             } catch (HttpHostConnectException e) {
@@ -95,41 +96,45 @@ public class MigrationSteps {
         }
     }
 
-    @When("^I deploy latest production version$")
-    public void IDeployProduction() throws Exception {
-        temp = Files.createTempDirectory("webapp");
-        log.info("Created temp directory: " + temp.toAbsolutePath());
-        runCommand(temp, new String[]{"git", "clone", "git@github.com:wearezeta/mars.git", "."});
-        runCommand(temp, new String[]{"git", "checkout", "tags/2016-04-29-12-36"});
+    @When("^I( initially)? deploy version with tag (.*)$")
+    public void IDeployVersionWithTag(String initially, String tag) throws Exception {
+        String url = deployWebapp("tags/" + tag);
+        if (initially != null) {
+            WebPage page = webappPagesCollection.getPage(WebPage.class);
+            page.setUrl(url);
+            page.navigateTo();
+        }
+    }
+
+    @When("^I deploy latest staging version$")
+    public void IDeployStaging() throws Exception {
+        deployWebapp("staging");
+    }
+
+    private String deployWebapp(String branch) throws Exception {
+        if (temp == null) {
+            temp = Files.createTempDirectory("webapp");
+            log.info("Created temp directory: " + temp.toAbsolutePath());
+            runCommand(temp, new String[]{"git", "clone", "git@github.com:wearezeta/mars.git", "."});
+        }
+        if (gruntProcess != null) {
+            try {
+                gruntProcess.destroy();
+                log.info("Process exited with " + gruntProcess.exitValue());
+            } catch (IllegalThreadStateException e) {
+                log.error(e.getMessage());
+                gruntProcess.destroyForcibly();
+            }
+        }
+        runCommand(temp, new String[]{"git", "checkout", branch});
         runCommand(temp, new String[]{"npm", "install"});
-        runCommand(temp, new String[]{"grunt", "init", "prepare_dist", "gitinfo", "set_version:staging"});
+        runCommand(temp, new String[]{"grunt", "prepare_dist", "gitinfo", "set_version:staging"});
         gruntProcess = runCommandUnattached(temp, new String[]{"grunt", "connect", "watch"});
         final String backend = CommonUtils.getBackendType(MigrationSteps.class);
         // TODO: final String ip = Inet4Address.getLocalHost().getHostAddress();
         final String ip = "localhost";
         final String url = String.format("http://%s:8888/?env=%s", ip, backend);
         waitUntilReachable(url);
-        WebPage page = webappPagesCollection.getPage(WebPage.class);
-        page.setUrl(url);
-        page.navigateTo();
-    }
-
-    @When("^I deploy latest staging version$")
-    public void IDeployStaging() throws Exception {
-        try {
-            gruntProcess.destroy();
-            log.info("Process exited with " + gruntProcess.exitValue());
-        } catch (IllegalThreadStateException e) {
-            log.error(e.getMessage());
-            gruntProcess.destroyForcibly();
-        }
-        runCommand(temp, new String[]{"git", "checkout", "staging"});
-        runCommand(temp, new String[]{"grunt", "init", "prepare_dist", "gitinfo", "set_version:staging"});
-        runCommandUnattached(temp, new String[]{"grunt", "connect", "watch"});
-        final String backend = CommonUtils.getBackendType(MigrationSteps.class);
-        // TODO: final String ip = Inet4Address.getLocalHost().getHostAddress();
-        final String ip = "localhost";
-        final String url = String.format("http://%s:8888/?env=%s", ip, backend);
-        waitUntilReachable(url);
+        return url;
     }
 }
