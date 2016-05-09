@@ -308,6 +308,8 @@ public final class WebAppLocators {
 
         // content
         public static final String idConversation = "conversation";
+        
+        public static final String cssConversation = ".messages-wrap";
 
         public static final String idMessageList = "message-list";
 
@@ -320,6 +322,8 @@ public final class WebAppLocators {
         public static String cssMessageHeader = cssMessage + " .message-header";
 
         public static String cssTextMessage = cssMessage + " .text";
+        
+        public static final String cssMessages = "[data-uie-name='item-message']";
 
         public static final String cssLastMessage = "[data-uie-name='item-message']:last-child";
 
