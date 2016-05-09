@@ -39,6 +39,6 @@ public class CallOngoingPage extends CallingOverlayPage {
     }
 
     public int getNumberOfParticipants() throws Exception {
-        return getElements(idParticipants).size();
+        return selectVisibleElements(idParticipants).size();
     }
 }

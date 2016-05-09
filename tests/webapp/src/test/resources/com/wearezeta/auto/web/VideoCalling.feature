@@ -331,7 +331,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @C77944 @videocalling @regression
+  @C77944 @videocalling @regression @WEBAPP-2462
   Scenario Outline: Verify I can start Video call after declining an audio call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -339,9 +339,9 @@ Feature: VideoCalling
     Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given <Contact> calls me
     When I am signed in properly
-    Then I see the incoming call controls for conversation <Contact>
+    Then <Contact> calls me
+    And I see the incoming call controls for conversation <Contact>
     And I see decline call button for conversation <Contact>
     When I ignore the call from conversation <Contact>
     Then I do not see the call controls for conversation <Contact>
@@ -463,7 +463,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      |
 
-  @C77946 @videocalling @regression
+  @C77946 @videocalling @regression @WEBAPP-2463
   Scenario Outline: Verify I can start an audio call back after declining a video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me

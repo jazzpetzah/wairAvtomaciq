@@ -7,10 +7,9 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.wearezeta.auto.common.driver.DummyElement;
+import com.wearezeta.auto.common.misc.ElementState;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.ImageUtil;
@@ -60,10 +59,8 @@ public class ConversationViewPage extends AndroidPage {
     private static final Function<String, String> xpathStrMissedCallMesageByText = text -> String
             .format("//*[@id='%s' and @value='%s']", idStrMissedCallMesage, text.toUpperCase());
 
-    private static final By idCursorFrame = By.id("cursor_layout");
-
     public static final Function<String, String> xpathStrPingMessageByText = text -> String
-            .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']", text);
+            .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']", text.toUpperCase());
 
     private static final By xpathDialogTakePhotoButton = By
             .xpath("//*[@id='gtv__camera_control__take_a_picture' and @shown='true']");
@@ -131,20 +128,30 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__back_camera");
 
-    private static Function<String, String> xpathMessageNotificationByValue = value -> String
+    private static final Function<String, String> xpathMessageNotificationByValue = value -> String
             .format("//*[starts-with(@id,'ttv_message_notification_chathead__label') and @value='%s']", value);
 
-    private static Function<String, String> xpathConversationTitleByValue = value -> String
+    private static final Function<String, String> xpathConversationTitleByValue = value -> String
             .format("//*[@id='tv__conversation_toolbar__title' and @value='%s']", value);
 
-    private static Function<String, String> xpathFileNamePlaceHolderByValue = value -> String
+    private static final Function<String, String> xpathFileNamePlaceHolderByValue = value -> String
             .format("//*[@id='ttv__row_conversation__file__filename' and @value='%s']", value);
 
-    private static Function<String, String> xpathFileInfoPlaceHolderByValue = value -> String
+    private static final Function<String, String> xpathFileInfoPlaceHolderByValue = value -> String
             .format("//*[@id='ttv__row_conversation__file__fileinfo' and @value='%s']", value);
 
-    private static Function<String, String> xpathConversationPeopleChangedByExp = exp -> String
+    private static final Function<String, String> xpathConversationPeopleChangedByExp = exp -> String
             .format("//*[@id='ttv__row_conversation__people_changed__text' and %s]", exp);
+
+    private static final By idActionModeBarDeleteButton = By.id("action_delete");
+    private static final By idActionModeBarCopyButton = By.id("action_copy");
+    private static final By idActionModeBarCloseButton = By.id("action_mode_close_button");
+
+    private static final By idYoutubeContainer = By.id("fl__youtube_image_container");
+
+    private static final By idSoundcloudContainer = By.id("mpv__row_conversation__message_media_player");
+
+    private static final By idFileTransferContainer = By.id("ll__row_conversation__file__message_container");
 
     private static final int MAX_CLICK_RETRIES = 5;
 
@@ -157,6 +164,12 @@ public class ConversationViewPage extends AndroidPage {
     private static final String FILE_UPLOAD_FAILED = "UPLOAD FAILED";
 
     private static final String FILE_MESSAGE_SEPARATOR = " · ";
+
+    private static final int SCROLL_TO_BOTTOM_TIMEOUT_SECONDS = 60;
+
+    private static final int SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS =1000;
+
+    private static final double SCROLL_TO_BOTTOM_MIN_SIMILARITY_SCORE = 0.97;
 
     public ConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -307,14 +320,20 @@ public class ConversationViewPage extends AndroidPage {
 
     //endregion
 
-    // NOTE: This method is required to scroll conversation to the end.
-    // NOTE: Click happens on the text input area if participants button is not
-    // NOTE: visible
     public void scrollToTheBottom() throws Exception {
         this.hideKeyboard();
-        swipeByCoordinates(1000, 50, 75, 50, 40);
-        getElementIfDisplayed(idCursorFrame, 3).orElseGet(DummyElement::new).click();
-        this.hideKeyboard();
+        final long millisecondsStarted = System.currentTimeMillis();
+        ElementState initState = new ElementState(this::getConvoViewStateScreenshot);
+        do {
+            initState.remember();
+            swipeByCoordinates(SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS, 50, 75, 50, 40);
+        } while (System.currentTimeMillis() - millisecondsStarted <= SCROLL_TO_BOTTOM_TIMEOUT_SECONDS * 1000
+                && initState.isChanged(1, SCROLL_TO_BOTTOM_MIN_SIMILARITY_SCORE));
+
+        if (System.currentTimeMillis() - millisecondsStarted > SCROLL_TO_BOTTOM_TIMEOUT_SECONDS * 1000) {
+            throw new IllegalStateException(String.format("Cannot scroll to the conversation bottom in %d seconds",
+                    SCROLL_TO_BOTTOM_TIMEOUT_SECONDS));
+        }
     }
 
     public void tapAudioCallBtn() throws Exception {
@@ -337,16 +356,8 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idCursorCloseButton, "Close cursor button is not visible").click();
     }
 
-    public void clickLastImageFromDialog() throws Exception {
-        final WebElement lastPicture = getElement(xpathLastPicture);
-        lastPicture.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathLastPicture, 3)) {
-            try {
-                lastPicture.click();
-            } catch (WebDriverException e) {
-                // silently ignore
-            }
-        }
+    public void tapRecentImage() throws Exception {
+        getElement(xpathLastPicture).click();
     }
 
     public boolean waitForConversationNameChangedMessage(String expectedName) throws Exception {
@@ -694,6 +705,114 @@ public class ConversationViewPage extends AndroidPage {
                 throw new Exception(String.format("Cannot identify the action '%s' in File dialog", action));
 
         }
+    }
+
+    public boolean isMessageInvisible(String msg) throws Exception {
+        final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public void tapDeleteActionModeBarButton() throws Exception {
+        getElement(idActionModeBarDeleteButton).click();
+    }
+
+    public void tapCopyTopActionModeBarButton() throws Exception {
+        getElement(idActionModeBarCopyButton).click();
+    }
+
+    public void tapCloseTopActionModeBarButton() throws Exception {
+        getElement(idActionModeBarCloseButton).click();
+    }
+
+    public boolean isDeleteActionModeBarButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idActionModeBarDeleteButton);
+    }
+
+    public boolean isDeleteActionModeBarButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idActionModeBarDeleteButton);
+    }
+
+    public boolean isCopyActionModeBarButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idActionModeBarCopyButton);
+    }
+
+    public boolean isCopyActionModeBarButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idActionModeBarCopyButton);
+    }
+
+    public boolean isCloseActionModeBarButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idActionModeBarCloseButton);
+    }
+
+    public boolean isCloseActionModeBarButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idActionModeBarCloseButton);
+    }
+
+    public void longTapMessage(String msg) throws Exception {
+        final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
+        getDriver().longTap(getElement(locator), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public void tapMessage(String msg) throws Exception {
+        final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
+        getElement(locator).click();
+    }
+
+    public boolean isYoutubeContainerVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idYoutubeContainer);
+    }
+
+    public boolean isYoutubeContainerInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idYoutubeContainer);
+    }
+
+    public void tapYoutubeContainer() throws Exception {
+        getElement(idYoutubeContainer).click();
+    }
+
+    public void longTapYoutubeContainer() throws Exception {
+        getDriver().longTap(getElement(idYoutubeContainer), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public boolean isSoundcloudContainerVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idSoundcloudContainer);
+    }
+
+    public boolean isSoundcloudContainerInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idSoundcloudContainer);
+    }
+
+    public void tapSoundcloudContainer() throws Exception {
+        getElement(idSoundcloudContainer).click();
+    }
+
+    public void longTapSoundcloudContainer() throws Exception {
+        getDriver().longTap(getElement(idSoundcloudContainer), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public boolean isFileUploadContainerVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idFileTransferContainer);
+    }
+
+    public boolean isFileUploadContainerInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idFileTransferContainer);
+    }
+
+    public void tapFileUploadContainer() throws Exception {
+        getElement(idFileTransferContainer).click();
+    }
+
+    public void longTapFileUploadContainer() throws Exception {
+        getDriver().longTap(getElement(idFileTransferContainer), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public void tapPingMessage(String message) throws Exception {
+        getElement(By.xpath(xpathStrPingMessageByText.apply(message))).click();
+    }
+
+    public void longTapPingMessage(String message) throws Exception {
+        getDriver().longTap(getElement(By.xpath(xpathStrPingMessageByText.apply(message))),
+                DriverUtils.LONG_TAP_DURATION);
     }
 
 }

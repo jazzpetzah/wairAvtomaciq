@@ -9,22 +9,23 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class TabletPendingUserPopoverPage extends OtherUserOnPendingProfilePage {
-	public static final Function<String, String> xpathStrUserByName = name ->
-			String.format("//UIAPopover/UIAStaticText[contains(@name, '%s')]", name);
+    public static final Function<String, String> xpathStrUserByName = name ->
+            String.format("//UIAPopover/UIAStaticText[contains(@name, '%s')]", name);
 
-    public static final By xpathConnectButton = By.xpath("//UIAPopover/*[@name='CONNECT' and @visible='true']");
+    public static final By xpathConnectButton =
+            By.xpath("//UIAPopover//UIAButton[@label='CONNECT' and @visible='true']");
 
-	public TabletPendingUserPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
-	}
+    public TabletPendingUserPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
+    }
 
-	public boolean isUserNameDisplayed(String name) throws Exception {
-		final By locator = By.xpath(xpathStrUserByName.apply(name));
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
-	}
+    public boolean isUserNameDisplayed(String name) throws Exception {
+        final By locator = By.xpath(xpathStrUserByName.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+    }
 
-	public boolean isConnectButtonDisplayed() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathConnectButton);
-	}
+    public boolean isConnectButtonDisplayed() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathConnectButton);
+    }
 
 }

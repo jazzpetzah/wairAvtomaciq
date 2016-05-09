@@ -267,7 +267,7 @@ public final class WebAppLocators {
 
     public static final class SelfProfilePage {
 
-        public static final String cssGearButton = "#self-profile:not(.self-profile-transition-in) #show-settings";
+        public static final String cssGearButton = "[data-uie-name='do-settings-menu']";
 
         public static final String xpathGearMenuRoot = "//div[@id='setting-bubble' and contains(@class, 'bubble-show')]";
 
@@ -639,8 +639,14 @@ public final class WebAppLocators {
 
         public static final String cssFullCallWarningModal = cssWarningModalRootDiv
                 + " .modal-call-voice-channel-full.modal-show";
+        
+        public static final String cssFullConversationWarningModal = cssWarningModalRootDiv
+                + " .modal-call-conversation-full.modal-show";
 
         public static final String cssFullCallWarningModalClose = cssFullCallWarningModal
+                + " .icon-close";
+        
+        public static final String cssFullConversationWarningModalClose = cssFullConversationWarningModal
                 + " .icon-close";
 
         public static final Function<String, String> xpathMissingWebRTCSupportWarningBarLinkByCaption = (
@@ -658,6 +664,12 @@ public final class WebAppLocators {
         public static final Function<String, String> xpathFullCallWarningModalButtonByCaption = (
                 name) -> String
                 .format("%s//div[@data-uie-name='modal-call-voice-channel-full' and contains(@class, 'modal-show')" +
+                                "]//div[contains(@class, 'button') and text()='%s']",
+                        xpathWarningModalRootDiv, name);
+        
+        public static final Function<String, String> xpathFullConversationWarningModalButtonByCaption = (
+                name) -> String
+                .format("%s//div[@data-uie-name='modal-call-conversation-full' and contains(@class, 'modal-show')" +
                                 "]//div[contains(@class, 'button') and text()='%s']",
                         xpathWarningModalRootDiv, name);
 

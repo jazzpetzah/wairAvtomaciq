@@ -7,6 +7,7 @@ import java.util.concurrent.TimeoutException;
 import akka.actor.ActorRef;
 
 import akka.actor.PoisonPill;
+import com.waz.model.MessageId;
 import com.waz.model.RConvId;
 import com.waz.provision.ActorMessage;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -224,6 +225,39 @@ class Device extends RemoteEntity implements IDevice {
             }
             askActor(this.ref(), new ActorMessage.SendFile(new RConvId(convId), path, mime));
         }
+    }
+
+    @Override
+    public void deleteMessage(String convId, MessageId messageId) throws Exception {
+        try {
+            askActor(this.ref(), new ActorMessage.DeleteMessage(new RConvId(convId), messageId));
+        } catch (TimeoutException e) {
+            // recreate process and retry
+            respawn();
+            if (hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+                askActor(this.ref(), new ActorMessage.DeleteMessage(new RConvId(convId), messageId));
+            }
+        }
+    }
+
+    @Override
+    public ActorMessage.MessageInfo[] getConversationMessages(String convId) throws Exception {
+        try {
+            ActorMessage.ConvMessages convMessages = (ActorMessage.ConvMessages) askActor(this.ref(),
+                    new ActorMessage.GetMessages(new RConvId(convId)));
+            return convMessages.msgs();
+        } catch (TimeoutException e) {
+            // recreate process and retry
+            respawn();
+            if (hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+                ActorMessage.ConvMessages convMessages = (ActorMessage.ConvMessages) askActor(this.ref(),
+                        new ActorMessage.GetMessages(new RConvId(convId)));
+                return convMessages.msgs();
+            }
+        }
+        return null;
     }
 
     @Override

@@ -37,7 +37,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I press Add Picture button on iPad
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -56,7 +55,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I press Add Picture button on iPad
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -200,7 +198,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I click plus button next to text input
     And I tap Sketch button from input tools
     And I draw a random sketch
     And I send my sketch
@@ -218,7 +215,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I click plus button next to text input
     And I tap Sketch button from input tools
     And I draw a random sketch
     And I send my sketch
@@ -236,7 +232,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     And I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Ping button from input tools
     Then I see "<PingMsg>" system message in the conversation view
 

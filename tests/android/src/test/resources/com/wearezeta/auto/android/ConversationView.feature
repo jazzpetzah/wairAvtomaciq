@@ -50,7 +50,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap on text input
     And I type the message "<Message>" and send it
-    Then I see my message "<Message>" in the dialog
+    Then I see the message "<Message>" in the conversation view
 
     Examples:
       | Name      | Contact   | Message |
@@ -124,7 +124,7 @@ Feature: Conversation View
     When I tap on contact name <GroupChatName>
     And I tap on text input
     And I type the message "<Message>" and send it
-    Then I see my message "<Message>" in the dialog
+    Then I see the message "<Message>" in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName     | Message |
@@ -140,7 +140,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap on text input
     And I type the message "LONG_MESSAGE" and send it
-    Then I see my message "LONG_MESSAGE" in the dialog
+    Then I see the message "LONG_MESSAGE" in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -156,7 +156,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap on text input
     And I type the message "<Message>" and send it
-    Then I see my message "<Message>" in the dialog
+    Then I see the message "<Message>" in the conversation view
 
     Examples:
       | Name      | Contact   | Message  |
@@ -172,7 +172,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap on text input
     And I type the message "<Message>" and send it
-    Then I see my message "<Message>" in the dialog
+    Then I see the message "<Message>" in the conversation view
 
     Examples:
       | Name      | Contact   | Message  |
@@ -207,11 +207,11 @@ Feature: Conversation View
     And I press "Gallery" button
     And I press "Confirm" button
     Then I see new photo in the dialog
-    And I select last photo in dialog
+    And I tap the recent picture in the conversation view
     And I rotate UI to landscape
-    And I swipe down on dialog page
+    And I scroll down the conversation view
     And I rotate UI to portrait
-    Then I select last photo in dialog
+    Then I tap the recent picture in the conversation view
     And I rotate UI to landscape
     And I press "Image Close" button
     Then I rotate UI to portrait
@@ -233,7 +233,7 @@ Feature: Conversation View
     And I tap Sketch button from cursor toolbar
     And I draw a sketch with <NumColors> colors
     And I send my sketch
-    And I select last photo in dialog
+    And I tap the recent picture in the conversation view
 
     Examples:
       | Name      | Contact1  | NumColors |
@@ -252,7 +252,7 @@ Feature: Conversation View
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
     Then I send my sketch
-    And I select last photo in dialog
+    And I tap the recent picture in the conversation view
 
     Examples:
       | Name      | Contact1  | NumColors |
@@ -271,7 +271,7 @@ Feature: Conversation View
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
     And I send my sketch
-    And I select last photo in dialog
+    And I tap the recent picture in the conversation view
 
     Examples:
       | Name      | Contact1  | NumColors |
@@ -309,7 +309,7 @@ Feature: Conversation View
     And I scroll to the bottom of conversation view
     Then I see new picture in the dialog
     And I see the picture in the dialog is animated
-    When I select last photo in dialog
+    When I tap the recent picture in the conversation view
     Then I see the picture in the preview is animated
 
     Examples:
@@ -411,7 +411,7 @@ Feature: Conversation View
     And the conversation title should be "<Contact1>"
     And User <Contact2> send message "<Message1>" to user Myself
     And I tap new message notification "<Message1>"
-    Then I see my message "<Message1>" in the dialog
+    Then I see the message "<Message1>" in the conversation view
     And the conversation title should be "<Contact2>"
     And I tap conversation name from top toolbar
     And I press back button
@@ -505,4 +505,3 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
-

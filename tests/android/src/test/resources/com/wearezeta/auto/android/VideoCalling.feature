@@ -269,7 +269,7 @@ Feature: VideoCalling
     And I swipe to ignore the call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
     When I tap Audio Call button from top toolbar
-    Then I see alert message containing "<ExpectedMsg>"
+    Then I see alert message containing "<ExpectedMsg>" in the body
     And <Contact> verifies that call status to me is changed to connecting in 3 seconds
 
     Examples:
@@ -326,11 +326,11 @@ Feature: VideoCalling
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
     When <Contact> calls me
-    And I see incoming video call
+    And I see incoming call
     And I swipe to ignore the call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
     When I tap Video Call button from top toolbar
-    Then I see alert message containing "<ExpectedMsg>"
+    Then I see alert message containing "<ExpectedMsg>" in the body
     And <Contact> verifies that call status to me is changed to connecting in 3 seconds
 
     Examples:

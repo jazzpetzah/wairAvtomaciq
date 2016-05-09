@@ -14,7 +14,7 @@ Feature: Upgrade
     Given I upgrade Wire to the recent version
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    Then I see my message "<Message>" in the dialog
+    Then I see the message "<Message>" in the conversation view
     And I see 1 image in the conversation view
     When User <Contact> sends encrypted image <Picture> to single user conversation Myself
     And I wait for 10 seconds
@@ -23,7 +23,7 @@ Feature: Upgrade
     When I scroll to the bottom of conversation view
     And I tap on text input
     And I type the message "<Message2>" and send it
-    Then I see my message "<Message2>" in the dialog
+    Then I see the message "<Message2>" in the conversation view
 
     Examples:
       | Contact   | Name      | Picture     | Message | Message2 |
