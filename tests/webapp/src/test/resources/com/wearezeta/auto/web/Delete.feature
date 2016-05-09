@@ -80,16 +80,16 @@ Feature: Delete
       And I send message
       And I wait for 1 seconds
       Then I see 3 messages in conversation
-      When I delete last message
+      When I delete and accept deletion of last message
       #And I wait for 5 second
-      And I accept message deletion
+      #And I accept message deletion
       And I wait for 2 seconds
-      And I delete last message
+      And I delete and accept deletion of last message
       #And I wait for 5 second
-      And I accept message deletion
+      #And I accept message deletion
       And I wait for 2 seconds
       Then I see 1 messages in conversation
-      And I verify the last text message equals to 1
+      And I verify the last text message equals to Message_1
 
       Examples: 
         | Login      | Password      | Name      | Contact   |
