@@ -23,8 +23,8 @@ Feature: Delete Message
     And I do not see the message "<Message2>" in the conversation view
 
     Examples:
-      | Name      | Contact   | Message1 | Message2 | AlertText  |
-      | user1Name | user2Name | Yo1      | Yo2      | 2 messages |
+      | Name      | Contact   | Message1 | Message2 | AlertText       |
+      | user1Name | user2Name | Yo1      | Yo2      | Delete messages |
 
   @C111644 @staging
   Scenario Outline: Verify deleting is synchronised across own devices when they are online
