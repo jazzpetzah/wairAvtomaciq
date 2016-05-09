@@ -797,7 +797,7 @@ Feature: Conversation View
       | Name      | Contact   | GroupChatName |
       | user1Name | user2Name | CURSORTOOLBAR |
 
-  @C111321 @staging
+  @C111321 @regression
   Scenario Outline: Verify deleting own text message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -814,7 +814,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C111322 @staging
+  @C111322 @regression
   Scenario Outline: Verify deleting received text message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
