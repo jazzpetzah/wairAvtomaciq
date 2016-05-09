@@ -1,5 +1,38 @@
 Feature: Conversation View
 
+  @C119438 @staging
+  Scenario Outline: Verify group conversation history is loaded properly
+    Given There are 3 users where <Name> is me
+    Given user <Contact1> adds a new device Device1 with label Label1
+    Given user <Name> adds a new device Device1 with label Label1
+    Given <Contact1> is connected to Myself,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I see the history info page
+    Then I click confirm on history info page
+    When I am signed in properly
+    Then I open self profile
+    When I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    Then I see Sign In page
+    And <Contact1> has group chat <ChatName> with Myself,<Contact2>
+    And Contact <Name> sends 35 encrypted messages with prefix <OtherDeviceMsg> via device Device1 to group conversation <ChatName>
+    And I wait for 10 seconds
+    And Contact <Contact1> sends 100 encrypted messages with prefix <OfflineMsg> via device Device1 to group conversation <ChatName>
+    When I Sign in using login <Login> and password <Password>
+    And I wait for 10 seconds
+    And I am signed in properly
+    And I open conversation with <ChatName>
+    And Contact <Contact1> sends 10 encrypted messages with prefix <OnlineMsg> via device Device1 to group conversation <ChatName>
+    And I wait for 5 seconds
+    Then I verify all remembered messages are present in conversation <ChatName>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2  | ChatName                | OfflineMsg | OnlineMsg | OtherDeviceMsg |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | HistoryOfflineGroupChat | OFFLINE    | ONLINE    | OTHERDEVICE    |
+
   @C1703 @smoke
   Scenario Outline: Send message in 1on1
     Given There are 2 users where <Name> is me

@@ -5,6 +5,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.Browser;
+import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
@@ -13,6 +14,7 @@ import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIB
 import cucumber.api.PendingException;
 
 import java.awt.image.BufferedImage;
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
@@ -22,8 +24,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import static org.apache.xml.serializer.utils.Utils.messages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -89,6 +94,9 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(css = WebAppLocators.ConversationPage.cssSecondLastTextMessage)
 	private WebElement secondLastTextMessage;
+        
+        @FindBy(css = WebAppLocators.ConversationPage.cssMessages)
+        private List<WebElement> messages;
 
 	@FindBy(css = WebAppLocators.ConversationPage.cssImageEntries)
 	private WebElement lastPicture;
@@ -800,4 +808,21 @@ public class ConversationPage extends WebPage {
 		By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileDownload, fileName));
 		getDriver().findElement(locator).click();
 	}
+    public void scrollUp() throws Exception {
+        getDriver().executeScript("$(\"" + WebAppLocators.ConversationPage.cssConversation + "\").animate({\n"
+                + "scrollTop: 0\n"
+                + "},100);", "");
+    }
+
+    public SortedSet<Message> getAllLoadedMessages() throws InterruptedException {
+        Thread.sleep(1000);
+        SortedSet<Message> mappedMessages = new TreeSet<>();
+        for (WebElement message : messages) {
+            String text = message.findElement(By.cssSelector(".text")).getText();
+            String time = message.findElement(By.cssSelector(".time")).getAttribute("data-timestamp");
+            String senderId = message.findElement(By.cssSelector("user-avatar")).getAttribute("user-id");
+            mappedMessages.add(new Message(text, senderId, Instant.ofEpochMilli(Long.parseLong(time))));
+        }
+        return mappedMessages;
+    }
 }

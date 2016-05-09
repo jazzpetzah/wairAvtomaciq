@@ -49,6 +49,8 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.Browser;
+import com.wearezeta.auto.web.common.ConversationStates;
+import com.wearezeta.auto.web.common.Message;
 import static com.wearezeta.auto.web.common.Pinger.startPinging;
 import static com.wearezeta.auto.web.common.Pinger.stopPinging;
 import com.wearezeta.auto.web.common.WebAppConstants;
@@ -85,6 +87,8 @@ public class CommonWebAppSteps {
     public static final Map<String, Future<ZetaWebAppDriver>> webdrivers = new HashMap<>();
 
     public static final Platform CURRENT_PLATFORM = Platform.Web;
+    
+    public static final ConversationStates CONVERSATION_STATES = new ConversationStates();
 
     public static final int SAFARI_DRIVER_CREATION_RETRY = 3;
     private static final int DELETION_RECEIVING_TIMEOUT = 120;
@@ -691,12 +695,15 @@ public class CommonWebAppSteps {
     @When("^Contact (.*) sends? (\\d+) encrypted messages with prefix (.*) via device (.*) to (user|group conversation) (.*)$")
     public void UserSendAmountOfMessages(String msgFromUserNameAlias, int amount, String prefix, String deviceName,
                                          String convoType, String dstConvoName) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
         if (convoType.equals("user")) {
             for (int i = 0; i < amount; i++) {
+                CONVERSATION_STATES.addMessage(dstConvoName, new Message(prefix + i, user.getId()));
                 commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, prefix + i, deviceName);
             }
         } else {
             for (int i = 0; i < amount; i++) {
+                CONVERSATION_STATES.addMessage(dstConvoName, new Message(prefix + i, user.getId()));
                 commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, prefix + i, deviceName);
             }
         }
