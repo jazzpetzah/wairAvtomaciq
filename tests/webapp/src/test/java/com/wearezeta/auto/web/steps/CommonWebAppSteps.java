@@ -797,6 +797,26 @@ public class CommonWebAppSteps {
     }
 
     /**
+     * User X delete message from User/Group via specified device
+     * Note : The recent message means the recent message sent from specified device by SE, the device should online.
+     *
+     * @param userNameAlias
+     * @param convoType
+     * @param dstNameAlias
+     * @param deviceName
+     * @throws Exception
+     * @step. ^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) via device (.*)$")
+    public void UserXDeleteLastMessage(String userNameAlias,int amount, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        for (int deleteCounter = 0; deleteCounter < amount; deleteCounter++) {
+            commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup);
+        }
+    }
+
+    /**
      * Send personal invitation over the backend
      *
      * @param userToNameAlias the name/alias of conversations list owner

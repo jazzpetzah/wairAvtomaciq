@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @C2301 @smoke @torun
+  @C2301 @smoke
   Scenario Outline: Verify I can block user from conversation list with right click
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
