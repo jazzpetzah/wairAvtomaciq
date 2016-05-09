@@ -30,8 +30,8 @@ Feature: Delete
     And I click send button in Giphy popup
     And I see sent gif in the conversation view
     And I wait for 2 seconds
-    And I send 10MB sized file with name example.txt to the current conversation
-    And I wait until file <File> is uploaded completely
+    And I send 1MB sized file with name example.txt to the current conversation
+    And I wait until file example.txt is uploaded completely
     # Video-message
       #second sending of messages, these will be deleted
       Then I send picture <PictureName> to the current conversation
@@ -52,8 +52,8 @@ Feature: Delete
       And I click send button in Giphy popup
       Then I see sent gif in the conversation view
       And I wait for 2 seconds
-      And I send 10MB sized file with name example.txt to the current conversation
-      And I wait until file <File> is uploaded completely
+      And I send 1MB sized file with name example.txt to the current conversation
+      And I wait until file example.txt is uploaded completely
       # Video-message
     And I wait for 1 seconds
     # With video-messages there are 20 messages
