@@ -199,8 +199,7 @@ final class BackendREST {
 
     public static void changeConnectRequestStatus(AuthToken token,
                                                   String connectionId, ConnectionStatus newStatus) throws Exception {
-        Builder webResource = buildDefaultRequestWithAuth(
-                String.format("self/connections/%s", connectionId),
+        Builder webResource = buildDefaultRequestWithAuth(String.format("connections/%s", connectionId),
                 MediaType.APPLICATION_JSON, token);
         JSONObject requestBody = new JSONObject();
         requestBody.put("status", newStatus.toString());
