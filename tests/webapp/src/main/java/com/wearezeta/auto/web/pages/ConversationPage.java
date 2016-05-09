@@ -409,6 +409,11 @@ public class ConversationPage extends WebPage {
 		getDriver().executeScript(showPathInputJScript);
 	}
 
+	public void moveCssSelectorOutOfViewport(String selector) throws Exception {
+		final String showPathInputJScript = "$(\"" + selector + "\").css({'left': 200});";
+		getDriver().executeScript(showPathInputJScript);
+	}
+
 	public void sendFile(String fileName) throws Exception {
 		final String filePath = WebCommonUtils.getFullFilePath("filetransfer/" + fileName);
 		hoverOverConversationInput();
@@ -418,6 +423,7 @@ public class ConversationPage extends WebPage {
 						this.getDriver(),
 						By.cssSelector(WebAppLocators.ConversationPage.cssSendFileInput));
 		filePathInput.sendKeys(filePath);
+		moveCssSelectorOutOfViewport(WebAppLocators.ConversationPage.cssSendFileInput);
 	}
 
 	public double getOverlapScoreOfLastImage(String pictureName)
