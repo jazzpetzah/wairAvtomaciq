@@ -59,15 +59,14 @@ Feature: DeleteMessage
       | Name      | Contact   | Picture     | GiphyTag |
       | user1Name | user2Name | testing.jpg | hello    |
 
-  @C111324 @staging
+  @torun @C111324 @staging
   Scenario Outline: Verify deleting soundcloud message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
-    Then I see the media container in the conversation view
-    When I long tap on media container in the conversation
+    And I long tap on media container in the conversation
     And I tap on Delete badge item
     Then I do not see the media container in the conversation view
 
