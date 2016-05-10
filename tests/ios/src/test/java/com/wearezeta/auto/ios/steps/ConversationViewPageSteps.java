@@ -1066,19 +1066,19 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verifies if media container is visible or not in the dialog
+     * Verifies if media container is visible or not in the conversation view
      *
      * @param shouldNotBeVisible equals to null if the media container should be visible
      * @throws Exception
-     * @step. ^I (do not )?see the media container in the dialog$
+     * @step. ^I (do not )?see the media container in the conversation view$
      */
-    @Then("^I (do not )?see the media container in the dialog$")
-    public void ISeeTheMediaContainerInTheDialog(String shouldNotBeVisible) throws Exception {
+    @Then("^I (do not )?see the media container in the conversation view$")
+    public void ISeeTheMediaContainerInTheConversationView(String shouldNotBeVisible) throws Exception {
         if (shouldNotBeVisible == null) {
-            Assert.assertTrue("Media container is not visible in dialog",
+            Assert.assertTrue("Media container is not visible in the conversation view",
                     getConversationViewPage().isMediaContainerVisible());
         } else {
-            Assert.assertTrue("Media container is visible in dialog",
+            Assert.assertTrue("Media container is visible in the conversation view",
                     getConversationViewPage().isMediaContainerInvisible());
         }
     }
