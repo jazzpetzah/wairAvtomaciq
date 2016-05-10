@@ -2,10 +2,9 @@ package com.wearezeta.auto.web.steps;
 
 import java.util.List;
 
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.web.common.TestContext;
 import org.junit.Assert;
 
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.SettingsPage;
 import com.wearezeta.auto.web.pages.SettingsPage.SoundAlertsLevel;
 
@@ -16,11 +15,17 @@ import static org.hamcrest.Matchers.*;
 
 public class SettingsPageSteps {
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
-
 	private String currentDeviceId = null;
+        
+        private final TestContext context;
+        
+    public SettingsPageSteps() {
+        this.context = new TestContext();
+    }
+
+    public SettingsPageSteps(TestContext context) {
+        this.context = context;
+    }
 
 	/**
 	 * Verifies whether settings dialog is visible
@@ -32,7 +37,7 @@ public class SettingsPageSteps {
 	 */
 	@Then("^I see Settings dialog$")
 	public void ISeeSetingsDialog() throws Exception {
-		Assert.assertTrue(webappPagesCollection.getPage(SettingsPage.class)
+		Assert.assertTrue(context.getPagesCollection().getPage(SettingsPage.class)
 				.isVisible());
 	}
 
@@ -47,7 +52,7 @@ public class SettingsPageSteps {
 	 */
 	@When("^I select Sound Alerts setting to be (None|Some|All)")
 	public void ISelectSoundAlertsSetting(String newLevel) throws Exception {
-		webappPagesCollection.getPage(SettingsPage.class).setSoundAlertsLevel(
+		context.getPagesCollection().getPage(SettingsPage.class).setSoundAlertsLevel(
 				SoundAlertsLevel.fromString(newLevel));
 	}
 
@@ -61,7 +66,7 @@ public class SettingsPageSteps {
 	 */
 	@When("^I see Sound Alerts setting is set to (None|Some|All)")
 	public void ISeeSoundAlertsSettingIs(String expectedValue) throws Exception {
-		final String currentValue = webappPagesCollection
+		final String currentValue = context.getPagesCollection()
 				.getPage(SettingsPage.class).getSoundAlertsLevel().toString();
 		Assert.assertTrue(
 				String.format(
@@ -77,7 +82,7 @@ public class SettingsPageSteps {
 	 */
 	@When("^I click close settings page button$")
 	public void IClickCloseSettingsPageButton() throws Exception {
-		webappPagesCollection.getPage(SettingsPage.class).clickCloseButton();
+		context.getPagesCollection().getPage(SettingsPage.class).clickCloseButton();
 	}
 
 	/**
@@ -89,7 +94,7 @@ public class SettingsPageSteps {
 	 */
 	@When("^I remember the device id of the current device$")
 	public void IRememberCurrentDeviceId() throws Exception {
-		currentDeviceId = webappPagesCollection.getPage(SettingsPage.class)
+		currentDeviceId = context.getPagesCollection().getPage(SettingsPage.class)
 				.getCurrentDeviceId();
 	}
 
@@ -110,10 +115,10 @@ public class SettingsPageSteps {
 					"currentDeviceId was not remembered, please use the according step first");
 		} else {
 			if (not == null) {
-				assertThat(webappPagesCollection.getPage(SettingsPage.class)
+				assertThat(context.getPagesCollection().getPage(SettingsPage.class)
 						.getCurrentDeviceId(), equalTo(currentDeviceId));
 			} else {
-				assertThat(webappPagesCollection.getPage(SettingsPage.class)
+				assertThat(context.getPagesCollection().getPage(SettingsPage.class)
 						.getCurrentDeviceId(), not(equalTo(currentDeviceId)));
 			}
 		}
@@ -133,7 +138,7 @@ public class SettingsPageSteps {
 	@When("^I( do not)? see a device named (.*) in the devices section$")
 	public void ISeeACertainDeviceInDevicesSection(String donot, String device)
 			throws Exception {
-		List<String> labels = webappPagesCollection.getPage(SettingsPage.class)
+		List<String> labels = context.getPagesCollection().getPage(SettingsPage.class)
 				.getDeviceLabels();
 		if (donot == null) {
 			assertThat(labels, hasItem(device.toUpperCase()));
@@ -153,7 +158,7 @@ public class SettingsPageSteps {
 	 */
 	@When("^I click on the device (.*) in the devices section$")
 	public void IClickOnDevice(String device) throws Exception {
-		webappPagesCollection.getPage(SettingsPage.class).clickDevice(device);
+		context.getPagesCollection().getPage(SettingsPage.class).clickDevice(device);
 	}
 
 	/**
@@ -167,29 +172,29 @@ public class SettingsPageSteps {
 	 */
 	@Then("^I see (\\d+) devices in the devices section$")
 	public void ISeeXDevices(int size) throws Exception {
-		assertThat(webappPagesCollection.getPage(SettingsPage.class)
+		assertThat(context.getPagesCollection().getPage(SettingsPage.class)
 				.getDeviceLabels(), hasSize(size));
 	}
 
     @When("^I click delete account button on settings page$")
     public void IClickDeleteAccountButton() throws Exception {
-        webappPagesCollection.getPage(SettingsPage.class).clickDeleteAccountButton();
+        context.getPagesCollection().getPage(SettingsPage.class).clickDeleteAccountButton();
     }
 
     @When("^I click cancel deletion button on settings page$")
     public void IClickCancelDeleteButton() throws Exception {
-        webappPagesCollection.getPage(SettingsPage.class).clickCancelDeleteAccountButton();
+        context.getPagesCollection().getPage(SettingsPage.class).clickCancelDeleteAccountButton();
     }
 
     @When("^I click send button to delete account$")
     public void IClickSendButton() throws Exception {
-        webappPagesCollection.getPage(SettingsPage.class).clickConfirmDeleteAccountButton();
+        context.getPagesCollection().getPage(SettingsPage.class).clickConfirmDeleteAccountButton();
     }
 
     @When("^I see email (.*) in delete info text on settings page$")
     public void ISeeEmailInDeleteInfo(String emailAlias) throws Exception {
-		String email = usrMgr.findUserByEmailOrEmailAlias(emailAlias).getEmail();
-        assertThat("Email address not in description", webappPagesCollection.getPage(SettingsPage.class).getDeleteInfo(),
+		String email = context.getUserManager().findUserByEmailOrEmailAlias(emailAlias).getEmail();
+        assertThat("Email address not in description", context.getPagesCollection().getPage(SettingsPage.class).getDeleteInfo(),
                 containsString(email.toUpperCase()));
     }
 
@@ -200,6 +205,6 @@ public class SettingsPageSteps {
      */
 	@When("^I click button to import contacts from Gmail$")
     public void IClickImportButton() throws Exception {
-        webappPagesCollection.getPage(SettingsPage.class).clickImportButton();
+        context.getPagesCollection().getPage(SettingsPage.class).clickImportButton();
     }
 }

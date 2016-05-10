@@ -18,12 +18,9 @@ public class Pinger {
     
     private static final int DRIVER_COMMAND_TIMEOUT_SECONDS = 30;
     
-    private static final ScheduledThreadPoolExecutor PING_EXECUTOR = new ScheduledThreadPoolExecutor(1);
-    static{
-        PING_EXECUTOR.setRemoveOnCancelPolicy(true);
-    }
-    private static ScheduledFuture<?> RUNNING_PINGER;
-    private static final Runnable PINGER = new Runnable() {
+    private final ScheduledThreadPoolExecutor PING_EXECUTOR = new ScheduledThreadPoolExecutor(1);
+    private ScheduledFuture<?> RUNNING_PINGER;
+    private final Runnable PINGER = new Runnable() {
         @Override
         public void run() {
             for (Map.Entry<Platform, Future<? extends RemoteWebDriver>> entry : PlatformDrivers.getInstance().getDrivers().entrySet()) {
@@ -37,8 +34,12 @@ public class Pinger {
             }
         }
     };
+
+    public Pinger() {
+        PING_EXECUTOR.setRemoveOnCancelPolicy(true);
+    }
     
-    public static void startPinging() {
+    public void startPinging() {
         if (RUNNING_PINGER == null) {
             log.debug("Scheduling pinger task");
             RUNNING_PINGER = PING_EXECUTOR.scheduleAtFixedRate(PINGER, 0, DRIVER_COMMAND_TIMEOUT_SECONDS, TimeUnit.SECONDS);
@@ -47,7 +48,7 @@ public class Pinger {
         }
     }
 
-    public static void stopPinging() {
+    public void stopPinging() {
         if (RUNNING_PINGER != null) {
             if (!RUNNING_PINGER.cancel(true)) {
                 log.warn("Could not stop driver pinger");

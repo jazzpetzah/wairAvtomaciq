@@ -185,7 +185,7 @@ Feature: Delete Message
       | user1Name | user2Name | user3Name | DeleteTextMessage | Device1 | Device2       | MyGroup       | MyMessage |
 
   @C111640 @regression @rc
-  Scenario Outline: (AN-3908) Verify deleting the picture, gif from Giphy
+  Scenario Outline: Verify deleting the picture, gif from Giphy
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -202,8 +202,7 @@ Feature: Delete Message
     And I tap Delete button on the action mode bar
     And I tap Delete button on the alert
     Then I do not see any pictures in the conversation view
-    # Blocked by AN-3908
-    # And I do not see the message "<Message> · via giphy.com" in the conversation view
+    And I see the message "<Message> · via giphy.com" in the conversation view
 
     Examples:
       | Name      | Contact   | Message |
