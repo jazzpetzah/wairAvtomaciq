@@ -28,6 +28,8 @@ public class ConversationViewPage extends AndroidPage {
 
     public static final By idCursorPing = By.id("cursor_menu_item_ping");
 
+    public static final By idCursorVideo = By.id("cursor_menu_item_video");
+
     public static final By idCursorView = By.id("cal__cursor");
 
     public static final By idCursorSelfAvatar = By.id("civ__cursor__self_avatar");
@@ -298,6 +300,10 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorFile);
     }
 
+    public boolean isVideoButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorVideo);
+    }
+
     public boolean isPingButtonInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorPing);
     }
@@ -312,6 +318,10 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isFileButtonInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorFile);
+    }
+
+    public boolean isVideoButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorVideo);
     }
 
     //endregion
