@@ -1151,4 +1151,16 @@ public class ConversationViewPageSteps {
     public void ITapButtonOnVideoMessage() throws Exception {
         getConversationViewPage().tapVideoMessageButton();
     }
+
+    /**
+     * Check whether a button is visible on video message container
+     *
+     * @throws Exception
+     * @step. ^I see (?:Play|X|Retry) button on the recent video message in the conversation view$"
+     */
+    @When("^I see (?:Play|X|Retry) button on the recent video message in the conversation view$")
+    public void ISeeButtonOnVideoMessage() throws Exception {
+        Assert.assertTrue("The button is not visible on the recent video message",
+                getConversationViewPage().isVideoMessageButtonVisible());
+    }
 }

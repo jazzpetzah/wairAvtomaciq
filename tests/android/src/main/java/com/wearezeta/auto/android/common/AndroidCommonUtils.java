@@ -300,14 +300,36 @@ public class AndroidCommonUtils extends CommonUtils {
                 getAndroidToolsPathFromConfig(c)));
     }
 
-    public static boolean isAppInForeground(String packageId) throws Exception {
-        final String output = getAdbOutput("shell dumpsys window windows");
-        for (String line : output.split("\n")) {
-            if ((line.contains("mCurrentFocus") || line.contains("mFocusedApp"))
-                    && line.contains(packageId)) {
+    public static boolean isAppInForeground(String packageId, long timeoutMillis) throws Exception {
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            Thread.sleep(100);
+            final String output = getAdbOutput("shell dumpsys window windows");
+            for (String line : output.split("\n")) {
+                if ((line.contains("mCurrentFocus") || line.contains("mFocusedApp")) && line.contains(packageId)) {
+                    return true;
+                }
+            }
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutMillis);
+        return false;
+    }
+
+    public static boolean isAppNotInForeground(String packageId, long timeoutMillis) throws Exception {
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            Thread.sleep(100);
+            boolean isInForeground = false;
+            final String output = getAdbOutput("shell dumpsys window windows");
+            for (String line : output.split("\n")) {
+                if ((line.contains("mCurrentFocus") || line.contains("mFocusedApp")) && line.contains(packageId)) {
+                    isInForeground = true;
+                    break;
+                }
+            }
+            if (!isInForeground) {
                 return true;
             }
-        }
+        } while (System.currentTimeMillis() - millisecondsStarted  <= timeoutMillis);
         return false;
     }
 

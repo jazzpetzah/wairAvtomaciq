@@ -833,4 +833,8 @@ public class ConversationViewPage extends AndroidPage {
     public void longVideoMessageContainer() throws Exception {
         getDriver().longTap(getElement(idVideoMessageContainer), DriverUtils.LONG_TAP_DURATION);
     }
+
+    public boolean isVideoMessageButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idVideoContainerButton);
+    }
 }

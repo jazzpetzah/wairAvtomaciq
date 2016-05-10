@@ -1364,6 +1364,8 @@ public class CommonAndroidSteps {
                 expectedMsg, currentContent.orElse(""));
     }
 
+    private static final long FOREGROUND_TIMEOUT_MILLIS = 5000;
+
     /**
      * Verify whether the app is in foreground
      *
@@ -1374,9 +1376,11 @@ public class CommonAndroidSteps {
     public void ISeeAppInForgeround(String shouldNotBeInForeground) throws Exception {
         final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
         if (shouldNotBeInForeground == null) {
-            Assert.assertTrue("Wire is currently not in foreground", AndroidCommonUtils.isAppInForeground(packageId));
+            Assert.assertTrue("Wire is currently not in foreground",
+                    AndroidCommonUtils.isAppInForeground(packageId, FOREGROUND_TIMEOUT_MILLIS));
         } else {
-            Assert.assertFalse("Wire is currently still in foreground", AndroidCommonUtils.isAppInForeground(packageId));
+            Assert.assertTrue("Wire is currently still in foreground",
+                    AndroidCommonUtils.isAppNotInForeground(packageId, FOREGROUND_TIMEOUT_MILLIS));
         }
     }
 }
