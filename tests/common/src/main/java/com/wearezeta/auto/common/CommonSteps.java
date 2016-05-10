@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
 
 import java.io.File;
@@ -320,9 +321,9 @@ public final class CommonSteps {
         seBridge.deleteMessage(user, dstConvId, messageId, deviceName);
     }
 
-    public void UserDeleteLatestMessage(String msgFromuserNameAlias, String dstConversationName, String deviceName,
+    public void UserDeleteLatestMessage(String msgFromUserNameAlias, String dstConversationName, String deviceName,
                                         boolean isGroup) throws Exception {
-        ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromuserNameAlias);
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
         if(!isGroup) {
             dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
         }
@@ -331,6 +332,31 @@ public final class CommonSteps {
         ActorMessage.MessageInfo lastMessage = messageInfos[messageInfos.length - 1];
 
         seBridge.deleteMessage(user, dstConvId, lastMessage.id(), deviceName);
+    }
+
+    /**
+     * Note: if there is no message in conversation, it will return Optional.of("")
+     *
+     * @param msgFromUserNameAlias
+     * @param dstConversationName
+     * @param deviceName
+     * @param isGroup
+     * @return
+     * @throws Exception
+     */
+    public Optional<String> UserGetRecentMessageId(String msgFromUserNameAlias, String dstConversationName, String deviceName,
+                                                   boolean isGroup) throws Exception {
+        ClientUser user = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+        if (!isGroup) {
+            dstConversationName = usrMgr.replaceAliasesOccurences(dstConversationName, FindBy.NAME_ALIAS);
+        }
+        String dstConvId = BackendAPIWrappers.getConversationIdByName(user, dstConversationName);
+        ActorMessage.MessageInfo[] messageInfos = seBridge.getConversationMessages(user, dstConvId, deviceName);
+        if (!ArrayUtils.isEmpty(messageInfos)) {
+            return Optional.ofNullable(messageInfos[messageInfos.length - 1].id().str());
+        }
+        // Means there is no any message
+        return Optional.of("");
     }
 
     public void UserSentMessageToUser(String msgFromUserNameAlias,

@@ -59,6 +59,9 @@ public class CommonAndroidSteps {
                     () -> new IllegalStateException("Cannot take a screenshot of the whole screen")
             )
     );
+
+    private static Optional<String> recentMessageId;
+
     private final CommonSteps commonSteps = CommonSteps.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     public static final Platform CURRENT_PLATFORM = Platform.Android;
@@ -1253,9 +1256,52 @@ public class CommonAndroidSteps {
      * @step. ^User (.*) deletes? the recent message from (user|group conversation) (.*) via device (.*)$
      */
     @When("^User (.*) deletes? the recent message from (user|group conversation) (.*) via device (.*)$")
-    public void UserXDeleteLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName) throws Exception {
+    public void UserXDeleteLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
         boolean isGroup = convoType.equals("group conversation");
         commonSteps.UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup);
+    }
+
+    /**
+     * Remember the recent message Id
+     *
+     * @param userNameAlias
+     * @param convoType
+     * @param dstNameAlias
+     * @param deviceName
+     * @throws Exception
+     * @step. ^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$")
+    public void UserXRemeberLastMessage(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        recentMessageId = Optional.empty();
+        boolean isGroup = convoType.equals("group conversation");
+        recentMessageId = commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup);
+    }
+
+    /**
+     * Check the rememberd message is changed
+     *
+     * @param userNameAlias
+     * @param convoType
+     * @param dstNameAlias
+     * @param deviceName
+     * @throws Exception
+     * @step. ^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed$
+     */
+    @Then("^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed$")
+    public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        if (recentMessageId.equals(Optional.empty())) {
+            throw new IllegalStateException("You should remember the recent message befor you check it");
+        }
+
+        boolean isGroup = convoType.equals("group conversation");
+        Optional<String> actualMessageId = commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup);
+
+        Assert.assertTrue(String.format("Remembered message Id should not equal to '%s'", actualMessageId),
+                actualMessageId.get() != recentMessageId.get());
     }
 
     /**

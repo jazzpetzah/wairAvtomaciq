@@ -7,7 +7,6 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.wearezeta.auto.common.misc.ElementState;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -151,6 +150,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idSoundcloudContainer = By.id("mpv__row_conversation__message_media_player");
 
+    private static final By idFileTransferContainer = By.id("ll__row_conversation__file__message_container");
+
     private static final int MAX_CLICK_RETRIES = 5;
 
     private static final double LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR = 0.01;
@@ -163,11 +164,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final String FILE_MESSAGE_SEPARATOR = " · ";
 
-    private static final int SCROLL_TO_BOTTOM_TIMEOUT_SECONDS = 60;
-
     private static final int SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS =1000;
 
-    private static final double SCROLL_TO_BOTTOM_MIN_SIMILARITY_SCORE = 0.97;
 
     public ConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -318,20 +316,15 @@ public class ConversationViewPage extends AndroidPage {
 
     //endregion
 
+    /**
+     * It based on the cursor action , scroll to the bottom of view when you tap on input text field and focus on it
+     *
+     * @throws Exception
+     */
     public void scrollToTheBottom() throws Exception {
+        tapOnTextInput();
         this.hideKeyboard();
-        final long millisecondsStarted = System.currentTimeMillis();
-        ElementState initState = new ElementState(this::getConvoViewStateScreenshot);
-        do {
-            initState.remember();
-            swipeByCoordinates(SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS, 50, 75, 50, 40);
-        } while (System.currentTimeMillis() - millisecondsStarted <= SCROLL_TO_BOTTOM_TIMEOUT_SECONDS * 1000
-                && initState.isChanged(1, SCROLL_TO_BOTTOM_MIN_SIMILARITY_SCORE));
-
-        if (System.currentTimeMillis() - millisecondsStarted > SCROLL_TO_BOTTOM_TIMEOUT_SECONDS * 1000) {
-            throw new IllegalStateException(String.format("Cannot scroll to the conversation bottom in %d seconds",
-                    SCROLL_TO_BOTTOM_TIMEOUT_SECONDS));
-        }
+        swipeByCoordinates(SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS, 50, 75, 50, 40);
     }
 
     public void tapAudioCallBtn() throws Exception {
@@ -786,5 +779,34 @@ public class ConversationViewPage extends AndroidPage {
 
     public void longTapSoundcloudContainer() throws Exception {
         getDriver().longTap(getElement(idSoundcloudContainer), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public boolean isFileUploadContainerVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idFileTransferContainer);
+    }
+
+    public boolean isFileUploadContainerInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idFileTransferContainer);
+    }
+
+    public void tapFileUploadContainer() throws Exception {
+        getElement(idFileTransferContainer).click();
+    }
+
+    public void longTapFileUploadContainer() throws Exception {
+        getDriver().longTap(getElement(idFileTransferContainer), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public void tapPingMessage(String message) throws Exception {
+        getElement(By.xpath(xpathStrPingMessageByText.apply(message))).click();
+    }
+
+    public void longTapPingMessage(String message) throws Exception {
+        getDriver().longTap(getElement(By.xpath(xpathStrPingMessageByText.apply(message))),
+                DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public void longTapRecentImage() throws Exception {
+        getDriver().longTap(getElement(xpathLastPicture), DriverUtils.LONG_TAP_DURATION);
     }
 }

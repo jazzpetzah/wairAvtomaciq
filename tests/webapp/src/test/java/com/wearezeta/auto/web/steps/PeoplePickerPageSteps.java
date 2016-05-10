@@ -31,6 +31,8 @@ public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
+	private static String rememberedUser;
+
 
 	/**
 	 * Verifies the presence of the People Picker
@@ -190,6 +192,18 @@ public class PeoplePickerPageSteps {
 		}
 	}
 
+	@When("^I click on remembered (not connected|pending) contact found in People Picker$")
+	public void IClickRememberedNotConnecteUserFoundInPeoplePicker(String userType) throws Exception {
+		rememberedUser = usrMgr.replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
+		if (userType.equalsIgnoreCase("not connected")) {
+			webappPagesCollection.getPage(PeoplePickerPage.class)
+					.clickNotConnectedUserName(rememberedUser);
+		} else if (userType.equalsIgnoreCase("pending")) {
+			webappPagesCollection.getPage(PeoplePickerPage.class)
+					.clickPendingUserName(rememberedUser);
+		}
+	}
+
 	/**
 	 * Creates conversation with users selected in People Picker
 	 *
@@ -338,7 +352,6 @@ public class PeoplePickerPageSteps {
 	 *            comma separated list of names of top people to select
 	 * @throws Exception
 	 */
-
 	@When("^I select (.*) from Top People$")
 	public void ISelectUsersFromTopPeople(String namesOfTopPeople)
 			throws Exception {
@@ -362,68 +375,57 @@ public class PeoplePickerPageSteps {
 				PeoplePickerPage.class).getNamesOfSelectedTopPeople();
 	}
 
-    private static String user1;
-
-    private static String user2;
-
-    @When("^I remember (.*) suggested user$")
-    public void IRememberSuggestedUser(String count) throws Exception {
+    @When("^I remember first suggested user$")
+    public void IRememberSuggestedUser() throws Exception {
         List<String> suggestedUsers = webappPagesCollection.getPage(PeoplePickerPage.class).getNamesOfSuggestedContacts();
-        if (count.contains("first")) {
-            user1 = suggestedUsers.get(0);
-            System.out.println("ERSTER: " + user1);
-        } else if (count.contains("second")) {
-            user2 = suggestedUsers.get(1);
-            System.out.println("ZWEITER: " + user2);
-        }
+		rememberedUser = suggestedUsers.get(0);
     }
 
     @When("^I( do not)? see (.*) remembered user in People Picker$")
     public void ISeeRememberedUserInPeoplePicker(String donot, String count) throws Exception {
         if (donot != null && count.contains("first")) {
             Assert.assertTrue(webappPagesCollection.getPage(
-                    PeoplePickerPage.class).isUserNotFound(user1));
-        } else if (donot != null && count.contains("second")) {
+                    PeoplePickerPage.class).isUserNotFound(rememberedUser));
+		} else if (count.contains("first")) {
             Assert.assertTrue(webappPagesCollection.getPage(
-                    PeoplePickerPage.class).isUserNotFound(user2));
-        } else if (count.contains("first")) {
-            Assert.assertTrue(webappPagesCollection.getPage(
-                    PeoplePickerPage.class).isUserFound(user1));
-        } else if (count.contains("second")) {
-            Assert.assertTrue(webappPagesCollection.getPage(
-                    PeoplePickerPage.class).isUserFound(user2));
+                    PeoplePickerPage.class).isUserFound(rememberedUser));
         }
     }
 
     @When("^I remove first remembered user from suggestions in People Picker$")
     public void IRemoveFirstRememberedUser() throws Exception {
-        user1 = usrMgr.replaceAliasesOccurences(user1, FindBy.NAME_ALIAS);
+		rememberedUser = usrMgr.replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
         webappPagesCollection.getPage(PeoplePickerPage.class)
-                .clickRemoveButtonOnSuggestion(user1);
+                .clickRemoveButtonOnSuggestion(rememberedUser);
     }
 
-    @When("^I make a connection request for second remembered user directly from People Picker$")
+    @When("^I make a connection request for remembered user directly from People Picker$")
     public void IMakeAConnectionRequestForSecondRememberedUser() throws Exception {
-        user2 = usrMgr.replaceAliasesOccurences(user2, FindBy.NAME_ALIAS);
+		rememberedUser = usrMgr.replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
         webappPagesCollection.getPage(PeoplePickerPage.class)
-                .clickPlusButtonOnSuggestion(user2);
+                .clickPlusButtonOnSuggestion(rememberedUser);
     }
 
-    @When("^I see Contact list with second remembered user$")
-    public void ISeeContactListWithSecondRememberedUser() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(ContactListPage.class)
-                .isConvoListEntryWithNameExist(user2));
+    @When("^I( do not)? see Contact list with remembered user$")
+    public void ISeeContactListWithSecondRememberedUser(String donot) throws Exception {
+		if (donot == null) {
+			Assert.assertTrue(webappPagesCollection.getPage(ContactListPage.class)
+					.isConvoListEntryWithNameExist(rememberedUser));
+		} else {
+			Assert.assertFalse(webappPagesCollection.getPage(ContactListPage.class)
+				.isConvoListEntryWithNameExist(rememberedUser));
+		}
     }
 
-    @When("^I open second remembered users conversation$")
+    @When("^I open remembered users conversation$")
     public void IOpenSecondRememberedUsersConversation() throws Exception {
-        webappPagesCollection.getPage(ContactListPage.class).openConversation(user2);
+        webappPagesCollection.getPage(ContactListPage.class).openConversation(rememberedUser);
     }
 
-    @When("^I see connecting message in conversation with second remembered user$")
+    @When("^I see connecting message in conversation with remembered contact$")
     public void ISeeConnectingMsgFromSecondRememberedUser() throws Exception {
         assertThat("User name", webappPagesCollection.getPage(ConversationPage.class).getConnectedMessageUser(),
-                equalTo(user2));
+                equalTo(rememberedUser));
         assertThat("Label", webappPagesCollection.getPage(ConversationPage.class).getConnectedMessageLabel(),
                 equalTo("CONNECTING"));
     }
