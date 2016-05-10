@@ -79,7 +79,6 @@ Feature: Bring Your Friends
     And I click Connect button on Connect To popover
     Then I see Contact list with remembered user
     When I open remembered users conversation
-    And I wait for 1 seconds
     Then I see connecting message in conversation with remembered contact
     When I open People Picker from Contact List
     And I click button to bring friends from Gmail
