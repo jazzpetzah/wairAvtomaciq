@@ -1075,10 +1075,10 @@ public class ConversationViewPageSteps {
     @Then("^I (do not )?see the media container in the dialog$")
     public void ISeeTheMediaContainerInTheDialog(String shouldNotBeVisible) throws Exception {
         if (shouldNotBeVisible == null) {
-            Assert.assertTrue("Soundcloud media container is not visible",
+            Assert.assertTrue("Media container is not visible in dialog",
                     getConversationViewPage().isMediaContainerVisible());
         } else {
-            Assert.assertTrue("Soundcloud media container is visible",
+            Assert.assertTrue("Media container is visible in dialog",
                     getConversationViewPage().isMediaContainerInvisible());
         }
     }
