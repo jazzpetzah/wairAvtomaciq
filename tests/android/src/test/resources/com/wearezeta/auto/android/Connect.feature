@@ -155,7 +155,7 @@ Feature: Connect
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I do not see text input
-    And I do not see video, ping, sketch, add picture and file buttons in cursor toolbar
+    And I do not see cursor toolbar
     And I Connect with contact by pressing button
     Then I see contact list with name <Contact>
 
@@ -179,7 +179,7 @@ Feature: Connect
     And I press Clear button
     Then I tap on contact name <Contact>
     And I see that connection is pending
-    And I do not see video, ping, sketch, add picture and file buttons in cursor toolbar
+    And I do not see cursor toolbar
     And I do not see text input
 
     Examples:

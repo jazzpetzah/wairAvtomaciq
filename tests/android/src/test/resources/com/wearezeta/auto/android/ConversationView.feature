@@ -433,7 +433,7 @@ Feature: Conversation View
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
-    Then I see video, ping, sketch, add picture and file buttons in cursor toolbar
+    Then I see cursor toolbar
     And I see text input
 
     Examples:
@@ -479,10 +479,10 @@ Feature: Conversation View
     And I tap on group found on People picker page <GroupChatName>
     Then I see the upper toolbar
     And I do not see text input
-    And I do not see video, ping, sketch, add picture and file buttons in cursor toolbar
+    And I do not see cursor toolbar
     When User <Contact1> adds user Myself to group chat <GroupChatName>
     Then I see text input
-    And I see video, ping, sketch, add picture and file buttons in cursor toolbar
+    And I see cursor toolbar
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
@@ -500,7 +500,7 @@ Feature: Conversation View
     And I see Contact list with contacts
     And I tap on contact name <GroupChatName>
     Then I do not see text input
-    And I do not see video, ping, sketch, add picture and file buttons in cursor toolbar
+    And I do not see cursor toolbar
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
