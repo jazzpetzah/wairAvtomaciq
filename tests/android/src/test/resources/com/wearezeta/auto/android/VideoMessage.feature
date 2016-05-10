@@ -10,7 +10,7 @@ Feature: Video Message
     Given I tap on contact name <Contact>
     When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
     And I see Video Message container in the conversation view
-    When I tap Play button on the recent video message in the conversation view
+    And I tap Play button on the recent video message in the conversation view
     # Wait for the video to be fully loaded
     And I wait for 5 seconds
     And I tap Play button on the recent video message in the conversation view
