@@ -10,10 +10,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import static com.wearezeta.auto.web.common.Lifecycle.DRIVER_INIT_TIMEOUT;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import org.apache.log4j.Logger;
@@ -46,7 +43,7 @@ public class TestContext {
         this.callingManager = new CommonCallingSteps2(userManager);
         this.pagesCollection = new WebappPagesCollection();
         this.conversationStates = new ConversationStates();
-        this.pinger = new Pinger();
+        this.pinger = new Pinger(driver);
     }
 
     /**
@@ -61,7 +58,7 @@ public class TestContext {
         this.callingManager = CommonCallingSteps2.getInstance();
         this.pagesCollection = WebappPagesCollection.getInstance();
         this.conversationStates = new ConversationStates();
-        this.pinger = new Pinger();
+        this.pinger = new Pinger(driver);
     }
 
     public String getTestname() {
