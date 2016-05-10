@@ -1,6 +1,6 @@
 Feature: Delete Message
 
-  @C111638 @staging @C111637
+  @C111638 @regression @rc @C111637
   Scenario Outline: Verify deleting own text message
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -23,10 +23,10 @@ Feature: Delete Message
     And I do not see the message "<Message2>" in the conversation view
 
     Examples:
-      | Name      | Contact   | Message1 | Message2 | AlertText  |
-      | user1Name | user2Name | Yo1      | Yo2      | 2 messages |
+      | Name      | Contact   | Message1 | Message2 | AlertText       |
+      | user1Name | user2Name | Yo1      | Yo2      | Delete messages |
 
-  @C111644 @staging
+  @C111644 @regression @rc
   Scenario Outline: Verify deleting is synchronised across own devices when they are online
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -52,7 +52,7 @@ Feature: Delete Message
       | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName |
       | user1Name | user2Name | user3Name | DeleteTextMessage | Device1 | Device2       | MyGroup       |
 
-  @C111641 @staging
+  @C111641 @regression @rc
   Scenario Outline: Verify deleting the media file (sound could, youtube)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -79,7 +79,7 @@ Feature: Delete Message
       | Name      | Contact   | YoutubeLink                                 | SoundcloudLink                                                      |
       | user1Name | user2Name | https://www.youtube.com/watch?v=gIQS9uUVmgk | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi |
 
-  @C111639 @staging
+  @C111639 @regression @rc
   Scenario Outline: Verify deleting received text message
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -97,7 +97,7 @@ Feature: Delete Message
       | Name      | Contact   | Message           |
       | user1Name | user2Name | DeleteTextMessage |
 
-  @C111643 @staging
+  @C111643 @regression @rc
   Scenario Outline: Verfiy deleting ping
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -120,7 +120,7 @@ Feature: Delete Message
       | Name      | Contact   | Message1       | CallBackend | Message2         |
       | user1Name | user2Name | You pinged     | autocall    | user2Name pinged |
 
-  @C111642 @staging
+  @C111642 @regression @rc
   Scenario Outline: Verify deleting the shared file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -140,8 +140,8 @@ Feature: Delete Message
       | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout |
       | user1Name | user2Name | qa_random | txt           | 1.00MB   | 20               |
 
-  @C111645 @staging @C111647
-  Scenario Outline: Verify deleting is synchronised across own devices when one of them was offline
+  @C111645 @regression @rc @C111647
+  Scenario Outline: (AN-3934) Verify deleting is synchronised across own devices when one of them was offline
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -155,10 +155,16 @@ Feature: Delete Message
     And I tap back button in upper toolbar
     And I tap on contact name <GroupChatName>
     And User Myself send encrypted message "<Message>" via device <Device> to group conversation <GroupChatName>
+    # The following step should be delete , which is blocked by AN-3934
+    And I tap back button in upper toolbar
     And I enable Airplane mode on the device
     And User Myself deletes the recent message from user <Contact1> via device <Device>
     And User Myself deletes the recent message from group conversation <GroupChatName> via device <Device>
     And I disable Airplane mode on the device
+    # Wait for sync
+    And I wait for 10 seconds
+    # This line also should be deleted when AN-3934 fixed
+    And I tap on contact name <GroupChatName>
     Then I do not see the message "<Message>" in the conversation view
     When I tap back button in upper toolbar
     And I tap on contact name <Contact1>
@@ -178,7 +184,7 @@ Feature: Delete Message
       | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName | Message2  |
       | user1Name | user2Name | user3Name | DeleteTextMessage | Device1 | Device2       | MyGroup       | MyMessage |
 
-  @C111640 @staging
+  @C111640 @regression @rc
   Scenario Outline: (AN-3908) Verify deleting the picture, gif from Giphy
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

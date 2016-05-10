@@ -270,7 +270,7 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
     And I see 1 photo in the dialog
-    And I longpress on image in the conversation
+    And I long tap on image in the conversation
     And I tap on Copy badge item
     And I tap on text input
     And I tap and hold on message input
@@ -292,7 +292,7 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     And I tap on contact name <Contact>
     And I see 1 photo in the dialog
-    And I longpress on image in the conversation
+    And I long tap on image in the conversation
     And I tap on Copy badge item
     And I tap on text input
     And I tap and hold on message input

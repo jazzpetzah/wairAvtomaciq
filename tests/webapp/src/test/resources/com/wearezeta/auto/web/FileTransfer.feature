@@ -138,7 +138,6 @@ Feature: File Transfer
     When I send <Size> sized file with name <File> to the current conversation
     And I wait until file <File> is uploaded completely
     When I click to download file <File> in the conversation view
-    And I verify status of file <File> is DOWNLOADING… in the conversation view
     And I refresh page
     Then I verify type of file <File> is <Type> in the conversation view
     When I click to download file <File> in the conversation view

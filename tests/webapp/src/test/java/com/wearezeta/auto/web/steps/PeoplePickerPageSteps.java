@@ -2,7 +2,6 @@ package com.wearezeta.auto.web.steps;
 
 import java.util.List;
 
-import com.typesafe.config.ConfigException;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import org.junit.Assert;
 
@@ -17,18 +16,17 @@ import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.openqa.selenium.WebElement;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class PeoplePickerPageSteps {
-        private final TestContext context;
-        
+
+    private final TestContext context;
+
+    private static String rememberedUser;
+
     public PeoplePickerPageSteps() {
         this.context = new TestContext();
     }
@@ -195,6 +193,18 @@ public class PeoplePickerPageSteps {
 		}
 	}
 
+	@When("^I click on remembered (not connected|pending) contact found in People Picker$")
+	public void IClickRememberedNotConnecteUserFoundInPeoplePicker(String userType) throws Exception {
+		rememberedUser = context.getUserManager().replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
+		if (userType.equalsIgnoreCase("not connected")) {
+			context.getPagesCollection().getPage(PeoplePickerPage.class)
+					.clickNotConnectedUserName(rememberedUser);
+		} else if (userType.equalsIgnoreCase("pending")) {
+			context.getPagesCollection().getPage(PeoplePickerPage.class)
+					.clickPendingUserName(rememberedUser);
+		}
+	}
+
 	/**
 	 * Creates conversation with users selected in People Picker
 	 *
@@ -343,7 +353,6 @@ public class PeoplePickerPageSteps {
 	 *            comma separated list of names of top people to select
 	 * @throws Exception
 	 */
-
 	@When("^I select (.*) from Top People$")
 	public void ISelectUsersFromTopPeople(String namesOfTopPeople)
 			throws Exception {
@@ -367,68 +376,57 @@ public class PeoplePickerPageSteps {
 				PeoplePickerPage.class).getNamesOfSelectedTopPeople();
 	}
 
-    private static String user1;
-
-    private static String user2;
-
-    @When("^I remember (.*) suggested user$")
-    public void IRememberSuggestedUser(String count) throws Exception {
+    @When("^I remember first suggested user$")
+    public void IRememberSuggestedUser() throws Exception {
         List<String> suggestedUsers = context.getPagesCollection().getPage(PeoplePickerPage.class).getNamesOfSuggestedContacts();
-        if (count.contains("first")) {
-            user1 = suggestedUsers.get(0);
-            System.out.println("ERSTER: " + user1);
-        } else if (count.contains("second")) {
-            user2 = suggestedUsers.get(1);
-            System.out.println("ZWEITER: " + user2);
-        }
+		rememberedUser = suggestedUsers.get(0);
     }
 
     @When("^I( do not)? see (.*) remembered user in People Picker$")
     public void ISeeRememberedUserInPeoplePicker(String donot, String count) throws Exception {
         if (donot != null && count.contains("first")) {
             Assert.assertTrue(context.getPagesCollection().getPage(
-                    PeoplePickerPage.class).isUserNotFound(user1));
-        } else if (donot != null && count.contains("second")) {
+                    PeoplePickerPage.class).isUserNotFound(rememberedUser));
+		} else if (count.contains("first")) {
             Assert.assertTrue(context.getPagesCollection().getPage(
-                    PeoplePickerPage.class).isUserNotFound(user2));
-        } else if (count.contains("first")) {
-            Assert.assertTrue(context.getPagesCollection().getPage(
-                    PeoplePickerPage.class).isUserFound(user1));
-        } else if (count.contains("second")) {
-            Assert.assertTrue(context.getPagesCollection().getPage(
-                    PeoplePickerPage.class).isUserFound(user2));
+                    PeoplePickerPage.class).isUserFound(rememberedUser));
         }
     }
 
     @When("^I remove first remembered user from suggestions in People Picker$")
     public void IRemoveFirstRememberedUser() throws Exception {
-        user1 = context.getUserManager().replaceAliasesOccurences(user1, FindBy.NAME_ALIAS);
+		rememberedUser = context.getUserManager().replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(PeoplePickerPage.class)
-                .clickRemoveButtonOnSuggestion(user1);
+                .clickRemoveButtonOnSuggestion(rememberedUser);
     }
 
-    @When("^I make a connection request for second remembered user directly from People Picker$")
+    @When("^I make a connection request for remembered user directly from People Picker$")
     public void IMakeAConnectionRequestForSecondRememberedUser() throws Exception {
-        user2 = context.getUserManager().replaceAliasesOccurences(user2, FindBy.NAME_ALIAS);
+		rememberedUser = context.getUserManager().replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(PeoplePickerPage.class)
-                .clickPlusButtonOnSuggestion(user2);
+                .clickPlusButtonOnSuggestion(rememberedUser);
     }
 
-    @When("^I see Contact list with second remembered user$")
-    public void ISeeContactListWithSecondRememberedUser() throws Exception {
-        Assert.assertTrue(context.getPagesCollection().getPage(ContactListPage.class)
-                .isConvoListEntryWithNameExist(user2));
+    @When("^I( do not)? see Contact list with remembered user$")
+    public void ISeeContactListWithSecondRememberedUser(String donot) throws Exception {
+		if (donot == null) {
+			Assert.assertTrue(context.getPagesCollection().getPage(ContactListPage.class)
+					.isConvoListEntryWithNameExist(rememberedUser));
+		} else {
+			Assert.assertFalse(context.getPagesCollection().getPage(ContactListPage.class)
+				.isConvoListEntryWithNameExist(rememberedUser));
+		}
     }
 
-    @When("^I open second remembered users conversation$")
+    @When("^I open remembered users conversation$")
     public void IOpenSecondRememberedUsersConversation() throws Exception {
-        context.getPagesCollection().getPage(ContactListPage.class).openConversation(user2);
+        context.getPagesCollection().getPage(ContactListPage.class).openConversation(rememberedUser);
     }
 
-    @When("^I see connecting message in conversation with second remembered user$")
+    @When("^I see connecting message in conversation with remembered contact$")
     public void ISeeConnectingMsgFromSecondRememberedUser() throws Exception {
         assertThat("User name", context.getPagesCollection().getPage(ConversationPage.class).getConnectedMessageUser(),
-                equalTo(user2));
+                equalTo(rememberedUser));
         assertThat("Label", context.getPagesCollection().getPage(ConversationPage.class).getConnectedMessageLabel(),
                 equalTo("CONNECTING"));
     }
