@@ -747,16 +747,12 @@ public class CommonAndroidTabletSteps {
      * @step. ^I see the Wire app is (not )?in foreground$
      */
     @Then("^I see the Wire app is (not )?in foreground$")
-    public void ISeeAppInForgeround(String shouldNotBeInForeground)
-            throws Exception {
-        final String packageId = AndroidCommonUtils
-                .getAndroidPackageFromConfig(getClass());
+    public void ISeeAppInForgeround(String shouldNotBeInForeground) throws Exception {
+        final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
         if (shouldNotBeInForeground == null) {
-            Assert.assertTrue("Wire is currently not in foreground",
-                    AndroidCommonUtils.isAppInForeground(packageId));
+            Assert.assertTrue("Wire is currently not in foreground", AndroidCommonUtils.isAppInForeground(packageId));
         } else {
-            Assert.assertFalse("Wire is currently still in foreground",
-                    AndroidCommonUtils.isAppInForeground(packageId));
+            Assert.assertFalse("Wire is currently still in foreground", AndroidCommonUtils.isAppInForeground(packageId));
         }
     }
 
