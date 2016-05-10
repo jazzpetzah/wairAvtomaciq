@@ -400,7 +400,7 @@ Feature: Conversation View
     And Contact <Contact> sends 35 encrypted messages with prefix <UNREAD> via device Device1 to user <Name>
     And I wait for 5 seconds
     When I open conversation with <Contact>
-    Then I do not see text message <READ>34
+    Then I do not see text message <READ>33
     And I do not see text message <READ>0
     And I do not see text message <UNREAD>34
     And I really see text message <UNREAD>0
