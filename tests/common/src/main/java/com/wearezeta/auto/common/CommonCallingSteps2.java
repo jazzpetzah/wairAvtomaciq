@@ -27,8 +27,6 @@ import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import javax.management.InstanceNotFoundException;
 
@@ -457,6 +455,7 @@ public final class CommonCallingSteps2 {
         }
         CompletableFuture.allOf(destroyTasks.values().toArray(new CompletableFuture[destroyTasks.size()]))
                 .get(INSTANCE_DESTROY_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        LOG.debug("Destroyed all calling instances - Clearing calling instance map");
         instanceMapping.clear();
     }
 
@@ -509,26 +508,25 @@ public final class CommonCallingSteps2 {
     private void addCall(Call call, ClientUser from) {
         final String key = makeKey(from);
         callMapping.put(key, call);
-        LOG.info("Added waiting call from " + from.getName() + " with key "
-                + key);
+        LOG.info("Added waiting call from " + from.getName() + " with key " + key);
     }
 
     private void addCall(Call call, ClientUser from, String conversationId) {
         final String key = makeKey(from, conversationId);
         callMapping.put(key, call);
-        LOG.info("Added call  from " + from.getName()
-                + " with conversation ID " + conversationId + " with key "
-                + key);
+        LOG.info("Added call  from " + from.getName() + " with conversation ID " + conversationId + " with key " + key);
     }
 
     private void addInstance(Instance instance, ClientUser from) {
-        String key = makeKey(from);
+        final String key = makeKey(from);
         instanceMapping.put(key, instance);
+        LOG.info("Added instance for user " + from.getName() + " with key " + key);
     }
 
     private void removeInstance(ClientUser from) {
-        String key = makeKey(from);
+        final String key = makeKey(from);
         instanceMapping.remove(key);
+        LOG.info("Removed instance for user " + from.getName() + " with key " + key);
     }
 
     private synchronized Instance getInstance(ClientUser userAs)

@@ -41,6 +41,7 @@ public class Lifecycle {
     public static final int SAFARI_DRIVER_CREATION_RETRY = 3;
     public static final long DRIVER_INIT_TIMEOUT = 60 * 1000;
     private TestContext context;
+    private TestContext compatContext;
 
     /**
      * The context is fully initialized after setting up the testcase
@@ -143,7 +144,7 @@ public class Lifecycle {
          * #### START ############################################################ COMPATIBILITY INSTRUCTIONS
          */
         TestContext.COMPAT_WEB_DRIVER = lazyWebDriver;
-        TestContext compatContext = new TestContext();
+        compatContext = new TestContext();
         try {
             compatContext.getDeviceManager().reset();
         } catch (Exception e) {
@@ -200,11 +201,14 @@ public class Lifecycle {
             try {
                 log.debug("Cleaning up calling instances");
                 context.getCallingManager().cleanup();
+                compatContext.getCallingManager().cleanup();
             } catch (Exception e) {
                 log.warn(e);
             }
             try {
                 log.debug("Clearing pages collection");
+                context.getPagesCollection().clearAllPages();
+                compatContext.getPagesCollection().clearAllPages();
                 WebPage.clearPagesCollection();
             } catch (Exception e) {
                 log.warn(e);
@@ -212,6 +216,7 @@ public class Lifecycle {
             try {
                 log.debug("Resetting users");
                 context.getUserManager().resetUsers();
+                compatContext.getUserManager().resetUsers();
             } catch (Exception e) {
                 log.warn(e);
             }
