@@ -90,7 +90,7 @@ Feature: File transfer
     And I save file from file dialog
     Then I wait up <DownloadTimeout> seconds until <FileExactSize> file having name "1_<FileName>.<FileExtension>" and MIME type "<MIMEType>" is downloaded to the device
 
-    Examples:F
+    Examples:
       | Name      | Contact1  | FileName | FileExtension | FileSize | UploadingTimeout | MIMEType  | DownloadTimeout | FileExactSize |
       | user1Name | user2Name | animated | gif           | 440KB    | 20               | image/gif | 10              | 451009B       |
 
