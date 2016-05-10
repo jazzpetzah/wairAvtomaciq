@@ -4,6 +4,7 @@ public class Config {
 
     private static final String EXECUTION_TAG_KEY = "picklejar.tag";
     private static final String CUCUMBER_REPORT_PATH_KEY = "picklejar.cucumber.report.path";
+    private static final String SCREENSHOT_PATH_KEY = "picklejar.screenshot.path";
     private static final String FEATURE_PACKAGE_KEY = "picklejar.feature.package";
     private static final String STEP_PACKAGE_KEY = "picklejar.steps.package";
     private static final String GENERATED_TEST_PACKAGE_KEY = "picklejar.tests.package";
@@ -11,6 +12,7 @@ public class Config {
     
     public static final String FEATURE_EXTENSION = "feature";
     public static final String CUCUMBER_REPORT_PATH = System.getProperty(CUCUMBER_REPORT_PATH_KEY, "target/");
+    public static final String SCREENSHOT_PATH = System.getProperty(SCREENSHOT_PATH_KEY, "target/Images/");
     public static final String STEP_PACKAGE = System.getProperty(STEP_PACKAGE_KEY, "com");
     public static final String GENERATED_TEST_PACKAGE = System.getProperty(GENERATED_TEST_PACKAGE_KEY, "c.pj.g");
     public static final String FEATURE_PACKAGE = System.getProperty(FEATURE_PACKAGE_KEY, "com");

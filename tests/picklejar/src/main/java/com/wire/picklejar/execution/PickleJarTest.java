@@ -1,6 +1,7 @@
 package com.wire.picklejar.execution;
 
 import com.wire.picklejar.Config;
+import static com.wire.picklejar.Config.SCREENSHOT_PATH;
 import com.wire.picklejar.PickleJar;
 import java.util.List;
 import java.util.Map;
@@ -96,7 +97,7 @@ public abstract class PickleJarTest {
         final String featureName = reportFeature.getName().replaceAll("[^a-zA-Z0-9]", "_");
         final String scenarioName = reportScenario.getName().replaceAll("[^a-zA-Z0-9]", "_");
         final String stepName = step.getName().replaceAll("[^a-zA-Z0-9]", "_");
-        Path path = Paths.get("target/Images/" + featureName + "/" + scenarioName + "/");
+        Path path = Paths.get(SCREENSHOT_PATH + featureName + "/" + scenarioName + "/");
         path.toFile().mkdirs();
         int index = 0;
         Path desiredPicture = Paths.get(path.toString(), stepName + "_" + index + ".png");
