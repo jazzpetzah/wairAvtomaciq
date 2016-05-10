@@ -65,3 +65,42 @@ Feature: Delete
     Examples:
       | Login      | Password      | Name      | Contact   | PictureName               | YouTubeLink                                | SpotifyLink                                           | SoundCloudLink                                           |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | http://www.youtube.com/watch?v=JOCtdw9FG-s | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss | https://soundcloud.com/wearegalantis/peanut-butter-jelly |
+
+  @C111959 @staging
+  Scenario Outline: Verify deleted messages remain deleted after I archive and unarchive a conversation
+    Given There are 2 users where <Name> is me
+    Given user <Name> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I write message <Message_1>
+    And I send message
+    And I write message <Message_2>
+    And I send message
+    And I write message <Message_3>
+    And I send message
+    Then I see text message <Message_1>
+    And I see text message <Message_2>
+    And I see text message <Message_3>
+    When User Myself deletes the recent 2 messages from user <Contact> via device Device1
+    Then I see text message <Message_1>
+    And I do not see text message <Message_2>
+    And I do not see text message <Message_3>
+    When I archive conversation <Contact>
+    And I do not see Contact list with name <Contact>
+    And I open archive
+    And I see archive list with name <Contact>
+    And I unarchive conversation <Contact>
+    And I see Contact list with name <Contact>
+    And I open conversation with <Contact>
+    Then I see text message <Message_1>
+    And I do not see text message <Message_2>
+    And I do not see text message <Message_3>
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | Message_1      | Message_2      | Message_3      |
+      | user1Email | user1Password | user1Name | user2Name | Test_Message_1 | Test_Message_2 | Test_Message_3 |
