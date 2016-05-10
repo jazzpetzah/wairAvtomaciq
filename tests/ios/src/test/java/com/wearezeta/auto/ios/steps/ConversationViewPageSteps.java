@@ -671,13 +671,13 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Long press on the image displayed in the conversation
+     * Long tap on the image displayed in the conversation
      *
      * @throws Exception
-     * @step. ^I longpress on image in the conversation$
+     * @step. ^I long tap on image in the conversation$
      */
-    @When("^I longpress on image in the conversation$")
-    public void ILongPressOnImage() throws Exception {
+    @When("^I long tap on image in the conversation$")
+    public void ILongTapOnImage() throws Exception {
         getConversationViewPage().tapHoldImage();
     }
 
