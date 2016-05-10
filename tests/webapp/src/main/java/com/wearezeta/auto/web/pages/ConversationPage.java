@@ -746,7 +746,8 @@ public class ConversationPage extends WebPage {
 		return connectedMessageUser.getText();
 	}
 
-	public Object getConnectedMessageLabel() {
+	public Object getConnectedMessageLabel() throws Exception {
+		DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage.cssConnectedMessageLabel));
 		return connectedMessageLabel.getText();
 	}
 
