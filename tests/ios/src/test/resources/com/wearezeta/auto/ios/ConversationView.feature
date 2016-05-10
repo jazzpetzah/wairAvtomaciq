@@ -831,7 +831,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @torun @C111323 @staging
+  @C111323 @staging
   Scenario Outline: Verify deleting the picture, gif from Giphy
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
