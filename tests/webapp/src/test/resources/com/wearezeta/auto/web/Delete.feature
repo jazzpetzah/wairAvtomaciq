@@ -77,25 +77,30 @@ Feature: Delete
     Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <Contact>
-    And I write random message
+    And I write message <Message_1>
     And I send message
-    And I write message FOR_DELETION_1
+    And I write message <Message_2>
     And I send message
-    And I write message FOR_DELETION_2
+    And I write message <Message_3>
     And I send message
-    And I wait for 1 second
-    Then I see 3 messages in conversation
+    Then I see text message <Message_1>
+    And I see text message <Message_2>
+    And I see text message <Message_3>
     When User Myself deletes the recent 2 messages from user <Contact> via device Device1
-    And I wait for 1 second
-    Then I see 1 messages in conversation
+    Then I see text message <Message_1>
+    And I do not see text message <Message_2>
+    And I do not see text message <Message_3>
     When I archive conversation <Contact>
     And I do not see Contact list with name <Contact>
     And I open archive
+    And I see archive list with name <Contact>
     And I unarchive conversation <Contact>
     And I see Contact list with name <Contact>
     And I open conversation with <Contact>
-    Then I see 1 messages in conversation
+    Then I see text message <Message_1>
+    And I do not see text message <Message_2>
+    And I do not see text message <Message_3>
 
     Examples:
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Message_1      | Message_2      | Message_3      |
+      | user1Email | user1Password | user1Name | user2Name | Test_Message_1 | Test_Message_2 | Test_Message_3 |
