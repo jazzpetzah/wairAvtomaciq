@@ -681,11 +681,8 @@ public class ConversationViewPage extends IOSPage {
         DriverUtils.tapOnPercentOfElement(getDriver(), lastMessage, 10, 50, 1000);
     }
 
-    public void tapAndHoldMediaContainer() {
-        try {
-            this.getDriver().tap(1, getElement(xpathMediaContainerCell), 1000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void tapAndHoldMediaContainer() throws Exception {
+        this.getDriver().tap(1, getElement(xpathMediaContainerCell), DriverUtils.LONG_TAP_DURATION);
+
     }
 }
