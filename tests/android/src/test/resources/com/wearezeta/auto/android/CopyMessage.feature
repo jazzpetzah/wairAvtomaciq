@@ -10,7 +10,7 @@ Feature: Copy Message
     And I tap on contact name <Contact>
     And I tap on text input
     And I type the message "<Message>" and send it
-    When I long tap the message "<Message>" in the conversation view
+    When I long tap the Text message "<Message>" in the conversation view
     And I tap Copy button on the action mode bar
     Then I verify that Android clipboard content equals to "<Message>"
 
@@ -30,10 +30,10 @@ Feature: Copy Message
     # Wait for the content to sync up
     Given I wait for 5 seconds
     And I tap on contact name <Contact>
-    When I long tap the message "<Message>" in the conversation view
+    When I long tap the Text message "<Message>" in the conversation view
     And I tap the recent picture in the conversation view
     Then I do not see Copy button on the action mode bar
-    When I tap the message "<Message>" in the conversation view
+    When I tap the Text message "<Message>" in the conversation view
     Then I do not see Copy button on the action mode bar
 
     Examples:
@@ -50,7 +50,7 @@ Feature: Copy Message
     And I tap on contact name <Contact>
     When User <Contact> sends encrypted message "<Message>" to user Myself
     Then I see Play button on Youtube container
-    When I long tap the message "<Message>" in the conversation view
+    When I long tap the Text message "<Message>" in the conversation view
     And I tap Copy button on the action mode bar
     Then I verify that Android clipboard content equals to "<Message>"
 
