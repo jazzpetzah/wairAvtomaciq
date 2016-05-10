@@ -1064,4 +1064,33 @@ public class ConversationViewPageSteps {
             getConversationViewPage().tapAndHoldTextMessageByText(msg);
         }
     }
+
+    /**
+     * Verifies if media container is visible or not in the dialog
+     *
+     * @param shouldNotBeVisible equals to null if the media container should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see the media container in the dialog$
+     */
+    @Then("^I (do not )?see the media container in the dialog$")
+    public void ISeeTheMediaContainerInTheDialog(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("Soundcloud media container is not visible",
+                    getConversationViewPage().isMediaContainerVisible());
+        } else {
+            Assert.assertTrue("Soundcloud media container is visible",
+                    getConversationViewPage().isMediaContainerInvisible());
+        }
+    }
+
+    /**
+     * Does a long tap on a media container to get delete/copy menu
+     *
+     * @throws Exception
+     * @step. ^I long tap on media container in the conversation$
+     */
+    @When("^I long tap on media container in the conversation$")
+    public void iLongTapOnMediaContainerInTheConversation() throws Exception {
+        getConversationViewPage().tapAndHoldMediaContainer();
+    }
 }
