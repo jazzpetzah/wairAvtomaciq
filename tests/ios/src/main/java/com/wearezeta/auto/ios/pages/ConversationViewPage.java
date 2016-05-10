@@ -371,6 +371,10 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathMediaContainerCell);
     }
 
+    public boolean isMediaContainerInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), xpathMediaContainerCell);
+    }
+
     public boolean isMediaBarDisplayed() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameTitle);
     }
@@ -675,5 +679,13 @@ public class ConversationViewPage extends IOSPage {
         final WebElement lastMessage = getElement(By.xpath(xpathStrMessageByTextPart.apply(msg)));
         //Using this method because tap should be performed precisely on the text otherwise popup won't appear
         DriverUtils.tapOnPercentOfElement(getDriver(), lastMessage, 10, 50, 1000);
+    }
+
+    public void tapAndHoldMediaContainer() {
+        try {
+            this.getDriver().tap(1, getElement(xpathMediaContainerCell), 1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
