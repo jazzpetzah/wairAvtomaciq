@@ -1,7 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppConstants;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.VerifyPage;
 
 import cucumber.api.java.en.Then;
@@ -11,8 +11,15 @@ import static org.hamcrest.Matchers.*;
 
 public class VerifyPageSteps {
 	
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+        private final TestContext context;
+        
+    public VerifyPageSteps() {
+        this.context = new TestContext();
+    }
+
+    public VerifyPageSteps(TestContext context) {
+        this.context = context;
+    }
 	
 	/**
 	 * Open verify page on website
@@ -23,16 +30,16 @@ public class VerifyPageSteps {
 	 */
 	@When("^I go to verify page for (.*)$")
 	public void IGoToVerifyPage(String agent) throws Exception {
-		webappPagesCollection.getPage(VerifyPage.class).setUrl(
+		context.getPagesCollection().getPage(VerifyPage.class).setUrl(
 				WebAppConstants.STAGING_SITE_ROOT + "/verify/%3Fsuccess%26agent=" + agent);
-		webappPagesCollection.getPage(VerifyPage.class).navigateTo();		
+		context.getPagesCollection().getPage(VerifyPage.class).navigateTo();		
 	}
 	
 	@When("^I go to broken verify page for (.*)$")
 	public void IGoToBrokenVerifyPage(String agent) throws Exception {
-		webappPagesCollection.getPage(VerifyPage.class).setUrl(
+		context.getPagesCollection().getPage(VerifyPage.class).setUrl(
 				WebAppConstants.STAGING_SITE_ROOT + "/verify/%3Fagent=" + agent);
-		webappPagesCollection.getPage(VerifyPage.class).navigateTo();		
+		context.getPagesCollection().getPage(VerifyPage.class).navigateTo();		
 	}
 	
 	@Then("^I see download button for (.*)$")
@@ -53,17 +60,17 @@ public class VerifyPageSteps {
 				break;
 			default: break;
 		}
-		assertThat(webappPagesCollection.getPage(VerifyPage.class).getDownloadUrl(agent), equalTo(downloadLink));
+		assertThat(context.getPagesCollection().getPage(VerifyPage.class).getDownloadUrl(agent), equalTo(downloadLink));
 	}
 	
 	@Then("^I see webapp button$")
 	public void ISeeWebappButton() throws Exception{
-		assertThat(webappPagesCollection.getPage(VerifyPage.class).getWebappUrl(), equalTo("https://wire-webapp-staging.zinfra.io/"));
+		assertThat(context.getPagesCollection().getPage(VerifyPage.class).getWebappUrl(), equalTo("https://wire-webapp-staging.zinfra.io/"));
 	}
 	
 	@Then("^I see error message$")
 	public void ISeeErrorMessage() throws Exception {
-		assertThat(webappPagesCollection.getPage(VerifyPage.class).isErrorMessageVisible(), is(true));
+		assertThat(context.getPagesCollection().getPage(VerifyPage.class).isErrorMessageVisible(), is(true));
 	}
 	
 

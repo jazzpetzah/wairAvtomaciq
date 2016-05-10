@@ -2,37 +2,38 @@ package com.wearezeta.auto.web.steps;
 
 import java.util.List;
 
-import com.typesafe.config.ConfigException;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.web.pages.PeoplePickerPage;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.GoogleLoginPage;
 import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.openqa.selenium.WebElement;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class PeoplePickerPageSteps {
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
-	private static String rememberedUser;
 
+    private final TestContext context;
+
+    private static String rememberedUser;
+
+    public PeoplePickerPageSteps() {
+        this.context = new TestContext();
+    }
+
+    public PeoplePickerPageSteps(TestContext context) {
+        this.context = context;
+    }
 
 	/**
 	 * Verifies the presence of the People Picker
@@ -43,7 +44,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I see [Pp]eople [Pp]icker$")
 	public void ISeePeoplePicker() throws Exception {
-		webappPagesCollection.getPage(PeoplePickerPage.class).isVisible();
+		context.getPagesCollection().getPage(PeoplePickerPage.class).isVisible();
 	}
 
 	/**
@@ -58,8 +59,8 @@ public class PeoplePickerPageSteps {
 	@When("^I select (.*) from People Picker results$")
 	public void ISelectUserFromPeoplePickerResults(String user)
 			throws Exception {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-		webappPagesCollection.getPage(PeoplePickerPage.class)
+		user = context.getUserManager().replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+		context.getPagesCollection().getPage(PeoplePickerPage.class)
 				.selectUserFromSearchResult(user);
 	}
 
@@ -72,7 +73,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I wait for the search field of People Picker to be empty$")
 	public void IWaitForSearchFieldToBeEmpty() throws Exception {
-		webappPagesCollection.getPage(PeoplePickerPage.class)
+		context.getPagesCollection().getPage(PeoplePickerPage.class)
 				.waitForSearchFieldToBeEmpty();
 	}
 
@@ -86,12 +87,12 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I type (.*) in search field of People Picker$")
 	public void ISearchForUser(String nameOrEmail) throws Exception {
-		nameOrEmail = usrMgr.replaceAliasesOccurences(nameOrEmail,
+		nameOrEmail = context.getUserManager().replaceAliasesOccurences(nameOrEmail,
 				FindBy.NAME_ALIAS);
-		nameOrEmail = usrMgr.replaceAliasesOccurences(nameOrEmail,
+		nameOrEmail = context.getUserManager().replaceAliasesOccurences(nameOrEmail,
 				FindBy.EMAIL_ALIAS);
 		// adding spaces to ensure trimming of input
-		webappPagesCollection.getPage(PeoplePickerPage.class).searchForUser(
+		context.getPagesCollection().getPage(PeoplePickerPage.class).searchForUser(
 				" " + nameOrEmail + " ");
 	}
 
@@ -110,13 +111,13 @@ public class PeoplePickerPageSteps {
 	@When("^I( do not)? see user (.*) found in People Picker$")
 	public void ISeeUserFoundInPeoplePicker(String donot, String name)
 			throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 
 		if (donot == null) {
-			Assert.assertTrue(webappPagesCollection.getPage(
+			Assert.assertTrue(context.getPagesCollection().getPage(
 					PeoplePickerPage.class).isUserFound(name));
 		} else {
-			Assert.assertTrue(webappPagesCollection.getPage(
+			Assert.assertTrue(context.getPagesCollection().getPage(
 					PeoplePickerPage.class).isUserNotFound(name));
 		}
 	}
@@ -132,8 +133,8 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I remove user (.*) from suggestions in People Picker$")
 	public void IClickRemoveButton(String contact) throws Exception {
-		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		webappPagesCollection.getPage(PeoplePickerPage.class)
+		contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		context.getPagesCollection().getPage(PeoplePickerPage.class)
 				.clickRemoveButtonOnSuggestion(contact);
 	}
 
@@ -149,8 +150,8 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I make a connection request for user (.*) directly from People Picker$")
 	public void IClickPlusButton(String contact) throws Exception {
-		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		webappPagesCollection.getPage(PeoplePickerPage.class)
+		contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		context.getPagesCollection().getPage(PeoplePickerPage.class)
 				.clickPlusButtonOnSuggestion(contact);
 	}
 
@@ -163,7 +164,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I close People Picker$")
 	public void IClosePeoplePicker() throws Exception {
-		webappPagesCollection.getPage(PeoplePickerPage.class).closeSearch();
+		context.getPagesCollection().getPage(PeoplePickerPage.class).closeSearch();
 	}
 
 	/**
@@ -182,24 +183,24 @@ public class PeoplePickerPageSteps {
 	@When("^I click on (not connected|pending) user (.*) found in People Picker$")
 	public void IClickNotConnecteUserFoundInPeoplePicker(String userType,
 			String name) throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		if (userType.equalsIgnoreCase("not connected")) {
-			webappPagesCollection.getPage(PeoplePickerPage.class)
+			context.getPagesCollection().getPage(PeoplePickerPage.class)
 					.clickNotConnectedUserName(name);
 		} else if (userType.equalsIgnoreCase("pending")) {
-			webappPagesCollection.getPage(PeoplePickerPage.class)
+			context.getPagesCollection().getPage(PeoplePickerPage.class)
 					.clickPendingUserName(name);
 		}
 	}
 
 	@When("^I click on remembered (not connected|pending) contact found in People Picker$")
 	public void IClickRememberedNotConnecteUserFoundInPeoplePicker(String userType) throws Exception {
-		rememberedUser = usrMgr.replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
+		rememberedUser = context.getUserManager().replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
 		if (userType.equalsIgnoreCase("not connected")) {
-			webappPagesCollection.getPage(PeoplePickerPage.class)
+			context.getPagesCollection().getPage(PeoplePickerPage.class)
 					.clickNotConnectedUserName(rememberedUser);
 		} else if (userType.equalsIgnoreCase("pending")) {
-			webappPagesCollection.getPage(PeoplePickerPage.class)
+			context.getPagesCollection().getPage(PeoplePickerPage.class)
 					.clickPendingUserName(rememberedUser);
 		}
 	}
@@ -212,7 +213,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I choose to create conversation from People Picker$")
 	public void IChooseToCreateConversationFromPeoplePicker() throws Exception {
-		webappPagesCollection.getPage(PeoplePickerPage.class)
+		context.getPagesCollection().getPage(PeoplePickerPage.class)
 				.createConversation();
 	}
 
@@ -220,7 +221,7 @@ public class PeoplePickerPageSteps {
 	public void ISeeMoreThanXSuggestionsInPeoplePicker(int count)
 			throws Exception {
 		assertThat("people suggestions",
-				webappPagesCollection.getPage(PeoplePickerPage.class)
+				context.getPagesCollection().getPage(PeoplePickerPage.class)
 						.getNumberOfSuggestions(), greaterThan(count));
 	}
 
@@ -233,7 +234,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I see Bring Your Friends or Invite People button$")
 	public void ISeeSendInvitationButton() throws Exception {
-		webappPagesCollection.getPage(PeoplePickerPage.class)
+		context.getPagesCollection().getPage(PeoplePickerPage.class)
 				.waitUntilBringYourFriendsOrInvitePeopleButtonIsVisible();
 	}
 
@@ -246,7 +247,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I do not see Gmail Import button on People Picker page$")
 	public void IDoNotSeeGmailImportButton() throws Exception {
-		webappPagesCollection.getPage(BringYourFriendsPopoverPage.class)
+		context.getPagesCollection().getPage(BringYourFriendsPopoverPage.class)
 				.waitUntilGmailImportButtonIsNotVisible();
 	}
 
@@ -258,7 +259,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@And("^I click button to bring friends from Gmail$")
 	public void IClickButtonToBringFriendsFromGmail() throws Exception {
-		webappPagesCollection.getPage(PeoplePickerPage.class)
+		context.getPagesCollection().getPage(PeoplePickerPage.class)
 				.clickBringFriendsFromGmailButton();
 	}
 
@@ -271,7 +272,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@And("^I see Google login popup$")
 	public void ISeeGoogleLoginPopup() throws Exception {
-		webappPagesCollection.getPage(PeoplePickerPage.class)
+		context.getPagesCollection().getPage(PeoplePickerPage.class)
 				.switchToGooglePopup();
 	}
 
@@ -287,7 +288,7 @@ public class PeoplePickerPageSteps {
 	@When("^I sign up at Google with email (.*) and password (.*)$")
 	public void ISignUpAtGoogleWithEmail(String email, String password)
 			throws Exception {
-		GoogleLoginPage googleLoginPage = webappPagesCollection
+		GoogleLoginPage googleLoginPage = context.getPagesCollection()
 				.getPage(GoogleLoginPage.class);
 		// sometimes Google already shows the email
 		googleLoginPage.setEmail(email);
@@ -309,7 +310,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I click Bring Your Friends or Invite People button$")
 	public void IClickBringYourFriendsOrInvitePeopleButton() throws Exception {
-		webappPagesCollection.getPage(PeoplePickerPage.class)
+		context.getPagesCollection().getPage(PeoplePickerPage.class)
 				.clickBringYourFriendsOrInvitePeopleButton();
 	}
 
@@ -322,7 +323,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I click Call button on People Picker page$")
 	public void IClickCallButton() throws Exception {
-		webappPagesCollection.getPage(PeoplePickerPage.class).clickCallButton();
+		context.getPagesCollection().getPage(PeoplePickerPage.class).clickCallButton();
 	}
 
 	/**
@@ -335,11 +336,11 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I wait till Top People list appears$")
 	public void IwaitTillTopPeopleListAppears() throws Exception {
-		if (!webappPagesCollection.getPage(PeoplePickerPage.class)
+		if (!context.getPagesCollection().getPage(PeoplePickerPage.class)
 				.isTopPeopleLabelVisible())
-			webappPagesCollection.getPage(PeoplePickerPage.class).closeSearch();
-		webappPagesCollection.getPage(ContactListPage.class).openPeoplePicker();
-		Assert.assertTrue("Top People list is not shown", webappPagesCollection
+			context.getPagesCollection().getPage(PeoplePickerPage.class).closeSearch();
+		context.getPagesCollection().getPage(ContactListPage.class).openPeoplePicker();
+		Assert.assertTrue("Top People list is not shown", context.getPagesCollection()
 				.getPage(PeoplePickerPage.class).isTopPeopleLabelVisible());
 	}
 
@@ -356,9 +357,9 @@ public class PeoplePickerPageSteps {
 	public void ISelectUsersFromTopPeople(String namesOfTopPeople)
 			throws Exception {
 		for (String alias : CommonSteps.splitAliases(namesOfTopPeople)) {
-			final String userName = usrMgr.findUserByNameOrNameAlias(alias)
+			final String userName = context.getUserManager().findUserByNameOrNameAlias(alias)
 					.getName();
-			webappPagesCollection.getPage(PeoplePickerPage.class)
+			context.getPagesCollection().getPage(PeoplePickerPage.class)
 					.clickNameInTopPeople(userName);
 		}
 	}
@@ -371,62 +372,62 @@ public class PeoplePickerPageSteps {
 
 	@When("^I remember user names selected in Top People$")
 	public void IRememberUserNamesSelectedInTopPeople() throws Exception {
-		selectedTopPeople = webappPagesCollection.getPage(
+		selectedTopPeople = context.getPagesCollection().getPage(
 				PeoplePickerPage.class).getNamesOfSelectedTopPeople();
 	}
 
     @When("^I remember first suggested user$")
     public void IRememberSuggestedUser() throws Exception {
-        List<String> suggestedUsers = webappPagesCollection.getPage(PeoplePickerPage.class).getNamesOfSuggestedContacts();
+        List<String> suggestedUsers = context.getPagesCollection().getPage(PeoplePickerPage.class).getNamesOfSuggestedContacts();
 		rememberedUser = suggestedUsers.get(0);
     }
 
     @When("^I( do not)? see (.*) remembered user in People Picker$")
     public void ISeeRememberedUserInPeoplePicker(String donot, String count) throws Exception {
         if (donot != null && count.contains("first")) {
-            Assert.assertTrue(webappPagesCollection.getPage(
+            Assert.assertTrue(context.getPagesCollection().getPage(
                     PeoplePickerPage.class).isUserNotFound(rememberedUser));
 		} else if (count.contains("first")) {
-            Assert.assertTrue(webappPagesCollection.getPage(
+            Assert.assertTrue(context.getPagesCollection().getPage(
                     PeoplePickerPage.class).isUserFound(rememberedUser));
         }
     }
 
     @When("^I remove first remembered user from suggestions in People Picker$")
     public void IRemoveFirstRememberedUser() throws Exception {
-		rememberedUser = usrMgr.replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
-        webappPagesCollection.getPage(PeoplePickerPage.class)
+		rememberedUser = context.getUserManager().replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
+        context.getPagesCollection().getPage(PeoplePickerPage.class)
                 .clickRemoveButtonOnSuggestion(rememberedUser);
     }
 
     @When("^I make a connection request for remembered user directly from People Picker$")
     public void IMakeAConnectionRequestForSecondRememberedUser() throws Exception {
-		rememberedUser = usrMgr.replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
-        webappPagesCollection.getPage(PeoplePickerPage.class)
+		rememberedUser = context.getUserManager().replaceAliasesOccurences(rememberedUser, FindBy.NAME_ALIAS);
+        context.getPagesCollection().getPage(PeoplePickerPage.class)
                 .clickPlusButtonOnSuggestion(rememberedUser);
     }
 
     @When("^I( do not)? see Contact list with remembered user$")
     public void ISeeContactListWithSecondRememberedUser(String donot) throws Exception {
 		if (donot == null) {
-			Assert.assertTrue(webappPagesCollection.getPage(ContactListPage.class)
+			Assert.assertTrue(context.getPagesCollection().getPage(ContactListPage.class)
 					.isConvoListEntryWithNameExist(rememberedUser));
 		} else {
-			Assert.assertFalse(webappPagesCollection.getPage(ContactListPage.class)
+			Assert.assertFalse(context.getPagesCollection().getPage(ContactListPage.class)
 				.isConvoListEntryWithNameExist(rememberedUser));
 		}
     }
 
     @When("^I open remembered users conversation$")
     public void IOpenSecondRememberedUsersConversation() throws Exception {
-        webappPagesCollection.getPage(ContactListPage.class).openConversation(rememberedUser);
+        context.getPagesCollection().getPage(ContactListPage.class).openConversation(rememberedUser);
     }
 
     @When("^I see connecting message in conversation with remembered contact$")
     public void ISeeConnectingMsgFromSecondRememberedUser() throws Exception {
-        assertThat("User name", webappPagesCollection.getPage(ConversationPage.class).getConnectedMessageUser(),
+        assertThat("User name", context.getPagesCollection().getPage(ConversationPage.class).getConnectedMessageUser(),
                 equalTo(rememberedUser));
-        assertThat("Label", webappPagesCollection.getPage(ConversationPage.class).getConnectedMessageLabel(),
+        assertThat("Label", context.getPagesCollection().getPage(ConversationPage.class).getConnectedMessageLabel(),
                 equalTo("CONNECTING"));
     }
 
@@ -441,7 +442,7 @@ public class PeoplePickerPageSteps {
 	public void ISeeSearchIsOpened() throws Exception {
 		final String searchMissingMessage = "Search is not visible on People Picker Page";
 		Assert.assertTrue(searchMissingMessage,
-				webappPagesCollection.getPage(PeoplePickerPage.class)
+				context.getPagesCollection().getPage(PeoplePickerPage.class)
 						.isSearchOpened());
 	}
 
@@ -462,10 +463,10 @@ public class PeoplePickerPageSteps {
 			throws Exception {
 
 		if (donot == null) {
-			Assert.assertTrue(webappPagesCollection.getPage(
+			Assert.assertTrue(context.getPagesCollection().getPage(
 					PeoplePickerPage.class).isGroupConversationFound(name));
 		} else {
-			Assert.assertTrue(webappPagesCollection.getPage(
+			Assert.assertTrue(context.getPagesCollection().getPage(
 					PeoplePickerPage.class).isGroupConversationNotFound(name));
 		}
 	}
@@ -479,7 +480,7 @@ public class PeoplePickerPageSteps {
 	@Then("^I see (\\d+) people in Top people list$")
 	public void ISeeXPeopleInTopPeopleList(int count) throws Exception {
 		assertThat("people suggestions",
-				webappPagesCollection.getPage(PeoplePickerPage.class)
+				context.getPagesCollection().getPage(PeoplePickerPage.class)
 						.getNumberOfTopPeople(), equalTo(count));
 	}
 
@@ -492,7 +493,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I click Video Call button on People Picker page$")
 	public void IClickVideoCallButton() throws Exception {
-		webappPagesCollection.getPage(PeoplePickerPage.class).clickVideoCallButton();
+		context.getPagesCollection().getPage(PeoplePickerPage.class).clickVideoCallButton();
 	}
 
 	/**
@@ -507,14 +508,14 @@ public class PeoplePickerPageSteps {
 		if (doNot == null) {
 			final String searchMissingMessage = "Video Call button is not shown on People Picker Page";
 			Assert.assertTrue(searchMissingMessage,
-					webappPagesCollection.getPage(PeoplePickerPage.class)
+					context.getPagesCollection().getPage(PeoplePickerPage.class)
 							.isVideoCallButtonVisible());
 		}
 		else
 		{
 			final String searchMissingMessage = "Video Call button is shown on People Picker Page";
 			Assert.assertTrue(searchMissingMessage,
-                    webappPagesCollection.getPage(PeoplePickerPage.class)
+                    context.getPagesCollection().getPage(PeoplePickerPage.class)
 					.isVideoCallButtonNotVisible());
 		}
 

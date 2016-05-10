@@ -3,11 +3,10 @@ package com.wearezeta.auto.web.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.AccentColor;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.SelfProfilePage;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -17,12 +16,15 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class SelfProfilePageSteps {
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+	private final TestContext context;
+        
+    public SelfProfilePageSteps() {
+        this.context = new TestContext();
+    }
 
-	public SelfProfilePageSteps() {
-	}
+    public SelfProfilePageSteps(TestContext context) {
+        this.context = context;
+    }
 
 	/**
 	 * Clicks the gear button on Self Profile page
@@ -32,7 +34,7 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I click gear button on self profile page$")
 	public void IClickGearButton() throws Exception {
-		webappPagesCollection.getPage(SelfProfilePage.class).clickGearButton();
+		context.getPagesCollection().getPage(SelfProfilePage.class).clickGearButton();
 	}
 
 	/**
@@ -46,7 +48,7 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I select (.*) menu item on self profile page$")
 	public void ISelectGearMenuItem(String name) throws Exception {
-		webappPagesCollection.getPage(SelfProfilePage.class)
+		context.getPagesCollection().getPage(SelfProfilePage.class)
 				.selectGearMenuItem(name);
 	}
 
@@ -61,8 +63,8 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I see user name on self profile page (.*)$")
 	public void ISeeUserNameOnSelfProfilePage(String name) throws Exception {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		boolean nameCorrect = webappPagesCollection.getPage(
+		name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		boolean nameCorrect = context.getPagesCollection().getPage(
 				SelfProfilePage.class).checkNameInSelfProfile(name);
 		Assert.assertTrue(nameCorrect);
 	}
@@ -79,9 +81,9 @@ public class SelfProfilePageSteps {
 	@And("^I see user phone number on self profile page (.*)$")
 	public void ISeeUserPhoneNumberOnSelfProfilePage(String phoneNumber)
 			throws Exception {
-		phoneNumber = usrMgr.replaceAliasesOccurences(phoneNumber,
+		phoneNumber = context.getUserManager().replaceAliasesOccurences(phoneNumber,
 				FindBy.PHONENUMBER_ALIAS);
-		assertThat(webappPagesCollection.getPage(SelfProfilePage.class)
+		assertThat(context.getPagesCollection().getPage(SelfProfilePage.class)
 				.getUserPhoneNumber(), equalTo(phoneNumber));
 	}
 
@@ -99,12 +101,12 @@ public class SelfProfilePageSteps {
 	public void ISeeUserEmailOnSelfProfilePage(String email)
 			throws NoSuchUserException, Exception {
 		try {
-			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
+			email = context.getUserManager().findUserByEmailOrEmailAlias(email).getEmail();
 		} catch (NoSuchUserException e) {
 
 		}
 
-		String actualEmail = webappPagesCollection.getPage(
+		String actualEmail = context.getPagesCollection().getPage(
 				SelfProfilePage.class).getUserMail();
 		Assert.assertEquals(email, actualEmail);
 	}
@@ -119,8 +121,8 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I change username to (.*)")
 	public void IChangeUserNameTo(String name) throws Exception {
-		webappPagesCollection.getPage(SelfProfilePage.class).setUserName(name);
-		usrMgr.getSelfUser().setName(name);
+		context.getPagesCollection().getPage(SelfProfilePage.class).setUserName(name);
+		context.getUserManager().getSelfUser().setName(name);
 	}
 
 	/**
@@ -136,7 +138,7 @@ public class SelfProfilePageSteps {
 	 */
 	@Then("^I set my accent color to (\\w+)$")
 	public void ISetMyAccentColorTo(String colorName) throws Exception {
-		webappPagesCollection.getPage(SelfProfilePage.class).selectAccentColor(
+		context.getPagesCollection().getPage(SelfProfilePage.class).selectAccentColor(
 				colorName);
 	}
 
@@ -153,7 +155,7 @@ public class SelfProfilePageSteps {
 	@Then("^I verify my accent color in color picker is set to (\\w+) color$")
 	public void IVerifyMyAccentColor(String colorName) throws Exception {
 		final int expectedColorId = AccentColor.getByName(colorName).getId();
-		final int actualColorId = webappPagesCollection.getPage(
+		final int actualColorId = context.getPagesCollection().getPage(
 				SelfProfilePage.class).getCurrentAccentColorId();
 		Assert.assertTrue("my actual accent color is not set",
 				actualColorId == expectedColorId);
@@ -168,7 +170,7 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I click camera button$")
 	public void IClickCameraButton() throws Exception {
-		webappPagesCollection.getPage(SelfProfilePage.class)
+		context.getPagesCollection().getPage(SelfProfilePage.class)
 				.clickCameraButton();
 	}
 
@@ -186,7 +188,7 @@ public class SelfProfilePageSteps {
 	@Then("^I verify my avatar background color is set to (\\w+) color$")
 	public void IVerifyMyAvatarColor(String colorName) throws Exception {
 		final AccentColor expectedColor = AccentColor.getByName(colorName);
-		final AccentColor avatarColor = webappPagesCollection.getPage(
+		final AccentColor avatarColor = context.getPagesCollection().getPage(
 				SelfProfilePage.class).getCurrentAvatarAccentColor();
 		Assert.assertTrue("my avatar background accent color is not set",
 				avatarColor == expectedColor);
@@ -203,7 +205,7 @@ public class SelfProfilePageSteps {
 	 */
 	@When("^I drop picture (.*) to self profile$")
 	public void IDropPicture(String pictureName) throws Exception {
-		webappPagesCollection.getPage(SelfProfilePage.class).dropPicture(
+		context.getPagesCollection().getPage(SelfProfilePage.class).dropPicture(
 				pictureName);
 	}
 
@@ -218,22 +220,22 @@ public class SelfProfilePageSteps {
 	 */
 	@When("^I upload picture (.*) to self profile$")
 	public void IUploadPicture(String pictureName) throws Exception {
-		webappPagesCollection.getPage(SelfProfilePage.class).uploadPicture(
+		context.getPagesCollection().getPage(SelfProfilePage.class).uploadPicture(
 				pictureName);
 	}
 
 	@When("^I see the clear data dialog$")
 	public void ISeeClearDataDialog() throws Exception {
-		assertThat(webappPagesCollection.getPage(SelfProfilePage.class).isLogoutDialogShown(), is(true));
+		assertThat(context.getPagesCollection().getPage(SelfProfilePage.class).isLogoutDialogShown(), is(true));
 	}
 
 	@When("^I enable checkbox to clear all data$")
 	public void IEnableClearDataCheckbox() throws Exception {
-		webappPagesCollection.getPage(SelfProfilePage.class).checkClearData();
+		context.getPagesCollection().getPage(SelfProfilePage.class).checkClearData();
 	}
 
 	@When("^I click Logout button on clear data dialog$")
 	public void IClickLogoutOnClearDataDialog() throws Exception {
-		webappPagesCollection.getPage(SelfProfilePage.class).clickLogoutButton();
+		context.getPagesCollection().getPage(SelfProfilePage.class).clickLogoutButton();
 	}
 }

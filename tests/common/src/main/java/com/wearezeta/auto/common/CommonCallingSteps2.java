@@ -73,23 +73,30 @@ public final class CommonCallingSteps2 {
     private static CommonCallingSteps2 singleton = null;
 
     private final ExecutorService executor;
-    private final ClientUsersManager usrMgr;
+    private ClientUsersManager usrMgr;
     private final CallingServiceClient client;
     private final Map<String, Instance> instanceMapping;
     private final Map<String, Call> callMapping;
 
     public synchronized static CommonCallingSteps2 getInstance() {
         if (singleton == null) {
-            singleton = new CommonCallingSteps2();
+            singleton = new CommonCallingSteps2(ClientUsersManager.getInstance());
         }
         return singleton;
     }
 
-    private CommonCallingSteps2() {
+    /**
+     * We break the singleton pattern here and make the constructor public to have multiple instances of this class for parallel
+     * test executions. This means this class is not suitable as singleton and it should be changed to a non-singleton class. In
+     * order to stay downward compatible we chose to just change the constructor.
+     *
+     * @return
+     */
+    public CommonCallingSteps2(ClientUsersManager usrMgr) {
         this.callMapping = new ConcurrentHashMap<>();
         this.instanceMapping = new ConcurrentHashMap<>();
         this.client = new CallingServiceClient();
-        this.usrMgr = ClientUsersManager.getInstance();
+        this.usrMgr = usrMgr;
         this.executor = Executors.newCachedThreadPool();
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {

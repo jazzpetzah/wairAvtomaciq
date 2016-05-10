@@ -1,9 +1,8 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.AddEmailAddressPage;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -12,9 +11,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class AddEmailAddressPageSteps {
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+    private final TestContext context;
+    
+    public AddEmailAddressPageSteps() {
+        this.context = new TestContext();
+    }
+
+    public AddEmailAddressPageSteps(TestContext context) {
+        this.context = context;
+    }
 
 	/**
 	 * Enter email address of user via user alias
@@ -27,8 +32,8 @@ public class AddEmailAddressPageSteps {
 	@When("^I enter email of user (.*) on add email address dialog$")
 	public void IEnterEmailOfUserOnAddEmailAddressDialog(String name)
 			throws Throwable {
-		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
-		webappPagesCollection.getPage(AddEmailAddressPage.class).setEmail(
+		ClientUser user = context.getUserManager().findUserByNameOrNameAlias(name);
+		context.getPagesCollection().getPage(AddEmailAddressPage.class).setEmail(
 				user.getEmail());
 	}
 
@@ -43,7 +48,7 @@ public class AddEmailAddressPageSteps {
 	@When("^I enter email address (.*) on add email address dialog$")
 	public void IEnterEmailOnAddEmailAddressDialog(String email)
 			throws Throwable {
-		webappPagesCollection.getPage(AddEmailAddressPage.class)
+		context.getPagesCollection().getPage(AddEmailAddressPage.class)
 				.setEmail(email);
 	}
 
@@ -58,7 +63,7 @@ public class AddEmailAddressPageSteps {
 	@When("^I enter password (.*) on add email address dialog$")
 	public void IEnterPasswordOnAddEmailAddressDialog(String password)
 			throws Exception {
-		webappPagesCollection.getPage(AddEmailAddressPage.class).setPassword(
+		context.getPagesCollection().getPage(AddEmailAddressPage.class).setPassword(
 				password);
 	}
 
@@ -69,7 +74,7 @@ public class AddEmailAddressPageSteps {
 	 */
 	@When("^I click add button on add email address dialog$")
 	public void IClickAddButtonOnAddEmailAddressDialog() throws Exception {
-		webappPagesCollection.getPage(AddEmailAddressPage.class)
+		context.getPagesCollection().getPage(AddEmailAddressPage.class)
 				.clickAddButton();
 	}
 
@@ -80,7 +85,7 @@ public class AddEmailAddressPageSteps {
 	 */
 	@When("^I see Skip for now button on add email address dialog$")
 	public void ISeeSkipForNowButtonOnAddEmailAddressDialog() throws Exception {
-		webappPagesCollection.getPage(AddEmailAddressPage.class)
+		context.getPagesCollection().getPage(AddEmailAddressPage.class)
 				.isSkipButtonVisible();
 	}
 
@@ -92,7 +97,7 @@ public class AddEmailAddressPageSteps {
 	@When("^I click Skip for now button on add email address dialog$")
 	public void IClickSkipForNowButtonOnAddEmailAddressDialog()
 			throws Exception {
-		webappPagesCollection.getPage(AddEmailAddressPage.class)
+		context.getPagesCollection().getPage(AddEmailAddressPage.class)
 				.clickSkipForNowButton();
 	}
 
@@ -108,7 +113,7 @@ public class AddEmailAddressPageSteps {
 	public void ISeeErrorMessageOnAddEmailAddressDialog(String message)
 			throws Exception {
 		assertThat("invalid email error",
-				webappPagesCollection.getPage(AddEmailAddressPage.class)
+				context.getPagesCollection().getPage(AddEmailAddressPage.class)
 						.getErrorMessage(), equalTo(message));
 	}
 
@@ -121,7 +126,7 @@ public class AddEmailAddressPageSteps {
 	 */
 	@Then("^the email field on add email address dialog is marked as error$")
 	public void EmailFieldIsMarkedAsError() throws Exception {
-		assertThat("email field marked as error", webappPagesCollection
+		assertThat("email field marked as error", context.getPagesCollection()
 				.getPage(AddEmailAddressPage.class).isEmailFieldMarkedAsError());
 	}
 
@@ -135,7 +140,7 @@ public class AddEmailAddressPageSteps {
 	 */
 	@Then("^the password field on add email address dialog is marked as error$")
 	public void ARedDotIsShownOnThePasswordField() throws Exception {
-		assertThat("password field marked as error", webappPagesCollection
+		assertThat("password field marked as error", context.getPagesCollection()
 				.getPage(AddEmailAddressPage.class)
 				.isPasswordFieldMarkedAsError());
 	}
