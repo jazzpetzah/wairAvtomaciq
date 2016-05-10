@@ -30,6 +30,7 @@ Feature: Copy Message
     # Wait for the content to sync up
     Given I wait for 5 seconds
     And I tap on contact name <Contact>
+    And I scroll to the bottom of conversation view
     When I long tap the Text message "<Message>" in the conversation view
     And I tap the recent picture in the conversation view
     Then I do not see Copy button on the action mode bar
