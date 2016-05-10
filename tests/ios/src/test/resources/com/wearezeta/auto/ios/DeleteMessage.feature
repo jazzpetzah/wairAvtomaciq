@@ -59,7 +59,7 @@ Feature: DeleteMessage
       | Name      | Contact   | Picture     | GiphyTag |
       | user1Name | user2Name | testing.jpg | hello    |
 
-  @torun @C111324 @staging
+  @C111324 @staging
   Scenario Outline: Verify deleting soundcloud message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
