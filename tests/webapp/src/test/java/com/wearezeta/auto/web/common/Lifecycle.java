@@ -175,49 +175,47 @@ public class Lifecycle {
         tearDown();
     }
 
-    public void tearDown() throws Exception {
+    public void tearDown() {
         try {
             ZetaWebAppDriver driver = (ZetaWebAppDriver) context.getDriver();
-
             // save browser console if possible
-            if (WebAppExecutionContext.getBrowser()
-                    .isSupportingConsoleLogManagement()) {
+            if (WebAppExecutionContext.getBrowser().isSupportingConsoleLogManagement()) {
                 writeBrowserLogsIntoMainLog(driver);
             }
-
             if (driver instanceof ZetaWebAppDriver) {
-                // logout with JavaScript because otherwise backend will
-                // block
+                // logout with JavaScript because otherwise backend will block
                 // us because of top many login requests
                 String logoutScript = "(typeof wire !== 'undefined') && wire.auth.repository.logout();";
                 driver.executeScript(logoutScript);
             }
-
-            // show link to saucelabs
-            String link = "https://saucelabs.com/jobs/"
-                    + driver.getSessionId();
-            log.debug("See more information on " + link);
-            String html = "<html><body><a id='link' href='"
-                    + link
-                    + "'>See more information on "
-                    + link
-                    + "</a><script>window.location.href = document.getElementById('link').getAttribute('href');</script></body></html>";
-            //TODO picklejar: Nullpointer in scenario
-//            scenario.embed(html.getBytes(Charset.forName("UTF-8")),
-//                    "text/html");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            context.getDriver().quit();
+            try {
+                log.debug("Closing webdriver");
+                context.getDriver().quit();
+            } catch (Exception e) {
+                log.warn(e);
+            }
+            try {
+                log.debug("Cleaning up calling instances");
+                context.getCallingManager().cleanup();
+            } catch (Exception e) {
+                log.warn(e);
+            }
+            try {
+                log.debug("Clearing pages collection");
+                WebPage.clearPagesCollection();
+            } catch (Exception e) {
+                log.warn(e);
+            }
+            try {
+                log.debug("Resetting users");
+                context.getUserManager().resetUsers();
+            } catch (Exception e) {
+                log.warn(e);
+            }
         }
-        try {
-            // async calls/waiting instances cleanup
-            context.getCallingManager().cleanup();
-        } catch (Exception e) {
-            log.warn(e);
-        }
-        WebPage.clearPagesCollection();
-        context.getUserManager().resetUsers();
     }
 
     private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
@@ -229,13 +227,11 @@ public class Lifecycle {
             }
             log.debug("--- END OF LOG ---");
         }
-
     }
 
     @SuppressWarnings("unchecked")
     public static List<LogEntry> getBrowserLog(RemoteWebDriver driver) {
-        return IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs()
-                .get(LogType.BROWSER).iterator());
+        return IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs().get(LogType.BROWSER).iterator());
     }
 
     private static void setCustomChromeProfile(DesiredCapabilities capabilities)

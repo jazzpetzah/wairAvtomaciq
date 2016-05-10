@@ -68,11 +68,11 @@ public final class CommonCallingSteps2 {
     // 10 seconds on the client side to actually get a timeout response to
     // recocgnize a failed instances creation for retry mechanisms
     private static final int INSTANCE_START_TIMEOUT_SECONDS = 190;
+    private static final int INSTANCE_DESTROY_TIMEOUT_SECONDS = 30;
     private static final int INSTANCE_CREATION_RETRIES = 3;
     private static final long POLLING_FREQUENCY_MILLISECONDS = 1000;
     private static CommonCallingSteps2 singleton = null;
 
-    private final ExecutorService executor;
     private ClientUsersManager usrMgr;
     private final CallingServiceClient client;
     private final Map<String, Instance> instanceMapping;
@@ -97,21 +97,6 @@ public final class CommonCallingSteps2 {
         this.instanceMapping = new ConcurrentHashMap<>();
         this.client = new CallingServiceClient();
         this.usrMgr = usrMgr;
-        this.executor = Executors.newCachedThreadPool();
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
-                executor.shutdown();
-                try {
-                    executor.awaitTermination(5, TimeUnit.SECONDS);
-                } catch (InterruptedException ex) {
-                    LOG.log(null, ex);
-                }
-                if (!executor.isTerminated()) {
-                    LOG.warn("Could not finish all async calling cleanup tasks! Forcing executor shutdown ...");
-                    executor.shutdownNow();
-                }
-            }
-        });
     }
 
     public static class CallNotFoundException extends Exception {
@@ -444,31 +429,34 @@ public final class CommonCallingSteps2 {
     }
 
     /**
-     * Stops and terminates all instances and calls asynchronously.
+     * Stops and terminates all instances and calls in parallel.
      *
      * @throws Exception
      */
     public synchronized void cleanup() throws Exception {
         if (instanceMapping.size() > 0) {
-            LOG.debug("Executing asynchronous cleanup of call instance leftovers...");
+            LOG.debug("Executing parallel cleanup of call instance leftovers...");
         }
-        final String callingServiceUrl = CommonUtils
-                .getDefaultCallingServiceUrlFromConfig(CommonCallingSteps2.class);
+        final String callingServiceUrl = CommonUtils.getDefaultCallingServiceUrlFromConfig(CommonCallingSteps2.class);
+        Map<Instance, CompletableFuture<Instance>> destroyTasks = new HashMap<>(instanceMapping.size());
         for (Map.Entry<String, Instance> entry : instanceMapping.entrySet()) {
             final Instance instance = entry.getValue();
+            final String url = callingServiceUrl + "/api/v1/instance/" + instance.getId() + "/";
             LOG.debug("---BROWSER LOG FOR INSTANCE:\n" + instance + "\n"
-                    + callingServiceUrl + "/api/v1/instance/"
-                    + instance.getId() + "/log");
-            CompletableFuture.runAsync(() -> {
+                    + "<a href="+url+"/log>"+instance.getId()+" LOGS</a>"+ "\n"
+                    + "<a href="+url+"/screenshots>"+instance.getId()+" SCREENSHOTS</a>");
+            
+            destroyTasks.put(instance, CompletableFuture.supplyAsync(() -> {
                 try {
-                    client.stopInstance(instance);
+                    return client.stopInstance(instance);
                 } catch (CallingServiceInstanceException ex) {
-                    LOG.warn(String.format(
-                            "Could not properly shut down instance '%s'",
-                            instance.getId()), ex);
+                    LOG.warn(String.format("Could not properly shut down instance '%s'", instance.getId()), ex);
+                    return null;
                 }
-            }, executor);
+            }));
         }
+        CompletableFuture.allOf(destroyTasks.values().toArray(new CompletableFuture[destroyTasks.size()]))
+                .get(INSTANCE_DESTROY_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         instanceMapping.clear();
     }
 
