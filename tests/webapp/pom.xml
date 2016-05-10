@@ -244,6 +244,7 @@
                                 <!--includes only the {TestRun}.java class-->
                                 <include>**/${TestRun}.java</include>
                             </includes>
+                            <disableXmlReport>true</disableXmlReport>
                             <argLine>-Djava.library.path=../common/native_lib</argLine>
                             <systemPropertyVariables>
                                 <java.awt.headless>true</java.awt.headless>
