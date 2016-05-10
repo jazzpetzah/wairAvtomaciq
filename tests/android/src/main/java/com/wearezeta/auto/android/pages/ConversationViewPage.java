@@ -152,6 +152,10 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idFileTransferContainer = By.id("ll__row_conversation__file__message_container");
 
+    private static final By idVideoMessageContainer = By.id("fl__video_message_container");
+
+    private static final By idVideoContainerButton = By.id("gpv__row_conversation__video_button");
+
     private static final int MAX_CLICK_RETRIES = 5;
 
     private static final double LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR = 0.01;
@@ -164,7 +168,7 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final String FILE_MESSAGE_SEPARATOR = " · ";
 
-    private static final int SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS =1000;
+    private static final int SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS = 1000;
 
 
     public ConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -808,5 +812,25 @@ public class ConversationViewPage extends AndroidPage {
 
     public void longTapRecentImage() throws Exception {
         getDriver().longTap(getElement(xpathLastPicture), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public boolean isVideoMessageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idVideoMessageContainer);
+    }
+
+    public boolean isVideoMessageNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idVideoMessageContainer);
+    }
+
+    public void tapVideoMessageButton() throws Exception {
+        getElement(idVideoContainerButton).click();
+    }
+
+    public void tapVideoMessageContainer() throws Exception {
+        getElement(idVideoMessageContainer).click();
+    }
+
+    public void longVideoMessageContainer() throws Exception {
+        getDriver().longTap(getElement(idVideoMessageContainer), DriverUtils.LONG_TAP_DURATION);
     }
 }

@@ -1363,4 +1363,20 @@ public class CommonAndroidSteps {
         Assert.assertEquals("The expected and the current clipboard contents are different",
                 expectedMsg, currentContent.orElse(""));
     }
+
+    /**
+     * Verify whether the app is in foreground
+     *
+     * @param shouldNotBeInForeground equals to null if 'not' part does not exist in step signature
+     * @step. ^I see the Wire app is (not )?in foreground$
+     */
+    @Then("^I see the Wire app is (not )?in foreground$")
+    public void ISeeAppInForgeround(String shouldNotBeInForeground) throws Exception {
+        final String packageId = AndroidCommonUtils.getAndroidPackageFromConfig(getClass());
+        if (shouldNotBeInForeground == null) {
+            Assert.assertTrue("Wire is currently not in foreground", AndroidCommonUtils.isAppInForeground(packageId));
+        } else {
+            Assert.assertFalse("Wire is currently still in foreground", AndroidCommonUtils.isAppInForeground(packageId));
+        }
+    }
 }

@@ -1065,11 +1065,11 @@ public class ConversationViewPageSteps {
      * Verify whether container is visible in the conversation
      *
      * @param shouldNotSee  equals to null if the container should be visible
-     * @param containerType euiter Youtube or Soundcloud or File Upload
+     * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
      * @throws Exception
-     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload) container in the conversation view$
+     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message) container in the conversation view$
      */
-    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload) container in the conversation view$")
+    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message) container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (containerType.toLowerCase()) {
@@ -1085,6 +1085,10 @@ public class ConversationViewPageSteps {
                 verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isFileUploadContainerVisible :
                         getConversationViewPage()::isFileUploadContainerInvisible;
                 break;
+            case "video message":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isVideoMessageVisible :
+                        getConversationViewPage()::isVideoMessageNotVisible;
+                break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
         }
@@ -1096,11 +1100,11 @@ public class ConversationViewPageSteps {
      * Tap container
      *
      * @param isLongTap     equals to null if this should be ordinary single tap
-     * @param containerType euiter Youtube or Soundcloud or File Upload
+     * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
      * @throws Exception
-     * @step. ^I (long )?tap (Youtube|Soundcloud|File Upload) container in the conversation view$
+     * @step. ^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message) container in the conversation view$
      */
-    @When("^I (long )?tap (Youtube|Soundcloud|File Upload) container in the conversation view$")
+    @When("^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message) container in the conversation view$")
     public void ITapContainer(String isLongTap, String containerType) throws Exception {
         switch (containerType.toLowerCase()) {
             case "youtube":
@@ -1124,8 +1128,27 @@ public class ConversationViewPageSteps {
                     getConversationViewPage().longTapFileUploadContainer();
                 }
                 break;
+            case "video message":
+                if (isLongTap == null) {
+                    getConversationViewPage().tapVideoMessageContainer();
+                } else {
+                    getConversationViewPage().longVideoMessageContainer();
+                }
+                break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
         }
+    }
+
+
+    /**
+     * Tap a button on video message preview
+     *
+     * @throws Exception
+     * @step. ^I tap (?:Play|X|Retry) button on the recent video message in the conversation view$"
+     */
+    @When("^I tap (?:Play|X|Retry) button on the recent video message in the conversation view$")
+    public void ITapButtonOnVideoMessage() throws Exception {
+        getConversationViewPage().tapVideoMessageButton();
     }
 }
