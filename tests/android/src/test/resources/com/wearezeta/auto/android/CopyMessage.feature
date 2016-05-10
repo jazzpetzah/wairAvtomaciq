@@ -1,6 +1,6 @@
 Feature: Copy Message
 
-  @C119435 @staging
+  @C119435 @regression @rc
   Scenario Outline: Verify could copy text message by copy button in top toolbar
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -18,7 +18,7 @@ Feature: Copy Message
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C119437 @staging
+  @C119437 @regression @rc
   Scenario Outline: Verify copy button is invisible when more than 1 message are selected or image/ping is selected
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -41,7 +41,7 @@ Feature: Copy Message
       | Name      | Contact   | Message | ImageName   |
       | user1Name | user2Name | Yo      | testing.jpg |
 
-  @C119436 @staging
+  @C119436 @regression @rc
   Scenario Outline: Verify copy multimedia link from youtube/soundcould
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
