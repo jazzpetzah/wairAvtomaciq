@@ -21,20 +21,30 @@ Feature: Migration
   Scenario Outline: Verify migration from DB version 3 to 4 to current
     Given I initially deploy version with tag <DBVersion3>
     Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    Then I see Contact list with name <Contact>
-    When I deploy version with tag <DBVersion4>
+    When I open conversation with <Contact>
+    And Contact <Contact> sends encrypted message <DBVersion3> to user Myself
+    And I see text message <DBVersion3>
+    And I deploy version with tag <DBVersion4>
     And I refresh page
     Then I am signed in properly
-    And I see Contact list with name <Contact>
+    And I open conversation with <Contact>
+    And Contact <Contact> sends encrypted message <DBVersion4> to user Myself
+    And I see text message <DBVersion3>
+    And I see text message <DBVersion4>
     #When I deploy version with tag 2016-05-06-12-30
     When I deploy latest staging version
     And I refresh page
     Then I am signed in properly
-    And I see Contact list with name <Contact>
+    When I open conversation with <Contact>
+    And Contact <Contact> sends encrypted message Staging to user Myself
+    Then I see text message <DBVersion3>
+    And I see text message <DBVersion4>
+    And I see text message Staging
 
     Examples:
       | Login      | Password      | Name      | Contact   | DBVersion3       | DBVersion4       |

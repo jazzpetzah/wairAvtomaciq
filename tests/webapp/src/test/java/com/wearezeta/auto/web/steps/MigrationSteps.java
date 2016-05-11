@@ -127,7 +127,8 @@ public class MigrationSteps {
         runCommand(temp, new String[]{"npm", "install"});
         runCommand(temp, new String[]{"grunt", "prepare_dist", "gitinfo", "set_version:staging"});
         // Get a port number in between 9000 and 10000
-        String port = String.valueOf(ThreadLocalRandom.current().nextInt(9000, 10000));
+        // TODO: String port = String.valueOf(ThreadLocalRandom.current().nextInt(9000, 10000));
+        String port = "8888";
         gruntProcess = runCommandUnattached(temp, new String[]{"grunt", "host:" + port + ":false"});
         final String backend = CommonUtils.getBackendType(MigrationSteps.class);
         // We use wire.ms as a alias-domain for localhost
