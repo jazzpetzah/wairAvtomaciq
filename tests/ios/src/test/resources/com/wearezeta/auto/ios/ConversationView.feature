@@ -407,7 +407,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C891 @regression @id3095
+  @C891 @rc @regression @id3095
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -776,7 +776,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @C111318 @regression
+  @C111318 @regression @rc
   Scenario Outline: Verify cursor and toolbar appear after adding person back
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other
