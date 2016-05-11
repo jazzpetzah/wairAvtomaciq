@@ -298,7 +298,7 @@ Feature: Conversation List
     And I see a delete warning modal for group conversations
     And I click delete button in the delete warning for group conversations
     And I do not see Contact list with name <ChatName>
-    And Contact <Contact1> sends image <Image> to group conversation <ChatName>
+    And User <Contact1> sends image <Image> to group conversation <ChatName>
     And I open conversation with <ChatName>
     Then I see <Action> action for <Contact1> in conversation
     And I see <Action> action for <Contact2> in conversation

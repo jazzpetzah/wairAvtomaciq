@@ -315,7 +315,7 @@ Feature: Connect
     And Contact <User2> sends message <Msg1> to user <User1>
     Then I see text message <Msg1>
     And <User1> blocked <User2>
-    And Contact <User2> sends image <Picture2> to single user conversation <User1>
+    And User <User2> sends image <Picture2> to single user conversation <User1>
     And User <User2> pinged in the conversation with <User1>
     And Contact <User2> sends message <Msg2> to user <User1>
     And I do not see Contact list with name <Name>
