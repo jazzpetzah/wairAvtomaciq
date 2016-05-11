@@ -2,12 +2,15 @@ package com.wearezeta.auto.ios.tools;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -249,13 +252,21 @@ public class IOSSimulatorHelper {
     }
 
     public static void installIpa(File ipaPath) throws Exception {
-        // final File app = IOSCommonUtils.extractAppFromIpa(ipaPath);
-//        try {
-        installApp(ipaPath);
-        Thread.sleep(30000);
-//        } finally {
-//            FileUtils.deleteDirectory(app);
-//        }
+        final File app = IOSCommonUtils.extractAppFromIpa(ipaPath);
+        try {
+            installApp(ipaPath);
+            Thread.sleep(30000);
+        } finally {
+            final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+            scheduler.schedule(() -> {
+                try {
+                    FileUtils.deleteDirectory(app);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }, 30, TimeUnit.SECONDS);
+            scheduler.shutdown();
+        }
     }
 
     public static void launchApp(String bundleId) throws Exception {
