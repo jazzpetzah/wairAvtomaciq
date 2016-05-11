@@ -35,7 +35,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | chrome      |
 
   @C2410 @calling_basic @id2712
   Scenario Outline: Verify ignoring of incoming call [LANDSCAPE]
@@ -52,7 +52,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | chrome      |
 
   @C2411 @rc @calling_basic @id2713
   Scenario Outline: Verify accepting incoming call [LANDSCAPE]
@@ -70,7 +70,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | chrome      |
 
   @C2399 @calling_basic @id2622
   Scenario Outline: Receiving missed call notification from one user [LANDSCAPE]
@@ -88,7 +88,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | chrome      |
 
   @C2408 @calling_basic @id2631
   Scenario Outline: Screenlock device when in the call [LANDSCAPE]
@@ -134,7 +134,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 |
-      | user1Name | user2Name | user3Name | firefox     | autocall     |
+      | user1Name | user2Name | user3Name | chrome      | chrome       |
 
   @C2395 @calling_basic @id2618
   Scenario Outline: Put app into background after initiating call [LANDSCAPE]
@@ -168,7 +168,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | chrome      |
 
   @C2404 @calling_basic @id2627
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button) [LANDSCAPE]
@@ -186,7 +186,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | chrome      |
 
   @C2401 @calling_basic @id2624
   Scenario Outline: I want to end the call from the ongoing voice overlay [LANDSCAPE]
@@ -209,7 +209,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | chrome      |
 
   @C2413 @calling_basic @id3812
   Scenario Outline: Verify putting client to the background during 1-to-1 call [LANDSCAPE]
@@ -229,4 +229,4 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | chrome      |

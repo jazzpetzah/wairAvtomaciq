@@ -29,7 +29,7 @@ Feature: Archive
 
     Examples:
       | Name      | ArchivedUser | Picture     | CallBackend |
-      | user1Name | user2Name    | testing.jpg | autocall    |
+      | user1Name | user2Name    | testing.jpg | chrome      |
 
   @C2390 @regression @id3992
   Scenario Outline: Verify unarchiving silenced conversation only by call [LANDSCAPE]
@@ -55,7 +55,7 @@ Feature: Archive
 
     Examples:
       | Name      | ArchivedUser | Picture     | CallBackend |
-      | user1Name | user2Name    | testing.jpg | autocall    |
+      | user1Name | user2Name    | testing.jpg | chrome      |
 
   @C2392 @regression @id3994
   Scenario Outline: Verify restoring from archive after adding to conversation [LANDSCAPE]
@@ -111,5 +111,5 @@ Feature: Archive
     And I do not see Archive button at the bottom of conversations list
 
     Examples:
-      | Name      | ArchivedUser|
-      | user1Name | user2Name   |
+      | Name      | ArchivedUser |
+      | user1Name | user2Name    |
