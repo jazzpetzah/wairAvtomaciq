@@ -11,9 +11,8 @@ Feature: Upgrade
     # To let the content to be synchronized
     Given I wait for 5 seconds
     Given I upgrade Wire to the recent version
-    # Commented out due to ZIOS-6143
-    # And I see conversations list
-    # When I tap on contact name <Contact>
+    And I see conversations list
+    When I tap on contact name <Contact>
     Then I see 1 photo in the dialog
     And I see 1 default message in the dialog
     When I type the default message and send it
