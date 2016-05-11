@@ -84,7 +84,7 @@ Feature: E2EE
     And I see the history info page
     And I click confirm on history info page
     And I am signed in properly
-    And Contact <Contact> sends encrypted message <OldMessage> to user Myself
+    And Contact <Contact> sends message <OldMessage> to user Myself
     And I see text message <OldMessage>
     And User <Name> removes all his registered OTR clients
     Then I see Sign In page
@@ -92,11 +92,11 @@ Feature: E2EE
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page
-    When Contact <Contact> sends encrypted message <Message1> to user Myself
+    When Contact <Contact> sends message <Message1> to user Myself
     And I wait for 5 seconds
     And I click confirm on history info page
     And I am signed in properly
-    And Contact <Contact> sends encrypted message <Message2> to user Myself
+    And Contact <Contact> sends message <Message2> to user Myself
     And I wait for 5 seconds
     And I open conversation with <Contact>
     And I write message <Message3>
@@ -122,7 +122,7 @@ Feature: E2EE
     And I see the history info page
     And I click confirm on history info page
     And I am signed in properly
-    And Contact <Contact> sends encrypted message <OldMessage> to user Myself
+    And Contact <Contact> sends message <OldMessage> to user Myself
     And I see text message <OldMessage>
     And I remember current page
     And I navigate to download page
@@ -132,11 +132,11 @@ Feature: E2EE
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page
-    When Contact <Contact> sends encrypted message <Message1> to user Myself
+    When Contact <Contact> sends message <Message1> to user Myself
     And I wait for 5 seconds
     And I click confirm on history info page
     And I am signed in properly
-    And Contact <Contact> sends encrypted message <Message2> to user Myself
+    And Contact <Contact> sends message <Message2> to user Myself
     And I wait for 5 seconds
     And I open conversation with <Contact>
     And I write message <Message3>
@@ -163,7 +163,7 @@ Feature: E2EE
     And I see the history info page
     And I click confirm on history info page
     And I am signed in properly
-    And Contact <Contact> sends encrypted message <OldMessage> to user Myself
+    And Contact <Contact> sends message <OldMessage> to user Myself
     And I see text message <OldMessage>
     And I navigate to download page
     And User <Name> removes all his registered OTR clients
@@ -172,11 +172,11 @@ Feature: E2EE
     And I enter password "<Password>"
     And I press Sign In button
     Then I see the history info page
-    When Contact <Contact> sends encrypted message <Message1> to user Myself
+    When Contact <Contact> sends message <Message1> to user Myself
     And I wait for 5 seconds
     And I click confirm on history info page
     And I am signed in properly
-    And Contact <Contact> sends encrypted message <Message2> to user Myself
+    And Contact <Contact> sends message <Message2> to user Myself
     And I wait for 5 seconds
     And I open conversation with <Contact>
     And I write message <Message3>
@@ -229,7 +229,7 @@ Feature: E2EE
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
-    When Contact <Contact> sends encrypted message <EncryptedMessage> to user Myself
+    When Contact <Contact> sends message <EncryptedMessage> to user Myself
     Then I see text message <EncryptedMessage>
 
     Examples:
@@ -243,7 +243,7 @@ Feature: E2EE
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
-    When User <Contact> sends encrypted image <ImageName> to single user conversation Myself
+    When User <Contact> sends image <ImageName> to single user conversation Myself
     Then I see sent picture <ImageName> in the conversation view
 
     Examples:
@@ -261,7 +261,7 @@ Feature: E2EE
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     When I open conversation with <GroupChatName>
-    And Contact <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
+    And Contact <Contact1> sends message <EncryptedMessage> to group conversation <GroupChatName>
     Then I see text message <EncryptedMessage>
 
     Examples:
@@ -279,7 +279,7 @@ Feature: E2EE
     Given I Sign in using login <Email> and password <Password>
     Given I am signed in properly
     When I open conversation with <GroupChatName>
-    And User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChatName>
+    And User <Contact1> sends image <ImageName> to group conversation <GroupChatName>
     Then I see sent picture <ImageName> in the conversation view
 
     Examples:
@@ -294,15 +294,15 @@ Feature: E2EE
     Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     When I am signed in properly
-    And Contact <Contact> sends encrypted message <OnlineMessage> to user Myself
+    And Contact <Contact> sends message <OnlineMessage> to user Myself
     Then I see text message <OnlineMessage>
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
-    And Contact <Contact> sends encrypted message <OfflineMessage> to user Myself
-    And User <Contact> sends encrypted image <ImageName> to single user conversation Myself
+    And Contact <Contact> sends message <OfflineMessage> to user Myself
+    And User <Contact> sends image <ImageName> to single user conversation Myself
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
     And I am signed in properly
@@ -326,15 +326,15 @@ Feature: E2EE
     Given I Sign in using login <Email> and password <Password>
     When I am signed in properly
     And I open conversation with <GroupChatName>
-    And Contact <Contact1> sends encrypted message <OnlineMessage> to group conversation <GroupChatName>
+    And Contact <Contact1> sends message <OnlineMessage> to group conversation <GroupChatName>
     Then I see text message <OnlineMessage>
     And I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
-    And Contact <Contact1> sends encrypted message <OfflineMessage> to group conversation <GroupChatName>
-    And User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChatName>
+    And Contact <Contact1> sends message <OfflineMessage> to group conversation <GroupChatName>
+    And User <Contact1> sends image <ImageName> to group conversation <GroupChatName>
     And I see Sign In page
     And I Sign in using login <Email> and password <Password>
     And I am signed in properly
@@ -625,7 +625,7 @@ Feature: E2EE
     And I click People button in group conversation
     And I see <ALL_VERIFIED> action in conversation
     When user <Contact1> adds a new device Device2 with label Label2
-    And Contact <Contact1> sends encrypted message <Message> via device Device2 to group conversation <GroupChatName>
+    And Contact <Contact1> sends message <Message> via device Device2 to group conversation <GroupChatName>
     Then I see <NEW_DEVICE> action for <Contact1> in conversation
     And I see text message <Message>
 
@@ -724,7 +724,7 @@ Feature: E2EE
     When I click People button in one to one conversation
     Then I see <ALL_VERIFIED> action in conversation
     When user <Contact> adds a new device Device2 with label Label2
-    And Contact <Contact> sends encrypted message <Message> via device Device2 to user Myself
+    And Contact <Contact> sends message <Message> via device Device2 to user Myself
     Then I see <NEW_DEVICE> action in conversation
     # Not sure if we want to check for the message. Should it be shown or not? Assuming it should
 
@@ -741,10 +741,10 @@ Feature: E2EE
     When I Sign in using login <Email> and password <Password>
     And I am signed in properly
     And I open conversation with <Contact>
-    And Contact <Contact> sends encrypted message <Message1> via device Device1 to user Myself
+    And Contact <Contact> sends message <Message1> via device Device1 to user Myself
     Then I see text message <Message1>
     When I break the session with device Device1 of user <Contact>
-    And Contact <Contact> sends encrypted message <Message2> via device Device1 to user Myself
+    And Contact <Contact> sends message <Message2> via device Device1 to user Myself
     Then I see <UNABLE_TO_DECRYPT> action in conversation
     When I click People button in one to one conversation
     And I see Single User Profile popover
@@ -752,7 +752,7 @@ Feature: E2EE
     And I click on device Device1 of user <Contact> on Single User Profile popover
     And I click reset session on the Device Detail popover
     And I click People button in one to one conversation
-    And Contact <Contact> sends encrypted message <Message3> via device Device1 to user Myself
+    And Contact <Contact> sends message <Message3> via device Device1 to user Myself
     Then I see text message <Message3>
 
     Examples:
@@ -770,10 +770,10 @@ Feature: E2EE
     And I click confirm on history info page
     And I am signed in properly
     And I open conversation with <Contact>
-    And Contact <Name> sends encrypted message <Message1> via device Device1 to user <Contact>
+    And Contact <Name> sends message <Message1> via device Device1 to user <Contact>
     Then I see text message <Message1>
     When I break the session with device Device1 of user <Name>
-    And Contact <Name> sends encrypted message <Message2> via device Device1 to user <Contact>
+    And Contact <Name> sends message <Message2> via device Device1 to user <Contact>
     Then I see <UNABLE_TO_DECRYPT> action in conversation
     When I open self profile
     And I wait for 2 seconds
@@ -787,7 +787,7 @@ Feature: E2EE
     When I click close settings page button
     And I wait for 2 seconds
     And I open conversation with <Contact>
-    And Contact <Name> sends encrypted message <Message3> via device Device1 to user <Contact>
+    And Contact <Name> sends message <Message3> via device Device1 to user <Contact>
     Then I see text message <Message3>
 
     Examples:
@@ -812,15 +812,15 @@ Feature: E2EE
     And I click confirm on history info page
     And I am signed in properly
     And I open conversation with <Contact>
-    And Contact <Name> sends encrypted message <StartMessage> via device Device1 to user <Contact>
+    And Contact <Name> sends message <StartMessage> via device Device1 to user <Contact>
     Then I see text message <StartMessage>
     When I remember current page
     And I navigate to download page
-    And Contact <Contact> sends 50 encrypted messages with prefix <PREFIX1> via device Device1 to user <Name>
-    And Contact <Name> sends 50 encrypted messages with prefix <PREFIX2> via device Device1 to user <Contact>
+    And Contact <Contact> sends 50 messages with prefix <PREFIX1> via device Device1 to user <Name>
+    And Contact <Name> sends 50 messages with prefix <PREFIX2> via device Device1 to user <Contact>
     And I navigate to previously remembered page
-    And Contact <Contact> sends 60 encrypted messages with prefix <PREFIX3> via device Device1 to user <Name>
-    And Contact <Name> sends 60 encrypted messages with prefix <PREFIX4> via device Device1 to user <Contact>
+    And Contact <Contact> sends 60 messages with prefix <PREFIX3> via device Device1 to user <Name>
+    And Contact <Name> sends 60 messages with prefix <PREFIX4> via device Device1 to user <Contact>
     And I am signed in properly
     And I open conversation with <Contact>
     And I wait for 30 seconds
