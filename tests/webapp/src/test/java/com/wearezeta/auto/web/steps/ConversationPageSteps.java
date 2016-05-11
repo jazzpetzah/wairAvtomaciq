@@ -616,7 +616,7 @@ public class ConversationPageSteps {
      */
     @Then("^I really see text message (.*)")
     public void ISeeTextMessageInViewPort(String message) throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).waitForDisplayedMessageContains(message);
+        context.getPagesCollection().getPage(ConversationPage.class).waitForDisplayedMessageContains(message, 30);
     }
 
     private static String expandPattern(final String originalStr) {
