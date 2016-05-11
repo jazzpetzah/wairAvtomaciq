@@ -254,8 +254,7 @@ public class IOSSimulatorHelper {
     public static void installIpa(File ipaPath) throws Exception {
         final File app = IOSCommonUtils.extractAppFromIpa(ipaPath);
         try {
-            installApp(ipaPath);
-            Thread.sleep(30000);
+            installApp(app);
         } finally {
             final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
             scheduler.schedule(() -> {
