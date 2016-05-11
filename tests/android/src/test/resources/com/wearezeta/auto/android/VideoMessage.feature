@@ -21,7 +21,7 @@ Feature: Video Message
       | user1Name | user2Name | testing.mp4 | video/mp4 | Device1    |
 
   @C119748 @staging
-  Scenario Outline: (AN-3951) Verify video is played full screen
+  Scenario Outline: (AN-3951) Verify download video message in offline mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
