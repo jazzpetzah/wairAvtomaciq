@@ -13,7 +13,7 @@ Feature: Conversation List
     And I write random message
     And I send message
     And I click ping button
-    And I send 24MB sized file with name <File> to the current conversation
+    And I send 1KB sized file with name <File> to the current conversation
     And I wait until file <File> is uploaded completely
     And I archive conversation <Contact>
     Then I do not see Contact list with name <Contact>
@@ -25,7 +25,7 @@ Feature: Conversation List
     And I see only 1 picture in the conversation
     And I see <PING> action 1 times in conversation
     And I see file transfer for file <File> in the conversation view
-    And I see 4 messages in conversation
+    And I see 5 messages in conversation
 
     Examples:
       | Login      | Password      | Name      | Contact   | PictureName               | PING       | File        |
@@ -468,7 +468,7 @@ Feature: Conversation List
     And I confirm keeping picture on Welcome page
     And I open conversation with <Name>
     And user <Name> adds a new device Device1 with label Label1
-    And Contact <Name> sends encrypted message <Message> via device Device1 to user <Contact2>
+    And Contact <Name> sends message <Message> via device Device1 to user <Contact2>
     Then I see text message <Message>
     When I open self profile
     And I click gear button on self profile page

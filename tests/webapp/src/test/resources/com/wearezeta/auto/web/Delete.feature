@@ -66,7 +66,7 @@ Feature: Delete
       | Login      | Password      | Name      | Contact   | PictureName               | YouTubeLink                                | SpotifyLink                                           | SoundCloudLink                                           |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | http://www.youtube.com/watch?v=JOCtdw9FG-s | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss | https://soundcloud.com/wearegalantis/peanut-butter-jelly |
 
-  @C111959 @staging
+  @C111959 @regression
   Scenario Outline: Verify deleted messages remain deleted after I archive and unarchive a conversation
     Given There are 2 users where <Name> is me
     Given user <Name> adds a new device Device1 with label Label1
