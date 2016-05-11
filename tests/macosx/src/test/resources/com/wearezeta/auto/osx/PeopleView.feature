@@ -49,7 +49,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact   | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @C2364 @smoke
+  @C2364 @smoke @WEBAPP-2428
   Scenario Outline: Verify adding people to group conversation with menu bar
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
