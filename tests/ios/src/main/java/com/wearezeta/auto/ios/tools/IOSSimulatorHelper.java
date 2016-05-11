@@ -249,12 +249,13 @@ public class IOSSimulatorHelper {
     }
 
     public static void installIpa(File ipaPath) throws Exception {
-        final File app = IOSCommonUtils.extractAppFromIpa(ipaPath);
-        try {
-            installApp(app);
-        } finally {
-            FileUtils.deleteDirectory(app);
-        }
+        // final File app = IOSCommonUtils.extractAppFromIpa(ipaPath);
+//        try {
+        installApp(ipaPath);
+        Thread.sleep(30000);
+//        } finally {
+//            FileUtils.deleteDirectory(app);
+//        }
     }
 
     public static void launchApp(String bundleId) throws Exception {

@@ -89,7 +89,8 @@ public class CommonIOSSteps {
 
     @SuppressWarnings("unchecked")
     public Future<ZetaIOSDriver> resetIOSDriver(String ipaPath,
-                                                Optional<Map<String, Object>> additionalCaps) throws Exception {
+                                                Optional<Map<String, Object>> additionalCaps,
+                                                int retriesCount) throws Exception {
         Optional<String> udid = Optional.empty();
 
         final DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -149,7 +150,7 @@ public class CommonIOSSteps {
         }
 
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
-                .resetDriver(getUrl(), capabilities, DRIVER_CREATION_RETRIES_COUNT);
+                .resetDriver(getUrl(), capabilities, retriesCount);
     }
 
     @Before
@@ -195,7 +196,8 @@ public class CommonIOSSteps {
         }
 
         final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath,
-                additionalCaps.isEmpty() ? Optional.empty() : Optional.of(additionalCaps));
+                additionalCaps.isEmpty() ? Optional.empty() : Optional.of(additionalCaps),
+                DRIVER_CREATION_RETRIES_COUNT);
         updateDriver(lazyDriver);
     }
 
@@ -269,7 +271,7 @@ public class CommonIOSSteps {
         customCaps.put("autoAcceptAlerts", true);
         customCaps.put("noReset", true);
         customCaps.put("fullReset", false);
-        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath, Optional.of(customCaps));
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath, Optional.of(customCaps), 1);
         updateDriver(lazyDriver);
     }
 
