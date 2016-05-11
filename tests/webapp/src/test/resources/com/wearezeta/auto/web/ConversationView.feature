@@ -18,14 +18,14 @@ Feature: Conversation View
     And I click Logout button on clear data dialog
     Then I see Sign In page
     And <Contact1> has group chat <ChatName> with Myself,<Contact2>
-    And Contact <Name> sends 35 encrypted messages with prefix <OtherDeviceMsg> via device Device1 to group conversation <ChatName>
+    And Contact <Name> sends 35 messages with prefix <OtherDeviceMsg> via device Device1 to group conversation <ChatName>
     And I wait for 10 seconds
-    And Contact <Contact1> sends 100 encrypted messages with prefix <OfflineMsg> via device Device1 to group conversation <ChatName>
+    And Contact <Contact1> sends 100 messages with prefix <OfflineMsg> via device Device1 to group conversation <ChatName>
     When I Sign in using login <Login> and password <Password>
     And I wait for 10 seconds
     And I am signed in properly
     And I open conversation with <ChatName>
-    And Contact <Contact1> sends 10 encrypted messages with prefix <OnlineMsg> via device Device1 to group conversation <ChatName>
+    And Contact <Contact1> sends 10 messages with prefix <OnlineMsg> via device Device1 to group conversation <ChatName>
     And I wait for 5 seconds
     Then I verify all remembered messages are present in conversation <ChatName>
 
@@ -177,14 +177,14 @@ Feature: Conversation View
     Given I am signed in properly
     And I see Contact list with name <ChatName>
     When I open conversation with <ChatName>
-    And Contact <Contact1> sends encrypted message <Msg1FromUserA> to group conversation <ChatName>
+    And Contact <Contact1> sends message <Msg1FromUserA> to group conversation <ChatName>
     Then I see text message <Msg1FromUserA>
     And I click People button in group conversation
     And I see Group Participants popover
     When I click Leave button on Group Participants popover
     And I click confirm leave group conversation on Group Participants popover
     Then I do not see Contact list with name <ChatName>
-    And Contact <Contact1> sends encrypted message <Msg2FromUserA> to group conversation <ChatName>
+    And Contact <Contact1> sends message <Msg2FromUserA> to group conversation <ChatName>
     When I open archive
     And I unarchive conversation <ChatName>
     When I open conversation with <ChatName>
@@ -393,11 +393,11 @@ Feature: Conversation View
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     When I open conversation with <Contact>
-    And Contact <Contact> sends 35 encrypted messages with prefix <READ> via device Device1 to user <Name>
+    And Contact <Contact> sends 35 messages with prefix <READ> via device Device1 to user <Name>
     And I wait for 5 seconds
     Then I really see text message <READ>34
     When I open self profile
-    And Contact <Contact> sends 35 encrypted messages with prefix <UNREAD> via device Device1 to user <Name>
+    And Contact <Contact> sends 35 messages with prefix <UNREAD> via device Device1 to user <Name>
     And I wait for 5 seconds
     When I open conversation with <Contact>
     Then I do not see text message <READ>33

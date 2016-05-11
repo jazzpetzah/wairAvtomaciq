@@ -468,7 +468,7 @@ Feature: Conversation List
     And I confirm keeping picture on Welcome page
     And I open conversation with <Name>
     And user <Name> adds a new device Device1 with label Label1
-    And Contact <Name> sends encrypted message <Message> via device Device1 to user <Contact2>
+    And Contact <Name> sends message <Message> via device Device1 to user <Contact2>
     Then I see text message <Message>
     When I open self profile
     And I click gear button on self profile page
