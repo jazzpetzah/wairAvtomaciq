@@ -13,7 +13,7 @@ Feature: Conversation List
     And I write random message
     And I send message
     And I click ping button
-    And I send 24MB sized file with name <File> to the current conversation
+    And I send 1KB sized file with name <File> to the current conversation
     And I wait until file <File> is uploaded completely
     And I archive conversation <Contact>
     Then I do not see Contact list with name <Contact>
@@ -25,7 +25,7 @@ Feature: Conversation List
     And I see only 1 picture in the conversation
     And I see <PING> action 1 times in conversation
     And I see file transfer for file <File> in the conversation view
-    And I see 4 messages in conversation
+    And I see 5 messages in conversation
 
     Examples:
       | Login      | Password      | Name      | Contact   | PictureName               | PING       | File        |
