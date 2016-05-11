@@ -39,6 +39,7 @@ Feature: People View
     When I open archive
     And I unarchive conversation <ChatName>
     Then I see <Message> action in conversation
+    And I verify that conversation input and buttons are not visible
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message  |

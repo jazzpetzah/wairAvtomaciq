@@ -28,7 +28,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
-import static org.apache.xml.serializer.utils.Utils.messages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -386,7 +385,7 @@ public class ConversationPage extends WebPage {
 	public void sendPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
-		hoverOverConversationInput();
+		hoverOverConversation();
 		moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendImageInput);
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
@@ -400,8 +399,14 @@ public class ConversationPage extends WebPage {
 		}
 	}
 
-	public void hoverOverConversationInput() throws Exception {
-		DriverUtils.addClass(getDriver(), conversation, "hover");
+	private void hoverOverConversation() throws Exception {
+		if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
+			// native mouse over
+			DriverUtils.moveMouserOver(this.getDriver(), conversation);
+		} else {
+			// safari workaround
+			DriverUtils.addClass(this.getDriver(), conversation, "hover");
+		}
 	}
 
 	public void moveCssSelectorIntoViewport(String selector) throws Exception {
@@ -416,7 +421,7 @@ public class ConversationPage extends WebPage {
 
 	public void sendFile(String fileName) throws Exception {
 		final String filePath = WebCommonUtils.getFullFilePath("filetransfer/" + fileName);
-		hoverOverConversationInput();
+		hoverOverConversation();
 		moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendFileInput);
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
@@ -469,12 +474,7 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void clickPingButton() throws Exception {
-		if (WebAppExecutionContext.getBrowser()
-				.isSupportingNativeMouseActions()) {
-			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
-		} else {
-			DriverUtils.addClass(this.getDriver(), conversation, "hover");
-		}
+		hoverOverConversation();
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssPingButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
@@ -484,38 +484,45 @@ public class ConversationPage extends WebPage {
 		pingButton.click();
 	}
 
+	public boolean isConversationInputVisible() throws Exception {
+		hoverOverConversation();
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(WebAppLocators.ConversationPage
+				.idConversationInput));
+	}
+
+	public boolean isImageButtonVisible() throws Exception {
+		hoverOverConversation();
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+				.cssSendImageInput));
+	}
+
 	public boolean isCallButtonVisible() throws Exception {
-		if (WebAppExecutionContext.getBrowser()
-				.isSupportingNativeMouseActions()) {
-			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
-		} else {
-			// safari workaround
-			DriverUtils.addClass(this.getDriver(), conversation, "hover");
-		}
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton),
-				5);
+		hoverOverConversation();
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+				.cssCallButton));
+	}
+
+	public boolean isFileButtonVisible() throws Exception {
+		hoverOverConversation();
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+				.cssSendFileButton));
+	}
+
+	public boolean isPingButtonVisible() throws Exception {
+		hoverOverConversation();
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+				.cssPingButton));
 	}
 
 	public void clickCallButton() throws Exception {
-		if (WebAppExecutionContext.getBrowser()
-				.isSupportingNativeMouseActions()) {
-			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
-		} else {
-			// safari workaround
-			DriverUtils.addClass(this.getDriver(), conversation, "hover");
-		}
+		hoverOverConversation();
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton),
-				5);
+				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton));
 		callButton.click();
 	}
 
 	public void clickVideoCallButton() throws Exception {
-		if (WebAppExecutionContext.getBrowser()
-				.isSupportingNativeMouseActions()) {
-			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
-		}
+		hoverOverConversation();
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
@@ -649,12 +656,7 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void hoverPingButton() throws Exception {
-		if (WebAppExecutionContext.getBrowser()
-				.isSupportingNativeMouseActions()) {
-			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
-		} else {
-			DriverUtils.addClass(this.getDriver(), conversation, "hover");
-		}
+		hoverOverConversation();
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssPingButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
@@ -678,16 +680,9 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void hoverCallButton() throws Exception {
-		if (WebAppExecutionContext.getBrowser()
-				.isSupportingNativeMouseActions()) {
-			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
-		} else {
-			// safari workaround
-			DriverUtils.addClass(this.getDriver(), conversation, "hover");
-		}
+		hoverOverConversation();
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton),
-				5);
+				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton));
 	}
 
 	public String getCallButtonToolTip() {
@@ -754,12 +749,6 @@ public class ConversationPage extends WebPage {
 	public boolean isConversationVerified() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage
 				.cssConversationVerifiedIcon));
-	}
-
-	public boolean isFileButtonDisplayed() throws Exception {
-		hoverOverConversationInput();
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
-				.cssSendFileButton));
 	}
 
 	public boolean isFileTransferDisplayed(String fileName) throws Exception {
