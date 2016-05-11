@@ -1163,4 +1163,42 @@ public class ConversationViewPageSteps {
         Assert.assertTrue("The button is not visible on the recent video message",
                 getConversationViewPage().isVideoMessageButtonVisible());
     }
+
+    private final ElementState playButtonState = new ElementState(
+            () -> getConversationViewPage().getVideoContainerButtonState().orElseThrow(
+                    () -> new IllegalStateException("Cannot take a screenshot of the button on video message container")
+            )
+    );
+
+    /**
+     * Store current state of Play button into varibale
+     *
+     * @throws Exception
+     * @step. ^I remember the state of (?:Play|X|Retry) button on the recent video message in the conversation view$"
+     */
+    @When("^I remember the state of (?:Play|X|Retry) button on the recent video message in the conversation view$")
+    public void IRememberPlayButtonState() throws Exception {
+        playButtonState.remember();
+    }
+
+    private static final double MIN_PLAY_BUTTON_SCORE = 0.9;
+    private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 10; //seconds
+
+    /**
+     * Verify whether current button state differs from the previous one
+     *
+     * @param shouldNotBeChanged equals to null if the state should be different
+     * @throws Exception
+     * @step. ^I verify the state of (?:Play|X|Retry) button on the recent video message in the conversation view is (not )?changed$
+     */
+    @Then("^I verify the state of (?:Play|X|Retry) button on the recent video message in the conversation view is (not )?changed$")
+    public void ISeePlayButtonStateChanged(String shouldNotBeChanged) throws Exception {
+        if (shouldNotBeChanged == null) {
+            Assert.assertTrue("The current and previous state of the button seems to be the same",
+                    playButtonState.isChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT, MIN_PLAY_BUTTON_SCORE));
+        } else {
+            Assert.assertTrue("The current and previous state of the button seems to be changed",
+                    playButtonState.isNotChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT, MIN_PLAY_BUTTON_SCORE));
+        }
+    }
 }
