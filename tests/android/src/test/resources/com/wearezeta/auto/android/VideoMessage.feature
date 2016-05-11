@@ -1,6 +1,6 @@
 Feature: Video Message
 
-  @C119743 @staging
+  @C119743 @staging @C119740
   Scenario Outline: Verify video is played full screen
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -10,8 +10,6 @@ Feature: Video Message
     Given I tap on contact name <Contact>
     When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
     And I see Video Message container in the conversation view
-    # Wait for sync
-    And I wait for 5 seconds
     And I tap Play button on the recent video message in the conversation view
     # Wait for the video to be fully loaded
     And I wait for 5 seconds
