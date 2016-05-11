@@ -73,3 +73,20 @@ Feature: DeleteMessage
     Examples:
       | Name      | Contact   | SoundCloudLink                                   |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
+
+  @C111961 @staging
+  Scenario Outline: Verify deleting messages containing links
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User Myself sends encrypted message "Try <Link>" to user <Contact>
+    When I tap on contact name <Contact>
+    Then I see 1 message in the dialog
+    When I long tap "<Link>" message in conversation view
+    And I tap on Delete badge item
+    Then I see 0 messages in the dialog
+
+    Examples:
+      | Name      | Contact   | Link                  |
+      | user1Name | user2Name | https://www.wire.com/ |
