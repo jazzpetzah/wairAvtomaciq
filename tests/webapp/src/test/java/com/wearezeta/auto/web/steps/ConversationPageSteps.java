@@ -33,6 +33,7 @@ import org.openqa.selenium.Keys;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertFalse;
 
 public class ConversationPageSteps {
 
@@ -284,7 +285,27 @@ public class ConversationPageSteps {
      */
     @Then("^I see file transfer button in conversation input$")
     public void ISeeFileButton() throws Exception {
-        assertThat("No button found", context.getPagesCollection().getPage(ConversationPage.class).isFileButtonDisplayed());
+        assertThat("No button found", context.getPagesCollection().getPage(ConversationPage.class).isFileButtonVisible());
+    }
+
+    /**
+     * Verifies if buttons are invisible and input is not usable
+     *
+     * @throws Exception
+     * @step. ^I verify that conversation input and buttons are not visible$
+     */
+    @Then("^I verify that conversation input and buttons are not visible$")
+    public void IDontSeeConversationInput() throws Exception {
+        assertFalse("conversation input is still visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isConversationInputVisible());
+        assertFalse("call button is still visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isCallButtonVisible());
+        assertFalse("image button is still visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isImageButtonVisible());
+        assertFalse("file button is still visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isFileButtonVisible());
+        assertFalse("ping button is still visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isPingButtonVisible());
     }
 
     /**
@@ -664,7 +685,7 @@ public class ConversationPageSteps {
      */
     @Then("^I do not see text message ?(.*)$")
     public void IDontSeeTextMessage(String message) throws Exception {
-        Assert.assertFalse("Saw text message " + message, context.getPagesCollection().getPage(ConversationPage.class)
+        assertFalse("Saw text message " + message, context.getPagesCollection().getPage(ConversationPage.class)
                 .isTextMessageVisible(message == null ? "" : message));
     }
 
@@ -690,7 +711,7 @@ public class ConversationPageSteps {
         if (doNot == null) {
             Assert.assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isCallButtonVisible());
         } else {
-            Assert.assertFalse(context.getPagesCollection().getPage(ConversationPage.class).isCallButtonVisible());
+            assertFalse(context.getPagesCollection().getPage(ConversationPage.class).isCallButtonVisible());
         }
     }
 
