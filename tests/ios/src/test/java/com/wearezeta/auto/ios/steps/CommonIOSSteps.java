@@ -265,6 +265,11 @@ public class CommonIOSSteps {
      */
     @Given("^I upgrade Wire to the recent version$")
     public void IUpgradeWire() throws Exception {
+        try {
+            PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         final String appPath = getAppPath();
         pagesCollection.getCommonPage().installIpa(new File(appPath));
         final Map<String, Object> customCaps = new HashMap<>();

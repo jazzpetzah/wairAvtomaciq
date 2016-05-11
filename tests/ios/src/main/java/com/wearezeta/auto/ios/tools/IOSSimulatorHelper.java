@@ -2,15 +2,12 @@ package com.wearezeta.auto.ios.tools;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -214,8 +211,8 @@ public class IOSSimulatorHelper {
     private static final String XCRUN_PATH = "/usr/bin/xcrun";
     private static final int XCRUN_TIMEOUT_SECONDS = 60;
 
-    private static String executeSimctl(String[] cmd) throws Exception {
-        final String[] firstCmdPart = new String[]{XCRUN_PATH, "simctl"};
+    private static String executeXcRunCommand(String prefix, String[] cmd) throws Exception {
+        final String[] firstCmdPart = new String[]{XCRUN_PATH, prefix};
         final String[] fullCmd = ArrayUtils.addAll(firstCmdPart, cmd);
         log.debug(String.format("Executing: %s", Arrays.toString(fullCmd)));
         final Process process = new ProcessBuilder(fullCmd).redirectErrorStream(true).start();
@@ -229,6 +226,14 @@ public class IOSSimulatorHelper {
         final String output = builder.toString().trim();
         log.debug(String.format("Command output: %s", output));
         return output;
+    }
+
+    private static String executeSimctl(String[] cmd) throws Exception {
+        return executeXcRunCommand("simctl", cmd);
+    }
+
+    private static String executeInstruments(String[] cmd) throws Exception {
+        return executeXcRunCommand("instruments", cmd);
     }
 
     public static void kill() throws Exception {
@@ -256,15 +261,7 @@ public class IOSSimulatorHelper {
         try {
             installApp(app);
         } finally {
-            final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-            scheduler.schedule(() -> {
-                try {
-                    FileUtils.deleteDirectory(app);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }, 30, TimeUnit.SECONDS);
-            scheduler.shutdown();
+            FileUtils.deleteDirectory(app);
         }
     }
 
