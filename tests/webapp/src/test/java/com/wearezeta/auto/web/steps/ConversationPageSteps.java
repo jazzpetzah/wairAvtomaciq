@@ -476,6 +476,17 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).confirmDelete();
     }
 
+    @When("^I hover over the latest message$")
+    public void IHoverOverLatestMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).hoverOverLatestMessage();
+    }
+
+    @When("^I do not see delete button for latest message$")
+    public void IDoNotSeeDeleteButton() throws Exception {
+        assertFalse("Delete button is visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isDeleteButtonVisibleForLatestMessage());
+    }
+
     /**
      * Verifies whether people button tool tip is correct or not.
      *

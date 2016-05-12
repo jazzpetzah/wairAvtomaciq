@@ -152,3 +152,59 @@ Feature: Delete
     Examples:
       | Login      | Password      | Name      | Contact   | Message1  | Message2       | Message3       | Message4       | Message5       | Message6  |
       | user1Email | user1Password | user1Name | user2Name | Remains 1 | Gets deleted 2 | Gets deleted 3 | Gets deleted 4 | Gets deleted 5 | Remains 6 |
+
+
+  @C111958 @staging
+  Scenario Outline: I cannot delete certain types of messages (system messages)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Given I open conversation with <Contact1>
+    When I hover over the latest message
+    Then I do not see delete button for latest message
+    When I click People button in group conversation
+    And I see Group Participants popover
+    And I click Add People button on Single User Profile popover
+    And I input user name <Contact2> in search field on Group Participants popover
+    And I select user <Contact2> from Group Participants popover search results
+    And I choose to create conversation from Single User Profile popover
+    And I see STARTED action in conversation
+    And I hover over the latest message
+    Then I do not see delete button for latest message
+    When I click People button in group conversation
+    And I see Group Participants popover
+    And I change group conversation title to <ChatName> on Group Participants popover
+    And I click People button in group conversation
+    And I see RENAMED action in conversation
+    And I hover over the latest message
+    Then I do not see delete button for latest message
+    When I click People button in group conversation
+    And I see Group Participants popover
+    And I click on participant <Contact2> on Group Participants popover
+    And I click Remove button on Group Participants popover
+    And I confirm remove from group chat on Group Participants popover
+    And I click People button in group conversation
+    And I see REMOVED action in conversation
+    And I hover over the latest message
+    Then I do not see delete button for latest message
+    When I click People button in group conversation
+    And I see Group Participants popover
+    And I click Add People button on Group Participants popover
+    And I input user name <Contact2> in search field on Group Participants popover
+    And I select user <Contact2> from Group Participants popover search results
+    And I choose to create group conversation from Group Participants popover
+    And I see ADDED action in conversation
+    And I hover over the latest message
+    Then I do not see delete button for latest message
+    When I call
+    And I wait for 5 seconds
+    And I hang up call with conversation <ChatName>
+    And I see CALLED action in conversation
+    And I hover over the latest message
+    Then I do not see delete button for latest message
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | New name |

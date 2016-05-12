@@ -835,6 +835,12 @@ public class ConversationPage extends WebPage {
         getDriver().findElement(locator).click();
     }
 
+    public void hoverOverLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        hoverOverMessage(id);
+    }
+
     private void hoverOverMessage(String id) throws Exception {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssMessagesById.apply(id));
         if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
@@ -847,5 +853,12 @@ public class ConversationPage extends WebPage {
 
     public void confirmDelete() {
         doDeleteButton.click();
+    }
+
+    public boolean isDeleteButtonVisibleForLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteButtonByMessageId.apply(id));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
     }
 }
