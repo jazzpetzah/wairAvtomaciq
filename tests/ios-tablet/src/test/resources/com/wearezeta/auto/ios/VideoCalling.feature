@@ -51,7 +51,7 @@ Feature: Video Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Video Call button
-    And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
+    # And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see Calling overlay
     And I tap Leave button on Calling overlay
     And I do not see Calling overlay
