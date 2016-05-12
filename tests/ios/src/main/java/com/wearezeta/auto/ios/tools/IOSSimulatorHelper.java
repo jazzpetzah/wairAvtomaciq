@@ -252,16 +252,18 @@ public class IOSSimulatorHelper {
         executeSimctl(new String[]{"erase", getId()});
     }
 
+    private static final long UPGRADE_SYNC_TIMEOUT = 15; // seconds
+
     public static void installApp(File appPath) throws Exception {
         executeSimctl(new String[]{"install", "booted", appPath.getCanonicalPath()});
+        log.debug("Sleeping a while to sync application upgrade...");
+        Thread.sleep(UPGRADE_SYNC_TIMEOUT * 1000);
     }
 
     public static void installIpa(File ipaPath) throws Exception {
         final File app = IOSCommonUtils.extractAppFromIpa(ipaPath);
         try {
             installApp(app);
-            log.debug("sleeping 20 minutes...");
-            Thread.sleep(20 * 60 * 1000);
         } finally {
             FileUtils.deleteDirectory(app);
         }
