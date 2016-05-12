@@ -260,6 +260,8 @@ public class IOSSimulatorHelper {
         final File app = IOSCommonUtils.extractAppFromIpa(ipaPath);
         try {
             installApp(app);
+            log.debug("sleeping 20 minutes...");
+            Thread.sleep(20 * 60 * 1000);
         } finally {
             FileUtils.deleteDirectory(app);
         }
