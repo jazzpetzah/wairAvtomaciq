@@ -84,7 +84,7 @@ public class TestClassGenerator {
         }
 
         public String toClassName() {
-            return (featureName + "__" + scenarioName).replaceAll("[^a-zA-Z0-9]", "_");
+            return (featureName + "__" + scenarioName + "_" + exampleNum).replaceAll("[^a-zA-Z0-9]", "_");
         }
 
         public String toSource() {
@@ -130,7 +130,8 @@ public class TestClassGenerator {
 
     public List<TestCase> generateTestCases() throws IOException {
         Collection<Object[]> testcases = PickleJar.getTestcases();
-        String template = new String(Files.readAllBytes(Paths.get(TEST_TEMPLATE_LOCATION + TEST_TEMPLATE_NAME)), StandardCharsets.UTF_8);
+        String template = new String(Files.readAllBytes(Paths.get(TEST_TEMPLATE_LOCATION + TEST_TEMPLATE_NAME)),
+                StandardCharsets.UTF_8);
 
         return testcases.stream()
                 .map((testcase) -> new TestCase(testcase, template))
