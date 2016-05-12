@@ -252,12 +252,12 @@ public class IOSSimulatorHelper {
         executeSimctl(new String[]{"erase", getId()});
     }
 
-    private static final long UPGRADE_SYNC_TIMEOUT = 15; // seconds
+    private static final long INSTALL_SYNC_TIMEOUT = 15; // seconds
 
     public static void installApp(File appPath) throws Exception {
         executeSimctl(new String[]{"install", "booted", appPath.getCanonicalPath()});
-        log.debug("Sleeping a while to sync application upgrade...");
-        Thread.sleep(UPGRADE_SYNC_TIMEOUT * 1000);
+        log.debug(String.format("Sleeping %s seconds to sync application install...", INSTALL_SYNC_TIMEOUT));
+        Thread.sleep(INSTALL_SYNC_TIMEOUT * 1000);
     }
 
     public static void installIpa(File ipaPath) throws Exception {
