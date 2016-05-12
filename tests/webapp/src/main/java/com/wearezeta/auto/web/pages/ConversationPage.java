@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
+import com.google.common.base.Function;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -18,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -30,8 +32,12 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -39,6 +45,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ConversationPage extends WebPage {
@@ -52,9 +60,6 @@ public class ConversationPage extends WebPage {
     private static final String TOOLTIP_PEOPLE = "People";
 
     private static final String CALLING_IN_LABEL = "IN ";
-
-    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssImageEntries)
-    private List<WebElement> imageEntries;
 
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssMessageAmount)
     private List<WebElement> messageAmount;
@@ -99,7 +104,13 @@ public class ConversationPage extends WebPage {
     private List<WebElement> messages;
 
     @FindBy(css = WebAppLocators.ConversationPage.cssImageEntries)
-    private WebElement lastPicture;
+    private List<WebElement> pictures;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssLoadingImageEntries)
+    private List<WebElement> loadingPictures;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssFirstImage)
+    private WebElement firstPicture;
 
     @FindBy(css = WebAppLocators.ConversationPage.cssFullscreenImage)
     private WebElement fullscreenImage;
@@ -128,6 +139,26 @@ public class ConversationPage extends WebPage {
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
+    }
+
+    private List<WebElement> waitUntilAllImagesAreFullyLoaded() throws Exception {
+        By picturesLocator = By.cssSelector(WebAppLocators.ConversationPage.cssImageEntries);
+        By loadingPicturesLocator = By.cssSelector(WebAppLocators.ConversationPage.cssImageEntries);
+
+        Wait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
+                .withTimeout(DriverUtils.getDefaultLookupTimeoutSeconds(), TimeUnit.SECONDS)
+                .pollingEvery(1, TimeUnit.SECONDS)
+                .ignoring(NoSuchElementException.class)
+                .ignoring(StaleElementReferenceException.class)
+                .ignoring(InvalidElementStateException.class);
+        wait.until(new Function<WebDriver, Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                List<WebElement> all = driver.findElements(picturesLocator);
+                List<WebElement> loading = driver.findElements(loadingPicturesLocator);
+                return all.size() == loading.size();
+            }
+        });
+        return pictures;
     }
 
     public void writeNewMessage(String message) throws Exception {
@@ -442,8 +473,11 @@ public class ConversationPage extends WebPage {
         if (!isImageMessageFound()) {
             return 0.0;
         }
+        // try to get the latest image
+        BufferedImage actualImage;
+        List<WebElement> images = waitUntilAllImagesAreFullyLoaded();
+        actualImage = this.getElementScreenshot(images.get(images.size() - 1)).orElseThrow(IllegalStateException::new);
         // comparison of the original and sent pictures
-        BufferedImage actualImage = this.getElementScreenshot(lastPicture).orElseThrow(IllegalStateException::new);
         BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
         return ImageUtil.getOverlapScore(actualImage, expectedImage,
                 ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
@@ -465,12 +499,12 @@ public class ConversationPage extends WebPage {
 
     public boolean isImageMessageFound() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.cssSelector(WebAppLocators.ConversationPage.cssImageEntries),
+                By.cssSelector(WebAppLocators.ConversationPage.cssFirstImage),
                 TIMEOUT_IMAGE_MESSAGE_UPLOAD);
     }
 
-    public int getNumberOfImagesInCurrentConversation() {
-        return imageEntries.size();
+    public int getNumberOfImagesInCurrentConversation() throws Exception {
+        return waitUntilAllImagesAreFullyLoaded().size();
     }
 
     public int getNumberOfMessagesInCurrentConversation() {
@@ -534,14 +568,14 @@ public class ConversationPage extends WebPage {
         videoCallButton.click();
     }
 
-    private static final int TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS = 5;
-
     public boolean isTextMessageVisible(String message) throws Exception {
-        final By locator = By
-                .xpath(WebAppLocators.ConversationPage.textMessageByText
-                        .apply(message));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                locator, TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
+        final By locator = By.xpath(WebAppLocators.ConversationPage.textMessageByText.apply(message));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+    }
+
+    public boolean isTextMessageInvisible(String message) throws Exception {
+        final By locator = By.xpath(WebAppLocators.ConversationPage.textMessageByText.apply(message));
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
     }
 
     private static final int MISSED_CALL_MSG_TIMOEUT = 15;
@@ -604,8 +638,8 @@ public class ConversationPage extends WebPage {
         assert DriverUtils
                 .waitUntilLocatorIsDisplayed(
                         getDriver(),
-                        By.cssSelector(WebAppLocators.ConversationPage.cssImageEntries));
-        lastPicture.click();
+                        By.cssSelector(WebAppLocators.ConversationPage.cssFirstImage));
+        firstPicture.click();
     }
 
     public boolean isPictureInModalDialog() throws Exception {

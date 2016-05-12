@@ -363,7 +363,11 @@ public final class WebAppLocators {
 
         public static final String cssFileDownload = cssFile + " [data-uie-name='file-download']";
 
-        public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']:not(.image-loading)";
+        public static final String cssFirstImage = "[data-uie-name='go-image-detail'][data-uie-visible='true']:not(.image-loading)";
+
+        public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']";
+
+        public static final String cssLoadingImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true'].image-loading";
 
         public static final String cssMessageAmount = "[data-uie-name='item-message']";
 
