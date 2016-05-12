@@ -122,6 +122,9 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssConnectedMessageLabel)
     private WebElement connectedMessageLabel;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssDoDelete)
+    private WebElement doDeleteButton;
+
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -822,5 +825,27 @@ public class ConversationPage extends WebPage {
             mappedMessages.add(new Message(text, senderId, Instant.ofEpochMilli(Long.parseLong(time))));
         }
         return mappedMessages;
+    }
+
+    public void clickToDeleteLatestMessage() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        hoverOverMessage(id);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteButtonByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+
+    private void hoverOverMessage(String id) throws Exception {
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssMessagesById.apply(id));
+        if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
+            // native mouse over
+            DriverUtils.moveMouserOver(this.getDriver(), getDriver().findElement(locator));
+        } else {
+            throw new Exception("hovering over a message is not implemented for this browser");
+        }
+    }
+
+    public void confirmDelete() {
+        doDeleteButton.click();
     }
 }

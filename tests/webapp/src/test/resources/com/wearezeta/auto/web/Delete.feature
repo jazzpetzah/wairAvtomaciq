@@ -86,7 +86,9 @@ Feature: Delete
     Then I see text message <Message_1>
     And I see text message <Message_2>
     And I see text message <Message_3>
-    When User Myself deletes the recent 2 messages from user <Contact> via device Device1
+    When I click to delete the latest message
+    And I click confirm to delete message
+    And User Myself deletes the recent 1 message from user <Contact> via device Device1
     Then I see text message <Message_1>
     And I do not see text message <Message_2>
     And I do not see text message <Message_3>

@@ -466,6 +466,15 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).downloadFile(fileName);
     }
 
+    @When("^I click to delete the latest message$")
+    public void IClickToDelete() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickToDeleteLatestMessage();
+    }
+
+    @When("^I click confirm to delete message$")
+    public void IClickConfirmToDelete() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).confirmDelete();
+    }
 
     /**
      * Verifies whether people button tool tip is correct or not.
