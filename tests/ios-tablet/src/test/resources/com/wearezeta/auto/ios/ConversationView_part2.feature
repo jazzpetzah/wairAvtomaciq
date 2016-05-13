@@ -434,3 +434,23 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   | GifPicture   |
       | user1Name | user2Name | animated.gif |
+
+  @C2592 @staging
+  Scenario Outline: Verify cursor tooltip is shown
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    Then I see input placeholder text
+    When I tap on text input
+    Then I see input placeholder text
+    When I type the default message
+    Then I do not see input placeholder text
+    When I send the message
+    Then I see input placeholder text
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
