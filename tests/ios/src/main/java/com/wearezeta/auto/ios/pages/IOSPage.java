@@ -103,12 +103,36 @@ public abstract class IOSPage extends BasePage {
         getElement(nameEditingItemSelectAll, "Select All popup is not visible").click();
     }
 
+    public boolean isPopupSelectAllButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemSelectAll);
+    }
+
+    public boolean isPopupSelectAllButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemSelectAll);
+    }
+
     public void tapPopupCopyButton() throws Exception {
         getElement(nameEditingItemCopy, "Copy popup is not visible").click();
     }
 
+    public boolean isPopupCopyButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemCopy);
+    }
+
+    public boolean isPopupCopyButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemCopy);
+    }
+
     public void tapPopupDeleteButton() throws Exception {
         getElement(nameEditingItemDelete, "Delete popup is not visible").click();
+    }
+
+    public boolean isPopupDeleteButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemDelete);
+    }
+
+    public boolean isPopupDeleteButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemDelete);
     }
 
     public void tapPopupPasteButton() throws Exception {
@@ -120,6 +144,14 @@ public abstract class IOSPage extends BasePage {
                     popupVisibilityTimeoutSeconds)));
         }
         Thread.sleep(2000);
+    }
+
+    public boolean isPopupPasteButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemPaste);
+    }
+
+    public boolean isPopupPasteButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemPaste);
     }
 
     private void clickAtSimulator(int x, int y) throws Exception {
@@ -354,7 +386,7 @@ public abstract class IOSPage extends BasePage {
         });
          */
         final ZetaIOSDriver driver = this.getDriver();
-        final Callable callable = new Callable<Boolean>(){
+        final Callable callable = new Callable<Boolean>() {
 
             @Override
             public Boolean call() throws Exception {

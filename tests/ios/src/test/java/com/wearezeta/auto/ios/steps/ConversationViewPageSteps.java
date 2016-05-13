@@ -6,6 +6,7 @@ import java.text.Normalizer.Form;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import cucumber.api.PendingException;
@@ -684,12 +685,12 @@ public class ConversationViewPageSteps {
     /**
      * Tap on pointed badge item
      *
-     * @param badgeItem
+     * @param badgeItem the badge item name
      * @throws Exception
      * @step. ^I tap on (Select All|Copy|Delete|Paste) badge item$
      */
     @When("^I tap on (Select All|Copy|Delete|Paste) badge item$")
-    public void ITapCopyBadge(String badgeItem) throws Exception {
+    public void ITapBadge(String badgeItem) throws Exception {
         switch (badgeItem) {
             case "Select All":
                 getConversationViewPage().tapPopupSelectAllButton();
@@ -706,6 +707,41 @@ public class ConversationViewPageSteps {
             default:
                 throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste) are allowed options");
         }
+    }
+
+    /**
+     * Verify whether the corresponding badge item is visible
+     *
+     * @param shouldNotSee equals to null if the corresponding item should be visible
+     * @param badgeItem    the badge item name
+     * @throws Exception
+     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste) badge item$
+     */
+    @Then("^I (do not )?see (Select All|Copy|Delete|Paste) badge item$")
+    public void ISeeBadge(String shouldNotSee, String badgeItem) throws Exception {
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
+        switch (badgeItem) {
+            case "Select All":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupSelectAllButtonVisible :
+                        getConversationViewPage()::isPopupSelectAllButtonInvisible;
+                break;
+            case "Copy":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupCopyButtonVisible :
+                        getConversationViewPage()::isPopupCopyButtonInvisible;
+                break;
+            case "Delete":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupDeleteButtonVisible :
+                        getConversationViewPage()::isPopupDeleteButtonInvisible;
+                break;
+            case "Paste":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupPasteButtonVisible :
+                        getConversationViewPage()::isPopupPasteButtonInvisible;
+                break;
+            default:
+                throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste) are allowed options");
+        }
+        Assert.assertTrue(String.format("The '%s' badge item is %s", badgeItem,
+                (shouldNotSee == null) ? "not visible" : "still visible"), verificationFunc.call());
     }
 
     /**
