@@ -1093,7 +1093,7 @@ public class ConversationViewPageSteps {
                 throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
         }
         Assert.assertTrue(String.format("%s should be %s in the conversation view", containerType,
-                (shouldNotSee == null) ? "not visible" : "still visible"), verificationFunc.call());
+                (shouldNotSee == null) ? "visible" : "invisible"), verificationFunc.call());
     }
 
     /**
