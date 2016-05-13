@@ -794,7 +794,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT | Message1    | Message2     | Message3    |
       | user1Email | user1Password | user1Name | user2Name | WAS NOT RECEIVED  | First hello | Second hello | Third hello |
 
-  @C82514 @e2ee @staging
+  @C82514 @e2ee @regression
   Scenario Outline: Verify you get no decryption errors when receiving messages on load
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1

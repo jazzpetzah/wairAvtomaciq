@@ -129,7 +129,7 @@ Feature: Delete
       | user1Email | user1Password | user1Name | user2Name | Test_Message_1 | Test_Message_2 | Test_Message_3 |
 
 
-  @C111960 @staging
+  @C111960 @regression
   Scenario Outline: Verify messages get deleted even when I was offline on time of deletion
     Given There are 2 users where <Name> is me
     Given user <Name> adds a new device SecondDevice with label Label1
@@ -175,7 +175,7 @@ Feature: Delete
       | user1Email | user1Password | user1Name | user2Name | Remains 1 | Gets deleted 2 | Gets deleted 3 | Gets deleted 4 | Gets deleted 5 | Remains 6 |
 
 
-  @C111958 @staging
+  @C111958 @regression
   Scenario Outline: I cannot delete certain types of messages (system messages)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
