@@ -100,8 +100,7 @@ Feature: DeleteMessage
     When I tap on contact name <Contact>
     And I tap File Transfer button from input tools
     And I tap file transfer menu item <FileName>
-    Then I see file transfer placeholder
-    When I long tap on file transfer placeholder in conversation view
+    And I long tap on file transfer placeholder in conversation view
     And I tap on Delete badge item
     Then I do not see file transfer placeholder
 
