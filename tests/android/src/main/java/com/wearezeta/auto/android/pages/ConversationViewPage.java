@@ -288,6 +288,10 @@ public class ConversationViewPage extends AndroidPage {
         Thread.sleep(2000);
     }
 
+    public void tapVideoMessageCursorBtn() throws Exception {
+        getElement(idCursorVideo, "Video button is not visible").click();
+    }
+
     public boolean isPingButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorPing);
     }
