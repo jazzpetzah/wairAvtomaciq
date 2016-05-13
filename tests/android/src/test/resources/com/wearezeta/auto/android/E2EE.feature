@@ -42,7 +42,7 @@ Feature: E2EE
       | user1Password | user1Name | Device1        |
 
   @C3227 @rc @regression
-  Scenario Outline: Verify you can receive encrypted and non-encrypted images in 1:1 chat
+  Scenario Outline: Verify in latest version you only can receive encrypted images in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
@@ -52,7 +52,7 @@ Feature: E2EE
     And User <Contact> sends image <ImageName> to single user conversation Myself
     And I tap on contact name <Contact>
     And I scroll to the bottom of conversation view
-    Then I see 2 images in the conversation view
+    Then I see 1 image in the conversation view
 
     Examples: 
       | Name      | Contact   | ImageName   |
