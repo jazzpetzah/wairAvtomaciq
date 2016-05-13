@@ -875,16 +875,18 @@ public class ConversationViewPageSteps {
      * Check the cursor bar only contains ping, sketch, add picture, people and file buttons in cursor bar
      *
      * @throws Exception
-     * @step. ^I( do not)? see ping, sketch, add picture and file buttons in cursor menu
+     * @step. ^I( do not)? see cursor toolbar
      */
-    @Then("^I( do not)? see ping, sketch, add picture and file buttons in cursor toolbar")
-    public void ThenIOnlySeePingSketchAddPictureFileButton(String doNotSee) throws Exception {
+    @Then("^I( do not)? see cursor toolbar")
+    public void ThenISeeCursorToolbar(String doNotSee) throws Exception {
         if (doNotSee == null) {
+            Assert.assertTrue("Video button should be visible in cursor menu", getConversationViewPage().isVideoButtonVisible());
             Assert.assertTrue("Ping button should be visible in cursor menu", getConversationViewPage().isPingButtonVisible());
             Assert.assertTrue("Sketch button should be visible in cursor menu", getConversationViewPage().isSketchButtonVisible());
             Assert.assertTrue("Add picture button should be visible in cursor menu", getConversationViewPage().isAddPictureButtonVisible());
             Assert.assertTrue("File button should be visible in cursor menu", getConversationViewPage().isFileButtonVisible());
         } else {
+            Assert.assertTrue("Video button should be invisible in cursor menu", getConversationViewPage().isVideoButtonInvisible());
             Assert.assertTrue("Ping button should be invisible in cursor menu", getConversationViewPage().isPingButtonInvisible());
             Assert.assertTrue("Sketch button should be invisible in cursor menu", getConversationViewPage().isSketchButtonInvisible());
             Assert.assertTrue("Add picture button should be invisible in cursor menu", getConversationViewPage().isAddPictureButtonInvisible());
