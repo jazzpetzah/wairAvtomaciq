@@ -47,3 +47,19 @@ Feature: Video Message
     Examples:
       | Name      | Contact   | FileName    | MIMEType  | DeviceName |
       | user1Name | user2Name | testing.mp4 | video/mp4 | Device1    |
+
+  @C119735 @staging
+  Scenario Outline: Verify previewing recorded video before sending
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I push local file named "<FileName>.<FileExtension>" to the device
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When I tap Video message button from cursor toolbar
+    And I see vidoe message preview
+
+    Examples:
+      | Name      | Contact   | FileName  | FileExtension  |
+      | user1Name | user2Name | testing   | mp4            |
