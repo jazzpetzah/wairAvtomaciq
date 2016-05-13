@@ -350,7 +350,7 @@ Feature: People View
     Given User Myself removes his avatar picture
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given Myself silenced group conversation with <GroupChatName>
+    Given User Myself silences group conversation <GroupChatName>
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I remember the right side state of <GroupChatName> conversation item on iPad
@@ -372,7 +372,7 @@ Feature: People View
     Given User Myself removes his avatar picture
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Name> silenced group conversation with <GroupChatName>
+    Given User Myself silences group conversation <GroupChatName>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list

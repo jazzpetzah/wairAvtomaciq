@@ -140,7 +140,7 @@ Feature: Search
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
     And I tap on create conversation
-    Then I see dialog page
+    Then I see conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -175,7 +175,7 @@ Feature: Search
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I tap Open Conversation action button on People Picker page
-    Then I see dialog page
+    Then I see conversation view
 
     Examples:
       | Name      | Contact1  |
@@ -195,7 +195,7 @@ Feature: Search
     And I tap Send Image action button on People Picker page
     And I press "Gallery" button
     And I press "Confirm" button
-    Then I see new photo in the dialog
+    Then I see a picture in the conversation view
 
     Examples:
       | Name      | Contact1  |
@@ -236,7 +236,7 @@ Feature: Search
     And I tap Send Image action button on People Picker page
     And I press "Gallery" button
     And I press "Confirm" button
-    Then I see new photo in the dialog
+    Then I see a picture in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -355,6 +355,8 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
+    # Top people will be generated in 15 minutes after sign up
+    Given I wait until Top People list appears
     When I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>

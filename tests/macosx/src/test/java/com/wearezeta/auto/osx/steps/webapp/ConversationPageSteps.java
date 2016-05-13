@@ -28,6 +28,9 @@ import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ConversationPageSteps {
 
@@ -461,9 +464,9 @@ public class ConversationPageSteps {
      */
     @Then("^I do not see text message ?(.*)$")
     public void IDontSeeTextMessage(String message) throws Exception {
-        Assert.assertFalse("Saw text message " + message,
+        Assert.assertTrue("Saw text message " + message,
                 webappPagesCollection.getPage(ConversationPage.class)
-                .isTextMessageVisible(message == null ? "" : message));
+                .isTextMessageInvisible(message == null ? "" : message));
     }
 
     /**

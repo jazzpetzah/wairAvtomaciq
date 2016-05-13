@@ -27,8 +27,6 @@ import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import javax.management.InstanceNotFoundException;
 
@@ -39,7 +37,7 @@ public final class CommonCallingSteps2 {
 
     private static final String CALL_BACKEND_VERSION_SEPARATOR = ":";
 
-    private static final String ZCALL_DEFAULT_VERSION = "2.1";
+    private static final String ZCALL_DEFAULT_VERSION = "2.3.8";
     private String zcallVersion = ZCALL_DEFAULT_VERSION;
 
     public String getZcallVersion() {
@@ -50,7 +48,7 @@ public final class CommonCallingSteps2 {
         this.zcallVersion = zcallVersion;
     }
 
-    private static final String AUTOCALL_DEFAULT_VERSION = "2.1";
+    private static final String AUTOCALL_DEFAULT_VERSION = "2.3.8";
     private String autocallVersion = AUTOCALL_DEFAULT_VERSION;
 
     public String getAutocallVersion() {
@@ -61,50 +59,42 @@ public final class CommonCallingSteps2 {
         this.autocallVersion = autocallVersion;
     }
 
-    private static final String FIREFOX_DEFAULT_VERSION = "44.0.2";
+    private static final String FIREFOX_DEFAULT_VERSION = "46.0.1";
     private static final String CHROME_DEFAULT_VERSION = "50.0.2661.75";
 
     // Request timeout of 180 secs is set by callingservice, we add additional
     // 10 seconds on the client side to actually get a timeout response to
     // recocgnize a failed instances creation for retry mechanisms
     private static final int INSTANCE_START_TIMEOUT_SECONDS = 190;
+    private static final int INSTANCE_DESTROY_TIMEOUT_SECONDS = 30;
     private static final int INSTANCE_CREATION_RETRIES = 3;
     private static final long POLLING_FREQUENCY_MILLISECONDS = 1000;
     private static CommonCallingSteps2 singleton = null;
 
-    private final ExecutorService executor;
-    private final ClientUsersManager usrMgr;
+    private ClientUsersManager usrMgr;
     private final CallingServiceClient client;
     private final Map<String, Instance> instanceMapping;
     private final Map<String, Call> callMapping;
 
     public synchronized static CommonCallingSteps2 getInstance() {
         if (singleton == null) {
-            singleton = new CommonCallingSteps2();
+            singleton = new CommonCallingSteps2(ClientUsersManager.getInstance());
         }
         return singleton;
     }
 
-    private CommonCallingSteps2() {
+    /**
+     * We break the singleton pattern here and make the constructor public to have multiple instances of this class for parallel
+     * test executions. This means this class is not suitable as singleton and it should be changed to a non-singleton class. In
+     * order to stay downward compatible we chose to just change the constructor.
+     *
+     * @return
+     */
+    public CommonCallingSteps2(ClientUsersManager usrMgr) {
         this.callMapping = new ConcurrentHashMap<>();
         this.instanceMapping = new ConcurrentHashMap<>();
         this.client = new CallingServiceClient();
-        this.usrMgr = ClientUsersManager.getInstance();
-        this.executor = Executors.newCachedThreadPool();
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
-                executor.shutdown();
-                try {
-                    executor.awaitTermination(5, TimeUnit.SECONDS);
-                } catch (InterruptedException ex) {
-                    LOG.log(null, ex);
-                }
-                if (!executor.isTerminated()) {
-                    LOG.warn("Could not finish all async calling cleanup tasks! Forcing executor shutdown ...");
-                    executor.shutdownNow();
-                }
-            }
-        });
+        this.usrMgr = usrMgr;
     }
 
     public static class CallNotFoundException extends Exception {
@@ -437,31 +427,35 @@ public final class CommonCallingSteps2 {
     }
 
     /**
-     * Stops and terminates all instances and calls asynchronously.
+     * Stops and terminates all instances and calls in parallel.
      *
      * @throws Exception
      */
     public synchronized void cleanup() throws Exception {
         if (instanceMapping.size() > 0) {
-            LOG.debug("Executing asynchronous cleanup of call instance leftovers...");
+            LOG.debug("Executing parallel cleanup of call instance leftovers...");
         }
-        final String callingServiceUrl = CommonUtils
-                .getDefaultCallingServiceUrlFromConfig(CommonCallingSteps2.class);
+        final String callingServiceUrl = CommonUtils.getDefaultCallingServiceUrlFromConfig(CommonCallingSteps2.class);
+        Map<Instance, CompletableFuture<Instance>> destroyTasks = new HashMap<>(instanceMapping.size());
         for (Map.Entry<String, Instance> entry : instanceMapping.entrySet()) {
             final Instance instance = entry.getValue();
+            final String url = callingServiceUrl + "/api/v1/instance/" + instance.getId() + "/";
             LOG.debug("---BROWSER LOG FOR INSTANCE:\n" + instance + "\n"
-                    + callingServiceUrl + "/api/v1/instance/"
-                    + instance.getId() + "/log");
-            CompletableFuture.runAsync(() -> {
+                    + "<a href="+url+"/log>"+instance.getId()+" LOGS</a>"+ "\n"
+                    + "<a href="+url+"/screenshots>"+instance.getId()+" SCREENSHOTS</a>");
+            
+            destroyTasks.put(instance, CompletableFuture.supplyAsync(() -> {
                 try {
-                    client.stopInstance(instance);
+                    return client.stopInstance(instance);
                 } catch (CallingServiceInstanceException ex) {
-                    LOG.warn(String.format(
-                            "Could not properly shut down instance '%s'",
-                            instance.getId()), ex);
+                    LOG.warn(String.format("Could not properly shut down instance '%s'", instance.getId()), ex);
+                    return null;
                 }
-            }, executor);
+            }));
         }
+        CompletableFuture.allOf(destroyTasks.values().toArray(new CompletableFuture[destroyTasks.size()]))
+                .get(INSTANCE_DESTROY_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        LOG.debug("Destroyed all calling instances - Clearing calling instance map");
         instanceMapping.clear();
     }
 
@@ -514,26 +508,25 @@ public final class CommonCallingSteps2 {
     private void addCall(Call call, ClientUser from) {
         final String key = makeKey(from);
         callMapping.put(key, call);
-        LOG.info("Added waiting call from " + from.getName() + " with key "
-                + key);
+        LOG.info("Added waiting call from " + from.getName() + " with key " + key);
     }
 
     private void addCall(Call call, ClientUser from, String conversationId) {
         final String key = makeKey(from, conversationId);
         callMapping.put(key, call);
-        LOG.info("Added call  from " + from.getName()
-                + " with conversation ID " + conversationId + " with key "
-                + key);
+        LOG.info("Added call  from " + from.getName() + " with conversation ID " + conversationId + " with key " + key);
     }
 
     private void addInstance(Instance instance, ClientUser from) {
-        String key = makeKey(from);
+        final String key = makeKey(from);
         instanceMapping.put(key, instance);
+        LOG.info("Added instance for user " + from.getName() + " with key " + key);
     }
 
     private void removeInstance(ClientUser from) {
-        String key = makeKey(from);
+        final String key = makeKey(from);
         instanceMapping.remove(key);
+        LOG.info("Removed instance for user " + from.getName() + " with key " + key);
     }
 
     private synchronized Instance getInstance(ClientUser userAs)

@@ -131,7 +131,11 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
                         }
                     }
                 }
-                throw new WebDriverException(e.getCause());
+                if (e.getCause() instanceof WebDriverException) {
+                    throw (WebDriverException) e.getCause();
+                } else {
+                    throw new WebDriverException(e.getCause());
+                }
             } else {
                 if (e instanceof TimeoutException) {
                     if (!isSessionLost()) {

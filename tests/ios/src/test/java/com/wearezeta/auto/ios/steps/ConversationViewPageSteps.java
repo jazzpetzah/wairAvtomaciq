@@ -6,8 +6,10 @@ import java.text.Normalizer.Form;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
+import cucumber.api.PendingException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -23,7 +25,8 @@ public class ConversationViewPageSteps {
 
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    public static final String DEFAULT_PNG = "group-icon@3x.png";
+    private static final String FTRANSFER_MENU_DEFAULT_PNG = "group-icon@3x.png";
+    private static final String FTRANSFER_MENU_TOO_BIG = "Big file";
 
     private ConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(ConversationViewPage.class);
@@ -47,15 +50,14 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap on text input to scroll to the end of conversation
+     * Scroll to the bottom of the current conversation view
      *
      * @throws Exception
-     * @step. ^I tap on text input to scroll to the end$
+     * @step. ^I scroll to the bottom of the conversation$$
      */
-    @When("^I tap on text input to scroll to the end$")
-    public void WhenITapOnTextInputToScroll() throws Exception {
-        getConversationViewPage().tapOnCursorInput();
-        getConversationViewPage().hideKeyboard();
+    @When("^I scroll to the bottom of the conversation$")
+    public void ScrollToTheBottom() throws Exception {
+        getConversationViewPage().scrollToTheBottom();
     }
 
     /**
@@ -195,30 +197,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Swipe left on text input to close options buttons
-     *
-     * @throws Exception
-     * @step. ^I swipe left on options buttons$
-     */
-    @When("^I swipe left on options buttons$")
-    public void ISwipeLeftTextInput() throws Exception {
-        getConversationViewPage().swipeLeftToShowInputCursor();
-    }
-
-    /**
-     * Swipe right text input to reveal option buttons
-     * <p>
-     * !!! The step is unstable on Simulator
-     *
-     * @throws Exception
-     * @step. ^I swipe right text input to reveal option buttons$
-     */
-    @When("^I swipe right text input to reveal option buttons$")
-    public void ISwipeTheTextInputCursor() throws Exception {
-        getConversationViewPage().swipeRightToShowConversationTools();
-    }
-
-    /**
      * Tap the corresponding button from input tools palette
      *
      * @param btnName one of available button names
@@ -241,10 +219,10 @@ public class ConversationViewPageSteps {
     public void VeirfyButtonVisibilityInInputTools(String shouldNot, String btnName) throws Exception {
         if (shouldNot == null) {
             Assert.assertTrue(btnName + "button in input tools palette is not visible",
-                    getConversationViewPage().inputToolButtonByNameIsVisible(btnName));
+                    getConversationViewPage().isInputToolButtonByNameVisible(btnName));
         } else {
             Assert.assertTrue(btnName + "button in input tools palette is  visible",
-                    getConversationViewPage().inputToolButtonByNameIsNotVisible((btnName)));
+                    getConversationViewPage().isInputToolButtonByNameNotVisible((btnName)));
         }
     }
 
@@ -323,8 +301,12 @@ public class ConversationViewPageSteps {
 
     @When("^I scroll media out of sight until media bar appears$")
     public void IScrollMediaOutOfSightUntilMediaBarAppears() throws Exception {
-        Assert.assertTrue("Media bar is not displayed after the view has been scrolled to the top",
-                getConversationViewPage().scrollDownTillMediaBarAppears());
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            throw new PendingException("Known Bug: Media bar disappears unexpectedly on Simulator");
+        } else {
+            Assert.assertTrue("Media bar is not displayed after the view has been scrolled to the top",
+                    getConversationViewPage().scrollDownTillMediaBarAppears());
+        }
     }
 
     @When("^I pause playing the media in media bar$")
@@ -503,18 +485,22 @@ public class ConversationViewPageSteps {
         getConversationViewPage().clickOnCallButtonForContact(contact.toUpperCase());
     }
 
-    public static final String TAP_OR_SLIDE = "TAP OR SLIDE";
-
     /**
-     * Observing tutorial "swipe right" aka "tap or slide"
+     * Check whether text input placeholder text is visible or not
      *
+     * @param shouldNotBeVisible equals to null if the placeholder should be visible
      * @throws Exception
-     * @step. ^I see TAPORSLIDE text$
+     * @step. ^I (do not )?see input placeholder text$
      */
-    @Then("^I see TAPORSLIDE text$")
-    public void ISeeTapOrSlideText() throws Exception {
-        boolean result = getConversationViewPage().isTypeOrSlideExists(TAP_OR_SLIDE);
-        Assert.assertTrue(result);
+    @Then("^I (do not )?see input placeholder text$")
+    public void ISeeInputPlaceholderText(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("Input placeholder text is not visible",
+                    getConversationViewPage().isInputPlaceholderTextVisible());
+        } else {
+            Assert.assertTrue("Input placeholder text is visible",
+                    getConversationViewPage().isInputPlaceholderTextInvisible());
+        }
     }
 
     /**
@@ -582,80 +568,21 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify is plus button is visible
+     * Verify that all buttons in toolbar are visible or not
      *
-     * @param shouldNotBeVisible equals to null if the button should not be visible
+     * @param shouldNotBeVisible equals to null if the toolbar should be visible
      * @throws Exception
-     * @step. ^I (do not )?see plus button next to text input$
+     * @step. ^I (do not )?see conversation tools buttons$
      */
-    @When("^I (do not )?see plus button next to text input$")
-    public void ISeePlusButtonNextInput(String shouldNotBeVisible) throws Exception {
+    @When("^I (do not )?see conversation tools buttons$")
+    public void ISeeOnlyPeopleButtonRestNotShown(String shouldNotBeVisible) throws Exception {
         if (shouldNotBeVisible == null) {
-            Assert.assertTrue("Plus button is not visible", getConversationViewPage().isPlusButtonVisible());
+            Assert.assertTrue("Some of input tools buttons are not visible",
+                    getConversationViewPage().areInputToolsVisible());
         } else {
-            Assert.assertTrue("Plus button is still shown", getConversationViewPage().waitPlusButtonNotVisible());
+            Assert.assertTrue("Some of input tools buttons are still visible",
+                    getConversationViewPage().areInputToolsInvisible());
         }
-    }
-
-    /**
-     * Verify tools Buttons are presented after text input swipe
-     *
-     * @throws Exception
-     * @step. ^I see conversation tools buttons$
-     */
-    @When("^I see conversation tools buttons$")
-    public void ISeeToolsButtons() throws Exception {
-        Assert.assertTrue("People button is not visible", getConversationViewPage().isPeopleButtonVisible());
-        Assert.assertTrue("Some of expected input tools buttons are not visible",
-                getConversationViewPage().areInputToolsVisible());
-    }
-
-    /**
-     * Verify that only People button is shown. Rest button should not be
-     * visible
-     *
-     * @throws Exception
-     * @step. ^I see no other conversation tools buttons except of Details$
-     */
-    @When("^I see no other conversation tools buttons except of People")
-    public void ISeeOnlyPeopleButtonRestNotShown() throws Exception {
-        Assert.assertTrue("People button is not visible", getConversationViewPage().isPeopleButtonVisible());
-        Assert.assertTrue("Some of input tools buttons are still visible",
-                getConversationViewPage().areInputToolsInvisible());
-    }
-
-    /**
-     * Verify Close button in options is NOT shown
-     *
-     * @throws Exception
-     * @step. ^I see Close input options button is not visible$
-     */
-    @When("^I see Close input options button is not visible$")
-    public void ISeeCloseButtonInputOptionsNotVisible() throws Exception {
-        Assert.assertTrue("Close input options button is visible",
-                getConversationViewPage().verifyInputOptionsCloseButtonNotVisible());
-    }
-
-    /**
-     * Click on plus button next to text input
-     *
-     * @throws Exception
-     * @step. ^I click plus button next to text input$
-     */
-    @When("^I click plus button next to text input$")
-    public void IClickPlusButton() throws Exception {
-        getConversationViewPage().clickPlusButton();
-    }
-
-    /**
-     * Click on close button in input options
-     *
-     * @throws Exception
-     * @step. ^I click close button next to text input$
-     */
-    @When("^I click Close input options button$")
-    public void IClickCloseButtonInputOptions() throws Exception {
-        getConversationViewPage().clickInputOptionsCloseButton();
     }
 
     /**
@@ -723,8 +650,9 @@ public class ConversationViewPageSteps {
      */
     @When("^I see the default message in input field$")
     public void WhenISeeMessageInInputField() throws Exception {
-        Assert.assertTrue("Input field has incorrect message or empty",
-                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE.equals(getConversationViewPage().getStringFromInput()));
+        Assert.assertTrue(String.format("The text input field contain content, which is different from '%s'",
+                CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE),
+                getConversationViewPage().isCurrentInputTextEqualTo(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE));
     }
 
     /**
@@ -744,39 +672,93 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Long press on the image displayed in the conversation
+     * Long tap on the image displayed in the conversation
      *
      * @throws Exception
-     * @step. ^I longpress on image in the conversation$
+     * @step. ^I long tap on image in the conversation$
      */
-    @When("^I longpress on image in the conversation$")
-    public void ILongPressOnImage() throws Exception {
+    @When("^I long tap on image in the conversation$")
+    public void ILongTapOnImage() throws Exception {
         getConversationViewPage().tapHoldImage();
     }
 
     /**
-     * Clicking on copy badge/icon/window in conversation
+     * Tap on pointed badge item
      *
+     * @param badgeItem the badge item name
      * @throws Exception
-     * @step. ^I tap on copy badge$
+     * @step. ^I tap on (Select All|Copy|Delete|Paste) badge item$
      */
-    @When("^I tap on copy badge$")
-    public void ITapCopyBadge() throws Exception {
-        getConversationViewPage().clickPopupCopyButton();
+    @When("^I tap on (Select All|Copy|Delete|Paste) badge item$")
+    public void ITapBadge(String badgeItem) throws Exception {
+        switch (badgeItem) {
+            case "Select All":
+                getConversationViewPage().tapPopupSelectAllButton();
+                break;
+            case "Copy":
+                getConversationViewPage().tapPopupCopyButton();
+                break;
+            case "Delete":
+                getConversationViewPage().tapPopupDeleteButton();
+                break;
+            case "Paste":
+                getConversationViewPage().tapPopupPasteButton();
+                break;
+            default:
+                throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste) are allowed options");
+        }
     }
 
     /**
-     * Verify plus icon is replaced with user avatar icon
+     * Verify whether the corresponding badge item is visible
      *
+     * @param shouldNotSee equals to null if the corresponding item should be visible
+     * @param badgeItem    the badge item name
      * @throws Exception
-     * @step. ^I see plus icon is changed to user avatar icon$
+     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste) badge item$
      */
-    @When("^I see plus icon is changed to user avatar icon$")
-    public void ISeePluseIconChangedToUserAvatar() throws Exception {
-        Assert.assertFalse("Plus icon is still visible", getConversationViewPage()
-                .isPlusButtonVisible());
-        Assert.assertTrue("User avatar is not visible", getConversationViewPage()
-                .isUserAvatarNextToInputVisible());
+    @Then("^I (do not )?see (Select All|Copy|Delete|Paste) badge item$")
+    public void ISeeBadge(String shouldNotSee, String badgeItem) throws Exception {
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
+        switch (badgeItem) {
+            case "Select All":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupSelectAllButtonVisible :
+                        getConversationViewPage()::isPopupSelectAllButtonInvisible;
+                break;
+            case "Copy":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupCopyButtonVisible :
+                        getConversationViewPage()::isPopupCopyButtonInvisible;
+                break;
+            case "Delete":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupDeleteButtonVisible :
+                        getConversationViewPage()::isPopupDeleteButtonInvisible;
+                break;
+            case "Paste":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupPasteButtonVisible :
+                        getConversationViewPage()::isPopupPasteButtonInvisible;
+                break;
+            default:
+                throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste) are allowed options");
+        }
+        Assert.assertTrue(String.format("The '%s' badge item is %s", badgeItem,
+                (shouldNotSee == null) ? "not visible" : "still visible"), verificationFunc.call());
+    }
+
+    /**
+     * Verify whether user avatar is visible near convo input field
+     *
+     * @param shouldNotBeVisible equals to nuill is the avatar should be invisible
+     * @throws Exception
+     * @step. ^I (do not )?see plus icon is changed to user avatar icon$
+     */
+    @When("^I (do not )?see user avatar icon near the conversation input field$")
+    public void ISeeUserAvatar(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("User avatar is not visible", getConversationViewPage().isUserAvatarNextToInputVisible());
+        } else {
+            Assert.assertTrue("User avatar is visible, but should be hidden",
+                    getConversationViewPage().isUserAvatarNextToInputInvisible());
+        }
     }
 
     /**
@@ -800,7 +782,7 @@ public class ConversationViewPageSteps {
     @When("^I see conversation is scrolled to the end$")
     public void ISeeConversationIsScrolledToEnd() throws Exception {
         Assert.assertTrue("The input field state looks incorrect",
-                getConversationViewPage().isPlusButtonVisible() && getConversationViewPage().waitForCursorInputVisible());
+                getConversationViewPage().waitForCursorInputVisible());
     }
 
     /**
@@ -974,27 +956,39 @@ public class ConversationViewPageSteps {
      *
      * @param itemName name of the item
      * @throws Exception
-     * @step. ^I tap file transfer menu item (.*)$
+     * @step. ^I tap file transfer menu item (.*)
      */
-    @When("^I tap file transfer menu item (.*)$")
+    @When("^I tap file transfer menu item (.*)")
     public void ITapFileTransferMenuItem(String itemName) throws Exception {
-        if (itemName.equals("DEFAULT_PNG")) {
-            itemName = DEFAULT_PNG;
+        String realName = itemName;
+        switch (itemName) {
+            case "FTRANSFER_MENU_DEFAULT_PNG":
+                realName = FTRANSFER_MENU_DEFAULT_PNG;
+                break;
+            case "TOO_BIG":
+                realName = FTRANSFER_MENU_TOO_BIG;
+                break;
         }
-        getConversationViewPage().tapFileTransferMenuItem(itemName);
+        getConversationViewPage().tapFileTransferMenuItem(realName);
     }
 
     /**
      * Verify file transfer placeholder visibility
      *
+     * @param shouldNotBeVisible equals to null if the placeholder should be visible
      * @throws Exception
-     * @step. ^I see file transfer placeholder$
+     * @step. ^I (do not )?see file transfer placeholder$
      */
-    @When("^I see file transfer placeholder$")
-    public void ISeeFileTransferPlaceHolder() throws Exception {
-        Assert.assertTrue("File transfer placeholder is not visible",
-                getConversationViewPage().fileTransferTopLabelIsVisible() &&
-                        getConversationViewPage().fileTransferBottomLabelIsVisible());
+    @When("^I (do not )?see file transfer placeholder$")
+    public void ISeeFileTransferPlaceHolder(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("File transfer placeholder is not visible",
+                    getConversationViewPage().isFileTransferTopLabelVisible() &&
+                            getConversationViewPage().isFileTransferBottomLabelVisible());
+        } else {
+            Assert.assertTrue("File transfer placeholder is visible, but should be hidden",
+                    getConversationViewPage().isFileTransferTopLabelInvisible());
+        }
     }
 
     /**
@@ -1040,5 +1034,100 @@ public class ConversationViewPageSteps {
         Assert.assertTrue(String.format("The preview was not shown for '%s' after %s seconds timeout", expectedFileName,
                 secondsTimeout),
                 getConversationViewPage().waitUntilFilePreviewIsVisible(secondsTimeout, expectedFileName));
+    }
+
+    /**
+     * Verify whether generic file share menu is shown
+     *
+     * @param timeoutSeconds timeout in seconds
+     * @throws Exception
+     * @step. ^I wait up to (\\d+) seconds until I see generic file share menu$
+     */
+    @Then("^I wait up to (\\d+) seconds until I see generic file share menu$")
+    public void ISeeGenericFileShareMenu(int timeoutSeconds) throws Exception {
+        Assert.assertTrue("Generic file share menu has not been shown",
+                getConversationViewPage().isGenericFileShareMenuVisible(timeoutSeconds));
+    }
+
+    /**
+     * Wait until Uploading label disappears
+     *
+     * @param timeoutSeconds seconds to wait label to disappear
+     * @throws Exception
+     * @step. ^I wait up to (\\d+) seconds until the file is uploaded$
+     */
+    @When("^I wait up to (\\d+) seconds until the file is uploaded$")
+    public void IWaitFileToUpload(int timeoutSeconds) throws Exception {
+        Assert.assertTrue(String.format("File is still uploading after %s seconds", timeoutSeconds),
+                getConversationViewPage().fileUploadingLabelNotVisible(timeoutSeconds));
+    }
+
+    /**
+     * Tap Share button on file preview
+     *
+     * @throws Exception
+     * @step. ^I tap Share button on file preview page$
+     */
+    @When("^I tap Share button on file preview page$")
+    public void ITapShareButtonOnPreview() throws Exception {
+        getConversationViewPage().tapShareButton();
+    }
+
+    /**
+     * Tap share menu item by name
+     *
+     * @param itemName title in Share menu
+     * @throws Exception
+     * @step. ^I tap (Save Image|Copy) share menu item$
+     */
+    @When("^I tap (Save Image|Copy) share menu item$")
+    public void ITapShareMenuItem(String itemName) throws Exception {
+        getConversationViewPage().tapShareMenuItem(itemName);
+    }
+
+    /**
+     * long tap on pointed text in conversation view
+     *
+     * @param msg message text
+     * @throws Exception
+     * @step. ^I long tap last (default\".*\") message in conversation view$
+     */
+    @When("^I long tap (default|\".*\") message in conversation view$")
+    public void ITapAndHoldTextMessage(String msg) throws Exception {
+        if (msg.equals("default")) {
+            getConversationViewPage().tapAndHoldTextMessageByText(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+        } else {
+            msg = msg.replaceAll("^\"|\"$", "");
+            getConversationViewPage().tapAndHoldTextMessageByText(msg);
+        }
+    }
+
+    /**
+     * Verifies if media container is visible or not in the conversation view
+     *
+     * @param shouldNotBeVisible equals to null if the media container should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see the media container in the conversation view$
+     */
+    @Then("^I (do not )?see the media container in the conversation view$")
+    public void ISeeTheMediaContainerInTheConversationView(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("Media container is not visible in the conversation view",
+                    getConversationViewPage().isMediaContainerVisible());
+        } else {
+            Assert.assertTrue("Media container is visible in the conversation view",
+                    getConversationViewPage().isMediaContainerInvisible());
+        }
+    }
+
+    /**
+     * Does a long tap on a media container to get delete/copy menu
+     *
+     * @throws Exception
+     * @step. ^I long tap on media container in the conversation$
+     */
+    @When("^I long tap on media container in the conversation$")
+    public void iLongTapOnMediaContainerInTheConversation() throws Exception {
+        getConversationViewPage().tapAndHoldMediaContainer();
     }
 }

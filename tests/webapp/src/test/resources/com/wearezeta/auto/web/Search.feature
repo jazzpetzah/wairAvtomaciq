@@ -6,7 +6,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact2> exists in backend search results
     When I open People Picker from Contact List
@@ -16,7 +16,7 @@ Feature: Search
     And I type <Contact2> in search field of People Picker
     And I select <Contact2> from People Picker results
     And I choose to create conversation from People Picker
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     Then I see Contact list with name <Contact1>,<Contact2>
 
     Examples: 
@@ -29,7 +29,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open People Picker from Contact List
     And I wait until <Contact1> exists in backend search results
     And I type <Contact1> in search field of People Picker
@@ -39,7 +39,7 @@ Feature: Search
     And I type <Contact2> in search field of People Picker
     And I select <Contact2> from People Picker results
     And I choose to create conversation from People Picker
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     Then I see Contact list with name <Contact1>,<Contact2>
     And I open self profile
     And I click gear button on self profile page
@@ -49,7 +49,7 @@ Feature: Search
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Contact1Email> and password <Contact1Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     Then I see Contact list with name <Name>,<Contact2>
     And I open self profile
     And I click gear button on self profile page
@@ -59,7 +59,7 @@ Feature: Search
     And User <Contact2> is me
     And I see Sign In page
     And I Sign in using login <Contact2Email> and password <Contact2Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     Then I see Contact list with name <Name>,<Contact1>
 
     Examples: 
@@ -72,7 +72,7 @@ Feature: Search
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I wait until <Contact> exists in backend search results
     And I open conversation with <Contact>
     And I click People button in one to one conversation
@@ -116,7 +116,7 @@ Feature: Search
     And User <Name2> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I see connection request from one user
     And I open the list of incoming connection requests
     When I accept connection request from user <Name>
@@ -130,7 +130,7 @@ Feature: Search
     And User <Name> is me
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I see Contact list with name <Name2>
     And I open conversation with <Name2>
     And I see connected message for <Name2> in conversation
@@ -142,14 +142,14 @@ Feature: Search
   @C1725 @smoke
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself is connected to <Contact1>,<Contact2>
     Given User Me sends message <Message1> to conversation <Contact1>
     Given User <Contact1> sends message <Message1> to conversation <Name>
     Given User Me sends message <Message1> to conversation <Contact2>
     Given User <Contact2> sends message <Message1> to conversation <Name>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    When I see my avatar on top of Contact list
+    When I am signed in properly
     And Myself waits until 2 people in backend top people results
     And I open People Picker from Contact List
     And I wait till Top People list appears
@@ -164,7 +164,7 @@ Feature: Search
   @C1724 @smoke
   Scenario Outline: Verify you can create a group conversation from Top People list
     Given There are 4 users where <Name> is me
-    Given Myself is connected to <Contact1>, <Contact2>, <Contact3>
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given User Me sends message <Message1> to conversation <Contact1>
     Given User <Contact1> sends message <Message1> to conversation <Name>
     Given User Me sends message <Message1> to conversation <Contact2>
@@ -173,7 +173,7 @@ Feature: Search
     Given User <Contact3> sends message <Message1> to conversation <Name>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    When I see my avatar on top of Contact list
+    When I am signed in properly
     And Myself waits until 3 people in backend top people results
     And I open People Picker from Contact List
     When I select <Contact1>,<Contact2> from Top People
@@ -206,7 +206,7 @@ Feature: Search
     Given Myself is connected to <Contact1>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I wait until <Contact1> exists in backend search results
     When I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker
@@ -228,7 +228,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact2> exists in backend search results
     When I open People Picker from Contact List

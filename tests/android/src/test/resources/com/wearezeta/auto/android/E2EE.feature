@@ -42,7 +42,7 @@ Feature: E2EE
       | user1Password | user1Name | Device1        |
 
   @C3227 @rc @regression
-  Scenario Outline: Verify you can receive encrypted and non-encrypted images in 1:1 chat
+  Scenario Outline: Verify in latest version you only can receive encrypted images in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
@@ -52,7 +52,7 @@ Feature: E2EE
     And User <Contact> sends image <ImageName> to single user conversation Myself
     And I tap on contact name <Contact>
     And I scroll to the bottom of conversation view
-    Then I see 2 images in the conversation view
+    Then I see 1 image in the conversation view
 
     Examples: 
       | Name      | Contact   | ImageName   |
@@ -70,13 +70,15 @@ Feature: E2EE
     Then I see the most recent conversation message is "<Message1>"
     When I enable Airplane mode on the device
     And User <Contact1> sends encrypted image <Picture> to single user conversation Myself
-    Then I do not see new picture in the dialog
+    Then I do not see any pictures in the conversation view
     When User <Contact1> sends encrypted message <Message2> to user Myself
     Then I see the most recent conversation message is "<Message1>"
     When I disable Airplane mode on the device
+    # Wait for sync
+    And I wait for 10 seconds
     And I scroll to the bottom of conversation view
     Then I see the most recent conversation message is "<Message2>"
-    And I see new picture in the dialog
+    And I see a picture in the conversation view
 
     Examples: 
       | Name      | Contact1  | Message1 | Message2 | Picture     |
@@ -95,13 +97,15 @@ Feature: E2EE
     Then I see the most recent conversation message is "<Message1>"
     When I enable Airplane mode on the device
     And User <Contact1> sends encrypted image <Picture> to group conversation <GroupChatName>
-    Then I do not see new picture in the dialog
+    Then I do not see any pictures in the conversation view
     When User <Contact2> sends encrypted message <Message2> to group conversation <GroupChatName>
     Then I see the most recent conversation message is "<Message1>"
     When I disable Airplane mode on the device
+    # Wait for sync
+    And I wait for 10 seconds
     And I scroll to the bottom of conversation view
     Then I see the most recent conversation message is "<Message2>"
-    And I see new picture in the dialog
+    And I see a picture in the conversation view
 
     Examples: 
       | Name      | Contact1  | Contact2  | Message1 | Message2 | Picture     | GroupChatName |
@@ -526,7 +530,7 @@ Feature: E2EE
     When I see takeover screen from user "<Contact1>"
     Then I tap send anyway button
     And I do not see takeover screen
-    Then I see my message "<Message2>" in the dialog
+    Then I see the message "<Message2>" in the conversation view
 
     Examples: 
       | Name      | Contact1  | Device  | Message1 | Message2        |

@@ -18,10 +18,6 @@ public class CallingSteps {
 
     private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2.getInstance();
 
-    {
-        commonCallingSteps.setAutocallVersion("2.2");
-    }
-
     /**
      * Make audio or video call(s) to one specific conversation.
      *

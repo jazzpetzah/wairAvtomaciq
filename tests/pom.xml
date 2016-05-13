@@ -14,5 +14,6 @@
 		<module>macosx</module>
 		<module>webapp</module>
 		<module>ios-tablet</module>
+	 <module>picklejar</module>
 	</modules>
 </project>

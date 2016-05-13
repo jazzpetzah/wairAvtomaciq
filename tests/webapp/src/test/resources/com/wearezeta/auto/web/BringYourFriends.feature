@@ -73,17 +73,21 @@ Feature: Bring Your Friends
     And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456!
     Then I see more than 5 suggestions in people picker
     And I remember first suggested user
-    And I remember second suggested user
     And I see first remembered user in People Picker
-    And I see second remembered user in People Picker
-    When I remove first remembered user from suggestions in People Picker
-    And I do not see first remembered user in People Picker
-    And I make a connection request for second remembered user directly from People Picker
-    And I do not see second remembered user in People Picker
+    When I click on remembered not connected contact found in People Picker
+    And I see Connect To popover
+    And I click Connect button on Connect To popover
+    Then I see Contact list with remembered user
+    When I open remembered users conversation
+    Then I see connecting message in conversation with remembered contact
+    When I open People Picker from Contact List
+    And I click button to bring friends from Gmail
+    And I click on remembered pending contact found in People Picker
+    And I click Cancel request on Pending Outgoing Connection popover
+    And I see Cancel request confirmation popover
+    And I click Yes button on Cancel request confirmation popover
     And I close People Picker
-    And I see Contact list with second remembered user
-    When I open second remembered users conversation
-    Then I see connecting message in conversation with second remembered user
+    Then I do not see Contact list with remembered user
 
   @C3218 @regression
   Scenario Outline: Switch between Invitation and Share Contacts bubbles

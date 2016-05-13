@@ -215,6 +215,14 @@ public class OSXCommonUtils extends CommonUtils {
         LOG.debug("executing command: " + Arrays.toString(commands));
         return executeOsXCommand(commands);
     }
+    
+    public static int getNumberOfWireProcesses() throws Exception {
+        String[] command = new String[]{"/bin/sh", "-c", "ps aux | grep Wire.*app | wc -l"};
+        LOG.debug("executing command: " + Arrays.toString(command));
+        String numberString = executeOsXCommandWithOutput(command);
+        int numberProcesses = Integer.parseInt(numberString.trim()) -2;//substract grep and wc process
+        return numberProcesses;
+    }
 
     public static int killAllApps() throws Exception {
         // TODO: merge commands

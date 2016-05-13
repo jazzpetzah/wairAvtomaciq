@@ -39,7 +39,7 @@ Feature: Conversation List
   Scenario Outline: Unarchive conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
-    Given Myself archived conversation with <ArchivedUser>
+    Given User Myself archives single user conversation <ArchivedUser>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -124,8 +124,10 @@ Feature: Conversation List
     Given <Contact> starts instance using <CallBackend>
     Given I Sign in on tablet using my email
     And I see conversations list
-    When I remember the left side state of <Contact> conversation item on iPad
-    When <Contact> calls me
+    When I tap on contact name <Contact1>
+    And I navigate back to conversations list
+    And I remember the left side state of <Contact> conversation item on iPad
+    And <Contact> calls me
     And <Contact> stops calling me
     Then I see the state of <Contact> conversation item is changed on iPad
     When I remember the left side state of <Contact> conversation item on iPad
@@ -134,7 +136,7 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact   | Contact1  | Number | CallBackend |
-      | user1Name | user2Name | user3Name | 2      | autocall    |
+      | user1Name | user2Name | user3Name | 2      | chrome      |
 
   @C2535 @regression @id2371
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [PORTRAIT]
@@ -406,10 +408,10 @@ Feature: Conversation List
     Then I see the state of <Contact1> conversation item is not changed on iPad
 
     Examples:
-      | Name      | Contact1  | Contact2 |
+      | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C95633 @staging
+  @C95633 @regression
   Scenario Outline: Verify hint is not shown anymore after tapping on it once [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

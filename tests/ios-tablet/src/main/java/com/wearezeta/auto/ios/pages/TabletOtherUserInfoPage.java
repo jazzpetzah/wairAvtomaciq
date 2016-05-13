@@ -20,11 +20,7 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
             String.format("%s//*[@name='%s']",
                     TabletGroupConversationDetailPopoverPage.xpathStrPopover, email.toUpperCase());
 
-    private static final By xpathOtherUserConnectLabel = By.xpath(
-            TabletGroupConversationDetailPopoverPage.xpathStrPopover + "//UIAStaticText[@name='CONNECT']");
-
-    private static final By xpathOtherUserConnectButton = By.xpath(
-            "//UIAStaticText[@name='CONNECT']/preceding-sibling::UIAButton[@name='OtherUserMetaControllerLeftButton']");
+    private static final By xpathOtherUserConnectButton = By.xpath("//UIAButton[@label='CONNECT']");
 
     private static final By nameOtherUserProfilePageCloseButton =
             MobileBy.AccessibilityId("OtherUserProfileCloseButton");
@@ -35,10 +31,6 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
 
     public void removeFromConversationOniPad() throws Exception {
         clickElementWithRetryIfStillDisplayed(nameOtherUserMetaControllerRightButtonIPadPopover);
-    }
-
-     public boolean isConnectLabelVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOtherUserConnectLabel);
     }
 
     public boolean isConnectButtonVisible() throws Exception {

@@ -32,7 +32,7 @@ public final class OSXLocators {
 
 	public static final class MainWirePage {
 
-		public static final String xpathWindow = "//AXApplication[contains(@AXTitle='Wire')]//AXWindow[contains(@AXTitle,'Wire')]";
+		public static final String xpathWindow = "//AXApplication[contains(@AXTitle,'Wire')]//AXWindow[contains(@AXTitle,'Wire')]";
 
 		public static final String xpathCloseButton = xpathWindow
 				+ "//AXButton[@AXRoleDescription='close button']";
@@ -46,7 +46,7 @@ public final class OSXLocators {
 
 	public static final class AboutPage {
 
-		public static final String xpathWindow = "//AXApplication[contains(@AXTitle='Wire')]//AXWindow[@AXTitle='']";
+		public static final String xpathWindow = "//AXApplication[contains(@AXTitle,'Wire')]//AXWindow[@AXTitle='']";
 
 		public static final String xpathCloseButton = xpathWindow
 				+ "//AXButton[@AXRoleDescription='close button']";

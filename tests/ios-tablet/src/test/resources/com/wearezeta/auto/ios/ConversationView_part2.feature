@@ -22,7 +22,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -51,7 +50,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -80,8 +78,6 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I post media link <YouTubeLink>
-    And I navigate back to conversations list
-    And I tap on contact name <Contact>
     And I click video container for the first time
     And I wait for 5 seconds
     Then I see video player page is opened
@@ -115,7 +111,6 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -167,29 +162,6 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2599 @rc @regression @id3237 @id3238
-  Scenario Outline: Verify opening and closing the cursor by clicking plus/cancel and swiping right/left [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    When I tap on contact name <Contact1>
-    And I click plus button next to text input
-    Then I see conversation tools buttons
-    And I do not see plus button next to text input
-    And I swipe left on options buttons
-    And I see Close input options button is not visible
-    And I click plus button next to text input
-    Then I see conversation tools buttons
-    And I click Close input options button
-    And I see Close input options button is not visible
-    And I see plus button next to text input
-
-    Examples:
-      | Name      | Contact1  |
-      | user1Name | user2Name |
-
   @C2596 @regressionF2601 @id3100
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [PORTRAIT]
     Given There are 4 users where <Name> is me
@@ -200,19 +172,16 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I click plus button next to text input
-    Then I see no other conversation tools buttons except of People
-    And I click Close input options button
+    Then I do not see conversation tools buttons
     And I navigate back to conversations list
     When I tap on group chat with name <GroupChatName>
-    And I click plus button next to text input
-    Then I see no other conversation tools buttons except of People
+    Then I do not see conversation tools buttons
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
 
-  @C2601 @rc @regression @id3267
+  @C2601 @regression @id3267
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -223,12 +192,9 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact1>
-    And I click plus button next to text input
-    Then I see no other conversation tools buttons except of People
-    And I click Close input options button
+    Then I do not see conversation tools buttons
     When I tap on group chat with name <GroupChatName>
-    And I click plus button next to text input
-    Then I see no other conversation tools buttons except of People
+    Then I do not see conversation tools buttons
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
@@ -289,8 +255,7 @@ Feature: Conversation View
     And I type the default message
     When I tap on contact name <Contact2>
     And I tap on contact name <Contact1>
-    Then I see Close input options button is not visible
-    And I see the default message in input field
+    Then I see the default message in input field
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -305,8 +270,10 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
     And I see 1 photo in the dialog
-    And I longpress on image in the conversation
-    And I tap on copy badge
+    # Wait for polka dots to disappear
+    And I wait for 7 seconds
+    And I long tap on image in the conversation
+    And I tap on Copy badge item
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
@@ -327,8 +294,10 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     And I tap on contact name <Contact>
     And I see 1 photo in the dialog
-    And I longpress on image in the conversation
-    And I tap on copy badge
+    # Wait for polka dots to disappear
+    And I wait for 7 seconds
+    And I long tap on image in the conversation
+    And I tap on Copy badge item
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
@@ -376,7 +345,6 @@ Feature: Conversation View
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -401,7 +369,6 @@ Feature: Conversation View
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
     And I tap close fullscreen page button
-    And I click plus button next to text input
     And I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
@@ -430,40 +397,25 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
       | user1Name | user2Name | user3Name | Caramba!      | testing.jpg |
 
-  @C2602 @regression @id4086
-  Scenario Outline: Verify cursor swiping is disabled when you scroll back into a conversation [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    Given I see conversations list
-    Given User Myself sends 40 encrypted messages to user <Contact>
-    Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    When I tap on contact name <Contact>
-    And I tap on text input to scroll to the end
-    When I scroll to the beginning of the conversation
-    Then I do not see plus button next to text input
-
-    Examples:
-      | Name      | Contact   | Picture     |
-      | user1Name | user2Name | testing.jpg |
-
   @C2603 @regression @id4087
   Scenario Outline: Verify people icon is changed on avatar with opening keyboard and back [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I type the default message
-    And I see plus icon is changed to user avatar icon
-    And I clear conversation text input
-    Then I see plus button next to text input
+    Then I do not see user avatar icon near the conversation input field
+    When I tap on text input
+    Then I see user avatar icon near the conversation input field
+    # This is to hide keyboard
+    When I tap on contact name <Contact1>
+    And I tap on contact name <Contact>
+    Then I do not see user avatar icon near the conversation input field
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | Contact1  |
+      | user1Name | user2Name | user3Name |
 
   @C2624 @regression @rc
   Scenario Outline: Verify sending GIF format pic [LANDSCAPE]

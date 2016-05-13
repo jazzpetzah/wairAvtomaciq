@@ -16,7 +16,7 @@ public class ConversationViewCameraPage extends AbstractCameraPage {
 
 	@Override
 	protected By getLensButtonLocator() {
-		return ConversationViewPage.idAddPicture;
+		return ConversationViewPage.idCursorCamera;
 	}
 
 }

@@ -22,7 +22,7 @@ Feature: Connect
       | user1Name | user2Name | user2Email   | user3Name |
 
   @C102 @rc @clumsy @regression @id1475
-  Scenario Outline: Get invitation message from user
+  Scenario Outline: (ZIOS-6515) Get invitation message from user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given <Contact> sent connection request to Me
@@ -304,8 +304,7 @@ Feature: Connect
     When I tap on contact name <Contact>
     And I type the default message and send it
     Then I see 1 default message in the dialog
-    When I click plus button next to text input
-    And I tap Add Picture button from input tools
+    When I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice

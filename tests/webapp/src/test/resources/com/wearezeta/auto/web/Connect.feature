@@ -88,7 +88,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C1817 @regression
+  @C1817 @regression @WEBAPP-2685
   Scenario Outline: Verify sending a connection request to user from conversation view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -312,12 +312,12 @@ Feature: Connect
     Given I Sign in using login <User1> and password <User1Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <User2>
-    And Contact <User2> sends encrypted message <Msg1> to user <User1>
+    And Contact <User2> sends message <Msg1> to user <User1>
     Then I see text message <Msg1>
     And <User1> blocked <User2>
-    And Contact <User2> sends image <Picture2> to single user conversation <User1>
+    And User <User2> sends image <Picture2> to single user conversation <User1>
     And User <User2> pinged in the conversation with <User1>
-    And Contact <User2> sends encrypted message <Msg2> to user <User1>
+    And Contact <User2> sends message <Msg2> to user <User1>
     And I do not see Contact list with name <Name>
     When I open self profile
     And I click gear button on self profile page

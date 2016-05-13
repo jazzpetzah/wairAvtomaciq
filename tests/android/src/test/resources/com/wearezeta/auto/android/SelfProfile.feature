@@ -80,14 +80,14 @@ Feature: Self Profile
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I see dialog page
+    And I see conversation view
     Then I remember the conversation view
     When I navigate back from dialog page
     And I tap conversations list settings button
     And I tap Light Bulb button
     And I close Personal Info Page
     When I tap on contact name <Contact>
-    And I see dialog page
+    And I see conversation view
     And I scroll to the bottom of conversation view
     Then I see the conversation view is changed
     When I navigate back from dialog page
@@ -95,7 +95,7 @@ Feature: Self Profile
     And I tap Light Bulb button
     And I close Personal Info Page
     When I tap on contact name <Contact>
-    And I see dialog page
+    And I see conversation view
     Then I see the conversation view is not changed
 
     Examples:

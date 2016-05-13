@@ -8,15 +8,28 @@ Feature: Conversation List
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     Given I see Contact list with name <Contact>
-    When I archive conversation <Contact>
+    When I open conversation with <Contact>
+    And I send picture <PictureName> to the current conversation
+    And I write random message
+    And I send message
+    And I click ping button
+    And I send 1KB sized file with name <File> to the current conversation
+    And I wait until file <File> is uploaded completely
+    And I archive conversation <Contact>
     Then I do not see Contact list with name <Contact>
     When I open archive
     And I unarchive conversation <Contact>
     Then I see Contact list with name <Contact>
+    When I open conversation with <Contact>
+    Then I see random message in conversation
+    And I see only 1 picture in the conversation
+    And I see <PING> action 1 times in conversation
+    And I see file transfer for file <File> in the conversation view
+    And I see 5 messages in conversation
 
-    Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+    Examples:
+      | Login      | Password      | Name      | Contact   | PictureName               | PING       | File        |
+      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg | you pinged | example.txt |
 
   @C1757 @smoke
   Scenario Outline: Mute 1on1 conversation
@@ -156,7 +169,7 @@ Feature: Conversation List
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <ChatName>
     Then I do not see <Message> action in conversation
 
@@ -196,7 +209,7 @@ Feature: Conversation List
     And User <Contact> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Name>
     Then I do not see <Action> action for <Name> in conversation
 
@@ -242,7 +255,7 @@ Feature: Conversation List
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     Then I see <Action2> action for <Name> in conversation
 
@@ -285,7 +298,7 @@ Feature: Conversation List
     And I see a delete warning modal for group conversations
     And I click delete button in the delete warning for group conversations
     And I do not see Contact list with name <ChatName>
-    And Contact <Contact1> sends image <Image> to group conversation <ChatName>
+    And User <Contact1> sends image <Image> to group conversation <ChatName>
     And I open conversation with <ChatName>
     Then I see <Action> action for <Contact1> in conversation
     And I see <Action> action for <Contact2> in conversation
@@ -342,7 +355,7 @@ Feature: Conversation List
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <ChatName>
     Then I see <Message> action in conversation
 
@@ -401,7 +414,7 @@ Feature: Conversation List
     And User <Contact1> is me
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Name>
     Then I do not see <Action> action in conversation
 
@@ -449,20 +462,20 @@ Feature: Conversation List
     And I see the clear data dialog
     And I click Logout button on clear data dialog
     Then I see Sign In page
-      When I Sign in using login <Login2> and password <Password2>
-      And I am signed in properly
-      And I see Welcome page
-      And I confirm keeping picture on Welcome page
-      And I open conversation with <Name>
+    When I Sign in using login <Login2> and password <Password2>
+    And I am signed in properly
+    And I see Welcome page
+    And I confirm keeping picture on Welcome page
+    And I open conversation with <Name>
     And user <Name> adds a new device Device1 with label Label1
-    And Contact <Name> sends encrypted message <Message> via device Device1 to user <Contact2>
-      Then I see text message <Message>
-      When I open self profile
-      And I click gear button on self profile page
-      And I select Log out menu item on self profile page
-      And I see the clear data dialog
-      And I click Logout button on clear data dialog
-      Then I see Sign In page
+    And Contact <Name> sends message <Message> via device Device1 to user <Contact2>
+    Then I see text message <Message>
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    Then I see Sign In page
     When I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I see Contact list with name <Contact2>

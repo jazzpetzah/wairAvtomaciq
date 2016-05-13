@@ -25,8 +25,6 @@ public class LoginPage extends WebPage {
 
 	private static final int TIMEOUT_SIGNED_IN_PROPERLY = 40; // seconds
 
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathCreateAccountButton)
 	private WebElement createAccountButton;
@@ -57,9 +55,12 @@ public class LoginPage extends WebPage {
 
 	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssLoginErrorText)
 	private WebElement loginErrorText;
-        
-        @FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssSessionExpiredErrorText)
+
+	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssSessionExpiredErrorText)
 	private WebElement sessionExpiredErrorText;
+
+	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssDescriptionText)
+	private WebElement descriptionText;
 
 	@FindBy(css = WebAppLocators.LoginPage.errorMarkedEmailField)
 	private WebElement redDotOnEmailField;
@@ -141,7 +142,7 @@ public class LoginPage extends WebPage {
 		signInButton.click();
 	}
 
-	public void clickChangePasswordButton() throws Exception {
+	public void clickChangePasswordButton(WebappPagesCollection webappPagesCollection) throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				changePasswordButton);
 
@@ -176,7 +177,7 @@ public class LoginPage extends WebPage {
 
     public String getSessionExpiredErrorMessage() throws Exception {
         DriverUtils.waitUntilLocatorAppears(getDriver(),
-                By.xpath(WebAppLocators.LoginPage.cssSessionExpiredErrorText));
+                By.cssSelector(WebAppLocators.LoginPage.cssSessionExpiredErrorText));
         return sessionExpiredErrorText.getText();
     }
 
@@ -184,6 +185,21 @@ public class LoginPage extends WebPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.cssSelector(WebAppLocators.LoginPage.cssSessionExpiredErrorText));
     }
+
+	public void visitRedirectedPage(String langKey) throws Exception {
+		getDriver().get(CommonUtils.getWebAppApplicationPathFromConfig(LoginPage.class) + "/?connect&hl=" + langKey);
+	}
+
+	public String getDescriptionMessage() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.cssSelector(WebAppLocators.LoginPage.cssDescriptionText));
+		return descriptionText.getText();
+	}
+
+	public boolean isDescriptionMessageVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.cssSelector(WebAppLocators.LoginPage.cssDescriptionText));
+	}
 
 	public void switchToPhoneNumberLoginPage() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), phoneSignInButton);

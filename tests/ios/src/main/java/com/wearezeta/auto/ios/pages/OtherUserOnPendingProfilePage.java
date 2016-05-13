@@ -10,12 +10,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class OtherUserOnPendingProfilePage extends IOSPage {
 
-    private static final By xpathOtherProfilePageCancelRequestLabel =
-            By.xpath("//UIAStaticText[contains(@name, 'CANCEL REQUEST')]");
-
-    private static final By xpathOtherProfileCancelRequestButton = By.xpath(
-            "//UIAStaticText[contains(@name, 'CANCEL REQUEST')]" +
-                    "/preceding-sibling::UIAButton[@name='OtherUserMetaControllerLeftButton']");
+    private static final By xpathOtherProfileCancelRequestButton = By.xpath("//UIAButton[@label='CANCEL REQUEST']");
 
     private static final By xpathCancelRequestYesButton = By.xpath(
             "//UIAStaticText[@name='Cancel Request?']/following-sibling::UIAButton[@name='YES']");
@@ -46,10 +41,6 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 
     public void confirmCancelRequest() throws Exception {
         getElement(xpathCancelRequestYesButton).click();
-    }
-
-    public boolean isCancelRequestLabelVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathOtherProfilePageCancelRequestLabel);
     }
 
     public void tapStartConversationButton() throws Exception {

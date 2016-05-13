@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import cucumber.api.PendingException;
@@ -34,6 +35,7 @@ public class ConversationViewPageSteps {
     private static final double SHIELD_MIN_SIMILARITY_SCORE = 0.97;
     private static final int TOP_TOOLBAR_STATE_CHANGE_TIMEOUT = 15;
     private static final double TOP_TOOLBAR_MIN_SIMILARITY_SCORE = 0.97;
+    private static final double FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE = 0.4;
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private final ElementState mediaButtonState = new ElementState(
@@ -44,6 +46,8 @@ public class ConversationViewPageSteps {
             () -> getConversationViewPage().getShieldStateScreenshot());
     private final ElementState topToolbarState = new ElementState(
             () -> getConversationViewPage().getTopToolbarState());
+    private final ElementState filePlaceHolderActionButtonState = new ElementState(
+            () -> getConversationViewPage().getFilePlaceholderActionButtonState());
     private Boolean wasShieldVisible = null;
 
     private static String expandMessage(String message) {
@@ -61,20 +65,16 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Waits for the dialog page to appear This step makes no assertions and doesn't fail if the dialog page doesn't appear.
+     * Waits for the conversation page to appear
      *
      * @throws Exception
-     * @step. ^I see dialog page$
+     * @step. ^I see conversation view$
      */
-    @When("^I( do not)? see dialog page$")
-    public void WhenISeeDialogPage(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue("The cursor is not visible in the conversation view",
-                    getConversationViewPage().waitForCursorInputVisible());
-        } else {
-            Assert.assertTrue("The cursor in the conversation view is still visible",
-                    getConversationViewPage().waitForCursorInputNotVisible());
-        }
+    @When("^I see conversation view$")
+    //TODO : Refactory See dialog page,
+    public void WhenISeeConversationPage() throws Exception {
+        Assert.assertTrue("The cursor is not visible in the conversation view",
+                getConversationViewPage().isCursorViewVisible());
     }
 
     /**
@@ -85,8 +85,9 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap on text input$")
     public void WhenITapOnTextInput() throws Exception {
-        getConversationViewPage().tapOnCursorInput();
+        getConversationViewPage().tapOnTextInput();
     }
+
 
     /**
      * Send message to the chat
@@ -114,38 +115,19 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Swipes the text input area to reveal the different input options
-     *
-     * @throws Exception
-     * @step. ^I swipe on text input$
-     */
-    @When("^I swipe on text input$")
-    public void WhenISwipeOnTextInput() throws Exception {
-        getConversationViewPage().swipeRightOnCursorInput();
-    }
-
-    /**
-     * Tap on plus button in the text input area to reveal the different input options
-     *
-     * @throws Exception
-     * @step. ^I tap plus( button)? i?o?n text input$
-     */
-    @When("^I tap plus( button)? i?o?n text input$")
-    public void WhenITapPlusInTextInput(String ignore) throws Exception {
-        getConversationViewPage().pressPlusButtonOnDialogPage();
-    }
-
-    /**
      * Press the corresponding button in the input controls
      * Tap file button will send file directly when you installed testing_gallery-debug.apk
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Add people|Ping|Add Picture|Sketch|File) button$ from input tools$
+     * @step. ^I tap (Video message|Ping|Add picture|Sketch|File) button$ from cursor toolbar$
      */
-    @When("^I tap (Add people|Ping|Add Picture|Sketch|File) button from input tools$")
-    public void WhenITapInputToolButton(String btnName) throws Exception {
+    @When("^I tap (Video message|Ping|Add picture|Sketch|File) button from cursor toolbar$")
+    public void WhenITapCursorToolButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
+            case "video message":
+                getConversationViewPage().tapVideoMessageCursorBtn();
+                break;
             case "ping":
                 getConversationViewPage().tapPingBtn();
                 break;
@@ -154,9 +136,6 @@ public class ConversationViewPageSteps {
                 break;
             case "sketch":
                 getConversationViewPage().tapSketchBtn();
-                break;
-            case "add people":
-                getConversationViewPage().tapPeopleBtn();
                 break;
             case "file":
                 getConversationViewPage().tapFileBtn();
@@ -293,38 +272,53 @@ public class ConversationViewPageSteps {
     /**
      * Used to check that a ping has been sent Not very clear what this step does
      *
-     * @param message message text
+     * @param doNotSee
+     * @param message  message text
      * @throws Exception
-     * @step. ^I see Ping message (.*) in the dialog$
+     * @step. ^I (do not )?see Ping message \"(.*)\" in the conversation view
      */
-    @Then("^I see Ping message (.*) in the dialog$")
-    public void ThenISeePingMessageInTheDialog(String message) throws Exception {
+    @Then("^I (do not )?see Ping message \"(.*)\" in the conversation view")
+    public void ThenISeePingMessageInTheDialog(String doNotSee, String message) throws Exception {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("Ping message '%s' is not visible after the timeout", message),
-                getConversationViewPage().waitForPingMessageWithText(message));
+        if (doNotSee == null) {
+            Assert.assertTrue(String.format("Ping message '%s' is not visible after the timeout", message),
+                    getConversationViewPage().waitForPingMessageWithText(message));
+        } else {
+            Assert.assertTrue(String.format("Ping message '%s' is visible after the timeout", message),
+                    getConversationViewPage().waitForPingMessageWithTextDisappears(message));
+        }
     }
 
     /**
      * Checks to see that a message that has been sent appears in the chat history
      *
+     * @param shouldNotSee equals to null if the message should be visible
+     * @param msg          the expected message
      * @throws Exception
-     * @step. ^I see my message \"(.*)\" in the dialog$
+     * @step. ^I (do not )?see the message "(.*)" in the conversation view$
      */
-    @Then("^I see my message \"(.*)\" in the dialog$")
-    public void ThenISeeMyMessageInTheDialog(String msg) throws Exception {
-        Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", msg),
-                getConversationViewPage().waitForMessage(expandMessage(msg)));
+    @Then("^I (do not )?see the message \"(.*)\" in the conversation view$")
+    public void ThenISeeMyMessageInTheDialog(String shouldNotSee, String msg) throws Exception {
+        msg = expandMessage(msg);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", msg),
+                    getConversationViewPage().waitForMessage(msg));
+        } else {
+            Assert.assertTrue(
+                    String.format("The message '%s' is still visible in the conversation view, but should be hidden", msg),
+                    getConversationViewPage().isMessageInvisible(msg));
+        }
     }
 
     /**
      * Checks to see that a photo exists in the chat history. Does not check which photo though
      *
      * @param shouldNotSee equals to null if 'do not' part does not exist
-     * @throws Throwable
-     * @step. ^I (do not )?see new (?:photo|picture) in the dialog$
+     * @throws Exception
+     * @step. ^I (do not )?see (?:any|a) (?:photos?|pictures?)in the dialog$
      */
-    @Then("^I (do not )?see new (?:photo|picture) in the dialog$")
-    public void ThenISeeNewPhotoInTheDialog(String shouldNotSee) throws Throwable {
+    @Then("^I (do not )?see (?:any|a) (?:photos?|pictures?) in the conversation view$")
+    public void ISeeNewPhotoInTheDialog(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue("No new photo is present in the chat", getConversationViewPage().isImageExists());
         } else {
@@ -336,32 +330,38 @@ public class ConversationViewPageSteps {
     /**
      * Selects the last picture sent in a conversation view dialog
      *
-     * @throws Throwable
-     * @step. ^I select last photo in dialog$
-     */
-    @When("^I select last photo in dialog$")
-    public void WhenISelectLastPhotoInDialog() throws Throwable {
-        getConversationViewPage().clickLastImageFromDialog();
-    }
-
-    /**
+     * @param isLogTap equals to null if it should be simple tap
      * @throws Exception
-     * @step. ^I swipe up on dialog page
+     * @step. ^I (long )?tap the recent image in the conversation view$
      */
-    @When("^I swipe up on dialog page$")
-    public void WhenISwipeUpOnDialogPage() throws Exception {
-        getConversationViewPage().dialogsPagesSwipeUp(SWIPE_DURATION_MILLISECONDS);
+    @When("^I (long )?tap the recent (?:image|picture) in the conversation view$")
+    public void ITapRecentImage(String isLogTap) throws Exception {
+        if (isLogTap == null) {
+            getConversationViewPage().tapRecentImage();
+        } else {
+            getConversationViewPage().longTapRecentImage();
+        }
     }
 
     /**
-     * Swipe down on dialog page
+     * Scroll the content of conversation view
      *
+     * @param swipeDirection either up or down
      * @throws Exception
-     * @step. ^I swipe down on dialog page$
+     * @step. ^I scroll (up|down) the conversation view$
      */
-    @When("^I swipe down on dialog page$")
-    public void WhenISwipedownOnDialogPage() throws Exception {
-        getConversationViewPage().dialogsPagesSwipeDown(SWIPE_DURATION_MILLISECONDS);
+    @When("^I scroll (up|down) the conversation view$")
+    public void WhenIScroll(String swipeDirection) throws Exception {
+        switch (swipeDirection.toLowerCase()) {
+            case "up":
+                getConversationViewPage().dialogsPagesSwipeUp(SWIPE_DURATION_MILLISECONDS);
+                break;
+            case "down":
+                getConversationViewPage().dialogsPagesSwipeDown(SWIPE_DURATION_MILLISECONDS);
+                break;
+            default:
+                throw new IllegalArgumentException((String.format("Unknonwn swipe direction '%s'", swipeDirection)));
+        }
     }
 
     /**
@@ -407,7 +407,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see new message notification \"(.*)\"$")
     public void WhenISeeNewMessageNotification(String message) throws Exception {
-        Assert.assertTrue(String.format("The notification message of '%s' should be visible", message ),
+        Assert.assertTrue(String.format("The notification message of '%s' should be visible", message),
                 getConversationViewPage().waitForMessageNotification(message));
     }
 
@@ -425,7 +425,7 @@ public class ConversationViewPageSteps {
             participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias).getName());
         }
         Assert.assertTrue(String.format("Group chat view with names %s is not visible", participantNames),
-                getConversationViewPage().isConversationMessageContainsNames(participantNames));
+                getConversationViewPage().isConversationPeopleChangedMessageContainsNames(participantNames));
     }
 
     /**
@@ -441,7 +441,7 @@ public class ConversationViewPageSteps {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         final String expectedMsg = message + " " + contact;
         Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", expectedMsg),
-                getConversationViewPage().waitForMessage(expectedMsg));
+                getConversationViewPage().waitForPeopleMessage(expectedMsg));
     }
 
     /**
@@ -525,6 +525,31 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Store the screenshot of current file placeholder action button
+     *
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder is changed$
+     */
+    @When("^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder$")
+    public void IRememberFileTransferActionBtnState() throws Exception {
+        filePlaceHolderActionButtonState.remember();
+    }
+
+    /**
+     * Wait to check whether the file placeholder action button is changed
+     *
+     * @param timeout
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder is changed$
+     */
+    @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder is changed$")
+    public void IWaitFileTransferActionButtonChanged(int timeout) throws Exception {
+        Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
+                timeout),
+                filePlaceHolderActionButtonState.isChanged(timeout, FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
+    }
+
+    /**
      * Tap back arrow button in upper toolbar
      *
      * @throws Exception
@@ -555,9 +580,21 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I tap (?:Retry|Download|View) button on (?:upload|download) file placeholder$
      */
-    @When("^I tap (?:Retry|Download|View) button on file (?:upload|download) placeholder$")
+    @When("^I tap (?:Retry|Download|View|Cancel) button on file (?:upload|download) placeholder$")
     public void ITapOnFileActionButton() throws Exception {
         getConversationViewPage().tapFileActionButton();
+    }
+
+    /**
+     * Save or Open file from File dialog
+     *
+     * @param action
+     * @throws Exception
+     * @step. ^I (save|open) file (?:in|from) file dialog$
+     */
+    @When("^I (save|open) file (?:in|from) file dialog$")
+    public void ISaveOrOpenFile(String action) throws Exception {
+        getConversationViewPage().tapFileDialogActionButton(action);
     }
 
     /**
@@ -841,20 +878,29 @@ public class ConversationViewPageSteps {
      * Check the cursor bar only contains ping, sketch, add picture, people and file buttons in cursor bar
      *
      * @throws Exception
-     * @step. ^I only see ping, sketch, camera, people and file buttons in cursor menu
+     * @step. ^I( do not)? see cursor toolbar
      */
-    @Then("^I only see ping, sketch, camera, people and file buttons in cursor menu")
-    public void ThenIOnlySeePingSketchAddPicturePeopleButton() throws Exception {
-        Assert.assertTrue("Ping button should be visible in cursor menu", getConversationViewPage().isPingButtonVisible());
-        Assert.assertTrue("Sketch button should be visible in cursor menu", getConversationViewPage().isSketchButtonVisible());
-        Assert.assertTrue("Camera button should be visible in cursor menu", getConversationViewPage().isCameraButtonVisible());
-        Assert.assertTrue("People button should be visible in cursor menu", getConversationViewPage().isPeopleButtonVisible());
-        Assert.assertTrue("File button should be visible in cursor menu", getConversationViewPage().isFileButtonVisible());
+    @Then("^I( do not)? see cursor toolbar")
+    public void ThenISeeCursorToolbar(String doNotSee) throws Exception {
+        if (doNotSee == null) {
+            Assert.assertTrue("Video button should be visible in cursor menu", getConversationViewPage().isVideoButtonVisible());
+            Assert.assertTrue("Ping button should be visible in cursor menu", getConversationViewPage().isPingButtonVisible());
+            Assert.assertTrue("Sketch button should be visible in cursor menu", getConversationViewPage().isSketchButtonVisible());
+            Assert.assertTrue("Add picture button should be visible in cursor menu", getConversationViewPage().isAddPictureButtonVisible());
+            Assert.assertTrue("File button should be visible in cursor menu", getConversationViewPage().isFileButtonVisible());
+        } else {
+            Assert.assertTrue("Video button should be invisible in cursor menu", getConversationViewPage().isVideoButtonInvisible());
+            Assert.assertTrue("Ping button should be invisible in cursor menu", getConversationViewPage().isPingButtonInvisible());
+            Assert.assertTrue("Sketch button should be invisible in cursor menu", getConversationViewPage().isSketchButtonInvisible());
+            Assert.assertTrue("Add picture button should be invisible in cursor menu", getConversationViewPage().isAddPictureButtonInvisible());
+            Assert.assertTrue("File button should be invisible in cursor menu", getConversationViewPage().isFileButtonInvisible());
+        }
     }
 
     /**
-     * Check the expected placehoder is visible
+     * Check whether the file transfer placeholder of expected filew is visible
      *
+     * @param doNotSee      equal null means should see the place holder
      * @param size          the expected size displayed, value should be good formatted, such as 3.00MB rather than 3MB
      * @param loadDirection could be upload or received
      * @param fileFullName  the expected file name displayed
@@ -862,17 +908,302 @@ public class ConversationViewPageSteps {
      * @param timeout       (optional) to define the validation should be complete within timeout
      * @param actionFailed  equals null means current action successfully
      * @throws Exception
-     * @step. ^I see the result of (.*) file (upload|received)?( failed)? having name "(.*)" and extension "(\w+)"( in \d+ seconds)?$
+     * @step. ^I( do not)? see the result of (.*) file (upload|received)?( failed)? having name "(.*)" and extension "(\w+)"( in \d+ seconds)?$
      */
-    @Then("^I see the result of (.*) file (upload|received)? having name \"(.*)\" and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
-    public void ThenISeeTheResultOfXFileUpload(String size, String loadDirection, String fileFullName,
+    @Then("^I( do not)? see the result of (.*) file (upload|received)? having name \"(.*)\" and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
+    public void ThenISeeTheResultOfXFileUpload(String doNotSee, String size, String loadDirection, String fileFullName,
                                                String extension, String timeout, String actionFailed) throws Exception {
         int lookUpTimeoutSeconds = (timeout == null) ? DriverUtils.getDefaultLookupTimeoutSeconds()
                 : Integer.parseInt(timeout.replaceAll("[\\D]", ""));
         boolean isUpload = loadDirection.equals("upload");
         boolean isSuccess = (actionFailed == null);
-        Assert.assertTrue("The placeholder of sending file should be visible",
-                getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload,
-                        isSuccess, lookUpTimeoutSeconds));
+        if (doNotSee == null) {
+            Assert.assertTrue("The placeholder of sending file should be visible",
+                    getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload,
+                            isSuccess, lookUpTimeoutSeconds));
+        } else {
+            Assert.assertTrue("The placeholder of sending file should be invisible",
+                    getConversationViewPage().isFilePlaceHolderInvisible(fileFullName, size, extension, isUpload,
+                            isSuccess, lookUpTimeoutSeconds));
+        }
+
+    }
+
+    /**
+     * Check whether the text input is visible
+     *
+     * @param doNotSee equals null means that the text input should be visible
+     * @throws Exception
+     * @step. ^I( do not)? see text input$
+     */
+    @Then("^I( do not)? see text input$")
+    public void ThenISeeTextInput(String doNotSee) throws Exception {
+        if (doNotSee == null) {
+            Assert.assertTrue("The text input should be visible", getConversationViewPage().isTextInputVisible());
+        } else {
+            Assert.assertTrue("The text input should be invisible", getConversationViewPage().isTextInputInvisible());
+        }
+    }
+
+    /**
+     * Check whether the tooltip of text input is visible
+     *
+     * @param doNotSee equals null means that the tooltip of text input should be visible
+     * @throws Exception
+     * @step. ^I( do not)? see tooltip of text input$
+     */
+    @Then("^I( do not)? see tooltip of text input$")
+    public void ThenISeeTooltipOfTextInput(String doNotSee) throws Exception {
+        if (doNotSee == null) {
+            Assert.assertTrue("The tooltip of text input should be visible",
+                    getConversationViewPage().isTooltipOfTextInputVisible());
+        } else {
+            Assert.assertTrue("The tooltip of text input should be invisible",
+                    getConversationViewPage().isTooltipOfTextInputInvisible());
+        }
+    }
+
+    /**
+     * Check the self avatar on text input
+     *
+     * @throws Exception
+     * @step. ^I see self avatar on text input$
+     */
+    @Then("^I see self avatar on text input$")
+    public void ThenISeeSelfAvatarOnTextInput() throws Exception {
+        Assert.assertTrue("The self avatar should be visible on text input",
+                getConversationViewPage().isSelfAvatarOnTextInputVisible());
+    }
+
+    /**
+     * Check the corresponding action mode bar button. The toolbar appears upon long tap on conversation item
+     *
+     * @param name one of possible toolbar button names
+     * @throws Exception
+     * @step. ^I (do not )?see (Delete|Copy|Close) button on the action mode bar$
+     */
+    @Then("^I (do not )?see (Delete|Copy|Close) button on the action mode bar$")
+    public void ITapTopToolbarButton(String shouldNotSee, String name) throws Exception {
+        boolean condition;
+        switch (name.toLowerCase()) {
+            case "delete":
+                condition = (shouldNotSee == null) ? getConversationViewPage().isDeleteActionModeBarButtonVisible() :
+                        getConversationViewPage().isDeleteActionModeBarButtonInvisible();
+                break;
+            case "copy":
+                condition = (shouldNotSee == null) ? getConversationViewPage().isCopyActionModeBarButtonVisible() :
+                        getConversationViewPage().isCopyActionModeBarButtonInvisible();
+                break;
+            case "close":
+                condition = (shouldNotSee == null) ? getConversationViewPage().isCloseActionModeBarButtonVisible() :
+                        getConversationViewPage().isCloseActionModeBarButtonInvisible();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("There is no '%s' button on the action bar", name));
+        }
+        Assert.assertTrue(String.format("The top toolbar button '%s' should be %s", name,
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Tap the corresponding action mode bar button. The toolbar appears upon long tap on conversation item
+     *
+     * @param name one of possible toolbar button names
+     * @throws Exception
+     * @step. ^I tap (Delete|Copy|Close) button on the action mode bar$
+     */
+    @When("^I tap (Delete|Copy|Close) button on the action mode bar$")
+    public void ITapTopToolbarButton(String name) throws Exception {
+        switch (name.toLowerCase()) {
+            case "delete":
+                getConversationViewPage().tapDeleteActionModeBarButton();
+                break;
+            case "copy":
+                getConversationViewPage().tapCopyTopActionModeBarButton();
+                break;
+            case "close":
+                getConversationViewPage().tapCloseTopActionModeBarButton();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("There is no '%s' button on the top toolbar", name));
+        }
+    }
+
+    /**
+     * Long tap an existing conversation message
+     *
+     * @param msg         the message to tap
+     * @param messageType the type of message which could be Ping or Text
+     * @param isLongTap   equals to null if the tap should be simple tap
+     * @throws Exception
+     * @step. ^I (long )?tap the (Ping|Text) message "(.*)" in the conversation view
+     */
+    @When("^I (long )?tap the (Ping|Text) message \"(.*)\" in the conversation view$")
+    public void ITapTheNonTextMessage(String isLongTap, String messageType, String message) throws Exception {
+        message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
+        if (isLongTap == null) {
+            switch (messageType.toLowerCase()) {
+                case "ping":
+                    getConversationViewPage().tapPingMessage(message);
+                    break;
+                case "text":
+                    getConversationViewPage().tapMessage(message);
+                    break;
+                default:
+                    throw new IllegalStateException(String.format("Cannot tap on %s message", messageType));
+            }
+        } else {
+            switch (messageType.toLowerCase()) {
+                case "ping":
+                    getConversationViewPage().longTapPingMessage(message);
+                    break;
+                case "text":
+                    getConversationViewPage().longTapMessage(message);
+                    break;
+                default:
+                    throw new IllegalStateException(String.format("Cannot long tap on %s message", messageType));
+            }
+        }
+    }
+
+    /**
+     * Verify whether container is visible in the conversation
+     *
+     * @param shouldNotSee  equals to null if the container should be visible
+     * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
+     * @throws Exception
+     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message) container in the conversation view$
+     */
+    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message) container in the conversation view$")
+    public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
+        switch (containerType.toLowerCase()) {
+            case "youtube":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isYoutubeContainerVisible :
+                        getConversationViewPage()::isYoutubeContainerInvisible;
+                break;
+            case "soundcloud":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isSoundcloudContainerVisible :
+                        getConversationViewPage()::isSoundcloudContainerInvisible;
+                break;
+            case "file upload":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isFileUploadContainerVisible :
+                        getConversationViewPage()::isFileUploadContainerInvisible;
+                break;
+            case "video message":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isVideoMessageVisible :
+                        getConversationViewPage()::isVideoMessageNotVisible;
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
+        }
+        Assert.assertTrue(String.format("%s should be %s in the conversation view", containerType,
+                (shouldNotSee == null) ? "visible" : "invisible"), verificationFunc.call());
+    }
+
+    /**
+     * Tap container
+     *
+     * @param isLongTap     equals to null if this should be ordinary single tap
+     * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
+     * @throws Exception
+     * @step. ^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message) container in the conversation view$
+     */
+    @When("^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message) container in the conversation view$")
+    public void ITapContainer(String isLongTap, String containerType) throws Exception {
+        switch (containerType.toLowerCase()) {
+            case "youtube":
+                if (isLongTap == null) {
+                    getConversationViewPage().tapYoutubeContainer();
+                } else {
+                    getConversationViewPage().longTapYoutubeContainer();
+                }
+                break;
+            case "soundcloud":
+                if (isLongTap == null) {
+                    getConversationViewPage().tapSoundcloudContainer();
+                } else {
+                    getConversationViewPage().longTapSoundcloudContainer();
+                }
+                break;
+            case "file upload":
+                if (isLongTap == null) {
+                    getConversationViewPage().tapFileUploadContainer();
+                } else {
+                    getConversationViewPage().longTapFileUploadContainer();
+                }
+                break;
+            case "video message":
+                if (isLongTap == null) {
+                    getConversationViewPage().tapVideoMessageContainer();
+                } else {
+                    getConversationViewPage().longVideoMessageContainer();
+                }
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
+        }
+    }
+
+
+    /**
+     * Tap a button on video message preview
+     *
+     * @throws Exception
+     * @step. ^I tap (?:Play|X|Retry) button on the recent video message in the conversation view$"
+     */
+    @When("^I tap (?:Play|X|Retry) button on the recent video message in the conversation view$")
+    public void ITapButtonOnVideoMessage() throws Exception {
+        getConversationViewPage().tapVideoMessageButton();
+    }
+
+    /**
+     * Check whether a button is visible on video message container
+     *
+     * @throws Exception
+     * @step. ^I see (?:Play|X|Retry) button on the recent video message in the conversation view$"
+     */
+    @When("^I see (?:Play|X|Retry) button on the recent video message in the conversation view$")
+    public void ISeeButtonOnVideoMessage() throws Exception {
+        Assert.assertTrue("The button is not visible on the recent video message",
+                getConversationViewPage().isVideoMessageButtonVisible());
+    }
+
+    private final ElementState playButtonState = new ElementState(
+            () -> getConversationViewPage().getVideoContainerButtonState().orElseThrow(
+                    () -> new IllegalStateException("Cannot take a screenshot of the button on video message container")
+            )
+    );
+
+    /**
+     * Store current state of Play button into varibale
+     *
+     * @throws Exception
+     * @step. ^I remember the state of (?:Play|X|Retry) button on the recent video message in the conversation view$"
+     */
+    @When("^I remember the state of (?:Play|X|Retry) button on the recent video message in the conversation view$")
+    public void IRememberPlayButtonState() throws Exception {
+        playButtonState.remember();
+    }
+
+    private static final double MIN_PLAY_BUTTON_SCORE = 0.9;
+    private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 10; //seconds
+
+    /**
+     * Verify whether current button state differs from the previous one
+     *
+     * @param shouldNotBeChanged equals to null if the state should be different
+     * @throws Exception
+     * @step. ^I verify the state of (?:Play|X|Retry) button on the recent video message in the conversation view is (not )?changed$
+     */
+    @Then("^I verify the state of (?:Play|X|Retry) button on the recent video message in the conversation view is (not )?changed$")
+    public void ISeePlayButtonStateChanged(String shouldNotBeChanged) throws Exception {
+        if (shouldNotBeChanged == null) {
+            Assert.assertTrue("The current and previous state of the button seems to be the same",
+                    playButtonState.isChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT, MIN_PLAY_BUTTON_SCORE));
+        } else {
+            Assert.assertTrue("The current and previous state of the button seems to be changed",
+                    playButtonState.isNotChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT, MIN_PLAY_BUTTON_SCORE));
+        }
     }
 }

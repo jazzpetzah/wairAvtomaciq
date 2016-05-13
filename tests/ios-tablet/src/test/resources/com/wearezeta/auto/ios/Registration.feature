@@ -16,7 +16,7 @@ Feature: Registration
     And I press Choose Photo button
     And I choose a picture from camera roll
     And I tap Share Contacts button on Share Contacts overlay
-    Then I see People picker page
+    Then I see conversations list
 
     Examples: 
       | Email      | Password      | Name      |

@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.localytics.CommonLocalyticsSteps;
 import com.wearezeta.auto.common.localytics.LocalyticsAPIWrappers;
+import com.wearezeta.auto.web.common.TestContext;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -14,8 +15,20 @@ public class LocalyticsSteps {
 	private final static String API_KEY = "a4bdc55844b980c252680fa-71a7f2a2-b896-11e5-ac37-003e57fecdee";
 	private final static String API_SECRET = "eedf438dd35d9ce43ac25ca-71a7f5cc-b896-11e5-ac37-003e57fecdee";
 
-	private static CommonLocalyticsSteps commonSteps = new CommonLocalyticsSteps(
+	private static CommonLocalyticsSteps commonSteps;
+        
+        private final TestContext context;
+        
+        
+    public LocalyticsSteps() {
+        this.context = new TestContext();
+    }
+
+    public LocalyticsSteps(TestContext context) {
+        this.context = context;
+        this.commonSteps = new CommonLocalyticsSteps(
 			APP_ID, new LocalyticsAPIWrappers(API_KEY, API_SECRET));
+    }
 
 	/**
 	 * Takes snapshot of current event occurrence values on Localytics

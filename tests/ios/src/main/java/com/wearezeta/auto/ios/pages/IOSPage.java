@@ -3,6 +3,9 @@ package com.wearezeta.auto.ios.pages;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -38,6 +41,8 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By nameEditingItemCopy = MobileBy.AccessibilityId("Copy");
 
+    protected static final By nameEditingItemDelete = MobileBy.AccessibilityId("Delete");
+
     protected static final By nameEditingItemPaste = MobileBy.AccessibilityId("Paste");
 
     private static final Function<String, String> xpathStrAlertByText = text ->
@@ -48,6 +53,10 @@ public abstract class IOSPage extends BasePage {
     protected static final By nameBackToWireBrowserButton = MobileBy.AccessibilityId("Back to Wire");
 
     private static final By xpathConfirmButton = By.xpath("//UIAButton[@name='OK' and @visible='true']");
+
+    private static final By nameCancelButton = MobileBy.AccessibilityId("Cancel");
+
+    private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
 
     private IOSKeyboard onScreenKeyboard;
 
@@ -90,15 +99,43 @@ public abstract class IOSPage extends BasePage {
         this.getDriver().swipe(10, 220, 10, 200, 500);
     }
 
-    public void clickPopupSelectAllButton() throws Exception {
+    public void tapPopupSelectAllButton() throws Exception {
         getElement(nameEditingItemSelectAll, "Select All popup is not visible").click();
     }
 
-    public void clickPopupCopyButton() throws Exception {
+    public boolean isPopupSelectAllButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemSelectAll);
+    }
+
+    public boolean isPopupSelectAllButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemSelectAll);
+    }
+
+    public void tapPopupCopyButton() throws Exception {
         getElement(nameEditingItemCopy, "Copy popup is not visible").click();
     }
 
-    public void clickPopupPasteButton() throws Exception {
+    public boolean isPopupCopyButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemCopy);
+    }
+
+    public boolean isPopupCopyButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemCopy);
+    }
+
+    public void tapPopupDeleteButton() throws Exception {
+        getElement(nameEditingItemDelete, "Delete popup is not visible").click();
+    }
+
+    public boolean isPopupDeleteButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemDelete);
+    }
+
+    public boolean isPopupDeleteButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemDelete);
+    }
+
+    public void tapPopupPasteButton() throws Exception {
         getElement(nameEditingItemPaste, "Paste popup is not visible").click();
         final int popupVisibilityTimeoutSeconds = 10;
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemPaste, popupVisibilityTimeoutSeconds)) {
@@ -107,6 +144,14 @@ public abstract class IOSPage extends BasePage {
                     popupVisibilityTimeoutSeconds)));
         }
         Thread.sleep(2000);
+    }
+
+    public boolean isPopupPasteButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemPaste);
+    }
+
+    public boolean isPopupPasteButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemPaste);
     }
 
     private void clickAtSimulator(int x, int y) throws Exception {
@@ -204,10 +249,6 @@ public abstract class IOSPage extends BasePage {
                 .executeScript(script);
     }
 
-    public void hideKeyboard() throws Exception {
-        this.getDriver().hideKeyboard();
-    }
-
     public void acceptAlertIfVisible() throws Exception {
         try {
             final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver());
@@ -282,20 +323,6 @@ public abstract class IOSPage extends BasePage {
                 String.format("%.3f", DriverUtils.LONG_TAP_DURATION / 1000.0));
     }
 
-    public void dismissAllAlerts() throws Exception {
-        int count = 0;
-        final int NUMBER_OF_RETRIES = 3;
-        final int ALERT_WAITING_TIMEOUT = 3;
-        do {
-            try {
-                this.getDriver().switchTo().alert().dismiss();
-            } catch (Exception e) {
-                // do nothing
-            }
-        } while (DriverUtils.waitUntilAlertAppears(this.getDriver(),
-                ALERT_WAITING_TIMEOUT) && count++ < NUMBER_OF_RETRIES);
-    }
-
     public void rotateScreen(ScreenOrientation orientation) throws Exception {
         switch (orientation) {
             case LANDSCAPE:
@@ -344,6 +371,31 @@ public abstract class IOSPage extends BasePage {
         } else {
             this.getDriver().lockScreen(timeSeconds);
         }
+    }
+
+    public void lockScreenOnRealDevice() throws Exception {
+        /*
+        this method can return the future itself, so you have more control over execution.
+        Also, it might come in handy to pass timeout as a parameter.
+        This can be done more efficiently with Java8:
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(() -> {
+        String threadName = Thread.currentThread().getName();
+        System.out.println("Hello " + threadName);
+        });
+         */
+        final ZetaIOSDriver driver = this.getDriver();
+        final Callable callable = new Callable<Boolean>() {
+
+            @Override
+            public Boolean call() throws Exception {
+                driver.lockScreen(20);
+                return true;
+            }
+        };
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(callable);
     }
 
     public void clickElementWithRetryIfStillDisplayed(By locator, int retryCount) throws Exception {
@@ -468,5 +520,13 @@ public abstract class IOSPage extends BasePage {
             }
         }
         return result;
+    }
+
+    public void tapCancelButton() throws Exception {
+        getElement(nameCancelButton).click();
+    }
+
+    public void tapDoneButton() throws Exception {
+        getElement(nameDoneButton).click();
     }
 }

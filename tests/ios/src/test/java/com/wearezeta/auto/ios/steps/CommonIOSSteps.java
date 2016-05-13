@@ -31,7 +31,6 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 
@@ -90,7 +89,8 @@ public class CommonIOSSteps {
 
     @SuppressWarnings("unchecked")
     public Future<ZetaIOSDriver> resetIOSDriver(String ipaPath,
-                                                Optional<Map<String, Object>> additionalCaps) throws Exception {
+                                                Optional<Map<String, Object>> additionalCaps,
+                                                int retriesCount) throws Exception {
         Optional<String> udid = Optional.empty();
 
         final DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -150,7 +150,7 @@ public class CommonIOSSteps {
         }
 
         return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
-                .resetDriver(getUrl(), capabilities, DRIVER_CREATION_RETRIES_COUNT);
+                .resetDriver(getUrl(), capabilities, retriesCount);
     }
 
     @Before
@@ -196,7 +196,8 @@ public class CommonIOSSteps {
         }
 
         final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath,
-                additionalCaps.isEmpty() ? Optional.empty() : Optional.of(additionalCaps));
+                additionalCaps.isEmpty() ? Optional.empty() : Optional.of(additionalCaps),
+                DRIVER_CREATION_RETRIES_COUNT);
         updateDriver(lazyDriver);
     }
 
@@ -264,13 +265,18 @@ public class CommonIOSSteps {
      */
     @Given("^I upgrade Wire to the recent version$")
     public void IUpgradeWire() throws Exception {
+        try {
+            PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         final String appPath = getAppPath();
         pagesCollection.getCommonPage().installIpa(new File(appPath));
         final Map<String, Object> customCaps = new HashMap<>();
         customCaps.put("autoAcceptAlerts", true);
         customCaps.put("noReset", true);
         customCaps.put("fullReset", false);
-        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath, Optional.of(customCaps));
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath, Optional.of(customCaps), 1);
         updateDriver(lazyDriver);
     }
 
@@ -334,29 +340,7 @@ public class CommonIOSSteps {
         pagesCollection.getCommonPage().dismissAlertIfVisible();
     }
 
-    /**
-     * Dismiss all alerts that appears before timeout
-     *
-     * @throws Exception
-     * @step. ^I dismiss all alerts$
-     */
-    @When("^I dismiss all alerts$")
-    public void IDismissAllAlerts() throws Exception {
-        pagesCollection.getCommonPage().dismissAllAlerts();
-    }
-
-    /**
-     * Hide keyboard using mobile command
-     *
-     * @throws Exception
-     * @step. ^I hide keyboard$
-     */
-    @When("^I hide keyboard$")
-    public void IHideKeyboard() throws Exception {
-        pagesCollection.getCommonPage().hideKeyboard();
-    }
-
-    /**
+     /**
      * click the corresponding on-screen keyboard button
      *
      * @param btnName button name, either Space or Hide or Done
@@ -529,62 +513,39 @@ public class CommonIOSSteps {
         commonSteps.WaitForTime(seconds);
     }
 
-    @When("^User (.*) blocks user (.*)$")
+    @When("^User (.*) blocks? user (.*)")
     public void BlockContact(String blockAsUserNameAlias,
                              String userToBlockNameAlias) throws Exception {
         commonSteps.BlockContact(blockAsUserNameAlias, userToBlockNameAlias);
     }
 
-    @When("^(.*) archived conversation with (.*)$")
-    public void ArchiveConversationWithUser(String userToNameAlias,
-                                            String archivedUserNameAlias) throws Exception {
-        commonSteps.ArchiveConversationWithUser(userToNameAlias, archivedUserNameAlias);
+    @When("^User (.*) archives? (single user|group) conversation (.*)$")
+    public void ArchiveConversationWithUser(String userToNameAlias, String isGroup,
+                                            String dstConvoName) throws Exception {
+        if (isGroup.equals("group")) {
+            commonSteps.ArchiveConversationWithGroup(userToNameAlias, dstConvoName);
+        } else {
+            commonSteps.ArchiveConversationWithUser(userToNameAlias, dstConvoName);
+        }
     }
 
     /**
      * Silences conversation in backend
      *
-     * @param userToNameAlias    user that mutes the conversation
-     * @param mutedUserNameAlias name of single conversation to mute
-     * @throws Exception
-     * @step. ^(.*) silenced conversation with (.*)$
-     */
-    @When("^(.*) silenced conversation with (.*)$")
-    public void MuteConversationWithUser(String userToNameAlias,
-                                         String mutedUserNameAlias) throws Exception {
-        mutedUserNameAlias = usrMgr.replaceAliasesOccurences(
-                mutedUserNameAlias, FindBy.NAME_ALIAS);
-        commonSteps.MuteConversationWithUser(userToNameAlias,
-                mutedUserNameAlias);
-    }
-
-    /**
-     * Silences group conversation in backend
-     *
      * @param userToNameAlias user that mutes the conversation
-     * @param groupName       name of group conversation to mute
+     * @param isGroup         equals to "group" if a group convo is going to be silenced
+     * @param dstConvo        name of single conversation to mute
      * @throws Exception
-     * @step. ^(.*) silenced group conversation with (.*)$
+     * @step. ^User (.*) silences? (single user|group) conversation (.*)
      */
-    @When("^(.*) silenced group conversation with (.*)$")
-    public void MuteGroupConversationWithUser(String userToNameAlias,
-                                              String groupName) throws Exception {
-        commonSteps.MuteConversationWithGroup(userToNameAlias, groupName);
-    }
-
-    /**
-     * Verifies that an unread message dot is NOT seen in the conversation list
-     *
-     * @param userToNameAlias       user that archives the group conversation
-     * @param archivedUserNameAlias name of group conversation to archive
-     * @throws Exception
-     * @step. ^(.*) archived conversation having groupname (.*)$
-     */
-    @When("^(.*) archived conversation having groupname (.*)$")
-    public void ArchiveConversationHavingGroupname(String userToNameAlias,
-                                                   String archivedUserNameAlias) throws Exception {
-        commonSteps.ArchiveConversationWithGroup(userToNameAlias,
-                archivedUserNameAlias);
+    @When("^User (.*) silences? (single user|group) conversation (.*)")
+    public void MuteConversationWithUser(String userToNameAlias, String isGroup,
+                                         String dstConvo) throws Exception {
+        if (isGroup.equals("group")) {
+            commonSteps.MuteConversationWithGroup(userToNameAlias, dstConvo);
+        } else {
+            commonSteps.MuteConversationWithUser(userToNameAlias, dstConvo);
+        }
     }
 
     /**
@@ -837,9 +798,16 @@ public class CommonIOSSteps {
         commonSteps.UserDeletesAvatarPicture(nameAlias);
     }
 
+    /**
+     * Verify whether currently visible alert contains particular text
+     *
+     * @param expectedText the text (or part of it) to verify
+     * @throws Exception
+     * @step. ^I verify the alert contains text (.*)
+     */
     @Then("^I verify the alert contains text (.*)")
     public void IVerifyAlertContains(String expectedText) throws Exception {
-        Assert.assertTrue(String.format("there is not '%s' on the alert", expectedText),
+        Assert.assertTrue(String.format("There is no '%s' text on the alert", expectedText),
                 pagesCollection.getCommonPage().isAlertContainsText(expectedText));
     }
 
@@ -1020,5 +988,40 @@ public class CommonIOSSteps {
     public void ICreateTemporaryFile(String size, String name, String ext) throws Exception {
         final String tmpFilesRoot = CommonUtils.getBuildPathFromConfig(getClass());
         CommonUtils.createRandomAccessFile(tmpFilesRoot + File.separator + name + "." + ext, size);
+    }
+
+    /**
+     * Locks screen without any time limit on real device
+     * This is a asynchronous step.
+     * TODO: expect to have timeout explicitly defined here
+     *
+     * @throws Exception
+     * @step. ^I lock screen on real device$
+     */
+    @When("^I lock screen on real device$")
+    public void ILockScreenOnRealDevice() throws Exception {
+        pagesCollection.getCommonPage().lockScreenOnRealDevice();
+    }
+
+    /**
+     * Taps cancel button
+     *
+     * @throws Exception
+     * @step. ^I tap Cancel button$
+     */
+    @When("^I tap Cancel button$")
+    public void ITapCancelButton() throws Exception {
+        pagesCollection.getCommonPage().tapCancelButton();
+    }
+
+    /**
+     * Tap Done button
+     *
+     * @throws Exception
+     * @step. ^I tap Done button$
+     */
+    @When("^I tap Done button$")
+    public void ITapDoneButton() throws Exception {
+        pagesCollection.getCommonPage().tapDoneButton();
     }
 }

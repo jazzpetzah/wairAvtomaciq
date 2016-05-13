@@ -5,13 +5,11 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import com.wearezeta.auto.android.pages.AndroidPage;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.android.pages.ConversationViewPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import org.openqa.selenium.WebElement;
 
 public class TabletConversationViewPage extends AndroidTabletPage {
 
@@ -30,10 +28,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     private static final By idMissedCallImage = By.id("sci__conversation__missed_call__image");
 
-    private static final By idShowToolsButton = By.id("cursor_button_open");
-
-    private static final By idCloseToolsButton = By.id("cursor_button_close");
-
     public static final Function<String, String> xpathConversationMessageByValue = value -> String
             .format("//*[@id='ltv__row_conversation__message' and @value='%s']", value);
 
@@ -41,7 +35,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         super(lazyDriver);
     }
 
-    private ConversationViewPage getDialogPage() throws Exception {
+    private ConversationViewPage getConversationViewPage() throws Exception {
         return this.getAndroidPageInstance(ConversationViewPage.class);
     }
 
@@ -55,14 +49,11 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public void tapTextInput() throws Exception {
-        // FIXME: Scroll to the bottom if cursor input is not visible
-        this.scrollToTheBottom();
-
-        getElement(AndroidPage.idCursorArea).click();
+        getConversationViewPage().tapOnTextInput();
     }
 
     public void typeMessage(String message) throws Exception {
-        getElement(idEditText).sendKeys(message);
+        getConversationViewPage().typeMessage(message);
     }
 
     public void sendMessage() throws Exception {
@@ -74,36 +65,20 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public void swipeOnTextInput() throws Exception {
-        getDialogPage().swipeRightOnCursorInput();
-    }
-
     public void tapPingButton() throws Exception {
-        getDialogPage().tapPingBtn();
+        getConversationViewPage().tapPingBtn();
     }
 
     public void tapTopToolbarTitle() throws Exception {
-        getDialogPage().tapTopToolbarTitle();
+        getConversationViewPage().tapTopToolbarTitle();
     }
 
     public boolean waitUntilPingMessageIsVisible(String expectedMessage) throws Exception {
-        return getDialogPage().waitForPingMessageWithText(expectedMessage);
+        return getConversationViewPage().waitForPingMessageWithText(expectedMessage);
     }
 
     public boolean waitUntilAPictureAppears() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idDialogImages);
-    }
-
-    public void tapShowInstrumentsButton() throws Exception {
-        final WebElement showToolsButton = getElement(idShowToolsButton);
-        showToolsButton.click();
-        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCloseToolsButton, 2)) {
-            showToolsButton.click();
-        }
-    }
-
-    public void tapCloseInstrumentsButton() throws Exception {
-        getElement(idCloseToolsButton).click();
     }
 
     public boolean waitUntilGCNIsVisible() throws Exception {
@@ -121,7 +96,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilPingMessageIsInvisible(String expectedMessage) throws Exception {
-        return getDialogPage().waitForPingMessageWithTextDisappears(expectedMessage);
+        return getConversationViewPage().waitForPingMessageWithTextDisappears(expectedMessage);
     }
 
     public void doSwipeRight() throws Exception {
@@ -129,19 +104,19 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public void scrollToTheBottom() throws Exception {
-        getDialogPage().scrollToTheBottom();
+        getConversationViewPage().scrollToTheBottom();
     }
 
     public Optional<BufferedImage> getRecentPictureScreenshot() throws Exception {
-        return getDialogPage().getRecentPictureScreenshot();
+        return getConversationViewPage().getRecentPictureScreenshot();
     }
 
     public Optional<BufferedImage> getPreviewPictureScreenshot() throws Exception {
-        return getDialogPage().getPreviewPictureScreenshot();
+        return getConversationViewPage().getPreviewPictureScreenshot();
     }
 
     public void tapRecentPicture() throws Exception {
-        getDialogPage().clickLastImageFromDialog();
+        getConversationViewPage().tapRecentImage();
     }
 
     public boolean waitForSystemConnectionMessageContains(String expectedMessage)
@@ -165,15 +140,15 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilUnsentIndicatorIsVisible(String msg) throws Exception {
-        return getDialogPage().waitForUnsentIndicatorVisible(msg);
+        return getConversationViewPage().waitForUnsentIndicatorVisible(msg);
     }
 
     public boolean waitUntilUnsentIndicatorIsVisibleForAPicture() throws Exception {
-        return getDialogPage().waitForAPictureWithUnsentIndicator();
+        return getConversationViewPage().waitForAPictureWithUnsentIndicator();
     }
 
     public void tapPlayPauseButton() throws Exception {
-        getDialogPage().tapPlayPauseBtn();
+        getConversationViewPage().tapPlayPauseBtn();
     }
 
     public boolean waitUntilClosePicturePreviewButtonVisible() throws Exception {
@@ -202,22 +177,26 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public void tapSketchButton() throws Exception {
-        getDialogPage().tapSketchBtn();
+        getConversationViewPage().tapSketchBtn();
+    }
+
+    public void tapFileButton() throws Exception {
+        getConversationViewPage().tapFileBtn();
     }
 
     public void tapSketchButtonOnPicturePreview() throws Exception {
-        getDialogPage().tapSketchOnImageButton();
+        getConversationViewPage().tapSketchOnImageButton();
     }
 
     public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries) throws Exception {
-        return getDialogPage().scrollUpUntilMediaBarVisible(maxScrollRetries);
+        return getConversationViewPage().scrollUpUntilMediaBarVisible(maxScrollRetries);
     }
 
     public void tapMediaBarControlButton() throws Exception {
-        getDialogPage().tapPlayPauseMediaBarBtn();
+        getConversationViewPage().tapPlayPauseMediaBarBtn();
     }
 
     public BufferedImage getMediaControlButtonState() throws Exception {
-        return getDialogPage().getMediaButtonState();
+        return getConversationViewPage().getMediaButtonState();
     }
 }

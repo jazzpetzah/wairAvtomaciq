@@ -67,7 +67,7 @@ public final class BackendAPIWrappers {
             case ByEmail:
                 BackendREST.registerNewUser(user.getEmail(), user.getName(), user.getPassword());
                 activationCode = getActivationCodeForRegisteredEmail(user.getEmail());
-                activateRegisteredEmailByBackdoorCade(user.getEmail(), activationCode, false);
+                activateRegisteredEmailByBackdoorCode(user.getEmail(), activationCode, false);
                 while (true) {
                     try {
                         attachUserPhoneNumber(user);
@@ -85,7 +85,7 @@ public final class BackendAPIWrappers {
             case ByEmailOnly:
                 BackendREST.registerNewUser(user.getEmail(), user.getName(), user.getPassword());
                 activationCode = getActivationCodeForRegisteredEmail(user.getEmail());
-                activateRegisteredEmailByBackdoorCade(user.getEmail(), activationCode, false);
+                activateRegisteredEmailByBackdoorCode(user.getEmail(), activationCode, false);
                 break;
             case ByPhoneNumber:
             case ByPhoneNumberOnly:
@@ -137,7 +137,7 @@ public final class BackendAPIWrappers {
         log.debug(String.format("User '%s' is successfully activated", registrationInfo.getDeliveredToEmail()));
     }
 
-    private static void activateRegisteredEmailByBackdoorCade(String email,
+    private static void activateRegisteredEmailByBackdoorCode(String email,
                                                               String code, boolean isDryRun) throws Exception {
         BackendREST.activateNewUser(email, code, isDryRun);
         log.debug(String.format("User '%s' is successfully activated", email));
@@ -221,7 +221,7 @@ public final class BackendAPIWrappers {
     private static void attachUserEmailUsingBackdoor(ClientUser user) throws Exception {
         BackendREST.updateSelfEmail(receiveAuthToken(user), user.getEmail());
         final String activationCode = getActivationCodeForRegisteredEmail(user.getEmail());
-        activateRegisteredEmailByBackdoorCade(user.getEmail(), activationCode, false);
+        activateRegisteredEmailByBackdoorCode(user.getEmail(), activationCode, false);
         changeUserPassword(user, null, user.getPassword());
     }
 

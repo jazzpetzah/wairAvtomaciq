@@ -104,7 +104,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C1088 @regression @noAcceptAlert @id3860 @ZIOS-5836
+  @C1088 @regression @noAcceptAlert @id3860
   Scenario Outline: Verify error message appears in case of registering already taken phone number
     Given There is 1 user where <Name> is me with email only
     Given I sign in using my email

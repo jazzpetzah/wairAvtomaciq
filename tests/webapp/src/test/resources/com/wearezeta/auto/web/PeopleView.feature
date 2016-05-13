@@ -39,6 +39,7 @@ Feature: People View
     When I open archive
     And I unarchive conversation <ChatName>
     Then I see <Message> action in conversation
+    And I verify that conversation input and buttons are not visible
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message  |
@@ -239,6 +240,7 @@ Feature: People View
     And I select Log out menu item on self profile page
     And I see the clear data dialog
     And I click Logout button on clear data dialog
+    Then I see Sign In page
     And I Sign in using login <KnownContact> and password <KnownContactPassword>
     And I open conversation with <ChatName>
     Then I see <MessageLeft> action for <Name> in conversation
@@ -304,7 +306,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | ChatNameEdit   | Message                  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | BaseChatName | EditedChatName | RENAMED THE CONVERSATION |
 
-  @C1714 @regression
+  @C1714 @regression @WEBAPP-2713
   Scenario Outline: Verify the new conversation is created on the other end from 1to1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

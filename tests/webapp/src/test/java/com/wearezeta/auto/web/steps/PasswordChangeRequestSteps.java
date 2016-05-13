@@ -12,11 +12,10 @@ import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.PasswordResetMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppConstants;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.PasswordChangePage;
 import com.wearezeta.auto.web.pages.external.PasswordChangeRequestPage;
 import com.wearezeta.auto.web.pages.external.PasswordChangeRequestSuccessfullPage;
@@ -33,17 +32,24 @@ public class PasswordChangeRequestSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(PasswordChangeRequestSteps.class.getSimpleName());
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
-
 	private Future<String> passwordChangeMessage = null;
+        
+        private final TestContext context;
+        
+        
+    public PasswordChangeRequestSteps() {
+        this.context = new TestContext();
+    }
+
+    public PasswordChangeRequestSteps(TestContext context) {
+        this.context = context;
+    }
 
 	@When("^I go to Password Change Reset page for (.*)")
 	public void IGoToPasswordChangeResetPageFor(String agent) throws Exception {
-		webappPagesCollection.getPage(PasswordChangePage.class).setUrl(
+		context.getPagesCollection().getPage(PasswordChangePage.class).setUrl(
 				WebAppConstants.STAGING_SITE_ROOT + "/forgot/?agent=" + agent);
-		webappPagesCollection.getPage(PasswordChangePage.class).navigateTo();
+		context.getPagesCollection().getPage(PasswordChangePage.class).navigateTo();
 	}
 	
 	/**
@@ -55,7 +61,7 @@ public class PasswordChangeRequestSteps {
 	 */
 	@Then("^I see Password Change Request page$")
 	public void ISeePasswordChangeRequestPage() throws Exception {
-		Assert.assertTrue("Email field not visible", webappPagesCollection
+		Assert.assertTrue("Email field not visible", context.getPagesCollection()
 				.getPage(PasswordChangeRequestPage.class).isEmailFieldVisible());
 	}
 
@@ -70,15 +76,15 @@ public class PasswordChangeRequestSteps {
 	 */
 	@When("^I enter email (\\S+) on Password Change Request page$")
 	public void IEnterEmail(String emailOrAlias) throws Exception {
-		emailOrAlias = usrMgr.replaceAliasesOccurences(emailOrAlias,
+		emailOrAlias = context.getUserManager().replaceAliasesOccurences(emailOrAlias,
 				FindBy.EMAIL_ALIAS);
-		webappPagesCollection.getPage(PasswordChangeRequestPage.class)
+		context.getPagesCollection().getPage(PasswordChangeRequestPage.class)
 				.setEmail(emailOrAlias);
 	}
 	
 	@When("^I enter unregistered email(.*)$")
 	public void IEnterUnregisteredEmail(String unregisteredMail) throws Exception {
-		webappPagesCollection.getPage(PasswordChangeRequestPage.class)
+		context.getPagesCollection().getPage(PasswordChangeRequestPage.class)
 				.setEmail(unregisteredMail);
 	}
 
@@ -99,9 +105,9 @@ public class PasswordChangeRequestSteps {
 			throws Exception {
 		ClientUser user;
 		try {
-			user = usrMgr.findUserByEmailOrEmailAlias(emailOrName);
+			user = context.getUserManager().findUserByEmailOrEmailAlias(emailOrName);
 		} catch (NoSuchUserException e) {
-			user = usrMgr.findUserByNameOrNameAlias(emailOrName);
+			user = context.getUserManager().findUserByNameOrNameAlias(emailOrName);
 		}
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
 		Map<String, String> expectedHeaders = new HashMap<>();
@@ -120,7 +126,7 @@ public class PasswordChangeRequestSteps {
 	 */
 	@And("^I click Change Password button on Password Change Request page$")
 	public void IClickChangePasswordButton() throws Exception {
-		webappPagesCollection.getPage(PasswordChangeRequestPage.class)
+		context.getPagesCollection().getPage(PasswordChangeRequestPage.class)
 				.clickChangePasswordButton();
 	}
 
@@ -134,7 +140,7 @@ public class PasswordChangeRequestSteps {
 	@Then("^I see Password Change Request Succeeded page$")
 	public void ISeeRequestSucceededPage() throws Exception {
 		assertThat(
-				webappPagesCollection.getPage(
+				context.getPagesCollection().getPage(
 						PasswordChangeRequestSuccessfullPage.class)
 						.isConfirmationTextVisible(), is(true));
 	}
@@ -142,7 +148,7 @@ public class PasswordChangeRequestSteps {
 	@Then("^I see unused mail message$")
 	public void ISeeUnusedMailMessage() throws Exception {
 		assertThat(
-				webappPagesCollection.getPage(
+				context.getPagesCollection().getPage(
 						PasswordChangeRequestSuccessfullPage.class)
 						.isUnusedTextVisible(), is(true));
 	}
@@ -164,9 +170,9 @@ public class PasswordChangeRequestSteps {
 		}
 		final PasswordResetMessage wrappedMsg = new PasswordResetMessage(
 				this.passwordChangeMessage.get());
-		webappPagesCollection.getPage(PasswordChangePage.class).setUrl(
+		context.getPagesCollection().getPage(PasswordChangePage.class).setUrl(
 				wrappedMsg.extractPasswordResetLink());
-		webappPagesCollection.getPage(PasswordChangePage.class).navigateTo();
+		context.getPagesCollection().getPage(PasswordChangePage.class).navigateTo();
 	}
 
 	/**
@@ -187,8 +193,8 @@ public class PasswordChangeRequestSteps {
 		final PasswordResetMessage wrappedMsg = new PasswordResetMessage(
 				this.passwordChangeMessage.get());
 		String link = wrappedMsg.extractPasswordResetLink() + "&agent=" + agent;
-		webappPagesCollection.getPage(PasswordChangePage.class).setUrl(link);
-		webappPagesCollection.getPage(PasswordChangePage.class).navigateTo();
+		context.getPagesCollection().getPage(PasswordChangePage.class).setUrl(link);
+		context.getPagesCollection().getPage(PasswordChangePage.class).navigateTo();
 	}
 	
 	@When("^I open Password Change link from the received email with wrong checksum for (.*)$")
@@ -200,8 +206,8 @@ public class PasswordChangeRequestSteps {
 		final PasswordResetMessage wrappedMsg = new PasswordResetMessage(
 				this.passwordChangeMessage.get());
 		String link = wrappedMsg.extractPasswordResetLink() + "_WRONG_CHECKSUM_" + "&agent=" + agent;
-		webappPagesCollection.getPage(PasswordChangePage.class).setUrl(link);
-		webappPagesCollection.getPage(PasswordChangePage.class).navigateTo();
+		context.getPagesCollection().getPage(PasswordChangePage.class).setUrl(link);
+		context.getPagesCollection().getPage(PasswordChangePage.class).navigateTo();
 	}
 
 }

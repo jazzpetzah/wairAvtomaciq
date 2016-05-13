@@ -14,8 +14,7 @@ import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
 
 import cucumber.api.java.en.Then;
@@ -25,11 +24,19 @@ public class DeleteAccountPageSteps {
 	public static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class
 			.getSimpleName());
 	
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	
 	private static final int DELETION_RECEIVING_TIMEOUT = 120;
 	
 	private String deleteLink = null;
+        
+        private final TestContext context;
+        
+    public DeleteAccountPageSteps() {
+        this.context = new TestContext();
+    }
+
+    public DeleteAccountPageSteps(TestContext context) {
+        this.context = context;
+    }
 	
 	/**
 	 * Verify that invitation email exists in user's mailbox
@@ -40,7 +47,7 @@ public class DeleteAccountPageSteps {
 	 */
 	@Then("^I delete account of user (.*) via email on (.*)$")
 	public void IDeleteAccountViaEmaiOn(String alias, String agent) throws Throwable {
-		final ClientUser user = usrMgr.findUserByNameOrNameAlias(alias);
+		final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
 		Map<String, String> expectedHeaders = new HashMap<>();
 		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
@@ -49,7 +56,7 @@ public class DeleteAccountPageSteps {
 				DELETION_RECEIVING_TIMEOUT, 0).get());
 		final String url = message.extractAccountDeletionLink() + "&agent=" + agent;
 		log.info("URL: " + url);
-		DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+		DeleteAccountPage deleteAccountPage = context.getPagesCollection()
 				.getPage(DeleteAccountPage.class);
 		deleteAccountPage.setUrl(url);
 		deleteAccountPage.navigateTo();
@@ -73,7 +80,7 @@ public class DeleteAccountPageSteps {
 		String newUrl = "";
 		int position = 0;
 		
-		final ClientUser user = usrMgr.findUserByNameOrNameAlias(alias);
+		final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
 		Map<String, String> expectedHeaders = new HashMap<>();
 		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
@@ -82,7 +89,7 @@ public class DeleteAccountPageSteps {
 				DELETION_RECEIVING_TIMEOUT, 0).get());
 		final String url = message.extractAccountDeletionLink() + "&agent=" + agent;
 		
-		DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+		DeleteAccountPage deleteAccountPage = context.getPagesCollection()
 				.getPage(DeleteAccountPage.class);
 		
 		switch (part) {
@@ -106,14 +113,14 @@ public class DeleteAccountPageSteps {
 	
 	@Then("^I click delete account button$")
 	public void IClickDeleteAccountButton() throws Exception{
-		DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+		DeleteAccountPage deleteAccountPage = context.getPagesCollection()
 				.getPage(DeleteAccountPage.class);
 		deleteAccountPage.clickDeleteAccountButton();
 	}
 	
 	@Then("^I see error message for wrong (.*) checksum$")
 	public void ISeeErrorMessageForWrongChecksum(String checksum) throws Exception{
-		DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+		DeleteAccountPage deleteAccountPage = context.getPagesCollection()
 				.getPage(DeleteAccountPage.class);
 		if (checksum == "key") {
 			assertTrue("Delete account page shows success message", deleteAccountPage.isWrongKey());
@@ -124,7 +131,7 @@ public class DeleteAccountPageSteps {
 		
 	@Then("^I remember delete link of user (.*)$")
 	public void IRememberDeleteLinkOfUser(String alias) throws Throwable {
-		final ClientUser user = usrMgr.findUserByNameOrNameAlias(alias);
+		final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
 		Map<String, String> expectedHeaders = new HashMap<>();
 		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
@@ -171,7 +178,7 @@ public class DeleteAccountPageSteps {
 		
 		String newUrl = newUrlBuffer.toString();
 		log.info("New URL: " + newUrl);
-		DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+		DeleteAccountPage deleteAccountPage = context.getPagesCollection()
 				.getPage(DeleteAccountPage.class);
 		deleteAccountPage.setUrl(newUrl);
 		deleteAccountPage.navigateTo();
@@ -179,7 +186,7 @@ public class DeleteAccountPageSteps {
 	
 	@Then("^I see error message for missing checksum$")
 	public void ISeeErrorMessageForMissingChecksum() throws Exception{
-		DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
+		DeleteAccountPage deleteAccountPage = context.getPagesCollection()
 				.getPage(DeleteAccountPage.class);
 		assertFalse("Delete button is visible", deleteAccountPage.isButtonVisible());
 		assertTrue("Delete account page shows success message", deleteAccountPage.isErrorMessage());

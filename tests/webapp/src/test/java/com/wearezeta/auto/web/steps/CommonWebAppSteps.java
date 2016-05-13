@@ -1,374 +1,64 @@
 package com.wearezeta.auto.web.steps;
 
 import java.io.RandomAccessFile;
-import java.net.URI;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 
 import com.wearezeta.auto.common.email.AccountDeletionMessage;
 import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
-import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
-import org.apache.commons.collections.IteratorUtils;
-import org.apache.commons.lang3.NotImplementedException;
-import org.apache.log4j.Logger;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.logging.LogEntry;
-import org.openqa.selenium.logging.LogType;
-import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.LocalFileDetector;
-import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.safari.SafariOptions;
-
-import com.wearezeta.auto.common.CommonCallingSteps2;
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.Platform;
-import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
-import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.web.common.Browser;
-import com.wearezeta.auto.web.common.WebAppConstants;
+import com.wearezeta.auto.web.common.Message;
+import com.wearezeta.auto.web.common.Lifecycle;
+import static com.wearezeta.auto.web.common.Lifecycle.DRIVER_INIT_TIMEOUT;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
-
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
 import cucumber.api.PendingException;
-import cucumber.api.Scenario;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeoutException;
-
-import org.openqa.selenium.WebDriverException;
-
+import java.net.URI;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import org.apache.log4j.Logger;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertTrue;
+import org.openqa.selenium.logging.LogEntry;
 
 public class CommonWebAppSteps {
 
-    private final CommonSteps commonSteps = CommonSteps.getInstance();
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
-
     public static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class
             .getSimpleName());
-
-    public static final Map<String, Future<ZetaWebAppDriver>> webdrivers = new HashMap<>();
-
-    public static final Platform CURRENT_PLATFORM = Platform.Web;
-
-    public static final int SAFARI_DRIVER_CREATION_RETRY = 3;
+    
     private static final int DELETION_RECEIVING_TIMEOUT = 120;
 
     private String rememberedPage = null;
 
     private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
-
-    private static final int DRIVER_COMMAND_TIMEOUT_SECONDS = 30;
-    private static final ScheduledExecutorService PING_EXECUTOR = Executors.newSingleThreadScheduledExecutor();
-    private static ScheduledFuture<?> RUNNING_PINGER;
-    private static final Runnable PINGER = new Runnable() {
-        @Override
-        public void run() {
-            for (Map.Entry<String, Future<ZetaWebAppDriver>> entry : webdrivers.entrySet()) {
-                try {
-                    ZetaWebAppDriver driver = entry.getValue().get(1, TimeUnit.SECONDS);
-                    log.debug(String.format("Pinging driver for \"%s\"",entry.getKey()));
-                    driver.getPageSource();
-                } catch (InterruptedException | ExecutionException | TimeoutException ex) {
-                    log.warn(String.format("Could not ping driver: %s", ex.getMessage()));
-                }
-
-            }
-        }
-    };
-
-    private static void startPinging() {
-        if (RUNNING_PINGER != null) {
-            log.warn("Driver pinger is already running - Please stop the driver pinger before starting it again");
-            return;
-        }
-        RUNNING_PINGER = PING_EXECUTOR.scheduleAtFixedRate(PINGER, 30, DRIVER_COMMAND_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    
+    private final TestContext context;
+    
+    public CommonWebAppSteps() {
+        this.context = new TestContext();
     }
-
-    private static void stopPinging() {
-        if (RUNNING_PINGER != null) {
-            if (!RUNNING_PINGER.cancel(true)) {
-                log.warn("Could not stop driver pinger");
-            }
-            RUNNING_PINGER = null;
-        }
+    
+    public CommonWebAppSteps(TestContext context) {
+        this.context = context;
     }
-
-    private static void setCustomChromeProfile(DesiredCapabilities capabilities)
-            throws Exception {
-        ChromeOptions options = new ChromeOptions();
-        // simulate a fake webcam and mic for testing
-        options.addArguments("use-fake-device-for-media-stream");
-        // allow skipping the security prompt for sharing the media device
-        options.addArguments("use-fake-ui-for-media-stream");
-
-        // allow skipping the security prompt for notifications in chrome 46++
-        Map<String, Object> prefs = new HashMap<>();
-        Map<String, Object> profile = new HashMap<>();
-        Map<String, Object> contentSettings = new HashMap<>();
-        contentSettings.put("notifications", 1);
-        profile.put("managed_default_content_settings", contentSettings);
-        prefs.put("profile", profile);
-        // prefs.put("profile.managed_default_content_settings.notifications",
-        // 1);
-        options.setExperimentalOption("prefs", prefs);
-        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-    }
-
-    private static void setCustomOperaProfile(DesiredCapabilities capabilities)
-            throws Exception {
-        final String userProfileRoot = WebCommonUtils.getOperaProfileRoot();
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("user-data-dir=" + userProfileRoot);
-        // simulate a fake webcam and mic for testing
-        options.addArguments("use-fake-device-for-media-stream");
-        // allow skipping the security prompt for sharing the media device
-        options.addArguments("use-fake-ui-for-media-stream");
-        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-    }
-
-    private static void setCustomFirefoxProfile(DesiredCapabilities capabilities) {
-        FirefoxProfile profile = new FirefoxProfile();
-        profile.setPreference("dom.webnotifications.enabled", false);
-        // allow skipping the security prompt for sharing the media device
-        profile.setPreference("media.navigator.permission.disabled", true);
-        capabilities.setCapability("firefox_profile", profile);
-    }
-
-    private static void setCustomSafariProfile(DesiredCapabilities capabilities) {
-        SafariOptions options = new SafariOptions();
-        options.setUseCleanSession(true);
-        capabilities.setCapability(SafariOptions.CAPABILITY, options);
-    }
-
-    private static void setCustomIEProfile(DesiredCapabilities capabilities) {
-        capabilities.setCapability("ie.ensureCleanSession", true);
-    }
-
-    private static void setExtendedLoggingLevel(
-            DesiredCapabilities capabilities, String loggingLevelName) {
-        final LoggingPreferences logs = new LoggingPreferences();
-        // set it to SEVERE by default
-        Level level = Level.SEVERE;
-        try {
-            level = Level.parse(loggingLevelName);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            // Just continue with the default logging level
-        }
-        logs.enable(LogType.BROWSER, level);
-        // logs.enable(LogType.CLIENT, Level.ALL);
-        // logs.enable(LogType.DRIVER, Level.ALL);
-        // logs.enable(LogType.PERFORMANCE, Level.ALL);
-        // logs.enable(LogType.PROFILER, Level.ALL);
-        // logs.enable(LogType.SERVER, Level.ALL);
-        capabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
-        log.debug("Browser logging level has been set to '" + level.getName()
-                + "'");
-    }
-
-    private static final long DRIVER_INIT_TIMEOUT = 60 * 1000;
-
-    @Before("~@performance")
-    public void setUp(Scenario scenario) throws Exception {
-
-        try {
-            SEBridge.getInstance().reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
-            usrMgr.setUseSpecialEmailFlag();
-        }
-
-        String platform = WebAppExecutionContext.getPlatform();
-        String osName = WebAppExecutionContext.getOsName();
-        String osVersion = WebAppExecutionContext.getOsVersion();
-        String browserName = WebAppExecutionContext.getBrowserName();
-        String browserVersion = WebAppExecutionContext.getBrowserVersion();
-
-        // create unique name for saucelabs and webdriver instances
-        String uniqueName = getUniqueTestName(scenario);
-        log.debug("Unique name for this test: " + uniqueName);
-
-        // get custom capabilities
-        DesiredCapabilities capabilities = getCustomCapabilities(platform,
-                osName, osVersion, browserName, browserVersion, uniqueName);
-
-        final String hubHost = System.getProperty("hubHost");
-        final String hubPort = System.getProperty("hubPort");
-        final String url = CommonUtils
-                .getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
-        final ExecutorService pool = Executors.newFixedThreadPool(1);
-
-        Callable<ZetaWebAppDriver> callableWebAppDriver = new Callable<ZetaWebAppDriver>() {
-
-            @Override
-            public ZetaWebAppDriver call() throws Exception {
-                ZetaWebAppDriver lazyWebDriver = null;
-                URL hubUrl = new URL("http://" + hubHost + ":" + hubPort
-                        + "/wd/hub");
-                if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
-                    int retries = SAFARI_DRIVER_CREATION_RETRY;
-                    boolean failed = false;
-                    do {
-                        try {
-                            retries--;
-                            // wait for safari to close properly before starting
-                            // it for
-                            // a new test
-                            Thread.sleep(5000);
-                            lazyWebDriver = new ZetaWebAppDriver(hubUrl,
-                                    capabilities);
-                            failed = false;
-                        } catch (WebDriverException e) {
-                            log.warn("Safari driver init failed - retrying", e);
-                            failed = true;
-                        }
-                    } while (failed && retries > 0);
-
-                    if (failed) {
-                        throw new Exception("Failed to init Safari driver");
-                    }
-                } else {
-                    lazyWebDriver = new ZetaWebAppDriver(hubUrl, capabilities);
-                }
-                // setup of the browser
-                lazyWebDriver.setFileDetector(new LocalFileDetector());
-                if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
-                    WebCommonUtils.closeAllAdditionalTabsInSafari(lazyWebDriver
-                            .getNodeIp());
-                    WebCommonUtils.clearHistoryInSafari(lazyWebDriver
-                            .getNodeIp());
-                }
-                if (WebAppExecutionContext.getBrowser()
-                        .isSupportingMaximizingTheWindow()) {
-                    lazyWebDriver.manage().window().maximize();
-                } else if (WebAppExecutionContext.getBrowser()
-                        .isSupportingSettingWindowSize()) {
-                    // http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
-                    lazyWebDriver
-                            .manage()
-                            .window()
-                            .setSize(
-                                    new Dimension(
-                                            WebAppConstants.MIN_WEBAPP_WINDOW_WIDTH,
-                                            WebAppConstants.MIN_WEBAPP_WINDOW_HEIGHT));
-                }
-                return lazyWebDriver;
-            }
-        };
-
-        final Future<ZetaWebAppDriver> lazyWebDriver = pool
-                .submit(callableWebAppDriver);
-        webdrivers.put(uniqueName, lazyWebDriver);
-        lazyWebDriver.get(DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS).get(url);
-        WebappPagesCollection.getInstance().setFirstPage(
-                new RegistrationPage(lazyWebDriver, url));
-        ZetaFormatter.setLazyDriver(lazyWebDriver);
-    }
-
-    private String getUniqueTestName(Scenario scenario) {
-        String browserName = WebAppExecutionContext.getBrowserName();
-        String browserVersion = WebAppExecutionContext.getBrowserVersion();
-        String platform = WebAppExecutionContext.getPlatform();
-
-        String id = scenario.getId().substring(
-                scenario.getId().lastIndexOf(";") + 1);
-
-        return scenario.getName() + " (" + id + ") on " + platform + " with "
-                + browserName + " " + browserVersion;
-    }
-
-    private static DesiredCapabilities getCustomCapabilities(String platform,
-            String osName, String osVersion, String browserName,
-            String browserVersion, String uniqueTestName) throws Exception {
-        final DesiredCapabilities capabilities;
-        Browser browser = Browser.fromString(browserName);
-        switch (browser) {
-            case Chrome:
-                capabilities = DesiredCapabilities.chrome();
-                setCustomChromeProfile(capabilities);
-                break;
-            case Opera:
-                capabilities = DesiredCapabilities.chrome();
-                setCustomOperaProfile(capabilities);
-                break;
-            case Firefox:
-                capabilities = DesiredCapabilities.firefox();
-                setCustomFirefoxProfile(capabilities);
-                break;
-            case Safari:
-                capabilities = DesiredCapabilities.safari();
-                setCustomSafariProfile(capabilities);
-                break;
-            case InternetExplorer:
-                capabilities = DesiredCapabilities.internetExplorer();
-                setCustomIEProfile(capabilities);
-                break;
-            case MicrosoftEdge:
-                capabilities = DesiredCapabilities.edge();
-                break;
-            default:
-                throw new NotImplementedException(
-                        "Unsupported/incorrect browser name is set: " + browserName);
-        }
-
-        if (browser.isSupportingConsoleLogManagement()) {
-            setExtendedLoggingLevel(
-                    capabilities,
-                    WebCommonUtils
-                    .getExtendedLoggingLevelInConfig(CommonCallingSteps2.class));
-        }
-
-        capabilities.setCapability("platform", platform);
-        capabilities.setCapability("version", browserVersion);
-        capabilities.setCapability("os", osName);
-        capabilities.setCapability("os_version", osVersion);
-        capabilities.setCapability("browser_version", browserVersion);
-        capabilities.setCapability("name", uniqueTestName);
-        capabilities.setCapability("browserstack.debug", "true");
-
-        return capabilities;
-    }
-
+    
     /**
      * This step will throw special PendingException whether the current browser does support calling or not. This will cause
      * Cucumber interpreter to skip the current test instead of failing it.
@@ -395,7 +85,7 @@ public class CommonWebAppSteps {
                     + " does support calling but this test is just for browsers without support.");
         }
     }
-
+    
     @Given("^I switch language to (.*)$")
     public void ISwitchLanguageTo(String language) throws Exception {
         WebappPagesCollection.getInstance().getPage(WebPage.class).switchLanguage(language);
@@ -428,7 +118,7 @@ public class CommonWebAppSteps {
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
             throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
+        context.getCommonSteps().ThereAreNUsersWhereXIsMe(context.getCurrentPlatform(), count,
                 myNameAlias);
         IChangeUserAvatarPicture(myNameAlias, "default");
     }
@@ -446,7 +136,7 @@ public class CommonWebAppSteps {
     @Given("^User (\\w+) change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
     public void IChangeAccentColor(String userNameAlias, String newColor)
             throws Exception {
-        commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
+        context.getCommonSteps().IChangeUserAccentColor(userNameAlias, newColor);
     }
 
     /**
@@ -461,7 +151,7 @@ public class CommonWebAppSteps {
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
     public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
             String myNameAlias) throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
+        context.getCommonSteps().ThereAreNUsersWhereXIsMe(context.getCurrentPlatform(), count,
                 myNameAlias);
     }
 
@@ -477,7 +167,7 @@ public class CommonWebAppSteps {
     @Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
     public void ThereAreNUsersWhereXIsMeWithoutEmail(int count,
             String myNameAlias) throws Exception {
-        commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
+        context.getCommonSteps().ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
     }
 
     /**
@@ -502,7 +192,7 @@ public class CommonWebAppSteps {
                 .toString());
         log.debug("Change avatar of user " + userNameAlias + " to "
                 + uri.getPath());
-        commonSteps.IChangeUserAvatarPicture(userNameAlias, uri.getPath());
+        context.getCommonSteps().IChangeUserAvatarPicture(userNameAlias, uri.getPath());
     }
 
     /**
@@ -516,7 +206,7 @@ public class CommonWebAppSteps {
     @Given("^(\\w+) is connected to (.*)$")
     public void UserIsConnectedTo(String userFromNameAlias,
             String usersToNameAliases) throws Exception {
-        commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
+        context.getCommonSteps().UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
     }
 
     /**
@@ -530,7 +220,7 @@ public class CommonWebAppSteps {
     @Given("^(\\w+) blocked (\\w+)$")
     public void UserBlocks(String userAsNameAlias, String userToBlockNameAlias)
             throws Exception {
-        commonSteps.BlockContact(userAsNameAlias, userToBlockNameAlias);
+        context.getCommonSteps().BlockContact(userAsNameAlias, userToBlockNameAlias);
     }
 
     /**
@@ -546,7 +236,7 @@ public class CommonWebAppSteps {
     public void UserHasGroupChatWithContacts(String chatOwnerNameAlias,
             String chatName, String otherParticipantsNameAlises)
             throws Exception {
-        commonSteps.UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
+        context.getCommonSteps().UserHasGroupChatWithContacts(chatOwnerNameAlias, chatName,
                 otherParticipantsNameAlises);
     }
 
@@ -559,7 +249,7 @@ public class CommonWebAppSteps {
      */
     @Given("^User (\\w+) is [Mm]e$")
     public void UserXIsMe(String nameAlias) throws Exception {
-        commonSteps.UserXIsMe(nameAlias);
+        context.getCommonSteps().UserXIsMe(nameAlias);
         IChangeUserAvatarPicture(nameAlias, "default");
     }
 
@@ -572,7 +262,7 @@ public class CommonWebAppSteps {
      */
     @Given("^User (\\w+) is [Mm]e without avatar$")
     public void UserXIsMeWithoutAvatar(String nameAlias) throws Exception {
-        commonSteps.UserXIsMe(nameAlias);
+        context.getCommonSteps().UserXIsMe(nameAlias);
     }
 
     /**
@@ -586,7 +276,7 @@ public class CommonWebAppSteps {
     @Given("^(.*) sent connection request to (.*)")
     public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
             String usersToNameAliases) throws Throwable {
-        commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
+        context.getCommonSteps().ConnectionRequestIsSentTo(userFromNameAlias,
                 usersToNameAliases);
     }
 
@@ -601,7 +291,9 @@ public class CommonWebAppSteps {
     @Given("^(\\w+) waits? until (.*) exists in backend search results$")
     public void UserWaitsUntilContactExistsInHisSearchResults(
             String searchByNameAlias, String query) throws Exception {
-        commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
+        context.startPinging();
+        context.getCommonSteps().WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
+        context.stopPinging();
     }
 
     /**
@@ -615,8 +307,9 @@ public class CommonWebAppSteps {
     @Given("^(\\w+) waits? until (\\d+) people in backend top people results$")
     public void UserWaitsUntilContactExistsInTopPeopleResults(
             String searchByNameAlias, int size) throws Exception {
-        commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
-                searchByNameAlias, size);
+        context.startPinging();
+        context.getCommonSteps().WaitUntilTopPeopleContactsIsFoundInSearch(searchByNameAlias, size);
+        context.stopPinging();
     }
 
     /**
@@ -629,7 +322,7 @@ public class CommonWebAppSteps {
      */
     @When("^I wait for (\\d+) seconds?$")
     public void WaitForTime(int seconds) throws Exception {
-        commonSteps.WaitForTime(seconds);
+        context.getCommonSteps().WaitForTime(seconds);
     }
 
     /**
@@ -643,7 +336,7 @@ public class CommonWebAppSteps {
     @When("^(.*) muted conversation with (user|group) (.*) on device (.*)$")
     public void MuteConversationWithUser(String userToNameAlias, String convType,
                                          String muteUserNameAlias, String deviceName) throws Exception {
-        commonSteps.UserMutesConversation(userToNameAlias, muteUserNameAlias, deviceName, convType.equals("group"));
+        context.getCommonSteps().UserMutesConversation(userToNameAlias, muteUserNameAlias, deviceName, convType.equals("group"));
     }
 
     /**
@@ -657,7 +350,7 @@ public class CommonWebAppSteps {
     @When("^(.*) archived conversation with (.*)$")
     public void ArchiveConversationWithUser(String userToNameAlias,
             String archivedUserNameAlias) throws Exception {
-        commonSteps.ArchiveConversationWithUser(userToNameAlias,
+        context.getCommonSteps().ArchiveConversationWithUser(userToNameAlias,
                 archivedUserNameAlias);
     }
 
@@ -672,7 +365,7 @@ public class CommonWebAppSteps {
     @When("^User (.*) pinged in the conversation with (.*)$")
     public void UserPingedConversation(String pingFromUserNameAlias,
             String dstConversationName) throws Exception {
-        commonSteps.UserPingedConversation(pingFromUserNameAlias,
+        context.getCommonSteps().UserPingedConversation(pingFromUserNameAlias,
                 dstConversationName);
     }
 
@@ -687,56 +380,52 @@ public class CommonWebAppSteps {
     @When("^User (.*) pinged twice in the conversation with (.*)$")
     public void UserHotPingedConversation(String pingFromUserNameAlias,
             String dstConversationName) throws Exception {
-        commonSteps.UserHotPingedConversation(pingFromUserNameAlias,
+        context.getCommonSteps().UserHotPingedConversation(pingFromUserNameAlias,
                 dstConversationName);
     }
 
     /**
-     * User A sends a simple text message to user B
+     * User A sends a simple text message (encrypted) to user B
      *
      * @param msgFromUserNameAlias the user who sends the message
      * @param msg a message to send. Random string will be sent if it is empty
      * @param dstConvoName The user to receive the message
-     * @param isEncrypted whether the message has to be encrypted
      * @param convoType either 'user' or 'group conversation'
      * @throws Exception
      * @step. ^Contact (.*) sends? (encrypted )?message "?(.*?)"?\s?(?:via device (.*)\s)?to (user|group conversation) (.*)$
      */
-    @When("^Contact (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
-    public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
+    @When("^Contact (.*) sends? message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
+    public void UserSendMessageToConversation(String msgFromUserNameAlias,
             String msg, String deviceName, String convoType, String dstConvoName) throws Exception {
         final String msgToSend = (msg == null || msg.trim().length() == 0)
                 ? CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
-            if (isEncrypted == null) {
-                commonSteps.UserSentMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
-            } else {
-                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
-            }
-        } else if (isEncrypted == null) {
-            commonSteps.UserSentMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
+            context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
         } else {
-            commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
+            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
         }
     }
 
-    @When("^Contact (.*) sends? (\\d+) encrypted messages with prefix (.*) via device (.*) to (user|group conversation) (.*)$")
+    @When("^Contact (.*) sends? (\\d+) messages with prefix (.*) via device (.*) to (user|group conversation) (.*)$")
     public void UserSendAmountOfMessages(String msgFromUserNameAlias, int amount, String prefix, String deviceName,
                                          String convoType, String dstConvoName) throws Exception {
+        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(msgFromUserNameAlias);
         if (convoType.equals("user")) {
             for (int i = 0; i < amount; i++) {
-                commonSteps.UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, prefix + i, deviceName);
+                context.getConversationStates().addMessage(dstConvoName, new Message(prefix + i, user.getId()));
+                context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, prefix + i, deviceName);
             }
         } else {
             for (int i = 0; i < amount; i++) {
-                commonSteps.UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, prefix + i, deviceName);
+                context.getConversationStates().addMessage(dstConvoName, new Message(prefix + i, user.getId()));
+                context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, prefix + i, deviceName);
             }
         }
     }
 
     @When("^I remember current page$")
     public void IRememberCurrentPage() throws Exception {
-        WebPage page = WebappPagesCollection.getInstance().getPage(WebPage.class);
+        WebPage page = context.getPagesCollection().getPage(WebPage.class);
         rememberedPage = page.getCurrentUrl();
     }
 
@@ -747,15 +436,14 @@ public class CommonWebAppSteps {
                     "No page has been remembered before!");
         }
 
-        WebPage page = WebappPagesCollection.getInstance().getPage(WebPage.class);
+        WebPage page = context.getPagesCollection().getPage(WebPage.class);
         page.setUrl(rememberedPage);
         page.navigateTo();
     }
 
     /**
-     * Sends an image from one user to a conversation
+     * Sends an image from one user to a conversation (encrypted).
      *
-     * @param isEncrypted whether the image has to be encrypted
      * @param imageSenderUserNameAlias the user to sending the image
      * @param imageFileName the file path name of the image to send. The path name is defined relative to the image file defined
      * in Configuration.cnf.
@@ -764,26 +452,20 @@ public class CommonWebAppSteps {
      * @throws Exception
      * @step. ^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)
      */
-    @When("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
-    public void ContactSendImageToConversation(String imageSenderUserNameAlias, String isEncrypted,
-            String imageFileName, String conversationType,
-            String dstConversationName) throws Exception {
+    @When("^User (.*) sends image (.*) to (single user|group) conversation (.*)")
+    public void ContactSendImageToConversation(String imageSenderUserNameAlias,
+                                               String imageFileName, String conversationType,
+                                               String dstConversationName) throws Exception {
         final String imagePath = WebCommonUtils.getFullPicturePath(imageFileName);
         final boolean isGroup = conversationType.equals("group");
-        if (isEncrypted == null) {
-            commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
-                    imagePath, dstConversationName, isGroup);
-        } else {
-            commonSteps.UserSentImageToConversationOtr(imageSenderUserNameAlias,
-                    imagePath, dstConversationName, isGroup);
-        }
+        context.getCommonSteps().UserSentImageToConversationOtr(imageSenderUserNameAlias, imagePath, dstConversationName, isGroup);
     }
 
     @When("^I break the session with device (.*) of user (.*)$")
     public void IBreakTheSession(String deviceName, String userAlias) throws Exception {
-        ClientUser user = usrMgr.findUserByNameOrNameAlias(userAlias);
-        String deviceId = SEBridge.getInstance().getDeviceId(user, deviceName);
-        webappPagesCollection.getPage(WebPage.class).breakSession(deviceId);
+        ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
+        String deviceId = context.getDeviceManager().getDeviceId(user, deviceName);
+        context.getPagesCollection().getPage(WebPage.class).breakSession(deviceId);
     }
 
     @When("^(.*) sends? (.*) sized file with name (.*) via device (.*) to (user|group conversation) (.*)$")
@@ -802,7 +484,7 @@ public class CommonWebAppSteps {
         }
         f.close();
         boolean isGroup = convoType.equals("user") ? false : true;
-        commonSteps.UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "plain/text", deviceName, isGroup);
+        context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "plain/text", deviceName, isGroup);
     }
 
     /**
@@ -817,8 +499,28 @@ public class CommonWebAppSteps {
     @When("^User (.*) sends? message (.*) to conversation (.*)")
     public void UserSentMessageToConversation(String userFromNameAlias,
             String message, String conversationName) throws Exception {
-        commonSteps.UserSentMessageToConversation(userFromNameAlias,
+        context.getCommonSteps().UserSentMessageToConversation(userFromNameAlias,
                 conversationName, message);
+    }
+
+    /**
+     * User X delete message from User/Group via specified device
+     * Note : The recent message means the recent message sent from specified device by SE, the device should online.
+     *
+     * @param userNameAlias
+     * @param convoType
+     * @param dstNameAlias
+     * @param deviceName
+     * @throws Exception
+     * @step. ^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) via device (.*)$
+     */
+    @When("^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) via device (.*)$")
+    public void UserXDeleteLastMessage(String userNameAlias,int amount, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
+        for (int deleteCounter = 0; deleteCounter < amount; deleteCounter++) {
+            context.getCommonSteps().UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup);
+        }
     }
 
     /**
@@ -833,7 +535,7 @@ public class CommonWebAppSteps {
     @When("^(.*) sends personal invitation to mail (.*) with message (.*)$")
     public void UserXSendsPersonalInvitation(String userToNameAlias,
             String toMail, String message) throws Exception {
-        commonSteps.UserXSendsPersonalInvitationWithMessageToUserWithMail(
+        context.getCommonSteps().UserXSendsPersonalInvitationWithMessageToUserWithMail(
                 userToNameAlias, toMail, message);
     }
 
@@ -846,7 +548,7 @@ public class CommonWebAppSteps {
      */
     @Then("^I verify user (.*) has received (?:an |\\s*)email invitation$")
     public void IVerifyUserReceiverInvitation(String alias) throws Throwable {
-        final ClientUser user = usrMgr.findUserByNameOrNameAlias(alias);
+        final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
         assertTrue(
                 String.format("Invitation email for %s is not valid", user.getEmail()),
                 BackendAPIWrappers
@@ -860,7 +562,7 @@ public class CommonWebAppSteps {
 
     @Then("^I delete account of user (.*) via email$")
     public void IDeleteAccountViaEmail(String alias) throws Throwable {
-        final ClientUser user = usrMgr.findUserByNameOrNameAlias(alias);
+        final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
         IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
         Map<String, String> expectedHeaders = new HashMap<>();
         expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
@@ -869,8 +571,7 @@ public class CommonWebAppSteps {
                 DELETION_RECEIVING_TIMEOUT, 0).get());
         final String url = message.extractAccountDeletionLink();
         log.info("URL: " + url);
-        DeleteAccountPage deleteAccountPage = WebappPagesCollection.getInstance()
-                .getPage(DeleteAccountPage.class);
+        DeleteAccountPage deleteAccountPage = context.getPagesCollection().getPage(DeleteAccountPage.class);
         deleteAccountPage.setUrl(url);
         deleteAccountPage.navigateTo();
         deleteAccountPage.clickDeleteAccountButton();
@@ -886,7 +587,7 @@ public class CommonWebAppSteps {
      */
     @Then("^(.*) navigates to personal invitation registration page$")
     public void INavigateToPersonalInvitationRegistrationPage(String alias) throws Throwable {
-        final ClientUser user = usrMgr.findUserByNameOrNameAlias(alias);
+        final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
         String url = BackendAPIWrappers
                 .getInvitationMessage(user)
                 .orElseThrow(
@@ -894,8 +595,7 @@ public class CommonWebAppSteps {
                             throw new IllegalStateException(
                                     "Invitation message has not been received");
                         }).extractInvitationLink();
-        RegistrationPage registrationPage = WebappPagesCollection.getInstance()
-                .getPage(RegistrationPage.class);
+        RegistrationPage registrationPage = context.getPagesCollection().getPage(RegistrationPage.class);
         registrationPage.setUrl(url);
         registrationPage.navigateTo();
     }
@@ -912,7 +612,7 @@ public class CommonWebAppSteps {
     @Given("^User (.*) added contacts? (.*) to group chat (.*)")
     public void UserXAddedContactsToGroupChat(String asUser, String contacts,
             String conversationName) throws Exception {
-        commonSteps.UserXAddedContactsToGroupChat(asUser, contacts,
+        context.getCommonSteps().UserXAddedContactsToGroupChat(asUser, contacts,
                 conversationName);
     }
 
@@ -924,7 +624,7 @@ public class CommonWebAppSteps {
      */
     @Given("^There are suggestions for user (.*) on backend$")
     public void suggestions(String userNameAlias) throws Exception {
-        commonSteps.WaitUntilSuggestionFound(userNameAlias);
+        context.getCommonSteps().WaitUntilSuggestionFound(userNameAlias);
     }
 
     /**
@@ -937,7 +637,7 @@ public class CommonWebAppSteps {
     @Given("^User (.*) has contacts? (.*) in address book")
     public void UserXHasContactsInAddressBook(String asUser, String emails)
             throws Exception {
-        commonSteps.UserXHasContactsInAddressBook(asUser, emails);
+        context.getCommonSteps().UserXHasContactsInAddressBook(asUser, emails);
     }
 
     /**
@@ -950,7 +650,7 @@ public class CommonWebAppSteps {
     @Given("(.*) takes? snapshot of current profile picture$")
     public void UserXTakesSnapshotOfProfilePicture(String asUser)
             throws Exception {
-        commonSteps.UserXTakesSnapshotOfProfilePicture(asUser);
+        context.getCommonSteps().UserXTakesSnapshotOfProfilePicture(asUser);
     }
 
     /**
@@ -963,7 +663,7 @@ public class CommonWebAppSteps {
     @Then("^I verify that current profile picture snapshot of (.*) differs? from the previous one$")
     public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
             String userNameAlias) throws Exception {
-        commonSteps
+        context.getCommonSteps()
                 .UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias);
     }
 
@@ -979,9 +679,7 @@ public class CommonWebAppSteps {
     @When("user (.*) adds a new device (.*) with label (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias,
             String deviceName, String label) throws Exception {
-        startPinging();
-        commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
-        stopPinging();
+        context.getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
     }
 
     /**
@@ -1005,12 +703,12 @@ public class CommonWebAppSteps {
      */
     @Then("^I verify browser log is empty$")
     public void VerifyBrowserLogIsEmpty() throws Exception {
-        if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+        if (PlatformDrivers.getInstance().hasDriver(context.getCurrentPlatform())) {
             try {
                 if (WebAppExecutionContext.getBrowser()
                         .isSupportingConsoleLogManagement()) {
-                    List<LogEntry> browserLog = getBrowserLog(PlatformDrivers
-                            .getInstance().getDriver(CURRENT_PLATFORM)
+                    List<LogEntry> browserLog = Lifecycle.getBrowserLog(PlatformDrivers
+                            .getInstance().getDriver(context.getCurrentPlatform())
                             .get(DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS));
 
                     StringBuilder bLog = new StringBuilder("\n");
@@ -1038,114 +736,8 @@ public class CommonWebAppSteps {
      */
     @Then("^I refresh page$")
     public void IRefreshPage() throws Exception {
-        WebappPagesCollection.getInstance().getPage(RegistrationPage.class)
+        context.getPagesCollection().getPage(RegistrationPage.class)
                 .refreshPage();
-    }
-
-    @SuppressWarnings("unchecked")
-    private List<LogEntry> getBrowserLog(RemoteWebDriver driver) {
-        return IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs()
-                .get(LogType.BROWSER).iterator());
-    }
-
-    private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
-        List<LogEntry> logEntries = getBrowserLog(driver);
-        if (!logEntries.isEmpty()) {
-            log.debug("BROWSER CONSOLE LOGS:");
-            for (LogEntry logEntry : logEntries) {
-                log.debug(logEntry.getMessage().replaceAll("^.*z\\.", "z\\."));
-            }
-            log.debug("--- END OF LOG ---");
-        }
-
-    }
-
-    @After
-    public void tearDown(Scenario scenario) throws Exception {
-        stopPinging();
-        try {
-            // async calls/waiting instances cleanup
-            CommonCallingSteps2.getInstance().cleanup();
-        } catch (Exception e) {
-            log.warn(e);
-        }
-
-        WebPage.clearPagesCollection();
-
-        String uniqueName = getUniqueTestName(scenario);
-
-        if (webdrivers.containsKey(uniqueName)) {
-            Future<ZetaWebAppDriver> webdriver = webdrivers.get(uniqueName);
-            try {
-                ZetaWebAppDriver driver = webdriver.get(DRIVER_INIT_TIMEOUT,
-                        TimeUnit.MILLISECONDS);
-
-                // save browser console if possible
-                if (WebAppExecutionContext.getBrowser()
-                        .isSupportingConsoleLogManagement()) {
-                    writeBrowserLogsIntoMainLog(driver);
-                }
-
-                if (driver instanceof ZetaWebAppDriver) {
-                    // logout with JavaScript because otherwise backend will
-                    // block
-                    // us because of top many login requests
-                    String logoutScript = "(typeof wire !== 'undefined') && wire.auth.repository.logout();";
-                    driver.executeScript(logoutScript);
-                }
-
-                // show link to saucelabs
-                String link = "https://saucelabs.com/jobs/"
-                        + driver.getSessionId();
-                log.debug("See more information on " + link);
-                String html = "<html><body><a id='link' href='"
-                        + link
-                        + "'>See more information on "
-                        + link
-                        + "</a><script>window.location.href = document.getElementById('link').getAttribute('href');</script></body></html>";
-                scenario.embed(html.getBytes(Charset.forName("UTF-8")),
-                        "text/html");
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                log.debug("Trying to quit webdriver for " + uniqueName);
-                webdriver.get(DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS)
-                        .quit();
-                log.debug("Remove webdriver for " + uniqueName + " from map");
-                webdrivers.remove(uniqueName);
-            }
-        }
-        commonSteps.getUserManager().resetUsers();
-    }
-
-    /**
-     * Sends an image from one user to a conversation
-     *
-     * @param imageSenderUserNameAlias the user to sending the image
-     * @param imageFileName the file path name of the image to send. The path name is defined relative to the image file defined
-     * in Configuration.cnf.
-     * @param conversationType "single user" or "group" conversation.
-     * @param dstConversationName the name of the conversation to send the image to.
-     * @throws Exception
-     * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$
-     */
-    @When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
-    public void ContactSendImageToConversation(String imageSenderUserNameAlias,
-            String imageFileName, String conversationType,
-            String dstConversationName) throws Exception {
-        String imagePath = WebCommonUtils.getFullPicturePath(imageFileName);
-        Boolean isGroup = null;
-        if (conversationType.equals("single user")) {
-            isGroup = false;
-        } else if (conversationType.equals("group")) {
-            isGroup = true;
-        }
-        if (isGroup == null) {
-            throw new Exception(
-                    "Incorrect type of conversation specified (single user | group) expected.");
-        }
-        commonSteps.UserSentImageToConversation(imageSenderUserNameAlias,
-                imagePath, dstConversationName, isGroup);
     }
 
     /**
@@ -1159,7 +751,7 @@ public class CommonWebAppSteps {
     @Given("^(\\w+) unblocks user (\\w+)$")
     public void UserUnblocks(String userAsNameAlias, String userToBlockNameAlias)
             throws Exception {
-        commonSteps.UnblockContact(userAsNameAlias, userToBlockNameAlias);
+        context.getCommonSteps().UnblockContact(userAsNameAlias, userToBlockNameAlias);
     }
 
     /**
@@ -1171,7 +763,7 @@ public class CommonWebAppSteps {
      */
     @Given("^I open Sign In page$")
     public void IOpenSignInPage() throws Exception {
-        WebappPagesCollection.getInstance().getPage(RegistrationPage.class)
+        context.getPagesCollection().getPage(RegistrationPage.class)
                 .openSignInPage();
     }
     
@@ -1184,7 +776,7 @@ public class CommonWebAppSteps {
      */
     @Given("^User (.*) removes all his registered OTR clients$")
     public void UserRemovesAllRegisteredOtrClients(String userAs) throws Exception {
-        commonSteps.UserRemovesAllRegisteredOtrClients(userAs);
+        context.getCommonSteps().UserRemovesAllRegisteredOtrClients(userAs);
     }
     
     /**
@@ -1197,7 +789,7 @@ public class CommonWebAppSteps {
      */
     @Given("^User (.*) only keeps his (\\d+) most recent OTR clients$")
     public void UserKeepsXOtrClients(String userAs, int clientsCount) throws Exception {
-        commonSteps.UserKeepsXOtrClients(userAs, clientsCount);
+        context.getCommonSteps().UserKeepsXOtrClients(userAs, clientsCount);
     }
 
 }

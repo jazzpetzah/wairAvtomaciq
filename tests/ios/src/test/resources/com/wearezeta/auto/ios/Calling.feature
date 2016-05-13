@@ -17,7 +17,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | chrome      |
 
   @C3180 @rc @calling_basic @clumsy @id908
   Scenario Outline: Verify starting outgoing call
@@ -63,7 +63,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | chrome      |
 
   @C2111 @rc @calling_basic @clumsy @IPv6 @id2093
   Scenario Outline: (ZIOS-5534) Verify acepting and ending incoming call
@@ -82,7 +82,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | chrome      |
 
   @C2072 @calling_basic @id902
   Scenario Outline: Receiving missed call notification from one user
@@ -99,7 +99,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | chrome      |
 
   @C348 @calling_basic @id1228
   Scenario Outline: Verify missed call indicator appearance (list)
@@ -124,7 +124,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | Contact1  | Number | CallBackend |
-      | user1Name | user2Name | user3Name | 2      | autocall    |
+      | user1Name | user2Name | user3Name | 2      | chrome      |
 
   @C2080 @calling_basic @id2296
   Scenario Outline: Screenlock device when in the call
@@ -172,7 +172,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 |
-      | user1Name | user2Name | user3Name | chrome      | autocall     |
+      | user1Name | user2Name | user3Name | chrome      | chrome       |
 
   @C2082 @calling_basic @id2646
   Scenario Outline: Put app into background after initiating call
@@ -207,7 +207,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | chrome      | autocall     | 30      |
+      | user1Name | user2Name | chrome      | chrome       | 30      |
 
   @C2074 @calling_basic @id913
   Scenario Outline: Verify starting and ending outgoing call
@@ -224,8 +224,8 @@ Feature: Calling
     Then I do not see Calling overlay
 
     Examples:
-      | Name      | Contact   | CallBackend | CallBackend2 |
-      | user1Name | user2Name | chrome      | autocall     |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |
 
   @C2046 @rc @calling_basic @IPv6 @id2682
   Scenario Outline: Verify accepting group call in foreground
@@ -241,15 +241,11 @@ Feature: Calling
     And <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
-    # FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
-    # Then I see <NumberOfAvatars> avatars on the Calling overlay
-    # And I wait for 10 seconds
-    # Then <Contact2> verify to have 2 flows
-    # Then <Contact2> verify that all flows have greater than 0 bytes
+    Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | AcceptingGROUPCALL | chrome      | autocall     | 2               |
+      | user1Name | user2Name | user3Name | AcceptingGROUPCALL | chrome      | chrome       | 1               |
 
   @C2047 @calling_basic @id2683
   Scenario Outline: Verify ignoring group call in foreground
@@ -267,10 +263,10 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName     | CallBackend |
-      | user1Name | user2Name | user3Name | IgnoringGROUPCALL | autocall    |
+      | user1Name | user2Name | user3Name | IgnoringGROUPCALL | chrome      |
 
   @C2050 @rc @calling_advanced @id2686
-  Scenario Outline: (ZIOS-5587)Verify receiving group call during 1-to-1 call (and accepting it)
+  Scenario Outline: (ZIOS-6010) Verify receiving group call during 1-to-1 call (and accepting it)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
@@ -283,15 +279,11 @@ Feature: Calling
     When <Contact2>,<Contact3> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
-    # And I see Accept second call alert
-    # And I press Accept button on alert
-    # FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
-    # Then I see <NumberOfAvatars> avatars on the Calling overlay
-    And I see Calling overlay
+    Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | GROUPCALL     | autocall    | 2               |
+      | user1Name | user2Name | user3Name | user4Name | GROUPCALL     | chrome      | 2               |
 
   @C2042 @rc @calling_advanced @id2678
   Scenario Outline: Verify leaving and coming back to the call in 20 sec
@@ -308,13 +300,11 @@ Feature: Calling
     Then I do not see Calling overlay
     And I wait for 20 seconds
     And I tap Audio Call button
-    Then I see Calling overlay
-    # FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
-    # Then I see <NumberOfAvatars> avatars on the Calling overlay
+    Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName   | CallBackend | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | RejoinGROUPCALL | autocall    | 2               |
+      | user1Name | user2Name | user3Name | RejoinGROUPCALL | chrome      | 2               |
 
   @C2054 @rc @calling_advanced @id2690 @ZIOS-6010
   Scenario Outline: Verify receiving 1-to-1 call during group call (and accepting it)
@@ -329,20 +319,15 @@ Feature: Calling
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
     And I see Calling overlay
-    # FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
-    # Then I see <NumberOfAvatars> avatars on the Calling overlay
+    Then I see <NumberOfAvatars> avatars on the Calling overlay
     When <Contact3> calls me
     And I see call status message contains "<Contact3> calling"
     And I tap Accept button on Calling overlay
-    # And I see Accept second call alert
-    # And I press Accept button on alert
-    Then I see Calling overlay
-    # FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
-    # Then I see <NumberOf1on1CallAvatars> avatars on the Calling overlay
+    Then I see <NumberOf1on1CallAvatars> avatars on the Calling overlay
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend | NumberOfAvatars | NumberOf1on1CallAvatars |
-      | user1Name | user2Name | user3Name | user4Name | GROUPCALL     | autocall    | 2               | 1                       |
+      | user1Name | user2Name | user3Name | user4Name | GROUPCALL     | chrome      | 2               | 1                       |
 
   @C2065 @rc @calling_basic @clumsy @IPv6 @id3270
   Scenario Outline: Verify possibility of starting group call
@@ -372,13 +357,11 @@ Feature: Calling
     And I wait for 45 seconds
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
-    Then I see Calling overlay
-    # FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
-    # Then I see <NumberOfAvatars> avatars on the Calling overlay
+    Then I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | WaitGROUPCALL | autocall    | 2               |
+      | user1Name | user2Name | user3Name | WaitGROUPCALL | chrome      | 2               |
 
   @C2039 @calling_advanced @id2673 @noAcceptAlert @ZIOS-6069
   Scenario Outline: Verify impossibility to connect 6th person to the call
@@ -396,9 +379,9 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | autocall    |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | chrome      |
 
-  @C2068 @rc @calling_basic @id880
+  @C2068 @calling_basic @id880
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -416,7 +399,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | chrome      |
 
   @C77933 @calling_advanced @noAcceptAlert
   Scenario Outline: Verify calling from an upper toolbar in a group conversation with more than 10 people
@@ -445,9 +428,7 @@ Feature: Calling
     And <Contact1>,<Contact2> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
-    And I see Calling overlay
-    # FIXME: There is an AVS<>iOS bug, which prevents autocall instances to be properly connected being in the same network
-    #Then I see <NumberOfAvatars> avatars on the Calling overlay
+    Then I see <NumberOfAvatars> avatars on the Calling overlay
     And I wait for 5 seconds
     And <Contact1> stops calling <GroupChatName>
     And <Contact1> verifies that call status to <GroupChatName> is changed to destroyed in 15 seconds
@@ -455,7 +436,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | AcceptingGROUPCALL | autocall    | 2               |
+      | user1Name | user2Name | user3Name | AcceptingGROUPCALL | chrome      | 2               |
 
   @C2101 @calling_basic
   Scenario Outline: Verify message about your missed call

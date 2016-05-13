@@ -72,7 +72,7 @@ Feature: Ping
     And I see Sign In page
     And User <Contact1> is me
     And I Sign in using login <Login1> and password <Password1>
-    Then I see my avatar on top of Contact list
+    Then I am signed in properly
     And I see ping icon in conversation with <ChatName>
     And I open conversation with <ChatName>
     Then I see <PING> action for <Name> in conversation

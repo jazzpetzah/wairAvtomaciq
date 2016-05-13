@@ -30,12 +30,16 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
 
 	private static final String AX_POSITION = "AXPosition";
 	private static final String AX_SIZE = "AXSize";
-	private static final String APP_NAME = "Wire";
+	private By windowLocator;
 	private volatile boolean isSessionLost = false;
 
 	public ZetaOSXDriver(URL remoteAddress, Capabilities desiredCapabilities) {
 		super(remoteAddress, desiredCapabilities);
 	}
+
+        public void setWindowLocator(By windowLocator) {
+            this.windowLocator = windowLocator;
+        }
 
 	@Override
 	public List<WebElement> findElements(By by) {
@@ -229,14 +233,10 @@ public class ZetaOSXDriver extends AppiumDriver<WebElement> implements ZetaDrive
 
 	protected class ZetaRemoteWebDriverOptions extends RemoteWebDriverOptions {
 
-		private static final String WINDOW_LOCATOR = "//AXApplication[@AXTitle='"
-			+ APP_NAME + "']//AXWindow";
-
 		@Beta
 		@Override
 		public WebDriver.Window window() {
-			final String xpathWindow = WINDOW_LOCATOR;
-			final WebElement window = findElement(By.xpath(xpathWindow));
+			final WebElement window = findElement(windowLocator);
 			return new ZetaRemoteWindow(window);
 		}
 

@@ -267,7 +267,7 @@ Feature: People View
     Given There are 2 users where <Name> is me
     Given User Myself removes his avatar picture
     Given <Contact> is connected to Myself
-    Given Myself silenced conversation with <Contact>
+    Given User Myself silences single user conversation <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I remember the state of <Contact> conversation item
@@ -369,7 +369,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C1831 @rc @regression @id3972
-  Scenario Outline: (ZIOS-5292) Verify removing the content and leaving from the group conversation via participant view
+  Scenario Outline: Verify removing the content and leaving from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>

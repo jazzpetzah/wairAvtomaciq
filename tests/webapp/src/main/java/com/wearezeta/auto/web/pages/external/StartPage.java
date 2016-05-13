@@ -58,8 +58,13 @@ public class StartPage extends WebPage {
 		return SITE_ROOT + uri.getPath();
 	}
 		
-	public List<WebElement> getAllElements() throws Exception{
+	public List<WebElement> getAllLinkElements() throws Exception{
 		List<WebElement> list = getDriver().findElements(By.cssSelector("a"));
+		return list;
+	}
+
+	public List<WebElement> getAllImageElements() throws Exception{
+		List<WebElement> list = getDriver().findElements(By.cssSelector("img"));
 		return list;
 	}
 	
@@ -71,33 +76,33 @@ public class StartPage extends WebPage {
 	}
 
 	public String getGermanValue() throws Exception {
-		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.StartPage.cssGermanButton));
+		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.StartPage.cssGermanValue));
 		return germanButton.getAttribute("value");
 	}
-	
+
 	public String getEnglishValue() throws Exception {
-		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.StartPage.cssEnglishButton));
+		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.StartPage.cssEnglishValue));
 		return englishButton.getAttribute("value");
 	}
-	
-    public boolean isEnglish() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.StartPage.cssEnglishSite));
-    }
-    
-    public boolean isGerman() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.StartPage.cssGermanSite));
-    }
-    
-    public void changeLanguageTo(String language) throws Exception {
-    	if (language.equals("german")) {
-       		WebElement select = getDriver().findElement(By.cssSelector(ExternalLocators.StartPage.cssEnglishSite));
-    		Select dropdown = new Select(select);
-    		dropdown.selectByVisibleText("DEUTSCH");
-     	}
-    	if (language.equals("english")) {
-    		WebElement select = getDriver().findElement(By.cssSelector(ExternalLocators.StartPage.cssGermanSite));
-    		Select dropdown = new Select(select);
-    		dropdown.selectByVisibleText("ENGLISH");
-    	}
-    }
+
+	public boolean isEnglish() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.StartPage.cssEnglishSite));
+	}
+
+	public boolean isGerman() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.StartPage.cssGermanSite));
+	}
+
+	public void changeLanguageTo(String language) throws Exception {
+		if (language.equals("german")) {
+			WebElement select = getDriver().findElement(By.cssSelector(ExternalLocators.StartPage.cssEnglishButton));
+			Select dropdown = new Select(select);
+			dropdown.selectByVisibleText("DEUTSCH");
+		}
+		if (language.equals("english")) {
+			WebElement select = getDriver().findElement(By.cssSelector(ExternalLocators.StartPage.cssGermanButton));
+			Select dropdown = new Select(select);
+			dropdown.selectByVisibleText("ENGLISH");
+		}
+	}
 }

@@ -1,14 +1,21 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.WelcomePage;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 
 public class WelcomePageSteps {
-	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
-			.getInstance();
+        private final TestContext context;
+        
+    public WelcomePageSteps() {
+        this.context = new TestContext();
+    }
+
+    public WelcomePageSteps(TestContext context) {
+        this.context = context;
+    }
 
 	/**
 	 * Verify that Welcome page with Picture upload is visible or not
@@ -22,10 +29,10 @@ public class WelcomePageSteps {
 	public void ISeeWelcomePage(String shouldNotBeVisible)
 			throws Exception {
 		if (shouldNotBeVisible == null) {
-			webappPagesCollection.getPage(WelcomePage.class)
+			context.getPagesCollection().getPage(WelcomePage.class)
 					.waitUntilButtonsAreClickable();
 		} else {
-			webappPagesCollection.getPage(WelcomePage.class)
+			context.getPagesCollection().getPage(WelcomePage.class)
 					.waitUntilNotVisible();
 		}
 	}
@@ -44,7 +51,7 @@ public class WelcomePageSteps {
 	 */
 	@And("^I choose (.*) as my self picture on Welcome page$")
 	public void IUploadMyPicture(String pictureName) throws Exception {
-		webappPagesCollection.getPage(WelcomePage.class)
+		context.getPagesCollection().getPage(WelcomePage.class)
 				.uploadPicture(pictureName);
 	}
 
@@ -57,7 +64,7 @@ public class WelcomePageSteps {
 	 */
 	@And("^I confirm keeping picture on Welcome page$")
 	public void IConfirmPicture() throws Exception {
-		webappPagesCollection.getPage(WelcomePage.class)
+		context.getPagesCollection().getPage(WelcomePage.class)
 				.keepPicture();
 	}
 
@@ -70,7 +77,7 @@ public class WelcomePageSteps {
 	 */
 	@When("^I wait for Self Picture Upload dialog to vanish$")
 	public void IWaitForPictureDialogToVanish() throws Exception {
-		webappPagesCollection.getPage(WelcomePage.class)
+		context.getPagesCollection().getPage(WelcomePage.class)
 				.waitUntilNotVisible();
 	}
 }

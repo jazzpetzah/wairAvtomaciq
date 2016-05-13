@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import java.math.BigInteger;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -111,7 +112,14 @@ public class ClientUsersManager {
 
     private static ClientUsersManager instance = null;
 
-    private ClientUsersManager() throws Exception {
+    /**
+     * We break the singleton pattern here and make the constructor public to have multiple instances of this class for parallel
+     * test executions. This means this class is not suitable as singleton and it should be changed to a non-singleton class. In
+     * order to stay downward compatible we chose to just change the constructor.
+     *
+     * @return
+     */
+    public ClientUsersManager() throws Exception {
         resetClientsList(this.users, MAX_USERS);
     }
 
@@ -277,17 +285,16 @@ public class ClientUsersManager {
                     } catch (BackendRequestException e) {
                         e.printStackTrace();
                         if (e.getReturnCode() == HttpStatus.SC_METHOD_FAILURE) {
-                            sleepInterval = (intervalSeconds + random
-                                    .nextInt(BackendAPIWrappers.ACTIVATION_TIMEOUT)) * 2000;
+                            sleepInterval = (intervalSeconds +
+                                    random.nextInt(BackendAPIWrappers.ACTIVATION_TIMEOUT)) * 2000;
                             intervalSeconds *= 2;
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    log.debug(String
-                            .format("Failed to create user '%s'. Retrying (%d of %d)...",
-                                    userToCreate.getName(), retryNumber,
-                                    NUMBER_OF_REGISTRATION_RETRIES));
+                    log.debug(String.format("Failed to create user '%s'. Retrying (%d of %d)...",
+                            userToCreate.getName(), retryNumber, NUMBER_OF_REGISTRATION_RETRIES));
+                    userToCreate.forceTokenExpiration();
                     try {
                         Thread.sleep(sleepInterval);
                     } catch (InterruptedException ex) {
@@ -308,8 +315,7 @@ public class ClientUsersManager {
                             usersCreationTimeout));
         }
         if (createdClientsCount.get() != usersToCreate.size()) {
-            throw new RuntimeException(
-                    "Failed to create new users or contacts on the backend");
+            throw new RuntimeException("Failed to create new users or contacts on the backend");
         }
     }
 

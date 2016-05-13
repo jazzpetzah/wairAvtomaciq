@@ -295,23 +295,41 @@ public class AndroidCommonUtils extends CommonUtils {
         return output.contains(androidPackage);
     }
 
-    private static final String TESTING_GALLERY_PACKAGE_ID = "com.wire.testinggallery";
-
     public static void installTestingGalleryApp(Class<?> c) throws Exception {
-        if (!isPackageInstalled(TESTING_GALLERY_PACKAGE_ID)) {
-            executeAdb(String.format("install %s/testing_gallery-debug.apk",
-                    getAndroidToolsPathFromConfig(c)));
-        }
+        executeAdb(String.format("install -r %s/testing_gallery-debug.apk",
+                getAndroidToolsPathFromConfig(c)));
     }
 
-    public static boolean isAppInForeground(String packageId) throws Exception {
-        final String output = getAdbOutput("shell dumpsys window windows");
-        for (String line : output.split("\n")) {
-            if ((line.contains("mCurrentFocus") || line.contains("mFocusedApp"))
-                    && line.contains(packageId)) {
+    public static boolean isAppInForeground(String packageId, long timeoutMillis) throws Exception {
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            Thread.sleep(100);
+            final String output = getAdbOutput("shell dumpsys window windows");
+            for (String line : output.split("\n")) {
+                if ((line.contains("mCurrentFocus") || line.contains("mFocusedApp")) && line.contains(packageId)) {
+                    return true;
+                }
+            }
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutMillis);
+        return false;
+    }
+
+    public static boolean isAppNotInForeground(String packageId, long timeoutMillis) throws Exception {
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            Thread.sleep(100);
+            boolean isInForeground = false;
+            final String output = getAdbOutput("shell dumpsys window windows");
+            for (String line : output.split("\n")) {
+                if ((line.contains("mCurrentFocus") || line.contains("mFocusedApp")) && line.contains(packageId)) {
+                    isInForeground = true;
+                    break;
+                }
+            }
+            if (!isInForeground) {
                 return true;
             }
-        }
+        } while (System.currentTimeMillis() - millisecondsStarted  <= timeoutMillis);
         return false;
     }
 
@@ -572,9 +590,10 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     /**
+     * Create random access file with predefined size and name , and push it into sdcard
      *
      * @param fileFullName the name with extension
-     * @param size the expected size of file
+     * @param size         the expected size of file
      * @throws Exception
      */
     public static void pushRandomFileToSdcardDownload(String fileFullName, String size)
@@ -584,6 +603,20 @@ public class AndroidCommonUtils extends CommonUtils {
         String fileName = FilenameUtils.getBaseName(fileFullName);
 
         CommonUtils.createRandomAccessFile(basePath + File.separator + fileFullName, size);
+        AndroidCommonUtils.pushFileToSdcardDownload(basePath, fileName, extension);
+    }
+
+    /**
+     * Push the file from defaultImagesPath (/tools/img/)
+     *
+     * @param fileFullName fileName should be the name of file which located in Android Tools Path
+     * @throws Exception
+     */
+    public static void pushLocalFileToSdcardDownload(String fileFullName) throws Exception {
+        String basePath = getImagesPath(AndroidCommonUtils.class);
+        String extension = FilenameUtils.getExtension(fileFullName);
+        String fileName = FilenameUtils.getBaseName(fileFullName);
+
         AndroidCommonUtils.pushFileToSdcardDownload(basePath, fileName, extension);
     }
 
@@ -614,4 +647,57 @@ public class AndroidCommonUtils extends CommonUtils {
                 "--where 'title=\"%s\"'", fileFullName, futureTimestamp, fileName));
     }
 
+
+    public static void pullFileFromSdcardDownload(String fileFullName) throws Exception {
+        pullFileFromSdcard(FILE_TRANSFER_SOURCE_LOCATION, fileFullName);
+    }
+
+    public static void removeFileFromSdcardDownload(String fileFullName) throws Exception {
+        removeFileFromSdcard(FILE_TRANSFER_SOURCE_LOCATION, fileFullName);
+    }
+
+    private static void pullFileFromSdcard(String sdcardBasePath, String fileFullName) throws Exception {
+        String sourceFilePath = sdcardBasePath + fileFullName;
+        String destinationFilePath = getBuildPathFromConfig(AndroidCommonUtils.class) + File.separator + fileFullName;
+        File destinationFile = new File(destinationFilePath);
+        if (destinationFile.exists()) {
+            destinationFile.delete();
+        }
+        executeAdb(String.format("pull %s %s", sourceFilePath, destinationFilePath));
+    }
+
+    private static void removeFileFromSdcard(String sdcardBasePath, String fileFullName) throws Exception {
+        String sourceFilePath = sdcardBasePath + fileFullName;
+        executeAdb(String.format("shell rm %s", sourceFilePath));
+        executeAdb(String.format("shell am broadcast -a android.intent.action.MEDIA_MOUNTED -d file://%s",
+                sourceFilePath));
+    }
+
+    // *** Read https://github.com/majido/clipper for more details
+
+    public static void installClipperApp(Class<?> c) throws Exception {
+        executeAdb(String.format("install -r %s/clipper.apk", getAndroidToolsPathFromConfig(c)));
+    }
+
+    private static void ensureClipperServiceIsRunning() throws Exception {
+        executeAdb("shell am startservice ca.zgrs.clipper/.ClipboardService");
+    }
+
+    public static Optional<String> getClipboardContent() throws Exception {
+        ensureClipperServiceIsRunning();
+        final String output = getAdbOutput("shell am broadcast -a clipper.get");
+        final Pattern pattern = Pattern.compile("data=\"(.*)\"$");
+        final Matcher matcher = pattern.matcher(output);
+        if (matcher.find()) {
+            return Optional.of(matcher.group(1));
+        }
+        return Optional.empty();
+    }
+
+    public static void setClipboardContent(String content) throws Exception {
+        ensureClipperServiceIsRunning();
+        executeAdb(String.format("shell am broadcast -a clipper.set -e text \"%s\"", content));
+    }
+
+    // ***
 }

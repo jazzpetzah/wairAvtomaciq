@@ -121,7 +121,7 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    And I tap the text input in the conversation view
+    And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
     And I send the typed message in the conversation view
     And I scroll to the bottom of the conversation view
@@ -142,7 +142,7 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    And I tap the text input in the conversation view
+    And I tap on text input
     When I type the message "<SoundCloudLink>" in the conversation view
     And I send the typed message in the conversation view
     And I scroll to the bottom of the conversation view

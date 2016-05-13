@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
-import io.appium.java_client.android.AndroidDriver;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -52,21 +51,18 @@ public class DriverUtils {
     public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver, final WebElement element) {
         try {
             final boolean result = element.isDisplayed();
-            if (driver instanceof AndroidDriver) {
                 return result && isElementInScreenRect(driver, element);
-            } else {
-                return result;
-            }
         } catch (NoSuchElementException e) {
             return false;
         }
     }
 
-    private static boolean isElementInScreenRect(RemoteWebDriver driver, final WebElement el) {
+    private static boolean isElementInScreenRect(WebDriver driver, final WebElement el) {
         final Rectangle elementRect = new Rectangle(el.getLocation().x, el.getLocation().y,
                 el.getSize().width, el.getSize().height);
         final Dimension dim = driver.manage().window().getSize();
-        return elementRect.intersects(new Rectangle(dim.getWidth(), dim.getHeight()));
+        final Rectangle windowRect = new Rectangle(dim.getWidth(), dim.getHeight());
+        return elementRect.intersects(windowRect);
     }
 
     public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver, By by) throws Exception {
@@ -468,6 +464,16 @@ public class DriverUtils {
         final int y = coords.y + size.getHeight() / 2;
         log.info("Tap on " + x + ":" + y);
         driver.tap(1, x, y, SINGLE_TAP_DURATION);
+    }
+
+    public static void tapOnPercentOfElement(
+            AppiumDriver<? extends WebElement> driver, WebElement element, int percentX, int percentY, int duration) {
+        final Point coords = element.getLocation();
+        final Dimension size = element.getSize();
+        final int x = coords.x + size.getWidth() * percentX / 100;
+        final int y = coords.y + size.getHeight() * percentY / 100;
+        log.info("Tap on " + x + ":" + y);
+        driver.tap(1, x, y, duration);
     }
 
     public static void tapOnPercentOfElement(

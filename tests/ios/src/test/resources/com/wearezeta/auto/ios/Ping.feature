@@ -8,8 +8,7 @@ Feature: Ping
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And I click plus button next to text input
-    And I click Ping button
+    And I tap Ping button from input tools
     Then I see "<PingMsg>" system message in the conversation view
 
     Examples:
