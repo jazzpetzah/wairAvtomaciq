@@ -81,14 +81,12 @@ public class MigrationSteps {
     }
 
     private void waitUntilReachable(String url) throws IOException, InterruptedException {
-        int statusCode;
         HttpClient client = HttpClientBuilder.create().build();
         int retry = 0;
         while (retry < MAX_RETRY) {
             try {
                 HttpResponse response = client.execute(new HttpGet(url));
-                statusCode = response.getStatusLine().getStatusCode();
-                if (statusCode == 200) {
+                if (response.getStatusLine().getStatusCode() == 200) {
                     log.info(String.format("Webserver is reachable via %s!", url));
                     break;
                 }
