@@ -370,8 +370,8 @@ Feature: E2EE
     And I verify fingerprint of device Device1 of user <Contact> on device detail page of Single User Profile popover
 
     Examples:
-      | Email      | Password      | Name      | Contact   | Message1                           | Message2                                     |
-      | user1Email | user1Password | user1Name | user2Name | is not using the encrypted version | Wire gives every device a unique fingerprint |
+      | Email      | Password      | Name      | Contact   | Message1                                                    | Message2                                     |
+      | user1Email | user1Password | user1Name | user2Name | is using an old version of Wire. No devices are shown here. | Wire gives every device a unique fingerprint |
 
   @C12046 @e2ee @regression
   Scenario Outline: Verify you can see device ids of the other conversation participant in group conversation details
@@ -397,8 +397,8 @@ Feature: E2EE
     And I verify fingerprint of device Device1 of user <Contact1> on device detail page of Single User Profile popover
 
     Examples:
-      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1                           | Message2                                     |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | is not using the encrypted version | Wire gives every device a unique fingerprint |
+      | Email      | Password      | Name      | Contact1  | Contact2  | GroupChatName | Message1                                                    | Message2                                     |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     | is using an old version of Wire. No devices are shown here. | Wire gives every device a unique fingerprint |
 
   @C12053 @regression
   Scenario Outline: Verify it is possible to verify 1:1 conversation participants

@@ -13,7 +13,7 @@ public class ParticipantsPage extends AbstractConversationDetailsPage {
     public static final By xpathConfirmLeaveButton = By.xpath("//*[@id='positive' and @value='LEAVE']");
 
     public static final Function<String, String> xpathStrParticipantAvatarByName = name -> String
-            .format("//*[@id='pgv__participants']//*[@id='ttv__group__adapter' and @value='%s']/parent::*/parent::*",
+            .format("//*[@id='pgv__participants']//*[@id='ttv__text_view' and @value='%s']/parent::*/parent::*",
                     name.toUpperCase());
 
     private static final String idStrConvoNameInput = "taet__participants__header__editable";

@@ -418,20 +418,15 @@ public class ConversationPage extends WebPage {
     }
 
     public void sendPicture(String pictureName) throws Exception {
-        final String picturePath = WebCommonUtils
-                .getFullPicturePath(pictureName);
+        final String picturePath = WebCommonUtils.getFullPicturePath(pictureName);
         hoverOverConversation();
         moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendImageInput);
-        assert DriverUtils
-                .waitUntilLocatorIsDisplayed(
-                        this.getDriver(),
-                        By.cssSelector(WebAppLocators.ConversationPage.cssSendImageInput));
         if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
-            WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
-                    .getNodeIp());
+            WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver().getNodeIp());
         } else {
             imagePathInput.sendKeys(picturePath);
         }
+        moveCssSelectorOutOfViewport(WebAppLocators.ConversationPage.cssSendImageInput);
     }
 
     private void hoverOverConversation() throws Exception {
@@ -447,6 +442,8 @@ public class ConversationPage extends WebPage {
     public void moveCssSelectorIntoViewport(String selector) throws Exception {
         final String showPathInputJScript = "$(\"" + selector + "\").css({'left': -200});";
         getDriver().executeScript(showPathInputJScript);
+        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(selector)) : "Could not move element " +
+                "with selector " + selector + " into viewport";
     }
 
     public void moveCssSelectorOutOfViewport(String selector) throws Exception {
@@ -458,10 +455,6 @@ public class ConversationPage extends WebPage {
         final String filePath = WebCommonUtils.getFullFilePath("filetransfer/" + fileName);
         hoverOverConversation();
         moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendFileInput);
-        assert DriverUtils
-                .waitUntilLocatorIsDisplayed(
-                        this.getDriver(),
-                        By.cssSelector(WebAppLocators.ConversationPage.cssSendFileInput));
         filePathInput.sendKeys(filePath);
         moveCssSelectorOutOfViewport(WebAppLocators.ConversationPage.cssSendFileInput);
     }
