@@ -9,6 +9,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.When;
@@ -25,9 +26,17 @@ import org.apache.log4j.Logger;
  */
 public class MigrationSteps {
 
-    public static final Logger log = ZetaLogger.getLog(MigrationSteps.class.getSimpleName());
+    TestContext context;
 
-    private final WebappPagesCollection webappPagesCollection = WebappPagesCollection.getInstance();
+    public MigrationSteps() {
+        this.context = new TestContext();
+    }
+
+    public MigrationSteps(TestContext context) {
+        this.context = context;
+    }
+
+    public static final Logger log = ZetaLogger.getLog(MigrationSteps.class.getSimpleName());
 
     private static final int IS_RUNNING_CHECK_INTERVAL = 20; // milliseconds
     private static final int MAX_RETRY = 3;
@@ -95,7 +104,7 @@ public class MigrationSteps {
     public void IDeployVersionWithTag(String initially, String tag) throws Exception {
         String url = deployWebapp("tags/" + tag);
         if (initially != null) {
-            WebPage page = webappPagesCollection.getPage(WebPage.class);
+            WebPage page = context.getPagesCollection().getPage(WebPage.class);
             page.setUrl(url);
             page.navigateTo();
         }

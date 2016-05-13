@@ -12,6 +12,7 @@ import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -60,6 +61,12 @@ public class Lifecycle {
     }
     
     public void setUp(String testname) throws Exception {
+
+        String[] command = new String[]{"/bin/sh", "-c", String.format("killall %s", "grunt")};
+        log.debug("Kill all grunt processes: " + Arrays.toString(command));
+        Process process = Runtime.getRuntime().exec(command);
+        int returnCode = process.waitFor();
+        log.debug("Process exited with: " + returnCode);
 
         String platform = WebAppExecutionContext.getPlatform();
         String osName = WebAppExecutionContext.getOsName();
