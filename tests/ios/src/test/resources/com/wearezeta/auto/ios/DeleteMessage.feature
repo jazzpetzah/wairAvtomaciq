@@ -80,7 +80,7 @@ Feature: DeleteMessage
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given User Myself sends encrypted message "Try <Link>" to user <Contact>
+    Given User Myself sends encrypted message "Try this app <Link>" to user <Contact>
     When I tap on contact name <Contact>
     Then I see 1 message in the dialog
     When I long tap "<Link>" message in conversation view
@@ -90,3 +90,23 @@ Feature: DeleteMessage
     Examples:
       | Name      | Contact   | Link                  |
       | user1Name | user2Name | https://www.wire.com/ |
+
+  @C111325 @staging
+  Scenario Outline: (Bug ZIOS-6578)Verify deleting shared file
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I tap File Transfer button from input tools
+    And I tap file transfer menu item <ItemName>
+    Then I see file transfer placeholder
+    # To make sure the file is uploaded
+    And I wait for 10 seconds
+    When I long tap on file transfer placeholder in conversation view
+    And I tap on Delete badge item
+    Then I do not see file transfer placeholder
+
+    Examples:
+      | Name      | Contact   | ItemName                   |
+      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
