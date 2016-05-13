@@ -61,7 +61,7 @@ public class MigrationSteps {
         log.info("Process exited with " + process.exitValue());
     }
 
-    private void runCommand(Path temp, String[] command) throws IOException {
+    private void runCommand(Path temp, String... command) throws IOException {
         ProcessBuilder builder = new ProcessBuilder(command);
         builder.directory(temp.toFile());
         builder.redirectErrorStream(true); //merge error and input steam into one stream
@@ -69,7 +69,7 @@ public class MigrationSteps {
         createProcessLogger(process);
     }
 
-    private Process runCommandUnattached(Path temp, String[] command) throws IOException {
+    private Process runCommandUnattached(Path temp, String... command) throws IOException {
         ProcessBuilder builder = new ProcessBuilder(command);
         builder.directory(temp.toFile());
         builder.redirectErrorStream(true); //merge error and input steam into one stream
@@ -117,7 +117,7 @@ public class MigrationSteps {
         if (temp == null) {
             temp = Files.createTempDirectory("webapp");
             log.info("Created temp directory: " + temp.toAbsolutePath());
-            runCommand(temp, new String[]{"git", "clone", "git@github.com:wearezeta/mars.git", "."});
+            runCommand(temp, "git", "clone", "git@github.com:wearezeta/mars.git", ".");
         }
         if (gruntProcess != null) {
             try {
@@ -128,15 +128,15 @@ public class MigrationSteps {
                 gruntProcess.destroyForcibly();
             }
         }
-        runCommand(temp, new String[]{"git", "checkout", branch});
+        runCommand(temp, "git", "checkout", branch);
         // cherry pick the feature to set port number
-        runCommand(temp, new String[]{"git", "cherry-pick", "93cd7fb11e54b1883e3c122bb876db3a57e75eae"});
-        runCommand(temp, new String[]{"npm", "install"});
-        runCommand(temp, new String[]{"grunt", "prepare_dist", "gitinfo", "set_version:staging"});
+        runCommand(temp, "git", "cherry-pick", "93cd7fb11e54b1883e3c122bb876db3a57e75eae");
+        runCommand(temp, "npm", "install");
+        runCommand(temp, "grunt", "prepare_dist", "gitinfo", "set_version:staging");
         // Get a port number in between 9000 and 10000
         // TODO: String port = String.valueOf(ThreadLocalRandom.current().nextInt(9000, 10000));
         String port = "8888";
-        gruntProcess = runCommandUnattached(temp, new String[]{"grunt", "host:" + port + ":false"});
+        gruntProcess = runCommandUnattached(temp, "grunt", "host:" + port + ":false");
         final String backend = CommonUtils.getBackendType(MigrationSteps.class);
         // We use wire.ms as a alias-domain for localhost
         final String host = "wire.ms";
