@@ -65,3 +65,20 @@ Feature: Video Message
     Examples:
       | Name      | Contact   | FileName    |
       | user1Name | user2Name | testing.mp4 |
+
+  @C119739 @staging
+  Scenario Outline: Verify notification is shown if video is too big (more than 25mb)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I push local file named "<FileName>" to the device
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When I tap Video message button from cursor toolbar
+    Then I see alert message containing "<AlertTitle>" in the title
+    And I do not see Video Message container in the conversation view
+
+    Examples:
+      | Name      | Contact   | FileName     |  AlertTitle      |
+      | user1Name | user2Name | bigvideo.mp4 |  Video too large |
