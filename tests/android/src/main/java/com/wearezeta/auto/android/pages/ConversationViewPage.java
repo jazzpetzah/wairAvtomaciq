@@ -837,4 +837,8 @@ public class ConversationViewPage extends AndroidPage {
     public boolean isVideoMessageButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idVideoContainerButton);
     }
+
+    public Optional<BufferedImage> getVideoContainerButtonState() throws Exception {
+        return getElementScreenshot(getElement(idVideoContainerButton));
+    }
 }

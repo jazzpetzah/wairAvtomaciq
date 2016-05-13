@@ -325,6 +325,14 @@ public final class WebAppLocators {
         
         public static final String cssMessages = "[data-uie-name='item-message']";
 
+        public static final Function<String, String> cssMessagesById = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s']", text);
+
+        public static final Function<String, String> cssDeleteButtonByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-message-delete']", text);
+
+        public static final String cssDoDelete = "[data-uie-name='do-delete']";
+
         public static final String cssLastMessage = "[data-uie-name='item-message']:last-child";
 
         public static final String cssSecondLastMessage = "[data-uie-name='item-message']:nth-last-child(2)";
@@ -355,7 +363,11 @@ public final class WebAppLocators {
 
         public static final String cssFileDownload = cssFile + " [data-uie-name='file-download']";
 
-        public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']:not(.image-loading)";
+        public static final String cssFirstImage = "[data-uie-name='go-image-detail'][data-uie-visible='true']:not(.image-loading)";
+
+        public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']";
+
+        public static final String cssLoadingImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true'].image-loading";
 
         public static final String cssMessageAmount = "[data-uie-name='item-message']";
 

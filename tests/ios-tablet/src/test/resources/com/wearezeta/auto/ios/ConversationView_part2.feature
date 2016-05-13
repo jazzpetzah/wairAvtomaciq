@@ -181,7 +181,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
 
-  @C2601 @rc @regression @id3267
+  @C2601 @regression @id3267
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>

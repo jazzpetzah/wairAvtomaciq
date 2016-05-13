@@ -3,6 +3,7 @@
 *.pyc
 tests/tools/javadoc-exporter/bin
 tests/tools/javadoc-exporter/target
+tests/picklejar/target/
 *.log*
 .DS_Store
 tests/common/bin/*

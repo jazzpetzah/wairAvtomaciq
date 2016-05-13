@@ -33,6 +33,8 @@ import org.openqa.selenium.Keys;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ConversationPageSteps {
 
@@ -165,7 +167,7 @@ public class ConversationPageSteps {
      */
     @Then("^I see embedded youtube video of (.*)")
     public void ThenISeeEmbeddedYoutubeVideoOf(String url) throws Exception {
-        Assert.assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isYoutubeVideoEmbedded(url));
+        assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isYoutubeVideoEmbedded(url));
     }
 
     /**
@@ -258,7 +260,7 @@ public class ConversationPageSteps {
      * @param x the amount of images
      * @step. ^I see only (\\d+) picture[s]? in the conversation$
      */
-    @Then("^I see only (\\d+) picture[s]? in the conversation$")
+    @Then("^I see only (\\d+) pictures? in the conversation$")
     public void ISeeOnlyXPicturesInConversation(int x) throws Exception {
         assertThat("Number of images in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
                 .getNumberOfImagesInCurrentConversation(), equalTo(x));
@@ -284,7 +286,27 @@ public class ConversationPageSteps {
      */
     @Then("^I see file transfer button in conversation input$")
     public void ISeeFileButton() throws Exception {
-        assertThat("No button found", context.getPagesCollection().getPage(ConversationPage.class).isFileButtonDisplayed());
+        assertThat("No button found", context.getPagesCollection().getPage(ConversationPage.class).isFileButtonVisible());
+    }
+
+    /**
+     * Verifies if buttons are invisible and input is not usable
+     *
+     * @throws Exception
+     * @step. ^I verify that conversation input and buttons are not visible$
+     */
+    @Then("^I verify that conversation input and buttons are not visible$")
+    public void IDontSeeConversationInput() throws Exception {
+        assertFalse("conversation input is still visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isConversationInputVisible());
+        assertFalse("call button is still visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isCallButtonVisible());
+        assertFalse("image button is still visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isImageButtonVisible());
+        assertFalse("file button is still visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isFileButtonVisible());
+        assertFalse("ping button is still visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isPingButtonVisible());
     }
 
     /**
@@ -445,6 +467,26 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).downloadFile(fileName);
     }
 
+    @When("^I click to delete the latest message$")
+    public void IClickToDelete() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickToDeleteLatestMessage();
+    }
+
+    @When("^I click confirm to delete message$")
+    public void IClickConfirmToDelete() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).confirmDelete();
+    }
+
+    @When("^I hover over the latest message$")
+    public void IHoverOverLatestMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).hoverOverLatestMessage();
+    }
+
+    @When("^I do not see delete button for latest message$")
+    public void IDoNotSeeDeleteButton() throws Exception {
+        assertFalse("Delete button is visible", context.getPagesCollection().getPage(ConversationPage.class)
+                .isDeleteButtonVisibleForLatestMessage());
+    }
 
     /**
      * Verifies whether people button tool tip is correct or not.
@@ -453,7 +495,7 @@ public class ConversationPageSteps {
      */
     @Then("^I see correct people button tool tip$")
     public void ThenISeeCorrectPeopleButtonToolTip() throws Exception {
-        Assert.assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isPeopleButtonToolTipCorrect());
+        assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isPeopleButtonToolTipCorrect());
     }
 
     @Then("^I see connecting message for (.*) in conversation$")
@@ -595,7 +637,7 @@ public class ConversationPageSteps {
      */
     @Then("^I really see text message (.*)")
     public void ISeeTextMessageInViewPort(String message) throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).waitForDisplayedMessageContains(message);
+        context.getPagesCollection().getPage(ConversationPage.class).waitForDisplayedMessageContains(message, 30);
     }
 
     private static String expandPattern(final String originalStr) {
@@ -664,8 +706,8 @@ public class ConversationPageSteps {
      */
     @Then("^I do not see text message ?(.*)$")
     public void IDontSeeTextMessage(String message) throws Exception {
-        Assert.assertFalse("Saw text message " + message, context.getPagesCollection().getPage(ConversationPage.class)
-                .isTextMessageVisible(message == null ? "" : message));
+        assertTrue("Saw text message " + message, context.getPagesCollection().getPage(ConversationPage.class)
+                .isTextMessageInvisible(message == null ? "" : message));
     }
 
     /**
@@ -688,9 +730,9 @@ public class ConversationPageSteps {
     @Then("^I( do not)? see calling button$")
     public void ISeeCallButton(String doNot) throws Exception {
         if (doNot == null) {
-            Assert.assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isCallButtonVisible());
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isCallButtonVisible());
         } else {
-            Assert.assertFalse(context.getPagesCollection().getPage(ConversationPage.class).isCallButtonVisible());
+            assertFalse(context.getPagesCollection().getPage(ConversationPage.class).isCallButtonVisible());
         }
     }
 
@@ -760,12 +802,12 @@ public class ConversationPageSteps {
     public void ISeePictureInFullscreen(String doNot, String pictureName) throws Exception {
         ConversationPage conversationPage = context.getPagesCollection().getPage(ConversationPage.class);
         if (doNot == null) {
-            Assert.assertTrue(conversationPage.isPictureInModalDialog());
-            Assert.assertTrue(conversationPage.isPictureInFullscreen());
+            assertTrue(conversationPage.isPictureInModalDialog());
+            assertTrue(conversationPage.isPictureInFullscreen());
             assertThat("Overlap score of image comparsion", conversationPage.getOverlapScoreOfFullscreenImage(pictureName),
                     greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
         } else {
-            Assert.assertTrue(conversationPage.isPictureNotInModalDialog());
+            assertTrue(conversationPage.isPictureNotInModalDialog());
         }
     }
 

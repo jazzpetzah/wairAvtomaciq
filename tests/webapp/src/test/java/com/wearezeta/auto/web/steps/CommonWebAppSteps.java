@@ -385,35 +385,28 @@ public class CommonWebAppSteps {
     }
 
     /**
-     * User A sends a simple text message to user B
+     * User A sends a simple text message (encrypted) to user B
      *
      * @param msgFromUserNameAlias the user who sends the message
      * @param msg a message to send. Random string will be sent if it is empty
      * @param dstConvoName The user to receive the message
-     * @param isEncrypted whether the message has to be encrypted
      * @param convoType either 'user' or 'group conversation'
      * @throws Exception
      * @step. ^Contact (.*) sends? (encrypted )?message "?(.*?)"?\s?(?:via device (.*)\s)?to (user|group conversation) (.*)$
      */
-    @When("^Contact (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
-    public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
+    @When("^Contact (.*) sends? message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
+    public void UserSendMessageToConversation(String msgFromUserNameAlias,
             String msg, String deviceName, String convoType, String dstConvoName) throws Exception {
         final String msgToSend = (msg == null || msg.trim().length() == 0)
                 ? CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
-            if (isEncrypted == null) {
-                context.getCommonSteps().UserSentMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend);
-            } else {
-                context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
-            }
-        } else if (isEncrypted == null) {
-            context.getCommonSteps().UserSentMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend);
+            context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
         } else {
             context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
         }
     }
 
-    @When("^Contact (.*) sends? (\\d+) encrypted messages with prefix (.*) via device (.*) to (user|group conversation) (.*)$")
+    @When("^Contact (.*) sends? (\\d+) messages with prefix (.*) via device (.*) to (user|group conversation) (.*)$")
     public void UserSendAmountOfMessages(String msgFromUserNameAlias, int amount, String prefix, String deviceName,
                                          String convoType, String dstConvoName) throws Exception {
         ClientUser user = context.getUserManager().findUserByNameOrNameAlias(msgFromUserNameAlias);
@@ -449,9 +442,8 @@ public class CommonWebAppSteps {
     }
 
     /**
-     * Sends an image from one user to a conversation
+     * Sends an image from one user to a conversation (encrypted).
      *
-     * @param isEncrypted whether the image has to be encrypted
      * @param imageSenderUserNameAlias the user to sending the image
      * @param imageFileName the file path name of the image to send. The path name is defined relative to the image file defined
      * in Configuration.cnf.
@@ -460,19 +452,13 @@ public class CommonWebAppSteps {
      * @throws Exception
      * @step. ^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)
      */
-    @When("^User (.*) sends (encrypted )?image (.*) to (single user|group) conversation (.*)")
-    public void ContactSendImageToConversation(String imageSenderUserNameAlias, String isEncrypted,
-            String imageFileName, String conversationType,
-            String dstConversationName) throws Exception {
+    @When("^User (.*) sends image (.*) to (single user|group) conversation (.*)")
+    public void ContactSendImageToConversation(String imageSenderUserNameAlias,
+                                               String imageFileName, String conversationType,
+                                               String dstConversationName) throws Exception {
         final String imagePath = WebCommonUtils.getFullPicturePath(imageFileName);
         final boolean isGroup = conversationType.equals("group");
-        if (isEncrypted == null) {
-            context.getCommonSteps().UserSentImageToConversation(imageSenderUserNameAlias,
-                    imagePath, dstConversationName, isGroup);
-        } else {
-            context.getCommonSteps().UserSentImageToConversationOtr(imageSenderUserNameAlias,
-                    imagePath, dstConversationName, isGroup);
-        }
+        context.getCommonSteps().UserSentImageToConversationOtr(imageSenderUserNameAlias, imagePath, dstConversationName, isGroup);
     }
 
     @When("^I break the session with device (.*) of user (.*)$")
@@ -752,36 +738,6 @@ public class CommonWebAppSteps {
     public void IRefreshPage() throws Exception {
         context.getPagesCollection().getPage(RegistrationPage.class)
                 .refreshPage();
-    }
-
-    /**
-     * Sends an image from one user to a conversation
-     *
-     * @param imageSenderUserNameAlias the user to sending the image
-     * @param imageFileName the file path name of the image to send. The path name is defined relative to the image file defined
-     * in Configuration.cnf.
-     * @param conversationType "single user" or "group" conversation.
-     * @param dstConversationName the name of the conversation to send the image to.
-     * @throws Exception
-     * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$
-     */
-    @When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
-    public void ContactSendImageToConversation(String imageSenderUserNameAlias,
-            String imageFileName, String conversationType,
-            String dstConversationName) throws Exception {
-        String imagePath = WebCommonUtils.getFullPicturePath(imageFileName);
-        Boolean isGroup = null;
-        if (conversationType.equals("single user")) {
-            isGroup = false;
-        } else if (conversationType.equals("group")) {
-            isGroup = true;
-        }
-        if (isGroup == null) {
-            throw new Exception(
-                    "Incorrect type of conversation specified (single user | group) expected.");
-        }
-        context.getCommonSteps().UserSentImageToConversation(imageSenderUserNameAlias,
-                imagePath, dstConversationName, isGroup);
     }
 
     /**

@@ -26,9 +26,9 @@ Feature: Archive
     And I tap Ignore button on Calling overlay
     Then I see first item in contact list named <ArchivedUser>
 
-    Examples: 
+    Examples:
       | Name      | ArchivedUser | Picture     | CallBackend |
-      | user1Name | user2Name    | testing.jpg | autocall    |
+      | user1Name | user2Name    | testing.jpg | chrome      |
 
   @C14 @regression @id1337
   Scenario Outline: Verify unarchiving silenced conversation only by call
@@ -51,9 +51,9 @@ Feature: Archive
     And I tap Ignore button on Calling overlay
     Then I see first item in contact list named <ArchivedUser>
 
-    Examples: 
+    Examples:
       | Name      | ArchivedUser | Picture     | CallBackend |
-      | user1Name | user2Name    | testing.jpg | autocall    |
+      | user1Name | user2Name    | testing.jpg | chrome      |
 
   @C16 @regression @id1339
   Scenario Outline: Verify restoring from archive after adding to conversation
@@ -70,7 +70,7 @@ Feature: Archive
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Then I see first item in contact list named <GroupChatName>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveArchive  |
 
@@ -107,5 +107,5 @@ Feature: Archive
     And I do not see Archive button at the bottom of conversations list
 
     Examples:
-      | Name      | ArchivedUser|
-      | user1Name | user2Name   |
+      | Name      | ArchivedUser |
+      | user1Name | user2Name    |

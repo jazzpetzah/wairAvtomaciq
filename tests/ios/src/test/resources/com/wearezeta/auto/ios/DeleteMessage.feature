@@ -1,6 +1,6 @@
 Feature: DeleteMessage
 
-  @C111321 @regression
+  @C111321 @regression @rc
   Scenario Outline: Verify deleting own text message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -34,7 +34,7 @@ Feature: DeleteMessage
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C111323 @staging
+  @C111323 @regression @rc
   Scenario Outline: Verify deleting the picture, gif from Giphy
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -59,7 +59,7 @@ Feature: DeleteMessage
       | Name      | Contact   | Picture     | GiphyTag |
       | user1Name | user2Name | testing.jpg | hello    |
 
-  @C111324 @staging
+  @C111324 @regression
   Scenario Outline: Verify deleting soundcloud message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

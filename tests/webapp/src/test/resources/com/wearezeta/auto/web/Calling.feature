@@ -293,7 +293,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    | chrome      | 20      |
 
-  @C119432 @staging @calling @group
+  @C119432 @regression @calling @group
   Scenario Outline: Verify I can not make a call in group chat with more than 10 participants
     Given My browser supports calling
     Given There are 11 users where <Name> is me

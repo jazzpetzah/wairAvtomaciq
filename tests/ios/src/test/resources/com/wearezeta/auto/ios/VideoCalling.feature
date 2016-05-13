@@ -129,7 +129,7 @@ Feature: Video Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | VideoCallBackend | AudioCallBackend | Timeout |
-      | user1Name | user2Name | user3Name | chrome           | autocall         | 60      |
+      | user1Name | user2Name | user3Name | chrome           | chrome           | 60      |
 
   @C12110 @calling_basic @video_calling
   Scenario Outline: Verify blocked contact could not get through with a Video call
@@ -181,8 +181,8 @@ Feature: Video Calling
     And <Contact2> verifies that call status to Myself is changed to active in <Timeout> seconds
 
     Examples:
-      | Name      | Contact    | Contact2 | VideoCallBackend | Timeout |
-      | user1Name | user2Name  | user3Name| chrome           | 60      |
+      | Name      | Contact   | Contact2  | VideoCallBackend | Timeout |
+      | user1Name | user2Name | user3Name | chrome           | 60      |
 
   @C12106 @calling_basic @video_calling @AUDIO-868
   Scenario Outline: Verify muting ongoing Video call
@@ -223,8 +223,8 @@ Feature: Video Calling
     And <Contact2> verifies that call status to me is changed to connecting in <Timeout> seconds
 
     Examples:
-      | Name      | Contact    | Contact2 | VideoCallBackend | Timeout | TimeoutAlreadyInCall |
-      | user1Name | user2Name  | user3Name| chrome           | 60      | 4                    |
+      | Name      | Contact   | Contact2  | VideoCallBackend | Timeout | TimeoutAlreadyInCall |
+      | user1Name | user2Name | user3Name | chrome           | 60      | 4                    |
 
   @C12108 @real
   Scenario Outline: Verify disabling video in Video call and enabling it back
@@ -233,7 +233,7 @@ Feature: Video Calling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
-    When <Contact> starts a video call to <Name> 
+    When <Contact> starts a video call to <Name>
     And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
