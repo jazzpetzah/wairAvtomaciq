@@ -112,23 +112,15 @@ Feature: DeleteMessage
   Scenario Outline: Verify canceling deleting a message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given I see sign in screen
-    Given I switch to Log In tab
-    Given I have entered login <Login>
-    Given I have entered password <Password>
-    Given I press Login button
-    Given I dismiss alert
-    Given I accept First Time overlay if it is visible
-    Given I dismiss alert
-    Given I dismiss settings warning
+    Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact1> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact1>
     And I long tap default message in conversation view
     And I tap on Delete badge item
-    And I tap Cancel button
+    And I dismiss alert
     Then I see 1 default message in the dialog
 
     Examples:
-      | Login      | Password      | Name      | Contact1  |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
