@@ -65,6 +65,11 @@ public class StartPageSteps {
 						WebAppConstants.STAGING_SITE_ROOT + "/forgot/%3Fagent=" + agent);
 				context.getPagesCollection().getPage(StartPage.class).navigateTo();
 				break;
+                        case "unsupported":
+				context.getPagesCollection().getPage(StartPage.class).setUrl(
+						WebAppConstants.STAGING_SITE_ROOT + "/unsupported/%3Fagent=" + agent);
+				context.getPagesCollection().getPage(StartPage.class).navigateTo();
+				break;
 			default: break;
 		}
 	}
@@ -144,8 +149,7 @@ public class StartPageSteps {
      */
 	@Then("^(.*) page for (.*) is (.*)$")
 	public void StartPageIs(String page, String agent, String language) throws Exception {
-		StartPage startPage = context.getPagesCollection().getInstance()
-				.getPage(StartPage.class);
+		StartPage startPage = context.getPagesCollection().getPage(StartPage.class);
 		switch (language) {
 			case "english":
 				assertTrue(page + "Page for " + agent + " is not in " + language, startPage.isEnglish());
