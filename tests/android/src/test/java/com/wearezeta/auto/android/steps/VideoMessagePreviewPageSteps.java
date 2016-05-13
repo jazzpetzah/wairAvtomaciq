@@ -18,9 +18,9 @@ public class VideoMessagePreviewPageSteps {
      *
      * @param doNotSend equals null means tap on send button, otherwise tap on cancel button
      * @throws Exception
-     * @step. ^I( do not)? send recored video from video message preview$
+     * @step. ^I( do not)? send recorded video from video message preview$
      */
-    @When("^I( do not)? send recored video from video message preview$")
+    @When("^I( do not)? send recorded video from video message preview$")
     public void ISendVideo(String doNotSend) throws Exception {
         if (doNotSend == null) {
             getVideoMessagePreviewPage().tapOnSendVideoButton();
