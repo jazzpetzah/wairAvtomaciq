@@ -74,6 +74,8 @@ Feature: E2EE
     When User <Contact1> sends encrypted message <Message2> to user Myself
     Then I see the most recent conversation message is "<Message1>"
     When I disable Airplane mode on the device
+    # Wait for sync
+    And I wait for 10 seconds
     And I scroll to the bottom of conversation view
     Then I see the most recent conversation message is "<Message2>"
     And I see a picture in the conversation view
@@ -99,6 +101,8 @@ Feature: E2EE
     When User <Contact2> sends encrypted message <Message2> to group conversation <GroupChatName>
     Then I see the most recent conversation message is "<Message1>"
     When I disable Airplane mode on the device
+    # Wait for sync
+    And I wait for 10 seconds
     And I scroll to the bottom of conversation view
     Then I see the most recent conversation message is "<Message2>"
     And I see a picture in the conversation view

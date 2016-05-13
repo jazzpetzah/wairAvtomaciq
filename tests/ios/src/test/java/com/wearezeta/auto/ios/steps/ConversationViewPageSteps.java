@@ -1061,6 +1061,7 @@ public class ConversationViewPageSteps {
         if (msg.equals("default")) {
             getConversationViewPage().tapAndHoldTextMessageByText(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
         } else {
+            msg = msg.replaceAll("^\"|\"$", "");
             getConversationViewPage().tapAndHoldTextMessageByText(msg);
         }
     }

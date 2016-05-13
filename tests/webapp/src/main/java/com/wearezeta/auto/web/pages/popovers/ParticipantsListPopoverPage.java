@@ -46,10 +46,9 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		final By locator = By
 				.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathParticipantByName
 						.apply(name));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
+		DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
 		WebElement participant = getDriver().findElement(locator);
-		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-				participant);
+		DriverUtils.waitUntilElementClickable(this.getDriver(), participant);
 		participant.click();
 	}
 

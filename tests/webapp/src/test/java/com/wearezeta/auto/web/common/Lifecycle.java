@@ -368,6 +368,7 @@ public class Lifecycle {
         capabilities.setCapability("os_version", osVersion);
         capabilities.setCapability("browser_version", browserVersion);
         capabilities.setCapability("name", uniqueTestName);
+        capabilities.setCapability("resolution", "1280x1024");
         capabilities.setCapability("browserstack.debug", "true");
 
         return capabilities;

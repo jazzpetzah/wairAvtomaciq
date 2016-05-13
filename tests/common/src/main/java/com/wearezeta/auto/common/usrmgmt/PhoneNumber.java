@@ -5,7 +5,8 @@ import java.util.Random;
 
 public final class PhoneNumber {
     private static final int MAX_NUMBER_LENGTH = 14;
-    private static final int MIN_NUMBER_LENGTH = 8;
+    // This is, actually, 8, but duplicated phone numbers are possible if we have low digits count
+    private static final int MIN_NUMBER_LENGTH = 10;
     public static final String WIRE_COUNTRY_PREFIX = "+0";
 
     private String number;

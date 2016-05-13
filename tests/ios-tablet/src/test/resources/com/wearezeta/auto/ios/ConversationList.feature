@@ -136,7 +136,7 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact   | Contact1  | Number | CallBackend |
-      | user1Name | user2Name | user3Name | 2      | autocall    |
+      | user1Name | user2Name | user3Name | 2      | chrome      |
 
   @C2535 @regression @id2371
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [PORTRAIT]
@@ -408,7 +408,7 @@ Feature: Conversation List
     Then I see the state of <Contact1> conversation item is not changed on iPad
 
     Examples:
-      | Name      | Contact1  | Contact2 |
+      | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
   @C95633 @regression

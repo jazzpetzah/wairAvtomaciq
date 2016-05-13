@@ -211,8 +211,8 @@ public class IOSSimulatorHelper {
     private static final String XCRUN_PATH = "/usr/bin/xcrun";
     private static final int XCRUN_TIMEOUT_SECONDS = 60;
 
-    private static String executeSimctl(String[] cmd) throws Exception {
-        final String[] firstCmdPart = new String[]{XCRUN_PATH, "simctl"};
+    private static String executeXcRunCommand(String prefix, String[] cmd) throws Exception {
+        final String[] firstCmdPart = new String[]{XCRUN_PATH, prefix};
         final String[] fullCmd = ArrayUtils.addAll(firstCmdPart, cmd);
         log.debug(String.format("Executing: %s", Arrays.toString(fullCmd)));
         final Process process = new ProcessBuilder(fullCmd).redirectErrorStream(true).start();
@@ -226,6 +226,14 @@ public class IOSSimulatorHelper {
         final String output = builder.toString().trim();
         log.debug(String.format("Command output: %s", output));
         return output;
+    }
+
+    private static String executeSimctl(String[] cmd) throws Exception {
+        return executeXcRunCommand("simctl", cmd);
+    }
+
+    private static String executeInstruments(String[] cmd) throws Exception {
+        return executeXcRunCommand("instruments", cmd);
     }
 
     public static void kill() throws Exception {
@@ -244,8 +252,12 @@ public class IOSSimulatorHelper {
         executeSimctl(new String[]{"erase", getId()});
     }
 
+    private static final long INSTALL_SYNC_TIMEOUT = 15; // seconds
+
     public static void installApp(File appPath) throws Exception {
         executeSimctl(new String[]{"install", "booted", appPath.getCanonicalPath()});
+        log.debug(String.format("Sleeping %s seconds to sync application install...", INSTALL_SYNC_TIMEOUT));
+        Thread.sleep(INSTALL_SYNC_TIMEOUT * 1000);
     }
 
     public static void installIpa(File ipaPath) throws Exception {
