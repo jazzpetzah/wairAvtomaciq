@@ -48,23 +48,7 @@ Feature: Video Message
       | Name      | Contact   | FileName    | MIMEType  | DeviceName |
       | user1Name | user2Name | testing.mp4 | video/mp4 | Device1    |
 
-  @C119735 @staging
-  Scenario Outline: Verify previewing recorded video before sending
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I push local file named "<FileName>" to the device
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
-    When I tap Video message button from cursor toolbar
-    Then I see video message preview
-
-    Examples:
-      | Name      | Contact   | FileName    |
-      | user1Name | user2Name | testing.mp4 |
-
-  @C119736 @staging
+  @C119736 @C119735 @staging
   Scenario Outline: Verify cancelling sending a video message after it was recorded
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -74,7 +58,7 @@ Feature: Video Message
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
     When I tap Video message button from cursor toolbar
-    And I wait for 3 seconds
+    And I see video message preview
     And I do not send recorded video from video message preview
     Then I do not see Video Message container in the conversation view
 
