@@ -40,6 +40,8 @@ public final class WebAppLocators {
         
         public static final String cssSessionExpiredErrorText = "[data-uie-name='status-expired']";
 
+        public static final String cssDescriptionText = "[data-uie-name='status-get-wire']";
+
         public static final String errorMarkedEmailField = "#form-account-login .input-error[data-uie-name='enter-email']";
 
         public static final String errorMarkedPasswordField = "#form-account-login " +

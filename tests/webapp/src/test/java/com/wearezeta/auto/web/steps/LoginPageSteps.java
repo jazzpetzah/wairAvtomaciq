@@ -286,4 +286,33 @@ public class LoginPageSteps {
                 context.getPagesCollection().getPage(LoginPage.class)
                 .getSessionExpiredErrorMessage());
     }
+
+	@Given("^I open (.*) login page as if I was redirected from get.wire.com$")
+	public void IOpenLoginPageRedirected(String lang) throws Throwable {
+		String langKey;
+		switch (lang) {
+			case "english":
+				langKey = "en";
+				break;
+			case "german":
+				langKey = "de";
+				break;
+			default:
+				throw new IllegalArgumentException("Please specify a language for the login page");
+		}
+		context.getPagesCollection().getPage(LoginPage.class).visitRedirectedPage(langKey);
+	}
+
+	@Then("^I verify description message is visible$")
+	public void i_verify_description_message_is_visible() throws Throwable {
+		Assert.assertTrue("description message is not visible", context.getPagesCollection().getPage(LoginPage.class)
+				.isDescriptionMessageVisible());
+	}
+
+	@Then("^I verify description message is equal to (.*)$")
+	public void i_verify_description_message_is_x(String descriptionMessage) throws Throwable {
+		Assert.assertEquals("description message does not match expected value", descriptionMessage,
+				context.getPagesCollection().getPage(LoginPage.class)
+						.getDescriptionMessage());
+	}
 }
