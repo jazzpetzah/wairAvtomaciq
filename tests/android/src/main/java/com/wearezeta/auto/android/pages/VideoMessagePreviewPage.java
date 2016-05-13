@@ -11,10 +11,10 @@ public class VideoMessagePreviewPage extends AndroidPage{
 
     private final static String strIdToolbar = "t_video_message_preview_toolbar";
 
-    public final static By idVideoPreviewContainer = By.id("fl__video_container");
-    public final static By idSendVideoBtn = By.id("action_send");
-    public final static By idToolbar = By.id(strIdToolbar);
-    public final static By xpathBackButton = By.xpath(String.format("//*[@id='%s']//*[1]", strIdToolbar));
+    private final static By idVideoPreviewContainer = By.id("fl__video_container");
+    private final static By idSendVideoBtn = By.id("action_send");
+    private final static By idToolbar = By.id(strIdToolbar);
+    private final static By xpathBackButton = By.xpath(String.format("//*[@id='%s']//*[1]", strIdToolbar));
 
 
     public VideoMessagePreviewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -36,6 +36,4 @@ public class VideoMessagePreviewPage extends AndroidPage{
     public void tapOnCancelVideoButton()  throws Exception {
         getElement(xpathBackButton).click();
     }
-
-
 }
