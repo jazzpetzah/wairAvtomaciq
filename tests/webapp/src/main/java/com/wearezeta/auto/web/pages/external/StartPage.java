@@ -58,8 +58,13 @@ public class StartPage extends WebPage {
 		return SITE_ROOT + uri.getPath();
 	}
 		
-	public List<WebElement> getAllElements() throws Exception{
+	public List<WebElement> getAllLinkElements() throws Exception{
 		List<WebElement> list = getDriver().findElements(By.cssSelector("a"));
+		return list;
+	}
+
+	public List<WebElement> getAllImageElements() throws Exception{
+		List<WebElement> list = getDriver().findElements(By.cssSelector("img"));
 		return list;
 	}
 	

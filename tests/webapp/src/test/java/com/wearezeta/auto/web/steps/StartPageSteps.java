@@ -1,6 +1,8 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.TestContext;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.web.common.WebAppConstants;
@@ -14,8 +16,10 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class StartPageSteps {
-	
-        private final TestContext context;
+
+	private static final Logger log = ZetaLogger.getLog(StartPageSteps.class.getSimpleName());
+
+	private final TestContext context;
         
     public StartPageSteps() {
         this.context = new TestContext();
@@ -87,14 +91,20 @@ public class StartPageSteps {
 	 */
 	@Then("^I can see no dead links$")
 	public void ICanSeeNoDeadLinks() throws Exception {
-        for (WebElement element : context.getPagesCollection().getPage(StartPage.class).getAllElements()) {
+        for (WebElement element : context.getPagesCollection().getPage(StartPage.class).getAllLinkElements()) {
             String href = element.getAttribute("href");
-            //System.out.println("URL: " + href);
+			log.info("Check URL " + href);
             int statusCode = context.getPagesCollection().getPage(StartPage.class).getStatusCode(href);
-            //System.out.println("Status Code: " + statusCode);
-            //System.out.println(" ");
+			log.info("Status Code " + statusCode);
             assertThat("Tested URL: " + href,statusCode, lessThan(400));
         }
+		for (WebElement element : context.getPagesCollection().getPage(StartPage.class).getAllImageElements()) {
+			String src = element.getAttribute("src");
+			log.info("Check Image " + src);
+			int statusCode = context.getPagesCollection().getPage(StartPage.class).getStatusCode(src);
+			log.info("Status Code " + statusCode);
+			assertThat("Tested Image: " + src,statusCode, lessThan(400));
+		}
 	}
 
 	/**
