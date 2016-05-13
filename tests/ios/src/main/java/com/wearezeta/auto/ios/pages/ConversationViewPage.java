@@ -676,7 +676,6 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapAndHoldTextMessageByText(String msg) throws Exception {
-        msg = msg.replaceAll("^\"|\"$", "");
         final WebElement lastMessage = getElement(By.xpath(xpathStrMessageByTextPart.apply(msg)));
         //Using this method because tap should be performed precisely on the text otherwise popup won't appear
         DriverUtils.tapOnPercentOfElement(getDriver(), lastMessage, 10, 50, 1000);
