@@ -256,7 +256,7 @@ Feature: People View
       | Name      | Contact1  | Contact1Email | Contact2  | GroupChatName |
       | user1Name | user2Name | user2Email    | user3Name | GroupChat     |
 
-  @C763 @id2856 @regression @rc
+  @C763 @id2856 @regression @rc @torun
   Scenario Outline: I see conversation name, number of participants and their avatars in group pop-over (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
