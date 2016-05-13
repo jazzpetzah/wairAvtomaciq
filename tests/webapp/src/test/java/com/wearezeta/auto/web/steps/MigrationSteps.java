@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
  */
 public class MigrationSteps {
 
-    TestContext context;
+    private TestContext context;
 
     public MigrationSteps() {
         this.context = new TestContext();
@@ -42,8 +42,8 @@ public class MigrationSteps {
     private static final int MAX_RETRY = 3;
     private static final int RETRY_TIMEOUT = 10000; // milliseconds
 
-    private Path temp = null;
-    private Process gruntProcess = null;
+    private Path temp;
+    private Process gruntProcess;
 
     private void createProcessLogger(Process process) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
