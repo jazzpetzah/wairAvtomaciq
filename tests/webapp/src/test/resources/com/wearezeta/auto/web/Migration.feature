@@ -10,13 +10,13 @@ Feature: Migration
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I open conversation with <Contact>
-    And Contact <Contact> sends encrypted message <DBVersion3> to user Myself
+    And Contact <Contact> sends message <DBVersion3> to user Myself
     And I see text message <DBVersion3>
     And I deploy version with tag <DBVersion4>
     And I refresh page
     Then I am signed in properly
     And I open conversation with <Contact>
-    And Contact <Contact> sends encrypted message <DBVersion4> to user Myself
+    And Contact <Contact> sends message <DBVersion4> to user Myself
     And I see text message <DBVersion3>
     And I wait for 10 seconds
     And I see text message <DBVersion4>
@@ -24,7 +24,7 @@ Feature: Migration
     And I refresh page
     Then I am signed in properly
     And I open conversation with <Contact>
-    And Contact <Contact> sends encrypted message <DBVersion6> to user Myself
+    And Contact <Contact> sends message <DBVersion6> to user Myself
     And I see text message <DBVersion3>
     And I see text message <DBVersion4>
     And I see text message <DBVersion6>
@@ -32,7 +32,7 @@ Feature: Migration
     And I refresh page
     Then I am signed in properly
     When I open conversation with <Contact>
-    And Contact <Contact> sends encrypted message Staging to user Myself
+    And Contact <Contact> sends message Staging to user Myself
     Then I see text message <DBVersion3>
     And I see text message <DBVersion4>
     And I see text message Staging
@@ -51,13 +51,13 @@ Feature: Migration
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I open conversation with <Contact>
-    And Contact <Contact> sends encrypted message <DBVersion> to user Myself
+    And Contact <Contact> sends message <DBVersion> to user Myself
     And I see text message <DBVersion>
     When I deploy latest staging version
     And I refresh page
     Then I am signed in properly
     When I open conversation with <Contact>
-    And Contact <Contact> sends encrypted message Staging to user Myself
+    And Contact <Contact> sends message Staging to user Myself
     Then I see text message <DBVersion>
     And I see text message Staging
 
