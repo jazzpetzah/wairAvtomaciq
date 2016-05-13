@@ -29,12 +29,9 @@ Feature: Video Calling
     When <Contact> starts a video call to me
     And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
-    And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
-    And I tap Leave button on Video Calling overlay
-    And I do not see Calling overlay
-    Then I see conversation view page
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
