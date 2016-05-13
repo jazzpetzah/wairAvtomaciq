@@ -177,7 +177,7 @@ public class LoginPage extends WebPage {
 
     public String getSessionExpiredErrorMessage() throws Exception {
         DriverUtils.waitUntilLocatorAppears(getDriver(),
-                By.xpath(WebAppLocators.LoginPage.cssSessionExpiredErrorText));
+                By.cssSelector(WebAppLocators.LoginPage.cssSessionExpiredErrorText));
         return sessionExpiredErrorText.getText();
     }
 
