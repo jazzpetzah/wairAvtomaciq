@@ -1091,7 +1091,18 @@ public class ConversationViewPageSteps {
      * @step. ^I long tap on media container in the conversation$
      */
     @When("^I long tap on media container in the conversation$")
-    public void iLongTapOnMediaContainerInTheConversation() throws Exception {
+    public void ILongTapOnMediaContainerInTheConversation() throws Exception {
         getConversationViewPage().tapAndHoldMediaContainer();
+    }
+
+    /**
+     * Does a long tap on the shared file placeholder
+     *
+     * @throws Exception
+     * @step. ^I long tap on file transfer placeholder in conversation view$
+     */
+    @When("^I long tap on file transfer placeholder in conversation view$")
+    public void ILongTapOnFileTransferPlaceholderInConversationView() throws Exception {
+        getConversationViewPage().tapAndHoldFileTransferPlaceholder();
     }
 }

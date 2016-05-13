@@ -683,6 +683,9 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapAndHoldMediaContainer() throws Exception {
         this.getDriver().tap(1, getElement(xpathMediaContainerCell), DriverUtils.LONG_TAP_DURATION);
+    }
 
+    public void tapAndHoldFileTransferPlaceholder() throws Exception {
+        this.getDriver().tap(1, getElement(nameFileTransferTopLabel), DriverUtils.LONG_TAP_DURATION);
     }
 }
