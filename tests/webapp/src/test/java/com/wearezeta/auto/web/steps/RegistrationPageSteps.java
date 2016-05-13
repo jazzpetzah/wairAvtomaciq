@@ -53,6 +53,11 @@ public class RegistrationPageSteps {
         this.context = context;
     }
 
+	@When("^I see Registration page$")
+	public void ISeeRegistrationPage() throws Exception {
+		context.getPagesCollection().getPage(RegistrationPage.class).waitForRegistrationPageToFullyLoad();
+	}
+
 	/**
 	 * Enter user name into registration form
 	 * 

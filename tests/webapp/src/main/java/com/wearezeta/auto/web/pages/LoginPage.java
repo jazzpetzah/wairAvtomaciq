@@ -55,9 +55,12 @@ public class LoginPage extends WebPage {
 
 	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssLoginErrorText)
 	private WebElement loginErrorText;
-        
-        @FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssSessionExpiredErrorText)
+
+	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssSessionExpiredErrorText)
 	private WebElement sessionExpiredErrorText;
+
+	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssDescriptionText)
+	private WebElement descriptionText;
 
 	@FindBy(css = WebAppLocators.LoginPage.errorMarkedEmailField)
 	private WebElement redDotOnEmailField;
@@ -182,6 +185,21 @@ public class LoginPage extends WebPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.cssSelector(WebAppLocators.LoginPage.cssSessionExpiredErrorText));
     }
+
+	public void visitRedirectedPage(String langKey) throws Exception {
+		getDriver().get(CommonUtils.getWebAppApplicationPathFromConfig(LoginPage.class) + "/?connect&hl=" + langKey);
+	}
+
+	public String getDescriptionMessage() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.cssSelector(WebAppLocators.LoginPage.cssDescriptionText));
+		return descriptionText.getText();
+	}
+
+	public boolean isDescriptionMessageVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.cssSelector(WebAppLocators.LoginPage.cssDescriptionText));
+	}
 
 	public void switchToPhoneNumberLoginPage() throws Exception {
 		DriverUtils.waitUntilElementClickable(getDriver(), phoneSignInButton);

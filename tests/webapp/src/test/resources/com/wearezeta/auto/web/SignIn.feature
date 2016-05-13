@@ -210,3 +210,15 @@ Feature: Sign In
     Examples: 
       | Name      | PasswordOfOtherUser |
       | user1Name | aqa123456!          |
+
+  @C125734 @regression
+  Scenario Outline: Verify you see a description about Wire when being redirected from get.wire.com
+    Given I open <Language> login page as if I was redirected from get.wire.com
+    Then I see Registration page
+    And I verify description message is visible
+    And I verify description message is equal to <DescriptionMessage>
+
+    Examples:
+      | Language | DescriptionMessage                                                                                    |
+      | english  | Simple, private & secure messenger for chat, calls, sharing pics, music, videos, GIFs and more.       |
+      | german   | Ein moderner und sicherer Messenger für Unterhaltungen, Anrufe, Bilder, Musik, Videos, GIFs und mehr. |
