@@ -99,7 +99,7 @@ public abstract class PickleJarTest {
         final String stepName = step.getName().replaceAll("[^a-zA-Z0-9]", "_");
         Path path = Paths.get(SCREENSHOT_PATH + featureName + "/" + scenarioName + "/");
         path.toFile().mkdirs();
-        int index = 0;
+        int index = 1;
         Path desiredPicture = Paths.get(path.toString(), stepName + "_" + index + ".png");
         // we abort the while loop when index exeeds 10. 
         // That means you have the same step 10 times in one scenario which is unlikely to happen
