@@ -78,7 +78,7 @@ public abstract class PickleJarTest {
     }
 
     @Test
-    protected void test() throws Exception {
+    protected void test() throws Throwable {
         LOG.info("Executing {}: {}", new Object[]{feature, testcase});
     }
 

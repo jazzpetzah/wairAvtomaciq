@@ -5,6 +5,7 @@ import java.util.Map;
 import org.junit.runner.RunWith;
 import com.wire.picklejar.PickleJar;
 import com.wire.picklejar.execution.PickleJarTest;
+import com.wire.picklejar.execution.exception.StepNotExecutableException;
 import com.wire.picklejar.gherkin.model.Result;
 import com.wire.picklejar.gherkin.model.Step;
 import java.io.IOException;
@@ -42,6 +43,7 @@ public class PickleJarInheritedTest extends PickleJarTest {
     }
 
     @Before
+    @Override
     public void setUp() throws Exception {
         super.setUp();
         lifecycle = new Lifecycle();
@@ -49,10 +51,11 @@ public class PickleJarInheritedTest extends PickleJarTest {
     }
 
     @Test
-    public void test() throws Exception {
+    @Override
+    public void test() throws Throwable {
         super.test();
         boolean failed = false;
-        Exception ex = null;
+        Throwable ex = null;
         List<Step> reportSteps = getReportScenario().getSteps();
         for (int i = 0; i < getSteps().size(); i++) {
             final String rawStep = getSteps().get(i);
@@ -63,8 +66,12 @@ public class PickleJarInheritedTest extends PickleJarTest {
                     reportStep.setResult(new Result(execTime, "passed", null));
                     byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
                     saveScreenshot(reportStep, screenshot);
-                } catch (Exception e) {
-                    ex = e;
+                } catch (Throwable e) {
+                    if (e instanceof StepNotExecutableException) {
+                        ex = e.getCause();
+                    }else{
+                        ex = e;
+                    }
                     failed = true;
                     StringWriter sw = new StringWriter();
                     ex.printStackTrace(new PrintWriter(sw));
@@ -85,6 +92,7 @@ public class PickleJarInheritedTest extends PickleJarTest {
     }
 
     @After
+    @Override
     public void tearDown() throws Exception {
         super.tearDown();
         lifecycle.tearDown();
