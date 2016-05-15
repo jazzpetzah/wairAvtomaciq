@@ -46,9 +46,9 @@ public abstract class PickleJarTest {
     private final Feature reportFeature;
     private final Scenario reportScenario;
     private final List<Step> reportSteps = new ArrayList<>();
-    
 
-    protected PickleJarTest(String feature, String testcase, Integer exampleNum, List<String> steps, Map<String, String> exampleRow)
+    protected PickleJarTest(String feature, String testcase, Integer exampleNum, List<String> steps,
+            Map<String, String> exampleRow)
             throws Exception {
         this.feature = feature;
         this.testcase = testcase;
@@ -101,7 +101,7 @@ public abstract class PickleJarTest {
         // needs more investigation what characters are removed and which are replaced by _
         // known removed characters are: ', "
         stepName = stepName.replaceAll("__", "_").replaceAll("__", "_");
-        Path path = Paths.get(SCREENSHOT_PATH + featureName + "/" + scenarioName + "/");
+        Path path = Paths.get(Paths.get(SCREENSHOT_PATH).toAbsolutePath() + "/" + featureName + "/" + scenarioName + "/");
         path.toFile().mkdirs();
         int index = 1;
         Path desiredPicture = Paths.get(path.toString(), stepName + "_" + index + ".png");

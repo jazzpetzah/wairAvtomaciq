@@ -202,7 +202,7 @@
                             <properties>
                                 <property>
                                     <name>listener</name>
-                                    <value>com.wire.picklejar.execution.GenerateCucumberReportListener</value>
+                                    <value>com.wire.picklejar.execution.PickleJarExecutionListener</value>
                                 </property>
                             </properties>
                             <systemPropertyVariables>
