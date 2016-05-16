@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +41,7 @@ public class PickleJarScanner {
      * 2 - Example row number (starting with 1, 0 means no examples)<br>
      * 3 - List of scenario steps<br>
      * 4 - Map of tuples of examples with header<br>
+     * 5 - list of tags<br>
      *
      * @param feature
      * @param tagFilter
@@ -65,7 +67,7 @@ public class PickleJarScanner {
 
                     for (int j = 0; j < tableRows.size(); j++) {
                         TableRow tableRow = tableRows.get(j);
-                        Object[] scenarioArray = new Object[5];
+                        Object[] scenarioArray = new Object[6];
 
                         Map<String, String> exampleRowWithHeader = new HashMap<>();
                         for (int k = 0; k < tableRow.getCells().size(); k++) {
@@ -82,6 +84,9 @@ public class PickleJarScanner {
                         scenarioArray[2] = new Integer(j + 1);
                         scenarioArray[3] = steps;
                         scenarioArray[4] = exampleRowWithHeader;
+                        scenarioArray[5] = scenarioDefinition.getTags().stream()
+                                .map((t)->t.getName())
+                                .collect(Collectors.toList());
 
                         LOG.debug("Adding scenario with example\n"
                                 + "FeatureName: " + feature.getName() + "\n"
@@ -89,27 +94,32 @@ public class PickleJarScanner {
                                 + "ExampleNumber: " + scenarioArray[2] + "\n"
                                 + "Steps: " + Arrays.toString(steps.toArray()) + "\n"
                                 + "Examples: " + Arrays.toString(exampleRowWithHeader.keySet().toArray()) + "\n"
-                                + "Examples: " + Arrays.toString(exampleRowWithHeader.values().toArray()));
+                                + "Examples: " + Arrays.toString(exampleRowWithHeader.values().toArray()) + "\n"
+                                + "Examples: " + Arrays.toString(scenarioDefinition.getTags().toArray()));
 
                         scenarios.add(scenarioArray);
                     }
 
                 }
             } catch (Exception e) {
-                Object[] scenarioArray = new Object[5];
+                Object[] scenarioArray = new Object[6];
                 scenarioArray[0] = feature.getName();
                 scenarioArray[1] = scenarioDefinition.getName();
                 // if we don't have examples we default to example row number 0
                 scenarioArray[2] = new Integer(0);
                 scenarioArray[3] = steps;
                 scenarioArray[4] = new HashMap<String, String>();
+                scenarioArray[5] = scenarioDefinition.getTags().stream()
+                                .map((t)->t.getName())
+                                .collect(Collectors.toList());
 
                 LOG.debug("Adding scenario without example\n"
                         + "FeatureName: " + feature.getName() + "\n"
                         + "ScenarioName: " + scenarioDefinition.getName() + "\n"
                         + "ExampleNumber: " + scenarioArray[2] + "\n"
                         + "Steps: " + Arrays.toString(steps.toArray()) + "\n"
-                        + "Examples: " + scenarioArray[4]);
+                        + "Examples: " + scenarioArray[4] + "\n"
+                        + "Examples: " + scenarioArray[5]);
 
                 scenarios.add(scenarioArray);
             }

@@ -1,27 +1,23 @@
 package com.wire.picklejar.execution;
 
-import com.wire.picklejar.Config;
 import static com.wire.picklejar.Config.SCREENSHOT_PATH;
 import com.wire.picklejar.PickleJar;
 import java.util.List;
 import java.util.Map;
 import com.wire.picklejar.PickleJarJUnitProvider;
 import static com.wire.picklejar.execution.PickleExecutor.replaceExampleOccurences;
-import com.wire.picklejar.gherkin.model.CucumberReport;
 import com.wire.picklejar.gherkin.model.Feature;
 import com.wire.picklejar.gherkin.model.Scenario;
 import com.wire.picklejar.gherkin.model.Step;
 import com.wire.picklejar.gherkin.model.Tag;
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -42,24 +38,28 @@ public abstract class PickleJarTest {
     private final String testcase;
     private final List<String> steps;
     private final Map<String, String> exampleRow;
+    private final List<String> tags;
 
     private final Feature reportFeature;
     private final Scenario reportScenario;
     private final List<Step> reportSteps = new ArrayList<>();
 
     protected PickleJarTest(String feature, String testcase, Integer exampleNum, List<String> steps,
-            Map<String, String> exampleRow)
+            Map<String, String> exampleRow, List<String> tags)
             throws Exception {
         this.feature = feature;
         this.testcase = testcase;
         this.steps = steps;
         this.exampleRow = exampleRow;
+        this.tags = tags;
 
         for (String rawStep : steps) {
             this.reportSteps.add(new Step(replaceExampleOccurences(rawStep, getExampleRow())));
         }
-        this.reportScenario = new Scenario(feature, testcase, exampleNum, "Scenario Outline", reportSteps, Arrays.asList(
-                new Tag[]{new Tag("@TODO")}));
+        this.reportScenario = new Scenario(feature, testcase, exampleNum, "Scenario Outline", reportSteps, tags.stream()
+                .map((t) -> new Tag(t))
+                .collect(Collectors.toList()));
+
         this.reportFeature = new Feature(feature);
     }
 

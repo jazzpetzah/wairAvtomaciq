@@ -32,8 +32,8 @@ public class PickleJarInheritedTest extends PickleJarTest {
     }
 
     public PickleJarInheritedTest(String feature, String testcase, Integer exampleNum, List<String> steps,
-            Map<String, String> examples) throws Exception {
-        super(feature, testcase, exampleNum, steps, examples);
+            Map<String, String> examples, List<String> tags) throws Exception {
+        super(feature, testcase, exampleNum, steps, examples, tags);
     }
 
     @BeforeClass
@@ -68,7 +68,7 @@ public class PickleJarInheritedTest extends PickleJarTest {
                     saveScreenshot(reportStep, screenshot);
                 } catch (Throwable e) {
                     if (e instanceof StepNotExecutableException) {
-                        ex = e.getCause();
+                        ex = e.getCause().getCause();
                     }else{
                         ex = e;
                     }

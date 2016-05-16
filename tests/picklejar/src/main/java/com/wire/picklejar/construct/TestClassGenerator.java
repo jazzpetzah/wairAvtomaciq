@@ -62,6 +62,7 @@ public class TestClassGenerator {
         private final int exampleNum;
         private final List<String> steps;
         private final Map<String, String> examples;
+        private final List<String> tags;
         private final String template;
 
         /**
@@ -78,6 +79,7 @@ public class TestClassGenerator {
             this.exampleNum = (Integer) testcase[2];
             this.steps = (List<String>) testcase[3];
             this.examples = (Map<String, String>) testcase[4];
+            this.tags = (List<String>) testcase[5];
 
             this.template = template
                     .replaceAll("\\$\\(TESTNAME\\)", toClassName())
@@ -97,7 +99,8 @@ public class TestClassGenerator {
             StringBuilder data = new StringBuilder("List<Object[]> testcases = new ArrayList<>();\n");
             data.append(buildExamplesMap());
             data.append(buildStepList());
-            data.append(String.format("testcases.add(new Object[]{\"%s\", \"%s\", %d, steps, examples});\n",
+            data.append(buildTagList());
+            data.append(String.format("testcases.add(new Object[]{\"%s\", \"%s\", %d, steps, examples, tags});\n",
                     featureName, scenarioName, exampleNum));
             data.append("return testcases;");
             return data.toString();
@@ -115,6 +118,14 @@ public class TestClassGenerator {
             StringBuilder listString = new StringBuilder("List<String> steps = new ArrayList<>();\n");
             for (String step : steps) {
                 listString.append(String.format("steps.add(\"%s\");\n", StringEscapeUtils.escapeJava(step)));
+            }
+            return listString.toString();
+        }
+        
+        private String buildTagList() {
+            StringBuilder listString = new StringBuilder("List<String> tags = new ArrayList<>();\n");
+            for (String tag : tags) {
+                listString.append(String.format("tags.add(\"%s\");\n", StringEscapeUtils.escapeJava(tag)));
             }
             return listString.toString();
         }

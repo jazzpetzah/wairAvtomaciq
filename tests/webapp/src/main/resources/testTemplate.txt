@@ -37,8 +37,8 @@ public class $(TESTNAME)Test extends PickleJarTest{
         $(DATA)
     }
 
-    public $(TESTNAME)Test(String feature, String testcase, Integer exampleNum, List<String> steps, Map<String, String> exampleRow) throws Exception {
-        super(feature, testcase, exampleNum, steps, exampleRow);
+    public $(TESTNAME)Test(String feature, String testcase, Integer exampleNum, List<String> steps, Map<String, String> exampleRow, List<String> tags) throws Exception {
+        super(feature, testcase, exampleNum, steps, exampleRow, tags);
     }
 
     @BeforeClass
@@ -72,7 +72,7 @@ public class $(TESTNAME)Test extends PickleJarTest{
                     saveScreenshot(reportStep, screenshot);
                 } catch (Throwable e) {
                     if (e instanceof StepNotExecutableException) {
-                        ex = e.getCause();
+                        ex = e.getCause().getCause();
                     }else{
                         ex = e;
                     }
