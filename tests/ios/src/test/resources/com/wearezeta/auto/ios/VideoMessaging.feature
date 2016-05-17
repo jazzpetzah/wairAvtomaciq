@@ -9,8 +9,8 @@ Feature: Video Messaging
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Video Message button from input tools
-    Then I wait up to <Timeout> seconds until I see a preview of the video message
+    Then I see a preview of video message
 
     Examples:
-      | Name      | Contact   | FileName    | Timeout |
-      | user1Name | user2Name | testing.mp4 | 15      |
+      | Name      | Contact   | FileName    |
+      | user1Name | user2Name | testing.mp4 |

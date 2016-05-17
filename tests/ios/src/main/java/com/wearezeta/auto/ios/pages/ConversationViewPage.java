@@ -694,7 +694,7 @@ public class ConversationViewPage extends IOSPage {
         this.getDriver().tap(1, getElement(nameFileTransferTopLabel), DriverUtils.LONG_TAP_DURATION);
     }
 
-    public boolean isVideoMessageContainerVisible(int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameVideoMessageActionButton, timeoutSeconds);
+    public boolean isVideoMessageContainerVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameVideoMessageActionButton);
     }
 }

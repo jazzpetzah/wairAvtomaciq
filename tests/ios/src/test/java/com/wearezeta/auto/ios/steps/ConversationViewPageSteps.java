@@ -1145,13 +1145,12 @@ public class ConversationViewPageSteps {
     /**
      * Wait for a while until video message container is shown in the conversation view
      *
-     * @param timeout maximum number of second to wait until the container is shown
      * @throws Exception
-     * @step. ^I wait up to (\d+) seconds? until I see a preview of the video message$"
+     * @step. ^I see a preview of video message$"
      */
-    @Then("^I wait up to (\\d+) seconds? until I see a preview of the video message$")
-    public void IWaitForVideoMessage(int timeout) throws Exception {
-        Assert.assertTrue(String.format("Video message container has not been shown after %s seconds",
-                timeout), getConversationViewPage().isVideoMessageContainerVisible(timeout));
+    @Then("^I see a preview of video message$")
+    public void IWaitForVideoMessage() throws Exception {
+        Assert.assertTrue("Video message container has not been shown",
+               getConversationViewPage().isVideoMessageContainerVisible());
     }
 }
