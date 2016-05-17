@@ -33,6 +33,8 @@ Feature: Video Message
     And I remember the state of Play button on the recent video message in the conversation view
     And I enable Airplane mode on the device
     And I tap Play button on the recent video message in the conversation view
+    #Wait for animation
+    And I wait for 5 seconds
     Then I verify the state of Play button on the recent video message in the conversation view is changed
     When I disable Airplane mode on the device
     # Wait for sync
