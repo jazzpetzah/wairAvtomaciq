@@ -465,6 +465,12 @@ public class CommonWebAppSteps {
     public void IBreakTheSession(String deviceName, String userAlias) throws Exception {
         ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
         String deviceId = context.getDeviceManager().getDeviceId(user, deviceName);
+        // we have to strip leading zeros since we don't want to use the padding for UI
+        int limit = deviceId.length();
+        while(deviceId.startsWith("0") && limit >= 0){
+            deviceId = deviceId.substring(1);
+            limit--;
+        }
         context.getPagesCollection().getPage(WebPage.class).breakSession(deviceId);
     }
 
