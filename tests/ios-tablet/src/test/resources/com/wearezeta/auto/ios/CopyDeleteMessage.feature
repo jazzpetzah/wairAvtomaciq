@@ -1,6 +1,6 @@
 Feature: Copy/Delete Message
 
-  @C119753 @staging
+  @C119753 @regression
   Scenario Outline: Verify copy/delete menu disappears on the rotation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>

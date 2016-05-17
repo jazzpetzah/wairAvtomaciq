@@ -435,7 +435,7 @@ Feature: Conversation View
       | Name      | Contact   | GifPicture   |
       | user1Name | user2Name | animated.gif |
 
-  @C2592 @staging
+  @C2592 @regression
   Scenario Outline: Verify cursor tooltip is shown
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
