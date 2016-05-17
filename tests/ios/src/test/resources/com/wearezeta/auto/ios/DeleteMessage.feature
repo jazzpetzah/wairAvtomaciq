@@ -74,7 +74,7 @@ Feature: DeleteMessage
       | Name      | Contact   | SoundCloudLink                                   |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
-  @C111961 @staging
+  @C111961 @regression
   Scenario Outline: Verify deleting messages containing links
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -108,7 +108,7 @@ Feature: DeleteMessage
       | Name      | Contact   | FileName                   |
       | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C123604 @staging @noAcceptAlert
+  @C123604 @regression @noAcceptAlert
   Scenario Outline: Verify canceling deleting a message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
