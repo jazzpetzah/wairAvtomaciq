@@ -36,6 +36,8 @@ public class AndroidCommonUtils extends CommonUtils {
     private static final String BACKEND_FILE_LOCATION = "/mnt/sdcard/customBackend.json";
     private static final String FILE_TRANSFER_SOURCE_LOCATION = "/mnt/sdcard/Download/";
 
+    private static final String IMAGE_FOR_VIDEO_GENERATION = "aqaPictureContact_osx_userinfo_2560x1600.png";
+
     public static void executeAdb(final String cmdline) throws Exception {
         executeOsXCommand(new String[]{"/bin/bash", "-c",
                 ADB_PREFIX + "adb " + cmdline});
@@ -329,7 +331,7 @@ public class AndroidCommonUtils extends CommonUtils {
             if (!isInForeground) {
                 return true;
             }
-        } while (System.currentTimeMillis() - millisecondsStarted  <= timeoutMillis);
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutMillis);
         return false;
     }
 
@@ -596,13 +598,19 @@ public class AndroidCommonUtils extends CommonUtils {
      * @param size         the expected size of file
      * @throws Exception
      */
-    public static void pushRandomFileToSdcardDownload(String fileFullName, String size)
-            throws Exception {
+    public static void pushRandomFileToSdcardDownload(String fileFullName, String size, boolean isVideo) throws Exception {
         String basePath = getBuildPathFromConfig(AndroidCommonUtils.class);
         String extension = FilenameUtils.getExtension(fileFullName);
         String fileName = FilenameUtils.getBaseName(fileFullName);
 
-        CommonUtils.createRandomAccessFile(basePath + File.separator + fileFullName, size);
+        if (isVideo) {
+            String imagesDirectoryPath = getImagesPath(CommonUtils.class);
+            CommonUtils.generateVideoFile(basePath + File.separator + fileFullName, size, imagesDirectoryPath
+                    + IMAGE_FOR_VIDEO_GENERATION);
+        } else {
+            CommonUtils.createRandomAccessFile(basePath + File.separator + fileFullName, size);
+        }
+
         AndroidCommonUtils.pushFileToSdcardDownload(basePath, fileName, extension);
     }
 
