@@ -22,6 +22,10 @@ import org.jcodec.containers.mp4.muxer.MP4Muxer;
 import org.jcodec.scale.ColorUtil;
 import org.jcodec.scale.Transform;
 
+/**
+ *  SequenceEncoder come from org.jcodec.api.awt.SequenceEncoder, but cannot use directly
+ *  based on transform issues, I copy it and update it
+ */
 public class SequenceEncoder {
     private SeekableByteChannel ch;
     private Picture toEncode;
