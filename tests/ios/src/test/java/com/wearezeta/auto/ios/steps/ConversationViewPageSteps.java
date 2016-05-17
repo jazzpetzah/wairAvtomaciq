@@ -201,9 +201,9 @@ public class ConversationViewPageSteps {
      *
      * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I tap (Add Picture|Ping|Sketch|File Transfer) button from input tools$
+     * @step. ^I tap (Add Picture|Ping|Sketch|File Transfer|Video Message) button from input tools$
      */
-    @When("^I tap (Add Picture|Ping|Sketch|File Transfer) button from input tools$")
+    @When("^I tap (Add Picture|Ping|Sketch|File Transfer|Video Message) button from input tools$")
     public void IPressAddPictureButton(String btnName) throws Exception {
         getConversationViewPage().tapInputToolButtonByName(btnName);
     }
@@ -1140,5 +1140,18 @@ public class ConversationViewPageSteps {
     @When("^I long tap on file transfer placeholder in conversation view$")
     public void ILongTapOnFileTransferPlaceholderInConversationView() throws Exception {
         getConversationViewPage().tapAndHoldFileTransferPlaceholder();
+    }
+
+    /**
+     * Wait for a while until video message container is shown in the conversation view
+     *
+     * @param timeout maximum number of second to wait until the container is shown
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until I see a preview of the video message$"
+     */
+    @Then("^I wait up to (\\d+) seconds? until I see a preview of the video message$")
+    public void IWaitForVideoMessage(int timeout) throws Exception {
+        Assert.assertTrue(String.format("Video message container has not been shown after %s seconds",
+                timeout), getConversationViewPage().isVideoMessageContainerVisible(timeout));
     }
 }

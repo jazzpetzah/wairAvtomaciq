@@ -117,6 +117,7 @@ public class ConversationViewPage extends IOSPage {
     protected static final By nameAddPictureButton = MobileBy.AccessibilityId("photoButton");
     private static final By namePingButton = MobileBy.AccessibilityId("pingButton");
     private static final By nameFileTransferButton = MobileBy.AccessibilityId("uploadFileButton");
+    private static final By nameVideoMessageButton = MobileBy.AccessibilityId("videoButton");
 
     private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[@name='ConversationView']";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
@@ -155,6 +156,8 @@ public class ConversationViewPage extends IOSPage {
     private static final By xpathFileUploadingLabel = By.xpath("//UIAStaticText[contains(@value,'UPLOADING…')]");
 
     private static final By nameShareButton = MobileBy.AccessibilityId("Share");
+
+    private static final By nameVideoMessageActionButton = MobileBy.AccessibilityId("VideoActionButton");
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -593,6 +596,8 @@ public class ConversationViewPage extends IOSPage {
                 return nameCursorSketchButton;
             case "file transfer":
                 return nameFileTransferButton;
+            case "video message":
+                return nameVideoMessageButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
         }
@@ -687,5 +692,9 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapAndHoldFileTransferPlaceholder() throws Exception {
         this.getDriver().tap(1, getElement(nameFileTransferTopLabel), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public boolean isVideoMessageContainerVisible(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameVideoMessageActionButton, timeoutSeconds);
     }
 }
