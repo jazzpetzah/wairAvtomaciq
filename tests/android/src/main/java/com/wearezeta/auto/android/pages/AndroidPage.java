@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.uiautomation.UIAutomationDriver;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -43,6 +44,12 @@ public abstract class AndroidPage extends BasePage {
     @Override
     protected ZetaAndroidDriver getDriver() throws Exception {
         return (ZetaAndroidDriver) super.getDriver();
+    }
+
+    private UIAutomationDriver uiAutomationDriver = new UIAutomationDriver();
+
+    protected UIAutomationDriver getUIAutomationDriver() throws Exception {
+        return this.uiAutomationDriver;
     }
 
     @SuppressWarnings("unchecked")
