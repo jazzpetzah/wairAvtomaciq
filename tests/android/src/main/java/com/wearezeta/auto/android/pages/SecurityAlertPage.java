@@ -19,24 +19,24 @@ public class SecurityAlertPage extends AndroidPage {
     }
 
     public void accept() throws Exception {
-        getUIAutomationDriver().clickElement(xpathAcceptButton);
+        getUIAutomatorDriver().clickElement(xpathAcceptButton);
     }
 
     public void acceptIfVisible() throws Exception {
-        final Optional<Node> acceptButton = getUIAutomationDriver().getElementIfPresent(xpathAcceptButton);
+        final Optional<Node> acceptButton = getUIAutomatorDriver().getElementIfPresent(xpathAcceptButton);
         if (acceptButton.isPresent()) {
-            getUIAutomationDriver().clickElement(acceptButton.get());
+            getUIAutomatorDriver().clickElement(acceptButton.get());
         }
     }
 
     public void dismiss() throws Exception {
-        getUIAutomationDriver().clickElement(xpathDenyButton);
+        getUIAutomatorDriver().clickElement(xpathDenyButton);
     }
 
     public void dismissIfVisible() throws Exception {
-        final Optional<Node> denyButton = getUIAutomationDriver().getElementIfPresent(xpathDenyButton);
+        final Optional<Node> denyButton = getUIAutomatorDriver().getElementIfPresent(xpathDenyButton);
         if (denyButton.isPresent()) {
-            getUIAutomationDriver().clickElement(denyButton.get());
+            getUIAutomatorDriver().clickElement(denyButton.get());
         }
     }
 }

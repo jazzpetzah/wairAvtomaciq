@@ -51,7 +51,7 @@ public abstract class AndroidPage extends BasePage {
      */
     private static final UIAutomatorDriver UI_AUTOMATOR_DRIVER = new UIAutomatorDriver();
 
-    protected UIAutomatorDriver getUIAutomationDriver() throws Exception {
+    protected UIAutomatorDriver getUIAutomatorDriver() throws Exception {
         return UI_AUTOMATOR_DRIVER;
     }
 
