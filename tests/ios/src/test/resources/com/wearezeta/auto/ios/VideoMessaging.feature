@@ -1,6 +1,6 @@
 Feature: Video Messaging
 
-  @C111938 @staging
+  @C111938 @regression
   Scenario Outline: Verify recording a video
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
