@@ -1153,4 +1153,9 @@ public class ConversationViewPageSteps {
         Assert.assertTrue("Video message container has not been shown",
                getConversationViewPage().isVideoMessageContainerVisible());
     }
+
+    @When("^I tap (Download|Play) button of video message$")
+    public void ITapDownloadPlayButtonOfVideoMessage(String button) throws Exception {
+        getConversationViewPage().tapVideoMessageContainerButton();
+    }
 }

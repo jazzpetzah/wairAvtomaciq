@@ -697,4 +697,8 @@ public class ConversationViewPage extends IOSPage {
     public boolean isVideoMessageContainerVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameVideoMessageActionButton);
     }
+
+    public void tapVideoMessageContainerButton() throws Exception {
+        getElement(nameVideoMessageActionButton).click();
+    }
 }
