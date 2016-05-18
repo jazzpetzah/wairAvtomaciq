@@ -685,7 +685,9 @@ public class CommonWebAppSteps {
     @When("user (.*) adds a new device (.*) with label (.*)$")
     public void UserAddRemoteDeviceToAccount(String userNameAlias,
             String deviceName, String label) throws Exception {
+        context.startPinging();
         context.getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
+        context.stopPinging();
     }
 
     /**
