@@ -22,15 +22,15 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class UIAutomationDriver {
-    private static final Logger log = ZetaLogger.getLog(UIAutomationDriver.class.getSimpleName());
+public class UIAutomatorDriver {
+    private static final Logger log = ZetaLogger.getLog(UIAutomatorDriver.class.getSimpleName());
 
     private static final String DUMP_LOCATION = "/sdcard/view.xml";
     private static final int DEFAULT_TIMEOUT = 7; // seconds
 
     private DocumentBuilder documentBuilder;
 
-    public UIAutomationDriver() {
+    public UIAutomatorDriver() {
         final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
         domFactory.setNamespaceAware(true);
         try {
