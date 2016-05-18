@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.common.uiautomation;
 
+import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import org.apache.log4j.Logger;
@@ -11,6 +12,7 @@ import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
@@ -28,10 +30,15 @@ public class UIAutomationDriver {
 
     private DocumentBuilder documentBuilder;
 
-    public UIAutomationDriver() throws Exception {
+    public UIAutomationDriver() {
         final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
         domFactory.setNamespaceAware(true);
-        this.documentBuilder = domFactory.newDocumentBuilder();
+        try {
+            this.documentBuilder = domFactory.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+            Throwables.propagate(e);
+        }
     }
 
     private static String getUIDump() throws Exception {

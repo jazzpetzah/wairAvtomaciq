@@ -46,10 +46,10 @@ public abstract class AndroidPage extends BasePage {
         return (ZetaAndroidDriver) super.getDriver();
     }
 
-    private UIAutomationDriver uiAutomationDriver = new UIAutomationDriver();
+    private static final UIAutomationDriver uiAutomationDriver = new UIAutomationDriver();
 
     protected UIAutomationDriver getUIAutomationDriver() throws Exception {
-        return this.uiAutomationDriver;
+        return uiAutomationDriver;
     }
 
     @SuppressWarnings("unchecked")
