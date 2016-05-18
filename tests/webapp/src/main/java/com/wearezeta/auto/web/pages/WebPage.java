@@ -76,8 +76,8 @@ public class WebPage extends BasePage {
     }
 
     /**
-     * Will add the query parameter "hl" to the current URL and load it to change the language of the page. Depending on
-     * already added query parameter, we need to use & or ? to add it. This will probably only work on Login/Registering page.
+     * Will add the query parameter "hl" to the current URL and load it to change the language of the page. Depending on already
+     * added query parameter, we need to use & or ? to add it. This will probably only work on Login/Registering page.
      *
      * @param language Currently can be "de" or "en"
      * @throws Exception
@@ -104,8 +104,8 @@ public class WebPage extends BasePage {
     }
 
     /**
-     * Returns a list of all placeholders of text boxes on the page. A placeholder is a text that is only shown if the user
-     * has not written anything into the field yet.
+     * Returns a list of all placeholders of text boxes on the page. A placeholder is a text that is only shown if the user has
+     * not written anything into the field yet.
      *
      * @return list of placeholders
      * @throws Exception
@@ -149,5 +149,20 @@ public class WebPage extends BasePage {
                 "cs = s[Object.keys(s).filter((x) => x.endsWith(\"" + deviceId + "\"))[0]];\n" +
                 "cs.session_states = {};";
         getDriver().executeScript(breakSession);
+    }
+
+    /**
+     * Disables the Ad banner for the webapp to make sure tests are not affected by it.
+     *
+     * @throws Exception
+     */
+    public void disableAdBanner() throws Exception {
+        Boolean wireLoaded;
+        do{
+        wireLoaded = (Boolean) getDriver().executeScript("console.log('checking for app wire');\n"
+                + "return wire.app !== undefined && wire.app.repository !== undefined");
+        }while(!wireLoaded);
+        getDriver().executeScript("console.log('setting banner true');\n"
+                + "wire.app.repository.user.properties.app_banner = true");
     }
 }

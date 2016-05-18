@@ -473,6 +473,15 @@ public class CommonWebAppSteps {
         }
         context.getPagesCollection().getPage(WebPage.class).breakSession(deviceId);
     }
+    
+    /**
+     * Disables the native app ad in webapp. It's mandatory to call this step right after clicking the login button!
+     * @throws Exception 
+     */
+    @When("^I disable ad banner$")
+    public void IDisableAdBanner() throws Exception {
+        context.getPagesCollection().getPage(WebPage.class).disableAdBanner();
+    }
 
     @When("^(.*) sends? (.*) sized file with name (.*) via device (.*) to (user|group conversation) (.*)$")
     public void WhenIXSizedSendFile(String contact, String size, String fileName, String deviceName, String convoType,
