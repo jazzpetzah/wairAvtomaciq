@@ -50,8 +50,7 @@ Feature: Registration
     And I tap Camera Shutter button
     And I remember current screen state
     And I confirm my choice
-    And I see People picker page
-    And I click clear button
+    And I tap Share Contacts button on Share Contacts overlay
     And I tap settings gear button
     And I tap on personal screen
     Then I verify that current screen similarity score is more than <Score> within <Timeout> seconds
