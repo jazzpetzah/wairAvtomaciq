@@ -229,6 +229,12 @@ public class ConversationPageSteps {
         assertThat("No verified icon", context.getPagesCollection().getPage(ConversationPage.class).isConversationVerified());
     }
 
+    @And("^I see titlebar with (.*)$")
+    public void ISeeTitlebar(String conversationName) throws Throwable {
+        assertThat("Wrong titlebar label", context.getPagesCollection().getPage(ConversationPage.class).getTitlebarLabel(),
+                equalTo(conversationName.toUpperCase()));
+    }
+
     /**
      * Send a picture into current conversation
      *

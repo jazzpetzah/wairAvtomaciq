@@ -68,6 +68,9 @@ public class ConversationPage extends WebPage {
     @FindBy(id = WebAppLocators.ConversationPage.idConversation)
     private WebElement conversation;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssTitlebarLabel)
+    private WebElement titlebarLabel;
+
     @FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
     private WebElement conversationInput;
 
@@ -882,5 +885,9 @@ public class ConversationPage extends WebPage {
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteButtonByMessageId.apply(id));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+    }
+
+    public String getTitlebarLabel() {
+        return titlebarLabel.getText();
     }
 }
