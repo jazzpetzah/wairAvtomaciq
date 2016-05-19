@@ -825,8 +825,7 @@ Feature: E2EE
     And Contact <Name> sends 60 messages with prefix <PREFIX4> via device Device1 to user <Contact>
     And I am signed in properly
     And I open conversation with <Contact>
-    And I wait for 20 seconds
-    Then I see text message <PREFIX4>59
+    And I wait for 30 seconds
     Then I do not see <UNABLE_TO_DECRYPT> action in conversation
     And I verify all remembered messages are present in conversation <Contact>
 
