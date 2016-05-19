@@ -619,7 +619,7 @@ public class ConversationPage extends WebPage {
     }
 
     public String getSecondLastTextMessage() throws Exception {
-        assert DriverUtils
+        DriverUtils
                 .waitUntilLocatorIsDisplayed(
                         getDriver(),
                         By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastTextMessage));
@@ -663,13 +663,6 @@ public class ConversationPage extends WebPage {
 
     public void clickGIFButton() throws Exception {
         gifButton.click();
-    }
-
-    public boolean isLastTextMessage(String expectedMessage) throws Exception {
-        return DriverUtils
-                .waitUntilLocatorIsDisplayed(
-                        getDriver(),
-                        By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
     }
 
     public String getMessageFromInputField() {
