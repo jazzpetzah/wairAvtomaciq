@@ -419,7 +419,6 @@ public class ConversationPage extends WebPage {
 
     public void sendPicture(String pictureName) throws Exception {
         final String picturePath = WebCommonUtils.getFullPicturePath(pictureName);
-        hoverOverConversation();
         moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendImageInput);
         if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
             WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver().getNodeIp());
@@ -453,7 +452,6 @@ public class ConversationPage extends WebPage {
 
     public void sendFile(String fileName) throws Exception {
         final String filePath = WebCommonUtils.getFullFilePath("filetransfer/" + fileName);
-        hoverOverConversation();
         moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendFileInput);
         filePathInput.sendKeys(filePath);
         moveCssSelectorOutOfViewport(WebAppLocators.ConversationPage.cssSendFileInput);
@@ -505,55 +503,45 @@ public class ConversationPage extends WebPage {
     }
 
     public void clickPingButton() throws Exception {
-        hoverOverConversation();
         final By locator = By
                 .cssSelector(WebAppLocators.ConversationPage.cssPingButton);
         assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 locator, 2) : "Ping button has not been shown after 2 seconds";
-        assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-                pingButton) : "Ping button has to be clickable";
         pingButton.click();
     }
 
     public boolean isConversationInputVisible() throws Exception {
-        hoverOverConversation();
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(WebAppLocators.ConversationPage.idConversationInput));
     }
 
     public boolean isImageButtonVisible() throws Exception {
-        hoverOverConversation();
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(
                 WebAppLocators.ConversationPage.cssSendImageInput));
     }
 
     public boolean isCallButtonVisible() throws Exception {
-        hoverOverConversation();
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.
                 cssSelector(WebAppLocators.ConversationPage.cssCallButton));
     }
 
     public boolean isFileButtonVisible() throws Exception {
-        hoverOverConversation();
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(
                 WebAppLocators.ConversationPage.cssSendFileButton));
     }
 
     public boolean isPingButtonVisible() throws Exception {
-        hoverOverConversation();
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.
                 cssSelector(WebAppLocators.ConversationPage.cssPingButton));
     }
 
     public void clickCallButton() throws Exception {
-        hoverOverConversation();
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 By.cssSelector(WebAppLocators.ConversationPage.cssCallButton));
         callButton.click();
     }
 
     public void clickVideoCallButton() throws Exception {
-        hoverOverConversation();
-        assert DriverUtils
+        DriverUtils
                 .waitUntilLocatorIsDisplayed(
                         this.getDriver(),
                         By.cssSelector(WebAppLocators.ConversationPage.cssVideoCallButton));
