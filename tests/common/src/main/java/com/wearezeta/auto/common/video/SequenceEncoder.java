@@ -23,8 +23,8 @@ import org.jcodec.scale.ColorUtil;
 import org.jcodec.scale.Transform;
 
 /**
- *  SequenceEncoder come from org.jcodec.api.awt.SequenceEncoder, but cannot use directly
- *  based on transform issues, I copy it and update it
+ * SequenceEncoder come from org.jcodec.api.awt.SequenceEncoder, but cannot use directly
+ * based on transform issues, I copy it and update it
  */
 public class SequenceEncoder {
     private SeekableByteChannel ch;
@@ -49,28 +49,28 @@ public class SequenceEncoder {
         this.ppsList = new ArrayList();
     }
 
-    /**
-     * Encode Image to Video
-     *
-     * @param image the image which will be encoded into video
-     * @return the current channel size
-     * @throws IOException
-     */
-    public long encodeImage(BufferedImage image) throws IOException {
+    public void initDefaultFrameFromSingleImage(BufferedImage image) throws IOException {
         Picture pic = makeFrame(image, ColorSpace.YUV420J);
         if (this.toEncode == null) {
             this.toEncode = Picture.create(pic.getWidth(), pic.getHeight(), this.encoder.getSupportedColorSpaces()[0]);
         }
-
         this.transform.transform(pic, this.toEncode);
+    }
+
+    public long addDefaultFrameToVideo() throws IOException {
+        if (this.toEncode == null) {
+            throw new IllegalStateException("Please init default frame by call initDefaultFrameFromSingleImage");
+        }
+
+        // each time it needs to init SPS and PPS in encodeFrame, so cannot extract it
         this._out.clear();
-        ByteBuffer result = this.encoder.encodeFrame(this.toEncode, this._out);
+        ByteBuffer frameByteBuffer = this.encoder.encodeFrame(this.toEncode, this._out);
 
         this.spsList.clear();
         this.ppsList.clear();
-        H264Utils.wipePS(result, this.spsList, this.ppsList);
-        H264Utils.encodeMOVPacket(result);
-        this.outTrack.addFrame(new MP4Packet(result, (long) this.frameNo, 25L, 100L, (long) this.frameNo, true, null, (long) this.frameNo, 0));
+        H264Utils.wipePS(frameByteBuffer, this.spsList, this.ppsList);
+        H264Utils.encodeMOVPacket(frameByteBuffer);
+        this.outTrack.addFrame(new MP4Packet(frameByteBuffer, (long) this.frameNo, 25L, 100L, (long) this.frameNo, true, null, (long) this.frameNo, 0));
         this.frameNo++;
         return this.ch.size();
     }

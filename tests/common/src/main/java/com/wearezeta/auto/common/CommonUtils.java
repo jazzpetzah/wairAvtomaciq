@@ -654,10 +654,10 @@ public class CommonUtils {
 
         SequenceEncoder sequenceEncoder = new SequenceEncoder(new File(filePath));
         BufferedImage in = ImageIO.read(new File(baseImageFilePath));
-
-        while (expectedSize > currentSize) {
-            currentSize = sequenceEncoder.encodeImage(in);
-        }
+        sequenceEncoder.initDefaultFrameFromSingleImage(in);
+        do {
+            currentSize = sequenceEncoder.addDefaultFrameToVideo();
+        } while (expectedSize > currentSize);
         sequenceEncoder.finish();
     }
 
