@@ -18,6 +18,7 @@ import cucumber.api.PendingException;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -811,6 +812,16 @@ public class ConversationPage extends WebPage {
         assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No file status element found for locator "
                 + locator;
         return getDriver().findElement(locator).getText();
+    }
+
+    public Optional<String> getOptionalFileStatusOf(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileStatus, fileName));
+        Optional<WebElement> element = DriverUtils.getElementIfDisplayed(getDriver(), locator);
+        if(element.isPresent()) {
+            return Optional.of(element.get().getText());
+        } else {
+            return Optional.empty();
+        }
     }
 
     public String getFileTypeOf(String fileType) throws Exception {
