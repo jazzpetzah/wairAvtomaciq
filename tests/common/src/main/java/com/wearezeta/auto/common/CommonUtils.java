@@ -17,6 +17,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.log4j.Logger;
+import org.jcodec.common.model.Picture;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -650,14 +651,13 @@ public class CommonUtils {
      */
     public static void generateVideoFile(String filePath, String size, String baseImageFilePath) throws Exception {
         final long expectedSize = getFileSizeFromString(size);
-        long currentSize = 0;
 
         SequenceEncoder sequenceEncoder = new SequenceEncoder(new File(filePath));
         BufferedImage in = ImageIO.read(new File(baseImageFilePath));
-        sequenceEncoder.initDefaultFrameFromSingleImage(in);
-        do {
-            currentSize = sequenceEncoder.addDefaultFrameToVideo();
-        } while (expectedSize > currentSize);
+        Picture renderedFrame =  sequenceEncoder.createFrameFromSingleImage(in);
+
+        while (sequenceEncoder.addFrameToVideo(renderedFrame) < expectedSize);
+
         sequenceEncoder.finish();
     }
 

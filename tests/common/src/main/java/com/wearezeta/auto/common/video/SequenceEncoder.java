@@ -19,6 +19,7 @@ import org.jcodec.containers.mp4.MP4Packet;
 import org.jcodec.containers.mp4.TrackType;
 import org.jcodec.containers.mp4.muxer.FramesMP4MuxerTrack;
 import org.jcodec.containers.mp4.muxer.MP4Muxer;
+import org.jcodec.scale.AWTUtil;
 import org.jcodec.scale.ColorUtil;
 import org.jcodec.scale.Transform;
 
@@ -28,7 +29,6 @@ import org.jcodec.scale.Transform;
  */
 public class SequenceEncoder {
     private SeekableByteChannel ch;
-    private Picture toEncode;
     private Transform transform;
     private H264Encoder encoder;
     private ArrayList<ByteBuffer> spsList;
@@ -49,29 +49,24 @@ public class SequenceEncoder {
         this.ppsList = new ArrayList();
     }
 
-    public void initDefaultFrameFromSingleImage(BufferedImage image) throws IOException {
-        Picture pic = makeFrame(image, ColorSpace.YUV420J);
-        if (this.toEncode == null) {
-            this.toEncode = Picture.create(pic.getWidth(), pic.getHeight(), this.encoder.getSupportedColorSpaces()[0]);
-        }
-        this.transform.transform(pic, this.toEncode);
+    public Picture createFrameFromSingleImage(BufferedImage image) throws IOException {
+        Picture pic = AWTUtil.fromBufferedImage(image);
+        Picture renderedFrame = Picture.create(pic.getWidth(), pic.getHeight(), this.encoder.getSupportedColorSpaces()[0]);
+        this.transform.transform(pic, renderedFrame);
+        return renderedFrame;
     }
 
-    public long addDefaultFrameToVideo() throws IOException {
-        if (this.toEncode == null) {
-            throw new IllegalStateException("Please init default frame by call initDefaultFrameFromSingleImage");
-        }
-
-        // each time it needs to init SPS and PPS in encodeFrame, so cannot extract it
+    public long addFrameToVideo(Picture picture) throws IOException {
+        // each time it needs to init SPS and PPS in encoder.encodeFrame, so cannot extract it
         this._out.clear();
-        ByteBuffer frameByteBuffer = this.encoder.encodeFrame(this.toEncode, this._out);
+        ByteBuffer frameByteBuffer = this.encoder.encodeFrame(picture, this._out);
 
         this.spsList.clear();
         this.ppsList.clear();
         H264Utils.wipePS(frameByteBuffer, this.spsList, this.ppsList);
         H264Utils.encodeMOVPacket(frameByteBuffer);
-        this.outTrack.addFrame(new MP4Packet(frameByteBuffer, (long) this.frameNo, 25L, 100L, (long) this.frameNo, true, null, (long) this.frameNo, 0));
-        this.frameNo++;
+        this.outTrack.addFrame(new MP4Packet(frameByteBuffer, (long) this.frameNo, 25L, 1L, (long) this.frameNo, true, null, (long) this.frameNo, 0));
+        ++this.frameNo;
         return this.ch.size();
     }
 
@@ -80,32 +75,5 @@ public class SequenceEncoder {
         this.muxer.writeHeader();
         NIOUtils.closeQuietly(this.ch);
     }
-
-    private Picture makeFrame(BufferedImage bi, ColorSpace cs) {
-        DataBuffer imgdata = bi.getRaster().getDataBuffer();
-        int[] ypix = new int[imgdata.getSize()];
-        int[] upix = new int[imgdata.getSize() >> 2];
-        int[] vpix = new int[imgdata.getSize() >> 2];
-        int ipx = 0, uvoff = 0;
-
-        for (int h = 0; h < bi.getHeight(); h++) {
-            for (int w = 0; w < bi.getWidth(); w++) {
-                int elem = imgdata.getElem(ipx);
-                int r = 0x0ff & (elem >>> 16);
-                int g = 0x0ff & (elem >>> 8);
-                int b = 0x0ff & elem;
-                ypix[ipx] = ((66 * r + 129 * g + 25 * b) >> 8) + 16;
-                if ((0 != w % 2) && (0 != h % 2)) {
-                    upix[uvoff] = ((-38 * r + -74 * g + 112 * b) >> 8) + 128;
-                    vpix[uvoff] = ((112 * r + -94 * g + -18 * b) >> 8) + 128;
-                    uvoff++;
-                }
-                ipx++;
-            }
-        }
-        int[][] pix = {ypix, upix, vpix, null};
-        return new Picture(bi.getWidth(), bi.getHeight(), pix, cs);
-    }
-
 
 }

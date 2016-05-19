@@ -36,7 +36,7 @@ public class AndroidCommonUtils extends CommonUtils {
     private static final String BACKEND_FILE_LOCATION = "/mnt/sdcard/customBackend.json";
     private static final String FILE_TRANSFER_SOURCE_LOCATION = "/mnt/sdcard/Download/";
 
-    private static final String IMAGE_FOR_VIDEO_GENERATION = "aqaPictureContact_osx_userinfo_2560x1600.png";
+    private static final String IMAGE_FOR_VIDEO_GENERATION = "about_page_logo_iPad.png";
 
     public static void executeAdb(final String cmdline) throws Exception {
         executeOsXCommand(new String[]{"/bin/bash", "-c",
