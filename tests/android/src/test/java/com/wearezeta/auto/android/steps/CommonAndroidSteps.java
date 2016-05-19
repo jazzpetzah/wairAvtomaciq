@@ -1,5 +1,12 @@
 package com.wearezeta.auto.android.steps;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.*;
+
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener;
@@ -36,13 +43,6 @@ import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.*;
 
 public class CommonAndroidSteps {
     static {
@@ -341,6 +341,34 @@ public class CommonAndroidSteps {
     }
 
     /**
+     * Tap on the DENY button in permissions popup (android 6.x)
+     *
+     * @throws Exception
+     * @step. ^I deny permission$
+     */
+    @Then("^I deny permission$")
+    public void IDenyPermission() throws Exception {
+        screenState.remember();
+        pagesCollection.getCommonPage().tapByCoordinates(48, 60);
+        if (screenState.isNotChanged(2, 0.9d)) {
+            pagesCollection.getCommonPage().tapByCoordinates(48, 65);
+//            commonSteps.WaitForTime(1);
+            Thread.sleep(500);
+        }
+    }
+
+    /**
+     * Tap on the given coordinates
+     *
+     * @throws Exception
+     * @step. ^I tap by coordinates \\d+:\\d+$
+     */
+    @When("^I tap by coordinates (\\d+):(\\d+)$")
+    public void ITapByCoordinates(int x, int y) throws Exception {
+        pagesCollection.getCommonPage().tapByCoordinates(x, y);
+    }
+
+    /**
      * Swipe down from given high %8 to 90% of hight
      *
      * @throws Exception
@@ -611,7 +639,7 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. ^I wait for (.*) second[s]*$
      */
-    @When("^I wait for\\s*(\\d+) seconds?$")
+    @And("^I wait for\\s*(\\d+) seconds?$")
     public void WaitForTime(int seconds) throws Exception {
         commonSteps.WaitForTime(seconds);
     }
@@ -692,7 +720,8 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
     public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
-                                              String msg, String deviceName, String convoType, String dstConvoName) throws Exception {
+                                              String msg, String deviceName, String convoType, String dstConvoName) throws
+            Exception {
         final String msgToSend = (msg == null || msg.trim().length() == 0) ?
                 CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
@@ -1205,7 +1234,8 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. ^(.*) sends (.*) file having name "(.*)" and MIME type "(.*)" via device (.*) to (user|group conversation) (.*)$
      */
-    @When("^(.*) sends (.*) file having name \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
+    @When("^(.*) sends (.*) file having name \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (" +
+            ".*)$")
     public void ContactSendsXFileFromSE(String contact, String size, String fileFullName, String mimeType,
                                         String deviceName, String convoType, String dstConvoName) throws Exception {
         String basePath = AndroidCommonUtils.getBuildPathFromConfig(AndroidCommonUtils.class);
