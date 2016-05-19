@@ -209,7 +209,7 @@ Feature: File Transfer
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size | Type |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 1KB | TXT  |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 15MB | TXT  |
 
   @C95631 @filetransfer @regression
   Scenario Outline: Verify file can be downloaded and decrypted by receiver in group
