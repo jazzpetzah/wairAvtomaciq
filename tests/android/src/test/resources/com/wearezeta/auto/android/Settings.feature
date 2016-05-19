@@ -60,7 +60,7 @@ Feature: Settings
     And I have entered password <Password>
     And I press Log in button
     And I accept First Time overlay as soon as it is visible
-    Then I deny permission
+    Then I dismiss security alert
     And I see Contact list with contacts
     When User <Contact1> send message "<Message>" to user Myself
     And I tap new message notification "<Message>"
@@ -73,11 +73,11 @@ Feature: Settings
     And I tap Ping button from cursor toolbar
     Then I see Ping message "<PingMsg2>" in the conversation view
     When I tap Add picture button from cursor toolbar
-    Then I deny permission
+    Then I dismiss security alert
     And I press "Gallery" button
     When I tap by coordinates 25:25
     Then I wait for 2 seconds
-    Then I deny permission
+    Then I dismiss security alert
     When I press "Confirm" button
     And I tap Sketch button from cursor toolbar
     And I draw a sketch with 2 colors
@@ -85,12 +85,13 @@ Feature: Settings
     And I tap the recent picture in the conversation view
     Then I swipe down from 50%
     When I tap Audio Call button from top toolbar
-    Then I deny permission
+    Then I dismiss security alert
     And I do not see ongoing call
     And I see alert message containing "Calling not available" in the title
     And I tap OK button on the alert
     When I tap Video Call button from top toolbar
-    Then I deny permission
+    Then I dismiss security alert
+    And I dismiss security alert if it is visible
     And I do not see ongoing video call
     And I see alert message containing "Calling not available" in the title
     And I tap OK button on the alert
@@ -107,15 +108,16 @@ Feature: Settings
     Given <Contact1> starts instance using <CallBackend>
     When <Contact1> calls me
     Then I wait for 5 seconds
-    And I deny permission
+    And I dismiss security alert
     And I see alert message containing "Calling not available" in the title
     And I tap OK button on the alert
     Then I do not see incoming call
     And <Contact1> stops calling me
     Given <Contact2> starts instance using <CallBackend2>
     When <Contact2> starts a video call to me
-    Then I wait for 10 seconds
-    And I deny permission
+    Then I wait for 7 seconds
+    And I dismiss security alert
+    And I dismiss security alert if it is visible
     And I see alert message containing "Calling not available" in the title
     And I tap OK button on the alert
     And I do not see ongoing video call

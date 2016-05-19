@@ -343,23 +343,6 @@ public class CommonAndroidSteps {
     }
 
     /**
-     * Tap on the DENY button in permissions popup (android 6.x)
-     *
-     * @throws Exception
-     * @step. ^I deny permission$
-     */
-    @Then("^I deny permission$")
-    public void IDenyPermission() throws Exception {
-        screenState.remember();
-        pagesCollection.getCommonPage().tapByCoordinates(48, 60);
-        if (screenState.isNotChanged(2, 0.9d)) {
-            pagesCollection.getCommonPage().tapByCoordinates(48, 65);
-//            commonSteps.WaitForTime(1);
-            Thread.sleep(500);
-        }
-    }
-
-    /**
      * Tap on the given coordinates
      *
      * @throws Exception
