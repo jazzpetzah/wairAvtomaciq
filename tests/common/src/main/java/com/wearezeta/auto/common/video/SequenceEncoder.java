@@ -71,12 +71,12 @@ public class SequenceEncoder {
     }
 
     /**
-     * Please note, it doesn't support to add different size picuture into Picture.
-     * Such as first you add the picture 10 * 10, second time you cannot add the picture 100* 100
-     * You need to resize all pictures into same size
+     * Please note, it doesn't support to add pictures with different size into Video.
+     * Such as first you add the picture with size 10 * 10, second time you cannot add the picture 100 * 100
+     * You need to resize all pictures into same size at first
      *
      * @param picture
-     * @return current channel size
+     * @return current output file channel size
      * @throws IOException
      */
     public long addFrameToVideo(Picture picture) throws IOException {
