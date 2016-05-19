@@ -2,7 +2,6 @@ package com.wearezeta.auto.common.video;
 
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -24,7 +23,9 @@ import org.jcodec.scale.ColorUtil;
 import org.jcodec.scale.Transform;
 
 /**
- * SequenceEncoder come from org.jcodec.api.awt.SequenceEncoder,
+ * SequenceEncoder come from org.jcodec.api.awt.SequenceEncoder, please check reference:
+ * https://github.com/jcodec/jcodec/blob/master/src/main/java/org/jcodec/api/SequenceEncoder.java
+ *
  * I copy it and update it to retrieve the channel size
  */
 public class SequenceEncoder {
@@ -35,13 +36,18 @@ public class SequenceEncoder {
     private ArrayList<ByteBuffer> ppsList;
     private FramesMP4MuxerTrack outTrack;
     private ByteBuffer _out;
-    private int frameNo;
+    private long frameNo;
     private MP4Muxer muxer;
+
+    private static final int TRACK_TIME_SCALE = 25;
+    private static final long MP4_PACKET_TIME_SCALE = 25;
+    private static final long MP4_PACKET_DURATION = 1;
+    private static final int MP4_PACKET_ENTRY_NO = 0;
 
     public SequenceEncoder(File out) throws IOException {
         this.ch = NIOUtils.writableFileChannel(out);
         this.muxer = new MP4Muxer(this.ch, Brand.MP4);
-        this.outTrack = this.muxer.addTrack(TrackType.VIDEO, 25);
+        this.outTrack = this.muxer.addTrack(TrackType.VIDEO, TRACK_TIME_SCALE);
         this._out = ByteBuffer.allocate(12441600);
         this.encoder = new H264Encoder();
         this.transform = ColorUtil.getTransform(ColorSpace.RGB, this.encoder.getSupportedColorSpaces()[0]);
@@ -58,7 +64,8 @@ public class SequenceEncoder {
      */
     public Picture createFrameFromSingleImage(BufferedImage image) throws IOException {
         Picture pic = AWTUtil.fromBufferedImage(image);
-        Picture renderedFrame = Picture.create(pic.getWidth(), pic.getHeight(), this.encoder.getSupportedColorSpaces()[0]);
+        Picture renderedFrame = Picture.create(pic.getWidth(), pic.getHeight(),
+                this.encoder.getSupportedColorSpaces()[0]);
         this.transform.transform(pic, renderedFrame);
         return renderedFrame;
     }
@@ -81,7 +88,8 @@ public class SequenceEncoder {
         this.ppsList.clear();
         H264Utils.wipePS(frameByteBuffer, this.spsList, this.ppsList);
         H264Utils.encodeMOVPacket(frameByteBuffer);
-        this.outTrack.addFrame(new MP4Packet(frameByteBuffer, (long) this.frameNo, 25L, 1L, (long) this.frameNo, true, null, (long) this.frameNo, 0));
+        this.outTrack.addFrame(new MP4Packet(frameByteBuffer, this.frameNo, MP4_PACKET_TIME_SCALE, MP4_PACKET_DURATION,
+                this.frameNo, true, null, this.frameNo, MP4_PACKET_ENTRY_NO));
         ++this.frameNo;
         return this.ch.size();
     }

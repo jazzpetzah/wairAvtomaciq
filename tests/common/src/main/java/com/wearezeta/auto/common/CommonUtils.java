@@ -643,6 +643,9 @@ public class CommonUtils {
 
     /**
      * Create Random Movie
+     * Notice the reason why the while loop without body is : it waits for the size of Video output chanel
+     * greater than the expected size
+     * Thus the size of final output file cannot be exact same to your expected size
      *
      * @param filePath          the path you want to save the output video
      * @param size              the expected size of video
@@ -651,13 +654,10 @@ public class CommonUtils {
      */
     public static void generateVideoFile(String filePath, String size, String baseImageFilePath) throws Exception {
         final long expectedSize = getFileSizeFromString(size);
-
         SequenceEncoder sequenceEncoder = new SequenceEncoder(new File(filePath));
         BufferedImage in = ImageIO.read(new File(baseImageFilePath));
-        Picture renderedFrame =  sequenceEncoder.createFrameFromSingleImage(in);
-
-        while (sequenceEncoder.addFrameToVideo(renderedFrame) < expectedSize);
-
+        Picture renderedFrame = sequenceEncoder.createFrameFromSingleImage(in);
+        while (sequenceEncoder.addFrameToVideo(renderedFrame) < expectedSize) ;
         sequenceEncoder.finish();
     }
 
