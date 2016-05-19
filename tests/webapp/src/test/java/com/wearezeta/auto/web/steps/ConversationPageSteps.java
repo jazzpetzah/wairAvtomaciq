@@ -436,6 +436,24 @@ public class ConversationPageSteps {
     }
 
     /**
+     * Verifies if the file transfer placeholder contains correct file status only if the file status is shown at all. This
+     * is helpful in cases of UPLOADING... and DOWNLOADING... status.
+     *
+     * @param fileName the name of a file
+     * @param status   the status of the transfer
+     * @throws Exception
+     * @step. ^I verify status of file (.*) is (.*) in the conversation view$
+     */
+    @Then("^I verify status of file (.*) is (.*) in the conversation view if possible$")
+    public void IVerifyStatusOfFileIfPossible(String fileName, String status) throws Exception {
+        Optional<String> optionalStatus = context.getPagesCollection().getPage(ConversationPage.class)
+                .getOptionalFileStatusOf(fileName);
+        if (optionalStatus.isPresent()) {
+            assertThat("Wrong file status for " + fileName, optionalStatus.get(), equalTo(status));
+        }
+    }
+
+    /**
      * Verifies if the file transfer placeholder contains correct file type
      *
      * @param fileName the name of a file

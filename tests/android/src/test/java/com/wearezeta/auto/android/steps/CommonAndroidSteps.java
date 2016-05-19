@@ -15,6 +15,7 @@ import com.wearezeta.auto.android.common.logging.LoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionFailedLoggingProfile;
 import com.wearezeta.auto.android.common.logging.RegressionPassedLoggingProfile;
 import com.wearezeta.auto.android.pages.AndroidPage;
+import com.wearezeta.auto.android.pages.SecurityAlertPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.AppiumServer;
@@ -43,6 +44,7 @@ import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import static com.wearezeta.auto.android.common.AndroidCommonUtils.PadButton.*;
 
 public class CommonAndroidSteps {
     static {
@@ -1411,6 +1413,37 @@ public class CommonAndroidSteps {
         } else {
             Assert.assertTrue("Wire is currently still in foreground",
                     AndroidCommonUtils.isAppNotInForeground(packageId, FOREGROUND_TIMEOUT_MILLIS));
+        }
+    }
+
+    /**
+     * Tap Accept/Deny button on Marshmallow's security alert
+     *
+     * @param action            either accept or dismiss
+     * @param throwIfNotVisible equals to null if an exception is expected in case the security alert is not visible
+     * @throws Exception
+     * @step. ^I (accept|dismiss) security alert( if it is visible)?$
+     */
+    @When("^I (accept|dismiss) security alert( if it is visible)?$")
+    public void IDoAlertAction(String action, String throwIfNotVisible) throws Exception {
+        final SecurityAlertPage dstPage = pagesCollection.getPage(SecurityAlertPage.class);
+        switch (action.toLowerCase()) {
+            case "accept":
+                if (throwIfNotVisible == null) {
+                    dstPage.accept();
+                } else {
+                    dstPage.acceptIfVisible();
+                }
+                break;
+            case "dismiss":
+                if (throwIfNotVisible == null) {
+                    dstPage.dismiss();
+                } else {
+                    dstPage.dismissIfVisible();
+                }
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown action %s", action));
         }
     }
 }

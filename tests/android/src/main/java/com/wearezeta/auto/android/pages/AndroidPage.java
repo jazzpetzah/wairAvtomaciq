@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.uiautomation.UIAutomatorDriver;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -43,6 +44,15 @@ public abstract class AndroidPage extends BasePage {
     @Override
     protected ZetaAndroidDriver getDriver() throws Exception {
         return (ZetaAndroidDriver) super.getDriver();
+    }
+
+    /**
+     * I expect this driver to be stateless
+     */
+    private static final UIAutomatorDriver UI_AUTOMATOR_DRIVER = new UIAutomatorDriver();
+
+    protected UIAutomatorDriver getUIAutomatorDriver() throws Exception {
+        return UI_AUTOMATOR_DRIVER;
     }
 
     @SuppressWarnings("unchecked")

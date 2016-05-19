@@ -334,7 +334,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
     }
 
     private static String getAdbOutput(String cmdLine) throws Exception {
-        String result = "";
+        final StringBuilder result = new StringBuilder();
         String adbCommand = ADB_PREFIX + "adb " + cmdLine;
         final Process process = Runtime.getRuntime().exec(
                 new String[]{"/bin/bash", "-c", adbCommand});
@@ -344,18 +344,17 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         }
         BufferedReader in = null;
         try {
-            in = new BufferedReader(new InputStreamReader(
-                    process.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String s;
             while ((s = in.readLine()) != null) {
-                result = result + s + "\n";
+                result.append(s).append("\n");
             }
         } finally {
             if (in != null) {
                 in.close();
             }
         }
-        return result;
+        return result.toString().trim();
     }
 
     /**
@@ -413,11 +412,9 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
                 sendButtonRow = -3;
             }
             assert keyboardButtons.size() >= Math.abs(sendButtonRow) : "Send button cannot be found on the keyboard";
-            final List<Rect> dstRow = keyboardButtons.get(keyboardButtons
-                    .size() + sendButtonRow);
+            final List<Rect> dstRow = keyboardButtons.get(keyboardButtons.size() + sendButtonRow);
             final Rect dstRect = dstRow.get(dstRow.size() - 1);
-            this.tap(1, dstRect.x + dstRect.width / 2, dstRect.y
-                    + dstRect.height / 2, 50);
+            this.tap(1, dstRect.x + dstRect.width / 2, dstRect.y + dstRect.height / 2, 50);
         } finally {
             screenshot.delete();
         }

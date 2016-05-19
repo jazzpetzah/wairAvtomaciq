@@ -18,6 +18,7 @@ import cucumber.api.PendingException;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -193,7 +194,7 @@ public class ConversationPage extends WebPage {
     }
 
     private static List<String> getTextOfPresentElements(By locator,
-                                                         WebDriver driver) throws Exception {
+            WebDriver driver) throws Exception {
         final List<WebElement> headers = driver.findElements(locator);
         return headers.stream().filter(a -> a.isDisplayed())
                 .map(a -> a.getText().replace("\n", ""))
@@ -201,7 +202,7 @@ public class ConversationPage extends WebPage {
     }
 
     private static List<String> getTextOfDisplayedElements(By locator,
-                                                           WebDriver driver) throws Exception {
+            WebDriver driver) throws Exception {
         final List<WebElement> headers = driver.findElements(locator);
         return headers.stream().filter(a -> DriverUtils.isElementPresentAndDisplayed((RemoteWebDriver) driver, a))
                 .map(a -> a.getText().replace("\n", ""))
@@ -209,7 +210,7 @@ public class ConversationPage extends WebPage {
     }
 
     private static boolean containsAllCaseInsensitive(String text,
-                                                      Set<String> parts) {
+            Set<String> parts) {
         for (String part : parts) {
             if (!text.replaceAll(" +", " ").toLowerCase()
                     .contains(part.toLowerCase())) {
@@ -262,10 +263,9 @@ public class ConversationPage extends WebPage {
     }
 
     /**
-     * An expectation for checking that a system message is visible that
-     * contains all strings of the expected strings.
+     * An expectation for checking that a system message is visible that contains all strings of the expected strings.
      *
-     * @param locator       used to find the element
+     * @param locator used to find the element
      * @param expectedTexts the strings that should be found in a certain system message
      * @return returns true if found
      */
@@ -299,10 +299,10 @@ public class ConversationPage extends WebPage {
     }
 
     /**
-     * An expectation for checking that a system message is present in the dom that
-     * contains all strings of the expected strings.
+     * An expectation for checking that a system message is present in the dom that contains all strings of the expected
+     * strings.
      *
-     * @param locator       used to find the element
+     * @param locator used to find the element
      * @param expectedTexts the strings that should be found in a certain system message
      * @return returns true if found
      */
@@ -336,7 +336,7 @@ public class ConversationPage extends WebPage {
     }
 
     public int getNumberOfElementsContainingText(final By locator,
-                                                 final Set<String> expectedTexts) throws Exception {
+            final Set<String> expectedTexts) throws Exception {
         int count = 0;
         List<String> elements = getTextOfDisplayedElements(locator, getDriver());
         for (String element : elements) {
@@ -419,7 +419,6 @@ public class ConversationPage extends WebPage {
 
     public void sendPicture(String pictureName) throws Exception {
         final String picturePath = WebCommonUtils.getFullPicturePath(pictureName);
-        hoverOverConversation();
         moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendImageInput);
         if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
             WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver().getNodeIp());
@@ -442,8 +441,8 @@ public class ConversationPage extends WebPage {
     public void moveCssSelectorIntoViewport(String selector) throws Exception {
         final String showPathInputJScript = "$(\"" + selector + "\").css({'left': -200});";
         getDriver().executeScript(showPathInputJScript);
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(selector)) : "Could not move element " +
-                "with selector " + selector + " into viewport";
+        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(selector)) : "Could not move element "
+                + "with selector " + selector + " into viewport";
     }
 
     public void moveCssSelectorOutOfViewport(String selector) throws Exception {
@@ -453,7 +452,6 @@ public class ConversationPage extends WebPage {
 
     public void sendFile(String fileName) throws Exception {
         final String filePath = WebCommonUtils.getFullFilePath("filetransfer/" + fileName);
-        hoverOverConversation();
         moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendFileInput);
         filePathInput.sendKeys(filePath);
         moveCssSelectorOutOfViewport(WebAppLocators.ConversationPage.cssSendFileInput);
@@ -505,56 +503,45 @@ public class ConversationPage extends WebPage {
     }
 
     public void clickPingButton() throws Exception {
-        hoverOverConversation();
         final By locator = By
                 .cssSelector(WebAppLocators.ConversationPage.cssPingButton);
         assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 locator, 2) : "Ping button has not been shown after 2 seconds";
-        assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-                pingButton) : "Ping button has to be clickable";
         pingButton.click();
     }
 
     public boolean isConversationInputVisible() throws Exception {
-        hoverOverConversation();
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(WebAppLocators.ConversationPage
-                .idConversationInput));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(WebAppLocators.ConversationPage.idConversationInput));
     }
 
     public boolean isImageButtonVisible() throws Exception {
-        hoverOverConversation();
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
-                .cssSendImageInput));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(
+                WebAppLocators.ConversationPage.cssSendImageInput));
     }
 
     public boolean isCallButtonVisible() throws Exception {
-        hoverOverConversation();
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
-                .cssCallButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.
+                cssSelector(WebAppLocators.ConversationPage.cssCallButton));
     }
 
     public boolean isFileButtonVisible() throws Exception {
-        hoverOverConversation();
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
-                .cssSendFileButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(
+                WebAppLocators.ConversationPage.cssSendFileButton));
     }
 
     public boolean isPingButtonVisible() throws Exception {
-        hoverOverConversation();
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
-                .cssPingButton));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.
+                cssSelector(WebAppLocators.ConversationPage.cssPingButton));
     }
 
     public void clickCallButton() throws Exception {
-        hoverOverConversation();
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 By.cssSelector(WebAppLocators.ConversationPage.cssCallButton));
         callButton.click();
     }
 
     public void clickVideoCallButton() throws Exception {
-        hoverOverConversation();
-        assert DriverUtils
+        DriverUtils
                 .waitUntilLocatorIsDisplayed(
                         this.getDriver(),
                         By.cssSelector(WebAppLocators.ConversationPage.cssVideoCallButton));
@@ -620,7 +607,7 @@ public class ConversationPage extends WebPage {
     }
 
     public String getSecondLastTextMessage() throws Exception {
-        assert DriverUtils
+        DriverUtils
                 .waitUntilLocatorIsDisplayed(
                         getDriver(),
                         By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastTextMessage));
@@ -664,13 +651,6 @@ public class ConversationPage extends WebPage {
 
     public void clickGIFButton() throws Exception {
         gifButton.click();
-    }
-
-    public boolean isLastTextMessage(String expectedMessage) throws Exception {
-        return DriverUtils
-                .waitUntilLocatorIsDisplayed(
-                        getDriver(),
-                        By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
     }
 
     public String getMessageFromInputField() {
@@ -773,13 +753,14 @@ public class ConversationPage extends WebPage {
     }
 
     public Object getConnectedMessageLabel() throws Exception {
-        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage.cssConnectedMessageLabel));
+        DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(
+                WebAppLocators.ConversationPage.cssConnectedMessageLabel));
         return connectedMessageLabel.getText();
     }
 
     public boolean isConversationVerified() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage
-                .cssConversationVerifiedIcon));
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(
+                WebAppLocators.ConversationPage.cssConversationVerifiedIcon));
     }
 
     public boolean isFileTransferDisplayed(String fileName) throws Exception {
@@ -809,9 +790,19 @@ public class ConversationPage extends WebPage {
 
     public String getFileStatusOf(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileStatus, fileName));
-        assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No file status element found for locator " +
-                locator;
+        assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No file status element found for locator "
+                + locator;
         return getDriver().findElement(locator).getText();
+    }
+
+    public Optional<String> getOptionalFileStatusOf(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileStatus, fileName));
+        Optional<WebElement> element = DriverUtils.getElementIfDisplayed(getDriver(), locator);
+        if(element.isPresent()) {
+            return Optional.of(element.get().getText());
+        } else {
+            return Optional.empty();
+        }
     }
 
     public String getFileTypeOf(String fileType) throws Exception {
@@ -846,10 +837,14 @@ public class ConversationPage extends WebPage {
         Thread.sleep(1000);
         SortedSet<Message> mappedMessages = new TreeSet<>();
         for (WebElement message : messages) {
-            String text = message.findElement(By.cssSelector(".text")).getText();
-            String time = message.findElement(By.cssSelector(".time")).getAttribute("data-timestamp");
-            String senderId = message.findElement(By.cssSelector("user-avatar")).getAttribute("user-id");
-            mappedMessages.add(new Message(text, senderId, Instant.ofEpochMilli(Long.parseLong(time))));
+            log.debug("message: " + message.getText());
+            // Ignores system messages
+            if(!message.findElements(By.cssSelector(".message-body")).isEmpty()) {
+                String text = message.findElement(By.cssSelector(".text")).getText();
+                String time = message.findElement(By.cssSelector(".time")).getAttribute("data-timestamp");
+                String senderId = message.findElement(By.cssSelector("user-avatar")).getAttribute("user-id");
+                mappedMessages.add(new Message(text, senderId, Instant.ofEpochMilli(Long.parseLong(time))));
+            }
         }
         return mappedMessages;
     }

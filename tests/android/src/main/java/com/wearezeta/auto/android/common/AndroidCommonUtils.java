@@ -64,23 +64,19 @@ public class AndroidCommonUtils extends CommonUtils {
         executeAdb("shell touch /sdcard/disableHockeyUpdates");
     }
 
-    private static String getAdbOutput(String cmdLine) throws Exception {
-        String result = "";
-
+    public static String getAdbOutput(String cmdLine) throws Exception {
+        final StringBuilder result = new StringBuilder();
         String adbCommand = ADB_PREFIX + "adb " + cmdLine;
-        final Process process = Runtime.getRuntime().exec(
-                new String[]{"/bin/bash", "-c", adbCommand});
+        final Process process = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", adbCommand});
         if (process == null) {
-            throw new RuntimeException(String.format(
-                    "Failed to execute command line '%s'", cmdLine));
+            throw new RuntimeException(String.format("Failed to execute command line '%s'", cmdLine));
         }
         BufferedReader in = null;
         try {
-            in = new BufferedReader(new InputStreamReader(
-                    process.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String s;
             while ((s = in.readLine()) != null) {
-                result += s + "\n";
+                result.append(s).append("\n");
             }
             outputErrorStreamToLog(process.getErrorStream());
         } finally {
@@ -89,11 +85,10 @@ public class AndroidCommonUtils extends CommonUtils {
             }
         }
 
-        return result.trim();
+        return result.toString().trim();
     }
 
-    private static String getPropertyFromAdb(String propertyName)
-            throws Exception {
+    private static String getPropertyFromAdb(String propertyName) throws Exception {
         return getAdbOutput(String.format("shell getprop %s", propertyName));
     }
 
@@ -700,4 +695,23 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     // ***
+
+    public enum PadButton {
+        RIGHT(22), LEFT(21), UP(19), DOWN(20), CENTER(23);
+
+        private int code;
+
+        PadButton(int code) {
+            this.code = code;
+        }
+
+        public int getCode() {
+            return this.code;
+        }
+    }
+
+    public static void pressPadButton(PadButton button) throws Exception {
+        executeAdb(String.format("shell input keyevent %s", button.getCode()));
+        Thread.sleep(300);
+    }
 }

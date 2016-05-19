@@ -31,7 +31,7 @@ Feature: Video Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C12101 @calling_basic @video_calling @AUDIO-868 @rc
+  @C12101 @calling_basic @video_calling @rc
   Scenario Outline: Verify accepting video call
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -42,11 +42,12 @@ Feature: Video Calling
     And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
-    Then I see Mute button on Video Calling overlay
-    And I see Switch Camera button on Video Calling overlay
-    And I see Leave button on Video Calling overlay
+    And <Contact> verifies to have 1 flows
+    And <Contact> verifies that all flows have greater than 0 bytes
+    # These steps are unstable because of Appium slowness
+    # Then I see Mute button on Video Calling overlay
+    # And I see Switch Camera button on Video Calling overlay
+    # And I see Leave button on Video Calling overlay
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
@@ -63,14 +64,14 @@ Feature: Video Calling
     When I tap on contact name <Contact>
     And I tap Video Call button
     And I see Video Calling overlay
-    And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
-    And I see Mute button on Video Calling overlay
-    And I tap Leave button on Video Calling overlay
+    Then <Contact> verifies to have 1 flows
+    And <Contact> verifies that all flows have greater than 0 bytes
+    When I tap Leave button on Video Calling overlay
     Then I see conversation view page
 
     Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | chrome      | 30      |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |
 
   @C12104 @calling_basic @video_calling
   Scenario Outline: Verify ignoring Video call
@@ -195,7 +196,6 @@ Feature: Video Calling
     And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
-    And I see Mute button on Video Calling overlay
     And I remember state of Mute button on Video Calling overlay
     And I tap Mute button on Video Calling overlay
     Then I see state of Mute button has changed on Video Calling overlay
@@ -204,7 +204,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 30      |
 
-  @C28861 @calling_basic @video_calling @AUDIO-868 @rc
+  @C28861 @calling_basic @video_calling @rc
   Scenario Outline: Verify video call continues after rejecting 2nd incoming video call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -218,34 +218,13 @@ Feature: Video Calling
     When <Contact2> starts a video call to me
     And I see call status message contains "<Contact2> calling"
     And I tap Ignore button on the Calling overlay
-    Then I see Mute button on Video Calling overlay
-    And <Contact> verifies that call status to me is changed to active in <TimeoutAlreadyInCall> seconds
+    # Then I see Mute button on Video Calling overlay
+    Then <Contact> verifies that call status to me is changed to active in <TimeoutAlreadyInCall> seconds
     And <Contact2> verifies that call status to me is changed to connecting in <Timeout> seconds
 
     Examples:
       | Name      | Contact   | Contact2  | VideoCallBackend | Timeout | TimeoutAlreadyInCall |
       | user1Name | user2Name | user3Name | chrome           | 60      | 4                    |
-
-  @C12108 @real
-  Scenario Outline: Verify disabling video in Video call and enabling it back
-    Given There are 2 user where <Name> is me
-    Given Myself is connected to <Contact>
-    Given <Contact> starts instance using <CallBackend>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When <Contact> starts a video call to <Name>
-    And I see call status message contains "<Contact> calling"
-    And I tap Accept Video button on Calling overlay
-    And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
-    And I see Switch Camera button on Video Calling overlay
-    And I remember state of Video button on Video Calling overlay
-    And I tap Call Video button on Video Calling overlay
-    Then I do not see Switch Camera button on Video Calling overlay
-    And I see state of Video button has changed on Video Calling overlay
-
-    Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | chrome      | 60      |
 
   @C48232 @calling_basic @video_calling @rc
   Scenario Outline: Verify starting two video calls in a row

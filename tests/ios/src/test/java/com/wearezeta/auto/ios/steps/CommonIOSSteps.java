@@ -1,6 +1,10 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,14 +118,12 @@ public class CommonIOSSteps {
         capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT_MILLIS);
         final String backendType = getBackendType(this.getClass());
         capabilities.setCapability("processArguments",
-                String.join(" ", new String[]{
-                        "--args",
+                String.join(" ",
                         "-UseHockey", "0",
                         "-ZMBackendEnvironmentType", backendType,
                         // https://wearezeta.atlassian.net/browse/ZIOS-5259
-                        "-AnalyticsUserDefaultsDisabledKey", "0",
-                        // "--debug-log-network"
-                })
+                        "-AnalyticsUserDefaultsDisabledKey", "0")
+                        // "--debug-log-network")
         );
 
         if (additionalCaps.isPresent()) {
@@ -340,7 +342,7 @@ public class CommonIOSSteps {
         pagesCollection.getCommonPage().dismissAlertIfVisible();
     }
 
-     /**
+    /**
      * click the corresponding on-screen keyboard button
      *
      * @param btnName button name, either Space or Hide or Done
@@ -1023,5 +1025,27 @@ public class CommonIOSSteps {
     @When("^I tap Done button$")
     public void ITapDoneButton() throws Exception {
         pagesCollection.getCommonPage().tapDoneButton();
+    }
+
+    // Check ZIOS-6570 for more details
+    private static final String SIMULATOR_VIDEO_MESSAGE_PATH = "/var/tmp/video.mp4";
+
+    /**
+     * Prepares the existing video file to be uploaded by iOS simulator
+     *
+     * @param name the name of an existing file. The file should be located in tools/img folder
+     * @throws Exception
+     * @step. ^I prepare (.*) to be uploaded as a video message$
+     */
+    @Given("^I prepare (.*) to be uploaded as a video message$")
+    public void IPrepareVideoMessage(String name) throws Exception {
+        final File srcVideo = new File(getImagesPath(getClass()) + File.separator + name);
+        if (!srcVideo.exists()) {
+            throw new IllegalArgumentException(String.format("The file %s does not exist or is not accessible",
+                    srcVideo.getCanonicalPath()));
+        }
+        final Path from = srcVideo.toPath();
+        final Path to = Paths.get(SIMULATOR_VIDEO_MESSAGE_PATH);
+        Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
     }
 }
