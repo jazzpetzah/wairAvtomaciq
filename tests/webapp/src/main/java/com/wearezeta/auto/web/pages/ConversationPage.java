@@ -54,6 +54,7 @@ public class ConversationPage extends WebPage {
 
     private static final int TIMEOUT_IMAGE_MESSAGE_UPLOAD = 40; // seconds
     private static final int TIMEOUT_FILE_UPLOAD = 100; // seconds
+    private static final int TIMEOUT_VIDEO_UPLOAD = 100; // seconds
 
     private static final Logger log = ZetaLogger.getLog(ConversationPage.class
             .getSimpleName());
@@ -830,6 +831,41 @@ public class ConversationPage extends WebPage {
         getDriver().findElement(locator).click();
     }
 
+    public boolean waitUntilVideoUploaded(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoPlay, fileName));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator, TIMEOUT_VIDEO_UPLOAD);
+    }
+
+    public void playVideo(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoPlay, fileName));
+        getDriver().findElement(locator).click();
+    }
+
+    public void pauseVideo(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoPause, fileName));
+        getDriver().findElement(locator).click();
+    }
+
+    public boolean waitUntilVideoPlays(String fileName) throws Exception {
+        By locator1 = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoPlay, fileName));
+        DriverUtils.waitUntilLocatorDissapears(getDriver(), locator1);
+        By locator2 = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoLoading, fileName));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator2, TIMEOUT_VIDEO_UPLOAD);
+    }
+
+    public boolean isSeekbarVisible(String fileName) throws Exception {
+        hoverOverVideo(fileName);
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoSeekbar, fileName));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    }
+
+    public String getTimeOfVideo(String fileName) throws Exception {
+        hoverOverVideo(fileName);
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoTime, fileName));
+        assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No time element found for locator " + locator;
+        return getDriver().findElement(locator).getText();
+    }
+
     public void scrollUp() throws Exception {
         getDriver().executeScript("$(\"" + WebAppLocators.ConversationPage.cssConversation + "\").animate({\n"
                 + "scrollTop: 0\n"
@@ -873,6 +909,16 @@ public class ConversationPage extends WebPage {
             DriverUtils.moveMouserOver(this.getDriver(), getDriver().findElement(locator));
         } else {
             throw new Exception("hovering over a message is not implemented for this browser");
+        }
+    }
+
+    private void hoverOverVideo(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideo, fileName));
+        if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
+            // native mouse over
+            DriverUtils.moveMouserOver(this.getDriver(), getDriver().findElement(locator));
+        } else {
+            throw new Exception("hovering over a video is not implemented for this browser");
         }
     }
 
