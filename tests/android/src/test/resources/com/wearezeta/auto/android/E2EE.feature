@@ -17,10 +17,10 @@ Feature: E2EE
       | Name      | Contact   | EncryptedMessage | SimpleMessage |
       | user1Name | user2Name | EncryptedYo      | SimpleYo      |
 
-  @C1847 @regression
+  @C3230 @regression
   Scenario Outline: Verify you can remove extra devices and log in successfully if too many devices are registered for your account
     Given There is 1 user where <Name> is me
-    Given User <Name> adds new devices <DeviceToRemove>,Device2,Device3,Device4,Device5,Device6,Device7
+    Given User <Name> adds new devices <DeviceToRemove>,<OtherDevice>,Device3,Device4,Device5,Device6,Device7
     # Workaround for AN-3281
     # Given I sign in using my email or phone number
     Given I sign in using my email
@@ -32,14 +32,16 @@ Feature: E2EE
     And I see device removal password confirmation dialog
     And I enter <Password> into the device removal password confirmation dialog
     And I tap OK button on the device removal password confirmation dialog
+    # Delete device will take time, should verify at first it already return back to device list view
+    And I see "<OtherDevice>" settings menu item
     And I do not see "<DeviceToRemove>" settings menu item
     And I press Back button 3 times
     When I do not see Manage Devices overlay
     Then I see Contact list with no contacts
 
     Examples: 
-      | Password      | Name      | DeviceToRemove |
-      | user1Password | user1Name | Device1        |
+      | Password      | Name      | DeviceToRemove | OtherDevice |
+      | user1Password | user1Name | Device1        | Device2     |
 
   @C3227 @rc @regression
   Scenario Outline: Verify in latest version you only can receive encrypted images in 1:1 chat
@@ -130,7 +132,7 @@ Feature: E2EE
       | user1Name | user2Name | user3Name | EncryptedYo      | SimpleYo      | HybridGroup   |
 
   @C3242 @regression
-  Scenario Outline: Verify you can receive encrypted and non-encrypted images in group chat
+  Scenario Outline: Verify you can only receive encrypted images in group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -141,7 +143,7 @@ Feature: E2EE
     And User <Contact1> sends image <ImageName> to group conversation <GroupChatName>
     And I tap on contact name <GroupChatName>
     And I scroll to the bottom of conversation view
-    Then I see 2 images in the conversation view
+    Then I see 1 images in the conversation view
 
     Examples: 
       | Name      | Contact1  | Contact2  | ImageName   | GroupChatName |

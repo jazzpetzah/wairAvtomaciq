@@ -888,12 +888,14 @@ public class ConversationViewPageSteps {
             Assert.assertTrue("Sketch button should be visible in cursor menu", getConversationViewPage().isSketchButtonVisible());
             Assert.assertTrue("Add picture button should be visible in cursor menu", getConversationViewPage().isAddPictureButtonVisible());
             Assert.assertTrue("File button should be visible in cursor menu", getConversationViewPage().isFileButtonVisible());
+            Assert.assertTrue("Audio message button should be visible in cursor menu", getConversationViewPage().isAudioButtonVisible());
         } else {
             Assert.assertTrue("Video button should be invisible in cursor menu", getConversationViewPage().isVideoButtonInvisible());
             Assert.assertTrue("Ping button should be invisible in cursor menu", getConversationViewPage().isPingButtonInvisible());
             Assert.assertTrue("Sketch button should be invisible in cursor menu", getConversationViewPage().isSketchButtonInvisible());
             Assert.assertTrue("Add picture button should be invisible in cursor menu", getConversationViewPage().isAddPictureButtonInvisible());
             Assert.assertTrue("File button should be invisible in cursor menu", getConversationViewPage().isFileButtonInvisible());
+            Assert.assertTrue("Audio message button should be invisible in cursor menu", getConversationViewPage().isAudioButtonInvisible());
         }
     }
 

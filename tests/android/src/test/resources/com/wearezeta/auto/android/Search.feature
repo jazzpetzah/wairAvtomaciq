@@ -356,7 +356,7 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     # Top people will be generated in 15 minutes after sign up
-    Given I wait until Top People list appears
+    Given Myself wait until 2 people is in the Top People list on the backend
     When I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
