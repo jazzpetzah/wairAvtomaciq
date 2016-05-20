@@ -42,4 +42,16 @@ public class VideoMessagePreviewPageSteps {
         Assert.assertTrue("The video message preview toolbar should be visible",
                 getVideoMessagePreviewPage().isToolbarVisible());
     }
+
+    /**
+     * Verify the video message compressing overlay is visible
+     *
+     * @throws Exception
+     * @step. ^I see video message compressing overlay$
+     */
+    @Then("^I see video message compressing overlay$")
+    public void ISeeVideoMessageCompressingOverlay() throws Exception {
+        Assert.assertTrue("The video message compressing overlay should be visible",
+                getVideoMessagePreviewPage().isCompressingOverlayVisible());
+    }
 }
