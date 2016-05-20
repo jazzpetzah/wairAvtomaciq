@@ -143,7 +143,7 @@ Feature: E2EE
     And User <Contact1> sends image <ImageName> to group conversation <GroupChatName>
     And I tap on contact name <GroupChatName>
     And I scroll to the bottom of conversation view
-    Then I see 1 images in the conversation view
+    Then I see 1 image in the conversation view
 
     Examples: 
       | Name      | Contact1  | Contact2  | ImageName   | GroupChatName |
