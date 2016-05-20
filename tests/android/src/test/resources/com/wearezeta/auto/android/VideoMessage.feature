@@ -67,3 +67,41 @@ Feature: Video Message
     Examples:
       | Name      | Contact   | FileName    |
       | user1Name | user2Name | testing.mp4 |
+
+  @C119739 @staging
+  Scenario Outline: Verify notification is shown if video is too big (more than 25mb)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I push <FileSize> video file having name "<FileFullName>" to the device
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When I tap Video message button from cursor toolbar
+    Then I see alert message containing "<AlertTitle>" in the title
+    And I do not see Video Message container in the conversation view
+
+    Examples:
+      | Name      | Contact   | FileSize | FileFullName      | AlertTitle      |
+      | user1Name | user2Name | 26.00MB  | random_video.mp4  | Video too large |
+
+  @C119745 @staging
+  Scenario Outline: Verify canceling sending video message during upload
+    Given There are 2 users where <Name> is me
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I push <FileSize> video file having name "<FileFullName>" to the device
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When I tap Video message button from cursor toolbar
+    And I see video message preview
+    And I send recorded video from video message preview
+    And I see Video Message container in the conversation view
+    And I tap X button on the recent video message in the conversation view
+    Then I do not see Video Message container in the conversation view
+
+    Examples:
+      | Name      | Contact   | FileFullName     | FileSize |
+      | user1Name | user2Name | random_video.mp4 | 20MB     |

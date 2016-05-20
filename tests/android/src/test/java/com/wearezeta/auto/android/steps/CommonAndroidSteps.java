@@ -1165,9 +1165,9 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. ^I push (.*) file having name \"(.*)\" to the device$
      */
-    @Given("^I push (.*) file having name \"(.*)\" to the device$")
-    public void IPushXFileHavingNameYToDevice(String size, String fileFullName) throws Exception {
-        AndroidCommonUtils.pushRandomFileToSdcardDownload(fileFullName, size);
+    @Given("^I push ([^\\s-]*) (video )?file having name \"(.*)\" to the device$")
+    public void IPushXFileHavingNameYToDevice(String size, String isVideoFile, String fileFullName) throws Exception {
+        AndroidCommonUtils.pushRandomFileToSdcardDownload(fileFullName, size, isVideoFile != null);
     }
 
     /**

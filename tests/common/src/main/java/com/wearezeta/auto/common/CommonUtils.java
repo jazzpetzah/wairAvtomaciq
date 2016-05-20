@@ -6,15 +6,18 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.*;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
+import com.wearezeta.auto.common.video.SequenceEncoder;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.log4j.Logger;
+import org.jcodec.common.model.Picture;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -639,12 +642,32 @@ public class CommonUtils {
     }
 
     /**
+     * Create Random Movie
+     * Notice the reason why the while loop without body is : it waits for the size of Video output chanel
+     * greater than the expected size
+     * Thus the size of final output file cannot be exact same to your expected size
+     *
+     * @param filePath          the path you want to save the output video
+     * @param size              the expected size of video
+     * @param baseImageFilePath the picture you want to use to generate the video
+     * @throws Exception
+     */
+    public static void generateVideoFile(String filePath, String size, String baseImageFilePath) throws Exception {
+        final long expectedSize = getFileSizeFromString(size);
+        SequenceEncoder sequenceEncoder = new SequenceEncoder(new File(filePath));
+        BufferedImage in = ImageIO.read(new File(baseImageFilePath));
+        Picture renderedFrame = sequenceEncoder.createFrameFromSingleImage(in);
+        while (sequenceEncoder.addFrameToVideo(renderedFrame) < expectedSize) ;
+        sequenceEncoder.finish();
+    }
+
+    /**
      * Convert formatted file size such as 50KB, 30.00MB into bytes
      *
      * @param size
      * @return file size in bytes
      */
-    public static long getFileSizeFromString(String size){
+    public static long getFileSizeFromString(String size) {
         final String[] sizeParts = size.split("(?<=\\d)\\s*(?=[a-zA-Z])");
         final int fileSize = Double.valueOf(sizeParts[0]).intValue();
         final String type = sizeParts.length > 1 ? sizeParts[1] : "";
