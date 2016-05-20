@@ -13,6 +13,7 @@ public class VideoMessagePreviewPage extends AndroidPage{
 
     private final static By idVideoPreviewContainer = By.id("fl__video_container");
     private final static By idSendVideoBtn = By.id("action_send");
+    private final static By idCompressingOverlay = By.id("fl__compression_overlay");
     private final static By idToolbar = By.id(strIdToolbar);
     private final static By xpathBackButton = By.xpath(String.format("//*[@id='%s']/*[2]", strIdToolbar));
 
@@ -27,6 +28,10 @@ public class VideoMessagePreviewPage extends AndroidPage{
 
     public boolean isToolbarVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idToolbar);
+    }
+
+    public boolean isCompressingOverlayVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCompressingOverlay);
     }
 
     public void tapOnSendVideoButton() throws Exception {
