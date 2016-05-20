@@ -74,9 +74,15 @@ public abstract class IOSPage extends BasePage {
     protected ZetaIOSDriver getDriver() throws Exception {
         try {
             return (ZetaIOSDriver) super.getDriver();
-        } catch (TimeoutException e) {
-            throw new TimeoutException((AppiumServer.getLog().orElse("Appium log is empty")) +
-                    "\n" + ExceptionUtils.getStackTrace(e));
+        } catch (ExecutionException e) {
+            if ((e.getCause() instanceof TimeoutException) ||
+                    ((e.getCause() instanceof WebDriverException) &&
+                            (e.getCause().getCause() instanceof TimeoutException))) {
+                throw new TimeoutException((AppiumServer.getLog().orElse("Appium log is empty")) +
+                        "\n" + ExceptionUtils.getStackTrace(e));
+            } else {
+                throw e;
+            }
         }
     }
 
