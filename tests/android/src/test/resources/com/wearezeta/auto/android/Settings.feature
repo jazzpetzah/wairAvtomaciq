@@ -50,7 +50,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C129781 @staging
+  @C129781 @android_m
   Scenario Outline: Deny permissions scenario
     Given There is 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -68,10 +68,6 @@ Feature: Settings
     When I tap on text input
     And I type the message "<Message>" and send it
     Then I see the message "<Message>" in the conversation view
-    When I tap Ping button from cursor toolbar
-    Then I see Ping message "<PingMsg1>" in the conversation view
-    And I tap Ping button from cursor toolbar
-    Then I see Ping message "<PingMsg2>" in the conversation view
     When I tap Add picture button from cursor toolbar
     Then I dismiss security alert
     And I press "Gallery" button
@@ -124,5 +120,5 @@ Feature: Settings
     And <Contact2> stops calling me
 
     Examples:
-      | Login      | Password      | Name      | Contact1   | Contact2  | Message | PingMsg1   | PingMsg2         | CallBackend | CallBackend2 |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name | Yo      | YOU PINGED | YOU PINGED AGAIN | autocall    | chrome       |
+      | Login      | Password      | Name      | Contact1   | Contact2  | Message | CallBackend | CallBackend2 |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | Yo      | autocall    | chrome       |
