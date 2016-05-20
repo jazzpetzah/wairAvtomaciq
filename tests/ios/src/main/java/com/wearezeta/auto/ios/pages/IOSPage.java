@@ -539,4 +539,12 @@ public abstract class IOSPage extends BasePage {
     public void tapDoneButton() throws Exception {
         getElement(nameDoneButton).click();
     }
+
+    public void installApp(File appFile) throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            IOSSimulatorHelper.installApp(appFile);
+        } else {
+            throw new NotImplementedException("Application install is only available for Simulator");
+        }
+    }
 }
