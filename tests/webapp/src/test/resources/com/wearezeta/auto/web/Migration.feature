@@ -18,7 +18,7 @@ Feature: Migration
     And I open conversation with <Contact>
     And Contact <Contact> sends message <DBVersion4> to user Myself
     And I see text message <DBVersion3>
-    And I wait for 10 seconds
+    And I wait for 20 seconds
     And I see text message <DBVersion4>
     And I deploy version with tag <DBVersion6>
     And I refresh page
@@ -27,6 +27,7 @@ Feature: Migration
     And Contact <Contact> sends message <DBVersion6> to user Myself
     And I see text message <DBVersion3>
     And I see text message <DBVersion4>
+    And I wait for 20 seconds
     And I see text message <DBVersion6>
     When I deploy latest staging version
     And I refresh page
@@ -59,9 +60,11 @@ Feature: Migration
     When I open conversation with <Contact>
     And Contact <Contact> sends message Staging to user Myself
     Then I see text message <DBVersion>
+    And I wait for 20 seconds
     And I see text message Staging
 
     Examples:
       | Login      | Password      | Name      | Contact   | DBVersion        |
       | user1Email | user1Password | user1Name | user2Name | 2016-03-10-10-25 |
       | user1Email | user1Password | user1Name | user2Name | 2016-04-06-15-06 |
+      | user1Email | user1Password | user1Name | user2Name | 2016-05-09-15-44 |

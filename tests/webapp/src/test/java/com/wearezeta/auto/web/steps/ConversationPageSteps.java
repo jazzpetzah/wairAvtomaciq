@@ -229,6 +229,12 @@ public class ConversationPageSteps {
         assertThat("No verified icon", context.getPagesCollection().getPage(ConversationPage.class).isConversationVerified());
     }
 
+    @And("^I see titlebar with (.*)$")
+    public void ISeeTitlebar(String conversationName) throws Throwable {
+        assertThat("Wrong titlebar label", context.getPagesCollection().getPage(ConversationPage.class).getTitlebarLabel(),
+                equalTo(conversationName.toUpperCase()));
+    }
+
     /**
      * Send a picture into current conversation
      *
@@ -433,6 +439,24 @@ public class ConversationPageSteps {
     public void IVerifyStatusOfFile(String fileName, String status) throws Exception {
         assertThat("Wrong file status for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                 .getFileStatusOf(fileName), equalTo(status));
+    }
+
+    /**
+     * Verifies if the file transfer placeholder contains correct file status only if the file status is shown at all. This
+     * is helpful in cases of UPLOADING... and DOWNLOADING... status.
+     *
+     * @param fileName the name of a file
+     * @param status   the status of the transfer
+     * @throws Exception
+     * @step. ^I verify status of file (.*) is (.*) in the conversation view$
+     */
+    @Then("^I verify status of file (.*) is (.*) in the conversation view if possible$")
+    public void IVerifyStatusOfFileIfPossible(String fileName, String status) throws Exception {
+        Optional<String> optionalStatus = context.getPagesCollection().getPage(ConversationPage.class)
+                .getOptionalFileStatusOf(fileName);
+        if (optionalStatus.isPresent()) {
+            assertThat("Wrong file status for " + fileName, optionalStatus.get(), equalTo(status));
+        }
     }
 
     /**

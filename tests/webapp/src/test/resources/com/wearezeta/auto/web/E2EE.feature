@@ -798,18 +798,19 @@ Feature: E2EE
   Scenario Outline: Verify you get no decryption errors when receiving messages on load
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
+    Given user <Name> adds a new device Device1 with label Label1
     Given user <Name> adds a new device Device2 with label Label2
     Given user <Name> adds a new device Device3 with label Label3
     Given user <Name> adds a new device Device4 with label Label4
     Given user <Name> adds a new device Device5 with label Label5
     Given user <Name> adds a new device Device6 with label Label6
     Given user <Contact> adds a new device Device7 with label Label7
-    Given user <Name> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     When I Sign in using login <Email> and password <Password>
     And I see the history info page
     And I click confirm on history info page
+    And I disable ad banner
     And I am signed in properly
     And I open conversation with <Contact>
     And Contact <Name> sends message <StartMessage> via device Device1 to user <Contact>
@@ -819,30 +820,14 @@ Feature: E2EE
     And Contact <Contact> sends 50 messages with prefix <PREFIX1> via device Device1 to user <Name>
     And Contact <Name> sends 50 messages with prefix <PREFIX2> via device Device1 to user <Contact>
     And I navigate to previously remembered page
+    And I disable ad banner
     And Contact <Contact> sends 60 messages with prefix <PREFIX3> via device Device1 to user <Name>
     And Contact <Name> sends 60 messages with prefix <PREFIX4> via device Device1 to user <Contact>
     And I am signed in properly
     And I open conversation with <Contact>
     And I wait for 30 seconds
     Then I do not see <UNABLE_TO_DECRYPT> action in conversation
-    And I see text message First10
-    And I see text message First20
-    And I see text message First30
-    And I see text message First40
-    And I see text message Second10
-    And I see text message Second20
-    And I see text message Second30
-    And I see text message Second40
-    And I see text message Third10
-    And I see text message Third20
-    And I see text message Third30
-    And I see text message Third40
-    And I see text message Third50
-    And I see text message Four10
-    And I see text message Four20
-    And I see text message Four30
-    And I see text message Four40
-    And I see text message Four50
+    And I verify all remembered messages are present in conversation <Contact>
 
     Examples:
       | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT | StartMessage | PREFIX1 | PREFIX2 | PREFIX3 | PREFIX4 |

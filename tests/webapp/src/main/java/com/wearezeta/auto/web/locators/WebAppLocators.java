@@ -340,10 +340,10 @@ public final class WebAppLocators {
         public static final String cssSecondLastMessage = "[data-uie-name='item-message']:nth-last-child(2)";
 
         public static final String cssLastTextMessage = cssLastMessage
-                + " .text-inner";
+                + " .text";
 
         public static final String cssSecondLastTextMessage = cssSecondLastMessage
-                + " .text-inner";
+                + " .text";
 
         public static final String cssFirstAction = cssMessage + " .action";
 
@@ -438,6 +438,8 @@ public final class WebAppLocators {
         public static final String cssConnectedMessageLabel = ".message-connected .label-xs";
 
         public static final String cssConversationVerifiedIcon = ".conversation-verified";
+
+        public static final String cssTitlebarLabel = ".conversation-titlebar-name-label";
     }
 
     public static final class ConnectToPage {

@@ -118,14 +118,12 @@ public class CommonIOSSteps {
         capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT_MILLIS);
         final String backendType = getBackendType(this.getClass());
         capabilities.setCapability("processArguments",
-                String.join(" ", new String[]{
-                        "--args",
+                String.join(" ",
                         "-UseHockey", "0",
                         "-ZMBackendEnvironmentType", backendType,
                         // https://wearezeta.atlassian.net/browse/ZIOS-5259
-                        "-AnalyticsUserDefaultsDisabledKey", "0",
-                        // "--debug-log-network"
-                })
+                        "-AnalyticsUserDefaultsDisabledKey", "0")
+                        // "--debug-log-network")
         );
 
         if (additionalCaps.isPresent()) {
