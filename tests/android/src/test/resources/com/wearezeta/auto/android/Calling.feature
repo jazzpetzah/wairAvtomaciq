@@ -304,26 +304,23 @@ Feature: Calling
       | autocall    | user1Name | user2Name | user3Name | user4Name | user5Name | MaxGroupCallChat |
 
   @C425 @id3165 @calling_basic
-  Scenario Outline: (AN-3608) Verify impossibility to connect 6th person to the call
-    Given There are 6 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
-    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <CallBackend>
+  Scenario Outline: Verify too many people in the group call
+    Given There are 11 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>, <Contact10>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
-    And <Contact1>,<Contact2>,<Contact3>,<Contact4> calls <GroupChatName>
-    And I wait for 10 seconds
-    And I swipe to accept the call
-    Then I do not see ongoing call
+    And I tap Audio Call button from top toolbar
+    Then I see alert message containing "<AlertTitle>" in the title
 
     Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName       | CallBackend |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | MaxGroupCallNegChat | autocall    |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | Contact10  | GroupChatName       | AlertTitle              |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | MaxGroupCallNegChat | Too many people to call |
 
   @C427 @id3180 @calling_advanced
-  Scenario Outline: (AN-3510) Verify receiving 1to1 call during group call and accepting it
+  Scenario Outline: Verify receiving 1to1 call during group call and accepting it
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
@@ -338,10 +335,6 @@ Feature: Calling
     And I see ongoing call
     And <Contact3> calls me
     Then I do not see incoming call
-#    Then I see incoming call
-#    And I see incoming call from <Contact3>
-#    When I swipe to accept the call
-#    Then I see ongoing call
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
