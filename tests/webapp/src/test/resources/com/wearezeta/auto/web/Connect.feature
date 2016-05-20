@@ -330,6 +330,9 @@ Feature: Connect
     When I open conversation with <User1>
     Then I see text message <Msg2>
     When I open self profile
+    And I see connected devices dialog
+    And I click OK on connected devices dialog
+    And I do not see connected devices dialog
     And I click gear button on self profile page
     And I select Log out menu item on self profile page
     And I see the clear data dialog
