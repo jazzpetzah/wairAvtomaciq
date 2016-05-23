@@ -547,9 +547,9 @@ public class ConversationViewPageSteps {
      * @step. I see my user name (.*) in conversation
      */
     @When("I see my user name (.*) in conversation")
-    public void ISeeMyNameInDialog(String name) throws Exception {
+    public void ISeeUserName(String name) throws Exception {
         Assert.assertTrue("My name: " + name + " is not displayed in dialog",
-                getConversationViewPage().isMyNameInDialogDisplayed(name));
+                getConversationViewPage().isUserNameDisplayedInConversationView(name));
     }
 
     /**
@@ -558,10 +558,10 @@ public class ConversationViewPageSteps {
      *
      * @param contact contact name
      * @throws Exception
-     * @step. ^I see dialog page with contact (.*)$
+     * @step. ^I see the conversation with (.*)$
      */
-    @When("^I see dialog page with contact (.*)$")
-    public void ISeeDialogPageWithContact(String contact) throws Exception {
+    @When("^I see the conversation with (.*)$")
+    public void ISeeConversationWith(String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         Assert.assertTrue("Dialog with user is not visible", getConversationViewPage()
                 .isConnectedToUserStartedConversationLabelVisible(contact));

@@ -159,6 +159,9 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameVideoMessageActionButton = MobileBy.AccessibilityId("VideoActionButton");
 
+    private static final Function<String, String> xpathUserNameByText = text ->
+            String.format("//UIATableCell[@name='%s']", text.toUpperCase());
+
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -447,8 +450,9 @@ public class ConversationViewPage extends IOSPage {
         getElement(nameGifButton).click();
     }
 
-    public boolean isMyNameInDialogDisplayed(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(name.toUpperCase()));
+    public boolean isUserNameDisplayedInConversationView(String name) throws Exception {
+        final By locator = By.xpath(xpathUserNameByText.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isConnectedToUserStartedConversationLabelVisible(String username) throws Exception {

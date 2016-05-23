@@ -106,7 +106,6 @@ Feature: Self Profile
     And I tap to edit my name
     And I change my name to <NewUsername>
     And I close self profile
-    And I see conversations list
     And I tap on contact name <Contact>
     Then I see my user name <NewUsername> in conversation
 

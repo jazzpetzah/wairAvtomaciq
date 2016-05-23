@@ -30,7 +30,7 @@ Feature: ContactsUI
     And I press the send an invite button
     And I see contact <Contact> in ContactsUI page list
     And I click on Open button next to user name <Contact> on ContactsUI
-    Then I see dialog page with contact <Contact>
+    Then I see the conversation with <Contact>
 
     Examples: 
       | Name      | Contact   |
