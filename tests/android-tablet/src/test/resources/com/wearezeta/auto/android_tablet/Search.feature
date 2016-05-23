@@ -130,6 +130,8 @@ Feature: Search
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     Given I see the Conversations list with conversations
     And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
@@ -154,6 +156,8 @@ Feature: Search
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     Given I see the Conversations list with conversations
     And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
@@ -220,6 +224,8 @@ Feature: Search
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     Given I see the Conversations list with conversations
     And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
@@ -324,6 +330,7 @@ Feature: Search
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
+    Given I wait until <Contact> exists in backend search results
     Given I see the Conversations list with conversations
     And I wait until <Contact> exists in backend search results
     And I open Search UI
@@ -364,6 +371,8 @@ Feature: Search
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     Given I see the Conversations list with conversations
     And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
@@ -384,6 +393,8 @@ Feature: Search
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     Given I see the Conversations list with conversations
     And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
