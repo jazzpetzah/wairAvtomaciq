@@ -33,7 +33,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameConversationInputAvatar = MobileBy.AccessibilityId("authorImage");
 
-    private static final By nameInputPlaceholderText = MobileBy.AccessibilityId("TYPE A MESSAGE …");
+    private static final By nameInputPlaceholderText = MobileBy.AccessibilityId("TYPE A MESSAGE");
 
     protected static final By nameYouRenamedConversation = MobileBy.AccessibilityId("YOU RENAMED THE CONVERSATION");
 
