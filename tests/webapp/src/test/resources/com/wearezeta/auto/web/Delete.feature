@@ -244,6 +244,7 @@ Feature: Delete
     Given I open conversation with GROUPCHAT
     When I write message MESSAGE1_NAME
     And I send message
+    And I see text message MESSAGE1_NAME
     And User <Contact1> sends message MESSAGE1_CONTACT to conversation GROUPCHAT
     And I see text message MESSAGE1_CONTACT
     And I write message MESSAGE2_NAME
@@ -252,13 +253,12 @@ Feature: Delete
     Then I see 4 messages in conversation
     When User Myself deletes the recent 1 message from user GROUPCHAT via device SecondDevice
     And I see text message MESSAGE1_CONTACT
-    And I wait for 1 seconds
+    And I do not see text message MESSAGE2_NAME
     And I see 3 messages in conversation
     When I click to delete the latest message
-    And I wait for 1 seconds
     And I click confirm to delete message
     And I see text message MESSAGE1_NAME
-    And I wait for 1 seconds
+    And I do not see text message MESSAGE1_CONTACT
     And I see 2 messages in conversation
 
     Examples:
