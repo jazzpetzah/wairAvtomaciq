@@ -36,7 +36,6 @@ Feature: Settings
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open self profile
-    And the camera button in self profile is clickable
     Then I do not see the settings button on self profile page
 
     Examples: 
