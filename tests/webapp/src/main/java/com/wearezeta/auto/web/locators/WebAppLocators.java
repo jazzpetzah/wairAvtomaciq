@@ -369,7 +369,7 @@ public final class WebAppLocators {
 
         // Video message
 
-        public static final String cssVideo = "[data-uie-name='video-asset'][data-ui-value='%s']";
+        public static final String cssVideo = "[data-uie-name='video-asset'][data-uie-value='%s']";
 
         public static final String cssVideoLoading = cssVideo + " [data-uie-name='loading-media']";
 
