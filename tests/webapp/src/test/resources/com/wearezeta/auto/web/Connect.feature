@@ -466,9 +466,9 @@ Feature: Connect
     And I click Logout button on clear data dialog
     And User <Contact1> is me
     And I Sign in using login <Contact1Email> and password <Contact1Password>
-    Then I see my avatar on top of Contact list
+    Then I am signed in properly
     And I do not see Contact list with name <Name>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user1Email    | user1Password    | user3Name |
+      | user1Email | user1Password | user1Name | user2Name | user2Email    | user2Password    | user3Name |
