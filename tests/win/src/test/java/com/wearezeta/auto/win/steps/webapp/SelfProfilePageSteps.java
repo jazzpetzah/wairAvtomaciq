@@ -12,8 +12,10 @@ import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class SelfProfilePageSteps {
 
@@ -234,5 +236,20 @@ public class SelfProfilePageSteps {
 	public void ITypeShortcutCombinationToOpenPreference() throws Exception {
 		WebappPagesCollection.getInstance().getPage(SelfProfilePage.class)
 				.pressShortCutForPreferences();
+	}
+        
+        @When("^I see the clear data dialog$")
+	public void ISeeClearDataDialog() throws Exception {
+		assertThat(webappPagesCollection.getPage(SelfProfilePage.class).isLogoutDialogShown(), is(true));
+	}
+
+	@When("^I enable checkbox to clear all data$")
+	public void IEnableClearDataCheckbox() throws Exception {
+		webappPagesCollection.getPage(SelfProfilePage.class).checkClearData();
+	}
+
+	@When("^I click Logout button on clear data dialog$")
+	public void IClickLogoutOnClearDataDialog() throws Exception {
+		webappPagesCollection.getPage(SelfProfilePage.class).clickLogoutButton();
 	}
 }
