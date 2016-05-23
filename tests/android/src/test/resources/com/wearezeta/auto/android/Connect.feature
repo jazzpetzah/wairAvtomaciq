@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @C676 @C677 @id191 @id193 @regression @rc @rc42 @torun
+  @C676 @C677 @id191 @id193 @regression @rc @rc42
   Scenario Outline: Send connection request from search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <IntermediateContact>
@@ -165,7 +165,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @C388 @id547 @regression @C111632 @torun
+  @C388 @id547 @regression @C111632
   Scenario Outline: I would not know other person has ignored my connection request
     Given There are 3 users where <Name> is me
     Given Myself is connected to <IntermediateContact>
@@ -211,7 +211,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @C696 @id553 @regression @rc @torun
+  @C696 @id553 @regression @rc
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <IntermediateContact>
@@ -237,7 +237,7 @@ Feature: Connect
       | Name      | Contact   | IntermediateContact |
       | user1Name | user2Name | user3Name           |
 
-  @C695 @id552 @regression @rc @torun
+  @C695 @id552 @regression @rc
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
     Given There are 3 users where <Name> is me
     Given Myself is connected to <IntermediateContact>
@@ -306,7 +306,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C391 @id680 @regression @torun
+  @C391 @id680 @regression
   Scenario Outline: I want to see user has been blocked within the Start UI
     Given There are 3 users where <Name> is me
     # Having the extra user is a workaround for an app bug
@@ -391,7 +391,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C705 @id1405 @regression @rc @torun
+  @C705 @id1405 @regression @rc
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <IntermediateContact>
