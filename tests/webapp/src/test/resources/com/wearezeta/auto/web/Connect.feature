@@ -157,7 +157,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I wait until <Login2> exists in backend search results
+    Given I wait until <Name2> exists in backend search results
     When I see Search is opened
     And I see Bring Your Friends or Invite People button
     And I type <Login2> in search field of People Picker
