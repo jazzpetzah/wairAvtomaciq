@@ -777,3 +777,65 @@ Feature: Calling
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName1 | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GC1       | autocall    | chrome      | 20      |
+
+  @C129912 @staging
+  Scenario Outline: Verify I can not call in a conversation with no one else left
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts instances using <WaitBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login1> and password <Password1>
+    Given I am signed in properly
+    When I open conversation with <ChatName>
+    And I call
+    Then I see the outgoing call controls for conversation <ChatName>
+    When I hang up call with conversation <ChatName>
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    Then I see Sign In page
+    When I Sign in using login <Login2> and password <Password2>
+    And I see the history info page
+    And I click confirm on history info page
+    And I am signed in properly
+    And I open conversation with <ChatName>
+    Then I see calling button
+    When I click People button in group conversation
+    And I click Leave button on Group Participants popover
+    And I click confirm leave group conversation on Group Participants popover
+    Then I do not see Contact list with name <ChatName>
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    Then I see Sign In page
+    When I Sign in using login <Login3> and password <Password3>
+    And I see the history info page
+    And I click confirm on history info page
+    And I am signed in properly
+    And I open conversation with <ChatName>
+    Then I see calling button
+    When I click People button in group conversation
+    And I click Leave button on Group Participants popover
+    And I click confirm leave group conversation on Group Participants popover
+    Then I do not see Contact list with name <ChatName>
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    Then I see Sign In page
+    When I Sign in using login <Login1> and password <Password1>
+    And I am signed in properly
+    And I open conversation with <ChatName>
+    Then I see 0 participants in the Group Participants popover
+    And I do not see calling button
+
+    Examples:
+      | Login1      | Password1      | Login2      | Password2      | Login3      | Password3      | Name      | Contact1  | Contact2  | ChatName  | WaitBackend |
+      | user1Email  | user1Password  | user2Email  | user2Password  | user3Email  | user3Password  | user1Name | user2Name | user3Name | EMPTY     | chrome      |
