@@ -49,7 +49,7 @@ Feature: Rich Media
       | Name      | Contact1  | SoudCloudLink                                               |
       | user1Name | user2Name | https://soundcloud.com/binary_for_breakfast/star-wars-theme |
       
-  @C412 @id1505 @regression @torun
+  @C412 @id1505 @regression
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (SoundCloud)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

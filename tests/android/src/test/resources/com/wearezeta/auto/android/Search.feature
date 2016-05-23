@@ -34,7 +34,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName          |
       | user1Name | user3Name | user2Name | PeoplePicker GroupChat |
 
-  @C680 @id223 @regression @rc @rc42 @torun
+  @C680 @id223 @regression @rc @rc42
   Scenario Outline: I can search for contact by partial name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -87,6 +87,7 @@ Feature: Search
     Given I delete all contacts from Address Book
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
