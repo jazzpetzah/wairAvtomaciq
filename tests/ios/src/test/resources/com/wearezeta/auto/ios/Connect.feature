@@ -4,6 +4,7 @@ Feature: Connect
   Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
+    Given <Contact2> is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search UI
@@ -108,6 +109,7 @@ Feature: Connect
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
+    Given <Contact2> is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search UI
@@ -152,7 +154,9 @@ Feature: Connect
 
   @C39 @regression @id596
   Scenario Outline: Verify you cannot send the invitation message twice
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
+    Given <Contact2> is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search UI
@@ -168,9 +172,9 @@ Feature: Connect
     And I tap on conversation <Contact> in search result
     Then I see Cancel Request button on pending profile page
 
-    Examples: 
-      | Name      | Contact   | ContactEmail |
-      | user1Name | user2Name | user2Email   |
+    Examples:
+      | Name      | Contact   | ContactEmail | Contact2 |
+      | user1Name | user2Name | user2Email   | user3Name |
 
   @C1029 @rc @regression @id2536
   Scenario Outline: Verify you can send an invitation via mail
