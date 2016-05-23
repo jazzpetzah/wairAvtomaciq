@@ -93,6 +93,9 @@ public class ConversationPage extends WebPage {
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssCallButton)
     private WebElement callButton;
 
+    @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssNobodyLeftModal)
+    private WebElement nobodyLeftModal;
+
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssVideoCallButton)
     private WebElement videoCallButton;
 
@@ -528,6 +531,11 @@ public class ConversationPage extends WebPage {
                 cssSelector(WebAppLocators.ConversationPage.cssCallButton));
     }
 
+    public boolean isNobodyToCallMsgVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.cssSelector(WebAppLocators.ConversationPage.cssNobodyLeftModal));
+    }
+
     public boolean isFileButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(
                 WebAppLocators.ConversationPage.cssSendFileButton));
@@ -708,8 +716,7 @@ public class ConversationPage extends WebPage {
         if (WebAppExecutionContext.isCurrentPlatformWindows()) {
             conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "r"));
         } else {
-            throw new PendingException(
-                    "Webdriver does not support shortcuts for Mac browsers");
+            conversationInput.sendKeys(Keys.chord(Keys.META, Keys.ALT, "r"));
         }
     }
 

@@ -777,3 +777,32 @@ Feature: Calling
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName1 | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GC1       | autocall    | chrome      | 20      |
+
+  @C129912 @staging
+  Scenario Outline: Verify I see an error when I try to call in a conversation with no one else left
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login1> and password <Password1>
+    Given I am signed in properly
+    When I open conversation with <ChatName>
+    And I click People button in group conversation
+    Then I see Group Participants popover
+    When I click on participant <Contact1> on Group Participants popover
+    And I click Remove button on Group Participants popover
+    And I confirm remove from group chat on Group Participants popover
+    And I click back button on Group Participants popover
+    And I click on participant <Contact2> on Group Participants popover
+    And I click Remove button on Group Participants popover
+    And I confirm remove from group chat on Group Participants popover
+    And I click People button in group conversation
+    Then I see 0 participants in the Group Participants popover
+    And I do not see calling button
+    When I type shortcut combination to start a call
+    Then I see nobody to call message
+
+    Examples:
+      | Login1      | Password1      | Name      | Contact1  | Contact2  | ChatName  |
+      | user1Email  | user1Password  | user1Name | user2Name | user3Name | EMPTY     |
