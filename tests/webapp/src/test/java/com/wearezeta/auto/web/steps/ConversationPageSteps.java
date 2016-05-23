@@ -1014,6 +1014,11 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).pressShortCutForCall();
     }
 
+    @Then("^I see nobody to call message")
+    public void ISeeNobodyToCallMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).isNobodyToCallMsgVisible();
+    }
+
     @And("^I click on pending user avatar$")
     public void IClickOnPendingUserAvatar() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickUserAvatar();

@@ -425,6 +425,8 @@ public final class WebAppLocators {
 
         public static final String cssCallButton = "[data-uie-name='do-call']";
 
+        public static final String cssNobodyLeftModal = "[data-uie-name=modal-call-conversation-empty']";
+
         public static final String cssVideoCallButton = "[data-uie-name='do-video-call']";
 
         public static final String cssGIFButton = "[data-uie-name='do-giphy-popover']";
