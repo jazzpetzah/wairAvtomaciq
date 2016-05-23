@@ -77,7 +77,7 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     When I see Search is opened
     And I see Bring Your Friends or Invite People button
-    And I type <Contact> in search field of People Picker
+    And I type <ContactEmail> in search field of People Picker
     And I see user <Contact> found in People Picker
     And I click on not connected user <Contact> found in People Picker
     And I see Connect To popover
@@ -85,8 +85,8 @@ Feature: Connect
     Then I see Contact list with name <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | ContactEmail |
+      | user1Email | user1Password | user1Name | user2Name | user2Email   |
 
   @C1817 @regression @WEBAPP-2685
   Scenario Outline: Verify sending a connection request to user from conversation view
@@ -112,7 +112,7 @@ Feature: Connect
   Scenario Outline: Verify 1to1 conversation is successfully created for sender end after connection is accepted
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
-    When I wait until <Login2> exists in backend search results
+    When I wait until <Name2> exists in backend search results
     And I Sign in using login <Login> and password <Password>
     And I see People Picker
     And I type <Login2> in search field of People Picker
@@ -445,7 +445,7 @@ Feature: Connect
     And I see my avatar on top of Contact list
     And I wait until <Contact1> exists in backend search results
     When I open People Picker from Contact List
-    And I type <Contact1> in search field of People Picker
+    And I type <Contact1Email> in search field of People Picker
     Then I see user <Contact1> found in People Picker
     When I click on pending user <Contact1> found in People Picker
     And I see Pending Outgoing Connection popover

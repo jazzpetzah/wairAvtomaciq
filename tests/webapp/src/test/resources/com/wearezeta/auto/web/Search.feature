@@ -83,15 +83,15 @@ Feature: Search
     Then I do not see Contact list with name <Contact>
     Then I do not see Single User Profile popover
     When I open People Picker from Contact List
-    And I type <Contact> in search field of People Picker
+    And I type <ContactEmail> in search field of People Picker
     And I select <Contact> from People Picker results
     And I see Unblock button on Single User Profile popover
     When I click Unblock button on Single User popover
     Then I see Contact list with name <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | ContactEmail |
+      | user1Email | user1Password | user1Name | user2Name | user2Email   |
 
   @C1722 @regression
   Scenario Outline: Verify you can add new user from search results from the other end
@@ -189,7 +189,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Given I wait until <Email2> exists in backend search results
+    Given I wait until <Name2> exists in backend search results
     When I see Search is opened
     And I see Bring Your Friends or Invite People button
     And I type <Email2> in search field of People Picker
