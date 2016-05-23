@@ -145,7 +145,7 @@ public class WebPage extends BasePage {
      * @throws Exception
      */
     public void breakSession(String deviceId) throws Exception {
-        String breakSession = "s = wire.app.repository.encryption.cryptobox.store.sessions;\n" +
+        String breakSession = "s = wire.app.repository.cryptography.cryptobox.store.sessions;\n" +
                 "cs = s[Object.keys(s).filter((x) => x.endsWith(\"" + deviceId + "\"))[0]];\n" +
                 "cs.session_states = {};";
         getDriver().executeScript(breakSession);

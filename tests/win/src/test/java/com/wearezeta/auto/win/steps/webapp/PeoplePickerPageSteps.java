@@ -276,6 +276,9 @@ public class PeoplePickerPageSteps {
 		}
 		googleLoginPage.setPassword(password);
 		googleLoginPage.clickSignIn();
+                if (googleLoginPage.hasApproveButton()) {
+			googleLoginPage.clickApprove();
+		}
 	}
 
 	/**

@@ -76,7 +76,7 @@ Feature: File Transfer
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
     When I click to download file <File> in the conversation view
-    Then I verify status of file <File> is DOWNLOADING… in the conversation view
+    Then I verify status of file <File> is DOWNLOADING… in the conversation view if possible
     When I wait until file <File> is downloaded completely
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view

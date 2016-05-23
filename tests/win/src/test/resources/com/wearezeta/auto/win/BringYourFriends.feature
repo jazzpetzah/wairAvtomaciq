@@ -1,6 +1,6 @@
 Feature: Bring Your Friends
 
-  @C2312 @smoke @id3502
+  @C2312 @smoke
   Scenario Outline: Use Gmail contacts import from search UI
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page

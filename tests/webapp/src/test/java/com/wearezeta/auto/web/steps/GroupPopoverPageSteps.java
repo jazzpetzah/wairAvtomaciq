@@ -452,13 +452,19 @@ public class GroupPopoverPageSteps {
 
 	@Then("I see (\\d+) participants in the Group Participants popover")
 	public void ISeeXParticipants(int amount) throws Exception {
-		assertThat("People information under conversation name",
-				context.getPagesCollection().getPage(GroupPopoverContainer.class)
-						.getPeopleCountInfo(), equalTo(String.valueOf(amount)
-						+ " PEOPLE"));
-		assertThat("Actual amount of people in popover", context.getPagesCollection()
-				.getPage(GroupPopoverContainer.class).getPeopleCount(),
-				equalTo(amount));
+		if (amount == 0) {
+			assertThat("People information under conversation name",
+					context.getPagesCollection().getPage(GroupPopoverContainer.class)
+							.getPeopleCountInfo(), equalTo(""));
+		} else {
+			assertThat("People information under conversation name",
+					context.getPagesCollection().getPage(GroupPopoverContainer.class)
+							.getPeopleCountInfo(), equalTo(String.valueOf(amount)
+							+ " PEOPLE"));
+			assertThat("Actual amount of people in popover", context.getPagesCollection()
+							.getPage(GroupPopoverContainer.class).getPeopleCount(),
+					equalTo(amount));
+		}
 	}
 
 	/**
