@@ -285,7 +285,7 @@ Feature: E2EE
       | Name      | Contact1  | EncMessage |
       | user1Name | user2Name | Bla        |
 
-  @C3515 @C3237 @regression
+  @C3515 @C3237 @regression @torun
   Scenario Outline: Verify green shield showed in other user profile when I verify all his devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

@@ -34,11 +34,12 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName          |
       | user1Name | user3Name | user2Name | PeoplePicker GroupChat |
 
-  @C680 @id223 @regression @rc @rc42
+  @C680 @id223 @regression @rc @rc42 @torun
   Scenario Outline: I can search for contact by partial name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
+    Given I wait until <Contact1> exists in backend search results
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact2>
@@ -81,7 +82,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @C56397 @regression
+  @C56397 @regression @torun
   Scenario Outline: Verify search results cleaned after closing search
     Given I delete all contacts from Address Book
     Given There are 3 users where <Name> is me
