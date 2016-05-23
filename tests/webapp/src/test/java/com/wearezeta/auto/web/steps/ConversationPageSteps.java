@@ -539,15 +539,44 @@ public class ConversationPageSteps {
     }
 
     @Then("^I verify seek bar is shown for video (.*) in the conversation view$")
-    public void IVerifySeekbar(String fileName) throws Exception {
+    public void IVerifyVideoSeekbar(String fileName) throws Exception {
         assertThat("No seekbar for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
-                .isSeekbarVisible(fileName));
+                .isVideoSeekbarVisible(fileName));
     }
 
     @Then("^I verify time for video (.*) is (.*) in the conversation view$")
     public void IVerifyTimeOfVideo(String fileName, String time) throws Exception {
         assertThat("Wrong time for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                 .getTimeOfVideo(fileName), equalTo(time));
+    }
+
+    @Then("^I wait until audio (.*) is uploaded completely$")
+    public void IWaitUntilAudioIsUploaded(String fileName) throws Exception {
+        assertThat("Upload still not finished for audio " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .waitUntilAudioUploaded(fileName));
+    }
+
+    @Then("^I click play button of audio (.*) in the conversation view$")
+    public void IClickPlayAudio(String fileName) throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).playAudio(fileName);
+    }
+
+    @Then("^I wait until audio (.*) is downloaded and starts to play$")
+    public void IWaitUntilAudioStartsPlaying(String fileName) throws Exception {
+        assertThat("Download still not finished for audio " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .waitUntilAudioPlays(fileName));
+    }
+
+    @Then("^I verify seek bar is shown for audio (.*) in the conversation view$")
+    public void IVerifyAudioSeekbar(String fileName) throws Exception {
+        assertThat("No seekbar for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .isAudioSeekbarVisible(fileName));
+    }
+
+    @Then("^I verify time for audio (.*) is changing in the conversation view$")
+    public void IVerifyTimeOfAudio(String fileName) throws Exception {
+        assertThat("Time is not changing for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .waitUntilAudioTimeChanges(fileName));
     }
 
     @When("^I click to delete the latest message$")

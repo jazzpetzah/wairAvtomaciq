@@ -11,12 +11,11 @@ Feature: Audio Message
     When I open conversation with <Contact>
     Then I see file transfer button in conversation input
     When I send audio file with length <Time> and name <File> to the current conversation
-    And I wait for 60 seconds
-    #And I wait until video <File> is uploaded completely
-    #And I click play button of video <File> in the conversation view
-    #Then I wait until video <File> is downloaded and starts to play
-    #And I verify seek bar is shown for video <File> in the conversation view
-    #And I verify time for video <File> is <Time> in the conversation view
+    And I wait until audio <File> is uploaded completely
+    And I click play button of audio <File> in the conversation view
+    Then I wait until audio <File> is downloaded and starts to play
+    And I verify time for audio <File> is changing in the conversation view
+    And I verify seek bar is shown for audio <File> in the conversation view
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Time  |
