@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @C119438 @staging
+  @C119438 @regression
   Scenario Outline: Verify group conversation history is loaded properly
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
