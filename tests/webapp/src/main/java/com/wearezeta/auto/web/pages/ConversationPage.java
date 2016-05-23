@@ -922,7 +922,8 @@ public class ConversationPage extends WebPage {
         }
     }
 
-    public void confirmDelete() {
+    public void confirmDelete() throws Exception {
+        DriverUtils.waitUntilElementClickable(this.getDriver(), doDeleteButton);
         doDeleteButton.click();
     }
 
