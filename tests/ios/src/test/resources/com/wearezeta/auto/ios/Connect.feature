@@ -270,8 +270,8 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C24 @regression @id586 @ZIOS-5335
-  Scenario Outline: Verify ignoring a connection request from another person (People view)
+  @C24 @regression @id586 @ZIOS-4985
+  Scenario Outline: (ZIOS-4985)Verify ignoring a connection request from another person (People view)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact3> sent connection request to me
