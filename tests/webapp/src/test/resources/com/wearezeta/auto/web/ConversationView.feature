@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @C119438 @staging
+  @C119438 @regression
   Scenario Outline: Verify group conversation history is loaded properly
     Given There are 3 users where <Name> is me
     Given user <Contact1> adds a new device Device1 with label Label1
@@ -391,6 +391,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    And I disable ad banner
     And I am signed in properly
     When I open conversation with <Contact>
     And Contact <Contact> sends 35 messages with prefix <READ> via device Device1 to user <Name>

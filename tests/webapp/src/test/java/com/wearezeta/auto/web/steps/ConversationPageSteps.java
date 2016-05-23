@@ -49,6 +49,7 @@ public class ConversationPageSteps {
 
     @SuppressWarnings("unused")
     private static final Logger log = ZetaLogger.getLog(ConversationPageSteps.class.getSimpleName());
+    private static final String VIDEO_MESSAGE_IMAGE = "userpicture_landscape.jpg";
 
     private String randomMessage;
     
@@ -229,6 +230,12 @@ public class ConversationPageSteps {
         assertThat("No verified icon", context.getPagesCollection().getPage(ConversationPage.class).isConversationVerified());
     }
 
+    @And("^I see titlebar with (.*)$")
+    public void ISeeTitlebar(String conversationName) throws Throwable {
+        assertThat("Wrong titlebar label", context.getPagesCollection().getPage(ConversationPage.class).getTitlebarLabel(),
+                equalTo(conversationName.toUpperCase()));
+    }
+
     /**
      * Send a picture into current conversation
      *
@@ -322,11 +329,11 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Send a file with a specific size into current conversation
+     * Generate and send a file with a specific size into current conversation
      *
-     * @param size the size of a picture file. This file should already exist in the ~/Documents folder
+     * @param size the size of a file.
+     * @param fileName the name of the file
      * @throws Exception
-     * @step. ^I send picture (.*) to the current conversation$
      */
     @When("^I send (.*) sized file with name (.*) to the current conversation$")
     public void WhenIXSizedSendFile(String size, String fileName) throws Exception {
@@ -342,6 +349,22 @@ public class ConversationPageSteps {
             f.setLength(fileSize);
         }
         f.close();
+        context.getPagesCollection().getPage(ConversationPage.class).sendFile(fileName);
+    }
+
+    /**
+     * Generate and send a video with a specific size into current conversation
+     *
+     * @param size the size of the video file.
+     * @param fileName the name of the file
+     * @throws Exception
+     */
+    @When("^I send (.*) sized video with name (.*) to the current conversation$")
+    public void WhenIXSizedSendVideo(String size, String fileName) throws Exception {
+        String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
+        path = path.replace("%40","@");
+        final String picturePath = WebCommonUtils.getFullPicturePath(VIDEO_MESSAGE_IMAGE);
+        CommonUtils.generateVideoFile(path + "/" + fileName, size, picturePath);
         context.getPagesCollection().getPage(ConversationPage.class).sendFile(fileName);
     }
 
@@ -436,6 +459,24 @@ public class ConversationPageSteps {
     }
 
     /**
+     * Verifies if the file transfer placeholder contains correct file status only if the file status is shown at all. This
+     * is helpful in cases of UPLOADING... and DOWNLOADING... status.
+     *
+     * @param fileName the name of a file
+     * @param status   the status of the transfer
+     * @throws Exception
+     * @step. ^I verify status of file (.*) is (.*) in the conversation view$
+     */
+    @Then("^I verify status of file (.*) is (.*) in the conversation view if possible$")
+    public void IVerifyStatusOfFileIfPossible(String fileName, String status) throws Exception {
+        Optional<String> optionalStatus = context.getPagesCollection().getPage(ConversationPage.class)
+                .getOptionalFileStatusOf(fileName);
+        if (optionalStatus.isPresent()) {
+            assertThat("Wrong file status for " + fileName, optionalStatus.get(), equalTo(status));
+        }
+    }
+
+    /**
      * Verifies if the file transfer placeholder contains correct file type
      *
      * @param fileName the name of a file
@@ -465,6 +506,35 @@ public class ConversationPageSteps {
     @Then("^I click to download file (.*) in the conversation view$")
     public void IDownloadFile(String fileName) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).downloadFile(fileName);
+    }
+
+    @Then("^I wait until video (.*) is uploaded completely$")
+    public void IWaitUntilVideoIsUploaded(String fileName) throws Exception {
+        assertThat("Upload still not finished for video " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .waitUntilVideoUploaded(fileName));
+    }
+
+    @Then("^I click play button of video (.*) in the conversation view$")
+    public void IClickPlay(String fileName) throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).playVideo(fileName);
+    }
+
+    @Then("^I wait until video (.*) is downloaded and starts to play$")
+    public void IWaitUntilVideoStartsPlaying(String fileName) throws Exception {
+        assertThat("Download still not finished for video " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .waitUntilVideoPlays(fileName));
+    }
+
+    @Then("^I verify seek bar is shown for video (.*) in the conversation view$")
+    public void IVerifySeekbar(String fileName) throws Exception {
+        assertThat("No seekbar for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .isSeekbarVisible(fileName));
+    }
+
+    @Then("^I verify time for video (.*) is (.*) in the conversation view$")
+    public void IVerifyTimeOfVideo(String fileName, String time) throws Exception {
+        assertThat("Wrong time for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .getTimeOfVideo(fileName), equalTo(time));
     }
 
     @When("^I click to delete the latest message$")

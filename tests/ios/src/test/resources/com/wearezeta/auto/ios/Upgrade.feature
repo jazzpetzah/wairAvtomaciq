@@ -25,6 +25,8 @@ Feature: Upgrade
     And I choose a picture from camera roll
     And I confirm my choice
     Then I see 2 photos in the dialog
+    When I restart Wire
+    Then I see 2 photos in the dialog
 
     Examples:
       | Name      | Contact   | Picture     |

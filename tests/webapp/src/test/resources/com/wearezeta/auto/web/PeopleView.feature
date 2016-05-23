@@ -295,12 +295,14 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     And I open conversation with <ChatName>
+    And I see titlebar with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
     And I change group conversation title to <ChatNameEdit> on Group Participants popover
     Then I see <Message> action in conversation
     And I see Group Participants popover
     Then I see conversation title <ChatNameEdit> on Group Participants popover
+    And I see titlebar with <ChatNameEdit>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | ChatNameEdit   | Message                  |

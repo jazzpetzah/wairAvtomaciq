@@ -3,10 +3,8 @@ package com.wearezeta.auto.ios.pages;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Optional;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 
 import com.wearezeta.auto.common.*;
@@ -18,6 +16,7 @@ import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 
@@ -73,7 +72,18 @@ public abstract class IOSPage extends BasePage {
 
     @Override
     protected ZetaIOSDriver getDriver() throws Exception {
-        return (ZetaIOSDriver) super.getDriver();
+        try {
+            return (ZetaIOSDriver) super.getDriver();
+        } catch (ExecutionException e) {
+            if ((e.getCause() instanceof TimeoutException) ||
+                    ((e.getCause() instanceof WebDriverException) &&
+                            (e.getCause().getCause() instanceof TimeoutException))) {
+                throw new TimeoutException((AppiumServer.getLog().orElse("Appium log is empty")) +
+                        "\n" + ExceptionUtils.getStackTrace(e));
+            } else {
+                throw e;
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -528,5 +538,13 @@ public abstract class IOSPage extends BasePage {
 
     public void tapDoneButton() throws Exception {
         getElement(nameDoneButton).click();
+    }
+
+    public void installApp(File appFile) throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            IOSSimulatorHelper.installApp(appFile);
+        } else {
+            throw new NotImplementedException("Application install is only available for Simulator");
+        }
     }
 }

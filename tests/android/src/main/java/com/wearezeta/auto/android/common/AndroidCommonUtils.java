@@ -36,6 +36,8 @@ public class AndroidCommonUtils extends CommonUtils {
     private static final String BACKEND_FILE_LOCATION = "/mnt/sdcard/customBackend.json";
     private static final String FILE_TRANSFER_SOURCE_LOCATION = "/mnt/sdcard/Download/";
 
+    private static final String IMAGE_FOR_VIDEO_GENERATION = "about_page_logo_iPad.png";
+
     public static void executeAdb(final String cmdline) throws Exception {
         executeOsXCommand(new String[]{"/bin/bash", "-c",
                 ADB_PREFIX + "adb " + cmdline});
@@ -64,23 +66,19 @@ public class AndroidCommonUtils extends CommonUtils {
         executeAdb("shell touch /sdcard/disableHockeyUpdates");
     }
 
-    private static String getAdbOutput(String cmdLine) throws Exception {
-        String result = "";
-
+    public static String getAdbOutput(String cmdLine) throws Exception {
+        final StringBuilder result = new StringBuilder();
         String adbCommand = ADB_PREFIX + "adb " + cmdLine;
-        final Process process = Runtime.getRuntime().exec(
-                new String[]{"/bin/bash", "-c", adbCommand});
+        final Process process = Runtime.getRuntime().exec(new String[]{"/bin/bash", "-c", adbCommand});
         if (process == null) {
-            throw new RuntimeException(String.format(
-                    "Failed to execute command line '%s'", cmdLine));
+            throw new RuntimeException(String.format("Failed to execute command line '%s'", cmdLine));
         }
         BufferedReader in = null;
         try {
-            in = new BufferedReader(new InputStreamReader(
-                    process.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String s;
             while ((s = in.readLine()) != null) {
-                result += s + "\n";
+                result.append(s).append("\n");
             }
             outputErrorStreamToLog(process.getErrorStream());
         } finally {
@@ -89,11 +87,10 @@ public class AndroidCommonUtils extends CommonUtils {
             }
         }
 
-        return result.trim();
+        return result.toString().trim();
     }
 
-    private static String getPropertyFromAdb(String propertyName)
-            throws Exception {
+    private static String getPropertyFromAdb(String propertyName) throws Exception {
         return getAdbOutput(String.format("shell getprop %s", propertyName));
     }
 
@@ -329,7 +326,7 @@ public class AndroidCommonUtils extends CommonUtils {
             if (!isInForeground) {
                 return true;
             }
-        } while (System.currentTimeMillis() - millisecondsStarted  <= timeoutMillis);
+        } while (System.currentTimeMillis() - millisecondsStarted <= timeoutMillis);
         return false;
     }
 
@@ -596,13 +593,19 @@ public class AndroidCommonUtils extends CommonUtils {
      * @param size         the expected size of file
      * @throws Exception
      */
-    public static void pushRandomFileToSdcardDownload(String fileFullName, String size)
-            throws Exception {
+    public static void pushRandomFileToSdcardDownload(String fileFullName, String size, boolean isVideo) throws Exception {
         String basePath = getBuildPathFromConfig(AndroidCommonUtils.class);
         String extension = FilenameUtils.getExtension(fileFullName);
         String fileName = FilenameUtils.getBaseName(fileFullName);
 
-        CommonUtils.createRandomAccessFile(basePath + File.separator + fileFullName, size);
+        if (isVideo) {
+            String imagesDirectoryPath = getImagesPath(CommonUtils.class);
+            CommonUtils.generateVideoFile(basePath + File.separator + fileFullName, size, imagesDirectoryPath
+                    + IMAGE_FOR_VIDEO_GENERATION);
+        } else {
+            CommonUtils.createRandomAccessFile(basePath + File.separator + fileFullName, size);
+        }
+
         AndroidCommonUtils.pushFileToSdcardDownload(basePath, fileName, extension);
     }
 
@@ -700,4 +703,23 @@ public class AndroidCommonUtils extends CommonUtils {
     }
 
     // ***
+
+    public enum PadButton {
+        RIGHT(22), LEFT(21), UP(19), DOWN(20), CENTER(23);
+
+        private int code;
+
+        PadButton(int code) {
+            this.code = code;
+        }
+
+        public int getCode() {
+            return this.code;
+        }
+    }
+
+    public static void pressPadButton(PadButton button) throws Exception {
+        executeAdb(String.format("shell input keyevent %s", button.getCode()));
+        Thread.sleep(300);
+    }
 }

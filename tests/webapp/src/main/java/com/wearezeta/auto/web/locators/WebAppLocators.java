@@ -340,14 +340,16 @@ public final class WebAppLocators {
         public static final String cssSecondLastMessage = "[data-uie-name='item-message']:nth-last-child(2)";
 
         public static final String cssLastTextMessage = cssLastMessage
-                + " .text-inner";
+                + " .text";
 
         public static final String cssSecondLastTextMessage = cssSecondLastMessage
-                + " .text-inner";
+                + " .text";
 
         public static final String cssFirstAction = cssMessage + " .action";
 
         public static final String cssLastAction = cssLastMessage + " .action";
+
+        // File transfer
 
         public static final String cssFile = "[data-uie-name='file'][data-uie-value='%s']";
 
@@ -364,6 +366,22 @@ public final class WebAppLocators {
         public static final String cssFileCancelUpload = cssFile + " [data-uie-name='file-cancel']";
 
         public static final String cssFileDownload = cssFile + " [data-uie-name='file-download']";
+
+        // Video message
+
+        public static final String cssVideo = "[data-uie-name='video-asset'][data-ui-value='%s']";
+
+        public static final String cssVideoLoading = cssVideo + " [data-uie-name='loading-media']";
+
+        public static final String cssVideoPlay = cssVideo + " [data-uie-name='do-play-media']";
+
+        public static final String cssVideoPause = cssVideo + " [data-uie-name='do-pause-media']";
+
+        public static final String cssVideoSeekbar = cssVideo + " .video-controls-seekbar";
+
+        public static final String cssVideoTime = cssVideo + " [data-uie-name='video-time']";
+
+        // images
 
         public static final String cssFirstImage = "[data-uie-name='go-image-detail'][data-uie-visible='true']:not(.image-loading)";
 
@@ -438,6 +456,8 @@ public final class WebAppLocators {
         public static final String cssConnectedMessageLabel = ".message-connected .label-xs";
 
         public static final String cssConversationVerifiedIcon = ".conversation-verified";
+
+        public static final String cssTitlebarLabel = ".conversation-titlebar-name-label";
     }
 
     public static final class ConnectToPage {
