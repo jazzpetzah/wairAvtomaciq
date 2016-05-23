@@ -54,13 +54,9 @@ Feature: Settings
   Scenario Outline: Deny permissions scenario
     Given There is 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I see welcome screen
-    When I switch to email sign in screen
-    And I have entered login <Login>
-    And I have entered password <Password>
-    And I press Log in button
-    And I accept First Time overlay as soon as it is visible
-    Then I dismiss security alert
+    When I sign in using my phone number
+    And I wait for 3 seconds
+    Then I dismiss security alert if it is visible
     And I see Contact list with contacts
     When User <Contact1> send message "<Message>" to user Myself
     And I tap new message notification "<Message>"
@@ -103,7 +99,7 @@ Feature: Settings
     Then I see a picture in the conversation view
     Given <Contact1> starts instance using <CallBackend>
     When <Contact1> calls me
-    Then I wait for 5 seconds
+    Then I wait for 7 seconds
     And I dismiss security alert
     And I see alert message containing "Calling not available" in the title
     And I tap OK button on the alert
