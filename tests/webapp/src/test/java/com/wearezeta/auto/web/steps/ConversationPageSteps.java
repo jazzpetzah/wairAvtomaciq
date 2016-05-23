@@ -30,9 +30,6 @@ import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -365,6 +362,22 @@ public class ConversationPageSteps {
         path = path.replace("%40","@");
         final String picturePath = WebCommonUtils.getFullPicturePath(VIDEO_MESSAGE_IMAGE);
         CommonUtils.generateVideoFile(path + "/" + fileName, size, picturePath);
+        context.getPagesCollection().getPage(ConversationPage.class).sendFile(fileName);
+    }
+
+    /**
+     * Generate and send a audio file with a specific size into current conversation
+     *
+     * @param length the length in format 00:00 (minutes:seconds) of the audio file.
+     * @param fileName the name of the file
+     * @throws Exception
+     */
+    @When("^I send audio file with length (.*) and name (.*) to the current conversation$")
+    public void WhenIXSizedSendAudio(String length, String fileName) throws Exception {
+        String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
+        path = path.replace("%40", "@");
+
+        CommonUtils.generateAudioFile(path + "/" + fileName, length);
         context.getPagesCollection().getPage(ConversationPage.class).sendFile(fileName);
     }
 
