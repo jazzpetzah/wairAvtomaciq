@@ -870,6 +870,21 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
+    public boolean waitUntilVideoTimeChanges(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoTime, fileName));
+        assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No time element found for locator " + locator;
+        final String time = getDriver().findElement(locator).getText();
+        Wait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
+                .withTimeout(DriverUtils.getDefaultLookupTimeoutSeconds(), TimeUnit.SECONDS)
+                .pollingEvery(1, TimeUnit.SECONDS)
+                .ignoring(NoSuchElementException.class)
+                .ignoring(StaleElementReferenceException.class)
+                .withMessage("Waited for time " + time + " to change, but is still " + getDriver().findElement(locator)
+                        .getText() + " on locator " + locator);
+        wait.until(d -> !d.findElement(locator).getText().equals(time));
+        return true;
+    }
+
     public String getTimeOfVideo(String fileName) throws Exception {
         hoverOverVideo(fileName);
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoTime, fileName));

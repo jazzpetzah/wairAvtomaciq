@@ -531,10 +531,10 @@ public class ConversationPageSteps {
                 .isSeekbarVisible(fileName));
     }
 
-    @Then("^I verify time for video (.*) is (.*) in the conversation view$")
-    public void IVerifyTimeOfVideo(String fileName, String time) throws Exception {
-        assertThat("Wrong time for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
-                .getTimeOfVideo(fileName), equalTo(time));
+    @Then("^I verify time for video (.*) is changing in the conversation view$")
+    public void IVerifyTimeOfVideo(String fileName) throws Exception {
+        assertThat("Time is not changing for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .waitUntilVideoTimeChanges(fileName));
     }
 
     @When("^I click to delete the latest message$")
