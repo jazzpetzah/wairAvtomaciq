@@ -1,6 +1,6 @@
 Feature: Delete
 
-  @C111956 @staging
+  @C111956 @regression
   Scenario Outline: Verify I can delete messages in 1:1 and from second device
     Given There are 2 users where <Name> is me
     Given user <Name> adds a new device SecondDevice with label Label1
@@ -230,7 +230,7 @@ Feature: Delete
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName |
       | user1Email | user1Password | user1Name | user2Name | user3Name | New name |
 
-  @C111957 @staging
+  @C111957 @regression
   Scenario Outline: Verify I can delete messages in group from me and others
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
