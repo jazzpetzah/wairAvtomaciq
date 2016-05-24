@@ -146,6 +146,9 @@ public class ConversationViewPage extends AndroidPage {
     private static final Function<String, String> xpathConversationPeopleChangedByExp = exp -> String
             .format("//*[@id='ttv__row_conversation__people_changed__text' and %s]", exp);
 
+    private static final Function<String, String> xpathCursorHtintByValue = value -> String
+            .format("//*[@id='ctv__cursor' and @value='%s']", value);
+
     private static final By idActionModeBarDeleteButton = By.id("action_delete");
     private static final By idActionModeBarCopyButton = By.id("action_copy");
     private static final By idActionModeBarCloseButton = By.id("action_mode_close_button");
@@ -344,6 +347,11 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isAudioButtonInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorAudioMessage);
+    }
+
+    public boolean isCursorHintVisible(String hintMessage) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.xpath(xpathCursorHtintByValue.apply(hintMessage)));
     }
 
     //endregion

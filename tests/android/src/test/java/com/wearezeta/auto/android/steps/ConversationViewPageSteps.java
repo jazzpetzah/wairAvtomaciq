@@ -969,6 +969,19 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Check whether the hint message of each cursor button is visible
+     *
+     * @param hintMessage the expected Hint message
+     * @throws Exception
+     * @step. ^I see hint message "(.*)" of cursor button$
+     */
+    @Then("^I see hint message \"(.*)\" of cursor button$")
+    public void ISeeCursorHintMessage(String hintMessage) throws Exception {
+        Assert.assertTrue(String.format("The hint message '%s' of cursor button should be visible", hintMessage),
+                getConversationViewPage().isCursorHintVisible(hintMessage));
+    }
+
+    /**
      * Check the self avatar on text input
      *
      * @throws Exception

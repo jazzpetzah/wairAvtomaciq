@@ -9,8 +9,8 @@ Feature: Audio Message
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
     When I tap Audio message button from cursor toolbar
-    Then I see tooltip of text input
+    Then I see hint message "<HintMessage>" of cursor button
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | HintMessage                          |
+      | user1Name | user2Name | Tap and hold to send a voice message |
