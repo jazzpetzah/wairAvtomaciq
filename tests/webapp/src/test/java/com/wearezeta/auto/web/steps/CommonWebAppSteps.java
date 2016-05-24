@@ -109,7 +109,7 @@ public class CommonWebAppSteps {
 
     @Given("^There is a known user (.*) with email (.*) and password (.*)$")
     public void ThereIsAKnownUser(String name, String email, String password) throws Exception {
-        context.getCommonSteps().ThereIaAKnownUser(name, email, password);
+        context.getCommonSteps().ThereIsAKnownUser(name, email, password);
     }
 
     /**

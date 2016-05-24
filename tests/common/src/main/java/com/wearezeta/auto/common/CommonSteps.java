@@ -134,7 +134,7 @@ public final class CommonSteps {
         }
     }
 
-    public void ThereIaAKnownUser(String name, String email, String password) throws Exception {
+    public void ThereIsAKnownUser(String name, String email, String password) throws Exception {
         ClientUser user = new ClientUser();
         user.setName(name);
         user.setEmail(email);

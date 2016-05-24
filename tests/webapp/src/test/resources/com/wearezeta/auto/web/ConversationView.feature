@@ -273,14 +273,14 @@ Feature: Conversation View
   @C131207 @staging
   Scenario Outline: Receive a really long message to group conversation
     Given There is a known user <Contact> with email <ContactEmail> and password <Password>
-    Given user <Contact> adds a new device Device1 with label Label1
+    Given User <Contact> removes all his registered OTR clients
     Given I switch to Sign In page
     Given I Sign in temporary using login <Login> and password <Password>
     Given I see the history info page
     Given I click confirm on history info page
     Given I am signed in properly
     When I open conversation with <ChatName>
-    And Contact <Contact> sends long message from file <File> via device Device1 to group conversation <ChatName>
+    And Contact <Contact> sends long message from file <File> to group conversation <ChatName>
     Then I verify the last text message equals file <File>
 
     Examples:
