@@ -778,7 +778,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName1 | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GC1       | autocall    | chrome      | 20      |
 
-  @C129912 @staging
+  @C129912 @regression
   Scenario Outline: Verify I see an error when I try to call in a conversation with no one else left
     Given My browser supports calling
     Given There are 3 users where <Name> is me
