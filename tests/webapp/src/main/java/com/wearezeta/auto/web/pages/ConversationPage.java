@@ -809,8 +809,12 @@ public class ConversationPage extends WebPage {
     public Optional<String> getOptionalFileStatusOf(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileStatus, fileName));
         Optional<WebElement> element = DriverUtils.getElementIfDisplayed(getDriver(), locator);
-        if(element.isPresent()) {
-            return Optional.of(element.get().getText());
+        if (element.isPresent()) {
+            try {
+                return Optional.of(element.get().getText());
+            } catch (StaleElementReferenceException e) {
+                return Optional.empty();
+            }
         } else {
             return Optional.empty();
         }
