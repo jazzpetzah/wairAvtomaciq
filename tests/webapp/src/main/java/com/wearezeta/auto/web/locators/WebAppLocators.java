@@ -377,9 +377,9 @@ public final class WebAppLocators {
 
         public static final String cssVideoPause = cssVideo + " [data-uie-name='do-pause-media']";
 
-        public static final String cssVideoSeekbar = cssVideo + " .video-controls-seekbar";
+        public static final String cssVideoSeekbar = cssVideo + " [data-uie-name='status-video-seekbar']";
 
-        public static final String cssVideoTime = cssVideo + " [data-uie-name='video-time']";
+        public static final String cssVideoTime = cssVideo + " [data-uie-name='status-video-time']";
 
         // images
 
