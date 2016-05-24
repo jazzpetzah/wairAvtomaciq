@@ -302,14 +302,14 @@ Feature: Calling Matrix
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given <Contact> starts instance using <WaitBackend>
-    Given <Contact> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact>
     And I tap Audio Call button from top toolbar
     Then I see outgoing call
-    And I see ongoing call
+    When <Contact> accepts next incoming call automatically
+    Then I see ongoing call
     When I lock the device
     And I wait for 5 seconds
     And I unlock the device
