@@ -202,7 +202,7 @@ public class ConversationViewPageSteps {
      * @param isLongTap equals to null if simple tap should be performed
      * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tools$
+     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tools$
      */
     @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tools$")
     public void IPressAddPictureButton(String isLongTap, String btnName) throws Exception {
