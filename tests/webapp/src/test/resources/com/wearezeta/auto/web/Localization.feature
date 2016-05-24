@@ -30,3 +30,29 @@ Feature: Localization
     Examples:
       | Language | LoginLink | EmailPlaceholder | PasswordPlaceholder | RememberMeText     | SignInButton | ForgotPasswordLink |
       | de       | LOGIN     | E-Mail-Adresse   | Passwort            | ANGEMELDET BLEIBEN | Login        | Passwort vergessen |
+
+  @C131208 @staging @torun
+  Scenario Outline: Verify conversation view and list has German-localized strings
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I switch language to <Language>
+    And I see Contact list with name <Contact>
+    And I see a string HINZUGEFÜGT on the page
+    And I open People Picker from Contact List
+    Then I see a placeholder <SearchPlaceHolder> on the page
+    When I close People Picker
+    And I see a string <ContactListPlaceholder> on the page
+    When I click on options button for conversation <Contact>
+    Then I see a title Stummschalten on the page
+    And I see a title Archivieren on the page
+    And I see a title Löschen on the page
+    And I see a title Blockieren on the page
+#    And I open conversation with <Contact>
+#    Then I see a placeholder <WritePlaceHolder> on the page
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | Language | ContactListPlaceholder | SearchPlaceHolder                | WritePlaceHolder        |
+      | user1Email | user1Password | user1Name | user2Name | de       | UNTERHALTUNG BEGINNEN  | Namen oder E-Mail-Adresse suchen | Schreibe eine Nachricht |
