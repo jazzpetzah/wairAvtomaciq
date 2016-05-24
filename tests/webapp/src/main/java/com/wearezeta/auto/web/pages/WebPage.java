@@ -160,7 +160,7 @@ public class WebPage extends BasePage {
         Boolean wireLoaded;
         do{
         wireLoaded = (Boolean) getDriver().executeScript("console.log('checking for app wire');\n"
-                + "return wire.app !== undefined && wire.app.repository !== undefined");
+                + "return wire !== undefined && wire.app !== undefined && wire.app.repository !== undefined");
         }while(!wireLoaded);
         getDriver().executeScript("console.log('setting banner true');\n"
                 + "wire.app.repository.user.properties.app_banner = true");
