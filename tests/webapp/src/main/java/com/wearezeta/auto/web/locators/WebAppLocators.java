@@ -369,18 +369,15 @@ public final class WebAppLocators {
 
         // Audio message
 
-        public static final String cssAudio = "audio-asset";
-        //public static final String cssAudio = "[data-uie-name='audio-asset'][data-ui-value='%s']";
+        public static final String cssAudio = "[data-uie-name='audio-asset'][data-uie-value='%s']";
 
-        public static final String cssAudioPlay = cssAudio + " .audio-button-play";
-        //public static final String cssAudioPlay = cssAudio + " [data-uie-name='do-play-media']";
+        public static final String cssAudioPlay = cssAudio + " [data-uie-name='do-play-media']";
 
-        public static final String cssAudioLoading = cssAudio + " .media-button:not(.audio-button*)";
-        // public static final String cssAudioLoading = cssAudio + " [data-uie-name='loading-media']";
+        public static final String cssAudioLoading = cssAudio + " [data-uie-name='status-loading-media']";
 
-        public static final String cssAudioSeekbar = cssAudio + " seek-bar";
+        public static final String cssAudioSeekbar = cssAudio + " [data-uie-name='status-audio-seekbar']";
 
-        public static final String cssAudioTime = cssAudio + " .audio-controls-time";
+        public static final String cssAudioTime = cssAudio + " [data-uie-name='status-audio-time']";
 
         // Video message
 
