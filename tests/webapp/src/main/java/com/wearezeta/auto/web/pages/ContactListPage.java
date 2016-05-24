@@ -631,6 +631,14 @@ public class ContactListPage extends WebPage {
         }
     }
 
+    public void pressShortcutForArchive() throws Exception {
+        if (WebAppExecutionContext.isCurrentPlatformWindows()) {
+            conversationInput.sendKeys(Keys.chord(Keys.ALT, Keys.CONTROL, "D"));
+        } else {
+            conversationInput.sendKeys(Keys.chord(Keys.META, Keys.ALT, Keys.SHIFT, "d"));
+        }
+    }
+
     public boolean isLeaveWarningModalVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.cssSelector(WebAppLocators.ContactListPage.cssLeaveModal));
