@@ -611,10 +611,8 @@ public class ConversationPage extends WebPage {
     }
 
     public String getLastTextMessage() throws Exception {
-        assert DriverUtils
-                .waitUntilLocatorIsDisplayed(
-                        getDriver(),
-                        By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
+        DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+                .cssLastTextMessage));
         return lastTextMessage.getText();
     }
 
