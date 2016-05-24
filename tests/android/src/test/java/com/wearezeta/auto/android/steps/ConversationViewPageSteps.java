@@ -118,34 +118,46 @@ public class ConversationViewPageSteps {
      * Press the corresponding button in the input controls
      * Tap file button will send file directly when you installed testing_gallery-debug.apk
      *
+     * @param longTap equals not null means long tap on the cursor button
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Video message|Ping|Add picture|Sketch|File|Audio message) button$ from cursor toolbar$
+     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button$ from cursor toolbar$
      */
-    @When("^I tap (Video message|Ping|Add picture|Sketch|File|Audio message) button from cursor toolbar$")
-    public void WhenITapCursorToolButton(String btnName) throws Exception {
-        switch (btnName.toLowerCase()) {
-            case "video message":
-                getConversationViewPage().tapVideoMessageCursorBtn();
-                break;
-            case "audio message":
-                getConversationViewPage().tapAudioMessageCursorBtn();
-                break;
-            case "ping":
-                getConversationViewPage().tapPingBtn();
-                break;
-            case "add picture":
-                getConversationViewPage().tapAddPictureBtn();
-                break;
-            case "sketch":
-                getConversationViewPage().tapSketchBtn();
-                break;
-            case "file":
-                getConversationViewPage().tapFileBtn();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
+    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button from cursor toolbar$")
+    public void WhenITapCursorToolButton(String longTap, String btnName) throws Exception {
+        if (longTap == null) {
+            switch (btnName.toLowerCase()) {
+                case "video message":
+                    getConversationViewPage().tapVideoMessageCursorBtn();
+                    break;
+                case "audio message":
+                    getConversationViewPage().tapAudioMessageCursorBtn();
+                    break;
+                case "ping":
+                    getConversationViewPage().tapPingBtn();
+                    break;
+                case "add picture":
+                    getConversationViewPage().tapAddPictureBtn();
+                    break;
+                case "sketch":
+                    getConversationViewPage().tapSketchBtn();
+                    break;
+                case "file":
+                    getConversationViewPage().tapFileBtn();
+                    break;
+                default:
+                    throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
+            }
+        } else {
+            switch (btnName.toLowerCase()) {
+                case "audio message":
+                    getConversationViewPage().longTapAudioMessagecursorBtn();
+                    break;
+                default:
+                    throw new IllegalStateException(String.format("Unknow button name '%s' for long tap", btnName));
+            }
         }
+
     }
 
     /**
@@ -1223,5 +1235,17 @@ public class ConversationViewPageSteps {
             Assert.assertTrue("The current and previous state of the button seems to be changed",
                     playButtonState.isNotChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT, MIN_PLAY_BUTTON_SCORE));
         }
+    }
+
+    /**
+     * Verify the audio message is recording
+     *
+     * @throws Exception
+     * @step. ^I see audio message recording slide$
+     */
+    @Then("^I see audio message recording slide$")
+    public void ISeeOngoingAudioMessageRecording() throws Exception {
+        Assert.assertTrue("The ongoing audio message recording should be visible",
+                getConversationViewPage().isAudioMessageRecordingSlideVisible());
     }
 }

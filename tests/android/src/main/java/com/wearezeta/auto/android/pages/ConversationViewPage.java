@@ -92,6 +92,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idCursorAudioMessage = By.id("cursor_menu_item_audio_message");
 
+    private static final By idAudioMessageRecordingSileControl = By.id("fl__audio_message__recording__slide_control");
+
     private static final By idFileActionBtn = By.id("gtv__row_conversation__file__action");
 
     private static final By idFileDialogActionOpenBtn = By.id("ttv__file_action_dialog__open");
@@ -301,6 +303,10 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idCursorAudioMessage, "Audio message button is not visible").click();
     }
 
+    public void longTapAudioMessagecursorBtn() throws Exception {
+        getDriver().longTap(getElement(idCursorAudioMessage), DriverUtils.LONG_TAP_DURATION);
+    }
+
     public boolean isPingButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorPing);
     }
@@ -352,6 +358,10 @@ public class ConversationViewPage extends AndroidPage {
     public boolean isCursorHintVisible(String hintMessage) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 By.xpath(xpathCursorHtintByValue.apply(hintMessage)));
+    }
+
+    public boolean isAudioMessageRecordingSlideVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessageRecordingSileControl);
     }
 
     //endregion
