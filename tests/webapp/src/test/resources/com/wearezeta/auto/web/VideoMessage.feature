@@ -18,5 +18,5 @@ Feature: Video Message
     And I verify time for video <File> is changing in the conversation view
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Size  | Time  |
-      | user1Email | user1Password | user1Name | user2Name | example.mp4 | 20MB  | 00:11 |
+      | Login      | Password      | Name      | Contact   | File        | Size  |
+      | user1Email | user1Password | user1Name | user2Name | example.mp4 | 20MB  |
