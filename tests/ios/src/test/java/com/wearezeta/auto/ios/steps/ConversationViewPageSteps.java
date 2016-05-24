@@ -1169,6 +1169,6 @@ public class ConversationViewPageSteps {
     @Then("^I see audio message record progress$")
     public void ISeeAudioRecordProgress() throws Exception {
         Assert.assertTrue("Audio message record progress control has not been shown",
-                getConversationViewPage().isAudioMessageProgressVisible());
+                getConversationViewPage().isAudioMessageRecordCancelVisible());
     }
 }

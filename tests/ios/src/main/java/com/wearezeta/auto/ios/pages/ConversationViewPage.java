@@ -163,6 +163,8 @@ public class ConversationViewPage extends IOSPage {
     private static final Function<String, String> xpathUserNameByText = text ->
             String.format("//UIATableCell[@name='%s']", text.toUpperCase());
 
+    private static final By nameAudioRecorderCancelButton = MobileBy.AccessibilityId("audioRecorderCancel");
+
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -709,7 +711,7 @@ public class ConversationViewPage extends IOSPage {
         getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_DURATION);
     }
 
-    public boolean isAudioMessageProgressVisible() throws Exception {
-        return true;
+    public boolean isAudioMessageRecordCancelVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAudioRecorderCancelButton);
     }
 }
