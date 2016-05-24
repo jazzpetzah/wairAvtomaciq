@@ -120,13 +120,16 @@ public class ConversationViewPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Video message|Ping|Add picture|Sketch|File) button$ from cursor toolbar$
+     * @step. ^I tap (Video message|Ping|Add picture|Sketch|File|Audio message) button$ from cursor toolbar$
      */
-    @When("^I tap (Video message|Ping|Add picture|Sketch|File) button from cursor toolbar$")
+    @When("^I tap (Video message|Ping|Add picture|Sketch|File|Audio message) button from cursor toolbar$")
     public void WhenITapCursorToolButton(String btnName) throws Exception {
         switch (btnName.toLowerCase()) {
             case "video message":
                 getConversationViewPage().tapVideoMessageCursorBtn();
+                break;
+            case "audio message":
+                getConversationViewPage().tapAudioMessageCursorBtn();
                 break;
             case "ping":
                 getConversationViewPage().tapPingBtn();

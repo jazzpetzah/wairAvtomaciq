@@ -294,6 +294,10 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idCursorVideoMessage, "Video button is not visible").click();
     }
 
+    public void tapAudioMessageCursorBtn() throws Exception {
+        getElement(idCursorAudioMessage, "Audio message button is not visible").click();
+    }
+
     public boolean isPingButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorPing);
     }
