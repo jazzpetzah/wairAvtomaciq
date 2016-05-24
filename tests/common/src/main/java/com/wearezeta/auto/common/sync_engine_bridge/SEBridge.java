@@ -20,15 +20,6 @@ public class SEBridge {
 
     private static final Logger LOG = ZetaLogger.getLog(SEBridge.class.getSimpleName());
 
-    static {
-        try {
-            CommonUtils.cleanupOutdatedMavenSnapshots(new File(ActorMessage.class.getProtectionDomain()
-                    .getCodeSource().getLocation().toURI().getPath()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private SEBridge() throws Exception {
         this.devicePool = new UserDevicePool(CommonUtils.getBackendType(CommonUtils.class),
                 CommonUtils.getOtrOnly(CommonUtils.class));

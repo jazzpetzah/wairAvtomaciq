@@ -572,31 +572,6 @@ public class CommonUtils {
         return Executors.newSingleThreadExecutor().submit(task);
     }
 
-    public static void cleanupOutdatedMavenSnapshots(File pluginJar) {
-        try {
-            if (!pluginJar.getCanonicalPath().contains(".m2")) {
-                return;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        final File allVersionsRoot = pluginJar.getParentFile().getParentFile();
-        final String currentLibVersion = pluginJar.getParentFile().getName();
-        for (String versionRootName : allVersionsRoot.list()) {
-            try {
-                final File versionRoot = new File(allVersionsRoot.getCanonicalPath() + File.separator + versionRootName);
-                if (versionRoot.isDirectory() && !versionRoot.getName().equals(currentLibVersion)) {
-                    log.debug(String.format("Cleaning outdated SE library by path %s (current lib version is %s)...",
-                            versionRoot.getAbsolutePath(), currentLibVersion));
-                    FileUtils.deleteDirectory(versionRoot);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public static boolean isRunningInJenkinsNetwork() throws UnknownHostException {
         final String prevPropValue = System.getProperty("java.net.preferIPv4Stack");
         try {
