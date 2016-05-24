@@ -185,6 +185,14 @@ public class ContactListPageSteps {
     }
 
     /**
+     * Types shortcut combination to archive conversation
+     */
+    @When("^I type shortcut combination to archive the conversation$")
+    public void ITypeShortcutCombinationToArchive() throws Exception {
+        context.getPagesCollection().getPage(ContactListPage.class).pressShortcutForArchive();
+    }
+
+    /**
      * Open archived conversations
      *
      * @throws Exception
