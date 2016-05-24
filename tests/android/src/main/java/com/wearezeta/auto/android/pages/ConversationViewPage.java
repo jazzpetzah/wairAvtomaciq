@@ -171,6 +171,10 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idVideoContainerButton = By.id("gpv__row_conversation__video_button");
 
+    private static final By idAudioMessageContainer = By.id("tffl__audio_message_container");
+
+    private static final By idAudioContainerButton = By.id("gpv__row_conversation__audio_button");
+
     private static final int MAX_CLICK_RETRIES = 5;
 
     private static final double LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR = 0.01;
@@ -897,8 +901,20 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idVideoMessageContainer);
     }
 
+    public boolean isAudioMessageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idAudioMessageContainer);
+    }
+
+    public boolean isAudioMessageNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idAudioMessageContainer);
+    }
+
     public void tapVideoMessageButton() throws Exception {
         getElement(idVideoContainerButton).click();
+    }
+
+    public void tapAudioMessageButton() throws Exception {
+        getElement(idAudioContainerButton).click();
     }
 
     public void tapVideoMessageContainer() throws Exception {

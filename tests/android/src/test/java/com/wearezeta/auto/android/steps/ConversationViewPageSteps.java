@@ -1124,9 +1124,9 @@ public class ConversationViewPageSteps {
      * @param shouldNotSee  equals to null if the container should be visible
      * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
      * @throws Exception
-     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message) container in the conversation view$
+     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message) container in the conversation view$
      */
-    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message) container in the conversation view$")
+    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message) container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (containerType.toLowerCase()) {
@@ -1145,6 +1145,10 @@ public class ConversationViewPageSteps {
             case "video message":
                 verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isVideoMessageVisible :
                         getConversationViewPage()::isVideoMessageNotVisible;
+                break;
+            case "audio message":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isAudioMessageVisible :
+                        getConversationViewPage()::isAudioMessageNotVisible;
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
@@ -1207,6 +1211,17 @@ public class ConversationViewPageSteps {
     @When("^I tap (?:Play|X|Retry) button on the recent video message in the conversation view$")
     public void ITapButtonOnVideoMessage() throws Exception {
         getConversationViewPage().tapVideoMessageButton();
+    }
+
+    /**
+     * Tap a button on audio message container
+     *
+     * @throws Exception
+     * @step. ^I tap Play button on the recent audio message in the conversation view$
+     */
+    @When("^I tap Play button on the recent audio message in the conversation view$")
+    public void ITapButtonAudioMessage() throws Exception {
+        getConversationViewPage().tapAudioMessageButton();
     }
 
     /**

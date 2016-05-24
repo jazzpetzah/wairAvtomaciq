@@ -61,3 +61,18 @@ Feature: Audio Message
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C131188 @staging
+  Scenario Outline: (Not-implemented, empty notification) Verify getting a chathead when voice message is sent in the other conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact2>
+    When <Contact1> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
+    Then I see new message notification "<Notification>"
+
+    Examples:
+      | Name      | Contact1  | Contact2  | FileName | MIMEType  | DeviceName | Notification    |
+      | user1Name | user2Name | user3Name | test.m4a | audio/mp4 | Device1    | Don't know      |
