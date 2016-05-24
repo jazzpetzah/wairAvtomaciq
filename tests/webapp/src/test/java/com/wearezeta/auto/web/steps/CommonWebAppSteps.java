@@ -36,6 +36,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertTrue;
+
 import org.openqa.selenium.logging.LogEntry;
 
 public class CommonWebAppSteps {
@@ -104,6 +105,11 @@ public class CommonWebAppSteps {
     @Then("^I see a button with (.*) on the page$")
     public void ISeeAButtonOnPage(String value) throws Throwable {
         assertThat(WebappPagesCollection.getInstance().getPage(WebPage.class).getButtonValues(), hasItem(value));
+    }
+
+    @Given("^There is a known user (.*) with email (.*) and password (.*)$")
+    public void ThereIsAKnownUser(String name, String email, String password) throws Exception {
+        context.getCommonSteps().ThereIaAKnownUser(name, email, password);
     }
 
     /**
@@ -420,6 +426,17 @@ public class CommonWebAppSteps {
                 context.getConversationStates().addMessage(dstConvoName, new Message(prefix + i, user.getId()));
                 context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, prefix + i, deviceName);
             }
+        }
+    }
+
+    @When("^Contact (.*) sends? long message from file \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
+    public void UserSendLongMessageToConversation(String msgFromUserNameAlias,
+                                              String file, String deviceName, String convoType, String dstConvoName) throws Exception {
+        String message = WebCommonUtils.getTextFromFile(file);
+        if (convoType.equals("user")) {
+            context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, message, deviceName);
+        } else {
+            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, message, deviceName);
         }
     }
 

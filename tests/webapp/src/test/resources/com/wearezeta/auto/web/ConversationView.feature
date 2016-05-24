@@ -270,6 +270,23 @@ Feature: Conversation View
       | Login                         | Password   | ChatName    | File           |
       | smoketester+68b16b1c@wire.com | aqa123456! | Lorem ipsum | loremipsum.txt |
 
+  @C131207 @staging
+  Scenario Outline: Receive a really long message to group conversation
+    Given There is a known user <Contact> with email <ContactEmail> and password <Password>
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given I switch to Sign In page
+    Given I Sign in temporary using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When I open conversation with <ChatName>
+    And Contact <Contact> sends long message from file <File> via device Device1 to group conversation <ChatName>
+    Then I verify the last text message equals file <File>
+
+    Examples:
+      | Login                         | Password   | ChatName       | File           | Contact  | ContactEmail                  |
+      | smoketester+68b16b1c@wire.com | aqa123456! | ReceiveLongMsg | loremipsum.txt | db76e9c3 | smoketester+db76e9c3@wire.com |
+
   @C1702 @regression
   Scenario Outline: Verify you can see conversation images in fullscreen
     Given There are 2 users where <Name> is me

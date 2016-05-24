@@ -134,6 +134,14 @@ public final class CommonSteps {
         }
     }
 
+    public void ThereIaAKnownUser(String name, String email, String password) throws Exception {
+        ClientUser user = new ClientUser();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(password);
+        usrMgr.appendCustomUser(user);
+    }
+
     public void ThereAreNUsers(Platform currentPlatform, int count)
             throws Exception {
         usrMgr.createUsersOnBackend(count, RegistrationStrategy.getRegistrationStrategyForPlatform(currentPlatform));
