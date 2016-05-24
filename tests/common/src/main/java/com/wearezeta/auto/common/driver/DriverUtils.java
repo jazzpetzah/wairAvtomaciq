@@ -51,7 +51,7 @@ public class DriverUtils {
     public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver, final WebElement element) {
         try {
             final boolean result = element.isDisplayed();
-                return result && isElementInScreenRect(driver, element);
+            return result && isElementInScreenRect(driver, element);
         } catch (NoSuchElementException e) {
             return false;
         }
@@ -321,6 +321,13 @@ public class DriverUtils {
         final int endY = coords.y + size.getHeight() * endPercentY / 100;
 
         driver.swipe(startX, startY, endX, endY, time);
+    }
+
+    public static void swipeFromElementToElement(AppiumDriver<? extends WebElement> driver, int durationMilleseconds,
+                                                 WebElement fromElement, WebElement toElement) {
+        final Point fromPoint = fromElement.getLocation();
+        final Point toPoint = toElement.getLocation();
+        driver.swipe(fromPoint.getX(), fromPoint.getY(), toPoint.getX(), toPoint.getY(), durationMilleseconds);
     }
 
     public static void swipeByCoordinates(

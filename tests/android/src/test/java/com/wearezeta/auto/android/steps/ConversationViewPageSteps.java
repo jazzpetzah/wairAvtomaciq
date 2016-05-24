@@ -414,6 +414,28 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Swipe up from Audio message play button to send button
+     *
+     * @throws Exception
+     * @step. ^I swipe up on audio message slide$
+     */
+    @When("^I swipe up on audio message slide$")
+    public void WhenISwipeUpOnAudioMessageSlide() throws Exception {
+        getConversationViewPage().audioMessageSlideSwipeUp();
+    }
+
+    /**
+     * Tap on send button within Audio message slide
+     *
+     * @throws Exception
+     * @step. ^I tap on audio message send button$"
+     */
+    @When("^I tap on audio message send button$")
+    public void WhenITapAudioMessageSendButton() throws Exception {
+        getConversationViewPage().tapAudioMessageSendButton();
+    }
+
+    /**
      * Checks to see that the new message notification is visible
      *
      * @param message the message content of message notification
@@ -1241,11 +1263,18 @@ public class ConversationViewPageSteps {
      * Verify the audio message is recording
      *
      * @throws Exception
-     * @step. ^I see audio message recording slide$
+     * @step. ^I see audio message is recording$
      */
-    @Then("^I see audio message recording slide$")
+    @Then("^I see audio message is recording$")
     public void ISeeOngoingAudioMessageRecording() throws Exception {
-        Assert.assertTrue("The ongoing audio message recording should be visible",
+        Assert.assertTrue("The audio message recording slide should be visible",
                 getConversationViewPage().isAudioMessageRecordingSlideVisible());
+        Assert.assertTrue("The audio message recording play button should be visible",
+                getConversationViewPage().isAudioMessagePlayButtonVisible());
+        Assert.assertTrue("The audio message recording send button should be visible",
+                getConversationViewPage().isAudioMessageSendButtonVisible());
+        Assert.assertTrue("The audio message recording cancel button should be visible",
+                getConversationViewPage().isAudioMessageCancelButtonVisible());
+
     }
 }

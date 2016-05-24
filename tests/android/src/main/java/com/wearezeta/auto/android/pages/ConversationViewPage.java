@@ -94,6 +94,12 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idAudioMessageRecordingSileControl = By.id("fl__audio_message__recording__slide_control");
 
+    private static final By idAudioMessageSendButton = By.id("gtv__audio_message__recording__send_button");
+
+    private static final By idAudioMessagePlayButton = By.id("gtv__audido_message__recording__bottom_button");
+
+    private static final By idAudioMessageCancelButton = By.id("fl__audio_message__recording__cancel_button_container");
+
     private static final By idFileActionBtn = By.id("gtv__row_conversation__file__action");
 
     private static final By idFileDialogActionOpenBtn = By.id("ttv__file_action_dialog__open");
@@ -178,6 +184,8 @@ public class ConversationViewPage extends AndroidPage {
     private static final String FILE_MESSAGE_SEPARATOR = " · ";
 
     private static final int SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS = 1000;
+
+    private static final int DEFAULT_SWIPE_DURATION = 2000;
 
 
     public ConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -362,6 +370,27 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isAudioMessageRecordingSlideVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessageRecordingSileControl);
+    }
+
+    public boolean isAudioMessageSendButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessageSendButton);
+    }
+
+    public boolean isAudioMessagePlayButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessagePlayButton);
+    }
+
+    public boolean isAudioMessageCancelButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessageCancelButton);
+    }
+
+    public void audioMessageSlideSwipeUp() throws Exception {
+        DriverUtils.swipeFromElementToElement(this.getDriver(), DEFAULT_SWIPE_DURATION, getElement(idAudioMessagePlayButton),
+                getElement(idAudioMessageSendButton));
+    }
+
+    public void tapAudioMessageSendButton() throws Exception {
+        getElement(idAudioMessageSendButton).click();
     }
 
     //endregion
