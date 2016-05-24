@@ -118,6 +118,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By namePingButton = MobileBy.AccessibilityId("pingButton");
     private static final By nameFileTransferButton = MobileBy.AccessibilityId("uploadFileButton");
     private static final By nameVideoMessageButton = MobileBy.AccessibilityId("videoButton");
+    private static final By nameAudioMessageButton = MobileBy.AccessibilityId("audioButton");
 
     private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[@name='ConversationView']";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
@@ -161,6 +162,8 @@ public class ConversationViewPage extends IOSPage {
 
     private static final Function<String, String> xpathUserNameByText = text ->
             String.format("//UIATableCell[@name='%s']", text.toUpperCase());
+
+    private static final By nameAudioRecorderCancelButton = MobileBy.AccessibilityId("audioRecorderCancel");
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -602,6 +605,8 @@ public class ConversationViewPage extends IOSPage {
                 return nameFileTransferButton;
             case "video message":
                 return nameVideoMessageButton;
+            case "audio message":
+                return nameAudioMessageButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
         }
@@ -679,7 +684,7 @@ public class ConversationViewPage extends IOSPage {
             actionIdx++;
         } while (actionIdx < maxActions);
         if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathFirstEntry, 1)) {
-            throw new IllegalStateException(String.format("The veru first conversation entry is not visible after %s " +
+            throw new IllegalStateException(String.format("The very first conversation entry is not visible after %s " +
                     "scrolling retries", actionIdx));
         }
     }
@@ -700,5 +705,13 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isVideoMessageContainerVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameVideoMessageActionButton);
+    }
+
+    public void longTapInputToolButtonByName(String btnName) throws Exception {
+        getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public boolean isAudioMessageRecordCancelVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAudioRecorderCancelButton);
     }
 }

@@ -199,13 +199,18 @@ public class ConversationViewPageSteps {
     /**
      * Tap the corresponding button from input tools palette
      *
+     * @param isLongTap equals to null if simple tap should be performed
      * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I tap (Add Picture|Ping|Sketch|File Transfer|Video Message) button from input tools$
+     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tools$
      */
-    @When("^I tap (Add Picture|Ping|Sketch|File Transfer|Video Message) button from input tools$")
-    public void IPressAddPictureButton(String btnName) throws Exception {
-        getConversationViewPage().tapInputToolButtonByName(btnName);
+    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tools$")
+    public void IPressAddPictureButton(String isLongTap, String btnName) throws Exception {
+        if (isLongTap == null) {
+            getConversationViewPage().tapInputToolButtonByName(btnName);
+        } else {
+            getConversationViewPage().longTapInputToolButtonByName(btnName);
+        }
     }
 
     /**
@@ -1152,5 +1157,18 @@ public class ConversationViewPageSteps {
     public void IWaitForVideoMessage() throws Exception {
         Assert.assertTrue("Video message container has not been shown",
                getConversationViewPage().isVideoMessageContainerVisible());
+    }
+
+    /**
+     * Verify whether audio message record progress control is visible
+     *
+     * @step. ^I see audio message record progress$
+     *
+     * @throws Exception
+     */
+    @Then("^I see audio message record progress$")
+    public void ISeeAudioRecordProgress() throws Exception {
+        Assert.assertTrue("Audio message record progress control has not been shown",
+                getConversationViewPage().isAudioMessageRecordCancelVisible());
     }
 }
