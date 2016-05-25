@@ -94,9 +94,9 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idAudioMessageRecordingSileControl = By.id("fl__audio_message__recording__slide_control");
 
-    private static final By idAudioMessageSendButton = By.id("gtv__audio_message__recording__send_button");
+    private static final By idAudioMessageSendButton = By.id("fl__audio_message__recording__send_button_container");
 
-    private static final By idAudioMessagePlayButton = By.id("gtv__audido_message__recording__bottom_button");
+    private static final By idAudioMessagePlayButton = By.id("fl__audio_message__recording__bottom_button_container");
 
     private static final By idAudioMessageCancelButton = By.id("fl__audio_message__recording__cancel_button_container");
 
@@ -154,7 +154,7 @@ public class ConversationViewPage extends AndroidPage {
     private static final Function<String, String> xpathConversationPeopleChangedByExp = exp -> String
             .format("//*[@id='ttv__row_conversation__people_changed__text' and %s]", exp);
 
-    private static final Function<String, String> xpathCursorHtintByValue = value -> String
+    private static final Function<String, String> xpathCursorHintByValue = value -> String
             .format("//*[@id='ctv__cursor' and @value='%s']", value);
 
     private static final By idActionModeBarDeleteButton = By.id("action_delete");
@@ -315,8 +315,8 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idCursorAudioMessage, "Audio message button is not visible").click();
     }
 
-    public void longTapAudioMessagecursorBtn() throws Exception {
-        getDriver().longTap(getElement(idCursorAudioMessage), DriverUtils.LONG_TAP_DURATION);
+    public void longTapAudioMessagecursorBtn(int duration) throws Exception {
+        getDriver().longTap(getElement(idCursorAudioMessage), duration);
     }
 
     public boolean isPingButtonVisible() throws Exception {
@@ -369,7 +369,7 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isCursorHintVisible(String hintMessage) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.xpath(xpathCursorHtintByValue.apply(hintMessage)));
+                By.xpath(xpathCursorHintByValue.apply(hintMessage)));
     }
 
     public boolean isAudioMessageRecordingSlideVisible() throws Exception {

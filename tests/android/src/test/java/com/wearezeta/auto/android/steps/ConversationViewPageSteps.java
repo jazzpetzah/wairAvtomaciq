@@ -120,11 +120,12 @@ public class ConversationViewPageSteps {
      *
      * @param longTap equals not null means long tap on the cursor button
      * @param btnName button name
+     * @param longTapDurationSeconds long tap duration in seconds
      * @throws Exception
      * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button$ from cursor toolbar$
      */
-    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button from cursor toolbar$")
-    public void WhenITapCursorToolButton(String longTap, String btnName) throws Exception {
+    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button (\\d+ seconds )?from cursor toolbar$")
+    public void WhenITapCursorToolButton(String longTap, String btnName, String longTapDurationMilleSeconds) throws Exception {
         if (longTap == null) {
             switch (btnName.toLowerCase()) {
                 case "video message":
@@ -149,9 +150,12 @@ public class ConversationViewPageSteps {
                     throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
             }
         } else {
+            int longTapDuration = (longTapDurationMilleSeconds == null) ? DriverUtils.LONG_TAP_DURATION :
+                    Integer.parseInt(longTapDurationMilleSeconds.replaceAll("[\\D]", "")) * 1000;
+
             switch (btnName.toLowerCase()) {
                 case "audio message":
-                    getConversationViewPage().longTapAudioMessagecursorBtn();
+                    getConversationViewPage().longTapAudioMessagecursorBtn(longTapDuration);
                     break;
                 default:
                     throw new IllegalStateException(String.format("Unknow button name '%s' for long tap", btnName));
