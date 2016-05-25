@@ -22,7 +22,7 @@ Feature: Audio Messaging
     Given I see conversations list
     When I tap on contact name <Contact>
     And I long tap Audio Message button from input tools
-    And I tap send audio message button
+    And I tap Send record control button
     Then I see audio message placeholder
 
     Examples:

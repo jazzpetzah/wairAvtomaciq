@@ -719,8 +719,17 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAudioRecorderCancelButton);
     }
 
-    public void tapSendAudioMessageButton() throws Exception {
-        getElement(nameSendAudioMessageButton).click();
+    private By getRecordControlButtonByName(String buttonName) {
+        switch (buttonName.toLowerCase()) {
+            case "send":
+                return nameSendAudioMessageButton;
+            default:
+                throw new IllegalArgumentException("Not know record control button");
+        }
+    }
+
+    public void tapRecordControlButton(String buttonName) throws Exception {
+        getElement(getRecordControlButtonByName(buttonName)).click();
     }
 
     public boolean isAudioActionButtonVisible() throws Exception {

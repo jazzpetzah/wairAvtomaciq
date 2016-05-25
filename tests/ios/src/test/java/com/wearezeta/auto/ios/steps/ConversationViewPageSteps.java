@@ -1173,14 +1173,14 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap send audio message button
+     * Tap pointed control button
      *
      * @throws Exception
-     * @step. ^I tap send audio message button$
+     * @step. ^I tap (Send) record control button
      */
-    @When("^I tap send audio message button$")
-    public void ITapSendAudioMessageButton() throws Exception {
-        getConversationViewPage().tapSendAudioMessageButton();
+    @When("^I tap (Send) record control button$")
+    public void ITapRecordControlButton(String buttonName) throws Exception {
+        getConversationViewPage().tapRecordControlButton(buttonName);
     }
 
     /**
