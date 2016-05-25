@@ -100,6 +100,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idAudioMessageCancelButton = By.id("fl__audio_message__recording__cancel_button_container");
 
+    private static final By xpathAudioMessageDurationText = By.xpath("//*[@id='ttv__audio_message__recording__duration' and not(text())]");
+
     private static final By idFileActionBtn = By.id("gtv__row_conversation__file__action");
 
     private static final By idFileDialogActionOpenBtn = By.id("ttv__file_action_dialog__open");
@@ -386,6 +388,10 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isAudioMessageCancelButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessageCancelButton);
+    }
+
+    public boolean isAudioMessageRecordingDurationVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathAudioMessageDurationText);
     }
 
     public void audioMessageSlideSwipeUp() throws Exception {

@@ -1294,6 +1294,8 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().isAudioMessageSendButtonVisible());
         Assert.assertTrue("The audio message recording cancel button should be visible",
                 getConversationViewPage().isAudioMessageCancelButtonVisible());
+        Assert.assertTrue("The audio message recording duration should be visible",
+                getConversationViewPage().isAudioMessageRecordingDurationVisible());
 
     }
 }
