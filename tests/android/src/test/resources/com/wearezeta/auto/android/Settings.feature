@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @C669 @id67 @regression @rc @torun
+  @C669 @id67 @regression @rc
   Scenario Outline: Open and Close settings page
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
