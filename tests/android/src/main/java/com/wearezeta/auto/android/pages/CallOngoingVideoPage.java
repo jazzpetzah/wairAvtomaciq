@@ -42,6 +42,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
     public BufferedImage getSpecialButtonScreenshot() throws Exception {
         if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idRight, ELEMENT_VISIBILITY_TIMEOUT_SECONDS)) {
             tapOngoingVideo();
+            DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idRight, ELEMENT_VISIBILITY_TIMEOUT_SECONDS);
         }
         return super.getSpecialButtonScreenshot();
     }
