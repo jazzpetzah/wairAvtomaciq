@@ -109,7 +109,7 @@ Feature: Archive
       | Email      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-  @C131206 @staging
+  @C131206 @regression
   Scenario Outline: Verify you archive the conversation when you press ⌥ ⌘ ⇧ D (Mac) or alt + ctrl + D (Win)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
