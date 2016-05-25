@@ -1162,11 +1162,11 @@ public class ConversationViewPageSteps {
     /**
      * Verify whether audio message record progress control is visible
      *
-     * @step. ^I see audio message record progress$
+     * @step. ^I see audio message record container$
      *
      * @throws Exception
      */
-    @Then("^I see audio message record progress$")
+    @Then("^I see audio message record container$")
     public void ISeeAudioRecordProgress() throws Exception {
         Assert.assertTrue("Audio message record progress control has not been shown",
                 getConversationViewPage().isAudioMessageRecordCancelVisible());

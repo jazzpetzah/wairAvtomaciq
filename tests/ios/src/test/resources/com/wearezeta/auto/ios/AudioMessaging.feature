@@ -1,6 +1,6 @@
 Feature: Audio Messaging
 
-  @C129323 @C129321 @staging
+  @C129323 @C129321 @regression
   Scenario Outline: Verify message is started recording by long tapping on the icon
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -8,7 +8,7 @@ Feature: Audio Messaging
     Given I see conversations list
     When I tap on contact name <Contact>
     And I long tap Audio Message button from input tools
-    Then I see audio message record progress
+    Then I see audio message record container
 
     Examples:
       | Name      | Contact   |
