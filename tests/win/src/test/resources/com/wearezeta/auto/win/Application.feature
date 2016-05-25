@@ -39,6 +39,7 @@ Feature: Application
 
   @C3144 @smoke
   Scenario: Verify size of sign in screen window
+    Given I switch to Sign In page
     When I ensure initial positioning
     Then I verify app width is 403 px and height is 618 px
     And I resize the app to the max by hand
