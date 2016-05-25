@@ -30,9 +30,6 @@ import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -369,6 +366,22 @@ public class ConversationPageSteps {
     }
 
     /**
+     * Generate and send a audio file with a specific size into current conversation
+     *
+     * @param length the length in format 00:00 (minutes:seconds) of the audio file.
+     * @param fileName the name of the file
+     * @throws Exception
+     */
+    @When("^I send audio file with length (.*) and name (.*) to the current conversation$")
+    public void WhenIXSizedSendAudio(String length, String fileName) throws Exception {
+        String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
+        path = path.replace("%40", "@");
+
+        CommonUtils.generateAudioFile(path + "/" + fileName, length);
+        context.getPagesCollection().getPage(ConversationPage.class).sendFile(fileName);
+    }
+
+    /**
      * Verifies if the file transfer placeholder contains correct file name
      *
      * @param fileName the name of a file
@@ -526,15 +539,44 @@ public class ConversationPageSteps {
     }
 
     @Then("^I verify seek bar is shown for video (.*) in the conversation view$")
-    public void IVerifySeekbar(String fileName) throws Exception {
+    public void IVerifyVideoSeekbar(String fileName) throws Exception {
         assertThat("No seekbar for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
-                .isSeekbarVisible(fileName));
+                .isVideoSeekbarVisible(fileName));
     }
 
     @Then("^I verify time for video (.*) is changing in the conversation view$")
     public void IVerifyTimeOfVideo(String fileName) throws Exception {
         assertThat("Time is not changing for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                 .waitUntilVideoTimeChanges(fileName));
+    }
+
+    @Then("^I wait until audio (.*) is uploaded completely$")
+    public void IWaitUntilAudioIsUploaded(String fileName) throws Exception {
+        assertThat("Upload still not finished for audio " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .waitUntilAudioUploaded(fileName));
+    }
+
+    @Then("^I click play button of audio (.*) in the conversation view$")
+    public void IClickPlayAudio(String fileName) throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).playAudio(fileName);
+    }
+
+    @Then("^I wait until audio (.*) is downloaded and starts to play$")
+    public void IWaitUntilAudioStartsPlaying(String fileName) throws Exception {
+        assertThat("Download still not finished for audio " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .waitUntilAudioPlays(fileName));
+    }
+
+    @Then("^I verify seek bar is shown for audio (.*) in the conversation view$")
+    public void IVerifyAudioSeekbar(String fileName) throws Exception {
+        assertThat("No seekbar for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .isAudioSeekbarVisible(fileName));
+    }
+
+    @Then("^I verify time for audio (.*) is changing in the conversation view$")
+    public void IVerifyTimeOfAudio(String fileName) throws Exception {
+        assertThat("Time is not changing for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .waitUntilAudioTimeChanges(fileName));
     }
 
     @When("^I click to delete the latest message$")
