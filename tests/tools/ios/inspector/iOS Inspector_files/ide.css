@@ -246,3 +246,7 @@ a.boxclosehtml {
 .tab {
     max-height: 90px;
 }
+
+.invisible {
+    display: none !important;
+}
