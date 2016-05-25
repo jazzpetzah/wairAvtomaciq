@@ -25,6 +25,7 @@ Feature: Calling Matrix
       | user1Name | user2Name | chrome:50.0.2661.75 | 20      |
       | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
       | user1Name | user2Name | chrome:47.0.2526.73 | 20      |
+      | user1Name | user2Name | firefox:46.0.1      | 20      |
       | user1Name | user2Name | firefox:45.0.1      | 20      |
       # Due to not working firefox
       #| user1Name | user2Name | firefox:44.0.2      | 20      |
@@ -49,8 +50,8 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact   | CallBackend    | Timeout |
-      | user1Name | user2Name | zcall:2.2.38   | 20      |
-      | user1Name | user2Name | zcall:2.2.46   | 20      |
+      | user1Name | user2Name | zcall:2.4.5    | 20      |
+      | user1Name | user2Name | zcall:2.3.8    | 20      |
 
   @calling_matrix
   Scenario Outline: Verify I can receive 1:1 call from <CallBackend>
@@ -77,6 +78,7 @@ Feature: Calling Matrix
       | user1Name | user2Name | chrome:50.0.2661.75 | 20      |
       | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
       | user1Name | user2Name | chrome:47.0.2526.73 | 20      |
+      | user1Name | user2Name | firefox:46.0.1      | 20      |
       | user1Name | user2Name | firefox:45.0.1      | 20      |
       | user1Name | user2Name | firefox:44.0.2      | 20      |
 
@@ -102,8 +104,8 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | CallBackend      | Timeout |
-      | user1Name | user2Name | autocall:2.2.46  | 60      |
-      | user1Name | user2Name | autocall:2.2.38  | 60      |
+      | user1Name | user2Name | autocall:2.4.5   | 60      |
+      | user1Name | user2Name | autocall:2.3.8   | 60      |
 
   @calling_matrix
   Scenario Outline: Verify I can make group call with multiple <WaitBackend>
@@ -131,6 +133,7 @@ Feature: Calling Matrix
       | user1Name | user2Name | user3Name | GroupCall     | chrome:50.0.2661.75 | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | chrome:49.0.2623.75 | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | chrome:47.0.2526.73 | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:46.0.1      | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | firefox:45.0.1      | 20      |
       # Due to not working firefox
       #| user1Name | user2Name | user3Name | GroupCall     | firefox:44.0.2      | 20      |
@@ -154,8 +157,8 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend   | Timeout |
-      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.2.46  | 20      |
-      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.2.38  | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.4.5   | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.3.8   | 20      |
 
   @calling_matrix
   Scenario Outline: Verify I can join group call with multiple <Backend>
@@ -185,6 +188,7 @@ Feature: Calling Matrix
       | user1Name | user2Name | user3Name | GroupCall     | chrome:50.0.2661.75 | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | chrome:49.0.2623.75 | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | chrome:47.0.2526.73 | 20      |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:46.0.1      | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | firefox:45.0.1      | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | firefox:44.0.2      | 20      |
 
@@ -209,12 +213,13 @@ Feature: Calling Matrix
     And I do not see ongoing call
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend         | Timeout | CallBackend     |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:50.0.2661.75 | 20      | autocall:2.2.38 |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:49.0.2623.75 | 20      | autocall:2.2.38 |
-      | user1Name | user2Name | user3Name | GroupCall     | chrome:47.0.2526.73 | 20      | autocall:2.2.38 |
-      | user1Name | user2Name | user3Name | GroupCall     | firefox:45.0.1      | 20      | autocall:2.2.38 |
-      | user1Name | user2Name | user3Name | GroupCall     | firefox:44.0.2      | 20      | autocall:2.2.38 |
+      | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend         | Timeout | CallBackend    |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:50.0.2661.75 | 20      | autocall:2.4.5 |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:49.0.2623.75 | 20      | autocall:2.4.5 |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:47.0.2526.73 | 20      | autocall:2.4.5 |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:46.0.1      | 20      | autocall:2.4.5 |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:45.0.1      | 20      | autocall:2.4.5 |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:44.0.2      | 20      | autocall:2.4.5 |
 
   @calling_matrix
   Scenario Outline: Verify I can join group call with ZCall <WaitBackend> and <CallBackend>
@@ -237,11 +242,11 @@ Feature: Calling Matrix
     And I do not see ongoing call
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend      | Timeout | WaitBackend  |
-      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.2.46  | 20      | zcall:2.2.46 |
-      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.2.38  | 20      | zcall:2.2.38 |
-      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.2.46  | 20      | zcall:2.2.38 |
-      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.2.38  | 20      | zcall:2.2.46 |
+      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend      | Timeout | WaitBackend |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.4.5   | 20      | zcall:2.4.5 |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.3.8   | 20      | zcall:2.3.8 |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.4.5   | 20      | zcall:2.3.8 |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.3.8   | 20      | zcall:2.4.5 |
 
   @calling_matrix
   Scenario Outline: Verify putting client to the background during 1-to-1 call <CallBackend> to me
@@ -263,8 +268,8 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact   | CallBackend       | Timeout |
-      | user1Name | user2Name | autocall:2.2.46   | 20      |
-      | user1Name | user2Name | autocall:2.2.38   | 20      |
+      | user1Name | user2Name | autocall:2.4.5    | 20      |
+      | user1Name | user2Name | autocall:2.3.8    | 20      |
 
   @calling_matrix
   Scenario Outline: Put app into background after initiating call with user <WaitBackend>
@@ -288,6 +293,7 @@ Feature: Calling Matrix
       | user1Name | user2Name | chrome:50.0.2661.75 | 20      |
       | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
       | user1Name | user2Name | chrome:47.0.2526.73 | 20      |
+      | user1Name | user2Name | firefox:46.0.1      | 20      |
       | user1Name | user2Name | firefox:45.0.1      | 20      |
       | user1Name | user2Name | firefox:44.0.2      | 20      |
 
@@ -296,14 +302,14 @@ Feature: Calling Matrix
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given <Contact> starts instance using <WaitBackend>
-    Given <Contact> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I tap on contact name <Contact>
     And I tap Audio Call button from top toolbar
     Then I see outgoing call
-    And I see ongoing call
+    When <Contact> accepts next incoming call automatically
+    Then I see ongoing call
     When I lock the device
     And I wait for 5 seconds
     And I unlock the device
@@ -315,6 +321,7 @@ Feature: Calling Matrix
       | user1Name | user2Name | chrome:50.0.2661.75 | 20      |
       | user1Name | user2Name | chrome:49.0.2623.75 | 20      |
       | user1Name | user2Name | chrome:47.0.2526.73 | 20      |
+      | user1Name | user2Name | firefox:46.0.1      | 20      |
       | user1Name | user2Name | firefox:45.0.1      | 20      |
       # Due to not working firefox
       #| user1Name | user2Name | firefox:44.0.2      | 20      |
@@ -335,6 +342,6 @@ Feature: Calling Matrix
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
     Examples:
-      | Name      | Contact   | CallBackend     | Timeout |
-      | user1Name | user2Name | autocall:2.2.38 | 20      |
-      | user1Name | user2Name | autocall:2.2.46 | 20      |
+      | Name      | Contact   | CallBackend    | Timeout |
+      | user1Name | user2Name | autocall:2.3.8 | 20      |
+      | user1Name | user2Name | autocall:2.4.5 | 20      |

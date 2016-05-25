@@ -28,7 +28,7 @@ public class ConversationViewPage extends AndroidPage {
 
     public static final By idCursorPing = By.id("cursor_menu_item_ping");
 
-    public static final By idCursorVideo = By.id("cursor_menu_item_video");
+    public static final By idCursorVideoMessage = By.id("cursor_menu_item_video");
 
     public static final By idCursorView = By.id("cal__cursor");
 
@@ -89,6 +89,8 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idVideoCall = By.id("action_video_call");
 
     private static final By idCursorFile = By.id("cursor_menu_item_file");
+
+    private static final By idCursorAudioMessage = By.id("cursor_menu_item_audio_message");
 
     private static final By idFileActionBtn = By.id("gtv__row_conversation__file__action");
 
@@ -289,7 +291,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void tapVideoMessageCursorBtn() throws Exception {
-        getElement(idCursorVideo, "Video button is not visible").click();
+        getElement(idCursorVideoMessage, "Video button is not visible").click();
     }
 
     public boolean isPingButtonVisible() throws Exception {
@@ -308,8 +310,12 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorFile);
     }
 
+    public boolean isAudioButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorAudioMessage);
+    }
+
     public boolean isVideoButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorVideo);
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorVideoMessage);
     }
 
     public boolean isPingButtonInvisible() throws Exception {
@@ -329,7 +335,11 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isVideoButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorVideo);
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorVideoMessage);
+    }
+
+    public boolean isAudioButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorAudioMessage);
     }
 
     //endregion

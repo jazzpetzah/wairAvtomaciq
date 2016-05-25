@@ -134,6 +134,14 @@ public final class CommonSteps {
         }
     }
 
+    public void ThereIsAKnownUser(String name, String email, String password) throws Exception {
+        ClientUser user = new ClientUser();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(password);
+        usrMgr.appendCustomUser(user);
+    }
+
     public void ThereAreNUsers(Platform currentPlatform, int count)
             throws Exception {
         usrMgr.createUsersOnBackend(count, RegistrationStrategy.getRegistrationStrategyForPlatform(currentPlatform));
@@ -546,6 +554,12 @@ public final class CommonSteps {
         query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
         BackendAPIWrappers.waitUntilContactsFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1,
                 true, BACKEND_USER_SYNC_TIMEOUT);
+    }
+
+    public void WaitUntilContactIsFoundInSearchByEmail(String searchByNameAlias, String contactAlias) throws Exception {
+        final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(contactAlias);
+        String query = userAs.getEmail();
+        BackendAPIWrappers.waitUntilContactsFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1, true, BACKEND_USER_SYNC_TIMEOUT);
     }
 
     public void WaitUntilTopPeopleContactsIsFoundInSearch(String searchByNameAlias, int size) throws Exception {

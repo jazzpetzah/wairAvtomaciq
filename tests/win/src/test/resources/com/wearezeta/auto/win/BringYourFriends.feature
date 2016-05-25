@@ -1,11 +1,12 @@
 Feature: Bring Your Friends
 
-  @C2312 @smoke @id3502
+  @C2312 @smoke
   Scenario Outline: Use Gmail contacts import from search UI
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    When I click button to bring friends from Gmail
+    When I see my avatar on top of Contact list
+    Then I click button to bring friends from Gmail
     And I see Google login popup
     And I sign up at Google with email <Gmail> and password <GmailPassword>
     Then I see Search is opened

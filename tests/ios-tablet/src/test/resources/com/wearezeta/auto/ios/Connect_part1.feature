@@ -4,6 +4,7 @@ Feature: Connect
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
+    Given <Contact2> is connected to <Contact>
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search UI
@@ -28,6 +29,7 @@ Feature: Connect
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
+    Given <Contact2> is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -268,7 +270,9 @@ Feature: Connect
 
   @C2491 @regression @id3016
   Scenario Outline: Verify you cannot send the invitation message twice [LANDSCAPE]
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
+    Given <Contact2> is connected to <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -288,8 +292,8 @@ Feature: Connect
     And I see <Contact> user pending profile popover on iPad
 
     Examples: 
-      | Name      | Contact   | ContactEmail |
-      | user1Name | user2Name | user2Email   |
+      | Name      | Contact   | ContactEmail | Contact2   |
+      | user1Name | user2Name | user2Email   | user3Name  |
 
   @C2796 @rc @regression @id3017
   Scenario Outline: Verify you can send an invitation via mail [LANDSCAPE]

@@ -15,7 +15,9 @@ Feature: Search
 
   @C1036 @rc @clumsy @regression @id2148 @id2543
   Scenario Outline: Verify search by name
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
+    Given <Contact2> is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search UI
@@ -23,8 +25,8 @@ Feature: Search
     Then I see the conversation "<Contact>" exists in Search results
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C3167 @rc @regression @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections
@@ -65,7 +67,9 @@ Feature: Search
 
   @C40 @rc @regression @id1454
   Scenario Outline: Verify sending a connection request to user chosen from search
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
+    Given <Contact2> is connected to <UnconnectedUser>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I open search UI
@@ -79,8 +83,8 @@ Feature: Search
     And I see <UnconnectedUser> user pending profile page
 
     Examples:
-      | Name      | UnconnectedUser |
-      | user1Name | user2Name       |
+      | Name      | UnconnectedUser | Contact2  |
+      | user1Name | user2Name       | user3Name |
 
   @C3220 @regression @id763
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations
@@ -309,24 +313,3 @@ Feature: Search
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @C1030 @regression
-  Scenario Outline: Verify possibility of general invitation accepting
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact>
-    And I copy paste and send invitation link from user <Contact2>
-    And I tap on message "<Link>"
-    And I wait for 10 seconds
-    And I press Enter key in Simulator window
-    And I see conversation view page
-    And I navigate back to conversations list
-    Then I see first item in contact list named <Contact2>
-    And I tap on contact name <Contact2>
-    And I see Pending Connect to <Contact2> message on Dialog page
-
-    Examples:
-      | Name      |  Contact   |  Link      | Contact2  |
-      | user1Name |  user2Name |  https://  | user3Name |

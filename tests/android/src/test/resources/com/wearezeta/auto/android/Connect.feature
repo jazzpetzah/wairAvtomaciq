@@ -2,10 +2,12 @@ Feature: Connect
 
   @C676 @C677 @id191 @id193 @regression @rc @rc42
   Scenario Outline: Send connection request from search
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <IntermediateContact>
+    Given <IntermediateContact> is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Contact list with contacts
     And I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
@@ -17,8 +19,8 @@ Feature: Connect
     Then I see contact list with name <Contact>
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | IntermediateContact |
+      | user1Name | user2Name | user3name           |
 
   @C687 @id323 @regression @rc @rc42
   Scenario Outline: Accept incoming connection request from conversation list
@@ -165,10 +167,12 @@ Feature: Connect
 
   @C388 @id547 @regression @C111632
   Scenario Outline: I would not know other person has ignored my connection request
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <IntermediateContact>
+    Given <IntermediateContact> is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Contact list with contacts
     And I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
@@ -183,8 +187,8 @@ Feature: Connect
     And I do not see text input
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | IntermediateContact |
+      | user1Name | user2Name | user3Name           |
 
   @C694 @id541 @regression @rc
   Scenario Outline: I can receive new connection request when app in background
@@ -209,10 +213,12 @@ Feature: Connect
 
   @C696 @id553 @regression @rc
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <IntermediateContact>
+    Given <IntermediateContact> is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Contact list with contacts
     And I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
@@ -228,15 +234,17 @@ Feature: Connect
     And I see conversation view
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | IntermediateContact |
+      | user1Name | user2Name | user3Name           |
 
   @C695 @id552 @regression @rc
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <IntermediateContact>
+    Given <IntermediateContact> is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Contact list with contacts
     And I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
@@ -246,8 +254,8 @@ Feature: Connect
     And I see People picker page
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | IntermediateContact |
+      | user1Name | user2Name | user3Name           |
 
   @C389 @id550 @regression
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
@@ -303,6 +311,8 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     # Having the extra user is a workaround for an app bug
     Given Myself is connected to <Contact1>
+    # if Contact2 doesn't have any contacts, it cannot be found by Myself
+    Given <Contact1> is connected to <Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
@@ -383,11 +393,13 @@ Feature: Connect
 
   @C705 @id1405 @regression @rc
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search)
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <IntermediateContact>
+    Given <IntermediateContact> is connected to <Contact>
     Given <Contact> has an avatar picture from file <Picture>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Contact list with contacts
     And I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
@@ -400,8 +412,8 @@ Feature: Connect
     Then I see that connection is pending
 
     Examples:
-      | Name      | Contact   | Picture                      |
-      | user1Name | user2Name | aqaPictureContact600_800.jpg |
+      | Name      | Contact   | Picture                      | IntermediateContact |
+      | user1Name | user2Name | aqaPictureContact600_800.jpg | user3Name           |
 
   @C409 @id1397 @regression
   Scenario Outline: Verify you do not receive any messages from blocked person in 1:1 chat
