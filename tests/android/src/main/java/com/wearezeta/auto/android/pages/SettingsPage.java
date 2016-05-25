@@ -12,7 +12,7 @@ public class SettingsPage extends AndroidPage {
 
     private static final String CURRENT_DEVICE = "CURRENT DEVICE";
 
-    private static final By xpathSettingsTitle = By.xpath("//*[@id='action_bar_container' and .//*[@value='Settings']]");
+    private static final By xpathSettingsTitle = By.xpath("//*[@id='toolbar' and .//*[@value='Settings']]");
 
     private static final Function<String, String> xpathStrSettingsMenuItemByText = text -> String
             .format("//*[@id='title' and @value='%s']", text);
