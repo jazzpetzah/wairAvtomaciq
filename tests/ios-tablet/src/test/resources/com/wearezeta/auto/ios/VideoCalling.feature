@@ -87,7 +87,6 @@ Feature: Video Calling
     And I see call status message contains "<Contact> calling"
     And I tap Accept Video button on Calling overlay
     And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
-    And I see Mute button on Video Calling overlay
     And I remember state of Mute button on Video Calling overlay
     And I tap Mute button on Video Calling overlay
     Then I see state of Mute button has changed on Video Calling overlay

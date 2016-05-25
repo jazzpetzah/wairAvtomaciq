@@ -57,25 +57,19 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
     public BufferedImage getMuteButtonScreenshot() throws Exception {
         final Optional<WebElement> muteButton = getElementIfDisplayed(nameMuteCallButton,
                 ELEMENT_VISIBILITY_TIMEOUT);
-        if (muteButton.isPresent()) {
-            return this.getElementScreenshot(muteButton.get()).orElseThrow(
-                    () -> new IllegalStateException("Cannot take a screenshot of Mute button"));
-        } else {
+        if (!muteButton.isPresent()) {
             tapButtonIgnoringVisibility(nameStrMuteCallButton, 1);
-            return super.getMuteButtonScreenshot();
         }
+        return super.getMuteButtonScreenshot();
     }
 
     public BufferedImage getVideoButtonScreenshot() throws Exception {
         final Optional<WebElement> videoButton = getElementIfDisplayed(nameCallVideoButton,
                 ELEMENT_VISIBILITY_TIMEOUT);
-        if (videoButton.isPresent()) {
-            return this.getElementScreenshot(videoButton.get()).orElseThrow(
-                    () -> new IllegalStateException("Cannot take a screenshot of Video button"));
-        } else {
+        if (!videoButton.isPresent()) {
             tapButtonIgnoringVisibility(nameStrCallVideoButton, 1);
-            return this.getElementScreenshot(getElement(nameCallVideoButton)).orElseThrow(
-                    () -> new IllegalStateException("Cannot take a screenshot of Video button"));
         }
+        return this.getElementScreenshot(getElement(nameCallVideoButton)).orElseThrow(
+                () -> new IllegalStateException("Cannot take a screenshot of Video button"));
     }
 }
