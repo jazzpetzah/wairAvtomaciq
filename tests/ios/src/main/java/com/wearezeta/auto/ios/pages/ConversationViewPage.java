@@ -165,6 +165,10 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameAudioRecorderCancelButton = MobileBy.AccessibilityId("audioRecorderCancel");
 
+    private static final By nameSendAudioMessageButton = MobileBy.AccessibilityId("audioRecorderSend");
+
+    private static final By nameAudioActionButton = MobileBy.AccessibilityId("AudioActionButton");
+
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -713,5 +717,13 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isAudioMessageRecordCancelVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAudioRecorderCancelButton);
+    }
+
+    public void tapSendAudioMessageButton() throws Exception {
+        getElement(nameSendAudioMessageButton).click();
+    }
+
+    public boolean isAudioActionButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAudioActionButton);
     }
 }
