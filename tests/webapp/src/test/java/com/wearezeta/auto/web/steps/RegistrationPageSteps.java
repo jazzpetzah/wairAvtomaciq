@@ -319,7 +319,6 @@ public class RegistrationPageSteps {
 	public void IVerifyRegistrationEmail() throws Exception {
 		BackendAPIWrappers
 				.activateRegisteredUserByEmail(this.activationMessage);
-		userToRegister.setUserState(UserState.Created);
 	}
 
 	/**
@@ -351,7 +350,6 @@ public class RegistrationPageSteps {
 			}
 		}
 
-		this.userToRegister.setUserState(UserState.Created);
 		// indexes in aliases start from 1
 		final int userIndex = context.getUserManager().appendCustomUser(userToRegister) + 1;
 		userToRegister.addEmailAlias(ClientUsersManager.EMAIL_ALIAS_TEMPLATE

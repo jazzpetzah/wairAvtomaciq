@@ -45,8 +45,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.*;
 
-import static com.wearezeta.auto.android.common.AndroidCommonUtils.PadButton.*;
-
 public class CommonAndroidSteps {
     static {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
@@ -214,7 +212,7 @@ public class CommonAndroidSteps {
         }
 
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
-            usrMgr.setUseSpecialEmailFlag();
+            usrMgr.useSpecialEmail();
         }
 
         if (isLogcatEnabled) {
@@ -897,6 +895,11 @@ public class CommonAndroidSteps {
             e.printStackTrace();
         }
 
+        try {
+            usrMgr.resetUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         AndroidLogListener.forceStopAll();
         LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
@@ -910,12 +913,6 @@ public class CommonAndroidSteps {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-
-        try {
-            commonSteps.getUserManager().resetUsers();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

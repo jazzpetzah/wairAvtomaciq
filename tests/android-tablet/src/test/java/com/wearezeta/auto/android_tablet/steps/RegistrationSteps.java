@@ -115,7 +115,8 @@ public class RegistrationSteps {
         final Map<String, String> additionalHeaders = new HashMap<>();
         additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, ActivationMessage.MESSAGE_PURPOSE);
         if (usrMgr.isSelfUserSet()) {
-            registrationMessage = BackendAPIWrappers.initMessageListener(usrMgr.getSelfUser(), additionalHeaders);
+            registrationMessage = BackendAPIWrappers.initMessageListener(usrMgr.getSelfUserOrThrowError(),
+                    additionalHeaders);
         } else {
             registrationMessage = BackendAPIWrappers.initMessageListener(userToRegister, additionalHeaders);
         }
@@ -144,7 +145,6 @@ public class RegistrationSteps {
     public void IVerifyMyRegistrationData() throws Exception {
         BackendAPIWrappers.activateRegisteredUserByEmail(registrationMessage);
         if (!usrMgr.isSelfUserSet()) {
-            userToRegister.setUserState(UserState.Created);
             usrMgr.setSelfUser(userToRegister);
         }
     }
