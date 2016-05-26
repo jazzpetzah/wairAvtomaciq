@@ -174,7 +174,7 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idVideoContainerButton = By.id("gpv__row_conversation__video_button");
 
-    private static final By idAudioMessageContainer = By.id("tffl__audio_message_container");
+    private static final By idAudioMessageContainer = By.id("tfll__audio_message_container");
 
     private static final By idAudioContainerButton = By.id("gpv__row_conversation__audio_button");
 
@@ -402,7 +402,8 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void tapAudioMessageSendButton() throws Exception {
-        getElement(idAudioMessageSendButton).click();
+        // Workaround cause click doesn't work, it seems need real touch
+        getDriver().longTap(getElement(idAudioMessageSendButton), DriverUtils.SINGLE_TAP_DURATION);
     }
 
     //endregion

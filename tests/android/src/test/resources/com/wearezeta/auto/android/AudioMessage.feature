@@ -66,7 +66,7 @@ Feature: Audio Message
       | user1Name | user2Name | user3Name | test.m4a | audio/mp4 | Device1    | Shared an audio message |
 
   @C131192 @C131193 @staging
-  Scenario Outline: Verify failing downloading voice message
+  Scenario Outline: (CM-958) Verify failing downloading voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -79,19 +79,50 @@ Feature: Audio Message
     And I wait for 3 seconds
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
-    # Wait for button become retry button
-    And I wait for 5 seconds
+    # Wait for the button to get retry glyph
+    And I wait for 3 seconds
     Then I verify the state of Play button on the recent audio message in the conversation view is changed
     When I disable Airplane mode on the device
     # Wait for sync
     And I wait for 10 seconds
     And I tap Retry button on the recent audio message in the conversation view
-    # Wait for the audio to be fully download, then it become from retry button to play button again
+    # Wait for the audio to be fully downloaded, then retry button changes to play button
     And I wait for 5 seconds
     Then I verify the state of Play button on the recent audio message in the conversation view is not changed
     When I tap Play button on the recent audio message in the conversation view
-    Then I see the Wire app is not in foreground
+    Then I verify the state of Play button on the recent audio message in the conversation view is changed
 
     Examples:
       | Name      | Contact   | FileName | MIMEType  | DeviceName |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
+
+  @C131183 @C131184 @staging
+  Scenario Outline: Verify failing sending/retrying voice message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When I enable Airplane mode on the device
+    # Wait for network is totally disabled
+    And I wait for 3 seconds
+    And I long tap Audio message button <TapDuration> seconds from cursor toolbar
+    And I tap on audio message send button
+    And I see Audio Message container in the conversation view
+    And I remember the state of Retry button on the recent audio message in the conversation view
+    And I disable Airplane mode on the device
+    # Wait for sync
+    And I wait for 10 seconds
+    And I tap Retry button on the recent audio message in the conversation view
+    # Retry button changes to Play button
+    Then I verify the state of Retry button on the recent audio message in the conversation view is changed
+    # Wait for the audio to be fully uploaded, then retry button changes to play button
+    When I wait for 10 seconds
+    And I remember the state of Play button on the recent audio message in the conversation view
+    And I tap Play button on the recent audio message in the conversation view
+    Then I verify the state of Play button on the recent audio message in the conversation view is changed
+
+    Examples:
+      | Name      | Contact   | TapDuration |
+      | user1Name | user2Name | 5           |
