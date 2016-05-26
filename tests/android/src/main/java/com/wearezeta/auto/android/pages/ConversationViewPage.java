@@ -406,6 +406,10 @@ public class ConversationViewPage extends AndroidPage {
         getDriver().longTap(getElement(idAudioMessageSendButton), DriverUtils.SINGLE_TAP_DURATION);
     }
 
+    public void tapAudioMessageCancelButton() throws Exception {
+        getElement(idAudioMessageCancelButton).click();
+    }
+
     //endregion
 
     /**
@@ -915,7 +919,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isAudioMessageNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idAudioMessageContainer);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idAudioMessageContainer);
     }
 
     public void tapVideoMessageButton() throws Exception {
