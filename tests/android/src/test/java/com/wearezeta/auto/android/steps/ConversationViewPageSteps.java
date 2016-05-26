@@ -1227,7 +1227,7 @@ public class ConversationViewPageSteps {
      * @step. ^I tap (?:Play|X|Retry) button on the recent (video message|audio message) in the conversation view$"
      */
     @When("^I tap (?:Play|X|Retry) button on the recent (video message|audio message) in the conversation view$")
-    public void ITapButtonOnVideoMessage(String buttonType) throws Exception {
+    public void ITapButtonOnAudioOrVideoMessage(String buttonType) throws Exception {
         switch (buttonType.toLowerCase()) {
             case "video message":
                 getConversationViewPage().tapVideoMessageButton();
