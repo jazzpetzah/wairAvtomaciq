@@ -23,15 +23,13 @@ public class ClientUser {
     private Set<String> passwordAliases = new HashSet<>();
     private Optional<String> tokenType = Optional.empty();
     private Optional<String> token = Optional.empty();
-    private UserState userState = UserState.NotCreated;
     private AccentColor accentColor = AccentColor.Undefined;
 
-    public ClientUser(String email, String password, PhoneNumber phoneNumber, String name, UserState state) {
+    public ClientUser(String email, String password, PhoneNumber phoneNumber, String name) {
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.name = name;
-        this.userState = state;
     }
 
     public String getName() {
@@ -133,14 +131,6 @@ public class ClientUser {
     public String getToken() throws Exception {
         refreshTokenInfoIfExpired();
         return token.get();
-    }
-
-    public UserState getUserState() {
-        return userState;
-    }
-
-    public void setUserState(UserState userState) {
-        this.userState = userState;
     }
 
     public void setAccentColor(AccentColor newColor) {

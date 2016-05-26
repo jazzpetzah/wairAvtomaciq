@@ -187,5 +187,8 @@ public class RegistrationSteps {
     @Then("^I verify my email$")
     public void IVerifyMyRegistrationData() throws Exception {
         BackendAPIWrappers.activateRegisteredUserByEmail(emailConfirmMessage);
+        if (!usrMgr.isSelfUserSet()) {
+            usrMgr.setSelfUser(userToRegister);
+        }
     }
 }

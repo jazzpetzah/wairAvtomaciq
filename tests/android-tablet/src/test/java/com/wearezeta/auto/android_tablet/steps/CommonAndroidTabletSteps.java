@@ -187,7 +187,7 @@ public class CommonAndroidTabletSteps {
         }
 
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
-            usrMgr.setUseSpecialEmailFlag();
+            usrMgr.useSpecialEmail();
         }
 
         if (isLogcatEnabled) {
@@ -226,6 +226,12 @@ public class CommonAndroidTabletSteps {
             e.printStackTrace();
         }
 
+        try {
+            usrMgr.resetUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         AndroidLogListener.forceStopAll();
         LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
         if (!scenario.getStatus().equals(Result.PASSED)) {
@@ -238,12 +244,6 @@ public class CommonAndroidTabletSteps {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-
-        try {
-            commonSteps.getUserManager().resetUsers();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

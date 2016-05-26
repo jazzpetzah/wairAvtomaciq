@@ -120,7 +120,6 @@ public final class BackendAPIWrappers {
             default:
                 throw new RuntimeException(String.format("Unknown registration strategy '%s'", strategy.name()));
         }
-        user.setUserState(UserState.Created);
         return user;
     }
 
@@ -237,12 +236,10 @@ public final class BackendAPIWrappers {
 
     public static void autoTestSendRequest(ClientUser userFrom, ClientUser userTo) throws Exception {
         sendConnectRequest(userFrom, userTo, userTo.getName(), CommonSteps.CONNECTION_MESSAGE);
-        userFrom.setUserState(UserState.RequestSend);
     }
 
     public static ClientUser autoTestAcceptAllRequest(ClientUser userTo) throws Exception {
         acceptAllConnections(userTo);
-        userTo.setUserState(UserState.AllContactsConnected);
         return userTo;
     }
 
