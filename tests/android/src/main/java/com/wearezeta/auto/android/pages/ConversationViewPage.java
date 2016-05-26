@@ -100,7 +100,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idAudioMessageCancelButton = By.id("fl__audio_message__recording__cancel_button_container");
 
-    private static final By xpathAudioMessageDurationText = By.xpath("//*[@id='ttv__audio_message__recording__duration' and not(text())]");
+    private static final By xpathAudioMessageDurationText =
+            By.xpath("//*[@id='ttv__audio_message__recording__duration' and not(text())]");
 
     private static final By idFileActionBtn = By.id("gtv__row_conversation__file__action");
 
@@ -395,7 +396,8 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void audioMessageSlideSwipeUp() throws Exception {
-        DriverUtils.swipeFromElementToElement(this.getDriver(), DEFAULT_SWIPE_DURATION, getElement(idAudioMessagePlayButton),
+        DriverUtils.swipeFromElementToElement(this.getDriver(), DEFAULT_SWIPE_DURATION,
+                getElement(idAudioMessagePlayButton),
                 getElement(idAudioMessageSendButton));
     }
 
@@ -937,5 +939,9 @@ public class ConversationViewPage extends AndroidPage {
 
     public Optional<BufferedImage> getVideoContainerButtonState() throws Exception {
         return getElementScreenshot(getElement(idVideoContainerButton));
+    }
+
+    public Optional<BufferedImage> getAudioContainerButtonState() throws Exception {
+        return getElementScreenshot(getElement(idAudioContainerButton));
     }
 }

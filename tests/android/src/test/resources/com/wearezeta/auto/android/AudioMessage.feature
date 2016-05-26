@@ -51,7 +51,7 @@ Feature: Audio Message
       | user1Name | user2Name | 5           |
 
   @C131188 @staging
-  Scenario Outline: (Not-implemented, empty notification) Verify getting a chathead when voice message is sent in the other conversation
+  Scenario Outline: Verify getting a chathead when voice message is sent in the other conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
@@ -62,5 +62,36 @@ Feature: Audio Message
     Then I see new message notification "<Notification>"
 
     Examples:
-      | Name      | Contact1  | Contact2  | FileName | MIMEType  | DeviceName | Notification         |
-      | user1Name | user2Name | user3Name | test.m4a | audio/mp4 | Device1    | SENT A VOICE MESSAGE |
+      | Name      | Contact1  | Contact2  | FileName | MIMEType  | DeviceName | Notification            |
+      | user1Name | user2Name | user3Name | test.m4a | audio/mp4 | Device1    | Shared an audio message |
+
+  @C131192 @C131193 @staging
+  Scenario Outline: Verify failing downloading voice message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
+    And I enable Airplane mode on the device
+    # Wait for network is totally disabled
+    And I wait for 3 seconds
+    And I remember the state of Play button on the recent audio message in the conversation view
+    And I tap Play button on the recent audio message in the conversation view
+    # Wait for button become retry button
+    And I wait for 5 seconds
+    Then I verify the state of Play button on the recent audio message in the conversation view is changed
+    When I disable Airplane mode on the device
+    # Wait for sync
+    And I wait for 10 seconds
+    And I tap Retry button on the recent audio message in the conversation view
+    # Wait for the audio to be fully download, then it become from retry button to play button again
+    And I wait for 5 seconds
+    Then I verify the state of Play button on the recent audio message in the conversation view is not changed
+    When I tap Play button on the recent audio message in the conversation view
+    Then I see the Wire app is not in foreground
+
+    Examples:
+      | Name      | Contact   | FileName | MIMEType  | DeviceName |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
