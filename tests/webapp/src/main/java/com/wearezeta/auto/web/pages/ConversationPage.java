@@ -914,6 +914,12 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
+    public String getAudioTime(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssAudioTime, fileName));
+        assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No time element found for locator " + locator;
+        return getDriver().findElement(locator).getText();
+    }
+
     public boolean waitUntilAudioTimeChanges(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssAudioTime, fileName));
         assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No time element found for locator " + locator;

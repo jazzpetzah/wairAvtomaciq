@@ -519,6 +519,16 @@ public class CommonWebAppSteps {
         context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "plain/text", deviceName, isGroup);
     }
 
+    @When("^(.*) sends? audio file (.*) via device (.*) to (user|group conversation) (.*)$")
+    public void WhenISendAudioFile(String contact, String fileName, String deviceName, String convoType, String
+            dstConvoName) throws Exception {
+        String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
+        path = path.replace("%40", "@");
+        boolean isGroup = !convoType.equals("user");
+        context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "audio/mp4",
+                deviceName, isGroup);
+    }
+
     /**
      * Send message to a conversation
      *

@@ -573,10 +573,14 @@ public class ConversationPageSteps {
                 .isAudioSeekbarVisible(fileName));
     }
 
-    @Then("^I verify time for audio (.*) is changing in the conversation view$")
-    public void IVerifyTimeOfAudio(String fileName) throws Exception {
-        assertThat("Time is not changing for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
-                .waitUntilAudioTimeChanges(fileName));
+    @Then("^I verify time for audio (.*) is (.*) in the conversation view$")
+    public void IVerifyTimeOfAudio(String fileName, String time) throws Exception {
+        ConversationPage page = context.getPagesCollection().getPage(ConversationPage.class);
+        if (time.equals("changing")) {
+            assertThat("Time is not changing for " + fileName, page.waitUntilAudioTimeChanges(fileName));
+        } else {
+            assertThat("Time is wrong" + fileName, page.getAudioTime(fileName), equalTo(time));
+        }
     }
 
     @Then("^I (do not )?see audio message (.*) in the conversation view$")
