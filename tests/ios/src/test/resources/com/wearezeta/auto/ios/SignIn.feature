@@ -78,7 +78,7 @@ Feature: Sign In
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
     When I enter <Count> digits phone number
-    Then I see something went wrong alert
+    Then I see invalid phone number alert
 
     Examples:
       | Count |
