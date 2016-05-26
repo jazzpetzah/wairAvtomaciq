@@ -15,7 +15,7 @@ Feature: Audio Messaging
       | user1Name | user2Name |
 
   @C129327 @staging
-  Scenario Outline: Verify sending voice message by long tap
+  Scenario Outline: Verify sending voice message by check icon tap
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
