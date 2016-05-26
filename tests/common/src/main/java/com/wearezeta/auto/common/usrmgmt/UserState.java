@@ -1,5 +1,5 @@
 package com.wearezeta.auto.common.usrmgmt;
 
-public enum UserState {
+enum UserState {
 	NotCreated, Created
 }
