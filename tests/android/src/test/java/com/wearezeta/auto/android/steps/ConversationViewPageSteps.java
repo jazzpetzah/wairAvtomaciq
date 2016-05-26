@@ -431,12 +431,22 @@ public class ConversationViewPageSteps {
     /**
      * Tap on send button within Audio message slide
      *
+     * @param buttonType could be send or cancel
      * @throws Exception
      * @step. ^I tap on audio message send button$"
      */
-    @When("^I tap on audio message send button$")
-    public void WhenITapAudioMessageSendButton() throws Exception {
-        getConversationViewPage().tapAudioMessageSendButton();
+    @When("^I tap on audio message (send|cancel) button$")
+    public void WhenITapAudioMessageSendButton(String buttonType) throws Exception {
+        switch (buttonType.toLowerCase()) {
+            case "send":
+                getConversationViewPage().tapAudioMessageSendButton();
+                break;
+            case "cancel":
+                getConversationViewPage().tapAudioMessageCancelButton();
+                break;
+            default:
+                throw new IllegalStateException(String.format("Cannot identify the button type '%s'", buttonType));
+        }
     }
 
     /**
