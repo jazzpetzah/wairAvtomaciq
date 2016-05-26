@@ -1,7 +1,6 @@
 package com.wearezeta.auto.common.usrmgmt;
 
 import com.google.common.base.Throwables;
-import com.waz.api.Opt;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
