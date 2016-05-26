@@ -79,18 +79,17 @@ Feature: Audio Message
     And I wait for 3 seconds
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
-    # Wait for button become retry button
+    # Wait for the button to get retry glyph
     And I wait for 3 seconds
     Then I verify the state of Play button on the recent audio message in the conversation view is changed
     When I disable Airplane mode on the device
     # Wait for sync
     And I wait for 10 seconds
     And I tap Retry button on the recent audio message in the conversation view
-    # Wait for the audio to be fully download, then it become from retry button to play button again
+    # Wait for the audio to be fully downloaded, then retry button changes to play button
     And I wait for 5 seconds
     Then I verify the state of Play button on the recent audio message in the conversation view is not changed
     When I tap Play button on the recent audio message in the conversation view
-     # Play button will change X button
     Then I verify the state of Play button on the recent audio message in the conversation view is changed
 
     Examples:
@@ -116,13 +115,12 @@ Feature: Audio Message
     # Wait for sync
     And I wait for 10 seconds
     And I tap Retry button on the recent audio message in the conversation view
-    # Retry button change to Play button
+    # Retry button changes to Play button
     Then I verify the state of Retry button on the recent audio message in the conversation view is changed
-    # I wait for fully upload, the button will become to Play button
+    # Wait for the audio to be fully uploaded, then retry button changes to play button
     When I wait for 10 seconds
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
-    # Play button will change to pause button
     Then I verify the state of Play button on the recent audio message in the conversation view is changed
 
     Examples:
