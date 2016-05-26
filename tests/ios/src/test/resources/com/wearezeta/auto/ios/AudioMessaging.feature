@@ -36,9 +36,9 @@ Feature: Audio Messaging
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact1>
-    When User <Contact1> sends file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    When User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Then I see audio message placeholder
 
     Examples:
-      | Name      | Contact1  | FileName | FileExt | FileMIME  | ContactDevice |
-      | user1Name | user2Name | test     | m4a     | audio/mp4 | Device1       |
+      | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
