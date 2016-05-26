@@ -66,7 +66,7 @@ Feature: Audio Message
       | user1Name | user2Name | user3Name | test.m4a | audio/mp4 | Device1    | Shared an audio message |
 
   @C131192 @C131193 @staging
-  Scenario Outline: Verify failing downloading voice message (test failed by cannot retry downloading)
+  Scenario Outline: (CM-958) Verify failing downloading voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -90,7 +90,7 @@ Feature: Audio Message
     And I wait for 5 seconds
     Then I verify the state of Play button on the recent audio message in the conversation view is not changed
     When I tap Play button on the recent audio message in the conversation view
-     # Change to X button
+     # Play button will change X button
     Then I verify the state of Play button on the recent audio message in the conversation view is changed
 
     Examples:
@@ -122,7 +122,7 @@ Feature: Audio Message
     When I wait for 10 seconds
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
-    # Change to pause button
+    # Play button will change to pause button
     Then I verify the state of Play button on the recent audio message in the conversation view is changed
 
     Examples:

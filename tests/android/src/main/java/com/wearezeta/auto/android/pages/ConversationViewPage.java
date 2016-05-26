@@ -403,7 +403,7 @@ public class ConversationViewPage extends AndroidPage {
 
     public void tapAudioMessageSendButton() throws Exception {
         // Workaround cause click doesn't work, it seems need real touch
-        getDriver().longTap(getElement(idAudioMessageSendButton), 3);
+        getDriver().longTap(getElement(idAudioMessageSendButton), DriverUtils.SINGLE_TAP_DURATION);
     }
 
     //endregion
