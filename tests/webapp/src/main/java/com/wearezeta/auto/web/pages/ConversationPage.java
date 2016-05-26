@@ -929,7 +929,7 @@ public class ConversationPage extends WebPage {
         return true;
     }
 
-    public boolean isAudioMessageDisplayed(String fileName) throws Exception {
+    public boolean isAudioMessageVisible(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssAudio, fileName));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }

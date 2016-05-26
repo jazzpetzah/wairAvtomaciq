@@ -583,7 +583,7 @@ public class ConversationPageSteps {
     public void ISeeAudioMessage(String doNot, String fileName) throws Exception {
         ConversationPage page = context.getPagesCollection().getPage(ConversationPage.class);
         if (doNot == null) {
-            assertThat("Could not find audio message " + fileName, page.isAudioMessageDisplayed(fileName));
+            assertThat("Could not find audio message " + fileName, page.isAudioMessageVisible(fileName));
         } else {
             assertThat("audio message displayed for " + fileName, page.isAudioMessageInvisible(fileName));
         }
