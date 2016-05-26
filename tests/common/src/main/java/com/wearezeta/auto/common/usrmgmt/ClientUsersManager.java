@@ -424,7 +424,7 @@ public class ClientUsersManager {
     }
 
     public boolean isSelfUserSet() {
-        return (this.selfUser.isPresent());
+        return this.selfUser.isPresent();
     }
 
     private static final int SHARED_USERS_MIN_CREATION_INTERVAL = 10;
