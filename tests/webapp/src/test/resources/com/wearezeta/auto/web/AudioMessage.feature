@@ -53,6 +53,7 @@ Feature: Audio Message
     And I see file transfer button in conversation input
     And <Contact1> sends audio file <File> via device Device1 to group conversation <ChatName>
     Then I wait until audio <File> is uploaded completely
+    # Please uncomment if we find a way to send audio meta-data through SE-Bridge
     #And I verify time for audio <File> is <Time> in the conversation view
     When I click play button of audio <File> in the conversation view
     And I wait until audio <File> is downloaded and starts to play
