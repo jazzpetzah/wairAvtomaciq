@@ -28,3 +28,17 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C129341 @staging
+  Scenario Outline: Verify receiving a voice message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    When User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Then I see audio message placeholder
+
+    Examples:
+      | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
