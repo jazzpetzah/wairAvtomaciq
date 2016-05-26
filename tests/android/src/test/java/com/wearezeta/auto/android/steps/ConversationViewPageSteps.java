@@ -1180,9 +1180,9 @@ public class ConversationViewPageSteps {
      * @param isLongTap     equals to null if this should be ordinary single tap
      * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
      * @throws Exception
-     * @step. ^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message) container in the conversation view$
+     * @step. ^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message|Audio Message) container in the conversation view$
      */
-    @When("^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message) container in the conversation view$")
+    @When("^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message|Audio Message) container in the conversation view$")
     public void ITapContainer(String isLongTap, String containerType) throws Exception {
         switch (containerType.toLowerCase()) {
             case "youtube":
@@ -1211,6 +1211,13 @@ public class ConversationViewPageSteps {
                     getConversationViewPage().tapVideoMessageContainer();
                 } else {
                     getConversationViewPage().longVideoMessageContainer();
+                }
+                break;
+            case "audio message":
+                if (isLongTap == null) {
+                    getConversationViewPage().tapAudioMessageContainer();
+                } else {
+                    getConversationViewPage().longAudioMessageContainer();
                 }
                 break;
             default:

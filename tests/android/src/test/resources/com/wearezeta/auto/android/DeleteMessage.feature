@@ -227,3 +227,27 @@ Feature: Delete Message
     Examples:
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
+
+
+  @C131212 @staging @torun
+  Scenario Outline: Verify deleting audio message after upload
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When I long tap Audio message button <TapDuration> seconds from cursor toolbar
+    And I tap on audio message send button
+    # Wait for the audio to be fully uploaded
+    And I wait for 5 seconds
+    And I long tap Audio Message container in the conversation view
+    Then I do not see Copy button on the action mode bar
+    When I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    Then I do not see Audio Message container in the conversation view
+
+
+    Examples:
+      | Name      | Contact   | TapDuration |
+      | user1Name | user2Name | 5           |
