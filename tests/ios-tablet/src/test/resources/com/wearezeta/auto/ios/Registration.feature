@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @C2768 @rc @regression @id1392 @useSpecialEmail @torun
+  @C2768 @rc @regression @id1392 @useSpecialEmail
   Scenario Outline: Automatic email verification [LANDSCAPE]
     Given I rotate UI to landscape
     Given I see sign in screen
