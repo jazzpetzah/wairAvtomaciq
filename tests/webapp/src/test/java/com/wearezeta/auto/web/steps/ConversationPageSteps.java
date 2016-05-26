@@ -581,12 +581,11 @@ public class ConversationPageSteps {
 
     @Then("^I (do not )?see audio message (.*) in the conversation view$")
     public void ISeeAudioMessage(String doNot, String fileName) throws Exception {
+        ConversationPage page = context.getPagesCollection().getPage(ConversationPage.class);
         if (doNot == null) {
-            assertThat("Could not find audio message " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
-                    .isAudioMessageDisplayed(fileName));
+            assertThat("Could not find audio message " + fileName, page.isAudioMessageDisplayed(fileName));
         } else {
-            assertThat("audio message displayed for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
-                    .isAudioMessageInvisible(fileName));
+            assertThat("audio message displayed for " + fileName, page.isAudioMessageInvisible(fileName));
         }
     }
 
