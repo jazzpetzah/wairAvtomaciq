@@ -123,6 +123,7 @@ Feature: Connect
     Given <Contact2> sent connection request to me
     Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
+    Given <Contact1> is connected to <Contact4>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
