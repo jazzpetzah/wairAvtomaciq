@@ -117,8 +117,8 @@ Feature: Delete Message
     And I do not see Ping message "<Message2>" in the conversation view
 
     Examples:
-      | Name      | Contact   | Message1       | CallBackend | Message2         |
-      | user1Name | user2Name | You pinged     | autocall    | user2Name pinged |
+      | Name      | Contact   | Message1   | CallBackend | Message2         |
+      | user1Name | user2Name | You pinged | autocall    | user2Name pinged |
 
   @C111642 @regression @rc
   Scenario Outline: Verify deleting the shared file
@@ -294,3 +294,24 @@ Feature: Delete Message
     Examples:
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
+
+  @131200 @staging
+  Scenario Outline: Verify deleting failed to upload voice message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
+    And I enable Airplane mode on the device
+    And I tap Play button on the recent audio message in the conversation view
+    And I long tap Audio Message container in the conversation view
+    Then I do not see Copy button on the action mode bar
+    When I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    Then I do not see Audio Message container in the conversation view
+
+    Examples:
+      | Name      | Contact   | FileName | MIMEType  | DeviceName |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
