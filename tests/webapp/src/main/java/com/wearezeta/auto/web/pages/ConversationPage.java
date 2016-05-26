@@ -929,6 +929,16 @@ public class ConversationPage extends WebPage {
         return true;
     }
 
+    public boolean isAudioMessageVisible(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssAudio, fileName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isAudioMessageInvisible(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssAudio, fileName));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
     public void scrollUp() throws Exception {
         getDriver().executeScript("$(\"" + WebAppLocators.ConversationPage.cssConversation + "\").animate({\n"
                 + "scrollTop: 0\n"

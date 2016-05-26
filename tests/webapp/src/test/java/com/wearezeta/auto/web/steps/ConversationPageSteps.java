@@ -579,6 +579,16 @@ public class ConversationPageSteps {
                 .waitUntilAudioTimeChanges(fileName));
     }
 
+    @Then("^I (do not )?see audio message (.*) in the conversation view$")
+    public void ISeeAudioMessage(String doNot, String fileName) throws Exception {
+        ConversationPage page = context.getPagesCollection().getPage(ConversationPage.class);
+        if (doNot == null) {
+            assertThat("Could not find audio message " + fileName, page.isAudioMessageVisible(fileName));
+        } else {
+            assertThat("audio message displayed for " + fileName, page.isAudioMessageInvisible(fileName));
+        }
+    }
+
     @When("^I click to delete the latest message$")
     public void IClickToDelete() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickToDeleteLatestMessage();
