@@ -52,7 +52,7 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     And I enter phone number for user Myself
     When I enter random verification code
-    Then I see already registered phone number alert
+    Then I see wrong credentials notification
 
     Examples:
       | Name      |
