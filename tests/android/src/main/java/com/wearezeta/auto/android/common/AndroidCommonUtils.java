@@ -732,14 +732,14 @@ public class AndroidCommonUtils extends CommonUtils {
      * @throws Exception
      */
     public static void grantPermissionsTo(String bundleId, String... perms) throws Exception {
-        for (String permissionsName: perms) {
-            executeAdb(String.format("shell pm grant %s %s", bundleId, permissionsName));
+        for (String permissionName: perms) {
+            executeAdb(String.format("shell pm grant %s %s", bundleId, permissionName));
         }
     }
 
     public static void revokePermissionsFrom(String bundleId, String... perms) throws Exception {
-        for (String permissionsName: perms) {
-            executeAdb(String.format("shell pm revoke %s %s", bundleId, permissionsName));
+        for (String permissionName: perms) {
+            executeAdb(String.format("shell pm revoke %s %s", bundleId, permissionName));
         }
     }
 }
