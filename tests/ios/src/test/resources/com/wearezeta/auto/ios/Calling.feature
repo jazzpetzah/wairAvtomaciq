@@ -421,24 +421,23 @@ Feature: Calling
       | Name      | GroupChatName  | UsersAmount |
       | user1Name | StartGROUPCALL | 11          |
 
-  @torun @C2040 @calling_basic
+  @C2040 @calling_basic
   Scenario Outline: Verify initiator is not a host for the call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> start instance using <CallBackend>
-    Given <Contact2> accepts next incoming call automatically
+    Given <Contact1>,<Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And <Contact1> calls <GroupChatName>
-    And I see call status message contains "<GroupChatName> ringing"
-    And I tap Accept button on Calling overlay
+    And I tap Audio Call button
     Then I see <NumberOfAvatars> avatars on the Calling overlay
-    And I wait for 5 seconds
-    And <Contact1> stops calling <GroupChatName>
-    And <Contact1> verifies that call status to <GroupChatName> is changed to destroyed in 15 seconds
-    Then <Contact2> verifies that call status to <GroupChatName> is changed to active in 2 seconds
+    And <Contact1> verifies that waiting instance status is changed to active in 10 seconds
+    And <Contact2> verifies that waiting instance status is changed to active in 10 seconds
+    And I tap Leave button on Calling overlay
+    And <Contact1> verifies that waiting instance status is changed to active in 5 seconds
+    Then <Contact2> verifies that waiting instance status is changed to active in 5 seconds
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | NumberOfAvatars |
