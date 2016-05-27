@@ -1184,8 +1184,15 @@ public class ConversationViewPageSteps {
         getConversationViewPage().tapVideoMessageContainerButton();
     }
 
-
-    @When("^I tap the video message container$")
-    public void iTapTheVideoMessageContainer() throws Exception {
+    /**
+     * Taps the video container to download and play video sent from a contact
+     *
+     * @throws Exception
+     * @step. ^I tap the video message container sent from (.*)$
+     */
+    @When("^I tap the video message container sent from (.*)$")
+    public void ITapTheVideoMessageContainer(String username) throws Exception {
+        username = usrMgr.findUserByNameOrNameAlias(username).getName();
+        getConversationViewPage().tapVideoMessageContainer(username);
     }
 }
