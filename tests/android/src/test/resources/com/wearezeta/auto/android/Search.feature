@@ -195,8 +195,8 @@ Feature: Search
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I tap Send Image action button on People Picker page
-    And I press "Gallery" button
-    And I press "Confirm" button
+    And I tap Gallery button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
 
     Examples:
@@ -236,8 +236,8 @@ Feature: Search
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact2>
     And I tap Send Image action button on People Picker page
-    And I press "Gallery" button
-    And I press "Confirm" button
+    And I tap Gallery button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
 
     Examples:

@@ -53,6 +53,9 @@ public class ConversationViewPage extends IOSPage {
     private static final Function<String, String> xpathStrLastMessageByExactText = text ->
             String.format("%s[1][@value='%s']", xpathStrAllTextMessages, text);
 
+    private static final Function<String, String> xpathTableCellFromUser = text ->
+            String.format("%s[@name='%s']",xpathStrAllEntries,text.toUpperCase());
+
     private static final Function<String, String> xpathStrMessageByTextPart = text ->
             String.format("%s[contains(@value, '%s')]", xpathStrAllTextMessages, text);
 
@@ -159,6 +162,8 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameShareButton = MobileBy.AccessibilityId("Share");
 
     private static final By nameVideoMessageActionButton = MobileBy.AccessibilityId("VideoActionButton");
+
+    private static final By nameVideoMessageSizeLabel = MobileBy.AccessibilityId("VideoSizeLabel");
 
     private static final Function<String, String> xpathUserNameByText = text ->
             String.format("//UIATableCell[@name='%s']", text.toUpperCase());
@@ -711,6 +716,10 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameVideoMessageActionButton);
     }
 
+    public void tapVideoMessageContainerButton() throws Exception {
+        getElement(nameVideoMessageActionButton).click();
+    }
+
     public void longTapInputToolButtonByName(String btnName) throws Exception {
         getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_DURATION);
     }
@@ -734,5 +743,10 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isAudioActionButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAudioActionButton);
+    }
+
+    public void tapVideoMessageContainer(String username) throws Exception {
+        final By locator = By.xpath(xpathTableCellFromUser.apply(username));
+        getElement(locator).click();
     }
 }

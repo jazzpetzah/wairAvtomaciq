@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.ImageUtil;
@@ -177,6 +179,12 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idAudioMessageContainer = By.id("tfll__audio_message_container");
 
     private static final By idAudioContainerButton = By.id("gpv__row_conversation__audio_button");
+
+    private static final By idCloseTakePictureViewButton = By.id("gtv__camera_control__back_to_change_image");
+
+    private static final By idChangePhotoBtn = By.id("gtv__camera_control__change_image_source");
+
+    private static final By idGalleryBtn = By.id("gtv__camera_control__pick_from_gallery");
 
     private static final int MAX_CLICK_RETRIES = 5;
 
@@ -938,6 +946,20 @@ public class ConversationViewPage extends AndroidPage {
         getDriver().longTap(getElement(idVideoMessageContainer), DriverUtils.LONG_TAP_DURATION);
     }
 
+    public void tapAudioMessageContainer() throws Exception {
+        getElement(idAudioMessageContainer).click();
+    }
+
+    public void longAudioMessageContainer() throws Exception {
+        // FIXME: Workaround based on issue AN-4051, should be fixed by commented line
+        WebElement el = getElement(idAudioMessageContainer);
+        final Point location = el.getLocation();
+        final Dimension size = el.getSize();
+        getDriver().longTap(location.x + 20, location.y + size.height / 2, DriverUtils.LONG_TAP_DURATION);
+
+        //getDriver().longTap(getElement(idAudioMessageContainer), DriverUtils.LONG_TAP_DURATION);
+    }
+
     public boolean isVideoMessageButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idVideoContainerButton);
     }
@@ -948,5 +970,29 @@ public class ConversationViewPage extends AndroidPage {
 
     public Optional<BufferedImage> getAudioContainerButtonState() throws Exception {
         return getElementScreenshot(getElement(idAudioContainerButton));
+    }
+
+    public void tapCloseTakePictureViewButton() throws Exception {
+        getElement(idCloseTakePictureViewButton).click();
+    }
+
+    public void tapChangePhotoButton() throws Exception {
+        getElement(idChangePhotoBtn).click();
+    }
+
+    public boolean isTakePhotoButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathDialogTakePhotoButton);
+    }
+
+    public boolean isTakePhotoButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathDialogTakePhotoButton);
+    }
+
+    public boolean isChangePhotoButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idChangePhotoBtn);
+    }
+
+    public boolean isChangePhotoButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idChangePhotoBtn);
     }
 }

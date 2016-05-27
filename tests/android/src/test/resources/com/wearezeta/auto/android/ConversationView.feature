@@ -65,8 +65,8 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I tap Add picture button from cursor toolbar
-    And I press "Take Photo" button
-    And I press "Confirm" button
+    And I tap Take Photo button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
 
     Examples:
@@ -187,8 +187,8 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I tap Add picture button from cursor toolbar
-    And I press "Gallery" button
-    And I press "Confirm" button
+    And I tap Gallery button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
 
     Examples:
@@ -204,8 +204,8 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I tap Add picture button from cursor toolbar
-    And I press "Gallery" button
-    And I press "Confirm" button
+    And I tap Gallery button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
     And I tap the recent picture in the conversation view
     And I rotate UI to landscape
@@ -213,7 +213,7 @@ Feature: Conversation View
     And I rotate UI to portrait
     Then I tap the recent picture in the conversation view
     And I rotate UI to landscape
-    And I press "Image Close" button
+    And I tap Image Close button on Take Picture view
     Then I rotate UI to portrait
     And I navigate back from dialog page
     And I see Contact list
@@ -248,8 +248,8 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I tap Add picture button from cursor toolbar
-    And I press "Gallery" button
-    And I press "Sketch Image Paint" button
+    And I tap Gallery button on Take Picture view
+    And I tap Sketch Image Paint button on Take Picture view
     And I draw a sketch on image with <NumColors> colors
     Then I send my sketch
     And I tap the recent picture in the conversation view
@@ -267,8 +267,8 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I tap Add picture button from cursor toolbar
-    And I press "Take Photo" button
-    And I press "Sketch Image Paint" button
+    And I press Take Photo button on Take Picture view
+    And I press Sketch Image Paint button on Take Picture view
     And I draw a sketch on image with <NumColors> colors
     And I send my sketch
     And I tap the recent picture in the conversation view
@@ -325,9 +325,9 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I tap Add picture button from cursor toolbar
-    And I press "Switch Camera" button
-    And I press "Take Photo" button
-    And I press "Confirm" button
+    And I tap Switch Camera button on Take Picture view
+    And I tap Take Photo button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
 
     Examples:

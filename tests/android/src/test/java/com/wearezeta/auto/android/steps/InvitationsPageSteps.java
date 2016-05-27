@@ -31,15 +31,21 @@ public class InvitationsPageSteps {
     /**
      * Verify that a particular user is visible in the invites list
      *
+     * @param shouldNotSee equals to null if the user should be visible
      * @param alias user alias
      * @throws Exception
-     * @step. ^I see (.*) in the invites list$
+     * @step. ^I (do not )?see (.*) in the invites list$
      */
-    @Then("^I see (.*) in the invites list$")
-    public void ISeeUser(String alias) throws Exception {
+    @Then("^I (do not )?see (.*) in the invites list$")
+    public void ISeeUser(String shouldNotSee, String alias) throws Exception {
         final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
-        Assert.assertTrue(String.format("User '%s' is not visible on invites page", name),
-                getInvitationsPage().waitUntilUserNameIsVisible(name));
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("User '%s' is not visible on invites page", name),
+                    getInvitationsPage().waitUntilUserNameIsVisible(name));
+        } else {
+            Assert.assertTrue(String.format("User '%s' is visible on invites page, but should be hidden", name),
+                    getInvitationsPage().waitUntilUserNameIsInvisible(name));
+        }
     }
 
     private ElementState avatarState = null;

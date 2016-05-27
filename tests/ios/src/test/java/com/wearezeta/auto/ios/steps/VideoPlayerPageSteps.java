@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
 import com.wearezeta.auto.ios.pages.VideoPlayerPage;
@@ -28,5 +29,17 @@ public class VideoPlayerPageSteps {
 	@When("I tap Pause button on Video player page")
 	public void ITapPauseButtonOnVideoPlayerPage() throws Exception {
 		getVideoPlayerPage().clickPauseButton();
+	}
+
+	/**
+	 * Verifies that the video message video player is opened
+	 *
+	 * @throws Exception
+	 * @step. ^I see video message player page is opened$
+     */
+	@Then("^I see video message player page is opened$")
+	public void ISeeVideoMessagePlayerPageIsOpened() throws Exception {
+		Assert.assertTrue("Video Message Player is not opened", getVideoPlayerPage().
+				isVideoMessagePlayerPageDoneButtonVisible());
 	}
 }

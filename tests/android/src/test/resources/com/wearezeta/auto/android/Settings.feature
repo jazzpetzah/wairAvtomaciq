@@ -49,3 +49,4 @@ Feature: Settings
     Examples:
       | Name      |
       | user1Name |
+

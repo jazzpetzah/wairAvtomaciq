@@ -100,6 +100,8 @@ Feature: DeleteMessage
     When I tap on contact name <Contact>
     And I tap File Transfer button from input tools
     And I tap file transfer menu item <FileName>
+    # Wait to be ready uploading for slower jenkins slaves
+    And I wait for 10 seconds
     And I long tap on file transfer placeholder in conversation view
     And I tap on Delete badge item
     Then I do not see file transfer placeholder
