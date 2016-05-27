@@ -53,6 +53,9 @@ public class ConversationViewPage extends IOSPage {
     private static final Function<String, String> xpathStrLastMessageByExactText = text ->
             String.format("%s[1][@value='%s']", xpathStrAllTextMessages, text);
 
+    private static final Function<String, String> xpathTableCellFromUser = text ->
+            String.format("%s[@name='%s']",xpathStrAllEntries,text);
+
     private static final Function<String, String> xpathStrMessageByTextPart = text ->
             String.format("%s[contains(@value, '%s')]", xpathStrAllTextMessages, text);
 
@@ -159,6 +162,8 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameShareButton = MobileBy.AccessibilityId("Share");
 
     private static final By nameVideoMessageActionButton = MobileBy.AccessibilityId("VideoActionButton");
+
+    private static final By nameVideoMessageSizeLabel = MobileBy.AccessibilityId("VideoSizeLabel");
 
     private static final Function<String, String> xpathUserNameByText = text ->
             String.format("//UIATableCell[@name='%s']", text.toUpperCase());
@@ -717,5 +722,10 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isAudioMessageRecordCancelVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAudioRecorderCancelButton);
+    }
+
+    public void tapVideoMessageContainer(String username) throws Exception {
+        final By locator = By.xpath(xpathTableCellFromUser.apply(username.toUpperCase()));
+        getElement(locator).click();
     }
 }
