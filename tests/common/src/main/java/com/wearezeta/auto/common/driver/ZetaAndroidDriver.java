@@ -114,7 +114,8 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
                                       int endy, int durationMilliseconds) {
         int duration = 1;
         if (durationMilliseconds > SWIPE_STEP_DURATION_MILLISECONDS) {
-            duration = (durationMilliseconds % SWIPE_STEP_DURATION_MILLISECONDS == 0) ? (durationMilliseconds / SWIPE_STEP_DURATION_MILLISECONDS)
+            duration = (durationMilliseconds % SWIPE_STEP_DURATION_MILLISECONDS == 0)
+                    ? (durationMilliseconds / SWIPE_STEP_DURATION_MILLISECONDS)
                     : (durationMilliseconds / SWIPE_STEP_DURATION_MILLISECONDS + 1);
         }
         int current = 1;
@@ -199,7 +200,19 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         }
     }
 
-    public void longTapAndSwipe(WebElement longTapElement, FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement, int swipeDurationMilliseconds, int tapDurationMilliseconds) {
+    /**
+     * Long tap on an element for several seconds, then move it to the end position
+     * However the end position could be an element which will be visible after you tap on the start element,
+     * Thus the end element will be passed by FunctionalInterface, will be called between "long tap" and "swipe"
+     *
+     * @param longTapElement            the start element
+     * @param getEndElement             the function to retrieve end element durint Runtime
+     * @param swipeDurationMilliseconds the duration of swipe
+     * @param tapDurationMilliseconds   the duration of long tap
+     */
+    public void longTapAndSwipe(WebElement longTapElement,
+                                FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement,
+                                int swipeDurationMilliseconds, int tapDurationMilliseconds) {
         final Point fromPoint = longTapElement.getLocation();
         final Dimension fromElementSize = longTapElement.getSize();
 
