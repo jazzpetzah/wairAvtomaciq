@@ -148,7 +148,7 @@ Feature: File Transfer
       | Login      | Password      | Name      | Contact   | File        | Size | Type |
       | user1Email | user1Password | user1Name | user2Name | example.txt | 24MB | TXT  |
 
-  @C82822 @filetransfer @staging
+  @C82822 @filetransfer @regression
   Scenario Outline: Verify sender is able to cancel upload
     Given There are 2 users where <Name> is me
     Given <Name> is connected to <Contact2>

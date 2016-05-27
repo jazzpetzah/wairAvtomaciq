@@ -1,6 +1,6 @@
 Feature: Audio Message
 
-  @C129782 @audiomessage @staging
+  @C129782 @audiomessage @regression
   Scenario Outline: Verify you can send and play the audio file in 1:1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -21,7 +21,7 @@ Feature: Audio Message
       | Login      | Password      | Name      | Contact   | File        | Time  |
       | user1Email | user1Password | user1Name | user2Name | example.wav | 00:20 |
 
-  @C129783 @audiomessage @staging
+  @C129783 @audiomessage @regression
   Scenario Outline: Verify you can delete an audio message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -41,7 +41,7 @@ Feature: Audio Message
       | Login      | Password      | Name      | Contact   | File         | Time  |
       | user1Email | user1Password | user1Name | user2Name | example2.wav | 00:03 |
 
-  @C129784 @audiomessage @staging
+  @C129784 @audiomessage @regression
   Scenario Outline: Verify you can receive and play the audio file in group
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
