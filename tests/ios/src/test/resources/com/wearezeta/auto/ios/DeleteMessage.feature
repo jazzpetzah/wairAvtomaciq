@@ -34,7 +34,7 @@ Feature: DeleteMessage
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C111323 @regression @rc @torun
+  @C111323 @regression @rc
   Scenario Outline: Verify deleting the picture, gif from Giphy
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
