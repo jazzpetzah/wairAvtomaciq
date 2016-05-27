@@ -27,10 +27,10 @@ Feature: Conversation View
     Then I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And I type shortcut combination to ping
-    And I wait for 1 seconds
+    And I wait for 30 seconds
     Then I see <PING> action in conversation
     When I type shortcut combination to ping
-    And I wait for 1 seconds
+    And I wait for 5 seconds
     Then I see <PING> action 2 times in conversation
 
     Examples: 
@@ -138,7 +138,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1   | Contact2   | ChatName  |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | GroupChat |
 
-  @C2359 @smoke
+  @C2359 @smoke @WEBAPP-2785
   Scenario Outline: Verify I can undo redo using menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -157,7 +157,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C2360 @smoke
+  @C2360 @smoke @WEBAPP-2785
   Scenario Outline: Verify I can undo redo using shortcuts Ctrl Z and Ctrl Shift Z
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

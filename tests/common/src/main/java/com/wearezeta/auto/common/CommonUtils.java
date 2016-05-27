@@ -23,6 +23,10 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
 
@@ -654,6 +658,45 @@ public class CommonUtils {
             default:
                 return fileSize;
         }
+    }
+
+    /**
+     * Create Random audio file in WAV format.
+     *
+     * @param filePath          the path you want to save the output video
+     * @param length            length the length in format 00:00 (minutes:seconds) of the audio file.
+     * @throws Exception
+     */
+    public static void generateAudioFile(String filePath, String length) throws Exception {
+        final int expectedLength = getTimeInSecondsFromString(length);
+        byte[] pcm_data = new byte[44100 * expectedLength];
+        double L1 = 44100.0 / 240.0;
+        double L2 = 44100.0 / 245.0;
+        for (int i = 0; i < pcm_data.length; i++) {
+            pcm_data[i] = (byte) (55 * Math.sin((i / L1) * Math.PI * 2));
+            pcm_data[i] += (byte) (55 * Math.sin((i / L2) * Math.PI * 2));
+        }
+
+        AudioFormat format = new AudioFormat(44100, 8, 1, true, true);
+        AudioInputStream ais = new AudioInputStream(new ByteArrayInputStream(pcm_data), format, pcm_data.length / format
+                .getFrameSize());
+        AudioSystem.write(ais, AudioFileFormat.Type.WAVE, new File(filePath));
+    }
+
+    /**
+     * Converts time that is given as a String in format 00:00 to seconds. Example: "01:12" will return 72 seconds.
+     *
+     * @param length String in format 00:00
+     * @return time in seconds
+     * @throws Exception
+     */
+    private static int getTimeInSecondsFromString(String length) throws Exception {
+        if (!length.contains(":")) {
+            throw new Exception("Time does not contain : separator");
+        }
+        int minutes = Integer.valueOf(length.split(":")[0]);
+        int seconds = Integer.valueOf(length.split(":")[1]);
+        return minutes * 60 + seconds;
     }
 
     /**

@@ -170,6 +170,10 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameAudioRecorderCancelButton = MobileBy.AccessibilityId("audioRecorderCancel");
 
+    private static final By nameSendAudioMessageButton = MobileBy.AccessibilityId("audioRecorderSend");
+
+    private static final By nameAudioActionButton = MobileBy.AccessibilityId("AudioActionButton");
+
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -722,6 +726,23 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isAudioMessageRecordCancelVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAudioRecorderCancelButton);
+    }
+
+    private By getRecordControlButtonByName(String buttonName) {
+        switch (buttonName.toLowerCase()) {
+            case "send":
+                return nameSendAudioMessageButton;
+            default:
+                throw new IllegalArgumentException("Not know record control button");
+        }
+    }
+
+    public void tapRecordControlButton(String buttonName) throws Exception {
+        getElement(getRecordControlButtonByName(buttonName)).click();
+    }
+
+    public boolean isAudioActionButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAudioActionButton);
     }
 
     public void tapVideoMessageContainer(String username) throws Exception {

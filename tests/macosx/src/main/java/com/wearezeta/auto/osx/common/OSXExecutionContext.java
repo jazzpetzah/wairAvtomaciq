@@ -36,7 +36,7 @@ public class OSXExecutionContext {
 			"com.wire.browser.version", "49");
 
 	public static final String ELECTRON_SUFFIX = System.getProperty(
-			"com.wire.electron.path.suffix", "/Contents/MacOS/Electron");
+			"com.wire.electron.path.suffix", "/Contents/MacOS/Wire");
 
 	public static final String CHROMEDRIVER_PATH = System.getProperty(
 			"com.wire.chromedriver.path", "/Applications/chromedriver");

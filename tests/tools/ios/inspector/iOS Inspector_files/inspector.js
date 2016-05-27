@@ -15,6 +15,8 @@
 Inspector.logLevel = 4; // 0=none, 1=error, 2=error +warning, 3=
 // error,warning,info 4 = all
 const APPIUM_ROOT = "http://localhost:4723/wd/hub";
+const SCALE_FACTOR = 2;
+
 
 function Inspector(selector) {
 
@@ -28,7 +30,9 @@ function Inspector(selector) {
 
     this.initScreenshotPath();
     $("#screenshot").attr("src", this.screenshotPath);
-    var jsTreeData = this.transformAutXmlToAjax(this.autXml);
+    var parser = new DOMParser();
+    var xmlDoc = parser.parseFromString(this.autXml, "text/xml");
+    var jsTreeData = this.transformAutXmlToAjax(xmlDoc);
     this.log.info(jsTreeData);
     this.jsTreeConfig = {
         "core": {
@@ -65,9 +69,7 @@ Inspector.prototype.initScreenshotPath = function () {
               });
 }
 
-Inspector.prototype.transformAutXmlToAjax = function (autXml) {
-    var parser = new DOMParser();
-    var xmlDoc = parser.parseFromString(autXml, "text/xml");
+Inspector.prototype.transformAutXmlToAjax = function (xmlDoc) {
     var uuid = function guid() {
       function s4() {
         return Math.floor((1 + Math.random()) * 0x10000)
@@ -81,7 +83,7 @@ Inspector.prototype.transformAutXmlToAjax = function (autXml) {
         var generatedRef = uuid();
         var toCoordinate = function(strPresentation) {
             if (strPresentation && !!parseFloat(strPresentation)) {
-                return Math.round(parseFloat(strPresentation) * 2);
+                return Math.round(parseFloat(strPresentation) * SCALE_FACTOR);
             } else {
                 return 0;
             }
@@ -319,6 +321,7 @@ Inspector.prototype.selectOne = function (node, displayDetails) {
     var id;
     var value;
     var label;
+    var visible;
     var l10n;
     var source;
 
@@ -330,6 +333,7 @@ Inspector.prototype.selectOne = function (node, displayDetails) {
         id = node.metadata.id;
         value = node.metadata.value;
         label = node.metadata.label;
+        visible = node.metadata.shown;
         l10n = node.metadata.l10n;
         source = node.metadata.source;
     } else {// from listener, jstree node
@@ -340,8 +344,13 @@ Inspector.prototype.selectOne = function (node, displayDetails) {
         id = node.rslt.obj.data('id');
         value = node.rslt.obj.data('value');
         label = node.rslt.obj.data('label');
+        visible = node.rslt.obj.data('shown');
         l10n = node.rslt.obj.data('l10n');
         source = node.rslt.obj.data('source');
+    }
+
+    if (rect === undefined) {
+        return;
     }
 
     this.jstree.jstree('select_node', '#' + ref);
@@ -352,7 +361,7 @@ Inspector.prototype.selectOne = function (node, displayDetails) {
 
     this.highlight(rect.x, rect.y, rect.h, rect.w, translationFound, ref);
     if (displayDetails) {
-        this.showDetails(type, ref, name, id, value, label, rect, l10n, source);
+        this.showDetails(type, ref, name, visible, value, label, rect, l10n, source);
         this.showActions(type, ref);
     }
 
@@ -371,14 +380,14 @@ Inspector.prototype.selectOne = function (node, displayDetails) {
  * @param l10n
  * @param html
  */
-Inspector.prototype.showDetails = function (type, ref, na, id, value, label, rect, l10n, html) {
+Inspector.prototype.showDetails = function (type, ref, na, isVisible, value, label, rect, l10n, html) {
     $('#details').html(
         "<h3>Details</h3>" + "<p><b>Type</b>: " + type + "</p>"
-            + "<p><b>Reference</b>: " + ref + "</p>"
-            + "<p><b>Name</b>: " + na + "</p>"
-            + "<p><b>Id</b>: " + id + "</p>"
+//            + "<p><b>Reference</b>: " + ref + "</p>"
+            + "<p><b>Accessibility Id</b>: " + na + "</p>"
             + "<p><b>Value</b>: " + value + "</p>"
             + "<p><b>Label</b>: " + label + "</p>"
+            + "<p><b>Is Visible</b>: " + isVisible + "</p>"
             + "<p><b>Rect</b>: x=" + rect.x + ", y=" + rect.y + ", h=" + rect.h + ", w=" + rect.w + "</p>");
 
     var content = $('#htmlSource').html() + "\n" + html;

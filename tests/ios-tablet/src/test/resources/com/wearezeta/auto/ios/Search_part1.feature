@@ -10,13 +10,15 @@ Feature: Search
     And I input in People picker search field user email <ContactEmail>
     Then I see the conversation "<ContactName>" exists in Search results
 
-    Examples: 
+    Examples:
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
   @C2789 @rc @regression @id2927
   Scenario Outline: Verify search by name [LANDSCAPE]
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <IntermediateContact>
+    Given <Contact> is connected to <IntermediateContact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
@@ -24,9 +26,9 @@ Feature: Search
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 
-    Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
+    Examples:
+      | Name      | Contact   | IntermediateContact |
+      | user1Name | user2Name | user3Name           |
 
   @C2838 @regression @id2656
   Scenario Outline: Start 1:1 chat with users from Top Connections [PORTRAIT]
@@ -43,7 +45,7 @@ Feature: Search
     And I wait for 2 seconds
     And I see conversation view page
 
-    Examples: 
+    Examples:
       | Name      | UserCount |
       | user1Name | 2         |
 
@@ -63,7 +65,7 @@ Feature: Search
     And I wait for 2 seconds
     And I see conversation view page
 
-    Examples: 
+    Examples:
       | Name      | UserCount |
       | user1Name | 2         |
 
@@ -85,7 +87,7 @@ Feature: Search
     And I navigate back to conversations list
     Then I see first item in contact list named <ConvoName>
 
-    Examples: 
+    Examples:
       | Name      | ConvoName    | UserCount |
       | user1Name | TopGroupTest | 3         |
 
@@ -108,7 +110,7 @@ Feature: Search
     And I dismiss popover on iPad
     And I see first item in contact list named <ConvoName>
 
-    Examples: 
+    Examples:
       | Name      | ConvoName    |
       | user1Name | TopGroupTest |
 
@@ -128,7 +130,7 @@ Feature: Search
     And I type the default message and send it
     Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -150,7 +152,7 @@ Feature: Search
     And I type the default message and send it
     Then I see 1 default message in the dialog
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -167,7 +169,7 @@ Feature: Search
     And I input in People picker search field user name <LastName>
     Then I see the conversation "<NewName>" exists in Search results
 
-    Examples: 
+    Examples:
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
@@ -183,8 +185,8 @@ Feature: Search
     And I input in People picker search field first 5 letters of user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 
-    Examples: 
-      | Name      | Contact   | 
+    Examples:
+      | Name      | Contact   |
       | user1Name | user2Name |
 
   @C2793 @regression @id2936
@@ -205,6 +207,6 @@ Feature: Search
     And I click space keyboard button
     Then I see that <Number> contacts are selected
 
-    Examples: 
+    Examples:
       | Name      | UserCount | Contact   | Number |
       | user1Name | 7         | user2Name | 4      |

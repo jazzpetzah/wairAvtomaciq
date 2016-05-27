@@ -1162,14 +1162,36 @@ public class ConversationViewPageSteps {
     /**
      * Verify whether audio message record progress control is visible
      *
-     * @step. ^I see audio message record progress$
+     * @step. ^I see audio message record container$
      *
      * @throws Exception
      */
-    @Then("^I see audio message record progress$")
+    @Then("^I see audio message record container$")
     public void ISeeAudioRecordProgress() throws Exception {
         Assert.assertTrue("Audio message record progress control has not been shown",
                 getConversationViewPage().isAudioMessageRecordCancelVisible());
+    }
+
+    /**
+     * Tap pointed control button
+     *
+     * @throws Exception
+     * @step. ^I tap (Send) record control button
+     */
+    @When("^I tap (Send) record control button$")
+    public void ITapRecordControlButton(String buttonName) throws Exception {
+        getConversationViewPage().tapRecordControlButton(buttonName);
+    }
+
+    /**
+     * Verify visibility of audio message placeholder
+     *
+     * @throws Exception
+     * @step. ^I see audio message placeholder$
+     */
+    @Then("^I see audio message placeholder$")
+    public void ISeeAudioMessagePlaceholder() throws Exception {
+        Assert.assertTrue("Audio message placeholder is not shown", getConversationViewPage().isAudioActionButtonVisible());
     }
 
     /**

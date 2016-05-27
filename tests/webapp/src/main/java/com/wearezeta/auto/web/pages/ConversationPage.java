@@ -46,6 +46,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -55,6 +56,7 @@ public class ConversationPage extends WebPage {
     private static final int TIMEOUT_IMAGE_MESSAGE_UPLOAD = 40; // seconds
     private static final int TIMEOUT_FILE_UPLOAD = 100; // seconds
     private static final int TIMEOUT_VIDEO_UPLOAD = 100; // seconds
+    private static final int TIMEOUT_AUDIO_UPLOAD = 100; // seconds
 
     private static final Logger log = ZetaLogger.getLog(ConversationPage.class
             .getSimpleName());
@@ -862,7 +864,7 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator2, TIMEOUT_VIDEO_UPLOAD);
     }
 
-    public boolean isSeekbarVisible(String fileName) throws Exception {
+    public boolean isVideoSeekbarVisible(String fileName) throws Exception {
         hoverOverVideo(fileName);
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoSeekbar, fileName));
         return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
@@ -888,6 +890,59 @@ public class ConversationPage extends WebPage {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoTime, fileName));
         assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No time element found for locator " + locator;
         return getDriver().findElement(locator).getText();
+    }
+
+    public boolean waitUntilAudioUploaded(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssAudioPlay, fileName));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator, TIMEOUT_AUDIO_UPLOAD);
+    }
+
+    public void playAudio(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssAudioPlay, fileName));
+        getDriver().findElement(locator).click();
+    }
+
+    public boolean waitUntilAudioPlays(String fileName) throws Exception {
+        By locator1 = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssAudioPlay, fileName));
+        DriverUtils.waitUntilLocatorDissapears(getDriver(), locator1);
+        By locator2 = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssAudioLoading, fileName));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator2, TIMEOUT_AUDIO_UPLOAD);
+    }
+
+    public boolean isAudioSeekbarVisible(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssAudioSeekbar, fileName));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    }
+
+    public String getAudioTime(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssAudioTime, fileName));
+        assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No time element found for locator " + locator;
+        return getDriver().findElement(locator).getText();
+    }
+
+    public boolean waitUntilAudioTimeChanges(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssAudioTime, fileName));
+        assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No time element found for locator " + locator;
+        final String time = getDriver().findElement(locator).getText();
+        Wait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
+                .withTimeout(DriverUtils.getDefaultLookupTimeoutSeconds(), TimeUnit.SECONDS)
+                .pollingEvery(1, TimeUnit.SECONDS)
+                .ignoring(NoSuchElementException.class)
+                .ignoring(StaleElementReferenceException.class)
+                .withMessage("Waited for time " + time + " to change, but is still " + getDriver().findElement(locator)
+                        .getText() + " on locator " + locator);
+        wait.until(d -> !d.findElement(locator).getText().equals(time));
+        return true;
+    }
+
+    public boolean isAudioMessageVisible(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssAudio, fileName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isAudioMessageInvisible(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssAudio, fileName));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public void scrollUp() throws Exception {
@@ -961,4 +1016,5 @@ public class ConversationPage extends WebPage {
     public String getTitlebarLabel() {
         return titlebarLabel.getText();
     }
+
 }

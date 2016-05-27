@@ -147,7 +147,7 @@ public class PendingConnectionsPageSteps {
 	public void ISeeCorrectColorForAcceptButtonConnectionFromUser(
 			String userAlias) throws Exception {
 		ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
-		AccentColor accentColor = context.getUserManager().getSelfUser().getAccentColor();
+		AccentColor accentColor = context.getUserManager().getSelfUserOrThrowError().getAccentColor();
 		assertThat(context.getPagesCollection().getPage(PendingConnectionsPage.class)
 				.getAcceptRequestButtonBgColor(user.getId()),
 				equalTo(accentColor));
@@ -167,7 +167,7 @@ public class PendingConnectionsPageSteps {
 	public void ISeeCorrectColorForIgnoreButtonConnectionFromUser(
 			String userAlias) throws Exception {
 		ClientUser user = context.getUserManager().findUserBy(userAlias, FindBy.NAME_ALIAS);
-		AccentColor accentColor = context.getUserManager().getSelfUser().getAccentColor();
+		AccentColor accentColor = context.getUserManager().getSelfUserOrThrowError().getAccentColor();
 		Assert.assertTrue(context.getPagesCollection()
 				.getPage(PendingConnectionsPage.class)
 				.getIgnoreRequestButtonBorderColor(user.getId())

@@ -1,6 +1,6 @@
 Feature: Video Message
 
-  @C119743 @staging @C119740
+  @C119743 @regression @C119740
   Scenario Outline: Verify video is played full screen
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -19,7 +19,7 @@ Feature: Video Message
       | Name      | Contact   | FileName    | MIMEType  | DeviceName |
       | user1Name | user2Name | testing.mp4 | video/mp4 | Device1    |
 
-  @C119748 @staging
+  @C119748 @regression
   Scenario Outline: (AN-3951) Verify download video message in offline mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -49,7 +49,7 @@ Feature: Video Message
       | Name      | Contact   | FileName    | MIMEType  | DeviceName |
       | user1Name | user2Name | testing.mp4 | video/mp4 | Device1    |
 
-  @C119736 @C119735 @staging
+  @C119736 @C119735 @regression
   Scenario Outline: Verify cancelling sending a video message after it was recorded
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -67,7 +67,7 @@ Feature: Video Message
       | Name      | Contact   | FileName    |
       | user1Name | user2Name | testing.mp4 |
 
-  @C119739 @staging
+  @C119739 @regression
   Scenario Outline: Verify notification is never shown if video is too big (more than 25mb)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

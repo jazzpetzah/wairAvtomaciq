@@ -16,7 +16,6 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.common.usrmgmt.UserState;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -115,7 +114,8 @@ public class RegistrationSteps {
         final Map<String, String> additionalHeaders = new HashMap<>();
         additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, ActivationMessage.MESSAGE_PURPOSE);
         if (usrMgr.isSelfUserSet()) {
-            registrationMessage = BackendAPIWrappers.initMessageListener(usrMgr.getSelfUser(), additionalHeaders);
+            registrationMessage = BackendAPIWrappers.initMessageListener(usrMgr.getSelfUserOrThrowError(),
+                    additionalHeaders);
         } else {
             registrationMessage = BackendAPIWrappers.initMessageListener(userToRegister, additionalHeaders);
         }
@@ -144,7 +144,6 @@ public class RegistrationSteps {
     public void IVerifyMyRegistrationData() throws Exception {
         BackendAPIWrappers.activateRegisteredUserByEmail(registrationMessage);
         if (!usrMgr.isSelfUserSet()) {
-            userToRegister.setUserState(UserState.Created);
             usrMgr.setSelfUser(userToRegister);
         }
     }

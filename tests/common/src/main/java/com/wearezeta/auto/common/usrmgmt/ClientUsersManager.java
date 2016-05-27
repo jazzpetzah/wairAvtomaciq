@@ -13,13 +13,9 @@ import org.apache.log4j.Logger;
 
 import java.math.BigInteger;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class ClientUsersManager {
     private static final int NUMBER_OF_REGISTRATION_RETRIES = 3;
@@ -32,8 +28,9 @@ public class ClientUsersManager {
      * which significantly improves delivery times. The flag will be automatically unset upon the next
      * resetClientsList method call.
      */
-    public void setUseSpecialEmailFlag() {
+    public void useSpecialEmail() throws Exception {
         this.useSpecialEmail = true;
+        resetClientsList(MAX_USERS);
     }
 
     public static final Function<Integer, String> NAME_ALIAS_TEMPLATE = idx -> String
@@ -46,8 +43,7 @@ public class ClientUsersManager {
             .format("user%dPhoneNumber", idx);
     private static final int MAX_USERS = 1001;
 
-    private static final Logger log = ZetaLogger
-            .getLog(ClientUsersManager.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(ClientUsersManager.class.getSimpleName());
 
     public static void setClientUserAliases(ClientUser user,
                                             String[] nameAliases, String[] passwordAliases,
@@ -78,36 +74,61 @@ public class ClientUsersManager {
         }
     }
 
-    private void resetClientsList(List<ClientUser> dstList, int maxCount) throws Exception {
-        this.selfUser = null;
-        dstList.clear();
-        for (int userIdx = 0; userIdx < maxCount; userIdx++) {
-            ClientUser pendingUser = new ClientUser();
-            if (this.useSpecialEmail) {
-                pendingUser.setEmail(
-                        MessagingUtils.generateEmail(MessagingUtils.getSpecialAccountName(), pendingUser.getName()));
-                pendingUser.setPassword(MessagingUtils.getSpecialAccountPassword());
-            }
-            final String[] nameAliases = new String[]{NAME_ALIAS_TEMPLATE.apply(userIdx + 1)};
-            final String[] passwordAliases = new String[]{PASSWORD_ALIAS_TEMPLATE.apply(userIdx + 1)};
-            final String[] emailAliases = new String[]{EMAIL_ALIAS_TEMPLATE.apply(userIdx + 1)};
-            final String[] phoneNumberAliases = new String[]{PHONE_NUMBER_ALIAS_TEMPLATE.apply(userIdx + 1)};
-            setClientUserAliases(pendingUser, nameAliases, passwordAliases, emailAliases, phoneNumberAliases);
-            dstList.add(pendingUser);
+    private void setUserDefaults(ClientUser user, int userIdx) throws Exception {
+        if (this.useSpecialEmail) {
+            user.setEmail(MessagingUtils.generateEmail(MessagingUtils.getSpecialAccountName(), user.getName()));
+            user.setPassword(MessagingUtils.getSpecialAccountPassword());
         }
-        // !!! Reset the flag automatically
-        this.useSpecialEmail = false;
+        final String[] nameAliases = new String[]{NAME_ALIAS_TEMPLATE.apply(userIdx + 1)};
+        final String[] passwordAliases = new String[]{PASSWORD_ALIAS_TEMPLATE.apply(userIdx + 1)};
+        final String[] emailAliases = new String[]{EMAIL_ALIAS_TEMPLATE.apply(userIdx + 1)};
+        final String[] phoneNumberAliases = new String[]{PHONE_NUMBER_ALIAS_TEMPLATE.apply(userIdx + 1)};
+        setClientUserAliases(user, nameAliases, passwordAliases, emailAliases, phoneNumberAliases);
     }
 
-    private List<ClientUser> users = new ArrayList<>();
+    private void resetClientsList(int maxCount) throws Exception {
+        this.selfUser = Optional.empty();
+        usersMap.get(UserState.NotCreated).clear();
+        usersMap.get(UserState.Created).clear();
+        for (int userIdx = 0; userIdx < maxCount; userIdx++) {
+            ClientUser pendingUser = new ClientUser();
+            setUserDefaults(pendingUser, userIdx);
+            usersMap.get(UserState.NotCreated).add(pendingUser);
+        }
+    }
+
+    private Map<UserState, List<ClientUser>> usersMap = new ConcurrentHashMap<>();
 
     public List<ClientUser> getCreatedUsers() {
-        return this.users.stream().filter(x -> x.getUserState() != UserState.NotCreated).collect(Collectors.toList());
+        return new ArrayList<>(this.usersMap.get(UserState.Created));
+    }
+
+    /**
+     * @param startIdx starts from 0, including
+     * @param endIdx   should be greater or equal than startIdx
+     */
+    private List<ClientUser> changeUsersStateToCreated(int startIdx, int endIdx) {
+        assert endIdx > startIdx;
+        final int previousCreatedUsersCount = getCreatedUsers().size();
+        this.usersMap.get(UserState.Created).addAll(this.usersMap.get(UserState.NotCreated).subList(startIdx, endIdx));
+        final List<ClientUser> resultArr = this.usersMap.get(UserState.NotCreated).subList(0, startIdx);
+        resultArr.addAll(this.usersMap.get(UserState.NotCreated).subList(endIdx,
+                this.usersMap.get(UserState.NotCreated).size()));
+        this.usersMap.put(UserState.NotCreated, resultArr);
+        return this.usersMap.get(UserState.Created).subList(previousCreatedUsersCount,
+                previousCreatedUsersCount + endIdx - startIdx);
+    }
+
+    private List<ClientUser> getAllUsers() {
+        final List<ClientUser> allUsers = new ArrayList<>();
+        allUsers.addAll(this.usersMap.get(UserState.Created));
+        allUsers.addAll(this.usersMap.get(UserState.NotCreated));
+        return allUsers;
     }
 
     public void resetUsers() throws Exception {
-        this.selfUser = null;
-        this.resetClientsList(users, MAX_USERS);
+        this.useSpecialEmail = false;
+        this.resetClientsList(MAX_USERS);
     }
 
     private static ClientUsersManager instance = null;
@@ -116,11 +137,11 @@ public class ClientUsersManager {
      * We break the singleton pattern here and make the constructor public to have multiple instances of this class for parallel
      * test executions. This means this class is not suitable as singleton and it should be changed to a non-singleton class. In
      * order to stay downward compatible we chose to just change the constructor.
-     *
-     * @return
      */
     public ClientUsersManager() throws Exception {
-        resetClientsList(this.users, MAX_USERS);
+        usersMap.put(UserState.Created, new ArrayList<>());
+        usersMap.put(UserState.NotCreated, new ArrayList<>());
+        resetClientsList(MAX_USERS);
     }
 
     public synchronized static ClientUsersManager getInstance() {
@@ -152,13 +173,11 @@ public class ClientUsersManager {
         }
     }
 
-    public ClientUser findUserByPasswordAlias(String alias)
-            throws NoSuchUserException {
+    public ClientUser findUserByPasswordAlias(String alias) throws NoSuchUserException {
         return findUserBy(alias, new FindBy[]{FindBy.PASSWORD_ALIAS});
     }
 
-    public ClientUser findUserByPhoneNumberOrPhoneNumberAlias(String alias)
-            throws NoSuchUserException {
+    public ClientUser findUserByPhoneNumberOrPhoneNumberAlias(String alias) throws NoSuchUserException {
         return findUserBy(alias, new FindBy[]{FindBy.PHONE_NUMBER,
                 FindBy.PHONENUMBER_ALIAS});
     }
@@ -174,8 +193,7 @@ public class ClientUsersManager {
                 FindBy.EMAIL_ALIAS});
     }
 
-    public ClientUser findUserBy(String searchStr, FindBy[] findByCriterias)
-            throws NoSuchUserException {
+    public ClientUser findUserBy(String searchStr, FindBy[] findByCriterias) throws NoSuchUserException {
         for (FindBy findBy : findByCriterias) {
             try {
                 return findUserBy(searchStr, findBy);
@@ -188,10 +206,9 @@ public class ClientUsersManager {
                 StringUtils.join(findByCriterias, ", ")));
     }
 
-    public ClientUser findUserBy(String searchStr, FindBy findByCriteria)
-            throws NoSuchUserException {
+    public ClientUser findUserBy(String searchStr, FindBy findByCriteria) throws NoSuchUserException {
         searchStr = searchStr.trim();
-        for (ClientUser user : users) {
+        for (ClientUser user : getAllUsers()) {
             Set<String> aliases = new HashSet<>();
             if (findByCriteria == FindBy.NAME_ALIAS) {
                 aliases = user.getNameAliases();
@@ -234,7 +251,7 @@ public class ClientUsersManager {
 
     public String replaceAliasesOccurences(String srcStr, FindBy findByAliasType) {
         String result = srcStr;
-        for (ClientUser dstUser : users) {
+        for (ClientUser dstUser : getAllUsers()) {
             Set<String> aliases;
             String replacement;
             if (findByAliasType == FindBy.NAME_ALIAS) {
@@ -327,67 +344,65 @@ public class ClientUsersManager {
         }
     }
 
-    public void createUsersOnBackend(int count, RegistrationStrategy strategy)
-            throws Exception {
-        this.resetClientsList(this.users, MAX_USERS);
+    public void createUsersOnBackend(int count, RegistrationStrategy strategy) throws Exception {
         if (count > MAX_USERS) {
-            throw new TooManyUsersToCreateException(
-                    String.format(
-                            "Maximum allowed number of users to create is %d. Current number is %d",
-                            MAX_USERS, count));
+            throw new TooManyUsersToCreateException(String.format(
+                    "Maximum allowed number of users to create is %d. Current number is %d",
+                    MAX_USERS, count));
         }
-        generateUsers(this.users.subList(0, count), strategy);
+        this.resetClientsList(MAX_USERS);
+        generateUsers(changeUsersStateToCreated(0, count), strategy);
     }
 
-    private static String[] SELF_USER_NAME_ALISES = new String[]{"I", "Me", "Myself"};
-    private static String[] SELF_USER_PASSWORD_ALISES = new String[]{"myPassword"};
-    private static String[] SELF_USER_EMAIL_ALISES = new String[]{"myEmail"};
-    private static String[] SELF_USER_PHONE_NUMBER_ALISES = new String[]{"myPhoneNumber"};
+    private static String[] SELF_USER_NAME_ALIASES = new String[]{"I", "Me", "Myself"};
+    private static String[] SELF_USER_PASSWORD_ALIASES = new String[]{"myPassword"};
+    private static String[] SELF_USER_EMAIL_ALIASES = new String[]{"myEmail"};
+    private static String[] SELF_USER_PHONE_NUMBER_ALIASES = new String[]{"myPhoneNumber"};
 
-    private ClientUser selfUser = null;
+    private Optional<ClientUser> selfUser = Optional.empty();
 
     public void setSelfUser(ClientUser usr) {
-        if (!this.users.contains(usr)) {
-            throw new RuntimeException(String.format(
-                    "User %s should be one of precreated users!",
-                    usr.toString()));
+        if (!this.getAllUsers().contains(usr)) {
+            throw new IllegalArgumentException(String.format(
+                    "User %s should be one of precreated users!", usr.toString()));
         }
+        // this is to make sure that the user is in the list of created users
+        appendCustomUser(usr);
 
-        if (this.selfUser != null) {
-            for (String nameAlias : SELF_USER_NAME_ALISES) {
-                if (this.selfUser.getNameAliases().contains(nameAlias)) {
-                    this.selfUser.removeNameAlias(nameAlias);
+        if (this.selfUser.isPresent()) {
+            for (String nameAlias : SELF_USER_NAME_ALIASES) {
+                if (this.selfUser.get().getNameAliases().contains(nameAlias)) {
+                    this.selfUser.get().removeNameAlias(nameAlias);
                 }
             }
-            for (String passwordAlias : SELF_USER_PASSWORD_ALISES) {
-                if (this.selfUser.getPasswordAliases().contains(passwordAlias)) {
-                    this.selfUser.removePasswordAlias(passwordAlias);
+            for (String passwordAlias : SELF_USER_PASSWORD_ALIASES) {
+                if (this.selfUser.get().getPasswordAliases().contains(passwordAlias)) {
+                    this.selfUser.get().removePasswordAlias(passwordAlias);
                 }
             }
-            for (String emailAlias : SELF_USER_EMAIL_ALISES) {
-                if (this.selfUser.getEmailAliases().contains(emailAlias)) {
-                    this.selfUser.removeEmailAlias(emailAlias);
+            for (String emailAlias : SELF_USER_EMAIL_ALIASES) {
+                if (this.selfUser.get().getEmailAliases().contains(emailAlias)) {
+                    this.selfUser.get().removeEmailAlias(emailAlias);
                 }
             }
-            for (String phoneNumberAlias : SELF_USER_PHONE_NUMBER_ALISES) {
-                if (this.selfUser.getPhoneNumberAliases().contains(
-                        phoneNumberAlias)) {
-                    this.selfUser.removePhoneNumberAlias(phoneNumberAlias);
+            for (String phoneNumberAlias : SELF_USER_PHONE_NUMBER_ALIASES) {
+                if (this.selfUser.get().getPhoneNumberAliases().contains(phoneNumberAlias)) {
+                    this.selfUser.get().removePhoneNumberAlias(phoneNumberAlias);
                 }
             }
         }
-        this.selfUser = usr;
-        for (String nameAlias : SELF_USER_NAME_ALISES) {
-            this.selfUser.addNameAlias(nameAlias);
+        this.selfUser = Optional.of(usr);
+        for (String nameAlias : SELF_USER_NAME_ALIASES) {
+            this.selfUser.get().addNameAlias(nameAlias);
         }
-        for (String passwordAlias : SELF_USER_PASSWORD_ALISES) {
-            this.selfUser.addPasswordAlias(passwordAlias);
+        for (String passwordAlias : SELF_USER_PASSWORD_ALIASES) {
+            this.selfUser.get().addPasswordAlias(passwordAlias);
         }
-        for (String emailAlias : SELF_USER_EMAIL_ALISES) {
-            this.selfUser.addEmailAlias(emailAlias);
+        for (String emailAlias : SELF_USER_EMAIL_ALIASES) {
+            this.selfUser.get().addEmailAlias(emailAlias);
         }
-        for (String phoneNumberAlias : SELF_USER_PHONE_NUMBER_ALISES) {
-            this.selfUser.addPhoneNumberAlias(phoneNumberAlias);
+        for (String phoneNumberAlias : SELF_USER_PHONE_NUMBER_ALIASES) {
+            this.selfUser.get().addPhoneNumberAlias(phoneNumberAlias);
         }
     }
 
@@ -399,26 +414,22 @@ public class ClientUsersManager {
         }
     }
 
-    public ClientUser getSelfUserOrThrowError()
-            throws SelfUserIsNotDefinedException {
-        if (this.selfUser == null) {
-            throw new SelfUserIsNotDefinedException(
-                    "Self user should be defined in some previous step!");
-        }
-        return this.selfUser;
+    public ClientUser getSelfUserOrThrowError() throws SelfUserIsNotDefinedException {
+        return this.selfUser.orElseThrow(() -> new SelfUserIsNotDefinedException(
+                "Self user should be defined in some previous step!"));
     }
 
-    public ClientUser getSelfUser() {
+    public Optional<ClientUser> getSelfUser() {
         return this.selfUser;
     }
 
     public boolean isSelfUserSet() {
-        return (this.selfUser != null);
+        return this.selfUser.isPresent();
     }
 
     private static final int SHARED_USERS_MIN_CREATION_INTERVAL = 10;
 
-    private void generateSharedUsers(List<ClientUser> sharedUsers, int count,
+    private void generateSharedUsers(List<ClientUser> sharedUsers,
                                      RegistrationStrategy strategy) throws Exception {
         // It is highly possible, that some part (or, probably, all)
         // of these shared users already
@@ -431,9 +442,6 @@ public class ClientUsersManager {
         while (lastExistingUserIndex >= 0) {
             try {
                 sharedUsers.get(lastExistingUserIndex).getId();
-                for (int idx = 0; idx <= lastExistingUserIndex; idx++) {
-                    sharedUsers.get(idx).setUserState(UserState.Created);
-                }
                 if (lastExistingUserIndex == sharedUsers.size() - 1) {
                     // All users already exist on the backend
                     return;
@@ -453,40 +461,33 @@ public class ClientUsersManager {
         this.generateUsers(sharedUsers.subList(lastExistingUserIndex + 1, sharedUsers.size()), strategy);
     }
 
-    public void appendSharedUsers(String commonNamePrefix, int count)
-            throws Exception {
+    public void appendSharedUsers(String commonNamePrefix, int count) throws Exception {
         if (count <= 0) {
-            throw new RuntimeException(
-                    "Count of users should be positive integer number");
+            throw new RuntimeException("Count of users should be positive integer number");
         }
         if (commonNamePrefix.length() == 0) {
-            throw new RuntimeException(
-                    "Common name prefix value could not be empty");
+            throw new RuntimeException("Common name prefix value could not be empty");
         }
 
-        List<ClientUser> sharedUsers = new ArrayList<ClientUser>();
+        List<ClientUser> sharedUsers = new ArrayList<>();
         final int ceiledCount = count / SHARED_USERS_MIN_CREATION_INTERVAL
                 * SHARED_USERS_MIN_CREATION_INTERVAL
                 + SHARED_USERS_MIN_CREATION_INTERVAL;
-        resetClientsList(sharedUsers, ceiledCount);
+        for (int idx = 0; idx < ceiledCount; idx++) {
+            setUserDefaults(sharedUsers.get(idx), getCreatedUsers().size() + idx);
+        }
         for (int sharedUserIdx = 0; sharedUserIdx < sharedUsers.size(); sharedUserIdx++) {
             ClientUser dstUser = sharedUsers.get(sharedUserIdx);
-            final String name = commonNamePrefix
-                    + Integer.toString(sharedUserIdx + 1);
+            final String name = commonNamePrefix + Integer.toString(sharedUserIdx + 1);
             dstUser.setName(name);
             dstUser.addNameAlias(name);
             dstUser.setEmail(MessagingUtils.generateEmail(MessagingUtils.getDefaultAccountName(), name));
             dstUser.addEmailAlias(name + "Email");
         }
-        generateSharedUsers(sharedUsers, ceiledCount,
-                RegistrationStrategy.ByEmail);
+        generateSharedUsers(sharedUsers, RegistrationStrategy.ByEmail);
 
         // Appending shared users to the end of "normal" users list
-        int appendPos = getCreatedUsers().size();
-        for (int sharedUserIdx = 0; sharedUserIdx < count; sharedUserIdx++) {
-            this.users.set(appendPos, sharedUsers.get(sharedUserIdx));
-            appendPos++;
-        }
+        this.usersMap.get(UserState.Created).addAll(sharedUsers);
     }
 
     public void appendSharedUsers(String commonNamePrefix,
@@ -504,7 +505,9 @@ public class ClientUsersManager {
         final int ceiledCount = count / SHARED_USERS_MIN_CREATION_INTERVAL
                 * SHARED_USERS_MIN_CREATION_INTERVAL
                 + SHARED_USERS_MIN_CREATION_INTERVAL;
-        resetClientsList(sharedUsers, ceiledCount);
+        for (int idx = 0; idx < ceiledCount; idx++) {
+            setUserDefaults(sharedUsers.get(idx), getCreatedUsers().size() + idx);
+        }
         for (int sharedUserIdx = 0; sharedUserIdx < sharedUsers.size(); sharedUserIdx++) {
             ClientUser dstUser = sharedUsers.get(sharedUserIdx);
             final String name = commonNamePrefix
@@ -517,15 +520,10 @@ public class ClientUsersManager {
                     BigInteger.valueOf(sharedUserIdx)));
             dstUser.addPhoneNumberAlias(name + "PhoneNumber");
         }
-        generateSharedUsers(sharedUsers, ceiledCount,
-                RegistrationStrategy.ByPhoneNumber);
+        generateSharedUsers(sharedUsers, RegistrationStrategy.ByPhoneNumber);
 
         // Appending shared users to the end of "normal" users list
-        int appendPos = getCreatedUsers().size();
-        for (int sharedUserIdx = 0; sharedUserIdx < count; sharedUserIdx++) {
-            this.users.set(appendPos, sharedUsers.get(sharedUserIdx));
-            appendPos++;
-        }
+        this.usersMap.get(UserState.Created).addAll(sharedUsers);
     }
 
     /**
@@ -534,13 +532,19 @@ public class ClientUsersManager {
      * <p>
      * Be careful when use this method. Make sure, that this user has been
      * already created and has all the necessary aliases already set
+     * The method will return current user index in the list if it has been already added
      *
      * @param user prepared ClientUser instance
      * @return index in users list
      */
     public int appendCustomUser(ClientUser user) {
-        int appendPos = getCreatedUsers().size();
-        this.users.set(appendPos, user);
-        return appendPos;
+        if (this.usersMap.get(UserState.Created).contains(user)) {
+            return this.usersMap.get(UserState.Created).indexOf(user);
+        }
+        this.usersMap.get(UserState.Created).add(user);
+        if (this.usersMap.get(UserState.NotCreated).contains(user)) {
+            this.usersMap.get(UserState.NotCreated).remove(user);
+        }
+        return getCreatedUsers().size() - 1;
     }
 }

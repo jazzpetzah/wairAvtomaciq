@@ -367,6 +367,18 @@ public final class WebAppLocators {
 
         public static final String cssFileDownload = cssFile + " [data-uie-name='file-download']";
 
+        // Audio message
+
+        public static final String cssAudio = "[data-uie-name='audio-asset'][data-uie-value='%s']";
+
+        public static final String cssAudioPlay = cssAudio + " [data-uie-name='do-play-media']";
+
+        public static final String cssAudioLoading = cssAudio + " [data-uie-name='status-loading-media']";
+
+        public static final String cssAudioSeekbar = cssAudio + " [data-uie-name='status-audio-seekbar']";
+
+        public static final String cssAudioTime = cssAudio + " [data-uie-name='status-audio-time']";
+
         // Video message
 
         public static final String cssVideo = "[data-uie-name='video-asset'][data-uie-value='%s']";

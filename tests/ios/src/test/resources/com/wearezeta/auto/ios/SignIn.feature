@@ -52,7 +52,7 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     And I enter phone number for user Myself
     When I enter random verification code
-    Then I see already registered phone number alert
+    Then I see wrong credentials notification
 
     Examples:
       | Name      |
@@ -78,7 +78,7 @@ Feature: Sign In
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
     When I enter <Count> digits phone number
-    Then I see something went wrong alert
+    Then I see invalid phone number alert
 
     Examples:
       | Count |

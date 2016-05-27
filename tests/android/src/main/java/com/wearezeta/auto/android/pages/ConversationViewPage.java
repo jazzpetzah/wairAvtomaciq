@@ -92,6 +92,17 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idCursorAudioMessage = By.id("cursor_menu_item_audio_message");
 
+    private static final By idAudioMessageRecordingSileControl = By.id("fl__audio_message__recording__slide_control");
+
+    private static final By idAudioMessageSendButton = By.id("fl__audio_message__recording__send_button_container");
+
+    private static final By idAudioMessagePlayButton = By.id("fl__audio_message__recording__bottom_button_container");
+
+    private static final By idAudioMessageCancelButton = By.id("fl__audio_message__recording__cancel_button_container");
+
+    private static final By xpathAudioMessageDurationText =
+            By.xpath("//*[@id='ttv__audio_message__recording__duration' and not(text())]");
+
     private static final By idFileActionBtn = By.id("gtv__row_conversation__file__action");
 
     private static final By idFileDialogActionOpenBtn = By.id("ttv__file_action_dialog__open");
@@ -146,6 +157,9 @@ public class ConversationViewPage extends AndroidPage {
     private static final Function<String, String> xpathConversationPeopleChangedByExp = exp -> String
             .format("//*[@id='ttv__row_conversation__people_changed__text' and %s]", exp);
 
+    private static final Function<String, String> xpathCursorHintByValue = value -> String
+            .format("//*[@id='ctv__cursor' and @value='%s']", value);
+
     private static final By idActionModeBarDeleteButton = By.id("action_delete");
     private static final By idActionModeBarCopyButton = By.id("action_copy");
     private static final By idActionModeBarCloseButton = By.id("action_mode_close_button");
@@ -160,6 +174,10 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idVideoContainerButton = By.id("gpv__row_conversation__video_button");
 
+    private static final By idAudioMessageContainer = By.id("tfll__audio_message_container");
+
+    private static final By idAudioContainerButton = By.id("gpv__row_conversation__audio_button");
+
     private static final int MAX_CLICK_RETRIES = 5;
 
     private static final double LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR = 0.01;
@@ -173,6 +191,8 @@ public class ConversationViewPage extends AndroidPage {
     private static final String FILE_MESSAGE_SEPARATOR = " · ";
 
     private static final int SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS = 1000;
+
+    private static final int DEFAULT_SWIPE_DURATION = 2000;
 
 
     public ConversationViewPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -294,6 +314,14 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idCursorVideoMessage, "Video button is not visible").click();
     }
 
+    public void tapAudioMessageCursorBtn() throws Exception {
+        getElement(idCursorAudioMessage, "Audio message button is not visible").click();
+    }
+
+    public void longTapAudioMessagecursorBtn(int duration) throws Exception {
+        getDriver().longTap(getElement(idCursorAudioMessage), duration);
+    }
+
     public boolean isPingButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorPing);
     }
@@ -340,6 +368,46 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isAudioButtonInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorAudioMessage);
+    }
+
+    public boolean isCursorHintVisible(String hintMessage) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+                By.xpath(xpathCursorHintByValue.apply(hintMessage)));
+    }
+
+    public boolean isAudioMessageRecordingSlideVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessageRecordingSileControl);
+    }
+
+    public boolean isAudioMessageSendButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessageSendButton);
+    }
+
+    public boolean isAudioMessagePlayButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessagePlayButton);
+    }
+
+    public boolean isAudioMessageCancelButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessageCancelButton);
+    }
+
+    public boolean isAudioMessageRecordingDurationVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathAudioMessageDurationText);
+    }
+
+    public void audioMessageSlideSwipeUp() throws Exception {
+        DriverUtils.swipeFromElementToElement(this.getDriver(), DEFAULT_SWIPE_DURATION,
+                getElement(idAudioMessagePlayButton),
+                getElement(idAudioMessageSendButton));
+    }
+
+    public void tapAudioMessageSendButton() throws Exception {
+        // Workaround cause click doesn't work, it seems need real touch
+        getDriver().longTap(getElement(idAudioMessageSendButton), DriverUtils.SINGLE_TAP_DURATION);
+    }
+
+    public void tapAudioMessageCancelButton() throws Exception {
+        getElement(idAudioMessageCancelButton).click();
     }
 
     //endregion
@@ -846,8 +914,20 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idVideoMessageContainer);
     }
 
+    public boolean isAudioMessageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idAudioMessageContainer);
+    }
+
+    public boolean isAudioMessageNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idAudioMessageContainer);
+    }
+
     public void tapVideoMessageButton() throws Exception {
         getElement(idVideoContainerButton).click();
+    }
+
+    public void tapAudioMessageButton() throws Exception {
+        getElement(idAudioContainerButton).click();
     }
 
     public void tapVideoMessageContainer() throws Exception {
@@ -864,5 +944,9 @@ public class ConversationViewPage extends AndroidPage {
 
     public Optional<BufferedImage> getVideoContainerButtonState() throws Exception {
         return getElementScreenshot(getElement(idVideoContainerButton));
+    }
+
+    public Optional<BufferedImage> getAudioContainerButtonState() throws Exception {
+        return getElementScreenshot(getElement(idAudioContainerButton));
     }
 }

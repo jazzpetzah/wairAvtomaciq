@@ -165,7 +165,7 @@ public class CommonIOSSteps {
         }
 
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
-            usrMgr.setUseSpecialEmailFlag();
+            usrMgr.useSpecialEmail();
         }
 
         if (scenario.getSourceTagNames().contains("@performance")) {
@@ -244,7 +244,7 @@ public class CommonIOSSteps {
         }
 
         try {
-            commonSteps.getUserManager().resetUsers();
+            usrMgr.resetUsers();
         } catch (Exception e) {
             e.printStackTrace();
         }
