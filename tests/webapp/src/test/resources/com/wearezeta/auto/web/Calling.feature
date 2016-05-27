@@ -45,13 +45,11 @@ Feature: Calling
     And I see the ongoing call controls for conversation <Contact>
     And User <Contact> pinged in the conversation with <Contact>
     And I see <PING> action in conversation
-    And User <Contact> pinged twice in the conversation with <Contact>
-    And I see <HOTPING> action in conversation
     And I hang up call with conversation <Contact>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | PING   | HOTPING      | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | pinged | pinged again | chrome      | 20      |
+      | Login      | Password      | Name      | Contact   | PING   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | pinged | chrome      | 20      |
 
   @C1753 @regression @calling @calling_debug
   Scenario Outline: Verify the corresponding conversations list item gets sticky on outgoing call

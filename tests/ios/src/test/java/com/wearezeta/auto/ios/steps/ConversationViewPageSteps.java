@@ -1193,4 +1193,16 @@ public class ConversationViewPageSteps {
     public void ISeeAudioMessagePlaceholder() throws Exception {
         Assert.assertTrue("Audio message placeholder is not shown", getConversationViewPage().isAudioActionButtonVisible());
     }
+
+    /**
+     * Taps the video container to download and play video sent from a contact
+     *
+     * @throws Exception
+     * @step. ^I tap the video message container sent from (.*)$
+     */
+    @When("^I tap the video message container sent from (.*)$")
+    public void ITapTheVideoMessageContainer(String username) throws Exception {
+        username = usrMgr.findUserByNameOrNameAlias(username).getName();
+        getConversationViewPage().tapVideoMessageContainer(username);
+    }
 }

@@ -4,15 +4,12 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class PersonalInfoPage extends AndroidPage {
     private static final String xpathStrParentSelfProfileOverlay = "//*[@id='fl__profile__main_container']";
-
-    private static final By idTakePhotoButton = By.id("gtv__camera_control__take_a_picture");
 
     private static final By xpathSettingsBox = By.xpath(xpathStrParentSelfProfileOverlay
             + "//*[@id='ll__settings_box_container']");
@@ -29,8 +26,6 @@ public class PersonalInfoPage extends AndroidPage {
 
     private static final By xpathNameEdit =
             By.xpath(xpathStrParentSelfProfileOverlay + "//*[@id='tet__profile__guided']");
-
-    private static final By idChangePhotoBtn = By.id("gtv__camera_control__change_image_source");
 
     private static final By idProfileOptionsButton = By.id("gtv__profile__settings_button");
 
@@ -50,27 +45,6 @@ public class PersonalInfoPage extends AndroidPage {
 
     public void tapOnPage() throws Exception {
         this.getDriver().tap(1, getElement(idPager), 500);
-    }
-
-    public void tapChangePhotoButton() throws Exception {
-        getElement(idChangePhotoBtn, "Change Photo button is not visible").click();
-    }
-
-    public void tapTakePhotoButton() throws Exception {
-        getElement(idTakePhotoButton, "Take Photo button is not visible").click();
-    }
-
-    public void tapGalleryButton() throws Exception {
-        getElement(idGalleryBtn, "Open Gallery button is not visible").click();
-    }
-
-    public void tapConfirmButton() throws Exception {
-        this.hideKeyboard();
-        final WebElement confirmBtn = getElement(ConversationViewPage.xpathConfirmOKButton,
-                "Confirmation button is not visible");
-        // Wait for animation
-        Thread.sleep(1000);
-        confirmBtn.click();
     }
 
     public void tapEllipsisButton() throws Exception {

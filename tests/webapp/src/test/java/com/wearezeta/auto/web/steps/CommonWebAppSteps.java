@@ -376,21 +376,6 @@ public class CommonWebAppSteps {
     }
 
     /**
-     * Send Hotping into a conversation using the backend
-     *
-     * @param pingFromUserNameAlias conversations list owner name/alias
-     * @param dstConversationName the name of conversation to send ping to
-     * @throws Exception
-     * @step. ^User (.*) pinged twice in the conversation with (.*)$
-     */
-    @When("^User (.*) pinged twice in the conversation with (.*)$")
-    public void UserHotPingedConversation(String pingFromUserNameAlias,
-            String dstConversationName) throws Exception {
-        context.getCommonSteps().UserHotPingedConversation(pingFromUserNameAlias,
-                dstConversationName);
-    }
-
-    /**
      * User A sends a simple text message (encrypted) to user B
      *
      * @param msgFromUserNameAlias the user who sends the message

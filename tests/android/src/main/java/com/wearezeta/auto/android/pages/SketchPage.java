@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Future;
 
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -72,7 +73,7 @@ public class SketchPage extends AndroidPage {
     public void drawLinesOnCanvas(int percentStartX, int percentStartY,
                                   int percentEndX, int percentEndY) throws Exception {
         int swipeDuration = 300;
-        if (getDriver().getOSVersionString().compareTo("4.3") < 0) {
+        if (getDriver().getOSVersion().compareTo(new DefaultArtifactVersion("4.3")) < 0) {
             swipeDuration = 1500;
         }
         DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(idCanvas),

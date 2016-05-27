@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 import org.apache.log4j.Logger;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.openqa.selenium.*;
 
 import java.util.Optional;
@@ -23,8 +24,6 @@ public abstract class AndroidPage extends BasePage {
             text -> String.format("//*[@id='alertTitle' and contains(@value, '%s')]", text);
 
     protected static final By idGiphyPreviewButton = By.id("cursor_button_giphy");
-
-    protected static final By idGalleryBtn = By.id("gtv__camera_control__pick_from_gallery");
 
     protected static final By idCloseImageBtn = By.id("gtv__single_image_message__close");
 
@@ -277,5 +276,9 @@ public abstract class AndroidPage extends BasePage {
     public boolean isAlertTitleVisible(String expectedMsg) throws Exception {
         final By locator = By.xpath(xpathStrAlertTitleByTextPart.apply(expectedMsg));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public DefaultArtifactVersion getOSVersion() throws Exception {
+        return getDriver().getOSVersion();
     }
 }

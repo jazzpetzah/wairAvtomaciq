@@ -31,6 +31,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gherkin.formatter.model.Result;
 import org.apache.log4j.Logger;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.SessionNotCreatedException;
@@ -162,7 +163,28 @@ public class CommonAndroidSteps {
 
     private static final long INTERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
+    private static final String[] STANDARD_WIRE_PERMISSIONS = new String[]{
+            "android.permission.WRITE_EXTERNAL_STORAGE",
+            "android.permission.READ_CONTACTS",
+            "android.permission.RECORD_AUDIO",
+            "android.permission.CAMERA",
+            "android.permission.READ_PHONE_STATE",
+            "android.permission.MODIFY_AUDIO_SETTINGS",
+            "android.permission.BLUETOOTH"
+    };
+
     private void onDriverInitFinished(RemoteWebDriver drv) {
+        // This is needed to make testing on Android 6+ with Selendroid possible
+        try {
+            if (isAutoAcceptOfSecurityAlertsEnabled &&
+                    ((ZetaAndroidDriver) drv).getOSVersion().compareTo(new DefaultArtifactVersion("6.0")) >= 0) {
+                AndroidCommonUtils.grantPermissionsTo(CommonUtils.getAndroidPackageFromConfig(getClass()),
+                        STANDARD_WIRE_PERMISSIONS);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         final long millisecondsStarted = System.currentTimeMillis();
         WebDriverException savedException = null;
         do {
@@ -203,6 +225,8 @@ public class CommonAndroidSteps {
         }
     }
 
+    private boolean isAutoAcceptOfSecurityAlertsEnabled = false;
+
     @Before
     public void setUp(Scenario scenario) throws Exception {
         try {
@@ -214,6 +238,8 @@ public class CommonAndroidSteps {
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
             usrMgr.useSpecialEmail();
         }
+
+        isAutoAcceptOfSecurityAlertsEnabled = !scenario.getSourceTagNames().contains("@noAcceptAlert");
 
         if (isLogcatEnabled) {
             if (scenario.getSourceTagNames().contains("@performance")) {
@@ -612,7 +638,7 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. ^I wait for (.*) second[s]*$
      */
-    @When("^I wait for\\s*(\\d+) seconds?$")
+    @And("^I wait for\\s*(\\d+) seconds?$")
     public void WaitForTime(int seconds) throws Exception {
         commonSteps.WaitForTime(seconds);
     }
@@ -693,7 +719,8 @@ public class CommonAndroidSteps {
      */
     @When("^User (.*) sends? (encrypted )?message \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
     public void UserSendMessageToConversation(String msgFromUserNameAlias, String isEncrypted,
-                                              String msg, String deviceName, String convoType, String dstConvoName) throws Exception {
+                                              String msg, String deviceName, String convoType, String dstConvoName) throws
+            Exception {
         final String msgToSend = (msg == null || msg.trim().length() == 0) ?
                 CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
@@ -1412,6 +1439,21 @@ public class CommonAndroidSteps {
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown action %s", action));
+        }
+    }
+
+    /**
+     * Verify whether current OS version is equal or better of the expected on
+     *
+     * @param minVersion the minimum version string
+     * @step. ^I am on Android ([\d\.]+) or better$
+     */
+    @Given("^I am on Android ([\\d\\.]+) or better$")
+    public void IAmOnAndroidXOrHigher(String minVersion) throws Exception {
+        final DefaultArtifactVersion currentOsVersion = pagesCollection.getCommonPage().getOSVersion();
+        if (currentOsVersion.compareTo(new DefaultArtifactVersion(minVersion)) < 0) {
+            throw new PendingException(String.format("The current Android OS version %s is too low to run this test." +
+                    "%s version is expected.", currentOsVersion, minVersion));
         }
     }
 }
