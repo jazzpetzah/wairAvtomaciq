@@ -252,11 +252,11 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts instance using <CallBackend>
+    Given <Contact1> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And <Contact1>,<Contact2> calls <GroupChatName>
+    And <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Ignore button on Calling overlay
     Then I do not see Calling overlay
@@ -271,12 +271,13 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
     Given <Contact1>,<Contact2>,<Contact3> starts instance using <CallBackend>
+    Given <Contact3> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
     And I tap on contact name <Contact1>
     When <Contact1> calls me
     And I tap Accept button on Calling overlay
-    When <Contact2>,<Contact3> calls <GroupChatName>
+    When <Contact2> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
     Then I see <NumberOfAvatars> avatars on the Calling overlay
@@ -291,10 +292,11 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And <Contact1>,<Contact2> calls <GroupChatName>
+    And <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Ignore button on Calling overlay
     Then I do not see Calling overlay
@@ -312,10 +314,11 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
     Given <Contact1>,<Contact2>,<Contact3> starts instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
     And I tap on group chat with name <GroupChatName>
-    When <Contact1>,<Contact2> calls <GroupChatName>
+    When <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
     And I see Calling overlay
@@ -350,9 +353,10 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
-    And <Contact1>,<Contact2> calls <GroupChatName>
+    And <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I wait for 45 seconds
     When I tap on group chat with name <GroupChatName>
@@ -369,10 +373,11 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5> starts instance using <CallBackend>
+    Given <Contact2>,<Contact3>,<Contact4>,<Contact5> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5> calls <GroupChatName>
+    And <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
     Then I see group call is Full message
@@ -416,16 +421,17 @@ Feature: Calling
       | Name      | GroupChatName  | UsersAmount |
       | user1Name | StartGROUPCALL | 11          |
 
-  @C2040 @calling_basic
+  @torun @C2040 @calling_basic
   Scenario Outline: Verify initiator is not a host for the call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> start instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
-    And <Contact1>,<Contact2> calls <GroupChatName>
+    And <Contact1> calls <GroupChatName>
     And I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
     Then I see <NumberOfAvatars> avatars on the Calling overlay
