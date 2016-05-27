@@ -6,20 +6,27 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.*;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver.SurfaceOrientation;
+import com.wearezeta.auto.common.video.SequenceEncoder;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.log4j.Logger;
+import org.jcodec.common.model.Picture;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
 
@@ -569,31 +576,6 @@ public class CommonUtils {
         return Executors.newSingleThreadExecutor().submit(task);
     }
 
-    public static void cleanupOutdatedMavenSnapshots(File pluginJar) {
-        try {
-            if (!pluginJar.getCanonicalPath().contains(".m2")) {
-                return;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        final File allVersionsRoot = pluginJar.getParentFile().getParentFile();
-        final String currentLibVersion = pluginJar.getParentFile().getName();
-        for (String versionRootName : allVersionsRoot.list()) {
-            try {
-                final File versionRoot = new File(allVersionsRoot.getCanonicalPath() + File.separator + versionRootName);
-                if (versionRoot.isDirectory() && !versionRoot.getName().equals(currentLibVersion)) {
-                    log.debug(String.format("Cleaning outdated SE library by path %s (current lib version is %s)...",
-                            versionRoot.getAbsolutePath(), currentLibVersion));
-                    FileUtils.deleteDirectory(versionRoot);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public static boolean isRunningInJenkinsNetwork() throws UnknownHostException {
         final String prevPropValue = System.getProperty("java.net.preferIPv4Stack");
         try {
@@ -639,12 +621,32 @@ public class CommonUtils {
     }
 
     /**
+     * Create Random Movie
+     * Notice the reason why the while loop without body is : it waits for the size of Video output chanel
+     * greater than the expected size
+     * Thus the size of final output file cannot be exact same to your expected size
+     *
+     * @param filePath          the path you want to save the output video
+     * @param size              the expected size of video
+     * @param baseImageFilePath the picture you want to use to generate the video
+     * @throws Exception
+     */
+    public static void generateVideoFile(String filePath, String size, String baseImageFilePath) throws Exception {
+        final long expectedSize = getFileSizeFromString(size);
+        SequenceEncoder sequenceEncoder = new SequenceEncoder(new File(filePath));
+        BufferedImage in = ImageIO.read(new File(baseImageFilePath));
+        Picture renderedFrame = sequenceEncoder.createFrameFromSingleImage(in);
+        while (sequenceEncoder.addFrameToVideo(renderedFrame) < expectedSize) ;
+        sequenceEncoder.finish();
+    }
+
+    /**
      * Convert formatted file size such as 50KB, 30.00MB into bytes
      *
      * @param size
      * @return file size in bytes
      */
-    public static long getFileSizeFromString(String size){
+    public static long getFileSizeFromString(String size) {
         final String[] sizeParts = size.split("(?<=\\d)\\s*(?=[a-zA-Z])");
         final int fileSize = Double.valueOf(sizeParts[0]).intValue();
         final String type = sizeParts.length > 1 ? sizeParts[1] : "";
@@ -656,6 +658,45 @@ public class CommonUtils {
             default:
                 return fileSize;
         }
+    }
+
+    /**
+     * Create Random audio file in WAV format.
+     *
+     * @param filePath          the path you want to save the output video
+     * @param length            length the length in format 00:00 (minutes:seconds) of the audio file.
+     * @throws Exception
+     */
+    public static void generateAudioFile(String filePath, String length) throws Exception {
+        final int expectedLength = getTimeInSecondsFromString(length);
+        byte[] pcm_data = new byte[44100 * expectedLength];
+        double L1 = 44100.0 / 240.0;
+        double L2 = 44100.0 / 245.0;
+        for (int i = 0; i < pcm_data.length; i++) {
+            pcm_data[i] = (byte) (55 * Math.sin((i / L1) * Math.PI * 2));
+            pcm_data[i] += (byte) (55 * Math.sin((i / L2) * Math.PI * 2));
+        }
+
+        AudioFormat format = new AudioFormat(44100, 8, 1, true, true);
+        AudioInputStream ais = new AudioInputStream(new ByteArrayInputStream(pcm_data), format, pcm_data.length / format
+                .getFrameSize());
+        AudioSystem.write(ais, AudioFileFormat.Type.WAVE, new File(filePath));
+    }
+
+    /**
+     * Converts time that is given as a String in format 00:00 to seconds. Example: "01:12" will return 72 seconds.
+     *
+     * @param length String in format 00:00
+     * @return time in seconds
+     * @throws Exception
+     */
+    private static int getTimeInSecondsFromString(String length) throws Exception {
+        if (!length.contains(":")) {
+            throw new Exception("Time does not contain : separator");
+        }
+        int minutes = Integer.valueOf(length.split(":")[0]);
+        int seconds = Integer.valueOf(length.split(":")[1]);
+        return minutes * 60 + seconds;
     }
 
     /**

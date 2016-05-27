@@ -331,7 +331,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @C77944 @videocalling @regression @WEBAPP-2462
+  @C77944 @videocalling @staging @WEBAPP-2462
   Scenario Outline: Verify I can start Video call after declining an audio call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -463,7 +463,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      |
 
-  @C77946 @videocalling @regression @WEBAPP-2463
+  @C77946 @videocalling @staging @WEBAPP-2463
   Scenario Outline: Verify I can start an audio call back after declining a video call
     Given My browser supports calling
     Given There are 2 users where <Name> is me

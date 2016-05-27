@@ -1,12 +1,5 @@
 package com.wearezeta.auto.android.steps;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.*;
-
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.logging.AndroidLogListener;
@@ -44,7 +37,13 @@ import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import static com.wearezeta.auto.android.common.AndroidCommonUtils.PadButton.*;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.*;
 
 public class CommonAndroidSteps {
     static {
@@ -213,7 +212,7 @@ public class CommonAndroidSteps {
         }
 
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
-            usrMgr.setUseSpecialEmailFlag();
+            usrMgr.useSpecialEmail();
         }
 
         if (isLogcatEnabled) {
@@ -908,6 +907,11 @@ public class CommonAndroidSteps {
             e.printStackTrace();
         }
 
+        try {
+            usrMgr.resetUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         AndroidLogListener.forceStopAll();
         LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
@@ -921,12 +925,6 @@ public class CommonAndroidSteps {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-
-        try {
-            commonSteps.getUserManager().resetUsers();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -1176,9 +1174,9 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. ^I push (.*) file having name \"(.*)\" to the device$
      */
-    @Given("^I push (.*) file having name \"(.*)\" to the device$")
-    public void IPushXFileHavingNameYToDevice(String size, String fileFullName) throws Exception {
-        AndroidCommonUtils.pushRandomFileToSdcardDownload(fileFullName, size);
+    @Given("^I push ([^\\s-]*) (video )?file having name \"(.*)\" to the device$")
+    public void IPushXFileHavingNameYToDevice(String size, String isVideoFile, String fileFullName) throws Exception {
+        AndroidCommonUtils.pushRandomFileToSdcardDownload(fileFullName, size, isVideoFile != null);
     }
 
     /**

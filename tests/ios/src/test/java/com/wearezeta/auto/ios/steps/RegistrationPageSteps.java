@@ -162,7 +162,9 @@ public class RegistrationPageSteps {
     @Then("^I verify registration address$")
     public void IVerifyRegistrationAddress() throws Exception {
         BackendAPIWrappers.activateRegisteredUserByEmail(this.activationMessage);
-        userToRegister.setUserState(UserState.Created);
+        if (!usrMgr.isSelfUserSet()) {
+            usrMgr.setSelfUser(userToRegister);
+        }
         getRegistrationPage().waitRegistrationToFinish();
     }
 

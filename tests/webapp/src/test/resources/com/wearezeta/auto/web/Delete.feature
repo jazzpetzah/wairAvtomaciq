@@ -1,6 +1,6 @@
 Feature: Delete
 
-  @C111956 @staging
+  @C111956 @regression
   Scenario Outline: Verify I can delete messages in 1:1 and from second device
     Given There are 2 users where <Name> is me
     Given user <Name> adds a new device SecondDevice with label Label1
@@ -229,3 +229,38 @@ Feature: Delete
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName |
       | user1Email | user1Password | user1Name | user2Name | user3Name | New name |
+
+  @C111957 @regression
+  Scenario Outline: Verify I can delete messages in group from me and others
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat GROUPCHAT with <Contact1>,<Contact2>
+    Given user <Name> adds a new device SecondDevice with label Label1
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    Given I open conversation with GROUPCHAT
+    When I write message MESSAGE1_NAME
+    And I send message
+    And I see text message MESSAGE1_NAME
+    And User <Contact1> sends message MESSAGE1_CONTACT to conversation GROUPCHAT
+    And I see text message MESSAGE1_CONTACT
+    And I write message MESSAGE2_NAME
+    And I send message
+    And I see text message MESSAGE2_NAME
+    Then I see 4 messages in conversation
+    When User Myself deletes the recent 1 message from user GROUPCHAT via device SecondDevice
+    And I see text message MESSAGE1_CONTACT
+    And I do not see text message MESSAGE2_NAME
+    And I see 3 messages in conversation
+    When I click to delete the latest message
+    And I click confirm to delete message
+    And I see text message MESSAGE1_NAME
+    And I do not see text message MESSAGE1_CONTACT
+    And I see 2 messages in conversation
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |

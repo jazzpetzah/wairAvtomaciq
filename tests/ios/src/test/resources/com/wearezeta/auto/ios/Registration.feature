@@ -57,7 +57,7 @@ Feature: Registration
 
     Examples:
       | Name      | Score | Timeout |
-      | user1Name | 0.4   | 15      |
+      | user1Name | 0.1   | 15      |
 
   @C1009 @regression
   Scenario Outline: Verify registering new user with Arabic name

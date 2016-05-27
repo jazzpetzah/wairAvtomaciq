@@ -76,7 +76,7 @@ Feature: File Transfer
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
     When I click to download file <File> in the conversation view
-    Then I verify status of file <File> is DOWNLOADING… in the conversation view
+    Then I verify status of file <File> is DOWNLOADING… in the conversation view if possible
     When I wait until file <File> is downloaded completely
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
@@ -158,25 +158,30 @@ Feature: File Transfer
     Given I see Welcome page
     Given I confirm keeping picture on Welcome page
     When I see Contact list with name <Name>
-    Then I open self profile
-    When I click gear button on self profile page
+    And I open self profile
+    And I click gear button on self profile page
     And I select Log out menu item on self profile page
-    Then I see the clear data dialog
+    And I see the clear data dialog
     And I click Logout button on clear data dialog
-    When I switch to Sign In page
+    And I see Sign In page
     And I Sign in using login <Login> and password <Password>
-    Then I am signed in properly
+    And I am signed in properly
     And I see Contact list with name <Contact2>
-    When I open conversation with <Contact2>
-    Then I see file transfer button in conversation input
+    And I open conversation with <Contact2>
+    And I see file transfer button in conversation input
     When I send <Size> sized file with name <File> to the current conversation
     And I cancel file upload of file <File>
-    And I verify status of file <File> is CANCELED in the conversation view
-    When I switch to Sign In page
-    Then I Sign in using login <Login2> and password <Password2>
+    Then I do not see file transfer for file <File> in the conversation view
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    And I see Sign In page
+    And I Sign in using login <Login2> and password <Password2>
     And I am signed in properly
-    When I open conversation with <Name>
-    And I do not see file transfer for file <File> in the conversation view
+    And I open conversation with <Name>
+    Then I do not see file transfer for file <File> in the conversation view
 
     Examples:
       | Login      | Password      | Name      | Contact2  | File        | Size | Login2     | Password2     |
@@ -209,7 +214,7 @@ Feature: File Transfer
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size | Type |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 1KB | TXT  |
+      | user1Email | user1Password | user1Name | user2Name | example.txt | 15MB | TXT  |
 
   @C95631 @filetransfer @regression
   Scenario Outline: Verify file can be downloaded and decrypted by receiver in group

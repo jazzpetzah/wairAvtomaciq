@@ -37,7 +37,7 @@ public class WelcomePageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private static final String ERROR_CODE_ALERT_HEADER = "Invalid Code";
+	private static final String ERROR_CODE_ALERT_HEADER = "Invalid code";
 	private static final String ERROR_CODE_ALERT_MESSAGE = "Please enter a valid code.";
 
 	private ClientUser userToRegister = null;

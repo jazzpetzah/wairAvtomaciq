@@ -20,6 +20,8 @@ import cucumber.api.java.en.When;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import org.openqa.selenium.NoSuchWindowException;
+import org.openqa.selenium.WebDriverException;
 
 public class PeoplePickerPageSteps {
 
@@ -290,15 +292,29 @@ public class PeoplePickerPageSteps {
 			throws Exception {
 		GoogleLoginPage googleLoginPage = context.getPagesCollection()
 				.getPage(GoogleLoginPage.class);
-		// sometimes Google already shows the email
-		googleLoginPage.setEmail(email);
-		// sometimes google shows a next button and you have to enter the
-		// password separately
-		if (googleLoginPage.hasNextButton()) {
-			googleLoginPage.clickNext();
-		}
-		googleLoginPage.setPassword(password);
-		googleLoginPage.clickSignIn();
+                // we use callable to handle exceptions
+                googleLoginPage.waitForWindowClose(() -> {
+                    // sometimes Google already shows the email
+                    googleLoginPage.setEmail(email);
+                    // sometimes google shows a next button and you have to enter the
+                    // password separately
+                    if (googleLoginPage.hasNextButton()) {
+                            googleLoginPage.clickNext();
+                    }
+                    googleLoginPage.setPassword(password);
+                    // sign in might be the last action
+                    googleLoginPage.clickSignIn();
+                    try{
+                        // sometimes we have to allow requested permissions
+                        if (googleLoginPage.hasApproveButton()) {
+                            googleLoginPage.clickApprove();
+                        }
+                    }catch(WebDriverException ex){
+                        // NOOP window already closed
+                    }
+                    // in order to handle exceptions we can't use Runnable thus we have to return something
+                    return true;
+                });
 	}
 
 	/**

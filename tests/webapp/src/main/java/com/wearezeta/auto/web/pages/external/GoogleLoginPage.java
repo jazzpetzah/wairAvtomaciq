@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.pages.WebPage;
+import java.util.concurrent.Callable;
 
 public class GoogleLoginPage extends WebPage {
 
@@ -76,18 +77,22 @@ public class GoogleLoginPage extends WebPage {
 	}
 
 	public void clickSignIn() throws Exception {
-		final Set<String> handles = this.getDriver().getWindowHandles();
 		signInButton.click();
-		// wait for popup to close
-		this.getWait().until(new ExpectedCondition<Boolean>() {
-			@Override
-			public Boolean apply(WebDriver input) {
-				return input.getWindowHandles().size() < handles.size();
-			}
-		});
-		// switch back to main window
-		this.getDriver().switchTo()
-			.window(this.getDriver().getWindowHandles().iterator().next());
 	}
+        
+    public void waitForWindowClose(Callable enclosedStep) throws Exception {
+        final Set<String> handles = this.getDriver().getWindowHandles();
+        enclosedStep.call();
+        // wait for popup to close
+        this.getWait().until(new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver input) {
+                return input.getWindowHandles().size() < handles.size();
+            }
+        });
+        // switch back to main window
+        this.getDriver().switchTo()
+                .window(this.getDriver().getWindowHandles().iterator().next());
+    }
 
 }

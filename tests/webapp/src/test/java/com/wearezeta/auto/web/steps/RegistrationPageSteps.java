@@ -19,7 +19,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.RegistrationPage;
@@ -319,7 +318,6 @@ public class RegistrationPageSteps {
 	public void IVerifyRegistrationEmail() throws Exception {
 		BackendAPIWrappers
 				.activateRegisteredUserByEmail(this.activationMessage);
-		userToRegister.setUserState(UserState.Created);
 	}
 
 	/**
@@ -351,7 +349,6 @@ public class RegistrationPageSteps {
 			}
 		}
 
-		this.userToRegister.setUserState(UserState.Created);
 		// indexes in aliases start from 1
 		final int userIndex = context.getUserManager().appendCustomUser(userToRegister) + 1;
 		userToRegister.addEmailAlias(ClientUsersManager.EMAIL_ALIAS_TEMPLATE

@@ -54,8 +54,6 @@ public final class CommonSteps {
      * We break the singleton pattern here and make the constructor public to have multiple instances of this class for parallel
      * test executions. This means this class is not suitable as singleton and it should be changed to a non-singleton class. In
      * order to stay downward compatible we chose to just change the constructor.
-     *
-     * @return
      */
     public CommonSteps(ClientUsersManager usrMgr, SEBridge seBridge) {
         this.usrMgr = usrMgr;
@@ -132,6 +130,14 @@ public final class CommonSteps {
                 BackendAPIWrappers.autoTestAcceptAllRequest(usrTo);
             }
         }
+    }
+
+    public void ThereIsAKnownUser(String name, String email, String password) throws Exception {
+        ClientUser user = new ClientUser();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(password);
+        usrMgr.appendCustomUser(user);
     }
 
     public void ThereAreNUsers(Platform currentPlatform, int count)
@@ -345,13 +351,6 @@ public final class CommonSteps {
 
     /**
      * Note: if there is no message in conversation, it will return Optional.of("")
-     *
-     * @param msgFromUserNameAlias
-     * @param dstConversationName
-     * @param deviceName
-     * @param isGroup
-     * @return
-     * @throws Exception
      */
     public Optional<String> UserGetRecentMessageId(String msgFromUserNameAlias, String dstConversationName, String deviceName,
                                                    boolean isGroup) throws Exception {
@@ -548,6 +547,12 @@ public final class CommonSteps {
                 true, BACKEND_USER_SYNC_TIMEOUT);
     }
 
+    public void WaitUntilContactIsFoundInSearchByEmail(String searchByNameAlias, String contactAlias) throws Exception {
+        final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(contactAlias);
+        String query = userAs.getEmail();
+        BackendAPIWrappers.waitUntilContactsFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1, true, BACKEND_USER_SYNC_TIMEOUT);
+    }
+
     public void WaitUntilTopPeopleContactsIsFoundInSearch(String searchByNameAlias, int size) throws Exception {
         BackendAPIWrappers.waitUntilTopPeopleContactsFound(usrMgr.findUserByNameOrNameAlias(searchByNameAlias), size,
                 size, true, BACKEND_USER_SYNC_TIMEOUT);
@@ -642,7 +647,6 @@ public final class CommonSteps {
 
     public void IAddUserToTheListOfTestCaseUsers(String nameAlias) throws Exception {
         ClientUser userToAdd = usrMgr.findUserByNameOrNameAlias(nameAlias);
-        userToAdd.setUserState(UserState.Created);
         usrMgr.appendCustomUser(userToAdd);
     }
 

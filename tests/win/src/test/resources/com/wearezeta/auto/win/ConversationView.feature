@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @C2344 @smoke @id3897
+  @C2344 @smoke
   Scenario Outline: Verify I can ping a conversation using the menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -18,7 +18,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name | pinged |
 
 
-  @C2333 @smoke @id3781
+  @C2333 @smoke
    Scenario Outline: Verify you ping in a conversation when you press Ctrl + K
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -27,17 +27,17 @@ Feature: Conversation View
     Then I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And I type shortcut combination to ping
-    And I wait for 1 seconds
+    And I wait for 30 seconds
     Then I see <PING> action in conversation
     When I type shortcut combination to ping
-    And I wait for 1 seconds
+    And I wait for 5 seconds
     Then I see <PING> action 2 times in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING       |
       | user1Email | user1Password | user1Name | user2Name | you pinged |
 
-   @C2334 @smoke @id3782
+   @C2334 @smoke
    Scenario Outline: Verify you start a call in a conversation when you press Ctrl + T
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -53,7 +53,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C2345 @smoke @id3898
+  @C2345 @smoke
   Scenario Outline: Verify I can call a conversation using the menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -68,7 +68,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C2346 @smoke @id3905
+  @C2346 @smoke
   Scenario Outline: Verify I can ping a group conversation using the menu bar
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -87,7 +87,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | GroupChat | pinged |
 
 
-  @C2348 @smoke @id3908
+  @C2348 @smoke
   Scenario Outline: Verify you ping in a group conversation when you press Ctrl + K
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -105,7 +105,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1   | Contact2   | ChatName  | PING   |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | GroupChat | pinged |
 
-  @C2349 @smoke @id3909
+  @C2349 @smoke
   Scenario Outline: Verify you start a call in a group conversation when you press Ctrl + T
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -122,7 +122,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1   | Contact2   | ChatName  |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | GroupChat |
 
-  @C2347 @smoke @id3907
+  @C2347 @smoke
   Scenario Outline: Verify I can call a group conversation using the menu bar
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -138,7 +138,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1   | Contact2   | ChatName  |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | GroupChat |
 
-  @C2359 @smoke @id3919
+  @C2359 @smoke @WEBAPP-2785
   Scenario Outline: Verify I can undo redo using menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -157,7 +157,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C2360 @smoke @id3920
+  @C2360 @smoke @WEBAPP-2785
   Scenario Outline: Verify I can undo redo using shortcuts Ctrl Z and Ctrl Shift Z
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -178,7 +178,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C2367 @smoke @id3945
+  @C2367 @smoke
   Scenario Outline: Verify I can select all, cut and paste using menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -199,7 +199,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C2368 @smoke @id3946
+  @C2368 @smoke
   Scenario Outline: Verify I can select all, cut and paste using shortcuts Ctrl A, Ctrl X and Ctrl V
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -222,7 +222,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C2369 @smoke @id3947
+  @C2369 @smoke
   Scenario Outline: Verify I can select all, copy and paste using menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -243,7 +243,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @C2370 @smoke @id3948
+  @C2370 @smoke
   Scenario Outline: Verify I can select all, copy and paste using shortcuts Ctrl A, Ctrl C and Ctrl V
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

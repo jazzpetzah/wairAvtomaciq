@@ -108,3 +108,23 @@ Feature: Archive
     Examples:
       | Email      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
+
+  @C131206 @regression
+  Scenario Outline: Verify you archive the conversation when you press ⌥ ⌘ ⇧ D (Mac) or alt + ctrl + D (Win)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Email> and password <Password>
+    Given I am signed in properly
+    When I see Contact list with name <Contact1>
+    And I see Contact list with name <Contact2>
+    And I open conversation with <Contact1>
+    And I type shortcut combination to archive the conversation
+    Then I see Contact list with name <Contact2>
+    And I do not see Contact list with name <Contact1>
+    When I open archive
+    Then I see archive list with name <Contact1>
+
+    Examples:
+      | Email      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |

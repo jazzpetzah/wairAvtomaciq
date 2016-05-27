@@ -1,15 +1,17 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.StringReader;
 import java.util.Optional;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Function;
 
-import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.BasePage;
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -18,10 +20,25 @@ import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.NotImplementedException;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.ios.pages.keyboard.IOSKeyboard;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
 
 public abstract class IOSPage extends BasePage {
     private static final Logger log = ZetaLogger.getLog(IOSPage.class.getSimpleName());
@@ -65,15 +82,32 @@ public abstract class IOSPage extends BasePage {
                 ZetaDriver.RECREATE_DELAY_SECONDS * (DRIVER_CREATION_RETRIES_COUNT - 1);
     }
 
+    private DocumentBuilder documentBuilder;
+
     public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
 
         this.onScreenKeyboard = new IOSKeyboard(driver);
+
+        final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+        domFactory.setNamespaceAware(true);
+        this.documentBuilder = domFactory.newDocumentBuilder();
     }
 
     @Override
     protected ZetaIOSDriver getDriver() throws Exception {
-        return (ZetaIOSDriver) super.getDriver();
+        try {
+            return (ZetaIOSDriver) super.getDriver();
+        } catch (ExecutionException e) {
+            if ((e.getCause() instanceof TimeoutException) ||
+                    ((e.getCause() instanceof WebDriverException) &&
+                            (e.getCause().getCause() instanceof TimeoutException))) {
+                throw new TimeoutException((AppiumServer.getLog().orElse("Appium log is empty")) +
+                        "\n" + ExceptionUtils.getStackTrace(e));
+            } else {
+                throw e;
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -528,5 +562,32 @@ public abstract class IOSPage extends BasePage {
 
     public void tapDoneButton() throws Exception {
         getElement(nameDoneButton).click();
+    }
+
+    public void installApp(File appFile) throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            IOSSimulatorHelper.installApp(appFile);
+        } else {
+            throw new NotImplementedException("Application install is only available for Simulator");
+        }
+    }
+
+    protected Rectangle getElementBounds(String xpathExpr) throws Exception {
+        final String docStr = getDriver().getPageSource();
+        final Document doc = documentBuilder.parse(new InputSource(new StringReader(docStr)));
+        final XPathFactory factory = XPathFactory.newInstance();
+        final XPath xpath = factory.newXPath();
+        final XPathExpression expr = xpath.compile(xpathExpr);
+        final NodeList result = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
+        if (result.getLength() == 0) {
+            throw new IllegalStateException(String.format("There are no nodes matching the xpath %s in\n%s",
+                    xpathExpr, docStr));
+        }
+        final Node node = result.item(0);
+        final NamedNodeMap attributes = node.getAttributes();
+        return new Rectangle((int) Double.parseDouble(attributes.getNamedItem("x").getNodeValue()),
+                (int) Double.parseDouble(attributes.getNamedItem("y").getNodeValue()),
+                (int) Double.parseDouble(attributes.getNamedItem("width").getNodeValue()),
+                (int) Double.parseDouble(attributes.getNamedItem("height").getNodeValue()));
     }
 }

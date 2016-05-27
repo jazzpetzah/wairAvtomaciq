@@ -2,11 +2,13 @@ Feature: Connect
 
   @C747 @id2281 @regression @rc @rc44
   Scenario Outline: Send connection request from search by name in landscape
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <IntermediateContact>
+    Given <IntermediateContact> is connected to <Contact>
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
-    Given I see the Conversations list with no conversations
+    Given I see the Conversations list with conversations
     And I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
@@ -20,16 +22,18 @@ Feature: Connect
     Then I see the conversation <Contact> in my conversations list
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | IntermediateContact |
+      | user1Name | user2Name | user3Name           |
 
   @C746 @id2280 @regression @rc @rc44
   Scenario Outline: Send connection request from search by name in portrait
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <IntermediateContact>
+    Given <IntermediateContact> is connected to <Contact>
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
-    Given I see the Conversations list with no conversations
+    Given I see the Conversations list with conversations
     And I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
@@ -43,8 +47,8 @@ Feature: Connect
     Then I see the conversation <Contact> in my conversations list
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | IntermediateContact |
+      | user1Name | user2Name | user3Name           |
 
   @C730 @id2245 @regression @rc @rc44
   Scenario Outline: Accept connection request in landscape mode

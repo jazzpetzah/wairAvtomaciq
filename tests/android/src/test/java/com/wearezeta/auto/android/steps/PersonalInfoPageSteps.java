@@ -144,7 +144,7 @@ public class PersonalInfoPageSteps {
     @When("^I change my name to (.*)$")
     public void IChangeNameTo(String newName) throws Exception {
         getPersonalInfoPage().changeSelfNameTo(newName);
-        usrMgr.getSelfUser().setName(newName);
+        usrMgr.getSelfUserOrThrowError().setName(newName);
     }
 
     /**

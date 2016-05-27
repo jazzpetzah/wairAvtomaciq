@@ -36,6 +36,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertTrue;
+
 import org.openqa.selenium.logging.LogEntry;
 
 public class CommonWebAppSteps {
@@ -104,6 +105,11 @@ public class CommonWebAppSteps {
     @Then("^I see a button with (.*) on the page$")
     public void ISeeAButtonOnPage(String value) throws Throwable {
         assertThat(WebappPagesCollection.getInstance().getPage(WebPage.class).getButtonValues(), hasItem(value));
+    }
+
+    @Given("^There is a known user (.*) with email (.*) and password (.*)$")
+    public void ThereIsAKnownUser(String name, String email, String password) throws Exception {
+        context.getCommonSteps().ThereIsAKnownUser(name, email, password);
     }
 
     /**
@@ -292,7 +298,7 @@ public class CommonWebAppSteps {
     public void UserWaitsUntilContactExistsInHisSearchResults(
             String searchByNameAlias, String query) throws Exception {
         context.startPinging();
-        context.getCommonSteps().WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
+        context.getCommonSteps().WaitUntilContactIsFoundInSearchByEmail(searchByNameAlias, query);
         context.stopPinging();
     }
 
@@ -423,6 +429,17 @@ public class CommonWebAppSteps {
         }
     }
 
+    @When("^Contact (.*) sends? long message from file \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
+    public void UserSendLongMessageToConversation(String msgFromUserNameAlias,
+                                              String file, String deviceName, String convoType, String dstConvoName) throws Exception {
+        String message = WebCommonUtils.getTextFromFile(file);
+        if (convoType.equals("user")) {
+            context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, message, deviceName);
+        } else {
+            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, message, deviceName);
+        }
+    }
+
     @When("^I remember current page$")
     public void IRememberCurrentPage() throws Exception {
         WebPage page = context.getPagesCollection().getPage(WebPage.class);
@@ -500,6 +517,16 @@ public class CommonWebAppSteps {
         f.close();
         boolean isGroup = convoType.equals("user") ? false : true;
         context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "plain/text", deviceName, isGroup);
+    }
+
+    @When("^(.*) sends? audio file (.*) via device (.*) to (user|group conversation) (.*)$")
+    public void WhenISendAudioFile(String contact, String fileName, String deviceName, String convoType, String
+            dstConvoName) throws Exception {
+        String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
+        path = path.replace("%40", "@");
+        boolean isGroup = !convoType.equals("user");
+        context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "audio/mp4",
+                deviceName, isGroup);
     }
 
     /**

@@ -122,7 +122,7 @@ public class SelfProfilePageSteps {
 	@And("^I change username to (.*)")
 	public void IChangeUserNameTo(String name) throws Exception {
 		context.getPagesCollection().getPage(SelfProfilePage.class).setUserName(name);
-		context.getUserManager().getSelfUser().setName(name);
+		context.getUserManager().getSelfUserOrThrowError().setName(name);
 	}
 
 	/**

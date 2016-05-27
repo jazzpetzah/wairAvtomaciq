@@ -113,7 +113,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     public List<String> getParticipantDevices() throws Exception {
         return selectVisibleElements(idParticipantDevices).stream().map(WebElement::getText).map(
-                (string) -> string.replaceAll("(PHONE)|(DESKTOP)|(\\n)|(\\s)|(ID:)", ""
+                (string) -> string.replaceAll("(PHONE)|(DESKTOP)|(\\n)|(\\s)|(ID:)|(ID)", ""
                 ).toLowerCase()).collect(Collectors.toList());
     }
 

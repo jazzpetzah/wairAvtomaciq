@@ -30,9 +30,6 @@ import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -49,6 +46,7 @@ public class ConversationPageSteps {
 
     @SuppressWarnings("unused")
     private static final Logger log = ZetaLogger.getLog(ConversationPageSteps.class.getSimpleName());
+    private static final String VIDEO_MESSAGE_IMAGE = "userpicture_landscape.jpg";
 
     private String randomMessage;
     
@@ -229,6 +227,12 @@ public class ConversationPageSteps {
         assertThat("No verified icon", context.getPagesCollection().getPage(ConversationPage.class).isConversationVerified());
     }
 
+    @And("^I see titlebar with (.*)$")
+    public void ISeeTitlebar(String conversationName) throws Throwable {
+        assertThat("Wrong titlebar label", context.getPagesCollection().getPage(ConversationPage.class).getTitlebarLabel(),
+                equalTo(conversationName.toUpperCase()));
+    }
+
     /**
      * Send a picture into current conversation
      *
@@ -322,11 +326,11 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Send a file with a specific size into current conversation
+     * Generate and send a file with a specific size into current conversation
      *
-     * @param size the size of a picture file. This file should already exist in the ~/Documents folder
+     * @param size the size of a file.
+     * @param fileName the name of the file
      * @throws Exception
-     * @step. ^I send picture (.*) to the current conversation$
      */
     @When("^I send (.*) sized file with name (.*) to the current conversation$")
     public void WhenIXSizedSendFile(String size, String fileName) throws Exception {
@@ -342,6 +346,38 @@ public class ConversationPageSteps {
             f.setLength(fileSize);
         }
         f.close();
+        context.getPagesCollection().getPage(ConversationPage.class).sendFile(fileName);
+    }
+
+    /**
+     * Generate and send a video with a specific size into current conversation
+     *
+     * @param size the size of the video file.
+     * @param fileName the name of the file
+     * @throws Exception
+     */
+    @When("^I send (.*) sized video with name (.*) to the current conversation$")
+    public void WhenIXSizedSendVideo(String size, String fileName) throws Exception {
+        String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
+        path = path.replace("%40","@");
+        final String picturePath = WebCommonUtils.getFullPicturePath(VIDEO_MESSAGE_IMAGE);
+        CommonUtils.generateVideoFile(path + "/" + fileName, size, picturePath);
+        context.getPagesCollection().getPage(ConversationPage.class).sendFile(fileName);
+    }
+
+    /**
+     * Generate and send a audio file with a specific size into current conversation
+     *
+     * @param length the length in format 00:00 (minutes:seconds) of the audio file.
+     * @param fileName the name of the file
+     * @throws Exception
+     */
+    @When("^I send audio file with length (.*) and name (.*) to the current conversation$")
+    public void WhenIXSizedSendAudio(String length, String fileName) throws Exception {
+        String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
+        path = path.replace("%40", "@");
+
+        CommonUtils.generateAudioFile(path + "/" + fileName, length);
         context.getPagesCollection().getPage(ConversationPage.class).sendFile(fileName);
     }
 
@@ -483,6 +519,78 @@ public class ConversationPageSteps {
     @Then("^I click to download file (.*) in the conversation view$")
     public void IDownloadFile(String fileName) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).downloadFile(fileName);
+    }
+
+    @Then("^I wait until video (.*) is uploaded completely$")
+    public void IWaitUntilVideoIsUploaded(String fileName) throws Exception {
+        assertThat("Upload still not finished for video " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .waitUntilVideoUploaded(fileName));
+    }
+
+    @Then("^I click play button of video (.*) in the conversation view$")
+    public void IClickPlay(String fileName) throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).playVideo(fileName);
+    }
+
+    @Then("^I wait until video (.*) is downloaded and starts to play$")
+    public void IWaitUntilVideoStartsPlaying(String fileName) throws Exception {
+        assertThat("Download still not finished for video " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .waitUntilVideoPlays(fileName));
+    }
+
+    @Then("^I verify seek bar is shown for video (.*) in the conversation view$")
+    public void IVerifyVideoSeekbar(String fileName) throws Exception {
+        assertThat("No seekbar for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .isVideoSeekbarVisible(fileName));
+    }
+
+    @Then("^I verify time for video (.*) is changing in the conversation view$")
+    public void IVerifyTimeOfVideo(String fileName) throws Exception {
+        assertThat("Time is not changing for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .waitUntilVideoTimeChanges(fileName));
+    }
+
+    @Then("^I wait until audio (.*) is uploaded completely$")
+    public void IWaitUntilAudioIsUploaded(String fileName) throws Exception {
+        assertThat("Upload still not finished for audio " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .waitUntilAudioUploaded(fileName));
+    }
+
+    @Then("^I click play button of audio (.*) in the conversation view$")
+    public void IClickPlayAudio(String fileName) throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).playAudio(fileName);
+    }
+
+    @Then("^I wait until audio (.*) is downloaded and starts to play$")
+    public void IWaitUntilAudioStartsPlaying(String fileName) throws Exception {
+        assertThat("Download still not finished for audio " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .waitUntilAudioPlays(fileName));
+    }
+
+    @Then("^I verify seek bar is shown for audio (.*) in the conversation view$")
+    public void IVerifyAudioSeekbar(String fileName) throws Exception {
+        assertThat("No seekbar for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .isAudioSeekbarVisible(fileName));
+    }
+
+    @Then("^I verify time for audio (.*) is (.*) in the conversation view$")
+    public void IVerifyTimeOfAudio(String fileName, String time) throws Exception {
+        ConversationPage page = context.getPagesCollection().getPage(ConversationPage.class);
+        if (time.equals("changing")) {
+            assertThat("Time is not changing for " + fileName, page.waitUntilAudioTimeChanges(fileName));
+        } else {
+            assertThat("Time is wrong" + fileName, page.getAudioTime(fileName), equalTo(time));
+        }
+    }
+
+    @Then("^I (do not )?see audio message (.*) in the conversation view$")
+    public void ISeeAudioMessage(String doNot, String fileName) throws Exception {
+        ConversationPage page = context.getPagesCollection().getPage(ConversationPage.class);
+        if (doNot == null) {
+            assertThat("Could not find audio message " + fileName, page.isAudioMessageVisible(fileName));
+        } else {
+            assertThat("audio message displayed for " + fileName, page.isAudioMessageInvisible(fileName));
+        }
     }
 
     @When("^I click to delete the latest message$")
@@ -960,6 +1068,11 @@ public class ConversationPageSteps {
     @Then("^I type shortcut combination to start a call$")
     public void ITypeShortcutCombinationToCall() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).pressShortCutForCall();
+    }
+
+    @Then("^I see nobody to call message")
+    public void ISeeNobodyToCallMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).isNobodyToCallMsgVisible();
     }
 
     @And("^I click on pending user avatar$")

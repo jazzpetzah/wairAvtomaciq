@@ -12,21 +12,23 @@ import org.openqa.selenium.By;
 public class CallingOverlayPage extends IOSPage {
     private static final By nameCallStatusLabel = MobileBy.AccessibilityId("CallStatusLabel");
 
-    private static final By nameEndCallButton = MobileBy.AccessibilityId("LeaveCallButton");
+    private static final String nameStrEndCallButton = "LeaveCallButton";
 
-    private static final By nameSpeakersButton = MobileBy.AccessibilityId("CallSpeakerButton");
+    private static final String nameStrSpeakersButton = "CallSpeakerButton";
 
-    private static final By nameIgnoreCallButton = MobileBy.AccessibilityId("IgnoreButton");
+    private static final String nameStrIgnoreCallButton = "IgnoreButton";
 
-    private static final By nameAcceptVideoCallButton = MobileBy.AccessibilityId("AcceptVideoButton");
+    private static final String nameStrAcceptVideoCallButton = "AcceptVideoButton";
 
-    protected static final By nameMuteCallButton = MobileBy.AccessibilityId("CallMuteButton");
+    protected static final String nameStrMuteCallButton = "CallMuteButton";
+    protected static final By nameMuteCallButton = MobileBy.AccessibilityId(nameStrMuteCallButton);
 
-    protected static final By nameCallVideoButton = MobileBy.AccessibilityId("CallVideoButton");
+    protected static final String nameStrCallVideoButton = "CallVideoButton";
+    protected static final By nameCallVideoButton = MobileBy.AccessibilityId(nameStrCallVideoButton);
 
-    private static final By nameSwitchCameraButton = MobileBy.AccessibilityId("SwitchCameraButton");
+    private static final String nameStrSwitchCameraButton = "SwitchCameraButton";
 
-    private static final By nameAcceptCallButton = MobileBy.AccessibilityId("AcceptButton");
+    private static final String nameStrAcceptCallButton = "AcceptButton";
 
     private static final Function<String, String> xpathStrCallingMessageByText = text ->
             String.format("//*[@name='CallStatusLabel' and contains(@value, '%s')]", text);
@@ -71,30 +73,35 @@ public class CallingOverlayPage extends IOSPage {
     }
 
     public boolean isGroupCallFullMessageShown() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGroupCallFullMessage, WAIT_FOR_GROUPCALL_FULL_MSG);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGroupCallFullMessage,
+                WAIT_FOR_GROUPCALL_FULL_MSG);
     }
 
-    protected By getButtonLocatorByName(final String name) {
+    protected String getButtonAccessibilityIdByName(final String name) {
         switch (name) {
             case "Ignore":
-                return nameIgnoreCallButton;
+                return nameStrIgnoreCallButton;
             case "Mute":
-                return nameMuteCallButton;
+                return nameStrMuteCallButton;
             case "Leave":
-                return nameEndCallButton;
+                return nameStrEndCallButton;
             case "Accept":
-                return nameAcceptCallButton;
+                return nameStrAcceptCallButton;
             case "Accept Video":
-                return nameAcceptVideoCallButton;
+                return nameStrAcceptVideoCallButton;
             case "Call Video":
-                return nameCallVideoButton;
+                return nameStrCallVideoButton;
             case "Call Speaker":
-                return nameSpeakersButton;
+                return nameStrSpeakersButton;
             case "Switch Camera":
-                return nameSwitchCameraButton;
+                return nameStrSwitchCameraButton;
             default:
                 throw new IllegalArgumentException(String.format("Button name '%s' is unknown", name));
         }
+    }
+
+    protected By getButtonLocatorByName(final String name) {
+        return MobileBy.AccessibilityId(getButtonAccessibilityIdByName(name));
     }
 
     public void tapButtonByName(String name) throws Exception {

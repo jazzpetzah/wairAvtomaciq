@@ -42,6 +42,7 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import static com.wearezeta.auto.common.CommonUtils.*;
 
@@ -123,7 +124,7 @@ public class CommonIOSSteps {
                         "-ZMBackendEnvironmentType", backendType,
                         // https://wearezeta.atlassian.net/browse/ZIOS-5259
                         "-AnalyticsUserDefaultsDisabledKey", "0")
-                        // "--debug-log-network")
+                // "--debug-log-network")
         );
 
         if (additionalCaps.isPresent()) {
@@ -164,7 +165,7 @@ public class CommonIOSSteps {
         }
 
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
-            usrMgr.setUseSpecialEmailFlag();
+            usrMgr.useSpecialEmail();
         }
 
         if (scenario.getSourceTagNames().contains("@performance")) {
@@ -243,7 +244,7 @@ public class CommonIOSSteps {
         }
 
         try {
-            commonSteps.getUserManager().resetUsers();
+            usrMgr.resetUsers();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -267,18 +268,58 @@ public class CommonIOSSteps {
      */
     @Given("^I upgrade Wire to the recent version$")
     public void IUpgradeWire() throws Exception {
+        final Map<String, Object> customCaps = new HashMap<>();
+        if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+            final RemoteWebDriver currentDriver = PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM).get();
+            final Map<String, ?> currentCapabilities = currentDriver.getCapabilities().asMap();
+            for (Map.Entry<String, ?> capabilityItem : currentCapabilities.entrySet()) {
+                customCaps.put(capabilityItem.getKey(), capabilityItem.getValue());
+            }
+            try {
+                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        customCaps.put("noReset", true);
+        customCaps.put("fullReset", false);
+        final String appPath = getAppPath();
+        if (appPath.endsWith(".ipa")) {
+            pagesCollection.getCommonPage().installIpa(new File(appPath));
+        } else if (appPath.endsWith(".app")) {
+            pagesCollection.getCommonPage().installApp(new File(appPath));
+        } else {
+            throw new IllegalArgumentException(String.format("Only .app and .ipa package formats are supported. " +
+                    "%s is given instead.", appPath));
+        }
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath, Optional.of(customCaps), 1);
+        updateDriver(lazyDriver);
+    }
+
+    /**
+     * Restarts currently executed Wire instance
+     *
+     * @throws Exception
+     * @step. ^I restart Wire$
+     */
+    @When("^I restart Wire$")
+    public void IRestartWire() throws Exception {
+        final RemoteWebDriver currentDriver =
+                PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM)
+                        .get(IOSPage.IOS_DRIVER_INIT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+        final Map<String, ?> currentCapabilities = currentDriver.getCapabilities().asMap();
         try {
             PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        final String appPath = getAppPath();
-        pagesCollection.getCommonPage().installIpa(new File(appPath));
         final Map<String, Object> customCaps = new HashMap<>();
-        customCaps.put("autoAcceptAlerts", true);
+        for (Map.Entry<String, ?> capabilityItem : currentCapabilities.entrySet()) {
+            customCaps.put(capabilityItem.getKey(), capabilityItem.getValue());
+        }
         customCaps.put("noReset", true);
         customCaps.put("fullReset", false);
-        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath, Optional.of(customCaps), 1);
+        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(getAppPath(), Optional.of(customCaps), 1);
         updateDriver(lazyDriver);
     }
 

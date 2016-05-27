@@ -1,7 +1,7 @@
 Feature: Conversation List
 
   @C56396 @regression
-  Scenario Outline: (AN-3523?) Verify contacts banner does not appear anymore after you opened contacts once
+  Scenario Outline: (AN-3523) Verify contacts banner does not appear anymore after you opened contacts once
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     When I accept First Time overlay as soon as it is visible
@@ -25,7 +25,7 @@ Feature: Conversation List
       | user1Name |
 
   @C719 @id1513 @regression @rc
-  Scenario Outline: (AN-3447) Verify messages are marked as read as you look at them so that you can know when there is unread content in a conversation
+  Scenario Outline: (AN-4024) Verify messages are marked as read as you look at them so that you can know when there is unread content in a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number

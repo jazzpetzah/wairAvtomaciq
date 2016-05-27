@@ -33,7 +33,7 @@
         <syncIsMuted>False</syncIsMuted>
         <cachedOtrDevicesCount>3</cachedOtrDevicesCount>
         <!-- http://192.168.10.18:8081/nexus/content/repositories/releases/com/wearezeta/zmessaging-actor/ -->
-        <zmessaging.actor.version>68.444</zmessaging.actor.version>
+        <zmessaging.actor.version>70.455</zmessaging.actor.version>
     </properties>
 
     <dependencies>
@@ -42,7 +42,7 @@
             <artifactId>opencv</artifactId>
             <version>2.4.9-7</version>
         </dependency>
-                
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -140,6 +140,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.jcodec</groupId>
+            <artifactId>jcodec-javase</artifactId>
+            <version>0.1.9</version>
+        </dependency>
+
+        <dependency>
             <groupId>commons-net</groupId>
             <artifactId>commons-net</artifactId>
             <version>3.3</version>
@@ -195,6 +201,11 @@
                     <failIfNoTests>false</failIfNoTests>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.7</version>
+             </plugin>
         </plugins>
 
         <resources>
