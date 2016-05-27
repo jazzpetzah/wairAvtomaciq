@@ -684,7 +684,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I long tap on image in the conversation$")
     public void ILongTapOnImage() throws Exception {
-        getConversationViewPage().tapHoldImage();
+        getConversationViewPage().tapHoldImageWithRetry();
     }
 
     /**
