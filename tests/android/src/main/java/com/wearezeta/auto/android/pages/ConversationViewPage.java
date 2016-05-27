@@ -945,7 +945,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void longAudioMessageContainer() throws Exception {
-        //FIXME: Workaround based on issue AN-4051, should be fixed by commented line
+        // FIXME: Workaround based on issue AN-4051, should be fixed by commented line
         WebElement el = getElement(idAudioMessageContainer);
         final Point location = el.getLocation();
         final Dimension size = el.getSize();

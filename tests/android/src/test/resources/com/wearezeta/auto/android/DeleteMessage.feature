@@ -260,7 +260,7 @@ Feature: Delete Message
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
     When I enable Airplane mode on the device
-    When I long tap Audio message button <TapDuration> seconds from cursor toolbar
+    And I long tap Audio message button <TapDuration> seconds from cursor toolbar
     And I tap on audio message send button
     And I long tap Audio Message container in the conversation view
     Then I do not see Copy button on the action mode bar
