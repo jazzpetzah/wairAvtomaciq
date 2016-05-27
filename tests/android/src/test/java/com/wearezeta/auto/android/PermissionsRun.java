@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(format = {"html:target/report", "json:target/regression_report.json",
-        "com.wearezeta.auto.common.ZetaFormatter"}, tags = {"@v6Plus"})
+        "com.wearezeta.auto.common.ZetaFormatter"}, tags = {"@v6_plus"})
 public class PermissionsRun {
 
 }
