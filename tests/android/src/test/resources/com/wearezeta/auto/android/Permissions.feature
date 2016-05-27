@@ -7,6 +7,8 @@ Feature: Permissions
     Given There is 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I add <Contact3> into Address Book
+    Given <Contact1> starts instance using <CallBackend>
+    Given <Contact2> starts instance using <CallBackend2>
     When I sign in using my phone number
     And I wait for 3 seconds
     Then I dismiss security alert if it is visible
@@ -42,7 +44,6 @@ Feature: Permissions
     And I see alert message containing "Calling not available" in the title
     And I tap OK button on the alert
     # --- Audio call from other user ---
-    Given <Contact1> starts instance using <CallBackend>
     When <Contact1> calls me
     And I wait for 7 seconds
     And I dismiss security alert
@@ -51,7 +52,6 @@ Feature: Permissions
     Then I do not see incoming call
     And <Contact1> stops calling me
     # --- Video call from other user ---
-    Given <Contact2> starts instance using <CallBackend2>
     When <Contact2> starts a video call to me
     And I wait for 7 seconds
     And I dismiss security alert
@@ -72,7 +72,7 @@ Feature: Permissions
     # --- Verify no user if visible in invites list if contacts access is denied
     When I close Personal Info Page
     And I open Search UI
-    And I do not see <Contact3> in the invites list
+    Then I do not see <Contact3> in the invites list
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | CallBackend | CallBackend2 |
