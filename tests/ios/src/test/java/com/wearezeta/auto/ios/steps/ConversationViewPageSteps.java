@@ -1173,18 +1173,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Presses the play bitton in video container to download and play video
-     *
-     * @param button download or play button
-     * @throws Exception
-     * @step. ^I tap (Download|Play) button of video message$
-     */
-    @When("^I tap (Download|Play) button of video message$")
-    public void ITapDownloadPlayButtonOfVideoMessage(String button) throws Exception {
-        getConversationViewPage().tapVideoMessageContainerButton();
-    }
-
-    /**
      * Taps the video container to download and play video sent from a contact
      *
      * @throws Exception
