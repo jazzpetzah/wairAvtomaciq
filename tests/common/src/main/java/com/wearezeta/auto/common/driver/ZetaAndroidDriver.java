@@ -4,6 +4,7 @@ import com.google.common.base.Throwables;
 import com.google.common.collect.ImmutableMap;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.common.ocr.OnScreenKeyboardScanner;
 import io.appium.java_client.MobileCommand;
 import io.appium.java_client.android.AndroidDriver;
@@ -132,6 +133,50 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         ta.up(endx, endy).perform();
     }
 
+    /**
+     * Touch is used for touch on an element for several seconds, then move it to the end position
+     * However the end position could be an element which be presented after you touch,
+     * Thus the end element should be located after long tap.
+     *
+     * @param startX                   start X
+     * @param startY                   start Y
+     * @param getEndElement            the functional interface to get end element, called after long tap
+     * @param swipDurationMilliseconds swipe duration
+     * @param tapDurationMilliseconds  tap duration
+     */
+    private void touch(int startX, int startY, FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement,
+                       int swipDurationMilliseconds, int tapDurationMilliseconds) {
+        int duration = 1;
+        if (swipDurationMilliseconds > SWIPE_STEP_DURATION_MILLISECONDS) {
+            duration = (swipDurationMilliseconds % SWIPE_STEP_DURATION_MILLISECONDS == 0)
+                    ? (swipDurationMilliseconds / SWIPE_STEP_DURATION_MILLISECONDS)
+                    : (swipDurationMilliseconds / SWIPE_STEP_DURATION_MILLISECONDS + 1);
+        }
+        int current = 1;
+        final TouchActions ta = new TouchActions(this);
+        ta.down(startX, startY).perform();
+
+        try {
+            Thread.sleep(tapDurationMilliseconds);
+            WebElement element = getEndElement.call();
+            Dimension dimension = element.getSize();
+            Point point = element.getLocation();
+
+            final int endx = point.x + dimension.width / 2;
+            final int endy = point.y + dimension.height / 2;
+
+            do {
+                Thread.sleep(SWIPE_STEP_DURATION_MILLISECONDS);
+                ta.move(getNextCoord(startX, endx, current, duration),
+                        getNextCoord(startY, endy, current, duration)).perform();
+                current++;
+            } while (current <= duration);
+            ta.up(endx, endy).perform();
+        } catch (Exception e) {
+            Throwables.propagate(e);
+        }
+    }
+
     @Override
     public void swipe(int startx, int starty, int endx, int endy, int durationMilliseconds) {
         if (androidOSVersion.compareTo("4.3") < 0) {
@@ -152,6 +197,16 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         } catch (Exception e) {
             throw new WebDriverException(e.getMessage(), e);
         }
+    }
+
+    public void longTapAndSwipe(WebElement longTapElement, FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement, int swipeDurationMilliseconds, int tapDurationMilliseconds) {
+        final Point fromPoint = longTapElement.getLocation();
+        final Dimension fromElementSize = longTapElement.getSize();
+
+        final int startX = fromPoint.x + fromElementSize.width / 2;
+        final int startY = fromPoint.y + fromElementSize.height / 2;
+
+        this.touch(startX, startY, getEndElement, swipeDurationMilliseconds, tapDurationMilliseconds);
     }
 
     public void longTap(WebElement el, int durationMilliseconds) {
