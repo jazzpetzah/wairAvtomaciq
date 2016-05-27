@@ -1,6 +1,6 @@
 Feature: Permissions
 
-  @C129781 @noAcceptAlert @staging
+  @C129781 @noAcceptAlert @v6Plus @staging
   Scenario Outline: Deny permissions scenario
     Given I am on Android 6 or better
     Given I delete all contacts from Address Book
