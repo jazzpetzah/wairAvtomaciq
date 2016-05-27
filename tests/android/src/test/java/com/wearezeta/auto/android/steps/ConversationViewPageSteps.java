@@ -120,12 +120,12 @@ public class ConversationViewPageSteps {
      *
      * @param longTap                equals not null means long tap on the cursor button
      * @param btnName                button name
-     * @param longTapDurationSeconds long tap duration in seconds
+     * @param longTapDurationMilliSeconds long tap duration in seconds
      * @throws Exception
      * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button$ from cursor toolbar$
      */
     @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button (\\d+ seconds )?from cursor toolbar$")
-    public void WhenITapCursorToolButton(String longTap, String btnName, String longTapDurationMilleSeconds) throws Exception {
+    public void WhenITapCursorToolButton(String longTap, String btnName, String longTapDurationMilliSeconds) throws Exception {
         if (longTap == null) {
             switch (btnName.toLowerCase()) {
                 case "video message":
@@ -150,8 +150,8 @@ public class ConversationViewPageSteps {
                     throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
             }
         } else {
-            int longTapDuration = (longTapDurationMilleSeconds == null) ? DriverUtils.LONG_TAP_DURATION :
-                    Integer.parseInt(longTapDurationMilleSeconds.replaceAll("[\\D]", "")) * 1000;
+            int longTapDuration = (longTapDurationMilliSeconds == null) ? DriverUtils.LONG_TAP_DURATION :
+                    Integer.parseInt(longTapDurationMilliSeconds.replaceAll("[\\D]", "")) * 1000;
 
             switch (btnName.toLowerCase()) {
                 case "audio message":
@@ -253,17 +253,20 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Presses a given button name Not clear which page is returned from a given action
+     * Tap the corresponding button on Take Picture view
      *
      * @param buttonName the button to press
      * @throws Exception
-     * @step. ^I press \"(.*)\" button$
+     * @step. ^I tap "(Take Photo|Confirm|Gallery|Image Close|Switch Camera|Switch Image Paint|Close)" button on Take Picture view$
      */
-    @When("^I press \"(.*)\" button$")
+    @When("^I tap (Take Photo|Change Photo|Confirm|Gallery|Image Close|Switch Camera|Switch Image Paint|Close) button on Take Picture view$")
     public void WhenIPressButton(String buttonName) throws Exception {
         switch (buttonName.toLowerCase()) {
             case "take photo":
                 getConversationViewPage().takePhoto();
+                break;
+            case "change photo":
+                getConversationViewPage().tapChangePhotoButton();
                 break;
             case "confirm":
                 getConversationViewPage().confirm();
@@ -273,6 +276,9 @@ public class ConversationViewPageSteps {
                 break;
             case "image close":
                 getConversationViewPage().closeFullScreenImage();
+                break;
+            case "close":
+                getConversationViewPage().tapCloseTakePictureViewButton();
                 break;
             case "switch camera":
                 if (!getConversationViewPage().tapSwitchCameraButton()) {
@@ -286,6 +292,33 @@ public class ConversationViewPageSteps {
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name: '%s'", buttonName));
         }
+    }
+
+    /**
+     * Verify whether the particular button is visible on Take Picture view
+     *
+     * @param shouldNotSee equals to null if the button should be visible
+     * @param buttonName   one of possible button names
+     * @throws Exception
+     * @step. ^I (do not )?see (Take Photo|Change Photo) button on Take Picture view$
+     */
+    @Then("^I (do not )?see (Take Photo|Change Photo) button on Take Picture view$")
+    public void ISeeButtonOnTakePictureView(String shouldNotSee, String buttonName) throws Exception {
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
+        switch (buttonName.toLowerCase()) {
+            case "take photo":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isTakePhotoButtonVisible :
+                        getConversationViewPage()::isTakePhotoButtonInvisible;
+                break;
+            case "change photo":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isChangePhotoButtonVisible :
+                        getConversationViewPage()::isChangePhotoButtonInvisible;
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name: '%s'", buttonName));
+        }
+        Assert.assertTrue(String.format("The %s button should %s visible on the Take Picture view",
+                buttonName, (shouldNotSee == null) ? "be" : "not be"), verificationFunc.call());
     }
 
     /**
@@ -1111,7 +1144,7 @@ public class ConversationViewPageSteps {
     /**
      * Long tap an existing conversation message
      *
-     * @param msg         the message to tap
+     * @param message     the message to tap
      * @param messageType the type of message which could be Ping or Text
      * @param isLongTap   equals to null if the tap should be simple tap
      * @throws Exception
