@@ -492,8 +492,9 @@ public class ConversationViewPage extends IOSPage {
     public void tapHoldImageWithRetry() throws Exception {
         for (int i = 0; i<3; i++) {
             tapHoldImage();
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemDelete, 5))
+            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemDelete, 5)) {
                 break;
+            }
         }
     }
 
