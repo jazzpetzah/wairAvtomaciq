@@ -226,7 +226,7 @@ public class ContactListPage extends WebPage {
         final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName
                 .apply(name);
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-                By.cssSelector(locator), 5);
+                By.cssSelector(locator));
     }
 
     public WebElement getListElementByName(String name, boolean includeArchived)
