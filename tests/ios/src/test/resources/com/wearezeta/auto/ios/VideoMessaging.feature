@@ -15,7 +15,7 @@ Feature: Video Messaging
       | Name      | Contact   | FileName    |
       | user1Name | user2Name | testing.mp4 |
 
-  @torun @C125733 @staging
+  @C125733 @staging
   Scenario Outline: Verify receiving video message
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -23,11 +23,10 @@ Feature: Video Messaging
     Given I see conversations list
     When I tap on contact name <Contact>
     And User <Contact> sends file <FileName> having MIME type <MIMEType> to single user conversation <Name> using device <DeviceName>
-    When I tap Download button of video message
-    When I tap the video message container
-    And I wait for 10 seconds
-    And I tap the video message container
-    Then I see video player page is opened
+    When I tap the video message container sent from <Contact>
+    #Wait to make sure video is downloaded
+    And I wait for 6 seconds
+    Then I see video message player page is opened
 
     Examples:
       | Name      | Contact   | FileName    | MIMEType  | DeviceName |
