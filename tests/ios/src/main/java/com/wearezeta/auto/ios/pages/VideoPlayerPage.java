@@ -49,4 +49,8 @@ public class VideoPlayerPage extends IOSPage {
             getElement(nameVideoPauseButton).click();
         }
     }
+
+    public boolean isVideoMessagePlayerPageDoneButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), nameVideoDoneButton);
+    }
 }
