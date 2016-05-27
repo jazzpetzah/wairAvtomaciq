@@ -125,7 +125,7 @@ public class ConversationViewPageSteps {
      * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button$ from cursor toolbar$
      */
     @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button (\\d+ seconds )?from cursor toolbar$")
-    public void WhenITapCursorToolButton(String longTap, String btnName, String longTapDurationMilleSeconds) throws Exception {
+    public void WhenITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds) throws Exception {
         if (longTap == null) {
             switch (btnName.toLowerCase()) {
                 case "video message":
@@ -150,8 +150,8 @@ public class ConversationViewPageSteps {
                     throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
             }
         } else {
-            int longTapDuration = (longTapDurationMilleSeconds == null) ? DriverUtils.LONG_TAP_DURATION :
-                    Integer.parseInt(longTapDurationMilleSeconds.replaceAll("[\\D]", "")) * 1000;
+            int longTapDuration = (longTapDurationSeconds == null) ? DriverUtils.LONG_TAP_DURATION :
+                    Integer.parseInt(longTapDurationSeconds.replaceAll("[\\D]", "")) * 1000;
 
             switch (btnName.toLowerCase()) {
                 case "audio message":
@@ -162,6 +162,18 @@ public class ConversationViewPageSteps {
             }
         }
 
+    }
+
+    /**
+     * Long tap on Audio message cursor button , and then move finger up to send button within Audio message slide
+     *
+     * @param durationSeconds
+     * @throws Exception
+     * @step. ^I long tap Audio message cursor button (\d+) seconds and swipe up$
+     */
+    @When("^I long tap Audio message cursor button (\\d+) seconds and swipe up$")
+    public void LongTapAudioMessageCursorAndSwipeUp(int durationSeconds) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtnAndSwipeUp(durationSeconds * 1000);
     }
 
     /**
@@ -415,17 +427,6 @@ public class ConversationViewPageSteps {
     @When("^I tap new message notification \"(.*)\"$")
     public void WhenIChangeConversationByClickMessageNotification(String message) throws Exception {
         getConversationViewPage().tapMessageNotification(message);
-    }
-
-    /**
-     * Swipe up from Audio message play button to send button
-     *
-     * @throws Exception
-     * @step. ^I swipe up on audio message slide$
-     */
-    @When("^I swipe up on audio message slide$")
-    public void WhenISwipeUpOnAudioMessageSlide() throws Exception {
-        getConversationViewPage().audioMessageSlideSwipeUp();
     }
 
     /**

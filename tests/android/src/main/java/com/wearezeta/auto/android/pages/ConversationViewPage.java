@@ -322,6 +322,11 @@ public class ConversationViewPage extends AndroidPage {
         getDriver().longTap(getElement(idCursorAudioMessage), duration);
     }
 
+    public void longTapAudioMessageCursorBtnAndSwipeUp(int longTapDurationMilliseconds) throws Exception {
+        getDriver().longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idAudioMessageSendButton),
+                DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds);
+    }
+
     public boolean isPingButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorPing);
     }
@@ -393,12 +398,6 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isAudioMessageRecordingDurationVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathAudioMessageDurationText);
-    }
-
-    public void audioMessageSlideSwipeUp() throws Exception {
-        DriverUtils.swipeFromElementToElement(this.getDriver(), DEFAULT_SWIPE_DURATION,
-                getElement(idAudioMessagePlayButton),
-                getElement(idAudioMessageSendButton));
     }
 
     public void tapAudioMessageSendButton() throws Exception {
