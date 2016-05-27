@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
 
