@@ -722,4 +722,24 @@ public class AndroidCommonUtils extends CommonUtils {
         executeAdb(String.format("shell input keyevent %s", button.getCode()));
         Thread.sleep(300);
     }
+
+    /**
+     * Grant permission to the particular application with bundleId identifier
+     *
+     * @param bundleId app identifier, dor example com.wire.x
+     * @param perms array of permission name. See https://developer.android.com/reference/android/Manifest.permission.html
+     *              for more details
+     * @throws Exception
+     */
+    public static void grantPermissionsTo(String bundleId, String... perms) throws Exception {
+        for (String permissionsName: perms) {
+            executeAdb(String.format("shell pm grant %s %s", bundleId, permissionsName));
+        }
+    }
+
+    public static void revokePermissionsFrom(String bundleId, String... perms) throws Exception {
+        for (String permissionsName: perms) {
+            executeAdb(String.format("shell pm revoke %s %s", bundleId, permissionsName));
+        }
+    }
 }

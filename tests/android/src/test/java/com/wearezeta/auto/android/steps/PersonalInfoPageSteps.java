@@ -90,51 +90,6 @@ public class PersonalInfoPageSteps {
     }
 
     /**
-     * Taps on the photo button to show the user posibilities to change their
-     * profile picture
-     *
-     * @throws Exception
-     * @step. ^I tap change photo button$
-     */
-    @When("^I tap change photo button$")
-    public void WhenITapChangePhotoButton() throws Exception {
-        getPersonalInfoPage().tapChangePhotoButton();
-    }
-
-    /**
-     * Takes photo for new avatar. Front camera is opened by default
-     *
-     * @throws Exception
-     * @step. ^I take new avatar picture$
-     */
-    @When("^I take new avatar picture$")
-    public void ITakePhoto() throws Exception {
-        getPersonalInfoPage().tapTakePhotoButton();
-    }
-
-    /**
-     * Presses on the gallery button to select a photo from the phone's storage
-     *
-     * @throws Exception
-     * @step. ^I press Gallery button$
-     */
-    @When("^I press Gallery button$")
-    public void WhenIPressGalleryButton() throws Exception {
-        getPersonalInfoPage().tapGalleryButton();
-    }
-
-    /**
-     * Confirms the selected picture
-     *
-     * @throws Exception
-     * @step. ^I press Confirm button$
-     */
-    @When("^I press Confirm button$")
-    public void WhenIPressConfirmButton() throws Exception {
-        getPersonalInfoPage().tapConfirmButton();
-    }
-
-    /**
      * Changes the current user's name to a new one
      *
      * @param newName the new name for the current user

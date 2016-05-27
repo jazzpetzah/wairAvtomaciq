@@ -11,6 +11,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.opencv.core.Rect;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.HasTouchScreen;
@@ -134,7 +135,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
 
     @Override
     public void swipe(int startx, int starty, int endx, int endy, int durationMilliseconds) {
-        if (androidOSVersion.compareTo("4.3") < 0) {
+        if (new DefaultArtifactVersion(androidOSVersion).compareTo(new DefaultArtifactVersion("4.3")) < 0) {
             // adb swipe command under 4.2 does not support duration parameter
             // and this fucks up all the tests
             swipeViaTouchActions(startx, starty, endx, endy, durationMilliseconds);
@@ -164,8 +165,8 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         this.swipe(x, y, x, y, durationMilliseconds);
     }
 
-    public String getOSVersionString() {
-        return this.androidOSVersion;
+    public DefaultArtifactVersion getOSVersion() {
+        return new DefaultArtifactVersion(this.androidOSVersion);
     }
 
     private void initOSVersionString() throws Exception {

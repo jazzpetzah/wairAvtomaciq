@@ -178,6 +178,12 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idAudioContainerButton = By.id("gpv__row_conversation__audio_button");
 
+    private static final By idCloseTakePictureViewButton = By.id("gtv__camera_control__back_to_change_image");
+
+    private static final By idChangePhotoBtn = By.id("gtv__camera_control__change_image_source");
+
+    private static final By idGalleryBtn = By.id("gtv__camera_control__pick_from_gallery");
+
     private static final int MAX_CLICK_RETRIES = 5;
 
     private static final double LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR = 0.01;
@@ -948,5 +954,29 @@ public class ConversationViewPage extends AndroidPage {
 
     public Optional<BufferedImage> getAudioContainerButtonState() throws Exception {
         return getElementScreenshot(getElement(idAudioContainerButton));
+    }
+
+    public void tapCloseTakePictureViewButton() throws Exception {
+        getElement(idCloseTakePictureViewButton).click();
+    }
+
+    public void tapChangePhotoButton() throws Exception {
+        getElement(idChangePhotoBtn).click();
+    }
+
+    public boolean isTakePhotoButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathDialogTakePhotoButton);
+    }
+
+    public boolean isTakePhotoButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathDialogTakePhotoButton);
+    }
+
+    public boolean isChangePhotoButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idChangePhotoBtn);
+    }
+
+    public boolean isChangePhotoButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idChangePhotoBtn);
     }
 }

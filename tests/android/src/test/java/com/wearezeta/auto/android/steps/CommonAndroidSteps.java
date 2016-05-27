@@ -31,6 +31,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gherkin.formatter.model.Result;
 import org.apache.log4j.Logger;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.SessionNotCreatedException;
@@ -162,7 +163,28 @@ public class CommonAndroidSteps {
 
     private static final long INTERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
+    private static final String[] STANDARD_WIRE_PERMISSIONS = new String[]{
+            "android.permission.WRITE_EXTERNAL_STORAGE",
+            "android.permission.READ_CONTACTS",
+            "android.permission.RECORD_AUDIO",
+            "android.permission.CAMERA",
+            "android.permission.READ_PHONE_STATE",
+            "android.permission.MODIFY_AUDIO_SETTINGS",
+            "android.permission.BLUETOOTH"
+    };
+
     private void onDriverInitFinished(RemoteWebDriver drv) {
+        // This is needed to make testing on Android 6+ with Selendroid possible
+        try {
+            if (isAutoAcceptOfSecurityAlertsEnabled &&
+                    ((ZetaAndroidDriver) drv).getOSVersion().compareTo(new DefaultArtifactVersion("6.0")) >= 0) {
+                AndroidCommonUtils.grantPermissionsTo(CommonUtils.getAndroidPackageFromConfig(getClass()),
+                        STANDARD_WIRE_PERMISSIONS);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         final long millisecondsStarted = System.currentTimeMillis();
         WebDriverException savedException = null;
         do {
@@ -203,6 +225,8 @@ public class CommonAndroidSteps {
         }
     }
 
+    private boolean isAutoAcceptOfSecurityAlertsEnabled = false;
+
     @Before
     public void setUp(Scenario scenario) throws Exception {
         try {
@@ -214,6 +238,8 @@ public class CommonAndroidSteps {
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
             usrMgr.useSpecialEmail();
         }
+
+        isAutoAcceptOfSecurityAlertsEnabled = !scenario.getSourceTagNames().contains("@noAcceptAlert");
 
         if (isLogcatEnabled) {
             if (scenario.getSourceTagNames().contains("@performance")) {
@@ -339,17 +365,6 @@ public class CommonAndroidSteps {
     @When("^I swipe down$")
     public void ISwipeDown() throws Exception {
         pagesCollection.getCommonPage().swipeDownCoordinates(DEFAULT_SWIPE_TIME);
-    }
-
-    /**
-     * Tap on the given coordinates
-     *
-     * @throws Exception
-     * @step. ^I tap by coordinates \\d+:\\d+$
-     */
-    @When("^I tap by coordinates (\\d+):(\\d+)$")
-    public void ITapByCoordinates(int x, int y) throws Exception {
-        pagesCollection.getCommonPage().tapByCoordinates(x, y);
     }
 
     /**
@@ -1217,8 +1232,7 @@ public class CommonAndroidSteps {
      * @throws Exception
      * @step. ^(.*) sends (.*) file having name "(.*)" and MIME type "(.*)" via device (.*) to (user|group conversation) (.*)$
      */
-    @When("^(.*) sends (.*) file having name \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (" +
-            ".*)$")
+    @When("^(.*) sends (.*) file having name \"(.*)\" and MIME type \"(.*)\" via device (.*) to (user|group conversation) (.*)$")
     public void ContactSendsXFileFromSE(String contact, String size, String fileFullName, String mimeType,
                                         String deviceName, String convoType, String dstConvoName) throws Exception {
         String basePath = AndroidCommonUtils.getBuildPathFromConfig(AndroidCommonUtils.class);
@@ -1425,6 +1439,21 @@ public class CommonAndroidSteps {
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown action %s", action));
+        }
+    }
+
+    /**
+     * Verify whether current OS version is equal or better of the expected on
+     *
+     * @param minVersion the minimum version string
+     * @step. ^I am on Android ([\d\.]+) or better$
+     */
+    @Given("^I am on Android ([\\d\\.]+) or better$")
+    public void IAmOnAndroidXOrHigher(String minVersion) throws Exception {
+        final DefaultArtifactVersion currentOsVersion = pagesCollection.getCommonPage().getOSVersion();
+        if (currentOsVersion.compareTo(new DefaultArtifactVersion(minVersion)) < 0) {
+            throw new PendingException(String.format("The current Android OS version %s is too low to run this test." +
+                    "%s version is expected.", currentOsVersion, minVersion));
         }
     }
 }
