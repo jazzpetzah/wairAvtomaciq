@@ -54,7 +54,7 @@ public class ConversationViewPage extends IOSPage {
             String.format("%s[1][@value='%s']", xpathStrAllTextMessages, text);
 
     private static final Function<String, String> xpathTableCellFromUser = text ->
-            String.format("%s[@name='%s']",xpathStrAllEntries,text);
+            String.format("%s[@name='%s']",xpathStrAllEntries,text.toUpperCase());
 
     private static final Function<String, String> xpathStrMessageByTextPart = text ->
             String.format("%s[contains(@value, '%s')]", xpathStrAllTextMessages, text);
@@ -746,7 +746,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapVideoMessageContainer(String username) throws Exception {
-        final By locator = By.xpath(xpathTableCellFromUser.apply(username.toUpperCase()));
+        final By locator = By.xpath(xpathTableCellFromUser.apply(username));
         getElement(locator).click();
     }
 }
