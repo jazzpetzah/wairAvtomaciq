@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.ImageUtil;
@@ -942,6 +944,20 @@ public class ConversationViewPage extends AndroidPage {
 
     public void longVideoMessageContainer() throws Exception {
         getDriver().longTap(getElement(idVideoMessageContainer), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public void tapAudioMessageContainer() throws Exception {
+        getElement(idAudioMessageContainer).click();
+    }
+
+    public void longAudioMessageContainer() throws Exception {
+        // FIXME: Workaround based on issue AN-4051, should be fixed by commented line
+        WebElement el = getElement(idAudioMessageContainer);
+        final Point location = el.getLocation();
+        final Dimension size = el.getSize();
+        getDriver().longTap(location.x + 20, location.y + size.height / 2, DriverUtils.LONG_TAP_DURATION);
+
+        //getDriver().longTap(getElement(idAudioMessageContainer), DriverUtils.LONG_TAP_DURATION);
     }
 
     public boolean isVideoMessageButtonVisible() throws Exception {
