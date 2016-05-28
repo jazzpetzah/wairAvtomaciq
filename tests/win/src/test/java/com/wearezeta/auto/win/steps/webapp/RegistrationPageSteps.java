@@ -6,7 +6,6 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 
@@ -201,9 +200,7 @@ public class RegistrationPageSteps {
 	 */
 	@Then("^I verify registration email$")
 	public void IVerifyRegistrationEmail() throws Exception {
-		BackendAPIWrappers
-				.activateRegisteredUserByEmail(this.activationMessage);
-		userToRegister.setUserState(UserState.Created);
+		BackendAPIWrappers.activateRegisteredUserByEmail(this.activationMessage);
 	}
 
 	/**
@@ -215,7 +212,6 @@ public class RegistrationPageSteps {
 	 */
 	@Given("^I switch to [Ss]ign [Ii]n page$")
 	public void ISwitchToLoginPage() throws Exception {
-		webappPagesCollection.getPage(RegistrationPage.class)
-				.switchToLoginPage();
+		webappPagesCollection.getPage(RegistrationPage.class).switchToLoginPage();
 	}
 }
