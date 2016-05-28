@@ -304,7 +304,7 @@ public class ConversationPageSteps {
 		user1 = usrMgr.replaceAliasesOccurences(user1, FindBy.NAME_ALIAS);
 		contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
 		if (contacts.contains(usrMgr.getSelfUserOrThrowError().getName())) {
-			contacts = contacts.replace(usrMgr.getSelfUser().getName(), "you");
+			contacts = contacts.replace(usrMgr.getSelfUserOrThrowError().getName(), "you");
 		}
 		Set<String> parts = new HashSet<String>();
 		parts.add(message);

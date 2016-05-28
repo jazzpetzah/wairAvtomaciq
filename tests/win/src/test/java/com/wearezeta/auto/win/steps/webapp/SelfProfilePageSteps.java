@@ -13,7 +13,6 @@ import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -140,7 +139,7 @@ public class SelfProfilePageSteps {
 	public void IChangeUserNameTo(String name) throws Exception {
 		WebappPagesCollection.getInstance().getPage(SelfProfilePage.class)
 				.setUserName(name);
-		usrMgr.getSelfUser().setName(name);
+		usrMgr.getSelfUserOrThrowError().setName(name);
 	}
 
 	/**
