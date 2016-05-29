@@ -14,47 +14,47 @@ import com.wearezeta.auto.web.pages.WebPage;
 
 public class GroupPeoplePopoverPage extends WebPage {
 
-	@FindBy(xpath = PopoverLocators.GroupPopover.xpathRootLocator)
-	private WebElement rootElement;
+    @FindBy(xpath = PopoverLocators.GroupPopover.xpathRootLocator)
+    private WebElement rootElement;
 
-	@FindBy(css = PopoverLocators.Shared.cssCreateGroupConversationButton)
-	private WebElement createGroupConversationButton;
+    @FindBy(css = PopoverLocators.Shared.cssCreateGroupConversationButton)
+    private WebElement createGroupConversationButton;
 
-	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantsListPage.xpathConversationTitle)
-	private WebElement conversationTitle;
+    @FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantsListPage.xpathConversationTitle)
+    private WebElement conversationTitle;
 
-	public GroupPeoplePopoverPage(Future<ZetaWebAppDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    public GroupPeoplePopoverPage(Future<ZetaWebAppDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
 
-	public void waitUntilVisibleOrThrowException() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(PopoverLocators.SingleUserPopover.xpathRootLocator)) : "Popover "
-				+ PopoverLocators.SingleUserPopover.xpathRootLocator
-				+ " has not been shown";
-	}
+    public void waitUntilVisibleOrThrowException() throws Exception {
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(PopoverLocators.SingleUserPopover.xpathRootLocator)) : "Popover "
+                + PopoverLocators.SingleUserPopover.xpathRootLocator
+                + " has not been shown";
+    }
 
-	public void waitUntilNotVisibleOrThrowException() throws Exception {
-		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.xpath(PopoverLocators.SingleUserPopover.xpathRootLocator)) : "Popover "
-				+ PopoverLocators.SingleUserPopover.xpathRootLocator
-				+ " has not been shown";
-	}
+    public void waitUntilNotVisibleOrThrowException() throws Exception {
+        assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.xpath(PopoverLocators.SingleUserPopover.xpathRootLocator)) : "Popover "
+                + PopoverLocators.SingleUserPopover.xpathRootLocator
+                + " has not been shown";
+    }
 
-	public boolean isAddPeopleMessageShown() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(PopoverLocators.Shared.xpathContinueButton));
-	}
+    public boolean isAddPeopleMessageShown() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(PopoverLocators.Shared.xpathContinueButton));
+    }
 
-	public boolean isAddToConversationButtonShown() throws Exception {
-		return DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						getDriver(),
-						By.cssSelector(PopoverLocators.Shared.cssCreateGroupConversationButton));
-	}
+    public boolean isAddToConversationButtonShown() throws Exception {
+        return DriverUtils
+                .waitUntilLocatorIsDisplayed(
+                        getDriver(),
+                        By.cssSelector(PopoverLocators.Shared.cssCreateGroupConversationButton));
+    }
 
-	public String getConversationTitle() {
-		return conversationTitle.getText();
-	}
+    public String getConversationTitle() {
+        return conversationTitle.getText();
+    }
 }

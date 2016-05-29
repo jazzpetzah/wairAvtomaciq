@@ -13,30 +13,30 @@ import com.wearezeta.auto.web.pages.WebPage;
 
 public class SingleUserPeoplePopoverPage extends WebPage {
 
-	@FindBy(xpath = PopoverLocators.SingleUserPopover.xpathUserName)
-	private WebElement userName;
+    @FindBy(xpath = PopoverLocators.SingleUserPopover.xpathUserName)
+    private WebElement userName;
 
-	public SingleUserPeoplePopoverPage(Future<ZetaWebAppDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    public SingleUserPeoplePopoverPage(Future<ZetaWebAppDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
 
-	public void waitUntilVisibleOrThrowException() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(PopoverLocators.SingleUserPopover.xpathRootLocator)) : "Popover "
-				+ PopoverLocators.SingleUserPopover.xpathRootLocator
-				+ " has not been shown";
-	}
+    public void waitUntilVisibleOrThrowException() throws Exception {
+        assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.xpath(PopoverLocators.SingleUserPopover.xpathRootLocator)) : "Popover "
+                + PopoverLocators.SingleUserPopover.xpathRootLocator
+                + " has not been shown";
+    }
 
-	public void waitUntilNotVisibleOrThrowException() throws Exception {
-		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.xpath(PopoverLocators.SingleUserPopover.xpathRootLocator)) : "Popover "
-				+ PopoverLocators.SingleUserPopover.xpathRootLocator
-				+ " has not been shown";
-	}
+    public void waitUntilNotVisibleOrThrowException() throws Exception {
+        assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.xpath(PopoverLocators.SingleUserPopover.xpathRootLocator)) : "Popover "
+                + PopoverLocators.SingleUserPopover.xpathRootLocator
+                + " has not been shown";
+    }
 
-	public String getUserName() {
-		return userName.getText();
-	}
+    public String getUserName() {
+        return userName.getText();
+    }
 
 }

@@ -9,9 +9,9 @@ import java.util.concurrent.Future;
 
 public class MainMenuAndDockPage extends WinPage {
 
-	public MainMenuAndDockPage(Future<ZetaWinDriver> osxDriver)
-			throws Exception {
-		super(osxDriver, WinExecutionContext.WIRE_APP_PATH);
-	}
+    public MainMenuAndDockPage(Future<ZetaWinDriver> osxDriver)
+            throws Exception {
+        super(osxDriver, WinExecutionContext.WIRE_APP_PATH);
+    }
 
 }

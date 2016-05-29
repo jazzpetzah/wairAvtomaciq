@@ -21,7 +21,7 @@ import static org.junit.Assert.assertThat;
 
 public class CallingSteps {
 
-	private static final Logger LOG = ZetaLogger.getLog(com.wearezeta.auto.web.steps.CallingSteps.class
+    private static final Logger LOG = ZetaLogger.getLog(com.wearezeta.auto.web.steps.CallingSteps.class
             .getName());
 
     private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2
@@ -161,7 +161,7 @@ public class CallingSteps {
             throws Exception {
         for (String callee : splitAliases(callees)) {
             final List<Flow> flows = commonCallingSteps.getFlows(callee);
-            assertThat("existing flows: \n"+flows, flows, hasSize(numberOfFlows));
+            assertThat("existing flows: \n" + flows, flows, hasSize(numberOfFlows));
         }
     }
 
@@ -177,8 +177,8 @@ public class CallingSteps {
     public void UserXVerifesHavingXFlows(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
             for (Flow flow : commonCallingSteps.getFlows(callee)) {
-                assertThat("incoming bytes: \n"+flow, flow.getBytesIn(), greaterThan(0L));
-                assertThat("outgoing bytes: \n"+flow, flow.getBytesOut(), greaterThan(0L));
+                assertThat("incoming bytes: \n" + flow, flow.getBytesIn(), greaterThan(0L));
+                assertThat("outgoing bytes: \n" + flow, flow.getBytesOut(), greaterThan(0L));
             }
         }
     }

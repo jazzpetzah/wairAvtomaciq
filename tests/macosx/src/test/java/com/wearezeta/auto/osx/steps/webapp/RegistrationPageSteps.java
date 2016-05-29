@@ -115,7 +115,7 @@ public class RegistrationPageSteps {
                 .getEmail();
         Assert.assertEquals("Entered email is wrong", realEmail,
                 webappPagesCollection.getPage(RegistrationPage.class)
-                        .getEnteredEmail());
+                .getEnteredEmail());
 
     }
 
@@ -132,7 +132,7 @@ public class RegistrationPageSteps {
                 .getName();
         Assert.assertEquals("Entered username is wrong", realUsername,
                 webappPagesCollection.getPage(RegistrationPage.class)
-                        .getEnteredName());
+                .getEnteredName());
 
     }
 
@@ -185,8 +185,7 @@ public class RegistrationPageSteps {
     }
 
     /**
-     * Start monitoring thread for activation email. Please put this step BEFORE
-     * you submit the registration form
+     * Start monitoring thread for activation email. Please put this step BEFORE you submit the registration form
      *
      * @throws Exception
      * @step. ^I start activation email monitoring$
@@ -200,8 +199,7 @@ public class RegistrationPageSteps {
     }
 
     /**
-     * Verify whether email address, which is visible on email confirmation page
-     * is the same as the expected one
+     * Verify whether email address, which is visible on email confirmation page is the same as the expected one
      *
      * @param email expected email/alias
      * @throws Exception
@@ -215,8 +213,7 @@ public class RegistrationPageSteps {
     }
 
     /**
-     * Verify whether email address, which is visible on email pending page is
-     * the same as the expected one
+     * Verify whether email address, which is visible on email pending page is the same as the expected one
      *
      * @param email expected email/alias
      * @throws Exception
@@ -244,12 +241,10 @@ public class RegistrationPageSteps {
     }
 
     /**
-     * Checks if a orange line is shown around the email field on the
-     * registration form
+     * Checks if a orange line is shown around the email field on the registration form
      *
      * @throws Exception
-     * @step. ^I verify that the email field on the registration form is( not)?
-     * marked as error$
+     * @step. ^I verify that the email field on the registration form is( not)? marked as error$
      */
     @Then("^I verify that the email field on the registration form is( not)? marked as error$")
     public void ARedDotIsShownOnTheEmailField(String not) throws Exception {
@@ -274,12 +269,12 @@ public class RegistrationPageSteps {
     public void IVerifyThatAnEnvelopeIconIsShown() throws Exception {
         assertThat("Envelope icon not shown",
                 webappPagesCollection.getPage(RegistrationPage.class)
-                        .isEnvelopeShown());
+                .isEnvelopeShown());
     }
 
     /**
-     * Activate newly registered user on the backend. Don't forget to call the
-     * 'I start activation email monitoring' step before this one
+     * Activate newly registered user on the backend. Don't forget to call the 'I start activation email monitoring' step before
+     * this one
      *
      * @throws Exception
      * @step. ^I verify registration email$
@@ -290,9 +285,8 @@ public class RegistrationPageSteps {
     }
 
     /**
-     * Activates user using browser URL from activation email and sign him in to
-     * the app if the activation was successful. Don't forget to call the 'I
-     * start activation email monitoring' step before this one
+     * Activates user using browser URL from activation email and sign him in to the app if the activation was successful. Don't
+     * forget to call the 'I start activation email monitoring' step before this one
      *
      * @throws Exception
      * @step. ^I activate user by URL$

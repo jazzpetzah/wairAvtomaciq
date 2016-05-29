@@ -8,9 +8,9 @@ import java.util.concurrent.Future;
 
 public class MainMenuAndDockPage extends OSXPage {
 
-	public MainMenuAndDockPage(Future<ZetaOSXDriver> osxDriver)
-			throws Exception {
-		super(osxDriver, OSXExecutionContext.WIRE_APP_PATH);
-	}
+    public MainMenuAndDockPage(Future<ZetaOSXDriver> osxDriver)
+            throws Exception {
+        super(osxDriver, OSXExecutionContext.WIRE_APP_PATH);
+    }
 
 }

@@ -1,6 +1,5 @@
 package com.wearezeta.auto.win.steps;
 
-
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
@@ -13,8 +12,8 @@ import static org.junit.Assert.assertThat;
 
 public class CallingSteps {
 
-	private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2
-			.getInstance();
+    private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2
+            .getInstance();
 
     /**
      * Make audio or video call(s) to one specific conversation.
@@ -150,7 +149,7 @@ public class CallingSteps {
             throws Exception {
         for (String callee : splitAliases(callees)) {
             final List<Flow> flows = commonCallingSteps.getFlows(callee);
-            assertThat("existing flows: \n"+flows, flows, hasSize(numberOfFlows));
+            assertThat("existing flows: \n" + flows, flows, hasSize(numberOfFlows));
         }
     }
 
@@ -166,8 +165,8 @@ public class CallingSteps {
     public void UserXVerifesHavingXFlows(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
             for (Flow flow : commonCallingSteps.getFlows(callee)) {
-                assertThat("incoming bytes: \n"+flow, flow.getBytesIn(), greaterThan(0L));
-                assertThat("outgoing bytes: \n"+flow, flow.getBytesOut(), greaterThan(0L));
+                assertThat("incoming bytes: \n" + flow, flow.getBytesIn(), greaterThan(0L));
+                assertThat("outgoing bytes: \n" + flow, flow.getBytesOut(), greaterThan(0L));
             }
         }
     }

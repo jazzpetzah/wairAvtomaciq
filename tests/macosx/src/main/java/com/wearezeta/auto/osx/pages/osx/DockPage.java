@@ -6,8 +6,8 @@ import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 
 public class DockPage extends OSXPage {
 
-	public DockPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
-	}
+    public DockPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
+    }
 
 }

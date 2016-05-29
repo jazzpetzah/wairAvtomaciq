@@ -13,22 +13,23 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.WebPage;
 
 public class PreferencesPage extends WebPage {
-	@FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssSettingsCloseButton)
-	private WebElement settingsCloseButton;
 
-	public PreferencesPage(Future<ZetaWebAppDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssSettingsCloseButton)
+    private WebElement settingsCloseButton;
 
-	public boolean isVisible() throws Exception {
-		final String xpath = WebAppLocators.SettingsPage.xpathSettingsDialogRoot;
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(xpath));
-	}
+    public PreferencesPage(Future<ZetaWebAppDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
 
-	public void clickCloseButton() {
-		settingsCloseButton.click();
-	}
+    public boolean isVisible() throws Exception {
+        final String xpath = WebAppLocators.SettingsPage.xpathSettingsDialogRoot;
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+                By.xpath(xpath));
+    }
+
+    public void clickCloseButton() {
+        settingsCloseButton.click();
+    }
 
 }

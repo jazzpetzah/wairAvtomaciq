@@ -13,32 +13,32 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class SelfProfilePage extends
-		com.wearezeta.auto.web.pages.SelfProfilePage {
+        com.wearezeta.auto.web.pages.SelfProfilePage {
 
-	// TODO hide behind driver impl
-	private final Robot robot = new Robot();
+    // TODO hide behind driver impl
+    private final Robot robot = new Robot();
 
-	@FindBy(how = How.CSS, using = WebAppLocators.SelfProfilePage.xpathCameraButton)
-	private WebElement cameraButton;
+    @FindBy(how = How.CSS, using = WebAppLocators.SelfProfilePage.xpathCameraButton)
+    private WebElement cameraButton;
 
-	public SelfProfilePage(Future<ZetaWebAppDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    public SelfProfilePage(Future<ZetaWebAppDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
 
-	public boolean isSettingsButtonVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.cssSelector(WebAppLocators.SelfProfilePage.cssGearButton));
-	}
+    public boolean isSettingsButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.cssSelector(WebAppLocators.SelfProfilePage.cssGearButton));
+    }
 
-	public boolean isCameraButtonClickable() throws Exception {
-		return DriverUtils.waitUntilElementClickable(getDriver(), cameraButton);
-	}
+    public boolean isCameraButtonClickable() throws Exception {
+        return DriverUtils.waitUntilElementClickable(getDriver(), cameraButton);
+    }
 
-	public void pressShortCutForPreferences() {
-		robot.keyPress(KeyEvent.VK_CONTROL);// command key
-		robot.keyPress(KeyEvent.VK_COMMA);
-		robot.keyRelease(KeyEvent.VK_COMMA);
-		robot.keyRelease(KeyEvent.VK_CONTROL);
-	}
+    public void pressShortCutForPreferences() {
+        robot.keyPress(KeyEvent.VK_CONTROL);// command key
+        robot.keyPress(KeyEvent.VK_COMMA);
+        robot.keyRelease(KeyEvent.VK_COMMA);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+    }
 }

@@ -215,12 +215,12 @@ public class OSXCommonUtils extends CommonUtils {
         LOG.debug("executing command: " + Arrays.toString(commands));
         return executeOsXCommand(commands);
     }
-    
+
     public static int getNumberOfWireProcesses() throws Exception {
         String[] command = new String[]{"/bin/sh", "-c", "ps aux | grep Wire.*app | wc -l"};
         LOG.debug("executing command: " + Arrays.toString(command));
         String numberString = executeOsXCommandWithOutput(command);
-        int numberProcesses = Integer.parseInt(numberString.trim()) -2;//substract grep and wc process
+        int numberProcesses = Integer.parseInt(numberString.trim()) - 2;//substract grep and wc process
         return numberProcesses;
     }
 
@@ -230,12 +230,12 @@ public class OSXCommonUtils extends CommonUtils {
             String.format("killall %s", "Electron")};
         LOG.debug("executing command: " + Arrays.toString(command));
         int returnCode1 = executeOsXCommand(command);
-        
+
         command = new String[]{"/bin/sh", "-c",
             String.format("killall %s", "Wire Helper")};
         LOG.debug("executing command: " + Arrays.toString(command));
         int returnCode2 = executeOsXCommand(command);
-        
+
         command = new String[]{"/bin/sh", "-c",
             String.format("killall %s", "chromedriver")};
         LOG.debug("executing command: " + Arrays.toString(command));

@@ -14,27 +14,27 @@ import com.wearezeta.auto.osx.pages.osx.OSXPage;
 
 public class NoInternetConnectionPage extends OSXPage {
 
-	@FindBy(how = How.ID, using = OSXLocators.NoInternetConnectionPage.idOKButton)
-	private WebElement okButton;
+    @FindBy(how = How.ID, using = OSXLocators.NoInternetConnectionPage.idOKButton)
+    private WebElement okButton;
 
-	@FindBy(how = How.XPATH, using = OSXLocators.NoInternetConnectionPage.xpathNoInternetMessage)
-	private WebElement noInternetMessage;
+    @FindBy(how = How.XPATH, using = OSXLocators.NoInternetConnectionPage.xpathNoInternetMessage)
+    private WebElement noInternetMessage;
 
-	public NoInternetConnectionPage(Future<ZetaOSXDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    public NoInternetConnectionPage(Future<ZetaOSXDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
 
-	public boolean isVisible() throws Exception {
-		return DriverUtils
-				.waitUntilLocatorAppears(
-						this.getDriver(),
-						By.xpath(OSXLocators.NoInternetConnectionPage.xpathNoInternetMessage),
-						60);
-	}
+    public boolean isVisible() throws Exception {
+        return DriverUtils
+                .waitUntilLocatorAppears(
+                        this.getDriver(),
+                        By.xpath(OSXLocators.NoInternetConnectionPage.xpathNoInternetMessage),
+                        60);
+    }
 
-	public void closeDialog() {
-		okButton.click();
-	}
+    public void closeDialog() {
+        okButton.click();
+    }
 
 }

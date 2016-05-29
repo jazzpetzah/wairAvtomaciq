@@ -121,8 +121,8 @@ public class MainWirePageSteps {
     }
 
     /**
-     * Ensures that the position of the app is in the upper left corner with
-     * respect to the dock (assuming it's on the left side).
+     * Ensures that the position of the app is in the upper left corner with respect to the dock (assuming it's on the left
+     * side).
      *
      * @step. ^I ensure initial positioning$
      *

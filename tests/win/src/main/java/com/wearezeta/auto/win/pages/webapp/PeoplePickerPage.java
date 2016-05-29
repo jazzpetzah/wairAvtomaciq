@@ -11,22 +11,22 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class PeoplePickerPage extends
-		com.wearezeta.auto.web.pages.PeoplePickerPage {
+        com.wearezeta.auto.web.pages.PeoplePickerPage {
 
-	@SuppressWarnings("unused")
-	private static final Logger LOG = ZetaLogger.getLog(PeoplePickerPage.class
-			.getName());
+    @SuppressWarnings("unused")
+    private static final Logger LOG = ZetaLogger.getLog(PeoplePickerPage.class
+            .getName());
 
-	public PeoplePickerPage(Future<ZetaWebAppDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    public PeoplePickerPage(Future<ZetaWebAppDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
 
-	public boolean isVisible() throws Exception {
-		return DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						this.getDriver(),
-						By.className(WebAppLocators.PeoplePickerPage.classNamePeoplePickerVisible));
-	}
+    public boolean isVisible() throws Exception {
+        return DriverUtils
+                .waitUntilLocatorIsDisplayed(
+                        this.getDriver(),
+                        By.className(WebAppLocators.PeoplePickerPage.classNamePeoplePickerVisible));
+    }
 
 }

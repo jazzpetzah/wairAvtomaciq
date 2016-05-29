@@ -305,7 +305,7 @@ public class ConversationPageSteps {
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
      * @param doNot if not null, checks if the action message does not display
-     * @param message  constant part of the system message
+     * @param message constant part of the system message
      * @throws Exception
      * @throws AssertionError if action message did not appear in conversation
      * @step. ^I see (.*) action in conversation$
@@ -322,8 +322,8 @@ public class ConversationPageSteps {
     /**
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
-     * @param message  constant part of the system message
-     * @param times  number of times the message appears
+     * @param message constant part of the system message
+     * @param times number of times the message appears
      * @throws Exception
      * @throws AssertionError if action message did not appear in conversation
      * @step. ^I see (.*) action in conversation$
@@ -338,7 +338,7 @@ public class ConversationPageSteps {
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
      * @param doNot if not null, checks if the action message does not display
-     * @param message  constant part of the system message
+     * @param message constant part of the system message
      * @param contacts list of comma separated contact names/aliases
      * @throws AssertionError if action message did not appear in conversation
      * @throws Exception
@@ -356,8 +356,8 @@ public class ConversationPageSteps {
     /**
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
-     * @param message  constant part of the system message
-     * @param times  number of times the message appears
+     * @param message constant part of the system message
+     * @param times number of times the message appears
      * @param contacts list of comma separated contact names/aliases
      * @throws AssertionError if action message did not appear in conversation
      * @throws Exception

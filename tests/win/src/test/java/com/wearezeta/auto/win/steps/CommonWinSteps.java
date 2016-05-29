@@ -254,14 +254,12 @@ public class CommonWinSteps {
                         + " does not support calling.");
             }
         } else // should not support calling
-        {
-            if (WebAppExecutionContext.getBrowser().isSupportingCalls()) {
+         if (WebAppExecutionContext.getBrowser().isSupportingCalls()) {
                 throw new PendingException(
                         "Browser "
                         + WebAppExecutionContext.getBrowser().toString()
                         + " does support calling but this test is just for browsers without support.");
             }
-        }
     }
 
     /**

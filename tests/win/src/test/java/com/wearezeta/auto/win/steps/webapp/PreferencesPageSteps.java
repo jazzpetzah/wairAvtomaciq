@@ -9,18 +9,17 @@ import cucumber.api.java.en.Then;
 
 public class PreferencesPageSteps {
 
-	/**
-	 * Verifies whether preferences dialog is visible
-	 * 
-	 * @step. ^I see [Pp]references dialog$
-	 * 
-	 * @throws AssertionError
-	 *             if preferences dialog is not currently visible
-	 */
-	@Then("^I see [Pp]references dialog$")
-	public void ISeeSetingsDialog() throws Exception {
-		Assert.assertTrue(WebappPagesCollection.getInstance()
-				.getPage(SettingsPage.class).isVisible());
-	}
+    /**
+     * Verifies whether preferences dialog is visible
+     *
+     * @step. ^I see [Pp]references dialog$
+     *
+     * @throws AssertionError if preferences dialog is not currently visible
+     */
+    @Then("^I see [Pp]references dialog$")
+    public void ISeeSetingsDialog() throws Exception {
+        Assert.assertTrue(WebappPagesCollection.getInstance()
+                .getPage(SettingsPage.class).isVisible());
+    }
 
 }

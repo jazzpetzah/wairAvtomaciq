@@ -18,42 +18,43 @@ import java.util.LinkedList;
 import java.util.concurrent.Callable;
 
 public class AboutPage extends WebPage {
-	@SuppressWarnings("unused")
-	private static final Logger LOG = ZetaLogger.getLog(AboutPage.class
-			.getName());
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.AboutPage.xpathVersion)
-	private WebElement version;
+    @SuppressWarnings("unused")
+    private static final Logger LOG = ZetaLogger.getLog(AboutPage.class
+            .getName());
 
-	public AboutPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
-	}
+    @FindBy(how = How.XPATH, using = WebAppLocators.AboutPage.xpathVersion)
+    private WebElement version;
 
-	public boolean isVisible() throws Exception {
-		return executeOnLatestWindow(() -> DriverUtils.waitUntilLocatorAppears(
-				this.getDriver(),
-				By.xpath(WebAppLocators.AboutPage.xpathVersion)));
-	}
+    public AboutPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
+        super(lazyDriver);
+    }
 
-	public boolean isVersionVisible() throws Exception {
-		return executeOnLatestWindow(() -> DriverUtils
-				.waitUntilLocatorIsDisplayed(getDriver(),
-						By.cssSelector(WebAppLocators.AboutPage.xpathVersion)));
-	}
+    public boolean isVisible() throws Exception {
+        return executeOnLatestWindow(() -> DriverUtils.waitUntilLocatorAppears(
+                this.getDriver(),
+                By.xpath(WebAppLocators.AboutPage.xpathVersion)));
+    }
 
-	public String getVersion() throws Exception {
-		return executeOnLatestWindow(version::getText);
-	}
+    public boolean isVersionVisible() throws Exception {
+        return executeOnLatestWindow(() -> DriverUtils
+                .waitUntilLocatorIsDisplayed(getDriver(),
+                        By.cssSelector(WebAppLocators.AboutPage.xpathVersion)));
+    }
 
-	private <T> T executeOnLatestWindow(Callable<T> function) throws Exception {
-		LinkedList<String> windowHandles = new LinkedList<>(getDriver()
-				.getWindowHandles());
-		// switch to latest window
-		getDriver().switchTo().window(windowHandles.getLast());
-		T result = function.call();
-		// switch to oldest window
-		getDriver().switchTo().window(windowHandles.getFirst());
-		return result;
-	}
+    public String getVersion() throws Exception {
+        return executeOnLatestWindow(version::getText);
+    }
+
+    private <T> T executeOnLatestWindow(Callable<T> function) throws Exception {
+        LinkedList<String> windowHandles = new LinkedList<>(getDriver()
+                .getWindowHandles());
+        // switch to latest window
+        getDriver().switchTo().window(windowHandles.getLast());
+        T result = function.call();
+        // switch to oldest window
+        getDriver().switchTo().window(windowHandles.getFirst());
+        return result;
+    }
 
 }
