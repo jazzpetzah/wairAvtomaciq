@@ -762,10 +762,10 @@ public class ConversationViewPage extends IOSPage {
         getElement(locator).click();
     }
 
-    public void tapAudioRecordWaitAndSwipe(int seconds) throws Exception {
+    public void tapAudioRecordWaitAndSwipe(int swipeDelaySeconds) throws Exception {
         WebElement recordAudioMessageBtn = getElement(nameAudioMessageButton);
         int y = getElement(nameConversationInput).getLocation().getY() - recordAudioMessageBtn.getLocation().getY();
-        new TouchAction(getDriver()).press(recordAudioMessageBtn).waitAction(seconds * 1000).moveTo(0, 2*y).release
+        new TouchAction(getDriver()).press(recordAudioMessageBtn).waitAction(swipeDelaySeconds * 1000).moveTo(0, 2 * y).release
                 ().perform();
     }
 
