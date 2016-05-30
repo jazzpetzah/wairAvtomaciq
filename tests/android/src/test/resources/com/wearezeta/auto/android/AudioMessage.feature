@@ -66,7 +66,7 @@ Feature: Audio Message
       | Name      | Contact1  | Contact2  | FileName | MIMEType  | DeviceName | Notification            |
       | user1Name | user2Name | user3Name | test.m4a | audio/mp4 | Device1    | Shared an audio message |
 
-  @C131192 @C131193 @staging
+  @C131192 @C131193 @staging @C131189
   Scenario Outline: (CM-958) Verify failing downloading voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -75,7 +75,9 @@ Feature: Audio Message
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
     When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
-    And I enable Airplane mode on the device
+    # C131189
+    Then I see Audio Message container in the conversation view
+    When I enable Airplane mode on the device
     # Wait for network is totally disabled
     And I wait for 3 seconds
     And I remember the state of Play button on the recent audio message in the conversation view
