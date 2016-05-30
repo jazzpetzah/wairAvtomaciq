@@ -56,3 +56,19 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C131214 @staging
+  Scenario Outline: Verify cancelling recorded audio message preview
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I long tap Audio Message button from input tools
+    And I tap Cancel record control button
+    Then I do not see audio message placeholder
+    And I see Audio Message button in input tools palette
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
