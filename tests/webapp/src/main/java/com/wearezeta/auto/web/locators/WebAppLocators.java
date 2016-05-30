@@ -353,7 +353,7 @@ public final class WebAppLocators {
 
         public static final String cssFile = "[data-uie-name='file'][data-uie-value='%s']";
 
-        public static final String cssFileIcon = cssFile + " .icon-file";
+        public static final String cssFileIcon = cssFile + " [data-uie-name='file-icon']";
 
         public static final String cssFileName = cssFile + " [data-uie-name='file-name']";
 
@@ -364,8 +364,6 @@ public final class WebAppLocators {
         public static final String cssFileType = cssFile + " [data-uie-name='file-type']";
 
         public static final String cssFileCancelUpload = cssFile + " [data-uie-name='file-cancel']";
-
-        public static final String cssFileDownload = cssFile + " [data-uie-name='file-download']";
 
         // Audio message
 

@@ -837,8 +837,8 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, TIMEOUT_FILE_UPLOAD);
     }
 
-    public void downloadFile(String fileName) throws Exception {
-        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileDownload, fileName));
+    public void clickFileIcon(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileIcon, fileName));
         getDriver().findElement(locator).click();
     }
 
@@ -993,6 +993,16 @@ public class ConversationPage extends WebPage {
 
     private void hoverOverVideo(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideo, fileName));
+        if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
+            // native mouse over
+            DriverUtils.moveMouserOver(this.getDriver(), getDriver().findElement(locator));
+        } else {
+            throw new Exception("hovering over a video is not implemented for this browser");
+        }
+    }
+
+    private void hoverOverDownload(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFile, fileName));
         if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
             // native mouse over
             DriverUtils.moveMouserOver(this.getDriver(), getDriver().findElement(locator));

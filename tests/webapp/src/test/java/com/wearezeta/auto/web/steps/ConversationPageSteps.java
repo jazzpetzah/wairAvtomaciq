@@ -514,11 +514,11 @@ public class ConversationPageSteps {
      *
      * @param fileName the name of a file
      * @throws Exception
-     * @step. ^II click to download file (.*) in the conversation view$
+     * @step. ^II click icon to download file (.*) in the conversation view$
      */
-    @Then("^I click to download file (.*) in the conversation view$")
+    @Then("^I click icon to download file (.*) in the conversation view$")
     public void IDownloadFile(String fileName) throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).downloadFile(fileName);
+        context.getPagesCollection().getPage(ConversationPage.class).clickFileIcon(fileName);
     }
 
     @Then("^I wait until video (.*) is uploaded completely$")

@@ -17,7 +17,7 @@ Feature: File Transfer
     When I wait until file <File> is uploaded completely
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
-    When I click to download file <File> in the conversation view
+    When I click icon to download file <File> in the conversation view
     And I wait until file <File> is downloaded completely
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
@@ -46,7 +46,7 @@ Feature: File Transfer
     When I wait until file <File> is uploaded completely
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
-    When I click to download file <File> in the conversation view
+    When I click icon to download file <File> in the conversation view
     And I wait until file <File> is downloaded completely
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
@@ -75,7 +75,7 @@ Feature: File Transfer
     When I wait until file <File> is uploaded completely
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
-    When I click to download file <File> in the conversation view
+    When I click icon to download file <File> in the conversation view
     Then I verify status of file <File> is DOWNLOADING… in the conversation view if possible
     When I wait until file <File> is downloaded completely
     Then I verify size of file <File> is <Size> in the conversation view
@@ -137,10 +137,10 @@ Feature: File Transfer
     Then I see file transfer button in conversation input
     When I send <Size> sized file with name <File> to the current conversation
     And I wait until file <File> is uploaded completely
-    When I click to download file <File> in the conversation view
+    When I click icon to download file <File> in the conversation view
     And I refresh page
     Then I verify type of file <File> is <Type> in the conversation view
-    When I click to download file <File> in the conversation view
+    When I click icon to download file <File> in the conversation view
     And I wait until file <File> is downloaded completely
     # Then I verify the downloaded file is the same as the uploaded file <File>
 
@@ -205,7 +205,7 @@ Feature: File Transfer
     When I wait until file <File> is uploaded completely
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
-    When I click to download file <File> in the conversation view
+    When I click icon to download file <File> in the conversation view
     And I verify status of file <File> is DOWNLOADING… in the conversation view if possible
     And I wait until file <File> is downloaded completely
     Then I verify size of file <File> is <Size> in the conversation view
@@ -235,7 +235,7 @@ Feature: File Transfer
     When I wait until file <File> is uploaded completely
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
-    When I click to download file <File> in the conversation view
+    When I click icon to download file <File> in the conversation view
     And I verify status of file <File> is DOWNLOADING… in the conversation view if possible
     And I wait until file <File> is downloaded completely
     Then I verify size of file <File> is <Size> in the conversation view
@@ -266,7 +266,7 @@ Feature: File Transfer
     When I wait until file <File> is uploaded completely
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
-    When I click to download file <File> in the conversation view
+    When I click icon to download file <File> in the conversation view
     And I wait until file <File> is downloaded completely
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
