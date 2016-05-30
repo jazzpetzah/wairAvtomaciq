@@ -1205,4 +1205,9 @@ public class ConversationViewPageSteps {
         username = usrMgr.findUserByNameOrNameAlias(username).getName();
         getConversationViewPage().tapVideoMessageContainer(username);
     }
+
+    @When("^I record (\\d) second(s) audio meassage and send by swipe up$")
+    public void IRecordXSecondsAudioMessageAndSendBySwipe(int sec) throws Exception {
+        getConversationViewPage().tapAudioRecordWaitAndSwipe(sec);
+    }
 }
