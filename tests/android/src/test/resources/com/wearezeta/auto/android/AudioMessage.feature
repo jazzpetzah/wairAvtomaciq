@@ -130,8 +130,8 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131182 @staging
-  Scenario Outline: Verify cancelling sending voice message
+  @C131182 @staging @C131177
+  Scenario Outline: Verify playing/cancelling sending voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -139,6 +139,9 @@ Feature: Audio Message
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
     When I long tap Audio message button <TapDuration> seconds from cursor toolbar
+    And I remember the state of audio message preview seekbar
+    And I tap on audio message play button
+    And I verify the state of audio message preview seekbar is changed
     And I tap on audio message cancel button
     Then I see cursor toolbar
     And I do not see Audio Message container in the conversation view

@@ -50,6 +50,8 @@ public class ConversationViewPageSteps {
             () -> getConversationViewPage().getFilePlaceholderActionButtonState());
     private final ElementState audiomessageSeekbarState = new ElementState(
             () -> getConversationViewPage().getAudioMessageSeekbar());
+    private final ElementState audiomessagePreviewSeekbarState = new ElementState(
+            () -> getConversationViewPage().getAudioMessagePreviewSeekbar());
     private Boolean wasShieldVisible = null;
 
     private static String expandMessage(String message) {
@@ -467,11 +469,11 @@ public class ConversationViewPageSteps {
     /**
      * Tap on send button within Audio message slide
      *
-     * @param buttonType could be send or cancel
+     * @param buttonType could be send or cancel or play
      * @throws Exception
-     * @step. ^I tap on audio message send button$"
+     * @step. ^I tap on audio message (send|cancel|play) button$"
      */
-    @When("^I tap on audio message (send|cancel) button$")
+    @When("^I tap on audio message (send|cancel|play) button$")
     public void WhenITapAudioMessageSendButton(String buttonType) throws Exception {
         switch (buttonType.toLowerCase()) {
             case "send":
@@ -479,6 +481,9 @@ public class ConversationViewPageSteps {
                 break;
             case "cancel":
                 getConversationViewPage().tapAudioMessageCancelButton();
+                break;
+            case "play":
+                getConversationViewPage().tapAudioMessagePlayButton();
                 break;
             default:
                 throw new IllegalStateException(String.format("Cannot identify the button type '%s'", buttonType));
@@ -631,6 +636,17 @@ public class ConversationViewPageSteps {
     @When("^I remember the state of recent audio message seekbar$")
     public void IRememberAudioMessageSeekbar() throws Exception {
         audiomessageSeekbarState.remember();
+    }
+
+    /**
+     * Store the screenshot of current audio message preview seekbar
+     *
+     * @throws Exception
+     * @step. ^I remember the state of audio message preview seekbar$
+     */
+    @When("^I remember the state of audio message preview seekbar$")
+    public void IRememberAudioMessagePreviewSeekbar() throws Exception {
+        audiomessagePreviewSeekbarState.remember();
     }
 
     /**
@@ -1398,7 +1414,21 @@ public class ConversationViewPageSteps {
     @Then("^I verify the state of recent audio message seekbar in the conversation view is changed$")
     public void ISeeAudioMessageSeekbarStateChanged() throws Exception{
         Assert.assertTrue("The current and previous state of audio message seekbar seems to be same",
-                audiomessageSeekbarState.isChanged(AUDIOMESSAGE_SEEKBAR_STATE_CHANGE_TIMEOUT, MIN_AUDIOMESSAGE_SEEKBAR_SCORE));
+                audiomessageSeekbarState.isChanged(AUDIOMESSAGE_SEEKBAR_STATE_CHANGE_TIMEOUT,
+                        MIN_AUDIOMESSAGE_SEEKBAR_SCORE));
+    }
+
+    /**
+     * Verify whether current audio message preview seekbar differs from the previous one
+     *
+     * @throws Exception
+     * @step. ^I verify the state of audio message preview seekbar is changed$
+     */
+    @Then("^I verify the state of audio message preview seekbar is changed$")
+    public void ISeeAudioMessagePreviewSeekbarStateChanged() throws Exception {
+        Assert.assertTrue("The current and previous state of audio message preview seekbar seems to be same",
+                audiomessagePreviewSeekbarState.isChanged(AUDIOMESSAGE_SEEKBAR_STATE_CHANGE_TIMEOUT,
+                        MIN_AUDIOMESSAGE_SEEKBAR_SCORE));
     }
 
     /**
