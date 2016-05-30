@@ -48,6 +48,8 @@ public class ConversationViewPageSteps {
             () -> getConversationViewPage().getTopToolbarState());
     private final ElementState filePlaceHolderActionButtonState = new ElementState(
             () -> getConversationViewPage().getFilePlaceholderActionButtonState());
+    private final ElementState audiomessageSeekbarState = new ElementState(
+            () -> getConversationViewPage().getAudioMessageSeekbar());
     private Boolean wasShieldVisible = null;
 
     private static String expandMessage(String message) {
@@ -617,6 +619,17 @@ public class ConversationViewPageSteps {
     @When("^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder$")
     public void IRememberFileTransferActionBtnState() throws Exception {
         filePlaceHolderActionButtonState.remember();
+    }
+
+    /**
+     * Store the screenshot of current audio message seekbar
+     *
+     * @throws Exception
+     * @step. ^I remember the state of recent audio message seekbar$
+     */
+    @When("^I remember the state of recent audio message seekbar$")
+    public void IRememberAudioMessageSeekbar() throws Exception {
+        audiomessageSeekbarState.remember();
     }
 
     /**
@@ -1370,6 +1383,21 @@ public class ConversationViewPageSteps {
 
         Assert.assertTrue(String.format("The current and previous state of the %s button seems to be %s", buttonType,
                 (shouldNotBeChanged == null) ? "the same" : "changed"), verificationFunc.call());
+    }
+
+    private static final double MIN_AUDIOMESSAGE_SEEKBAR_SCORE = 0.8;
+    private static final int AUDIOMESSAGE_SEEKBAR_STATE_CHANGE_TIMEOUT = 20; //seconds
+
+    /**
+     * Verify whether current audio message seekbar differs from the previous one
+     *
+     * @throws Exception
+     * @step. ^I verify the state of recent audio message seekbar in the conversation view is changed$
+     */
+    @Then("^I verify the state of recent audio message seekbar in the conversation view is changed$")
+    public void ISeeAudioMessageSeekbarStateChanged() throws Exception{
+        Assert.assertTrue("The current and previous state of audio message seekbar seems to be same",
+                audiomessageSeekbarState.isChanged(AUDIOMESSAGE_SEEKBAR_STATE_CHANGE_TIMEOUT, MIN_AUDIOMESSAGE_SEEKBAR_SCORE));
     }
 
     /**

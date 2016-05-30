@@ -12,8 +12,8 @@ Feature: Audio Message
     Then I see hint message "<HintMessage>" of cursor button
 
     Examples:
-      | Name      | Contact   | HintMessage                          |
-      | user1Name | user2Name | Tap and hold to send a voice message |
+      | Name      | Contact   | HintMessage                           |
+      | user1Name | user2Name | Tap and hold to send an audio message |
 
   @C131179 @staging  @C131175 @C131176
   Scenario Outline: Verify sending voice message by long tap > swipe up
@@ -143,3 +143,21 @@ Feature: Audio Message
     Examples:
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
+
+  @C131194 @staging
+  Scenario Outline: Verify playing a received voice message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
+    And I see Audio Message container in the conversation view
+    And I remember the state of recent audio message seekbar
+    And I tap Play button on the recent audio message in the conversation view
+    Then I verify the state of recent audio message seekbar in the conversation view is changed
+
+    Examples:
+      | Name      | Contact   | FileName | MIMEType  | DeviceName |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
