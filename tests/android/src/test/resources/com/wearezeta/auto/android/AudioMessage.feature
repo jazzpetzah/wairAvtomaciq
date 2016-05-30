@@ -23,9 +23,7 @@ Feature: Audio Message
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
-    When I long tap Audio message button <TapDuration> seconds from cursor toolbar
-    Then I see audio message is recording
-    When I swipe up on audio message slide
+    When I long tap Audio message cursor button <TapDuration> seconds and swipe up
     Then I see cursor toolbar
     And I see Audio Message container in the conversation view
 
