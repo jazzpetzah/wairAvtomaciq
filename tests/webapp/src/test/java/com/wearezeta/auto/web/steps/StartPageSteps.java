@@ -170,4 +170,19 @@ public class StartPageSteps {
 			default: break;
 		}
 	}
+
+	@Then("^I see localized (.*) support page$")
+	public void ISeeLocalizedSupportPage(String language) throws Exception {
+		StartPage startPage = context.getPagesCollection().getPage(StartPage.class);
+		switch (language) {
+			case "english":
+				assertTrue("Support Page for is not in " + language, startPage.isEnglish());
+				break;
+			case "german":
+				assertTrue("Support Page for is not in " + language, startPage.isGerman());
+				break;
+			default:
+				break;
+		}
+	}
 }
