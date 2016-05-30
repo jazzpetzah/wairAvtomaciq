@@ -145,9 +145,11 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
      * @param getEndElement            the functional interface to get end element, called after long tap
      * @param swipDurationMilliseconds swipe duration
      * @param tapDurationMilliseconds  tap duration
+     * @param callback                 callback during the long tap, can be null if nothing want to to do
      */
     private void touch(int startX, int startY, FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement,
-                       int swipDurationMilliseconds, int tapDurationMilliseconds) {
+                       int swipDurationMilliseconds, int tapDurationMilliseconds,
+                       FunctionalInterfaces.ISupplierWithException callback) {
         int duration = 1;
         if (swipDurationMilliseconds > SWIPE_STEP_DURATION_MILLISECONDS) {
             duration = (swipDurationMilliseconds % SWIPE_STEP_DURATION_MILLISECONDS == 0)
@@ -159,6 +161,10 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         ta.down(startX, startY).perform();
 
         try {
+            if (callback != null) {
+                callback.call();
+            }
+
             Thread.sleep(tapDurationMilliseconds);
             WebElement element = getEndElement.call();
             Dimension dimension = element.getSize();
@@ -210,17 +216,19 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
      * @param getEndElement             the function to retrieve end element durint Runtime
      * @param swipeDurationMilliseconds the duration of swipe
      * @param tapDurationMilliseconds   the duration of long tap
+     * @param callback                  the callback during long tap, cannbe null if no callback
      */
     public void longTapAndSwipe(WebElement longTapElement,
                                 FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement,
-                                int swipeDurationMilliseconds, int tapDurationMilliseconds) {
+                                int swipeDurationMilliseconds, int tapDurationMilliseconds,
+                                FunctionalInterfaces.ISupplierWithException callback) {
         final Point fromPoint = longTapElement.getLocation();
         final Dimension fromElementSize = longTapElement.getSize();
 
         final int startX = fromPoint.x + fromElementSize.width / 2;
         final int startY = fromPoint.y + fromElementSize.height / 2;
 
-        this.touch(startX, startY, getEndElement, swipeDurationMilliseconds, tapDurationMilliseconds);
+        this.touch(startX, startY, getEndElement, swipeDurationMilliseconds, tapDurationMilliseconds, callback);
     }
 
     public void longTap(WebElement el, int durationMilliseconds) {

@@ -31,6 +31,21 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
+  @C131176 @staging
+  Scenario Outline: Verify microphone is changed to play icon after releasing the thumb
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When I long tap Audio message microphone button <TapDuration> seconds and remember icon
+    And I verify the state of audio message microphone button in the conversation view is changed
+
+    Examples:
+      | Name      | Contact   | TapDuration |
+      | user1Name | user2Name | 5           |
+
   @C131180 @staging @C131195
   Scenario Outline: Verify sending voice message by long tap > release the humb > tap on the check icon -> play audio message
     Given There are 2 users where <Name> is me

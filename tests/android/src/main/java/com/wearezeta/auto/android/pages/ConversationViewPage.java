@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.common.misc.ElementState;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -242,15 +243,21 @@ public class ConversationViewPage extends AndroidPage {
         );
     }
 
-    public BufferedImage getAudioMessageSeekbar() throws Exception {
+    public BufferedImage getAudioMessageSeekbarState() throws Exception {
         return this.getElementScreenshot(getElement(idAudioContainerSeekbar)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of seekbar within audio message container")
         );
     }
 
-    public BufferedImage getAudioMessagePreviewSeekbar() throws Exception {
+    public BufferedImage getAudioMessagePreviewSeekbarState() throws Exception {
         return this.getElementScreenshot(getElement(idAudioMessagePreviewSeekbar)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of seekbar within audio message preview ")
+        );
+    }
+
+    public BufferedImage getAudioMessagePreviewMicrophoneButtonState() throws Exception {
+        return this.getElementScreenshot(getElement(idAudioMessagePlayButton)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot of Audio message recording slide microphone button")
         );
     }
 
@@ -348,7 +355,13 @@ public class ConversationViewPage extends AndroidPage {
 
     public void longTapAudioMessageCursorBtnAndSwipeUp(int longTapDurationMilliseconds) throws Exception {
         getDriver().longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idAudioMessageSendButton),
-                DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds);
+                DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds, null);
+    }
+
+    public void longTapAudioMessageCursorBtnAndRememberIcon(int longTapDurationMilliseconds, ElementState elementState)
+            throws Exception {
+        getDriver().longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idCursorAudioMessage),
+                DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds, () -> elementState.remember());
     }
 
     public boolean isPingButtonVisible() throws Exception {
