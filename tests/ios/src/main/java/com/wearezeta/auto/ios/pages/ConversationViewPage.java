@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
+import io.appium.java_client.TouchAction;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -54,7 +55,7 @@ public class ConversationViewPage extends IOSPage {
             String.format("%s[1][@value='%s']", xpathStrAllTextMessages, text);
 
     private static final Function<String, String> xpathTableCellFromUser = text ->
-            String.format("%s[@name='%s']",xpathStrAllEntries,text.toUpperCase());
+            String.format("%s[@name='%s']", xpathStrAllEntries, text.toUpperCase());
 
     private static final Function<String, String> xpathStrMessageByTextPart = text ->
             String.format("%s[contains(@value, '%s')]", xpathStrAllTextMessages, text);
@@ -171,6 +172,8 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameAudioRecorderCancelButton = MobileBy.AccessibilityId("audioRecorderCancel");
 
     private static final By nameSendAudioMessageButton = MobileBy.AccessibilityId("audioRecorderSend");
+
+    private static final By namePlayAudioMessageButton = MobileBy.AccessibilityId("audioRecorderPlay");
 
     private static final By nameAudioActionButton = MobileBy.AccessibilityId("AudioActionButton");
 
@@ -490,7 +493,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapHoldImageWithRetry() throws Exception {
-        for (int i = 0; i<3; i++) {
+        for (int i = 0; i < 3; i++) {
             tapHoldImage();
             if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemDelete, 5)) {
                 break;
@@ -758,4 +761,12 @@ public class ConversationViewPage extends IOSPage {
         final By locator = By.xpath(xpathTableCellFromUser.apply(username));
         getElement(locator).click();
     }
+
+    public void tapAudioRecordWaitAndSwipe(int swipeDelaySeconds) throws Exception {
+        WebElement recordAudioMessageBtn = getElement(nameAudioMessageButton);
+        int y = getElement(nameConversationInput).getLocation().getY() - recordAudioMessageBtn.getLocation().getY();
+        new TouchAction(getDriver()).press(recordAudioMessageBtn).waitAction(swipeDelaySeconds * 1000).moveTo(0, 2 * y).release
+                ().perform();
+    }
+
 }
