@@ -4,13 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.android.pages.RegistrationPage;
 import com.wearezeta.auto.common.email.ActivationMessage;
 import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.*;
-import com.wearezeta.auto.android.pages.registration.ProfilePicturePage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
@@ -25,30 +24,9 @@ public class RegistrationSteps {
         return pagesCollection.getPage(RegistrationPage.class);
     }
 
-    private ProfilePicturePage getProfilePicturePage() throws Exception {
-        return pagesCollection.getPage(ProfilePicturePage.class);
-    }
-
     private ClientUser userToRegister = null;
 
     public Future<String> activationMessage;
-
-    /**
-     * Presses the camera button once to bring up the camera, and again to take
-     * a picture
-     *
-     * @param shouldPressTwice this will tap camera button twice if exists
-     * @throws Exception
-     * @step. ^I press Camera button( twice|\s*)$
-     */
-    @When("^I press Camera button( twice|\\s*)$")
-    public void WhenIPressCameraButton(String shouldPressTwice) throws Exception {
-        getProfilePicturePage().clickCameraButton();
-        if (shouldPressTwice != null && shouldPressTwice.contains("twice")) {
-            Thread.sleep(2000);
-            getProfilePicturePage().clickCameraButton();
-        }
-    }
 
     /**
      * Presses the camera button to bring up the camera app
@@ -59,17 +37,6 @@ public class RegistrationSteps {
     @When("^I press Picture button$")
     public void WhenIPressPictureButton() throws Exception {
         getRegistrationPage().selectPicture();
-    }
-
-    /**
-     * Presses the confirm button to confirm the selected picture
-     *
-     * @throws Exception
-     * @step. ^I confirm selection$
-     */
-    @When("^I confirm selection$")
-    public void IConfirmSelection() throws Exception {
-        getProfilePicturePage().confirmPicture();
     }
 
     /**
@@ -131,9 +98,18 @@ public class RegistrationSteps {
      * @throws Exception
      * @step. ^I select to choose my own picture$
      */
-    @And("^I select to choose my own picture$")
-    public void ITapOwnPictureButton() throws Exception {
-        getRegistrationPage().tapOwnPictureButton();
+    @And("^I select to (choose my own|keep the current) picture$")
+    public void ITapOwnPictureButton(String action) throws Exception {
+        switch (action.toLowerCase()) {
+            case "choose my own":
+                getRegistrationPage().tapOwnPictureButton();
+                break;
+            case "keep the current":
+                getRegistrationPage().tapKeepThisPictureButton();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unsupported action name %s", action));
+        }
     }
 
     /**

@@ -65,11 +65,6 @@ public class ConversationViewPage extends AndroidPage {
     public static final Function<String, String> xpathStrPingMessageByText = text -> String
             .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']", text.toUpperCase());
 
-    private static final By xpathDialogTakePhotoButton = By
-            .xpath("//*[@id='gtv__camera_control__take_a_picture' and @shown='true']");
-
-    private static final By idSketchImagePaintButton = By.id("gtv__sketch_image_paint_button");
-
     private static final By idFullScreenImage = By.id("tiv__single_image_message__image");
 
     public static final By idVerifiedConversationShield = By.id("cursor_button_giphy");
@@ -142,8 +137,6 @@ public class ConversationViewPage extends AndroidPage {
     public static final By idDialogRoot = By.id(idStrDialogRoot);
     private static final By xpathDialogContent = By.xpath("//*[@id='" + idStrDialogRoot + "']/*/*/*");
 
-    private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__back_camera");
-
     private static final Function<String, String> xpathMessageNotificationByValue = value -> String
             .format("//*[starts-with(@id,'ttv_message_notification_chathead__label') and @value='%s']", value);
 
@@ -183,12 +176,6 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idAudioContainerSeekbar = By.id("sb__audio_progress");
 
     private static final By idAudioMessagePreviewSeekbar = By.id("sb__voice_message__recording__seekbar");
-
-    private static final By idCloseTakePictureViewButton = By.id("gtv__camera_control__back_to_change_image");
-
-    private static final By idChangePhotoBtn = By.id("gtv__camera_control__change_image_source");
-
-    private static final By idGalleryBtn = By.id("gtv__camera_control__pick_from_gallery");
 
     private static final int MAX_CLICK_RETRIES = 5;
 
@@ -537,21 +524,6 @@ public class ConversationViewPage extends AndroidPage {
         }
     }
 
-    public void tapSketchOnImageButton() throws Exception {
-        getElement(idSketchImagePaintButton, "Draw sketch on image button is not visible").click();
-    }
-
-    public void takePhoto() throws Exception {
-        final WebElement btn = getElement(xpathDialogTakePhotoButton, "Take Photo button is not visible");
-        if (!DriverUtils.waitUntilElementClickable(getDriver(), btn)) {
-            throw new IllegalStateException("Take Photo button is not clickable");
-        }
-        btn.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathDialogTakePhotoButton)) {
-            throw new IllegalStateException("Take Photo button is still visible after being clicked");
-        }
-    }
-
     /**
      * Navigates back by swipe and initialize ConversationsListPage
      *
@@ -559,21 +531,6 @@ public class ConversationViewPage extends AndroidPage {
      */
     public void navigateBack(int timeMilliseconds) throws Exception {
         swipeRightCoordinates(timeMilliseconds);
-    }
-
-    public void openGallery() throws Exception {
-        getElement(idGalleryBtn, "Gallery button is still not visible").click();
-    }
-
-    public void closeFullScreenImage() throws Exception {
-        // Sometimes X button is opened automatically after some timeout
-        final int MAX_TRIES = 4;
-        int ntry = 1;
-        while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCloseImageBtn, 4) && ntry <= MAX_TRIES) {
-            this.tapOnCenterOfScreen();
-            ntry++;
-        }
-        getElement(idCloseImageBtn).click();
     }
 
     public boolean waitForPingMessageWithText(String expectedText) throws Exception {
@@ -712,15 +669,6 @@ public class ConversationViewPage extends AndroidPage {
 
     public int getCurrentNumberOfItemsInDialog() throws Exception {
         return selectVisibleElements(xpathDialogContent).size();
-    }
-
-    /**
-     * @return false if Take Photo button is not visible after Switch Camera button is clicked
-     * @throws Exception
-     */
-    public boolean tapSwitchCameraButton() throws Exception {
-        getElement(idSwitchCameraButton).click();
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathDialogTakePhotoButton);
     }
 
     private static final long IMAGES_VISIBILITY_TIMEOUT = 10000; // seconds;
@@ -989,29 +937,5 @@ public class ConversationViewPage extends AndroidPage {
 
     public Optional<BufferedImage> getAudioContainerButtonState() throws Exception {
         return getElementScreenshot(getElement(idAudioContainerButton));
-    }
-
-    public void tapCloseTakePictureViewButton() throws Exception {
-        getElement(idCloseTakePictureViewButton).click();
-    }
-
-    public void tapChangePhotoButton() throws Exception {
-        getElement(idChangePhotoBtn).click();
-    }
-
-    public boolean isTakePhotoButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathDialogTakePhotoButton);
-    }
-
-    public boolean isTakePhotoButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathDialogTakePhotoButton);
-    }
-
-    public boolean isChangePhotoButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idChangePhotoBtn);
-    }
-
-    public boolean isChangePhotoButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idChangePhotoBtn);
     }
 }

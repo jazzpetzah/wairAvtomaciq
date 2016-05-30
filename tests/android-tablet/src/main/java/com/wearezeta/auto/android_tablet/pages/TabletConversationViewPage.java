@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.android.pages.TakePicturePage;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.android.pages.ConversationViewPage;
@@ -37,6 +38,10 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     private ConversationViewPage getConversationViewPage() throws Exception {
         return this.getAndroidPageInstance(ConversationViewPage.class);
+    }
+
+    private TakePicturePage getTakePicturePage() throws Exception {
+        return this.getAndroidPageInstance(TakePicturePage.class);
     }
 
     public boolean waitUntilVisible() throws Exception {
@@ -185,7 +190,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     }
 
     public void tapSketchButtonOnPicturePreview() throws Exception {
-        getConversationViewPage().tapSketchOnImageButton();
+        getTakePicturePage().tapSketchOnImageButton();
     }
 
     public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries) throws Exception {
