@@ -150,7 +150,7 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131194 @staging @C131196
+  @C131194 @staging @C131196 @C131202
   Scenario Outline: Verify playing a received voice message + playing in the background
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -169,6 +169,11 @@ Feature: Audio Message
     And I wait for 5 seconds
     And I restore the application
     Then I verify the state of recent audio message seekbar in the conversation view is changed
+    When I long tap Audio Message container in the conversation view
+    Then I do not see Copy button on the action mode bar
+    When I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    Then I do not see Audio Message container in the conversation view
 
     Examples:
       | Name      | Contact   | FileName | MIMEType  | DeviceName |
