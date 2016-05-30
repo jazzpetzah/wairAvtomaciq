@@ -1304,9 +1304,9 @@ public class ConversationViewPageSteps {
      *
      * @param buttonType could be "audio message" or "video message"
      * @throws Exception
-     * @step. ^I tap (?:Play|X|Retry) button on the recent (video message|audio message) in the conversation view$"
+     * @step. ^I tap (?:Play|X|Retry) button on the recent (video message|audio message|Pause) in the conversation view$"
      */
-    @When("^I tap (?:Play|X|Retry) button on the recent (video message|audio message) in the conversation view$")
+    @When("^I tap (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view$")
     public void ITapButtonOnAudioOrVideoMessage(String buttonType) throws Exception {
         switch (buttonType.toLowerCase()) {
             case "video message":

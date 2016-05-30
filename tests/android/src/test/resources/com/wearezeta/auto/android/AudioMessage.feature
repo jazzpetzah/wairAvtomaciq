@@ -31,8 +31,8 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131180 @staging @C131195
-  Scenario Outline: Verify sending voice message by long tap > release the humb > tap on the check icon -> play audio message
+  @C131180 @staging @C131195 @C131197
+  Scenario Outline: Verify sending voice message by long tap > release the humb > tap on the check icon -> play/pause audio message
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -44,8 +44,12 @@ Feature: Audio Message
     Then I see cursor toolbar
     And I see Audio Message container in the conversation view
     When I remember the state of recent audio message seekbar
+    And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
     Then I verify the state of recent audio message seekbar in the conversation view is changed
+    And I verify the state of Play button on the recent audio message in the conversation view is changed
+    When I tap Pause button on the recent audio message in the conversation view
+    Then I verify the state of Play button on the recent audio message in the conversation view is not changed
 
     Examples:
       | Name      | Contact   | TapDuration |
