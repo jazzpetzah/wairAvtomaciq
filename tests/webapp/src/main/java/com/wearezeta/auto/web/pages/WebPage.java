@@ -103,15 +103,15 @@ public class WebPage extends BasePage {
         return getDriver().findElement(By.tagName("body")).getText();
     }
 
-    public List<String> getTitles() throws Exception {
-        List<WebElement> title = getDriver().findElements(By.cssSelector("li"));
-        List<String> titles = new ArrayList<>();
-        for (WebElement element : title) {
+    public List<String> getConvOptions() throws Exception {
+        List<WebElement> option = getDriver().findElements(By.cssSelector("li"));
+        List<String> convOptions = new ArrayList<>();
+        for (WebElement element : option) {
             if (element.isDisplayed()) {
-                titles.add(element.getAttribute("title"));
+                convOptions.add(element.getAttribute("title"));
             }
         }
-        return titles;
+        return convOptions;
     }
 
     /**

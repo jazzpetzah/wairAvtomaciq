@@ -41,18 +41,16 @@ Feature: Localization
     When I switch language to <Language>
     And I see Contact list with name <Contact>
     And I see a string HINZUGEFÜGT on the page
-    And I open People Picker from Contact List
+    And I see a string <ContactListPlaceholder> on the page
+    When I open People Picker from Contact List
     Then I see a placeholder <SearchPlaceHolder> on the page
     When I close People Picker
-    And I see a string <ContactListPlaceholder> on the page
-    When I click on options button for conversation <Contact>
-    Then I see a title Stummschalten on the page
-    And I see a title Archivieren on the page
-    And I see a title Löschen on the page
-    And I see a title Blockieren on the page
-#    And I open conversation with <Contact>
-#    Then I see a placeholder <WritePlaceHolder> on the page
+    And I click on options button for conversation <Contact>
+    Then I see a conversation option Stummschalten on the page
+    And I see a conversation option Archivieren on the page
+    And I see a conversation option Löschen on the page
+    And I see a conversation option Blockieren on the page
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Language | ContactListPlaceholder | SearchPlaceHolder                | WritePlaceHolder        |
-      | user1Email | user1Password | user1Name | user2Name | de       | UNTERHALTUNG BEGINNEN  | Namen oder E-Mail-Adresse suchen | Schreibe eine Nachricht |
+      | Login      | Password      | Name      | Contact   | Language | ContactListPlaceholder | SearchPlaceHolder                |
+      | user1Email | user1Password | user1Name | user2Name | de       | UNTERHALTUNG BEGINNEN  | Namen oder E-Mail-Adresse suchen |
