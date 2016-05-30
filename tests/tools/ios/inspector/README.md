@@ -7,7 +7,7 @@ The tool for iOS elements location. It is based on the original source of [Selen
 Usage
 -----
 
-Execute your iOS test using Appium and set a brakepoint on a page, where you want to investgate UI tree. Open/refresh iOS Inspector.html web page in your favourite web browser, wait for a while until the data is loaded and you are free to go. The inspector currently supports showing of element attributes, elements location by XPath and, naturally, two-way visual elements location using a screenshot and UI tree.
+Execute your iOS test using Appium (by default it is expected to listen on localhost:4723) and set a breakpoint where you want to investigate UI tree. Open/refresh iOS Inspector.html web page in your favourite web browser, wait for a while until the data is loaded and you are free to go. The inspector currently supports showing of element attributes, elements location by XPath and, naturally, two-way visual elements location using a screenshot and UI tree.
 Note: The Accessibility Id property can be presented as @name attribute in XPath expessions.
 
 License

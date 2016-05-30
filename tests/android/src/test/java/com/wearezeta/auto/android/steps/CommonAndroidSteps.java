@@ -168,9 +168,7 @@ public class CommonAndroidSteps {
             "android.permission.READ_CONTACTS",
             "android.permission.RECORD_AUDIO",
             "android.permission.CAMERA",
-            "android.permission.READ_PHONE_STATE",
-            "android.permission.MODIFY_AUDIO_SETTINGS",
-            "android.permission.BLUETOOTH"
+            "android.permission.READ_PHONE_STATE"
     };
 
     private void onDriverInitFinished(RemoteWebDriver drv) {
