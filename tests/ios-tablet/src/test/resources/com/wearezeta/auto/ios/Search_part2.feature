@@ -7,6 +7,7 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Call action button on People picker page
