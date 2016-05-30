@@ -200,7 +200,7 @@ public class ConversationViewPageSteps {
      * Tap the corresponding button from input tools palette
      *
      * @param isLongTap equals to null if simple tap should be performed
-     * @param btnName one of available button names
+     * @param btnName   one of available button names
      * @throws Exception
      * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tools$
      */
@@ -218,10 +218,10 @@ public class ConversationViewPageSteps {
      *
      * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I (do not)?see (Add Picture|Ping|Sketch|File Transfer) button in input tools palette$
+     * @step. ^I (do not)?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$
      */
-    @When("^I (do not)?see (Add Picture|Ping|Sketch|File Transfer) button in input tools palette$")
-    public void VeirfyButtonVisibilityInInputTools(String shouldNot, String btnName) throws Exception {
+    @When("^I (do not)?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$")
+    public void VerifyButtonVisibilityInInputTools(String shouldNot, String btnName) throws Exception {
         if (shouldNot == null) {
             Assert.assertTrue(btnName + "button in input tools palette is not visible",
                     getConversationViewPage().isInputToolButtonByNameVisible(btnName));
@@ -1156,15 +1156,14 @@ public class ConversationViewPageSteps {
     @Then("^I see a preview of video message$")
     public void IWaitForVideoMessage() throws Exception {
         Assert.assertTrue("Video message container has not been shown",
-               getConversationViewPage().isVideoMessageContainerVisible());
+                getConversationViewPage().isVideoMessageContainerVisible());
     }
 
     /**
      * Verify whether audio message record progress control is visible
      *
-     * @step. ^I see audio message record container$
-     *
      * @throws Exception
+     * @step. ^I see audio message record container$
      */
     @Then("^I see audio message record container$")
     public void ISeeAudioRecordProgress() throws Exception {
@@ -1176,9 +1175,9 @@ public class ConversationViewPageSteps {
      * Tap pointed control button
      *
      * @throws Exception
-     * @step. ^I tap (Send) record control button
+     * @step. ^I tap (Send|Cancel) record control button
      */
-    @When("^I tap (Send) record control button$")
+    @When("^I tap (Send|Cancel) record control button$")
     public void ITapRecordControlButton(String buttonName) throws Exception {
         getConversationViewPage().tapRecordControlButton(buttonName);
     }
@@ -1186,12 +1185,19 @@ public class ConversationViewPageSteps {
     /**
      * Verify visibility of audio message placeholder
      *
+     * @param shouldNotSee equals to null if the placeholder should be visible
      * @throws Exception
-     * @step. ^I see audio message placeholder$
+     * @step. ^I (do not )?see audio message placeholder$"
      */
-    @Then("^I see audio message placeholder$")
-    public void ISeeAudioMessagePlaceholder() throws Exception {
-        Assert.assertTrue("Audio message placeholder is not shown", getConversationViewPage().isAudioActionButtonVisible());
+    @Then("^I (do not )?see audio message placeholder$")
+    public void ISeeAudioMessagePlaceholder(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("Audio message placeholder is not shown",
+                    getConversationViewPage().isAudioActionButtonVisible());
+        } else {
+            Assert.assertTrue("Audio message placeholder should not be visible",
+                    getConversationViewPage().isAudioActionButtonInvisible());
+        }
     }
 
     /**

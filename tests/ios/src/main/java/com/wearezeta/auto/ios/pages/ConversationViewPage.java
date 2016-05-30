@@ -744,6 +744,8 @@ public class ConversationViewPage extends IOSPage {
         switch (buttonName.toLowerCase()) {
             case "send":
                 return nameSendAudioMessageButton;
+            case "cancel":
+                return nameAudioRecorderCancelButton;
             default:
                 throw new IllegalArgumentException("Not know record control button");
         }
@@ -755,6 +757,10 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isAudioActionButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAudioActionButton);
+    }
+
+    public boolean isAudioActionButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameAudioActionButton);
     }
 
     public void tapVideoMessageContainer(String username) throws Exception {
