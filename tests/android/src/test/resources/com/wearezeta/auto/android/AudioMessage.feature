@@ -31,8 +31,8 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131180 @staging
-  Scenario Outline: Verify sending voice message by long tap > release the humb > tap on the check ion
+  @C131180 @staging @C131195
+  Scenario Outline: Verify sending voice message by long tap > release the humb > tap on the check icon -> play audio message
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -43,10 +43,13 @@ Feature: Audio Message
     And I tap on audio message send button
     Then I see cursor toolbar
     And I see Audio Message container in the conversation view
+    When I remember the state of recent audio message seekbar
+    And I tap Play button on the recent audio message in the conversation view
+    Then I verify the state of recent audio message seekbar in the conversation view is changed
 
     Examples:
       | Name      | Contact   | TapDuration |
-      | user1Name | user2Name | 5           |
+      | user1Name | user2Name | 10          |
 
   @C131188 @staging
   Scenario Outline: Verify getting a chathead when voice message is sent in the other conversation
@@ -142,8 +145,8 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131194 @staging
-  Scenario Outline: Verify playing a received voice message
+  @C131194 @staging @C131196
+  Scenario Outline: Verify playing a received voice message + playing in the background
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -155,7 +158,15 @@ Feature: Audio Message
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
     Then I verify the state of recent audio message seekbar in the conversation view is changed
+    When I remember the state of recent audio message seekbar
+    And I minimize the application
+    # Let audio play 5 seconds
+    And I wait for 5 seconds
+    And I restore the application
+    Then I verify the state of recent audio message seekbar in the conversation view is changed
 
     Examples:
       | Name      | Contact   | FileName | MIMEType  | DeviceName |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
+
+
