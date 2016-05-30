@@ -102,6 +102,11 @@ public class CommonWebAppSteps {
         assertThat(WebappPagesCollection.getInstance().getPage(WebPage.class).getPlaceholders(), hasItem(placeholder));
     }
 
+    @Then("I see a conversation option (.*) on the page$")
+    public void ISeeAConversationOptionOnPage(String option) throws Throwable {
+        assertThat(WebappPagesCollection.getInstance().getPage(WebPage.class).getConvOptions().toString(), containsString(option));
+    }
+
     @Then("^I see a button with (.*) on the page$")
     public void ISeeAButtonOnPage(String value) throws Throwable {
         assertThat(WebappPagesCollection.getInstance().getPage(WebPage.class).getButtonValues(), hasItem(value));

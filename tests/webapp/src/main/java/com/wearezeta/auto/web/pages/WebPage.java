@@ -103,6 +103,17 @@ public class WebPage extends BasePage {
         return getDriver().findElement(By.tagName("body")).getText();
     }
 
+    public List<String> getConvOptions() throws Exception {
+        List<WebElement> option = getDriver().findElements(By.cssSelector("li"));
+        List<String> convOptions = new ArrayList<>();
+        for (WebElement element : option) {
+            if (element.isDisplayed()) {
+                convOptions.add(element.getAttribute("title"));
+            }
+        }
+        return convOptions;
+    }
+
     /**
      * Returns a list of all placeholders of text boxes on the page. A placeholder is a text that is only shown if the user has
      * not written anything into the field yet.
