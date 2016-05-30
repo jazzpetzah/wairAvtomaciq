@@ -50,7 +50,7 @@ Feature: Audio Messaging
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I record 5 seconds audio meassage and send by swipe up
+    And I record 5 seconds long audio message and send it using swipe up gesture
     Then I see audio message placeholder
 
     Examples:

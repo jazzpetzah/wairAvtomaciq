@@ -1211,9 +1211,9 @@ public class ConversationViewPageSteps {
      *
      * @param sec time in seconds
      * @throws Exception
-     * @step. ^I record (\\d+) seconds? audio meassage and send by swipe up$
+     * @step. ^I record (\d+) seconds? audio meassage and send by swipe up$
      */
-    @When("^I record (\\d+) seconds? audio meassage and send by swipe up$")
+    @When("^I record (\\d+) seconds? long audio message and send it using swipe up gesture$")
     public void IRecordXSecondsAudioMessageAndSendBySwipe(int sec) throws Exception {
         getConversationViewPage().tapAudioRecordWaitAndSwipe(sec);
     }
