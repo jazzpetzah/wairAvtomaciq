@@ -180,6 +180,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idAudioContainerButton = By.id("gpv__row_conversation__audio_button");
 
+    private static final By idAudioContainerSeekbar = By.id("sb__audio_progress");
+
     private static final By idCloseTakePictureViewButton = By.id("gtv__camera_control__back_to_change_image");
 
     private static final By idChangePhotoBtn = By.id("gtv__camera_control__change_image_source");
@@ -234,6 +236,12 @@ public class ConversationViewPage extends AndroidPage {
 
     public BufferedImage getFilePlaceholderActionButtonState() throws Exception {
         return this.getElementScreenshot(getElement(idFileActionBtn)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot of file place holder action button")
+        );
+    }
+
+    public BufferedImage getAudioMessageSeekbar() throws Exception {
+        return this.getElementScreenshot(getElement(idAudioContainerSeekbar)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of file place holder action button")
         );
     }
