@@ -182,6 +182,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idAudioContainerSeekbar = By.id("sb__audio_progress");
 
+    private static final By idAudioMessagePreviewSeekbar = By.id("sb__voice_message__recording__seekbar");
+
     private static final By idCloseTakePictureViewButton = By.id("gtv__camera_control__back_to_change_image");
 
     private static final By idChangePhotoBtn = By.id("gtv__camera_control__change_image_source");
@@ -242,7 +244,13 @@ public class ConversationViewPage extends AndroidPage {
 
     public BufferedImage getAudioMessageSeekbar() throws Exception {
         return this.getElementScreenshot(getElement(idAudioContainerSeekbar)).orElseThrow(
-                () -> new IllegalStateException("Cannot get a screenshot of file place holder action button")
+                () -> new IllegalStateException("Cannot get a screenshot of seekbar within audio message container")
+        );
+    }
+
+    public BufferedImage getAudioMessagePreviewSeekbar() throws Exception {
+        return this.getElementScreenshot(getElement(idAudioMessagePreviewSeekbar)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot of seekbar within audio message preview ")
         );
     }
 
@@ -423,6 +431,10 @@ public class ConversationViewPage extends AndroidPage {
 
     public void tapAudioMessageCancelButton() throws Exception {
         getElement(idAudioMessageCancelButton).click();
+    }
+
+    public void tapAudioMessagePlayButton() throws Exception {
+        getElement(idAudioMessagePlayButton).click();
     }
 
     //endregion
