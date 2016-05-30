@@ -269,9 +269,9 @@ public class ConversationViewPageSteps {
      *
      * @param buttonName the button to press
      * @throws Exception
-     * @step. ^I tap "(Take Photo|Confirm|Gallery|Image Close|Switch Camera|Switch Image Paint|Close)" button on Take Picture view$
+     * @step. ^I tap "(Take Photo|Confirm|Gallery|Image Close|Switch Camera|Sketch Image Paint|Close)" button on Take Picture view$
      */
-    @When("^I tap (Take Photo|Change Photo|Confirm|Gallery|Image Close|Switch Camera|Switch Image Paint|Close) button on Take Picture view$")
+    @When("^I tap (Take Photo|Change Photo|Confirm|Gallery|Image Close|Switch Camera|Sketch Image Paint|Close) button on Take Picture view$")
     public void WhenIPressButton(String buttonName) throws Exception {
         switch (buttonName.toLowerCase()) {
             case "take photo":
