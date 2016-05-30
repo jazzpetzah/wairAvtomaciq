@@ -172,7 +172,6 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameAudioRecorderCancelButton = MobileBy.AccessibilityId("audioRecorderCancel");
 
     private static final By nameSendAudioMessageButton = MobileBy.AccessibilityId("audioRecorderSend");
-    private static final String nameStrSendAudioMessageButton = "audioRecorderSend";
 
     private static final By namePlayAudioMessageButton = MobileBy.AccessibilityId("audioRecorderPlay");
 
