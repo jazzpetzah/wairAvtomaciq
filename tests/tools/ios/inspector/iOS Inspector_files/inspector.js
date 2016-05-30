@@ -10,7 +10,12 @@
  * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
+ *
+ * Copyright 2016 Nick at Wire Swiss Inc. Made the Inspector compatible with Appium iOS driver.
+ *
  */
+
+
 
 Inspector.logLevel = 4; // 0=none, 1=error, 2=error +warning, 3=
 // error,warning,info 4 = all
@@ -442,7 +447,6 @@ Inspector.prototype.highlight = function (x, y, h, w, translationFound, ref) {
         d.css('z-index', '3');
         d.css('opacity', '0.5');
         d.css('opacity', '0.5');
-        d.html("<div  style='opacity: 1;color:red;'>ref:" + ref + "</div>");
         var color;
         if (translationFound) {
             color = "blue";
