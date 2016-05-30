@@ -14,7 +14,7 @@ public class CallOutgoingPage extends CallingOverlayPage {
 
     private static final By xpathOngoingAudioCallContainer =
             By.xpath("//*[@id='ttv__calling__header__subtitle' and contains(@value, 'RINGING') " +
-                    "and //*[@id='ccbv__calling_controls__hangup']]");
+                    "and //*[@id='ccbv__button_middle']]");
     
     private static final By idParticipants = By.id("chv__calling__participants_grid__chathead");
 
