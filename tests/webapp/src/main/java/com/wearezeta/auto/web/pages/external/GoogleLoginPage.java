@@ -11,10 +11,15 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.pages.WebPage;
 import java.util.concurrent.Callable;
+import org.apache.log4j.Logger;
 
 public class GoogleLoginPage extends WebPage {
+    
+    private static final Logger log = ZetaLogger.getLog(GoogleLoginPage.class
+			.getSimpleName());
 
 	// TODO move to Locators
 	private static final String EMAIL_ID = "Email";
@@ -76,14 +81,23 @@ public class GoogleLoginPage extends WebPage {
 		approveAccessButton.click();
 	}
 
-	public void clickSignIn() throws Exception {
-		signInButton.click();
-	}
-        
+    public void clickSignIn() throws Exception {
+        signInButton.click();
+    }
+
+    public void clickSignInWithWindowSwitch() throws Exception {
+        waitForWindowClose(() -> {
+            clickSignIn();
+            return true;
+        });
+    }
+
     public void waitForWindowClose(Callable enclosedStep) throws Exception {
         final Set<String> handles = this.getDriver().getWindowHandles();
+
         enclosedStep.call();
-        // wait for popup to close
+
+        // wait for popup to close		
         this.getWait().until(new ExpectedCondition<Boolean>() {
             @Override
             public Boolean apply(WebDriver input) {
@@ -91,8 +105,7 @@ public class GoogleLoginPage extends WebPage {
             }
         });
         // switch back to main window
-        this.getDriver().switchTo()
-                .window(this.getDriver().getWindowHandles().iterator().next());
+        this.getDriver().switchTo().window(this.getDriver().getWindowHandles().iterator().next());
     }
 
 }
