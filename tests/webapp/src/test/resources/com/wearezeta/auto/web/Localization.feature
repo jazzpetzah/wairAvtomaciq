@@ -40,17 +40,17 @@ Feature: Localization
     Given I am signed in properly
     When I switch language to <Language>
     And I see Contact list with name <Contact>
-    And I see a string HINZUGEFÜGT on the page
-    And I see a string <ContactListPlaceholder> on the page
+    And I see a string <ConversationViewText> on the page
+    And I see a string <ContactListText> on the page
     When I open People Picker from Contact List
     Then I see a placeholder <SearchPlaceHolder> on the page
     When I close People Picker
     And I click on options button for conversation <Contact>
-    Then I see a conversation option Stummschalten on the page
-    And I see a conversation option Archivieren on the page
-    And I see a conversation option Löschen on the page
-    And I see a conversation option Blockieren on the page
+    Then I see a conversation option <ConvOption1> on the page
+    And I see a conversation option <ConvOption2> on the page
+    And I see a conversation option <ConvOption3> on the page
+    And I see a conversation option <ConvOption4> on the page
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Language | ContactListPlaceholder | SearchPlaceHolder                |
-      | user1Email | user1Password | user1Name | user2Name | de       | UNTERHALTUNG BEGINNEN  | Namen oder E-Mail-Adresse suchen |
+      | Login      | Password      | Name      | Contact   | Language | ConversationViewText | ContactListText        | SearchPlaceHolder                | ConvOption1   | ConvOption2 | ConvOption3 | ConvOption4 |
+      | user1Email | user1Password | user1Name | user2Name | de       | HINZUGEFÜGT          | UNTERHALTUNG BEGINNEN  | Namen oder E-Mail-Adresse suchen | Stummschalten | Archivieren | Löschen     | Blockieren  |
