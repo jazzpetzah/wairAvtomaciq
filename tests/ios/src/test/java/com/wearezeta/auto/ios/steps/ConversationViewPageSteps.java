@@ -1206,6 +1206,13 @@ public class ConversationViewPageSteps {
         getConversationViewPage().tapVideoMessageContainer(username);
     }
 
+    /**
+     * Tap on record audio button waits and swipe up to send audio message
+     *
+     * @param sec time in seconds
+     * @throws Exception
+     * @step. ^I record (\\d+) seconds? audio meassage and send by swipe up$
+     */
     @When("^I record (\\d+) seconds? audio meassage and send by swipe up$")
     public void IRecordXSecondsAudioMessageAndSendBySwipe(int sec) throws Exception {
         getConversationViewPage().tapAudioRecordWaitAndSwipe(sec);
