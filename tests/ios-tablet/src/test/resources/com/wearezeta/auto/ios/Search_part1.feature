@@ -191,7 +191,7 @@ Feature: Search
 
   @C2793 @regression @id2936
   Scenario Outline: Verify search is possible after selection users from Top People [LANDSAPE]
-    Given There are <UserCount> users where <Name> is me
+    Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -199,14 +199,12 @@ Feature: Search
     Given I wait until <Contact> exists in backend search results
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
-    And I see top people list on People picker page
-    And I tap on 3 top connections but not <Contact>
+    And I tap on 1 top connection but not <Contact>
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I click space keyboard button
     Then I see that <Number> contacts are selected
 
     Examples:
-      | Name      | UserCount | Contact   | Number |
-      | user1Name | 7         | user2Name | 4      |
+      | Name      | Contact   | Number |
+      | user1Name | user2Name | 2      |

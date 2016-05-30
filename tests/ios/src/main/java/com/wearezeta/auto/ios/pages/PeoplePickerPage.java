@@ -85,7 +85,7 @@ public class PeoplePickerPage extends IOSPage {
     }
 
     public void tapOnPeoplePickerSearch() throws Exception {
-        getElement(xpathPickerSearch).click();
+        DriverUtils.tapInTheCenterOfTheElement(getDriver(), getElement(xpathPickerSearch));
     }
 
     public void tapOnPeoplePickerClearBtn() throws Exception {

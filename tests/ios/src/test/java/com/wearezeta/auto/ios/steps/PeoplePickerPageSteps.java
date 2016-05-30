@@ -161,7 +161,7 @@ public class PeoplePickerPageSteps {
      * @param numberOfTopConnections amount of contacts that should be selected
      * @throws Exception
      */
-    @Then("I tap on first (.*) top connections")
+    @Then("^I tap on first (\\d+) top connections?$")
     public void WhenITapOnTopConnections(int numberOfTopConnections) throws Exception {
         getPeoplePickerPage().tapNumberOfTopConnections(numberOfTopConnections);
     }
@@ -173,7 +173,7 @@ public class PeoplePickerPageSteps {
      * @param contact                name of contact that shouldn't be tapped
      * @throws Exception
      */
-    @Then("I tap on (.*) top connections but not (.*)")
+    @Then("^I tap on (\\d+) top connections? but not (.*)")
     public void WhenITapOnTopConnectionsButNotUser(int numberOfTopConnections, String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getPeoplePickerPage().tapNumberOfTopConnectionsButNotUser(numberOfTopConnections, contact);
