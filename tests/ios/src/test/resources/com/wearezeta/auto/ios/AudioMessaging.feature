@@ -14,7 +14,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C129327 @staging
+  @C129327 @regression
   Scenario Outline: Verify sending voice message by check icon tap
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -29,7 +29,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C129341 @staging
+  @C129341 @regression
   Scenario Outline: Verify receiving a voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

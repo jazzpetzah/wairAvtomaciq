@@ -15,7 +15,7 @@ Feature: Video Messaging
       | Name      | Contact   | FileName    |
       | user1Name | user2Name | testing.mp4 |
 
-  @C125733 @staging
+  @C125733 @regression
   Scenario Outline: Verify receiving video message
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
