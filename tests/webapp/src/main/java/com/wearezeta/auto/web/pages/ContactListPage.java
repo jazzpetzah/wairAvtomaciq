@@ -387,6 +387,17 @@ public class ContactListPage extends WebPage {
         }
     }
 
+    public List<String> getConvOptions() throws Exception {
+        List<WebElement> option = getDriver().findElements(By.cssSelector("li"));
+        List<String> convOptions = new ArrayList<>();
+        for (WebElement element : option) {
+            if (element.isDisplayed()) {
+                convOptions.add(element.getAttribute("title"));
+            }
+        }
+        return convOptions;
+    }
+
     private static final int SELECTION_TIMEOUT = 5; // seconds
     private static final String NON_SELECTED_ITEM_COLOR = "rgba(255, 255, 255, 1)";
 

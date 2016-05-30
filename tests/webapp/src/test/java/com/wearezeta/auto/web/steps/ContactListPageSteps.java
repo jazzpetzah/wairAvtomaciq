@@ -19,6 +19,7 @@ import cucumber.api.java.en.When;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertTrue;
 
 public class ContactListPageSteps {
@@ -618,6 +619,11 @@ public class ContactListPageSteps {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickOptionsButtonForContact(contact);
+    }
+
+    @Then("I see a conversation option (.*) on the page$")
+    public void ISeeAConversationOptionOnPage(String option) throws Throwable {
+        assertThat(context.getPagesCollection().getPage(ContactListPage.class).getConvOptions().toString(), containsString(option));
     }
 
     /**
