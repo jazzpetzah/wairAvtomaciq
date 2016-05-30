@@ -88,20 +88,21 @@ Feature: Search
 
   @C3220 @regression @id763
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations
-    Given There are <UserCount> users where <Name> is me
+    Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
-    And I open search UI
-    And I tap on 3 top connections but not <Contact>
+    When I open search UI
+    And I tap on 1 top connection but not <Contact>
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     Then I see that <Number> contacts are selected
 
     Examples:
-      | Name      | UserCount | Contact   | Number |
-      | user1Name | 7         | user2Name | 4      |
+      | Name      | Contact   | Number |
+      | user1Name | user2Name | 2      |
 
   @C3244 @regression @id1456
   Scenario Outline: Verify you can unblock someone from search list
@@ -112,6 +113,7 @@ Feature: Search
     Given I see conversations list
     When I do not see conversation <Contact> in conversations list
     And I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user
