@@ -105,9 +105,10 @@ Feature: Search
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I see Open conversation action button on People picker page
+    Then I see Open conversation action button on People picker page
 
     Examples: 
       | Name      | Contact   |
@@ -122,7 +123,6 @@ Feature: Search
     Given I see conversations list
     Given I wait until my Top People list is not empty on the backend
     When I open search UI
-    And I see top people list on People picker page
     When I tap on 1st top connection contact
     Then I see Open conversation action button on People picker page
     When I tap on 2nd top connection contact
