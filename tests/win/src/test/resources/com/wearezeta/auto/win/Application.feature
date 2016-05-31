@@ -5,7 +5,7 @@ Feature: Application
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I ensure initial positioning
     And I resize the app to the max by hand
     Then I verify app is in fullscreen
