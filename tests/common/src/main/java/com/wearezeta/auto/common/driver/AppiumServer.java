@@ -38,7 +38,7 @@ public class AppiumServer {
     private boolean waitUntilIsStopped(long millisecondsTimeout) throws Exception {
         final URL status = new URL(SERVER_URL + "/status");
         try {
-            new UrlChecker().waitUntilAvailable(millisecondsTimeout, TimeUnit.MILLISECONDS, status);
+            new UrlChecker().waitUntilUnavailable(millisecondsTimeout, TimeUnit.MILLISECONDS, status);
             return true;
         } catch (UrlChecker.TimeoutException e) {
             return false;
@@ -48,7 +48,7 @@ public class AppiumServer {
     private boolean waitUntilIsRunning(long millisecondsTimeout) throws Exception {
         final URL status = new URL(SERVER_URL + "/status");
         try {
-            new UrlChecker().waitUntilUnavailable(millisecondsTimeout, TimeUnit.MILLISECONDS, status);
+            new UrlChecker().waitUntilAvailable(millisecondsTimeout, TimeUnit.MILLISECONDS, status);
             return true;
         } catch (UrlChecker.TimeoutException e) {
             return false;
