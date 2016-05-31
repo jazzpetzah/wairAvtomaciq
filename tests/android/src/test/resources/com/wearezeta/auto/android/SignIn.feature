@@ -98,7 +98,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C43808 @rc @regression
+  @C43808 @rc @regression @useSpecialEmail
   Scenario Outline: Verify sign in with phone number only
     Given There is 1 user with phone number only where <Name> is me
     Given I see welcome screen
