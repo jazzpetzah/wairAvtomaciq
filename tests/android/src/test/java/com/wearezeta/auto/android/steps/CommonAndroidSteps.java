@@ -269,13 +269,6 @@ public class CommonAndroidSteps {
      */
     @When("^I upgrade Wire to the recent version$")
     public void IUpgradeWire() throws Exception {
-        if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-            try {
-                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         final String appPath = getPath();
         AndroidCommonUtils.stopPackage(getPackageName());
         AndroidCommonUtils.installApp(new File(appPath));
@@ -284,7 +277,6 @@ public class CommonAndroidSteps {
         customCaps.put("fullReset", false);
         customCaps.put("skipUninstall", true);
         customCaps.put("appWaitActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
-        AppiumServer.getInstance().restart();
         final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath, Optional.of(customCaps));
         updateDriver(lazyDriver);
     }

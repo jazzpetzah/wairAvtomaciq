@@ -1,51 +1,26 @@
 package com.wearezeta.auto.common.driver;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.common.process.AsyncProcess;
 import com.wearezeta.common.process.UnixProcessHelpers;
-import io.appium.java_client.service.local.AppiumDriverLocalService;
-import io.appium.java_client.service.local.AppiumServiceBuilder;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.net.UrlChecker;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 public class AppiumServer {
     private static final Logger log = ZetaLogger.getLog(AppiumServer.class.getSimpleName());
 
-    private AppiumDriverLocalService service;
-
-    private static final int PORT = 4723;
-    public static final int DEFAULT_COMMAND_TIMEOUT = 500; // in seconds
-    private static final int SELENDROID_PORT = 4444;
-    private static final String NODE_EXECUTABLE = "/usr/local/bin/node";
-    private static final String APPIUM_EXECUTABLE = "/usr/local/lib/node_modules/appium/build/lib/main.js";
-    private static final String LOG_PATH = "/usr/local/var/log/appium/appium.log";
-    private static final String LOG_LEVEL = "debug";
-
     private static AppiumServer instance = null;
 
     private AppiumServer() {
-        try {
-            // This is to make sure there are no extra existing running instances
-            UnixProcessHelpers.killProcessesGracefully("node");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        this.service = AppiumDriverLocalService.buildService(
-                new AppiumServiceBuilder()
-                        .usingDriverExecutable(new File(NODE_EXECUTABLE))
-                        .withAppiumJS(new File(APPIUM_EXECUTABLE))
-                        .usingPort(PORT)
-                        .withLogFile(new File(LOG_PATH))
-                        .withArgument(() -> "--session-override")
-                        .withArgument(() -> "--selendroid-port", Integer.toString(SELENDROID_PORT))
-                        .withArgument(() -> "--log-level", LOG_LEVEL)
-                        .withArgument(() -> "--log-timestamp")
-        );
     }
 
     public synchronized static AppiumServer getInstance() {
@@ -53,6 +28,64 @@ public class AppiumServer {
             instance = new AppiumServer();
         }
         return instance;
+    }
+
+    private static final int PORT = 4723;
+    private static final int SELENDROID_PORT = 4444;
+    private static final int RESTART_TIMEOUT = 30000; // milliseconds
+    private static final String SERVER_URL = String.format("http://localhost:%d", PORT);
+
+    private boolean waitUntilIsStopped(long millisecondsTimeout) throws Exception {
+        final URL status = new URL(SERVER_URL + "/status");
+        try {
+            new UrlChecker().waitUntilAvailable(millisecondsTimeout, TimeUnit.MILLISECONDS, status);
+            return true;
+        } catch (UrlChecker.TimeoutException e) {
+            return false;
+        }
+    }
+
+    private boolean waitUntilIsRunning(long millisecondsTimeout) throws Exception {
+        final URL status = new URL(SERVER_URL + "/status");
+        try {
+            new UrlChecker().waitUntilUnavailable(millisecondsTimeout, TimeUnit.MILLISECONDS, status);
+            return true;
+        } catch (UrlChecker.TimeoutException e) {
+            return false;
+        }
+    }
+
+    private static final String MAIN_EXECUTABLE_PATH = "/usr/local/bin/appium";
+    public static final int DEFAULT_COMMAND_TIMEOUT = 500; // in seconds
+    private static final String LOG_PATH = "/usr/local/var/log/appium/appium.log";
+
+    private static final String[] DEFAULT_CMDLINE = new String[]{
+            MAIN_EXECUTABLE_PATH,
+            "--port", Integer.toString(PORT),
+            "--session-override",
+            "--selendroid-port", Integer.toString(SELENDROID_PORT),
+            "--log", LOG_PATH,
+            "--log-timestamp"
+    };
+
+    private void ensureParentDirExistence(String filePath) throws Exception {
+        final File log = new File(filePath);
+        if (!log.getParentFile().exists()) {
+            if (!log.getParentFile().mkdirs()) {
+                throw new RuntimeException(String.format("The script has failed to create '%s' folder for Appium logs. " +
+                                "Please make sure your account has correct access permissions on the parent folder(s)",
+                        log.getParentFile().getCanonicalPath()));
+            }
+        }
+    }
+
+    private void ensureAppiumExecutableExistence() throws Exception {
+        if (!new File(MAIN_EXECUTABLE_PATH).exists()) {
+            throw new RuntimeException(
+                    String.format("The script is unable to find main Appium executable at the path '%s'. " +
+                                    "Please make sure it is properly installed (`npm install -g appium`)",
+                            MAIN_EXECUTABLE_PATH));
+        }
     }
 
     public synchronized void resetIOS() throws Exception {
@@ -71,22 +104,31 @@ public class AppiumServer {
 
     public void restart() throws Exception {
         final String hostname = InetAddress.getLocalHost().getHostName();
-        log.info(String.format("Trying to (re)start Appium server on %s:%s...", hostname, PORT));
+        log.warn(String.format("Trying to (re)start Appium server on %s:%s...", hostname, PORT));
+
+        UnixProcessHelpers.killProcessesGracefully("node");
+        waitUntilIsStopped(RESTART_TIMEOUT / 2);
+
+        ensureAppiumExecutableExistence();
+        ensureParentDirExistence(LOG_PATH);
+
+        final AsyncProcess appiumProcess = new AsyncProcess(DEFAULT_CMDLINE, false, false).start();
         log.info(String.format("Waiting for Appium to be (re)started on %s:%s...", hostname, PORT));
         final long msStarted = System.currentTimeMillis();
-        UnixProcessHelpers.killProcessesGracefully("node");
-        try {
-            service.stop();
-        } catch (Throwable e) {
-            e.printStackTrace();
+        if (!waitUntilIsRunning(RESTART_TIMEOUT)) {
+            throw new IllegalStateException(String.format(
+                    "Appium server has failed to start after %s seconds timeout on server '%s'.\n" +
+                            "Please make sure that NodeJS and Appium packages are installed properly on this machine.\n" +
+                            "Appium logs:\n\n%s\n\n%s\n\n\n",
+                    RESTART_TIMEOUT / 1000, hostname, appiumProcess.getStderr(), appiumProcess.getStdout()));
         }
-        service.start();
+
         log.info(String.format("Appium server has been successfully (re)started after %.1f seconds " +
                 "and now is listening on %s:%s", (System.currentTimeMillis() - msStarted) / 1000.0, hostname, PORT));
     }
 
     public boolean isRunning() throws Exception {
-        return service.isRunning();
+        return waitUntilIsRunning(1);
     }
 
     public Optional<String> getLog() {
