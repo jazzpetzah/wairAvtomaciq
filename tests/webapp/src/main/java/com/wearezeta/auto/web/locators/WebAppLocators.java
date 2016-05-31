@@ -381,13 +381,13 @@ public final class WebAppLocators {
 
         public static final String cssVideo = "[data-uie-name='video-asset'][data-uie-value='%s']";
 
-        public static final String cssVideoLoading = cssVideo + " [data-uie-name='loading-media']";
+        public static final String cssVideoLoading = cssVideo + " [data-uie-name='status-loading-media']";
 
         public static final String cssVideoPlay = cssVideo + " [data-uie-name='do-play-media']";
 
         public static final String cssVideoPause = cssVideo + " [data-uie-name='do-pause-media']";
 
-        public static final String cssVideoSeekbar = cssVideo + " [data-uie-name='status-video-seekbar']";
+        public static final String cssVideoSeekbar = cssVideo + " [data-ui-name='status-video-seekbar']";
 
         public static final String cssVideoTime = cssVideo + " [data-uie-name='status-video-time']";
 
