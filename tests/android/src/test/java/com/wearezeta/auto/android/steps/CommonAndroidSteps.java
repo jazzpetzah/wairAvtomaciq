@@ -284,6 +284,7 @@ public class CommonAndroidSteps {
         customCaps.put("fullReset", false);
         customCaps.put("skipUninstall", true);
         customCaps.put("appWaitActivity", CommonUtils.getAndroidMainActivityFromConfig(getClass()));
+        AppiumServer.getInstance().restart();
         final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath, Optional.of(customCaps));
         updateDriver(lazyDriver);
     }
