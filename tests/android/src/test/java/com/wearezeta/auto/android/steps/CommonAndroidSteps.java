@@ -128,13 +128,12 @@ public class CommonAndroidSteps {
 
     private static Void prepareDevice() throws Exception {
         AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
-        AndroidCommonUtils.disableHints();
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidSteps.class);
         AndroidCommonUtils.installClipperApp(CommonAndroidSteps.class);
-        final String backendJSON =
-                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
-        AndroidCommonUtils.deployBackendFile(backendJSON);
+//        final String backendJSON =
+//                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
+//        AndroidCommonUtils.deployBackendFile(backendJSON);
         return null;
     }
 
@@ -270,6 +269,13 @@ public class CommonAndroidSteps {
      */
     @When("^I upgrade Wire to the recent version$")
     public void IUpgradeWire() throws Exception {
+        if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+            try {
+                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         final String appPath = getPath();
         AndroidCommonUtils.stopPackage(getPackageName());
         AndroidCommonUtils.installApp(new File(appPath));

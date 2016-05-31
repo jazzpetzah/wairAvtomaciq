@@ -103,12 +103,11 @@ public class CommonAndroidTabletSteps {
 
     private static Void prepareDevice() throws Exception {
         AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
-        AndroidCommonUtils.disableHints();
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidTabletSteps.class);
-        final String backendJSON =
-                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidTabletSteps.class));
-        AndroidCommonUtils.deployBackendFile(backendJSON);
+//        final String backendJSON =
+//                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidTabletSteps.class));
+//        AndroidCommonUtils.deployBackendFile(backendJSON);
         return null;
     }
 

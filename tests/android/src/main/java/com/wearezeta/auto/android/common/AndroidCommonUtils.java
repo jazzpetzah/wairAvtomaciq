@@ -58,10 +58,6 @@ public class AndroidCommonUtils extends CommonUtils {
         executeAdb(String.format("shell input tap %d %d", x, y));
     }
 
-    public static void disableHints() throws Exception {
-        executeAdb("shell touch /sdcard/disableOnBoardingHints");
-    }
-
     public static void disableHockeyUpdates() throws Exception {
         executeAdb("shell touch /sdcard/disableHockeyUpdates");
     }
