@@ -270,7 +270,7 @@ Feature: Conversation View
       | Login                         | Password   | ChatName    | File           |
       | smoketester+68b16b1c@wire.com | aqa123456! | Lorem ipsum | loremipsum.txt |
 
-  @C131207 @staging
+  @C131207 @regression
   Scenario Outline: Receive a really long message to group conversation
     Given There is a known user <Contact> with email <ContactEmail> and password <Password>
     Given User <Contact> removes all his registered OTR clients
