@@ -272,7 +272,7 @@ Feature: Conversation View
     And I see 1 photo in the dialog
     # Wait for polka dots to disappear
     And I wait for 7 seconds
-    And I long tap on image in the conversation
+    And I long tap on image in conversation view
     And I tap on Copy badge item
     And I tap on text input
     And I tap and hold on message input
@@ -296,7 +296,7 @@ Feature: Conversation View
     And I see 1 photo in the dialog
     # Wait for polka dots to disappear
     And I wait for 7 seconds
-    And I long tap on image in the conversation
+    And I long tap on image in conversation view
     And I tap on Copy badge item
     And I tap on text input
     And I tap and hold on message input
