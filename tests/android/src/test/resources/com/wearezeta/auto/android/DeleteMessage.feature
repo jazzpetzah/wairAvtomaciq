@@ -229,7 +229,7 @@ Feature: Delete Message
       | user1Name | user2Name | Yo      |
 
 
-  @C131212 @staging
+  @C131212 @rc @regression
   Scenario Outline: Verify deleting audio message after upload
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -251,7 +251,7 @@ Feature: Delete Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131221 @staging
+  @C131221 @regression
   Scenario Outline: Verify deleting failed to upload voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -272,7 +272,7 @@ Feature: Delete Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131201 @staging @C131200
+  @C131200 @C131201 @regression
   Scenario Outline: Verify deleting failed to downloaded voice message (+ delete audio message sent by file transfer)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
