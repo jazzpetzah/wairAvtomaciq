@@ -24,7 +24,7 @@ public class AppiumServer {
     private static final String NODE_EXECUTABLE = "/usr/local/bin/node";
     private static final String APPIUM_EXECUTABLE = "/usr/local/lib/node_modules/appium/build/lib/main.js";
     private static final String LOG_PATH = "/usr/local/var/log/appium/appium.log";
-    private static final String LOG_LEVEL = "warn";
+    private static final String LOG_LEVEL = "debug";
 
     private static AppiumServer instance = null;
 
@@ -75,10 +75,13 @@ public class AppiumServer {
         log.info(String.format("Waiting for Appium to be (re)started on %s:%s...", hostname, PORT));
         final long msStarted = System.currentTimeMillis();
         try {
-            service.stop();
-        } catch (Throwable e) {
+            try {
+                service.stop();
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        } finally {
             UnixProcessHelpers.killProcessesGracefully("node");
-            e.printStackTrace();
         }
         service.start();
         log.info(String.format("Appium server has been successfully (re)started after %.1f seconds " +
