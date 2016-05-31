@@ -174,20 +174,15 @@ public class StartPageSteps {
 		}
 	}
 
+	@Then("I switch to support page tab$")
+	public void ISwitchToSupportPageTab() throws Exception {
+		context.getPagesCollection().getPage(StartPage.class).switchToSupportPageTab();
+	}
+
 	@Then("^I see localized (.*) support page$")
 	public void ISeeLocalizedSupportPage(String language) throws Exception {
-		StartPage startPage = context.getPagesCollection().getPage(StartPage.class);
-		switch (language) {
-			case "en":
-				assertTrue("en", startPage.isEnglishTitleVisible());
-				break;
-			case "de":
-//				assertThat(startPage.isGermanTitleVisible(), containsString("Wire Hilfe"));
- 				assertTrue(startPage.isGermanTitleVisible());
-//				assertThat("de", startPage.isGermanTitleVisible());
-				break;
-			default:
-				break;
-		}
+		if (language.equals("en")) { language = "en-us"; }
+		assertTrue("Support page is not in the correct language: " + language,
+				context.getPagesCollection().getPage(WebPage.class).getCurrentUrl().equals("https://support.wire.com/hc/" + language));
 	}
 }

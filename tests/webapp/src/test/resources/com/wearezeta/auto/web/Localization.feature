@@ -56,7 +56,7 @@ Feature: Localization
       | user1Email | user1Password | user1Name | user2Name | de       | HINZUGEFÜGT          | UNTERHALTUNG BEGINNEN  | Namen oder E-Mail-Adresse suchen | Stummschalten | Archivieren | Löschen     | Blockieren  |
 
   @C136458 @staging @torun
-  Scenario Outline: Verify support pages are opened in correct language
+  Scenario Outline: Verify support pages are opened in correct language (<Language>)
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -65,10 +65,10 @@ Feature: Localization
     And I open self profile
     And I click gear button on self profile page
     And I select <SupportButton> menu item on self profile page
+    And I switch to support page tab
     Then I see localized <Language> support page
-    And I wait for 10 seconds
 
     Examples:
       | Login      | Password      | Name      | Language | SupportButton |
       | user1Email | user1Password | user1Name | de       | Hilfe         |
-#      | user1Email | user1Password | user1Name | en       | Support       |
+      | user1Email | user1Password | user1Name | en       | Support       |
