@@ -74,14 +74,11 @@ public class AppiumServer {
         log.info(String.format("Trying to (re)start Appium server on %s:%s...", hostname, PORT));
         log.info(String.format("Waiting for Appium to be (re)started on %s:%s...", hostname, PORT));
         final long msStarted = System.currentTimeMillis();
+        UnixProcessHelpers.killProcessesGracefully("node");
         try {
-            try {
-                service.stop();
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        } finally {
-            UnixProcessHelpers.killProcessesGracefully("node");
+            service.stop();
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
         service.start();
         log.info(String.format("Appium server has been successfully (re)started after %.1f seconds " +
