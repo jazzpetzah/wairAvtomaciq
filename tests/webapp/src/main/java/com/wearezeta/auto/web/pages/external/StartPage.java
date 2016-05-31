@@ -80,7 +80,15 @@ public class StartPage extends WebPage {
 		handles.remove(driver.getWindowHandle());
 		driver.switchTo().window(handles.iterator().next());
 	}
-		
+
+	public String getEnglishTitle() throws Exception {
+		return getDriver().findElement(By.tagName("title")).toString();
+	}
+
+	public String getGermanTitle() throws Exception {
+		return getDriver().findElement(By.tagName("head")).getText();
+	}
+
 	public List<WebElement> getAllLinkElements() throws Exception{
 		List<WebElement> list = getDriver().findElements(By.cssSelector("a"));
 		return list;
@@ -106,21 +114,6 @@ public class StartPage extends WebPage {
 	public String getEnglishValue() throws Exception {
 		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.StartPage.cssEnglishValue));
 		return englishButton.getAttribute("value");
-	}
-
-	public boolean isGermanTitleVisible() throws Exception {
-		System.out.println("HEAD: " + getDriver().findElements(By.tagName("head")).get(0).toString());
-		System.out.println("HEAD: " + getDriver().findElements(By.tagName("head")).get(0).getText());
-		System.out.println("HEAD: " + getDriver().findElement(By.tagName("title")).getText());
-		System.out.println("HEAD: " + getDriver().findElement(By.xpath("/html/head/title")));
-		System.out.println("HEAD: " + getDriver().findElement(By.xpath("/html/head/title")).getTagName());
-		System.out.println("HEAD: " + getDriver().findElement(By.xpath("/html/head/title")).getText());
-		System.out.println("RESULT: " + DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath("/html/head/title")));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath("/html/head/title"));
-	}
-
-	public boolean isEnglishTitleVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(ExternalLocators.StartPage.cssEnglishTitle));
 	}
 
 	public boolean isEnglish() throws Exception {

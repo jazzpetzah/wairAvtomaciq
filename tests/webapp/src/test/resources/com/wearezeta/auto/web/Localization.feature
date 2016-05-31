@@ -66,7 +66,8 @@ Feature: Localization
     And I click gear button on self profile page
     And I select <SupportButton> menu item on self profile page
     And I switch to support page tab
-    Then I see localized <Language> support page
+    Then I verify the page title is in language <Language>
+    And I see localized <Language> support page
 
     Examples:
       | Login      | Password      | Name      | Language | SupportButton |
