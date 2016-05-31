@@ -102,7 +102,7 @@ public abstract class IOSPage extends BasePage {
             if ((e.getCause() instanceof TimeoutException) ||
                     ((e.getCause() instanceof WebDriverException) &&
                             (e.getCause().getCause() instanceof TimeoutException))) {
-                throw new TimeoutException((AppiumServer.getLog().orElse("Appium log is empty")) +
+                throw new TimeoutException((AppiumServer.getInstance().getLog().orElse("Appium log is empty")) +
                         "\n" + ExceptionUtils.getStackTrace(e));
             } else {
                 throw e;

@@ -55,6 +55,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
             log.debug("Driver pre-initialization callback has been successfully invoked");
         }
         int ntry = 1;
+        final AppiumServer appiumServer = AppiumServer.getInstance();
         do {
             log.debug(String.format("Creating driver instance for platform '%s'...", this.platform.name()));
             RemoteWebDriver platformDriver;
@@ -64,16 +65,12 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                         platformDriver = new ZetaOSXDriver(new URL(url), capabilities);
                         break;
                     case iOS:
-                        if (capabilities.getCapability("udid") instanceof String) {
-                            AppiumServer.resetIOSRealDevice();
-                        } else {
-                            AppiumServer.resetIOSSimulator();
-                        }
+                        appiumServer.resetIOS();
                         platformDriver = new ZetaIOSDriver(new URL(url), capabilities);
                         break;
                     case Android:
-                        if (!AppiumServer.isRunning()) {
-                            AppiumServer.restart();
+                        if (!appiumServer.isRunning()) {
+                            appiumServer.restart();
                         }
                         platformDriver = new ZetaAndroidDriver(new URL(url), capabilities);
                         break;
