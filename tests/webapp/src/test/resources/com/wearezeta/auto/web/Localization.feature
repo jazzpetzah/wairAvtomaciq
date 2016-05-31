@@ -55,7 +55,7 @@ Feature: Localization
       | Login      | Password      | Name      | Contact   | Language | ConversationViewText | ContactListText        | SearchPlaceHolder                | ConvOption1   | ConvOption2 | ConvOption3 | ConvOption4 |
       | user1Email | user1Password | user1Name | user2Name | de       | HINZUGEFÜGT          | UNTERHALTUNG BEGINNEN  | Namen oder E-Mail-Adresse suchen | Stummschalten | Archivieren | Löschen     | Blockieren  |
 
-  @C136458 @staging
+  @C136458 @staging @torun
   Scenario Outline: Verify support pages are opened in correct language
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -66,7 +66,9 @@ Feature: Localization
     And I click gear button on self profile page
     And I select <SupportButton> menu item on self profile page
     Then I see localized <Language> support page
+    And I wait for 10 seconds
 
     Examples:
       | Login      | Password      | Name      | Language | SupportButton |
       | user1Email | user1Password | user1Name | de       | Hilfe         |
+#      | user1Email | user1Password | user1Name | en       | Support       |

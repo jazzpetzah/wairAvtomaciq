@@ -2,6 +2,8 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.pages.WebPage;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
 
@@ -14,6 +16,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.containsString;
 
 public class StartPageSteps {
 
@@ -175,11 +178,13 @@ public class StartPageSteps {
 	public void ISeeLocalizedSupportPage(String language) throws Exception {
 		StartPage startPage = context.getPagesCollection().getPage(StartPage.class);
 		switch (language) {
-			case "english":
-				assertTrue("Support Page for is not in " + language, startPage.isEnglish());
+			case "en":
+				assertTrue("en", startPage.isEnglishTitleVisible());
 				break;
-			case "german":
-				assertTrue("Support Page for is not in " + language, startPage.isGerman());
+			case "de":
+//				assertThat(startPage.isGermanTitleVisible(), containsString("Wire Hilfe"));
+ 				assertTrue(startPage.isGermanTitleVisible());
+//				assertThat("de", startPage.isGermanTitleVisible());
 				break;
 			default:
 				break;
