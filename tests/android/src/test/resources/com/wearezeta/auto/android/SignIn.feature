@@ -129,3 +129,14 @@ Feature: Sign In
     Examples:
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @C131213 @rc @regression
+  Scenario Outline: Verify you see first time usage overlay on first login by mail
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I tap Got It button on First Time overlay
+    Given I see Contact list with no contacts
+
+    Examples:
+      | Name      |
+      | user1Name |
