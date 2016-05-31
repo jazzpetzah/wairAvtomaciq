@@ -1191,7 +1191,14 @@ public class ConversationViewPageSteps {
         getConversationViewPage().tapAudioRecordWaitAndSwipe(sec);
     }
 
-    @When("^I long tap on (image|default message|media container|file transfer placeholder|audio message placeholder) in conversation view$")
+    /**
+     * Long tap on a conversation view item
+     *
+     * @param conversationItem item name
+     * @throws Exception
+     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in conversation view$")
+     */
+    @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in conversation view$")
     public void ITapAndHoldAudioMessagePlaceholder(String conversationItem) throws Exception {
         switch (conversationItem) {
             case "image":
@@ -1205,9 +1212,6 @@ public class ConversationViewPageSteps {
                 break;
             case "audio message placeholder":
                 getConversationViewPage().tapAndHoldAudioMessage();
-                break;
-            case "default message":
-                getConversationViewPage().tapAndHoldTextMessageByText(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
                 break;
             default:
                 throw new IllegalArgumentException("Not known conversation item. Please use only items pointed in the step");
