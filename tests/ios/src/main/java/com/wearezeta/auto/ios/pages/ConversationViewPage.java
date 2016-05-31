@@ -775,4 +775,7 @@ public class ConversationViewPage extends IOSPage {
                 ().perform();
     }
 
+    public void tapAndHoldAudioMessage() throws Exception {
+        this.getDriver().tap(1, getElement(nameAudioActionButton), DriverUtils.LONG_TAP_DURATION);
+    }
 }

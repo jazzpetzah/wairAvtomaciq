@@ -677,17 +677,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Long tap on the image displayed in the conversation
-     *
-     * @throws Exception
-     * @step. ^I long tap on image in the conversation$
-     */
-    @When("^I long tap on image in the conversation$")
-    public void ILongTapOnImage() throws Exception {
-        getConversationViewPage().tapHoldImageWithRetry();
-    }
-
-    /**
      * Tap on pointed badge item
      *
      * @param badgeItem the badge item name
@@ -1126,28 +1115,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Does a long tap on a media container to get delete/copy menu
-     *
-     * @throws Exception
-     * @step. ^I long tap on media container in the conversation$
-     */
-    @When("^I long tap on media container in the conversation$")
-    public void ILongTapOnMediaContainerInTheConversation() throws Exception {
-        getConversationViewPage().tapAndHoldMediaContainer();
-    }
-
-    /**
-     * Does a long tap on the shared file placeholder
-     *
-     * @throws Exception
-     * @step. ^I long tap on file transfer placeholder in conversation view$
-     */
-    @When("^I long tap on file transfer placeholder in conversation view$")
-    public void ILongTapOnFileTransferPlaceholderInConversationView() throws Exception {
-        getConversationViewPage().tapAndHoldFileTransferPlaceholder();
-    }
-
-    /**
      * Wait for a while until video message container is shown in the conversation view
      *
      * @throws Exception
@@ -1222,5 +1189,22 @@ public class ConversationViewPageSteps {
     @When("^I record (\\d+) seconds? long audio message and send it using swipe up gesture$")
     public void IRecordXSecondsAudioMessageAndSendBySwipe(int sec) throws Exception {
         getConversationViewPage().tapAudioRecordWaitAndSwipe(sec);
+    }
+
+    @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in conversation view$")
+    public void ITapAndHoldAudioMessagePlaceholder(String conversationItem) throws Exception {
+        switch (conversationItem) {
+            case "image":
+                getConversationViewPage().tapHoldImageWithRetry();
+                break;
+            case "media container":
+                getConversationViewPage().tapAndHoldMediaContainer();
+                break;
+            case "file transfer placeholder":
+                getConversationViewPage().tapAndHoldFileTransferPlaceholder();
+            case "audio message placeholder":
+                getConversationViewPage().tapAndHoldAudioMessage();
+                break;
+        }
     }
 }
