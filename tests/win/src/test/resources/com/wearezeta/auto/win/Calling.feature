@@ -9,7 +9,7 @@ Feature: Calling
     Given <Contact1> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact1>
     When I call
     Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
