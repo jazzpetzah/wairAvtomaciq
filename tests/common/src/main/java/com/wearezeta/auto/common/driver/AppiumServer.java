@@ -29,6 +29,12 @@ public class AppiumServer {
     private static AppiumServer instance = null;
 
     private AppiumServer() {
+        try {
+            // This is to make sure there are no extra existing running instances
+            UnixProcessHelpers.killProcessesGracefully("node");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         this.service = AppiumDriverLocalService.buildService(
                 new AppiumServiceBuilder()
                         .usingDriverExecutable(new File(NODE_EXECUTABLE))
@@ -38,6 +44,7 @@ public class AppiumServer {
                         .withArgument(() -> "--session-override")
                         .withArgument(() -> "--selendroid-port", Integer.toString(SELENDROID_PORT))
                         .withArgument(() -> "--log-level", LOG_LEVEL)
+                        .withArgument(() -> "--log-timestamp")
         );
     }
 
@@ -49,7 +56,7 @@ public class AppiumServer {
     }
 
     public synchronized void resetIOS() throws Exception {
-        UnixProcessHelpers.killProcessesGracefully("node", "osascript",
+        UnixProcessHelpers.killProcessesGracefully("osascript",
                 "Simulator", "configd_sim", "xpcproxy_sim", "backboardd",
                 "platform_launch_", "companionappd", "ids_simd", "launchd_sim",
                 "CoreSimulatorBridge", "SimulatorBridge", "SpringBoard",
@@ -64,13 +71,13 @@ public class AppiumServer {
 
     public void restart() throws Exception {
         final String hostname = InetAddress.getLocalHost().getHostName();
-        log.warn(String.format("Trying to (re)start Appium server on %s:%s...", hostname, PORT));
+        log.info(String.format("Trying to (re)start Appium server on %s:%s...", hostname, PORT));
         log.info(String.format("Waiting for Appium to be (re)started on %s:%s...", hostname, PORT));
         final long msStarted = System.currentTimeMillis();
         try {
             service.stop();
-            new File(LOG_PATH).delete();
         } catch (Throwable e) {
+            UnixProcessHelpers.killProcessesGracefully("node");
             e.printStackTrace();
         }
         service.start();
