@@ -69,9 +69,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                         platformDriver = new ZetaIOSDriver(new URL(url), capabilities);
                         break;
                     case Android:
-                        if (!appiumServer.isRunning()) {
-                            appiumServer.restart();
-                        }
+                        appiumServer.restart();
                         platformDriver = new ZetaAndroidDriver(new URL(url), capabilities);
                         break;
                     case Web:
