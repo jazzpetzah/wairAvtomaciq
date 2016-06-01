@@ -6,7 +6,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     And I click menu bar item "Conversation" and menu item "Ping"
     Then I see <PING> action in conversation
@@ -23,7 +23,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I type shortcut combination to ping
     Then I see <PING> action in conversation
@@ -40,7 +40,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I type shortcut combination to start a call
     Then I see the outgoing call controls for conversation <Contact>
@@ -55,7 +55,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     And I click menu bar item "Conversation" and menu item "Call"
     Then I see the outgoing call controls for conversation <Contact>
@@ -71,7 +71,7 @@ Feature: Conversation View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     And I click menu bar item "Conversation" and menu item "Ping"
     Then I see <PING> action in conversation
@@ -89,7 +89,7 @@ Feature: Conversation View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <ChatName>
     And I type shortcut combination to ping
     Then I see <PING> action in conversation
@@ -107,7 +107,7 @@ Feature: Conversation View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <ChatName>
     And I type shortcut combination to start a call
     Then I see the outgoing call controls for conversation <ChatName>
@@ -123,7 +123,7 @@ Feature: Conversation View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     And I click menu bar item "Conversation" and menu item "Call"
     Then I see the outgoing call controls for conversation <ChatName>
@@ -138,7 +138,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I write random message
     Then I verify that random message was typed
@@ -157,7 +157,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I write random message
     Then I verify that random message was typed
@@ -176,7 +176,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I write random message
     Then I verify that random message was typed
@@ -197,7 +197,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I write random message
     Then I verify that random message was typed
@@ -218,7 +218,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I write random message
     Then I verify that random message was typed
@@ -239,7 +239,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I write random message
     Then I verify that random message was typed
