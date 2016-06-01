@@ -88,6 +88,8 @@ public class AppiumServer {
         }
     }
 
+    private static final String INSTRUMENTS_SOCKET_PATH = "/tmp/instruments_sock";
+
     public synchronized void resetIOS() throws Exception {
         UnixProcessHelpers.killProcessesGracefully("osascript",
                 "Simulator", "configd_sim", "xpcproxy_sim", "backboardd",
@@ -99,6 +101,10 @@ public class AppiumServer {
                 "callservicesd", "revisiond", "touchsetupd", "calaccessd",
                 "ServerFileProvider", "mobileassetd", "IMDPersistenceAgent",
                 "itunesstored", "profiled", "passd", "carkitd", "instruments");
+        if (!new File(INSTRUMENTS_SOCKET_PATH).delete()) {
+            log.error(String.format("Instruments socket %s has not been reset properly",
+                    INSTRUMENTS_SOCKET_PATH));
+        }
         restart();
     }
 

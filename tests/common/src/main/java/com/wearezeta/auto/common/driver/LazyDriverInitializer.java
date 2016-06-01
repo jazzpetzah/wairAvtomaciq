@@ -65,7 +65,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                         platformDriver = new ZetaOSXDriver(new URL(url), capabilities);
                         break;
                     case iOS:
-                        if (!appiumServer.isRunning() || ntry > 1) {
+                        if (capabilities.is("udid") || !appiumServer.isRunning() || ntry > 1) {
                             appiumServer.resetIOS();
                         }
                         platformDriver = new ZetaIOSDriver(new URL(url), capabilities);
