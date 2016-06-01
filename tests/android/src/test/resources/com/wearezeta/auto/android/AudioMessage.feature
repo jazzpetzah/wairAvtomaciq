@@ -1,6 +1,6 @@
 Feature: Audio Message
 
-  @C131173 @regression @rc
+  @C131173 @regression @rc @rc42
   Scenario Outline: Verify hint appears on voice icon tapping
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -14,8 +14,7 @@ Feature: Audio Message
     Examples:
       | Name      | Contact   | HintMessage                           |
       | user1Name | user2Name | Tap and hold to send an audio message |
-
-  @C131179 @C131175 @C131176  @regression @rc
+  @C131179 @C131175 @C131176  @regression @rc @rc42
   Scenario Outline: Verify sending voice message by long tap > swipe up
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -31,7 +30,7 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131180 @C131195 @C131197  @regression @rc
+  @C131180 @C131195 @C131197  @regression @rc @rc42
   Scenario Outline: Verify sending voice message by long tap > release the humb > tap on the check icon -> play/pause audio message
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -70,7 +69,7 @@ Feature: Audio Message
       | Name      | Contact1  | Contact2  | FileName | MIMEType  | DeviceName | Notification            |
       | user1Name | user2Name | user3Name | test.m4a | audio/mp4 | Device1    | Shared an audio message |
 
-  @C131192 @C131193 @C131189 @regression @rc
+  @C131192 @C131193 @C131189 @regression @rc @rc42
   Scenario Outline: (CM-958) Verify failing downloading voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -134,7 +133,7 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131182 @C131177 @regression @rc
+  @C131182 @C131177 @regression @rc @rc42
   Scenario Outline: Verify playing/cancelling sending voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -154,7 +153,7 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131194 @C131196 @C131202 @regression @rc
+  @C131194 @C131196 @C131202 @regression @rc @rc42
   Scenario Outline: Verify playing a received voice message + playing in the background
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

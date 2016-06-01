@@ -334,7 +334,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C236 @rc @regression
+  @C236 @regression @rc
   Scenario Outline: I can send giphy image from the giphy grid preview
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -358,7 +358,7 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C77948 @C77950 @rc @regression
+  @C77948 @C77950 @regression @rc
   Scenario Outline: Upper toolbar displayed in conversation view, I can back to conversation list by toolbar arrow
     Given There is 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -425,7 +425,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |  Message1 | Message2 |
       | user1Name | user2Name | user3Name |  Msg1     | Msg2     |
 
-  @C77966 @regression @C87626 @rc @rc42 @C111617
+  @C77966 @C87626 @C111617 @regression @rc @rc42
   Scenario Outline: Verify there are no video and audio calling icons under the + button bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -440,7 +440,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C111622 @C111625 @rc @regression
+  @C111622 @C111625 @regression @rc
   Scenario Outline: Verify tooltip is shown in different condition
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
