@@ -29,7 +29,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C129341 @C129345 @staging
+  @C129341 @C129345 @regression
   Scenario Outline: Verify receiving a voice message and deleting it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -46,7 +46,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
 
-  @C129326 @staging
+  @C129326 @regression
   Scenario Outline: Verify sending voice message by swipe up
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -60,7 +60,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C131214 @staging
+  @C131214 @regression
   Scenario Outline: Verify cancelling recorded audio message preview
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
