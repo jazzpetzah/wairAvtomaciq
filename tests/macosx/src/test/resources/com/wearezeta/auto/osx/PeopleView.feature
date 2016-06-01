@@ -6,7 +6,7 @@ Feature: People View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I click menu bar item "Conversation" and menu item "People"
     Then I see Single User Profile popover
@@ -23,7 +23,7 @@ Feature: People View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     And I click menu bar item "Conversation" and menu item "People"
     Then I see Group Participants popover
@@ -39,7 +39,7 @@ Feature: People View
     Given Myself is connected to <Contact>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I click menu bar item "Conversation" and menu item "Add People…"
     Then I see Single User Profile popover
@@ -56,7 +56,7 @@ Feature: People View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     And I click menu bar item "Conversation" and menu item "Add People…"
     Then I see Group Participants popover

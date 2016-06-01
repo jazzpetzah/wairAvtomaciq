@@ -5,31 +5,31 @@ Feature: Application
     Given There are 1 users where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I ensure initial positioning
     And I resize the app to the max by hand
     Then I verify app is in fullscreen
     When I restart the app
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     Then I verify app is in fullscreen
     When I ensure initial positioning
     And I resize the app to the min by hand
     Then I verify app width is 760 px and height is 680 px
     When I restart the app
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     Then I verify app width is 760 px and height is 680 px
     When I ensure initial positioning
     And I maximize the app
     Then I verify app is in fullscreen
     When I restart the app
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     Then I verify app is in fullscreen
     When I ensure initial positioning
     And I resize the app to the min by hand
     And I resize the app to width 999 px and height 800 px
     And I change position of the app to X 100 and Y 100
     And I restart the app
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     Then I verify app width is 999 px and height is 800 px
     And I verify app X coordinate is 100 and Y coordinate is 100
 
@@ -64,7 +64,7 @@ Feature: Application
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I click menu bar item "Wire" and menu item "Log Out"
     Then I see the clear data dialog
     When I click Logout button on clear data dialog
