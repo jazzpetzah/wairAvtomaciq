@@ -84,8 +84,7 @@ Feature: Audio Messaging
     Given I see conversations list
     When I tap on contact name <Contact>
     And I record 30 seconds long audio message and send it using swipe up gesture
-    Then I see audio message placeholder
-    When I tap Play audio message button
+    And I tap Play audio message button
     And I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item
     Then I do not see audio message placeholder
