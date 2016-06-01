@@ -37,7 +37,7 @@ public class AppiumServer {
 
     private static final int PORT = 4723;
     private static final int SELENDROID_PORT = 4444;
-    private static final int RESTART_TIMEOUT = 30000; // milliseconds
+    private static final int RESTART_TIMEOUT = 60000; // milliseconds
     private static final String SERVER_URL = String.format("http://127.0.0.1:%d/wd/hub", PORT);
 
     private boolean waitUntilIsStopped(long millisecondsTimeout) throws Exception {
