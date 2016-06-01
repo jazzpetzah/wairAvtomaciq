@@ -140,7 +140,7 @@ public class AppiumServer {
     }
 
     public boolean isRunning() throws Exception {
-        return waitUntilIsRunning(1);
+        return waitUntilIsRunning(1500);
     }
 
     public Optional<String> getLog() {
