@@ -13,8 +13,10 @@ Feature: Offline Mode
     Then I see the message "<Message1>" in the conversation view
     When I enable Airplane mode on the device
     And User <Contact> sends encrypted message <Message2> to user Myself
+    And I wait for 3 seconds
     Then I do not see the message "<Message2>" in the conversation view
     When User <Contact> sends encrypted image <Picture> to single user conversation <Name>
+    And I wait for 3 seconds
     Then I do not see any new pictures in the conversation view
     When I disable Airplane mode on the device
     # To let the content load properly after offline mode
