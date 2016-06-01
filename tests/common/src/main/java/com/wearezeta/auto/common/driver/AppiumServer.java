@@ -4,6 +4,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.common.process.AsyncProcess;
 import com.wearezeta.common.process.UnixProcessHelpers;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.net.UrlChecker;
 
 import java.io.File;
@@ -72,7 +73,8 @@ public class AppiumServer {
         final File log = new File(filePath);
         if (!log.getParentFile().exists()) {
             if (!log.getParentFile().mkdirs()) {
-                throw new RuntimeException(String.format("The script has failed to create '%s' folder for Appium logs. " +
+                throw new IllegalStateException(String.format(
+                        "The script has failed to create '%s' folder for Appium logs. " +
                                 "Please make sure your account has correct access permissions on the parent folder(s)",
                         log.getParentFile().getCanonicalPath()));
             }
@@ -81,7 +83,7 @@ public class AppiumServer {
 
     private void ensureAppiumExecutableExistence() throws Exception {
         if (!new File(MAIN_EXECUTABLE_PATH).exists()) {
-            throw new RuntimeException(
+            throw new IllegalStateException(
                     String.format("The script is unable to find main Appium executable at the path '%s'. " +
                                     "Please make sure it is properly installed (`npm install -g appium`)",
                             MAIN_EXECUTABLE_PATH));
@@ -122,7 +124,7 @@ public class AppiumServer {
         log.info(String.format("Waiting for Appium to be (re)started on %s:%s...", hostname, PORT));
         final long msStarted = System.currentTimeMillis();
         if (!waitUntilIsRunning(RESTART_TIMEOUT)) {
-            throw new IllegalStateException(String.format(
+            throw new WebDriverException(String.format(
                     "Appium server has failed to start after %s seconds timeout on server '%s'.\n" +
                             "Please make sure that NodeJS and Appium packages are installed properly on this machine.\n" +
                             "Appium logs:\n\n%s\n\n%s\n\n\n",
