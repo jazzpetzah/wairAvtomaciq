@@ -1217,4 +1217,15 @@ public class ConversationViewPageSteps {
                 throw new IllegalArgumentException("Not known conversation item. Please use only items pointed in the step");
         }
     }
+
+    /**
+     * Tap Play audio message button
+     *
+     * @throws Exception
+     * @step. ^I tap Play audio message button$
+     */
+    @When("^I tap Play audio message button$")
+    public void ITapPlayAudioMessageButton() throws Exception {
+        getConversationViewPage().tapPlayAudioMessageButton();
+    }
 }
