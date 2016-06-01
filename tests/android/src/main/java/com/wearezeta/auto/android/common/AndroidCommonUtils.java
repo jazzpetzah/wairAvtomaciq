@@ -301,6 +301,11 @@ public class AndroidCommonUtils extends CommonUtils {
                 getAndroidToolsPathFromConfig(c)));
     }
 
+    public static void installUnlockApp(Class<?> c) throws Exception {
+        executeAdb(String.format("install -r %s/unlock_apk-fixed.apk",
+                getAndroidToolsPathFromConfig(c)));
+    }
+
     public static boolean isAppInForeground(String packageId, long timeoutMillis) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         do {
