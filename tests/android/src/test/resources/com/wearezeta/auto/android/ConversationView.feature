@@ -146,38 +146,6 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C377 @id145 @regression
-  Scenario Outline: Send Upper and Lower case to contact
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I tap on text input
-    And I type the message "<Message>" and send it
-    Then I see the message "<Message>" in the conversation view
-
-    Examples:
-      | Name      | Contact   | Message  |
-      | user1Name | user2Name | aaaaAAAA |
-
-  @C378 @id149 @regression
-  Scenario Outline: Send emoji message to contact
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I tap on text input
-    And I type the message "<Message>" and send it
-    Then I see the message "<Message>" in the conversation view
-
-    Examples:
-      | Name      | Contact   | Message  |
-      | user1Name | user2Name | :) ;) :( |
-
   @C379 @id163 @regression
   Scenario Outline: Send existing image from gallery (portrait) in 1:1 chat
     Given There are 2 users where <Name> is me
@@ -298,7 +266,7 @@ Feature: Conversation View
       | user1Name | user2Name | Yo      |
 
   @C674 @id165 @regression @rc
-  Scenario Outline: (BUG AN-3443) Send GIF format pic
+  Scenario Outline: Send GIF format pic
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number

@@ -14,7 +14,8 @@ Feature: Audio Message
     Examples:
       | Name      | Contact   | HintMessage                           |
       | user1Name | user2Name | Tap and hold to send an audio message |
-  @C131179 @C131175 @C131176  @regression @rc @rc42
+
+  @C131179 @C131175 @C131176 @regression @rc @rc42
   Scenario Outline: Verify sending voice message by long tap > swipe up
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -30,7 +31,7 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131180 @C131195 @C131197  @regression @rc @rc42
+  @C131180 @C131195 @C131197 @regression @rc @rc42
   Scenario Outline: Verify sending voice message by long tap > release the humb > tap on the check icon -> play/pause audio message
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

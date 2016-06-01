@@ -329,24 +329,31 @@ public class CommonAndroidSteps {
         pagesCollection.getCommonPage().hideKeyboard();
     }
 
-    @When("^I swipe right$")
-    public void ISwipeRight() throws Exception {
-        pagesCollection.getCommonPage().swipeRightCoordinates(DEFAULT_SWIPE_TIME);
-    }
-
-    @When("^I swipe left$")
-    public void ISwipeLeft() throws Exception {
-        pagesCollection.getCommonPage().swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
-    }
-
-    @When("^I swipe up$")
-    public void ISwipeUp() throws Exception {
-        pagesCollection.getCommonPage().swipeUpCoordinates(DEFAULT_SWIPE_TIME);
-    }
-
-    @When("^I swipe down$")
-    public void ISwipeDown() throws Exception {
-        pagesCollection.getCommonPage().swipeDownCoordinates(DEFAULT_SWIPE_TIME);
+    /**
+     * Do swipe gesture on the current screen
+     *
+     * @step. ^I swipe (right|left|up|down)$
+     * @param direction one of possible direction values
+     * @throws Exception
+     */
+    @When("^I swipe (right|left|up|down)$")
+    public void ISwipeRight(String direction) throws Exception {
+        switch (direction.toLowerCase()) {
+            case "right":
+                pagesCollection.getCommonPage().swipeRightCoordinates(DEFAULT_SWIPE_TIME);
+                break;
+            case "left":
+                pagesCollection.getCommonPage().swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
+                break;
+            case "up":
+                pagesCollection.getCommonPage().swipeUpCoordinates(DEFAULT_SWIPE_TIME);
+                break;
+            case "down":
+                pagesCollection.getCommonPage().swipeDownCoordinates(DEFAULT_SWIPE_TIME);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown swipe direction '%s'", direction));
+        }
     }
 
     /**
