@@ -108,9 +108,6 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                 e.printStackTrace();
                 log.debug(String.format("Driver initialization failed. Trying to recreate (%d of %d)...",
                         ntry, this.maxRetryCount));
-                log.debug(String.format("Sleeping %s seconds before driver restart...",
-                        ZetaDriver.RECREATE_DELAY_SECONDS));
-                Thread.sleep(ZetaDriver.RECREATE_DELAY_SECONDS * 1000);
             }
         } while (ntry <= this.maxRetryCount);
         throw new WebDriverException(

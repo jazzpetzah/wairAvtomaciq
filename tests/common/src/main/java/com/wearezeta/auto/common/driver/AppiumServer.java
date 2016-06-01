@@ -15,7 +15,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class AppiumServer {
     private static final Logger log = ZetaLogger.getLog(AppiumServer.class.getSimpleName());
@@ -37,7 +36,7 @@ public class AppiumServer {
 
     private static final int PORT = 4723;
     private static final int SELENDROID_PORT = 4444;
-    private static final int RESTART_TIMEOUT = 60000; // milliseconds
+    public static final int RESTART_TIMEOUT_MILLIS = 60000; // milliseconds
     private static final String SERVER_URL = String.format("http://127.0.0.1:%d/wd/hub", PORT);
 
     private boolean waitUntilIsStopped(long millisecondsTimeout) throws Exception {
@@ -123,17 +122,17 @@ public class AppiumServer {
             appiumProcess = Optional.empty();
         }
         UnixProcessHelpers.killProcessesGracefully("node");
-        waitUntilIsStopped(RESTART_TIMEOUT / 2);
+        waitUntilIsStopped(RESTART_TIMEOUT_MILLIS / 2);
 
         this.appiumProcess = Optional.of(new AsyncProcess(DEFAULT_CMDLINE, false, false).start());
         log.info(String.format("Waiting for Appium to be (re)started on %s:%s...", hostname, PORT));
         final long msStarted = System.currentTimeMillis();
-        if (!waitUntilIsRunning(RESTART_TIMEOUT)) {
+        if (!waitUntilIsRunning(RESTART_TIMEOUT_MILLIS)) {
             throw new WebDriverException(String.format(
                     "Appium server has failed to start after %s seconds timeout on server '%s'.\n" +
                             "Please make sure that NodeJS and Appium packages are installed properly on this machine.\n" +
                             "Appium logs:\n\n%s\n\n%s\n\n\n",
-                    RESTART_TIMEOUT / 1000, hostname, appiumProcess.get().getStderr(), appiumProcess.get().getStdout()));
+                    RESTART_TIMEOUT_MILLIS / 1000, hostname, appiumProcess.get().getStderr(), appiumProcess.get().getStdout()));
         }
 
         log.info(String.format("Appium server has been successfully (re)started after %.1f seconds " +

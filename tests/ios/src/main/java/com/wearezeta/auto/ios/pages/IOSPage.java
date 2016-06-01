@@ -43,7 +43,6 @@ import javax.xml.xpath.XPathFactory;
 public abstract class IOSPage extends BasePage {
     private static final Logger log = ZetaLogger.getLog(IOSPage.class.getSimpleName());
 
-    public final static long IOS_DRIVER_INIT_TIMEOUT_MILLIS = ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS;
     public static final int DRIVER_CREATION_RETRIES_COUNT = 2;
 
     private static final int DEFAULT_RETRY_COUNT = 2;
@@ -78,8 +77,8 @@ public abstract class IOSPage extends BasePage {
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
-        return IOS_DRIVER_INIT_TIMEOUT_MILLIS * DRIVER_CREATION_RETRIES_COUNT +
-                ZetaDriver.RECREATE_DELAY_SECONDS * (DRIVER_CREATION_RETRIES_COUNT - 1);
+        return (ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS + AppiumServer.RESTART_TIMEOUT_MILLIS)
+                * DRIVER_CREATION_RETRIES_COUNT;
     }
 
     private DocumentBuilder documentBuilder;

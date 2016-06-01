@@ -34,9 +34,6 @@ public abstract class AndroidPage extends BasePage {
     private static final By idChatheadNotification = By.id("va_message_notification_chathead__label_viewanimator");
 
     public static final int DRIVER_CREATION_RETRIES_COUNT = 2;
-    public static final long DRIVER_INIT_TIMEOUT_MILLIS =
-            ZetaAndroidDriver.MAX_COMMAND_DURATION_MILLIS * DRIVER_CREATION_RETRIES_COUNT
-                    + ZetaAndroidDriver.MAX_COMMAND_DURATION_MILLIS / 10;
 
     protected static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
 
@@ -78,7 +75,8 @@ public abstract class AndroidPage extends BasePage {
 
     @Override
     protected long getDriverInitializationTimeout() {
-        return DRIVER_INIT_TIMEOUT_MILLIS;
+        return  (ZetaAndroidDriver.MAX_COMMAND_DURATION_MILLIS + AppiumServer.RESTART_TIMEOUT_MILLIS)
+                * DRIVER_CREATION_RETRIES_COUNT;
     }
 
     public AndroidPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
