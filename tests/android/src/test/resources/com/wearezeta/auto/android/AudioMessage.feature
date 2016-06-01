@@ -154,7 +154,7 @@ Feature: Audio Message
       | user1Name | user2Name | 5           |
 
   @C131194 @C131196 @C131202 @regression @rc @rc42
-  Scenario Outline: Verify playing a received voice message + playing in the background
+  Scenario Outline: Verify playing a received voice message + DO NOT playing in the background
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -165,13 +165,17 @@ Feature: Audio Message
     And I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
+    # Force to wait for 10 seconds to wait for fully downloaded
+    And I wait for 10 seconds
     Then I verify the state of recent audio message seekbar in the conversation view is changed
-    When I remember the state of recent audio message seekbar
+    # Wait for play button changes to pause button
+    When I wait for 2 seconds
+    When I remember the state of Pause button on the recent audio message in the conversation view
     And I minimize the application
-    # Let audio play 5 seconds
-    And I wait for 5 seconds
+    # Wait for minizie the application
+    And I wait for 3 seconds
     And I restore the application
-    Then I verify the state of recent audio message seekbar in the conversation view is changed
+    Then I verify the state of Pause button on the recent audio message in the conversation view is changed
     When I long tap Audio Message container in the conversation view
     Then I do not see Copy button on the action mode bar
     When I tap Delete button on the action mode bar

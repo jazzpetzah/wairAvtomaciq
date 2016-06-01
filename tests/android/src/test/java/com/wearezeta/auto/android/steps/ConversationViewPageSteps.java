@@ -1280,9 +1280,9 @@ public class ConversationViewPageSteps {
      *
      * @param buttonType could be "audio message" or "video message"
      * @throws Exception
-     * @step. ^I remember the state of (?:Play|X|Retry) button on the recent (video message|audio message) in the conversation view$"
+     * @step. ^I remember the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view$"
      */
-    @When("^I remember the state of (?:Play|X|Retry) button on the recent (video message|audio message) in the conversation view$")
+    @When("^I remember the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view$")
     public void IRememberPlayButtonState(String buttonType) throws Exception {
         switch (buttonType.toLowerCase()) {
             case "video message":
@@ -1305,9 +1305,9 @@ public class ConversationViewPageSteps {
      * @param buttonType         could be "audio message" or "video message"
      * @param shouldNotBeChanged equals to null if the state should be different
      * @throws Exception
-     * @step. ^I verify the state of (?:Play|X|Retry) button on the recent (video message|audio message) in the conversation view is (not )?changed$
+     * @step. ^I verify the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view is (not )?changed$
      */
-    @Then("^I verify the state of (?:Play|X|Retry) button on the recent (video message|audio message) in the conversation view is (not )?changed$")
+    @Then("^I verify the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view is (not )?changed$")
     public void ISeePlayButtonStateChanged(String buttonType, String shouldNotBeChanged) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (buttonType.toLowerCase()) {
