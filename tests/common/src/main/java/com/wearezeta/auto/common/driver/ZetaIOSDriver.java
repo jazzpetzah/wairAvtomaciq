@@ -24,7 +24,7 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 
 
 public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
-    public static final long MAX_COMMAND_DURATION_MILLIS = 200000;
+    public static final long MAX_COMMAND_DURATION_MILLIS = 150000;
 
     private static final Logger log = ZetaLogger.getLog(ZetaIOSDriver.class.getSimpleName());
 
