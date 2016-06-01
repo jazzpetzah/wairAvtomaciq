@@ -104,7 +104,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      |
 
   @C1776 @regression @calling @calling_debug
   Scenario Outline: Verify I can call a user twice in a row
@@ -289,7 +289,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    | chrome      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | chrome      | 20      |
 
   @C119432 @mute @calling @group
   Scenario Outline: Verify I can not make a call in group chat with more than 10 participants
@@ -379,7 +379,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | ChatName2 | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GC1       | GC2       | autocall    | chrome      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GC1       | GC2       | chrome      | chrome      | 20      |
 
   @C1765 @regression @calling @calling_debug
   Scenario Outline: Verify I get missed call notification when I call
@@ -419,7 +419,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | MISSED | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | called | autocall    |
+      | user1Email | user1Password | user1Name | user2Name | called | chrome      |
 
   @C1755 @regression @calling @calling_debug
   Scenario Outline: Verify I can make another call while current one is ignored
@@ -463,7 +463,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name    | chrome      | 20      |
 
   @C1751 @regression @calling @calling_debug
   Scenario Outline: Verify I can see muted conversation person trying to call me
@@ -481,7 +481,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | autocall    | 20      |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
 
   @staging @calling
   Scenario Outline: Verify that outgoing call is terminated after within 1 minute timeout if nobody responds
@@ -551,8 +551,8 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName  | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall    | chrome      | 20      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall    | firefox     | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome      | chrome      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome      | firefox     | 20      |
 
   @staging @calling @group @calling_debug
   Scenario Outline: Verify impossibility to connect 6th person to the call
@@ -581,7 +581,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | ChatName              | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GroupCallConversation | autocall    | chrome      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GroupCallConversation | chrome      | chrome      | 20      |
 
   @C1813 @regression @calling @group @calling_debug
   Scenario Outline: Verify initiating group call
@@ -628,7 +628,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | autocall    | chrome      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | chrome      | 20      |
 
   @regression @calling @group @calling_debug
   Scenario Outline: Verify leaving and coming back to the call
@@ -688,7 +688,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | autocall    | chrome      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | chrome      | 20      |
 
   @calling @group @durational
   Scenario Outline: Verify initiating group call several times
@@ -774,7 +774,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName1 | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GC1       | autocall    | chrome      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GC1       | chrome      | chrome      | 20      |
 
   @C129912 @regression
   Scenario Outline: Verify I see an error when I try to call in a conversation with no one else left
