@@ -38,6 +38,14 @@ public class AndroidCommonUtils extends CommonUtils {
 
     private static final String IMAGE_FOR_VIDEO_GENERATION = "about_page_logo_iPad.png";
 
+    public static final String[] STANDARD_WIRE_PERMISSIONS = new String[]{
+            "android.permission.WRITE_EXTERNAL_STORAGE",
+            "android.permission.READ_CONTACTS",
+            "android.permission.RECORD_AUDIO",
+            "android.permission.CAMERA",
+            "android.permission.READ_PHONE_STATE"
+    };
+
     public static void executeAdb(final String cmdline) throws Exception {
         executeOsXCommand(new String[]{"/bin/bash", "-c",
                 ADB_PREFIX + "adb " + cmdline});

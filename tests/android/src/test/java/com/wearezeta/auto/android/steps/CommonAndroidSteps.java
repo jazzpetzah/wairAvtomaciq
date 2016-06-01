@@ -34,7 +34,6 @@ import org.apache.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -93,6 +92,7 @@ public class CommonAndroidSteps {
         return resetAndroidDriver(url, path, Optional.empty());
     }
 
+
     @SuppressWarnings("unchecked")
     public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path,
                                                         Optional<Map<String, Object>> additionalCaps) throws Exception {
@@ -114,16 +114,8 @@ public class CommonAndroidSteps {
 
         devicePreparationThread.get(DEVICE_PREPARATION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
-        try {
-            return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities, 1,
-                    this::onDriverInitFinished, null);
-        } catch (SessionNotCreatedException e) {
-            // Unlock the screen and retry
-            AndroidCommonUtils.unlockScreen();
-            Thread.sleep(5000);
-            return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities, 1,
-                    this::onDriverInitFinished, null);
-        }
+        return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities,
+                AndroidPage.DRIVER_CREATION_RETRIES_COUNT, this::onDriverInitFinished, null);
     }
 
     private static Void prepareDevice() throws Exception {
@@ -131,6 +123,7 @@ public class CommonAndroidSteps {
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidSteps.class);
         AndroidCommonUtils.installClipperApp(CommonAndroidSteps.class);
+        // This is handled by TestingGallery now
 //        final String backendJSON =
 //                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
 //        AndroidCommonUtils.deployBackendFile(backendJSON);
@@ -162,21 +155,13 @@ public class CommonAndroidSteps {
 
     private static final long INTERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
-    private static final String[] STANDARD_WIRE_PERMISSIONS = new String[]{
-            "android.permission.WRITE_EXTERNAL_STORAGE",
-            "android.permission.READ_CONTACTS",
-            "android.permission.RECORD_AUDIO",
-            "android.permission.CAMERA",
-            "android.permission.READ_PHONE_STATE"
-    };
-
     private void onDriverInitFinished(RemoteWebDriver drv) {
         // This is needed to make testing on Android 6+ with Selendroid possible
         try {
             if (isAutoAcceptOfSecurityAlertsEnabled &&
                     ((ZetaAndroidDriver) drv).getOSVersion().compareTo(new DefaultArtifactVersion("6.0")) >= 0) {
                 AndroidCommonUtils.grantPermissionsTo(CommonUtils.getAndroidPackageFromConfig(getClass()),
-                        STANDARD_WIRE_PERMISSIONS);
+                        AndroidCommonUtils.STANDARD_WIRE_PERMISSIONS);
             }
         } catch (Exception e) {
             e.printStackTrace();

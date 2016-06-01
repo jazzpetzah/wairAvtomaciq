@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.driver;
 
 import java.net.URL;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -14,6 +15,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
+
+import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
 
 final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
     private static final Logger log = ZetaLogger.getLog(LazyDriverInitializer.class.getSimpleName());
@@ -72,6 +75,10 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                         break;
                     case Android:
                         if (!appiumServer.isRunning() || ntry > 1) {
+                            new ProcessBuilder("/bin/bash", "-c",
+                                    ADB_PREFIX + "adb shell am start -n io.appium.unlock/.Unlock")
+                                    .start()
+                                    .waitFor(10, TimeUnit.SECONDS);
                             appiumServer.restart();
                         }
                         platformDriver = new ZetaAndroidDriver(new URL(url), capabilities);

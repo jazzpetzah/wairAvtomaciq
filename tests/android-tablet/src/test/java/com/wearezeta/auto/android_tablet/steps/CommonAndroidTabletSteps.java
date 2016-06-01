@@ -28,10 +28,10 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import gherkin.formatter.model.Result;
 import org.apache.log4j.Logger;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ScreenOrientation;
-import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -74,6 +74,8 @@ public class CommonAndroidTabletSteps {
         return CommonUtils.getAndroidApplicationPathFromConfig(CommonAndroidTabletSteps.class);
     }
 
+    private boolean isAutoAcceptOfSecurityAlertsEnabled = false;
+
     @SuppressWarnings("unchecked")
     public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path) throws Exception {
         final DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -89,22 +91,15 @@ public class CommonAndroidTabletSteps {
 
         devicePreparationThread.get(DEVICE_PREPARATION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
-        try {
-            return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
-                    .resetDriver(url, capabilities, 1, this::onDriverInitFinished, null);
-        } catch (SessionNotCreatedException e) {
-            // Unlock the screen and retry
-            AndroidCommonUtils.unlockScreen();
-            Thread.sleep(5000);
-            return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
-                    .resetDriver(url, capabilities, 1, this::onDriverInitFinished, null);
-        }
+        return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities,
+                AndroidPage.DRIVER_CREATION_RETRIES_COUNT, this::onDriverInitFinished, null);
     }
 
     private static Void prepareDevice() throws Exception {
         AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidTabletSteps.class);
+        // This is handled by TestingGallery now
 //        final String backendJSON =
 //                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidTabletSteps.class));
 //        AndroidCommonUtils.deployBackendFile(backendJSON);
@@ -137,6 +132,17 @@ public class CommonAndroidTabletSteps {
     private static final long INTERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
     private void onDriverInitFinished(RemoteWebDriver drv) {
+        // This is needed to make testing on Android 6+ with Selendroid possible
+        try {
+            if (isAutoAcceptOfSecurityAlertsEnabled &&
+                    ((ZetaAndroidDriver) drv).getOSVersion().compareTo(new DefaultArtifactVersion("6.0")) >= 0) {
+                AndroidCommonUtils.grantPermissionsTo(CommonUtils.getAndroidPackageFromConfig(getClass()),
+                        AndroidCommonUtils.STANDARD_WIRE_PERMISSIONS);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         final long millisecondsStarted = System.currentTimeMillis();
         WebDriverException savedException = null;
         do {
@@ -188,6 +194,8 @@ public class CommonAndroidTabletSteps {
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
             usrMgr.useSpecialEmail();
         }
+
+        isAutoAcceptOfSecurityAlertsEnabled = !scenario.getSourceTagNames().contains("@noAcceptAlert");
 
         if (isLogcatEnabled) {
             AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
