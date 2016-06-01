@@ -15,13 +15,17 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class AppiumServer {
     private static final Logger log = ZetaLogger.getLog(AppiumServer.class.getSimpleName());
 
     private static AppiumServer instance = null;
+    private Optional<AsyncProcess> appiumProcess = Optional.empty();
 
     private AppiumServer() {
+        ensureAppiumExecutableExistence();
+        ensureParentDirExistence(LOG_PATH);
     }
 
     public synchronized static AppiumServer getInstance() {
@@ -69,19 +73,19 @@ public class AppiumServer {
             "--log-timestamp"
     };
 
-    private void ensureParentDirExistence(String filePath) throws Exception {
+    private static void ensureParentDirExistence(String filePath) {
         final File log = new File(filePath);
         if (!log.getParentFile().exists()) {
             if (!log.getParentFile().mkdirs()) {
                 throw new IllegalStateException(String.format(
                         "The script has failed to create '%s' folder for Appium logs. " +
                                 "Please make sure your account has correct access permissions on the parent folder(s)",
-                        log.getParentFile().getCanonicalPath()));
+                        log.getParentFile().getAbsolutePath()));
             }
         }
     }
 
-    private void ensureAppiumExecutableExistence() throws Exception {
+    private static void ensureAppiumExecutableExistence() {
         if (!new File(MAIN_EXECUTABLE_PATH).exists()) {
             throw new IllegalStateException(
                     String.format("The script is unable to find main Appium executable at the path '%s'. " +
@@ -112,15 +116,20 @@ public class AppiumServer {
 
     public void restart() throws Exception {
         final String hostname = InetAddress.getLocalHost().getHostName();
-        log.warn(String.format("Trying to (re)start Appium server on %s:%s...", hostname, PORT));
+        log.info(String.format("Trying to (re)start Appium server on %s:%s...", hostname, PORT));
 
         UnixProcessHelpers.killProcessesGracefully("node");
+        if (appiumProcess.isPresent()) {
+            try {
+                appiumProcess.get().stop(2000);
+            } catch (TimeoutException e) {
+                appiumProcess.get().stop(9, new int[]{this.appiumProcess.get().getPid()}, 2000);
+            }
+            appiumProcess = Optional.empty();
+        }
         waitUntilIsStopped(RESTART_TIMEOUT / 2);
 
-        ensureAppiumExecutableExistence();
-        ensureParentDirExistence(LOG_PATH);
-
-        final AsyncProcess appiumProcess = new AsyncProcess(DEFAULT_CMDLINE, false, false).start();
+        this.appiumProcess = Optional.of(new AsyncProcess(DEFAULT_CMDLINE, false, false).start());
         log.info(String.format("Waiting for Appium to be (re)started on %s:%s...", hostname, PORT));
         final long msStarted = System.currentTimeMillis();
         if (!waitUntilIsRunning(RESTART_TIMEOUT)) {
@@ -128,7 +137,7 @@ public class AppiumServer {
                     "Appium server has failed to start after %s seconds timeout on server '%s'.\n" +
                             "Please make sure that NodeJS and Appium packages are installed properly on this machine.\n" +
                             "Appium logs:\n\n%s\n\n%s\n\n\n",
-                    RESTART_TIMEOUT / 1000, hostname, appiumProcess.getStderr(), appiumProcess.getStdout()));
+                    RESTART_TIMEOUT / 1000, hostname, appiumProcess.get().getStderr(), appiumProcess.get().getStdout()));
         }
 
         log.info(String.format("Appium server has been successfully (re)started after %.1f seconds " +
