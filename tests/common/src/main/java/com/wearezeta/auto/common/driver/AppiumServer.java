@@ -96,7 +96,7 @@ public class AppiumServer {
 
     private static final String INSTRUMENTS_SOCKET_PATH = "/tmp/instruments_sock";
 
-    public synchronized void resetIOS() throws Exception {
+    public void resetIOS() throws Exception {
         UnixProcessHelpers.killProcessesGracefully("osascript",
                 "Simulator", "configd_sim", "xpcproxy_sim", "backboardd",
                 "platform_launch_", "companionappd", "ids_simd", "launchd_sim",
@@ -114,19 +114,15 @@ public class AppiumServer {
         restart();
     }
 
-    public void restart() throws Exception {
+    public synchronized void restart() throws Exception {
         final String hostname = InetAddress.getLocalHost().getHostName();
         log.info(String.format("Trying to (re)start Appium server on %s:%s...", hostname, PORT));
 
-        UnixProcessHelpers.killProcessesGracefully("node");
         if (appiumProcess.isPresent()) {
-            try {
-                appiumProcess.get().stop(2000);
-            } catch (TimeoutException e) {
-                appiumProcess.get().stop(9, new int[]{this.appiumProcess.get().getPid()}, 2000);
-            }
+            appiumProcess.get().stop(9, new int[]{this.appiumProcess.get().getPid()}, 2000);
             appiumProcess = Optional.empty();
         }
+        UnixProcessHelpers.killProcessesGracefully("node");
         waitUntilIsStopped(RESTART_TIMEOUT / 2);
 
         this.appiumProcess = Optional.of(new AsyncProcess(DEFAULT_CMDLINE, false, false).start());
