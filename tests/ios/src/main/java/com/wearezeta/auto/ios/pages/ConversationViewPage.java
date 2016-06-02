@@ -740,6 +740,10 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAudioRecorderCancelButton);
     }
 
+    public boolean isAudioMessageRecordCancelInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameAudioRecorderCancelButton);
+    }
+
     private By getRecordControlButtonByName(String buttonName) {
         switch (buttonName.toLowerCase()) {
             case "send":

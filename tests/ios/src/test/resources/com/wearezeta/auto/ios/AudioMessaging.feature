@@ -92,3 +92,37 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C131214 @staging
+  Scenario Outline: Verify not sent yet audio message is preserved on minimising the app
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I long tap Audio Message button from input tools
+    And I close the app for 3 seconds
+    Then I see audio message record container
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @C131219 @staging
+  Scenario Outline: Verify not sent yet audio message is deleted on switching between the conversations
+    Given There are 3 user where <Name> is me
+    Given Myself is connected to all other
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I long tap Audio Message button from input tools
+    Then I see audio message record container
+    When I navigate back to conversations list
+    And I tap on contact name <Contact2>
+    And I navigate back to conversations list
+    And I tap on contact name <Contact>
+    Then I do not see audio message record container
+
+    Examples:
+      | Name      | Contact   | Contact2 |
+      | user1Name | user2Name | user3Name|
