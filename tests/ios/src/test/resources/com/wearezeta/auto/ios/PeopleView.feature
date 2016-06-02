@@ -286,7 +286,7 @@ Feature: People View
 
   @C26 @regression @id712
   Scenario Outline: Verify you can block a person from profile view
-    Given There are 3 users where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
     Given I see conversations list
@@ -297,11 +297,10 @@ Feature: People View
     And I tap Block action button
     And I confirm blocking alert
     Then I do not see conversation <Contact1> in conversations list
-    Then I see conversation <Contact2> is selected in list
 
     Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @C29 @regression @id722
   Scenario Outline: Verify you can unblock someone from a group conversation
@@ -317,8 +316,6 @@ Feature: People View
     And I see <Contact1> user profile page
     And I unblock user
     Then I see conversation view page
-    And I navigate back to conversations list
-    Then I see conversation <Contact1> is selected in list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName    |
