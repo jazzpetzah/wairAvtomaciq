@@ -187,7 +187,7 @@ Feature: Audio Message
       | Name      | Contact   | FileName | MIMEType  | DeviceName |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
 
-  @C139849 @staging @torun
+  @C139849 @staging
   Scenario Outline: (AN-4067) Verify that play of audio message will be stopped by incoming voice call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
