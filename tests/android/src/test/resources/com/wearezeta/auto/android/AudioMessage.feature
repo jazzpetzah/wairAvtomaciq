@@ -187,4 +187,29 @@ Feature: Audio Message
       | Name      | Contact   | FileName | MIMEType  | DeviceName |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
 
+  @C139849 @staging @torun
+  Scenario Outline: (AN-4067) Verify that play of audio message will be stopped by incoming voice call
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    Given <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
+    When I see Audio Message container in the conversation view
+    And I remember the state of recent audio message seekbar
+    And I tap Play button on the recent audio message in the conversation view
+    # Wait 10 seconds until the message is fully downloaded
+    And I wait for 10 seconds
+    Then I verify the state of recent audio message seekbar in the conversation view is changed
+    When I remember the state of Pause button on the recent audio message in the conversation view
+    And <Contact> calls me
+    And I see incoming call from <Contact>
+    And <Contact> stops calling me
+    And I do not see incoming call
+    Then I verify the state of Pause button on the recent audio message in the conversation view is changed
 
+    Examples:
+      | Name      | Contact   | FileName | MIMEType  | DeviceName | CallBackend |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | autocall    |
