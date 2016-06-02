@@ -138,6 +138,8 @@ Feature: Audio Messaging
     And I long tap on audio message placeholder in conversation view
     Then I do not see Save badge item
     When I tap Play audio message button
+    # Small wait to make sure download is completed
+    And I wait for 5 seconds
     And I long tap on audio message placeholder in conversation view
     Then I see Save badge item
 

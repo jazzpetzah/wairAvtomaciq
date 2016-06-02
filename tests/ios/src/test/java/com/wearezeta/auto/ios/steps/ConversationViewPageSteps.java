@@ -704,7 +704,7 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify visibilityof the corresponding badge item
+     * Verify visibility of the corresponding badge item
      *
      * @param shouldNotSee equals to null if the corresponding item should be visible
      * @param badgeItem    the badge item name
