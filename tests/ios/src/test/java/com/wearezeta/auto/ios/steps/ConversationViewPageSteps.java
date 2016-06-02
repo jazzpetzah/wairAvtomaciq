@@ -704,14 +704,14 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify whether the corresponding badge item is visible
+     * Verify visibilityof the corresponding badge item
      *
      * @param shouldNotSee equals to null if the corresponding item should be visible
      * @param badgeItem    the badge item name
      * @throws Exception
-     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste) badge item$
+     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste|Save) badge item$
      */
-    @Then("^I (do not )?see (Select All|Copy|Delete|Paste) badge item$")
+    @Then("^I (do not )?see (Select All|Copy|Delete|Paste|Save) badge item$")
     public void ISeeBadge(String shouldNotSee, String badgeItem) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (badgeItem) {
@@ -731,8 +731,12 @@ public class ConversationViewPageSteps {
                 verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupPasteButtonVisible :
                         getConversationViewPage()::isPopupPasteButtonInvisible;
                 break;
+            case "Save":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupSaveButtonVisible :
+                        getConversationViewPage()::isPopupSaveButtonInvisible;
+                break;
             default:
-                throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste) are allowed options");
+                throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste|Save) are allowed options");
         }
         Assert.assertTrue(String.format("The '%s' badge item is %s", badgeItem,
                 (shouldNotSee == null) ? "not visible" : "still visible"), verificationFunc.call());

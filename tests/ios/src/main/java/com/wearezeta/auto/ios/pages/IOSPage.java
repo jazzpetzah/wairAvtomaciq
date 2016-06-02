@@ -61,6 +61,8 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By nameEditingItemPaste = MobileBy.AccessibilityId("Paste");
 
+    protected static final By nameEditingItemSave = MobileBy.AccessibilityId("Save");
+
     private static final Function<String, String> xpathStrAlertByText = text ->
             String.format("//UIAAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
 
@@ -185,6 +187,14 @@ public abstract class IOSPage extends BasePage {
 
     public boolean isPopupPasteButtonInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemPaste);
+    }
+
+    public boolean isPopupSaveButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemSave);
+    }
+
+    public boolean isPopupSaveButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemSave);
     }
 
     private void clickAtSimulator(int x, int y) throws Exception {

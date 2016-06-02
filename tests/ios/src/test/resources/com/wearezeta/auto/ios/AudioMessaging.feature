@@ -126,3 +126,21 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact   | Contact2 |
       | user1Name | user2Name | user3Name|
+
+  @C129346 @staging
+  Scenario Outline: Verify impossibility of saving voice message before downloading
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    When User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    And I long tap on audio message placeholder in conversation view
+    Then I do not see Save badge item
+    When I tap Play audio message button
+    And I long tap on audio message placeholder in conversation view
+    Then I see Save badge item
+
+    Examples:
+      | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
