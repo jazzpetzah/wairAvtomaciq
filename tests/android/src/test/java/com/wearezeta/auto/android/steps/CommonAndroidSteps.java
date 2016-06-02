@@ -218,6 +218,8 @@ public class CommonAndroidSteps {
             e.printStackTrace();
         }
 
+        AppiumServer.getInstance().resetLog();
+
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
             usrMgr.useSpecialEmail();
         }

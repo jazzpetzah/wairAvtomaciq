@@ -8,7 +8,9 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.net.UrlChecker;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -153,5 +155,18 @@ public class AppiumServer {
             }
         }
         return Optional.empty();
+    }
+
+    public void resetLog() {
+        final File logFile = new File(LOG_PATH);
+        if (logFile.exists()) {
+            try {
+                final PrintWriter writer = new PrintWriter(logFile);
+                writer.print("");
+                writer.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
