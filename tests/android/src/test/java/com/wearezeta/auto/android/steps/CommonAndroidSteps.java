@@ -335,9 +335,9 @@ public class CommonAndroidSteps {
     /**
      * Do swipe gesture on the current screen
      *
-     * @step. ^I swipe (right|left|up|down)$
      * @param direction one of possible direction values
      * @throws Exception
+     * @step. ^I swipe (right|left|up|down)$
      */
     @When("^I swipe (right|left|up|down)$")
     public void ISwipeRight(String direction) throws Exception {
@@ -1446,6 +1446,23 @@ public class CommonAndroidSteps {
         if (currentOsVersion.compareTo(new DefaultArtifactVersion(minVersion)) < 0) {
             throw new PendingException(String.format("The current Android OS version %s is too low to run this test." +
                     "%s version is expected.", currentOsVersion, minVersion));
+        }
+    }
+
+    /**
+     * Verify whether no internet bar is visible
+     *
+     * @param shouldNotSee   equals null means the "no internet bar" should be visible
+     * @param timeoutSeconds the custom timeout for verification
+     * @throws Exception
+     * @step. ^I (do not )?see No Internet bar in (\d+) seconds?$
+     */
+    @Then("^I (do not )?see No Internet bar in (\\d+) seconds?$")
+    public void ISeeNoInternetBar(String shouldNotSee, int timeoutSeconds) throws Exception {
+        if (shouldNotSee == null) {
+            pagesCollection.getCommonPage().waitUntilNoInternetBarVisible(timeoutSeconds);
+        } else {
+            pagesCollection.getCommonPage().waitUntilNoInternetBarInvisible(timeoutSeconds);
         }
     }
 }
