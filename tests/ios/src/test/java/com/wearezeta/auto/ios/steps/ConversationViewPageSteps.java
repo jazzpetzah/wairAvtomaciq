@@ -1228,13 +1228,60 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap Play audio message button
+     * Tap Play/Pause audio message button
+     *
+     * @param placeholderIndex optional parameter. If exists then button state for the particular placeholder will
+     *                         be verified.
+     *                         The most recent  audio message placeholder is the conversation view will have index 1
+     * @throws Exception
+     * @step. ^I tap (?:Play|Pause) audio message button (on audio message placeholder number \d+)$
+     */
+    @When("^I tap (?:Play|Pause) audio message button( on audio message placeholder number \\d+)?$")
+    public void ITapPlayAudioMessageButton(String placeholderIndex) throws Exception {
+        if (placeholderIndex == null) {
+            getConversationViewPage().tapPlayAudioMessageButton();
+        } else {
+            getConversationViewPage().tapPlayAudioMessageButton(
+                    Integer.parseInt(placeholderIndex.replaceAll("[\\D]", "")));
+        }
+    }
+
+    private ElementState playButtonState;
+
+    /**
+     * Remember the current state of Play/Pause button on Audio Message placeholder
+     *
+     * @param isSecond optional parameter. If exists then button state for the particular placeholder will be verified.
+     *                 The most recent  audio message placeholder is the conversation view will have index 1
+     * @throws Exception
+     * @step. ^I remember the state of (?:Play|Pause) button on audio message placeholder$
+     */
+    @When("^I remember the state of (?:Play|Pause) button on (the second )?audio message placeholder?$")
+    public void IRememberPlayButtonState(String isSecond) throws Exception {
+        if (isSecond == null) {
+            playButtonState = new ElementState(getConversationViewPage()::getFirstPlayAudioMessageButtonScreenshot);
+        } else {
+            playButtonState = new ElementState(getConversationViewPage()::getSecondPlayAudioMessageButtonScreenshot);
+        }
+        playButtonState.remember();
+    }
+
+    private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 7;
+    private static final double PLAY_BUTTON_MIN_SIMILARITY = 0.95;
+
+    /**
+     * Verify the sate of Play/Pause button has been changed
      *
      * @throws Exception
-     * @step. ^I tap Play audio message button$
+     * @step. ^I verify the state of (?:Play|Pause) button on audio message placeholder is changed$
      */
-    @When("^I tap Play audio message button$")
-    public void ITapPlayAudioMessageButton() throws Exception {
-        getConversationViewPage().tapPlayAudioMessageButton();
+    @Then("^I verify the state of (?:Play|Pause) button on audio message placeholder is changed$")
+    public void IVerifyPlayButtonState() throws Exception {
+        if (playButtonState == null) {
+            throw new IllegalStateException("Please remember button state first");
+        }
+        Assert.assertTrue(String.format("The state of the button has not been changed after %s seconds",
+                PLAY_BUTTON_STATE_CHANGE_TIMEOUT), playButtonState.isChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT,
+                PLAY_BUTTON_MIN_SIMILARITY));
     }
 }
