@@ -170,13 +170,13 @@ Feature: Audio Messaging
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
   
   @C139855 @staging
-  Scenario Outline: (Bug ZIOS-6759) Verify playback is stopped when incoming call has appeared
+  Scenario Outline: (ZIOS-6759) Verify playback is stopped when incoming call has appeared
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
+    Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given I see conversations list
-    When User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     And I tap on contact name <Contact>
     And I remember the state of Play button on audio message placeholder
     And I tap Play audio message button

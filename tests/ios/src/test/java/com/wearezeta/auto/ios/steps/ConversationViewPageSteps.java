@@ -1278,7 +1278,7 @@ public class ConversationViewPageSteps {
      * @step. ^I verify the state of (?:Play|Pause) button on audio message placeholder is changed$
      */
     @Then("^I verify the state of (?:Play|Pause) button on audio message placeholder is (not )?changed$")
-    public void   IVerifyPlayButtonState(String didNotChange) throws Exception {
+    public void IVerifyPlayButtonState(String didNotChange) throws Exception {
         if (playButtonState == null) {
             throw new IllegalStateException("Please remember button state first");
         }
@@ -1291,6 +1291,5 @@ public class ConversationViewPageSteps {
                     PLAY_BUTTON_STATE_CHANGE_TIMEOUT), playButtonState.isNotChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT,
                     PLAY_BUTTON_MIN_SIMILARITY));
         }
-
     }
 }
