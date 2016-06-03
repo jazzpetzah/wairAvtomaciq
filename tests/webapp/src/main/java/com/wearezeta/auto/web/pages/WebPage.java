@@ -17,6 +17,9 @@ import org.openqa.selenium.WebElement;
 public class WebPage extends BasePage {
 
     private static final Logger log = ZetaLogger.getLog(WebPage.class.getSimpleName());
+    
+    private static final int WIRE_LOADED_MAX_RETRY = 20;
+    private static final int WIRE_LOADED_WAIT_MS = 1000;
 
     @Override
     protected ZetaWebAppDriver getDriver() throws Exception {
@@ -158,10 +161,13 @@ public class WebPage extends BasePage {
      */
     public void disableAdBanner() throws Exception {
         Boolean wireLoaded;
+        int retry = WIRE_LOADED_MAX_RETRY;
         do{
-        wireLoaded = (Boolean) getDriver().executeScript("console.log('checking for app wire');\n"
+            wireLoaded = (Boolean) getDriver().executeScript("console.log('checking for app wire');\n"
                 + "return wire !== undefined && wire.app !== undefined && wire.app.repository !== undefined");
-        }while(!wireLoaded);
+            retry--;
+            Thread.sleep(WIRE_LOADED_WAIT_MS);
+        }while(!wireLoaded && retry > 0);
         getDriver().executeScript("console.log('setting banner true');\n"
                 + "wire.app.repository.user.properties.app_banner = true");
     }

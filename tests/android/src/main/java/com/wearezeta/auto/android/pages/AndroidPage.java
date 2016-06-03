@@ -39,6 +39,9 @@ public abstract class AndroidPage extends BasePage {
 
     protected static final By idPager = By.id("conversation_pager");
 
+    private static final By xpathInternetIndicator =
+            By.xpath("//*[@id='civ__connectivity_indicator' and //*[@value='NO INTERNET']]");
+
     private static Function<String, String> xpathStrAlertButtonByCaption = caption ->
             String.format("//*[starts-with(@id, 'button') and @value='%s']", caption);
 
@@ -294,5 +297,13 @@ public abstract class AndroidPage extends BasePage {
 
     public DefaultArtifactVersion getOSVersion() throws Exception {
         return getDriver().getOSVersion();
+    }
+
+    public boolean waitUntilNoInternetBarVisible(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathInternetIndicator, timeoutSeconds);
+    }
+
+    public boolean waitUntilNoInternetBarInvisible(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathInternetIndicator, timeoutSeconds);
     }
 }
