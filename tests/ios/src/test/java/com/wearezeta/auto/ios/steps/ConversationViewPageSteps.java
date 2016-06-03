@@ -1234,7 +1234,7 @@ public class ConversationViewPageSteps {
      *                         be verified.
      *                         The most recent  audio message placeholder is the conversation view will have index 1
      * @throws Exception
-     * @step. ^I tap (?:Play|Pause) audio message button (on audio message placeholder number \d+)$
+     * @step. ^I tap (?:Play|Pause) audio message button (on audio message placeholder number \d+)?$
      */
     @When("^I tap (?:Play|Pause) audio message button( on audio message placeholder number \\d+)?$")
     public void ITapPlayAudioMessageButton(String placeholderIndex) throws Exception {

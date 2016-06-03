@@ -156,7 +156,6 @@ Feature: Audio Messaging
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given I see conversations list
     Given I tap on contact name <Contact1>
-    # Wait for both placeholders to appear
     When I tap Play audio message button on audio message placeholder number 2
     # Wait until the audio is downloaded and starts playback
     And I wait for <AudioDownloadTimeout> seconds
