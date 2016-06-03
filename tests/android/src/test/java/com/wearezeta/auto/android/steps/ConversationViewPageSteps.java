@@ -238,9 +238,9 @@ public class ConversationViewPageSteps {
      * Tap on Play/Pause media item button
      *
      * @throws Exception
-     * @step. ^I press PlayPause media item button$
+     * @step. ^I tap (?:Play|Pause) button button on SoundCloud container$
      */
-    @When("^I press PlayPause media item button$")
+    @When("^I tap (?:Play|Pause) button button on SoundCloud container$")
     public void WhenIPressPlayPauseButton() throws Exception {
         getConversationViewPage().tapPlayPauseBtn();
     }
@@ -529,10 +529,10 @@ public class ConversationViewPageSteps {
      * Store the screenshot of current media control button state
      *
      * @throws Exception
-     * @step. ^I remember the state of PlayPause media item button$
+     * @step. ^I remember the state of (?:Play|Pause) button on SoundCloud container$
      */
-    @When("^I remember the state of PlayPause media item button$")
-    public void IRememeberMediaItemButtonState() throws Exception {
+    @When("^I remember the state of (?:Play|Pause) button on SoundCloud container$")
+    public void IRememberMediaItemButtonState() throws Exception {
         mediaButtonState.remember();
     }
 
@@ -646,9 +646,9 @@ public class ConversationViewPageSteps {
      * Verify the current state of media control button has been changed since the last snapshot was made
      *
      * @throws Exception
-     * @step. ^I verify the state of PlayPause media item button is changed$
+     * @step. ^I verify the state of (?:Play|Pause) button on SoundCloud container is changed$
      */
-    @Then("^I verify the state of PlayPause media item button is changed$")
+    @Then("^I verify the state of (?:Play|Pause) button on SoundCloud container is changed$")
     public void IVerifyStateOfMediaControlButtonIsChanged() throws Exception {
         Assert.assertTrue("State of PlayPause media item button has not changed",
                 mediaButtonState.isChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE));
