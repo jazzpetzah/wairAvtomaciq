@@ -530,7 +530,9 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
+    # Splitting large instance creation requests to double the timeout
+    Given <Contact2>,<Contact3> starts instance using <WaitBackend>
+    Given <Contact4> starts instance using <WaitBackend>
     Given <Contact1> starts instance using <CallBackend>
     Given <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I switch to Sign In page
@@ -589,7 +591,9 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
+    # Splitting large instance creation requests to double the timeout
+    Given <Contact1>,<Contact2> starts instance using <WaitBackend>
+    Given <Contact3>,<Contact4> starts instance using <WaitBackend>
     Given <Contact1>,<Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
