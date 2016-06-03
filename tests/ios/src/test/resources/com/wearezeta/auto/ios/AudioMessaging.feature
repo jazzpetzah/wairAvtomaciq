@@ -126,3 +126,24 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact   | Contact2 |
       | user1Name | user2Name | user3Name|
+
+  @torun @C139855 @staging
+  Scenario Outline: (Bug ZIOS-6759)Verify playback is stopped when incoming call has appeared
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    And I tap on contact name <Contact>
+    And I tap Play audio message button
+    # Wait to make sure the audio file is downloaded
+    And I wait for 5 seconds
+    And <Contact> calls me
+    And I see call status message contains "<Contact> calling"
+    And I tap Ignore button on Calling overlay
+    Then I wait for 5 seconds
+
+    Examples:
+      | Name      | Contact   | FileName | FileMIME  | ContactDevice | CallBackend |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | chrome      |
