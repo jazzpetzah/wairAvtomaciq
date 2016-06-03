@@ -85,10 +85,9 @@ Feature: Audio Message
     # Wait for network is totally disabled
     And I wait for 3 seconds
     And I tap Play button on the recent audio message in the conversation view
-    Then I see no internet bar
+    Then I see no internet bar in <NetworkTimeout> seconds
     When I disable Airplane mode on the device
-    # Wait for sync
-    And I wait for 10 seconds
+    And I do not see no internet bar in <NetworkTimeout> seconds
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
     # Wait for the audio to be fully downloaded
@@ -96,8 +95,8 @@ Feature: Audio Message
     Then I verify the state of Play button on the recent audio message in the conversation view is changed
 
     Examples:
-      | Name      | Contact   | FileName | MIMEType  | DeviceName |
-      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
+      | Name      | Contact   | FileName | MIMEType  | DeviceName | NetworkTimeout |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | 10             |
 
   @C131183 @C131184 @regression @rc
   Scenario Outline: Verify failing sending/retrying voice message

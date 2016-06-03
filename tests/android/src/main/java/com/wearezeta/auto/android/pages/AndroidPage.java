@@ -299,11 +299,11 @@ public abstract class AndroidPage extends BasePage {
         return getDriver().getOSVersion();
     }
 
-    public boolean waitUntilNoInternetBarVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathInternetIndicator);
+    public boolean waitUntilNoInternetBarVisible(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathInternetIndicator, timeoutSeconds);
     }
 
-    public boolean waitUntilNoInternetBarInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathInternetIndicator);
+    public boolean waitUntilNoInternetBarInvisible(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathInternetIndicator, timeoutSeconds);
     }
 }

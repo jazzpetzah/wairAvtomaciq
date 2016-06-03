@@ -335,9 +335,9 @@ public class CommonAndroidSteps {
     /**
      * Do swipe gesture on the current screen
      *
-     * @step. ^I swipe (right|left|up|down)$
      * @param direction one of possible direction values
      * @throws Exception
+     * @step. ^I swipe (right|left|up|down)$
      */
     @When("^I swipe (right|left|up|down)$")
     public void ISwipeRight(String direction) throws Exception {
@@ -1452,16 +1452,17 @@ public class CommonAndroidSteps {
     /**
      * Verify whether no internet bar is visible
      *
-     * @param shouldNotSee equals null means the "no internet bar" should be visible
+     * @param shouldNotSee   equals null means the "no internet bar" should be visible
+     * @param timeoutSeconds the custom timeout for verification
      * @throws Exception
-     * @step. ^I (do not )?see no internet bar$
+     * @step. ^I (do not )?see no internet bar in (\d+) seconds?$
      */
-    @Then("^I (do not )?see no internet bar$")
-    public void ISeeNoInternetBar(String shouldNotSee) throws Exception{
-        if(shouldNotSee == null) {
-            pagesCollection.getCommonPage().waitUntilNoInternetBarVisible();
+    @Then("^I (do not )?see no internet bar in (\\d+) seconds?$")
+    public void ISeeNoInternetBar(String shouldNotSee, int timeoutSeconds) throws Exception {
+        if (shouldNotSee == null) {
+            pagesCollection.getCommonPage().waitUntilNoInternetBarVisible(timeoutSeconds);
         } else {
-            pagesCollection.getCommonPage().waitUntilNoInternetBarInvisible();
+            pagesCollection.getCommonPage().waitUntilNoInternetBarInvisible(timeoutSeconds);
         }
     }
 }
