@@ -1455,9 +1455,9 @@ public class CommonAndroidSteps {
      * @param shouldNotSee   equals null means the "no internet bar" should be visible
      * @param timeoutSeconds the custom timeout for verification
      * @throws Exception
-     * @step. ^I (do not )?see no internet bar in (\d+) seconds?$
+     * @step. ^I (do not )?see No Internet bar in (\d+) seconds?$
      */
-    @Then("^I (do not )?see no internet bar in (\\d+) seconds?$")
+    @Then("^I (do not )?see No Internet bar in (\\d+) seconds?$")
     public void ISeeNoInternetBar(String shouldNotSee, int timeoutSeconds) throws Exception {
         if (shouldNotSee == null) {
             pagesCollection.getCommonPage().waitUntilNoInternetBarVisible(timeoutSeconds);

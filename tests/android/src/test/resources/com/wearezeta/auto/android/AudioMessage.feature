@@ -85,9 +85,9 @@ Feature: Audio Message
     # Wait for network is totally disabled
     And I wait for 3 seconds
     And I tap Play button on the recent audio message in the conversation view
-    Then I see no internet bar in <NetworkTimeout> seconds
+    Then I see No Internet bar in <NetworkTimeout> seconds
     When I disable Airplane mode on the device
-    And I do not see no internet bar in <NetworkTimeout> seconds
+    And I do not see No Internet bar in <NetworkTimeout> seconds
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
     # Wait for the audio to be fully downloaded

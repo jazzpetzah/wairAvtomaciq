@@ -39,8 +39,8 @@ public abstract class AndroidPage extends BasePage {
 
     protected static final By idPager = By.id("conversation_pager");
 
-    private static final By xpathInternetIndicator = By.xpath("//*[@id='civ__connectivity_indicator' " +
-            "and //*[@value='NO INTERNET']]");
+    private static final By xpathInternetIndicator =
+            By.xpath("//*[@id='civ__connectivity_indicator' and //*[@value='NO INTERNET']]");
 
     private static Function<String, String> xpathStrAlertButtonByCaption = caption ->
             String.format("//*[starts-with(@id, 'button') and @value='%s']", caption);
