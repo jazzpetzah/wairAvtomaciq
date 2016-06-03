@@ -450,10 +450,10 @@ Feature: Calling
   Scenario Outline: Verify I can not see blocked contact trying to call me
     Given My browser supports calling
     Given There are 3 users where <Name> is me
-    Given <Contact> starts instance using <CallBackend>
     # OtherContact is needed otherwise the search will show up sometimes
     Given Myself is connected to <Contact>,<OtherContact>
     Given Myself blocked <Contact>
+    Given <Contact> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
@@ -530,7 +530,9 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
+    # Splitting large instance creation requests to double the timeout
+    Given <Contact2>,<Contact3> starts instance using <WaitBackend>
+    Given <Contact4> starts instance using <WaitBackend>
     Given <Contact1> starts instance using <CallBackend>
     Given <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I switch to Sign In page
@@ -589,7 +591,9 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
+    # Splitting large instance creation requests to double the timeout
+    Given <Contact1>,<Contact2> starts instance using <WaitBackend>
+    Given <Contact3>,<Contact4> starts instance using <WaitBackend>
     Given <Contact1>,<Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>

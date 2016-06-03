@@ -704,14 +704,14 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify whether the corresponding badge item is visible
+     * Verify visibility of the corresponding badge item
      *
      * @param shouldNotSee equals to null if the corresponding item should be visible
      * @param badgeItem    the badge item name
      * @throws Exception
-     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste) badge item$
+     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste|Save) badge item$
      */
-    @Then("^I (do not )?see (Select All|Copy|Delete|Paste) badge item$")
+    @Then("^I (do not )?see (Select All|Copy|Delete|Paste|Save) badge item$")
     public void ISeeBadge(String shouldNotSee, String badgeItem) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (badgeItem) {
@@ -731,8 +731,12 @@ public class ConversationViewPageSteps {
                 verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupPasteButtonVisible :
                         getConversationViewPage()::isPopupPasteButtonInvisible;
                 break;
+            case "Save":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupSaveButtonVisible :
+                        getConversationViewPage()::isPopupSaveButtonInvisible;
+                break;
             default:
-                throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste) are allowed options");
+                throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste|Save) are allowed options");
         }
         Assert.assertTrue(String.format("The '%s' badge item is %s", badgeItem,
                 (shouldNotSee == null) ? "not visible" : "still visible"), verificationFunc.call());
@@ -1224,13 +1228,68 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap Play audio message button
+     * Tap Play/Pause audio message button
+     *
+     * @param placeholderIndex optional parameter. If exists then button state for the particular placeholder will
+     *                         be verified.
+     *                         The most recent  audio message placeholder is the conversation view will have index 1
+     * @throws Exception
+     * @step. ^I tap (?:Play|Pause) audio message button (on audio message placeholder number \d+)?$
+     */
+    @When("^I tap (?:Play|Pause) audio message button( on audio message placeholder number \\d+)?$")
+    public void ITapPlayAudioMessageButton(String placeholderIndex) throws Exception {
+        if (placeholderIndex == null) {
+            getConversationViewPage().tapPlayAudioMessageButton();
+        } else {
+            getConversationViewPage().tapPlayAudioMessageButton(
+                    Integer.parseInt(placeholderIndex.replaceAll("[\\D]", "")));
+        }
+    }
+
+    private ElementState playButtonState;
+
+    /**
+     * Remember the current state of Play/Pause button on Audio Message placeholder
+     *
+     * @param isSecond optional parameter. If exists then button state for the particular placeholder will be verified.
+     *                 The most recent  audio message placeholder is the conversation view will have index 1
+     * @throws Exception
+     * @step. ^I remember the state of (?:Play|Pause) button on audio message placeholder$
+     */
+    @When("^I remember the state of (?:Play|Pause) button on (the second )?audio message placeholder?$")
+    public void IRememberPlayButtonState(String isSecond) throws Exception {
+        if (isSecond == null) {
+            playButtonState = new ElementState(getConversationViewPage()::getFirstPlayAudioMessageButtonScreenshot);
+        } else {
+            playButtonState = new ElementState(getConversationViewPage()::getSecondPlayAudioMessageButtonScreenshot);
+        }
+        playButtonState.remember();
+    }
+
+    private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 7;
+    private static final double PLAY_BUTTON_MIN_SIMILARITY = 0.95;
+
+    /**
+     * Verify the sate of Play/Pause button has been changed
+     *
+     * @param didNotChange equals to null if button state should be changed
      *
      * @throws Exception
-     * @step. ^I tap Play audio message button$
+     * @step. ^I verify the state of (?:Play|Pause) button on audio message placeholder is changed$
      */
-    @When("^I tap Play audio message button$")
-    public void ITapPlayAudioMessageButton() throws Exception {
-        getConversationViewPage().tapPlayAudioMessageButton();
+    @Then("^I verify the state of (?:Play|Pause) button on audio message placeholder is (not )?changed$")
+    public void IVerifyPlayButtonState(String didNotChange) throws Exception {
+        if (playButtonState == null) {
+            throw new IllegalStateException("Please remember button state first");
+        }
+        if (didNotChange == null){
+            Assert.assertTrue(String.format("The state of the button has not been changed after %s seconds",
+                    PLAY_BUTTON_STATE_CHANGE_TIMEOUT), playButtonState.isChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT,
+                    PLAY_BUTTON_MIN_SIMILARITY));
+        } else {
+            Assert.assertTrue(String.format("The state of the button has changed after %s seconds",
+                    PLAY_BUTTON_STATE_CHANGE_TIMEOUT), playButtonState.isNotChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT,
+                    PLAY_BUTTON_MIN_SIMILARITY));
+        }
     }
 }

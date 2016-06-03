@@ -86,7 +86,7 @@ Feature: Audio Message
       | user1Name | user2Name | user3Name | test.m4a | audio/mp4 | Device1    | Shared an audio message |
 
   @C131192 @C131193 @C131189 @regression @rc @rc42
-  Scenario Outline: (CM-958) Verify failing downloading voice message
+  Scenario Outline: Verify failing downloading voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -99,24 +99,19 @@ Feature: Audio Message
     When I enable Airplane mode on the device
     # Wait for network is totally disabled
     And I wait for 3 seconds
+    And I tap Play button on the recent audio message in the conversation view
+    Then I see No Internet bar in <NetworkTimeout> seconds
+    When I disable Airplane mode on the device
+    And I do not see No Internet bar in <NetworkTimeout> seconds
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
-    # Wait for the button to get retry glyph
-    And I wait for 3 seconds
-    Then I verify the state of Play button on the recent audio message in the conversation view is changed
-    When I disable Airplane mode on the device
-    # Wait for sync
-    And I wait for 10 seconds
-    And I tap Retry button on the recent audio message in the conversation view
-    # Wait for the audio to be fully downloaded, then retry button changes to play button
+    # Wait for the audio to be fully downloaded
     And I wait for 5 seconds
-    Then I verify the state of Play button on the recent audio message in the conversation view is not changed
-    When I tap Play button on the recent audio message in the conversation view
     Then I verify the state of Play button on the recent audio message in the conversation view is changed
 
     Examples:
-      | Name      | Contact   | FileName | MIMEType  | DeviceName |
-      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
+      | Name      | Contact   | FileName | MIMEType  | DeviceName | NetworkTimeout |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | 10             |
 
   @C131183 @C131184 @regression @rc
   Scenario Outline: Verify failing sending/retrying voice message
