@@ -38,6 +38,14 @@ public class AndroidCommonUtils extends CommonUtils {
 
     private static final String IMAGE_FOR_VIDEO_GENERATION = "about_page_logo_iPad.png";
 
+    public static final String[] STANDARD_WIRE_PERMISSIONS = new String[]{
+            "android.permission.WRITE_EXTERNAL_STORAGE",
+            "android.permission.READ_CONTACTS",
+            "android.permission.RECORD_AUDIO",
+            "android.permission.CAMERA",
+            "android.permission.READ_PHONE_STATE"
+    };
+
     public static void executeAdb(final String cmdline) throws Exception {
         executeOsXCommand(new String[]{"/bin/bash", "-c",
                 ADB_PREFIX + "adb " + cmdline});
@@ -56,10 +64,6 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static void genericScreenTap(int x, int y) throws Exception {
         executeAdb(String.format("shell input tap %d %d", x, y));
-    }
-
-    public static void disableHints() throws Exception {
-        executeAdb("shell touch /sdcard/disableOnBoardingHints");
     }
 
     public static void disableHockeyUpdates() throws Exception {
@@ -294,6 +298,11 @@ public class AndroidCommonUtils extends CommonUtils {
 
     public static void installTestingGalleryApp(Class<?> c) throws Exception {
         executeAdb(String.format("install -r %s/testing_gallery-debug.apk",
+                getAndroidToolsPathFromConfig(c)));
+    }
+
+    public static void installUnlockApp(Class<?> c) throws Exception {
+        executeAdb(String.format("install -r %s/unlock_apk-fixed.apk",
                 getAndroidToolsPathFromConfig(c)));
     }
 

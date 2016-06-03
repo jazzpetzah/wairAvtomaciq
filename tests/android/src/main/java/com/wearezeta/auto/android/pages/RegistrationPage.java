@@ -28,6 +28,8 @@ public class RegistrationPage extends AndroidPage {
 
     public static final By idChooseMyOwnButton = By.id("zb__choose_own_picture");
 
+    private static final By idKeepThisPicture = By.id("zb__keep_picture");
+
     private static Function<String, String> xpathChoosePictSrcDialogButtonByName = name ->
             String.format("//*[starts-with(@id, 'button') and @value='%s']", name);
 
@@ -63,6 +65,10 @@ public class RegistrationPage extends AndroidPage {
 
     public void tapOwnPictureButton() throws Exception {
         getElement(idChooseMyOwnButton).click();
+    }
+
+    public void tapKeepThisPictureButton() throws Exception {
+        getElement(idKeepThisPicture).click();
     }
 
     public void selectPictureSource(String src) throws Exception {

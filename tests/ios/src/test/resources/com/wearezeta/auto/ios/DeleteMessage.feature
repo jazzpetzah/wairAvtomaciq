@@ -43,7 +43,7 @@ Feature: DeleteMessage
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
     Then I see 1 photo in the dialog
-    When I long tap on image in the conversation
+    When I long tap on image in conversation view
     And I tap on Delete badge item
     Then I see 0 photos in the dialog
     And I type tag for giphy preview <GiphyTag> and open preview overlay
@@ -51,7 +51,7 @@ Feature: DeleteMessage
     And I wait for 10 seconds
     And I send gif from giphy preview page
     Then I see 1 photo in the dialog
-    When I long tap on image in the conversation
+    When I long tap on image in conversation view
     And I tap on Delete badge item
     Then I see 0 photos in the dialog
 
@@ -66,7 +66,7 @@ Feature: DeleteMessage
     Given I sign in using my email or phone number
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
-    And I long tap on media container in the conversation
+    And I long tap on media container in conversation view
     And I tap on Delete badge item
     Then I do not see the media container in the conversation view
 

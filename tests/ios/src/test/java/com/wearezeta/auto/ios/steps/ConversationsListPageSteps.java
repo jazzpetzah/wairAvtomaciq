@@ -435,23 +435,6 @@ public class ConversationsListPageSteps {
     }
 
     /**
-     * Verifies that next conversation is selected in list
-     *
-     * @param conversation that is selected now
-     * @throws Throwable
-     * @step. ^I see conversation (.*) is selected in list$
-     */
-    @Then("^I see conversation (.*) is selected in list$")
-    public void ISeeConversationIsSelectedInList(String conversation)
-            throws Throwable {
-        conversation = usrMgr.replaceAliasesOccurences(conversation,
-                FindBy.NAME_ALIAS);
-        Assert.assertEquals("Conversation is not selected", "1",
-                getConversationsListPage().getSelectedConversationCellValue(conversation).
-                        orElseThrow(() -> new IllegalStateException("No conversations are selected in the list")));
-    }
-
-    /**
      * Verify if Invite more people button is shown or not in contact list
      *
      * @param shouldNotBeVisible equals to null if the button should not be visible

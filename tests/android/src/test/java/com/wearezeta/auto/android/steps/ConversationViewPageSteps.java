@@ -253,9 +253,9 @@ public class ConversationViewPageSteps {
      * Tap on Play/Pause media item button
      *
      * @throws Exception
-     * @step. ^I press PlayPause media item button$
+     * @step. ^I tap (?:Play|Pause) button button on SoundCloud container$
      */
-    @When("^I press PlayPause media item button$")
+    @When("^I tap (?:Play|Pause) button button on SoundCloud container$")
     public void WhenIPressPlayPauseButton() throws Exception {
         getConversationViewPage().tapPlayPauseBtn();
     }
@@ -281,75 +281,6 @@ public class ConversationViewPageSteps {
     @When("^I press PlayPause on Mediabar button$")
     public void WhenIPressPlayPauseOnMediaBarButton() throws Exception {
         getConversationViewPage().tapPlayPauseMediaBarBtn();
-    }
-
-    /**
-     * Tap the corresponding button on Take Picture view
-     *
-     * @param buttonName the button to press
-     * @throws Exception
-     * @step. ^I tap "(Take Photo|Confirm|Gallery|Image Close|Switch Camera|Sketch Image Paint|Close)" button on Take Picture view$
-     */
-    @When("^I tap (Take Photo|Change Photo|Confirm|Gallery|Image Close|Switch Camera|Sketch Image Paint|Close) button on Take Picture view$")
-    public void WhenIPressButton(String buttonName) throws Exception {
-        switch (buttonName.toLowerCase()) {
-            case "take photo":
-                getConversationViewPage().takePhoto();
-                break;
-            case "change photo":
-                getConversationViewPage().tapChangePhotoButton();
-                break;
-            case "confirm":
-                getConversationViewPage().confirm();
-                break;
-            case "gallery":
-                getConversationViewPage().openGallery();
-                break;
-            case "image close":
-                getConversationViewPage().closeFullScreenImage();
-                break;
-            case "close":
-                getConversationViewPage().tapCloseTakePictureViewButton();
-                break;
-            case "switch camera":
-                if (!getConversationViewPage().tapSwitchCameraButton()) {
-                    throw new PendingException(
-                            "Device under test does not have front camera. " + "Skipping all the further verification...");
-                }
-                break;
-            case "sketch image paint":
-                getConversationViewPage().tapSketchOnImageButton();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name: '%s'", buttonName));
-        }
-    }
-
-    /**
-     * Verify whether the particular button is visible on Take Picture view
-     *
-     * @param shouldNotSee equals to null if the button should be visible
-     * @param buttonName   one of possible button names
-     * @throws Exception
-     * @step. ^I (do not )?see (Take Photo|Change Photo) button on Take Picture view$
-     */
-    @Then("^I (do not )?see (Take Photo|Change Photo) button on Take Picture view$")
-    public void ISeeButtonOnTakePictureView(String shouldNotSee, String buttonName) throws Exception {
-        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
-        switch (buttonName.toLowerCase()) {
-            case "take photo":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isTakePhotoButtonVisible :
-                        getConversationViewPage()::isTakePhotoButtonInvisible;
-                break;
-            case "change photo":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isChangePhotoButtonVisible :
-                        getConversationViewPage()::isChangePhotoButtonInvisible;
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name: '%s'", buttonName));
-        }
-        Assert.assertTrue(String.format("The %s button should %s visible on the Take Picture view",
-                buttonName, (shouldNotSee == null) ? "be" : "not be"), verificationFunc.call());
     }
 
     /**
@@ -613,10 +544,10 @@ public class ConversationViewPageSteps {
      * Store the screenshot of current media control button state
      *
      * @throws Exception
-     * @step. ^I remember the state of PlayPause media item button$
+     * @step. ^I remember the state of (?:Play|Pause) button on SoundCloud container$
      */
-    @When("^I remember the state of PlayPause media item button$")
-    public void IRememeberMediaItemButtonState() throws Exception {
+    @When("^I remember the state of (?:Play|Pause) button on SoundCloud container$")
+    public void IRememberMediaItemButtonState() throws Exception {
         mediaButtonState.remember();
     }
 
@@ -730,9 +661,9 @@ public class ConversationViewPageSteps {
      * Verify the current state of media control button has been changed since the last snapshot was made
      *
      * @throws Exception
-     * @step. ^I verify the state of PlayPause media item button is changed$
+     * @step. ^I verify the state of (?:Play|Pause) button on SoundCloud container is changed$
      */
-    @Then("^I verify the state of PlayPause media item button is changed$")
+    @Then("^I verify the state of (?:Play|Pause) button on SoundCloud container is changed$")
     public void IVerifyStateOfMediaControlButtonIsChanged() throws Exception {
         Assert.assertTrue("State of PlayPause media item button has not changed",
                 mediaButtonState.isChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE));
@@ -1364,9 +1295,9 @@ public class ConversationViewPageSteps {
      *
      * @param buttonType could be "audio message" or "video message"
      * @throws Exception
-     * @step. ^I remember the state of (?:Play|X|Retry) button on the recent (video message|audio message) in the conversation view$"
+     * @step. ^I remember the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view$"
      */
-    @When("^I remember the state of (?:Play|X|Retry) button on the recent (video message|audio message) in the conversation view$")
+    @When("^I remember the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view$")
     public void IRememberPlayButtonState(String buttonType) throws Exception {
         switch (buttonType.toLowerCase()) {
             case "video message":
@@ -1389,9 +1320,9 @@ public class ConversationViewPageSteps {
      * @param buttonType         could be "audio message" or "video message"
      * @param shouldNotBeChanged equals to null if the state should be different
      * @throws Exception
-     * @step. ^I verify the state of (?:Play|X|Retry) button on the recent (video message|audio message) in the conversation view is (not )?changed$
+     * @step. ^I verify the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view is (not )?changed$
      */
-    @Then("^I verify the state of (?:Play|X|Retry) button on the recent (video message|audio message) in the conversation view is (not )?changed$")
+    @Then("^I verify the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view is (not )?changed$")
     public void ISeePlayButtonStateChanged(String buttonType, String shouldNotBeChanged) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (buttonType.toLowerCase()) {

@@ -79,7 +79,7 @@ Feature: Conversation List
       | user1Name | user2Name | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |
 
   @C95626 @regression
-  Scenario Outline: (CM-882) Verify deleting a conversation is synchronised to all devices
+  Scenario Outline: Verify deleting a conversation is synchronised to all devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -201,7 +201,7 @@ Feature: Conversation List
       | user1Name | user2Name |
 
   @C452 @id4073 @regression
-  Scenario Outline: (CM-858) I can unmute 1:1 conversation from the conversation list
+  Scenario Outline: I can unmute 1:1 conversation from the conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is silenced to user <Name>
@@ -218,7 +218,7 @@ Feature: Conversation List
       | user1Name | user2Name |
 
   @C453 @id4078 @regression
-  Scenario Outline: (CM-858) I can mute group conversation from the conversation list
+  Scenario Outline: I can mute group conversation from the conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>

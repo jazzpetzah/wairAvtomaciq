@@ -41,7 +41,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | LeaveGroupChat |
 
   @C686 @id322 @regression @rc @rc42
-  Scenario Outline: (AN-3888) Remove from group chat
+  Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -139,11 +139,6 @@ Feature: People View
     And I do not see 1:1 options menu
     When I press options menu button
     And I see correct 1:1 options menu
-    #Need to delete small swipe check if it will be unstable
-    #When I do small swipe down
-    #And I wait for 1 second
-    #Then I do not see participant page
-    #And I see correct 1:1 options menu
     When I tap on center of screen
     And I press options menu button
     And I swipe left

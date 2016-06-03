@@ -77,7 +77,6 @@ public class LoginSteps {
         getVerificationPage().clickConfirm();
         Assert.assertTrue("Phone number verification code input screen is still visible",
                 getVerificationPage().waitUntilConfirmButtonDisappears());
-        Assert.assertTrue("Invalid verification code!", getVerificationPage().isIncorrectCodeErrorNotAppears());
     }
 
     private static final int PHONE_NUMBER_LOGIN_THRESHOLD = 60;

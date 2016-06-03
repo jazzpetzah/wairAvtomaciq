@@ -4,10 +4,7 @@ package com.wearezeta.auto.common.testrail;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TestrailRESTWrapper {
@@ -35,12 +32,10 @@ public class TestrailRESTWrapper {
 
     private static boolean isConfigurationEqual(String expectedConfiguration, String actualConfiguration) {
         // Configuration name is comma-separated string
-        final Set<String> normalizedExpectedConfig =
-                Arrays.asList(expectedConfiguration.split(",")).stream().map(
-                        String::trim).collect(Collectors.toSet());
-        final Set<String> normalizedActualConfig =
-                Arrays.asList(actualConfiguration.split(",")).stream().map(
-                        String::trim).collect(Collectors.toSet());
+        final Set<String> normalizedExpectedConfig = Arrays.asList(expectedConfiguration.split(",")).stream().map(
+                String::trim).collect(Collectors.toSet());
+        final Set<String> normalizedActualConfig = Arrays.asList(actualConfiguration.split(",")).stream().map(
+                String::trim).collect(Collectors.toSet());
         return normalizedExpectedConfig.equals(normalizedActualConfig);
     }
 
@@ -48,8 +43,7 @@ public class TestrailRESTWrapper {
             throws Exception {
         final JSONObject response = TestrailREST.getTestPlan(testPlanId);
         if (!response.has("entries")) {
-            throw new IllegalArgumentException(String.format("Test run '%s' cannot be found",
-                    testRunName));
+            throw new IllegalArgumentException(String.format("Test run '%s' cannot be found", testRunName));
         }
         final JSONArray entries = response.getJSONArray("entries");
         for (int entryIdx = 0; entryIdx < entries.length(); entryIdx++) {
@@ -59,8 +53,7 @@ public class TestrailRESTWrapper {
                     if (runs.getJSONObject(runIdx).getString("name").equals(testRunName)) {
                         if (configurationName.isPresent()) {
                             if (runs.getJSONObject(runIdx).has("config") && isConfigurationEqual(
-                                    configurationName.get(),
-                                    runs.getJSONObject(runIdx).getString("config"))) {
+                                    configurationName.get(), runs.getJSONObject(runIdx).getString("config"))) {
                                 return runs.getJSONObject(runIdx).getLong("id");
                             } else {
                                 continue;
@@ -85,13 +78,11 @@ public class TestrailRESTWrapper {
      */
 
     public static void updateTestResult(long testRunId, long caseId,
-                                        TestrailExecutionStatus newStatus, Optional<String> comment)
-            throws Exception {
+                                        TestrailExecutionStatus newStatus, Optional<String> comment) throws Exception {
         TestrailREST.addTestCaseResult(testRunId, caseId, newStatus.getId(), comment);
     }
 
-    public static TestrailExecutionStatus getCurrentTestResult(long testRunId, long caseId)
-            throws Exception {
+    public static TestrailExecutionStatus getCurrentTestResult(long testRunId, long caseId) throws Exception {
         final JSONArray response = TestrailREST.getTestCaseResults(testRunId, caseId);
         if (response.length() == 0) {
             return TestrailExecutionStatus.Untested;
@@ -100,15 +91,17 @@ public class TestrailRESTWrapper {
         }
     }
 
-    public static void updateCaseIsAutomated(long caseId, boolean newValue) throws Exception {
+    public static void updateCustomCaseProperty(long caseId, String valueName, Object newValue) throws Exception {
         final JSONObject requestBody = new JSONObject();
-        requestBody.put("custom_is_automated", newValue);
+        requestBody.put(valueName, newValue);
         TestrailREST.updateCase(caseId, requestBody);
     }
 
-    public static void updateCaseIsMuted(long caseId, boolean newValue) throws Exception {
+    public static void updateCustomCaseProperties(long caseId, Map<String, Object> newValues) throws Exception {
         final JSONObject requestBody = new JSONObject();
-        requestBody.put("custom_is_muted", newValue);
+        for (Map.Entry<String, Object> entry : newValues.entrySet()) {
+            requestBody.put(entry.getKey(), entry.getValue());
+        }
         TestrailREST.updateCase(caseId, requestBody);
     }
- }
+}

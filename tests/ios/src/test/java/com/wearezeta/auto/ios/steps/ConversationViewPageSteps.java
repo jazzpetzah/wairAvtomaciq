@@ -677,17 +677,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Long tap on the image displayed in the conversation
-     *
-     * @throws Exception
-     * @step. ^I long tap on image in the conversation$
-     */
-    @When("^I long tap on image in the conversation$")
-    public void ILongTapOnImage() throws Exception {
-        getConversationViewPage().tapHoldImageWithRetry();
-    }
-
-    /**
      * Tap on pointed badge item
      *
      * @param badgeItem the badge item name
@@ -1126,28 +1115,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Does a long tap on a media container to get delete/copy menu
-     *
-     * @throws Exception
-     * @step. ^I long tap on media container in the conversation$
-     */
-    @When("^I long tap on media container in the conversation$")
-    public void ILongTapOnMediaContainerInTheConversation() throws Exception {
-        getConversationViewPage().tapAndHoldMediaContainer();
-    }
-
-    /**
-     * Does a long tap on the shared file placeholder
-     *
-     * @throws Exception
-     * @step. ^I long tap on file transfer placeholder in conversation view$
-     */
-    @When("^I long tap on file transfer placeholder in conversation view$")
-    public void ILongTapOnFileTransferPlaceholderInConversationView() throws Exception {
-        getConversationViewPage().tapAndHoldFileTransferPlaceholder();
-    }
-
-    /**
      * Wait for a while until video message container is shown in the conversation view
      *
      * @throws Exception
@@ -1165,10 +1132,15 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I see audio message record container$
      */
-    @Then("^I see audio message record container$")
-    public void ISeeAudioRecordProgress() throws Exception {
-        Assert.assertTrue("Audio message record progress control has not been shown",
-                getConversationViewPage().isAudioMessageRecordCancelVisible());
+    @Then("^I (do not )?see audio message record container$")
+    public void ISeeAudioRecordProgress(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("Audio message record progress control has not been shown",
+                    getConversationViewPage().isAudioMessageRecordCancelVisible());
+        } else {
+            Assert.assertTrue("Audio message record progress control is shown",
+                    getConversationViewPage().isAudioMessageRecordCancelInvisible());
+        }
     }
 
     /**
@@ -1222,5 +1194,43 @@ public class ConversationViewPageSteps {
     @When("^I record (\\d+) seconds? long audio message and send it using swipe up gesture$")
     public void IRecordXSecondsAudioMessageAndSendBySwipe(int sec) throws Exception {
         getConversationViewPage().tapAudioRecordWaitAndSwipe(sec);
+    }
+
+    /**
+     * Long tap on a conversation view item
+     *
+     * @param conversationItem item name
+     * @throws Exception
+     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in conversation view$")
+     */
+    @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in conversation view$")
+    public void ITapAndHoldAudioMessagePlaceholder(String conversationItem) throws Exception {
+        switch (conversationItem) {
+            case "image":
+                getConversationViewPage().tapHoldImageWithRetry();
+                break;
+            case "media container":
+                getConversationViewPage().tapAndHoldMediaContainer();
+                break;
+            case "file transfer placeholder":
+                getConversationViewPage().tapAndHoldFileTransferPlaceholder();
+                break;
+            case "audio message placeholder":
+                getConversationViewPage().tapAndHoldAudioMessage();
+                break;
+            default:
+                throw new IllegalArgumentException("Not known conversation item. Please use only items pointed in the step");
+        }
+    }
+
+    /**
+     * Tap Play audio message button
+     *
+     * @throws Exception
+     * @step. ^I tap Play audio message button$
+     */
+    @When("^I tap Play audio message button$")
+    public void ITapPlayAudioMessageButton() throws Exception {
+        getConversationViewPage().tapPlayAudioMessageButton();
     }
 }

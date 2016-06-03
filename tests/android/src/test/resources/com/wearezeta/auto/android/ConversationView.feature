@@ -146,38 +146,6 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C377 @id145 @regression
-  Scenario Outline: Send Upper and Lower case to contact
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I tap on text input
-    And I type the message "<Message>" and send it
-    Then I see the message "<Message>" in the conversation view
-
-    Examples:
-      | Name      | Contact   | Message  |
-      | user1Name | user2Name | aaaaAAAA |
-
-  @C378 @id149 @regression
-  Scenario Outline: Send emoji message to contact
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I tap on text input
-    And I type the message "<Message>" and send it
-    Then I see the message "<Message>" in the conversation view
-
-    Examples:
-      | Name      | Contact   | Message  |
-      | user1Name | user2Name | :) ;) :( |
-
   @C379 @id163 @regression
   Scenario Outline: Send existing image from gallery (portrait) in 1:1 chat
     Given There are 2 users where <Name> is me
@@ -298,7 +266,7 @@ Feature: Conversation View
       | user1Name | user2Name | Yo      |
 
   @C674 @id165 @regression @rc
-  Scenario Outline: (BUG AN-3443) Send GIF format pic
+  Scenario Outline: Send GIF format pic
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -334,7 +302,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C236 @rc @regression
+  @C236 @regression @rc
   Scenario Outline: I can send giphy image from the giphy grid preview
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -358,7 +326,7 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C77948 @C77950 @rc @regression
+  @C77948 @C77950 @regression @rc
   Scenario Outline: Upper toolbar displayed in conversation view, I can back to conversation list by toolbar arrow
     Given There is 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -425,7 +393,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |  Message1 | Message2 |
       | user1Name | user2Name | user3Name |  Msg1     | Msg2     |
 
-  @C77966 @regression @C87626 @rc @rc42 @C111617
+  @C77966 @C87626 @C111617 @regression @rc @rc42
   Scenario Outline: Verify there are no video and audio calling icons under the + button bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -440,7 +408,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C111622 @C111625 @rc @regression
+  @C111622 @C111625 @regression @rc
   Scenario Outline: Verify tooltip is shown in different condition
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

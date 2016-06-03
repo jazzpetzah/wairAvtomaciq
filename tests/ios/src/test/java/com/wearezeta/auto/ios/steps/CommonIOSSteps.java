@@ -35,7 +35,6 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 
 import cucumber.api.java.After;
@@ -116,7 +115,7 @@ public class CommonIOSSteps {
             ));
         }
         capabilities.setCapability("platformVersion", getPlatformVersion());
-        capabilities.setCapability("launchTimeout", IOSPage.IOS_DRIVER_INIT_TIMEOUT_MILLIS);
+        capabilities.setCapability("launchTimeout", ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS);
         final String backendType = getBackendType(this.getClass());
         capabilities.setCapability("processArguments",
                 String.join(" ",
@@ -163,6 +162,8 @@ public class CommonIOSSteps {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        AppiumServer.getInstance().resetLog();
 
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
             usrMgr.useSpecialEmail();
@@ -306,7 +307,7 @@ public class CommonIOSSteps {
     public void IRestartWire() throws Exception {
         final RemoteWebDriver currentDriver =
                 PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM)
-                        .get(IOSPage.IOS_DRIVER_INIT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
+                        .get(ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS, TimeUnit.MILLISECONDS);
         final Map<String, ?> currentCapabilities = currentDriver.getCapabilities().asMap();
         try {
             PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);

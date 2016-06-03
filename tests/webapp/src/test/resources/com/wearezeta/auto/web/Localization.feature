@@ -31,7 +31,7 @@ Feature: Localization
       | Language | LoginLink | EmailPlaceholder | PasswordPlaceholder | RememberMeText     | SignInButton | ForgotPasswordLink |
       | de       | LOGIN     | E-Mail-Adresse   | Passwort            | ANGEMELDET BLEIBEN | Login        | Passwort vergessen |
 
-  @C131208 @staging
+  @C131208 @regression
   Scenario Outline: Verify conversation view and list has German-localized strings
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

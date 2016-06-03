@@ -24,7 +24,7 @@ import org.openqa.selenium.remote.UnreachableBrowserException;
 
 
 public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
-    public static final long MAX_COMMAND_DURATION_MILLIS = 200000;
+    public static final long MAX_COMMAND_DURATION_MILLIS = 150000;
 
     private static final Logger log = ZetaLogger.getLog(ZetaIOSDriver.class.getSimpleName());
 
@@ -74,7 +74,8 @@ public class ZetaIOSDriver extends IOSDriver<WebElement> implements ZetaDriver {
     private void setSessionLost(boolean isSessionLost) {
         if (isSessionLost != this.isSessionLost) {
             log.warn(String.format("Changing isSessionLost to %s", isSessionLost));
-            log.debug(LOG_DECORATION_PREFIX + "\n" + AppiumServer.getLog().orElse("") + "\n" + LOG_DECORATION_SUFFIX);
+            log.debug(LOG_DECORATION_PREFIX + "\n" + AppiumServer.getInstance().getLog().orElse("")
+                    + "\n" + LOG_DECORATION_SUFFIX);
         }
         this.isSessionLost = isSessionLost;
     }

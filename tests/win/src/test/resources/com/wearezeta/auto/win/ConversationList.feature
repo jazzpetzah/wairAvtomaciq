@@ -6,7 +6,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <Contact>
     And I open context menu of conversation <Contact>
     And I click block in context menu
@@ -23,7 +23,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     And I open conversation with <ChatName>
     And I open context menu of conversation <ChatName>
     And I click leave in context menu
@@ -39,7 +39,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I open context menu of conversation <Contact>
     And I click silence in context menu
@@ -58,7 +58,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I click menu bar item "Conversation" and menu item "Silence"
     Then I see that conversation <Contact> is muted
@@ -75,7 +75,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I type shortcut combination to mute or unmute a conversation
     And I wait for 2 seconds
@@ -95,7 +95,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <ChatName>
     And I open context menu of conversation <ChatName>
     And I click silence in context menu
@@ -115,7 +115,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <ChatName>
     And I click menu bar item "Conversation" and menu item "Silence"
     Then I see that conversation <ChatName> is muted
@@ -133,7 +133,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <ChatName>
     And I type shortcut combination to mute or unmute a conversation
     And I wait for 2 seconds
@@ -152,7 +152,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I open context menu of conversation <Contact>
     And I click delete in context menu
@@ -168,7 +168,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I click menu bar item "Conversation" and menu item "Delete"
     Then I see a delete warning modal for 1:1 conversations
@@ -184,7 +184,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <ChatName>
     And I open context menu of conversation <ChatName>
     And I click delete in context menu
@@ -201,7 +201,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <ChatName>
     And I click menu bar item "Conversation" and menu item "Delete"
     Then I see a delete warning modal for group conversations
@@ -216,7 +216,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I open context menu of conversation <Contact>
     And I click archive in context menu
@@ -232,7 +232,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I click menu bar item "Conversation" and menu item "Archive"
     Then I do not see Contact list with name <Contact>
@@ -247,7 +247,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     And I type shortcut combination to archive a conversation
     And I wait for 2 seconds
@@ -264,7 +264,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <ChatName>
     And I open context menu of conversation <ChatName>
     And I click archive in context menu
@@ -281,7 +281,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <ChatName>
     And I click menu bar item "Conversation" and menu item "Archive"
     Then I do not see Contact list with name <ChatName>
@@ -297,7 +297,7 @@ Feature: Conversation List
     Given Myself has group chat <ChatName> with <Contact>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <ChatName>
     And I type shortcut combination to archive a conversation
     And I wait for 2 seconds
@@ -313,7 +313,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     When I click menu bar item "Conversation" and menu item "Start"
     Then I see people picker
 
@@ -327,7 +327,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     When I type shortcut combination to open search
     Then I see people picker
 
@@ -341,7 +341,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     And I verify active conversation is at index 1
     When I type shortcut combination for next conversation
     And I wait for 1 seconds
@@ -366,7 +366,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
+    And I am signed in properly
     And I verify active conversation is at index 1
     When I click menu bar item "View" and menu item "Next Conversation"
     And I verify active conversation is at index 1

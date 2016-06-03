@@ -4,24 +4,26 @@ import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.uiautomation.UIAutomatorDriver;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.AppiumServer;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.apache.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.openqa.selenium.*;
 
 import java.util.Optional;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.function.Function;
 
 public abstract class AndroidPage extends BasePage {
     private static final Function<String, String> xpathStrAlertMessageByText =
             text -> String.format("//*[@id='message' and contains(@value, '%s')]", text);
 
-    private static final Function<String, String>  xpathStrAlertTitleByTextPart =
+    private static final Function<String, String> xpathStrAlertTitleByTextPart =
             text -> String.format("//*[@id='alertTitle' and contains(@value, '%s')]", text);
 
     protected static final By idGiphyPreviewButton = By.id("cursor_button_giphy");
@@ -32,7 +34,7 @@ public abstract class AndroidPage extends BasePage {
 
     private static final By idChatheadNotification = By.id("va_message_notification_chathead__label_viewanimator");
 
-    public static final long DRIVER_INIT_TIMEOUT_MILLIS = ZetaAndroidDriver.MAX_COMMAND_DURATION_MILLIS; // milliseconds
+    public static final int DRIVER_CREATION_RETRIES_COUNT = 2;
 
     protected static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
 
@@ -43,7 +45,18 @@ public abstract class AndroidPage extends BasePage {
 
     @Override
     protected ZetaAndroidDriver getDriver() throws Exception {
-        return (ZetaAndroidDriver) super.getDriver();
+        try {
+            return (ZetaAndroidDriver) super.getDriver();
+        } catch (ExecutionException e) {
+            if ((e.getCause() instanceof java.util.concurrent.TimeoutException) ||
+                    ((e.getCause() instanceof WebDriverException) &&
+                            (e.getCause().getCause() instanceof java.util.concurrent.TimeoutException))) {
+                throw new java.util.concurrent.TimeoutException((AppiumServer.getInstance().getLog()
+                        .orElse("Appium log is empty")) + "\n" + ExceptionUtils.getStackTrace(e));
+            } else {
+                throw e;
+            }
+        }
     }
 
     /**
@@ -63,7 +76,8 @@ public abstract class AndroidPage extends BasePage {
 
     @Override
     protected long getDriverInitializationTimeout() {
-        return DRIVER_INIT_TIMEOUT_MILLIS;
+        return  (ZetaAndroidDriver.MAX_COMMAND_DURATION_MILLIS + AppiumServer.RESTART_TIMEOUT_MILLIS)
+                * DRIVER_CREATION_RETRIES_COUNT;
     }
 
     public AndroidPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -253,8 +267,8 @@ public abstract class AndroidPage extends BasePage {
      * The distance percentage(based on screen hight) between B.Y and (A.Y + A.Height)
      * should small than <locationDifferencePercentage>
      *
-     * @param elementA The element in the relative "bottom" position
-     * @param elementB The element in the relative "top" position
+     * @param elementA                     The element in the relative "bottom" position
+     * @param elementB                     The element in the relative "top" position
      * @param locationDifferencePercentage [0, n), n belong any integer,
      *                                     if equal 0, means A is below B, and A is close to B
      *                                     if in (0,1), means A is below B, means the distance percentage
