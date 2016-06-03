@@ -1272,16 +1272,25 @@ public class ConversationViewPageSteps {
     /**
      * Verify the sate of Play/Pause button has been changed
      *
+     * @param didNotChange equals to null if button state should be changed
+     *
      * @throws Exception
      * @step. ^I verify the state of (?:Play|Pause) button on audio message placeholder is changed$
      */
-    @Then("^I verify the state of (?:Play|Pause) button on audio message placeholder is changed$")
-    public void IVerifyPlayButtonState() throws Exception {
+    @Then("^I verify the state of (?:Play|Pause) button on audio message placeholder is (not )?changed$")
+    public void   IVerifyPlayButtonState(String didNotChange) throws Exception {
         if (playButtonState == null) {
             throw new IllegalStateException("Please remember button state first");
         }
-        Assert.assertTrue(String.format("The state of the button has not been changed after %s seconds",
-                PLAY_BUTTON_STATE_CHANGE_TIMEOUT), playButtonState.isChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT,
-                PLAY_BUTTON_MIN_SIMILARITY));
+        if (didNotChange == null){
+            Assert.assertTrue(String.format("The state of the button has not been changed after %s seconds",
+                    PLAY_BUTTON_STATE_CHANGE_TIMEOUT), playButtonState.isChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT,
+                    PLAY_BUTTON_MIN_SIMILARITY));
+        } else {
+            Assert.assertTrue(String.format("The state of the button has changed after %s seconds",
+                    PLAY_BUTTON_STATE_CHANGE_TIMEOUT), playButtonState.isNotChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT,
+                    PLAY_BUTTON_MIN_SIMILARITY));
+        }
+
     }
 }
