@@ -93,7 +93,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C131214 @staging
+  @C131214 @regression
   Scenario Outline: Verify not sent yet audio message is preserved on minimising the app
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -108,7 +108,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C131219 @staging
+  @C131219 @regression
   Scenario Outline: Verify not sent yet audio message is deleted on switching between the conversations
     Given There are 3 user where <Name> is me
     Given Myself is connected to all other
