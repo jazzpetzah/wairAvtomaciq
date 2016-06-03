@@ -27,6 +27,8 @@ import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 
 public class RegistrationPageSteps {
     
@@ -161,20 +163,21 @@ public class RegistrationPageSteps {
     }
 
     /**
-     * Verifiy whether email address, which is visible on email confirmation page is the same as the expected one
-     *
-     * @step. ^I see email (.*) on [Vv]erification page$
-     *
-     * @param email expected email/alias
-     * @throws NoSuchUserException
-     */
-    @Then("^I see email (.*) on [Vv]erification page$")
-    public void ISeeVerificationEmail(String email) throws NoSuchUserException,
-            Exception {
-        email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-        assertThat(webappPagesCollection.getPage(RegistrationPage.class)
-                .getVerificationEmailAddress(), equalTo(email));
-    }
+	 * Verify whether email address, which is visible on email confirmation page
+	 * is the same as the expected one
+	 * 
+	 * @step. ^I see email (.*) on [Vv]erification page$
+	 * 
+	 * @param email
+	 *            expected email/alias
+	 * @throws Exception
+	 */
+	@Then("^I see email (.*) on [Vv]erification page$")
+	public void ISeeVerificationEmail(String email) throws Exception {
+		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
+		assertThat(webappPagesCollection.getPage(RegistrationPage.class)
+				.getVerificationEmailAddress(), containsString(email));
+	}
 
     /**
      * Verify whether I see an error message on the verification page
