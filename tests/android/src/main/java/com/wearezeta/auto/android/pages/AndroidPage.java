@@ -8,6 +8,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.apache.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.openqa.selenium.*;
@@ -280,5 +281,30 @@ public abstract class AndroidPage extends BasePage {
 
     public DefaultArtifactVersion getOSVersion() throws Exception {
         return getDriver().getOSVersion();
+    }
+
+    /**
+     * Long tap on an element for several seconds, then move it to the end position
+     * However the end position could be an element which will be visible after you tap on the start element,
+     * Thus the end element will be passed by FunctionalInterface, will be called between "long tap" and "swipe"
+     *
+     * @param longTapElement            the start element
+     * @param getEndElement             the function to retrieve end element durint Runtime
+     * @param swipeDurationMilliseconds the duration of swipe
+     * @param tapDurationMilliseconds   the duration of long tap
+     * @param callback                  the callback during long tap, cannbe null if no callback
+     * @throws Exception
+     */
+    public void longTapAndSwipe(WebElement longTapElement,
+                                FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement,
+                                int swipeDurationMilliseconds, int tapDurationMilliseconds,
+                                FunctionalInterfaces.ISupplierWithException callback) throws Exception {
+        final Point fromPoint = longTapElement.getLocation();
+        final Dimension fromElementSize = longTapElement.getSize();
+
+        final int startX = fromPoint.x + fromElementSize.width / 2;
+        final int startY = fromPoint.y + fromElementSize.height / 2;
+
+        getDriver().touch(startX, startY, getEndElement, swipeDurationMilliseconds, tapDurationMilliseconds, callback);
     }
 }

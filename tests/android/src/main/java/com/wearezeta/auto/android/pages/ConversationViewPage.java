@@ -354,13 +354,13 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void longTapAudioMessageCursorBtnAndSwipeUp(int longTapDurationMilliseconds) throws Exception {
-        getDriver().longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idAudioMessageSendButton),
+        longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idAudioMessageSendButton),
                 DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds, null);
     }
 
     public void longTapAudioMessageCursorBtnAndRememberIcon(int longTapDurationMilliseconds, ElementState elementState)
             throws Exception {
-        getDriver().longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idCursorAudioMessage),
+        longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idCursorAudioMessage),
                 DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds, () -> elementState.remember());
     }
 

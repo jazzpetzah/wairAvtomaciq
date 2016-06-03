@@ -147,7 +147,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
      * @param tapDurationMilliseconds  tap duration
      * @param callback                 callback during the long tap, can be null if nothing want to to do
      */
-    private void touch(int startX, int startY, FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement,
+    public void touch(int startX, int startY, FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement,
                        int swipDurationMilliseconds, int tapDurationMilliseconds,
                        FunctionalInterfaces.ISupplierWithException callback) {
         int duration = 1;
@@ -207,29 +207,7 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
         }
     }
 
-    /**
-     * Long tap on an element for several seconds, then move it to the end position
-     * However the end position could be an element which will be visible after you tap on the start element,
-     * Thus the end element will be passed by FunctionalInterface, will be called between "long tap" and "swipe"
-     *
-     * @param longTapElement            the start element
-     * @param getEndElement             the function to retrieve end element durint Runtime
-     * @param swipeDurationMilliseconds the duration of swipe
-     * @param tapDurationMilliseconds   the duration of long tap
-     * @param callback                  the callback during long tap, cannbe null if no callback
-     */
-    public void longTapAndSwipe(WebElement longTapElement,
-                                FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement,
-                                int swipeDurationMilliseconds, int tapDurationMilliseconds,
-                                FunctionalInterfaces.ISupplierWithException callback) {
-        final Point fromPoint = longTapElement.getLocation();
-        final Dimension fromElementSize = longTapElement.getSize();
 
-        final int startX = fromPoint.x + fromElementSize.width / 2;
-        final int startY = fromPoint.y + fromElementSize.height / 2;
-
-        this.touch(startX, startY, getEndElement, swipeDurationMilliseconds, tapDurationMilliseconds, callback);
-    }
 
     public void longTap(WebElement el, int durationMilliseconds) {
         final Point location = el.getLocation();
