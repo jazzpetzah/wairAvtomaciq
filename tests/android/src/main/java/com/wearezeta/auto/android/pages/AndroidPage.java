@@ -337,7 +337,7 @@ public abstract class AndroidPage extends BasePage {
         final int startX = fromPoint.x + fromElementSize.width / 2;
         final int startY = fromPoint.y + fromElementSize.height / 2;
 
-        touch(startX, startY, getEndElement, swipeDurationMilliseconds, tapDurationMilliseconds, callback);
+        touchAndSwipe(startX, startY, getEndElement, swipeDurationMilliseconds, tapDurationMilliseconds, callback);
     }
 
     /**
@@ -353,7 +353,7 @@ public abstract class AndroidPage extends BasePage {
      * @param callback                  callback during the long tap, can be null if nothing want to to do
      * @throws Exception
      */
-    public void touch(int startX, int startY, FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement,
+    private void touchAndSwipe(int startX, int startY, FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement,
                       int swipeDurationMilliseconds, int tapDurationMilliseconds,
                       Optional<FunctionalInterfaces.ISupplierWithException> callback) throws Exception {
         int duration = 1;
