@@ -9,11 +9,11 @@ import org.openqa.selenium.By;
 public class CallOutgoingPage extends CallingOverlayPage {
 
     private static final By xpathOngoingVideoCallContainer =
-            By.xpath("//*[@id='ttv__calling__header__avatar__subtitle' and contains(@value, 'ringing') " +
-                    "and //*[@id='ccbv__calling_controls__hangup']]");
+            By.xpath("//*[@id='ttv__calling__header__subtitle' and contains(@value, 'Ringing') " +
+                    "and //*[@id='ccbv__button_middle']]");
 
     private static final By xpathOngoingAudioCallContainer =
-            By.xpath("//*[@id='ttv__calling__header__subtitle' and contains(@value, 'RINGING') " +
+            By.xpath("//*[@id='ttv__calling__header__subtitle' and contains(@value, 'Ring') " +
                     "and //*[@id='ccbv__button_middle']]");
     
     private static final By idParticipants = By.id("chv__calling__participants_grid__chathead");
