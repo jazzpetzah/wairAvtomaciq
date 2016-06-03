@@ -8,6 +8,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -348,7 +349,7 @@ public class ConversationViewPage extends AndroidPage {
     public void longTapAudioMessageCursorBtnAndRememberIcon(int longTapDurationMilliseconds, ElementState elementState)
             throws Exception {
         longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idCursorAudioMessage),
-                DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds, () -> elementState.remember());
+                DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds, Optional.of(() -> elementState.remember()));
     }
 
     public boolean isPingButtonVisible() throws Exception {

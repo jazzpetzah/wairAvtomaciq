@@ -1358,7 +1358,7 @@ public class ConversationViewPageSteps {
      * @step. ^I verify the state of recent audio message seekbar in the conversation view is changed$
      */
     @Then("^I verify the state of recent audio message seekbar in the conversation view is changed$")
-    public void ISeeAudioMessageSeekbarStateChanged() throws Exception{
+    public void ISeeAudioMessageSeekbarStateChanged() throws Exception {
         Assert.assertTrue("The current and previous state of audio message seekbar seems to be same",
                 audiomessageSeekbarState.isChanged(AUDIOMESSAGE_SEEKBAR_STATE_CHANGE_TIMEOUT,
                         MIN_AUDIOMESSAGE_SEEKBAR_SCORE));
@@ -1384,6 +1384,7 @@ public class ConversationViewPageSteps {
      * Verify whether current audio message microphone button differs from the previous one
      *
      * @throws Exception
+     * @step. ^I verify the state of audio message microphone button in the conversation view is changed$
      */
     @Then("^I verify the state of audio message microphone button in the conversation view is changed$")
     public void ISeeAudioMessageMicrophoneButtonStateChanged() throws Exception {
