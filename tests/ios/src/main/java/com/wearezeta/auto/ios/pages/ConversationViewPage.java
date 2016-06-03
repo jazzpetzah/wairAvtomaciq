@@ -124,7 +124,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameVideoMessageButton = MobileBy.AccessibilityId("videoButton");
     private static final By nameAudioMessageButton = MobileBy.AccessibilityId("audioButton");
 
-    private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[@name='ConversationView']";
+    private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[./UIAButton[@name='Back']]";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
 
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
