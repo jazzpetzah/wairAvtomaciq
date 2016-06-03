@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
+import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.uiautomation.UIAutomatorDriver;
 import com.wearezeta.auto.common.BasePage;
@@ -10,9 +11,11 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.apache.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.touch.TouchActions;
 
 import java.util.Optional;
 import java.util.concurrent.*;
@@ -78,7 +81,7 @@ public abstract class AndroidPage extends BasePage {
 
     @Override
     protected long getDriverInitializationTimeout() {
-        return  (ZetaAndroidDriver.MAX_COMMAND_DURATION_MILLIS + AppiumServer.RESTART_TIMEOUT_MILLIS)
+        return (ZetaAndroidDriver.MAX_COMMAND_DURATION_MILLIS + AppiumServer.RESTART_TIMEOUT_MILLIS)
                 * DRIVER_CREATION_RETRIES_COUNT;
     }
 
@@ -305,5 +308,101 @@ public abstract class AndroidPage extends BasePage {
 
     public boolean waitUntilNoInternetBarInvisible(int timeoutSeconds) throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathInternetIndicator, timeoutSeconds);
+    }
+
+    /**
+     * Long tap on an element for several seconds, then move it to the end position
+     *
+     * @param longTapElement            the start element
+     * @param getEndElement             the function to retrieve end element durint Runtime
+     * @param swipeDurationMilliseconds the duration of swipe
+     * @param tapDurationMilliseconds   the duration of long tap
+     * @throws Exception
+     */
+    public void longTapAndSwipe(WebElement longTapElement,
+                                FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement,
+                                int swipeDurationMilliseconds, int tapDurationMilliseconds) throws Exception {
+        longTapAndSwipe(longTapElement, getEndElement, swipeDurationMilliseconds, tapDurationMilliseconds,
+                Optional.empty());
+    }
+
+    /**
+     * Long tap on an element for several seconds, then move it to the end position
+     * However the end position could be an element which will be visible after you tap on the start element,
+     * Thus the end element will be passed by FunctionalInterface, will be called between "long tap" and "swipe"
+     *
+     * @param longTapElement            the start element
+     * @param getEndElement             the function to retrieve end element durint Runtime
+     * @param swipeDurationMilliseconds the duration of swipe
+     * @param tapDurationMilliseconds   the duration of long tap
+     * @param callback                  the callback during long tap, cannbe null if no callback
+     * @throws Exception
+     */
+    public void longTapAndSwipe(WebElement longTapElement,
+                                FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement,
+                                int swipeDurationMilliseconds, int tapDurationMilliseconds,
+                                Optional<FunctionalInterfaces.ISupplierWithException> callback) throws Exception {
+        final Point fromPoint = longTapElement.getLocation();
+        final Dimension fromElementSize = longTapElement.getSize();
+
+        final int startX = fromPoint.x + fromElementSize.width / 2;
+        final int startY = fromPoint.y + fromElementSize.height / 2;
+
+        touchAndSwipe(startX, startY, getEndElement, swipeDurationMilliseconds, tapDurationMilliseconds, callback);
+    }
+
+    /**
+     * Touch is used for touch on an element for several seconds, then move it to the end position
+     * However the end position could be an element which be presented after you touch,
+     * Thus the end element should be located after long tap.
+     *
+     * @param startX                    start X
+     * @param startY                    start Y
+     * @param getEndElement             the functional interface to get end element, called after long tap
+     * @param swipeDurationMilliseconds swipe duration
+     * @param tapDurationMilliseconds   tap duration
+     * @param callback                  callback during the long tap, can be null if nothing want to to do
+     * @throws Exception
+     */
+    private void touchAndSwipe(int startX, int startY, FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement,
+                      int swipeDurationMilliseconds, int tapDurationMilliseconds,
+                      Optional<FunctionalInterfaces.ISupplierWithException> callback) throws Exception {
+        int duration = 1;
+        if (swipeDurationMilliseconds > ZetaAndroidDriver.SWIPE_STEP_DURATION_MILLISECONDS) {
+            duration = (swipeDurationMilliseconds % ZetaAndroidDriver.SWIPE_STEP_DURATION_MILLISECONDS == 0)
+                    ? (swipeDurationMilliseconds / ZetaAndroidDriver.SWIPE_STEP_DURATION_MILLISECONDS)
+                    : (swipeDurationMilliseconds / ZetaAndroidDriver.SWIPE_STEP_DURATION_MILLISECONDS + 1);
+        }
+        int current = 1;
+        final TouchActions ta = new TouchActions(getDriver());
+        ta.down(startX, startY).perform();
+
+        try {
+            if (callback.isPresent()) {
+                callback.get().call();
+            }
+
+            Thread.sleep(tapDurationMilliseconds);
+            WebElement element = getEndElement.call();
+            Dimension dimension = element.getSize();
+            Point point = element.getLocation();
+
+            final int endx = point.x + dimension.width / 2;
+            final int endy = point.y + dimension.height / 2;
+
+            do {
+                Thread.sleep(ZetaAndroidDriver.SWIPE_STEP_DURATION_MILLISECONDS);
+                ta.move(getNextCoord(startX, endx, current, duration),
+                        getNextCoord(startY, endy, current, duration)).perform();
+                current++;
+            } while (current <= duration);
+            ta.up(endx, endy).perform();
+        } catch (Exception e) {
+            Throwables.propagate(e);
+        }
+    }
+
+    private static int getNextCoord(double startC, double endC, double current, double duration) {
+        return (int) Math.round(startC + (endC - startC) / duration * current);
     }
 }

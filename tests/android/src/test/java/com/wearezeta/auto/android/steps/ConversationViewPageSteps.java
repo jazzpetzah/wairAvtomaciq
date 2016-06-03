@@ -49,9 +49,11 @@ public class ConversationViewPageSteps {
     private final ElementState filePlaceHolderActionButtonState = new ElementState(
             () -> getConversationViewPage().getFilePlaceholderActionButtonState());
     private final ElementState audiomessageSeekbarState = new ElementState(
-            () -> getConversationViewPage().getAudioMessageSeekbar());
+            () -> getConversationViewPage().getAudioMessageSeekbarState());
     private final ElementState audiomessagePreviewSeekbarState = new ElementState(
-            () -> getConversationViewPage().getAudioMessagePreviewSeekbar());
+            () -> getConversationViewPage().getAudioMessagePreviewSeekbarState());
+    private final ElementState audiomessageSlideMicrophoneButtonState = new ElementState(
+            () -> getConversationViewPage().getAudioMessagePreviewMicrophoneButtonState());
     private Boolean wasShieldVisible = null;
 
     private static String expandMessage(String message) {
@@ -178,6 +180,19 @@ public class ConversationViewPageSteps {
     @When("^I long tap Audio message cursor button (\\d+) seconds and swipe up$")
     public void LongTapAudioMessageCursorAndSwipeUp(int durationSeconds) throws Exception {
         getConversationViewPage().longTapAudioMessageCursorBtnAndSwipeUp(durationSeconds * 1000);
+    }
+
+    /**
+     * Long tap on Audio message cursor button, and remember the icon state
+     *
+     * @param durationSeconds
+     * @throws Exception
+     * @step. ^I long tap Audio message microphone button (\d+) seconds and remember icon$
+     */
+    @When("^I long tap Audio message microphone button (\\d+) seconds and remember icon$")
+    public void LongTapAudioMessageCursorAndRememberIcon(int durationSeconds) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtnAndRememberIcon(durationSeconds * 1000,
+                audiomessageSlideMicrophoneButtonState);
     }
 
     /**
@@ -1343,7 +1358,7 @@ public class ConversationViewPageSteps {
      * @step. ^I verify the state of recent audio message seekbar in the conversation view is changed$
      */
     @Then("^I verify the state of recent audio message seekbar in the conversation view is changed$")
-    public void ISeeAudioMessageSeekbarStateChanged() throws Exception{
+    public void ISeeAudioMessageSeekbarStateChanged() throws Exception {
         Assert.assertTrue("The current and previous state of audio message seekbar seems to be same",
                 audiomessageSeekbarState.isChanged(AUDIOMESSAGE_SEEKBAR_STATE_CHANGE_TIMEOUT,
                         MIN_AUDIOMESSAGE_SEEKBAR_SCORE));
@@ -1360,6 +1375,22 @@ public class ConversationViewPageSteps {
         Assert.assertTrue("The current and previous state of audio message preview seekbar seems to be same",
                 audiomessagePreviewSeekbarState.isChanged(AUDIOMESSAGE_SEEKBAR_STATE_CHANGE_TIMEOUT,
                         MIN_AUDIOMESSAGE_SEEKBAR_SCORE));
+    }
+
+    private static final double MIN_AUDIOMESSAGE_MICROPHONE_SCORE = 0.9;
+    private static final int AUDIOMESSAGE_MICROPHONE_STATE_CHANGE_TIMEOUT = 10; //seconds
+
+    /**
+     * Verify whether current audio message microphone button differs from the previous one
+     *
+     * @throws Exception
+     * @step. ^I verify the state of audio message microphone button in the conversation view is changed$
+     */
+    @Then("^I verify the state of audio message microphone button in the conversation view is changed$")
+    public void ISeeAudioMessageMicrophoneButtonStateChanged() throws Exception {
+        Assert.assertTrue("The current and previous state of audio message microphone button seems to be same",
+                audiomessageSlideMicrophoneButtonState.isChanged(AUDIOMESSAGE_MICROPHONE_STATE_CHANGE_TIMEOUT,
+                        MIN_AUDIOMESSAGE_MICROPHONE_SCORE));
     }
 
     /**
