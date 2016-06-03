@@ -1448,4 +1448,20 @@ public class CommonAndroidSteps {
                     "%s version is expected.", currentOsVersion, minVersion));
         }
     }
+
+    /**
+     * Verify whether no internet bar is visible
+     *
+     * @param shouldNotSee equals null means the "no internet bar" should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see no internet bar$
+     */
+    @Then("^I (do not )?see no internet bar$")
+    public void ISeeNoInternetBar(String shouldNotSee) throws Exception{
+        if(shouldNotSee == null) {
+            pagesCollection.getCommonPage().waitUntilNoInternetBarVisible();
+        } else {
+            pagesCollection.getCommonPage().waitUntilNoInternetBarInvisible();
+        }
+    }
 }
