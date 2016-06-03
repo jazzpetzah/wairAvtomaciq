@@ -93,7 +93,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C131214 @staging
+  @C131214 @regression
   Scenario Outline: Verify not sent yet audio message is preserved on minimising the app
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -108,7 +108,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C131219 @staging
+  @C131219 @regression
   Scenario Outline: Verify not sent yet audio message is deleted on switching between the conversations
     Given There are 3 user where <Name> is me
     Given Myself is connected to all other
@@ -124,9 +124,51 @@ Feature: Audio Messaging
     Then I do not see audio message record container
 
     Examples:
-      | Name      | Contact   | Contact2 |
-      | user1Name | user2Name | user3Name|
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
+  @C129346 @staging
+  Scenario Outline: Verify impossibility of saving voice message before downloading
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    When User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    And I long tap on audio message placeholder in conversation view
+    Then I do not see Save badge item
+    When I tap Play audio message button
+    # Small wait to make sure download is completed
+    And I wait for 5 seconds
+    And I long tap on audio message placeholder in conversation view
+    Then I see Save badge item
+
+    Examples:
+      | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
+
+  @C131217 @staging
+  Scenario Outline: Verify playback is stopped when other audio message starts playing
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    When I tap Play audio message button on audio message placeholder number 2
+    # Wait until the audio is downloaded and starts playback
+    And I wait for <AudioDownloadTimeout> seconds
+    And I remember the state of Pause button on the second audio message placeholder
+    And I tap Play audio message button on audio message placeholder number 1
+    # Wait until the audio is downloaded
+    And I wait for <AudioDownloadTimeout> seconds
+    Then I verify the state of Pause button on audio message placeholder is changed
+
+    Examples:
+      | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
+  
   @torun @C139855 @staging
   Scenario Outline: (Bug ZIOS-6759)Verify playback is stopped when incoming call has appeared
     Given There are 2 user where <Name> is me
