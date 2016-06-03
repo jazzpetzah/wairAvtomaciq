@@ -175,7 +175,11 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By namePlayAudioMessageButton = MobileBy.AccessibilityId("audioRecorderPlay");
 
-    private static final By nameAudioActionButton = MobileBy.AccessibilityId("AudioActionButton");
+    private static final String strNameAudioActionButton = "AudioActionButton";
+    private static final By nameAudioActionButton = MobileBy.AccessibilityId(strNameAudioActionButton);
+
+    private static final Function<Integer, String> xpathStrAudioActionButtonByIndex = index ->
+            String.format("(//*[@name='%s'])[%s]", strNameAudioActionButton, index);
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -783,7 +787,29 @@ public class ConversationViewPage extends IOSPage {
         this.getDriver().tap(1, getElement(nameAudioActionButton), DriverUtils.LONG_TAP_DURATION);
     }
 
+    public void tapPlayAudioMessageButton(int placeholderIndex) throws Exception {
+        final By locator = By.xpath(xpathStrAudioActionButtonByIndex.apply(placeholderIndex));
+        getElement(locator).click();
+    }
+
     public void tapPlayAudioMessageButton() throws Exception {
         getElement(nameAudioActionButton).click();
+    }
+
+    public BufferedImage getPlayAudioMessageButtonScreenshot(int placeholderIndex) throws Exception {
+        final By locator = By.xpath(xpathStrAudioActionButtonByIndex.apply(placeholderIndex));
+        return this.getElementScreenshot(getElement(locator)).orElseThrow(
+                () -> new IllegalStateException(
+                        String.format("Cannot get a screenshot of Play/Pause button on audio container #%d",
+                                placeholderIndex))
+        );
+    }
+
+    public BufferedImage getFirstPlayAudioMessageButtonScreenshot() throws Exception {
+        return getPlayAudioMessageButtonScreenshot(1);
+    }
+
+    public BufferedImage getSecondPlayAudioMessageButtonScreenshot() throws Exception {
+        return getPlayAudioMessageButtonScreenshot(2);
     }
 }

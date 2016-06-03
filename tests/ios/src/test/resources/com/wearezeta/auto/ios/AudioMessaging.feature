@@ -124,8 +124,8 @@ Feature: Audio Messaging
     Then I do not see audio message record container
 
     Examples:
-      | Name      | Contact   | Contact2 |
-      | user1Name | user2Name | user3Name|
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C129346 @staging
   Scenario Outline: Verify impossibility of saving voice message before downloading
@@ -146,3 +146,25 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
+
+  @C131217 @staging
+  Scenario Outline: Verify playback is stopped when other audio message starts playing
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    When I tap Play audio message button on audio message placeholder number 2
+    # Wait until the audio is downloaded and starts playback
+    And I wait for <AudioDownloadTimeout> seconds
+    And I remember the state of Pause button on the second audio message placeholder
+    And I tap Play audio message button on audio message placeholder number 1
+    # Wait until the audio is downloaded
+    And I wait for <AudioDownloadTimeout> seconds
+    Then I verify the state of Pause button on audio message placeholder is changed
+
+    Examples:
+      | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
