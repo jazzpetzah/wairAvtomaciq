@@ -3,19 +3,34 @@ package com.wearezeta.auto.win.steps.webapp;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
 public class RegistrationPageSteps {
+    
+    private static final Logger LOG = ZetaLogger.getLog(RegistrationPageSteps.class.getName());
 
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
@@ -105,6 +120,18 @@ public class RegistrationPageSteps {
         webappPagesCollection.getPage(RegistrationPage.class).enterPassword(
                 this.userToRegister.getPassword());
     }
+    
+    /**
+     * Check terms of use checkbox
+     *
+     * @throws Exception
+     * @step. ^I accept the Terms of Use$
+     */
+    @When("^I accept the Terms of Use$")
+    public void IAcceptTermsOfUse() throws Exception {
+        webappPagesCollection.getPage(RegistrationPage.class)
+                .acceptTermsOfUse();
+    }
 
     /**
      * Submit registration form
@@ -117,6 +144,20 @@ public class RegistrationPageSteps {
     public void ISubmitRegistration() throws Exception {
         webappPagesCollection.getPage(RegistrationPage.class)
                 .submitRegistration();
+    }
+    
+    /**
+     * Start monitoring thread for activation email. Please put this step BEFORE you submit the registration form
+     *
+     * @throws Exception
+     * @step. ^I start activation email monitoring$
+     */
+    @When("^I start activation email monitoring$")
+    public void IStartActivationEmailMonitoring() throws Exception {
+        Map<String, String> expectedHeaders = new HashMap<>();
+        expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
+        this.activationMessage = IMAPSMailbox.getInstance(userToRegister.getEmail(), userToRegister.getPassword())
+                .getMessage(expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
     }
 
     /**
@@ -194,6 +235,46 @@ public class RegistrationPageSteps {
     public void IVerifyRegistrationEmail() throws Exception {
         BackendAPIWrappers.activateRegisteredUserByEmail(this.activationMessage);
     }
+    
+    /**
+     * Activates user using browser URL from activation email and sign him in to the app if the activation was successful. Don't
+     * forget to call the 'I start activation email monitoring' step before this one
+     *
+     * @throws Exception
+     * @step. ^I activate user by URL$
+     */
+    @Then("^I activate user by URL$")
+    public void WhenIActivateUserByUrl() throws Exception {
+        final String link = BackendAPIWrappers
+                .getUserActivationLink(this.activationMessage);
+        LOG.info("Get activation link from " + link);
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpGet httpGet = new HttpGet(link);
+        HttpEntity entity = httpclient.execute(httpGet).getEntity();
+        if (entity != null) {
+            String content = EntityUtils.toString(entity);
+            Pattern p = Pattern.compile("data-url=\"(.*?)\"");
+            Matcher m = p.matcher(content);
+            while (m.find()) {
+                String activationLink = m.group(1);
+                LOG.info("Activation link: " + activationLink);
+                httpGet = new HttpGet(activationLink);
+                httpclient.execute(httpGet);
+            }
+        }
+
+        // indexes in aliases start from 1
+        final int userIndex = usrMgr.appendCustomUser(userToRegister) + 1;
+        userToRegister.addEmailAlias(ClientUsersManager.EMAIL_ALIAS_TEMPLATE
+                .apply(userIndex));
+        userToRegister.addNameAlias(ClientUsersManager.NAME_ALIAS_TEMPLATE
+                .apply(userIndex));
+        userToRegister
+                .addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
+                        .apply(userIndex));
+
+        webappPagesCollection.getPage(LoginPage.class).waitForLogin();
+    }
 
     /**
      * Switch to Sign In page
@@ -205,5 +286,17 @@ public class RegistrationPageSteps {
     @Given("^I switch to [Ss]ign [Ii]n page$")
     public void ISwitchToLoginPage() throws Exception {
         webappPagesCollection.getPage(RegistrationPage.class).switchToLoginPage();
+    }
+    
+    /**
+     * Clicks on Verify later button on Verification page
+     *
+     * @throws Exception
+     * @step. ^I click on Verify later button on Verification page$
+     */
+    @Then("^I click on Verify later button on Verification page$")
+    public void IClickVerifyLaterButton() throws Exception {
+        webappPagesCollection.getPage(RegistrationPage.class)
+                .clickVerifyLaterButton();
     }
 }
