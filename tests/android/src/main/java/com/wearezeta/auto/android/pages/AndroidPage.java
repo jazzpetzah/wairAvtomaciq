@@ -76,7 +76,7 @@ public abstract class AndroidPage extends BasePage {
 
     @Override
     protected long getDriverInitializationTimeout() {
-        return  (ZetaAndroidDriver.MAX_COMMAND_DURATION_MILLIS + AppiumServer.RESTART_TIMEOUT_MILLIS)
+        return (ZetaAndroidDriver.MAX_COMMAND_DURATION_MILLIS + AppiumServer.RESTART_TIMEOUT_MILLIS)
                 * DRIVER_CREATION_RETRIES_COUNT;
     }
 
@@ -295,6 +295,21 @@ public abstract class AndroidPage extends BasePage {
 
     public DefaultArtifactVersion getOSVersion() throws Exception {
         return getDriver().getOSVersion();
+    }
+
+    /**
+     * Long tap on an element for several seconds, then move it to the end position
+     *
+     * @param longTapElement            the start element
+     * @param getEndElement             the function to retrieve end element durint Runtime
+     * @param swipeDurationMilliseconds the duration of swipe
+     * @param tapDurationMilliseconds   the duration of long tap
+     * @throws Exception
+     */
+    public void longTapAndSwipe(WebElement longTapElement,
+                                FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement,
+                                int swipeDurationMilliseconds, int tapDurationMilliseconds) throws Exception {
+        longTapAndSwipe(longTapElement, getEndElement, swipeDurationMilliseconds, tapDurationMilliseconds, null);
     }
 
     /**

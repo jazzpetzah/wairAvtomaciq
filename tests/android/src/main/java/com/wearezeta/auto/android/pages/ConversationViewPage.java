@@ -342,7 +342,7 @@ public class ConversationViewPage extends AndroidPage {
 
     public void longTapAudioMessageCursorBtnAndSwipeUp(int longTapDurationMilliseconds) throws Exception {
         longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idAudioMessageSendButton),
-                DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds, null);
+                DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds);
     }
 
     public void longTapAudioMessageCursorBtnAndRememberIcon(int longTapDurationMilliseconds, ElementState elementState)
