@@ -164,7 +164,7 @@ public class WebPage extends BasePage {
         int retry = WIRE_LOADED_MAX_RETRY;
         do{
             wireLoaded = (Boolean) getDriver().executeScript("console.log('checking for app wire');\n"
-                + "return wire !== undefined && wire.app !== undefined && wire.app.repository !== undefined");
+                + "return typeof wire !== \"undefined\" && typeof wire.app !== \"undefined\" && typeof wire.app.repository !== \"undefined\"");
             retry--;
             Thread.sleep(WIRE_LOADED_WAIT_MS);
         }while(!wireLoaded && retry > 0);
