@@ -1,20 +1,19 @@
 package com.wearezeta.auto.common.driver;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.common.process.AsyncProcess;
 import com.wearezeta.common.process.UnixProcessHelpers;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.net.UrlChecker;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -22,7 +21,6 @@ public class AppiumServer {
     private static final Logger log = ZetaLogger.getLog(AppiumServer.class.getSimpleName());
 
     private static AppiumServer instance = null;
-    private Optional<AsyncProcess> appiumProcess = Optional.empty();
 
     private AppiumServer() {
         ensureAppiumExecutableExistence();
@@ -41,18 +39,8 @@ public class AppiumServer {
     public static final int RESTART_TIMEOUT_MILLIS = 60000; // milliseconds
     private static final String SERVER_URL = String.format("http://127.0.0.1:%d/wd/hub", PORT);
 
-    private boolean waitUntilIsStopped(long millisecondsTimeout) throws Exception {
-        final URL status = new URL(SERVER_URL + "/status");
-        try {
-            new UrlChecker().waitUntilUnavailable(millisecondsTimeout, TimeUnit.MILLISECONDS, status);
-            return true;
-        } catch (UrlChecker.TimeoutException e) {
-            return false;
-        }
-    }
-
     private boolean waitUntilIsRunning(long millisecondsTimeout) throws Exception {
-        final URL status = new URL(SERVER_URL + "/status");
+        final URL status = new URL(SERVER_URL + "/sessions");
         try {
             new UrlChecker().waitUntilAvailable(millisecondsTimeout, TimeUnit.MILLISECONDS, status);
             return true;
@@ -61,17 +49,21 @@ public class AppiumServer {
         }
     }
 
-    private static final String MAIN_EXECUTABLE_PATH = "/usr/local/bin/appium";
+    private static final String APPIUM_SCRIPT_PATH = "/usr/local/bin/appium";
+    private static final String NODE_EXECUTABLE_PATH = "/usr/local/bin/node";
     public static final int DEFAULT_COMMAND_TIMEOUT = 500; // in seconds
     private static final String LOG_PATH = "/usr/local/var/log/appium/appium.log";
 
     private static final String[] DEFAULT_CMDLINE = new String[]{
-            MAIN_EXECUTABLE_PATH,
+            NODE_EXECUTABLE_PATH,
+            APPIUM_SCRIPT_PATH,
             "--port", Integer.toString(PORT),
             "--session-override",
             "--selendroid-port", Integer.toString(SELENDROID_PORT),
             "--log", LOG_PATH,
-            "--log-timestamp"
+            "--log-timestamp",
+            "> /dev/null 2>&1",
+            "&"
     };
 
     private static void ensureParentDirExistence(String filePath) {
@@ -87,15 +79,13 @@ public class AppiumServer {
     }
 
     private static void ensureAppiumExecutableExistence() {
-        if (!new File(MAIN_EXECUTABLE_PATH).exists()) {
+        if (!new File(APPIUM_SCRIPT_PATH).exists()) {
             throw new IllegalStateException(
                     String.format("The script is unable to find main Appium executable at the path '%s'. " +
                                     "Please make sure it is properly installed (`npm install -g appium`)",
-                            MAIN_EXECUTABLE_PATH));
+                            APPIUM_SCRIPT_PATH));
         }
     }
-
-    private static final String INSTRUMENTS_SOCKET_PATH = "/tmp/instruments_sock";
 
     public void resetIOS() throws Exception {
         UnixProcessHelpers.killProcessesGracefully("osascript",
@@ -108,33 +98,33 @@ public class AppiumServer {
                 "callservicesd", "revisiond", "touchsetupd", "calaccessd",
                 "ServerFileProvider", "mobileassetd", "IMDPersistenceAgent",
                 "itunesstored", "profiled", "passd", "carkitd", "instruments");
-        if (!new File(INSTRUMENTS_SOCKET_PATH).delete()) {
-            log.error(String.format("Instruments socket %s has not been reset properly",
-                    INSTRUMENTS_SOCKET_PATH));
-        }
         restart();
     }
 
     public synchronized void restart() throws Exception {
         final String hostname = InetAddress.getLocalHost().getHostName();
         log.info(String.format("Trying to (re)start Appium server on %s:%s...", hostname, PORT));
-
-        if (appiumProcess.isPresent()) {
-            appiumProcess.get().stop(9, new int[]{this.appiumProcess.get().getPid()}, 2000);
-            appiumProcess = Optional.empty();
-        }
         UnixProcessHelpers.killProcessesGracefully("node");
-        waitUntilIsStopped(RESTART_TIMEOUT_MILLIS / 2);
 
-        this.appiumProcess = Optional.of(new AsyncProcess(DEFAULT_CMDLINE, false, false).start());
+        final File scriptFile = File.createTempFile("script", ".sh");
+        try {
+            final List<String> scriptContent = new ArrayList<>();
+            scriptContent.add("#!/bin/bash");
+            Collections.addAll(scriptContent, String.join(" ", DEFAULT_CMDLINE));
+            try (Writer output = new BufferedWriter(new FileWriter(scriptFile))) {
+                output.write(String.join("\n", scriptContent));
+            }
+            new ProcessBuilder(new String[]{"/bin/bash", scriptFile.getCanonicalPath()}).start().waitFor();
+        } finally {
+            scriptFile.delete();
+        }
         log.info(String.format("Waiting for Appium to be (re)started on %s:%s...", hostname, PORT));
         final long msStarted = System.currentTimeMillis();
         if (!waitUntilIsRunning(RESTART_TIMEOUT_MILLIS)) {
             throw new WebDriverException(String.format(
                     "Appium server has failed to start after %s seconds timeout on server '%s'.\n" +
                             "Please make sure that NodeJS and Appium packages are installed properly on this machine.\n" +
-                            "Appium logs:\n\n%s\n\n%s\n\n\n",
-                    RESTART_TIMEOUT_MILLIS / 1000, hostname, appiumProcess.get().getStderr(), appiumProcess.get().getStdout()));
+                            "Appium logs:\n\n%s\n\n\n", RESTART_TIMEOUT_MILLIS / 1000, hostname, getLog()));
         }
 
         log.info(String.format("Appium server has been successfully (re)started after %.1f seconds " +
