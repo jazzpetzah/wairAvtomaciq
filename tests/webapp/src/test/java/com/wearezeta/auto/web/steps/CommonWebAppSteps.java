@@ -107,6 +107,11 @@ public class CommonWebAppSteps {
         assertThat(WebappPagesCollection.getInstance().getPage(WebPage.class).getButtonValues(), hasItem(value));
     }
 
+    @Then("^I see a title (.*) on the page$")
+    public void ISeeATitleOnPage(String title) throws Exception {
+        assertTrue(WebappPagesCollection.getInstance().getPage(WebPage.class).getPageTitle().contains(title));
+    }
+
     @Given("^There is a known user (.*) with email (.*) and password (.*)$")
     public void ThereIsAKnownUser(String name, String email, String password) throws Exception {
         context.getCommonSteps().ThereIsAKnownUser(name, email, password);
