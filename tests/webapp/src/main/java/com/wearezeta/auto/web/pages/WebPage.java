@@ -141,6 +141,10 @@ public class WebPage extends BasePage {
         return values;
     }
 
+    public String getPageTitle() throws Exception {
+        return getDriver().getTitle();
+    }
+
     /**
      * Breaks the session to a certain device through injecting Javascript that removes the session state in cryptobox
      *

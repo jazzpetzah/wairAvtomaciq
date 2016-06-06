@@ -4,15 +4,20 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.*;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -20,6 +25,7 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.locators.ExternalLocators;
 import com.wearezeta.auto.web.pages.WebPage;
+import org.openqa.selenium.support.ui.Wait;
 
 public class StartPage extends WebPage {
 	
@@ -51,13 +57,30 @@ public class StartPage extends WebPage {
 	protected ZetaWebAppDriver getDriver() throws Exception {
 		return (ZetaWebAppDriver) super.getDriver();
 	}
-	
+
 	private static String transformSiteUrl(String url)
 			throws URISyntaxException {
 		final URI uri = new URI(url);
 		return SITE_ROOT + uri.getPath();
 	}
-		
+
+	public void switchToSupportPageTab() throws Exception {
+		WebDriver driver = this.getDriver();
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(
+				DriverUtils.getDefaultLookupTimeoutSeconds(), TimeUnit.SECONDS)
+				.pollingEvery(1, TimeUnit.SECONDS);
+		try {
+			wait.until(drv -> {
+				return (drv.getWindowHandles().size() > 1);
+			});
+		} catch (TimeoutException e) {
+			throw new TimeoutException("No Support page tab was found", e);
+		}
+		Set<String> handles = driver.getWindowHandles();
+		handles.remove(driver.getWindowHandle());
+		driver.switchTo().window(handles.iterator().next());
+	}
+
 	public List<WebElement> getAllLinkElements() throws Exception{
 		List<WebElement> list = getDriver().findElements(By.cssSelector("a"));
 		return list;
