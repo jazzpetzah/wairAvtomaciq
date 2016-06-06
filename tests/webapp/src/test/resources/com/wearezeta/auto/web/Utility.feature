@@ -66,6 +66,19 @@ Feature: Utility
       | osx     |
       | windows |
 
+  @C139985 @utility
+  Scenario Outline: Verify that there are no dead links on unsupported browser page for <Agent>
+    When I navigate to unsupported page for <Agent>
+    When I navigate to unsupported page for <Agent>
+    Then I can see no dead links
+
+    Examples:
+      | Agent   |
+      | iphone  |
+      | android |
+      | osx     |
+      | windows |
+
   @C12086 @utility
   Scenario Outline: Verify that there are no dead links on german start page for <Agent>
     When I navigate to start page for <Agent>
@@ -87,6 +100,21 @@ Feature: Utility
     When I navigate to privacy page for <Agent>
     And I change language to german
     And privacy page for <Agent> is german
+    Then I can see no dead links
+
+    Examples:
+      | Agent   |
+      | iphone  |
+      | android |
+      | osx     |
+      | windows |
+
+  @C139986 @utility
+  Scenario Outline: Verify that there are no dead links on german unsupported browser page for <Agent>
+    When I navigate to unsupported page for <Agent>
+    When I navigate to unsupported page for <Agent>
+    And I change language to german
+    And unsupported page for <Agent> is german
     Then I can see no dead links
 
     Examples:
