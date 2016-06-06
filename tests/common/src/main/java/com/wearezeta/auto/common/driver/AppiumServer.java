@@ -1,16 +1,12 @@
 package com.wearezeta.auto.common.driver;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.common.process.AsyncProcess;
 import com.wearezeta.common.process.UnixProcessHelpers;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.net.UrlChecker;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -22,7 +18,7 @@ public class AppiumServer {
     private static final Logger log = ZetaLogger.getLog(AppiumServer.class.getSimpleName());
 
     private static AppiumServer instance = null;
-    private Optional<AsyncProcess> appiumProcess = Optional.empty();
+    private Optional<Process> appiumProcess = Optional.empty();
 
     private AppiumServer() {
         ensureAppiumExecutableExistence();
@@ -99,13 +95,38 @@ public class AppiumServer {
         restart();
     }
 
+    private class DummyPrinter extends Thread {
+        InputStream is = null;
+
+        DummyPrinter(InputStream is) {
+            this.is = is;
+        }
+
+        public void run() {
+            try {
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                do {
+                    if (br.ready()) {
+                        if (br.readLine() != null) {
+                            // ignore
+                        }
+                    } else {
+                        Thread.sleep(500);
+                    }
+                } while (br != null);
+            } catch (Exception ioe) {
+                // ignore
+            }
+        }
+    }
+
     public synchronized void restart() throws Exception {
         final String hostname = InetAddress.getLocalHost().getHostName();
         log.info(String.format("Trying to (re)start Appium server on %s:%s...", hostname, PORT));
 
         if (appiumProcess.isPresent()) {
             try {
-                appiumProcess.get().stop(2000);
+                appiumProcess.get().destroyForcibly();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -113,15 +134,21 @@ public class AppiumServer {
         }
         UnixProcessHelpers.killProcessesGracefully("node");
 
-        this.appiumProcess = Optional.of(new AsyncProcess(DEFAULT_CMDLINE, false, false, false).start());
+        // TODO: Daemonize the process
+        this.appiumProcess = Optional.of(new ProcessBuilder(DEFAULT_CMDLINE).start());
+        Thread commandLineThread = new Thread(() -> {
+            new DummyPrinter(this.appiumProcess.get().getErrorStream());
+            new DummyPrinter(this.appiumProcess.get().getInputStream());
+        });
+        commandLineThread.setDaemon(true);
+        commandLineThread.start();
         log.info(String.format("Waiting for Appium to be (re)started on %s:%s...", hostname, PORT));
         final long msStarted = System.currentTimeMillis();
         if (!waitUntilIsRunning(RESTART_TIMEOUT_MILLIS)) {
             throw new WebDriverException(String.format(
                     "Appium server has failed to start after %s seconds timeout on server '%s'.\n" +
                             "Please make sure that NodeJS and Appium packages are installed properly on this machine.\n" +
-                            "Appium logs:\n\n%s\n\n%s\n\n\n", RESTART_TIMEOUT_MILLIS / 1000, hostname,
-                    appiumProcess.get().getStderr(), appiumProcess.get().getStdout()));
+                            "Appium logs:\n\n%s\n\n\n", RESTART_TIMEOUT_MILLIS / 1000, hostname, getLog()));
         }
 
         log.info(String.format("Appium server has been successfully (re)started after %.1f seconds " +
