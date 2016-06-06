@@ -127,7 +127,7 @@ Feature: Audio Messaging
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C129346 @staging
+  @C129346 @regression
   Scenario Outline: Verify impossibility of saving voice message before downloading
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -147,7 +147,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
 
-  @C131217 @staging
+  @C131217 @regression
   Scenario Outline: Verify playback is stopped when other audio message starts playing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
