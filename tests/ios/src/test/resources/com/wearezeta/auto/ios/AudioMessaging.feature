@@ -168,7 +168,7 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
-  
+
   @C139855 @staging
   Scenario Outline: (ZIOS-6759) Verify playback is stopped when incoming call has appeared
     Given There are 2 user where <Name> is me
@@ -190,3 +190,23 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact   | FileName | FileMIME  | ContactDevice | CallBackend | AudioDownloadTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | chrome      | 5                    |
+
+  @C139857 @staging
+  Scenario Outline: Verify recording is stopped when incoming call has appeared
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I long tap Audio Message button from input tools without releasing my finger
+    # Let it record something
+    And I wait for 3 seconds
+    And <Contact> calls me
+    And I see call status message contains "<Contact> calling"
+    And I tap Ignore button on Calling overlay
+    Then I see Cancel record control button
+
+    Examples:
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
