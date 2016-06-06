@@ -11,6 +11,9 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -18,7 +21,6 @@ public class AppiumServer {
     private static final Logger log = ZetaLogger.getLog(AppiumServer.class.getSimpleName());
 
     private static AppiumServer instance = null;
-    private Optional<Process> appiumProcess = Optional.empty();
 
     private AppiumServer() {
         ensureAppiumExecutableExistence();
@@ -47,17 +49,21 @@ public class AppiumServer {
         }
     }
 
-    private static final String MAIN_EXECUTABLE_PATH = "/usr/local/bin/appium";
+    private static final String APPIUM_SCRIPT_PATH = "/usr/local/bin/appium";
+    private static final String NODE_EXECUTABLE_PATH = "/usr/local/bin/node";
     public static final int DEFAULT_COMMAND_TIMEOUT = 500; // in seconds
     private static final String LOG_PATH = "/usr/local/var/log/appium/appium.log";
 
     private static final String[] DEFAULT_CMDLINE = new String[]{
-            MAIN_EXECUTABLE_PATH,
+            NODE_EXECUTABLE_PATH,
+            APPIUM_SCRIPT_PATH,
             "--port", Integer.toString(PORT),
             "--session-override",
             "--selendroid-port", Integer.toString(SELENDROID_PORT),
             "--log", LOG_PATH,
-            "--log-timestamp"
+            "--log-timestamp",
+            "> /dev/null 2>&1",
+            "&"
     };
 
     private static void ensureParentDirExistence(String filePath) {
@@ -73,11 +79,11 @@ public class AppiumServer {
     }
 
     private static void ensureAppiumExecutableExistence() {
-        if (!new File(MAIN_EXECUTABLE_PATH).exists()) {
+        if (!new File(APPIUM_SCRIPT_PATH).exists()) {
             throw new IllegalStateException(
                     String.format("The script is unable to find main Appium executable at the path '%s'. " +
                                     "Please make sure it is properly installed (`npm install -g appium`)",
-                            MAIN_EXECUTABLE_PATH));
+                            APPIUM_SCRIPT_PATH));
         }
     }
 
@@ -95,53 +101,23 @@ public class AppiumServer {
         restart();
     }
 
-    private class DummyPrinter extends Thread {
-        InputStream is = null;
-
-        DummyPrinter(InputStream is) {
-            this.is = is;
-        }
-
-        public void run() {
-            try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(is));
-                do {
-                    if (br.ready()) {
-                        if (br.readLine() != null) {
-                            // ignore
-                        }
-                    } else {
-                        Thread.sleep(500);
-                    }
-                } while (br != null);
-            } catch (Exception ioe) {
-                // ignore
-            }
-        }
-    }
-
     public synchronized void restart() throws Exception {
         final String hostname = InetAddress.getLocalHost().getHostName();
         log.info(String.format("Trying to (re)start Appium server on %s:%s...", hostname, PORT));
-
-        if (appiumProcess.isPresent()) {
-            try {
-                appiumProcess.get().destroyForcibly();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            appiumProcess = Optional.empty();
-        }
         UnixProcessHelpers.killProcessesGracefully("node");
 
-        // TODO: Daemonize the process
-        this.appiumProcess = Optional.of(new ProcessBuilder(DEFAULT_CMDLINE).start());
-        Thread commandLineThread = new Thread(() -> {
-            new DummyPrinter(this.appiumProcess.get().getErrorStream());
-            new DummyPrinter(this.appiumProcess.get().getInputStream());
-        });
-        commandLineThread.setDaemon(true);
-        commandLineThread.start();
+        final File scriptFile = File.createTempFile("script", ".sh");
+        try {
+            final List<String> scriptContent = new ArrayList<>();
+            scriptContent.add("#!/bin/bash");
+            Collections.addAll(scriptContent, String.join(" ", DEFAULT_CMDLINE));
+            try (Writer output = new BufferedWriter(new FileWriter(scriptFile))) {
+                output.write(String.join("\n", scriptContent));
+            }
+            new ProcessBuilder(new String[]{"/bin/bash", scriptFile.getCanonicalPath()}).start().waitFor();
+        } finally {
+            scriptFile.delete();
+        }
         log.info(String.format("Waiting for Appium to be (re)started on %s:%s...", hostname, PORT));
         final long msStarted = System.currentTimeMillis();
         if (!waitUntilIsRunning(RESTART_TIMEOUT_MILLIS)) {
