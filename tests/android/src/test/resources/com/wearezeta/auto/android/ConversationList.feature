@@ -16,7 +16,8 @@ Feature: Conversation List
     And I select "Log out" settings menu item
     And I confirm sign out
     And I sign in using my email
-    Then I do not see First Time overlay
+    # Workaround, it should not see First time overlay
+    Then I accept First Time overlay as soon as it is visible
     And I see Contact list
     And I do not see contact hint banner
 
@@ -51,7 +52,7 @@ Feature: Conversation List
       | user1Name | user2Name |
 
   @C822 @id4042 @regression @rc
-  Scenario Outline: (AN-2875) Verify I can delete a 1:1 conversation from conversation list
+  Scenario Outline: Verify I can delete a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number

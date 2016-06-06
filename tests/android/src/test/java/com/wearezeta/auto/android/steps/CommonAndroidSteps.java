@@ -1330,10 +1330,10 @@ public class CommonAndroidSteps {
      * @param fileFullName
      * @param mimeType
      * @throws Exception
-     * @step. ^I wait up (\d+) seconds? until (.*) file having name "(.*)" and MIME type "(.*)" is downloaded to the device$
+     * @step. ^I wait up (\d+) seconds? until (.*) file having name "(.*)" is downloaded to the device$
      */
-    @Then("^I wait up (\\d+) seconds? until (.*) file having name \"(.*)\" and MIME type \"(.*)\" is downloaded to the device$")
-    public void TheXFileSavedInDownloadFolder(int timeoutSeconds, String size, String fileFullName, String mimeType)
+    @Then("^I wait up (\\d+) seconds? until (.*) file having name \"(.*)\" is downloaded to the device$")
+    public void TheXFileSavedInDownloadFolder(int timeoutSeconds, String size, String fileFullName)
             throws Exception {
         Optional<FileInfo> fileInfo = CommonUtils.waitUntil(timeoutSeconds,
                 CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS, () -> {
@@ -1353,8 +1353,6 @@ public class CommonAndroidSteps {
                 fileFullName, fileInfo.get().getFileName());
         Assert.assertTrue(String.format("File size should around %s bytes, but it is %s", expectedSize, actualSize),
                 Math.abs(expectedSize - actualSize) < 100);
-        Assert.assertEquals(String.format("File MIME type should be %s", mimeType),
-                mimeType, fileInfo.get().getMimeType());
     }
 
     /**

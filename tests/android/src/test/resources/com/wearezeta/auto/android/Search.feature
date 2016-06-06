@@ -124,6 +124,9 @@ Feature: Search
     And I add in search field user name to connect to <Contact2>
     And I tap on user name found on People picker page <Contact2>
     And I tap on create conversation
+    # Workaround for AN-4011, for following two steps
+    And I tap conversation name from top toolbar
+    And I press back button
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
