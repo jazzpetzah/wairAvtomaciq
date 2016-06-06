@@ -53,9 +53,16 @@ public class LoginSteps {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
         getWelcomePage().tapSignInTab();
-        getEmailSignInPage().setLogin(self.getEmail());
-        getEmailSignInPage().setPassword(self.getPassword());
-        getEmailSignInPage().logIn(true, DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
+        try {
+            getEmailSignInPage().setLogin(self.getEmail());
+            getEmailSignInPage().setPassword(self.getPassword());
+            getEmailSignInPage().logIn(true, DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
+        }catch (Exception e) {
+            Thread.sleep(2000);
+            getEmailSignInPage().setLogin(self.getEmail());
+            getEmailSignInPage().setPassword(self.getPassword());
+            getEmailSignInPage().logIn(true, DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
+        }
     }
 
     /**
