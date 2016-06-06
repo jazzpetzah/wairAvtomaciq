@@ -179,25 +179,11 @@ public class StartPageSteps {
 		context.getPagesCollection().getPage(StartPage.class).switchToSupportPageTab();
 	}
 
-	@Then("^I verify the page title is in language (.*)$")
-	public void IVerifyCorrectPageTitle(String language) throws Exception {
-		StartPage startPage = context.getPagesCollection().getPage(StartPage.class);
-		switch (language) {
-			case "en":
-				System.out.println("TITLE: " + startPage.getEnglishTitle());
-				assertTrue("Title for " + language + " support page is not correct",startPage.getEnglishTitle().equals("Wire - Support"));
-				break;
-			case "de":
-				System.out.println("TITLE: " + startPage.getGermanTitle());
-				assertThat("Title for " + language + " support page is not correct",startPage.getGermanTitle(), containsString("Wire Hilfe"));
-				break;
-			default: break;
-		}
-	}
-
 	@Then("^I see localized (.*) support page$")
 	public void ISeeLocalizedSupportPage(String language) throws Exception {
-		if (language.equals("en")) { language = "en-us"; }
+		if (language.equals("en")) {
+			language = "en-us";
+		}
 		assertTrue("Support page is not in the correct language: " + language,
 				context.getPagesCollection().getPage(WebPage.class).getCurrentUrl().equals("https://support.wire.com/hc/" + language));
 	}

@@ -81,14 +81,6 @@ public class StartPage extends WebPage {
 		driver.switchTo().window(handles.iterator().next());
 	}
 
-	public String getEnglishTitle() throws Exception {
-		return getDriver().findElement(By.tagName("title")).toString();
-	}
-
-	public String getGermanTitle() throws Exception {
-		return getDriver().findElement(By.tagName("head")).getText();
-	}
-
 	public List<WebElement> getAllLinkElements() throws Exception{
 		List<WebElement> list = getDriver().findElements(By.cssSelector("a"));
 		return list;

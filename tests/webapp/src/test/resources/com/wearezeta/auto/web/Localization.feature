@@ -66,10 +66,10 @@ Feature: Localization
     And I click gear button on self profile page
     And I select <SupportButton> menu item on self profile page
     And I switch to support page tab
-    Then I verify the page title is in language <Language>
+    Then I see a placeholder <SearchFieldPlaceholder> on the page
     And I see localized <Language> support page
 
     Examples:
-      | Login      | Password      | Name      | Language | SupportButton |
-      | user1Email | user1Password | user1Name | de       | Hilfe         |
-      | user1Email | user1Password | user1Name | en       | Support       |
+      | Login      | Password      | Name      | Language | SupportButton | SearchFieldPlaceholder |
+      | user1Email | user1Password | user1Name | de       | Hilfe         | Gib ein Schlagwort ein |
+      | user1Email | user1Password | user1Name | en       | Support       | Enter a keyword        |
