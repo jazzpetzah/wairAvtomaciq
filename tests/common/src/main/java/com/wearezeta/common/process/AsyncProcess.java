@@ -27,11 +27,17 @@ public class AsyncProcess {
     private Optional<Process> process = Optional.empty();
     private Optional<Thread> stdOutMonitor = Optional.empty();
     private Optional<Thread> stdErrMonitor = Optional.empty();
+    private boolean stopOnDestroy = true;
 
     public AsyncProcess(String[] cmd, boolean shouldLogStdOut, boolean shouldLogStdErr) {
         this.cmd = cmd;
         this.shouldLogStdOut = shouldLogStdOut;
         this.shouldLogStdErr = shouldLogStdErr;
+    }
+
+    public AsyncProcess(String[] cmd, boolean shouldLogStdOut, boolean shouldLogStdErr, boolean stopOnDestroy) {
+        this(cmd,shouldLogStdOut, shouldLogStdErr);
+        this.stopOnDestroy = stopOnDestroy;
     }
 
     private Thread createListenerThread(final BufferedReader reader,
@@ -187,7 +193,7 @@ public class AsyncProcess {
     }
 
     private void destroy() {
-        if (this.isRunning()) {
+        if (this.stopOnDestroy && this.isRunning()) {
             try {
                 this.stop(9, new int[]{this.getPid()}, 2000);
             } catch (Exception e) {

@@ -210,3 +210,23 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
+
+  @C139860 @staging
+  Scenario Outline: Verify playback is stopped when Soundcloud playback is started
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
+    Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I remember the state of Pause button on audio message placeholder
+    And I tap Play audio message button
+    # Wait until the audio is downloaded and starts playback
+    And I wait for <AudioDownloadTimeout> seconds
+    And I tap media container
+    Then I verify the state of Pause button on audio message placeholder is not changed
+
+    Examples:
+      | Name      | Contact   | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout | SoundCloudLink                                                   |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
