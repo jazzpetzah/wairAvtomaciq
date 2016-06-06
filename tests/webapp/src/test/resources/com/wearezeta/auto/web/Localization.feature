@@ -55,7 +55,7 @@ Feature: Localization
       | Login      | Password      | Name      | Contact   | Language | ConversationViewText | ContactListText        | SearchPlaceHolder                | ConvOption1   | ConvOption2 | ConvOption3 | ConvOption4 |
       | user1Email | user1Password | user1Name | user2Name | de       | HINZUGEFÜGT          | UNTERHALTUNG BEGINNEN  | Namen oder E-Mail-Adresse suchen | Stummschalten | Archivieren | Löschen     | Blockieren  |
 
-  @C136458 @staging @torun
+  @C136458 @staging
   Scenario Outline: Verify support pages are opened in correct language (<Language>)
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
@@ -71,6 +71,6 @@ Feature: Localization
     And I see localized <Language> support page
 
     Examples:
-      | Login      | Password      | Name      | Language | SupportButton | PageTitle | SearchFieldPlaceholder |
-      | user1Email | user1Password | user1Name | de       | Hilfe         | Hilfe     | Gib ein Schlagwort ein |
-      | user1Email | user1Password | user1Name | en       | Support       | Support   | Enter a keyword        |
+      | Login      | Password      | Name      | Language | SupportButton | PageTitle      | SearchFieldPlaceholder |
+      | user1Email | user1Password | user1Name | de       | Hilfe         | Wire Hilfe     | Gib ein Schlagwort ein |
+      | user1Email | user1Password | user1Name | en       | Support       | Wire – Support | Enter a keyword        |

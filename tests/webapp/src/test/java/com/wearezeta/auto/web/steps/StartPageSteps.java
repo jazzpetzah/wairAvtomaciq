@@ -184,7 +184,7 @@ public class StartPageSteps {
 		if (language.equals("en")) {
 			language = "en-us";
 		}
-		assertTrue("Support page is not in the correct language: " + language,
-				context.getPagesCollection().getPage(WebPage.class).getCurrentUrl().equals("https://support.wire.com/hc/" + language));
+		assertThat("Support page is not in the correct language: " + language,
+				context.getPagesCollection().getPage(WebPage.class).getCurrentUrl(), equalTo("https://support.wire.com/hc/" + language));
 	}
 }
