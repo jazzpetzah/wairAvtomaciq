@@ -470,7 +470,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | user4Name | AddContact    | 3                  |
 
   @C2447 @regression @id2333
-  Scenario Outline: Verify you can block a person from profile view [PORTRAIT]
+  Scenario Outline: ZIOS-6762 Verify you can block a person from profile view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I Sign in on tablet using my email
