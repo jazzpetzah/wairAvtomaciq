@@ -533,8 +533,13 @@ public class ConversationPageSteps {
     }
 
     @Then("^I click play button of video (.*) in the conversation view$")
-    public void IClickPlay(String fileName) throws Exception {
+    public void IClickPlayVideo(String fileName) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).playVideo(fileName);
+    }
+
+    @Then("^I click pause button of video (.*) in the conversation view$")
+    public void IClickPauseVideo(String fileName) throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).pauseVideo(fileName);
     }
 
     @Then("^I wait until video (.*) is downloaded and starts to play$")
