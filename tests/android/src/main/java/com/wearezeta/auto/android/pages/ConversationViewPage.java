@@ -8,7 +8,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.misc.ElementState;
-import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -75,11 +74,11 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idYoutubePlayButton = By.id("gtv__youtube_message__play");
 
-    private static final String strIdMediaBarControl = "gtv__conversation_header__mediabar__control";
+    private static final String mediaToolbarId = "tb__conversation_header__mediabar";
 
-    private static final By idMediaBarControl = By.id(strIdMediaBarControl);
+    private static final By idMediaBarPlayBtn = By.xpath(String.format("//*[@id='%s']/*[2]", mediaToolbarId));
 
-    private static final By xpathMediaBar = By.xpath(String.format("//*[@id='%s']/parent::*", strIdMediaBarControl));
+    private static final By idMediaToolbar = By.id(mediaToolbarId);
 
     private static final By idCursorSketch = By.id("cursor_menu_item_draw");
 
@@ -623,11 +622,11 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void tapPlayPauseMediaBarBtn() throws Exception {
-        getElement(idMediaBarControl, "Media barr PlayPause button is not visible").click();
+        getElement(idMediaBarPlayBtn, "Media bar PlayPause button is not visible").click();
     }
 
     private boolean waitUntilMediaBarVisible(int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMediaBarControl, timeoutSeconds);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMediaToolbar, timeoutSeconds);
     }
 
     public boolean waitUntilMissedCallMessageIsVisible(String expectedMessage) throws Exception {
@@ -719,7 +718,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isMediaBarBelowUptoolbar() throws Exception {
-        return isElementABelowElementB(getElement(xpathMediaBar), getElement(xpathToolbar),
+        return isElementABelowElementB(getElement(idMediaToolbar), getElement(xpathToolbar),
                 LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR);
     }
 

@@ -11,12 +11,13 @@ Feature: Rich Media
     And I see the upper toolbar
     And I remember the state of upper toolbar
     And User <Contact1> sends 18 encrypted messages to user Myself
-    And I scroll to the bottom of conversation view
+    # Wait until message fully loaded
+    And I wait for 3 seconds
     And I tap on text input
     And I type the message "<SoundCloudLink>" and send it
     And User <Contact1> sends encrypted message to user Myself
     And I scroll to the bottom of conversation view
-    And I tap Play button button on SoundCloud container
+    And I tap Play button on SoundCloud container
     And I remember the state of Play button on SoundCloud container
     And I swipe down on dialog page until Mediabar appears
     And I press PlayPause on Mediabar button
@@ -26,8 +27,8 @@ Feature: Rich Media
     Then I verify the state of Play button on SoundCloud container is changed
 
     Examples:
-      | Name      | Contact1  | SoundCloudLink                                              |
-      | user1Name | user2Name | https://soundcloud.com/binary_for_breakfast/star-wars-theme |
+      | Name      | Contact1  | SoundCloudLink                                   |
+      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
   @C717 @id1510 @regression @rc
   Scenario Outline: Verify conversation list play/pause controls can change playing SoundCloud media state
@@ -41,13 +42,13 @@ Feature: Rich Media
     And I type the message "<SoudCloudLink>" and send it
     # Workaround for bug with autoscroll
     And I scroll to the bottom of conversation view
-    And I tap Play button button on SoundCloud container
+    And I tap Play button on SoundCloud container
     And I press back button
     Then I see PlayPause media content button for conversation <Contact1>
 
     Examples:
-      | Name      | Contact1  | SoudCloudLink                                               |
-      | user1Name | user2Name | https://soundcloud.com/binary_for_breakfast/star-wars-theme |
+      | Name      | Contact1  | SoudCloudLink                                    |
+      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
   @C412 @id1505 @regression
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (SoundCloud)
@@ -60,8 +61,8 @@ Feature: Rich Media
     And I tap on text input
     And I type the message "<SoundCloudLink>" and send it
     And I scroll to the bottom of conversation view
-    And I tap Play button button on SoundCloud container
-    And I navigate back from dialog page
+    And I tap Play button on SoundCloud container
+    And I press back button
     Then I see PlayPause media content button for conversation <Contact1>
     When I tap on contact name <Contact2>
     And I press back button
@@ -71,8 +72,8 @@ Feature: Rich Media
     Then I see the state of PlayPause button next to the <Contact1> conversation is changed
 
     Examples:
-      | Name      | Contact1  | Contact2  | SoundCloudLink                                              |
-      | user1Name | user2Name | user3Name | https://soundcloud.com/binary_for_breakfast/star-wars-theme |
+      | Name      | Contact1  | Contact2  | SoundCloudLink                                   |
+      | user1Name | user2Name | user3Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
   @C675 @id170 @regression @rc @rc42
   Scenario Outline: Verify you can send youtube link
@@ -98,17 +99,19 @@ Feature: Rich Media
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    Given User <Contact> sends encrypted message <SoundCloudLink> to user Myself
-    When I tap on contact name <Contact>
+    # Workaround for AN-4115
+    Given I tap on contact name <Contact>
+    When User <Contact> sends encrypted message <SoundCloudLink> to user Myself
     And I scroll to the bottom of conversation view
-    And I tap Play button button on SoundCloud container
+    And I tap Play button on SoundCloud container
     And I remember the state of Pause button on SoundCloud container
     And <Contact> calls me
     And I see incoming call from <Contact>
     And <Contact> stops calling me
     And I do not see incoming call
+    And I scroll to the bottom of conversation view
     Then I verify the state of Pause button on SoundCloud container is changed
 
     Examples:
-      | Name      | Contact   | SoundCloudLink                                              | CallBackend |
-      | user1Name | user2Name | https://soundcloud.com/binary_for_breakfast/star-wars-theme | autocall    |
+      | Name      | Contact   | SoundCloudLink                                   | CallBackend |
+      | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme | autocall    |
