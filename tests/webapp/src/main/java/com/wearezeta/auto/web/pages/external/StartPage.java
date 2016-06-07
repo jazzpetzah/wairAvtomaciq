@@ -31,7 +31,8 @@ public class StartPage extends WebPage {
 	
 	// FIXME: Works for staging backend only
 	private static final String SITE_ROOT = WebAppConstants.STAGING_SITE_ROOT;
-	
+	private static final String UNSUPPORTED_TEXT = "This browser is not supported.";
+
 	@FindBy(css = ExternalLocators.StartPage.cssGermanButton)
 	private WebElement germanButton;
 	
@@ -79,6 +80,12 @@ public class StartPage extends WebPage {
 		Set<String> handles = driver.getWindowHandles();
 		handles.remove(driver.getWindowHandle());
 		driver.switchTo().window(handles.iterator().next());
+	}
+
+	public boolean isUnsupportedPageVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(
+				getDriver(), By.xpath(ExternalLocators.StartPage.xpathLabelByText
+						.apply(UNSUPPORTED_TEXT)));
 	}
 
 	public List<WebElement> getAllLinkElements() throws Exception{

@@ -60,6 +60,9 @@ public final class ExternalLocators {
 	}
 
 	public static final class StartPage {
+		public final static Function<String, String> xpathLabelByText = txt -> String
+				.format("//*[contains(text(),'%s')]", txt);
+
 		public static final String cssGermanValue = "option[value='/l/de/']";
 		public static final String cssEnglishValue = "option[value='/l/en/']";
 

@@ -66,6 +66,18 @@ Feature: Utility
       | osx     |
       | windows |
 
+  @C139985 @utility
+  Scenario Outline: Verify that there are no dead links on unsupported browser page for <Agent>
+    When I navigate to unsupported page for <Agent>
+    Then I can see no dead links
+
+    Examples:
+      | Agent   |
+      | iphone  |
+      | android |
+      | osx     |
+      | windows |
+
   @C12086 @utility
   Scenario Outline: Verify that there are no dead links on german start page for <Agent>
     When I navigate to start page for <Agent>
@@ -95,6 +107,29 @@ Feature: Utility
       | android |
       | osx     |
       | windows |
+
+  @C139986 @utility
+  Scenario Outline: Verify that there are no dead links on german unsupported browser page for <Agent>
+    When I navigate to unsupported page for <Agent>
+    And I change language to german
+    And unsupported page for <Agent> is german
+    Then I can see no dead links
+
+    Examples:
+      | Agent   |
+      | iphone  |
+      | android |
+      | osx     |
+      | windows |
+
+  @C139987 @utility
+    Scenario Outline: Verify I get redirected to unsupported browser page
+    When I navigate to login page for <Agent>
+    Then I see unsupported browser page
+    
+    Examples:
+      | Agent  |
+      | safari |
 
   @C5232 @utility @useSpecialEmail
   Scenario Outline: Check password reset utility page for all agents
