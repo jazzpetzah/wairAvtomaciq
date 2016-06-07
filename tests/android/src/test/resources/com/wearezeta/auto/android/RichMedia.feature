@@ -128,7 +128,7 @@ Feature: Rich Media
     Given I tap on contact name <Contact>
     When I scroll to the bottom of conversation view
     And I remember the state of recent audio message seekbar
-    And I tap Play button button on SoundCloud container
+    And I tap Play button on SoundCloud container
     And I remember the state of Pause button on SoundCloud container
     And <Contact> starts a video call to me
     And I see incoming video call
@@ -137,5 +137,5 @@ Feature: Rich Media
     Then I verify the state of Pause button on SoundCloud container is changed
 
     Examples:
-      | Name      | Contact   | CallBackend | SoundCloudLink                                              |
-      | user1Name | user2Name | chrome      | https://soundcloud.com/binary_for_breakfast/star-wars-theme |
+      | Name      | Contact   | CallBackend | SoundCloudLink                                   |
+      | user1Name | user2Name | chrome      | https://soundcloud.com/sodab/256-ra-robag-wruhme |
