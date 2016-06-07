@@ -40,8 +40,8 @@ public class ContactListPage extends WebPage {
     private static final Logger log = ZetaLogger.getLog(ContactListPage.class
             .getSimpleName());
 
-    @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssSelfProfileAvatar)
-    private WebElement selfProfileAvatar;
+    @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssSelfProfileButton)
+    private WebElement selfProfileButton;
 
     @FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathContactListEntries)
     private List<WebElement> contactListEntries;
@@ -54,9 +54,12 @@ public class ContactListPage extends WebPage {
 
     @FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenArchivedConvosButton)
     private WebElement openArchivedConvosButton;
+    
+    @FindBy(css = WebAppLocators.ContactListPage.cssCloseArchivedConvosButton)
+    private WebElement closeArchivedConvosButton;
 
-    @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssOpenPeoplePickerButton)
-    private WebElement openPeoplePickerButton;
+    @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssOpenStartUIButton)
+    private WebElement openStartUIButton;
 
     @FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
     private WebElement conversationInput;
@@ -65,7 +68,7 @@ public class ContactListPage extends WebPage {
 
     @FindBy(css = WebAppLocators.ContactListPage.cssArchiveButton)
     private WebElement archiveButton;
-
+    
     @FindBy(css = WebAppLocators.ContactListPage.cssMuteButton)
     private WebElement muteButton;
 
@@ -183,13 +186,13 @@ public class ContactListPage extends WebPage {
         return DriverUtils
                 .waitUntilLocatorAppears(
                         this.getDriver(),
-                        By.cssSelector(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton));
+                        By.cssSelector(WebAppLocators.ContactListPage.cssOpenStartUIButton));
 
     }
 
-    public void waitForSelfProfileAvatar() throws Exception {
+    public void waitForSelfProfileButton() throws Exception {
         assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-                selfProfileAvatar);
+                selfProfileButton);
     }
 
     public boolean isConvoListEntryWithNameExist(String name) throws Exception {
@@ -305,6 +308,13 @@ public class ContactListPage extends WebPage {
                         .elementToBeClickable(openArchivedConvosButton));
         openArchivedConvosButton.click();
     }
+    
+    public void closeArchive() throws Exception {
+        this.getWait().until(
+                ExpectedConditions
+                        .elementToBeClickable(closeArchivedConvosButton));
+        closeArchivedConvosButton.click();
+    }
 
     public void clickArchiveConversation() throws Exception {
         waitForOptionButtonsToBeClickable();
@@ -339,7 +349,7 @@ public class ContactListPage extends WebPage {
         // do nothing (safari workaround)
         if (WebAppExecutionContext.getBrowser()
                 .isSupportingNativeMouseActions()) {
-            DriverUtils.moveMouserOver(this.getDriver(), selfProfileAvatar);
+            DriverUtils.moveMouserOver(this.getDriver(), selfProfileButton);
         }
         return DriverUtils
                 .waitUntilLocatorIsDisplayed(
@@ -354,7 +364,7 @@ public class ContactListPage extends WebPage {
         // do nothing (safari workaround)
         if (WebAppExecutionContext.getBrowser()
                 .isSupportingNativeMouseActions()) {
-            DriverUtils.moveMouserOver(this.getDriver(), selfProfileAvatar);
+            DriverUtils.moveMouserOver(this.getDriver(), selfProfileButton);
         }
         return DriverUtils
                 .waitUntilLocatorDissapears(
@@ -466,19 +476,19 @@ public class ContactListPage extends WebPage {
     }
 
     public void openSelfProfile() throws Exception {
-        waitForSelfProfileAvatar();
-        selfProfileAvatar.click();
+        waitForSelfProfileButton();
+        selfProfileButton.click();
     }
 
-    public void openPeoplePicker() throws Exception {
+    public void openStartUI() throws Exception {
         DriverUtils
                 .waitUntilLocatorAppears(
                         this.getDriver(),
-                        By.cssSelector(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton));
+                        By.cssSelector(WebAppLocators.ContactListPage.cssOpenStartUIButton));
         if (WebAppExecutionContext.getBrowser() == Browser.InternetExplorer) {
-            clickWithJS(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton);
+            clickWithJS(WebAppLocators.ContactListPage.cssOpenStartUIButton);
         } else {
-            openPeoplePickerButton.click();
+            openStartUIButton.click();
         }
     }
 
@@ -528,8 +538,8 @@ public class ContactListPage extends WebPage {
 
     public boolean isSelfNameEntrySelected() throws Exception {
         final By locator = By
-                .cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
-        waitForSelfProfileAvatar();
+                .cssSelector(WebAppLocators.ContactListPage.cssSelfProfileButton);
+        waitForSelfProfileButton();
         final WebElement entry = getDriver().findElement(locator);
         try {
             waitUtilEntryIsSelected(entry);

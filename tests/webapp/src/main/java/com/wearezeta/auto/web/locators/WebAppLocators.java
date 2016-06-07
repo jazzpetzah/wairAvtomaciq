@@ -55,7 +55,9 @@ public final class WebAppLocators {
     public static final class ContactListPage {
 
         public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
+        public static final String xpathParentArchiveListItem = "//div[@id='archive']";
         public static final String cssParentContactListItem = "#conversation-list";
+        public static final String cssParentArchiveListItem = "#archive";
 
         public static final String cssIncomingPendingConvoItem = cssParentContactListItem
                 + " [data-uie-name='item-pending-requests']";
@@ -68,6 +70,8 @@ public final class WebAppLocators {
                         name);
 
         public static final String cssArchiveButton = "[data-uie-name='do-archive']";
+
+        public static final String cssCloseArchivedConvosButton = "[data-uie-name='do-close-archive']";
 
         public static final String cssMuteButton = "[data-uie-name='do-silence']";
 
@@ -95,28 +99,27 @@ public final class WebAppLocators {
         public static final Function<String, String> cssArchiveListEntryByName = (
                 name) -> String
                 .format("%s div[data-uie-name='item-conversation-archived'][data-uie-value='%s']",
-                        cssParentContactListItem, name);
+                        cssParentArchiveListItem, name);
 
-        public static final String cssSelfProfileAvatar = "[data-uie-name='go-self-profile'] :first-child";
+        public static final String cssSelfProfileButton = "[data-uie-name='go-self-profile']";
 
         public static final String xpathContactListEntries = xpathParentContactListItem
                 + "//*[@data-uie-name='item-conversation' or @data-uie-name='item-call']";
 
-        public static final String xpathActiveConversationEntry = xpathParentContactListItem
+        public static final String xpathActiveConversationEntry = xpathParentArchiveListItem
                 + "//*[contains(@class, 'text-theme')]//*[@data-uie-name='item-conversation' or @data-uie-name='item-call']";
 
         public static final Function<Integer, String> xpathContactListEntryByIndex = (
                 idx) -> String.format("(%s)[%s]", xpathContactListEntries, idx);
-        public static final String xpathArchivedContactListEntries = xpathParentContactListItem
+        public static final String xpathArchivedContactListEntries = xpathParentArchiveListItem
                 + "//*[@data-uie-name='item-conversation-archived']";
 
-        // FIXME: bug in webapp -> @data-uie-value should belong to div
         public static final Function<String, String> xpathArchivedContactListEntryByName = (
                 name) -> String
-                .format("%s//*[@data-uie-name='item-conversation-archived' and ./ancestor-or-self::*[@data-uie-value='%s']]",
-                        xpathParentContactListItem, name);
+                .format("%s//*[@data-uie-name='item-conversation-archived' and @data-uie-value='%s']",
+                        xpathParentArchiveListItem, name);
 
-        public static final String cssOpenPeoplePickerButton = "[data-uie-name=enter-search]";
+        public static final String cssOpenStartUIButton = "[data-uie-name='go-people']";
 
         public static final Function<String, String> xpathMissedCallNotificationByContactName = (
                 name) -> String
@@ -504,18 +507,18 @@ public final class WebAppLocators {
                         uid);
     }
 
-    public static final class PeoplePickerPage {
+    public static final class StartUIPage {
 
-        public static final String xpathRoot = "//div[@id='people-picker']";
+        public static final String xpathRoot = "//div[@id='start-ui']";
 
         public static final String cssNameSearchInput = "[data-uie-name='enter-users']";
 
         public static final String cssOpenOrCreateConversationButton = "[data-uie-name='do-add-create']," +
                 "[data-uie-name='do-open']";
 
-        public static final String cssCallButton = "#search-header [data-uie-name='do-audio-call']";
+        public static final String cssCallButton = "#start-ui-header [data-uie-name='do-audio-call']";
 
-        public static final String cssVideoCallButton = "#search-header [data-uie-name='do-video-call']";
+        public static final String cssVideoCallButton = "#start-ui-header [data-uie-name='do-video-call']";
 
         public static final Function<String, String> xpathSearchResultByName = (
                 name) -> String.format(
@@ -527,7 +530,7 @@ public final class WebAppLocators {
                 "%s//*[@data-uie-name='item-group' and .//*[text()='%s']]",
                 xpathRoot, name);
 
-        public static final String cssCloseSearchButton = ".search-header span[data-uie-name='do-close']";
+        public static final String cssCloseStartUIButton = ".start-ui-header [data-uie-name='do-close']";
 
         public static final Function<String, String> cssDismissIconByName = (
                 name) -> String.format(
@@ -536,7 +539,7 @@ public final class WebAppLocators {
         public static final Function<String, String> cssAddIconByName = (name) -> String
                 .format("div[data-uie-value='%s'] span.icon-add", name);
 
-        public static final String classNamePeoplePickerVisible = "people-picker-is-visible";
+        public static final String classNameStartUIVisible = "start-ui-is-visible";
 
         public static final String cssBringYourFriendsOrInvitePeopleButton = "#invite-button";
 
@@ -555,12 +558,12 @@ public final class WebAppLocators {
 
         public static final String xpathSelectedTopPeopleList = "//user-list[contains('top_users')]"
                 + "//*[@data-uie-name='item-user' and .//*[contains(@class,'selected')]]";
-
-        public static final String xpathSuggestedContacts = "//*[contains(@class,'people-picker-list-suggestions')]//div[@data-uie-name='item-user']";
+        
+        public static final String xpathSuggestedContacts = "//*[contains(@class,'start-ui-list-suggestions')]//div[@data-uie-name='item-user']";
 
         public static final String cssSearchField = "[data-uie-name='enter-users']";
 
-        public static final String cssBringFriendsFromGMailButton = ".people-picker-import-buttons";
+        public static final String cssBringFriendsFromGMailButton = ".start-ui-import-buttons";
 
     }
 

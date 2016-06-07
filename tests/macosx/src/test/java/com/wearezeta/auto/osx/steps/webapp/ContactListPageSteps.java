@@ -13,7 +13,7 @@ import com.wearezeta.auto.web.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
-import com.wearezeta.auto.web.steps.PeoplePickerPageSteps;
+import com.wearezeta.auto.web.steps.StartUIPageSteps;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -49,7 +49,7 @@ public class ContactListPageSteps {
                 .getPage(ContactListPage.class);
         Assert.assertTrue("No contact list loaded.",
                 contactListPage.waitForContactListVisible());
-        contactListPage.waitForSelfProfileAvatar();
+        contactListPage.waitForSelfProfileButton();
     }
 
     /**
@@ -284,8 +284,8 @@ public class ContactListPageSteps {
      * @throws Exception
      */
     @When("^I open People Picker from Contact List$")
-    public void IOpenPeoplePicker() throws Exception {
-        webappPagesCollection.getPage(ContactListPage.class).openPeoplePicker();
+    public void IOpenStartUI() throws Exception {
+        webappPagesCollection.getPage(ContactListPage.class).openStartUI();
     }
 
     /**
@@ -596,7 +596,7 @@ public class ContactListPageSteps {
     @Then("^I see previously remembered user selected in the conversations list$")
     public void ISeePreviouslyRememberedUserSelectedInConversationList()
             throws Exception {
-        final List<String> selectedTopPeople = PeoplePickerPageSteps
+        final List<String> selectedTopPeople = StartUIPageSteps
                 .getSelectedTopPeople();
         ContactListPage contactListPage = webappPagesCollection
                 .getPage(ContactListPage.class);

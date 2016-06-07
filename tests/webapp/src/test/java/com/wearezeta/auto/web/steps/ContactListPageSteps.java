@@ -17,9 +17,9 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class ContactListPageSteps {
@@ -54,7 +54,7 @@ public class ContactListPageSteps {
         Assert.assertTrue("No contact list loaded.", context.getPagesCollection()
                 .getPage(ContactListPage.class).waitForContactListVisible());
         context.getPagesCollection().getPage(ContactListPage.class)
-                .waitForSelfProfileAvatar();
+                .waitForSelfProfileButton();
     }
 
     @Given("^I verify a badge is shown on my avatar$")
@@ -203,6 +203,17 @@ public class ContactListPageSteps {
     public void IOpenArchive() throws Exception {
         context.getPagesCollection().getPage(ContactListPage.class).openArchive();
     }
+    
+    /**
+     * Close archive
+     *
+     * @throws Exception
+     * @step. ^I close archive$
+     */
+    @When("^I close archive$")
+    public void ICloseArchive() throws Exception {
+        context.getPagesCollection().getPage(ContactListPage.class).closeArchive();
+    }
 
     /**
      * Checks that we cannot see conversation with specified name in Contact
@@ -285,8 +296,8 @@ public class ContactListPageSteps {
      * @step. ^I open People Picker from Contact List$
      */
     @When("^I open People Picker from Contact List$")
-    public void IOpenPeoplePicker() throws Exception {
-        context.getPagesCollection().getPage(ContactListPage.class).openPeoplePicker();
+    public void IOpenStartUI() throws Exception {
+        context.getPagesCollection().getPage(ContactListPage.class).openStartUI();
     }
 
     /**
@@ -580,7 +591,7 @@ public class ContactListPageSteps {
     @Then("^I see previously remembered user selected in the conversations list$")
     public void ISeePreviouslyRememberedUserSelectedInConversationList()
             throws Exception {
-        final List<String> selectedTopPeople = PeoplePickerPageSteps
+        final List<String> selectedTopPeople = StartUIPageSteps
                 .getSelectedTopPeople();
         if (selectedTopPeople != null) {
             assert selectedTopPeople.size() == 1 : "Count of selected Top People is expected to be 1";
