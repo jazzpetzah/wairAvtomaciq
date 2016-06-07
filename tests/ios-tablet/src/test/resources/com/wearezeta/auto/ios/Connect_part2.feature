@@ -44,6 +44,7 @@ Feature: Connect
     And I open conversation details
     And I tap Cancel Request button on pending profile page
     And I confirm Cancel Request action on pending profile page
+    And I navigate back to conversations list
     And I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
