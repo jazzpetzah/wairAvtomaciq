@@ -62,7 +62,9 @@ Feature: Localization
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I switch language to <Language>
-    And I open self profile
+    Then I see People Picker
+    And I close People Picker
+    Then I open self profile
     And I click gear button on self profile page
     And I select <SupportButton> menu item on self profile page
     And I switch to support page tab
