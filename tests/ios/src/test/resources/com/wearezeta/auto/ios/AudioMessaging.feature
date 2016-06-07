@@ -193,7 +193,7 @@ Feature: Audio Messaging
       | Name      | Contact   | FileName | FileMIME  | ContactDevice | CallBackend | AudioDownloadTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | chrome      | 5                    |
 
-  @C139857 @staging
+  @C139857 @regression
   Scenario Outline: Verify recording is stopped when incoming call has appeared
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -213,7 +213,7 @@ Feature: Audio Messaging
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C139860 @staging
+  @C139860 @regression
   Scenario Outline: Verify playback is stopped when Soundcloud playback is started
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
