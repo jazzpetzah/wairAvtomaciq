@@ -266,7 +266,7 @@ Feature: Audio Message
     And I see incoming call from <Contact>
     And <Contact> stops calling me
     And I do not see incoming call
-    Then I see cancel button on audio message recorder
+    Then I see Cancel button on audio message recorder
 
     Examples:
       | Name      | Contact   | CallBackend |

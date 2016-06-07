@@ -448,9 +448,9 @@ public class ConversationViewPageSteps {
      *
      * @param buttonType could be send or cancel or play
      * @throws Exception
-     * @step. ^I see (send|cancel|play) button on audio message recorder$"
+     * @step. ^I see (Send|Cancel|Play) button on audio message recorder$"
      */
-    @When("^I see (send|cancel|play) button on audio message recorder$")
+    @When("^I see (Send|Cancel|Play) button on audio message recorder$")
     public void ISeeAudioRecorderButton(String buttonType) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (buttonType.toLowerCase()) {
