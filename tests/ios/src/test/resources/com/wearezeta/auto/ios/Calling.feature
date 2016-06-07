@@ -406,21 +406,6 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C77933 @calling_advanced @noAcceptAlert
-  Scenario Outline: Verify calling from an upper toolbar in a group conversation with more than 10 people
-    Given There are <UsersAmount> users where <Name> is me
-    Given Myself is connected to all other
-    Given Myself has group chat <GroupChatName> with all other
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    And I tap Audio Call button
-    Then I see Too many people alert
-
-    Examples:
-      | Name      | GroupChatName  | UsersAmount |
-      | user1Name | StartGROUPCALL | 11          |
-
   @C2040 @calling_basic
   Scenario Outline: Verify initiator is not a host for the call
     Given There are 3 users where <Name> is me
