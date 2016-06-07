@@ -66,8 +66,9 @@ Feature: Utility
       | osx     |
       | windows |
 
-  @C139985 @utility
+  @C139985 @utility 
   Scenario Outline: Verify that there are no dead links on unsupported browser page for <Agent>
+    When I navigate to unsupported page for <Agent>
     When I navigate to unsupported page for <Agent>
     Then I can see no dead links
 
