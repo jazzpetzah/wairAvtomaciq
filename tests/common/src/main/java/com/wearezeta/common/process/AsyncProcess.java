@@ -34,8 +34,7 @@ public class AsyncProcess {
         this.shouldLogStdErr = shouldLogStdErr;
     }
 
-    private Thread createListenerThread(final BufferedReader reader,
-                                        final String logPrefix) {
+    private Thread createListenerThread(final BufferedReader reader, final String logPrefix) {
         return new Thread() {
             @Override
             public void run() {
@@ -179,20 +178,6 @@ public class AsyncProcess {
             return f.getInt(process.get());
         } else {
             throw new UnsupportedOperationException("getPid implementation is not available for non-Unix systems");
-        }
-    }
-
-    {
-        Runtime.getRuntime().addShutdownHook(new Thread(this::destroy));
-    }
-
-    private void destroy() {
-        if (this.isRunning()) {
-            try {
-                this.stop(9, new int[]{this.getPid()}, 2000);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 }

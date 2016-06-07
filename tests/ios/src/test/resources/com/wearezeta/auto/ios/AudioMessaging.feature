@@ -83,10 +83,11 @@ Feature: Audio Messaging
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I record 30 seconds long audio message and send it using swipe up gesture
+    And I record 60 seconds long audio message and send it using swipe up gesture
     And I tap Play audio message button
     And I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item
+    And I accept alert
     Then I do not see audio message placeholder
 
     Examples:
@@ -127,7 +128,7 @@ Feature: Audio Messaging
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C129346 @staging
+  @C129346 @regression
   Scenario Outline: Verify impossibility of saving voice message before downloading
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -147,7 +148,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
 
-  @C131217 @staging
+  @C131217 @regression
   Scenario Outline: Verify playback is stopped when other audio message starts playing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -169,6 +170,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
   
+
   @C139855 @staging
   Scenario Outline: (ZIOS-6759) Verify playback is stopped when incoming call has appeared
     Given There are 2 user where <Name> is me
@@ -190,3 +192,101 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact   | FileName | FileMIME  | ContactDevice | CallBackend | AudioDownloadTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | chrome      | 5                    |
+
+  @C139857 @regression
+  Scenario Outline: Verify recording is stopped when incoming call has appeared
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I long tap Audio Message button from input tools without releasing my finger
+    # Let it record something
+    And I wait for 3 seconds
+    And <Contact> calls me
+    And I see call status message contains "<Contact> calling"
+    And I tap Ignore button on Calling overlay
+    Then I see Cancel record control button
+
+    Examples:
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
+
+  @C139860 @regression
+  Scenario Outline: Verify playback is stopped when Soundcloud playback is started
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
+    Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I remember the state of Pause button on audio message placeholder
+    And I tap Play audio message button
+    # Wait until the audio is downloaded and starts playback
+    And I wait for <AudioDownloadTimeout> seconds
+    And I tap media container
+    Then I verify the state of Pause button on audio message placeholder is not changed
+
+    Examples:
+      | Name      | Contact   | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout | SoundCloudLink                                                   |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
+    
+  @C131215 @staging
+  Scenario Outline: Verify playback is stopped when audio message recording is started
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    And I remember the state of Play button on audio message placeholder
+    And I tap Play audio message button
+    # Wait until the audio is downloaded and starts playback
+    And I wait for <AudioDownloadTimeout> seconds
+    And I long tap Audio Message button from input tools
+    When I tap Cancel record control button
+    Then I verify the state of Play button on audio message placeholder is not changed
+
+    Examples:
+      | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
+
+  @C139856 @staging
+  Scenario Outline: Verify playback is stopped when outgoing call is started
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    And I remember the state of Play button on audio message placeholder
+    And I tap Play audio message button
+# Wait until the audio is downloaded and starts playback
+    And I wait for <AudioDownloadTimeout> seconds
+    And I tap Audio Call button
+    And I tap Leave button on Calling overlay
+    Then I verify the state of Play button on audio message placeholder is not changed
+
+    Examples:
+      | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
+
+  @C139862 @staging
+  Scenario Outline: Verify Soundcloud playback is stopped when audio message recording is started
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
+    And I tap on contact name <Contact>
+    And I tap media container
+    And I remember media container state
+    And I long tap Audio Message button from input tools
+    Then I see audio message record container
+    And I see media container state is changed
+
+    Examples:
+      | Name      | Contact   |SoundCloudLink                                                   |
+      | user1Name | user2Name |https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |

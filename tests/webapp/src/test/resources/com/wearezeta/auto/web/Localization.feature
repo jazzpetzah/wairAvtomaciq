@@ -52,5 +52,27 @@ Feature: Localization
     And I see a conversation option <ConvOption4> on the page
 
     Examples:
-      | Login      | Password      | Name      | Contact   | Language | ConversationViewText | ContactListText        | SearchPlaceHolder                | ConvOption1   | ConvOption2 | ConvOption3 | ConvOption4 |
-      | user1Email | user1Password | user1Name | user2Name | de       | HINZUGEFÜGT          | UNTERHALTUNG BEGINNEN  | Namen oder E-Mail-Adresse suchen | Stummschalten | Archivieren | Löschen     | Blockieren  |
+      | Login      | Password      | Name      | Contact   | Language | ConversationViewText | ContactListText  | SearchPlaceHolder                | ConvOption1   | ConvOption2 | ConvOption3 | ConvOption4 |
+      | user1Email | user1Password | user1Name | user2Name | de       | HINZUGEFÜGT          | KONTAKTE         | Namen oder E-Mail-Adresse suchen | Stummschalten | Archivieren | Löschen     | Blockieren  |
+
+  @C136458 @regression
+  Scenario Outline: Verify support pages are opened in correct language (<Language>)
+    Given There is 1 user where <Name> is me
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I switch language to <Language>
+    Then I see People Picker
+    And I close People Picker
+    Then I open self profile
+    And I click gear button on self profile page
+    And I select <SupportButton> menu item on self profile page
+    And I switch to support page tab
+    Then I see a title <PageTitle> on the page
+    And I see a placeholder <SearchFieldPlaceholder> on the page
+    And I see localized <Language> support page
+
+    Examples:
+      | Login      | Password      | Name      | Language | SupportButton | PageTitle      | SearchFieldPlaceholder |
+      | user1Email | user1Password | user1Name | de       | Hilfe         | Wire Hilfe     | Gib ein Schlagwort ein |
+      | user1Email | user1Password | user1Name | en       | Support       | Wire – Support | Enter a keyword        |

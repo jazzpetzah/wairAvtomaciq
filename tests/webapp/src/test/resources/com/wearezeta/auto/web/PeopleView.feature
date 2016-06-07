@@ -235,6 +235,7 @@ Feature: People View
     And I do not see Contact list with name <ChatName>
     When I open archive
     Then I see archive list with name <ChatName>
+    And I close archive
     When I open self profile
     And I click gear button on self profile page
     And I select Log out menu item on self profile page

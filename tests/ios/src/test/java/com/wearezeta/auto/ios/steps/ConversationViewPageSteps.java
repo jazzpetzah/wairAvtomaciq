@@ -199,17 +199,19 @@ public class ConversationViewPageSteps {
     /**
      * Tap the corresponding button from input tools palette
      *
-     * @param isLongTap equals to null if simple tap should be performed
-     * @param btnName   one of available button names
+     * @param isLongTap     equals to null if simple tap should be performed
+     * @param btnName       one of available button names
+     * @param shouldKeepTap this signals that the finger should not be released after the step is completed.
+     *                      Works with long tap only
      * @throws Exception
-     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tools$
+     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tool( without releasing my finger)?s$
      */
-    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tools$")
-    public void IPressAddPictureButton(String isLongTap, String btnName) throws Exception {
+    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tools( without releasing my finger)?$")
+    public void IPressAddPictureButton(String isLongTap, String btnName, String shouldKeepTap) throws Exception {
         if (isLongTap == null) {
             getConversationViewPage().tapInputToolButtonByName(btnName);
         } else {
-            getConversationViewPage().longTapInputToolButtonByName(btnName);
+            getConversationViewPage().longTapInputToolButtonByName(btnName, shouldKeepTap != null);
         }
     }
 
@@ -1159,6 +1161,18 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Verify visibility of the corresponding record control button
+     *
+     * @throws Exception
+     * @step. ^I see (Send|Cancel) record control button$
+     */
+    @Then("^I see (Send|Cancel) record control button$")
+    public void ISeeRecordControlButton(String buttonName) throws Exception {
+        Assert.assertTrue(String.format("Record control button '%s' is not visible", buttonName),
+                getConversationViewPage().isRecordControlButtonVisible(buttonName));
+    }
+
+    /**
      * Verify visibility of audio message placeholder
      *
      * @param shouldNotSee equals to null if the placeholder should be visible
@@ -1273,7 +1287,6 @@ public class ConversationViewPageSteps {
      * Verify the sate of Play/Pause button has been changed
      *
      * @param didNotChange equals to null if button state should be changed
-     *
      * @throws Exception
      * @step. ^I verify the state of (?:Play|Pause) button on audio message placeholder is changed$
      */
@@ -1282,7 +1295,7 @@ public class ConversationViewPageSteps {
         if (playButtonState == null) {
             throw new IllegalStateException("Please remember button state first");
         }
-        if (didNotChange == null){
+        if (didNotChange == null) {
             Assert.assertTrue(String.format("The state of the button has not been changed after %s seconds",
                     PLAY_BUTTON_STATE_CHANGE_TIMEOUT), playButtonState.isChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT,
                     PLAY_BUTTON_MIN_SIMILARITY));

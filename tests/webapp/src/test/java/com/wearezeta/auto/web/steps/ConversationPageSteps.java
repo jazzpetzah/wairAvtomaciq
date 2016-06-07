@@ -523,8 +523,13 @@ public class ConversationPageSteps {
 
     @Then("^I wait until video (.*) is uploaded completely$")
     public void IWaitUntilVideoIsUploaded(String fileName) throws Exception {
-        assertThat("Upload still not finished for video " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
-                .waitUntilVideoUploaded(fileName));
+        if (WebAppExecutionContext.getBrowser().isSupportingInlineVideo()) {
+            assertThat("Upload still not finished for video " + fileName, context.getPagesCollection().getPage
+                    (ConversationPage.class).waitUntilVideoUploaded(fileName));
+        } else {
+            assertThat("Upload still not finished for file " + fileName, context.getPagesCollection().getPage
+                    (ConversationPage.class).waitUntilFileUploaded(fileName));
+        }
     }
 
     @Then("^I click play button of video (.*) in the conversation view$")
@@ -548,6 +553,16 @@ public class ConversationPageSteps {
     public void IVerifyTimeOfVideo(String fileName) throws Exception {
         assertThat("Time is not changing for " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
                 .waitUntilVideoTimeChanges(fileName));
+    }
+
+    @Then("^I (do not )?see video message (.*) in the conversation view$")
+    public void ISeeVideoMessage(String doNot, String fileName) throws Exception {
+        ConversationPage page = context.getPagesCollection().getPage(ConversationPage.class);
+        if (doNot == null) {
+            assertThat("Could not find video message " + fileName, page.isVideoMessageVisible(fileName));
+        } else {
+            assertThat("video message displayed for " + fileName, page.isVideoMessageInvisible(fileName));
+        }
     }
 
     @Then("^I wait until audio (.*) is uploaded completely$")
@@ -966,7 +981,8 @@ public class ConversationPageSteps {
 
     @Then("^I see sent gif in the conversation view$")
     public void ISeeSentGifInTheConversationView() throws Throwable {
-        context.getPagesCollection().getPage(ConversationPage.class).isImageMessageFound();
+        assertThat("No image foud in conversation", context.getPagesCollection().getPage(ConversationPage.class)
+                .isImageMessageFound());
     }
 
     /**

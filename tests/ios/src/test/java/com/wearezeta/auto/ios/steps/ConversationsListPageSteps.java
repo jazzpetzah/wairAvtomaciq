@@ -324,7 +324,7 @@ public class ConversationsListPageSteps {
                 getConversationsListPage().noConversationsMessageIsVisible());
     }
 
-    @When("I tap play/pause button in conversations list next to (.*)")
+    @When("I tap (?:Play|Pause) button in conversations list next to (.*)")
     public void ITapPlayPauseButtonInContactListNextTo(String contact) throws Exception {
         String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getConversationsListPage().tapPlayPauseButtonNextTo(name);

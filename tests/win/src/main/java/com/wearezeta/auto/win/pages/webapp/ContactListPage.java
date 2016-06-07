@@ -33,7 +33,7 @@ public class ContactListPage extends
     private final WinPagesCollection osxPagesCollection = WinPagesCollection
             .getInstance();
 
-    @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssSelfProfileAvatar)
+    @FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssSelfProfileButton)
     private WebElement selfProfileAvatar;
 
     @FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathActiveConversationEntry)

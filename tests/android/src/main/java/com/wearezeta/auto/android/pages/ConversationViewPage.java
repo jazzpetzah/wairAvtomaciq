@@ -17,6 +17,7 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import org.openqa.selenium.interactions.touch.TouchActions;
 
 public class ConversationViewPage extends AndroidPage {
 
@@ -336,7 +337,7 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idCursorAudioMessage, "Audio message button is not visible").click();
     }
 
-    public void longTapAudioMessagecursorBtn(int duration) throws Exception {
+    public void longTapAudioMessageCursorBtn(int duration) throws Exception {
         getDriver().longTap(getElement(idCursorAudioMessage), duration);
     }
 
@@ -947,5 +948,12 @@ public class ConversationViewPage extends AndroidPage {
 
     public Optional<BufferedImage> getAudioContainerButtonState() throws Exception {
         return getElementScreenshot(getElement(idAudioContainerButton));
+    }
+
+    public void longTapAndKeepAudioMessageCursorBtn() throws Exception {
+        final WebElement audioMsgButton = getElement(idCursorAudioMessage);
+        final int x = audioMsgButton.getLocation().getX() + audioMsgButton.getSize().getWidth() / 2;
+        final int y = audioMsgButton.getLocation().getY() + audioMsgButton.getSize().getHeight() / 2;
+        new TouchActions(getDriver()).down(x, y).perform();
     }
 }

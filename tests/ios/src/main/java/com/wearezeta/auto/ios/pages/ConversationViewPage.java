@@ -736,8 +736,12 @@ public class ConversationViewPage extends IOSPage {
         getElement(nameVideoMessageActionButton).click();
     }
 
-    public void longTapInputToolButtonByName(String btnName) throws Exception {
-        getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_DURATION);
+    public void longTapInputToolButtonByName(String btnName, boolean shouldKeepTap) throws Exception {
+        if (shouldKeepTap) {
+            new TouchAction(getDriver()).press(getElement(getInputToolButtonByName(btnName))).perform();
+        } else {
+            getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_DURATION);
+        }
     }
 
     public boolean isAudioMessageRecordCancelVisible() throws Exception {
@@ -811,5 +815,9 @@ public class ConversationViewPage extends IOSPage {
 
     public BufferedImage getSecondPlayAudioMessageButtonScreenshot() throws Exception {
         return getPlayAudioMessageButtonScreenshot(2);
+    }
+
+    public boolean isRecordControlButtonVisible(String buttonName) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getRecordControlButtonByName(buttonName));
     }
 }
