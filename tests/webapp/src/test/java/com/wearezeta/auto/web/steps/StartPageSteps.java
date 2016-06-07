@@ -2,6 +2,8 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.pages.WebPage;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
 
@@ -14,6 +16,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.containsString;
 
 public class StartPageSteps {
 
@@ -169,5 +172,19 @@ public class StartPageSteps {
 				break;
 			default: break;
 		}
+	}
+
+	@Then("I switch to support page tab$")
+	public void ISwitchToSupportPageTab() throws Exception {
+		context.getPagesCollection().getPage(StartPage.class).switchToSupportPageTab();
+	}
+
+	@Then("^I see localized (.*) support page$")
+	public void ISeeLocalizedSupportPage(String language) throws Exception {
+		if (language.equals("en")) {
+			language = "en-us";
+		}
+		assertThat("Support page is not in the correct language: " + language,
+				context.getPagesCollection().getPage(WebPage.class).getCurrentUrl(), equalTo("https://support.wire.com/hc/" + language));
 	}
 }

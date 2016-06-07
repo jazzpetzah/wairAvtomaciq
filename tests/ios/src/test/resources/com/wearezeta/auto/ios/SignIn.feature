@@ -128,7 +128,7 @@ Feature: Sign In
       | smoketester@wearezeta.com | user1Password | user1Name |
 
   @C1147 @regression @id3857 @noAcceptAlert @ZIOS-5585
-  Scenario Outline: Verify error message appears in case of registering already taken email
+  Scenario Outline: Verify error message appears in case of entering not valid email address
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
     Given I switch to Log In tab

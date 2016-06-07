@@ -966,7 +966,8 @@ public class ConversationPageSteps {
 
     @Then("^I see sent gif in the conversation view$")
     public void ISeeSentGifInTheConversationView() throws Throwable {
-        context.getPagesCollection().getPage(ConversationPage.class).isImageMessageFound();
+        assertThat("No image foud in conversation", context.getPagesCollection().getPage(ConversationPage.class)
+                .isImageMessageFound());
     }
 
     /**

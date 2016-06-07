@@ -34,6 +34,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertTrue;
 
@@ -105,6 +106,11 @@ public class CommonWebAppSteps {
     @Then("^I see a button with (.*) on the page$")
     public void ISeeAButtonOnPage(String value) throws Throwable {
         assertThat(WebappPagesCollection.getInstance().getPage(WebPage.class).getButtonValues(), hasItem(value));
+    }
+
+    @Then("^I see a title (.*) on the page$")
+    public void ISeeATitleOnPage(String title) throws Exception {
+        assertThat("Title on the page is not correct", WebappPagesCollection.getInstance().getPage(WebPage.class).getPageTitle(), equalTo(title));
     }
 
     @Given("^There is a known user (.*) with email (.*) and password (.*)$")

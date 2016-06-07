@@ -112,3 +112,27 @@ Feature: Rich Media
     Examples:
       | Name      | Contact   | SoundCloudLink                                              | CallBackend |
       | user1Name | user2Name | https://soundcloud.com/binary_for_breakfast/star-wars-theme | autocall    |
+
+  @C139850 @staging
+  Scenario Outline: Verify that play of soundcloud track will be stopped by incoming video call
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given User <Contact> sends encrypted message <SoundCloudLink> to user Myself
+    Given I tap on contact name <Contact>
+    When I scroll to the bottom of conversation view
+    And I remember the state of recent audio message seekbar
+    And I tap Play button button on SoundCloud container
+    And I remember the state of Pause button on SoundCloud container
+    And <Contact> starts a video call to me
+    And I see incoming video call
+    And <Contact> stops calling me
+    And I do not see incoming video call
+    Then I verify the state of Pause button on SoundCloud container is changed
+
+    Examples:
+      | Name      | Contact   | CallBackend | SoundCloudLink                                              |
+      | user1Name | user2Name | chrome      | https://soundcloud.com/binary_for_breakfast/star-wars-theme |

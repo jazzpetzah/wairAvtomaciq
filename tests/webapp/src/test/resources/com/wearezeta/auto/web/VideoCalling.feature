@@ -381,7 +381,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
-  @C78099 @videocalling @regression @WEBAPP-2795
+  @C78099 @videocalling @regression
   Scenario Outline: Verify I can see the incoming video call when I just login
     Given My browser supports calling
     Given There are 2 users where <Name> is me
