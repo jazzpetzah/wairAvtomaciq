@@ -251,3 +251,23 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
+
+  @C139856 @staging
+  Scenario Outline: Verify playback is stopped when outgoing call is started
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    And I remember the state of Play button on audio message placeholder
+    And I tap Play audio message button
+# Wait until the audio is downloaded and starts playback
+    And I wait for <AudioDownloadTimeout> seconds
+    And I tap Audio Call button
+    And I tap Leave button on Calling overlay
+    Then I verify the state of Play button on audio message placeholder is not changed
+
+    Examples:
+      | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
