@@ -3,7 +3,6 @@ package com.wearezeta.auto.web.steps;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.WebPage;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
 
@@ -12,11 +11,11 @@ import com.wearezeta.auto.web.pages.external.StartPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.hamcrest.Matchers.containsString;
 
 public class StartPageSteps {
 
@@ -76,6 +75,11 @@ public class StartPageSteps {
 				context.getPagesCollection().getPage(StartPage.class).setUrl(
 						WebAppConstants.STAGING_SITE_ROOT + "/unsupported/%3Fagent=" + agent);
 				context.getPagesCollection().getPage(StartPage.class).navigateTo();
+				break;
+			case "login":
+				context.getPagesCollection().getPage(WebPage.class).setUrl(
+						"https://wire-webapp-staging.zinfra.io/auth/?agent=safari");
+				context.getPagesCollection().getPage(WebPage.class).navigateTo();
 				break;
 			default: break;
 		}
@@ -186,5 +190,13 @@ public class StartPageSteps {
 		}
 		assertThat("Support page is not in the correct language: " + language,
 				context.getPagesCollection().getPage(WebPage.class).getCurrentUrl(), equalTo("https://support.wire.com/hc/" + language));
+	}
+
+	@Then("^I see unsupported browser page$")
+	public void ISeeUnsupportedBrowserPage() throws Exception {
+		assertThat(
+				context.getPagesCollection().getPage(
+						StartPage.class)
+						.isUnsupportedPageVisible(), is(true));
 	}
 }

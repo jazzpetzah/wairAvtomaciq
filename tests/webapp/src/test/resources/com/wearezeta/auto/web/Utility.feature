@@ -124,6 +124,14 @@ Feature: Utility
       | osx     |
       | windows |
 
+  @C139987 @utility @torun
+    Scenario Outline: Verify I get redirected to unsupported browser page
+    When I navigate to login page for <Agent>
+    Then I see unsupported browser page
+    Examples:
+      | Agent  |
+      | safari |
+
   @C5232 @utility @useSpecialEmail
   Scenario Outline: Check password reset utility page for all agents
     Given There is 1 user where <Name> is me
