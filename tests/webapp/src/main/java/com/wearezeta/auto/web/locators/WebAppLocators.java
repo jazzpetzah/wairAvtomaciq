@@ -553,7 +553,7 @@ public final class WebAppLocators {
 
         public static final Function<String, String> cssTopPeopleListByName = (
                 name) -> String
-                .format(".people-picker-list-top-conversations [data-uie-value='%s'] user-avatar",
+                .format(".start-ui-list-top-conversations [data-uie-value='%s'] user-avatar",
                         name);
 
         public static final String xpathSelectedTopPeopleList = "//user-list[contains('top_users')]"
