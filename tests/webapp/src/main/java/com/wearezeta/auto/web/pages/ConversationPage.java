@@ -885,6 +885,16 @@ public class ConversationPage extends WebPage {
         return true;
     }
 
+    public boolean isVideoMessageVisible(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideo, fileName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isVideoMessageInvisible(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideo, fileName));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
     public String getTimeOfVideo(String fileName) throws Exception {
         hoverOverVideo(fileName);
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoTime, fileName));
