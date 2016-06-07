@@ -1155,7 +1155,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I tap (Send|Cancel) record control button
      */
-    @When("^I tap (Send|Cancel) record control button$")
+    @When("^I tap (Send|Cancel|Play) record control button$")
     public void ITapRecordControlButton(String buttonName) throws Exception {
         getConversationViewPage().tapRecordControlButton(buttonName);
     }
@@ -1304,5 +1304,24 @@ public class ConversationViewPageSteps {
                     PLAY_BUTTON_STATE_CHANGE_TIMEOUT), playButtonState.isNotChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT,
                     PLAY_BUTTON_MIN_SIMILARITY));
         }
+    }
+
+    /**
+     * Verifies that the audio message gets played
+     *
+     * @throws Throwable
+     * @step. ^I see the audio message gets played$
+     */
+    @Then("^I see the audio message gets played$")
+    public void ISeeTheAudioMessageGetsPlayed() throws Exception {
+
+        String startTime;
+        String currentTime;
+
+        startTime = getConversationViewPage().getAudioMessageTimeLabelValue();
+        Thread.sleep(700);
+        currentTime = getConversationViewPage().getAudioMessageTimeLabelValue();
+        Assert.assertNotEquals("The Audio message did not get played. StartTime: %s is the same as CurrentTime: %s ! ",
+                startTime,currentTime);
     }
 }
