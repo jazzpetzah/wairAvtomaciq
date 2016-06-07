@@ -124,10 +124,11 @@ Feature: Utility
       | osx     |
       | windows |
 
-  @C139987 @utility @torun
+  @C139987 @utility
     Scenario Outline: Verify I get redirected to unsupported browser page
     When I navigate to login page for <Agent>
     Then I see unsupported browser page
+    
     Examples:
       | Agent  |
       | safari |
