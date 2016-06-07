@@ -66,7 +66,7 @@ Feature: Calling
       | user1Name | user2Name | chrome      |
 
   @C2111 @rc @calling_basic @clumsy @IPv6 @id2093
-  Scenario Outline: (ZIOS-5534) Verify acepting and ending incoming call
+  Scenario Outline: Verify acepting and ending incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
