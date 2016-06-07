@@ -168,6 +168,7 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
+  
 
   @C139855 @staging
   Scenario Outline: (ZIOS-6759) Verify playback is stopped when incoming call has appeared
@@ -229,4 +230,24 @@ Feature: Audio Messaging
 
     Examples:
       | Name      | Contact   | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout | SoundCloudLink                                                   |
-      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | chrome      | 5                    |
+
+  @C131215 @staging
+  Scenario Outline: Verify playback is stopped when audio message recording is started
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    And I remember the state of Play button on audio message placeholder
+    And I tap Play audio message button
+    # Wait until the audio is downloaded and starts playback
+    And I wait for <AudioDownloadTimeout> seconds
+    And I long tap Audio Message button from input tools
+    When I tap Cancel record control button
+    Then I verify the state of Play button on audio message placeholder is not changed
+
+    Examples:
+      | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
