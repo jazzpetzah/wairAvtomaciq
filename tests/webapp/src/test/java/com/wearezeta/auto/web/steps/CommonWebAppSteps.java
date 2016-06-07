@@ -87,6 +87,14 @@ public class CommonWebAppSteps {
                     + " does support calling but this test is just for browsers without support.");
         }
     }
+
+    @Then("^I skip if my browser does not support inline video messages$")
+    public void MyBrowserSupportsInlineVideo() throws Exception {
+        if (!WebAppExecutionContext.getBrowser().isSupportingInlineVideo()) {
+            throw new PendingException("Browser " + WebAppExecutionContext.getBrowser().toString() + " does not support " +
+                    "inline video.");
+        }
+    }
     
     @Given("^I switch language to (.*)$")
     public void ISwitchLanguageTo(String language) throws Exception {
