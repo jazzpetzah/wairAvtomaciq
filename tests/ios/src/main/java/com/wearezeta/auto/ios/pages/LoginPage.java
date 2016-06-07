@@ -41,8 +41,6 @@ public class LoginPage extends IOSPage {
     public static final By nameResentIn10min = MobileBy.AccessibilityId(
             "We already sent you a code via SMS. Tap Resend after 10 minutes to get a new one.");
 
-    private static final By nameInvalidPhoneNumber = MobileBy.AccessibilityId("Please enter a valid phone number");
-
     private static final By nameSomethingWentWrong = MobileBy.AccessibilityId("Something went wrong, please try again");
 
     private static final By nameInvalidEmail = MobileBy.AccessibilityId("Please enter a valid email address");
@@ -141,11 +139,6 @@ public class LoginPage extends IOSPage {
     public boolean isResendIn10minAlertVisible() throws Exception {
         return DriverUtils.waitUntilAlertAppears(getDriver()) &&
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameResentIn10min);
-    }
-
-    public boolean isInvalidPhoneNumberAlertShown() throws Exception {
-        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidPhoneNumber);
     }
 
     public boolean isInvalidEmailAlertShown() throws Exception {
