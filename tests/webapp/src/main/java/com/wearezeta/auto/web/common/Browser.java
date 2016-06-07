@@ -48,10 +48,9 @@ public enum Browser {
 		}
 	}
 
-	public boolean isSupportingProfileManagement() {
+	public boolean isSupportingInlineVideo() {
 		switch (this) {
 		case Chrome:
-		case Firefox:
 			return true;
 		default:
 			return false;

@@ -12,6 +12,7 @@ Feature: Video Message
     Then I see file transfer button in conversation input
     When I send <Size> sized video with name <File> to the current conversation
     And I wait until video <File> is uploaded completely
+    And I skip if my browser does not support inline video messages
     And I click play button of video <File> in the conversation view
     Then I wait until video <File> is downloaded and starts to play
     And I verify seek bar is shown for video <File> in the conversation view
