@@ -69,7 +69,6 @@ Feature: Utility
   @C139985 @utility
   Scenario Outline: Verify that there are no dead links on unsupported browser page for <Agent>
     When I navigate to unsupported page for <Agent>
-    When I navigate to unsupported page for <Agent>
     Then I can see no dead links
 
     Examples:
@@ -111,7 +110,6 @@ Feature: Utility
 
   @C139986 @utility
   Scenario Outline: Verify that there are no dead links on german unsupported browser page for <Agent>
-    When I navigate to unsupported page for <Agent>
     When I navigate to unsupported page for <Agent>
     And I change language to german
     And unsupported page for <Agent> is german

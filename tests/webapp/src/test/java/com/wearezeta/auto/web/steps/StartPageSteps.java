@@ -1,7 +1,9 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.WebPage;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
@@ -77,8 +79,9 @@ public class StartPageSteps {
 				context.getPagesCollection().getPage(StartPage.class).navigateTo();
 				break;
 			case "login":
+				System.out.println(CommonUtils.getWebAppApplicationPathFromConfig(LoginPage.class));
 				context.getPagesCollection().getPage(WebPage.class).setUrl(
-						"https://wire-webapp-staging.zinfra.io/auth/?agent=" + agent);
+						CommonUtils.getWebAppApplicationPathFromConfig(LoginPage.class) + "/?agent=" + agent);
 				context.getPagesCollection().getPage(WebPage.class).navigateTo();
 				break;
 			default: break;
