@@ -78,7 +78,7 @@ public class StartPageSteps {
 				break;
 			case "login":
 				context.getPagesCollection().getPage(WebPage.class).setUrl(
-						"https://wire-webapp-staging.zinfra.io/auth/?agent=safari");
+						"https://wire-webapp-staging.zinfra.io/auth/?agent=" + agent);
 				context.getPagesCollection().getPage(WebPage.class).navigateTo();
 				break;
 			default: break;
