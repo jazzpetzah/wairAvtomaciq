@@ -1,6 +1,6 @@
 Feature: Video Message
 
-  @C123927 @videomessage @staging
+  @C123927 @videomessage @regression
   Scenario Outline: Verify sender can play video message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
