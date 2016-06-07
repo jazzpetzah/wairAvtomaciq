@@ -230,8 +230,8 @@ Feature: Audio Messaging
 
     Examples:
       | Name      | Contact   | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout | SoundCloudLink                                                   |
-      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | chrome      | 5                    |
-
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
+    
   @C131215 @staging
   Scenario Outline: Verify playback is stopped when audio message recording is started
     Given There are 2 users where <Name> is me
