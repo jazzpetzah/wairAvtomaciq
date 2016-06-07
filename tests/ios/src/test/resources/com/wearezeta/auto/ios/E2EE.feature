@@ -111,13 +111,10 @@ Feature: E2EE
     And I close group participant details page
     And I close group info page
     Then I see shield icon next to conversation input field
-    #BUG Labels can not be located right now in appium
-    #And I see last message in dialog is expected message <VerificationMsg>
-    Then I see 2 conversation entries
 
     Examples:
-      | Name      | Contact1  | Contact2  | DeviceName1 | DeviceLabel1 | DeviceName2 | DeviceLabel2 | GroupChatName | VerificationMsg               |
-      | user1Name | user2Name | user3Name | Device1     | Label1       | Device2     | Label2       | VerifiedGroup | ALL FINGERPRINTS ARE VERIFIED |
+      | Name      | Contact1  | Contact2  | DeviceName1 | DeviceLabel1 | DeviceName2 | DeviceLabel2 | GroupChatName |
+      | user1Name | user2Name | user3Name | Device1     | Label1       | Device2     | Label2       | VerifiedGroup |
 
   @C3294 @rc @regression
   Scenario Outline: (ZIOS-5787) Verify system message appearance in case of using a new device by friend
@@ -211,6 +208,8 @@ Feature: E2EE
     Given I see conversations list
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
     When I tap settings gear button
+    # FIXME: Sometimes autoaccept fails
+    And I accept alert
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     And I select settings item Privacy & Security

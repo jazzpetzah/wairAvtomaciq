@@ -78,11 +78,11 @@ Feature: Sign In
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
     When I enter <Count> digits phone number
-    Then I see invalid phone number alert
+    Then I verify the alert contains text <ExpectedText>
 
     Examples:
-      | Count |
-      | 10    |
+      | Count | ExpectedText               |
+      | 16    | enter a valid phone number |
 
   @C1136 @rc @regression @id3851 @ZIOS-5585 @useSpecialEmail
   Scenario Outline: Verify first time phone sign in when email is not assigned

@@ -382,18 +382,6 @@ public class LoginPageSteps {
     }
 
     /**
-     * Verifies whether the notification invalid phone number shown
-     *
-     * @throws Exception
-     * @step. ^I see invalid phone number alert$
-     */
-    @Then("^I see invalid phone number alert$")
-    public void ISeeInvalidPhoneNumberAlert() throws Exception {
-        Assert.assertTrue("I don't see invalid phone number alert",
-                getLoginPage().isInvalidPhoneNumberAlertShown());
-    }
-
-    /**
      * Verifies whether the notification invalid email is shown
      *
      * @throws Exception

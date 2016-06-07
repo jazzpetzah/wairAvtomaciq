@@ -55,7 +55,7 @@ Feature: Localization
       | Login      | Password      | Name      | Contact   | Language | ConversationViewText | ContactListText        | SearchPlaceHolder                | ConvOption1   | ConvOption2 | ConvOption3 | ConvOption4 |
       | user1Email | user1Password | user1Name | user2Name | de       | HINZUGEFÜGT          | UNTERHALTUNG BEGINNEN  | Namen oder E-Mail-Adresse suchen | Stummschalten | Archivieren | Löschen     | Blockieren  |
 
-  @C136458 @staging
+  @C136458 @regression
   Scenario Outline: Verify support pages are opened in correct language (<Language>)
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
