@@ -367,25 +367,6 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
       | user1Name | user2Name | user3Name | WaitGROUPCALL | chrome      | 2               |
 
-  @C2039 @calling_advanced @id2673 @noAcceptAlert @ZIOS-6069
-  Scenario Outline: Verify impossibility to connect 6th person to the call
-    Given There are 6 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
-    Given <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5> starts instance using <CallBackend>
-    Given <Contact2>,<Contact3>,<Contact4>,<Contact5> accepts next incoming call automatically
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    And <Contact1> calls <GroupChatName>
-    And I see call status message contains "<GroupChatName> ringing"
-    And I tap Accept button on Calling overlay
-    Then I see group call is Full message
-
-    Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | chrome      |
-
   @C2068 @calling_basic @id880
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
