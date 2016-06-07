@@ -9,7 +9,6 @@ import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -127,11 +126,15 @@ public class ConversationViewPageSteps {
      * @param longTap                equals not null means long tap on the cursor button
      * @param btnName                button name
      * @param longTapDurationSeconds long tap duration in seconds
+     * @param shouldReleaseFinger    this does not equal to hull if one should not
+     *                               release his finger after tap on an icon. Works for long tap on Audio Message
+     *                               icon only
      * @throws Exception
-     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button$ from cursor toolbar$
+     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button$ from cursor toolbar( without releasing my finger)?$
      */
-    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button (\\d+ seconds )?from cursor toolbar$")
-    public void WhenITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds) throws Exception {
+    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button (\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
+    public void WhenITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
+                                         String shouldReleaseFinger) throws Exception {
         if (longTap == null) {
             switch (btnName.toLowerCase()) {
                 case "video message":
@@ -161,7 +164,11 @@ public class ConversationViewPageSteps {
 
             switch (btnName.toLowerCase()) {
                 case "audio message":
-                    getConversationViewPage().longTapAudioMessagecursorBtn(longTapDuration);
+                    if (shouldReleaseFinger == null) {
+                        getConversationViewPage().longTapAudioMessageCursorBtn(longTapDuration);
+                    } else {
+                        getConversationViewPage().longTapAndKeepAudioMessageCursorBtn();
+                    }
                     break;
                 default:
                     throw new IllegalStateException(String.format("Unknow button name '%s' for long tap", btnName));
@@ -434,6 +441,27 @@ public class ConversationViewPageSteps {
             default:
                 throw new IllegalStateException(String.format("Cannot identify the button type '%s'", buttonType));
         }
+    }
+
+    /**
+     * Verify the corresponding button exists on Audio Message recorder control
+     *
+     * @param buttonType could be send or cancel or play
+     * @throws Exception
+     * @step. ^I see (Send|Cancel|Play) button on audio message recorder$"
+     */
+    @When("^I see (Send|Cancel|Play) button on audio message recorder$")
+    public void ISeeAudioRecorderButton(String buttonType) throws Exception {
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
+        switch (buttonType.toLowerCase()) {
+            case "cancel":
+                verificationFunc = getConversationViewPage()::isAudioMessageCancelButtonVisible;
+                break;
+            default:
+                throw new IllegalStateException(String.format("Cannot identify the button type '%s'", buttonType));
+        }
+        Assert.assertTrue(String.format("The %s button is exoected to be visible on audio recorder control",
+                buttonType), verificationFunc.call());
     }
 
     /**
