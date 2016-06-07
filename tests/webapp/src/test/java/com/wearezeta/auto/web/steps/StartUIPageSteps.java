@@ -334,11 +334,7 @@ public class StartUIPageSteps {
 	 */
 	@When("^I wait till Top People list appears$")
 	public void IwaitTillTopPeopleListAppears() throws Exception {
-		if (!context.getPagesCollection().getPage(StartUIPage.class)
-				.isTopPeopleLabelVisible())
-			context.getPagesCollection().getPage(StartUIPage.class).closeStartUI();
-		context.getPagesCollection().getPage(ContactListPage.class).openStartUI();
-		Assert.assertTrue("Top People list is not shown", context.getPagesCollection()
+		Assert.assertTrue("Top People list is NOT shown", context.getPagesCollection()
 				.getPage(StartUIPage.class).isTopPeopleLabelVisible());
 	}
 

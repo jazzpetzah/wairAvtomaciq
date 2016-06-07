@@ -21,6 +21,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class ContactListPageSteps {
 
@@ -57,9 +59,9 @@ public class ContactListPageSteps {
                 .waitForSelfProfileButton();
     }
 
-    @Given("^I verify a badge is shown on my avatar$")
-    public void ISeeBadgeOnAvatar() throws Exception {
-        Assert.assertTrue("No contact list loaded.", context.getPagesCollection()
+    @Given("^I verify a badge is shown on self profile button$")
+    public void ISeeBadgeOnSelfProfileButton() throws Exception {
+        Assert.assertTrue("No badge visible.", context.getPagesCollection()
                 .getPage(ContactListPage.class).waitForBadgeVisible());
     }
 

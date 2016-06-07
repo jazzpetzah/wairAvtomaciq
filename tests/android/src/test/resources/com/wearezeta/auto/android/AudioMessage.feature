@@ -250,3 +250,24 @@ Feature: Audio Message
     Examples:
       | Name      | Contact   | FileName | MIMEType  | DeviceName | CallBackend |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | chrome      |
+
+  @C139852 @staging
+  Scenario Outline: (AN-4107) Verify that record of audio message will be stopped by incoming voice/video call
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When I long tap Audio message button from cursor toolbar without releasing my finger
+    And I wait for 3 seconds
+    And <Contact> calls me
+    And I see incoming call from <Contact>
+    And <Contact> stops calling me
+    And I do not see incoming call
+    Then I see Cancel button on audio message recorder
+
+    Examples:
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |

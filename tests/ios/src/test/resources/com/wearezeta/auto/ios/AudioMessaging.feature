@@ -273,6 +273,24 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
 
+  @C139862 @staging
+  Scenario Outline: Verify Soundcloud playback is stopped when audio message recording is started
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
+    And I tap on contact name <Contact>
+    And I tap media container
+    And I remember media container state
+    And I long tap Audio Message button from input tools
+    Then I see audio message record container
+    And I see media container state is changed
+
+    Examples:
+      | Name      | Contact   |SoundCloudLink                                                   |
+      | user1Name | user2Name |https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
+
   @C129325 @C129324 @staging
   Scenario Outline: Verify playing the message by tapping on the play icon on record toolbar
     Given There are 2 users where <Name> is me

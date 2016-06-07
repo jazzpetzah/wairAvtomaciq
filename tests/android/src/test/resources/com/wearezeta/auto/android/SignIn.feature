@@ -134,6 +134,7 @@ Feature: Sign In
   Scenario Outline: Verify you see first time usage overlay on first login by mail
     Given There is 1 user where <Name> is me
     Given I sign in using my email
+    Given I see First Time overlay
     Given I tap Got It button on First Time overlay
     Given I see Contact list with no contacts
 
