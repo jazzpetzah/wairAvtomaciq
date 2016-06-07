@@ -555,6 +555,16 @@ public class ConversationPageSteps {
                 .waitUntilVideoTimeChanges(fileName));
     }
 
+    @Then("^I (do not )?see video message (.*) in the conversation view$")
+    public void ISeeVideoMessage(String doNot, String fileName) throws Exception {
+        ConversationPage page = context.getPagesCollection().getPage(ConversationPage.class);
+        if (doNot == null) {
+            assertThat("Could not find video message " + fileName, page.isVideoMessageVisible(fileName));
+        } else {
+            assertThat("video message displayed for " + fileName, page.isVideoMessageInvisible(fileName));
+        }
+    }
+
     @Then("^I wait until audio (.*) is uploaded completely$")
     public void IWaitUntilAudioIsUploaded(String fileName) throws Exception {
         assertThat("Upload still not finished for audio " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
