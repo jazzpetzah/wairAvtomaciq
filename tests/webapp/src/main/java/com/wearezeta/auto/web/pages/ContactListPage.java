@@ -84,7 +84,7 @@ public class ContactListPage extends WebPage {
     @FindBy(css = WebAppLocators.ContactListPage.cssDeleteButton)
     private WebElement deleteButton;
 
-    @FindBy(xpath = WebAppLocators.ContactListPage.xpathCancelRequestButton)
+    @FindBy(css = WebAppLocators.ContactListPage.cssCancelRequestButton)
     private WebElement cancelRequestButton;
 
     // leave warning
