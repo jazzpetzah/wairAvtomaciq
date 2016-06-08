@@ -90,6 +90,9 @@ Feature: Conversation View
     And I tap on user name found on People picker page <Contact2>
     And I see Add to conversation button
     And I click on Add to conversation button
+    # Workaround for AN-4011, for following two steps
+    And I tap conversation name from top toolbar
+    And I press back button
     Then I see group chat page with users <Contact1>,<Contact2>
     And I navigate back from dialog page
     And I see group conversation with <Contact1>,<Contact2> in conversations list
@@ -99,7 +102,7 @@ Feature: Conversation View
       | user1Name | user2Name | user3Name |
       
   @C18044 @regression
-  Scenario Outline: (AN-3428) I see creation header when someone create group conversation with me
+  Scenario Outline: I see creation header when someone create group conversation with me
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
     Given I sign in using my email or phone number
@@ -107,6 +110,9 @@ Feature: Conversation View
     Given I see Contact list with contacts
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
     When I tap on contact name <GroupChatName>
+    # Workaround for AN-4011, for following two steps
+    And I tap conversation name from top toolbar
+    And I press back button
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
