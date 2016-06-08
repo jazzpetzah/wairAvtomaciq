@@ -704,7 +704,7 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Click the cancel button
+     * Click the cancel button in the leave warning
      *
      * @throws Throwable
      * @step. ^I click cancel button in the leave warning$
@@ -886,5 +886,17 @@ public class ContactListPageSteps {
     public void IClickCancelRequestButton() throws Exception {
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickCancelRequest();
+    }
+
+    /**
+     * Click the archive option
+     *
+     * @throws Exception
+     * @step. ^I click archive in the options popover$
+     */
+    @When("^I click archive in the options popover$")
+    public void IClickArchiveButton() throws Exception {
+        context.getPagesCollection().getPage(ContactListPage.class)
+                .clickArchiveButton();
     }
 }
