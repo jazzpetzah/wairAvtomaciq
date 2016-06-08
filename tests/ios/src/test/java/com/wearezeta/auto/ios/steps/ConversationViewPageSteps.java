@@ -203,18 +203,21 @@ public class ConversationViewPageSteps {
      * @param btnName       one of available button names
      * @param shouldKeepTap this signals that the finger should not be released after the step is completed.
      *                      Works with long tap only
+     * @param specificTime specific time duration you press the button
      * @throws Exception
-     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tool( without releasing my finger)?s$
+     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for specific seconds?)? from input tool( without releasing my finger)?s$
      */
-    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tools( without releasing my finger)?$")
-    public void IPressAddPictureButton(String isLongTap, String btnName, String shouldKeepTap) throws Exception {
+    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for specific seconds?)? from input tools( without releasing my finger)?$")
+    public void IPressAddPictureButton(String isLongTap, String btnName,String specificTime,
+                                       String shouldKeepTap) throws Exception {
         if (isLongTap == null) {
             getConversationViewPage().tapInputToolButtonByName(btnName);
-        }
-        if(shouldKeepTap == null){
-            getConversationViewPage().longTapInputToolButtonByName(btnName, false);
         } else {
-            getConversationViewPage().longTapInputToolButtonByName(btnName, shouldKeepTap != null);
+            if(specificTime == null){
+                getConversationViewPage().longTapInputToolButtonByName(btnName, shouldKeepTap != null);
+            }else {
+                getConversationViewPage().longTapWithDurationInputToolButtonByName(btnName);
+            }
         }
     }
 

@@ -741,12 +741,13 @@ public class ConversationViewPage extends IOSPage {
     public void longTapInputToolButtonByName(String btnName, boolean shouldKeepTap) throws Exception {
         if (shouldKeepTap) {
             new TouchAction(getDriver()).press(getElement(getInputToolButtonByName(btnName))).perform();
-        }
-        if(!shouldKeepTap){
-            getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_RECORD_AUDIO_MESSAGE_DURATION);
         } else {
             getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_DURATION);
         }
+    }
+
+    public void longTapWithDurationInputToolButtonByName(String btnName) throws Exception {
+        getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_RECORD_AUDIO_MESSAGE_DURATION);
     }
 
     public boolean isAudioMessageRecordCancelVisible() throws Exception {
