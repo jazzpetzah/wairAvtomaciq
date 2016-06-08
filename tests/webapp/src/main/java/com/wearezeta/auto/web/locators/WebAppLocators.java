@@ -83,7 +83,7 @@ public final class WebAppLocators {
 
         public static final String cssLeaveButton = "[data-uie-name='do-leave']";
 
-        public static final String cssCancelRequestButton = "[data-uie-name='do-cancel-request']";
+        public static final String xpathCancelRequestButton = "//div[@id='actions-bubble']//*[@data-uie-name='do-cancel-request']";
 
         public static final Function<String, String> cssContactListEntryByName = (
                 name) -> String
