@@ -6,7 +6,7 @@ Feature: Settings
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I click menu bar item "Wire" and menu item "Settings"
     Then I see Settings dialog
 
@@ -20,7 +20,7 @@ Feature: Settings
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I type shortcut combination to open preferences
     Then I see Settings dialog
 
@@ -34,7 +34,7 @@ Feature: Settings
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open self profile
     Then I do not see the settings button on self profile page
 

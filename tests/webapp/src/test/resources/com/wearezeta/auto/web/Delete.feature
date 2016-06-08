@@ -143,11 +143,11 @@ Feature: Delete
     Given I open conversation with <Contact>
     Given I write message <Message1>
     Given I send message
+    Given I see text message <Message1>
     Given I write message <Message2>
     Given I send message
-    Given Contact <Contact> sends message <Message3> to user Myself
-    Given I see text message <Message1>
     Given I see text message <Message2>
+    Given Contact <Contact> sends message <Message3> to user Myself
     Given I see text message <Message3>
     Given I open self profile
     Given I click gear button on self profile page

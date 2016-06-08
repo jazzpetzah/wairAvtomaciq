@@ -98,7 +98,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C43808 @rc @regression
+  @C43808 @rc @regression @useSpecialEmail
   Scenario Outline: Verify sign in with phone number only
     Given There is 1 user with phone number only where <Name> is me
     Given I see welcome screen
@@ -129,3 +129,15 @@ Feature: Sign In
     Examples:
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @C131213 @rc @regression
+  Scenario Outline: Verify you see first time usage overlay on first login by mail
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I see First Time overlay
+    Given I tap Got It button on First Time overlay
+    Given I see Contact list with no contacts
+
+    Examples:
+      | Name      |
+      | user1Name |

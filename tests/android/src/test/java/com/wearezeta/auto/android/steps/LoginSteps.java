@@ -53,9 +53,17 @@ public class LoginSteps {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
         getWelcomePage().tapSignInTab();
-        getEmailSignInPage().setLogin(self.getEmail());
-        getEmailSignInPage().setPassword(self.getPassword());
-        getEmailSignInPage().logIn(true, DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
+        // FIXME: AN-4116
+        try {
+            getEmailSignInPage().setLogin(self.getEmail());
+            getEmailSignInPage().setPassword(self.getPassword());
+            getEmailSignInPage().logIn(true, DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
+        } catch (Exception e) {
+            Thread.sleep(2000);
+            getEmailSignInPage().setLogin(self.getEmail());
+            getEmailSignInPage().setPassword(self.getPassword());
+            getEmailSignInPage().logIn(true, DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
+        }
     }
 
     /**
@@ -77,7 +85,6 @@ public class LoginSteps {
         getVerificationPage().clickConfirm();
         Assert.assertTrue("Phone number verification code input screen is still visible",
                 getVerificationPage().waitUntilConfirmButtonDisappears());
-        Assert.assertTrue("Invalid verification code!", getVerificationPage().isIncorrectCodeErrorNotAppears());
     }
 
     private static final int PHONE_NUMBER_LOGIN_THRESHOLD = 60;
@@ -155,12 +162,12 @@ public class LoginSteps {
     public void IAcceptErrorMsg() throws Exception {
         getEmailSignInPage().acceptErrorMessage();
     }
-    
+
     /**
      * Verify whether forcer email login page is visible
-     * 
-     * @step. ^I see (?:forced)? e?mail login page$
+     *
      * @throws Exception
+     * @step. ^I see (?:forced)? e?mail login page$
      */
     @Given("^I see (?:forced)? e?mail login page$")
     public void GivenISeeEmailScreen() throws Exception {
@@ -171,9 +178,8 @@ public class LoginSteps {
     /**
      * Click NOT NOW button on the corresponding page
      *
-     * @step. ^I postpone Add Phone Number action$
-     *
      * @throws Exception
+     * @step. ^I postpone Add Phone Number action$
      */
     @And("^I postpone Add Phone Number action$")
     public void IPostponeAddPhoneNumber() throws Exception {

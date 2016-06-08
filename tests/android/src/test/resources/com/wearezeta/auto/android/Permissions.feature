@@ -1,6 +1,6 @@
 Feature: Permissions
 
-  @C129781 @noAcceptAlert @permissions_test
+  @C129781 @noAcceptAlert @permissionsTest
   Scenario Outline: Deny permissions scenario
     Given I am on Android 6 or better
     Given I delete all contacts from Address Book
@@ -77,3 +77,40 @@ Feature: Permissions
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | user4Name | autocall    | chrome       |
+
+  @C136785 @noAcceptAlert @permissionsTest
+  Scenario Outline: Verify you can successfully register a new user and log in automatically denying all permission requests
+    Given I see welcome screen
+    When I input a new phone number for user <Name>
+    And I input the verification code
+    And I input my name
+    # deny access to contacts
+    And I dismiss security alert
+    And I select to choose my own picture
+    And I select Camera as picture source
+    # deny access to camera
+    And I dismiss security alert
+    And I select to keep the current picture
+    Then I see Contact list with no contacts
+
+    Examples:
+      | Name      |
+      | user1Name |
+
+  @C136786 @noAcceptAlert @permissionsTest @useSpecialEmail
+  Scenario Outline: Verify you can successfully log in and add email by denying all the permission requests
+    Given There is 1 user with phone number only where <Name> is me
+    Given I see welcome screen
+    When I sign in using my phone number
+    # deny access to contacts
+    And I dismiss security alert
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I start listening for confirmation email
+    And I press Log in button
+    And I verify my email
+    Then I see Contact list with no contacts
+
+    Examples:
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

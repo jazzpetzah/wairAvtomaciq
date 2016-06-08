@@ -13,7 +13,7 @@ import com.wearezeta.auto.win.pages.webapp.ContactListPage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
-import com.wearezeta.auto.web.steps.PeoplePickerPageSteps;
+import com.wearezeta.auto.web.steps.StartUIPageSteps;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -21,8 +21,7 @@ import cucumber.api.java.en.When;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
+
 
 public class ContactListPageSteps {
 
@@ -72,7 +71,7 @@ public class ContactListPageSteps {
                 .getPage(ContactListPage.class);
         Assert.assertTrue("No contact list loaded.",
                 contactListPage.waitForContactListVisible());
-        contactListPage.waitForSelfProfileAvatar();
+        contactListPage.waitForSelfProfileButton();
     }
 
     /**
@@ -307,8 +306,8 @@ public class ContactListPageSteps {
      * @throws Exception
      */
     @When("^I open People Picker from Contact List$")
-    public void IOpenPeoplePicker() throws Exception {
-        webappPagesCollection.getPage(ContactListPage.class).openPeoplePicker();
+    public void IOpenStartUI() throws Exception {
+        webappPagesCollection.getPage(ContactListPage.class).openStartUI();
     }
 
     /**
@@ -619,7 +618,7 @@ public class ContactListPageSteps {
     @Then("^I see previously remembered user selected in the conversations list$")
     public void ISeePreviouslyRememberedUserSelectedInConversationList()
             throws Exception {
-        final List<String> selectedTopPeople = PeoplePickerPageSteps
+        final List<String> selectedTopPeople = StartUIPageSteps
                 .getSelectedTopPeople();
         ContactListPage contactListPage = webappPagesCollection
                 .getPage(ContactListPage.class);

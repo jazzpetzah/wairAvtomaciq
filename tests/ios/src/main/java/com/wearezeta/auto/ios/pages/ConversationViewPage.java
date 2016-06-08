@@ -124,7 +124,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameVideoMessageButton = MobileBy.AccessibilityId("videoButton");
     private static final By nameAudioMessageButton = MobileBy.AccessibilityId("audioButton");
 
-    private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[@name='ConversationView']";
+    private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[./UIAButton[@name='Back']]";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
 
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
@@ -175,7 +175,13 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By namePlayAudioMessageButton = MobileBy.AccessibilityId("audioRecorderPlay");
 
-    private static final By nameAudioActionButton = MobileBy.AccessibilityId("AudioActionButton");
+    private static final By nameAudioRecordTimeLabel = MobileBy.AccessibilityId("audioRecorderTimeLabel");
+
+    private static final String strNameAudioActionButton = "AudioActionButton";
+    private static final By nameAudioActionButton = MobileBy.AccessibilityId(strNameAudioActionButton);
+
+    private static final Function<Integer, String> xpathStrAudioActionButtonByIndex = index ->
+            String.format("(//*[@name='%s'])[%s]", strNameAudioActionButton, index);
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -732,12 +738,23 @@ public class ConversationViewPage extends IOSPage {
         getElement(nameVideoMessageActionButton).click();
     }
 
-    public void longTapInputToolButtonByName(String btnName) throws Exception {
-        getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_DURATION);
+    public void longTapInputToolButtonByName(String btnName, boolean shouldKeepTap) throws Exception {
+        if (shouldKeepTap) {
+            new TouchAction(getDriver()).press(getElement(getInputToolButtonByName(btnName))).perform();
+        }
+        if(!shouldKeepTap){
+            getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_RECORD_AUDIO_MESSAGE_DURATION);
+        } else {
+            getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_DURATION);
+        }
     }
 
     public boolean isAudioMessageRecordCancelVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAudioRecorderCancelButton);
+    }
+
+    public boolean isAudioMessageRecordCancelInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameAudioRecorderCancelButton);
     }
 
     private By getRecordControlButtonByName(String buttonName) {
@@ -746,6 +763,8 @@ public class ConversationViewPage extends IOSPage {
                 return nameSendAudioMessageButton;
             case "cancel":
                 return nameAudioRecorderCancelButton;
+            case "play":
+                return namePlayAudioMessageButton;
             default:
                 throw new IllegalArgumentException("Not know record control button");
         }
@@ -775,4 +794,41 @@ public class ConversationViewPage extends IOSPage {
                 ().perform();
     }
 
+    public void tapAndHoldAudioMessage() throws Exception {
+        this.getDriver().tap(1, getElement(nameAudioActionButton), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public void tapPlayAudioMessageButton(int placeholderIndex) throws Exception {
+        final By locator = By.xpath(xpathStrAudioActionButtonByIndex.apply(placeholderIndex));
+        getElement(locator).click();
+    }
+
+    public void tapPlayAudioMessageButton() throws Exception {
+        getElement(nameAudioActionButton).click();
+    }
+
+    public BufferedImage getPlayAudioMessageButtonScreenshot(int placeholderIndex) throws Exception {
+        final By locator = By.xpath(xpathStrAudioActionButtonByIndex.apply(placeholderIndex));
+        return this.getElementScreenshot(getElement(locator)).orElseThrow(
+                () -> new IllegalStateException(
+                        String.format("Cannot get a screenshot of Play/Pause button on audio container #%d",
+                                placeholderIndex))
+        );
+    }
+
+    public BufferedImage getFirstPlayAudioMessageButtonScreenshot() throws Exception {
+        return getPlayAudioMessageButtonScreenshot(1);
+    }
+
+    public BufferedImage getSecondPlayAudioMessageButtonScreenshot() throws Exception {
+        return getPlayAudioMessageButtonScreenshot(2);
+    }
+
+    public boolean isRecordControlButtonVisible(String buttonName) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getRecordControlButtonByName(buttonName));
+    }
+
+    public String getAudioMessageTimeLabelValue() throws Exception {
+        return getElement(nameAudioRecordTimeLabel).getAttribute("value");
+    }
 }

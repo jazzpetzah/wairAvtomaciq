@@ -199,17 +199,22 @@ public class ConversationViewPageSteps {
     /**
      * Tap the corresponding button from input tools palette
      *
-     * @param isLongTap equals to null if simple tap should be performed
-     * @param btnName   one of available button names
+     * @param isLongTap     equals to null if simple tap should be performed
+     * @param btnName       one of available button names
+     * @param shouldKeepTap this signals that the finger should not be released after the step is completed.
+     *                      Works with long tap only
      * @throws Exception
-     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tools$
+     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tool( without releasing my finger)?s$
      */
-    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tools$")
-    public void IPressAddPictureButton(String isLongTap, String btnName) throws Exception {
+    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tools( without releasing my finger)?$")
+    public void IPressAddPictureButton(String isLongTap, String btnName, String shouldKeepTap) throws Exception {
         if (isLongTap == null) {
             getConversationViewPage().tapInputToolButtonByName(btnName);
+        }
+        if(shouldKeepTap == null){
+            getConversationViewPage().longTapInputToolButtonByName(btnName, false);
         } else {
-            getConversationViewPage().longTapInputToolButtonByName(btnName);
+            getConversationViewPage().longTapInputToolButtonByName(btnName, shouldKeepTap != null);
         }
     }
 
@@ -677,17 +682,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Long tap on the image displayed in the conversation
-     *
-     * @throws Exception
-     * @step. ^I long tap on image in the conversation$
-     */
-    @When("^I long tap on image in the conversation$")
-    public void ILongTapOnImage() throws Exception {
-        getConversationViewPage().tapHoldImageWithRetry();
-    }
-
-    /**
      * Tap on pointed badge item
      *
      * @param badgeItem the badge item name
@@ -715,14 +709,14 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify whether the corresponding badge item is visible
+     * Verify visibility of the corresponding badge item
      *
      * @param shouldNotSee equals to null if the corresponding item should be visible
      * @param badgeItem    the badge item name
      * @throws Exception
-     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste) badge item$
+     * @step. ^I (do not )?see (Select All|Copy|Delete|Paste|Save) badge item$
      */
-    @Then("^I (do not )?see (Select All|Copy|Delete|Paste) badge item$")
+    @Then("^I (do not )?see (Select All|Copy|Delete|Paste|Save) badge item$")
     public void ISeeBadge(String shouldNotSee, String badgeItem) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (badgeItem) {
@@ -742,8 +736,12 @@ public class ConversationViewPageSteps {
                 verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupPasteButtonVisible :
                         getConversationViewPage()::isPopupPasteButtonInvisible;
                 break;
+            case "Save":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isPopupSaveButtonVisible :
+                        getConversationViewPage()::isPopupSaveButtonInvisible;
+                break;
             default:
-                throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste) are allowed options");
+                throw new IllegalArgumentException("Only (Select All|Copy|Delete|Paste|Save) are allowed options");
         }
         Assert.assertTrue(String.format("The '%s' badge item is %s", badgeItem,
                 (shouldNotSee == null) ? "not visible" : "still visible"), verificationFunc.call());
@@ -1126,28 +1124,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Does a long tap on a media container to get delete/copy menu
-     *
-     * @throws Exception
-     * @step. ^I long tap on media container in the conversation$
-     */
-    @When("^I long tap on media container in the conversation$")
-    public void ILongTapOnMediaContainerInTheConversation() throws Exception {
-        getConversationViewPage().tapAndHoldMediaContainer();
-    }
-
-    /**
-     * Does a long tap on the shared file placeholder
-     *
-     * @throws Exception
-     * @step. ^I long tap on file transfer placeholder in conversation view$
-     */
-    @When("^I long tap on file transfer placeholder in conversation view$")
-    public void ILongTapOnFileTransferPlaceholderInConversationView() throws Exception {
-        getConversationViewPage().tapAndHoldFileTransferPlaceholder();
-    }
-
-    /**
      * Wait for a while until video message container is shown in the conversation view
      *
      * @throws Exception
@@ -1165,10 +1141,15 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I see audio message record container$
      */
-    @Then("^I see audio message record container$")
-    public void ISeeAudioRecordProgress() throws Exception {
-        Assert.assertTrue("Audio message record progress control has not been shown",
-                getConversationViewPage().isAudioMessageRecordCancelVisible());
+    @Then("^I (do not )?see audio message record container$")
+    public void ISeeAudioRecordProgress(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("Audio message record progress control has not been shown",
+                    getConversationViewPage().isAudioMessageRecordCancelVisible());
+        } else {
+            Assert.assertTrue("Audio message record progress control is shown",
+                    getConversationViewPage().isAudioMessageRecordCancelInvisible());
+        }
     }
 
     /**
@@ -1177,9 +1158,21 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I tap (Send|Cancel) record control button
      */
-    @When("^I tap (Send|Cancel) record control button$")
+    @When("^I tap (Send|Cancel|Play) record control button$")
     public void ITapRecordControlButton(String buttonName) throws Exception {
         getConversationViewPage().tapRecordControlButton(buttonName);
+    }
+
+    /**
+     * Verify visibility of the corresponding record control button
+     *
+     * @throws Exception
+     * @step. ^I see (Send|Cancel) record control button$
+     */
+    @Then("^I see (Send|Cancel) record control button$")
+    public void ISeeRecordControlButton(String buttonName) throws Exception {
+        Assert.assertTrue(String.format("Record control button '%s' is not visible", buttonName),
+                getConversationViewPage().isRecordControlButtonVisible(buttonName));
     }
 
     /**
@@ -1222,5 +1215,113 @@ public class ConversationViewPageSteps {
     @When("^I record (\\d+) seconds? long audio message and send it using swipe up gesture$")
     public void IRecordXSecondsAudioMessageAndSendBySwipe(int sec) throws Exception {
         getConversationViewPage().tapAudioRecordWaitAndSwipe(sec);
+    }
+
+    /**
+     * Long tap on a conversation view item
+     *
+     * @param conversationItem item name
+     * @throws Exception
+     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in conversation view$")
+     */
+    @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in conversation view$")
+    public void ITapAndHoldAudioMessagePlaceholder(String conversationItem) throws Exception {
+        switch (conversationItem) {
+            case "image":
+                getConversationViewPage().tapHoldImageWithRetry();
+                break;
+            case "media container":
+                getConversationViewPage().tapAndHoldMediaContainer();
+                break;
+            case "file transfer placeholder":
+                getConversationViewPage().tapAndHoldFileTransferPlaceholder();
+                break;
+            case "audio message placeholder":
+                getConversationViewPage().tapAndHoldAudioMessage();
+                break;
+            default:
+                throw new IllegalArgumentException("Not known conversation item. Please use only items pointed in the step");
+        }
+    }
+
+    /**
+     * Tap Play/Pause audio message button
+     *
+     * @param placeholderIndex optional parameter. If exists then button state for the particular placeholder will
+     *                         be verified.
+     *                         The most recent  audio message placeholder is the conversation view will have index 1
+     * @throws Exception
+     * @step. ^I tap (?:Play|Pause) audio message button (on audio message placeholder number \d+)?$
+     */
+    @When("^I tap (?:Play|Pause) audio message button( on audio message placeholder number \\d+)?$")
+    public void ITapPlayAudioMessageButton(String placeholderIndex) throws Exception {
+        if (placeholderIndex == null) {
+            getConversationViewPage().tapPlayAudioMessageButton();
+        } else {
+            getConversationViewPage().tapPlayAudioMessageButton(
+                    Integer.parseInt(placeholderIndex.replaceAll("[\\D]", "")));
+        }
+    }
+
+    private ElementState playButtonState;
+
+    /**
+     * Remember the current state of Play/Pause button on Audio Message placeholder
+     *
+     * @param isSecond optional parameter. If exists then button state for the particular placeholder will be verified.
+     *                 The most recent  audio message placeholder is the conversation view will have index 1
+     * @throws Exception
+     * @step. ^I remember the state of (?:Play|Pause) button on audio message placeholder$
+     */
+    @When("^I remember the state of (?:Play|Pause) button on (the second )?audio message placeholder?$")
+    public void IRememberPlayButtonState(String isSecond) throws Exception {
+        if (isSecond == null) {
+            playButtonState = new ElementState(getConversationViewPage()::getFirstPlayAudioMessageButtonScreenshot);
+        } else {
+            playButtonState = new ElementState(getConversationViewPage()::getSecondPlayAudioMessageButtonScreenshot);
+        }
+        playButtonState.remember();
+    }
+
+    private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 7;
+    private static final double PLAY_BUTTON_MIN_SIMILARITY = 0.95;
+
+    /**
+     * Verify the sate of Play/Pause button has been changed
+     *
+     * @param didNotChange equals to null if button state should be changed
+     * @throws Exception
+     * @step. ^I verify the state of (?:Play|Pause) button on audio message placeholder is changed$
+     */
+    @Then("^I verify the state of (?:Play|Pause) button on audio message placeholder is (not )?changed$")
+    public void IVerifyPlayButtonState(String didNotChange) throws Exception {
+        if (playButtonState == null) {
+            throw new IllegalStateException("Please remember button state first");
+        }
+        if (didNotChange == null) {
+            Assert.assertTrue(String.format("The state of the button has not been changed after %s seconds",
+                    PLAY_BUTTON_STATE_CHANGE_TIMEOUT), playButtonState.isChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT,
+                    PLAY_BUTTON_MIN_SIMILARITY));
+        } else {
+            Assert.assertTrue(String.format("The state of the button has changed after %s seconds",
+                    PLAY_BUTTON_STATE_CHANGE_TIMEOUT), playButtonState.isNotChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT,
+                    PLAY_BUTTON_MIN_SIMILARITY));
+        }
+    }
+
+    /**
+     * Verifies that the audio message gets played
+     *
+     * @throws Exception
+     * @step. ^I see the audio message gets played$
+     */
+    @Then("^I see the audio message gets played$")
+    public void ISeeTheAudioMessageGetsPlayed() throws Exception {
+
+        String startTime = getConversationViewPage().getAudioMessageTimeLabelValue();
+        Thread.sleep(1000);
+        String currentTime = getConversationViewPage().getAudioMessageTimeLabelValue();
+        Assert.assertNotEquals("The Audio message did not get played. StartTime: %s is the same as CurrentTime: %s ! ",
+                startTime, currentTime);
     }
 }

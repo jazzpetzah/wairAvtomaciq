@@ -9,7 +9,6 @@ import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -49,9 +48,11 @@ public class ConversationViewPageSteps {
     private final ElementState filePlaceHolderActionButtonState = new ElementState(
             () -> getConversationViewPage().getFilePlaceholderActionButtonState());
     private final ElementState audiomessageSeekbarState = new ElementState(
-            () -> getConversationViewPage().getAudioMessageSeekbar());
+            () -> getConversationViewPage().getAudioMessageSeekbarState());
     private final ElementState audiomessagePreviewSeekbarState = new ElementState(
-            () -> getConversationViewPage().getAudioMessagePreviewSeekbar());
+            () -> getConversationViewPage().getAudioMessagePreviewSeekbarState());
+    private final ElementState audiomessageSlideMicrophoneButtonState = new ElementState(
+            () -> getConversationViewPage().getAudioMessagePreviewMicrophoneButtonState());
     private Boolean wasShieldVisible = null;
 
     private static String expandMessage(String message) {
@@ -125,11 +126,15 @@ public class ConversationViewPageSteps {
      * @param longTap                equals not null means long tap on the cursor button
      * @param btnName                button name
      * @param longTapDurationSeconds long tap duration in seconds
+     * @param shouldReleaseFinger    this does not equal to hull if one should not
+     *                               release his finger after tap on an icon. Works for long tap on Audio Message
+     *                               icon only
      * @throws Exception
-     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button$ from cursor toolbar$
+     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button$ from cursor toolbar( without releasing my finger)?$
      */
-    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button (\\d+ seconds )?from cursor toolbar$")
-    public void WhenITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds) throws Exception {
+    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button (\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
+    public void WhenITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
+                                         String shouldReleaseFinger) throws Exception {
         if (longTap == null) {
             switch (btnName.toLowerCase()) {
                 case "video message":
@@ -159,7 +164,11 @@ public class ConversationViewPageSteps {
 
             switch (btnName.toLowerCase()) {
                 case "audio message":
-                    getConversationViewPage().longTapAudioMessagecursorBtn(longTapDuration);
+                    if (shouldReleaseFinger == null) {
+                        getConversationViewPage().longTapAudioMessageCursorBtn(longTapDuration);
+                    } else {
+                        getConversationViewPage().longTapAndKeepAudioMessageCursorBtn();
+                    }
                     break;
                 default:
                     throw new IllegalStateException(String.format("Unknow button name '%s' for long tap", btnName));
@@ -178,6 +187,19 @@ public class ConversationViewPageSteps {
     @When("^I long tap Audio message cursor button (\\d+) seconds and swipe up$")
     public void LongTapAudioMessageCursorAndSwipeUp(int durationSeconds) throws Exception {
         getConversationViewPage().longTapAudioMessageCursorBtnAndSwipeUp(durationSeconds * 1000);
+    }
+
+    /**
+     * Long tap on Audio message cursor button, and remember the icon state
+     *
+     * @param durationSeconds
+     * @throws Exception
+     * @step. ^I long tap Audio message microphone button (\d+) seconds and remember icon$
+     */
+    @When("^I long tap Audio message microphone button (\\d+) seconds and remember icon$")
+    public void LongTapAudioMessageCursorAndRememberIcon(int durationSeconds) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtnAndRememberIcon(durationSeconds * 1000,
+                audiomessageSlideMicrophoneButtonState);
     }
 
     /**
@@ -238,9 +260,9 @@ public class ConversationViewPageSteps {
      * Tap on Play/Pause media item button
      *
      * @throws Exception
-     * @step. ^I press PlayPause media item button$
+     * @step. ^I tap (?:Play|Pause) button on SoundCloud container$
      */
-    @When("^I press PlayPause media item button$")
+    @When("^I tap (?:Play|Pause) button on SoundCloud container$")
     public void WhenIPressPlayPauseButton() throws Exception {
         getConversationViewPage().tapPlayPauseBtn();
     }
@@ -266,75 +288,6 @@ public class ConversationViewPageSteps {
     @When("^I press PlayPause on Mediabar button$")
     public void WhenIPressPlayPauseOnMediaBarButton() throws Exception {
         getConversationViewPage().tapPlayPauseMediaBarBtn();
-    }
-
-    /**
-     * Tap the corresponding button on Take Picture view
-     *
-     * @param buttonName the button to press
-     * @throws Exception
-     * @step. ^I tap "(Take Photo|Confirm|Gallery|Image Close|Switch Camera|Sketch Image Paint|Close)" button on Take Picture view$
-     */
-    @When("^I tap (Take Photo|Change Photo|Confirm|Gallery|Image Close|Switch Camera|Sketch Image Paint|Close) button on Take Picture view$")
-    public void WhenIPressButton(String buttonName) throws Exception {
-        switch (buttonName.toLowerCase()) {
-            case "take photo":
-                getConversationViewPage().takePhoto();
-                break;
-            case "change photo":
-                getConversationViewPage().tapChangePhotoButton();
-                break;
-            case "confirm":
-                getConversationViewPage().confirm();
-                break;
-            case "gallery":
-                getConversationViewPage().openGallery();
-                break;
-            case "image close":
-                getConversationViewPage().closeFullScreenImage();
-                break;
-            case "close":
-                getConversationViewPage().tapCloseTakePictureViewButton();
-                break;
-            case "switch camera":
-                if (!getConversationViewPage().tapSwitchCameraButton()) {
-                    throw new PendingException(
-                            "Device under test does not have front camera. " + "Skipping all the further verification...");
-                }
-                break;
-            case "sketch image paint":
-                getConversationViewPage().tapSketchOnImageButton();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name: '%s'", buttonName));
-        }
-    }
-
-    /**
-     * Verify whether the particular button is visible on Take Picture view
-     *
-     * @param shouldNotSee equals to null if the button should be visible
-     * @param buttonName   one of possible button names
-     * @throws Exception
-     * @step. ^I (do not )?see (Take Photo|Change Photo) button on Take Picture view$
-     */
-    @Then("^I (do not )?see (Take Photo|Change Photo) button on Take Picture view$")
-    public void ISeeButtonOnTakePictureView(String shouldNotSee, String buttonName) throws Exception {
-        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
-        switch (buttonName.toLowerCase()) {
-            case "take photo":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isTakePhotoButtonVisible :
-                        getConversationViewPage()::isTakePhotoButtonInvisible;
-                break;
-            case "change photo":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isChangePhotoButtonVisible :
-                        getConversationViewPage()::isChangePhotoButtonInvisible;
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name: '%s'", buttonName));
-        }
-        Assert.assertTrue(String.format("The %s button should %s visible on the Take Picture view",
-                buttonName, (shouldNotSee == null) ? "be" : "not be"), verificationFunc.call());
     }
 
     /**
@@ -491,6 +444,27 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Verify the corresponding button exists on Audio Message recorder control
+     *
+     * @param buttonType could be send or cancel or play
+     * @throws Exception
+     * @step. ^I see (Send|Cancel|Play) button on audio message recorder$"
+     */
+    @When("^I see (Send|Cancel|Play) button on audio message recorder$")
+    public void ISeeAudioRecorderButton(String buttonType) throws Exception {
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
+        switch (buttonType.toLowerCase()) {
+            case "cancel":
+                verificationFunc = getConversationViewPage()::isAudioMessageCancelButtonVisible;
+                break;
+            default:
+                throw new IllegalStateException(String.format("Cannot identify the button type '%s'", buttonType));
+        }
+        Assert.assertTrue(String.format("The %s button is exoected to be visible on audio recorder control",
+                buttonType), verificationFunc.call());
+    }
+
+    /**
      * Checks to see that the new message notification is visible
      *
      * @param message the message content of message notification
@@ -598,10 +572,10 @@ public class ConversationViewPageSteps {
      * Store the screenshot of current media control button state
      *
      * @throws Exception
-     * @step. ^I remember the state of PlayPause media item button$
+     * @step. ^I remember the state of (?:Play|Pause) button on SoundCloud container$
      */
-    @When("^I remember the state of PlayPause media item button$")
-    public void IRememeberMediaItemButtonState() throws Exception {
+    @When("^I remember the state of (?:Play|Pause) button on SoundCloud container$")
+    public void IRememberMediaItemButtonState() throws Exception {
         mediaButtonState.remember();
     }
 
@@ -715,9 +689,9 @@ public class ConversationViewPageSteps {
      * Verify the current state of media control button has been changed since the last snapshot was made
      *
      * @throws Exception
-     * @step. ^I verify the state of PlayPause media item button is changed$
+     * @step. ^I verify the state of (?:Play|Pause) button on SoundCloud container is changed$
      */
-    @Then("^I verify the state of PlayPause media item button is changed$")
+    @Then("^I verify the state of (?:Play|Pause) button on SoundCloud container is changed$")
     public void IVerifyStateOfMediaControlButtonIsChanged() throws Exception {
         Assert.assertTrue("State of PlayPause media item button has not changed",
                 mediaButtonState.isChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE));
@@ -1349,9 +1323,9 @@ public class ConversationViewPageSteps {
      *
      * @param buttonType could be "audio message" or "video message"
      * @throws Exception
-     * @step. ^I remember the state of (?:Play|X|Retry) button on the recent (video message|audio message) in the conversation view$"
+     * @step. ^I remember the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view$"
      */
-    @When("^I remember the state of (?:Play|X|Retry) button on the recent (video message|audio message) in the conversation view$")
+    @When("^I remember the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view$")
     public void IRememberPlayButtonState(String buttonType) throws Exception {
         switch (buttonType.toLowerCase()) {
             case "video message":
@@ -1374,9 +1348,9 @@ public class ConversationViewPageSteps {
      * @param buttonType         could be "audio message" or "video message"
      * @param shouldNotBeChanged equals to null if the state should be different
      * @throws Exception
-     * @step. ^I verify the state of (?:Play|X|Retry) button on the recent (video message|audio message) in the conversation view is (not )?changed$
+     * @step. ^I verify the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view is (not )?changed$
      */
-    @Then("^I verify the state of (?:Play|X|Retry) button on the recent (video message|audio message) in the conversation view is (not )?changed$")
+    @Then("^I verify the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view is (not )?changed$")
     public void ISeePlayButtonStateChanged(String buttonType, String shouldNotBeChanged) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (buttonType.toLowerCase()) {
@@ -1412,7 +1386,7 @@ public class ConversationViewPageSteps {
      * @step. ^I verify the state of recent audio message seekbar in the conversation view is changed$
      */
     @Then("^I verify the state of recent audio message seekbar in the conversation view is changed$")
-    public void ISeeAudioMessageSeekbarStateChanged() throws Exception{
+    public void ISeeAudioMessageSeekbarStateChanged() throws Exception {
         Assert.assertTrue("The current and previous state of audio message seekbar seems to be same",
                 audiomessageSeekbarState.isChanged(AUDIOMESSAGE_SEEKBAR_STATE_CHANGE_TIMEOUT,
                         MIN_AUDIOMESSAGE_SEEKBAR_SCORE));
@@ -1429,6 +1403,22 @@ public class ConversationViewPageSteps {
         Assert.assertTrue("The current and previous state of audio message preview seekbar seems to be same",
                 audiomessagePreviewSeekbarState.isChanged(AUDIOMESSAGE_SEEKBAR_STATE_CHANGE_TIMEOUT,
                         MIN_AUDIOMESSAGE_SEEKBAR_SCORE));
+    }
+
+    private static final double MIN_AUDIOMESSAGE_MICROPHONE_SCORE = 0.9;
+    private static final int AUDIOMESSAGE_MICROPHONE_STATE_CHANGE_TIMEOUT = 10; //seconds
+
+    /**
+     * Verify whether current audio message microphone button differs from the previous one
+     *
+     * @throws Exception
+     * @step. ^I verify the state of audio message microphone button in the conversation view is changed$
+     */
+    @Then("^I verify the state of audio message microphone button in the conversation view is changed$")
+    public void ISeeAudioMessageMicrophoneButtonStateChanged() throws Exception {
+        Assert.assertTrue("The current and previous state of audio message microphone button seems to be same",
+                audiomessageSlideMicrophoneButtonState.isChanged(AUDIOMESSAGE_MICROPHONE_STATE_CHANGE_TIMEOUT,
+                        MIN_AUDIOMESSAGE_MICROPHONE_SCORE));
     }
 
     /**

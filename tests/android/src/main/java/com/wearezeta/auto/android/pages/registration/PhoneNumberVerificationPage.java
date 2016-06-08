@@ -26,8 +26,6 @@ public class PhoneNumberVerificationPage extends AndroidPage {
 
     private static final By idConfirmButton = By.id("pcb__activate");
 
-    private static final By idOkButton = By.id("button3");
-
     private static final By idEditPhoneButton = By.id("alertTitle");
 
     private static final By idErrorAlertMessage = By.id("message");
@@ -62,10 +60,6 @@ public class PhoneNumberVerificationPage extends AndroidPage {
             return DriverUtils.waitUntilLocatorDissapears(getDriver(), idConfirmButton, 60);
         }
         return true;
-    }
-
-    public boolean isIncorrectCodeErrorNotAppears() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idOkButton);
     }
 
     public String getErrorAlertHeader() throws Exception {

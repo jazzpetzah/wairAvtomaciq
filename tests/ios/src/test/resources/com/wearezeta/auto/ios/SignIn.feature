@@ -78,11 +78,11 @@ Feature: Sign In
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
     When I enter <Count> digits phone number
-    Then I see invalid phone number alert
+    Then I verify the alert contains text <ExpectedText>
 
     Examples:
-      | Count |
-      | 10    |
+      | Count | ExpectedText               |
+      | 16    | enter a valid phone number |
 
   @C1136 @rc @regression @id3851 @ZIOS-5585 @useSpecialEmail
   Scenario Outline: Verify first time phone sign in when email is not assigned
@@ -128,7 +128,7 @@ Feature: Sign In
       | smoketester@wearezeta.com | user1Password | user1Name |
 
   @C1147 @regression @id3857 @noAcceptAlert @ZIOS-5585
-  Scenario Outline: Verify error message appears in case of registering already taken email
+  Scenario Outline: Verify error message appears in case of entering not valid email address
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
     Given I switch to Log In tab

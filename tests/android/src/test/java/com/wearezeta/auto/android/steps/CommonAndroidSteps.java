@@ -34,7 +34,6 @@ import org.apache.log4j.Logger;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.junit.Assert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -93,6 +92,7 @@ public class CommonAndroidSteps {
         return resetAndroidDriver(url, path, Optional.empty());
     }
 
+
     @SuppressWarnings("unchecked")
     public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path,
                                                         Optional<Map<String, Object>> additionalCaps) throws Exception {
@@ -114,27 +114,20 @@ public class CommonAndroidSteps {
 
         devicePreparationThread.get(DEVICE_PREPARATION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 
-        try {
-            return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities, 1,
-                    this::onDriverInitFinished, null);
-        } catch (SessionNotCreatedException e) {
-            // Unlock the screen and retry
-            AndroidCommonUtils.unlockScreen();
-            Thread.sleep(5000);
-            return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities, 1,
-                    this::onDriverInitFinished, null);
-        }
+        return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance().resetDriver(url, capabilities,
+                AndroidPage.DRIVER_CREATION_RETRIES_COUNT, this::onDriverInitFinished, null);
     }
 
     private static Void prepareDevice() throws Exception {
         AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
-        AndroidCommonUtils.disableHints();
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidSteps.class);
+        AndroidCommonUtils.installUnlockApp(CommonAndroidSteps.class);
         AndroidCommonUtils.installClipperApp(CommonAndroidSteps.class);
-        final String backendJSON =
-                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
-        AndroidCommonUtils.deployBackendFile(backendJSON);
+        // This is handled by TestingGallery now
+//        final String backendJSON =
+//                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
+//        AndroidCommonUtils.deployBackendFile(backendJSON);
         return null;
     }
 
@@ -163,21 +156,13 @@ public class CommonAndroidSteps {
 
     private static final long INTERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
-    private static final String[] STANDARD_WIRE_PERMISSIONS = new String[]{
-            "android.permission.WRITE_EXTERNAL_STORAGE",
-            "android.permission.READ_CONTACTS",
-            "android.permission.RECORD_AUDIO",
-            "android.permission.CAMERA",
-            "android.permission.READ_PHONE_STATE"
-    };
-
     private void onDriverInitFinished(RemoteWebDriver drv) {
         // This is needed to make testing on Android 6+ with Selendroid possible
         try {
             if (isAutoAcceptOfSecurityAlertsEnabled &&
                     ((ZetaAndroidDriver) drv).getOSVersion().compareTo(new DefaultArtifactVersion("6.0")) >= 0) {
                 AndroidCommonUtils.grantPermissionsTo(CommonUtils.getAndroidPackageFromConfig(getClass()),
-                        STANDARD_WIRE_PERMISSIONS);
+                        AndroidCommonUtils.STANDARD_WIRE_PERMISSIONS);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -232,6 +217,8 @@ public class CommonAndroidSteps {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        AppiumServer.getInstance().resetLog();
 
         if (scenario.getSourceTagNames().contains("@useSpecialEmail")) {
             usrMgr.useSpecialEmail();
@@ -345,24 +332,31 @@ public class CommonAndroidSteps {
         pagesCollection.getCommonPage().hideKeyboard();
     }
 
-    @When("^I swipe right$")
-    public void ISwipeRight() throws Exception {
-        pagesCollection.getCommonPage().swipeRightCoordinates(DEFAULT_SWIPE_TIME);
-    }
-
-    @When("^I swipe left$")
-    public void ISwipeLeft() throws Exception {
-        pagesCollection.getCommonPage().swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
-    }
-
-    @When("^I swipe up$")
-    public void ISwipeUp() throws Exception {
-        pagesCollection.getCommonPage().swipeUpCoordinates(DEFAULT_SWIPE_TIME);
-    }
-
-    @When("^I swipe down$")
-    public void ISwipeDown() throws Exception {
-        pagesCollection.getCommonPage().swipeDownCoordinates(DEFAULT_SWIPE_TIME);
+    /**
+     * Do swipe gesture on the current screen
+     *
+     * @param direction one of possible direction values
+     * @throws Exception
+     * @step. ^I swipe (right|left|up|down)$
+     */
+    @When("^I swipe (right|left|up|down)$")
+    public void ISwipeRight(String direction) throws Exception {
+        switch (direction.toLowerCase()) {
+            case "right":
+                pagesCollection.getCommonPage().swipeRightCoordinates(DEFAULT_SWIPE_TIME);
+                break;
+            case "left":
+                pagesCollection.getCommonPage().swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
+                break;
+            case "up":
+                pagesCollection.getCommonPage().swipeUpCoordinates(DEFAULT_SWIPE_TIME);
+                break;
+            case "down":
+                pagesCollection.getCommonPage().swipeDownCoordinates(DEFAULT_SWIPE_TIME);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown swipe direction '%s'", direction));
+        }
     }
 
     /**
@@ -1336,10 +1330,10 @@ public class CommonAndroidSteps {
      * @param fileFullName
      * @param mimeType
      * @throws Exception
-     * @step. ^I wait up (\d+) seconds? until (.*) file having name "(.*)" and MIME type "(.*)" is downloaded to the device$
+     * @step. ^I wait up (\d+) seconds? until (.*) file having name "(.*)" is downloaded to the device$
      */
-    @Then("^I wait up (\\d+) seconds? until (.*) file having name \"(.*)\" and MIME type \"(.*)\" is downloaded to the device$")
-    public void TheXFileSavedInDownloadFolder(int timeoutSeconds, String size, String fileFullName, String mimeType)
+    @Then("^I wait up (\\d+) seconds? until (.*) file having name \"(.*)\" is downloaded to the device$")
+    public void TheXFileSavedInDownloadFolder(int timeoutSeconds, String size, String fileFullName)
             throws Exception {
         Optional<FileInfo> fileInfo = CommonUtils.waitUntil(timeoutSeconds,
                 CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS, () -> {
@@ -1359,8 +1353,6 @@ public class CommonAndroidSteps {
                 fileFullName, fileInfo.get().getFileName());
         Assert.assertTrue(String.format("File size should around %s bytes, but it is %s", expectedSize, actualSize),
                 Math.abs(expectedSize - actualSize) < 100);
-        Assert.assertEquals(String.format("File MIME type should be %s", mimeType),
-                mimeType, fileInfo.get().getMimeType());
     }
 
     /**
@@ -1452,6 +1444,23 @@ public class CommonAndroidSteps {
         if (currentOsVersion.compareTo(new DefaultArtifactVersion(minVersion)) < 0) {
             throw new PendingException(String.format("The current Android OS version %s is too low to run this test." +
                     "%s version is expected.", currentOsVersion, minVersion));
+        }
+    }
+
+    /**
+     * Verify whether no internet bar is visible
+     *
+     * @param shouldNotSee   equals null means the "no internet bar" should be visible
+     * @param timeoutSeconds the custom timeout for verification
+     * @throws Exception
+     * @step. ^I (do not )?see No Internet bar in (\d+) seconds?$
+     */
+    @Then("^I (do not )?see No Internet bar in (\\d+) seconds?$")
+    public void ISeeNoInternetBar(String shouldNotSee, int timeoutSeconds) throws Exception {
+        if (shouldNotSee == null) {
+            pagesCollection.getCommonPage().waitUntilNoInternetBarVisible(timeoutSeconds);
+        } else {
+            pagesCollection.getCommonPage().waitUntilNoInternetBarInvisible(timeoutSeconds);
         }
     }
 }

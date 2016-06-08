@@ -43,7 +43,6 @@ import javax.xml.xpath.XPathFactory;
 public abstract class IOSPage extends BasePage {
     private static final Logger log = ZetaLogger.getLog(IOSPage.class.getSimpleName());
 
-    public final static long IOS_DRIVER_INIT_TIMEOUT_MILLIS = ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS;
     public static final int DRIVER_CREATION_RETRIES_COUNT = 2;
 
     private static final int DEFAULT_RETRY_COUNT = 2;
@@ -62,6 +61,8 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By nameEditingItemPaste = MobileBy.AccessibilityId("Paste");
 
+    protected static final By nameEditingItemSave = MobileBy.AccessibilityId("Save");
+
     private static final Function<String, String> xpathStrAlertByText = text ->
             String.format("//UIAAlert[ .//*[contains(@name, '%s')] or contains(@name, '%s')]", text, text);
 
@@ -78,8 +79,8 @@ public abstract class IOSPage extends BasePage {
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
-        return IOS_DRIVER_INIT_TIMEOUT_MILLIS * DRIVER_CREATION_RETRIES_COUNT +
-                ZetaDriver.RECREATE_DELAY_SECONDS * (DRIVER_CREATION_RETRIES_COUNT - 1);
+        return (ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS + AppiumServer.RESTART_TIMEOUT_MILLIS)
+                * DRIVER_CREATION_RETRIES_COUNT;
     }
 
     private DocumentBuilder documentBuilder;
@@ -102,7 +103,7 @@ public abstract class IOSPage extends BasePage {
             if ((e.getCause() instanceof TimeoutException) ||
                     ((e.getCause() instanceof WebDriverException) &&
                             (e.getCause().getCause() instanceof TimeoutException))) {
-                throw new TimeoutException((AppiumServer.getLog().orElse("Appium log is empty")) +
+                throw new TimeoutException((AppiumServer.getInstance().getLog().orElse("Appium log is empty")) +
                         "\n" + ExceptionUtils.getStackTrace(e));
             } else {
                 throw e;
@@ -186,6 +187,14 @@ public abstract class IOSPage extends BasePage {
 
     public boolean isPopupPasteButtonInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemPaste);
+    }
+
+    public boolean isPopupSaveButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemSave);
+    }
+
+    public boolean isPopupSaveButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEditingItemSave);
     }
 
     private void clickAtSimulator(int x, int y) throws Exception {
@@ -589,5 +598,10 @@ public abstract class IOSPage extends BasePage {
                 (int) Double.parseDouble(attributes.getNamedItem("y").getNodeValue()),
                 (int) Double.parseDouble(attributes.getNamedItem("width").getNodeValue()),
                 (int) Double.parseDouble(attributes.getNamedItem("height").getNodeValue()));
+    }
+
+    public void tapOnScreenCenter() throws Exception {
+        final Dimension dim = getDriver().manage().window().getSize();
+        DriverUtils.genericTap(getDriver(), dim.getWidth() / 2, dim.getHeight() / 2);
     }
 }

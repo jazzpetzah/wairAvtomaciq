@@ -102,7 +102,6 @@ Feature: Search
     When I open search UI
     And I see top people list on People picker page
     And I tap on first 2 top connections
-    #And I click hide keyboard button
     And I tap Create conversation action button on People picker page
     And I wait for 5 seconds
     And I open group conversation details

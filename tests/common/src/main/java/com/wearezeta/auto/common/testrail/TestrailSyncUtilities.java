@@ -13,16 +13,12 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
 public class TestrailSyncUtilities {
-    private static final Logger log = ZetaLogger.getLog(TestrailSyncUtilities.class
-            .getSimpleName());
-
+    private static final Logger log = ZetaLogger.getLog(TestrailSyncUtilities.class.getSimpleName());
 
     private static Optional<String> testrailProjectName = Optional.empty();
     private static Optional<String> testrailPlanName = Optional.empty();
@@ -104,6 +100,8 @@ public class TestrailSyncUtilities {
         }
     }
 
+    private static final String IS_MUTED_PROPERTY = "custom_is_muted";
+
     private static void syncTestrailIsMutedState(String scenarioName, Set<String> normalizedTags,
                                                  TestrailExecutionStatus actualTestResult) {
         final List<String> actualIds = normalizedTags
@@ -128,7 +126,7 @@ public class TestrailSyncUtilities {
                     try {
                         log.info(String.format("Setting IsMuted property of test case #%s to FALSE",
                                 caseId));
-                        TestrailRESTWrapper.updateCaseIsMuted(Long.parseLong(caseId), false);
+                        TestrailRESTWrapper.updateCustomCaseProperty(Long.parseLong(caseId), IS_MUTED_PROPERTY, false);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -137,7 +135,7 @@ public class TestrailSyncUtilities {
                     try {
                         log.info(String.format("Setting IsMuted property of test case #%s to TRUE",
                                 caseId));
-                        TestrailRESTWrapper.updateCaseIsMuted(Long.parseLong(caseId), true);
+                        TestrailRESTWrapper.updateCustomCaseProperty(Long.parseLong(caseId), IS_MUTED_PROPERTY, true);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -145,6 +143,10 @@ public class TestrailSyncUtilities {
             }
         }
     }
+
+    private static final String STAGING_TAG = "@staging";
+    private static final String IS_AUTOMATED_PROPERTY = "custom_is_automated";
+    private static final String IS_STAGING_PROPERTY = "custom_is_staging";
 
     private static void syncTestrailIsAutomatedState(String scenarioName, Set<String> normalizedTags) {
         final List<String> actualIds = normalizedTags
@@ -168,7 +170,15 @@ public class TestrailSyncUtilities {
             log.info(String.format("Setting IsAutomated property of test case #%s to TRUE",
                     caseId));
             try {
-                TestrailRESTWrapper.updateCaseIsAutomated(Long.parseLong(caseId), true);
+                final Map<String, Object> props = new HashMap<>();
+                if (normalizedTags.contains(STAGING_TAG)) {
+                    props.put(IS_AUTOMATED_PROPERTY, false);
+                    props.put(IS_STAGING_PROPERTY, true);
+                } else {
+                    props.put(IS_AUTOMATED_PROPERTY, true);
+                    props.put(IS_STAGING_PROPERTY, false);
+                }
+                TestrailRESTWrapper.updateCustomCaseProperties(Long.parseLong(caseId), props);
             } catch (Exception e) {
                 e.printStackTrace();
             }

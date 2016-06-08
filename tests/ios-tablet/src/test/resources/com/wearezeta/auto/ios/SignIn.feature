@@ -127,11 +127,11 @@ Feature: Sign In
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
     And I enter 10 digits phone number
-    Then I see invalid phone number alert
+    Then I verify the alert contains text <ExpectedText>
 
     Examples:
-      | Name      |
-      | user1Name |
+      | Name      | ExpectedText               |
+      | user1Name | enter a valid phone number |
 
   @C2862 @regression @id3853 @useSpecialEmail
   Scenario Outline: Verify adding email to the contact signed up with phone number [LANDSCAPE]

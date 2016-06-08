@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.wearezeta.auto.common.misc.ElementState;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -16,6 +17,7 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import org.openqa.selenium.interactions.touch.TouchActions;
 
 public class ConversationViewPage extends AndroidPage {
 
@@ -65,11 +67,6 @@ public class ConversationViewPage extends AndroidPage {
     public static final Function<String, String> xpathStrPingMessageByText = text -> String
             .format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']", text.toUpperCase());
 
-    private static final By xpathDialogTakePhotoButton = By
-            .xpath("//*[@id='gtv__camera_control__take_a_picture' and @shown='true']");
-
-    private static final By idSketchImagePaintButton = By.id("gtv__sketch_image_paint_button");
-
     private static final By idFullScreenImage = By.id("tiv__single_image_message__image");
 
     public static final By idVerifiedConversationShield = By.id("cursor_button_giphy");
@@ -78,11 +75,11 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idYoutubePlayButton = By.id("gtv__youtube_message__play");
 
-    private static final String strIdMediaBarControl = "gtv__conversation_header__mediabar__control";
+    private static final String strIdMediaToolbar = "tb__conversation_header__mediabar";
 
-    private static final By idMediaBarControl = By.id(strIdMediaBarControl);
+    private static final By idMediaBarPlayBtn = By.xpath(String.format("//*[@id='%s']/*[2]", strIdMediaToolbar));
 
-    private static final By xpathMediaBar = By.xpath(String.format("//*[@id='%s']/parent::*", strIdMediaBarControl));
+    private static final By idMediaToolbar = By.id(strIdMediaToolbar);
 
     private static final By idCursorSketch = By.id("cursor_menu_item_draw");
 
@@ -142,8 +139,6 @@ public class ConversationViewPage extends AndroidPage {
     public static final By idDialogRoot = By.id(idStrDialogRoot);
     private static final By xpathDialogContent = By.xpath("//*[@id='" + idStrDialogRoot + "']/*/*/*");
 
-    private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__back_camera");
-
     private static final Function<String, String> xpathMessageNotificationByValue = value -> String
             .format("//*[starts-with(@id,'ttv_message_notification_chathead__label') and @value='%s']", value);
 
@@ -183,12 +178,6 @@ public class ConversationViewPage extends AndroidPage {
     private static final By idAudioContainerSeekbar = By.id("sb__audio_progress");
 
     private static final By idAudioMessagePreviewSeekbar = By.id("sb__voice_message__recording__seekbar");
-
-    private static final By idCloseTakePictureViewButton = By.id("gtv__camera_control__back_to_change_image");
-
-    private static final By idChangePhotoBtn = By.id("gtv__camera_control__change_image_source");
-
-    private static final By idGalleryBtn = By.id("gtv__camera_control__pick_from_gallery");
 
     private static final int MAX_CLICK_RETRIES = 5;
 
@@ -242,15 +231,21 @@ public class ConversationViewPage extends AndroidPage {
         );
     }
 
-    public BufferedImage getAudioMessageSeekbar() throws Exception {
+    public BufferedImage getAudioMessageSeekbarState() throws Exception {
         return this.getElementScreenshot(getElement(idAudioContainerSeekbar)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of seekbar within audio message container")
         );
     }
 
-    public BufferedImage getAudioMessagePreviewSeekbar() throws Exception {
+    public BufferedImage getAudioMessagePreviewSeekbarState() throws Exception {
         return this.getElementScreenshot(getElement(idAudioMessagePreviewSeekbar)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of seekbar within audio message preview ")
+        );
+    }
+
+    public BufferedImage getAudioMessagePreviewMicrophoneButtonState() throws Exception {
+        return this.getElementScreenshot(getElement(idAudioMessagePlayButton)).orElseThrow(
+                () -> new IllegalStateException("Cannot get a screenshot of Audio message recording slide microphone button")
         );
     }
 
@@ -342,13 +337,19 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idCursorAudioMessage, "Audio message button is not visible").click();
     }
 
-    public void longTapAudioMessagecursorBtn(int duration) throws Exception {
+    public void longTapAudioMessageCursorBtn(int duration) throws Exception {
         getDriver().longTap(getElement(idCursorAudioMessage), duration);
     }
 
     public void longTapAudioMessageCursorBtnAndSwipeUp(int longTapDurationMilliseconds) throws Exception {
-        getDriver().longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idAudioMessageSendButton),
+        longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idAudioMessageSendButton),
                 DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds);
+    }
+
+    public void longTapAudioMessageCursorBtnAndRememberIcon(int longTapDurationMilliseconds, ElementState elementState)
+            throws Exception {
+        longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idCursorAudioMessage),
+                DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds, Optional.of(() -> elementState.remember()));
     }
 
     public boolean isPingButtonVisible() throws Exception {
@@ -537,21 +538,6 @@ public class ConversationViewPage extends AndroidPage {
         }
     }
 
-    public void tapSketchOnImageButton() throws Exception {
-        getElement(idSketchImagePaintButton, "Draw sketch on image button is not visible").click();
-    }
-
-    public void takePhoto() throws Exception {
-        final WebElement btn = getElement(xpathDialogTakePhotoButton, "Take Photo button is not visible");
-        if (!DriverUtils.waitUntilElementClickable(getDriver(), btn)) {
-            throw new IllegalStateException("Take Photo button is not clickable");
-        }
-        btn.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathDialogTakePhotoButton)) {
-            throw new IllegalStateException("Take Photo button is still visible after being clicked");
-        }
-    }
-
     /**
      * Navigates back by swipe and initialize ConversationsListPage
      *
@@ -559,21 +545,6 @@ public class ConversationViewPage extends AndroidPage {
      */
     public void navigateBack(int timeMilliseconds) throws Exception {
         swipeRightCoordinates(timeMilliseconds);
-    }
-
-    public void openGallery() throws Exception {
-        getElement(idGalleryBtn, "Gallery button is still not visible").click();
-    }
-
-    public void closeFullScreenImage() throws Exception {
-        // Sometimes X button is opened automatically after some timeout
-        final int MAX_TRIES = 4;
-        int ntry = 1;
-        while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCloseImageBtn, 4) && ntry <= MAX_TRIES) {
-            this.tapOnCenterOfScreen();
-            ntry++;
-        }
-        getElement(idCloseImageBtn).click();
     }
 
     public boolean waitForPingMessageWithText(String expectedText) throws Exception {
@@ -652,11 +623,11 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void tapPlayPauseMediaBarBtn() throws Exception {
-        getElement(idMediaBarControl, "Media barr PlayPause button is not visible").click();
+        getElement(idMediaBarPlayBtn, "Media bar PlayPause button is not visible").click();
     }
 
     private boolean waitUntilMediaBarVisible(int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMediaBarControl, timeoutSeconds);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMediaToolbar, timeoutSeconds);
     }
 
     public boolean waitUntilMissedCallMessageIsVisible(String expectedMessage) throws Exception {
@@ -714,15 +685,6 @@ public class ConversationViewPage extends AndroidPage {
         return selectVisibleElements(xpathDialogContent).size();
     }
 
-    /**
-     * @return false if Take Photo button is not visible after Switch Camera button is clicked
-     * @throws Exception
-     */
-    public boolean tapSwitchCameraButton() throws Exception {
-        getElement(idSwitchCameraButton).click();
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathDialogTakePhotoButton);
-    }
-
     private static final long IMAGES_VISIBILITY_TIMEOUT = 10000; // seconds;
 
     public boolean waitForXImages(int expectedCount) throws Exception {
@@ -757,7 +719,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isMediaBarBelowUptoolbar() throws Exception {
-        return isElementABelowElementB(getElement(xpathMediaBar), getElement(xpathToolbar),
+        return isElementABelowElementB(getElement(idMediaToolbar), getElement(xpathToolbar),
                 LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR);
     }
 
@@ -970,13 +932,10 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void longAudioMessageContainer() throws Exception {
-        // FIXME: Workaround based on issue AN-4051, should be fixed by commented line
         WebElement el = getElement(idAudioMessageContainer);
         final Point location = el.getLocation();
         final Dimension size = el.getSize();
-        getDriver().longTap(location.x + 20, location.y + size.height / 2, DriverUtils.LONG_TAP_DURATION);
-
-        //getDriver().longTap(getElement(idAudioMessageContainer), DriverUtils.LONG_TAP_DURATION);
+        getDriver().longTap(location.x + size.width / 2, location.y + size.height / 5, DriverUtils.LONG_TAP_DURATION);
     }
 
     public boolean isVideoMessageButtonVisible() throws Exception {
@@ -991,27 +950,10 @@ public class ConversationViewPage extends AndroidPage {
         return getElementScreenshot(getElement(idAudioContainerButton));
     }
 
-    public void tapCloseTakePictureViewButton() throws Exception {
-        getElement(idCloseTakePictureViewButton).click();
-    }
-
-    public void tapChangePhotoButton() throws Exception {
-        getElement(idChangePhotoBtn).click();
-    }
-
-    public boolean isTakePhotoButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathDialogTakePhotoButton);
-    }
-
-    public boolean isTakePhotoButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathDialogTakePhotoButton);
-    }
-
-    public boolean isChangePhotoButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idChangePhotoBtn);
-    }
-
-    public boolean isChangePhotoButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idChangePhotoBtn);
+    public void longTapAndKeepAudioMessageCursorBtn() throws Exception {
+        final WebElement audioMsgButton = getElement(idCursorAudioMessage);
+        final int x = audioMsgButton.getLocation().getX() + audioMsgButton.getSize().getWidth() / 2;
+        final int y = audioMsgButton.getLocation().getY() + audioMsgButton.getSize().getHeight() / 2;
+        new TouchActions(getDriver()).down(x, y).perform();
     }
 }

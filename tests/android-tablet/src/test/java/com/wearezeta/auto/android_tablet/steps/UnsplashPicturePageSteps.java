@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android_tablet.steps;
 
 import com.wearezeta.auto.android_tablet.pages.registration.TabletUnsplashPicturePage;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
@@ -13,8 +12,6 @@ public class UnsplashPicturePageSteps {
 	private TabletUnsplashPicturePage getUnsplashPicturePage() throws Exception {
 		return pagesCollection.getPage(TabletUnsplashPicturePage.class);
 	}
-
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
 	 * Verify whether Unsplash Picture screen is visible

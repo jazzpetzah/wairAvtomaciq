@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.driver;
 
 import java.net.URL;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -14,6 +15,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
+
+import static com.wearezeta.auto.common.driver.ZetaAndroidDriver.ADB_PREFIX;
 
 final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
     private static final Logger log = ZetaLogger.getLog(LazyDriverInitializer.class.getSimpleName());
@@ -55,6 +58,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
             log.debug("Driver pre-initialization callback has been successfully invoked");
         }
         int ntry = 1;
+        final AppiumServer appiumServer = AppiumServer.getInstance();
         do {
             log.debug(String.format("Creating driver instance for platform '%s'...", this.platform.name()));
             RemoteWebDriver platformDriver;
@@ -64,16 +68,18 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                         platformDriver = new ZetaOSXDriver(new URL(url), capabilities);
                         break;
                     case iOS:
-                        if (capabilities.getCapability("udid") instanceof String) {
-                            AppiumServer.resetIOSRealDevice();
-                        } else {
-                            AppiumServer.resetIOSSimulator();
+                        if (!appiumServer.isRunning() || ntry > 1) {
+                            appiumServer.resetIOS();
                         }
                         platformDriver = new ZetaIOSDriver(new URL(url), capabilities);
                         break;
                     case Android:
-                        if (!AppiumServer.isRunning()) {
-                            AppiumServer.restart();
+                        if (!appiumServer.isRunning() || ntry > 1) {
+                            new ProcessBuilder("/bin/bash", "-c",
+                                    ADB_PREFIX + "adb shell am start -n io.appium.unlock/.Unlock")
+                                    .start()
+                                    .waitFor(10, TimeUnit.SECONDS);
+                            appiumServer.restart();
                         }
                         platformDriver = new ZetaAndroidDriver(new URL(url), capabilities);
                         break;
@@ -102,9 +108,6 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                 e.printStackTrace();
                 log.debug(String.format("Driver initialization failed. Trying to recreate (%d of %d)...",
                         ntry, this.maxRetryCount));
-                log.debug(String.format("Sleeping %s seconds before driver restart...",
-                        ZetaDriver.RECREATE_DELAY_SECONDS));
-                Thread.sleep(ZetaDriver.RECREATE_DELAY_SECONDS * 1000);
             }
         } while (ntry <= this.maxRetryCount);
         throw new WebDriverException(

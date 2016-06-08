@@ -199,18 +199,21 @@ public class RegistrationPageSteps {
     }
 
     /**
-     * Verify whether email address, which is visible on email confirmation page is the same as the expected one
-     *
-     * @param email expected email/alias
-     * @throws Exception
-     * @step. ^I see email (.*) on [Vv]erification page$
-     */
-    @Then("^I see email (.*) on [Vv]erification page$")
-    public void ISeeVerificationEmail(String email) throws Exception {
-        email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-        assertThat(webappPagesCollection.getPage(RegistrationPage.class)
-                .getVerificationEmailAddress(), containsString(email));
-    }
+	 * Verify whether email address, which is visible on email confirmation page
+	 * is the same as the expected one
+	 * 
+	 * @step. ^I see email (.*) on [Vv]erification page$
+	 * 
+	 * @param email
+	 *            expected email/alias
+	 * @throws Exception
+	 */
+	@Then("^I see email (.*) on [Vv]erification page$")
+	public void ISeeVerificationEmail(String email) throws Exception {
+		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
+		assertThat(webappPagesCollection.getPage(RegistrationPage.class)
+				.getVerificationEmailAddress(), containsString(email));
+	}
 
     /**
      * Verify whether email address, which is visible on email pending page is the same as the expected one

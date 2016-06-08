@@ -324,7 +324,7 @@ public class ConversationsListPageSteps {
                 getConversationsListPage().noConversationsMessageIsVisible());
     }
 
-    @When("I tap play/pause button in conversations list next to (.*)")
+    @When("I tap (?:Play|Pause) button in conversations list next to (.*)")
     public void ITapPlayPauseButtonInContactListNextTo(String contact) throws Exception {
         String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getConversationsListPage().tapPlayPauseButtonNextTo(name);
@@ -432,23 +432,6 @@ public class ConversationsListPageSteps {
     @When("^I confirm blocking alert$")
     public void IConfirmBlockingAlert() throws Exception {
         ITapXButtonInActionMenu("Block");
-    }
-
-    /**
-     * Verifies that next conversation is selected in list
-     *
-     * @param conversation that is selected now
-     * @throws Throwable
-     * @step. ^I see conversation (.*) is selected in list$
-     */
-    @Then("^I see conversation (.*) is selected in list$")
-    public void ISeeConversationIsSelectedInList(String conversation)
-            throws Throwable {
-        conversation = usrMgr.replaceAliasesOccurences(conversation,
-                FindBy.NAME_ALIAS);
-        Assert.assertEquals("Conversation is not selected", "1",
-                getConversationsListPage().getSelectedConversationCellValue(conversation).
-                        orElseThrow(() -> new IllegalStateException("No conversations are selected in the list")));
     }
 
     /**

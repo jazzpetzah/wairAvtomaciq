@@ -66,7 +66,7 @@ Feature: Calling
       | user1Name | user2Name | chrome      |
 
   @C2111 @rc @calling_basic @clumsy @IPv6 @id2093
-  Scenario Outline: (ZIOS-5534) Verify acepting and ending incoming call
+  Scenario Outline: Verify acepting and ending incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
@@ -367,25 +367,6 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
       | user1Name | user2Name | user3Name | WaitGROUPCALL | chrome      | 2               |
 
-  @C2039 @calling_advanced @id2673 @noAcceptAlert @ZIOS-6069
-  Scenario Outline: Verify impossibility to connect 6th person to the call
-    Given There are 6 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
-    Given <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5> starts instance using <CallBackend>
-    Given <Contact2>,<Contact3>,<Contact4>,<Contact5> accepts next incoming call automatically
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    And <Contact1> calls <GroupChatName>
-    And I see call status message contains "<GroupChatName> ringing"
-    And I tap Accept button on Calling overlay
-    Then I see group call is Full message
-
-    Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | chrome      |
-
   @C2068 @calling_basic @id880
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
@@ -405,21 +386,6 @@ Feature: Calling
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
-
-  @C77933 @calling_advanced @noAcceptAlert
-  Scenario Outline: Verify calling from an upper toolbar in a group conversation with more than 10 people
-    Given There are <UsersAmount> users where <Name> is me
-    Given Myself is connected to all other
-    Given Myself has group chat <GroupChatName> with all other
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    And I tap Audio Call button
-    Then I see Too many people alert
-
-    Examples:
-      | Name      | GroupChatName  | UsersAmount |
-      | user1Name | StartGROUPCALL | 11          |
 
   @C2040 @calling_basic
   Scenario Outline: Verify initiator is not a host for the call

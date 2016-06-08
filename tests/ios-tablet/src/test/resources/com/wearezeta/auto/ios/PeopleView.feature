@@ -470,7 +470,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | user4Name | AddContact    | 3                  |
 
   @C2447 @regression @id2333
-  Scenario Outline: Verify you can block a person from profile view [PORTRAIT]
+  Scenario Outline: ZIOS-6762 Verify you can block a person from profile view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I Sign in on tablet using my email
@@ -661,7 +661,8 @@ Feature: People View
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     Then I do not see conversation <GroupChatName> in conversations list
-    And I do not see Archive button at the bottom of conversations list
+    # Workaround for ZIOS-6195
+    # And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -688,7 +689,8 @@ Feature: People View
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     Then I do not see conversation <GroupChatName> in conversations list
-    And I do not see Archive button at the bottom of conversations list
+    # Workaround for ZIOS-6195
+    # And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |

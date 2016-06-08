@@ -10,14 +10,14 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
-public class PeoplePickerPage extends
-        com.wearezeta.auto.web.pages.PeoplePickerPage {
+public class StartUIPage extends
+        com.wearezeta.auto.web.pages.StartUIPage {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = ZetaLogger.getLog(PeoplePickerPage.class
+    private static final Logger LOG = ZetaLogger.getLog(StartUIPage.class
             .getName());
 
-    public PeoplePickerPage(Future<ZetaWebAppDriver> lazyDriver)
+    public StartUIPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
     }
@@ -26,7 +26,7 @@ public class PeoplePickerPage extends
         return DriverUtils
                 .waitUntilLocatorIsDisplayed(
                         this.getDriver(),
-                        By.className(WebAppLocators.PeoplePickerPage.classNamePeoplePickerVisible));
+                        By.className(WebAppLocators.StartUIPage.classNameStartUIVisible));
     }
 
 }

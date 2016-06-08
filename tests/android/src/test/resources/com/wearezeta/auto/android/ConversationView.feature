@@ -90,6 +90,9 @@ Feature: Conversation View
     And I tap on user name found on People picker page <Contact2>
     And I see Add to conversation button
     And I click on Add to conversation button
+    # Workaround for AN-4011, for following two steps
+    And I tap conversation name from top toolbar
+    And I press back button
     Then I see group chat page with users <Contact1>,<Contact2>
     And I navigate back from dialog page
     And I see group conversation with <Contact1>,<Contact2> in conversations list
@@ -99,7 +102,7 @@ Feature: Conversation View
       | user1Name | user2Name | user3Name |
       
   @C18044 @regression
-  Scenario Outline: (AN-3428) I see creation header when someone create group conversation with me
+  Scenario Outline: I see creation header when someone create group conversation with me
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
     Given I sign in using my email or phone number
@@ -107,6 +110,9 @@ Feature: Conversation View
     Given I see Contact list with contacts
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
     When I tap on contact name <GroupChatName>
+    # Workaround for AN-4011, for following two steps
+    And I tap conversation name from top toolbar
+    And I press back button
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples:
@@ -145,38 +151,6 @@ Feature: Conversation View
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
-
-  @C377 @id145 @regression
-  Scenario Outline: Send Upper and Lower case to contact
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I tap on text input
-    And I type the message "<Message>" and send it
-    Then I see the message "<Message>" in the conversation view
-
-    Examples:
-      | Name      | Contact   | Message  |
-      | user1Name | user2Name | aaaaAAAA |
-
-  @C378 @id149 @regression
-  Scenario Outline: Send emoji message to contact
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I tap on text input
-    And I type the message "<Message>" and send it
-    Then I see the message "<Message>" in the conversation view
-
-    Examples:
-      | Name      | Contact   | Message  |
-      | user1Name | user2Name | :) ;) :( |
 
   @C379 @id163 @regression
   Scenario Outline: Send existing image from gallery (portrait) in 1:1 chat
@@ -298,7 +272,7 @@ Feature: Conversation View
       | user1Name | user2Name | Yo      |
 
   @C674 @id165 @regression @rc
-  Scenario Outline: (BUG AN-3443) Send GIF format pic
+  Scenario Outline: Send GIF format pic
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -334,7 +308,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C236 @rc @regression
+  @C236 @regression @rc
   Scenario Outline: I can send giphy image from the giphy grid preview
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -358,7 +332,7 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C77948 @C77950 @rc @regression
+  @C77948 @C77950 @regression @rc
   Scenario Outline: Upper toolbar displayed in conversation view, I can back to conversation list by toolbar arrow
     Given There is 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -425,7 +399,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |  Message1 | Message2 |
       | user1Name | user2Name | user3Name |  Msg1     | Msg2     |
 
-  @C77966 @regression @C87626 @rc @rc42 @C111617
+  @C77966 @C87626 @C111617 @regression @rc @rc42
   Scenario Outline: Verify there are no video and audio calling icons under the + button bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -440,7 +414,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C111622 @C111625 @rc @regression
+  @C111622 @C111625 @regression @rc
   Scenario Outline: Verify tooltip is shown in different condition
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
