@@ -55,6 +55,8 @@ Feature: DeleteMessage
     Then I see 1 photo in the dialog
     When I long tap on image in conversation view
     And I tap on Delete badge item
+    # Sometimes the alert is not accepted automatically
+    And I accept alert
     Then I see 0 photos in the dialog
 
     Examples:
