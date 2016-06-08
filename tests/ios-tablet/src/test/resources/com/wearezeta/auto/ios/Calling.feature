@@ -230,3 +230,21 @@ Feature: Calling
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
+
+  @C145968 @staging
+  Scenario Outline: Verify starting a group call [LANDSCAPE]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    Then I tap on group chat with name <GroupChatName>
+    And I tap Audio Call button
+    And I see Calling overlay
+    When I tap Leave button on Calling overlay
+    Then I do not see Calling overlay
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | GROUPCALL     |
