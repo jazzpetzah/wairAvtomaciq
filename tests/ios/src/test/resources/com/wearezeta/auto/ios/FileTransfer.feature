@@ -66,7 +66,7 @@ Feature: File Transfer
       | Name      | Contact1  | Contact2  | GroupChatName | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | Timeout |
       | user1Name | user2Name | user3Name | FTransfer     | testing  | tmp     | 240 KB   | application/octet-stream | device1       | 20      |
 
-  @C95960 @regression
+  @C95960 @rc @regression
   Scenario Outline: Verify sending file in the empty conversation and text after it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

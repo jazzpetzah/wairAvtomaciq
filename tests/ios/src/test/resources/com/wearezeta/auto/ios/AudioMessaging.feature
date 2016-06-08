@@ -1,6 +1,6 @@
 Feature: Audio Messaging
 
-  @C129323 @C129321 @regression
+  @C129323 @C129321 @rc @regression
   Scenario Outline: Verify message is started recording by long tapping on the icon
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -14,7 +14,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C129327 @regression
+  @C129327 @rc @regression
   Scenario Outline: Verify sending voice message by check icon tap
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -29,7 +29,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C129341 @C129345 @regression
+  @C129341 @C129345 @rc @regression
   Scenario Outline: Verify receiving a voice message and deleting it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -48,7 +48,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
 
-  @C129326 @regression
+  @C129326 @rc @regression
   Scenario Outline: Verify sending voice message by swipe up
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -150,7 +150,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
 
-  @C131217 @regression
+  @C131217 @rc @regression
   Scenario Outline: Verify playback is stopped when other audio message starts playing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

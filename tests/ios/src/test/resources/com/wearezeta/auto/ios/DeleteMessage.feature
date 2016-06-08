@@ -95,7 +95,7 @@ Feature: DeleteMessage
       | Name      | Contact   | Link                  |
       | user1Name | user2Name | https://www.wire.com/ |
 
-  @C111325 @regression
+  @C111325 @rc @regression
   Scenario Outline: Verify deleting shared file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

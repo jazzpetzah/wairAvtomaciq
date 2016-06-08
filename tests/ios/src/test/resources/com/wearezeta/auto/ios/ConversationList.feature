@@ -113,7 +113,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  @C104 @regression @id2761
+  @C104 @rc @regression @id2761
   Scenario Outline: Verify conversations are sorted according to most recent activity
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
