@@ -204,7 +204,7 @@ public class ContactListPage extends WebPage {
         final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName
                 .apply(name);
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.cssSelector(locator), 5);
+                By.cssSelector(locator));
     }
 
     public boolean isArchiveListEntryWithNameExist(String name)
