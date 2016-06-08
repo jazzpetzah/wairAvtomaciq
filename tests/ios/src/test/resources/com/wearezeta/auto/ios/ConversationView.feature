@@ -31,9 +31,10 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C923 @regression @id331
+  @C923 @regression @id331 @fastLogin
   Scenario Outline: Send Hello to contact
     Given There are 2 users where <Name> is me
+    Given I prepare Wire to perform fast log in by email as Myself
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list

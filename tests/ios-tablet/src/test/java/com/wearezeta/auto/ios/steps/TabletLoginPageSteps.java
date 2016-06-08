@@ -5,8 +5,8 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.FirstTimeOverlay;
 import com.wearezeta.auto.ios.pages.TabletLoginPage;
 
+import com.wearezeta.auto.ios.tools.FastLoginContainer;
 import cucumber.api.java.en.Given;
-import org.openqa.selenium.WebDriverException;
 
 public class TabletLoginPageSteps {
 
@@ -30,23 +30,17 @@ public class TabletLoginPageSteps {
      */
     @Given("^I Sign in on tablet using my email$")
     public void GivenISignInUsingEmail() throws Exception {
-        final ClientUser self = usrMgr.getSelfUserOrThrowError();
         getTabletLoginPage().switchToLogin();
-        getTabletLoginPage().setLogin(self.getEmail());
-        getTabletLoginPage().setPassword(self.getPassword());
-        getTabletLoginPage().clickLoginButton();
+        if (!FastLoginContainer.getInstance().isEnabled()) {
+            final ClientUser self = usrMgr.getSelfUserOrThrowError();
+            getTabletLoginPage().setLogin(self.getEmail());
+            getTabletLoginPage().setPassword(self.getPassword());
+            getTabletLoginPage().clickLoginButton();
+        }
         getTabletLoginPage().waitForLoginToFinish();
-        try {
-            getTabletLoginPage().acceptAlertIfVisible(5);
-        } catch (WebDriverException e) {
-            // pass silently
-        }
+        getTabletLoginPage().acceptAlertIfVisible(5);
         getFirstTimeOverlayPage().acceptIfVisible(2);
-        try {
-            getTabletLoginPage().acceptAlertIfVisible(5);
-        } catch (WebDriverException e) {
-            // pass silently
-        }
+        getTabletLoginPage().acceptAlertIfVisible(5);
         getTabletLoginPage().dismissSettingsWarningIfVisible(10);
     }
 }
