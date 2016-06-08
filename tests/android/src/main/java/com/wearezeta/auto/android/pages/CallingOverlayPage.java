@@ -8,10 +8,10 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 
 public abstract class CallingOverlayPage extends AndroidPage {
-    protected static final By idMute = By.id("ccbv__button_left");
-    protected static final By idHangup = By.id("ccbv__button_middle");
+    protected static final By idMute = By.id("ccbv__calling_controls__mute");
+    protected static final By idHangup = By.id("ccbv__calling_controls__hangup");
     //Could be VideoOnOff or SpeakOnOff
-    protected static final By idRight = By.id("ccbv__button_right");
+    protected static final By idRight = By.id("ccbv__calling_controls__right_button");
 
     public BufferedImage getSpecialButtonScreenshot() throws Exception {
         return this.getElementScreenshot(getElement(idRight)).orElseThrow(
