@@ -127,7 +127,7 @@ Feature: Search
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
     And I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -149,7 +149,7 @@ Feature: Search
     And I tap on conversation <Contact> in search result
     And I unblock user on iPad
     And I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact   |

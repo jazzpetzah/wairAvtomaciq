@@ -1,6 +1,6 @@
 Feature: Video Messaging
 
-  @C111938 @regression
+  @C111938 @rc @regression
   Scenario Outline: Verify recording a video
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -15,7 +15,7 @@ Feature: Video Messaging
       | Name      | Contact   | FileName    |
       | user1Name | user2Name | testing.mp4 |
 
-  @C125733 @regression
+  @C125733 @rc @regression
   Scenario Outline: Verify receiving video message
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

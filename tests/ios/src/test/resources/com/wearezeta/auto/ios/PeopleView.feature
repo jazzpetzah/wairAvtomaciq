@@ -153,7 +153,7 @@ Feature: People View
     And I select participant <Contact1>
     And I tap on start dialog button on other user profile page
     And I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
