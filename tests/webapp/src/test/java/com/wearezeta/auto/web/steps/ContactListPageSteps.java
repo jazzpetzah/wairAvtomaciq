@@ -875,4 +875,16 @@ public class ContactListPageSteps {
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickCancelOnDeleteWarningSingle();
     }
+
+    /**
+     * Click the cancel request option
+     *
+     * @throws Exception
+     * @step. ^I click cancel request in the options popover$
+     */
+    @When("^I click cancel request in the options popover$")
+    public void IClickCancelRequestButton() throws Exception {
+        context.getPagesCollection().getPage(ContactListPage.class)
+                .clickCancelRequest();
+    }
 }
