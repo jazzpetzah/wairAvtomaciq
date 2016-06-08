@@ -26,7 +26,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
     private static final int ELEMENT_VISIBILITY_TIMEOUT_SECONDS = 3;
 
     public boolean waitUntilVisible() throws Exception {
-        if(!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOngoingCallControllerLayout,
+        if(DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOngoingCallControllerLayout,
                 VISIBILITY_TIMEOUT_SECONDS)) {
             tapOngoingVideo();
             return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOngoingCallControllerLayout,

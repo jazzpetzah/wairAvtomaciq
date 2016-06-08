@@ -53,6 +53,7 @@ public class LoginSteps {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
         assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
         getWelcomePage().tapSignInTab();
+        // FIXME: AN-4116
         try {
             getEmailSignInPage().setLogin(self.getEmail());
             getEmailSignInPage().setPassword(self.getPassword());

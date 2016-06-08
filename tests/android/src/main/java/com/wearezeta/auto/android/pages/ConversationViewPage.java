@@ -75,11 +75,11 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idYoutubePlayButton = By.id("gtv__youtube_message__play");
 
-    private static final String mediaToolbarId = "tb__conversation_header__mediabar";
+    private static final String strIdMediaToolbar = "tb__conversation_header__mediabar";
 
-    private static final By idMediaBarPlayBtn = By.xpath(String.format("//*[@id='%s']/*[2]", mediaToolbarId));
+    private static final By idMediaBarPlayBtn = By.xpath(String.format("//*[@id='%s']/*[2]", strIdMediaToolbar));
 
-    private static final By idMediaToolbar = By.id(mediaToolbarId);
+    private static final By idMediaToolbar = By.id(strIdMediaToolbar);
 
     private static final By idCursorSketch = By.id("cursor_menu_item_draw");
 
