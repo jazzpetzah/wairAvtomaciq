@@ -309,8 +309,30 @@ Feature: Audio Messaging
     # Let it record something for specific duration
     When I long tap Audio Message button for specific seconds from input tools
     And I tap Play record control button
-    Then I see the audio message gets played
+    Then I see the audio message in record toolbar gets played
 
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @C129342 @C129780 @staging
+  Scenario Outline: Verify playing/pausing a received voice message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    #Given User <Contact1> sends 1 encrypted message to user Myself
+    When I tap on contact name <Contact1>
+    And User <Contact1> sends 1 encrypted message to user Myself
+    And I see audio message placeholder
+    And I tap Play audio message button
+    Then I see state of button on audio message placeholder is pause
+    And I see the audio message in placeholder gets played
+    When I tap Pause audio message button
+    Then I see state of button on audio message placeholder is play
+    And I see the audio message in placeholder gets paused
+
+    Examples:
+      | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
