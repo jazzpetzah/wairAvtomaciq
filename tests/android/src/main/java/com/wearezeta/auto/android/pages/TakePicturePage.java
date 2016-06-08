@@ -21,6 +21,8 @@ public class TakePicturePage extends AndroidPage {
 
     private static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
 
+    private static final By xpathCancelButton = By.xpath("//*[@id='ttv__confirmation__cancel' and @value='CANCEL']");
+
     private static final By idSketchImagePaintButton = By.id("gtv__sketch_image_paint_button");
 
     public TakePicturePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -49,6 +51,14 @@ public class TakePicturePage extends AndroidPage {
 
     public boolean isChangePhotoButtonInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idChangePhotoBtn);
+    }
+
+    public boolean isGalleryButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idGalleryBtn);
+    }
+
+    public boolean isGalleryButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idGalleryBtn);
     }
 
     /**
@@ -94,6 +104,17 @@ public class TakePicturePage extends AndroidPage {
         okBtn.click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConfirmOKButton)) {
             throw new IllegalStateException("OK button is still present on the screen after being clicked");
+        }
+    }
+
+    public void cancel() throws Exception {
+        final WebElement okBtn = getElement(xpathCancelButton, "Cancel button is not visible");
+        if (!DriverUtils.waitUntilElementClickable(getDriver(), okBtn)) {
+            throw new IllegalStateException("Cancel button is not clickable");
+        }
+        okBtn.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathCancelButton)) {
+            throw new IllegalStateException("Cancel button is still present on the screen after being clicked");
         }
     }
 

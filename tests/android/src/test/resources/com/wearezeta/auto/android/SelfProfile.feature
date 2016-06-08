@@ -9,7 +9,6 @@ Feature: Self Profile
     When I tap conversations list settings button
     And I tap on personal info screen
     And I remember my current profile picture
-    And I tap Change Photo button on Take Picture view
     And I tap Gallery button on Take Picture view
     And I tap Confirm button on Take Picture view
     And I tap on personal info screen
@@ -58,8 +57,6 @@ Feature: Self Profile
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I tap conversations list settings button
-    # Wait until self profile image is loaded into UI
-    And I wait for 10 seconds
     And I tap on personal info screen
     And I remember my current profile picture
     And I tap Change Photo button on Take Picture view
@@ -101,3 +98,24 @@ Feature: Self Profile
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C145963 @staging
+  Scenario Outline: I should be moved to right view on canceling new profile picture
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with no contacts
+    When I tap conversations list settings button
+    And I tap on personal info screen
+    And I tap Gallery button on Take Picture view
+    And I tap Cancel button on Take Picture view
+    Then I see Change Photo button on Take Picture view
+    And I see Gallery button on Take Picture view
+    When I tap Change Photo button on Take Picture view
+    And I tap Take Photo button on Take Picture view
+    And I tap Cancel button on Take Picture view
+    Then I see Take Photo button on Take Picture view
+
+    Examples:
+      | Name      |
+      | user1Name |
