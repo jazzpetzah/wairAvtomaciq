@@ -1,6 +1,6 @@
 Feature: Audio Messaging
 
-  @C129323 @C129321 @rc @regression
+  @C129323 @rc @regression
   Scenario Outline: Verify message is started recording by long tapping on the icon
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
