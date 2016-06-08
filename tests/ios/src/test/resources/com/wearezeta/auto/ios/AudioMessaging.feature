@@ -241,6 +241,7 @@ Feature: Audio Messaging
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given User <Contact1> sends 1 encrypted messages to user <Name>
     Given I see conversations list
     Given I tap on contact name <Contact1>
     And I remember the state of Play button on audio message placeholder
@@ -256,11 +257,12 @@ Feature: Audio Messaging
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
 
   @C139856 @staging
-  Scenario Outline: Verify playback is stopped when outgoing call is started
+  Scenario Outline: (ZIOS-6759) Verify playback is stopped when outgoing call is started
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given User <Contact1> sends 1 encrypted messages to user <Name>
     Given I see conversations list
     Given I tap on contact name <Contact1>
     And I remember the state of Play button on audio message placeholder
