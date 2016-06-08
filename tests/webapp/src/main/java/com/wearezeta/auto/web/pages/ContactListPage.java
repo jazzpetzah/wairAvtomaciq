@@ -84,6 +84,9 @@ public class ContactListPage extends WebPage {
     @FindBy(css = WebAppLocators.ContactListPage.cssDeleteButton)
     private WebElement deleteButton;
 
+    @FindBy(css = WebAppLocators.ContactListPage.cssCancelRequestButton)
+    private WebElement cancelRequestButton;
+
     // leave warning
 
     @FindBy(css = WebAppLocators.ContactListPage.cssLeaveModalCancelButton)
@@ -725,7 +728,12 @@ public class ContactListPage extends WebPage {
         deleteModalCancelButtonSingle.click();
     }
 
-    // only for Wrapper
+    public void clickCancelRequest() throws Exception {
+        waitForOptionButtonsToBeClickable();
+        cancelRequestButton.click();
+    }
+
+        // only for Wrapper
     public void openContextMenuForContact(String name)
             throws Exception {
         if (name == null) {
