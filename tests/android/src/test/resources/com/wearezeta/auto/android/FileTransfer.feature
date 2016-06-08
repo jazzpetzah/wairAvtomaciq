@@ -88,14 +88,14 @@ Feature: File transfer
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     And I tap View button on file upload placeholder
     And I save file from file dialog
-    Then I wait up <DownloadTimeout> seconds until <FileExactSize> file having name "1_<FileName>.<FileExtension>" and MIME type "<MIMEType>" is downloaded to the device
+    Then I wait up <DownloadTimeout> seconds until <FileExactSize> file having name "1_<FileName>.<FileExtension>" is downloaded to the device
 
     Examples:
-      | Name      | Contact1  | FileName | FileExtension | FileSize | UploadingTimeout | MIMEType  | DownloadTimeout | FileExactSize |
-      | user1Name | user2Name | animated | gif           | 440KB    | 20               | image/gif | 10              | 451009B       |
+      | Name      | Contact1  | FileName | FileExtension | FileSize | UploadingTimeout | DownloadTimeout | FileExactSize |
+      | user1Name | user2Name | animated | gif           | 440KB    | 20               | 10              | 451009B       |
 
   @C87634 @rc @regression
-  Scenario Outline: (AN-3792) Verify downloading file by receiver
+  Scenario Outline: Verify downloading file by receiver
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -110,7 +110,7 @@ Feature: File transfer
     And I wait up to <DownloadTimeout> seconds until the state of Download button on file download placeholder is changed
     And I tap View button on file download placeholder
     And I save file from file dialog
-    Then I wait up <DownloadTimeout> seconds until <FileExactSize> file having name "<FileName>.<FileExtension>" and MIME type "<MIMEType>" is downloaded to the device
+    Then I wait up <DownloadTimeout> seconds until <FileExactSize> file having name "<FileName>.<FileExtension>" is downloaded to the device
 
     Examples:
       | Name      | Contact1  | FileName   | FileExtension | FileSize | MIMEType  | DownloadTimeout | FileExactSize | ReceivingTimeout |

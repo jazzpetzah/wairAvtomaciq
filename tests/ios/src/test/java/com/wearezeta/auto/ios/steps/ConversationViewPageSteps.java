@@ -139,11 +139,11 @@ public class ConversationViewPageSteps {
     }
 
     @When("^I send the message$")
-    public void WhenISendTheMessage() throws Throwable {
+    public void WhenISendTheMessage() throws Exception {
         getConversationViewPage().clickKeyboardCommitButton();
     }
 
-    @Then("^I see (\\d+) (default )?messages? in the dialog$")
+    @Then("^I see (\\d+) (default )?messages? in the conversation view$")
     public void ThenISeeMessageInTheDialog(int expectedCount, String isDefault) throws Exception {
         int actualCount;
         if (isDefault == null) {
@@ -203,15 +203,21 @@ public class ConversationViewPageSteps {
      * @param btnName       one of available button names
      * @param shouldKeepTap this signals that the finger should not be released after the step is completed.
      *                      Works with long tap only
+     * @param specificTime specific time duration you press the button
      * @throws Exception
-     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tool( without releasing my finger)?s$
+     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for specific seconds?)? from input tool( without releasing my finger)?s$
      */
-    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tools( without releasing my finger)?$")
-    public void IPressAddPictureButton(String isLongTap, String btnName, String shouldKeepTap) throws Exception {
+    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for specific seconds?)? from input tools( without releasing my finger)?$")
+    public void IPressAddPictureButton(String isLongTap, String btnName,String specificTime,
+                                       String shouldKeepTap) throws Exception {
         if (isLongTap == null) {
             getConversationViewPage().tapInputToolButtonByName(btnName);
         } else {
-            getConversationViewPage().longTapInputToolButtonByName(btnName, shouldKeepTap != null);
+            if(specificTime == null){
+                getConversationViewPage().longTapInputToolButtonByName(btnName, shouldKeepTap != null);
+            }else {
+                getConversationViewPage().longTapWithDurationInputToolButtonByName(btnName);
+            }
         }
     }
 
@@ -258,7 +264,7 @@ public class ConversationViewPageSteps {
 
     private static final long IMAGE_VISIBILITY_TIMEOUT = 10000; //milliseconds
 
-    @Then("^I see (\\d+) photos? in the dialog$")
+    @Then("^I see (\\d+) photos? in the conversation view$")
     public void ISeeNewPhotoInTheDialog(int expectedCount) throws Exception {
         int actualCount = getConversationViewPage().getCountOfImages();
         if (actualCount > 0 && expectedCount > 1 && actualCount < expectedCount) {
@@ -1155,7 +1161,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I tap (Send|Cancel) record control button
      */
-    @When("^I tap (Send|Cancel) record control button$")
+    @When("^I tap (Send|Cancel|Play) record control button$")
     public void ITapRecordControlButton(String buttonName) throws Exception {
         getConversationViewPage().tapRecordControlButton(buttonName);
     }
@@ -1304,5 +1310,21 @@ public class ConversationViewPageSteps {
                     PLAY_BUTTON_STATE_CHANGE_TIMEOUT), playButtonState.isNotChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT,
                     PLAY_BUTTON_MIN_SIMILARITY));
         }
+    }
+
+    /**
+     * Verifies that the audio message gets played
+     *
+     * @throws Exception
+     * @step. ^I see the audio message gets played$
+     */
+    @Then("^I see the audio message gets played$")
+    public void ISeeTheAudioMessageGetsPlayed() throws Exception {
+
+        String startTime = getConversationViewPage().getAudioMessageTimeLabelValue();
+        Thread.sleep(1000);
+        String currentTime = getConversationViewPage().getAudioMessageTimeLabelValue();
+        Assert.assertNotEquals("The Audio message did not get played. StartTime: %s is the same as CurrentTime: %s ! ",
+                startTime, currentTime);
     }
 }

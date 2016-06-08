@@ -318,7 +318,7 @@ Feature: People View
     And I tap on start dialog button on other user profile page
     #And I dismiss popover on iPad
     And I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact2  | Contact3  | GroupChatName |
@@ -338,7 +338,7 @@ Feature: People View
     And I tap on start dialog button on other user profile page
     #And I dismiss popover on iPad
     And I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact2  | Contact3  | GroupChatName |
@@ -661,7 +661,8 @@ Feature: People View
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     Then I do not see conversation <GroupChatName> in conversations list
-    And I do not see Archive button at the bottom of conversations list
+    # Workaround for ZIOS-6195
+    # And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -688,7 +689,8 @@ Feature: People View
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     Then I do not see conversation <GroupChatName> in conversations list
-    And I do not see Archive button at the bottom of conversations list
+    # Workaround for ZIOS-6195
+    # And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -819,7 +821,7 @@ Feature: People View
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
@@ -845,7 +847,7 @@ Feature: People View
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |

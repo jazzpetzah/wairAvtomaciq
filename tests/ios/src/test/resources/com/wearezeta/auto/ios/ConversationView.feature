@@ -25,7 +25,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -56,7 +56,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -71,7 +71,7 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
@@ -103,7 +103,7 @@ Feature: Conversation View
     And I tap on contact name <Contact>
     And I tap on text input
     And I press Enter key in Simulator window
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -143,10 +143,10 @@ Feature: Conversation View
     Given I see conversations list
     And I tap on contact name <Contact>
     When I type the "   " message and send it
-    Then I see 0 default messages in the dialog
+    Then I see 0 default messages in the conversation view
     When I type the default message
     And I type the "   " message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -163,7 +163,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see sender first name <Name> on fullscreen page
@@ -173,7 +173,7 @@ Feature: Conversation View
     And I verify image caption and download button are not shown
     And I tap on fullscreen page
     And I tap close fullscreen page button
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -187,7 +187,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     And I tap on contact name <Contact>
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     When I rotate UI to landscape
@@ -215,7 +215,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C940 @regression @IPv6 @id2762
+  @C940 @rc @regression @IPv6 @id2762
   Scenario Outline: Receive message from contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -223,7 +223,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -237,7 +237,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -253,7 +253,7 @@ Feature: Conversation View
     And I tap Sketch button from input tools
     And I draw a random sketch
     And I send my sketch
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact1  |
@@ -286,13 +286,13 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I press Sketch button on image fullscreen page
     And I draw a random sketch
     And I send my sketch
-    Then I see 2 photos in the dialog
+    Then I see 2 photos in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -312,7 +312,7 @@ Feature: Conversation View
     And I draw a random sketch
     And I send my sketch
     And I confirm my choice
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -411,7 +411,7 @@ Feature: Conversation View
     And I tap Open conversation action button on People picker page
     Then I see conversation view page
     And I type the default message and send it
-    And I see 1 default message in the dialog
+    And I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact1  |
@@ -425,14 +425,14 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     And I tap on contact name <Contact>
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
     And I long tap on image in conversation view
     And I tap on Copy badge item
     And I tap on text input
     And I tap and hold on message input
     And I click on popup Paste item
     And I confirm my choice
-    Then I see 2 photo in the dialog
+    Then I see 2 photo in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -446,7 +446,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
@@ -456,7 +456,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
-    And I see 2 photos in the dialog
+    And I see 2 photos in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -508,7 +508,7 @@ Feature: Conversation View
     And I tap Add Picture button from input tools
     And I tap Camera Shutter button
     And I confirm my choice
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -525,7 +525,7 @@ Feature: Conversation View
     And I tap Toggle Camera button
     And I tap Camera Shutter button
     And I confirm my choice
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -614,7 +614,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
     When I tap and hold image to open full screen
     Then I see Full Screen Page opened
     And I tap close fullscreen page button

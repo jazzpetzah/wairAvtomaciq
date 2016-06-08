@@ -143,7 +143,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C3164 @calling_advanced @id2645
+  @C3164 @rc @calling_advanced @id2645
   Scenario Outline: 3rd person tries to call me after I initiate a call to somebody
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -367,7 +367,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
       | user1Name | user2Name | user3Name | WaitGROUPCALL | chrome      | 2               |
 
-  @C2068 @calling_basic @id880
+  @C2068 @2068 @calling_basic @id880
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
