@@ -16,7 +16,7 @@ Feature: File Transfer
 
     Examples:
       | Name      | Contact   | ItemName                   |
-      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |Feature: File Transfer
+      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
   @C145956 @staging
   Scenario Outline: Verify downloading and opening file for a preview [LANDSCAPE]
