@@ -354,7 +354,7 @@ public class Lifecycle {
                 capabilities = DesiredCapabilities.internetExplorer();
                 setCustomIEProfile(capabilities);
                 break;
-            case MicrosoftEdge:
+            case Edge:
                 capabilities = DesiredCapabilities.edge();
                 break;
             default:

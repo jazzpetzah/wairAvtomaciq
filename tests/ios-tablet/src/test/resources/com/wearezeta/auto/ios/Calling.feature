@@ -17,7 +17,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2407 @calling_basic @id2630
+  @C2407 @rc @calling_basic @id2630
   Scenario Outline: Verify calling from missed call indicator in conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -107,7 +107,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2427 @calling_advanced @id2652
+  @C2427 @rc @calling_advanced @id2652
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -211,7 +211,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2413 @calling_basic @id3812
+  @C2413 @rc @calling_basic @id3812
   Scenario Outline: Verify putting client to the background during 1-to-1 call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

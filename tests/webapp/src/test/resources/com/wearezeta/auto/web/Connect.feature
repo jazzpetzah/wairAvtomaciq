@@ -472,3 +472,33 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user2Email    | user2Password    | user3Name |
+
+  @C145959 @staging
+  Scenario Outline: I want to cancel a pending request from conversation list
+    Given There are 3 users where <Name> is me
+    Given I sent connection request to <Contact1>
+    Given Myself is connected to <Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact1>
+    When I click on options button for conversation <Contact1>
+    Then I see a conversation option <ConvOption1> on the page
+    And I see a conversation option <ConvOption2> on the page
+    And I see a conversation option <ConvOption3> on the page
+    When I click cancel request in the options popover
+    Then I do not see Contact list with name <Contact1>
+    When I open self profile
+    And I click gear button on self profile page
+    Then I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    And I see Sign In page
+    And User <Contact1> is me
+    When I Sign in using login <Contact1Email> and password <Contact1Password>
+    And I am signed in properly
+    Then I do not see Contact list with name <Name>
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ConvOption1 | ConvOption2    | ConvOption3 | Contact1Email | Contact1Password |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | Archive     | Cancel request | Block       | user2Email    | user2Password    |

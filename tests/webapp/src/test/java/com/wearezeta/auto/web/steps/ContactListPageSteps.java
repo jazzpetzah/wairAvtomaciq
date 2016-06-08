@@ -78,15 +78,8 @@ public class ContactListPageSteps {
         log.debug("Looking for contact with name " + name);
         Assert.assertTrue("No contact list loaded.", context.getPagesCollection()
                 .getPage(ContactListPage.class).waitForContactListVisible());
-        for (int i = 0; i < 5; i++) {
-            if (context.getPagesCollection().getPage(ContactListPage.class)
-                    .isConvoListEntryWithNameExist(name)) {
-                return;
-            }
-            Thread.sleep(1000);
-        }
-        throw new AssertionError("Conversation list entry '" + name
-                + "' is not visible after timeout expired");
+        assertThat("Conversation list entry '" + name + "' is not visible after timeout expired", context.getPagesCollection
+                ().getPage(ContactListPage.class).isConvoListEntryWithNameExist(name));
     }
 
     /**
@@ -881,5 +874,17 @@ public class ContactListPageSteps {
     public void IClickCancelButtonOnDeleteWarningForSingle() throws Throwable {
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickCancelOnDeleteWarningSingle();
+    }
+
+    /**
+     * Click the cancel request option
+     *
+     * @throws Exception
+     * @step. ^I click cancel request in the options popover$
+     */
+    @When("^I click cancel request in the options popover$")
+    public void IClickCancelRequestButton() throws Exception {
+        context.getPagesCollection().getPage(ContactListPage.class)
+                .clickCancelRequest();
     }
 }
