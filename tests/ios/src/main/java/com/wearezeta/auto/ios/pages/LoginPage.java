@@ -45,9 +45,6 @@ public class LoginPage extends IOSPage {
 
     private static final By nameInvalidEmail = MobileBy.AccessibilityId("Please enter a valid email address");
 
-    private static final By nameAlreadyRegisteredNumber = MobileBy.AccessibilityId(
-            "The phone number you provided has already been registered. Please try again.");
-
     private static final By nameAlreadyRegisteredEmail =
             MobileBy.AccessibilityId("The email address you provided has already been registered. Please try again.");
 
@@ -144,11 +141,6 @@ public class LoginPage extends IOSPage {
     public boolean isInvalidEmailAlertShown() throws Exception {
         return DriverUtils.waitUntilAlertAppears(getDriver()) &&
                 DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidEmail);
-    }
-
-    public boolean isRegisteredNumberAlertShown() throws Exception {
-        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAlreadyRegisteredNumber);
     }
 
     public boolean isAlreadyRegisteredEmailAlertShown() throws Exception {

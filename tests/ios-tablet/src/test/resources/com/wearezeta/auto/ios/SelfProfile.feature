@@ -149,7 +149,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C2866 @regression @noAcceptAlert @id3862 @ZIOS-5836
+  @C2866 @regression @noAcceptAlert @id3862
   Scenario Outline: Verify error message appears in case of registering already taken phone number [LANDSCAPE]
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape
@@ -163,11 +163,11 @@ Feature: Self Profile
     When I tap settings gear button
     And I tap to add my phone number
     And I input phone number <Number> with code <Code>
-    Then I see already registered phone number alert
+    Then I verify the alert contains text <ExpectedText>
 
     Examples:
-      | Name      | Number        | Code |
-      | user1Name | 8301652248706 | +0   |
+      | Name      | Number        | Code | ExpectedText                |
+      | user1Name | 8301652248706 | +0   | has already been registered |
 
   @C2855 @rc @regression @id3986
   Scenario Outline: Verify theme switcher is not shown on the self profile [LANDSCAPE]
