@@ -36,7 +36,7 @@ Feature: Audio Messaging
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact1> sends encrypted message "Hi" to user Myself
+    Given User <Contact1> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact1>
     Then I see audio message placeholder
     When I long tap on audio message placeholder in conversation view
@@ -78,7 +78,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C129349 @staging
+  @C129349 @regression
   Scenario Outline: Verify deleting playing voice message
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -138,6 +138,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     When User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    And User <Contact1> sends 1 encrypted message to user Myself
     And I long tap on audio message placeholder in conversation view
     Then I do not see Save badge item
     When I tap Play audio message button
@@ -157,6 +158,7 @@ Feature: Audio Messaging
     Given I sign in using my email or phone number
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list
     Given I tap on contact name <Contact1>
     When I tap Play audio message button on audio message placeholder number 2
@@ -180,6 +182,7 @@ Feature: Audio Messaging
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given User <Contact> sends 1 encrypted message to user Myself
     Given I see conversations list
     And I tap on contact name <Contact>
     And I remember the state of Play button on audio message placeholder
@@ -222,9 +225,10 @@ Feature: Audio Messaging
     Given I sign in using my email or phone number
     Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given User <Contact> sends 1 encrypted message to user Myself
     Given I see conversations list
     Given I tap on contact name <Contact>
-    When I remember the state of Pause button on audio message placeholder
+    When I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
     And I wait for <AudioDownloadTimeout> seconds
