@@ -210,6 +210,9 @@ public class ConversationViewPageSteps {
     public void IPressAddPictureButton(String isLongTap, String btnName, String shouldKeepTap) throws Exception {
         if (isLongTap == null) {
             getConversationViewPage().tapInputToolButtonByName(btnName);
+        }
+        if(shouldKeepTap == null){
+            getConversationViewPage().longTapInputToolButtonByName(btnName, false);
         } else {
             getConversationViewPage().longTapInputToolButtonByName(btnName, shouldKeepTap != null);
         }
@@ -1309,19 +1312,16 @@ public class ConversationViewPageSteps {
     /**
      * Verifies that the audio message gets played
      *
-     * @throws Throwable
+     * @throws Exception
      * @step. ^I see the audio message gets played$
      */
     @Then("^I see the audio message gets played$")
     public void ISeeTheAudioMessageGetsPlayed() throws Exception {
 
-        String startTime;
-        String currentTime;
-
-        startTime = getConversationViewPage().getAudioMessageTimeLabelValue();
-        Thread.sleep(700);
-        currentTime = getConversationViewPage().getAudioMessageTimeLabelValue();
+        String startTime = getConversationViewPage().getAudioMessageTimeLabelValue();
+        Thread.sleep(1000);
+        String currentTime = getConversationViewPage().getAudioMessageTimeLabelValue();
         Assert.assertNotEquals("The Audio message did not get played. StartTime: %s is the same as CurrentTime: %s ! ",
-                startTime,currentTime);
+                startTime, currentTime);
     }
 }

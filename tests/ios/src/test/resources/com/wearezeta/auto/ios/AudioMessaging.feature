@@ -299,7 +299,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     # Let it record something for specific duration
-    And I long tap Audio Message button from input tools without releasing my finger
+    When I long tap Audio Message button from input tools
     And I tap Play record control button
     Then I see the audio message gets played
 
