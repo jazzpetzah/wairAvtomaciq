@@ -265,7 +265,7 @@ Feature: Audio Messaging
     Given I tap on contact name <Contact1>
     And I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
-# Wait until the audio is downloaded and starts playback
+    # Wait until the audio is downloaded and starts playback
     And I wait for <AudioDownloadTimeout> seconds
     And I tap Audio Call button
     And I tap Leave button on Calling overlay
@@ -292,3 +292,19 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact   |SoundCloudLink                                                   |
       | user1Name | user2Name |https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
+
+  @C129325 @C129324 @staging
+  Scenario Outline: Verify playing the message by tapping on the play icon on record toolbar
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
+    # Let it record something for specific duration
+    When I long tap Audio Message button from input tools
+    And I tap Play record control button
+    Then I see the audio message gets played
+
+    Examples:
+      | Name      | Contact1  |
+      | user1Name | user2Name |

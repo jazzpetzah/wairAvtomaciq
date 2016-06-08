@@ -175,6 +175,8 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By namePlayAudioMessageButton = MobileBy.AccessibilityId("audioRecorderPlay");
 
+    private static final By nameAudioRecordTimeLabel = MobileBy.AccessibilityId("audioRecorderTimeLabel");
+
     private static final String strNameAudioActionButton = "AudioActionButton";
     private static final By nameAudioActionButton = MobileBy.AccessibilityId(strNameAudioActionButton);
 
@@ -739,6 +741,9 @@ public class ConversationViewPage extends IOSPage {
     public void longTapInputToolButtonByName(String btnName, boolean shouldKeepTap) throws Exception {
         if (shouldKeepTap) {
             new TouchAction(getDriver()).press(getElement(getInputToolButtonByName(btnName))).perform();
+        }
+        if(!shouldKeepTap){
+            getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_RECORD_AUDIO_MESSAGE_DURATION);
         } else {
             getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_DURATION);
         }
@@ -758,6 +763,8 @@ public class ConversationViewPage extends IOSPage {
                 return nameSendAudioMessageButton;
             case "cancel":
                 return nameAudioRecorderCancelButton;
+            case "play":
+                return namePlayAudioMessageButton;
             default:
                 throw new IllegalArgumentException("Not know record control button");
         }
@@ -819,5 +826,9 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isRecordControlButtonVisible(String buttonName) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getRecordControlButtonByName(buttonName));
+    }
+
+    public String getAudioMessageTimeLabelValue() throws Exception {
+        return getElement(nameAudioRecordTimeLabel).getAttribute("value");
     }
 }

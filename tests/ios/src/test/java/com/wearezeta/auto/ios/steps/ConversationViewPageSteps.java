@@ -210,6 +210,9 @@ public class ConversationViewPageSteps {
     public void IPressAddPictureButton(String isLongTap, String btnName, String shouldKeepTap) throws Exception {
         if (isLongTap == null) {
             getConversationViewPage().tapInputToolButtonByName(btnName);
+        }
+        if(shouldKeepTap == null){
+            getConversationViewPage().longTapInputToolButtonByName(btnName, false);
         } else {
             getConversationViewPage().longTapInputToolButtonByName(btnName, shouldKeepTap != null);
         }
@@ -1155,7 +1158,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I tap (Send|Cancel) record control button
      */
-    @When("^I tap (Send|Cancel) record control button$")
+    @When("^I tap (Send|Cancel|Play) record control button$")
     public void ITapRecordControlButton(String buttonName) throws Exception {
         getConversationViewPage().tapRecordControlButton(buttonName);
     }
@@ -1304,5 +1307,21 @@ public class ConversationViewPageSteps {
                     PLAY_BUTTON_STATE_CHANGE_TIMEOUT), playButtonState.isNotChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT,
                     PLAY_BUTTON_MIN_SIMILARITY));
         }
+    }
+
+    /**
+     * Verifies that the audio message gets played
+     *
+     * @throws Exception
+     * @step. ^I see the audio message gets played$
+     */
+    @Then("^I see the audio message gets played$")
+    public void ISeeTheAudioMessageGetsPlayed() throws Exception {
+
+        String startTime = getConversationViewPage().getAudioMessageTimeLabelValue();
+        Thread.sleep(1000);
+        String currentTime = getConversationViewPage().getAudioMessageTimeLabelValue();
+        Assert.assertNotEquals("The Audio message did not get played. StartTime: %s is the same as CurrentTime: %s ! ",
+                startTime, currentTime);
     }
 }
