@@ -599,4 +599,9 @@ public abstract class IOSPage extends BasePage {
                 (int) Double.parseDouble(attributes.getNamedItem("width").getNodeValue()),
                 (int) Double.parseDouble(attributes.getNamedItem("height").getNodeValue()));
     }
+
+    public void tapOnScreenCenter() throws Exception {
+        final Dimension dim = getDriver().manage().window().getSize();
+        DriverUtils.genericTap(getDriver(), dim.getWidth() / 2, dim.getHeight() / 2);
+    }
 }
