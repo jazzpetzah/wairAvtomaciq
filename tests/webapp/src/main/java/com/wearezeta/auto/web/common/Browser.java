@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 public enum Browser {
 	Safari("safari"), InternetExplorer("internetexplorer"), Chrome("chrome"), Firefox(
-			"firefox"), Opera("opera"), MicrosoftEdge("MicrosoftEdge");
+			"firefox"), Opera("opera"), Edge("Edge");
 
 	private final String stringRepresentation;
 
@@ -84,7 +84,6 @@ public enum Browser {
 	public boolean isSupportingMaximizingTheWindow() {
 		switch (this) {
 		case InternetExplorer:
-		case MicrosoftEdge:
 			return false;
 		default:
 			return true;
@@ -93,7 +92,7 @@ public enum Browser {
 
 	public boolean isSupportingSettingWindowSize() {
 		switch (this) {
-		case MicrosoftEdge:
+		case Edge:
 			return false;
 		default:
 			return true;
