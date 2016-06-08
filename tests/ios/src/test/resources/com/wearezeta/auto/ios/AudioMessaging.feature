@@ -35,11 +35,13 @@ Feature: Audio Messaging
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given I tap on contact name <Contact1>
-    When User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given User <Contact1> sends encrypted message "Hi" to user Myself
+    When I tap on contact name <Contact1>
     Then I see audio message placeholder
     When I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item
+    And I accept alert
     Then I do not see audio message placeholder
 
     Examples:
