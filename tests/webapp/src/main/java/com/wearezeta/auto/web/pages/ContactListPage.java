@@ -729,7 +729,6 @@ public class ContactListPage extends WebPage {
     }
 
     public void clickCancelRequest() throws Exception {
-        waitForOptionButtonsToBeClickable();
         cancelRequestButton.click();
     }
 

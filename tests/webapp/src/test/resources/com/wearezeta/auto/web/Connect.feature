@@ -490,11 +490,14 @@ Feature: Connect
     Then I do not see Contact list with name <Contact1>
     When I open self profile
     And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
+    Then I select Log out menu item on self profile page
+    And I see the clear data dialog
+    And I click Logout button on clear data dialog
+    And I see Sign In page
     And User <Contact1> is me
-    And I Sign in using login <Contact1Email> and password <Contact1Password>
-    Then I see my avatar on top of Contact list
-    And I do not see Contact list with name <Name>
+    When I Sign in using login <Contact1Email> and password <Contact1Password>
+    And I am signed in properly
+    Then I do not see Contact list with name <Name>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ConvOption1 | ConvOption2    | ConvOption3 | Contact1Email | Contact1Password |
