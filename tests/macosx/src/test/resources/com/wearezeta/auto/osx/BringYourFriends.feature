@@ -22,8 +22,7 @@ Feature: Bring Your Friends
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
-    When I click gear button on self profile page
-    And I select Settings menu item on self profile page
+    When I type shortcut combination for preferences
     And I see Settings dialog
     And I click button to import contacts from Gmail
     And I see Google login popup

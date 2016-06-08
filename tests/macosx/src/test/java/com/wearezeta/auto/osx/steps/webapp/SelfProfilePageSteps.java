@@ -13,7 +13,6 @@ import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -25,6 +24,7 @@ public class SelfProfilePageSteps {
 
     public SelfProfilePageSteps() {
     }
+    
 
     /**
      * Checks the ... button on Self Profile page
@@ -33,7 +33,7 @@ public class SelfProfilePageSteps {
      * @throws Exception
      */
     @And("^I do not see the settings button on self profile page$")
-    public void IClickGearButton() throws Exception {
+    public void ISeeGearButton() throws Exception {
         Assert.assertTrue("Setting button visible", WebappPagesCollection
                 .getInstance().getPage(SelfProfilePage.class)
                 .isSettingsButtonVisible());
