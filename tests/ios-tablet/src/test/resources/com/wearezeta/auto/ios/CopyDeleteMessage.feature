@@ -18,7 +18,7 @@ Feature: Copy/Delete Message
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C145958 @staging @torun
+  @C145958 @staging
   Scenario Outline: Delete Message. Verify deleting a picture [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
