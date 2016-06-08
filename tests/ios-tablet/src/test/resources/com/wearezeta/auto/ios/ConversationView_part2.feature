@@ -26,7 +26,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see sender first name <Name> on fullscreen page
@@ -36,7 +36,7 @@ Feature: Conversation View
     And I verify image caption and download button are not shown
     And I tap on fullscreen page
     And I tap close fullscreen page button
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -54,7 +54,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see sender first name <Name> on fullscreen page
@@ -64,7 +64,7 @@ Feature: Conversation View
     And I verify image caption and download button are not shown
     And I tap on fullscreen page
     And I tap close fullscreen page button
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -115,7 +115,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I rotate UI to portrait
@@ -269,7 +269,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
     # Wait for polka dots to disappear
     And I wait for 7 seconds
     And I long tap on image in conversation view
@@ -278,7 +278,7 @@ Feature: Conversation View
     And I tap and hold on message input
     And I click on popup Paste item
     And I confirm my choice
-    Then I see 2 photos in the dialog
+    Then I see 2 photos in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -293,7 +293,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     And I tap on contact name <Contact>
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
     # Wait for polka dots to disappear
     And I wait for 7 seconds
     And I long tap on image in conversation view
@@ -302,7 +302,7 @@ Feature: Conversation View
     And I tap and hold on message input
     And I click on popup Paste item
     And I confirm my choice
-    Then I see 2 photos in the dialog
+    Then I see 2 photos in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -325,7 +325,7 @@ Feature: Conversation View
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
     When I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact1  |
@@ -339,7 +339,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
@@ -349,7 +349,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
-    And I see 2 photos in the dialog
+    And I see 2 photos in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -363,7 +363,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
@@ -373,7 +373,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll
     When I confirm my choice
-    Then I see 2 photos in the dialog
+    Then I see 2 photos in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -426,7 +426,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <GifPicture> to single user conversation Myself
     When I tap on contact name <Contact>
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
     And I see the picture in the conversation view is animated
     When I tap and hold image to open full screen
     Then I see the picture on image fullscreen page is animated

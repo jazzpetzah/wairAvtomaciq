@@ -118,7 +118,7 @@ Feature: Search
     And I tap on conversation <Contact> in search result
     And I unblock user
     And I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -171,7 +171,7 @@ Feature: Search
     And I choose a picture from camera roll
     And I confirm my choice
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
     When I navigate back to conversations list
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 

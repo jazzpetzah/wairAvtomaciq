@@ -139,11 +139,11 @@ public class ConversationViewPageSteps {
     }
 
     @When("^I send the message$")
-    public void WhenISendTheMessage() throws Throwable {
+    public void WhenISendTheMessage() throws Exception {
         getConversationViewPage().clickKeyboardCommitButton();
     }
 
-    @Then("^I see (\\d+) (default )?messages? in the dialog$")
+    @Then("^I see (\\d+) (default )?messages? in the conversation view$")
     public void ThenISeeMessageInTheDialog(int expectedCount, String isDefault) throws Exception {
         int actualCount;
         if (isDefault == null) {
@@ -264,7 +264,7 @@ public class ConversationViewPageSteps {
 
     private static final long IMAGE_VISIBILITY_TIMEOUT = 10000; //milliseconds
 
-    @Then("^I see (\\d+) photos? in the dialog$")
+    @Then("^I see (\\d+) photos? in the conversation view$")
     public void ISeeNewPhotoInTheDialog(int expectedCount) throws Exception {
         int actualCount = getConversationViewPage().getCountOfImages();
         if (actualCount > 0 && expectedCount > 1 && actualCount < expectedCount) {

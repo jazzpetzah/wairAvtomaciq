@@ -141,12 +141,12 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user
-    Then I see 0 default messages in the dialog
-    And I see 0 photos in the dialog
+    Then I see 0 default messages in the conversation view
+    And I see 0 photos in the conversation view
     # FIXME: No idea why these messages are not getting delivered in automated tests, manual run through always pass
     # When User <Contact> sends 1 encrypted message to user Myself
-    # Then I see 1 default message in the dialog
-    # And I see 0 photos in the dialog
+    # Then I see 1 default message in the conversation view
+    # And I see 0 photos in the conversation view
 
     Examples: 
       | Name      | Contact   | Picture     |
@@ -309,12 +309,12 @@ Feature: Connect
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
     When I tap Add Picture button from input tools
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples: 
       | Name      | Contact   |

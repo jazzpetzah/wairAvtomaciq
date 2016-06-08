@@ -9,7 +9,7 @@ Feature: Conversation View
     And I see conversations list
     When I tap on contact name <Contact>
     And I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -24,7 +24,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -41,7 +41,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -59,7 +59,7 @@ Feature: Conversation View
     And I press Camera Roll button
     And I choose a picture from camera roll
     And I confirm my choice
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -106,7 +106,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to <ConversationType> conversation <Name>
     When I tap on contact name <Contact>
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     | ConversationType |
@@ -121,7 +121,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -140,7 +140,7 @@ Feature: Conversation View
     And I tap on contact name <Contact1>
     And I tap on text input
     And I press Enter key in Simulator window
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -182,10 +182,10 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the "   " message and send it
-    Then I see 0 default messages in the dialog
+    Then I see 0 default messages in the conversation view
     When I type the default message
     And I type the "   " message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -201,7 +201,7 @@ Feature: Conversation View
     And I tap Sketch button from input tools
     And I draw a random sketch
     And I send my sketch
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact1  |
@@ -218,7 +218,7 @@ Feature: Conversation View
     And I tap Sketch button from input tools
     And I draw a random sketch
     And I send my sketch
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact1  |
@@ -249,7 +249,7 @@ Feature: Conversation View
     And I see conversations list
     When I tap on group chat with name <GroupChatName>
     And I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |

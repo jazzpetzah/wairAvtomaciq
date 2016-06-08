@@ -8,10 +8,10 @@ Feature: DeleteMessage
     Given I see conversations list
     When I tap on contact name <Contact>
     And I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
     When I long tap default message in conversation view
     And I tap on Delete badge item
-    Then I see 0 default messages in the dialog
+    Then I see 0 default messages in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -25,10 +25,10 @@ Feature: DeleteMessage
     Given I see conversations list
     Given User <Contact> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact>
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
     When I long tap default message in conversation view
     And I tap on Delete badge item
-    Then I see 0 default messages in the dialog
+    Then I see 0 default messages in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -42,22 +42,22 @@ Feature: DeleteMessage
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
     When I long tap on image in conversation view
     And I tap on Delete badge item
     # FIXME: Sometimes autoaccept fails
     And I accept alert
-    Then I see 0 photos in the dialog
+    Then I see 0 photos in the conversation view
     And I type tag for giphy preview <GiphyTag> and open preview overlay
     # Wait for GIF picture to be downloaded
     And I wait for 10 seconds
     And I send gif from giphy preview page
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
     When I long tap on image in conversation view
     And I tap on Delete badge item
     # Sometimes the alert is not accepted automatically
     And I accept alert
-    Then I see 0 photos in the dialog
+    Then I see 0 photos in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     | GiphyTag |
@@ -86,10 +86,10 @@ Feature: DeleteMessage
     Given I see conversations list
     Given User Myself sends encrypted message "Try this app <Link>" to user <Contact>
     When I tap on contact name <Contact>
-    Then I see 1 message in the dialog
+    Then I see 1 message in the conversation view
     When I long tap "<Link>" message in conversation view
     And I tap on Delete badge item
-    Then I see 0 messages in the dialog
+    Then I see 0 messages in the conversation view
 
     Examples:
       | Name      | Contact   | Link                  |
@@ -125,7 +125,7 @@ Feature: DeleteMessage
     And I long tap default message in conversation view
     And I tap on Delete badge item
     And I dismiss alert
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact1  |
