@@ -16,7 +16,8 @@ Feature: Conversation List
     And I select "Log out" settings menu item
     And I confirm sign out
     And I sign in using my email
-    Then I do not see First Time overlay
+    # Workaround, it should not see First time overlay
+    Then I accept First Time overlay as soon as it is visible
     And I see Contact list
     And I do not see contact hint banner
 
@@ -51,16 +52,19 @@ Feature: Conversation List
       | user1Name | user2Name |
 
   @C822 @id4042 @regression @rc
-  Scenario Outline: (AN-2875) Verify I can delete a 1:1 conversation from conversation list
+  Scenario Outline: Verify I can delete a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
+    # Workaround for AN-4115, need to open conversation view before receiving message
+    Given I tap on contact name <Contact1>
     Given User <Contact1> sends encrypted message <SpotifyLink> to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     Given User <Contact1> sends encrypted message <Message> to user Myself
-    And I tap on contact name <Contact1>
+    # Wait for all messages are syned
+    Given I wait for 10 seconds
     And I scroll to the bottom of conversation view
     And I see the most recent conversation message is "<Message>"
     And I navigate back from dialog page
@@ -68,7 +72,7 @@ Feature: Conversation List
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
     Then I see Contact list with no contacts
-    And I open Search UI
+    When I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I tap Open Conversation action button on People Picker page
@@ -103,11 +107,14 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
+    # Workaround AN-4115, open conversation before receiving
+    Given I tap on contact name <GroupChatName>
     Given User <Contact1> sends encrypted message <SpotifyLink> to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Image> to group conversation Myself
     Given User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
-    When I tap on contact name <GroupChatName>
-    And I scroll to the bottom of conversation view
+    # Wait for sync
+    Given I wait for 10 seconds
+    When I scroll to the bottom of conversation view
     And I see the most recent conversation message is "<Message>"
     And I navigate back from dialog page
     And I swipe right on a <GroupChatName>

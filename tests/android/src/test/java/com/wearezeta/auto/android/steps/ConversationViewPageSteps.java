@@ -260,9 +260,9 @@ public class ConversationViewPageSteps {
      * Tap on Play/Pause media item button
      *
      * @throws Exception
-     * @step. ^I tap (?:Play|Pause) button button on SoundCloud container$
+     * @step. ^I tap (?:Play|Pause) button on SoundCloud container$
      */
-    @When("^I tap (?:Play|Pause) button button on SoundCloud container$")
+    @When("^I tap (?:Play|Pause) button on SoundCloud container$")
     public void WhenIPressPlayPauseButton() throws Exception {
         getConversationViewPage().tapPlayPauseBtn();
     }
