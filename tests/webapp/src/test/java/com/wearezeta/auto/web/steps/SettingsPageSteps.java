@@ -203,7 +203,7 @@ public class SettingsPageSteps {
      *
      * @throws Exception
      */
-	@When("^I click button to import contacts from Gmail$")
+    @When("^I click button to import contacts from Gmail$")
     public void IClickImportButton() throws Exception {
         context.getPagesCollection().getPage(SettingsPage.class).clickImportButton();
     }
