@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.ios.pages.FirstTimeOverlay;
+import com.wearezeta.auto.ios.tools.FastLoginContainer;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -60,25 +61,27 @@ public class LoginPageSteps {
     }
 
     private void emailLoginSequence(String login, String password) throws Exception {
-        try {
-            login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
-        try {
-            password = usrMgr.findUserByPasswordAlias(password).getPassword();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
-
         getLoginPage().switchToLogin();
+        // TODO: skip the whole login flow when using fast log in option
+        if (!FastLoginContainer.getInstance().isEnabled()) {
+            try {
+                login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
+            } catch (NoSuchUserException e) {
+                // Ignore silently
+            }
+            try {
+                password = usrMgr.findUserByPasswordAlias(password).getPassword();
+            } catch (NoSuchUserException e) {
+                // Ignore silently
+            }
 
-//        if (getLoginPage().isEmailInputFieldInvisible()) {
-//            getLoginPage().switchToEmailLogin();
-//        }
-        getLoginPage().setLogin(login);
-        getLoginPage().setPassword(password);
-        getLoginPage().clickLoginButton();
+            // if (getLoginPage().isEmailInputFieldInvisible()) {
+            //     getLoginPage().switchToEmailLogin();
+            // }
+            getLoginPage().setLogin(login);
+            getLoginPage().setPassword(password);
+            getLoginPage().clickLoginButton();
+        }
         getLoginPage().waitForLoginToFinish();
         getLoginPage().acceptAlertIfVisible(5);
         getFirstTimeOverlayPage().acceptIfVisible(2);

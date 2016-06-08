@@ -78,7 +78,7 @@ public class LoginPage extends IOSPage {
     }
 
     public void waitForLoginToFinish() throws Exception {
-        if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), nameSwitchToLoginButton, 40)) {
+        if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), nameSwitchToLoginButton, LOGIN_TIMEOUT_SECONDS)) {
             throw new IllegalStateException("Login button is still visible after the timeout");
         }
     }
@@ -95,7 +95,7 @@ public class LoginPage extends IOSPage {
         ((IOSElement) getElement(namePasswordField)).setValue(password);
     }
 
-    private static final int LOGIN_TIMEOUT_SECONDS = 30;
+    public static final int LOGIN_TIMEOUT_SECONDS = 30;
 
     public void dismissSettingsWarning() throws Exception {
         final WebElement maybeLaterBtn = getElement(nameMaybeLater, "MAYBE LATER link is not visible",
@@ -163,10 +163,8 @@ public class LoginPage extends IOSPage {
 
     public void switchToLogin() throws Exception {
         final WebElement switchToLoginButton = getElement(nameSwitchToLoginButton);
+        // Wait for a while until the button is 100% accessible
+        Thread.sleep(1000);
         switchToLoginButton.click();
-        // sometimes switch does not work if clicked too early
-        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLoginField, 5)) {
-            switchToLoginButton.click();
-        }
     }
 }
