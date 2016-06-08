@@ -219,7 +219,7 @@ Feature: Conversation List
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on contact name <GroupChatName>
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
     When I navigate back to conversations list
     And I swipe right on a <GroupChatName>
     And I tap Delete action button
@@ -244,7 +244,7 @@ Feature: Conversation List
     Given User <Contact1> sends 1 encrypted message to user <Name>
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I tap on contact name <Contact1>
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
     When I navigate back to conversations list
     And I swipe right on a <Contact1>
     And I tap Delete action button
@@ -396,7 +396,7 @@ Feature: Conversation List
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
     When I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |

@@ -278,7 +278,7 @@ Feature: Conversation List
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
     When I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
@@ -319,7 +319,7 @@ Feature: Conversation List
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
     And I tap on contact name <Contact>
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     |

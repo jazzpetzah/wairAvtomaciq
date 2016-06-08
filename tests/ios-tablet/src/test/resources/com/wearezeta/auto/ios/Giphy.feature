@@ -25,7 +25,7 @@ Feature: Giphy
     When I tap on contact name <Contact>
     And I type tag for giphy preview <GiphyTag> and open preview overlay
     And I send gif from giphy preview page
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples: 
       | Name      | Contact   | GiphyTag |

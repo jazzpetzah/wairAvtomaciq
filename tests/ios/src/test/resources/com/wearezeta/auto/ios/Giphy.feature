@@ -27,7 +27,7 @@ Feature: Giphy
     # Wait for GIF picture to be downloaded
     And I wait for 10 seconds
     And I send gif from giphy preview page
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples: 
       | Name      | Contact   | GiphyTag |

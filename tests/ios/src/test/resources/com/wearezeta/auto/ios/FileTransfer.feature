@@ -77,7 +77,7 @@ Feature: File Transfer
     And I tap file transfer menu item <ItemName>
     Then I see file transfer placeholder
     When I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact   | ItemName                   |
