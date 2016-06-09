@@ -895,6 +895,6 @@ public class ContactListPageSteps {
     @When("^I click archive in the options popover$")
     public void IClickArchiveButton() throws Exception {
         context.getPagesCollection().getPage(ContactListPage.class)
-                .clickArchiveButton();
+                .clickArchiveConversation();
     }
 }

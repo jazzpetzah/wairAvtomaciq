@@ -320,13 +320,28 @@ public class ContactListPage extends WebPage {
     }
 
     public void clickArchiveConversation() throws Exception {
-        waitForOptionButtonsToBeClickable();
+        waitForArchiveButtonToBeClickable();
         archiveButton.click();
     }
 
     public void clickMuteConversation() throws Exception {
         waitForOptionButtonsToBeClickable();
         muteButton.click();
+    }
+
+    private void waitForArchiveButtonToBeClickable() throws Exception {
+        assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+                archiveButton);
+    }
+
+    private void waitForBlockButtonToBeClickable() throws Exception {
+        assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+                blockButton);
+    }
+
+    private void waitForCancelRequestButtonToBeClickable() throws Exception {
+        assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+                cancelRequestButton);
     }
 
     private void waitForOptionButtonsToBeClickable() throws Exception {
@@ -724,14 +739,12 @@ public class ContactListPage extends WebPage {
     }
 
     public void clickCancelRequest() throws Exception {
+        waitForCancelRequestButtonToBeClickable();
         cancelRequestButton.click();
     }
 
-    public void clickArchiveButton() throws Exception {
-        archiveButton.click();
-    }
-
     public void clickBlockButton() throws Exception {
+        waitForBlockButtonToBeClickable();
         blockButton.click();
     }
 
