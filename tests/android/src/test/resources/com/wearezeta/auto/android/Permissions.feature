@@ -103,7 +103,8 @@ Feature: Permissions
     Given I see welcome screen
     When I sign in using my phone number
     # deny access to contacts
-    And I dismiss security alert
+    # Workaround an issue when login screen covers security alert
+    And I dismiss security alert if it is visible
     And I have entered login <Login>
     And I have entered password <Password>
     And I start listening for confirmation email
