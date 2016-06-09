@@ -35,10 +35,10 @@ Feature: Audio Messaging
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact1> sends 1 encrypted message to user Myself
-    When I tap on contact name <Contact1>
-    Then I see audio message placeholder
+    Given I see audio message placeholder
     When I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item
     And I accept alert
@@ -156,11 +156,11 @@ Feature: Audio Messaging
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact1> sends 1 encrypted message to user Myself
-    Given I see conversations list
-    Given I tap on contact name <Contact1>
     When I tap Play audio message button on audio message placeholder number 2
     # Wait until the audio is downloaded and starts playback
     And I wait for <AudioDownloadTimeout> seconds
@@ -173,7 +173,7 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
-  
+
 
   @C139855 @staging
   Scenario Outline: (ZIOS-6759) Verify playback is stopped when incoming call has appeared
@@ -223,11 +223,11 @@ Feature: Audio Messaging
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
     Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact> sends 1 encrypted message to user Myself
-    Given I see conversations list
-    Given I tap on contact name <Contact>
     When I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
@@ -238,16 +238,16 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact   | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout | SoundCloudLink                                                   |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
-    
+
   @C131215 @staging
   Scenario Outline: Verify playback is stopped when audio message recording is started
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact1> sends 1 encrypted messages to user <Name>
     Given I see conversations list
     Given I tap on contact name <Contact1>
+    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given User <Contact1> sends 1 encrypted messages to user <Name>
     And I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
@@ -265,10 +265,10 @@ Feature: Audio Messaging
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact1> sends 1 encrypted messages to user <Name>
     Given I see conversations list
     Given I tap on contact name <Contact1>
+    Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    Given User <Contact1> sends 1 encrypted messages to user <Name>
     And I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
@@ -296,8 +296,8 @@ Feature: Audio Messaging
     And I see media container state is changed
 
     Examples:
-      | Name      | Contact   |SoundCloudLink                                                   |
-      | user1Name | user2Name |https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
+      | Name      | Contact   | SoundCloudLink                                                   |
+      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
   @C129325 @C129324 @staging
   Scenario Outline: Verify playing the message by tapping on the play icon on record toolbar
@@ -307,10 +307,10 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     # Let it record something for specific duration
-    When I long tap Audio Message button for specific seconds from input tools
+    When I long tap Audio Message button for <Duration> seconds from input tools
     And I tap Play record control button
     Then I see the audio message gets played
 
     Examples:
-      | Name      | Contact1  |
-      | user1Name | user2Name |
+      | Name      | Contact1  | Duration |
+      | user1Name | user2Name | 20       |
