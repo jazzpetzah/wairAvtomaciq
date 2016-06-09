@@ -1326,27 +1326,17 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see the audio message in (placeholder|record toolbar) gets (played|paused)$")
     public void ISeeTheAudioMessageGetsPlayed(String playerType, String state) throws Exception {
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
+        verificationFunc = (playerType.equals("placeholder")) ? getConversationViewPage()
+                ::isPlaceholderTimeLabelValueChanging : getConversationViewPage()::isRecordTimeLabelValueChanging;
         switch (state) {
             case "played":
-                if (playerType.equals("placeholder")) {
-                    Assert.assertTrue("The Audio message in placeholder did not get played. StartTime is the same as " +
-                                    "CurrentTime",
-                            getConversationViewPage().isPlaceholderTimeLabelValueChanging());
-                } else {
-                    Assert.assertTrue("The Audio message in recorder did not get played. StartTime is the same as CurrentTime",
-                            getConversationViewPage().isRecordTimeLabelValueChanging());
-                }
+                Assert.assertTrue(String.format("The Audio message in %s did not get played. StartTime is the same as " +
+                        "CurrentTime", playerType), verificationFunc.call());
                 break;
             case "paused":
-                if (playerType.equals("placeholder")) {
-                    Assert.assertFalse("The Audio message in placeholder did not get paused. StartTime is not the same as " +
-                                    "CurrentTime",
-                            getConversationViewPage().isPlaceholderTimeLabelValueChanging());
-                } else {
-                    Assert.assertFalse("The Audio message in recorder did not get paused. StartTime is not the same as " +
-                                    "CurrentTime",
-                            getConversationViewPage().isRecordTimeLabelValueChanging());
-                }
+                Assert.assertFalse(String.format("The Audio message in %s did not get paused. StartTime is not the same as " +
+                        "CurrentTime", playerType), verificationFunc.call());
                 break;
             default:
                 throw new IllegalArgumentException("Allowed states are 'played|paused'");
