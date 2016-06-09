@@ -102,7 +102,7 @@ Feature: Connect
     And I see Connect To popover
     And I click Connect button on Connect To popover
     Then I see Contact list with name <Contact2>
-    And I see cancel pending request button
+    And I see cancel pending request button in the conversation view
     And I verify that conversation input and buttons are not visible
 
     Examples: 
@@ -535,8 +535,8 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     When I open conversation with <Contact1>
-    Then I see cancel pending request button
-    When I click cancel pending request button
+    Then I see cancel pending request button in the conversation view
+    When I click cancel pending request button in the conversation view
     Then I do not see connection request from one user
 
     Examples:

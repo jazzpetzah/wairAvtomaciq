@@ -1096,12 +1096,12 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).clickUserAvatar();
     }
     
-    @Then("^I see cancel pending request button$")
+    @Then("^I see cancel pending request button in the conversation view$")
     public void ISeeCancelRequestButton() throws Exception {
         assertTrue("Cancel request is NOT visible in conversation list",context.getPagesCollection().getPage(ConversationPage.class).isCancelRequestButtonVisible());
     }
 
-    @Then("^I click cancel pending request button$")
+    @Then("^I click cancel pending request button in the conversation view$")
     public void IClickOnCancelRequestButton() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickCancelPendingRequestButton();
     }
