@@ -322,7 +322,6 @@ Feature: Audio Messaging
     Given I sign in using my email or phone number
     Given I see conversations list
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    #Given User <Contact1> sends 1 encrypted message to user Myself
     When I tap on contact name <Contact1>
     And User <Contact1> sends 1 encrypted message to user Myself
     And I see audio message placeholder
