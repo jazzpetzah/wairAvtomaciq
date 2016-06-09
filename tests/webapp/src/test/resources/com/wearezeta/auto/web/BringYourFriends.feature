@@ -78,7 +78,7 @@ Feature: Bring Your Friends
     And I see Connect To popover
     And I click Connect button on Connect To popover
     Then I see Contact list with remembered user
-    And I see cancel pending request button
+    And I see cancel pending request button in the conversation view
     And I verify that conversation input and buttons are not visible
     When I open People Picker from Contact List
     And I click button to bring friends from Gmail

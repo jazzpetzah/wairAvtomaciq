@@ -1042,4 +1042,7 @@ public class ConversationPage extends WebPage {
         return titlebarLabel.getText();
     }
 
+    public void clickCancelPendingRequestButton() throws Exception {
+        cancelRequestButton.click();
+    }
 }

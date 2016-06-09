@@ -102,7 +102,7 @@ Feature: Connect
     And I see Connect To popover
     And I click Connect button on Connect To popover
     Then I see Contact list with name <Contact2>
-    And I see cancel pending request button
+    And I see cancel pending request button in the conversation view
     And I verify that conversation input and buttons are not visible
 
     Examples: 
@@ -526,3 +526,19 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact2  | ConvOption1 | ConvOption2    | ConvOption3 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Archive     | Cancel request | Block       |
 
+  @C147863 @staging
+  Scenario Outline: Verify you can cancel a pending request from conversation view
+    Given There are 3 users where <Name> is me
+    Given I sent connection request to <Contact1>
+    Given Myself is connected to <Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    When I open conversation with <Contact1>
+    Then I see cancel pending request button in the conversation view
+    When I click cancel pending request button in the conversation view
+    Then I do not see connection request from one user
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
