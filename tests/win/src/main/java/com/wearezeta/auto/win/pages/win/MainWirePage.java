@@ -70,8 +70,8 @@ public class MainWirePage extends WinPage {
 
     public void pressShortCutForPreferences() throws Exception {
         robot.keyPress(KeyEvent.VK_CONTROL);
-        robot.keyPress(KeyEvent.VK_I);
-        robot.keyRelease(KeyEvent.VK_I);
+        robot.keyPress(KeyEvent.VK_COMMA);
+        robot.keyRelease(KeyEvent.VK_COMMA);
         robot.keyRelease(KeyEvent.VK_CONTROL);
     }
 
