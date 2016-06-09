@@ -1320,7 +1320,7 @@ public class ConversationViewPageSteps {
      * Verify audio message in placeholder|record toolbar state after time label value
      *
      * @param playerType placeholder or record toolbar
-     * @param state played or paused
+     * @param state      played or paused
      * @throws Exception
      * @step. ^I see the audio message in (placeholder|record toolbar) gets (played|paused)$
      */
@@ -1344,7 +1344,7 @@ public class ConversationViewPageSteps {
                             getConversationViewPage().verifyPlaceholderTimeLabelValueDiffersInXSeconds());
                 } else {
                     Assert.assertFalse("The Audio message in recorder did not get paused. StartTime is not the same as " +
-                            "CurrentTime",
+                                    "CurrentTime",
                             getConversationViewPage().verifyRecordTimeLabelValueDiffersInXSeconds());
                 }
                 break;
@@ -1362,6 +1362,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see state of button on audio message placeholder is (play|pause)$")
     public void ISeeAudioMessageControlButtonStateIs(String buttonState) throws Exception {
-        Assert.assertTrue(getConversationViewPage().isPlaceholderAudioMessageButtonState(buttonState));
+        Assert.assertTrue(String.format("Wrong button state. Espected state is '%s'", buttonState),
+                getConversationViewPage().isPlaceholderAudioMessageButtonState(buttonState));
     }
 }
