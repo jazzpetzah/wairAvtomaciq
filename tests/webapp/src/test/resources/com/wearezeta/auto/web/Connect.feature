@@ -405,7 +405,7 @@ Feature: Connect
     Given User <Contact> has contact <Me> in address book
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I open conversation with <Contact>
     Then I see CONNECTED TO action for <Contact> in conversation
     Then I see START A CONVERSATION action for <Contact> in conversation
@@ -503,3 +503,26 @@ Feature: Connect
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ConvOption1 | ConvOption2    | ConvOption3 | Contact1Email | Contact1Password |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Archive     | Cancel request | Block       | user2Email    | user2Password    |
+
+  @C145967 @staging
+  Scenario Outline: I want to archive a pending request from conversation list
+    Given There are 3 users where <Name> is me
+    Given I sent connection request to <Contact1>
+    Given Myself is connected to <Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact1>
+    When I click on options button for conversation <Contact1>
+    Then I see a conversation option <ConvOption1> on the page
+    And I see a conversation option <ConvOption2> on the page
+    And I see a conversation option <ConvOption3> on the page
+    When I click archive in the options popover
+    And I do not see connection request from one user
+    When I open archive
+    Then I see archive list with name <Contact1>
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ConvOption1 | ConvOption2    | ConvOption3 |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | Archive     | Cancel request | Block       |
+
