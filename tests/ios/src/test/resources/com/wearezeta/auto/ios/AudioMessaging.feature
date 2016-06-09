@@ -14,20 +14,26 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C129327 @rc @regression
-  Scenario Outline: Verify sending voice message by check icon tap
+  @C129327 @C129343 @rc @regression
+  Scenario Outline: Verify sending voice message by check icon tap and playing it
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I long tap Audio Message button from input tools
+    And I long tap Audio Message button for <Duration> seconds from input tools
     And I tap Send record control button
     Then I see audio message placeholder
+    When I tap Play audio message button
+    Then I see state of button on audio message placeholder is pause
+    And I see the audio message in placeholder gets played
+    When I tap Pause audio message button
+    Then I see state of button on audio message placeholder is play
+    And I see the audio message in placeholder gets paused
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | Duration |
+      | user1Name | user2Name | 50       |
 
   @C129341 @C129345 @rc @regression
   Scenario Outline: Verify receiving a voice message and deleting it

@@ -78,7 +78,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C1100 @C1101 @regression @id730 @id731
+  @C1100 @regression @id730 @id731
   Scenario Outline: Verify about screen contains all the required information
     Given There is 1 user where <Name> is me
     Given User me change accent color to <Color>
