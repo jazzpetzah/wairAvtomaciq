@@ -181,10 +181,10 @@ Feature: Audio Messaging
     Given Myself is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact> sends 1 encrypted message to user Myself
-    Given I see conversations list
-    And I tap on contact name <Contact>
     And I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait to make sure the audio file is downloaded and starts playback
