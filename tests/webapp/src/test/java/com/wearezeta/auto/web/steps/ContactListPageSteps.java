@@ -685,8 +685,9 @@ public class ContactListPageSteps {
      */
     @When("^I click the option to block in the options popover$")
     public void IClickBlockButton() throws Exception {
-        context.getPagesCollection().getPage(ContactListPage.class)
-                .clickBlockButton();
+        Assert.assertTrue("Block button is not shown in the option popover",
+                context.getPagesCollection().getPage(ContactListPage.class).isBlockButtonClickable());
+        context.getPagesCollection().getPage(ContactListPage.class).clickBlockButton();
     }
 
     /**
@@ -766,15 +767,16 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Click the delete option
+     * Click the delete option in the options popover
      *
      * @throws Exception
      * @step. ^I click delete in the options popover$
      */
     @When("^I click delete in the options popover$")
     public void IClickDeleteButton() throws Exception {
-        context.getPagesCollection().getPage(ContactListPage.class)
-                .clickDeleteConversation();
+        Assert.assertTrue("Delete button is not shown in the option popover",
+                context.getPagesCollection().getPage(ContactListPage.class).isDeleteButtonClickable());
+        context.getPagesCollection().getPage(ContactListPage.class).clickDeleteButton();
     }
 
     /**
@@ -882,6 +884,8 @@ public class ContactListPageSteps {
      */
     @When("^I click cancel request in the options popover$")
     public void IClickCancelRequestButton() throws Exception {
+        Assert.assertTrue("Cancel request button is not shown in the option popover",
+                context.getPagesCollection().getPage(ContactListPage.class).isCancelRequestButtonClickable());
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickCancelRequest();
     }
@@ -894,6 +898,8 @@ public class ContactListPageSteps {
      */
     @When("^I click archive in the options popover$")
     public void IClickArchiveButton() throws Exception {
+        Assert.assertTrue("Archive button is not shown in the option popover",
+                context.getPagesCollection().getPage(ContactListPage.class).isArchiveButtonClickable());
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickArchiveConversation();
     }
