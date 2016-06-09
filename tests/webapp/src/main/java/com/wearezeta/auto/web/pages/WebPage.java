@@ -19,7 +19,7 @@ public class WebPage extends BasePage {
     private static final Logger log = ZetaLogger.getLog(WebPage.class.getSimpleName());
     
     private static final int WIRE_LOADED_MAX_RETRY = 20;
-    private static final int WIRE_LOADED_WAIT_MS = 1000;
+    private static final int WIRE_LOADED_WAIT_MS = 100;
 
     @Override
     protected ZetaWebAppDriver getDriver() throws Exception {

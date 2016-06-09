@@ -27,7 +27,7 @@ $(document).ready(function () {
                                           center__childOptions: {}
                                       });
 
-    var southH = 200;
+    var southH = 5;
     layout.sizePane("south", southH);
 
     var topLayout = layout.center.children.layout1;

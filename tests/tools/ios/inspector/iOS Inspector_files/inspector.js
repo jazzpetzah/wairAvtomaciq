@@ -31,14 +31,15 @@ function Inspector(selector) {
     this.log = new Logger(this);
     this.selector = selector;
     this.initSessionId();
-    this.initAutXml();
+    if (this.sessionId !== undefined) {
+        this.initAutXml();
 
-    this.initScreenshotPath();
-    $("#screenshot").attr("src", this.screenshotPath);
-    var parser = new DOMParser();
-    var xmlDoc = parser.parseFromString(this.autXml, "text/xml");
-    var jsTreeData = this.transformAutXmlToAjax(xmlDoc);
-    this.log.info(jsTreeData);
+        this.initScreenshot();
+        var parser = new DOMParser();
+        var xmlDoc = parser.parseFromString(this.autXml, "text/xml");
+        var jsTreeData = this.transformAutXmlToAjax(xmlDoc);
+        this.log.info(jsTreeData);
+    }
     this.jsTreeConfig = {
         "core": {
             "animation": 0,
@@ -56,21 +57,32 @@ function Inspector(selector) {
     this.init();
 }
 
-Inspector.prototype.initScreenshotPath = function () {
+Inspector.prototype.initScreenshot = function () {
     var me = this;
-    this.log.info("initScreenshotPath...");
+    this.log.info("initScreenshot...");
+    $("#loading").show();
     $.ajax({
                url: APPIUM_ROOT + "/session/" + me.sessionId + "/screenshot",
-               async: false,
                type: "GET",
+               timeout: 20000
            })
         .done(function (data) {
-                  me.log.info("success");
-                  me.log.info(data);
-                  me.screenshotPath = "data:image/png;base64," + data.value;
+                  $("#loading").hide();
+                  $("#screenshot").show();
+                  $("#screenshot").attr("src", "data:image/png;base64," + data.value);
+                  me.log.info("Screenshot received. Scheduling structure update...");
+                  window.setTimeout(function(){
+                      resize();
+                  }, 1000);
               })
         .fail(function () {
                   me.log.info("error");
+                  $("#loading").hide();
+                  $("#screenshot").show();
+                  $("#screenshot").attr("src", "about:blank");
+                  window.setTimeout(function(){
+                      resize();
+                  }, 1000);
               });
 }
 
@@ -159,6 +171,10 @@ Inspector.prototype.initSessionId = function () {
         .done(function (data) {
                   me.log.info("success");
                   me.log.info(data);
+                  if (data.value[0] === undefined) {
+                      me.log.info("Session Id is undefined");
+                      return;
+                  }
                   me.sessionId = data.value[0].id;
                   me.log.info("Session Id: " + me.sessionId);
               })

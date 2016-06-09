@@ -199,24 +199,27 @@ public class ConversationViewPageSteps {
     /**
      * Tap the corresponding button from input tools palette
      *
-     * @param isLongTap     equals to null if simple tap should be performed
-     * @param btnName       one of available button names
-     * @param shouldKeepTap this signals that the finger should not be released after the step is completed.
-     *                      Works with long tap only
-     * @param specificTime specific time duration you press the button
+     * @param isLongTap       equals to null if simple tap should be performed
+     * @param btnName         one of available button names
+     * @param shouldKeepTap   this signals that the finger should not be released after the step is completed.
+     *                        Works with long tap only
+     * @param durationSeconds specific time duration you press the button
      * @throws Exception
-     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for specific seconds?)? from input tool( without releasing my finger)?s$
+     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)?
+     * from input tool( without releasing my finger)?s$
      */
-    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for specific seconds?)? from input tools( without releasing my finger)?$")
-    public void IPressAddPictureButton(String isLongTap, String btnName,String specificTime,
+    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)? " +
+            "from input tools( without releasing my finger)?$")
+    public void IPressAddPictureButton(String isLongTap, String btnName, String durationSeconds,
                                        String shouldKeepTap) throws Exception {
         if (isLongTap == null) {
             getConversationViewPage().tapInputToolButtonByName(btnName);
         } else {
-            if(specificTime == null){
+            if (durationSeconds == null) {
                 getConversationViewPage().longTapInputToolButtonByName(btnName, shouldKeepTap != null);
-            }else {
-                getConversationViewPage().longTapWithDurationInputToolButtonByName(btnName);
+            } else {
+                getConversationViewPage().longTapWithDurationInputToolButtonByName(btnName,
+                        Integer.parseInt(durationSeconds.replaceAll("[\\D]", "")));
             }
         }
     }
@@ -1225,7 +1228,8 @@ public class ConversationViewPageSteps {
      *
      * @param conversationItem item name
      * @throws Exception
-     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in conversation view$")
+     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in
+     * conversation view$")
      */
     @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in conversation view$")
     public void ITapAndHoldAudioMessagePlaceholder(String conversationItem) throws Exception {
@@ -1312,19 +1316,44 @@ public class ConversationViewPageSteps {
         }
     }
 
-    /**
-     * Verifies that the audio message gets played
-     *
-     * @throws Exception
-     * @step. ^I see the audio message gets played$
-     */
-    @Then("^I see the audio message gets played$")
-    public void ISeeTheAudioMessageGetsPlayed() throws Exception {
 
-        String startTime = getConversationViewPage().getAudioMessageTimeLabelValue();
-        Thread.sleep(1000);
-        String currentTime = getConversationViewPage().getAudioMessageTimeLabelValue();
-        Assert.assertNotEquals("The Audio message did not get played. StartTime: %s is the same as CurrentTime: %s ! ",
-                startTime, currentTime);
+    /**
+     * Verify audio message in placeholder|record toolbar state after time label value
+     *
+     * @param playerType placeholder or record toolbar
+     * @param state      played or paused
+     * @throws Exception
+     * @step. ^I see the audio message in (placeholder|record toolbar) gets (played|paused)$
+     */
+    @Then("^I see the audio message in (placeholder|record toolbar) gets (played|paused)$")
+    public void ISeeTheAudioMessageGetsPlayed(String playerType, String state) throws Exception {
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc =
+                (playerType.equals("placeholder")) ? getConversationViewPage()::isPlaceholderTimeLabelValueChanging :
+                        getConversationViewPage()::isRecordTimeLabelValueChanging;
+        switch (state) {
+            case "played":
+                Assert.assertTrue(String.format("The Audio message in %s did not get played. StartTime is the same as " +
+                        "CurrentTime", playerType), verificationFunc.call());
+                break;
+            case "paused":
+                Assert.assertFalse(String.format("The Audio message in %s did not get paused. StartTime is not the same as " +
+                        "CurrentTime", playerType), verificationFunc.call());
+                break;
+            default:
+                throw new IllegalArgumentException("Allowed states are 'played|paused'");
+        }
+    }
+
+    /**
+     * Verify play/pause button state in audio message placeholder
+     *
+     * @param buttonState play or pause
+     * @throws Exception
+     * @step. ^I see state of button on audio message placeholder is (play|pause)$
+     */
+    @Then("^I see state of button on audio message placeholder is (play|pause)$")
+    public void ISeeAudioMessageControlButtonStateIs(String buttonState) throws Exception {
+        Assert.assertTrue(String.format("Wrong button state. Espected state is '%s'", buttonState),
+                getConversationViewPage().isPlaceholderAudioMessageButtonState(buttonState));
     }
 }

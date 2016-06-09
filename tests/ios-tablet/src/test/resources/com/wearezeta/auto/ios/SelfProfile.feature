@@ -87,14 +87,10 @@ Feature: Self Profile
     And I tap to edit my name
     And I attempt to enter <username1char> and press return
     Then I see error message asking for more characters
-    And I attempt to enter <username1char> and tap the screen
-    And I see error message asking for more characters
-    And I attempt to enter <username2chars> and press return
-    Then I see my new name <username2chars>
 
     Examples:
-      | Name      | username1char | username2chars |
-      | user1Name | c             | AB             |
+      | Name      | username1char |
+      | user1Name | c             |
 
   @C2888 @rc @regression @id3163
   Scenario Outline: Verify name change [LANDSCAPE]
