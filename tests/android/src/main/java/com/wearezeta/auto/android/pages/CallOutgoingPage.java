@@ -8,11 +8,11 @@ import org.openqa.selenium.By;
 
 public class CallOutgoingPage extends CallingOverlayPage {
 
-    private static final By xpathOngoingVideoCallContainer =
-            By.xpath("//*[@id='ttv__calling__header__avatar__subtitle' and contains(@value, 'Ringing') " +
-                    "and //*[@id='ccbv__button_middle']]");
+    private static final By xpathOutgoingVideoCallContainer =
+            By.xpath("//*[@id='ttv__calling__header__subtitle' and contains(@value, 'Ringing') " +
+                    "and //*[@id='ccbv__button_right']]");
 
-    private static final By xpathOngoingAudioCallContainer =
+    private static final By xpathOutgoingAudioCallContainer =
             By.xpath("//*[@id='ttv__calling__header__subtitle' and contains(@value, 'Ringing') " +
                     "and //*[@id='ccbv__button_middle']]");
 
@@ -24,14 +24,14 @@ public class CallOutgoingPage extends CallingOverlayPage {
 
     public boolean waitUntilVisible(boolean isVideoCall) throws Exception {
 
-        return isVideoCall ? DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOngoingVideoCallContainer,
-                VISIBILITY_TIMEOUT_SECONDS) : DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOngoingAudioCallContainer,
+        return isVideoCall ? DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOutgoingVideoCallContainer,
+                VISIBILITY_TIMEOUT_SECONDS) : DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOutgoingAudioCallContainer,
                 VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilNotVisible(boolean isVideoCall) throws Exception {
-        return isVideoCall ? DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOngoingVideoCallContainer)
-                : DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOngoingAudioCallContainer);
+        return isVideoCall ? DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOutgoingVideoCallContainer)
+                : DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOutgoingAudioCallContainer);
     }
     
 }
