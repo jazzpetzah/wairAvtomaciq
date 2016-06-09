@@ -1101,6 +1101,11 @@ public class ConversationPageSteps {
         assertTrue("Cancel request is NOT visible in conversation list",context.getPagesCollection().getPage(ConversationPage.class).isCancelRequestButtonVisible());
     }
 
+    @Then("^I click cancel pending request button$")
+    public void IClickOnCancelRequestButton() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickCancelPendingRequestButton();
+    }
+
     /**
      * Click on an avatar bubble inside the conversation view
      *

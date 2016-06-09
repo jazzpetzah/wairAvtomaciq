@@ -526,3 +526,19 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact2  | ConvOption1 | ConvOption2    | ConvOption3 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Archive     | Cancel request | Block       |
 
+  @C147863 @staging
+  Scenario Outline: Verify you can cancel a pending request from conversation view
+    Given There are 3 users where <Name> is me
+    Given I sent connection request to <Contact1>
+    Given Myself is connected to <Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    When I open conversation with <Contact1>
+    Then I see cancel pending request button
+    When I click cancel pending request button
+    Then I do not see connection request from one user
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
