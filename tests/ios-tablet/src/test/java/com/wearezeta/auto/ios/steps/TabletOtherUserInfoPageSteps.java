@@ -114,4 +114,16 @@ public class TabletOtherUserInfoPageSteps {
         getTabletOtherUserInfoPage().exitOtherUserGroupChatPopover();
     }
 
+    /**
+     * Open the details page of corresponding device on conversation details page
+     *
+     * @param deviceIndex the device index. Starts from 1
+     * @throws Exception
+     * @step. ^I open details page of device number (\d+)$
+     */
+    @When("^I open details page of device number (\\d+) on iPad$")
+    public void IOpenDeviceDetails(int deviceIndex) throws Exception {
+        getTabletOtherUserInfoPage().openDeviceDetailsPage(deviceIndex);
+    }
+
 }

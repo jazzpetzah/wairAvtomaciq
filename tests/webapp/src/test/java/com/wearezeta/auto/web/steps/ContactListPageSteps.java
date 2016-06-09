@@ -147,6 +147,7 @@ public class ContactListPageSteps {
     @Given("^I unarchive conversation (.*)")
     public void GivenIUnarchiveConversation(String name) throws Exception {
         name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        //TODO
         context.getPagesCollection().getPage(ContactListPage.class)
                 .unarchiveConversation(name);
     }
@@ -174,7 +175,9 @@ public class ContactListPageSteps {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
+        //TODO
         contactListPage.clickOptionsButtonForContact(contact);
+        Assert.assertTrue("Archive button is not clickable",contactListPage.isArchiveButtonClickable());
         contactListPage.clickArchiveConversation();
     }
 
@@ -305,7 +308,9 @@ public class ContactListPageSteps {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
+        //TODO
         contactListPage.clickOptionsButtonForContact(contact);
+        Assert.assertTrue("Mute button is not clickable",contactListPage.isMuteButtonClickable());
         contactListPage.clickMuteConversation();
     }
 
@@ -322,7 +327,9 @@ public class ContactListPageSteps {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
+        //TODO
         contactListPage.clickOptionsButtonForContact(contact);
+        Assert.assertTrue("Unmute button is not clickable",contactListPage.isUnmuteButtonClickable());
         contactListPage.clickUnmuteConversation();
     }
 
@@ -673,6 +680,8 @@ public class ContactListPageSteps {
      */
     @When("^I click the option to leave in the options popover$")
     public void IClickLeaveButton() throws Exception {
+        Assert.assertTrue("Leave button is not clickable", context.getPagesCollection().getPage(ContactListPage.class)
+                .isLeaveButtonClickable());
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickLeaveConversation();
     }
@@ -776,7 +785,7 @@ public class ContactListPageSteps {
     public void IClickDeleteButton() throws Exception {
         Assert.assertTrue("Delete button is not shown in the option popover",
                 context.getPagesCollection().getPage(ContactListPage.class).isDeleteButtonClickable());
-        context.getPagesCollection().getPage(ContactListPage.class).clickDeleteButton();
+        context.getPagesCollection().getPage(ContactListPage.class).clickDeleteConversation();
     }
 
     /**

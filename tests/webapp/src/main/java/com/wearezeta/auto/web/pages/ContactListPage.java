@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.pages;
 
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
 
+import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -324,8 +325,23 @@ public class ContactListPage extends WebPage {
     }
 
     public void clickMuteConversation() throws Exception {
-        waitForOptionButtonsToBeClickable();
         muteButton.click();
+    }
+
+    public boolean isMuteButtonClickable() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(),muteButton);
+    }
+
+    public boolean isUnmuteButtonClickable() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(),unmuteButton);
+    }
+
+    public boolean isDeleteButtonClickable() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(),deleteButton);
+    }
+
+    public boolean isLeaveButtonClickable() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(),leaveButton);
     }
 
     public boolean isArchiveButtonClickable() throws Exception {
@@ -510,12 +526,10 @@ public class ContactListPage extends WebPage {
     }
 
     public void clickUnmuteConversation() throws Exception {
-        waitForOptionButtonsToBeClickable();
         unmuteButton.click();
     }
 
     public void clickLeaveConversation() throws Exception {
-        waitForOptionButtonsToBeClickable();
         leaveButton.click();
     }
 

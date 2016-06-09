@@ -7,6 +7,7 @@ Feature: Video Message
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
+    Given I disable ad banner
     Given I see Contact list with name <Contact>
     When I open conversation with <Contact>
     Then I see file transfer button in conversation input
