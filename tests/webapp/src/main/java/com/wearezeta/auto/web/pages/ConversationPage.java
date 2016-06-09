@@ -1043,7 +1043,6 @@ public class ConversationPage extends WebPage {
     }
 
     public void clickCancelPendingRequestButton() throws Exception {
-        DriverUtils.waitUntilElementClickable(this.getDriver(), cancelRequestButton);
         cancelRequestButton.click();
     }
 }
