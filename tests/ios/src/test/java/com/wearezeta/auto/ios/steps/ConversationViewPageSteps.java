@@ -1331,21 +1331,21 @@ public class ConversationViewPageSteps {
                 if (playerType.equals("placeholder")) {
                     Assert.assertTrue("The Audio message in placeholder did not get played. StartTime is the same as " +
                                     "CurrentTime",
-                            getConversationViewPage().verifyPlaceholderTimeLabelValueDiffersInXSeconds());
+                            getConversationViewPage().isPlaceholderTimeLabelValueChanging());
                 } else {
                     Assert.assertTrue("The Audio message in recorder did not get played. StartTime is the same as CurrentTime",
-                            getConversationViewPage().verifyRecordTimeLabelValueDiffersInXSeconds());
+                            getConversationViewPage().isRecordTimeLabelValueChanging());
                 }
                 break;
             case "paused":
                 if (playerType.equals("placeholder")) {
                     Assert.assertFalse("The Audio message in placeholder did not get paused. StartTime is not the same as " +
                                     "CurrentTime",
-                            getConversationViewPage().verifyPlaceholderTimeLabelValueDiffersInXSeconds());
+                            getConversationViewPage().isPlaceholderTimeLabelValueChanging());
                 } else {
                     Assert.assertFalse("The Audio message in recorder did not get paused. StartTime is not the same as " +
                                     "CurrentTime",
-                            getConversationViewPage().verifyRecordTimeLabelValueDiffersInXSeconds());
+                            getConversationViewPage().isRecordTimeLabelValueChanging());
                 }
                 break;
             default:

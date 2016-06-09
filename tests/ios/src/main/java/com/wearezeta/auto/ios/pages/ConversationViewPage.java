@@ -848,14 +848,14 @@ public class ConversationViewPage extends IOSPage {
                 (buttonState)));
     }
 
-    public boolean verifyPlaceholderTimeLabelValueDiffersInXSeconds() throws Exception {
+    public boolean isPlaceholderTimeLabelValueChanging() throws Exception {
         String startTime = getAudioMessagePlaceholderTimeLabelValue();
         Thread.sleep(1000);
         String currentTime = getAudioMessagePlaceholderTimeLabelValue();
         return !startTime.equals(currentTime);
     }
 
-    public boolean verifyRecordTimeLabelValueDiffersInXSeconds() throws Exception {
+    public boolean isRecordTimeLabelValueChanging() throws Exception {
         String startTime = getAudioMessageRecordTimeLabelValue();
         Thread.sleep(1000);
         String currentTime = getAudioMessageRecordTimeLabelValue();
