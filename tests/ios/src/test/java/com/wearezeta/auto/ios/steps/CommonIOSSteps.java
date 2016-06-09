@@ -5,10 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -19,7 +16,9 @@ import com.wearezeta.auto.common.driver.*;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ElementState;
 import com.wearezeta.auto.common.sync_engine_bridge.SEBridge;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.ios.reporter.IOSLogListener;
+import com.wearezeta.auto.ios.tools.FastLoginContainer;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import com.wearezeta.auto.ios.tools.RealDeviceHelpers;
@@ -117,20 +116,29 @@ public class CommonIOSSteps {
         capabilities.setCapability("platformVersion", getPlatformVersion());
         capabilities.setCapability("launchTimeout", ZetaIOSDriver.MAX_COMMAND_DURATION_MILLIS);
         final String backendType = getBackendType(this.getClass());
-        capabilities.setCapability("processArguments",
-                String.join(" ",
-                        "-UseHockey", "0",
-                        "-ZMBackendEnvironmentType", backendType,
-                        // https://wearezeta.atlassian.net/browse/ZIOS-5259
-                        "-AnalyticsUserDefaultsDisabledKey", "0")
-                // "--debug-log-network")
-        );
+        final List<String> processArgs = new ArrayList<>(Arrays.asList(
+                "-UseHockey", "0",
+                "-ZMBackendEnvironmentType", backendType,
+                // https://wearezeta.atlassian.net/browse/ZIOS-5259
+                "-AnalyticsUserDefaultsDisabledKey", "0"
+                // ,"--debug-log-network"
+        ));
 
         if (additionalCaps.isPresent()) {
             for (Map.Entry<String, Object> entry : additionalCaps.get().entrySet()) {
-                capabilities.setCapability(entry.getKey(), entry.getValue());
+                if (entry.getKey().equals(FastLoginContainer.CAPABILITY_NAME) &&
+                        (entry.getValue() instanceof ClientUser)) {
+                    // https://github.com/wearezeta/zclient-ios/pull/2152
+                    processArgs.addAll(Arrays.asList(
+                            "--loginemail=" + ((ClientUser) entry.getValue()).getEmail(),
+                            "--loginpassword=" + ((ClientUser) entry.getValue()).getPassword()
+                    ));
+                } else {
+                    capabilities.setCapability(entry.getKey(), entry.getValue());
+                }
             }
         }
+        capabilities.setCapability("processArguments", String.join(" ", processArgs));
 
         if (!CommonUtils.getIsSimulatorFromConfig(getClass()) &&
                 (capabilities.is("noReset") && !((Boolean) capabilities.getCapability("noReset")) ||
@@ -199,10 +207,16 @@ public class CommonIOSSteps {
             additionalCaps.put("fullReset", false);
         }
 
-        final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath,
-                additionalCaps.isEmpty() ? Optional.empty() : Optional.of(additionalCaps),
-                DRIVER_CREATION_RETRIES_COUNT);
-        updateDriver(lazyDriver);
+        if (scenario.getSourceTagNames().contains(FastLoginContainer.TAG_NAME)) {
+            FastLoginContainer.getInstance().enable(this::resetIOSDriver, appPath,
+                    additionalCaps.isEmpty() ? Optional.empty() : Optional.of(additionalCaps),
+                    DRIVER_CREATION_RETRIES_COUNT);
+        } else {
+            final Future<ZetaIOSDriver> lazyDriver = resetIOSDriver(appPath,
+                    additionalCaps.isEmpty() ? Optional.empty() : Optional.of(additionalCaps),
+                    DRIVER_CREATION_RETRIES_COUNT);
+            updateDriver(lazyDriver);
+        }
     }
 
     private void updateDriver(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -222,6 +236,8 @@ public class CommonIOSSteps {
             // do not fail if smt fails here
             e.printStackTrace();
         }
+
+        FastLoginContainer.getInstance().reset();
 
         pagesCollection.clearAllPages();
 
@@ -1089,5 +1105,25 @@ public class CommonIOSSteps {
         final Path from = srcVideo.toPath();
         final Path to = Paths.get(SIMULATOR_VIDEO_MESSAGE_PATH);
         Files.copy(from, to, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    /**
+     * Use this step if you have @fastLogin option set and you want the application to log in
+     * under particular user, skipping the whole login flow in UI, which is supposed to be quite faster
+     * in comparison to the "classic" flow
+     *
+     * @step. ^I prepare Wire to perform fast log in by email as (.*)
+     * @param alias user name/alias to sign in as. This user should have his email address registered on the backedn
+     * @throws Exception
+     */
+    @Given("^I prepare Wire to perform fast log in by email as (.*)")
+    public void IDoFastLogin(String alias) throws Exception {
+        final FastLoginContainer flc = FastLoginContainer.getInstance();
+        if (!flc.isEnabled()) {
+            throw new IllegalStateException(
+                    String.format("Fast login should be enabled first in order to call this step." +
+                            "Make sure you have the '%s' tag in your scenario", FastLoginContainer.TAG_NAME));
+        }
+        updateDriver(flc.executeDriverCreation(usrMgr.findUserByNameOrNameAlias(alias)));
     }
 }

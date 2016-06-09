@@ -176,16 +176,20 @@ public class IOSSimulatorHelper {
                 System.getProperty("user.home")));
         if (reportsRoot.exists() && reportsRoot.isDirectory()) {
             final File[] allFiles = reportsRoot.listFiles();
-            for (File f : allFiles) {
-                if (f.isFile() && f.getName().endsWith(".crash") && f.getName().startsWith(APP_CRASHES_MARKER)) {
-                    result.append(new String(Files.readAllBytes(f.toPath()), Charset.forName("UTF-8"))).append("\n\n");
-                    final File newPath = new File(
-                            String.format("%s/%s%s", f.getParent(), USED_APP_CRASHES_MARKER, f.getName()));
-                    if (newPath.exists()) {
-                        newPath.delete();
-                    }
-                    if (!f.renameTo(newPath)) {
-                        f.delete();
+            if (allFiles != null) {
+                for (File f : allFiles) {
+                    if (f.isFile() && f.getName().endsWith(".crash") && f.getName().startsWith(APP_CRASHES_MARKER)) {
+                        log.debug(String.format(">>> Collecting new crash report: %s", f.getCanonicalPath()));
+                        result.append(
+                                new String(Files.readAllBytes(f.toPath()), Charset.forName("UTF-8"))).append("\n\n");
+                        final File newPath = new File(
+                                String.format("%s/%s%s", f.getParent(), USED_APP_CRASHES_MARKER, f.getName()));
+                        log.debug(String.format(">>> Collection completed. Renaming the crash log to %s",
+                                newPath.getCanonicalPath()));
+                        if (newPath.exists()) {
+                            newPath.delete();
+                        }
+                        f.renameTo(newPath);
                     }
                 }
             }
@@ -202,7 +206,9 @@ public class IOSSimulatorHelper {
             result.append(new String(Files.readAllBytes(logFile.toPath()), Charset.forName("UTF-8")));
         }
         final String crashReports = getRecentWireCrashReports();
-        if (!crashReports.isEmpty()) {
+        if (crashReports.isEmpty()) {
+            result.append("\n\n\n\n\n").append("------- No new crashes were detected so far --------");
+        } else {
             result.append("\n\n\n\n\n").append(crashReports);
         }
         return result.toString();

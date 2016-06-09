@@ -3,7 +3,7 @@ package com.wearezeta.auto.common.misc;
 import java.awt.image.BufferedImage;
 
 public interface FunctionalInterfaces {
-    
+
     @FunctionalInterface
     interface FunctionFor2Parameters<A, B, C> {
         A apply(B b, C c);
@@ -15,8 +15,7 @@ public interface FunctionalInterfaces {
     }
 
     @FunctionalInterface
-    public interface ISupplierWithException<T> {
+    interface ISupplierWithException<T> {
         T call() throws Exception;
     }
-
 }
