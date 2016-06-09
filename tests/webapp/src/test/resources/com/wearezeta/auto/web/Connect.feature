@@ -517,7 +517,6 @@ Feature: Connect
     And I see a conversation option <ConvOption2> on the page
     And I see a conversation option <ConvOption3> on the page
     When I click archive in the options popover
-    #Then I do not see Contact list with name <Contact1>
     And I do not see connection request from one user
     When I open archive
     Then I see archive list with name <Contact1>
