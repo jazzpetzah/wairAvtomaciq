@@ -106,7 +106,7 @@ Feature: Search
     And I see Connect To popover
     And I click Connect button on Connect To popover
     Then I see conversation with <Name2> is selected in conversations list
-    And I see cancel pending request button
+    And I see cancel pending request button in the conversation view
     And I verify that conversation input and buttons are not visible
     And I open self profile
     And I click gear button on self profile page
