@@ -732,6 +732,10 @@ public class ContactListPage extends WebPage {
         cancelRequestButton.click();
     }
 
+    public void clickArchiveButton() throws Exception {
+        archiveButton.click();
+    }
+
         // only for Wrapper
     public void openContextMenuForContact(String name)
             throws Exception {

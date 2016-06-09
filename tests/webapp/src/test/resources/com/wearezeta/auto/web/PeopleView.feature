@@ -359,11 +359,11 @@ Feature: People View
     Given I am signed in properly
     And I see Contact list with name <Name>,<Contact1>
     And I open conversation with <Name>,<Contact1>
-    And I see <Message3> action for <Name>,<Contact1> in conversation
+    And I see <Message3> action for <Name>,<Contact1>,You in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact1Password | Contact2  | Message                         | Message2                    | Message3                  |
-      | user1Email | user1Password | user1Name | user2Name | user2Password    | user3Name | YOU STARTED A CONVERSATION WITH | STARTED A CONVERSATION WITH | START A CONVERSATION WITH |
+      | Login      | Password      | Name      | Contact1  | Contact1Password | Contact2  | Message                         | Message2                    | Message3                    |
+      | user1Email | user1Password | user1Name | user2Name | user2Password    | user3Name | YOU STARTED A CONVERSATION WITH | STARTED A CONVERSATION WITH | STARTED A CONVERSATION WITH |
 
   @C1697 @regression
   Scenario Outline: Verify you can unblock someone from a group conversation

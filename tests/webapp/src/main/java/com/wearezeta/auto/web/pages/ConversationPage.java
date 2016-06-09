@@ -38,7 +38,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -46,7 +45,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -76,6 +74,9 @@ public class ConversationPage extends WebPage {
 
     @FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
     private WebElement conversationInput;
+    
+    @FindBy(css = WebAppLocators.ConversationPage.cssCancelRequestButton)
+    private WebElement cancelRequestButton;
 
     @FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssShowParticipantsButton)
     private WebElement showParticipants;
@@ -517,6 +518,10 @@ public class ConversationPage extends WebPage {
         assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 locator, 2) : "Ping button has not been shown after 2 seconds";
         pingButton.click();
+    }
+            
+    public boolean isCancelRequestButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage.cssCancelRequestButton));
     }
 
     public boolean isConversationInputVisible() throws Exception {
@@ -1037,4 +1042,7 @@ public class ConversationPage extends WebPage {
         return titlebarLabel.getText();
     }
 
+    public void clickCancelPendingRequestButton() throws Exception {
+        cancelRequestButton.click();
+    }
 }

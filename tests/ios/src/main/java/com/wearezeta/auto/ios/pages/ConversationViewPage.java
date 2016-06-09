@@ -177,11 +177,16 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameAudioRecordTimeLabel = MobileBy.AccessibilityId("audioRecorderTimeLabel");
 
+    private static final By nameAudioPlaceholderTimeLabel = MobileBy.AccessibilityId("AudioTimeLabel");
+
     private static final String strNameAudioActionButton = "AudioActionButton";
     private static final By nameAudioActionButton = MobileBy.AccessibilityId(strNameAudioActionButton);
 
     private static final Function<Integer, String> xpathStrAudioActionButtonByIndex = index ->
             String.format("(//*[@name='%s'])[%s]", strNameAudioActionButton, index);
+
+    private static final Function<String, String> placeholderAudioMessageButtonState = buttonState ->
+            String.format("//UIAButton[@name='%s' and @value='%s']", strNameAudioActionButton, buttonState);
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -746,8 +751,8 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
-    public void longTapWithDurationInputToolButtonByName(String btnName) throws Exception {
-        getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_RECORD_AUDIO_MESSAGE_DURATION);
+    public void longTapWithDurationInputToolButtonByName(String btnName, int durationSeconds) throws Exception {
+        getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), durationSeconds * 1000);
     }
 
     public boolean isAudioMessageRecordCancelVisible() throws Exception {
@@ -829,7 +834,31 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getRecordControlButtonByName(buttonName));
     }
 
-    public String getAudioMessageTimeLabelValue() throws Exception {
+    private String getAudioMessageRecordTimeLabelValue() throws Exception {
         return getElement(nameAudioRecordTimeLabel).getAttribute("value");
+    }
+
+    private String getAudioMessagePlaceholderTimeLabelValue() throws Exception {
+        return getElement(nameAudioPlaceholderTimeLabel).getAttribute("value");
+    }
+
+
+    public boolean isPlaceholderAudioMessageButtonState(String buttonState) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(placeholderAudioMessageButtonState.apply
+                (buttonState)));
+    }
+
+    public boolean isPlaceholderTimeLabelValueChanging() throws Exception {
+        String startTime = getAudioMessagePlaceholderTimeLabelValue();
+        Thread.sleep(1000);
+        String currentTime = getAudioMessagePlaceholderTimeLabelValue();
+        return !startTime.equals(currentTime);
+    }
+
+    public boolean isRecordTimeLabelValueChanging() throws Exception {
+        String startTime = getAudioMessageRecordTimeLabelValue();
+        Thread.sleep(1000);
+        String currentTime = getAudioMessageRecordTimeLabelValue();
+        return !startTime.equals(currentTime);
     }
 }

@@ -110,7 +110,9 @@ Feature: Conversation List
     And I do not see Pending request link in conversations list
     When <Contact> sent connection request to Me
     Then I see Pending request link in conversations list
-    And I see Hello connect message from user <Contact> on Pending request page
+    # Workaround for ZIOS-6338
+    When I click on Pending request link in conversations list
+    Then I see Hello connect message from user <Contact> on Pending request page
 
     Examples:
       | Name      | Contact   |

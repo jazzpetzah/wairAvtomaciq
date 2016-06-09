@@ -22,6 +22,11 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
 
     private static final By xpathOtherUserConnectButton = By.xpath("//UIAButton[@label='CONNECT']");
 
+    // idx starts from 1
+    private static final Function<Integer, String> xpathStrDeviceByIndex = idx ->
+            String.format("%s/UIATableView/UIATableCell[%d]",
+                    TabletGroupConversationDetailPopoverPage.xpathStrPopover, idx);
+
     private static final By nameOtherUserProfilePageCloseButton =
             MobileBy.AccessibilityId("OtherUserProfileCloseButton");
 
@@ -57,5 +62,11 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage {
     public boolean isEmailVisible(String email) throws Exception {
         final By locator = By.xpath(xpathStrOtherUserEmailField.apply(email));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    @Override
+    public void openDeviceDetailsPage(int deviceIndex) throws Exception {
+        final By locator = By.xpath(xpathStrDeviceByIndex.apply(deviceIndex));
+        getElement(locator).click();
     }
 }
