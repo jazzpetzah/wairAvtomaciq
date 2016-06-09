@@ -1327,9 +1327,9 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see the audio message in (placeholder|record toolbar) gets (played|paused)$")
     public void ISeeTheAudioMessageGetsPlayed(String playerType, String state) throws Exception {
-        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
-        verificationFunc = (playerType.equals("placeholder")) ? getConversationViewPage()
-                ::isPlaceholderTimeLabelValueChanging : getConversationViewPage()::isRecordTimeLabelValueChanging;
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc =
+                (playerType.equals("placeholder")) ? getConversationViewPage()::isPlaceholderTimeLabelValueChanging :
+                        getConversationViewPage()::isRecordTimeLabelValueChanging;
         switch (state) {
             case "played":
                 Assert.assertTrue(String.format("The Audio message in %s did not get played. StartTime is the same as " +
