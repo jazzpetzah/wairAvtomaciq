@@ -40,10 +40,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return this.getAndroidPageInstance(ConversationViewPage.class);
     }
 
-    private TakePicturePage getTakePicturePage() throws Exception {
-        return this.getAndroidPageInstance(TakePicturePage.class);
-    }
-
     public boolean waitUntilVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationViewPage.idDialogRoot);
     }
@@ -72,6 +68,10 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     public void tapPingButton() throws Exception {
         getConversationViewPage().tapPingBtn();
+    }
+
+    public void tapAddPictureButton() throws Exception {
+        getConversationViewPage().tapAddPictureBtn();
     }
 
     public void tapTopToolbarTitle() throws Exception {
@@ -187,10 +187,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     public void tapFileButton() throws Exception {
         getConversationViewPage().tapFileBtn();
-    }
-
-    public void tapSketchButtonOnPicturePreview() throws Exception {
-        getTakePicturePage().tapSketchOnImageButton();
     }
 
     public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries) throws Exception {

@@ -17,6 +17,8 @@ public class TakePicturePage extends AndroidPage {
 
     private static final By idGalleryBtn = By.id("gtv__camera_control__pick_from_gallery");
 
+    private static final By idGalleryCameraBtn = By.id("gtv__camera_control__pick_from_gallery_in_camera");
+
     private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__back_camera");
 
     private static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
@@ -74,6 +76,10 @@ public class TakePicturePage extends AndroidPage {
         getElement(idGalleryBtn, "Gallery button is still not visible").click();
     }
 
+    public void openGalleryFromCamera() throws Exception {
+        getElement(idGalleryCameraBtn, "Gallery within camera is still not visible").click();
+    }
+
     public void closeFullScreenImage() throws Exception {
         // Sometimes X button is opened automatically after some timeout
         final int MAX_TRIES = 4;
@@ -103,18 +109,18 @@ public class TakePicturePage extends AndroidPage {
         }
         okBtn.click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConfirmOKButton)) {
-            throw new IllegalStateException("OK button is still present on the screen after being clicked");
+            okBtn.click();
         }
     }
 
     public void cancel() throws Exception {
-        final WebElement okBtn = getElement(xpathCancelButton, "Cancel button is not visible");
-        if (!DriverUtils.waitUntilElementClickable(getDriver(), okBtn)) {
+        final WebElement cancelBtn = getElement(xpathCancelButton, "Cancel button is not visible");
+        if (!DriverUtils.waitUntilElementClickable(getDriver(), cancelBtn)) {
             throw new IllegalStateException("Cancel button is not clickable");
         }
-        okBtn.click();
+        cancelBtn.click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathCancelButton)) {
-            throw new IllegalStateException("Cancel button is still present on the screen after being clicked");
+            cancelBtn.click();
         }
     }
 

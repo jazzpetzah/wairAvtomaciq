@@ -9,7 +9,6 @@ import com.wearezeta.auto.common.email.WireMessage;
 import org.junit.Assert;
 
 import com.google.common.base.Throwables;
-import com.wearezeta.auto.android_tablet.pages.camera.RegistrationCameraPage;
 import com.wearezeta.auto.android_tablet.pages.registration.TabletRegisterConfirmationPage;
 import com.wearezeta.auto.android_tablet.pages.registration.TabletRegistrationFormPage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -32,10 +31,6 @@ public class RegistrationSteps {
 
     private TabletRegisterConfirmationPage getRegisterConfirmationPage() throws Exception {
         return pagesCollection.getPage(TabletRegisterConfirmationPage.class);
-    }
-
-    private RegistrationCameraPage getRegistrationCameraPage() throws Exception {
-        return pagesCollection.getPage(RegistrationCameraPage.class);
     }
 
     private ClientUser userToRegister;
@@ -196,55 +191,5 @@ public class RegistrationSteps {
                         "The expected email address '%s' is not visible on the confirmation page",
                         expectedEmail), getRegisterConfirmationPage()
                         .waitUntilEmailIsVisible(expectedEmail));
-    }
-
-    /**
-     * Verify that Take Picture after registration page is visible
-     *
-     * @throws Exception
-     * @step. ^I see (?:the |\\s*)[Tt]ake [Rr]egistration [Pp]icture page$
-     */
-    @Then("^I see (?:the |\\s*)[Tt]ake [Rr]egistration [Pp]icture page$")
-    public void ISeeRegistrationPicturePage() throws Exception {
-        Assert.assertTrue(
-                "The Take Picture after registration page has not been shown after timeout",
-                getRegistrationCameraPage().waitUntilVisible());
-    }
-
-    /**
-     * Tap Camera button on the Take Picture after registration page
-     *
-     * @throws Exception
-     * @step. ^I tap Camera button on (?:the |\\s*)[Tt]ake [Rr]egistration
-     * [Pp]icture page$
-     */
-    @And("^I tap Camera button on (?:the |\\s*)[Tt]ake [Rr]egistration [Pp]icture page$")
-    public void ITapCameraButton() throws Exception {
-        getRegistrationCameraPage().tapLensButton();
-    }
-
-    /**
-     * Tap Take picture button on the Take Picture after registration page
-     *
-     * @throws Exception
-     * @step. ^I tap Take Picture button on (?:the |\\s*)[Tt]ake [Rr]egistration
-     * [Pp]icture page$
-     */
-    @And("^I tap Take Picture button on (?:the |\\s*)[Tt]ake [Rr]egistration [Pp]icture page$")
-    public void ITapTakePictureButton() throws Exception {
-        getRegistrationCameraPage().tapTakePhotoButton();
-    }
-
-    /**
-     * Tap OK button on the Take Picture after registration page to confirm your
-     * photo selection
-     *
-     * @throws Exception
-     * @step. ^I confirm my picture on (?:the |\\s*)[Tt]ake [Rr]egistration
-     * [Pp]icture page$
-     */
-    @And("^I confirm my picture on (?:the |\\s*)[Tt]ake [Rr]egistration [Pp]icture page$")
-    public void IConfirmMyPicture() throws Exception {
-        getRegistrationCameraPage().confirmPictureSelection();
     }
 }
