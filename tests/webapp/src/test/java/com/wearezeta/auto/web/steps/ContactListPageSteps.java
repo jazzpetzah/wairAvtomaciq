@@ -21,8 +21,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 public class ContactListPageSteps {
 
@@ -688,7 +686,7 @@ public class ContactListPageSteps {
     @When("^I click the option to block in the options popover$")
     public void IClickBlockButton() throws Exception {
         context.getPagesCollection().getPage(ContactListPage.class)
-                .clickBlockConversation();
+                .clickBlockButton();
     }
 
     /**

@@ -518,7 +518,7 @@ Feature: Connect
     And I see a conversation option <ConvOption2> on the page
     And I see a conversation option <ConvOption3> on the page
     When I click archive in the options popover
-    And I do not see connection request from one user
+    Then I do not see connection request from one user
     When I open archive
     Then I see archive list with name <Contact1>
 
@@ -542,3 +542,30 @@ Feature: Connect
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @C145966 @staging
+  Scenario Outline: Verify you can block a user who sent you an incoming connection request from conversation list
+    Given There are 3 users where <Name> is me
+    Given I sent connection request to <Contact1>
+    Given Myself is connected to <Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact1>
+    When I click on options button for conversation <Contact1>
+    Then I see a conversation option <ConvOption1> on the page
+    And I see a conversation option <ConvOption2> on the page
+    And I see a conversation option <ConvOption3> on the page
+    When I click the option to block in the options popover
+    Then I see a block warning modal
+    When I click cancel button in the block warning
+    Then I see Contact list with name <Contact1>
+    When I click on options button for conversation <Contact1>
+    And I click the option to block in the options popover
+    Then I see a block warning modal
+    When I click block button in the block warning
+    Then I do not see connection request from one user
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ConvOption1 | ConvOption2    | ConvOption3 |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | Archive     | Cancel request | Block       |

@@ -505,11 +505,6 @@ public class ContactListPage extends WebPage {
         leaveButton.click();
     }
 
-    public void clickBlockConversation() throws Exception {
-        waitForOptionButtonsToBeClickable();
-        blockButton.click();
-    }
-
     public void unarchiveConversation(String conversationName) throws Exception {
         conversationName = fixDefaultGroupConvoName(conversationName, true);
         final By archivedEntryLocator = By
@@ -734,6 +729,10 @@ public class ContactListPage extends WebPage {
 
     public void clickArchiveButton() throws Exception {
         archiveButton.click();
+    }
+
+    public void clickBlockButton() throws Exception {
+        blockButton.click();
     }
 
         // only for Wrapper
