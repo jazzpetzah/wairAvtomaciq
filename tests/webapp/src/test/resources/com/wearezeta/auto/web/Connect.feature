@@ -474,7 +474,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user2Email    | user2Password    | user3Name |
 
-  @C145959 @staging
+  @C145959 @regression
   Scenario Outline: I want to cancel a pending request from conversation list
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>
