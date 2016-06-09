@@ -102,7 +102,8 @@ Feature: Connect
     And I see Connect To popover
     And I click Connect button on Connect To popover
     Then I see Contact list with name <Contact2>
-    And I see connecting message for <Contact2> in conversation
+    And I see cancel pending request button
+    And I verify that conversation input and buttons are not visible
 
     Examples: 
       | Login      | Password      | Name      | ChatName | Contact1  | Contact2  |
