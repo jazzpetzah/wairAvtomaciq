@@ -7,7 +7,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import java.util.function.Function;
 import org.openqa.selenium.By;
 
-public class CallOngoingPage extends CallingOverlayPage {
+public class CallOngoingAudioPage extends CallingOverlayPage {
 
     private static final By xpathOngoingCallContainer =
             By.xpath("//*[@id='ttv__calling__header__subtitle' and contains(@value, ':') and //*[@id='ccbv__button_middle']]");
@@ -17,7 +17,7 @@ public class CallOngoingPage extends CallingOverlayPage {
     private static final Function<String, String> xpathCallingHeaderByName = name -> String
             .format("//*[@id='ttv__calling__header__name' and contains(@value, '%s')]", name.toLowerCase());
 
-    public CallOngoingPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+    public CallOngoingAudioPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
