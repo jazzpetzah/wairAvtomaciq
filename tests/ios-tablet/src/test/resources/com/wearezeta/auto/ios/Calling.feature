@@ -255,15 +255,15 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
     Given <Contact2> accepts next incoming call automatically
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
     Given I remember the state of <GroupChatName> conversation item
     When I tap on group chat with name <GroupChatName>
-    And <Contact1> calls <GroupChatName>
+    And I tap Audio Call button
     Then I see call status message contains "<GroupChatName> ringing"
-    And I tap Accept button on Calling overlay
     And I see <NumberOfAvatars> avatars on the Calling overlay
     Then I tap Leave button on Calling overlay
     And I do not see Calling overlay
