@@ -61,11 +61,6 @@ class AddPeoplePopoverPage extends AbstractPopoverPage {
 		List<WebElement> elements = searchResultItems;
 		for (int i = 0; i < amount; i++) {
 			elements.get(i).click();
-                        // adds additional sleep when adding the first 9 users to the list 
-                        // because the list changes it's size which breaks autoscrolling sometimes
-                        if (i < 10) {
-                            Thread.sleep(1000);
-                        }
 		}
 	}
 }
