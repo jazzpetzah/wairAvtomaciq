@@ -260,7 +260,7 @@ Feature: File Transfer
     When I open conversation with <Contact>
     When <Name> sends <Size> sized file with name <File> via device Device1 to user <Contact>
     Then I see file transfer for file <File> in the conversation view
-    And I verify status of file <File> is UPLOADING… in the conversation view
+    And I verify status of file <File> is UPLOADING… in the conversation view if possible
     And I verify icon of file <File> in the conversation view
     And I verify size of file <File> is <Size> in the conversation view
     When I wait until file <File> is uploaded completely
