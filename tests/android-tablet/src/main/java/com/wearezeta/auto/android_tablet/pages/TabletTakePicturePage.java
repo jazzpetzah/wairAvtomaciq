@@ -93,7 +93,7 @@ public class TabletTakePicturePage extends AndroidTabletPage {
      */
     private void setOrientationForTakePicture() throws Exception {
         this.getAndroidTakePicturePage().rotateLandscape();
-        Thread.sleep(5000);
+        Thread.sleep(3000);
     }
 
     /**
@@ -107,8 +107,7 @@ public class TabletTakePicturePage extends AndroidTabletPage {
                 this.getAndroidTakePicturePage().rotatePortrait();
             }
         }
-        Thread.sleep(5000);
-
+        Thread.sleep(3000);
     }
 
 
