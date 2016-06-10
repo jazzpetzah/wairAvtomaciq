@@ -74,8 +74,8 @@ public class TabletTakePicturePage extends AndroidTabletPage {
         isGalleryModeActivated = true;
     }
 
-    public void openGalleryFromCamera() throws Exception {
-        getAndroidTakePicturePage().openGalleryFromCamera();
+    public void openGalleryFromCameraView() throws Exception {
+        getAndroidTakePicturePage().openGalleryFromCameraView();
         isGalleryModeActivated = true;
     }
 

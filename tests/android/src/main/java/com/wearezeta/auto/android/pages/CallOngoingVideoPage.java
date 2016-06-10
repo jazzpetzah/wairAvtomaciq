@@ -122,10 +122,10 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
     }
 
     public boolean isVideoSelfPreviewVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),idVideoSelfPreview);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idVideoSelfPreview);
     }
 
     public boolean isVideoSelfPreviewInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),idVideoSelfPreviewOff);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idVideoSelfPreviewOff);
     }
 }

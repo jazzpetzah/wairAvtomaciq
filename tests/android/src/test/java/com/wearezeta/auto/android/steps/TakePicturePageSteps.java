@@ -1,18 +1,8 @@
 package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.pages.TakePicturePage;
-import com.wearezeta.auto.android.pages.registration.AddNamePage;
-import com.wearezeta.auto.android.pages.registration.AreaCodePage;
-import com.wearezeta.auto.android.pages.registration.PhoneNumberVerificationPage;
-import com.wearezeta.auto.android.pages.registration.WelcomePage;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.PendingException;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
@@ -50,7 +40,7 @@ public class TakePicturePageSteps {
                 getTakePicturePage().openGallery();
                 break;
             case "gallery camera":
-                getTakePicturePage().openGalleryFromCamera();
+                getTakePicturePage().openGalleryFromCameraView();
                 break;
             case "image close":
                 getTakePicturePage().closeFullScreenImage();
