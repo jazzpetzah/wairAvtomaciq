@@ -377,24 +377,6 @@ Feature: Conversation View
       | Name      | Contact1  | MessageAndLink                                |
       | user1Name | user2Name | https://www.wire.com/ is the best of the best |
 
-  @C943 @regression @id3798
-  Scenario Outline: Verify input field and action buttons are not shown simultaneously
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>, <Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on contact name <Contact1>
-    And I type the default message
-    And I navigate back to conversations list
-    When I tap on contact name <Contact2>
-    And I navigate back to conversations list
-    And I tap on contact name <Contact1>
-    Then I see the default message in input field
-
-    Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
-
   @C845 @regression @id3963
   Scenario Outline: Verify posting in a 1-to-1 conversation without content
     Given There are 2 users where <Name> is me

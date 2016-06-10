@@ -176,7 +176,6 @@ resize = function () {
 
     $('#rotationCenter').css('-moz-transform', 'scale(' + scale + ')');
     $('#rotationCenter').css('-webkit-transform', 'scale(' + scale + ')');
-
 };
 
 $(window).resize(function () {

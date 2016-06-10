@@ -10,12 +10,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class CallOngoingVideoPage extends CallingOverlayPage {
-    private static final By idVideoSelfPreview = By.id("spv__self_preview");
+    private static final By idVideoSelfPreview = By.id("tv__self_preview_place_holder");
 
-    private static final By xpathOngoingCallControllerLayout =
-            By.xpath("//*[@id='occv__ongoing_call_controls' and count(*) > 0]");
-
-    private static final By xpathOngoingCallContainer = By.xpath("//*[@id='fl__calling__container']");
+    private static final By xpathOngoingCallContainer = By.xpath("//*[@id='video_calling_view']");
 
     public CallOngoingVideoPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -23,20 +20,15 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
 
     private static final int VISIBILITY_TIMEOUT_SECONDS = 20;
 
-    private static final int ELEMENT_VISIBILITY_TIMEOUT_SECONDS = 3;
+    private static final int ELEMENT_VISIBILITY_TIMEOUT_SECONDS = 1;
 
     public boolean waitUntilVisible() throws Exception {
-        if(DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOngoingCallControllerLayout,
-                VISIBILITY_TIMEOUT_SECONDS)) {
-            tapOngoingVideo();
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOngoingCallControllerLayout,
-                    VISIBILITY_TIMEOUT_SECONDS);
-        }
-        return true;
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathOngoingCallContainer,
+                VISIBILITY_TIMEOUT_SECONDS);
     }
 
     public boolean waitUntilNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOngoingCallControllerLayout);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOngoingCallContainer);
     }
 
     private void tapOngoingVideo() throws Exception {

@@ -250,10 +250,8 @@ public class StartUIPage extends WebPage {
 	}
 
 	public void clickNameInTopPeople(String name) throws Exception {
-		String topPeopleItemLocator = WebAppLocators.StartUIPage.cssTopPeopleListByName
-				.apply(name);
-                DriverUtils.waitUntilElementClickable(getDriver(), getDriver()
-				.findElement(By.cssSelector(topPeopleItemLocator)));
+		String topPeopleItemLocator = WebAppLocators.StartUIPage.cssTopPeopleListByName.apply(name);
+		DriverUtils.waitUntilElementClickable(getDriver(), getDriver().findElement(By.cssSelector(topPeopleItemLocator)));
 		getDriver().findElement(By.cssSelector(topPeopleItemLocator)).click();
 	}
 
