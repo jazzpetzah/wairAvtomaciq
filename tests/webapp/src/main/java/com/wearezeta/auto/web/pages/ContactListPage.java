@@ -358,23 +358,6 @@ public class ContactListPage extends WebPage {
                 cancelRequestButton);
     }
 
-    private void waitForOptionButtonsToBeClickable() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-                archiveButton);
-        assert (DriverUtils
-                .waitUntilLocatorIsDisplayed(
-                        this.getDriver(),
-                        By.cssSelector(WebAppLocators.ContactListPage.cssMuteButton),
-                        3) && DriverUtils.waitUntilElementClickable(
-                this.getDriver(), muteButton, 3))
-                || (DriverUtils
-                .waitUntilLocatorIsDisplayed(
-                        this.getDriver(),
-                        By.cssSelector(WebAppLocators.ContactListPage.cssUnmuteButton),
-                        3) && DriverUtils.waitUntilElementClickable(
-                this.getDriver(), this.unmuteButton, 3));
-    }
-
     public boolean isConversationMuted(String conversationName)
             throws Exception {
         // moving focus from contact - to now show ... button

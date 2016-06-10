@@ -147,7 +147,6 @@ public class ContactListPageSteps {
     @Given("^I unarchive conversation (.*)")
     public void GivenIUnarchiveConversation(String name) throws Exception {
         name = context.getUserManager().replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        //TODO
         context.getPagesCollection().getPage(ContactListPage.class)
                 .unarchiveConversation(name);
     }
@@ -175,7 +174,6 @@ public class ContactListPageSteps {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
-        //TODO
         contactListPage.clickOptionsButtonForContact(contact);
         Assert.assertTrue("Archive button is not clickable",contactListPage.isArchiveButtonClickable());
         contactListPage.clickArchiveConversation();
@@ -308,7 +306,6 @@ public class ContactListPageSteps {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
-        //TODO
         contactListPage.clickOptionsButtonForContact(contact);
         Assert.assertTrue("Mute button is not clickable",contactListPage.isMuteButtonClickable());
         contactListPage.clickMuteConversation();
@@ -327,7 +324,6 @@ public class ContactListPageSteps {
         contact = context.getUserManager().replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
-        //TODO
         contactListPage.clickOptionsButtonForContact(contact);
         Assert.assertTrue("Unmute button is not clickable",contactListPage.isUnmuteButtonClickable());
         contactListPage.clickUnmuteConversation();
