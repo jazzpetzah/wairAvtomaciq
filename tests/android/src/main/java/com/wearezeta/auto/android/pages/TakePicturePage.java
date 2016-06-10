@@ -76,7 +76,7 @@ public class TakePicturePage extends AndroidPage {
         getElement(idGalleryBtn, "Gallery button is still not visible").click();
     }
 
-    public void openGalleryFromCamera() throws Exception {
+    public void openGalleryFromCameraView() throws Exception {
         getElement(idGalleryCameraBtn, "Gallery within camera is still not visible").click();
     }
 

@@ -92,6 +92,8 @@ public class DriverUtils {
                         for (WebElement element : foundElements) {
                             if (isElementPresentAndDisplayed(driver, element)) {
                                 return true;
+                            } else {
+                                log.debug("Element is not in viewport: " + element);
                             }
                         }
                     }

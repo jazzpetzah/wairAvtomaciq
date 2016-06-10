@@ -187,7 +187,7 @@ public class LoginPage extends WebPage {
     }
 
 	public void visitRedirectedPage(String langKey) throws Exception {
-		getDriver().get(CommonUtils.getWebAppApplicationPathFromConfig(LoginPage.class) + "/?connect&hl=" + langKey);
+		getDriver().get(CommonUtils.getWebAppApplicationPathFromConfig(LoginPage.class) + "?connect&hl=" + langKey);
 	}
 
 	public String getDescriptionMessage() throws Exception {

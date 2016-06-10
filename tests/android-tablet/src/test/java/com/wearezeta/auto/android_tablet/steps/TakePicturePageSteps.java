@@ -41,7 +41,7 @@ public class TakePicturePageSteps {
                 getTakePicturePage().openGallery();
                 break;
             case "gallery camera":
-                getTakePicturePage().openGalleryFromCamera();
+                getTakePicturePage().openGalleryFromCameraView();
                 break;
             case "image close":
                 getTakePicturePage().closeFullScreenImage();
