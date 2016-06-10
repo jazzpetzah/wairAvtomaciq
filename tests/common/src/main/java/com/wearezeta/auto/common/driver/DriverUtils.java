@@ -75,7 +75,9 @@ public class DriverUtils {
 
     public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
                                                       final By by, int timeoutSeconds) throws Exception {
-        turnOffImplicitWait(driver);
+        if (!PlatformDrivers.isMobileDriver(driver)) {
+            turnOffImplicitWait(driver);
+        }
         try {
             Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
                     .withTimeout(timeoutSeconds, TimeUnit.SECONDS)
@@ -99,7 +101,9 @@ public class DriverUtils {
                 return false;
             }
         } finally {
-            restoreImplicitWait(driver);
+            if (!PlatformDrivers.isMobileDriver(driver)) {
+                restoreImplicitWait(driver);
+            }
         }
     }
 
@@ -109,7 +113,9 @@ public class DriverUtils {
 
     public static Optional<WebElement> getElementIfDisplayed(RemoteWebDriver driver,
                                                              final By by, int timeoutSeconds) throws Exception {
-        turnOffImplicitWait(driver);
+        if (!PlatformDrivers.isMobileDriver(driver)) {
+            turnOffImplicitWait(driver);
+        }
         try {
             final long millisecondsStarted = System.currentTimeMillis();
             do {
@@ -129,7 +135,9 @@ public class DriverUtils {
             } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
             return Optional.empty();
         } finally {
-            restoreImplicitWait(driver);
+            if (!PlatformDrivers.isMobileDriver(driver)) {
+                restoreImplicitWait(driver);
+            }
         }
     }
 
@@ -140,7 +148,9 @@ public class DriverUtils {
 
     public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
                                                      final By by, int timeoutSeconds) throws Exception {
-        turnOffImplicitWait(driver);
+        if (!PlatformDrivers.isMobileDriver(driver)) {
+            turnOffImplicitWait(driver);
+        }
         try {
             Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
                     .withTimeout(timeoutSeconds, TimeUnit.SECONDS)
@@ -161,7 +171,9 @@ public class DriverUtils {
         } catch (TimeoutException ex) {
             return false;
         } finally {
-            restoreImplicitWait(driver);
+            if (!PlatformDrivers.isMobileDriver(driver)) {
+                restoreImplicitWait(driver);
+            }
         }
     }
 
@@ -172,7 +184,9 @@ public class DriverUtils {
 
     public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,
                                                   final By locator, int timeoutSeconds) throws Exception {
-        turnOffImplicitWait(driver);
+        if (!PlatformDrivers.isMobileDriver(driver)) {
+            turnOffImplicitWait(driver);
+        }
         try {
             Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
                     .withTimeout(timeoutSeconds, TimeUnit.SECONDS)
@@ -184,7 +198,9 @@ public class DriverUtils {
         } catch (TimeoutException ex) {
             return false;
         } finally {
-            restoreImplicitWait(driver);
+            if (!PlatformDrivers.isMobileDriver(driver)) {
+                restoreImplicitWait(driver);
+            }
         }
     }
 
@@ -194,7 +210,9 @@ public class DriverUtils {
 
     public static Optional<WebElement> getElementIfPresentInDOM(RemoteWebDriver driver,
                                                                 final By by, int timeoutSeconds) throws Exception {
-        turnOffImplicitWait(driver);
+        if (!PlatformDrivers.isMobileDriver(driver)) {
+            turnOffImplicitWait(driver);
+        }
         try {
             final long millisecondsStarted = System.currentTimeMillis();
             do {
@@ -210,7 +228,9 @@ public class DriverUtils {
             } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
             return Optional.empty();
         } finally {
-            restoreImplicitWait(driver);
+            if (!PlatformDrivers.isMobileDriver(driver)) {
+                restoreImplicitWait(driver);
+            }
         }
     }
 
@@ -221,7 +241,9 @@ public class DriverUtils {
 
     public static boolean waitUntilElementClickable(RemoteWebDriver driver,
                                                     final WebElement element, int timeoutSeconds) throws Exception {
-        turnOffImplicitWait(driver);
+        if (!PlatformDrivers.isMobileDriver(driver)) {
+            turnOffImplicitWait(driver);
+        }
         try {
             Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
                     .withTimeout(timeoutSeconds, TimeUnit.SECONDS)
@@ -233,7 +255,9 @@ public class DriverUtils {
         } catch (TimeoutException e) {
             return false;
         } finally {
-            restoreImplicitWait(driver);
+            if (!PlatformDrivers.isMobileDriver(driver)) {
+                restoreImplicitWait(driver);
+            }
         }
     }
 
@@ -243,7 +267,6 @@ public class DriverUtils {
 
     public static boolean waitUntilAlertAppears(AppiumDriver<? extends WebElement> driver, long timeout)
             throws Exception {
-        DriverUtils.turnOffImplicitWait(driver);
         try {
             Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
                     .withTimeout(timeout, TimeUnit.SECONDS)
@@ -252,8 +275,6 @@ public class DriverUtils {
             return (wait.until(ExpectedConditions.alertIsPresent()) != null);
         } catch (TimeoutException e) {
             return false;
-        } finally {
-            restoreImplicitWait(driver);
         }
     }
 
@@ -263,7 +284,6 @@ public class DriverUtils {
 
     public static Optional<Alert> getAlertIfDisplayed(AppiumDriver<? extends WebElement> driver,
                                                       int timeoutSeconds) throws Exception {
-        DriverUtils.turnOffImplicitWait(driver);
         try {
             Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
                     .withTimeout(timeoutSeconds, TimeUnit.SECONDS)
@@ -272,8 +292,6 @@ public class DriverUtils {
             return Optional.ofNullable(wait.until(ExpectedConditions.alertIsPresent()));
         } catch (TimeoutException e) {
             return Optional.empty();
-        } finally {
-            restoreImplicitWait(driver);
         }
     }
 

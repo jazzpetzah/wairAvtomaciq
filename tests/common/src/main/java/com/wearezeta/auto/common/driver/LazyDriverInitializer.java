@@ -72,6 +72,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                             appiumServer.resetIOS();
                         }
                         platformDriver = new ZetaIOSDriver(new URL(url), capabilities);
+                        platformDriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
                         break;
                     case Android:
                         if (!appiumServer.isRunning() || ntry > 1) {
@@ -82,6 +83,7 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
                             appiumServer.restart();
                         }
                         platformDriver = new ZetaAndroidDriver(new URL(url), capabilities);
+                        platformDriver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
                         break;
                     case Web:
                         platformDriver = new ZetaWebAppDriver(new URL(url), capabilities);
