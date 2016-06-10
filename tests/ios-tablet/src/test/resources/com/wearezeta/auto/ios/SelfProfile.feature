@@ -82,7 +82,7 @@ Feature: Self Profile
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap settings gear button
-    # This alert is not accepted automatically
+    # This alert is sometimes not accepted automatically
     And I accept alert
     And I tap to edit my name
     And I attempt to enter <username1char> and press return
@@ -101,6 +101,8 @@ Feature: Self Profile
     Given I see conversations list
     Given User <Name> sends 1 encrypted message to user <Contact>
     When I tap settings gear button
+    # This alert is sometimes not accepted automatically
+    And I accept alert
     And I tap to edit my name
     And I change my name to <NewUsername>
     And I close self profile
