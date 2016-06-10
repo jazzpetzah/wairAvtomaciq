@@ -60,9 +60,6 @@ public class ConversationViewPage extends IOSPage {
     private static final Function<String, String> xpathStrMessageByTextPart = text ->
             String.format("%s[contains(@value, '%s')]", xpathStrAllTextMessages, text);
 
-    private static final Function<String, String> xpathConversationEntryTemplate =
-            xpathExpr -> String.format("//UIAStaticText[%s]", xpathExpr);
-
     private static final Function<String, String> xpathStrMessageCellByTextPart = text ->
             String.format("%s[contains(@value, '%s')]/parent::*", xpathStrAllTextMessages, text);
 
@@ -125,6 +122,8 @@ public class ConversationViewPage extends IOSPage {
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
     private static Function<String, String> xpathStrToolbarByConversationName = name ->
             String.format("%s/UIAButton[starts-with(@name, '%s')]", xpathStrConversationViewTopBar, name.toUpperCase());
+    private static Function<String, String> xpathStrToolbarByExpr = expr ->
+            String.format("%s/UIAButton[%s]", xpathStrConversationViewTopBar, expr);
 
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
     private static final By xpathVideoCallButton = MobileBy.AccessibilityId("videoCallBarButton");
@@ -163,7 +162,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameVideoMessageActionButton = MobileBy.AccessibilityId("VideoActionButton");
 
-    private static final By nameVideoMessageSizeLabel = MobileBy.AccessibilityId("VideoSizeLabel");
+//    private static final By nameVideoMessageSizeLabel = MobileBy.AccessibilityId("VideoSizeLabel");
 
     private static final Function<String, String> xpathUserNameByText = text ->
             String.format("//UIATableCell[@name='%s']", text.toUpperCase());
@@ -350,11 +349,12 @@ public class ConversationViewPage extends IOSPage {
         clickMediaBarCloseButton();
     }
 
-    public boolean isChatMessageContainsStringsExist(List<String> values) throws Exception {
-        final String xpathExpr = String.join(" and ",
-                values.stream().map(x -> String.format("contains(@name, '%s')", x.toUpperCase())).collect(Collectors.toList()));
-        final By locator = By.xpath(xpathConversationEntryTemplate.apply(xpathExpr));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 10);
+    public boolean isUpperToolbarContainNames(List<String> expectedNames) throws Exception {
+        final String xpathExpr = String.join(" and ", expectedNames.stream()
+                .map(x -> String.format("contains(@name, '%s')", x.toUpperCase()))
+                .collect(Collectors.toList()));
+        final By locator = By.xpath(xpathStrToolbarByExpr.apply(xpathExpr));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public String getMediaStateFromMediaBar() throws Exception {
