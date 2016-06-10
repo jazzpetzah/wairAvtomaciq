@@ -153,11 +153,11 @@ Feature: Conversation View
     When I click menu bar item "Edit" and menu item "Undo"
     Then I verify that message "" was typed
     When I click menu bar item "Edit" and menu item "Redo"
-    Then I verify that message "<Message>" was typed
+    Then I verify that message "<RedoMessage>" was typed
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message |
-      | user1Email | user1Password | user1Name | user2Name | Test    |
+      | Login      | Password      | Name      | Contact   | Message | RedoMessage |
+      | user1Email | user1Password | user1Name | user2Name | Test    | T           |
 
   @C2360 @smoke @WEBAPP-2785
   Scenario Outline: Verify I can undo redo using shortcuts Ctrl Z and Ctrl Shift Z
@@ -177,11 +177,11 @@ Feature: Conversation View
     Then I verify that message "" was typed
     When I type shortcut combination to redo
     And I wait for 1 seconds
-    Then I verify that message "<Message>" was typed
+    Then I verify that message "<RedoMessage>" was typed
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message |
-      | user1Email | user1Password | user1Name | user2Name | Test    |
+      | Login      | Password      | Name      | Contact   | Message | RedoMessage |
+      | user1Email | user1Password | user1Name | user2Name | Test    | T           |
 
   @C2367 @smoke
   Scenario Outline: Verify I can select all, cut and paste using menu bar
