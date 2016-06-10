@@ -100,22 +100,3 @@ Feature: Permissions
     Examples:
       | Name      |
       | user1Name |
-
-  @C136786 @noAcceptAlert @permissionsTest @useSpecialEmail
-  Scenario Outline: Verify you can successfully log in and add email by denying all the permission requests
-    Given There is 1 user with phone number only where <Name> is me
-    Given I see welcome screen
-    When I sign in using my phone number
-    # deny access to contacts
-    # Workaround an issue when login screen covers security alert
-    And I dismiss security alert if it is visible
-    And I have entered login <Login>
-    And I have entered password <Password>
-    And I start listening for confirmation email
-    And I press Log in button
-    And I verify my email
-    Then I see Contact list with no contacts
-
-    Examples:
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
