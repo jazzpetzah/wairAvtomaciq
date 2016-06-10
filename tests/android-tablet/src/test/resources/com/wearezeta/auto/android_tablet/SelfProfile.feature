@@ -44,9 +44,8 @@ Feature: Self Profile
     And I see my name on Self Profile page
     And I tap in the center of Self Profile page
     And I remember my current profile picture on Self Profile page
-    And I tap Change Picture button on Self Profile page
-    And I tap Gallery button on Self Profile page
-    And I confirm my picture on the Self Profile page
+    And I tap Gallery button on Take Picture view
+    And I tap Confirm button on Take Picture view
     And I tap in the center of Self Profile page
     Then I verify that my current profile picture is different from the previous one
 
@@ -64,9 +63,8 @@ Feature: Self Profile
     And I see my name on Self Profile page
     And I tap in the center of Self Profile page
     And I remember my current profile picture on Self Profile page
-    And I tap Change Picture button on Self Profile page
-    And I tap Gallery button on Self Profile page
-    And I confirm my picture on the Self Profile page
+    And I tap Gallery button on Take Picture view
+    And I tap Confirm button on Take Picture view
     And I tap in the center of Self Profile page
     Then I verify that my current profile picture is different from the previous one
 
@@ -85,9 +83,9 @@ Feature: Self Profile
     And I see my name on Self Profile page
     And I tap in the center of Self Profile page
     And I remember my current profile picture on Self Profile page
-    And I tap Change Picture button on Self Profile page
-    And I tap Take Photo button on Self Profile page
-    And I confirm my picture on the Self Profile page
+    And I tap Change Photo button on Take Picture view
+    And I tap Take Photo button on Take Picture view
+    And I tap Confirm button on Take Picture view
     And I tap in the center of Self Profile page
     Then I verify that my current profile picture is different from the previous one
 
@@ -105,9 +103,9 @@ Feature: Self Profile
     When I see my name on Self Profile page
     And I tap in the center of Self Profile page
     And I remember my current profile picture on Self Profile page
-    And I tap Change Picture button on Self Profile page
-    And I tap Take Photo button on Self Profile page
-    And I confirm my picture on the Self Profile page
+    And I tap Change Photo button on Take Picture view
+    And I tap Take Photo button on Take Picture view
+    And I tap Confirm button on Take Picture view
     And I tap in the center of Self Profile page
     Then I verify that my current profile picture is different from the previous one
 

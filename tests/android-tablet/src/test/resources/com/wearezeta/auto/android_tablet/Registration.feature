@@ -18,8 +18,8 @@ Feature: Registration
     When I see the Unsplash Picture page
     And I tap Choose My Own button on Unsplash Picture page
     And I select Camera picture source on Unsplash Picture page
-    And I tap Take Picture button on the Take Registration Picture page
-    And I confirm my picture on the Take Registration Picture page
+    And I tap Take Photo button on Take Picture view
+    And I tap Confirm button on Take Picture view
     And I see the conversations list with no conversations
     Then I see my name on Self Profile page
 
@@ -45,8 +45,8 @@ Feature: Registration
     When I see the Unsplash Picture page
     And I tap Choose My Own button on Unsplash Picture page
     And I select Camera picture source on Unsplash Picture page
-    And I tap Take Picture button on the Take Registration Picture page
-    And I confirm my picture on the Take Registration Picture page
+    And I tap Take Photo button on Take Picture view
+    And I tap Confirm button on Take Picture view
     And I see the conversations list with no conversations
     Then I see my name on Self Profile page
 

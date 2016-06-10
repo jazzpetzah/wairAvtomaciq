@@ -47,8 +47,8 @@ Feature: Conversation View
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
     When I tap Add picture button from cursor toolbar
-    And I tap Take Photo button in the conversation view
-    And I confirm the picture for the conversation view
+    And I tap Take Photo button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
 
     Examples:
@@ -65,8 +65,8 @@ Feature: Conversation View
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
     When I tap Add picture button from cursor toolbar
-    And I tap Take Photo button in the conversation view
-    And I confirm the picture for the conversation view
+    And I tap Take Photo button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
 
     Examples:
@@ -223,8 +223,8 @@ Feature: Conversation View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     When I tap Add picture button from cursor toolbar
-    And I tap Take Photo button in the conversation view
-    And I confirm the picture for the conversation view
+    And I tap Take Photo button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
 
     Examples:
@@ -242,8 +242,8 @@ Feature: Conversation View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     When I tap Add picture button from cursor toolbar
-    And I tap Take Photo button in the conversation view
-    And I confirm the picture for the conversation view
+    And I tap Take Photo button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
 
     Examples:
@@ -260,8 +260,8 @@ Feature: Conversation View
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
     When I tap Add picture button from cursor toolbar
-    And I tap Gallery button in the conversation view
-    And I confirm the picture for the conversation view
+    And I tap Gallery Camera button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
 
     Examples:
@@ -278,8 +278,8 @@ Feature: Conversation View
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
     When I tap Add picture button from cursor toolbar
-    And I tap Gallery button in the conversation view
-    And I confirm the picture for the conversation view
+    And I tap Gallery Camera button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
 
     Examples:
@@ -357,8 +357,8 @@ Feature: Conversation View
     Given I see the conversations list with conversations
     And I tap the conversation <Contact1>
     When I tap Add picture button from cursor toolbar
-    And I tap Gallery button in the conversation view
-    And I tap Sketch button on the picture preview
+    And I tap Gallery Camera button on Take Picture view
+    And I tap Sketch Image Paint button on Take Picture view
     And I draw a sketch with <NumColors> colors on Sketch page
     And I tap Send button on Sketch page
     Then I see a new picture in the conversation view

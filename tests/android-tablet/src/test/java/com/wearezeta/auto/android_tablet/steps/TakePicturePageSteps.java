@@ -1,27 +1,18 @@
-package com.wearezeta.auto.android.steps;
+package com.wearezeta.auto.android_tablet.steps;
 
-import com.wearezeta.auto.android.pages.TakePicturePage;
-import com.wearezeta.auto.android.pages.registration.AddNamePage;
-import com.wearezeta.auto.android.pages.registration.AreaCodePage;
-import com.wearezeta.auto.android.pages.registration.PhoneNumberVerificationPage;
-import com.wearezeta.auto.android.pages.registration.WelcomePage;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.android_tablet.pages.TabletTakePicturePage;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.PendingException;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class TakePicturePageSteps {
-    private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
-    private TakePicturePage getTakePicturePage() throws Exception {
-        return pagesCollection.getPage(TakePicturePage.class);
+    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
+
+    private TabletTakePicturePage getTakePicturePage() throws Exception {
+        return pagesCollection.getPage(TabletTakePicturePage.class);
     }
 
     /**
@@ -31,7 +22,7 @@ public class TakePicturePageSteps {
      * @throws Exception
      * @step. ^I tap "(Take Photo|Confirm|Cancel|Gallery|Image Close|Switch Camera|Sketch Image Paint|Close)" button on Take Picture view$
      */
-    @When("^I tap (Take Photo|Change Photo|Confirm|Cancel|Gallery|Image Close|Switch Camera|Sketch Image Paint|Close) button on Take Picture view$")
+    @When("^I tap (Take Photo|Change Photo|Confirm|Cancel|Gallery|Gallery Camera|Image Close|Switch Camera|Sketch Image Paint|Close) button on Take Picture view$")
     public void WhenIPressButton(String buttonName) throws Exception {
         switch (buttonName.toLowerCase()) {
             case "take photo":
@@ -48,6 +39,9 @@ public class TakePicturePageSteps {
                 break;
             case "gallery":
                 getTakePicturePage().openGallery();
+                break;
+            case "gallery camera":
+                getTakePicturePage().openGalleryFromCamera();
                 break;
             case "image close":
                 getTakePicturePage().closeFullScreenImage();

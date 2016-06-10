@@ -96,8 +96,8 @@ Feature: Rotations
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
     When I tap Add picture button from cursor toolbar
-    And I tap Take Photo button in the conversation view
-    And I confirm the picture for the conversation view
+    And I tap Take Photo button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
     When I tap the new picture in the conversation view
     Then I see Close Picture Preview button in the conversation view

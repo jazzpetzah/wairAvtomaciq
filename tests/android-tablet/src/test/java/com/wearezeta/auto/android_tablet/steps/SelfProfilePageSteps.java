@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletSelfProfilePage;
-import com.wearezeta.auto.android_tablet.pages.camera.SelfProfileCameraPage;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
@@ -21,10 +20,6 @@ public class SelfProfilePageSteps {
 
     private TabletSelfProfilePage getSelfProfilePage() throws Exception {
         return pagesCollection.getPage(TabletSelfProfilePage.class);
-    }
-
-    private SelfProfileCameraPage getSelfProfileCameraPage() throws Exception {
-        return pagesCollection.getPage(SelfProfileCameraPage.class);
     }
 
     /**
@@ -127,64 +122,6 @@ public class SelfProfilePageSteps {
     @When("^I remember my current profile picture on [Ss]elf [Pp]rofile page$")
     public void IRememberMyCurrentProfilePictureTablet() throws Exception {
         savedProfileScreenshot = getSelfProfilePage().getScreenshot();
-    }
-
-    /**
-     * Tap the Change Picture button
-     *
-     * @throws Exception
-     * @step. ^I tap Change Picture button on (?:the |\\s*)[Ss]elf [Pp]rofile
-     * page$
-     */
-    @And("^I tap Change Picture button on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
-    public void ITapChangePictureButton() throws Exception {
-        getSelfProfileCameraPage().tapLensButton();
-    }
-
-    /**
-     * Verify whether the Take Photo button is visible
-     *
-     * @throws Exception
-     * @step. ^I see Take Photo button on (?:the |\\s*)[Ss]elf [Pp]rofile page$
-     */
-    @Then("^I see Take Photo button on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
-    public void ISeeTakePhotoButton() throws Exception {
-        Assert.assertTrue(
-                "Take Photo button is still not visible after the timeout",
-                getSelfProfileCameraPage().waitUntilTakePhotoButtonVisible());
-    }
-
-    /**
-     * Tap Take Photo button on Self Profile page
-     *
-     * @throws Exception
-     * @step. ^I tap Take Photo button on (?:the |\\s*)[Ss]elf [Pp]rofile page$
-     */
-    @Then("^I tap Take Photo button on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
-    public void ITapTakePhotoButton() throws Exception {
-        getSelfProfileCameraPage().tapTakePhotoButton();
-    }
-
-    /**
-     * Tap the Gallery button
-     *
-     * @throws Exception
-     * @step. ^I tap Gallery button on (?:the |\\s*)[Ss]elf [Pp]rofile page$
-     */
-    @And("^I tap Gallery button on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
-    public void ITapGalleryButton() throws Exception {
-        getSelfProfileCameraPage().tapGalleryButton();
-    }
-
-    /**
-     * Tap the Confirm button to confirm the picture selection in the Gallery
-     *
-     * @throws Exception
-     * @step. ^I confirm my picture on (?:the |\\s*)[Ss]elf [Pp]rofile page$
-     */
-    @And("^I confirm my picture on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
-    public void IConfirmMyPicture() throws Exception {
-        getSelfProfileCameraPage().confirmPictureSelection();
     }
 
     private static final double MAX_SCREENSHOTS_OVERLAP_SCORE = 0.55;
