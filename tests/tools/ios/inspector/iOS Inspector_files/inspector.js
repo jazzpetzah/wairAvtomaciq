@@ -33,12 +33,10 @@ function Inspector(selector) {
     this.initSessionId();
     if (this.sessionId !== undefined) {
         this.initAutXml();
-
         this.initScreenshot();
-        var parser = new DOMParser();
-        var xmlDoc = parser.parseFromString(this.autXml, "text/xml");
+        var xmlDoc = this.parseXml(this.autXml);
+        // TODO: better defaults if no sessions id is received
         var jsTreeData = this.transformAutXmlToAjax(xmlDoc);
-        this.log.info(jsTreeData);
     }
     this.jsTreeConfig = {
         "core": {
@@ -269,7 +267,6 @@ Inspector.prototype.select = function (elements) {
             var node = new NodeFinder(this.root).getNodeByReference(ref);
             this.selectOne(node, elements.length === 1);
         }
-
     }
 }
 
@@ -388,6 +385,41 @@ Inspector.prototype.selectOne = function (node, displayDetails) {
 
 }
 
+Inspector.prototype.calculateAbsoluteNodePath = function(ref) {
+    var getIndex = function(node) {
+        if (node.parentNode) {
+            var children = node.parentNode.childNodes;
+            var elementIndex = 1;
+            for (var i = 0; i < children.length; i++) {
+                var child = children[i];
+                if (child.nodeType == 1) {
+                    if (child.getAttributeNode("ref") && child.getAttributeNode("ref").nodeValue === node.getAttributeNode("ref").nodeValue) {
+                        return elementIndex;
+                    } else if (child.nodeName === node.nodeName) {
+                        elementIndex++;
+                    }
+                }
+            }
+        }
+        return 1;
+    }
+    var currentNodes = this.findElementsByXpath2("//*[@ref='" + ref + "']");
+    var result = "";
+    if (currentNodes && currentNodes.length > 0) {
+        var currentNode = currentNodes[0];
+        while(currentNode.parentNode) {
+            var index = getIndex(currentNode);
+            result = "/" + currentNode.nodeName + ((index == 1) ? "" : "["+index+"]") + result;
+            currentNode = currentNode.parentNode;
+        }
+    }
+    if (result.length > 0) {
+        return result;
+    } else {
+        return "N/A";
+    }
+}
+
 /**
  * show the info about a node in the right details section.
  *
@@ -402,14 +434,16 @@ Inspector.prototype.selectOne = function (node, displayDetails) {
  * @param html
  */
 Inspector.prototype.showDetails = function (type, ref, na, isVisible, value, label, rect, l10n, html) {
+    var me = this;
     $('#details').html(
-        "<h3>Details</h3>" + "<p><b>Type</b>: " + type + "</p>"
+            "<h3>Details</h3>" + "<p><b>Type</b>: " + type + "</p>"
 //            + "<p><b>Reference</b>: " + ref + "</p>"
             + "<p><b>Accessibility Id</b>: " + na + "</p>"
             + "<p><b>Value</b>: " + value + "</p>"
             + "<p><b>Label</b>: " + label + "</p>"
             + "<p><b>Is Visible</b>: " + isVisible + "</p>"
-            + "<p><b>Rect</b>: x=" + rect.x + ", y=" + rect.y + ", h=" + rect.h + ", w=" + rect.w + "</p>");
+            + "<p><b>Rect</b>: x=" + rect.x + ", y=" + rect.y + ", h=" + rect.h + ", w=" + rect.w + "</p>"
+            + "<p><b>Absolute XPath</b>: " + me.calculateAbsoluteNodePath(ref) + "</p>");
 
     var content = $('#htmlSource').html() + "\n" + html;
 
@@ -418,7 +452,6 @@ Inspector.prototype.showDetails = function (type, ref, na, isVisible, value, lab
     if (prettyPrint) {
         prettyPrint();
     }
-
 };
 
 /**
@@ -525,30 +558,23 @@ Inspector.prototype.getTreeAsXMLString = function () {
     }
 };
 
+Inspector.prototype.parseXml = function (xmlStr) {
+    if (window.DOMParser) {
+        return (new window.DOMParser()).parseFromString(xmlStr, "text/xml");
+    } else if ("undefined" !== typeof window.ActiveXObject && new window.ActiveXObject("Microsoft.XMLDOM")) {
+        var xmlDoc = new window.ActiveXObject("Microsoft.XMLDOM");
+        xmlDoc.async = "false";
+        xmlDoc.loadXML(xmlStr);
+        return xmlDoc;
+    }
+    return null;
+}
+
 /**
  * init the xpath search content from the XML raw string.
  */
 Inspector.prototype.loadXpathContext = function () {
-    var parseXml;
-
-    if (window.DOMParser) {
-        parseXml = function (xmlStr) {
-            return (new window.DOMParser()).parseFromString(xmlStr, "text/xml");
-        };
-    } else if ("undefined" !== typeof window.ActiveXObject
-        && new window.ActiveXObject("Microsoft.XMLDOM")) {
-        parseXml = function (xmlStr) {
-            var xmlDoc = new window.ActiveXObject("Microsoft.XMLDOM");
-            xmlDoc.async = "false";
-            xmlDoc.loadXML(xmlStr);
-            return xmlDoc;
-        };
-    } else {
-        parseXml = function (xmlStr) {
-            return null;
-        }
-    }
-    var xmlObject = parseXml(this.getTreeAsXMLString());
+    var xmlObject = this.parseXml(this.getTreeAsXMLString());
     this.xpathContext = xmlObject.ownerDocument == null ? xmlObject.documentElement
         : xmlObject.ownerDocument.documentElement;
 }
