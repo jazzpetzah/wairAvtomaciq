@@ -29,9 +29,9 @@ public class TakePicturePageSteps {
      *
      * @param buttonName the button to press
      * @throws Exception
-     * @step. ^I tap "(Take Photo|Confirm|Cancel|Gallery|Image Close|Switch Camera|Sketch Image Paint|Close)" button on Take Picture view$
+     * @step. ^I tap "(Take Photo|Confirm|Cancel|Gallery|Gallery Camera|Image Close|Switch Camera|Sketch Image Paint|Close)" button on Take Picture view$
      */
-    @When("^I tap (Take Photo|Change Photo|Confirm|Cancel|Gallery|Image Close|Switch Camera|Sketch Image Paint|Close) button on Take Picture view$")
+    @When("^I tap (Take Photo|Change Photo|Confirm|Cancel|Gallery|Gallery Camera|Image Close|Switch Camera|Sketch Image Paint|Close) button on Take Picture view$")
     public void WhenIPressButton(String buttonName) throws Exception {
         switch (buttonName.toLowerCase()) {
             case "take photo":
@@ -48,6 +48,9 @@ public class TakePicturePageSteps {
                 break;
             case "gallery":
                 getTakePicturePage().openGallery();
+                break;
+            case "gallery camera":
+                getTakePicturePage().openGalleryFromCamera();
                 break;
             case "image close":
                 getTakePicturePage().closeFullScreenImage();

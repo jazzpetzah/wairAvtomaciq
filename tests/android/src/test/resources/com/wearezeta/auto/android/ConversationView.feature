@@ -161,7 +161,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I tap Add picture button from cursor toolbar
-    And I tap Gallery button on Take Picture view
+    And I tap Gallery Camera button on Take Picture view
     And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
 
@@ -178,7 +178,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I tap Add picture button from cursor toolbar
-    And I tap Gallery button on Take Picture view
+    And I tap Gallery Camera button on Take Picture view
     And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
     And I tap the recent picture in the conversation view
@@ -222,7 +222,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I tap Add picture button from cursor toolbar
-    And I tap Gallery button on Take Picture view
+    And I tap Gallery Camera button on Take Picture view
     And I tap Sketch Image Paint button on Take Picture view
     And I draw a sketch on image with <NumColors> colors
     Then I send my sketch
