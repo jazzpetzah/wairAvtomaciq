@@ -233,7 +233,7 @@ Feature: Audio Messaging
     Given I tap on contact name <Contact>
     Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User Me sends 1 encrypted message to user <Contact>
     When I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
