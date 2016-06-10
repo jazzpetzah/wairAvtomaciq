@@ -51,7 +51,11 @@ public class DriverUtils {
     public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver, final WebElement element) {
         try {
             final boolean result = element.isDisplayed();
-            return result && isElementInScreenRect(driver, element);
+            if (driver instanceof ZetaIOSDriver) {
+                return result;
+            } else {
+                return result && isElementInScreenRect(driver, element);
+            }
         } catch (NoSuchElementException e) {
             return false;
         }
@@ -112,9 +116,9 @@ public class DriverUtils {
                 final List<WebElement> foundElements = driver.findElements(by);
                 try {
                     if (foundElements.size() > 0) {
-                        for (WebElement foundeLement : foundElements) {
-                            if (isElementPresentAndDisplayed(driver, foundeLement)) {
-                                return Optional.of(foundeLement);
+                        for (WebElement foundElement : foundElements) {
+                            if (isElementPresentAndDisplayed(driver, foundElement)) {
+                                return Optional.of(foundElement);
                             }
                         }
                     }
