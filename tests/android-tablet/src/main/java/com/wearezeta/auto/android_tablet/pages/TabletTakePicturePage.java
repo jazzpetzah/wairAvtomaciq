@@ -9,7 +9,7 @@ import java.util.concurrent.Future;
 
 public class TabletTakePicturePage extends AndroidTabletPage {
 
-    private static final long WAIT_FOR_ROTATION_IN_MILLISECONDS = 3000;
+    private static final long ROTATION_DELAY_MILLISECONDS = 3000;
 
     public TabletTakePicturePage(Future<ZetaAndroidDriver> lazyDriver)
             throws Exception {
@@ -96,7 +96,7 @@ public class TabletTakePicturePage extends AndroidTabletPage {
      */
     private void setOrientationForTakePicture() throws Exception {
         this.getAndroidTakePicturePage().rotateLandscape();
-        Thread.sleep(WAIT_FOR_ROTATION_IN_MILLISECONDS);
+        Thread.sleep(ROTATION_DELAY_MILLISECONDS);
     }
 
     /**
@@ -109,7 +109,7 @@ public class TabletTakePicturePage extends AndroidTabletPage {
             ScreenOrientation orientation = ScreenOrientationHelper.getInstance().getOrientation().get();
             if (orientation == ScreenOrientation.PORTRAIT) {
                 this.getAndroidTakePicturePage().rotatePortrait();
-                Thread.sleep(WAIT_FOR_ROTATION_IN_MILLISECONDS);
+                Thread.sleep(ROTATION_DELAY_MILLISECONDS);
             }
         }
     }
