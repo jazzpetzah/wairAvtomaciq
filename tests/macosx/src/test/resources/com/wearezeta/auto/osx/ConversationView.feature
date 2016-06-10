@@ -143,6 +143,8 @@ Feature: Conversation View
     And I write message <Message>
     Then I verify that message "<Message>" was typed
     When I click menu bar item "Edit" and menu item "Undo"
+    Then I verify that message "T" was typed
+    When I type shortcut combination to undo
     Then I verify that message "" was typed
     When I click menu bar item "Edit" and menu item "Redo"
     Then I verify that message "<Message>" was typed
@@ -161,6 +163,8 @@ Feature: Conversation View
     When I open conversation with <Contact>
     And I write message <Message>
     Then I verify that message "<Message>" was typed
+    When I type shortcut combination to undo
+    Then I verify that message "T" was typed
     When I type shortcut combination to undo
     Then I verify that message "" was typed
     When I type shortcut combination to redo
