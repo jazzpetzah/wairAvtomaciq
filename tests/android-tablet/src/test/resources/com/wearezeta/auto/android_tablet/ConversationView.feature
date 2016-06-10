@@ -250,7 +250,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ChatWithImg   |
 
-  @C757 @id2828 @regression @rc @rc44 @torun
+  @C757 @id2828 @regression @rc @rc44
   Scenario Outline: Send existing image from gallery in 1:1 chat (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
