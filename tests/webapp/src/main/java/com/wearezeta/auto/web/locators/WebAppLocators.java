@@ -108,7 +108,7 @@ public final class WebAppLocators {
         public static final String xpathContactListEntries = xpathParentContactListItem
                 + "//*[@data-uie-name='item-conversation' or @data-uie-name='item-call']";
 
-        public static final String xpathActiveConversationEntry = xpathParentArchiveListItem
+        public static final String xpathActiveConversationEntry = xpathParentContactListItem
                 + "//*[contains(@class, 'text-theme')]//*[@data-uie-name='item-conversation' or @data-uie-name='item-call']";
 
         public static final Function<Integer, String> xpathContactListEntryByIndex = (
