@@ -836,10 +836,14 @@ public class ConversationViewPage extends IOSPage {
         return getElement(nameAudioPlaceholderTimeLabel).getAttribute("value");
     }
 
-
     public boolean isPlaceholderAudioMessageButtonState(String buttonState) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(placeholderAudioMessageButtonState.apply
                 (buttonState)));
+    }
+
+    public boolean isPlaceholderAudioMessageButtonState(String buttonState, int index) throws Exception {
+        final By locator = By.xpath(xpathStrAudioActionButtonByIndex.apply(index));
+        return getElement(locator).getAttribute("value").equals(buttonState);
     }
 
     public boolean isPlaceholderTimeLabelValueChanging() throws Exception {
