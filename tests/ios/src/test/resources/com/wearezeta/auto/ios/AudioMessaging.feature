@@ -166,7 +166,7 @@ Feature: Audio Messaging
     Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User Me sends 1 encrypted message to user <Contact1>
     When I tap Play audio message button on audio message placeholder number 2
     # Wait until the audio is downloaded and starts playback
     And I wait for <AudioDownloadTimeout> seconds
@@ -190,7 +190,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact>
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User Me sends 1 encrypted message to user <Contact>
     And I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait to make sure the audio file is downloaded and starts playback
@@ -253,7 +253,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact1> sends 1 encrypted messages to user <Name>
+    Given User Me sends 1 encrypted message to user <Contact1>
     And I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
@@ -274,7 +274,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact1> sends 1 encrypted messages to user <Name>
+    Given User Me sends 1 encrypted message to user <Contact1>
     And I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
