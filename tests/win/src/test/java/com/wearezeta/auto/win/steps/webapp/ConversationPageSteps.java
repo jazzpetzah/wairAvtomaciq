@@ -55,7 +55,7 @@ public class ConversationPageSteps {
      */
     @When("^I write random message$")
     public void WhenIWriteRandomMessage() throws Exception {
-        randomMessage = CommonUtils.generateGUID().substring(0, 5);
+        randomMessage = CommonUtils.generateGUID();
         IWriteMessage(randomMessage);
     }
 

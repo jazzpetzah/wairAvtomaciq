@@ -143,7 +143,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @C385 @id542 @regression @C111633
+  @C385 @C111633 @regression @rc
   Scenario Outline: Accept incoming connection request from search
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
@@ -165,7 +165,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @C388 @id547 @regression @C111632
+  @C388  @C111632 @regression @rc
   Scenario Outline: I would not know other person has ignored my connection request
     Given There are 3 users where <Name> is me
     Given Myself is connected to <IntermediateContact>
