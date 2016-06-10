@@ -437,7 +437,7 @@ Feature: People View
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
-    Then I see the system message CONNECTED TO <Contact1> in the conversation view
+    Then I see the conversation with <Contact1>
 
     Examples:
       | Name      | Contact1  | Image       |

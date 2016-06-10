@@ -28,7 +28,7 @@ Feature: ContactsUI
     And I press the send an invite button
     And I see contact <Contact> in ContactsUI page list
     And I click on Open button next to user name <Contact> on ContactsUI
-    Then I see the conversation with <Contact>
+    When I see conversation <Contact> in conversations list
 
     Examples: 
       | Name      | Contact   |

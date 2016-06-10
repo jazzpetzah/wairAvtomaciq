@@ -106,9 +106,6 @@ public class ConversationViewPage extends IOSPage {
     public static final Function<String, String> xpathStrConnectingToUserLabelByName = name -> String.format(
             "//UIAStaticText[contains(@name, 'CONNECTING TO %s.')]", name.toUpperCase());
 
-    public static final Function<String, String> xpathStrConnectedToUserLabelByName = name -> String.format(
-            "//UIAStaticText[contains(@name, 'CONNECTED TO %s')]", name.toUpperCase());
-
     private static final By nameShieldIconNextToInput = MobileBy.AccessibilityId("verifiedConversationIndicator");
 
     public static final String MEDIA_STATE_PLAYING = "playing";
@@ -126,6 +123,8 @@ public class ConversationViewPage extends IOSPage {
 
     private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[./UIAButton[@name='Back']]";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
+    private static Function<String, String> xpathStrToolbarByConversationName = name ->
+            String.format("%s/UIAButton[starts-with(@name, '%s')]", xpathStrConversationViewTopBar, name.toUpperCase());
 
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
     private static final By xpathVideoCallButton = MobileBy.AccessibilityId("videoCallBarButton");
@@ -478,11 +477,6 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isUserNameDisplayedInConversationView(String name) throws Exception {
         final By locator = By.xpath(xpathUserNameByText.apply(name));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-    }
-
-    public boolean isConnectedToUserStartedConversationLabelVisible(String username) throws Exception {
-        final By locator = By.xpath(xpathStrConnectedToUserLabelByName.apply(username));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -860,5 +854,10 @@ public class ConversationViewPage extends IOSPage {
         Thread.sleep(1000);
         String currentTime = getAudioMessageRecordTimeLabelValue();
         return !startTime.equals(currentTime);
+    }
+
+    public boolean isUserNameVisibleOnUpperToolbar(String contact) throws Exception {
+        final By locator = By.xpath(xpathStrToolbarByConversationName.apply(contact));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }

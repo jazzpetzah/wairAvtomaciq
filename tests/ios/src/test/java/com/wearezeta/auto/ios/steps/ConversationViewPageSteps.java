@@ -569,8 +569,7 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify if dialog page with pointed user is shown. It's ok to use only if
-     * there is not or small amount of messages in dialog.
+     * Verify if conversation view page with pointed user is shown.
      *
      * @param contact contact name
      * @throws Exception
@@ -579,8 +578,8 @@ public class ConversationViewPageSteps {
     @When("^I see the conversation with (.*)$")
     public void ISeeConversationWith(String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        Assert.assertTrue("Dialog with user is not visible", getConversationViewPage()
-                .isConnectedToUserStartedConversationLabelVisible(contact));
+        Assert.assertTrue(String.format("Conversation with %s is not visible", contact),
+                getConversationViewPage().isUserNameVisibleOnUpperToolbar(contact));
     }
 
     /**
@@ -669,22 +668,6 @@ public class ConversationViewPageSteps {
         Assert.assertTrue(String.format("The text input field contain content, which is different from '%s'",
                 CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE),
                 getConversationViewPage().isCurrentInputTextEqualTo(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE));
-    }
-
-    /**
-     * Verifies that 'Connected to username' message is the only message in
-     * dialog
-     *
-     * @param username name of the contact
-     * @throws Exception
-     * @step. ^I see the only message in dialog is system message CONNECTED TO
-     * (.*)$
-     */
-    @When("^I see the system message CONNECTED TO (.*) in the conversation view$")
-    public void ISeeLastMessageIsSystem(String username) throws Exception {
-        username = usrMgr.findUserByNameOrNameAlias(username).getName();
-        Assert.assertTrue(String.format("The 'CONNECTED' TO %s' system message is not visible in the conversation view",
-                username), getConversationViewPage().isConnectedToUserStartedConversationLabelVisible(username));
     }
 
     /**

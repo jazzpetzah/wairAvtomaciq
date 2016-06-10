@@ -204,7 +204,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2511 @regression @id3901 @ZIOS-5279
+  @C2511 @regression @id3901
   Scenario Outline: Verify first conversation in the list is highlighted and opened [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
