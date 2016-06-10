@@ -475,7 +475,7 @@ public class ClientUsersManager {
                 + SHARED_USERS_MIN_CREATION_INTERVAL;
         for (int idx = 0; idx < ceiledCount; idx++) {
             ClientUser pendingUser = new ClientUser();
-            sharedUsers.add(idx, pendingUser);
+            sharedUsers.add(pendingUser);
             setUserDefaults(sharedUsers.get(idx), getCreatedUsers().size() + idx);
         }
         for (int sharedUserIdx = 0; sharedUserIdx < sharedUsers.size(); sharedUserIdx++) {
