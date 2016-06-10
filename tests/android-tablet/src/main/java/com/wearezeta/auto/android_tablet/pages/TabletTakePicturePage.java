@@ -5,6 +5,7 @@ import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.openqa.selenium.ScreenOrientation;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 public class TabletTakePicturePage extends AndroidTabletPage {
@@ -105,12 +106,10 @@ public class TabletTakePicturePage extends AndroidTabletPage {
      * @throws Exception
      */
     private void restoreTestOrientation() throws Exception {
-        if (ScreenOrientationHelper.getInstance().getOrientation().isPresent()) {
-            ScreenOrientation orientation = ScreenOrientationHelper.getInstance().getOrientation().get();
-            if (orientation == ScreenOrientation.PORTRAIT) {
-                this.getAndroidTakePicturePage().rotatePortrait();
-                Thread.sleep(ROTATION_DELAY_MILLISECONDS);
-            }
+        final Optional<ScreenOrientation> currentOrientation = ScreenOrientationHelper.getInstance().getOrientation();
+        if (currentOrientation.isPresent() && currentOrientation.get() == ScreenOrientation.PORTRAIT) {
+            this.getAndroidTakePicturePage().rotatePortrait();
+            Thread.sleep(ROTATION_DELAY_MILLISECONDS);
         }
     }
 
