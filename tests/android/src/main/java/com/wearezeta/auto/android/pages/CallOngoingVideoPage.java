@@ -10,7 +10,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class CallOngoingVideoPage extends CallingOverlayPage {
-    private static final By idVideoSelfPreview = By.id("tv__self_preview_place_holder");
+    private static final By idVideoSelfPreview = By.id("ll__self_view_layout");
+
+    private static final By idVideoSelfPreviewOff =
+            By.xpath("//*[@id='tv__self_preview_place_holder' and @value='VIDEO OFF']");
 
     private static final By xpathOngoingCallContainer = By.xpath("//*[@id='video_calling_view']");
 
@@ -119,10 +122,10 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
     }
 
     public boolean isVideoSelfPreviewVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(getDriver(),idVideoSelfPreview);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idVideoSelfPreview);
     }
 
     public boolean isVideoSelfPreviewInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(),idVideoSelfPreview);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idVideoSelfPreviewOff);
     }
 }

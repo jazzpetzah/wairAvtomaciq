@@ -46,6 +46,7 @@ Feature: Permissions
     # --- Audio call from other user ---
     When <Contact1> calls me
     And I wait for 7 seconds
+    And I swipe to accept the call
     And I dismiss security alert
     And I see alert message containing "Calling not available" in the title
     And I tap OK button on the alert
@@ -54,6 +55,7 @@ Feature: Permissions
     # --- Video call from other user ---
     When <Contact2> starts a video call to me
     And I wait for 7 seconds
+    And I swipe to accept the call
     And I dismiss security alert
     And I dismiss security alert if it is visible
     And I see alert message containing "Calling not available" in the title
@@ -90,6 +92,8 @@ Feature: Permissions
     And I select Camera as picture source
     # deny access to camera
     And I dismiss security alert
+    # Workaround for AN-4119
+    And I press Back button
     And I select to keep the current picture
     Then I see Contact list with no contacts
 
