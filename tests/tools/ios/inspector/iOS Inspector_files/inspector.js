@@ -33,10 +33,10 @@ function Inspector(selector) {
     this.initSessionId();
     if (this.sessionId === undefined) {
         // Cannot load session info
-        $("#tree").html(
+        $("#logo").html(
             "<a style=\"color: red;\" href=\"javascript:location.reload()\">"
-            + "Appium session at " + APPIUM_ROOT + " is unreachable.<br>"
-            + "Make sure your Appium test is running and click this message."
+            + "Appium session at <em>" + APPIUM_ROOT + "</em> is unreachable. "
+            + "Make sure your Appium test is running and click this message to retry."
             + "</a>");
         return;
     }
