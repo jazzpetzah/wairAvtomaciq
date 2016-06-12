@@ -31,13 +31,18 @@ function Inspector(selector) {
     this.log = new Logger(this);
     this.selector = selector;
     this.initSessionId();
-    if (this.sessionId !== undefined) {
-        this.initAutXml();
-        this.initScreenshot();
-        var xmlDoc = this.parseXml(this.autXml);
-        // TODO: better defaults if no sessions id is received
-        var jsTreeData = this.transformAutXmlToAjax(xmlDoc);
+    if (this.sessionId === undefined) {
+        // Cannot load session info
+        $("#tree").html(
+            "<a style=\"color: red;\" href=\"javascript:location.reload()\">"
+            + "Appium session at " + APPIUM_ROOT + " is unreachable.<br>"
+            + "Make sure your Appium test is running and click this message."
+            + "</a>");
+        return;
     }
+    this.initAutXml();
+    this.initScreenshot();
+    var jsTreeData = this.transformAutXmlToAjax(this.parseXml(this.autXml));
     this.jsTreeConfig = {
         "core": {
             "animation": 0,
