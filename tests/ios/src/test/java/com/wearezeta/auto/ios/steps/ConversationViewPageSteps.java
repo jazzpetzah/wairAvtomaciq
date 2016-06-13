@@ -1341,7 +1341,7 @@ public class ConversationViewPageSteps {
     public void ISeeAudioMessageControlButtonStateIs(String placeholderIndex, String buttonState) throws Exception {
         if (placeholderIndex == null) {
             Assert.assertTrue(String.format("Wrong button state. Expected state is '%s'", buttonState),
-                    getConversationViewPage().isPlaceholderAudioMessageButtonState(buttonState));
+                    getConversationViewPage().isPlaceholderAudioMessageButtonState(buttonState, 1));
         } else {
             Assert.assertTrue(String.format("Wrong button state. Expected state for button in placeholder %s is '%s'",
                     placeholderIndex, buttonState),
