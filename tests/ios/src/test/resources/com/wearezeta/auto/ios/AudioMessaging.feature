@@ -168,13 +168,9 @@ Feature: Audio Messaging
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User Me sends 1 encrypted message to user <Contact1>
     When I tap Play audio message button on audio message placeholder number 2
-    # Wait until the audio is downloaded and starts playback
-    And I wait for <AudioDownloadTimeout> seconds
-    And I remember the state of Pause button on the second audio message placeholder
+    And I see state of button on audio message placeholder number 2 is pause
     And I tap Play audio message button on audio message placeholder number 1
-    # Wait until the audio is downloaded
-    And I wait for <AudioDownloadTimeout> seconds
-    Then I verify the state of Pause button on audio message placeholder is changed
+    Then I see state of button on audio message placeholder number 2 is play
 
     Examples:
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
