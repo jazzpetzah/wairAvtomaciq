@@ -848,7 +848,7 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isPlaceholderAudioMessageButtonState(String buttonState, int index) throws Exception {
         final By locator = By.xpath(placeholderAudioMessageButtonStateByIndex.apply(buttonState, index));
-        return getElement(locator).getAttribute("value").equals(buttonState);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isPlaceholderTimeLabelValueChanging() throws Exception {
