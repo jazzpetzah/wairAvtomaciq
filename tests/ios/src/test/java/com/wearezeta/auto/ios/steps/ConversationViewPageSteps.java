@@ -1339,14 +1339,8 @@ public class ConversationViewPageSteps {
      */
     @Then("^I see state of button on audio message placeholder (number \\d+ )?is (play|pause)$")
     public void ISeeAudioMessageControlButtonStateIs(String placeholderIndex, String buttonState) throws Exception {
-        if (placeholderIndex == null) {
-            Assert.assertTrue(String.format("Wrong button state. Expected state is '%s'", buttonState),
-                    getConversationViewPage().isPlaceholderAudioMessageButtonState(buttonState, 1));
-        } else {
-            Assert.assertTrue(String.format("Wrong button state. Expected state for button in placeholder %s is '%s'",
-                    placeholderIndex, buttonState),
-                    getConversationViewPage().isPlaceholderAudioMessageButtonState(buttonState,
-                            Integer.parseInt(placeholderIndex.replaceAll("[\\D]", ""))));
-        }
+        Assert.assertTrue(String.format("Wrong button state. Expected state is '%s'", buttonState),
+                getConversationViewPage().isPlaceholderAudioMessageButtonState(buttonState,
+                        (placeholderIndex == null) ? 1 : Integer.parseInt(placeholderIndex.replaceAll("[\\D]", ""))));
     }
 }
