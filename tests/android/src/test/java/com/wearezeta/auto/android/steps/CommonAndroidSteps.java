@@ -122,7 +122,6 @@ public class CommonAndroidSteps {
         AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidSteps.class);
-        AndroidCommonUtils.installUnlockApp(CommonAndroidSteps.class);
         AndroidCommonUtils.installClipperApp(CommonAndroidSteps.class);
         // This is handled by TestingGallery now
 //        final String backendJSON =
