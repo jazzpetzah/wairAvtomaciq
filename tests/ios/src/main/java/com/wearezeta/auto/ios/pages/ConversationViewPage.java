@@ -189,7 +189,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final FunctionFor2Parameters<String, String, Integer> placeholderAudioMessageButtonStateByIndex =
             (buttonState, index) ->
-            String.format("(//UIAButton[@name='%s' and @value='%s'])[%s]", strNameAudioActionButton, buttonState);
+            String.format("(//UIAButton[@name='%s' and @value='%s'])[%s]", strNameAudioActionButton, buttonState, index);
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
