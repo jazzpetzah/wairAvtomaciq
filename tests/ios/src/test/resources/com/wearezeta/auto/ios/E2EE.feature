@@ -13,7 +13,8 @@ Feature: E2EE
     Given I wait for 5 seconds
     Given User <Contact1> adds user Myself to group chat <GroupChatName>
     When I tap on contact name <GroupChatName>
-    Then I see 0 conversation entries
+    Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
+    And I see 0 conversation entries
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |

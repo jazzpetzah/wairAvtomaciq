@@ -227,7 +227,8 @@ Feature: Conversation List
     And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     And I tap on conversation <GroupChatName> in search result
-    Then I see 0 conversation entries
+    Then I see group chat page with users <Contact1>,<Contact2>
+    And I see 0 conversation entries
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |
@@ -393,7 +394,8 @@ Feature: Conversation List
     When I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     And I tap on conversation <GroupChatName> in search result
-    And I type the default message and send it
+    Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
+    When I type the default message and send it
     Then I see 1 default message in the conversation view
 
     Examples:
