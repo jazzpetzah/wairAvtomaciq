@@ -275,3 +275,23 @@ Feature: Calling
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
       | user1Name | user2Name | user3Name | GROUPCALL     | chrome      | 2               |
+
+  @C145950 @staging
+  Scenario Outline: Verify joining 2 other people on the group call [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    And <Contact1> calls <GroupChatName>
+    Then I see call status message contains "<GroupChatName> ringing"
+    And I tap Accept button on Calling overlay
+    Then I see <NumberOfAvatars> avatars on the Calling overlay
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | GROUPCALL     | chrome      | 2               |
