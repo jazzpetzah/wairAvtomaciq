@@ -43,7 +43,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User Me sends 1 encrypted message to user <Contact1>
     Given I see audio message placeholder
     When I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item
