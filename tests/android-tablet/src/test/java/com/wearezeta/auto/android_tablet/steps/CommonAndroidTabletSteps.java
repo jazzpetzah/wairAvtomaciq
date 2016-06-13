@@ -99,7 +99,6 @@ public class CommonAndroidTabletSteps {
         AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidTabletSteps.class);
-        AndroidCommonUtils.installUnlockApp(CommonAndroidTabletSteps.class);
         // This is handled by TestingGallery now
 //        final String backendJSON =
 //                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidTabletSteps.class));
