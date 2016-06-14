@@ -2,6 +2,7 @@ Feature: Notifications
 
   @C147866 @staging
   Scenario Outline: Verify push notifications are received after successful registration
+    Given I am on Android 4.0 or better
     Given I see welcome screen
     Given I input a new phone number for user <Name>
     Given I input the verification code
