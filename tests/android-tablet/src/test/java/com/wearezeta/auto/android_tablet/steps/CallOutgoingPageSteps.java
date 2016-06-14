@@ -1,7 +1,8 @@
 package com.wearezeta.auto.android_tablet.steps;
 
 
-import com.wearezeta.auto.android_tablet.pages.TabletCallOutgoingPage;
+import com.wearezeta.auto.android_tablet.pages.TabletCallOutgoingAudioPage;
+import com.wearezeta.auto.android_tablet.pages.TabletCallOutgoingVideoPage;
 import com.wearezeta.auto.common.misc.ElementState;
 import cucumber.api.java.en.Then;
 
@@ -12,14 +13,18 @@ import static org.junit.Assert.assertTrue;
 
 public class CallOutgoingPageSteps {
 
-    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
-            .getInstance();
+    private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
 
-    private final ElementState videoButtonState = new ElementState(() -> getPage().getSpecialButtonScreenshot());
-    private final ElementState muteButtonState = new ElementState(() -> getPage().getMuteButtonScreenshot());
+    private final ElementState videoButtonState = new ElementState(() -> getAudioPage().getSpecialButtonScreenshot());
+    private final ElementState muteButtonState = new ElementState(() -> getAudioPage().getMuteButtonScreenshot());
 
-    private TabletCallOutgoingPage getPage() throws Exception {
-        return pagesCollection.getPage(TabletCallOutgoingPage.class);
+
+    private TabletCallOutgoingAudioPage getAudioPage() throws Exception {
+        return pagesCollection.getPage(TabletCallOutgoingAudioPage.class);
+    }
+
+    private TabletCallOutgoingVideoPage getVideoPage() throws Exception {
+        return pagesCollection.getPage(TabletCallOutgoingVideoPage.class);
     }
 
     /**
@@ -29,9 +34,8 @@ public class CallOutgoingPageSteps {
      * @step. ^I hang up$
      */
     @When("^I hang up outgoing call$")
-    public void IHangUp()
-            throws Exception {
-        getPage().hangup();
+    public void IHangUp() throws Exception {
+        getAudioPage().hangup();
     }
 
     /**
@@ -44,15 +48,16 @@ public class CallOutgoingPageSteps {
      */
     @When("^I (do not )?see outgoing (video )?call$")
     public void ISeeOutgoingCall(String not, String videoCall) throws Exception {
-        boolean isVideoCall = (videoCall != null);
+        final boolean isVideoCall = (videoCall != null);
         if (not == null) {
             assertTrue(String.format("%s Outgoing call not visible", isVideoCall ? "Video" : "Audio"),
-                    getPage().waitUntilVisible(isVideoCall));
+                    isVideoCall ? getVideoPage().waitUntilVisible() : getAudioPage().waitUntilVisible());
         } else {
             assertTrue(String.format("%s Outgoing call should not be visible", isVideoCall ? "Video" : "Audio"),
-                    getPage().waitUntilNotVisible(isVideoCall));
+                    isVideoCall ? getVideoPage().waitUntilInvisible() : getAudioPage().waitUntilInvisible());
         }
     }
+
     /**
      * Tap the corresponding button onm video overlay
      *
@@ -64,10 +69,10 @@ public class CallOutgoingPageSteps {
     public void WhenITapButton(String btnName) throws Exception {
         switch (btnName) {
             case "mute":
-                getPage().toggleMute();
+                getAudioPage().toggleMute();
                 break;
             case "video":
-                getPage().toggleVideo();
+                getVideoPage().toggleVideo();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
