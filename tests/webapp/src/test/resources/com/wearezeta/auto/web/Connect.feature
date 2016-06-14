@@ -394,7 +394,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact1  | Contact2  |
       | user1Name | user1Email | user1Password | user2Name | user3Name |
 
-  @C1785 @legacy
+  @C1785 @legacy @C147867
   Scenario Outline: Verify you get auto-connected to people on sign-in
     Given There is 2 user where <Me> is me
     # we need to wait a bit, otherwise backend throws a 429 status
@@ -423,14 +423,14 @@ Feature: Connect
     Given User <Me> has contact <Contact> in address book
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     # we need to wait a bit, otherwise backend throws a 429 status
     And I wait for 10 seconds
     When User <Contact> has contact <Me> in address book
-    When I open conversation with <Contact>
+    And I open conversation with <Contact>
     Then I see CONNECTED TO action for <Contact> in conversation
-    Then I see START A CONVERSATION action for <Contact> in conversation
-    Then I do not see text message
+    And I see START A CONVERSATION action for <Contact> in conversation
+    And I do not see text message
 
     Examples: 
       | Me        | MyEmail    | MyPassword    | Contact   |
@@ -446,6 +446,7 @@ Feature: Connect
     And I see my avatar on top of Contact list
     And I wait until <Contact1> exists in backend search results
     When I open People Picker from Contact List
+    And I wait for the search field of People Picker to be empty
     And I type <Contact1Email> in search field of People Picker
     Then I see user <Contact1> found in People Picker
     When I click on pending user <Contact1> found in People Picker

@@ -377,9 +377,11 @@ public final class WebAppLocators {
 
         public static final String cssFileStatus = cssFile + " [data-uie-name='file-status']";
 
+        public static final String cssFilePlaceholder = cssFile + " .asset-placeholder";
+
         public static final String cssFileType = cssFile + " [data-uie-name='file-type']";
 
-        public static final String cssFileCancelUpload = cssFile + " [data-uie-name='file-cancel']";
+        public static final String cssFileCancelUpload = cssFile + " .icon-close";
 
         // Audio message
 

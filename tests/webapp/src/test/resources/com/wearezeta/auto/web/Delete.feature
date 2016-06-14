@@ -28,6 +28,7 @@ Feature: Delete
     And I see 3 messages in conversation
     When User Myself deletes the recent 1 message from user <Contact> via device SecondDevice
     Then I see text message <Message1>
+    And I do not see any picture in the conversation view
     And I see 2 messages in conversation
     When I write message <YouTubeLink>
     And I send message

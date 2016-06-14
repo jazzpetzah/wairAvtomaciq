@@ -32,7 +32,8 @@ Feature: E2EE
     And I see device removal password confirmation dialog
     And I enter <Password> into the device removal password confirmation dialog
     And I tap OK button on the device removal password confirmation dialog
-    # Delete device will take time, should verify at first it already return back to device list view
+    # Delete device will take time, should verify at first it already return back to device list view, also the list is already updated
+    And I wait for 5 seconds
     And I see "<DeviceToRemoveWithoutPassword>" settings menu item
     And I do not see "<DeviceToRemove>" settings menu item
     # C145960
@@ -40,7 +41,7 @@ Feature: E2EE
     And I select "Remove device" settings menu item
     And I see "<OtherDevice>" settings menu item
     And I do not see "<DeviceToRemoveWithoutPassword>" settings menu item
-    And I press Back button 3 times
+    And I press Back button 2 times
     When I do not see Manage Devices overlay
     Then I see Contact list with no contacts
 
@@ -210,15 +211,10 @@ Feature: E2EE
     Then I see message <EncMessage> 1 times in the conversation view
     When I press back button
     And I tap conversations list settings button
-    And I tap options button
-    And I tap settings button
-    When I select "Privacy & Security" settings menu item
     And I select "Devices" settings menu item
     And I tap current device in devices settings menu
     Then I remember the device id shown in the device detail view
-    When I press back button
-    And I press back button
-    And I press back button
+    When I press back button 2 times
     When I select "Account" settings menu item
     And I select "Log out" settings menu item
     Then I confirm sign out
@@ -229,9 +225,6 @@ Feature: E2EE
     Then I see message <EncMessage> 1 times in the conversation view
     When I press back button
     And I tap conversations list settings button
-    And I tap options button
-    And I tap settings button
-    When I select "Privacy & Security" settings menu item
     And I select "Devices" settings menu item
     And I tap current device in devices settings menu
     Then I verify the remembered device id is shown in the device detail view

@@ -69,7 +69,7 @@ Feature: Application
       | user1Email | user1Password | user1Name | user2Name |
 
   @C2324 @smoke
-  Scenario Outline: Sign Out
+  Scenario Outline: Sign out with menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page

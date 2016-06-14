@@ -374,7 +374,7 @@ public class RegistrationPageSteps {
 		context.getPagesCollection().getPage(RegistrationPage.class)
 				.switchToLoginPage();
 	}
-
+        
 	/**
 	 * Clicks on Verify later button on Verification page
 	 * 

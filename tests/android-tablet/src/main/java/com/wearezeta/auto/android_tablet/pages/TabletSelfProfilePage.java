@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
+@Deprecated
 public class TabletSelfProfilePage extends AndroidTabletPage {
     public static final By idSelfNameInput = By.id("tet__profile__guided");
 

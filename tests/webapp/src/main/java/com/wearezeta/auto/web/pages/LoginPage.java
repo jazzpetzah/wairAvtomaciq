@@ -76,6 +76,11 @@ public class LoginPage extends WebPage {
 			throws Exception {
 		super(lazyDriver, url);
 	}
+        
+        public void switchToRegistrationPage() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), switchToRegisterButton);
+		switchToRegisterButton.click();
+	}
 
 	public boolean isVisible() throws Exception {
 		return DriverUtils.waitUntilElementClickable(this.getDriver(),

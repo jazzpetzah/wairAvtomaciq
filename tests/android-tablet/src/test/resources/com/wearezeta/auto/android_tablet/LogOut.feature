@@ -9,9 +9,6 @@ Feature: Log Out
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
     And I tap conversations list settings button
-    And I see my name on Self Profile page
-    And I tap Options button on Self Profile page
-    And I select "SETTINGS" menu item on Self Profile page
     And I select "Account" menu item on Settings page
     And I select "Log out" menu item on Settings page
     And I confirm logout on Settings page
@@ -29,9 +26,7 @@ Feature: Log Out
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
-    And I see my name on Self Profile page
-    And I tap Options button on Self Profile page
-    And I select "SETTINGS" menu item on Self Profile page
+    And I tap conversations list settings button
     And I select "Account" menu item on Settings page
     And I select "Log out" menu item on Settings page
     And I confirm logout on Settings page

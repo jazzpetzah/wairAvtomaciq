@@ -301,8 +301,6 @@ public class LoginPageSteps {
 				throw new IllegalArgumentException("Please specify a language for the login page");
 		}
 		context.getPagesCollection().getPage(LoginPage.class).visitRedirectedPage(langKey);
-                // sometimes driver.get(URL) does not visit the URL so we retry :/
-                context.getPagesCollection().getPage(LoginPage.class).visitRedirectedPage(langKey);
 	}
 
 	@Then("^I verify description message is visible$")
@@ -316,5 +314,18 @@ public class LoginPageSteps {
 		Assert.assertEquals("description message does not match expected value", descriptionMessage,
 				context.getPagesCollection().getPage(LoginPage.class)
 						.getDescriptionMessage());
+	}
+        
+        /**
+	 * Switch to Registration page
+	 * 
+	 * @step. ^I switch to registration page$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I switch to registration page$")
+	public void ISwitchToRegistrationPage() throws Exception {
+		context.getPagesCollection().getPage(LoginPage.class)
+				.switchToRegistrationPage();
 	}
 }

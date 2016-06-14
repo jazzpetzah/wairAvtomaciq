@@ -89,11 +89,15 @@ public class WebPage extends BasePage {
         String currentUrl = this.getDriver().getCurrentUrl();
         log.info("Current URL: " + currentUrl);
         URL url = new URL(currentUrl);
+        String newUrl;
         if (url.getQuery() == null) {
-            this.getDriver().get(currentUrl + "?hl=" + language);
+            newUrl = url.getProtocol() + "://" + url.getHost() + url.getPath() + "?" + "hl=" + language + "#" + url.getRef();
         } else {
-            this.getDriver().get(currentUrl + "&hl=" + language);
+            newUrl = url.getProtocol() + "://" + url.getHost() + url.getPath() + url.getQuery() + "&" + "hl=" + language + "#" + url.
+                    getRef();
         }
+        log.debug("Visiting URL: " + newUrl);
+        this.getDriver().get(newUrl);
     }
 
     /**

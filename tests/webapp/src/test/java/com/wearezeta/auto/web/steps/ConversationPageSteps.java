@@ -258,6 +258,12 @@ public class ConversationPageSteps {
                 .getOverlapScoreOfLastImage(pictureName), greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
     }
 
+    @Then("^I do not see any picture in the conversation view$")
+    public void ISeeSentPicture() throws Exception {
+        assertThat("I see a picture in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
+                .isImageInvisible());
+    }
+
     /**
      * Verifies that only x images are in the conversation. Helps with checking for doubles.
      *
