@@ -137,8 +137,8 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox     | 20      |
 
-  @C1747 @calling
-  Scenario Outline: Verify I can call a user for more than 15 mins
+  @C1747 @calling @long-call
+  Scenario Outline: Verify I can call a user for more than 30 mins
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -151,6 +151,8 @@ Feature: Calling
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact> verify to have 1 flows
+    And <Contact> verify that all flows have greater than 0 bytes
     And I wait for 60 seconds
     And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -166,6 +168,7 @@ Feature: Calling
     And I wait for 60 seconds
     And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 5 minutes
     And I wait for 60 seconds
     And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -181,6 +184,7 @@ Feature: Calling
     And I wait for 60 seconds
     And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 10 minutes
     And I wait for 60 seconds
     And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -196,11 +200,310 @@ Feature: Calling
     And I wait for 60 seconds
     And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 15 minutes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 20 minutes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 25 minutes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 30 minutes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact> verify to have 1 flows
+    And <Contact> verify that all flows have greater than 0 bytes
     And I hang up call with conversation <Contact>
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
+
+  @C147868 @calling @long-call
+  Scenario Outline: Verify I can call a group for more than 30 mins with browsers
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
+    Given Myself has group chat <ChatName1> with <Contact>,<Contact2>
+    Given <Contact>,<Contact2> starts instance using <CallBackend>
+    Given <Contact>,<Contact2> accepts next incoming call automatically
+    Given <Contact>,<Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <ChatName1>
+    And I call
+    Then <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact>,<Contact2> verify to have 2 flows
+    And <Contact>,<Contact2> verify that all flows have greater than 0 bytes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 5 minutes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 10 minutes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 15 minutes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 20 minutes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 25 minutes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 30 minutes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact>,<Contact2> verify to have 2 flows
+    And <Contact>,<Contact2> verify that all flows have greater than 0 bytes
+    And I hang up call with conversation <ChatName1>
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | Contact2   | ChatName1 | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name  | GC1       | chrome      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name  | GC1       | firefox     | 20      |
+
+  @C147869 @calling @long-call
+  Scenario Outline: Verify I can call a group for more than 30 mins with AVS
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact2>
+    Given Myself has group chat <ChatName1> with <Contact>,<Contact2>
+    Given <Contact>,<Contact2> starts instance using <CallBackend>
+    Given <Contact>,<Contact2> accepts next incoming call automatically
+    Given <Contact>,<Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <ChatName1>
+    And I call
+    Then <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 5 minutes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 10 minutes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 15 minutes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 20 minutes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 25 minutes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 30 minutes
+    And I wait for 60 seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I hang up call with conversation <ChatName1>
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | Contact2   | ChatName1 | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name  | GC1       | zcall       | 20      |
 
   @C1754 @regression @calling @calling_debug
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as caller)
