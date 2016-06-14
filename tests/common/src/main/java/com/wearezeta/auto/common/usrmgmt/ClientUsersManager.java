@@ -103,20 +103,15 @@ public class ClientUsersManager {
         return new ArrayList<>(this.usersMap.get(UserState.Created));
     }
 
-    /**
-     * @param startIdx starts from 0, including
-     * @param endIdx   should be greater or equal than startIdx
-     */
-    private List<ClientUser> changeUsersStateToCreated(int startIdx, int endIdx) {
-        assert endIdx > startIdx;
+    private List<ClientUser> syncCreatedState(int count) {
         final int previousCreatedUsersCount = getCreatedUsers().size();
-        this.usersMap.get(UserState.Created).addAll(this.usersMap.get(UserState.NotCreated).subList(startIdx, endIdx));
-        final List<ClientUser> resultArr = this.usersMap.get(UserState.NotCreated).subList(0, startIdx);
-        resultArr.addAll(this.usersMap.get(UserState.NotCreated).subList(endIdx,
+        this.usersMap.get(UserState.Created).addAll(this.usersMap.get(UserState.NotCreated).subList(0, count));
+        final List<ClientUser> nonCreatedUsersLeft = this.usersMap.get(UserState.NotCreated).subList(0, count);
+        nonCreatedUsersLeft.addAll(this.usersMap.get(UserState.NotCreated).subList(count,
                 this.usersMap.get(UserState.NotCreated).size()));
-        this.usersMap.put(UserState.NotCreated, resultArr);
+        this.usersMap.put(UserState.NotCreated, nonCreatedUsersLeft);
         return this.usersMap.get(UserState.Created).subList(previousCreatedUsersCount,
-                previousCreatedUsersCount + endIdx - startIdx);
+                previousCreatedUsersCount + count);
     }
 
     private List<ClientUser> getAllUsers() {
@@ -344,14 +339,24 @@ public class ClientUsersManager {
         }
     }
 
-    public void createUsersOnBackend(int count, RegistrationStrategy strategy) throws Exception {
-        if (count > MAX_USERS) {
+    public void createUsersOnBackend(int countToCreate, RegistrationStrategy strategy) throws Exception {
+        if (countToCreate > MAX_USERS) {
             throw new TooManyUsersToCreateException(String.format(
                     "Maximum allowed number of users to create is %d. Current number is %d",
-                    MAX_USERS, count));
+                    MAX_USERS, countToCreate));
         }
         this.resetClientsList(MAX_USERS);
-        generateUsers(changeUsersStateToCreated(0, count), strategy);
+        generateUsers(syncCreatedState(countToCreate), strategy);
+    }
+
+    public void createAndAppendUsers(int countToAppend, RegistrationStrategy strategy) throws Exception {
+        final int currentUsersCount = this.getCreatedUsers().size();
+        if (countToAppend + currentUsersCount > MAX_USERS) {
+            throw new TooManyUsersToCreateException(String.format(
+                    "Maximum allowed number of users to create is %d. Current number is %d",
+                    MAX_USERS, currentUsersCount + countToAppend));
+        }
+        generateUsers(syncCreatedState(countToAppend), strategy);
     }
 
     private static String[] SELF_USER_NAME_ALIASES = new String[]{"I", "Me", "Myself"};

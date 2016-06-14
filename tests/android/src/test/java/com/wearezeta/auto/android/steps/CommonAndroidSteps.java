@@ -44,6 +44,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CommonAndroidSteps {
     static {
@@ -1327,7 +1329,7 @@ public class CommonAndroidSteps {
      *
      * @param size
      * @param fileFullName
-     * @param mimeType
+     * @param timeoutSeconds
      * @throws Exception
      * @step. ^I wait up (\d+) seconds? until (.*) file having name "(.*)" is downloaded to the device$
      */
@@ -1461,5 +1463,45 @@ public class CommonAndroidSteps {
         } else {
             pagesCollection.getCommonPage().waitUntilNoInternetBarInvisible(timeoutSeconds);
         }
+    }
+
+    /**
+     * Create and add new users to the test
+     *
+     * @param count count of new users to add. User indexing will be continued
+     * @throws Exception
+     * @step. ^There (?:is|are) (\d+) additional users?$
+     */
+    @Given("^There (?:is|are) (\\d+) additional users?$")
+    public void ThereAreXAdditionalUsers(int count) throws Exception {
+        commonSteps.ThereAreXAdditionalUsers(CURRENT_PLATFORM, count);
+    }
+
+    private static final int PUSH_NOTIFICATION_TIMEOUT_SEC = 20;
+
+    /**
+     * Verify whether the paricular string is present in Wire push messages
+     *
+     * @param expectedMessage the expected push message
+     * @throws Exception
+     * @step. ^I see the message "(.*)" in push notifications list$
+     */
+    @Then("^I see the message \"(.*)\" in push notifications list$")
+    public void ISeePushMessage(String expectedMessage) throws Exception {
+        boolean isMsgFound = false;
+        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote(expectedMessage) + "\\b");
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            final String output = AndroidCommonUtils.getWirePushNotifications();
+            log.debug(output);
+            if (pattern.matcher(output).find()) {
+                isMsgFound = true;
+                break;
+            }
+            Thread.sleep(500);
+        } while (System.currentTimeMillis() - millisecondsStarted <= PUSH_NOTIFICATION_TIMEOUT_SEC * 1000);
+        Assert.assertTrue(String.format("Push message '%s' has not been received within %s seconds timeout OR "
+                + "TestingGallery app has no access to read push notifications (please check phone settings)",
+                expectedMessage, PUSH_NOTIFICATION_TIMEOUT_SEC), isMsgFound);
     }
 }
