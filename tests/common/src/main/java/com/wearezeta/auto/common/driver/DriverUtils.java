@@ -293,7 +293,7 @@ public class DriverUtils {
                     .ignoring(NoSuchElementException.class);
             return (wait.until(ExpectedConditions.alertIsPresent()) == null);
         } catch (TimeoutException e) {
-            return false;
+            return true;
         }
     }
 
