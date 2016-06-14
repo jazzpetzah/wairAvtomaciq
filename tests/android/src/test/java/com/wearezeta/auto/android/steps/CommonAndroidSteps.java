@@ -172,7 +172,7 @@ public class CommonAndroidSteps {
                 AndroidCommonUtils.enableAutoAnswerCall(getClass());
             }
         } catch (Exception e) {
-            e.printStackTrace();
+             Throwables.propagate(e);
         }
 
         final long millisecondsStarted = System.currentTimeMillis();
