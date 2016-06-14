@@ -167,6 +167,14 @@ public class CommonAndroidSteps {
             e.printStackTrace();
         }
 
+        try {
+            if (isAutoAnswerCallEnabled) {
+                AndroidCommonUtils.enableAutoAnswerCall(getClass());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         final long millisecondsStarted = System.currentTimeMillis();
         WebDriverException savedException = null;
         do {
@@ -208,6 +216,7 @@ public class CommonAndroidSteps {
     }
 
     private boolean isAutoAcceptOfSecurityAlertsEnabled = false;
+    private boolean isAutoAnswerCallEnabled = false;
 
     @Before
     public void setUp(Scenario scenario) throws Exception {
@@ -224,6 +233,8 @@ public class CommonAndroidSteps {
         }
 
         isAutoAcceptOfSecurityAlertsEnabled = !scenario.getSourceTagNames().contains("@noAcceptAlert");
+
+        isAutoAnswerCallEnabled = scenario.getSourceTagNames().contains("@calling_autoAnswer");
 
         if (isLogcatEnabled) {
             if (scenario.getSourceTagNames().contains("@performance")) {
