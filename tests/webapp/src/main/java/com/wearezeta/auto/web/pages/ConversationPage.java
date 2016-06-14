@@ -789,7 +789,8 @@ public class ConversationPage extends WebPage {
 
     public boolean isFileTransferInvisible(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFile, fileName));
-        return !DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator) && !DriverUtils.waitUntilLocatorIsDisplayed
+                (getDriver(), locator);
     }
 
     public boolean getFileIcon(String fileName) throws Exception {
@@ -1060,5 +1061,10 @@ public class ConversationPage extends WebPage {
 
     public void clickCancelPendingRequestButton() throws Exception {
         cancelRequestButton.click();
+    }
+
+    public boolean isImageInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+                .cssFirstImage));
     }
 }
