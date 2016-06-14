@@ -289,10 +289,11 @@ public class DriverUtils {
         try {
             Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
                     .withTimeout(timeout, TimeUnit.SECONDS)
-                    .pollingEvery(1, TimeUnit.SECONDS)
-                    .ignoring(NoSuchElementException.class);
+                    .pollingEvery(1, TimeUnit.SECONDS);
             return (wait.until(ExpectedConditions.alertIsPresent()) == null);
         } catch (TimeoutException e) {
+            return true;
+        } catch (NoSuchElementException e) {
             return true;
         }
     }
