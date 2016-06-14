@@ -841,7 +841,6 @@ Feature: People View
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
-    And I see 3 conversation entries
     And I open group conversation details
     And I press leave conversation button
     And I see leave conversation alert
