@@ -3,7 +3,7 @@ Feature: Registration
   @C1019 @clumsy @regression @rc @id589
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
-    When I enter phone number for user <Name>
+    When I enter phone number for <Name>
     And I enter activation code
     And I accept terms of service
     And I input name <Name> and hit Enter
@@ -30,8 +30,8 @@ Feature: Registration
   @C2652 @regression @noAcceptAlert @id2742
   Scenario Outline: Verify notification appearance in case of incorrect code
     Given I see sign in screen
-    When I enter phone number for user <Name>
-    And I input random activation code
+    When I enter phone number for <Name>
+    And I enter random verification code for <Name>
     Then I see invalid code alert
 
     Examples:
@@ -41,7 +41,7 @@ Feature: Registration
   @C3166 @real
   Scenario Outline: Verify taking photo with a front camera
     Given I see sign in screen
-    When I enter phone number for user <Name>
+    When I enter phone number for <Name>
     And I enter activation code
     And I accept terms of service
     And I input name <Name> and hit Enter
@@ -62,7 +62,7 @@ Feature: Registration
   @C1009 @regression
   Scenario Outline: Verify registering new user with Arabic name
     Given I see sign in screen
-    Given I enter phone number for user <Name>
+    Given I enter phone number for <Name>
     Given I enter activation code
     Given I accept terms of service
     And I input Non-English name <ArabicName> and hit Enter
@@ -79,7 +79,7 @@ Feature: Registration
   @C1004 @regression
   Scenario Outline: Verify resending code
     Given I see sign in screen
-    When I enter phone number for user <Name>
+    When I enter phone number for <Name>
     Then I do not see RESEND button
     And I see NO CODE TO SHOW UP label
     When I wait for <Timeout> seconds

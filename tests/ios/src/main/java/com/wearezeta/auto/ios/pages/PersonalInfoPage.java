@@ -14,7 +14,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class PersonalInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrEmailFieldByValue = value ->
-            String.format("//*UIAStaticText[contains(@name, '%s')]", value);
+            String.format("//UIAStaticText[contains(@name, '%s')]", value);
 
     private static final By nameProfileSettingsButton = MobileBy.AccessibilityId("SettingsButton");
 

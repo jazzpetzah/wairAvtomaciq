@@ -2,7 +2,9 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DummyElement;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
@@ -29,14 +31,11 @@ public class LoginPage extends IOSPage {
 
     private static final By nameForgotPassword = MobileBy.AccessibilityId("FORGOT PASSWORD?");
 
-    private static final By namePhoneLoginButton = MobileBy.AccessibilityId("RegistrationRightButton");
-
     private static final By nameMaybeLater = MobileBy.AccessibilityId("MAYBE LATER");
 
-    private static final By nameCountryPickerButton = MobileBy.AccessibilityId("CountryPickerButton");
-
     private static final By xpathSetEmailPasswordSuggestionLabel = By.xpath(
-            "//UIAStaticText[contains(@name, 'Add email address and password')]");
+            "//UIAStaticText[contains(@name, 'Add your email and password.')]");
+
 
     public static final By nameResentIn10min = MobileBy.AccessibilityId(
             "We already sent you a code via SMS. Tap Resend after 10 minutes to get a new one.");
@@ -58,10 +57,6 @@ public class LoginPage extends IOSPage {
 
     public boolean isVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(nameStrMainWindow));
-    }
-
-    public boolean isPhoneSignInButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), namePhoneLoginButton);
     }
 
     public void switchToEmailLogin() throws Exception {
@@ -166,5 +161,13 @@ public class LoginPage extends IOSPage {
         // Wait for a while until the button is 100% accessible
         Thread.sleep(1000);
         switchToLoginButton.click();
+    }
+
+    public void inputLoginCode(PhoneNumber forNumber) throws Exception {
+        final WebElement codeInput = getElement(RegistrationPage.xpathVerificationCodeInput,
+                "Login code input is not visible");
+        final String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(forNumber);
+        codeInput.sendKeys(code);
+        getElement(RegistrationPage.nameConfirmButton, "Confirm button is not visible", 2).click();
     }
 }

@@ -140,7 +140,8 @@ Feature: Self Profile
     Given I see conversations list
     When I tap settings gear button
     And I tap to add my phone number
-    And I enter phone number and verification code
+    And I enter phone number for Myself
+    And I enter registration verification code for Myself
     Then I see phone number attached to profile
 
     Examples:

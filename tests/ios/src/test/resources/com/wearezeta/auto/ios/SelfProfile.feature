@@ -80,7 +80,8 @@ Feature: Self Profile
     Given I see conversations list
     When I tap settings gear button
     And I tap to add my phone number
-    And I enter phone number and verification code
+    And I enter phone number for Myself
+    And I enter registration verification code for Myself
     Then I see phone number attached to profile
 
     Examples:
@@ -118,11 +119,11 @@ Feature: Self Profile
     When I tap settings gear button
     And I tap to add my phone number
     And I input phone number <Number> with code <Code>
-    Then I see already registered phone number alert
+    Then I verify the alert contains text <ExpectedText>
 
     Examples:
-      | Name      | Number        | Code |
-      | user1Name | 8301652248706 | +0   |
+      | Name      | Number        | Code | ExpectedText               |
+      | user1Name | 8301652248706 | +0   | enter a valid phone number |
 
   @C1081 @regression @rc @id3990
   Scenario Outline: Verify theme switcher is shown on the self profile

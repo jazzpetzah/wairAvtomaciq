@@ -9,7 +9,6 @@ import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -34,13 +33,13 @@ public class RegistrationPage extends IOSPage {
 
     private static final By namePhoneNumberField = MobileBy.AccessibilityId("PhoneNumberField");
 
-    private static final By xpathActivationCode = By.xpath(xpathStrMainWindow + "//UIATextField");
+    public static final By xpathVerificationCodeInput = By.xpath(xpathStrMainWindow + "//UIATextField");
 
     private static final By nameCountryPickerButton = MobileBy.AccessibilityId("CountryPickerButton");
 
     public static final By xpathCountryList = By.xpath(xpathStrMainWindow + "/UIATableView[1]");
 
-    private static final By nameConfirmButton = MobileBy.AccessibilityId("RegistrationConfirmButton");
+    public static final By nameConfirmButton = MobileBy.AccessibilityId("RegistrationConfirmButton");
 
     private static final By nameAgreeButton = MobileBy.AccessibilityId("I AGREE");
 
@@ -74,14 +73,6 @@ public class RegistrationPage extends IOSPage {
         clickElementWithRetryIfStillDisplayed(nameAgreeButton);
     }
 
-    public boolean isCountryPickerButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameCountryPickerButton, 2);
-    }
-
-    public boolean isCountryPickerButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameCountryPickerButton, 2);
-    }
-
     private static final String WIRE_COUNTRY_NAME = "Wirestan";
 
     private void selectWirestan() throws Exception {
@@ -112,22 +103,15 @@ public class RegistrationPage extends IOSPage {
     }
 
     public void inputActivationCode(PhoneNumber forNumber) throws Exception {
-        final WebElement activationCodeInput = getElement(xpathActivationCode, "Activation code input is not visible");
+        final WebElement codeInput = getElement(xpathVerificationCodeInput,
+                "Activation code input is not visible");
         final String code = BackendAPIWrappers.getActivationCodeByPhoneNumber(forNumber);
-        activationCodeInput.sendKeys(code);
+        codeInput.sendKeys(code);
         getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
     }
-
-    public void inputActivationCode(String code) throws Exception {
-        final WebElement activationCodeInput = getElement(xpathActivationCode, "Activation code input is not visible");
-        activationCodeInput.sendKeys(code);
-        getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
-    }
-
-    private static final Random rand = new Random();
 
     public void inputRandomActivationCode() throws Exception {
-        inputActivationCode(Integer.toString(100000 + rand.nextInt(900000)));
+        inputActivationCode(new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX));
     }
 
     public void clickResendCodeButton() throws Exception {
