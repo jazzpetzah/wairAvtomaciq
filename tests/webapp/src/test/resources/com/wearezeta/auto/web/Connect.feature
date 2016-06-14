@@ -446,6 +446,7 @@ Feature: Connect
     And I see my avatar on top of Contact list
     And I wait until <Contact1> exists in backend search results
     When I open People Picker from Contact List
+    And I wait for the search field of People Picker to be empty
     And I type <Contact1Email> in search field of People Picker
     Then I see user <Contact1> found in People Picker
     When I click on pending user <Contact1> found in People Picker
