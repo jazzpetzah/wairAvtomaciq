@@ -297,9 +297,20 @@ public class AndroidCommonUtils extends CommonUtils {
         return output.contains(androidPackage);
     }
 
+    /**
+     * Install Testing Gallery, if SDK Version <= 4.3, which will not support Catching Notification Service
+     *
+     * @param c
+     * @throws Exception
+     */
     public static void installTestingGalleryApp(Class<?> c) throws Exception {
-        executeAdb(String.format("install -r %s/testing_gallery-debug.apk",
-                getAndroidToolsPathFromConfig(c)));
+        if (compareAndroidVersion("4.3") <= 0) {
+            executeAdb(String.format("install -r %s/testing_gallery-debug.apk",
+                    getAndroidToolsPathFromConfig(c)));
+        } else {
+            executeAdb(String.format("install -r %s/testing_gallery-debug19.apk",
+                    getAndroidToolsPathFromConfig(c)));
+        }
     }
 
     public static boolean isAppInForeground(String packageId, long timeoutMillis) throws Exception {
@@ -732,18 +743,18 @@ public class AndroidCommonUtils extends CommonUtils {
      * Grant permission to the particular application with bundleId identifier
      *
      * @param bundleId app identifier, dor example com.wire.x
-     * @param perms array of permission name. See https://developer.android.com/reference/android/Manifest.permission.html
-     *              for more details
+     * @param perms    array of permission name. See https://developer.android.com/reference/android/Manifest.permission.html
+     *                 for more details
      * @throws Exception
      */
     public static void grantPermissionsTo(String bundleId, String... perms) throws Exception {
-        for (String permissionName: perms) {
+        for (String permissionName : perms) {
             executeAdb(String.format("shell pm grant %s %s", bundleId, permissionName));
         }
     }
 
     public static void revokePermissionsFrom(String bundleId, String... perms) throws Exception {
-        for (String permissionName: perms) {
+        for (String permissionName : perms) {
             executeAdb(String.format("shell pm revoke %s %s", bundleId, permissionName));
         }
     }
