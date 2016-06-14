@@ -10,6 +10,7 @@ import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ScreenOrientation;
 
@@ -254,10 +255,10 @@ public class AndroidCommonUtils extends CommonUtils {
      * device's version
      * @throws Exception
      */
-    public static int compareAndroidVersion(String targetVersion)
-            throws Exception {
-        String deviceVersion = readDeviceInfo().getOperatingSystemBuild();
-        return deviceVersion.compareTo(targetVersion);
+    public static int compareAndroidVersion(String targetVersion) throws Exception {
+        final DefaultArtifactVersion deviceVersion =
+                new DefaultArtifactVersion(getPropertyFromAdb("ro.build.version.release"));
+        return deviceVersion.compareTo(new DefaultArtifactVersion(targetVersion));
     }
 
     /**
