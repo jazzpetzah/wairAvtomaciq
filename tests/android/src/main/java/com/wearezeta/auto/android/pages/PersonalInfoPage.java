@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
+@Deprecated
 public class PersonalInfoPage extends AndroidPage {
     private static final String xpathStrParentSelfProfileOverlay = "//*[@id='fl__profile__main_container']";
 
