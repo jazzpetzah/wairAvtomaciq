@@ -313,6 +313,11 @@ public class AndroidCommonUtils extends CommonUtils {
         }
     }
 
+    public static void enableAutoAnswerCall(Class<?> c) throws Exception {
+        executeAdb("shell am broadcast -a com.waz.zclient.intent.action.AUTO_ANSWER_CALL " +
+                "--ez AUTO_ANSWER_CALL_EXTRA_KEY true");
+    }
+
     public static boolean isAppInForeground(String packageId, long timeoutMillis) throws Exception {
         final long millisecondsStarted = System.currentTimeMillis();
         do {
