@@ -723,6 +723,24 @@ public class AndroidCommonUtils extends CommonUtils {
         executeAdb(String.format("shell am broadcast -a clipper.set -e text \"%s\"", content));
     }
 
+
+    // ***
+
+    /**
+     * this method requires TestingGallery app to be installed on the target device
+     * See https://github.com/wearezeta/zclient-android/pull/3317/ for more details
+     */
+    public static String getWirePushNotifications() throws Exception {
+        return getAdbOutput("shell am broadcast -a com.wire.testinggallery.notification --es command get");
+    }
+
+    public static String clearWirePushNotifications() throws Exception {
+        return getAdbOutput("shell am broadcast -a com.wire.testinggallery.notification --es command clear");
+    }
+
+    // ***
+
+
     // ***
 
     public enum PadButton {

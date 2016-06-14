@@ -140,13 +140,15 @@ public final class CommonSteps {
         usrMgr.appendCustomUser(user);
     }
 
-    public void ThereAreNUsers(Platform currentPlatform, int count)
-            throws Exception {
+    public void ThereAreNUsers(Platform currentPlatform, int count) throws Exception {
         usrMgr.createUsersOnBackend(count, RegistrationStrategy.getRegistrationStrategyForPlatform(currentPlatform));
     }
 
-    public void ThereAreNUsersWhereXIsMe(Platform currentPlatform, int count,
-            String myNameAlias) throws Exception {
+    public void ThereAreXAdditionalUsers(Platform currentPlatform, int count) throws Exception {
+        usrMgr.createAndAppendUsers(count, RegistrationStrategy.getRegistrationStrategyForPlatform(currentPlatform));
+    }
+
+    public void ThereAreNUsersWhereXIsMe(Platform currentPlatform, int count, String myNameAlias) throws Exception {
         usrMgr.createUsersOnBackend(count, RegistrationStrategy
                 .getRegistrationStrategyForPlatform(currentPlatform));
         usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
