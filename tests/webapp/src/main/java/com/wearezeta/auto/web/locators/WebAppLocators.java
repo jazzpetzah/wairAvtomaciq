@@ -342,6 +342,15 @@ public final class WebAppLocators {
 
         public static final String cssDoDelete = "[data-uie-name='do-delete']";
 
+        // TODO: replace the bottom css with this, when implemented by developers
+        //public static final Function<String, String> cssResetSessionByMessageId = text -> String
+        //        .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-reset-session']", text);
+
+        public static final Function<String, String> cssResetSessionByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-header-decrypt-reset-session span", text);
+
+        public static final String cssCloseResetSessionDialog = "[data-uie-name='modal-session-reset'] [data-uie-name='do-close']";
+
         public static final String cssLastMessage = "[data-uie-name='item-message']:last-child";
 
         public static final String cssSecondLastMessage = "[data-uie-name='item-message']:nth-last-child(2)";

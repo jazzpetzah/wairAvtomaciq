@@ -504,7 +504,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact2  | ConvOption1 | ConvOption2    | ConvOption3 | Contact1Email | Contact1Password |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Archive     | Cancel request | Block       | user2Email    | user2Password    |
 
-  @C145967 @staging
+  @C145967 @regression
   Scenario Outline: I want to archive a pending request from conversation list
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>
@@ -526,7 +526,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact2  | ConvOption1 | ConvOption2    | ConvOption3 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Archive     | Cancel request | Block       |
 
-  @C147863 @staging
+  @C147863 @regression
   Scenario Outline: Verify you can cancel a pending request from conversation view
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>
@@ -543,7 +543,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @C145966 @staging
+  @C145966 @regression
   Scenario Outline: Verify you can block a user who sent you an incoming connection request from conversation list
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>

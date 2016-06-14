@@ -50,11 +50,6 @@ public class GroupChatInfoPage extends IOSPage {
 
     private static final By classNameParticipantAvatarCell = By.className("UIACollectionCell");
     
-    private static final By nameAddPeopleAtTopButton = MobileBy.AccessibilityId("ADD PEOPLE");
-
-    private static final By xpathStrSpreadTheWord = By
-            .xpath("//UIATextView[contains(@name, 'SPREAD THE WORD')]");
-
     public GroupChatInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -140,17 +135,5 @@ public class GroupChatInfoPage extends IOSPage {
     public boolean waitForContactToDisappear(String contact) throws Exception {
         final By locator = By.xpath(xpathStrUserNameLabelByText.apply(contact));
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
-    }
-
-    public void addContactToChat() throws Exception {
-        getElement(nameAddPeopleAtTopButton).click();
-    }
-
-    public boolean isAddPeopleButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), nameAddPeopleAtTopButton);
-    }
-
-    public boolean isSpreadTheWordTextViewVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrSpreadTheWord);
     }
 }

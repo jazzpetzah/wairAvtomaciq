@@ -629,6 +629,16 @@ public class ConversationPageSteps {
                 .isDeleteButtonVisibleForLatestMessage());
     }
 
+    @When("^I click reset session on the latest decryption error")
+    public void IClickToResetSession() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickToResetSessionOnLatestError();
+    }
+
+    @When("^I close reset session dialog$")
+    public void IClickConfirmToResetSession() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).setCloseResetSessionDialog();
+    }
+
     /**
      * Verifies whether people button tool tip is correct or not.
      *

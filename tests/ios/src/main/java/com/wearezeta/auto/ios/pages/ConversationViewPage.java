@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.TouchAction;
@@ -185,6 +186,10 @@ public class ConversationViewPage extends IOSPage {
 
     private static final Function<String, String> placeholderAudioMessageButtonState = buttonState ->
             String.format("//UIAButton[@name='%s' and @value='%s']", strNameAudioActionButton, buttonState);
+
+    private static final FunctionFor2Parameters<String, String, Integer> placeholderAudioMessageButtonStateByIndex =
+            (buttonState, index) ->
+            String.format("(//UIAButton[@name='%s'])[%s][@value='%s']", strNameAudioActionButton, index, buttonState);
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -836,10 +841,14 @@ public class ConversationViewPage extends IOSPage {
         return getElement(nameAudioPlaceholderTimeLabel).getAttribute("value");
     }
 
-
     public boolean isPlaceholderAudioMessageButtonState(String buttonState) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(placeholderAudioMessageButtonState.apply
                 (buttonState)));
+    }
+
+    public boolean isPlaceholderAudioMessageButtonState(String buttonState, int index) throws Exception {
+        final By locator = By.xpath(placeholderAudioMessageButtonStateByIndex.apply(buttonState, index));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isPlaceholderTimeLabelValueChanging() throws Exception {

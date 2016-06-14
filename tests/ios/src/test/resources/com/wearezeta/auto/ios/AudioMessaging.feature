@@ -24,12 +24,15 @@ Feature: Audio Messaging
     And I long tap Audio Message button for <Duration> seconds from input tools
     And I tap Send record control button
     Then I see audio message placeholder
+    When I remember the state of Play button on audio message placeholder
     When I tap Play audio message button
     Then I see state of button on audio message placeholder is pause
-    And I see the audio message in placeholder gets played
+    # TODO: Should be uncommented once ZIOS-6798 is fixed
+    #And I see the audio message in placeholder gets played
     When I tap Pause audio message button
     Then I see state of button on audio message placeholder is play
-    And I see the audio message in placeholder gets paused
+    # TODO: Should be uncommented once ZIOS-6798 is fixed
+    #And I see the audio message in placeholder gets paused
 
     Examples:
       | Name      | Contact   | Duration |
@@ -43,7 +46,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User Me sends 1 encrypted message to user <Contact1>
     Given I see audio message placeholder
     When I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item
@@ -166,15 +169,11 @@ Feature: Audio Messaging
     Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User Me sends 1 encrypted message to user <Contact1>
     When I tap Play audio message button on audio message placeholder number 2
-    # Wait until the audio is downloaded and starts playback
-    And I wait for <AudioDownloadTimeout> seconds
-    And I remember the state of Pause button on the second audio message placeholder
+    And I see state of button on audio message placeholder number 2 is pause
     And I tap Play audio message button on audio message placeholder number 1
-    # Wait until the audio is downloaded
-    And I wait for <AudioDownloadTimeout> seconds
-    Then I verify the state of Pause button on audio message placeholder is changed
+    Then I see state of button on audio message placeholder number 2 is play
 
     Examples:
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
@@ -190,7 +189,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact>
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User Me sends 1 encrypted message to user <Contact>
     And I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait to make sure the audio file is downloaded and starts playback
@@ -233,7 +232,7 @@ Feature: Audio Messaging
     Given I tap on contact name <Contact>
     Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User Me sends 1 encrypted message to user <Contact>
     When I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
@@ -253,7 +252,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact1> sends 1 encrypted messages to user <Name>
+    Given User Me sends 1 encrypted message to user <Contact1>
     And I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
@@ -274,7 +273,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact1> sends 1 encrypted messages to user <Name>
+    Given User Me sends 1 encrypted message to user <Contact1>
     And I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
@@ -315,7 +314,9 @@ Feature: Audio Messaging
     # Let it record something for specific duration
     When I long tap Audio Message button for <Duration> seconds from input tools
     And I tap Play record control button
-    Then I see the audio message in record toolbar gets played
+    Then I see state of button on audio message placeholder is pause
+    # TODO: Should be uncommented once ZIOS-6798 is fixed
+    #And I see the audio message in record toolbar gets played
 
     Examples:
       | Name      | Contact1  | Duration |
@@ -333,10 +334,12 @@ Feature: Audio Messaging
     And I see audio message placeholder
     And I tap Play audio message button
     Then I see state of button on audio message placeholder is pause
-    And I see the audio message in placeholder gets played
+    # TODO: Should be uncommented once ZIOS-6798 is fixed
+    #And I see the audio message in placeholder gets played
     When I tap Pause audio message button
     Then I see state of button on audio message placeholder is play
-    And I see the audio message in placeholder gets paused
+    # TODO: Should be uncommented once ZIOS-6798 is fixed
+    #And I see the audio message in placeholder gets paused
 
     Examples:
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice |

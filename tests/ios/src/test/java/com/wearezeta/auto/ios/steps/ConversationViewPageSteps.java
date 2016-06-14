@@ -1238,7 +1238,7 @@ public class ConversationViewPageSteps {
      * Tap Play/Pause audio message button
      *
      * @param placeholderIndex optional parameter. If exists then button state for the particular placeholder will
-     *                         be verified.
+     *                         be tap.
      *                         The most recent  audio message placeholder is the conversation view will have index 1
      * @throws Exception
      * @step. ^I tap (?:Play|Pause) audio message button (on audio message placeholder number \d+)?$
@@ -1330,13 +1330,17 @@ public class ConversationViewPageSteps {
     /**
      * Verify play/pause button state in audio message placeholder
      *
-     * @param buttonState play or pause
+     * @param placeholderIndex optional parameter. If exists then button state for the particular placeholder will
+     *                         be verified.
+     *                         The most recent  audio message placeholder is the conversation view will have index 1
+     * @param buttonState      play or pause
      * @throws Exception
-     * @step. ^I see state of button on audio message placeholder is (play|pause)$
+     * @step. ^I see state of button on audio message placeholder (number \d+ )?is (play|pause)$
      */
-    @Then("^I see state of button on audio message placeholder is (play|pause)$")
-    public void ISeeAudioMessageControlButtonStateIs(String buttonState) throws Exception {
-        Assert.assertTrue(String.format("Wrong button state. Espected state is '%s'", buttonState),
-                getConversationViewPage().isPlaceholderAudioMessageButtonState(buttonState));
+    @Then("^I see state of button on audio message placeholder (number \\d+ )?is (play|pause)$")
+    public void ISeeAudioMessageControlButtonStateIs(String placeholderIndex, String buttonState) throws Exception {
+        Assert.assertTrue(String.format("Wrong button state. Expected state is '%s'", buttonState),
+                getConversationViewPage().isPlaceholderAudioMessageButtonState(buttonState,
+                        (placeholderIndex == null) ? 1 : Integer.parseInt(placeholderIndex.replaceAll("[\\D]", ""))));
     }
 }

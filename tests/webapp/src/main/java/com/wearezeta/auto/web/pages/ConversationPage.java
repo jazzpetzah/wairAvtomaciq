@@ -147,6 +147,9 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssDoDelete)
     private WebElement doDeleteButton;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssCloseResetSessionDialog)
+    private WebElement closeResetSessionDialogButton;
+
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -1006,6 +1009,14 @@ public class ConversationPage extends WebPage {
         }
     }
 
+    public void clickToResetSessionOnLatestError() throws Exception {
+        By lastMessageLocator = By.cssSelector(WebAppLocators.ConversationPage.cssLastMessage);
+        String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
+        hoverOverMessage(id);
+        By locator = By.cssSelector(WebAppLocators.ConversationPage.cssResetSessionByMessageId.apply(id));
+        getDriver().findElement(locator).click();
+    }
+
     private void hoverOverVideo(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideo, fileName));
         if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
@@ -1036,6 +1047,11 @@ public class ConversationPage extends WebPage {
         String id = getDriver().findElement(lastMessageLocator).getAttribute("data-uie-uid");
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssDeleteButtonByMessageId.apply(id));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+    }
+
+    public void setCloseResetSessionDialog() throws Exception {
+        DriverUtils.waitUntilElementClickable(this.getDriver(), closeResetSessionDialogButton);
+        closeResetSessionDialogButton.click();
     }
 
     public String getTitlebarLabel() {
