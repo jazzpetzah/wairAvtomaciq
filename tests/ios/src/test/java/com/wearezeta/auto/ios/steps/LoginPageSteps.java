@@ -116,6 +116,18 @@ public class LoginPageSteps {
     }
 
     /**
+     * Enter login verification code for current phone number
+     *
+     * @throws Exception
+     * @step. ^I enter login verification code$
+     */
+    @When("^I enter login verification code$")
+    public void IEnterLoginVerificationCode() throws Exception {
+        ClientUser self = usrMgr.getSelfUserOrThrowError();
+        getRegistrationPage().inputLoginCode(self.getPhoneNumber());
+    }
+
+    /**
      * Enter verification code for specified user
      *
      * @param name name of user

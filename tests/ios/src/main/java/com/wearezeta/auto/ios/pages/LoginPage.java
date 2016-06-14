@@ -36,7 +36,8 @@ public class LoginPage extends IOSPage {
     private static final By nameCountryPickerButton = MobileBy.AccessibilityId("CountryPickerButton");
 
     private static final By xpathSetEmailPasswordSuggestionLabel = By.xpath(
-            "//UIAStaticText[contains(@name, 'Add email address and password')]");
+            "//UIAStaticText[contains(@name, 'Add your email and password.')]");
+
 
     public static final By nameResentIn10min = MobileBy.AccessibilityId(
             "We already sent you a code via SMS. Tap Resend after 10 minutes to get a new one.");

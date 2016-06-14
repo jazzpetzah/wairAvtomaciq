@@ -84,14 +84,14 @@ Feature: Sign In
       | Count | ExpectedText               |
       | 16    | enter a valid phone number |
 
-  @C1136 @rc @regression @id3851 @ZIOS-5585 @useSpecialEmail
+  @C1136 @rc @regression @id3851 @useSpecialEmail
   Scenario Outline: Verify first time phone sign in when email is not assigned
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
     When I enter phone number for user <Name>
-    And I enter verification code for user <Name>
+    And I enter login verification code
     And I have entered login <Email>
     And I start activation email monitoring
     And I have entered password <Password>
@@ -107,7 +107,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C1089 @regression @id3863 @noAcceptAlert @ZIOS-5585
+  @C1089 @regression @id3863 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -115,7 +115,7 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     When I enter phone number for user <Name>
     Then I see verification code page
-    When I enter verification code for user <Name>
+    When I enter login verification code
     And I accept alert
     And I see set email/password suggesstion page
     When I have entered login <Email>
@@ -127,7 +127,7 @@ Feature: Sign In
       | Email                     | Password      | Name      |
       | smoketester@wearezeta.com | user1Password | user1Name |
 
-  @C1147 @regression @id3857 @noAcceptAlert @ZIOS-5585
+  @C1147 @regression @id3857 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of entering not valid email address
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
@@ -135,7 +135,7 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     When I enter phone number for user <Name>
     Then I see verification code page
-    When I enter verification code for user <Name>
+    When I enter login verification code
     And I accept alert
     And I see set email/password suggesstion page
     When I have entered login <Email>

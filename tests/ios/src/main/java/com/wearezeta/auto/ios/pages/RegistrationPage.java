@@ -118,6 +118,13 @@ public class RegistrationPage extends IOSPage {
         getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
     }
 
+    public void inputLoginCode(PhoneNumber forNumber) throws Exception {
+        final WebElement activationCodeInput = getElement(xpathActivationCode, "Login code input is not visible");
+        final String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(forNumber);
+        activationCodeInput.sendKeys(code);
+        getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
+    }
+
     public void inputActivationCode(String code) throws Exception {
         final WebElement activationCodeInput = getElement(xpathActivationCode, "Activation code input is not visible");
         activationCodeInput.sendKeys(code);
