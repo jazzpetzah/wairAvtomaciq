@@ -842,8 +842,10 @@ public class ConversationPage extends WebPage {
     }
 
     public boolean waitUntilFileUploaded(String fileName) throws Exception {
-        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileStatus, fileName));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, TIMEOUT_FILE_UPLOAD);
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFile, fileName));
+        DriverUtils.waitUntilLocatorAppears(getDriver(), locator, TIMEOUT_FILE_UPLOAD);
+        By locatorPlaceholder = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFilePlaceholder, fileName));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locatorPlaceholder, TIMEOUT_FILE_UPLOAD);
     }
 
     public void clickFileIcon(String fileName) throws Exception {
