@@ -1,6 +1,6 @@
 package com.wearezeta.auto.android_tablet.steps;
 
-import com.wearezeta.auto.android_tablet.pages.TabletCallOngoingPage;
+import com.wearezeta.auto.android_tablet.pages.TabletCallOngoingAudioPage;
 import com.wearezeta.auto.common.misc.ElementState;
 
 import cucumber.api.java.en.Then;
@@ -10,14 +10,14 @@ import org.junit.Assert;
 
 import static org.junit.Assert.assertTrue;
 
-public class CallOngoingPageSteps {
+public class CallOngoingPageAudioSteps {
 
     private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
 
     private final ElementState muteButtonState = new ElementState(() -> getPage().getMuteButtonScreenshot());
 
-    private TabletCallOngoingPage getPage() throws Exception {
-        return pagesCollection.getPage(TabletCallOngoingPage.class);
+    private TabletCallOngoingAudioPage getPage() throws Exception {
+        return pagesCollection.getPage(TabletCallOngoingAudioPage.class);
     }
 
     /**
