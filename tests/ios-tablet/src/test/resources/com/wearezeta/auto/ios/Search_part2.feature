@@ -24,6 +24,7 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
