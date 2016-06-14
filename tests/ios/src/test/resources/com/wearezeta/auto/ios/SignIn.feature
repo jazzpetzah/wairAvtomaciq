@@ -29,14 +29,14 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @C1138 @regression @id2719 @ZIOS-5585
+  @C1138 @regression @id2719
   Scenario Outline: Verify phone sign in when email is assigned
     Given There is 1 user where <Name> is me
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    When I enter phone number for user <Name>
-    And I enter verification code for user <Name>
+    When I enter phone number for Myself
+    And I enter login verification code for Myself
     And I dismiss settings warning
     Then I see conversations list
 
@@ -50,8 +50,8 @@ Feature: Sign In
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    And I enter phone number for user Myself
-    When I enter random verification code
+    And I enter phone number for Myself
+    When I enter random verification code for Myself
     Then I see wrong credentials notification
 
     Examples:
@@ -64,7 +64,7 @@ Feature: Sign In
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    And I enter phone number for user <Name>
+    And I enter phone number for Myself
     When I tap RESEND code button
     Then I see Resend will be possible after 10 min alert
 
@@ -90,8 +90,8 @@ Feature: Sign In
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    When I enter phone number for user <Name>
-    And I enter login verification code
+    When I enter phone number for Myself
+    And I enter login verification code for Myself
     And I have entered login <Email>
     And I start activation email monitoring
     And I have entered password <Password>
@@ -113,14 +113,13 @@ Feature: Sign In
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    When I enter phone number for user <Name>
-    Then I see verification code page
-    When I enter login verification code
+    When I enter phone number for Myself
+    And I enter login verification code for Myself
     And I accept alert
     And I see set email/password suggesstion page
-    When I have entered login <Email>
+    And I have entered login <Email>
     And I have entered password <Password>
-    When I click DONE keyboard button
+    And I click DONE keyboard button
     Then I see already registered email alert
 
     Examples:
@@ -133,14 +132,13 @@ Feature: Sign In
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    When I enter phone number for user <Name>
-    Then I see verification code page
-    When I enter login verification code
+    When I enter phone number for Myself
+    And I enter login verification code for Myself
     And I accept alert
     And I see set email/password suggesstion page
-    When I have entered login <Email>
+    And I have entered login <Email>
     And I have entered password <Password>
-    When I click DONE keyboard button
+    And I click DONE keyboard button
     Then I see invalid email alert
 
     Examples:
