@@ -231,7 +231,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C145968 @staging
+  @C145968 @calling_basic
   Scenario Outline: Verify starting a group call [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
