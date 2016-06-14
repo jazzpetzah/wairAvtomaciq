@@ -6,6 +6,8 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -26,6 +28,8 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
