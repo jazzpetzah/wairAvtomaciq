@@ -8,6 +8,7 @@ Feature: File Transfer
     Given I see conversations list
     When I tap on contact name <Contact>
     And User <Contact> sends file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    And User Me sends 1 encrypted message to user <Contact>
     Then I wait up to <Timeout> seconds until the file <FileName>.<FileExt> with size <FileSize> is ready for download from conversation view
     When I tap file transfer placeholder
     Then I wait up to <Timeout> seconds until I see a preview of the file named "<FileName>"

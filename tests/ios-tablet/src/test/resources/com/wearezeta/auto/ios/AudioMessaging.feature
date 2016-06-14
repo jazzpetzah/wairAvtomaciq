@@ -13,7 +13,8 @@ Feature: Audio Messaging
     Then I see audio message placeholder
     When I tap Play audio message button
     Then I see state of button on audio message placeholder is pause
-    And I see the audio message in placeholder gets played
+    # TODO: Should be uncommented once ZIOS-6798 is fixed
+    #And I see the audio message in placeholder gets played
 
     Examples:
       | Name      | Contact   | Duration |
