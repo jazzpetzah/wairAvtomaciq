@@ -33,6 +33,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 
     private static final int LOAD_TIMEOUT = 15; // seconds
 
+    // TODO: no self profile view anymore, should refactoring this function
     public void verifyConversationsListIsLoaded() throws Exception {
         if (ScreenOrientationHelper.getInstance().fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
             if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrConvoViewOrSelfProfile, LOAD_TIMEOUT)) {

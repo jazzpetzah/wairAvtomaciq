@@ -32,8 +32,6 @@ Feature: Sign In
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I tap conversations list settings button
-    When I tap options button
-    And I tap settings button
     And I select "Account" settings menu item
     And I select "Log out" settings menu item
     And I confirm sign out

@@ -10,8 +10,6 @@ Feature: Conversation List
     And I press Clear button
     Then I do not see contact hint banner
     When I tap conversations list settings button
-    And I tap options button
-    And I tap settings button
     And I select "Account" settings menu item
     And I select "Log out" settings menu item
     And I confirm sign out
