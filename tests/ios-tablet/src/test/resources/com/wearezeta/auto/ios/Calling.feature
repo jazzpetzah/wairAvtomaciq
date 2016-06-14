@@ -290,7 +290,7 @@ Feature: Calling
     And <Contact1> calls <GroupChatName>
     Then I see call status message contains "<GroupChatName> ringing"
     And I tap Accept button on Calling overlay
-    Then I see <NumberOfAvatars> avatars on the Calling overlay
+    And I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
