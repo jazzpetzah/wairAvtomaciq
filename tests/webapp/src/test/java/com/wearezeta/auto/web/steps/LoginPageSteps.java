@@ -301,8 +301,6 @@ public class LoginPageSteps {
 				throw new IllegalArgumentException("Please specify a language for the login page");
 		}
 		context.getPagesCollection().getPage(LoginPage.class).visitRedirectedPage(langKey);
-                // sometimes driver.get(URL) does not visit the URL so we retry :/
-                context.getPagesCollection().getPage(LoginPage.class).visitRedirectedPage(langKey);
 	}
 
 	@Then("^I verify description message is visible$")
