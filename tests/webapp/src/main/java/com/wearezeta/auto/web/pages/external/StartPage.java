@@ -125,11 +125,13 @@ public class StartPage extends WebPage {
 
 	public void changeLanguageTo(String language) throws Exception {
 		if (language.equals("german")) {
+			DriverUtils.waitUntilLocatorAppears(getDriver(), By.cssSelector(ExternalLocators.StartPage.cssEnglishButton));
 			WebElement select = getDriver().findElement(By.cssSelector(ExternalLocators.StartPage.cssEnglishButton));
 			Select dropdown = new Select(select);
 			dropdown.selectByVisibleText("DEUTSCH");
 		}
 		if (language.equals("english")) {
+			DriverUtils.waitUntilLocatorAppears(getDriver(), By.cssSelector(ExternalLocators.StartPage.cssGermanButton));
 			WebElement select = getDriver().findElement(By.cssSelector(ExternalLocators.StartPage.cssGermanButton));
 			Select dropdown = new Select(select);
 			dropdown.selectByVisibleText("ENGLISH");
