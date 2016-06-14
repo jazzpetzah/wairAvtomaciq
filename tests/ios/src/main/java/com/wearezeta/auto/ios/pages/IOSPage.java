@@ -297,6 +297,9 @@ public abstract class IOSPage extends BasePage {
             final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver());
             if (alert.isPresent()) {
                 alert.get().accept();
+                if (!DriverUtils.waitUntilAlertDisappears(getDriver())) {
+                    throw new IllegalStateException("Alert is still visible after time out");
+                }
             }
         } catch (WebDriverException e) {
             // ignore
