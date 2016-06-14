@@ -208,8 +208,7 @@ public class ConversationViewPageSteps {
      * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)?
      * from input tool( without releasing my finger)?s$
      */
-    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)? " +
-            "from input tools( without releasing my finger)?$")
+    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)? from input tools( without releasing my finger)?$")
     public void IPressAddPictureButton(String isLongTap, String btnName, String durationSeconds,
                                        String shouldKeepTap) throws Exception {
         if (isLongTap == null) {

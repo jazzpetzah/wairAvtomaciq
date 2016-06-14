@@ -65,7 +65,7 @@ public class ConversationViewPage extends IOSPage {
             String.format("%s[contains(@value, '%s')]/parent::*", xpathStrAllTextMessages, text);
 
     private static final Function<String, String> xpathStrSystemMessageByText = text ->
-            String.format("%s[@name='%s']", xpathStrAllEntries, text.toUpperCase());
+            String.format("//UIATableCell[@name='%s']", text.toUpperCase());
 
     private static final String xpathStrImageCells = xpathStrAllEntries + "[@name='ImageCell']";
     private static final By xpathImageCell = By.xpath(xpathStrImageCells);
