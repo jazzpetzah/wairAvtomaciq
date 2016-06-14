@@ -1,7 +1,13 @@
 package com.wearezeta.auto.android;
 
-/**
- * Created by julianereschke on 14/06/16.
- */
+import org.junit.runner.RunWith;
+
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(format = {"html:target/report", "json:target/test_report.json",
+        "com.wearezeta.auto.common.ZetaFormatter"}, tags = {"@calling_autoAnswer"})
+
 public class CallAutoAnswerRun {
 }
