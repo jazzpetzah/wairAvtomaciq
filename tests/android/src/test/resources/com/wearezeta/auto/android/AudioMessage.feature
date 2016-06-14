@@ -58,6 +58,8 @@ Feature: Audio Message
     And I tap on audio message send button
     Then I see cursor toolbar
     And I see Audio Message container in the conversation view
+    #TODO: instead of static waiter we should wait untill message is uploaded
+    And I wait for 5 seconds
     When I remember the state of recent audio message seekbar
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
