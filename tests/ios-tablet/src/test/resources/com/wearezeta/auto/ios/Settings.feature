@@ -111,7 +111,7 @@ Feature: Settings
       | Name      | Color  |
       | user1Name | Violet |
 
-  @C145961 @staging @useSpecialEmail
+  @C145961 @regression @useSpecialEmail
   Scenario Outline: Verify deleting the account registered by email [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape

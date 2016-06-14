@@ -1,6 +1,6 @@
 Feature: File Transfer
 
-  @C145955 @staging
+  @C145955 @regression
   Scenario Outline: Verify sending the file in an empty conversation and text after it [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

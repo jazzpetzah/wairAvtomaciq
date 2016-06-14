@@ -1,6 +1,6 @@
 Feature: E2EE
 
-  @C145965 @staging
+  @C145965 @regression
   Scenario Outline: Verify device verification [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -25,7 +25,7 @@ Feature: E2EE
       | Name      | Contact1  | DeviceName1 | DeviceName2 |
       | user1Name | user2Name | Device1     | Device2     |
 
-  @C145964 @staging
+  @C145964 @regression
   Scenario Outline: Verify system message appearance in case of using a new device by you [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
