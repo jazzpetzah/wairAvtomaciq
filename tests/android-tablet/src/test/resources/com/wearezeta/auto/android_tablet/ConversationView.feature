@@ -90,6 +90,7 @@ Feature: Conversation View
     And I see the Single user popover
     When I tap Create Group button on Single user popover
     And I enter "<Contact2>" into the Search input on Single user popover
+    And I hide keyboard
     And I tap the avatar of <Contact2> in search results on Single user popover
     And I tap the Add To Conversation button on Single user popover
     Then I see the system message contains "<Action>" text on conversation view page
