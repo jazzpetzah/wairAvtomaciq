@@ -32,11 +32,10 @@ Feature: Audio Messaging
     And User <Contact> sends 1 encrypted message to user Myself
     And I see state of button on audio message placeholder is play
     And I tap Play audio message button
-    # Wait to make sure the audio file is downloaded and starts playback
-    And I wait for <AudioDownloadTimeout> seconds
+    #This step waits until state is changed, no need for download sleep anymore
     Then I see state of button on audio message placeholder is pause
 
     Examples:
-      | Name      | Contact   | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
-      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
+      | Name      | Contact   | FileName | FileMIME  | ContactDevice |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
 
