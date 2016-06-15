@@ -1342,4 +1342,17 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().isPlaceholderAudioMessageButtonState(buttonState,
                         (placeholderIndex == null) ? 1 : Integer.parseInt(placeholderIndex.replaceAll("[\\D]", ""))));
     }
+
+    /**
+     * Verify state of record control button playing or idle
+     *
+     * @param buttonState should be "playing" or "idle"
+     * @throws Exception
+     * @step. ^I see state of button on record toolbar is (playing|idle)$
+     */
+    @Then("^I see state of button on record toolbar is (playing|idle)$")
+    public void IseeRecordToolbarButtonStateIs(String buttonState) throws Exception {
+        Assert.assertTrue(String.format("Wrong button state. Expected state is '%s'", buttonState),
+                getConversationViewPage().isRecordControlButtonState(buttonState));
+    }
 }
