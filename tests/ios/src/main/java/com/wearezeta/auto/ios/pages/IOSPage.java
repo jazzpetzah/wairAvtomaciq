@@ -76,6 +76,8 @@ public abstract class IOSPage extends BasePage {
 
     private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
 
+    private static final By classAlert = By.className("UIAAlert");
+
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
@@ -293,17 +295,13 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void acceptAlertIfVisible() throws Exception {
-        try {
-            final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver());
-            if (alert.isPresent()) {
-                alert.get().accept();
-            }
-        } catch (WebDriverException e) {
-            // ignore
-        }
+        acceptAlertIfVisible(DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
     public void acceptAlertIfVisible(int timeoutSeconds) throws Exception {
+        if (!waitUntilAlertAppears(timeoutSeconds)) {
+            return;
+        }
         try {
             final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver(), timeoutSeconds);
             if (alert.isPresent()) {
@@ -315,6 +313,13 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void dismissAlertIfVisible() throws Exception {
+        dismissAlertIfVisible(DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    public void dismissAlertIfVisible(int timeoutSeconds) throws Exception {
+        if (!waitUntilAlertAppears(timeoutSeconds)) {
+            return;
+        }
         try {
             final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver());
             if (alert.isPresent()) {
@@ -602,5 +607,21 @@ public abstract class IOSPage extends BasePage {
 
     public void tapOnScreenCenter() throws Exception {
         DriverUtils.genericTap(getDriver(), 50, 50);
+    }
+
+    public boolean waitUntilAlertAppears() throws Exception {
+        return waitUntilAlertAppears(DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    public boolean waitUntilAlertAppears(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classAlert, timeoutSeconds);
+    }
+
+    public boolean waitUntilAlertDisappears() throws Exception {
+        return waitUntilAlertDisappears(DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    public boolean waitUntilAlertDisappears(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), classAlert, timeoutSeconds);
     }
 }

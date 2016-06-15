@@ -263,23 +263,6 @@ public class DriverUtils {
         }
     }
 
-    public static boolean waitUntilAlertAppears(AppiumDriver<? extends WebElement> driver) throws Exception {
-        return waitUntilAlertAppears(driver, getDefaultLookupTimeoutSeconds());
-    }
-
-    public static boolean waitUntilAlertAppears(AppiumDriver<? extends WebElement> driver, long timeout)
-            throws Exception {
-        try {
-            Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-                    .withTimeout(timeout, TimeUnit.SECONDS)
-                    .pollingEvery(1, TimeUnit.SECONDS)
-                    .ignoring(NoSuchElementException.class);
-            return (wait.until(ExpectedConditions.alertIsPresent()) != null);
-        } catch (TimeoutException e) {
-            return false;
-        }
-    }
-
     public static Optional<Alert> getAlertIfDisplayed(AppiumDriver<? extends WebElement> driver) throws Exception {
         return getAlertIfDisplayed(driver, getDefaultLookupTimeoutSeconds());
     }
