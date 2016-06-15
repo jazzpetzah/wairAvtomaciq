@@ -209,7 +209,7 @@ Feature: Conversation List
       | user1Name | user2Name | user3Name | LeaveActionMenu |
 
   @C840 @rc @clumsy @regression @id3315
-  Scenario Outline: Verify removing the content from the group conversation
+  Scenario Outline: ZIOS-6809 Verify removing the content from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -235,7 +235,7 @@ Feature: Conversation List
       | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
   @C842 @rc @clumsy @regression @id3318
-  Scenario Outline: Verify removing the history from 1-to1 conversation
+  Scenario Outline: ZIOS-6809 Verify removing the history from 1-to1 conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number

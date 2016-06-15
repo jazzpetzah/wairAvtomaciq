@@ -299,16 +299,8 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void acceptAlertIfVisible(int timeoutSeconds) throws Exception {
-        if (!waitUntilAlertAppears(timeoutSeconds)) {
-            return;
-        }
-        try {
-            final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver(), timeoutSeconds);
-            if (alert.isPresent()) {
-                alert.get().accept();
-            }
-        } catch (WebDriverException e) {
-            // ignore
+        if (waitUntilAlertAppears(timeoutSeconds)) {
+            getDriver().switchTo().alert().accept();
         }
     }
 
@@ -317,16 +309,8 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void dismissAlertIfVisible(int timeoutSeconds) throws Exception {
-        if (!waitUntilAlertAppears(timeoutSeconds)) {
-            return;
-        }
-        try {
-            final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver());
-            if (alert.isPresent()) {
-                alert.get().dismiss();
-            }
-        } catch (WebDriverException e) {
-            // ignore
+        if (waitUntilAlertAppears(timeoutSeconds)) {
+            getDriver().switchTo().alert().dismiss();
         }
     }
 

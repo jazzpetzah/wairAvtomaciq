@@ -263,23 +263,6 @@ public class DriverUtils {
         }
     }
 
-    public static Optional<Alert> getAlertIfDisplayed(AppiumDriver<? extends WebElement> driver) throws Exception {
-        return getAlertIfDisplayed(driver, getDefaultLookupTimeoutSeconds());
-    }
-
-    public static Optional<Alert> getAlertIfDisplayed(AppiumDriver<? extends WebElement> driver,
-                                                      int timeoutSeconds) throws Exception {
-        try {
-            Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-                    .withTimeout(timeoutSeconds, TimeUnit.SECONDS)
-                    .pollingEvery(1, TimeUnit.SECONDS)
-                    .ignoring(NoSuchElementException.class);
-            return Optional.ofNullable(wait.until(ExpectedConditions.alertIsPresent()));
-        } catch (TimeoutException e) {
-            return Optional.empty();
-        }
-    }
-
     public static final int SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL = 100;
 
     public static void swipeRight(AppiumDriver<? extends WebElement> driver,
