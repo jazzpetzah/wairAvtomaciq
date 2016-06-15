@@ -559,6 +559,18 @@ public class ContactListPageSteps {
                 conversationName);
         Assert.assertEquals(expectedColor, unreadDotColor);
     }
+    
+    /*
+     * Verifies that unread dot for given conversation is visible.
+     *
+     * @throws Exception
+     */
+    @Then("^I see unread dot in conversation (\\w+)$")
+    public void IVerifySeeUnreadDot(String conversationName) throws Exception {
+        conversationName = context.getUserManager().replaceAliasesOccurences(conversationName, FindBy.NAME_ALIAS);
+        assertTrue(String.format("Unread dot for conversation %s is NOT visible", conversationName), 
+                context.getPagesCollection().getPage(ContactListPage.class).isUnreadDotVisibleForConversation(conversationName));
+    }
 
     /*
      * Verify if there is a ping icon in contact list in conversation with user
