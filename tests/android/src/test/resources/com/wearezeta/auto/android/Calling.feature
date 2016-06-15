@@ -222,10 +222,10 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     And <Contact1> calls <GroupChatName>
-#TODO activity check
+    # TODO: activity check
     Then I see incoming call
     When I swipe to accept the call
-#TODO activity check
+    # TODO: activity check
     Then I see ongoing call
     # FIXME: Temporarily disable calling flows verification since this is unstable on webapp side
     # And <Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
@@ -297,7 +297,6 @@ Feature: Calling
     Then I see incoming call
     When I swipe to accept the call
     Then I see ongoing call
-    And I see 4 users take part in call
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
@@ -406,7 +405,6 @@ Feature: Calling
     Then I see incoming call from <GroupChatName>
     And I swipe to accept the call
     And I see ongoing call
-    And I see 2 users take part in call
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |

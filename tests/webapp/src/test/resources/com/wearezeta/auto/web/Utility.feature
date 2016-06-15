@@ -112,6 +112,7 @@ Feature: Utility
   @C139986 @utility
   Scenario Outline: Verify that there are no dead links on german unsupported browser page for <Agent>
     Given I switch to sign in page
+    When I navigate to unsupported page for <Agent>
     And I change language to german
     And unsupported page for <Agent> is german
     Then I can see no dead links

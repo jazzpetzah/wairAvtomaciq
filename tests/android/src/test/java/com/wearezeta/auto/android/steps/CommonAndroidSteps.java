@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.*;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CommonAndroidSteps {
@@ -71,7 +70,7 @@ public class CommonAndroidSteps {
 
     public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
     public static final int DEFAULT_SWIPE_TIME = 1500;
-    public static final int FIRST_TIME_OVERLAY_TIMEOUT = 5; // seconds
+    public static final int FIRST_TIME_OVERLAY_TIMEOUT = 3; // seconds
     private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
 
     private static String getUrl() throws Exception {
@@ -93,7 +92,6 @@ public class CommonAndroidSteps {
     public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path) throws Exception {
         return resetAndroidDriver(url, path, Optional.empty());
     }
-
 
     @SuppressWarnings("unchecked")
     public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path,

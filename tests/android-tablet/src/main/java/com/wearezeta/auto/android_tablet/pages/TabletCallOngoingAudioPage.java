@@ -41,10 +41,6 @@ public class TabletCallOngoingAudioPage extends AndroidTabletPage {
         getPage().hangup();
     }
 
-    public int getNumberOfParticipants() throws Exception {
-        return getPage().getNumberOfParticipants();
-    }
-
     public BufferedImage getMuteButtonScreenshot() throws Exception {
         return getPage().getMuteButtonScreenshot();
     }

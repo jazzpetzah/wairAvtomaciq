@@ -1,13 +1,11 @@
 package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
-import java.util.Optional;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 public class CallOngoingVideoPage extends CallingOverlayPage {
     private static final By idVideoSelfPreview = By.id("ll__self_view_layout");
@@ -42,28 +40,30 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
 
     @Override
     public BufferedImage getSpecialButtonScreenshot() throws Exception {
-        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idRight, ELEMENT_VISIBILITY_TIMEOUT_SECONDS)) {
+        try {
+            return super.getSpecialButtonScreenshot();
+        } catch (IllegalStateException e) {
             tapOngoingVideo();
+            return super.getSpecialButtonScreenshot();
         }
-        return super.getSpecialButtonScreenshot();
     }
 
     @Override
     public BufferedImage getMuteButtonScreenshot() throws Exception {
-        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMute, ELEMENT_VISIBILITY_TIMEOUT_SECONDS)) {
+        try {
+            return super.getMuteButtonScreenshot();
+        } catch (IllegalStateException e) {
             tapOngoingVideo();
+            return super.getMuteButtonScreenshot();
         }
-        return super.getMuteButtonScreenshot();
     }
 
 
     @Override
     protected void tapSpecialAction() throws Exception {
-        final Optional<WebElement> specialActionBtn = getElementIfDisplayed(idRight,
-                ELEMENT_VISIBILITY_TIMEOUT_SECONDS);
-        if (specialActionBtn.isPresent()) {
-            specialActionBtn.get().click();
-        } else {
+        try {
+            super.tapSpecialAction();
+        } catch (IllegalStateException e) {
             tapOngoingVideo();
             super.tapSpecialAction();
         }
@@ -71,10 +71,9 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
 
     @Override
     public void hangup() throws Exception {
-        final Optional<WebElement> hangUpBtn = getElementIfDisplayed(idHangup, ELEMENT_VISIBILITY_TIMEOUT_SECONDS);
-        if (hangUpBtn.isPresent()) {
-            hangUpBtn.get().click();
-        } else {
+        try {
+            super.hangup();
+        } catch (IllegalStateException e) {
             tapOngoingVideo();
             super.hangup();
         }
@@ -82,10 +81,9 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
 
     @Override
     public void toggleMute() throws Exception {
-        final Optional<WebElement> muteBtn = getElementIfDisplayed(idMute, ELEMENT_VISIBILITY_TIMEOUT_SECONDS);
-        if (muteBtn.isPresent()) {
-            muteBtn.get().click();
-        } else {
+        try {
+            super.toggleMute();
+        } catch (IllegalStateException e) {
             tapOngoingVideo();
             super.toggleMute();
         }

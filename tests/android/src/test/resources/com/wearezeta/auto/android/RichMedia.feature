@@ -116,7 +116,7 @@ Feature: Rich Media
       | Name      | Contact   | SoundCloudLink                                   | CallBackend |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme | autocall    |
 
-  @C139850 @staging
+  @C139850 @regression
   Scenario Outline: Verify that play of soundcloud track will be stopped by incoming video call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
