@@ -62,8 +62,8 @@ Feature: Rich Media
     Then I see the state of Pause button next to the conversation name <Contact> is changed
 
     Examples:
-      | Name      | Contact   | SoundCloudLink                                             |
-      | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
+      | Name      | Contact   | SoundCloudLink                                                      |
+      | user1Name | user2Name | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi |
 
   @C798 @id3144 @regression @rc
   Scenario Outline: (AN-3300) Verify you can play/pause media from the conversation list (landscape)
@@ -86,8 +86,8 @@ Feature: Rich Media
     Then I see the state of Pause button next to the conversation name <Contact> is changed
 
     Examples:
-      | Name      | Contact   | SoundCloudLink                                             |
-      | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
+      | Name      | Contact   | SoundCloudLink                                                      |
+      | user1Name | user2Name | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi |
 
   @C788 @id2991 @regression @rc
   Scenario Outline: I can send giphy image by typing some massage and clicking GIF button (portrait)
@@ -162,5 +162,5 @@ Feature: Rich Media
     Then I see the state of media button in the conversation view is changed
 
     Examples:
-      | Name      | Contact   | SoundCloudLink                                             | MsgsInConvo |
-      | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll | 40          |
+      | Name      | Contact   | SoundCloudLink                                                      | MsgsInConvo |
+      | user1Name | user2Name | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi | 40          |
