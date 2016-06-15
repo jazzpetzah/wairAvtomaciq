@@ -624,14 +624,15 @@ public class ContactListPage extends WebPage {
         final WebElement entry = getDriver().findElement(locator);
         return AccentColor.getByRgba(entry.getCssValue("color"));
     }
+    
+    public boolean isUnreadDotVisibleForConversation(String name) throws Exception {
+        final By locator = By.xpath(WebAppLocators.ContactListPage.xpathUnreadDotByContactName.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+    }
 
-    public AccentColor getCurrentUnreadDotAccentColor(String name)
-            throws Exception {
-        final By locator = By
-                .xpath(WebAppLocators.ContactListPage.xpathUnreadDotByContactName
-                        .apply(name));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                locator);
+    public AccentColor getCurrentUnreadDotAccentColor(String name) throws Exception {
+        final By locator = By.xpath(WebAppLocators.ContactListPage.xpathUnreadDotByContactName.apply(name));
+        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
         final WebElement entry = getDriver().findElement(locator);
         return AccentColor.getByRgba(entry.getCssValue("background-color"));
     }
