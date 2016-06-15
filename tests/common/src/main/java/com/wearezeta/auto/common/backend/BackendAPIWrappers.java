@@ -689,7 +689,17 @@ public final class BackendAPIWrappers {
         final long startTimestamp = System.currentTimeMillis();
         int currentCount;
         while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
-            final JSONObject searchResult = BackendREST.searchForContacts(receiveAuthToken(searchByUser), query);
+            JSONObject searchResult;
+            try {
+                searchResult = BackendREST.searchForContacts(receiveAuthToken(searchByUser), query);
+            } catch (BackendRequestException e) {
+                if (e.getReturnCode() == 500) {
+                    Thread.sleep(1000);
+                    continue;
+                } else {
+                    throw e;
+                }
+            }
             if (searchResult.has("documents") && (searchResult.get("documents") instanceof JSONArray)) {
                 currentCount = searchResult.getJSONArray("documents").length();
             } else {
@@ -710,13 +720,15 @@ public final class BackendAPIWrappers {
         final long startTimestamp = System.currentTimeMillis();
         int currentCount;
         while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
-            JSONObject searchResult = new JSONObject();
+            JSONObject searchResult;
             try {
                 searchResult = BackendREST.searchForTopPeopleContacts(receiveAuthToken(searchByUser), size);
             } catch (BackendRequestException e) {
                 if (e.getReturnCode() == 500) {
                     Thread.sleep(1000);
                     continue;
+                } else {
+                    throw e;
                 }
             }
             if (searchResult.has("documents") && (searchResult.get("documents") instanceof JSONArray)) {
@@ -739,13 +751,15 @@ public final class BackendAPIWrappers {
         final long startTimestamp = System.currentTimeMillis();
         int currentCount = 0;
         do {
-            JSONObject searchResult = new JSONObject();
+            JSONObject searchResult;
             try {
                 searchResult = BackendREST.searchForContacts(receiveAuthToken(searchByUser), query);
             } catch (BackendRequestException e) {
                 if (e.getReturnCode() == 500) {
                     Thread.sleep(1000);
                     continue;
+                } else {
+                    throw e;
                 }
             }
             if (searchResult.has("documents") && (searchResult.get("documents") instanceof JSONArray)) {

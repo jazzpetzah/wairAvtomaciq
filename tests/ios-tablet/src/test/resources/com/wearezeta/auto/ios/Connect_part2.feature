@@ -88,6 +88,7 @@ Feature: Connect
     Given Me sent connection request to <Contact1>
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until <Contact1> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -106,6 +107,7 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until <Contact1> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
