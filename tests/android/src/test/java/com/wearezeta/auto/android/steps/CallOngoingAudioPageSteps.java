@@ -49,23 +49,6 @@ public class CallOngoingAudioPageSteps {
     }
 
     /**
-     * Check whether expected number of users present in call
-     *
-     * @throws Exception
-     * @step. ^I see (\\d+) users? take part in call$
-     */
-    @When("^I see (\\d+) users? take part in call$")
-    public void ISeeXUsersTakePartInGroupCall(final int expectedUsersCount)
-            throws Exception {
-        int actualUsersCount = getPage().getNumberOfParticipants();
-        if (actualUsersCount != expectedUsersCount) {
-            throw new AssertionError(String.format(
-                    "The actual count of users in call %s does not equal to the expected count %s",
-                    actualUsersCount, expectedUsersCount));
-        }
-    }
-
-    /**
      * Tap the corresponding button onm video overlay
      *
      * @param btnName button name
