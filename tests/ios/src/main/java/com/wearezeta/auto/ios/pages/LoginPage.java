@@ -134,18 +134,16 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isResendIn10minAlertVisible() throws Exception {
-        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameResentIn10min);
+        return waitUntilAlertAppears() && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameResentIn10min);
     }
 
     public boolean isInvalidEmailAlertShown() throws Exception {
-        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidEmail);
+        return waitUntilAlertAppears() && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidEmail);
     }
 
     public boolean isAlreadyRegisteredEmailAlertShown() throws Exception {
-        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAlreadyRegisteredEmail);
+        return waitUntilAlertAppears() && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                nameAlreadyRegisteredEmail);
     }
 
     public void clickPhoneNotNow() throws Exception {
@@ -153,8 +151,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isSomethingWentWrongAlertShown() throws Exception {
-        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSomethingWentWrong);
+        return waitUntilAlertAppears() && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSomethingWentWrong);
     }
 
     public void dismissSettingsWarningIfVisible(int timeoutSeconds) throws Exception {
