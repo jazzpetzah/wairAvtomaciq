@@ -9,6 +9,7 @@ import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -110,8 +111,11 @@ public class RegistrationPage extends IOSPage {
         getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
     }
 
-    public void inputRandomActivationCode() throws Exception {
-        inputActivationCode(new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX));
+    private static final Random rand = new Random();
+
+    public void inputRandomConfirmationCode() throws Exception {
+        getElement(xpathVerificationCodeInput).sendKeys(Integer.toString(100000 + rand.nextInt(900000)));
+        getElement(nameConfirmButton, "Confirm button is not visible", 2).click();
     }
 
     public void clickResendCodeButton() throws Exception {

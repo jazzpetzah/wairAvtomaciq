@@ -106,7 +106,7 @@ public class LoginPageSteps {
                 getRegistrationPage().inputActivationCode(user.getPhoneNumber());
                 break;
             case "random":
-                getRegistrationPage().inputRandomActivationCode();
+                getRegistrationPage().inputRandomConfirmationCode();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown code type '%s'", codeType));
