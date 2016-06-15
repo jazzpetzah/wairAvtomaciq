@@ -6,8 +6,8 @@ Feature: Search
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Call action button on People picker page
@@ -229,6 +229,7 @@ Feature: Search
     And I tap on 1st top connection contact
     And I do not see Open conversation action button on People picker page
     And I see Invite more people button
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I do not see Invite more people button
