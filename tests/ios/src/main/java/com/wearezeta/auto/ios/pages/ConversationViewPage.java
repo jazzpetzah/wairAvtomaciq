@@ -172,7 +172,12 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameSendAudioMessageButton = MobileBy.AccessibilityId("audioRecorderSend");
 
-    private static final By namePlayAudioMessageButton = MobileBy.AccessibilityId("audioRecorderPlay");
+    private static final String strNamePlayAudioRecorderButton = "audioRecorderPlay";
+
+    private static final By namePlayAudioRecorderButton = MobileBy.AccessibilityId(strNamePlayAudioRecorderButton);
+
+    private static final Function<String, String> recordControlButtonWithState = state ->
+            String.format("//UIAButton[@name='%s' and @value='%s']", strNamePlayAudioRecorderButton, state);
 
     private static final By nameAudioRecordTimeLabel = MobileBy.AccessibilityId("audioRecorderTimeLabel");
 
@@ -769,7 +774,7 @@ public class ConversationViewPage extends IOSPage {
             case "cancel":
                 return nameAudioRecorderCancelButton;
             case "play":
-                return namePlayAudioMessageButton;
+                return namePlayAudioRecorderButton;
             default:
                 throw new IllegalArgumentException("Not know record control button");
         }
@@ -867,6 +872,11 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isUserNameVisibleOnUpperToolbar(String contact) throws Exception {
         final By locator = By.xpath(xpathStrToolbarByConversationName.apply(contact));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isRecordControlButtonState(String buttonState) throws Exception {
+        final By locator = By.xpath(recordControlButtonWithState.apply(buttonState));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }

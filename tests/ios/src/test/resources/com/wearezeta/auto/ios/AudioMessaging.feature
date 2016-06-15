@@ -314,7 +314,7 @@ Feature: Audio Messaging
     # Let it record something for specific duration
     When I long tap Audio Message button for <Duration> seconds from input tools
     And I tap Play record control button
-    Then I see state of button on audio message placeholder is pause
+    Then I see state of button on record toolbar is playing
     # TODO: Should be uncommented once ZIOS-6798 is fixed
     #And I see the audio message in record toolbar gets played
 
