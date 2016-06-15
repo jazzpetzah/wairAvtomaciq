@@ -69,7 +69,11 @@ public class SettingsPage extends AndroidPage {
     }
 
     public void tapOKButtonOnPasswordConfirmationDialog() throws Exception {
-        getElement(xpathConfirmationInputOKButton).click();
+        final WebElement okBtn = getElement(xpathConfirmationInputOKButton);
+        okBtn.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConfirmationInputOKButton, 5)) {
+            okBtn.click();
+        }
     }
 
     public void tapCurrentDevice() throws Exception {
