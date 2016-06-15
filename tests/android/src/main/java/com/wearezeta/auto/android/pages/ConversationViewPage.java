@@ -349,7 +349,7 @@ public class ConversationViewPage extends AndroidPage {
     public void longTapAudioMessageCursorBtnAndRememberIcon(int longTapDurationMilliseconds, ElementState elementState)
             throws Exception {
         longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idCursorAudioMessage),
-                DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds, Optional.of(() -> elementState.remember()));
+                DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds, Optional.of(elementState::remember));
     }
 
     public boolean isPingButtonVisible() throws Exception {

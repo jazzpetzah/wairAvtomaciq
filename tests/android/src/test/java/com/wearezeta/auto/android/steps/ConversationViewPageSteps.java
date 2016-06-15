@@ -1071,10 +1071,11 @@ public class ConversationViewPageSteps {
      *
      * @param hintMessage the expected Hint message
      * @throws Exception
-     * @step. ^I see hint message "(.*)" of cursor button$
+     * @step. ^I tap Audio message button from cursor toolbar and see hint message "(.*)"$
      */
-    @Then("^I see hint message \"(.*)\" of cursor button$")
+    @Then("^I tap Audio message button from cursor toolbar and see hint message \"(.*)\"$")
     public void ISeeCursorHintMessage(String hintMessage) throws Exception {
+        getConversationViewPage().tapAudioMessageCursorBtn();
         Assert.assertTrue(String.format("The hint message '%s' of cursor button should be visible", hintMessage),
                 getConversationViewPage().isCursorHintVisible(hintMessage));
     }

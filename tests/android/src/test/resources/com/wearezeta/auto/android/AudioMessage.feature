@@ -7,9 +7,8 @@ Feature: Audio Message
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
-    When I tap Audio message button from cursor toolbar
-    Then I see hint message "<HintMessage>" of cursor button
+    And I tap on contact name <Contact>
+    Then I tap Audio message button from cursor toolbar and see hint message "<HintMessage>"
 
     Examples:
       | Name      | Contact   | HintMessage                           |
