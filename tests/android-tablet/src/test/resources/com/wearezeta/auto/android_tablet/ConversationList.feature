@@ -168,6 +168,7 @@ Feature: Conversation List
     And I confirm conversation deletion on Conversation Actions overlay
     Then I do not see Conversation Actions overlay
     And I do not see conversation <Contact1> in my conversations list
+    And I wait until <Contact1> exists in backend search results
     When I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     Then I see "<Contact1>" avatar on People Picker page
