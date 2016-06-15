@@ -180,7 +180,7 @@ Feature: Audio Messaging
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
 
 
-  @C139855 @staging
+  @C139855 @regression
   Scenario Outline: (ZIOS-6759) Verify playback is stopped when incoming call has appeared
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -244,8 +244,8 @@ Feature: Audio Messaging
       | Name      | Contact   | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout | SoundCloudLink                                                   |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
-  @C131215 @staging
-  Scenario Outline: Verify playback is stopped when audio message recording is started
+  @C131215 @regression
+  Scenario Outline: (ZIOS-6759) Verify playback is stopped when audio message recording is started
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -265,7 +265,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
 
-  @C139856 @staging
+  @C139856 @regression
   Scenario Outline: (ZIOS-6759) Verify playback is stopped when outgoing call is started
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
