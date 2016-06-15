@@ -85,28 +85,3 @@ Feature: Rotations
     Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
-
-  @C510 @id2908 @regression
-  Scenario Outline: I want to exit fullscreen view in landscape
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to portrait
-    Given I sign in using my email
-    Given I accept First Time overlay as soon as it is visible
-    Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
-    When I tap Add picture button from cursor toolbar
-    And I tap Take Photo button on Take Picture view
-    And I tap Confirm button on Take Picture view
-    Then I see a new picture in the conversation view
-    When I tap the new picture in the conversation view
-    Then I see Close Picture Preview button in the conversation view
-    When I rotate UI to landscape
-    Then I see Close Picture Preview button in the conversation view
-    When I tap Close Picture Preview button in the conversation view
-    Then I do not see Close Picture Preview button in the conversation view
-    And I see a new picture in the conversation view
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |

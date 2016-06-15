@@ -60,7 +60,7 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
     }
 
     public void tapInTheCenter() throws Exception {
-        DriverUtils.tapInTheCenterOfTheElement(this.getDriver(), getElement(idSelfProfileView));
+        DriverUtils.genericTap(getDriver(), 50, 50);
     }
 
     public boolean waitUntilOptionsMenuItemVisible(String itemName) throws Exception {
