@@ -344,3 +344,23 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
+
+  @C139861 @staging
+  Scenario Outline: Verify Soundcloud playback is stopped when audio message playback is started
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
+    And User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    And I tap on contact name <Contact>
+    And User Me sends 1 encrypted message to user <Contact>
+    And I remember media container state
+    And I tap media container
+    And I see media container state is changed
+    And I tap Play audio message button
+    Then I see media container state is changed
+
+    Examples:
+      | Name      | Contact   | SoundCloudLink                                                   | FileName | FileMIME  | ContactDevice |
+      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic | test.m4a | audio/mp4 | Device1       |
