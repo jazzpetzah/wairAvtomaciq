@@ -417,6 +417,7 @@ Feature: Conversation View
     When I open self profile
     And Contact <Contact> sends 35 messages with prefix <UNREAD> via device Device1 to user <Name>
     And I wait for 5 seconds
+    Then I see unread dot in conversation <Contact>
     When I open conversation with <Contact>
     Then I do not see text message <READ>33
     And I do not see text message <READ>0

@@ -131,7 +131,7 @@ Feature: Sign In
       | Name      | ExpectedText               |
       | user1Name | enter a valid phone number |
 
-  @C2862 @regression @id3853 @useSpecialEmail
+  @C2861 @regression @id3853 @useSpecialEmail
   Scenario Outline: Verify adding email to the contact signed up with phone number [LANDSCAPE]
     Given There is 1 user where <Name> is me with phone number only
     Given I rotate UI to landscape
