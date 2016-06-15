@@ -107,7 +107,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C1089 @regression @id3863 @noAcceptAlert
+  @C3505 @regression @id3863 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen
