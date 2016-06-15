@@ -701,7 +701,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C1833 @regression @id3975
-  Scenario Outline: Verify removing the content from the group conversation via participant view [PORTRAIT]
+  Scenario Outline: ZIOS-6809 Verify removing the content from the group conversation via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -727,7 +727,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
   @C1834 @regression @id3976
-  Scenario Outline: Verify removing the content from the group conversation via participant view [LANDSCAPE]
+  Scenario Outline: ZIOS-6809 Verify removing the content from the group conversation via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
