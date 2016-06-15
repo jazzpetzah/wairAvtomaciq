@@ -17,9 +17,6 @@ public abstract class AbstractConversationDetailsPage extends AbstractPopoverPag
             .format("//*[@id='%s']//*[@value='%s']/parent::*//*[@id='fl_options_menu_button']",
                     idStrOptionsContainer, itemName.toUpperCase());
 
-    public final static By xpathCreateGroupButton =
-            By.xpath("//*[@id='ttv__participants__left_label' and @value='CREATE GROUP']");
-
     public final static By idCloseButton = By.id("gtv__participants__close");
 
     public AbstractConversationDetailsPage(
@@ -45,10 +42,6 @@ public abstract class AbstractConversationDetailsPage extends AbstractPopoverPag
     public boolean isMenuItemInvisible(String itemName) throws Exception {
         final By locator = By.xpath(xpathStrOptionMenuItemByName.apply(itemName));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
-    }
-
-    public void tapCreateGroupButton() throws Exception {
-        getElement(xpathCreateGroupButton).click();
     }
 
     private WebElement getCloseButton() throws Exception {

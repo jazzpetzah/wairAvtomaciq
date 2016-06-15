@@ -80,7 +80,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  | ItemLeave |
       | user1Name | user2Name | user3Name | LeaveGroupChat | LEAVE     |
 
-  @C468 @id2258 @regression
+  @C468 @id2258 @regression @torun
   Scenario Outline: Remove from group chat in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -91,8 +91,6 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I see the Group popover
-    And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
     When I tap Remove button on Group popover
     And I confirm removal from the group chat on Group popover
@@ -116,8 +114,6 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I see the Group popover
-    And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
     When I tap Remove button on Group popover
     And I confirm removal from the group chat on Group popover
