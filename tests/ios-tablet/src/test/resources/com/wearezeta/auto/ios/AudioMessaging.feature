@@ -19,3 +19,24 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact   | Duration |
       | user1Name | user2Name | 50       |
+
+  @C145954 @staging
+  Scenario Outline: Verify receiving and playing an audio message [LANDSCAPE]
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    When User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    And I tap on contact name <Contact>
+    And User <Contact> sends 1 encrypted message to user Myself
+    And I see state of button on audio message placeholder is play
+    And I tap Play audio message button
+    # Wait to make sure the audio file is downloaded and starts playback
+    And I wait for <AudioDownloadTimeout> seconds
+    Then I see state of button on audio message placeholder is pause
+
+    Examples:
+      | Name      | Contact   | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
+      | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
+
