@@ -294,11 +294,11 @@ Feature: Audio Messaging
     Given I see conversations list
     When User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     And I tap on contact name <Contact>
-    And I tap media container
     And I remember media container state
+    And I tap media container
     And I long tap Audio Message button from input tools
     Then I see audio message record container
-    And I see media container state is changed
+    And I see media container state is not changed
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                                   |
