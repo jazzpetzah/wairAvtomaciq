@@ -1,6 +1,6 @@
 Feature: Audio Messaging
 
-  @C145953 @staging
+  @C145953 @regression
   Scenario Outline: Verify recording and sending an audio message [LANDSCAPE]
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

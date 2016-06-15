@@ -1,6 +1,6 @@
 Feature: Video Messaging
 
-  @C145952 @staging
+  @C145952 @regression
   Scenario Outline: Verify receiving and playing a video message [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

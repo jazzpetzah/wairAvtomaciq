@@ -18,7 +18,7 @@ Feature: File Transfer
       | Name      | Contact   | ItemName                   |
       | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C145956 @staging
+  @C145956 @regression
   Scenario Outline: Verify downloading and opening file for a preview [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
