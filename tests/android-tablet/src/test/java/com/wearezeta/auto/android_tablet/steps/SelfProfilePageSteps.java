@@ -167,7 +167,7 @@ public class SelfProfilePageSteps {
     public void ISeeChatheadNotification(String shouldNotSee) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue("Chathead notification is not visible",
-                    getSelfProfilePage().waitUntilChatheadNotificationVisible());
+                    getSelfProfilePage().waitForChatheadNotification().isPresent());
         } else {
             Assert.assertTrue("Chathead notification is still visible",
                     getSelfProfilePage().waitUntilChatheadNotificationInvisible());
