@@ -56,6 +56,7 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     When I enter phone number for Myself
     When I enter login verification code for Myself
+    And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
 
@@ -79,6 +80,7 @@ Feature: Sign In
     When I click DONE keyboard button
     Then I see email verification reminder
     When I verify registration address
+    And I dismiss settings warning
     Then I see conversations list
 
     Examples:
