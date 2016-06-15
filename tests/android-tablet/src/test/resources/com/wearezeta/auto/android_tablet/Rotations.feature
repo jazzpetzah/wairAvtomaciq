@@ -26,24 +26,6 @@ Feature: Rotations
       | Name      |
       | user1Name |
 
-  @C475 @id2186 @regression
-  Scenario Outline: (AN-2900) Search (people picker)
-    Given There is 1 user where <Name> is me
-    Given I rotate UI to portrait
-    Given I sign in using my email
-    Given I accept First Time overlay as soon as it is visible
-    Given I see the conversations list with no conversations
-    When I open Search UI
-    Then I see People Picker page
-    When I rotate UI to landscape
-    Then I see People Picker page
-    When I rotate UI to portrait
-    Then I see People Picker page
-
-    Examples:
-      | Name      |
-      | user1Name |
-
   @C476 @id2187 @regression
   Scenario Outline: Conversation view
     Given There are 2 users where <Name> is me
@@ -73,6 +55,7 @@ Feature: Rotations
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
+    Given I wait until <Contact2> exists in backend search results
     When I open Search UI
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap the found item <Contact2> on People Picker page

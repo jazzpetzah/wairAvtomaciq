@@ -223,16 +223,16 @@ public abstract class AndroidPage extends BasePage {
     public void tapChatheadNotification() throws Exception {
         waitForChatheadNotification().orElseThrow(() ->
                 new IllegalStateException(String.format("Chathead notification has not been shown after %s seconds",
-                        CHATHEAD_VISIBILITY_TIMEOUT))
+                        CHATHEAD_VISIBILITY_TIMEOUT_MS / 1000))
         ).click();
     }
 
-    private static final long CHATHEAD_VISIBILITY_TIMEOUT = 10000; //milliseconds
+    private static final long CHATHEAD_VISIBILITY_TIMEOUT_MS = 10000;
 
     public Optional<WebElement> waitForChatheadNotification() throws Exception {
         final By locator = idChatheadNotification;
         final long millisecondsStarted = System.currentTimeMillis();
-        while (System.currentTimeMillis() - millisecondsStarted < CHATHEAD_VISIBILITY_TIMEOUT) {
+        while (System.currentTimeMillis() - millisecondsStarted < CHATHEAD_VISIBILITY_TIMEOUT_MS) {
             final Optional<WebElement> chatheadNotification = getElementIfDisplayed(locator, 1);
             if (chatheadNotification.isPresent()) {
                 if (chatheadNotification.get().getSize().width > 0) {
@@ -247,7 +247,7 @@ public abstract class AndroidPage extends BasePage {
     public boolean waitUntilChatheadNotificationInvisible() throws Exception {
         final By locator = idChatheadNotification;
         final long millisecondsStarted = System.currentTimeMillis();
-        while (System.currentTimeMillis() - millisecondsStarted < CHATHEAD_VISIBILITY_TIMEOUT) {
+        while (System.currentTimeMillis() - millisecondsStarted < CHATHEAD_VISIBILITY_TIMEOUT_MS) {
             final Optional<WebElement> chatheadNotification = getElementIfDisplayed(locator, 1);
             if (chatheadNotification.isPresent()) {
                 if (chatheadNotification.get().getSize().width == 0) {
