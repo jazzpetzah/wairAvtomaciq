@@ -304,7 +304,7 @@ Feature: Audio Messaging
       | Name      | Contact   | SoundCloudLink                                                   |
       | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
-  @C129325 @C129324 @staging
+  @C129325 @C129324 @regression
   Scenario Outline: Verify playing the message by tapping on the play icon on record toolbar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
