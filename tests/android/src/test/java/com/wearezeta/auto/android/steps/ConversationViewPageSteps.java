@@ -637,8 +637,8 @@ public class ConversationViewPageSteps {
      * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)
      * placeholder is changed$
      */
-    @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder " +
-            "is changed$")
+    @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)" +
+            "placeholder is changed$")
     public void IWaitFileTransferActionButtonChanged(int timeout) throws Exception {
         Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
                 timeout),
@@ -1023,8 +1023,8 @@ public class ConversationViewPageSteps {
      * @step. ^I( do not)? see the result of (.*) file (upload|received)?( failed)? having name "(.*)" and extension "(\w+)"(
      * in \d+ seconds)?$
      */
-    @Then("^I( do not)? see the result of (.*) file (upload|received)? having name \"(.*)\" and extension \"(\\w+)\"" +
-            "( in \\d+ seconds)?( failed)?$")
+    @Then("^I( do not)? see the result of (.*) file (upload|received)? having name \"(.*)\"" +
+            " and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
     public void ThenISeeTheResultOfXFileUpload(String doNotSee, String size, String loadDirection, String fileFullName,
                                                String extension, String timeout, String actionFailed) throws Exception {
         int lookUpTimeoutSeconds = (timeout == null) ? DriverUtils.getDefaultLookupTimeoutSeconds()
@@ -1338,8 +1338,8 @@ public class ConversationViewPageSteps {
      * @step. ^I remember the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the
      * conversation view$"
      */
-    @When("^I remember the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the " +
-            "conversation view$")
+    @When("^I remember the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message)" +
+            " in the conversation view$")
     public void IRememberPlayButtonState(String buttonType) throws Exception {
         switch (buttonType.toLowerCase()) {
             case "video message":
@@ -1390,8 +1390,8 @@ public class ConversationViewPageSteps {
      * @step. ^I verify the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the
      * conversation view is (not )?changed$
      */
-    @Then("^I verify the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the " +
-            "conversation view is (not )?changed$")
+    @Then("^I verify the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message)" +
+            " in the conversation view is (not )?changed$")
     public void ISeePlayButtonStateChanged(String buttonType, String shouldNotBeChanged) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (buttonType.toLowerCase()) {
