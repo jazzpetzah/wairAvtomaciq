@@ -21,7 +21,7 @@ Feature: Video Message
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size  |
-      | user1Email | user1Password | user1Name | user2Name | example.mp4 | 15MB  |
+      | user1Email | user1Password | user1Name | user2Name | example.mp4 | 20MB  |
 
   @C123938 @videomessage @regression
   Scenario Outline: Verify user can delete video message
