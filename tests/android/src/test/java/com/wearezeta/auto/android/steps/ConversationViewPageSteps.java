@@ -504,7 +504,7 @@ public class ConversationViewPageSteps {
      * @param message the text of the message
      * @param contact user name/alias
      * @throws Exception
-     * @step. ^I see message (.*) contact (.*) on group page
+     * @step. ^I see message (.*) contact (.*) on group page$
      */
     @Then("^I see message (.*) contact (.*) on group page$")
     public void ThenISeeMessageContactOnGroupPage(String message, String contact) throws Exception {
@@ -560,9 +560,9 @@ public class ConversationViewPageSteps {
      * @param message the text of convo
      * @param not     equals to null if the message should be visible
      * @throws Exception
-     * @step. ^I see the most recent conversation message is (not )?"(.*)"
+     * @step. ^I see the most recent conversation message is (not )?"(.*)"$
      */
-    @Then("^I see the most recent conversation message is (not )?\"(.*)\"")
+    @Then("^I see the most recent conversation message is (not )?\"(.*)\"$")
     public void ISeeLastMessage(String not, String message) throws Exception {
         if (not == null) {
             Assert.assertTrue(String.format("The most recent conversation message is not equal to '%s'", message),
