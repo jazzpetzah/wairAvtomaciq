@@ -15,7 +15,7 @@ public class ElementState {
 
     private static final long MS_INTERVAL = 500;
 
-    private Optional<BufferedImage> previousScreenshot = Optional.empty();
+    public Optional<BufferedImage> previousScreenshot = Optional.empty();
     private FunctionalInterfaces.StateGetter stateGetter;
 
     public ElementState(FunctionalInterfaces.StateGetter stateGetter) {
