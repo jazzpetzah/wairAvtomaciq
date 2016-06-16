@@ -159,8 +159,8 @@ Feature: Connect
     Given <Contact2> is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <ContactEmail> exists in backend search results
     When I open search UI
-    And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog

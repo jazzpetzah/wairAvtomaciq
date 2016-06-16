@@ -94,7 +94,7 @@ Feature: File Transfer
     And I tap File Transfer button from input tools
     And I tap file transfer menu item <ItemName>
     Then I verify the alert contains text <ExpectedAlertText>
-    When I accept alert
+    When I tap OK button on the alert
     Then I do not see file transfer placeholder
 
     Examples:
