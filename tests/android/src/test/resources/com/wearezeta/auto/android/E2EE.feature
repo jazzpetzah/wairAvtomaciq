@@ -470,7 +470,7 @@ Feature: E2EE
     When I see takeover screen from user "<Contact1>"
     Then I tap send anyway button
     And I do not see takeover screen
-    Then I see message <Message2> 1 times in the conversation view
+    Then I see message <Message2> 1 time in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | Message1 | Message2 | GroupChatName |
