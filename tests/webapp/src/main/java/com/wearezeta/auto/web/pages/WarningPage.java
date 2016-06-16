@@ -28,6 +28,9 @@ public class WarningPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.WarningPage.cssFileTransferLimitWarningModalButton)
 	private WebElement fileTransferLimitWarningModalButton;
 
+	@FindBy(how = How.CSS, using = WebAppLocators.WarningPage.cssFullHouseWarningModalClose)
+	private WebElement fullHouseWarningModalCloseButton;
+
 	public WarningPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -149,5 +152,19 @@ public class WarningPage extends WebPage {
 
 	public void clickOKInFileTransferLimitWarningModal() throws Exception {
 		fileTransferLimitWarningModalButton.click();
+	}
+
+	public boolean isFullHouseWarningModalVisible() throws Exception {
+		final By locator = By.cssSelector(WebAppLocators.WarningPage.cssFullHouseWarningModal);
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator);
+	}
+
+	public boolean isFullHouseWarningModalInvisible() throws Exception {
+		final By locator = By.cssSelector(WebAppLocators.WarningPage.cssFullHouseWarningModal);
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+	}
+
+	public void clickCloseOnFullHouseWarningModal() throws Exception {
+		fullHouseWarningModalCloseButton.click();
 	}
 }

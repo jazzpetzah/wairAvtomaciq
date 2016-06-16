@@ -1197,5 +1197,4 @@ public class ConversationPageSteps {
             processedMessages.add(currentMessage);
         }
     }
-
 }

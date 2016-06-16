@@ -225,6 +225,9 @@ Feature: Conversation View
     When I click Add People button on Group Participants popover
     And I select the first 1 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
+    And I see full house warning modal
+    And I click on close button in full house warning modal
+    And I do not see full house warning modal
     When I click People button in group conversation
     And I see Group Participants popover
     Then I see 127 participants in the Group Participants popover

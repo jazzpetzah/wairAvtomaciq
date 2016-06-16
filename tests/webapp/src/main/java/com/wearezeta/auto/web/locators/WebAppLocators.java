@@ -740,6 +740,12 @@ public final class WebAppLocators {
         public static final String cssFileTransferLimitWarningModal = ".modal-asset-upload-too-large";
         public static final String cssFileTransferLimitWarningModalButton = cssFileTransferLimitWarningModal + " " +
                 "[data-uie-name='do-close']";
+
+        public static final String cssFullHouseWarningModal = cssWarningModalRootDiv
+                + " .modal-too-many-members.modal-show";
+
+        public static final String cssFullHouseWarningModalClose = cssFullHouseWarningModal
+                + " [data-uie-name='do-close']";
     }
 
     public static final class PhoneNumberVerificationPage {
