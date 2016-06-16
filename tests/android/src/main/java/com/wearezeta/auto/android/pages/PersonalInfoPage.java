@@ -37,10 +37,7 @@ public class PersonalInfoPage extends AndroidPage {
     private static final By xpathSelfProfileClose = By.xpath(xpathStrParentSelfProfileOverlay
             + "//*[@id='gtv__profile__close_button']");
 
-    private static final By idLightBulbButton = By.id("gtv__profile__theme_button");
-
-    public PersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
-            throws Exception {
+    public PersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -95,9 +92,5 @@ public class PersonalInfoPage extends AndroidPage {
 
     public void pressCloseButton() throws Exception {
         getElement(xpathSelfProfileClose, "Close Self Profile button is not visible").click();
-    }
-
-    public void tapLightBulbButton() throws Exception {
-        getElement(idLightBulbButton).click();
     }
 }

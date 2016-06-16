@@ -218,15 +218,4 @@ public class PersonalInfoPageSteps {
                         PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS),
                 previousProfilePicture.isChanged(PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS, MAX_OVERLAP_SCORE));
     }
-
-    /**
-     * Tap the Light Bulb button on self profile page to change the current UI theme
-     *
-     * @throws Exception
-     * @step. ^I tap Light Bulb button$
-     */
-    @And("^I tap Light Bulb button$")
-    public void ITapLightBulbButton() throws Exception {
-        getPersonalInfoPage().tapLightBulbButton();
-    }
 }

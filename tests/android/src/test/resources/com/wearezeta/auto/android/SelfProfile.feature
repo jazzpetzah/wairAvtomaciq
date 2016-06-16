@@ -69,36 +69,6 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C450 @id4069 @regression
-  Scenario Outline: Verify I can switch dark/white theme from self profile
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to Myself
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I see conversation view
-    Then I remember the conversation view
-    When I navigate back from dialog page
-    And I tap conversations list settings button
-    And I tap Light Bulb button
-    And I close Personal Info Page
-    When I tap on contact name <Contact>
-    And I see conversation view
-    And I scroll to the bottom of conversation view
-    Then I see the conversation view is changed
-    When I navigate back from dialog page
-    And I tap conversations list settings button
-    And I tap Light Bulb button
-    And I close Personal Info Page
-    When I tap on contact name <Contact>
-    And I see conversation view
-    Then I see the conversation view is not changed
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @C145963 @staging
   Scenario Outline: I should be moved to right view on canceling new profile picture
     Given There is 1 user where <Name> is me
