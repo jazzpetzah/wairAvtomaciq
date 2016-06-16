@@ -718,6 +718,7 @@ Feature: People View
     And I confirm delete conversation content
     And I wait until popover is closed
     And I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -745,6 +746,7 @@ Feature: People View
     And I confirm delete conversation content
     And I wait until popover is closed
     And I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
