@@ -163,7 +163,7 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131194 @C131196 @C131202 @regression @rc @rc42 @torun
+  @C131194 @C131196 @C131202 @regression @rc @rc42
   Scenario Outline: Verify playing a received voice message + DO NOT playing in the background
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
