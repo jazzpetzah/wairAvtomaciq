@@ -15,7 +15,7 @@ public class ElementState {
 
     private static final long MS_INTERVAL = 500;
 
-    public Optional<BufferedImage> previousScreenshot = Optional.empty();
+    private Optional<BufferedImage> previousScreenshot = Optional.empty();
     private FunctionalInterfaces.StateGetter stateGetter;
 
     public ElementState(FunctionalInterfaces.StateGetter stateGetter) {
@@ -37,6 +37,11 @@ public class ElementState {
             }
         } while (nTry < maxRetries);
         throw savedException;
+    }
+
+    public ElementState remember(BufferedImage customInitialState) throws Exception {
+        this.previousScreenshot = Optional.of(customInitialState);
+        return this;
     }
 
     private boolean checkState(Function<Double, Boolean> checkerFunc, int timeoutSeconds) throws Exception {

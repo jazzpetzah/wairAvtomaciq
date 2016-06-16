@@ -1356,26 +1356,18 @@ public class ConversationViewPageSteps {
     /**
      * Wait until audio message upload completed
      *
-     * @param timeout seconds to wait for upload completed
+     * @param timeoutSeconds seconds to wait for upload completed
      * @throws Exception
-     * @step. ^I wait for\s*(\d+) seconds?  until audio message upload completed$
+     * @step. ^I wait for (\d+) seconds?  until audio message upload completed$
      */
-    @Then("^I wait for\\s*(\\d+) seconds? until audio message upload completed$")
-    public void IWaintUntillMessageUploaded(int timeout) throws Exception {
+    @Then("^I wait for (\\d+) seconds? until audio message upload completed$")
+    public void IWaitUntilMessageUploaded(int timeoutSeconds) throws Exception {
         final BufferedImage playBntTargetState = ImageUtil.readImageFromFile(
                 AndroidCommonUtils.getImagesPath(AndroidCommonUtils.class) + "android_audio_msg_play_btn.png");
-        double score = 0d;
-        for (int timer = 0; timer < timeout; timer++) {
-            audioMessagePlayButtonState.remember();
-            score = ImageUtil.getOverlapScore(playBntTargetState, audioMessagePlayButtonState.previousScreenshot.get());
-            if (score < MIN_PLAY_BUTTON_SCORE) {
-                Thread.sleep(1000);
-            } else {
-                break;
-            }
-        }
-        Assert.assertTrue("After " + PLAY_BUTTON_STATE_CHANGE_TIMEOUT + " seconds audio message seems still uploading...",
-                score >= MIN_PLAY_BUTTON_SCORE);
+        audioMessagePlayButtonState.remember(playBntTargetState);
+        Assert.assertTrue(String.format(
+                "After %s seconds audio message is still being uploaded", PLAY_BUTTON_STATE_CHANGE_TIMEOUT),
+                audioMessagePlayButtonState.isNotChanged(timeoutSeconds, MIN_PLAY_BUTTON_SCORE));
     }
 
     private static final double MIN_PLAY_BUTTON_SCORE = 0.9;
