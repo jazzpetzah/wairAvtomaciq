@@ -312,7 +312,9 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     # Let it record something for specific duration
+    Given I see Audio Message button in input tools palette
     When I long tap Audio Message button for <Duration> seconds from input tools
+    And I see Play record control button
     And I tap Play record control button
     Then I see state of button on record toolbar is playing
     # TODO: Should be uncommented once ZIOS-6798 is fixed
