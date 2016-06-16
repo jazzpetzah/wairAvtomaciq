@@ -53,24 +53,3 @@ Feature: Self Profile
     Examples:
       | Name      |
       | user1Name |
-
-  @C145963 @staging
-  Scenario Outline: I should be moved to right view on canceling new profile picture
-    Given There is 1 user where <Name> is me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
-    When I tap conversations list settings button
-    And I tap on personal info screen
-    And I tap Gallery Camera button on Take Picture view
-    And I tap Cancel button on Take Picture view
-    Then I see Change Photo button on Take Picture view
-    And I see Gallery Camera button on Take Picture view
-    When I tap Change Photo button on Take Picture view
-    And I tap Take Photo button on Take Picture view
-    And I tap Cancel button on Take Picture view
-    Then I see Take Photo button on Take Picture view
-
-    Examples:
-      | Name      |
-      | user1Name |

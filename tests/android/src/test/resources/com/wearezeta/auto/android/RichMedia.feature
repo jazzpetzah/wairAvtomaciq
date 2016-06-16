@@ -92,17 +92,16 @@ Feature: Rich Media
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
   @C139848 @staging
-  Scenario Outline: Verify that play of soundcloud track will be stopped by incoming voice call
+  Scenario Outline: AN-4152 Verify that play of soundcloud track will be stopped by incoming voice call
     Given There are 2 users where <Name> is me
     Given <Name> is connected to <Contact>
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> sends encrypted message <SoundCloudLink> to user Myself
     Given I see Contact list with contacts
-    # Workaround for AN-4115
     Given I tap on contact name <Contact>
-    When User <Contact> sends encrypted message <SoundCloudLink> to user Myself
-    And I scroll to the bottom of conversation view
+    When I scroll to the bottom of conversation view
     And I tap Play button on SoundCloud container
     And I remember the state of Pause button on SoundCloud container
     And <Contact> calls me
