@@ -186,7 +186,7 @@ Feature: Search
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C439 @id3873 @regression
+  @C439 @id3873 @regression @torun
   Scenario Outline: Verify sending a photo with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -198,7 +198,7 @@ Feature: Search
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I tap Send Image action button on People Picker page
-    And I tap Gallery button on Take Picture view
+    And I tap Gallery Camera button on Take Picture view
     And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
 
@@ -239,7 +239,7 @@ Feature: Search
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact2>
     And I tap Send Image action button on People Picker page
-    And I tap Gallery button on Take Picture view
+    And I tap Gallery Camera button on Take Picture view
     And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
 

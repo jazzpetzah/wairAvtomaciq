@@ -9,7 +9,7 @@ Feature: Self Profile
     When I tap conversations list settings button
     And I tap on personal info screen
     And I remember my current profile picture
-    And I tap Gallery button on Take Picture view
+    And I tap Gallery Camera button on Take Picture view
     And I tap Confirm button on Take Picture view
     And I tap on personal info screen
     Then I verify that my current profile picture is different from the previous one
@@ -107,10 +107,10 @@ Feature: Self Profile
     Given I see Contact list with no contacts
     When I tap conversations list settings button
     And I tap on personal info screen
-    And I tap Gallery button on Take Picture view
+    And I tap Gallery Camera button on Take Picture view
     And I tap Cancel button on Take Picture view
     Then I see Change Photo button on Take Picture view
-    And I see Gallery button on Take Picture view
+    And I see Gallery Camera button on Take Picture view
     When I tap Change Photo button on Take Picture view
     And I tap Take Photo button on Take Picture view
     And I tap Cancel button on Take Picture view
