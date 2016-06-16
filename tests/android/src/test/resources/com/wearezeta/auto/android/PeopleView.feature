@@ -125,11 +125,6 @@ Feature: People View
     And I see <Contact> user profile page
     And I press options menu button
     Then I see correct 1:1 options menu
-    When I tap on center of screen
-    Then I see participant page
-    And I do not see 1:1 options menu
-    When I press options menu button
-    Then I see correct 1:1 options menu
     When I press back button
     Then I see participant page
     And I do not see 1:1 options menu
