@@ -358,6 +358,7 @@ Feature: Audio Messaging
     And I remember media container state
     And I tap media container
     And I see media container state is changed
+    And I remember media container state
     And I tap Play audio message button
     Then I see media container state is changed
 
