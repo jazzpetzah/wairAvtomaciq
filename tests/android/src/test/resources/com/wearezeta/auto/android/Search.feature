@@ -186,7 +186,7 @@ Feature: Search
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C439 @id3873 @regression @torun
+  @C439 @id3873 @regression
   Scenario Outline: Verify sending a photo with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

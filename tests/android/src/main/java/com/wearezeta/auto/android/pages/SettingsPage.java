@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
 
 public class SettingsPage extends AndroidPage {
 
-    private static final String CURRENT_DEVICE = "CURRENT DEVICE";
+    private static final String CURRENT_DEVICE = "Current Device";
 
     private static final By xpathSettingsTitle = By.xpath("//*[@id='toolbar' and .//*[@value='Settings']]");
 
@@ -20,7 +20,8 @@ public class SettingsPage extends AndroidPage {
     private static final Function<String, String> xpathStrConfirmBtnByName = name -> String
             .format("//*[starts-with(@id, 'button') and @value='%s']", name);
 
-    private static final By xpathCurrentDevice = By.xpath(xpathStrSettingsMenuItemByText.apply(CURRENT_DEVICE) + "/following-sibling::*//*[@id='title']");
+    private static final By xpathCurrentDevice = By.xpath(xpathStrSettingsMenuItemByText.apply(CURRENT_DEVICE)
+            + "/following::*[@id='title']");
 
     private static final By idPasswordConfirmationInput = By.id("acet__remove_otr__password");
 

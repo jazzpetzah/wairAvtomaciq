@@ -200,10 +200,10 @@ Feature: E2EE
       | user1Name | user2Name | Msg1     |
 
   @C3232 @regression
-  Scenario Outline: Verify the device id is not changed after relogin
+  Scenario Outline: CM-997 Verify the device id is not changed after relogin
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
+    Given I sign in using my phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When User <Contact1> sends encrypted message <EncMessage> to user Myself
