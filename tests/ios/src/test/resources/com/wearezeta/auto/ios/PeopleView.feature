@@ -393,7 +393,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C1830 @regression @id3971
-  Scenario Outline: Verify removing the content from the group conversation via participant view
+  Scenario Outline: ZIOS-6809 Verify removing the content from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -453,7 +453,6 @@ Feature: People View
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
-    And I see 3 conversation entries
     And I open group conversation details
     And I press leave conversation button
     And I see leave conversation alert

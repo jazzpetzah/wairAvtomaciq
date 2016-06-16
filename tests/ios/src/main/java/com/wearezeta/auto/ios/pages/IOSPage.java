@@ -78,6 +78,9 @@ public abstract class IOSPage extends BasePage {
 
     private static final By classAlert = By.className("UIAAlert");
 
+    private static final Function<String, String> xpathStrAlertButtonByCaption = caption ->
+            String.format("//UIAAlert//UIAButton[@label='%s']", caption);
+
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
@@ -607,5 +610,10 @@ public abstract class IOSPage extends BasePage {
 
     public boolean waitUntilAlertDisappears(int timeoutSeconds) throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), classAlert, timeoutSeconds);
+    }
+
+    public void tapAlertButton(String caption) throws Exception {
+        final By locator = By.xpath(xpathStrAlertButtonByCaption.apply(caption));
+        getElement(locator).click();
     }
 }
