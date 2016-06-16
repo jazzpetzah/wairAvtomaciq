@@ -57,7 +57,7 @@ Feature: Audio Message
     And I tap on audio message send button
     Then I see cursor toolbar
     And I see Audio Message container in the conversation view
-    Then I wait for 10 seconds until audio message upload completed
+    And I wait for 15 seconds until audio message upload completed
     When I remember the state of recent audio message seekbar
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
@@ -134,8 +134,7 @@ Feature: Audio Message
     And I tap Retry button on the recent audio message in the conversation view
     # Retry button changes to Play button
     Then I verify the state of Retry button on the recent audio message in the conversation view is changed
-    # Wait for the audio to be fully uploaded, then retry button changes to play button
-    When I wait for 10 seconds
+    Then I wait for 15 seconds until audio message upload completed
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
     Then I verify the state of Play button on the recent audio message in the conversation view is changed
@@ -164,7 +163,7 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131194 @C131196 @C131202 @regression @rc @rc42
+  @C131194 @C131196 @C131202 @regression @rc @rc42 @torun
   Scenario Outline: Verify playing a received voice message + DO NOT playing in the background
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -176,8 +175,7 @@ Feature: Audio Message
     And I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
-    # Wait 10 seconds until the message is fully downloaded
-    And I wait for 10 seconds
+    Then I wait for 15 seconds until audio message download completed
     Then I verify the state of recent audio message seekbar in the conversation view is changed
     # Wait until play button changes to pause button
     When I wait for 2 seconds
@@ -210,8 +208,7 @@ Feature: Audio Message
     When I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
-    # Wait 10 seconds until the message is fully downloaded
-    And I wait for 10 seconds
+    Then I wait for 15 seconds until audio message download completed
     Then I verify the state of recent audio message seekbar in the conversation view is changed
     When I remember the state of Pause button on the recent audio message in the conversation view
     And <Contact> calls me
@@ -237,8 +234,7 @@ Feature: Audio Message
     When I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
-    # Wait 10 seconds until the message is fully downloaded
-    And I wait for 10 seconds
+    Then I wait for 15 seconds until audio message download completed
     Then I verify the state of recent audio message seekbar in the conversation view is changed
     When I remember the state of Pause button on the recent audio message in the conversation view
     When <Contact> starts a video call to me
