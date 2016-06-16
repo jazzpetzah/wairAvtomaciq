@@ -155,33 +155,4 @@ public class SelfProfilePageSteps {
                 "The overlap value between the previous and the current profile picture is greater than expected (%.2f > %.02f)",
                 overlapScore, MAX_SCREENSHOTS_OVERLAP_SCORE), overlapScore <= MAX_SCREENSHOTS_OVERLAP_SCORE);
     }
-
-    /**
-     * Verify whether chathead notification is visible
-     *
-     * @param shouldNotSee equals to null if the notification should be visible
-     * @throws Exception
-     * @step. ^I (do not )?see chathead notification$
-     */
-    @Then("^I (do not )?see chathead notification$")
-    public void ISeeChatheadNotification(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue("Chathead notification is not visible",
-                    getSelfProfilePage().waitForChatheadNotification().isPresent());
-        } else {
-            Assert.assertTrue("Chathead notification is still visible",
-                    getSelfProfilePage().waitUntilChatheadNotificationInvisible());
-        }
-    }
-
-    /**
-     * Tap chathead notification as soon as it appears on the screen
-     *
-     * @throws Exception
-     * @step. ^I tap the chathead$
-     */
-    @And("^I tap the chathead notification$")
-    public void ITapChathead() throws Exception {
-        getSelfProfilePage().tapChatheadNotification();
-    }
 }
