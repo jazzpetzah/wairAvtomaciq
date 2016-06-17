@@ -515,6 +515,12 @@ public class ConversationPageSteps {
                 .waitUntilFileUploaded(fileName));
     }
 
+    @Then("^I wait until placeholder for file (.*) disappears$")
+    public void IWaitUntilFilePlaceholderDisappears(String fileName) throws Exception {
+        assertThat("Upload still not finished for file " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .waitUntilFilePlaceholderDisappears(fileName));
+    }
+
     /**
      * Clicks on download button to download certain file
      *
