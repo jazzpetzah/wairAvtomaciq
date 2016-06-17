@@ -540,8 +540,7 @@ public class CommonWebAppSteps {
         boolean isGroup = !convoType.equals("user");
         context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "video/mp4", deviceName, isGroup);
     }
-
-
+    
     /**
      * Send message to a conversation
      *
