@@ -1358,9 +1358,9 @@ public class ConversationViewPageSteps {
      *
      * @param timeoutSeconds seconds to wait for upload completed
      * @throws Exception
-     * @step. ^I wait for (\d+) seconds? until audio message (download|upload) completed$
+     * @step. ^I wait for (\d+) seconds? until audio message (?:download|upload) completed$
      */
-    @Then("^I wait for (\\d+) seconds? until audio message (download|upload) completed$")
+    @Then("^I wait for (\\d+) seconds? until audio message (?:download|upload) completed$")
     public void IWaitUntilMessageUploaded(int timeoutSeconds) throws Exception {
         final BufferedImage playBntTargetState = ImageUtil.readImageFromFile(
                 AndroidCommonUtils.getImagesPath(AndroidCommonUtils.class) + "android_audio_msg_play_btn.png");
