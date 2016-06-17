@@ -18,7 +18,7 @@ Feature: Connect
     And I tap on contact name <Contact>
     And I see Pending Connect to <Contact> message on Dialog page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
@@ -37,7 +37,7 @@ Feature: Connect
     And I navigate back to conversations list
     Then I see first item in contact list named <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -58,7 +58,7 @@ Feature: Connect
     And I navigate back to conversations list
     Then I see first item in contact list named <UnconnectedUser>
 
-    Examples: 
+    Examples:
       | Name      | GroupCreator | GroupChatName | UnconnectedUser |
       | user1Name | user2Name    | TESTCHAT      | user3Name       |
 
@@ -80,7 +80,7 @@ Feature: Connect
     And I tap on conversation <Contact1> in search result
     Then I see Pending request page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
@@ -101,7 +101,7 @@ Feature: Connect
     And I see conversation <Contact2> in conversations list
     And I see conversation <Contact3> in conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
@@ -121,7 +121,7 @@ Feature: Connect
     And I see <Contact> user pending profile page
     And I see Cancel Request button on pending profile page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -148,7 +148,7 @@ Feature: Connect
     # Then I see 1 default message in the conversation view
     # And I see 0 photos in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
@@ -159,7 +159,7 @@ Feature: Connect
     Given <Contact2> is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
-    Given I wait until <ContactEmail> exists in backend search results
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -173,8 +173,8 @@ Feature: Connect
     Then I see Cancel Request button on pending profile page
 
     Examples:
-      | Name      | Contact   | ContactEmail | Contact2 |
-      | user1Name | user2Name | user2Email   | user3Name |
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C1029 @rc @regression @id2536
   Scenario Outline: Verify you can send an invitation via mail
@@ -212,7 +212,7 @@ Feature: Connect
     And I tap on contact name <UnconnectedUser>
     Then I see Pending Connect to <UnconnectedUser> message on Dialog page
 
-    Examples: 
+    Examples:
       | Name      | UnconnectedUser | ContactEmail |
       | user1Name | user2Name       | user2Email   |
 
@@ -229,7 +229,7 @@ Feature: Connect
     And I confirm Cancel Request action on pending profile page
     Then I do not see conversation <Contact1> in conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -253,7 +253,7 @@ Feature: Connect
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -270,7 +270,7 @@ Feature: Connect
     And I confirm Cancel Request action on pending profile page
     Then I see the conversation "<Contact1>" exists in Search results
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -296,7 +296,7 @@ Feature: Connect
     Then I see Pending request link in conversations list
     # Then I do not see Pending request link in conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
@@ -316,7 +316,7 @@ Feature: Connect
     And I confirm my choice
     Then I see 1 photo in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -336,7 +336,7 @@ Feature: Connect
     When I navigate back to conversations list
     Then I see conversation <Contact> in conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -351,7 +351,7 @@ Feature: Connect
     When I click on Pending request link in conversations list
     Then I see Pending request page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
@@ -366,7 +366,7 @@ Feature: Connect
     And I see Pending request page
     Then I see Hello connect message from user <NewName> on Pending request page
 
-    Examples: 
+    Examples:
       | Name      | Contact   | NewName  |
       | user1Name | user2Name | New Name |
 
@@ -381,6 +381,6 @@ Feature: Connect
     And <Contact> cancel all outgoing connection requests
     Then I do not see Pending request link in conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
