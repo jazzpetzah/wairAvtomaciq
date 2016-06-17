@@ -1,6 +1,6 @@
 Feature: Chatheads
 
-  @C150006 @staging
+  @C150006 @regression @rc
   Scenario Outline: Verify tapping a chathead will open correct conversation view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
