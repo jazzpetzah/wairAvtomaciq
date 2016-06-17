@@ -217,15 +217,33 @@ Feature: Conversation View
     And I click People button in group conversation
     And I see Group Participants popover
     When I click Add People button on Group Participants popover
-    And I select the first 125 participants from Group Participants popover search results
+    And I select the first 122 participants from Group Participants popover search results
+    And I choose to create group conversation from Group Participants popover
+    When I click People button in group conversation
+    And I see Group Participants popover
+    Then I see 124 participants in the Group Participants popover
+    When I click Add People button on Group Participants popover
+    And I select the first 4 participants from Group Participants popover search results
+    And I choose to create group conversation from Group Participants popover
+    And I see full house warning modal
+    And I see a string 3 remaining on the page
+    And I click on close button in full house warning modal
+    And I do not see full house warning modal
+    #Next step: Check if text gives 3 remaining
+    When I click People button in group conversation
+    And I see Group Participants popover
+    When I click Add People button on Group Participants popover
+    And I select the first 3 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
     When I click People button in group conversation
     And I see Group Participants popover
     Then I see 127 participants in the Group Participants popover
+    #Next step: Check if text gives 0 remaining
     When I click Add People button on Group Participants popover
     And I select the first 1 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
     And I see full house warning modal
+    And I see a string 0 remaining on the page
     And I click on close button in full house warning modal
     And I do not see full house warning modal
     When I click People button in group conversation
