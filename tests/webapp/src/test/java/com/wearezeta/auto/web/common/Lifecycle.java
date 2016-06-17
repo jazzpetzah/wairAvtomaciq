@@ -249,8 +249,6 @@ public class Lifecycle {
     private static void setCustomChromeProfile(DesiredCapabilities capabilities)
             throws Exception {
         ChromeOptions options = new ChromeOptions();
-        // Always use en-US as default locale for chrome
-        options.addArguments("--lang=en-US");
         // simulate a fake webcam and mic for testing
         options.addArguments("use-fake-device-for-media-stream");
         // allow skipping the security prompt for sharing the media device
