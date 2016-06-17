@@ -157,9 +157,11 @@ public class ConversationViewPage extends AndroidPage {
     private static final Function<String, String> xpathCursorHintByValue = value -> String
             .format("//*[@id='ctv__cursor' and @value='%s']", value);
 
+    private static final By idActionModeBarForwardButton = By.id("action_fwd");
     private static final By idActionModeBarDeleteButton = By.id("action_delete");
     private static final By idActionModeBarCopyButton = By.id("action_copy");
     private static final By idActionModeBarCloseButton = By.id("action_mode_close_button");
+
 
     private static final By idYoutubeContainer = By.id("fl__youtube_image_container");
 
@@ -955,5 +957,9 @@ public class ConversationViewPage extends AndroidPage {
         final int x = audioMsgButton.getLocation().getX() + audioMsgButton.getSize().getWidth() / 2;
         final int y = audioMsgButton.getLocation().getY() + audioMsgButton.getSize().getHeight() / 2;
         new TouchActions(getDriver()).down(x, y).perform();
+    }
+
+    public void tapForwardTopActionModeBarButton() throws Exception {
+        getElement(idActionModeBarForwardButton).click();
     }
 }
