@@ -195,7 +195,7 @@ Feature: Audio Message
       | Name      | Contact   | FileName | MIMEType  | DeviceName |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
 
-  @C139849 @staging
+  @C139849 @regression
   Scenario Outline: (AN-4067) Verify that play of audio message will be stopped by incoming voice call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -221,7 +221,7 @@ Feature: Audio Message
       | Name      | Contact   | FileName | MIMEType  | DeviceName | CallBackend |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | autocall    |
 
-  @C139851 @staging
+  @C139851 @regression
   Scenario Outline: (AN-4067) Verify that play of audio message will be stopped by incoming video call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -247,7 +247,7 @@ Feature: Audio Message
       | Name      | Contact   | FileName | MIMEType  | DeviceName | CallBackend |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | chrome      |
 
-  @C139852 @staging
+  @C139852 @regression
   Scenario Outline: (AN-4107) Verify that record of audio message will be stopped by incoming voice/video call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

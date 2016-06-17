@@ -126,6 +126,7 @@ Feature: Utility
 
   @C139987 @utility
     Scenario Outline: Verify I get redirected to unsupported browser page
+    Given I switch to sign in page
     When I navigate to login page for <Agent>
     Then I see unsupported browser page
     

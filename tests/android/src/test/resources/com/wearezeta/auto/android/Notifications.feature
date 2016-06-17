@@ -1,6 +1,6 @@
 Feature: Notifications
 
-  @C147866 @staging
+  @C147866 @regression @rc
   Scenario Outline: Verify push notifications are received after successful registration
     Given I am on Android 4.0 or better
     Given I see welcome screen
