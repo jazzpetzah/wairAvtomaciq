@@ -50,7 +50,7 @@ Feature: Conversation List
       | user1Name | user2Name |
 
   @C822 @id4042 @regression @rc
-  Scenario Outline: Verify I can delete a 1:1 conversation from conversation list
+  Scenario Outline: CM-998 Verify I can delete a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -70,7 +70,8 @@ Feature: Conversation List
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
     Then I see Contact list with no contacts
-    When I open Search UI
+    When I wait until <Contact1> exists in backend search results
+    And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I tap Open Conversation action button on People Picker page

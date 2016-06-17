@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 
 public class CallOngoingVideoPage extends CallingOverlayPage {
     private static final By idVideoSelfPreview = By.id("ll__self_view_layout");
@@ -42,7 +43,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
     public BufferedImage getSpecialButtonScreenshot() throws Exception {
         try {
             return super.getSpecialButtonScreenshot();
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | WebDriverException e) {
             tapOngoingVideo();
             return super.getSpecialButtonScreenshot();
         }
@@ -52,7 +53,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
     public BufferedImage getMuteButtonScreenshot() throws Exception {
         try {
             return super.getMuteButtonScreenshot();
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | WebDriverException e) {
             tapOngoingVideo();
             return super.getMuteButtonScreenshot();
         }
@@ -63,7 +64,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
     protected void tapSpecialAction() throws Exception {
         try {
             super.tapSpecialAction();
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | WebDriverException e) {
             tapOngoingVideo();
             super.tapSpecialAction();
         }
@@ -73,7 +74,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
     public void hangup() throws Exception {
         try {
             super.hangup();
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | WebDriverException e) {
             tapOngoingVideo();
             super.hangup();
         }
@@ -83,7 +84,7 @@ public class CallOngoingVideoPage extends CallingOverlayPage {
     public void toggleMute() throws Exception {
         try {
             super.toggleMute();
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | WebDriverException e) {
             tapOngoingVideo();
             super.toggleMute();
         }

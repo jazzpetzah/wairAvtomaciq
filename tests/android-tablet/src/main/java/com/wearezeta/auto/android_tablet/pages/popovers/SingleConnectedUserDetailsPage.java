@@ -11,27 +11,30 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class SingleConnectedUserDetailsPage extends
 		AbstractConversationDetailsPage {
 	public final static Function<String, String> xpathNameByValue = value -> String
-			.format("//*[@id='ttv__participants__header' and @value='%s']",
-					value);
+			.format("//*[@id='ttv__participants__header' and @value='%s']", value);
 
 	public final static Function<String, String> xpathEmailByValue = value -> String
-			.format("//*[@id='ttv__participants__sub_header' and @value='%s']",
-					value);
+			.format("//*[@id='ttv__participants__sub_header' and @value='%s']", value);
+
+    public final static By xpathCreateGroupButton =
+            By.xpath("//*[@id='ttv__participants__left_label' and @value='CREATE GROUP']");
 
 	public SingleConnectedUserDetailsPage(Future<ZetaAndroidDriver> lazyDriver,
 										  SingleUserPopover container) throws Exception {
 		super(lazyDriver, container);
 	}
 
-	public boolean waitUntilUserNameVisible(String expectedName)
-			throws Exception {
+	public boolean waitUntilUserNameVisible(String expectedName) throws Exception {
 		final By locator = By.xpath(xpathNameByValue.apply(expectedName));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	public boolean waitUntilUserEmailVisible(String expectedEmail)
-			throws Exception {
+	public boolean waitUntilUserEmailVisible(String expectedEmail) throws Exception {
 		final By locator = By.xpath(xpathEmailByValue.apply(expectedEmail));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
+
+    public void tapCreateGroupButton() throws Exception {
+        getElement(xpathCreateGroupButton).click();
+    }
 }

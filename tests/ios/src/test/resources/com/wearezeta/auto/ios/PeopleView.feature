@@ -328,14 +328,15 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <Contact3> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact3>
     And I see the conversation "<Contact3>" exists in Search results
     And I click close button to dismiss people view
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I press Add button
     And I wait until <Contact2> exists in backend search results
+    And I press Add button
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     Then I see the conversation "<Contact3>" does not exist in Search results
@@ -393,7 +394,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C1830 @regression @id3971
-  Scenario Outline: Verify removing the content from the group conversation via participant view
+  Scenario Outline: ZIOS-6809 Verify removing the content from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -453,7 +454,6 @@ Feature: People View
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
-    And I see 3 conversation entries
     And I open group conversation details
     And I press leave conversation button
     And I see leave conversation alert

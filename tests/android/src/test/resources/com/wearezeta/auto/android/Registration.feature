@@ -16,8 +16,8 @@ Feature: Registration
       | Name      |
       | user1Name |
 
-  @C145970 @staging
-  Scenario Outline: (AN-4119) Change self picture during registration using gallery
+  @C145970 @regression @rc @rc42
+  Scenario Outline: Change self picture during registration using gallery
     Given I see welcome screen
     When I input a new phone number for user <Name>
     And I input the verification code

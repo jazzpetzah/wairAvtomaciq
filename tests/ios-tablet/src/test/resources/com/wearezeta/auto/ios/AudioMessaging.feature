@@ -20,7 +20,7 @@ Feature: Audio Messaging
       | Name      | Contact   | Duration |
       | user1Name | user2Name | 50       |
 
-  @C145954 @staging
+  @C145954 @regression
   Scenario Outline: Verify receiving and playing an audio message [LANDSCAPE]
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -34,6 +34,8 @@ Feature: Audio Messaging
     And I tap Play audio message button
     #This step waits until state is changed, no need for download sleep anymore
     Then I see state of button on audio message placeholder is pause
+    # TODO: Should be uncommented once ZIOS-6798 is fixed
+    #And I see the audio messag
 
     Examples:
       | Name      | Contact   | FileName | FileMIME  | ContactDevice |

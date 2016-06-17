@@ -98,7 +98,7 @@ Feature: Audio Messaging
     And I tap Play audio message button
     And I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item
-    And I accept alert
+    And I tap Delete button on the alert
     Then I do not see audio message placeholder
 
     Examples:
@@ -147,7 +147,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     When User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    And User <Contact1> sends 1 encrypted message to user Myself
+    And User Me sends 1 encrypted message to user <Contact1>
     And I long tap on audio message placeholder in conversation view
     Then I do not see Save badge item
     When I tap Play audio message button
@@ -304,7 +304,7 @@ Feature: Audio Messaging
       | Name      | Contact   | SoundCloudLink                                                   |
       | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
-  @C129325 @C129324 @staging
+  @C129325 @C129324 @regression
   Scenario Outline: Verify playing the message by tapping on the play icon on record toolbar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -312,7 +312,9 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     # Let it record something for specific duration
+    Given I see Audio Message button in input tools palette
     When I long tap Audio Message button for <Duration> seconds from input tools
+    And I see Play record control button
     And I tap Play record control button
     Then I see state of button on record toolbar is playing
     # TODO: Should be uncommented once ZIOS-6798 is fixed
@@ -330,7 +332,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     When I tap on contact name <Contact1>
-    And User <Contact1> sends 1 encrypted message to user Myself
+    And User Me sends 1 encrypted message to user <Contact1>
     And I see audio message placeholder
     And I tap Play audio message button
     Then I see state of button on audio message placeholder is pause
@@ -344,3 +346,24 @@ Feature: Audio Messaging
     Examples:
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
+
+  @C139861 @staging
+  Scenario Outline: Verify Soundcloud playback is stopped when audio message playback is started
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
+    And User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    And I tap on contact name <Contact>
+    And User Me sends 1 encrypted message to user <Contact>
+    And I remember media container state
+    And I tap media container
+    And I see media container state is changed
+    And I remember media container state
+    And I tap Play audio message button
+    Then I see media container state is changed
+
+    Examples:
+      | Name      | Contact   | SoundCloudLink                                                   | FileName | FileMIME  | ContactDevice |
+      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic | test.m4a | audio/mp4 | Device1       |

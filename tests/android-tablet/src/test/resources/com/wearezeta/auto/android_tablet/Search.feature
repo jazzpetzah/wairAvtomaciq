@@ -183,27 +183,7 @@ Feature: Search
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
-    And I open Search UI
-    And I enter "<Contact>" into Search input on People Picker page
-    And I tap the found item <Contact> on People Picker page
-    When I tap Send Image action button on People Picker page
-    And I tap Take Photo button on Take Picture view
-    And I tap Confirm button on Take Picture view
-    Then I see a new picture in the conversation view
-    And I do not see People Picker page
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C544 @id3893 @regression
-  Scenario Outline: Verify sending a photo with action button (portrait)
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to portrait
-    Given I sign in using my email
-    Given I accept First Time overlay as soon as it is visible
-    Given I see the Conversations list with conversations
+    Given I wait until <Contact> exists in backend search results
     And I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
@@ -255,6 +235,8 @@ Feature: Search
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap the found item <Contact1> on People Picker page
@@ -283,6 +265,8 @@ Feature: Search
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     When I tap the found item <Contact1> on People Picker page

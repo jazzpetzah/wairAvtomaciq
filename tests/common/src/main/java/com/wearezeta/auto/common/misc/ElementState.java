@@ -39,6 +39,11 @@ public class ElementState {
         throw savedException;
     }
 
+    public ElementState remember(BufferedImage customInitialState) throws Exception {
+        this.previousScreenshot = Optional.of(customInitialState);
+        return this;
+    }
+
     private boolean checkState(Function<Double, Boolean> checkerFunc, int timeoutSeconds) throws Exception {
         final long msTimeout = timeoutSeconds * 1000;
         final long msStarted = System.currentTimeMillis();

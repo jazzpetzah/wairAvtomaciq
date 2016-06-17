@@ -123,10 +123,10 @@ public class CommonAndroidSteps {
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidSteps.class);
         AndroidCommonUtils.installClipperApp(CommonAndroidSteps.class);
-        // This is handled by TestingGallery now
-//        final String backendJSON =
-//                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
-//        AndroidCommonUtils.deployBackendFile(backendJSON);
+        // FIXME: This is handled by TestingGallery now
+        final String backendJSON =
+                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
+        AndroidCommonUtils.deployBackendFile(backendJSON);
         return null;
     }
 
@@ -172,7 +172,7 @@ public class CommonAndroidSteps {
                 AndroidCommonUtils.enableAutoAnswerCall(getClass());
             }
         } catch (Exception e) {
-             Throwables.propagate(e);
+            Throwables.propagate(e);
         }
 
         final long millisecondsStarted = System.currentTimeMillis();
@@ -459,17 +459,14 @@ public class CommonAndroidSteps {
     @Then("^I verify the previous and the current screenshots are( not)? different$")
     public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent(String shouldBeEqual) throws Exception {
         final int timeoutSeconds = 10;
-        final double targetScore = 0.75d;
         if (shouldBeEqual == null) {
             Assert.assertTrue(
                     String.format("The current screen state seems to be similar to the previous one after %s seconds",
-                            timeoutSeconds),
-                    screenState.isChanged(timeoutSeconds, targetScore));
+                            timeoutSeconds), screenState.isChanged(timeoutSeconds, 0.975));
         } else {
             Assert.assertTrue(
                     String.format("The current screen state seems to be different to the previous one after %s seconds",
-                            timeoutSeconds),
-                    screenState.isNotChanged(timeoutSeconds, targetScore));
+                            timeoutSeconds), screenState.isNotChanged(timeoutSeconds, 0.75));
         }
     }
 
@@ -1510,7 +1507,36 @@ public class CommonAndroidSteps {
             Thread.sleep(500);
         } while (System.currentTimeMillis() - millisecondsStarted <= PUSH_NOTIFICATION_TIMEOUT_SEC * 1000);
         Assert.assertTrue(String.format("Push message '%s' has not been received within %s seconds timeout OR "
-                + "TestingGallery app has no access to read push notifications (please check phone settings)",
+                        + "TestingGallery app has no access to read push notifications (please check phone settings)",
                 expectedMessage, PUSH_NOTIFICATION_TIMEOUT_SEC), isMsgFound);
+    }
+
+    /**
+     * Tap chathead notification as soon as it appears on the screen
+     *
+     * @throws Exception
+     * @step. ^I tap the chathead$
+     */
+    @And("^I tap the chathead notification$")
+    public void ITapChathead() throws Exception {
+        pagesCollection.getCommonPage().tapChatheadNotification();
+    }
+
+    /**
+     * Verify whether chathead notification is visible
+     *
+     * @param shouldNotSee equals to null if the notification should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see chathead notification$
+     */
+    @Then("^I (do not )?see chathead notification$")
+    public void ISeeChatheadNotification(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("Chathead notification is not visible",
+                    pagesCollection.getCommonPage().waitForChatheadNotification().isPresent());
+        } else {
+            Assert.assertTrue("Chathead notification is still visible",
+                    pagesCollection.getCommonPage().waitUntilChatheadNotificationInvisible());
+        }
     }
 }

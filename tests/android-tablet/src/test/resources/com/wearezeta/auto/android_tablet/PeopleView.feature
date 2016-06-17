@@ -10,8 +10,7 @@ Feature: People View
     Given I see the conversations list with conversations
     When I tap the conversation <Contact>
     And I tap conversation name from top toolbar
-    Then I see the Single user popover
-    And I see the user name <Contact> on Single user popover
+    Then I see the user name <Contact> on Single user popover
     And I see the user email <ContactEmail> on Single user popover
 
     Examples:
@@ -28,8 +27,7 @@ Feature: People View
     Given I see the conversations list with conversations
     When I tap the conversation <Contact>
     And I tap conversation name from top toolbar
-    Then I see the Single user popover
-    And I see the user name <Contact> on Single user popover
+    Then I see the user name <Contact> on Single user popover
     And I see the user email <ContactEmail> on Single user popover
 
     Examples:
@@ -47,7 +45,6 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I see the Group popover
     And I tap Options button on Group popover
     When I select <ItemLeave> menu item on Group popover
     And I confirm leaving the group chat on Group popover
@@ -69,7 +66,6 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I see the Group popover
     And I tap Options button on Group popover
     When I select <ItemLeave> menu item on Group popover
     And I confirm leaving the group chat on Group popover
@@ -91,8 +87,6 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I see the Group popover
-    And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
     When I tap Remove button on Group popover
     And I confirm removal from the group chat on Group popover
@@ -116,8 +110,6 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I see the Group popover
-    And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
     When I tap Remove button on Group popover
     And I confirm removal from the group chat on Group popover
@@ -180,9 +172,7 @@ Feature: People View
     Given User <Contact1> sends encrypted message <Message> to user Myself
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I see the Group popover
-    When I see the participant avatar <Contact1> on Group popover
-    And I tap the participant avatar <Contact1> on Group popover
+    When I tap the participant avatar <Contact1> on Group popover
     And I tap Open Conversation button on Group popover
     Then I do not see the Group popover
     And I see the message "<Message>" in the conversation view
@@ -203,9 +193,7 @@ Feature: People View
     Given User <Contact1> sends encrypted message <Message> to user Myself
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I see the Group popover
-    When I see the participant avatar <Contact1> on Group popover
-    And I tap the participant avatar <Contact1> on Group popover
+    When I tap the participant avatar <Contact1> on Group popover
     And I tap Open Conversation button on Group popover
     Then I do not see the Group popover
     And I see the message "<Message>" in the conversation view
@@ -225,8 +213,6 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I see the Group popover
-    When I see the participant avatar <Contact1> on Group popover
     And I tap the participant avatar <Contact1> on Group popover
     Then I see the user name <Contact1> on Group popover
     And I see the user email <Contact1Email> on Group popover
@@ -246,8 +232,6 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I see the Group popover
-    When I see the participant avatar <Contact1> on Group popover
     And I tap the participant avatar <Contact1> on Group popover
     Then I see the user name <Contact1> on Group popover
     And I see the user email <Contact1Email> on Group popover
@@ -267,8 +251,7 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     When I tap conversation name from top toolbar
-    Then I see the Group popover
-    And I see the participant avatars <Contact1>,<Contact2> on Group popover
+    Then I see the participant avatars <Contact1>,<Contact2> on Group popover
     And I see the conversation name "<GroupChatName>" on Group popover
     And I see "<Subheader>" subheader on Group popover
 
@@ -287,8 +270,7 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     When I tap conversation name from top toolbar
-    Then I see the Group popover
-    And I see the participant avatars <Contact1>,<Contact2> on Group popover
+    Then I see the participant avatars <Contact1>,<Contact2> on Group popover
     And I see the conversation name "<GroupChatName>" on Group popover
     And I see "<Subheader>" subheader on Group popover
 
@@ -329,7 +311,6 @@ Feature: People View
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I see the Group popover
     When I tap Options button on Group popover
     And I see <ItemLeave> menu item on Group popover
     And I navigate back
@@ -353,8 +334,6 @@ Feature: People View
     And I do not see the conversation <Contact2> in my conversations list
     And I tap the conversation <GroupChatName>
     And I tap conversation name from top toolbar
-    And I see the Group popover
-    And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
     Then I do not see Open Conversation button on Group popover
 

@@ -37,6 +37,7 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     When I enter phone number for Myself
     And I enter login verification code for Myself
+    And I accept First Time overlay if it is visible
     And I dismiss settings warning
     Then I see conversations list
 
@@ -107,7 +108,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C1089 @regression @id3863 @noAcceptAlert
+  @C3505 @regression @id3863 @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken email
     Given There is 1 user where <Name> is me with phone number only
     Given I see sign in screen

@@ -15,8 +15,6 @@ public class TakePicturePage extends AndroidPage {
 
     public static final By idChangePhotoBtn = By.id("gtv__camera_control__change_image_source");
 
-    private static final By idGalleryBtn = By.id("gtv__camera_control__pick_from_gallery");
-
     private static final By idGalleryCameraBtn = By.id("gtv__camera_control__pick_from_gallery_in_camera");
 
     private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__back_camera");
@@ -55,14 +53,6 @@ public class TakePicturePage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idChangePhotoBtn);
     }
 
-    public boolean isGalleryButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idGalleryBtn);
-    }
-
-    public boolean isGalleryButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idGalleryBtn);
-    }
-
     /**
      * @return false if Take Photo button is not visible after Switch Camera button is clicked
      * @throws Exception
@@ -70,10 +60,6 @@ public class TakePicturePage extends AndroidPage {
     public boolean tapSwitchCameraButton() throws Exception {
         getElement(idSwitchCameraButton).click();
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathTakePhotoButton);
-    }
-
-    public void openGallery() throws Exception {
-        getElement(idGalleryBtn, "Gallery button is still not visible").click();
     }
 
     public void openGalleryFromCameraView() throws Exception {
@@ -126,5 +112,13 @@ public class TakePicturePage extends AndroidPage {
 
     public void tapSketchOnImageButton() throws Exception {
         getElement(idSketchImagePaintButton, "Draw sketch on image button is not visible").click();
+    }
+
+    public boolean isGalleryCameraButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idGalleryCameraBtn);
+    }
+
+    public boolean isGalleryCameraButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idGalleryCameraBtn);
     }
 }

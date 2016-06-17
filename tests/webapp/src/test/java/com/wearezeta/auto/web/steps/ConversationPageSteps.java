@@ -1214,7 +1214,7 @@ public class ConversationPageSteps {
      * @step. "^I click OK on long message warning dialog$"
      */
     @When("^I click OK on long message warning dialog$")
-    public void IClickLogoutOnClearDataDialog() throws Exception {
+    public void IClickOKOnLongMessageWarning() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickOKButtonOnLongMWarning();
     }
 }

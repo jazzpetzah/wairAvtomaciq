@@ -129,7 +129,7 @@ Feature: DeleteMessage
     When I tap on contact name <Contact1>
     And I long tap default message in conversation view
     And I tap on Delete badge item
-    And I dismiss alert
+    And I tap Cancel button on the alert
     Then I see 1 default message in the conversation view
 
     Examples:

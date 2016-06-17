@@ -122,8 +122,8 @@ Feature: Self Profile
     Then I verify the alert contains text <ExpectedText>
 
     Examples:
-      | Name      | Number        | Code | ExpectedText               |
-      | user1Name | 8301652248706 | +0   | enter a valid phone number |
+      | Name      | Number        | Code | ExpectedText                |
+      | user1Name | 8301652248706 | +0   | has already been registered |
 
   @C1081 @regression @rc @id3990
   Scenario Outline: Verify theme switcher is shown on the self profile

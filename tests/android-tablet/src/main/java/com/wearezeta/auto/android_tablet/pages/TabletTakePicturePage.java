@@ -40,11 +40,6 @@ public class TabletTakePicturePage extends AndroidTabletPage {
         restoreTestOrientation();
     }
 
-    public void openGallery() throws Exception {
-        setOrientationForTakePicture();
-        getAndroidTakePicturePage().openGallery();
-    }
-
     public void openGalleryFromCameraView() throws Exception {
         setOrientationForTakePicture();
         getAndroidTakePicturePage().openGalleryFromCameraView();
@@ -80,14 +75,6 @@ public class TabletTakePicturePage extends AndroidTabletPage {
 
     public boolean isChangePhotoButtonInvisible() throws Exception {
         return getAndroidTakePicturePage().isChangePhotoButtonInvisible();
-    }
-
-    public boolean isGalleryButtonVisible() throws Exception {
-        return getAndroidTakePicturePage().isGalleryButtonVisible();
-    }
-
-    public boolean isGalleryButtonInvisible() throws Exception {
-        return getAndroidTakePicturePage().isGalleryButtonInvisible();
     }
 
     /**

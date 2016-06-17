@@ -36,9 +36,6 @@ public class TakePicturePageSteps {
             case "cancel":
                 getTakePicturePage().cancel();
                 break;
-            case "gallery":
-                getTakePicturePage().openGallery();
-                break;
             case "gallery camera":
                 getTakePicturePage().openGalleryFromCameraView();
                 break;
@@ -68,9 +65,9 @@ public class TakePicturePageSteps {
      * @param shouldNotSee equals to null if the button should be visible
      * @param buttonName   one of possible button names
      * @throws Exception
-     * @step. ^I (do not )?see (Take Photo|Change Photo) button on Take Picture view$
+     * @step. ^I (do not )?see (Take Photo|Change Photo|Gallery Camera) button on Take Picture view$
      */
-    @Then("^I (do not )?see (Take Photo|Change Photo|Gallery) button on Take Picture view$")
+    @Then("^I (do not )?see (Take Photo|Change Photo|Gallery|Gallery Camera) button on Take Picture view$")
     public void ISeeButtonOnTakePictureView(String shouldNotSee, String buttonName) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (buttonName.toLowerCase()) {
@@ -82,9 +79,9 @@ public class TakePicturePageSteps {
                 verificationFunc = (shouldNotSee == null) ? getTakePicturePage()::isChangePhotoButtonVisible :
                         getTakePicturePage()::isChangePhotoButtonInvisible;
                 break;
-            case "gallery":
-                verificationFunc = (shouldNotSee == null) ? getTakePicturePage()::isGalleryButtonVisible :
-                        getTakePicturePage()::isGalleryButtonInvisible;
+            case "gallery camera":
+                verificationFunc =( shouldNotSee == null) ? getTakePicturePage()::isGalleryCameraButtonVisible :
+                        getTakePicturePage()::isGalleryCameraButtonInvisible;
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name: '%s'", buttonName));

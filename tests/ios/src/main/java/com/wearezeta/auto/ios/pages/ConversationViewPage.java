@@ -487,6 +487,7 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isUserNameDisplayedInConversationView(String name) throws Exception {
         final By locator = By.xpath(xpathUserNameByText.apply(name));
+        this.printPageSource();
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -589,6 +590,7 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isSystemMessageVisible(String expectedMsg) throws Exception {
         final By locator = By.xpath(xpathStrSystemMessageByText.apply(expectedMsg));
+        this.printPageSource();
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 

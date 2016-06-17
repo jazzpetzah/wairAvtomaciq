@@ -225,6 +225,9 @@ Feature: Conversation View
     When I click Add People button on Group Participants popover
     And I select the first 1 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
+    And I see full house warning modal
+    And I click on close button in full house warning modal
+    And I do not see full house warning modal
     When I click People button in group conversation
     And I see Group Participants popover
     Then I see 127 participants in the Group Participants popover
@@ -417,6 +420,7 @@ Feature: Conversation View
     When I open self profile
     And Contact <Contact> sends 35 messages with prefix <UNREAD> via device Device1 to user <Name>
     And I wait for 5 seconds
+    Then I see unread dot in conversation <Contact>
     When I open conversation with <Contact>
     Then I do not see text message <READ>33
     And I do not see text message <READ>0

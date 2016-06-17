@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import org.junit.Assert;
 
@@ -41,6 +42,9 @@ public class SettingsPageSteps {
      */
     @When("^I select \"(.*)\" settings menu item$")
     public void ISelectSettingsMenuItem(String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         getSettingsPage().selectMenuItem(name);
     }
 
@@ -54,6 +58,9 @@ public class SettingsPageSteps {
      */
     @When("^I (do not )?see \"(.*)\" settings menu item$")
     public void ISeeSettingsMenuItem(String shouldNotSee, String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Settings menu item '%s' is not visible", name),
                     getSettingsPage().waitUntilMenuItemVisible(name));
@@ -120,5 +127,20 @@ public class SettingsPageSteps {
     @And("^I tap current device in devices settings menu$")
     public void ITapCurrentDeviceInDevicesSettingsMenu() throws Exception {
         getSettingsPage().tapCurrentDevice();
+    }
+
+    /**
+     * Enter new name into the corresponding user name input dialog and commit it
+     *
+     * @step. ^I commit my new name "(.*)"$
+     *
+     * @param newName the new self user name
+     * @throws Exception
+     */
+    @And("^I commit my new name \"(.*)\"$")
+    public void ICommitNewUSerName(String newName) throws Exception {
+        final ClientUser self = usrMgr.getSelfUserOrThrowError();
+        getSettingsPage().commitNewName(newName);
+        self.setName(newName);
     }
 }

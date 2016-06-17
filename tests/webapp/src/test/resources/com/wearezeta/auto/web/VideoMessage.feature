@@ -16,12 +16,12 @@ Feature: Video Message
     And I skip if my browser does not support inline video messages
     And I click play button of video <File> in the conversation view
     Then I wait until video <File> is downloaded and starts to play
-    And I verify seek bar is shown for video <File> in the conversation view
     And I verify time for video <File> is changing in the conversation view
+    And I verify seek bar is shown for video <File> in the conversation view
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size  |
-      | user1Email | user1Password | user1Name | user2Name | example.mp4 | 15MB  |
+      | user1Email | user1Password | user1Name | user2Name | example.mp4 | 20MB  |
 
   @C123938 @videomessage @regression
   Scenario Outline: Verify user can delete video message

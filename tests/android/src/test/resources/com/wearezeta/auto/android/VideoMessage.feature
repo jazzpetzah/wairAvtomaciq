@@ -12,7 +12,7 @@ Feature: Video Message
     And I see Video Message container in the conversation view
     And I tap Play button on the recent video message in the conversation view
     # Wait for the video to be fully loaded
-    And I wait for 10 seconds
+    And I wait for 5 seconds
     Then I see the Wire app is not in foreground
 
     Examples:

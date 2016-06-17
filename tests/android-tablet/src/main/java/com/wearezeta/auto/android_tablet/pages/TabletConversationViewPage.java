@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import com.wearezeta.auto.android.pages.TakePicturePage;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.android.pages.ConversationViewPage;
@@ -15,7 +14,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class TabletConversationViewPage extends AndroidTabletPage {
 
     public static final Function<String, String> xpathStrSystemMessageByContent = content -> String
-            .format("//*[@id='ltv__row_conversation__message' and contains(@value, '%s')]", content);
+            .format("//*[starts-with(@id, 'ttv__row_conversation') and contains(@value, '%s')]", content.toUpperCase());
 
     private static final Function<String, String> xpathStrOutgoingInvitationMessageByContent = content -> String
             .format("//*[@id='ttv__connect_request__first_message' and @value='%s']", content);

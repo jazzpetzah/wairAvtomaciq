@@ -228,9 +228,9 @@ public class ConversationViewPageSteps {
      *
      * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I (do not)?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$
+     * @step. ^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$
      */
-    @When("^I (do not)?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$")
+    @When("^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$")
     public void VerifyButtonVisibilityInInputTools(String shouldNot, String btnName) throws Exception {
         if (shouldNot == null) {
             Assert.assertTrue(btnName + "button in input tools palette is not visible",
@@ -1155,9 +1155,9 @@ public class ConversationViewPageSteps {
      * Verify visibility of the corresponding record control button
      *
      * @throws Exception
-     * @step. ^I see (Send|Cancel) record control button$
+     * @step. ^I see (Send|Cancel|Play) record control button$
      */
-    @Then("^I see (Send|Cancel) record control button$")
+    @Then("^I see (Send|Cancel|Play) record control button$")
     public void ISeeRecordControlButton(String buttonName) throws Exception {
         Assert.assertTrue(String.format("Record control button '%s' is not visible", buttonName),
                 getConversationViewPage().isRecordControlButtonVisible(buttonName));

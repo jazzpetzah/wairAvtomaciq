@@ -1,5 +1,12 @@
 package com.wearezeta.auto.android.steps;
 
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.ConversationViewPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
@@ -13,11 +20,6 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ConversationViewPageSteps {
 
@@ -100,7 +102,7 @@ public class ConversationViewPageSteps {
      * @param msg               message to type. There are several special shortcuts: LONG_MESSAGE - to type long message
      * @param doNotHideKeyboard if it equals null, should hide keyboard
      * @throws Exception
-     * @step. I type the message "(.*)" and send it( without hiding keyboard)?$
+     * @step. ^I type the message "(.*)" and send it( without hiding keyboard)?$
      */
     @When("^I type the message \"(.*)\" and send it( without hiding keyboard)?$")
     public void ITypeMessageAndSendIt(String msg, String doNotHideKeyboard) throws Exception {
@@ -112,7 +114,7 @@ public class ConversationViewPageSteps {
      *
      * @param msg message to type. There are several special shortcuts: LONG_MESSAGE - to type long message
      * @throws Exception
-     * @step. ^I type the message \"(.*)\"$
+     * @step. ^I type the message "(.*)"$
      */
     @When("^I type the message \"(.*)\"$")
     public void ITypeMessage(String msg) throws Exception {
@@ -130,9 +132,11 @@ public class ConversationViewPageSteps {
      *                               release his finger after tap on an icon. Works for long tap on Audio Message
      *                               icon only
      * @throws Exception
-     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button$ from cursor toolbar( without releasing my finger)?$
+     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button (\d+ seconds )? from cursor
+     * toolbar( without releasing my finger)?$
      */
-    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button (\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
+    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button (\\d+ seconds )?" +
+            "from cursor toolbar( without releasing my finger)?$")
     public void WhenITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
                                          String shouldReleaseFinger) throws Exception {
         if (longTap == null) {
@@ -271,7 +275,7 @@ public class ConversationViewPageSteps {
      * Verify that Play button is visible on youtube container
      *
      * @throws Exception
-     * @step. ^I see Play button on youtube container$
+     * @step. ^I see Play button on [Yy]outube container$
      */
     @When("^I see Play button on [Yy]outube container$")
     public void ISeePlayButtonOnYoutubeContainer() throws Exception {
@@ -296,7 +300,7 @@ public class ConversationViewPageSteps {
      * @param doNotSee
      * @param message  message text
      * @throws Exception
-     * @step. ^I (do not )?see Ping message \"(.*)\" in the conversation view
+     * @step. ^I (do not )?see Ping message "(.*)" in the conversation view
      */
     @Then("^I (do not )?see Ping message \"(.*)\" in the conversation view")
     public void ThenISeePingMessageInTheDialog(String doNotSee, String message) throws Exception {
@@ -336,7 +340,7 @@ public class ConversationViewPageSteps {
      *
      * @param shouldNotSee equals to null if 'do not' part does not exist
      * @throws Exception
-     * @step. ^I (do not )?see (?:any|a) (?:photos?|pictures?)in the dialog$
+     * @step. ^I (do not )?see (?:any|a) (?:photos?|pictures?) in the conversation view$
      */
     @Then("^I (do not )?see (?:any|a) (?:photos?|pictures?) in the conversation view$")
     public void ISeeNewPhotoInTheDialog(String shouldNotSee) throws Exception {
@@ -353,7 +357,7 @@ public class ConversationViewPageSteps {
      *
      * @param isLogTap equals to null if it should be simple tap
      * @throws Exception
-     * @step. ^I (long )?tap the recent image in the conversation view$
+     * @step. ^I (long )?tap the recent (?:image|picture) in the conversation view$
      */
     @When("^I (long )?tap the recent (?:image|picture) in the conversation view$")
     public void ITapRecentImage(String isLogTap) throws Exception {
@@ -520,7 +524,8 @@ public class ConversationViewPageSteps {
     @Then("^I see a message informing me that I renamed the conversation to (.*)$")
     public void ThenISeeMessageInformingGroupRename(String newConversationName) throws Exception {
         Assert.assertTrue(
-                String.format("The new conversation name '%s' has not been shown in the conversation view", newConversationName),
+                String.format("The new conversation name '%s' has not been shown in the conversation view",
+                        newConversationName),
                 getConversationViewPage().waitForConversationNameChangedMessage(newConversationName));
     }
 
@@ -555,9 +560,9 @@ public class ConversationViewPageSteps {
      * @param message the text of convo
      * @param not     equals to null if the message should be visible
      * @throws Exception
-     * @step. ^^I see the most recent conversation message is (not )?"(.*)"
+     * @step. ^I see the most recent conversation message is (not )?"(.*)"$
      */
-    @Then("^I see the most recent conversation message is (not )?\"(.*)\"")
+    @Then("^I see the most recent conversation message is (not )?\"(.*)\"$")
     public void ISeeLastMessage(String not, String message) throws Exception {
         if (not == null) {
             Assert.assertTrue(String.format("The most recent conversation message is not equal to '%s'", message),
@@ -594,7 +599,7 @@ public class ConversationViewPageSteps {
      * Store the screenshot of current file placeholder action button
      *
      * @throws Exception
-     * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder is changed$
+     * @step. ^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder$
      */
     @When("^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder$")
     public void IRememberFileTransferActionBtnState() throws Exception {
@@ -628,9 +633,11 @@ public class ConversationViewPageSteps {
      *
      * @param timeout
      * @throws Exception
-     * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder is changed$
+     * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)
+     * placeholder is changed$
      */
-    @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download) placeholder is changed$")
+    @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)" +
+            " placeholder is changed$")
     public void IWaitFileTransferActionButtonChanged(int timeout) throws Exception {
         Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
                 timeout),
@@ -666,7 +673,7 @@ public class ConversationViewPageSteps {
      * Tap on file action button within File placeholder
      *
      * @throws Exception
-     * @step. ^I tap (?:Retry|Download|View) button on (?:upload|download) file placeholder$
+     * @step. ^I tap (?:Retry|Download|View|Cancel) button on file (?:upload|download) placeholder$
      */
     @When("^I tap (?:Retry|Download|View|Cancel) button on file (?:upload|download) placeholder$")
     public void ITapOnFileActionButton() throws Exception {
@@ -746,7 +753,8 @@ public class ConversationViewPageSteps {
                         avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
                 break;
             case PREVIEW:
-                avgThreshold = ImageUtil.getAnimationThreshold(getConversationViewPage()::getPreviewPictureScreenshot, maxFrames,
+                avgThreshold = ImageUtil.getAnimationThreshold(getConversationViewPage()::getPreviewPictureScreenshot,
+                        maxFrames,
                         screenshotingDelay);
                 Assert.assertTrue(String.format("The picture in the image preview view seems to be static (%.2f >= %.2f)",
                         avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
@@ -813,7 +821,7 @@ public class ConversationViewPageSteps {
      * @param msg   the message to check
      * @param times the expected count of message repetitions in the convo view
      * @throws Exception
-     * @step. ^I see message (.*) (\\d+) times? in the conversation view$
+     * @step. ^I see message (.*) (\d+) times? in the conversation view$
      */
     @Then("^I see message (.*) (\\d+) times? in the conversation view$")
     public void ISeeMessageXTimes(String msg, int times) throws Exception {
@@ -875,7 +883,7 @@ public class ConversationViewPageSteps {
      *
      * @param msg the expected conversation message
      * @throws Exception
-     * @step. ^I see unsent indicator next to \"(.*)\" in the conversation view$
+     * @step. ^I see unsent indicator next to "(.*)" in the conversation view$
      */
     @Then("^I see unsent indicator next to \"(.*)\" in the conversation view$")
     public void ThenISeeUnsentIndicatorNextToTheMessage(String msg) throws Exception {
@@ -904,6 +912,7 @@ public class ConversationViewPageSteps {
      *
      * @param doNotSee equal null means the Video call button should be visible
      * @throws Exception
+     * @step. I(do not)? see the (audio|video) call button in upper toolbar$
      */
     @Then("I( do not)? see the (audio|video) call button in upper toolbar$")
     public void ThenIseeVideoCallButtonInUpperToolbar(String doNotSee, String callType) throws Exception {
@@ -967,9 +976,9 @@ public class ConversationViewPageSteps {
      * Check the cursor bar only contains ping, sketch, add picture, people and file buttons in cursor bar
      *
      * @throws Exception
-     * @step. ^I( do not)? see cursor toolbar
+     * @step. ^I( do not)? see cursor toolbar$
      */
-    @Then("^I( do not)? see cursor toolbar")
+    @Then("^I( do not)? see cursor toolbar$")
     public void ThenISeeCursorToolbar(String doNotSee) throws Exception {
         if (doNotSee == null) {
             Assert.assertTrue("Video button should be visible in cursor menu",
@@ -1011,9 +1020,11 @@ public class ConversationViewPageSteps {
      * @param timeout       (optional) to define the validation should be complete within timeout
      * @param actionFailed  equals null means current action successfully
      * @throws Exception
-     * @step. ^I( do not)? see the result of (.*) file (upload|received)?( failed)? having name "(.*)" and extension "(\w+)"( in \d+ seconds)?$
+     * @step. ^I( do not)? see the result of (.*) file (upload|received)? having name "(.*)" and extension "(\w+)"( in \d+
+     * seconds)?( failed)?$
      */
-    @Then("^I( do not)? see the result of (.*) file (upload|received)? having name \"(.*)\" and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
+    @Then("^I( do not)? see the result of (.*) file (upload|received)? having name \"(.*)\"" +
+            " and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
     public void ThenISeeTheResultOfXFileUpload(String doNotSee, String size, String loadDirection, String fileFullName,
                                                String extension, String timeout, String actionFailed) throws Exception {
         int lookUpTimeoutSeconds = (timeout == null) ? DriverUtils.getDefaultLookupTimeoutSeconds()
@@ -1071,10 +1082,11 @@ public class ConversationViewPageSteps {
      *
      * @param hintMessage the expected Hint message
      * @throws Exception
-     * @step. ^I see hint message "(.*)" of cursor button$
+     * @step. ^I tap Audio message button from cursor toolbar and see hint message "(.*)"$
      */
-    @Then("^I see hint message \"(.*)\" of cursor button$")
+    @Then("^I tap Audio message button from cursor toolbar and see hint message \"(.*)\"$")
     public void ISeeCursorHintMessage(String hintMessage) throws Exception {
+        getConversationViewPage().tapAudioMessageCursorBtn();
         Assert.assertTrue(String.format("The hint message '%s' of cursor button should be visible", hintMessage),
                 getConversationViewPage().isCursorHintVisible(hintMessage));
     }
@@ -1278,7 +1290,7 @@ public class ConversationViewPageSteps {
      *
      * @param buttonType could be "audio message" or "video message"
      * @throws Exception
-     * @step. ^I tap (?:Play|X|Retry) button on the recent (video message|audio message|Pause) in the conversation view$"
+     * @step. ^I tap (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view$
      */
     @When("^I tap (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view$")
     public void ITapButtonOnAudioOrVideoMessage(String buttonType) throws Exception {
@@ -1298,7 +1310,7 @@ public class ConversationViewPageSteps {
      * Check whether a button is visible on video message container
      *
      * @throws Exception
-     * @step. ^I see (?:Play|X|Retry) button on the recent video message in the conversation view$"
+     * @step. ^I see (?:Play|X|Retry) button on the recent video message in the conversation view$
      */
     @When("^I see (?:Play|X|Retry) button on the recent video message in the conversation view$")
     public void ISeeButtonOnVideoMessage() throws Exception {
@@ -1323,9 +1335,11 @@ public class ConversationViewPageSteps {
      *
      * @param buttonType could be "audio message" or "video message"
      * @throws Exception
-     * @step. ^I remember the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view$"
+     * @step. ^I remember the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the
+     * conversation view$
      */
-    @When("^I remember the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view$")
+    @When("^I remember the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message)" +
+            " in the conversation view$")
     public void IRememberPlayButtonState(String buttonType) throws Exception {
         switch (buttonType.toLowerCase()) {
             case "video message":
@@ -1339,6 +1353,23 @@ public class ConversationViewPageSteps {
         }
     }
 
+    /**
+     * Wait until audio message upload completed
+     *
+     * @param timeoutSeconds seconds to wait for upload completed
+     * @throws Exception
+     * @step. ^I wait for (\d+) seconds? until audio message (?:download|upload) completed$
+     */
+    @Then("^I wait for (\\d+) seconds? until audio message (?:download|upload) completed$")
+    public void IWaitUntilMessageUploaded(int timeoutSeconds) throws Exception {
+        final BufferedImage playBntTargetState = ImageUtil.readImageFromFile(
+                AndroidCommonUtils.getImagesPath(AndroidCommonUtils.class) + "android_audio_msg_cancel_btn.png");
+        audioMessagePlayButtonState.remember(playBntTargetState);
+        Assert.assertTrue(String.format(
+                "After %s seconds audio message is still being uploaded", timeoutSeconds),
+                audioMessagePlayButtonState.isChanged(timeoutSeconds, MIN_PLAY_BUTTON_SCORE));
+    }
+
     private static final double MIN_PLAY_BUTTON_SCORE = 0.9;
     private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 10; //seconds
 
@@ -1348,9 +1379,11 @@ public class ConversationViewPageSteps {
      * @param buttonType         could be "audio message" or "video message"
      * @param shouldNotBeChanged equals to null if the state should be different
      * @throws Exception
-     * @step. ^I verify the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view is (not )?changed$
+     * @step. ^I verify the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the
+     * conversation view is (not )?changed$
      */
-    @Then("^I verify the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message) in the conversation view is (not )?changed$")
+    @Then("^I verify the state of (?:Play|X|Retry|Pause) button on the recent (video message|audio message)" +
+            " in the conversation view is (not )?changed$")
     public void ISeePlayButtonStateChanged(String buttonType, String shouldNotBeChanged) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (buttonType.toLowerCase()) {

@@ -51,6 +51,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ConversationPage extends WebPage {
 
+    private static final int TIMEOUT_I_SEE_MESSAGE = 20; // seconds
     private static final int TIMEOUT_IMAGE_MESSAGE_UPLOAD = 40; // seconds
     private static final int TIMEOUT_FILE_UPLOAD = 100; // seconds
     private static final int TIMEOUT_VIDEO_UPLOAD = 100; // seconds
@@ -254,7 +255,7 @@ public class ConversationPage extends WebPage {
 
     public boolean waitForPresentMessageContains(String text) throws Exception {
         final By locator = By.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
-        WebDriverWait wait = new WebDriverWait(getDriver(), DriverUtils.getDefaultLookupTimeoutSeconds());
+        WebDriverWait wait = new WebDriverWait(getDriver(), TIMEOUT_I_SEE_MESSAGE);
         return wait.until(presenceOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
     }
 

@@ -125,11 +125,6 @@ Feature: People View
     And I see <Contact> user profile page
     And I press options menu button
     Then I see correct 1:1 options menu
-    When I tap on center of screen
-    Then I see participant page
-    And I do not see 1:1 options menu
-    When I press options menu button
-    Then I see correct 1:1 options menu
     When I press back button
     Then I see participant page
     And I do not see 1:1 options menu
@@ -229,3 +224,18 @@ Feature: People View
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     |
+
+  @C689 @id325 @regression @rc
+  Scenario Outline: Check contact personal info in one to one conversation
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I tap conversation name from top toolbar
+    Then I see <Contact> user name and email
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |

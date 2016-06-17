@@ -559,15 +559,9 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search UI
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact3>
-    And I see the conversation "<Contact3>" exists in Search results
-    And I click close button to dismiss people view
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     Then I see No Results label in People picker search result
@@ -584,14 +578,9 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search UI
-    And I input in People picker search field user name <Contact3>
-    And I see the conversation "<Contact3>" exists in Search results
-    And I click close button to dismiss people view
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     Then I see No Results label in People picker search result
@@ -718,6 +707,7 @@ Feature: People View
     And I confirm delete conversation content
     And I wait until popover is closed
     And I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -745,6 +735,7 @@ Feature: People View
     And I confirm delete conversation content
     And I wait until popover is closed
     And I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
