@@ -1217,4 +1217,36 @@ public class ConversationPageSteps {
     public void IClickOKOnLongMessageWarning() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickOKButtonOnLongMWarning();
     }
+
+    /**
+     * Clicks X on long message warning dialog
+     *
+     * @step. "^I click X button on long message warning dialog$"
+     */
+    @When("^I click X button on long message warning dialog$")
+    public void IClickXOnLongMessageWarning() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickXButtonOnLongMWarning();
+    }
+
+    /**
+     * Clicks X on long message warning dialog
+     *
+     * @step. "^I click X button on long message warning dialog$"
+     */
+    @When("^I click X button on long message warning dialog$")
+    public void IClickXOnLongMessageWarning() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickXButtonOnLongMWarning();
+    }
+
+    /**
+     * Clears conversation input
+     *
+     * @step. "^I delete typed message from conversation input$"
+     */
+    @When("^I delete typed message from conversation input$")
+    public void IDeleteTypedMessage() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clearConversationInput();
+    }
+
+
 }

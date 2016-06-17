@@ -442,10 +442,14 @@ Feature: Conversation View
     And I paste message from file <File1>
     And I send message
     Then I see long message warning dialog
-    #And I click OK on long message warning dialog
+    And I click OK on long message warning dialog
     Then I do not see long message warning dialog
-    And I do not see text message <File2>
-    When I open conversation with <ChatName>
+    And I send message
+    Then I see long message warning dialog
+    And I click X button on long message warning dialog
+    Then I do not see long message warning dialog
+    And I do not see text message <File1>
+    And I clear the conversation input
     And I paste message from file <File2>
     And I send message
     Then I do not see long message warning dialog

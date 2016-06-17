@@ -154,8 +154,11 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssCloseResetSessionDialog)
     private WebElement closeResetSessionDialogButton;
 
-    @FindBy(css = WebAppLocators.ConversationPage.cssOKButtonOnLongMWarning)
+    @FindBy(xpath = WebAppLocators.ConversationPage.xpathOKButtonOnLongMWarning)
     private WebElement oKButtonOnLongMWarning;
+
+    @FindBy(xpath = WebAppLocators.ConversationPage.xpathXButtonOnLongMWarning)
+    private WebElement xButtonOnLongMWarning;
 
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
@@ -1083,10 +1086,19 @@ public class ConversationPage extends WebPage {
 
     public boolean isLongMessageWarnDialogNotShown() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage
-                .cssLongMessageDialog);
+                .cssLongMessageDialog));
     }
 
     public void clickOKButtonOnLongMWarning() throws Exception {
         oKButtonOnLongMWarning.click();
+    }
+
+    public void clickXButtonOnLongMWarning() throws Exception {
+        xButtonOnLongMWarning.click();
+    }
+
+    public void clearConversationInput() throws Exception {
+            conversationInput.sendKeys(Keys.BACK_SPACE);
+
     }
 }
