@@ -147,7 +147,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     When User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    And User <Contact1> sends 1 encrypted message to user Myself
+    And User Me sends 1 encrypted message to user <Contact1>
     And I long tap on audio message placeholder in conversation view
     Then I do not see Save badge item
     When I tap Play audio message button
@@ -332,7 +332,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     When I tap on contact name <Contact1>
-    And User <Contact1> sends 1 encrypted message to user Myself
+    And User Me sends 1 encrypted message to user <Contact1>
     And I see audio message placeholder
     And I tap Play audio message button
     Then I see state of button on audio message placeholder is pause
