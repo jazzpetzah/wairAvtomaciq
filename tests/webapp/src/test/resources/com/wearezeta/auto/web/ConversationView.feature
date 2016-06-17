@@ -226,7 +226,7 @@ Feature: Conversation View
     And I select the first 4 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
     And I see full house warning modal
-    And I see a string 3 remaining on the page
+    And I see a string 3 more people on the page
     And I click on close button in full house warning modal
     And I do not see full house warning modal
     #Next step: Check if text gives 3 remaining
@@ -243,7 +243,7 @@ Feature: Conversation View
     And I select the first 1 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
     And I see full house warning modal
-    And I see a string 0 remaining on the page
+    And I see a string 0 more people on the page
     And I click on close button in full house warning modal
     And I do not see full house warning modal
     When I click People button in group conversation
