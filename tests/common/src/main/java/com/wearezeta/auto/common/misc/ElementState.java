@@ -17,15 +17,9 @@ public class ElementState {
 
     private Optional<BufferedImage> previousScreenshot = Optional.empty();
     private FunctionalInterfaces.StateGetter stateGetter;
-    private int resizeMode = ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION;
 
     public ElementState(FunctionalInterfaces.StateGetter stateGetter) {
         this.stateGetter = stateGetter;
-    }
-
-    public ElementState(FunctionalInterfaces.StateGetter stateGetter, int resizeMode) {
-        this(stateGetter);
-        this.resizeMode = resizeMode;
     }
 
     public ElementState remember() throws Exception {
@@ -51,6 +45,11 @@ public class ElementState {
     }
 
     private boolean checkState(Function<Double, Boolean> checkerFunc, int timeoutSeconds) throws Exception {
+        return checkState(checkerFunc, timeoutSeconds, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+    }
+
+    private boolean checkState(Function<Double, Boolean> checkerFunc, int timeoutSeconds, int resizeMode)
+            throws Exception {
         final long msTimeout = timeoutSeconds * 1000;
         final long msStarted = System.currentTimeMillis();
         do {
@@ -59,7 +58,7 @@ public class ElementState {
                 final double score = ImageUtil.getOverlapScore(
                         this.previousScreenshot.orElseThrow(
                                 () -> new IllegalStateException("Please remember the previous element state first")),
-                        currentState, this.resizeMode);
+                        currentState, resizeMode);
                 log.debug(String.format("Actual score: %.4f; Time left: %s ms", score,
                         msTimeout + msStarted - System.currentTimeMillis()));
                 if (checkerFunc.apply(score)) {
