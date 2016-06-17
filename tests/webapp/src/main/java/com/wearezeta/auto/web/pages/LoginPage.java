@@ -76,6 +76,11 @@ public class LoginPage extends WebPage {
 			throws Exception {
 		super(lazyDriver, url);
 	}
+        
+        public void switchToRegistrationPage() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), switchToRegisterButton);
+		switchToRegisterButton.click();
+	}
 
 	public boolean isVisible() throws Exception {
 		return DriverUtils.waitUntilElementClickable(this.getDriver(),
@@ -187,7 +192,7 @@ public class LoginPage extends WebPage {
     }
 
 	public void visitRedirectedPage(String langKey) throws Exception {
-		getDriver().get(CommonUtils.getWebAppApplicationPathFromConfig(LoginPage.class) + "/?connect&hl=" + langKey);
+		getDriver().get(CommonUtils.getWebAppApplicationPathFromConfig(LoginPage.class) + "?connect&hl=" + langKey);
 	}
 
 	public String getDescriptionMessage() throws Exception {

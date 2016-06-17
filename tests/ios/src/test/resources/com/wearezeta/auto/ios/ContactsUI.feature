@@ -27,7 +27,7 @@ Feature: ContactsUI
     And I open search UI
     And I press the send an invite button
     And I see contact <Contact> in ContactsUI page list
-    And I click on Open button next to user name <Contact> on ContactsUI
+    When I click on Open button next to user name <Contact> on ContactsUI
     Then I see the conversation with <Contact>
 
     Examples: 

@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.*;
+import java.util.regex.Pattern;
 
 public class CommonAndroidSteps {
     static {
@@ -69,7 +70,7 @@ public class CommonAndroidSteps {
 
     public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
     public static final int DEFAULT_SWIPE_TIME = 1500;
-    public static final int FIRST_TIME_OVERLAY_TIMEOUT = 5; // seconds
+    public static final int FIRST_TIME_OVERLAY_TIMEOUT = 3; // seconds
     private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
 
     private static String getUrl() throws Exception {
@@ -91,7 +92,6 @@ public class CommonAndroidSteps {
     public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path) throws Exception {
         return resetAndroidDriver(url, path, Optional.empty());
     }
-
 
     @SuppressWarnings("unchecked")
     public Future<ZetaAndroidDriver> resetAndroidDriver(String url, String path,
@@ -122,12 +122,11 @@ public class CommonAndroidSteps {
         AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidSteps.class);
-        AndroidCommonUtils.installUnlockApp(CommonAndroidSteps.class);
         AndroidCommonUtils.installClipperApp(CommonAndroidSteps.class);
-        // This is handled by TestingGallery now
-//        final String backendJSON =
-//                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
-//        AndroidCommonUtils.deployBackendFile(backendJSON);
+        // FIXME: This is handled by TestingGallery now
+        final String backendJSON =
+                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
+        AndroidCommonUtils.deployBackendFile(backendJSON);
         return null;
     }
 
@@ -166,6 +165,14 @@ public class CommonAndroidSteps {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        try {
+            if (isAutoAnswerCallEnabled) {
+                AndroidCommonUtils.enableAutoAnswerCall(getClass());
+            }
+        } catch (Exception e) {
+            Throwables.propagate(e);
         }
 
         final long millisecondsStarted = System.currentTimeMillis();
@@ -209,6 +216,7 @@ public class CommonAndroidSteps {
     }
 
     private boolean isAutoAcceptOfSecurityAlertsEnabled = false;
+    private boolean isAutoAnswerCallEnabled = false;
 
     @Before
     public void setUp(Scenario scenario) throws Exception {
@@ -225,6 +233,8 @@ public class CommonAndroidSteps {
         }
 
         isAutoAcceptOfSecurityAlertsEnabled = !scenario.getSourceTagNames().contains("@noAcceptAlert");
+
+        isAutoAnswerCallEnabled = scenario.getSourceTagNames().contains("@calling_autoAnswer");
 
         if (isLogcatEnabled) {
             if (scenario.getSourceTagNames().contains("@performance")) {
@@ -449,17 +459,14 @@ public class CommonAndroidSteps {
     @Then("^I verify the previous and the current screenshots are( not)? different$")
     public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent(String shouldBeEqual) throws Exception {
         final int timeoutSeconds = 10;
-        final double targetScore = 0.75d;
         if (shouldBeEqual == null) {
             Assert.assertTrue(
                     String.format("The current screen state seems to be similar to the previous one after %s seconds",
-                            timeoutSeconds),
-                    screenState.isChanged(timeoutSeconds, targetScore));
+                            timeoutSeconds), screenState.isChanged(timeoutSeconds, 0.975));
         } else {
             Assert.assertTrue(
                     String.format("The current screen state seems to be different to the previous one after %s seconds",
-                            timeoutSeconds),
-                    screenState.isNotChanged(timeoutSeconds, targetScore));
+                            timeoutSeconds), screenState.isNotChanged(timeoutSeconds, 0.75));
         }
     }
 
@@ -1328,12 +1335,12 @@ public class CommonAndroidSteps {
      *
      * @param size
      * @param fileFullName
-     * @param mimeType
+     * @param timeoutSeconds
      * @throws Exception
-     * @step. ^I wait up (\d+) seconds? until (.*) file having name "(.*)" and MIME type "(.*)" is downloaded to the device$
+     * @step. ^I wait up (\d+) seconds? until (.*) file having name "(.*)" is downloaded to the device$
      */
-    @Then("^I wait up (\\d+) seconds? until (.*) file having name \"(.*)\" and MIME type \"(.*)\" is downloaded to the device$")
-    public void TheXFileSavedInDownloadFolder(int timeoutSeconds, String size, String fileFullName, String mimeType)
+    @Then("^I wait up (\\d+) seconds? until (.*) file having name \"(.*)\" is downloaded to the device$")
+    public void TheXFileSavedInDownloadFolder(int timeoutSeconds, String size, String fileFullName)
             throws Exception {
         Optional<FileInfo> fileInfo = CommonUtils.waitUntil(timeoutSeconds,
                 CommonSteps.DEFAULT_WAIT_UNTIL_INTERVAL_MILLISECONDS, () -> {
@@ -1353,8 +1360,6 @@ public class CommonAndroidSteps {
                 fileFullName, fileInfo.get().getFileName());
         Assert.assertTrue(String.format("File size should around %s bytes, but it is %s", expectedSize, actualSize),
                 Math.abs(expectedSize - actualSize) < 100);
-        Assert.assertEquals(String.format("File MIME type should be %s", mimeType),
-                mimeType, fileInfo.get().getMimeType());
     }
 
     /**
@@ -1463,6 +1468,75 @@ public class CommonAndroidSteps {
             pagesCollection.getCommonPage().waitUntilNoInternetBarVisible(timeoutSeconds);
         } else {
             pagesCollection.getCommonPage().waitUntilNoInternetBarInvisible(timeoutSeconds);
+        }
+    }
+
+    /**
+     * Create and add new users to the test
+     *
+     * @param count count of new users to add. User indexing will be continued
+     * @throws Exception
+     * @step. ^There (?:is|are) (\d+) additional users?$
+     */
+    @Given("^There (?:is|are) (\\d+) additional users?$")
+    public void ThereAreXAdditionalUsers(int count) throws Exception {
+        commonSteps.ThereAreXAdditionalUsers(CURRENT_PLATFORM, count);
+    }
+
+    private static final int PUSH_NOTIFICATION_TIMEOUT_SEC = 20;
+
+    /**
+     * Verify whether the paricular string is present in Wire push messages
+     *
+     * @param expectedMessage the expected push message
+     * @throws Exception
+     * @step. ^I see the message "(.*)" in push notifications list$
+     */
+    @Then("^I see the message \"(.*)\" in push notifications list$")
+    public void ISeePushMessage(String expectedMessage) throws Exception {
+        boolean isMsgFound = false;
+        final Pattern pattern = Pattern.compile("\\b" + Pattern.quote(expectedMessage) + "\\b");
+        final long millisecondsStarted = System.currentTimeMillis();
+        do {
+            final String output = AndroidCommonUtils.getWirePushNotifications();
+            log.debug(output);
+            if (pattern.matcher(output).find()) {
+                isMsgFound = true;
+                break;
+            }
+            Thread.sleep(500);
+        } while (System.currentTimeMillis() - millisecondsStarted <= PUSH_NOTIFICATION_TIMEOUT_SEC * 1000);
+        Assert.assertTrue(String.format("Push message '%s' has not been received within %s seconds timeout OR "
+                        + "TestingGallery app has no access to read push notifications (please check phone settings)",
+                expectedMessage, PUSH_NOTIFICATION_TIMEOUT_SEC), isMsgFound);
+    }
+
+    /**
+     * Tap chathead notification as soon as it appears on the screen
+     *
+     * @throws Exception
+     * @step. ^I tap the chathead$
+     */
+    @And("^I tap the chathead notification$")
+    public void ITapChathead() throws Exception {
+        pagesCollection.getCommonPage().tapChatheadNotification();
+    }
+
+    /**
+     * Verify whether chathead notification is visible
+     *
+     * @param shouldNotSee equals to null if the notification should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see chathead notification$
+     */
+    @Then("^I (do not )?see chathead notification$")
+    public void ISeeChatheadNotification(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("Chathead notification is not visible",
+                    pagesCollection.getCommonPage().waitForChatheadNotification().isPresent());
+        } else {
+            Assert.assertTrue("Chathead notification is still visible",
+                    pagesCollection.getCommonPage().waitUntilChatheadNotificationInvisible());
         }
     }
 }

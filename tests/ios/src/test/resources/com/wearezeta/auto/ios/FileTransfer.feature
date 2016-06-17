@@ -8,6 +8,7 @@ Feature: File Transfer
     Given I see conversations list
     When I tap on contact name <Contact>
     And User <Contact> sends file <FileName>.<FileExt> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    And User Me sends 1 encrypted message to user <Contact>
     Then I wait up to <Timeout> seconds until the file <FileName>.<FileExt> with size <FileSize> is ready for download from conversation view
     When I tap file transfer placeholder
     Then I wait up to <Timeout> seconds until I see a preview of the file named "<FileName>"
@@ -66,7 +67,7 @@ Feature: File Transfer
       | Name      | Contact1  | Contact2  | GroupChatName | FileName | FileExt | FileSize | FileMIME                 | ContactDevice | Timeout |
       | user1Name | user2Name | user3Name | FTransfer     | testing  | tmp     | 240 KB   | application/octet-stream | device1       | 20      |
 
-  @C95960 @regression
+  @C95960 @rc @regression
   Scenario Outline: Verify sending file in the empty conversation and text after it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -77,7 +78,7 @@ Feature: File Transfer
     And I tap file transfer menu item <ItemName>
     Then I see file transfer placeholder
     When I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact   | ItemName                   |
@@ -93,7 +94,7 @@ Feature: File Transfer
     And I tap File Transfer button from input tools
     And I tap file transfer menu item <ItemName>
     Then I verify the alert contains text <ExpectedAlertText>
-    When I accept alert
+    When I tap OK button on the alert
     Then I do not see file transfer placeholder
 
     Examples:

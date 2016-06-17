@@ -132,7 +132,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
 
-  @C2359 @smoke
+  @C2359 @smoke @WEBAPP-2785
   Scenario Outline: Verify I can undo redo using menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -140,18 +140,20 @@ Feature: Conversation View
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     When I open conversation with <Contact>
-    And I write random message
-    Then I verify that random message was typed
+    And I write message <Message>
+    Then I verify that message "<Message>" was typed
     When I click menu bar item "Edit" and menu item "Undo"
+    Then I verify that message "T" was typed
+    When I type shortcut combination to undo
     Then I verify that message "" was typed
     When I click menu bar item "Edit" and menu item "Redo"
-    Then I verify that random message was typed
+    Then I verify that message "<RedoMessage>" was typed
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Message | RedoMessage |
+      | user1Email | user1Password | user1Name | user2Name | Test    | T           |
 
-  @C2360 @smoke
+  @C2360 @smoke @WEBAPP-2785
   Scenario Outline: Verify I can undo redo using shortcuts ⌘ Z and ⌘ ⇧ Z
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -159,16 +161,18 @@ Feature: Conversation View
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     When I open conversation with <Contact>
-    And I write random message
-    Then I verify that random message was typed
+    And I write message <Message>
+    Then I verify that message "<Message>" was typed
+    When I type shortcut combination to undo
+    Then I verify that message "T" was typed
     When I type shortcut combination to undo
     Then I verify that message "" was typed
     When I type shortcut combination to redo
-    Then I verify that random message was typed
+    Then I verify that message "<RedoMessage>" was typed
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Message | RedoMessage |
+      | user1Email | user1Password | user1Name | user2Name | Test    | T           |
 
   @C2367 @smoke
   Scenario Outline: Verify I can select all, cut and paste using menu bar

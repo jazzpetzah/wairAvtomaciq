@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.ios.pages.FirstTimeOverlay;
+import com.wearezeta.auto.ios.tools.FastLoginContainer;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -60,25 +61,13 @@ public class LoginPageSteps {
     }
 
     private void emailLoginSequence(String login, String password) throws Exception {
-        try {
-            login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
-        try {
-            password = usrMgr.findUserByPasswordAlias(password).getPassword();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
-
         getLoginPage().switchToLogin();
-
-//        if (getLoginPage().isEmailInputFieldInvisible()) {
-//            getLoginPage().switchToEmailLogin();
-//        }
-        getLoginPage().setLogin(login);
-        getLoginPage().setPassword(password);
-        getLoginPage().clickLoginButton();
+        // TODO: skip the whole login flow when using Fast log in option
+        if (!FastLoginContainer.getInstance().isEnabled()) {
+            getLoginPage().setLogin(login);
+            getLoginPage().setPassword(password);
+            getLoginPage().clickLoginButton();
+        }
         getLoginPage().waitForLoginToFinish();
         getLoginPage().acceptAlertIfVisible(5);
         getFirstTimeOverlayPage().acceptIfVisible(2);
@@ -88,63 +77,40 @@ public class LoginPageSteps {
 
     private void phoneLoginSequence(final PhoneNumber number) throws Exception {
         getLoginPage().switchToLogin();
-
-//        if (getRegistrationPage().isCountryPickerButtonInvisible()) {
         getLoginPage().switchToPhoneLogin();
-//        }
         getRegistrationPage().inputPhoneNumber(number);
-        getRegistrationPage().inputActivationCode(number);
+        getLoginPage().inputLoginCode(number);
         getLoginPage().waitForLoginToFinish();
+        getLoginPage().acceptAlertIfVisible(5);
         getFirstTimeOverlayPage().acceptIfVisible(2);
+        getLoginPage().acceptAlertIfVisible(5);
         getLoginPage().dismissSettingsWarningIfVisible(5);
-    }
-
-    /**
-     * Enters the phone number and verification code at self profile page
-     *
-     * @throws Throwable
-     * @step. ^I enter phone number and verification code$
-     */
-    @When("^I enter phone number and verification code$")
-    public void IEnterPhoneNumberAndVerificationCode() throws Throwable {
-        ClientUser self = usrMgr.getSelfUserOrThrowError();
-        getRegistrationPage().inputPhoneNumber(self.getPhoneNumber());
-        getRegistrationPage().inputActivationCode(self.getPhoneNumber());
     }
 
     /**
      * Enter verification code for specified user
      *
-     * @param name name of user
+     * @param name     name of user
+     * @param codeType one of possible types of verification codes
      * @throws Exception
-     * @step. ^I enter verification code for user (.*)$
+     * @step. ^I enter (login|registration|random) verification code for (.*)
      */
-    @When("^I enter verification code for user (.*)$")
-    public void IEnterVerificationCodeForUser(String name) throws Exception {
+    @When("^I enter (login|registration|random) verification code for (.*)")
+    public void IEnterVerificationCodeForUser(String codeType, String name) throws Exception {
         ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
-        getRegistrationPage().inputActivationCode(user.getPhoneNumber());
-    }
-
-    /**
-     * Inputs not valid verification code
-     *
-     * @throws Exception
-     * @step. ^I enter random verification code$
-     */
-    @When("^I enter random verification code$")
-    public void IEnterRandomVerificationCode() throws Exception {
-        getRegistrationPage().inputRandomActivationCode();
-    }
-
-    /**
-     * Inputs random activation code
-     *
-     * @throws Exception
-     * @step. ^I input random activation code$
-     */
-    @When("^I input random activation code$")
-    public void IEnterRandomActivationCode() throws Exception {
-        getRegistrationPage().inputRandomActivationCode();
+        switch (codeType.toLowerCase()) {
+            case "login":
+                getLoginPage().inputLoginCode(user.getPhoneNumber());
+                break;
+            case "registration":
+                getRegistrationPage().inputActivationCode(user.getPhoneNumber());
+                break;
+            case "random":
+                getRegistrationPage().inputRandomConfirmationCode();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown code type '%s'", codeType));
+        }
     }
 
     /**
@@ -156,18 +122,6 @@ public class LoginPageSteps {
     @When("^I tap RESEND code button$")
     public void ITapResendCodeButton() throws Exception {
         getRegistrationPage().clickResendCodeButton();
-    }
-
-    /**
-     * Verify if PHONE SIGN IN button is visible
-     *
-     * @throws Exception
-     * @step. ^I see PHONE SIGN IN button$
-     */
-    @When("^I see PHONE SIGN IN button$")
-    public void ISeePhoneSignInButton() throws Exception {
-        Assert.assertTrue("PHONE SIGN IN button is not visible", getLoginPage()
-                .isPhoneSignInButtonVisible());
     }
 
     /**
@@ -207,7 +161,8 @@ public class LoginPageSteps {
     private static final Random rand = new Random();
 
     /**
-     * Sign in with email/password (20%) or phone number (80%)
+     * Sign in with email/password (20%) or phone number (80%).
+     * Email login will be always enabled if @fastLogin tag is provided
      *
      * @throws AssertionError if login operation was unsuccessful
      * @step. ^I sign in using my email or phone number$
@@ -215,11 +170,12 @@ public class LoginPageSteps {
     @Given("^I sign in using my email or phone number$")
     public void GivenISignInUsingEmailOrPhone() throws Exception {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
-//        if (rand.nextInt(100) < BY_PHONE_NUMBER_LOGIN_PROBABILITY) {
-//            phoneLoginSequence(self.getPhoneNumber());
-//        } else {
-        emailLoginSequence(self.getEmail(), self.getPassword());
-//        }
+        if (rand.nextInt(100) < BY_PHONE_NUMBER_LOGIN_PROBABILITY &&
+                !FastLoginContainer.getInstance().isEnabled()) {
+            phoneLoginSequence(self.getPhoneNumber());
+        } else {
+            emailLoginSequence(self.getEmail(), self.getPassword());
+        }
     }
 
     /**
@@ -391,18 +347,6 @@ public class LoginPageSteps {
     public void ISeeInvalidEmailAlert() throws Exception {
         Assert.assertTrue("I don't see invalid email alert",
                 getLoginPage().isInvalidEmailAlertShown());
-    }
-
-    /**
-     * Verifies whether the notification registered phone number shown
-     *
-     * @throws Exception
-     * @step. ^I see already registered phone number alert$
-     */
-    @Then("^I see already registered phone number alert$")
-    public void ISeeRegisteredNumberAlert() throws Exception {
-        Assert.assertTrue("I don't see registered phone number alert",
-                getLoginPage().isRegisteredNumberAlertShown());
     }
 
     /**

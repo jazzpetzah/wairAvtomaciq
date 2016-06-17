@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.android.pages.ConversationViewPage;
 import com.wearezeta.auto.android.pages.ConversationsListPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import org.openqa.selenium.By;
@@ -19,11 +18,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class TabletConversationsListPage extends AndroidTabletPage {
     private static final int PLAY_PAUSE_BUTTON_WIDTH_PERCENTAGE = 15;
 
-    private static final By xpathStrConvoViewOrSelfProfile = By.xpath(String.format("//*[@id='%s' or @id='%s']",
-            TabletSelfProfilePage.idStrSelfProfileView, ConversationViewPage.idStrDialogRoot));
-
-    public TabletConversationsListPage(Future<ZetaAndroidDriver> lazyDriver)
-            throws Exception {
+    public TabletConversationsListPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -31,45 +26,17 @@ public class TabletConversationsListPage extends AndroidTabletPage {
         return this.getAndroidPageInstance(ConversationsListPage.class);
     }
 
-    private static final int LOAD_TIMEOUT = 15; // seconds
-
+    // TODO: no self profile view anymore, should refactoring this function
     public void verifyConversationsListIsLoaded() throws Exception {
         if (ScreenOrientationHelper.getInstance().fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathStrConvoViewOrSelfProfile, LOAD_TIMEOUT)) {
-                // FIXME: Workaround for self profile as start page issue
-                int ntry = 1;
-                final int maxRetries = 3;
-                final int leftBorderWidth = getDriver().manage().window().getSize().width / 4;
-                final Optional<WebElement> selfProfileEl =
-                        getElementIfDisplayed(TabletSelfProfilePage.idSelfProfileView, 1);
-                do {
-                    if (DriverUtils.waitUntilLocatorDissapears(getDriver(), ConversationsListPage.idListActionsAvatar, 2)
-                            || (selfProfileEl.isPresent() && selfProfileEl.get().getLocation().getX() < leftBorderWidth)) {
-                        DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90, 50);
-                        // FIXME: Self profile could switch to full colour instead of being swiped
-                        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), ConversationsListPage.idListActionsAvatar, 1)
-                                && (selfProfileEl.isPresent()
-                                && selfProfileEl.get().getLocation().getX() > leftBorderWidth)) {
-                            break;
-                        } else {
-                            this.tapOnCenterOfScreen();
-                            DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90, 50);
-                        }
-                    } else {
-                        break;
-                    }
-                    ntry++;
-                } while (ntry <= maxRetries);
-                if (ntry > maxRetries) {
-                    throw new IllegalStateException(
-                            String.format("Conversations list was not shown after %d retries", maxRetries));
-                }
-            } else {
-                throw new IllegalStateException(String.format(
-                        "The initial view has not been loaded within %s seconds", LOAD_TIMEOUT));
+            try {
+                DriverUtils.swipeByCoordinates(getDriver(), 1500, 45, 50, 90, 50);
+                getContactListPage().verifyContactListIsFullyLoaded();
+            } catch (IllegalStateException e) {
+                DriverUtils.swipeByCoordinates(getDriver(), 1500, 45, 50, 90, 50);
+                getContactListPage().verifyContactListIsFullyLoaded();
             }
         }
-        getContactListPage().verifyContactListIsFullyLoaded();
     }
 
     public boolean waitUntilConversationIsVisible(String name) throws Exception {

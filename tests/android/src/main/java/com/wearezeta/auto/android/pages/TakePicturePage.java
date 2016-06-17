@@ -8,18 +8,20 @@ import org.openqa.selenium.WebElement;
 import java.util.concurrent.Future;
 
 public class TakePicturePage extends AndroidPage {
-    private static final By xpathTakePhotoButton = By
+    public static final By xpathTakePhotoButton = By
             .xpath("//*[@id='gtv__camera_control__take_a_picture' and @shown='true']");
 
     private static final By idCloseTakePictureViewButton = By.id("gtv__camera_control__back_to_change_image");
 
-    private static final By idChangePhotoBtn = By.id("gtv__camera_control__change_image_source");
+    public static final By idChangePhotoBtn = By.id("gtv__camera_control__change_image_source");
 
-    private static final By idGalleryBtn = By.id("gtv__camera_control__pick_from_gallery");
+    private static final By idGalleryCameraBtn = By.id("gtv__camera_control__pick_from_gallery_in_camera");
 
     private static final By idSwitchCameraButton = By.id("gtv__camera__top_control__back_camera");
 
-    private static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
+    public static final By xpathConfirmOKButton = By.xpath("//*[@id='ttv__confirmation__confirm' and @value='OK']");
+
+    public static final By xpathCancelButton = By.xpath("//*[@id='ttv__confirmation__cancel' and @value='CANCEL']");
 
     private static final By idSketchImagePaintButton = By.id("gtv__sketch_image_paint_button");
 
@@ -60,8 +62,8 @@ public class TakePicturePage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathTakePhotoButton);
     }
 
-    public void openGallery() throws Exception {
-        getElement(idGalleryBtn, "Gallery button is still not visible").click();
+    public void openGalleryFromCameraView() throws Exception {
+        getElement(idGalleryCameraBtn, "Gallery within camera is still not visible").click();
     }
 
     public void closeFullScreenImage() throws Exception {
@@ -93,11 +95,30 @@ public class TakePicturePage extends AndroidPage {
         }
         okBtn.click();
         if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConfirmOKButton)) {
-            throw new IllegalStateException("OK button is still present on the screen after being clicked");
+            okBtn.click();
+        }
+    }
+
+    public void cancel() throws Exception {
+        final WebElement cancelBtn = getElement(xpathCancelButton, "Cancel button is not visible");
+        if (!DriverUtils.waitUntilElementClickable(getDriver(), cancelBtn)) {
+            throw new IllegalStateException("Cancel button is not clickable");
+        }
+        cancelBtn.click();
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathCancelButton)) {
+            cancelBtn.click();
         }
     }
 
     public void tapSketchOnImageButton() throws Exception {
         getElement(idSketchImagePaintButton, "Draw sketch on image button is not visible").click();
+    }
+
+    public boolean isGalleryCameraButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idGalleryCameraBtn);
+    }
+
+    public boolean isGalleryCameraButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idGalleryCameraBtn);
     }
 }

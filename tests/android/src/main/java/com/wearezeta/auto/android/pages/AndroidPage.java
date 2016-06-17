@@ -204,19 +204,15 @@ public abstract class AndroidPage extends BasePage {
     /**
      * Swipe from y = 10% of height to y = 90% of height. x = widthPercent
      */
-    public void swipeDownCoordinates(int durationMilliseconds, int widthPercent)
-            throws Exception {
+    public void swipeDownCoordinates(int durationMilliseconds, int widthPercent) throws Exception {
         swipeByCoordinates(durationMilliseconds, widthPercent,
                 SWIPE_DEFAULT_PERCENTAGE_START, widthPercent,
                 SWIPE_DEFAULT_PERCENTAGE_END);
     }
 
-    public void tapByCoordinates(int widthPercent, int heightPercent)
-            throws Exception {
-        int x = getDriver().manage().window().getSize().getWidth()
-                * widthPercent / 100;
-        int y = getDriver().manage().window().getSize().getHeight()
-                * heightPercent / 100;
+    public void tapByCoordinates(int widthPercent, int heightPercent) throws Exception {
+        int x = getDriver().manage().window().getSize().getWidth() * widthPercent / 100;
+        int y = getDriver().manage().window().getSize().getHeight() * heightPercent / 100;
         AndroidCommonUtils.genericScreenTap(x, y);
     }
 
@@ -225,30 +221,33 @@ public abstract class AndroidPage extends BasePage {
     }
 
     public void tapChatheadNotification() throws Exception {
-        getElement(idChatheadNotification).click();
+        waitForChatheadNotification().orElseThrow(() ->
+                new IllegalStateException(String.format("Chathead notification has not been shown after %s seconds",
+                        CHATHEAD_VISIBILITY_TIMEOUT_MS / 1000))
+        ).click();
     }
 
-    private static final long CHATHEAD_VISIBILITY_TIMEOUT = 10000; //milliseconds
+    private static final long CHATHEAD_VISIBILITY_TIMEOUT_MS = 10000;
 
-    public boolean waitUntilChatheadNotificationVisible() throws Exception {
+    public Optional<WebElement> waitForChatheadNotification() throws Exception {
         final By locator = idChatheadNotification;
         final long millisecondsStarted = System.currentTimeMillis();
-        while (System.currentTimeMillis() - millisecondsStarted < CHATHEAD_VISIBILITY_TIMEOUT) {
+        while (System.currentTimeMillis() - millisecondsStarted < CHATHEAD_VISIBILITY_TIMEOUT_MS) {
             final Optional<WebElement> chatheadNotification = getElementIfDisplayed(locator, 1);
             if (chatheadNotification.isPresent()) {
                 if (chatheadNotification.get().getSize().width > 0) {
-                    return true;
+                    return chatheadNotification;
                 }
             }
             Thread.sleep(500);
         }
-        return false;
+        return Optional.empty();
     }
 
     public boolean waitUntilChatheadNotificationInvisible() throws Exception {
         final By locator = idChatheadNotification;
         final long millisecondsStarted = System.currentTimeMillis();
-        while (System.currentTimeMillis() - millisecondsStarted < CHATHEAD_VISIBILITY_TIMEOUT) {
+        while (System.currentTimeMillis() - millisecondsStarted < CHATHEAD_VISIBILITY_TIMEOUT_MS) {
             final Optional<WebElement> chatheadNotification = getElementIfDisplayed(locator, 1);
             if (chatheadNotification.isPresent()) {
                 if (chatheadNotification.get().getSize().width == 0) {
@@ -365,8 +364,8 @@ public abstract class AndroidPage extends BasePage {
      * @throws Exception
      */
     private void touchAndSwipe(int startX, int startY, FunctionalInterfaces.ISupplierWithException<WebElement> getEndElement,
-                      int swipeDurationMilliseconds, int tapDurationMilliseconds,
-                      Optional<FunctionalInterfaces.ISupplierWithException> callback) throws Exception {
+                               int swipeDurationMilliseconds, int tapDurationMilliseconds,
+                               Optional<FunctionalInterfaces.ISupplierWithException> callback) throws Exception {
         int duration = 1;
         if (swipeDurationMilliseconds > ZetaAndroidDriver.SWIPE_STEP_DURATION_MILLISECONDS) {
             duration = (swipeDurationMilliseconds % ZetaAndroidDriver.SWIPE_STEP_DURATION_MILLISECONDS == 0)

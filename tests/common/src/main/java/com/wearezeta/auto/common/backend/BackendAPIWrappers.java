@@ -689,7 +689,17 @@ public final class BackendAPIWrappers {
         final long startTimestamp = System.currentTimeMillis();
         int currentCount;
         while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
-            final JSONObject searchResult = BackendREST.searchForContacts(receiveAuthToken(searchByUser), query);
+            JSONObject searchResult;
+            try {
+                searchResult = BackendREST.searchForContacts(receiveAuthToken(searchByUser), query);
+            } catch (BackendRequestException e) {
+                if (e.getReturnCode() == 500) {
+                    Thread.sleep(1000);
+                    continue;
+                } else {
+                    throw e;
+                }
+            }
             if (searchResult.has("documents") && (searchResult.get("documents") instanceof JSONArray)) {
                 currentCount = searchResult.getJSONArray("documents").length();
             } else {
@@ -710,8 +720,17 @@ public final class BackendAPIWrappers {
         final long startTimestamp = System.currentTimeMillis();
         int currentCount;
         while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
-            final JSONObject searchResult = BackendREST.searchForTopPeopleContacts(receiveAuthToken(searchByUser),
-                    size);
+            JSONObject searchResult;
+            try {
+                searchResult = BackendREST.searchForTopPeopleContacts(receiveAuthToken(searchByUser), size);
+            } catch (BackendRequestException e) {
+                if (e.getReturnCode() == 500) {
+                    Thread.sleep(1000);
+                    continue;
+                } else {
+                    throw e;
+                }
+            }
             if (searchResult.has("documents") && (searchResult.get("documents") instanceof JSONArray)) {
                 currentCount = searchResult.getJSONArray("documents").length();
             } else {
@@ -732,7 +751,17 @@ public final class BackendAPIWrappers {
         final long startTimestamp = System.currentTimeMillis();
         int currentCount = 0;
         do {
-            final JSONObject searchResult = BackendREST.searchForContacts(receiveAuthToken(searchByUser), query);
+            JSONObject searchResult;
+            try {
+                searchResult = BackendREST.searchForContacts(receiveAuthToken(searchByUser), query);
+            } catch (BackendRequestException e) {
+                if (e.getReturnCode() == 500) {
+                    Thread.sleep(1000);
+                    continue;
+                } else {
+                    throw e;
+                }
+            }
             if (searchResult.has("documents") && (searchResult.get("documents") instanceof JSONArray)) {
                 currentCount = searchResult.getJSONArray("documents").length();
             }

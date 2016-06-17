@@ -34,7 +34,7 @@ public class PersonalInfoPageSteps {
     @When("I attempt to input an empty name and tap the screen")
     public void EnterEmptyNameAndTapScreen() throws Exception {
         getPersonalInfoPage().clearNameField();
-        getPersonalInfoPage().tapOnPersonalPage();
+        getPersonalInfoPage().tapOnScreenCenter();
     }
 
     @When("I see error message asking for more characters")
@@ -217,7 +217,7 @@ public class PersonalInfoPageSteps {
 
     @When("^I tap on personal screen$")
     public void ITapOnPersonalScreen() throws Exception {
-        getPersonalInfoPage().tapOnPersonalPage();
+        getPersonalInfoPage().tapOnScreenCenter();
     }
 
     @When("^I press Camera button$")
@@ -272,7 +272,7 @@ public class PersonalInfoPageSteps {
     public void EnterUsernameAndTapScreen(String username) throws Exception {
         getPersonalInfoPage().clearNameField();
         getPersonalInfoPage().enterNameInNameField(username);
-        getPersonalInfoPage().tapOnPersonalPage();
+        getPersonalInfoPage().tapOnScreenCenter();
     }
 
     @When("I click on Settings button from the options menu")

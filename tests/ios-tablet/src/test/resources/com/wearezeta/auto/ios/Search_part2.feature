@@ -6,8 +6,8 @@ Feature: Search
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
-    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I tap Call action button on People picker page
@@ -24,6 +24,7 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -49,7 +50,7 @@ Feature: Search
     And I choose a picture from camera roll
     And I confirm my choice
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
     When I navigate back to conversations list
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
@@ -73,7 +74,7 @@ Feature: Search
     And I choose a picture from camera roll
     And I confirm my choice
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
     And I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 
     Examples: 
@@ -228,6 +229,7 @@ Feature: Search
     And I tap on 1st top connection contact
     And I do not see Open conversation action button on People picker page
     And I see Invite more people button
+    And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I do not see Invite more people button

@@ -19,7 +19,7 @@ public class WebPage extends BasePage {
     private static final Logger log = ZetaLogger.getLog(WebPage.class.getSimpleName());
     
     private static final int WIRE_LOADED_MAX_RETRY = 20;
-    private static final int WIRE_LOADED_WAIT_MS = 1000;
+    private static final int WIRE_LOADED_WAIT_MS = 100;
 
     @Override
     protected ZetaWebAppDriver getDriver() throws Exception {
@@ -89,11 +89,15 @@ public class WebPage extends BasePage {
         String currentUrl = this.getDriver().getCurrentUrl();
         log.info("Current URL: " + currentUrl);
         URL url = new URL(currentUrl);
+        String newUrl;
         if (url.getQuery() == null) {
-            this.getDriver().get(currentUrl + "?hl=" + language);
+            newUrl = url.getProtocol() + "://" + url.getHost() + url.getPath() + "?" + "hl=" + language + "#" + url.getRef();
         } else {
-            this.getDriver().get(currentUrl + "&hl=" + language);
+            newUrl = url.getProtocol() + "://" + url.getHost() + url.getPath() + url.getQuery() + "&" + "hl=" + language + "#" + url.
+                    getRef();
         }
+        log.debug("Visiting URL: " + newUrl);
+        this.getDriver().get(newUrl);
     }
 
     /**

@@ -139,11 +139,11 @@ public class ConversationViewPageSteps {
     }
 
     @When("^I send the message$")
-    public void WhenISendTheMessage() throws Throwable {
+    public void WhenISendTheMessage() throws Exception {
         getConversationViewPage().clickKeyboardCommitButton();
     }
 
-    @Then("^I see (\\d+) (default )?messages? in the dialog$")
+    @Then("^I see (\\d+) (default )?messages? in the conversation view$")
     public void ThenISeeMessageInTheDialog(int expectedCount, String isDefault) throws Exception {
         int actualCount;
         if (isDefault == null) {
@@ -199,19 +199,27 @@ public class ConversationViewPageSteps {
     /**
      * Tap the corresponding button from input tools palette
      *
-     * @param isLongTap     equals to null if simple tap should be performed
-     * @param btnName       one of available button names
-     * @param shouldKeepTap this signals that the finger should not be released after the step is completed.
-     *                      Works with long tap only
+     * @param isLongTap       equals to null if simple tap should be performed
+     * @param btnName         one of available button names
+     * @param shouldKeepTap   this signals that the finger should not be released after the step is completed.
+     *                        Works with long tap only
+     * @param durationSeconds specific time duration you press the button
      * @throws Exception
-     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tool( without releasing my finger)?s$
+     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)?
+     * from input tool( without releasing my finger)?s$
      */
-    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button from input tools( without releasing my finger)?$")
-    public void IPressAddPictureButton(String isLongTap, String btnName, String shouldKeepTap) throws Exception {
+    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)? from input tools( without releasing my finger)?$")
+    public void IPressAddPictureButton(String isLongTap, String btnName, String durationSeconds,
+                                       String shouldKeepTap) throws Exception {
         if (isLongTap == null) {
             getConversationViewPage().tapInputToolButtonByName(btnName);
         } else {
-            getConversationViewPage().longTapInputToolButtonByName(btnName, shouldKeepTap != null);
+            if (durationSeconds == null) {
+                getConversationViewPage().longTapInputToolButtonByName(btnName, shouldKeepTap != null);
+            } else {
+                getConversationViewPage().longTapWithDurationInputToolButtonByName(btnName,
+                        Integer.parseInt(durationSeconds.replaceAll("[\\D]", "")));
+            }
         }
     }
 
@@ -220,9 +228,9 @@ public class ConversationViewPageSteps {
      *
      * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I (do not)?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$
+     * @step. ^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$
      */
-    @When("^I (do not)?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$")
+    @When("^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$")
     public void VerifyButtonVisibilityInInputTools(String shouldNot, String btnName) throws Exception {
         if (shouldNot == null) {
             Assert.assertTrue(btnName + "button in input tools palette is not visible",
@@ -258,7 +266,7 @@ public class ConversationViewPageSteps {
 
     private static final long IMAGE_VISIBILITY_TIMEOUT = 10000; //milliseconds
 
-    @Then("^I see (\\d+) photos? in the dialog$")
+    @Then("^I see (\\d+) photos? in the conversation view$")
     public void ISeeNewPhotoInTheDialog(int expectedCount) throws Exception {
         int actualCount = getConversationViewPage().getCountOfImages();
         if (actualCount > 0 && expectedCount > 1 && actualCount < expectedCount) {
@@ -560,8 +568,7 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify if dialog page with pointed user is shown. It's ok to use only if
-     * there is not or small amount of messages in dialog.
+     * Verify if conversation view page with pointed user is shown.
      *
      * @param contact contact name
      * @throws Exception
@@ -570,8 +577,8 @@ public class ConversationViewPageSteps {
     @When("^I see the conversation with (.*)$")
     public void ISeeConversationWith(String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        Assert.assertTrue("Dialog with user is not visible", getConversationViewPage()
-                .isConnectedToUserStartedConversationLabelVisible(contact));
+        Assert.assertTrue(String.format("Conversation with %s is not visible", contact),
+                getConversationViewPage().isUserNameVisibleOnUpperToolbar(contact));
     }
 
     /**
@@ -660,22 +667,6 @@ public class ConversationViewPageSteps {
         Assert.assertTrue(String.format("The text input field contain content, which is different from '%s'",
                 CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE),
                 getConversationViewPage().isCurrentInputTextEqualTo(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE));
-    }
-
-    /**
-     * Verifies that 'Connected to username' message is the only message in
-     * dialog
-     *
-     * @param username name of the contact
-     * @throws Exception
-     * @step. ^I see the only message in dialog is system message CONNECTED TO
-     * (.*)$
-     */
-    @When("^I see the system message CONNECTED TO (.*) in the conversation view$")
-    public void ISeeLastMessageIsSystem(String username) throws Exception {
-        username = usrMgr.findUserByNameOrNameAlias(username).getName();
-        Assert.assertTrue(String.format("The 'CONNECTED' TO %s' system message is not visible in the conversation view",
-                username), getConversationViewPage().isConnectedToUserStartedConversationLabelVisible(username));
     }
 
     /**
@@ -1155,7 +1146,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I tap (Send|Cancel) record control button
      */
-    @When("^I tap (Send|Cancel) record control button$")
+    @When("^I tap (Send|Cancel|Play) record control button$")
     public void ITapRecordControlButton(String buttonName) throws Exception {
         getConversationViewPage().tapRecordControlButton(buttonName);
     }
@@ -1164,9 +1155,9 @@ public class ConversationViewPageSteps {
      * Verify visibility of the corresponding record control button
      *
      * @throws Exception
-     * @step. ^I see (Send|Cancel) record control button$
+     * @step. ^I see (Send|Cancel|Play) record control button$
      */
-    @Then("^I see (Send|Cancel) record control button$")
+    @Then("^I see (Send|Cancel|Play) record control button$")
     public void ISeeRecordControlButton(String buttonName) throws Exception {
         Assert.assertTrue(String.format("Record control button '%s' is not visible", buttonName),
                 getConversationViewPage().isRecordControlButtonVisible(buttonName));
@@ -1219,7 +1210,8 @@ public class ConversationViewPageSteps {
      *
      * @param conversationItem item name
      * @throws Exception
-     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in conversation view$")
+     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in
+     * conversation view$")
      */
     @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in conversation view$")
     public void ITapAndHoldAudioMessagePlaceholder(String conversationItem) throws Exception {
@@ -1245,7 +1237,7 @@ public class ConversationViewPageSteps {
      * Tap Play/Pause audio message button
      *
      * @param placeholderIndex optional parameter. If exists then button state for the particular placeholder will
-     *                         be verified.
+     *                         be tap.
      *                         The most recent  audio message placeholder is the conversation view will have index 1
      * @throws Exception
      * @step. ^I tap (?:Play|Pause) audio message button (on audio message placeholder number \d+)?$
@@ -1304,5 +1296,63 @@ public class ConversationViewPageSteps {
                     PLAY_BUTTON_STATE_CHANGE_TIMEOUT), playButtonState.isNotChanged(PLAY_BUTTON_STATE_CHANGE_TIMEOUT,
                     PLAY_BUTTON_MIN_SIMILARITY));
         }
+    }
+
+
+    /**
+     * Verify audio message in placeholder|record toolbar state after time label value
+     *
+     * @param playerType placeholder or record toolbar
+     * @param state      played or paused
+     * @throws Exception
+     * @step. ^I see the audio message in (placeholder|record toolbar) gets (played|paused)$
+     */
+    @Then("^I see the audio message in (placeholder|record toolbar) gets (played|paused)$")
+    public void ISeeTheAudioMessageGetsPlayed(String playerType, String state) throws Exception {
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc =
+                (playerType.equals("placeholder")) ? getConversationViewPage()::isPlaceholderTimeLabelValueChanging :
+                        getConversationViewPage()::isRecordTimeLabelValueChanging;
+        switch (state) {
+            case "played":
+                Assert.assertTrue(String.format("The Audio message in %s did not get played. StartTime is the same as " +
+                        "CurrentTime", playerType), verificationFunc.call());
+                break;
+            case "paused":
+                Assert.assertFalse(String.format("The Audio message in %s did not get paused. StartTime is not the same as " +
+                        "CurrentTime", playerType), verificationFunc.call());
+                break;
+            default:
+                throw new IllegalArgumentException("Allowed states are 'played|paused'");
+        }
+    }
+
+    /**
+     * Verify play/pause button state in audio message placeholder
+     *
+     * @param placeholderIndex optional parameter. If exists then button state for the particular placeholder will
+     *                         be verified.
+     *                         The most recent  audio message placeholder is the conversation view will have index 1
+     * @param buttonState      play or pause
+     * @throws Exception
+     * @step. ^I see state of button on audio message placeholder (number \d+ )?is (play|pause)$
+     */
+    @Then("^I see state of button on audio message placeholder (number \\d+ )?is (play|pause)$")
+    public void ISeeAudioMessageControlButtonStateIs(String placeholderIndex, String buttonState) throws Exception {
+        Assert.assertTrue(String.format("Wrong button state. Expected state is '%s'", buttonState),
+                getConversationViewPage().isPlaceholderAudioMessageButtonState(buttonState,
+                        (placeholderIndex == null) ? 1 : Integer.parseInt(placeholderIndex.replaceAll("[\\D]", ""))));
+    }
+
+    /**
+     * Verify state of record control button playing or idle
+     *
+     * @param buttonState should be "playing" or "idle"
+     * @throws Exception
+     * @step. ^I see state of button on record toolbar is (playing|idle)$
+     */
+    @Then("^I see state of button on record toolbar is (playing|idle)$")
+    public void IseeRecordToolbarButtonStateIs(String buttonState) throws Exception {
+        Assert.assertTrue(String.format("Wrong button state. Expected state is '%s'", buttonState),
+                getConversationViewPage().isRecordControlButtonState(buttonState));
     }
 }

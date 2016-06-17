@@ -20,22 +20,17 @@ Feature: Lock/Unlock
     Then I see People Picker page
     When I close People Picker
     And I tap conversations list settings button
-    And I see my name on Self Profile page
+    And I see settings page
     And I lock the device
     And I unlock the device
-    Then I see my name on Self Profile page
-    When I tap Options button on Self Profile page
-    And I see "<ItemName>" menu item on Self Profile page
-    And I lock the device
-    And I unlock the device
-    Then I see "<ItemName>" menu item on Self Profile page
+    Then I see settings page
     When I navigate back
     And I tap in the center of Self Profile page
-    And I tap Change Picture button on Self Profile page
-    And I see Take Photo button on Self Profile page
+    And I tap Change Photo button on Take Picture view
+    And I tap Take Photo button on Take Picture view
     And I lock the device
     And I unlock the device
-    Then I see Take Photo button on Self Profile page
+    Then I see Take Photo button on Take Picture view
     When I navigate back
     And I navigate back
     And I tap the conversation <GroupChatName>

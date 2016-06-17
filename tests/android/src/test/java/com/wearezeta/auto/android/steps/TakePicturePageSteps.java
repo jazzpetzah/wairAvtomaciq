@@ -1,18 +1,8 @@
 package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.pages.TakePicturePage;
-import com.wearezeta.auto.android.pages.registration.AddNamePage;
-import com.wearezeta.auto.android.pages.registration.AreaCodePage;
-import com.wearezeta.auto.android.pages.registration.PhoneNumberVerificationPage;
-import com.wearezeta.auto.android.pages.registration.WelcomePage;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.PendingException;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
@@ -29,9 +19,9 @@ public class TakePicturePageSteps {
      *
      * @param buttonName the button to press
      * @throws Exception
-     * @step. ^I tap "(Take Photo|Confirm|Gallery|Image Close|Switch Camera|Sketch Image Paint|Close)" button on Take Picture view$
+     * @step. ^I tap "(Take Photo|Confirm|Cancel|Gallery|Gallery Camera|Image Close|Switch Camera|Sketch Image Paint|Close)" button on Take Picture view$
      */
-    @When("^I tap (Take Photo|Change Photo|Confirm|Gallery|Image Close|Switch Camera|Sketch Image Paint|Close) button on Take Picture view$")
+    @When("^I tap (Take Photo|Change Photo|Confirm|Cancel|Gallery|Gallery Camera|Image Close|Switch Camera|Sketch Image Paint|Close) button on Take Picture view$")
     public void WhenIPressButton(String buttonName) throws Exception {
         switch (buttonName.toLowerCase()) {
             case "take photo":
@@ -43,8 +33,11 @@ public class TakePicturePageSteps {
             case "confirm":
                 getTakePicturePage().confirm();
                 break;
-            case "gallery":
-                getTakePicturePage().openGallery();
+            case "cancel":
+                getTakePicturePage().cancel();
+                break;
+            case "gallery camera":
+                getTakePicturePage().openGalleryFromCameraView();
                 break;
             case "image close":
                 getTakePicturePage().closeFullScreenImage();
@@ -72,9 +65,9 @@ public class TakePicturePageSteps {
      * @param shouldNotSee equals to null if the button should be visible
      * @param buttonName   one of possible button names
      * @throws Exception
-     * @step. ^I (do not )?see (Take Photo|Change Photo) button on Take Picture view$
+     * @step. ^I (do not )?see (Take Photo|Change Photo|Gallery Camera) button on Take Picture view$
      */
-    @Then("^I (do not )?see (Take Photo|Change Photo) button on Take Picture view$")
+    @Then("^I (do not )?see (Take Photo|Change Photo|Gallery|Gallery Camera) button on Take Picture view$")
     public void ISeeButtonOnTakePictureView(String shouldNotSee, String buttonName) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (buttonName.toLowerCase()) {
@@ -85,6 +78,10 @@ public class TakePicturePageSteps {
             case "change photo":
                 verificationFunc = (shouldNotSee == null) ? getTakePicturePage()::isChangePhotoButtonVisible :
                         getTakePicturePage()::isChangePhotoButtonInvisible;
+                break;
+            case "gallery camera":
+                verificationFunc =( shouldNotSee == null) ? getTakePicturePage()::isGalleryCameraButtonVisible :
+                        getTakePicturePage()::isGalleryCameraButtonInvisible;
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name: '%s'", buttonName));

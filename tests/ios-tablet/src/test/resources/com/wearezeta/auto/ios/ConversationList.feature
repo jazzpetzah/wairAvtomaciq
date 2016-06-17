@@ -110,7 +110,9 @@ Feature: Conversation List
     And I do not see Pending request link in conversations list
     When <Contact> sent connection request to Me
     Then I see Pending request link in conversations list
-    And I see Hello connect message from user <Contact> on Pending request page
+    # Workaround for ZIOS-6338
+    When I click on Pending request link in conversations list
+    Then I see Hello connect message from user <Contact> on Pending request page
 
     Examples:
       | Name      | Contact   |
@@ -202,7 +204,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2511 @regression @id3901 @ZIOS-5279
+  @C2511 @regression @id3901
   Scenario Outline: Verify first conversation in the list is highlighted and opened [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -258,7 +260,7 @@ Feature: Conversation List
       | user1Name | user2Name |
 
   @C2553 @rc @regression @id3970
-  Scenario Outline: Verify posting in a group conversation without content [LANDSCAPE]
+  Scenario Outline: ZIOS-6809 Verify posting in a group conversation without content [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -278,7 +280,7 @@ Feature: Conversation List
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
     When I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
@@ -319,7 +321,7 @@ Feature: Conversation List
     And I open archived conversations
     Then I see conversation <Contact> in conversations list
     And I tap on contact name <Contact>
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact   | Picture     |
@@ -384,6 +386,7 @@ Feature: Conversation List
     And I confirm blocking alert
     Then I do not see conversation <Contact> in conversations list
     And I do not see Archive button at the bottom of conversations list
+    And I wait until <Contact> exists in backend search results
     And I open search UI
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results

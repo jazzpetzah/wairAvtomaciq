@@ -1,7 +1,6 @@
 package com.wearezeta.auto.osx.steps.webapp;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 import java.util.*;
@@ -28,8 +27,6 @@ import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ConversationPageSteps {

@@ -78,7 +78,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C1100 @C1101 @regression @id730 @id731
+  @C1100 @regression @id730 @id731
   Scenario Outline: Verify about screen contains all the required information
     Given There is 1 user where <Name> is me
     Given User me change accent color to <Color>
@@ -118,7 +118,7 @@ Feature: Settings
     And I select settings item Account
     And I start waiting for <Name> account removal notification
     And I select settings item Delete Account
-    # FIXME: Sometimes the alert is not accepeted automatically
+    # FIXME: Sometimes the alert is not accepted automatically
     And I accept alert
     Then I see sign in screen
     And I verify account removal notification is received

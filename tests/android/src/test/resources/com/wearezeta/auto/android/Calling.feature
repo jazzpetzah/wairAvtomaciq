@@ -222,10 +222,10 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     And <Contact1> calls <GroupChatName>
-#TODO activity check
+    # TODO: activity check
     Then I see incoming call
     When I swipe to accept the call
-#TODO activity check
+    # TODO: activity check
     Then I see ongoing call
     # FIXME: Temporarily disable calling flows verification since this is unstable on webapp side
     # And <Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
@@ -297,14 +297,13 @@ Feature: Calling
     Then I see incoming call
     When I swipe to accept the call
     Then I see ongoing call
-    And I see 4 users take part in call
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | user4Name | user5Name | MaxGroupCallChat |
 
   @C425 @id3165 @calling_basic
-  Scenario Outline: Verify too many people in the group call
+  Scenario Outline: (Disable this test, no spec for it) Verify too many people in the group call
     Given There are 11 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>, <Contact10>
@@ -406,7 +405,6 @@ Feature: Calling
     Then I see incoming call from <GroupChatName>
     And I swipe to accept the call
     And I see ongoing call
-    And I see 2 users take part in call
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
@@ -473,3 +471,20 @@ Feature: Calling
     Examples:
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
+
+  @calling_autoAnswer
+  Scenario Outline: Auto Answer Call
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When <Contact> calls me
+    Then I see ongoing call
+
+    Examples:
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
+
+

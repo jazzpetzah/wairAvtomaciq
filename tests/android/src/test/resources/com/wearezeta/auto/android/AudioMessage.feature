@@ -7,15 +7,14 @@ Feature: Audio Message
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
-    When I tap Audio message button from cursor toolbar
-    Then I see hint message "<HintMessage>" of cursor button
+    And I tap on contact name <Contact>
+    Then I tap Audio message button from cursor toolbar and see hint message "<HintMessage>"
 
     Examples:
       | Name      | Contact   | HintMessage                           |
       | user1Name | user2Name | Tap and hold to send an audio message |
 
-  @C131179 @C131175 @C131176 @regression @rc @rc42
+  @C131179 @C131175 @regression @rc @rc42
   Scenario Outline: Verify sending voice message by long tap > swipe up
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -31,7 +30,7 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C131176 @staging
+  @C131176 @regression @rc @rc42
   Scenario Outline: Verify microphone is changed to play icon after releasing the thumb
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -58,6 +57,7 @@ Feature: Audio Message
     And I tap on audio message send button
     Then I see cursor toolbar
     And I see Audio Message container in the conversation view
+    And I wait for 15 seconds until audio message upload completed
     When I remember the state of recent audio message seekbar
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
@@ -134,8 +134,7 @@ Feature: Audio Message
     And I tap Retry button on the recent audio message in the conversation view
     # Retry button changes to Play button
     Then I verify the state of Retry button on the recent audio message in the conversation view is changed
-    # Wait for the audio to be fully uploaded, then retry button changes to play button
-    When I wait for 10 seconds
+    Then I wait for 15 seconds until audio message upload completed
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
     Then I verify the state of Play button on the recent audio message in the conversation view is changed
@@ -176,8 +175,7 @@ Feature: Audio Message
     And I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
-    # Wait 10 seconds until the message is fully downloaded
-    And I wait for 10 seconds
+    Then I wait for 15 seconds until audio message download completed
     Then I verify the state of recent audio message seekbar in the conversation view is changed
     # Wait until play button changes to pause button
     When I wait for 2 seconds
@@ -197,7 +195,7 @@ Feature: Audio Message
       | Name      | Contact   | FileName | MIMEType  | DeviceName |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
 
-  @C139849 @staging
+  @C139849 @regression
   Scenario Outline: (AN-4067) Verify that play of audio message will be stopped by incoming voice call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -210,8 +208,7 @@ Feature: Audio Message
     When I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
-    # Wait 10 seconds until the message is fully downloaded
-    And I wait for 10 seconds
+    Then I wait for 15 seconds until audio message download completed
     Then I verify the state of recent audio message seekbar in the conversation view is changed
     When I remember the state of Pause button on the recent audio message in the conversation view
     And <Contact> calls me
@@ -224,7 +221,7 @@ Feature: Audio Message
       | Name      | Contact   | FileName | MIMEType  | DeviceName | CallBackend |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | autocall    |
 
-  @C139851 @staging
+  @C139851 @regression
   Scenario Outline: (AN-4067) Verify that play of audio message will be stopped by incoming video call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -237,8 +234,7 @@ Feature: Audio Message
     When I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
-    # Wait 10 seconds until the message is fully downloaded
-    And I wait for 10 seconds
+    Then I wait for 15 seconds until audio message download completed
     Then I verify the state of recent audio message seekbar in the conversation view is changed
     When I remember the state of Pause button on the recent audio message in the conversation view
     When <Contact> starts a video call to me
@@ -250,3 +246,24 @@ Feature: Audio Message
     Examples:
       | Name      | Contact   | FileName | MIMEType  | DeviceName | CallBackend |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    | chrome      |
+
+  @C139852 @regression
+  Scenario Outline: (AN-4107) Verify that record of audio message will be stopped by incoming voice/video call
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When I long tap Audio message button from cursor toolbar without releasing my finger
+    And I wait for 3 seconds
+    And <Contact> calls me
+    And I see incoming call from <Contact>
+    And <Contact> stops calling me
+    And I do not see incoming call
+    Then I see Cancel button on audio message recorder
+
+    Examples:
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |

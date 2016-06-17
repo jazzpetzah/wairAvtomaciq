@@ -41,19 +41,19 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     private static final Function<Integer, String> xpathParticipantDeviceShieldByIdx = idx -> String
             .format("(//*[@id='iv__row_otr_icon'])[%d]", idx);
 
-    private static final By xpathSingleOtrSwitch =
-            By.xpath("//OtrSwitch[@id='os__single_otr_client__verify']/SwitchCompat");
+    private static final String idStrSwitch = "os__single_otr_client__verify";
 
-    private static final By xpathSingleOtrSwitchValue =
-            By.xpath("//OtrSwitch[@id='os__single_otr_client__verify']//TypefaceTextView[contains(@value, 'erified')]");
+    private static final By xpathSingleOtrSwitch = By.xpath(String.format("//*[@id='%s']/*", idStrSwitch));
+
+    private static final Function<String, String> xpathStrOtrSwitchByState = state ->
+            String.format("//*[@id='%s']/*[@value='%s']", idStrSwitch, state);
 
     private static final Function<String, String> xpathParticipantAvatarByName = name -> String
-            .format("//*[@id='cv__chathead' and ./parent::*/*[@value='%s']]",
-                    name.toUpperCase());
+            .format("//*[@id='cv__chathead' and ./parent::*/*[@value='%s']]", name.toUpperCase());
 
-    // TODO: Improve locator
     private static final Function<String, String> xpathVerifiedParticipantAvatarByName = name -> String
-            .format("//*[@value='%s']", name.split("\\s+")[0]);
+            .format("//*[@id='pgv__participants']//*[@value='Verified']/following::"
+                    + "*[@id='cv__chathead' and ./parent::*/*[@value='%s']]", name.toUpperCase());
 
     private static final By idParticipantsHeader = By.id("ttv__participants__header");
 
@@ -80,8 +80,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     private static final By xpathConfirmLeaveButton = By.xpath("//*[@id='positive' and @value='LEAVE']");
 
-    public OtherUserPersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
-            throws Exception {
+    public OtherUserPersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
@@ -128,11 +127,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         return getElementScreenshot(deviceShield).orElseThrow(IllegalStateException::new);
     }
 
-    private static final String NOT_VERIFIED_VALUE = "Not verified";
+    private static final String NOT_VERIFIED_STATE = "Not verified";
 
     public void verifyParticipantDevice() throws Exception {
-        if (getElement(xpathSingleOtrSwitchValue, "Device verification status fot found").getText()
-                .equals(NOT_VERIFIED_VALUE)) {
+        final By unselectedSwitchLocator = By.xpath(xpathStrOtrSwitchByState.apply(NOT_VERIFIED_STATE));
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), unselectedSwitchLocator, 3)) {
             getElement(xpathSingleOtrSwitch).click();
         }
     }

@@ -82,17 +82,15 @@ Feature: Self Profile
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap settings gear button
+    # This alert is sometimes not accepted automatically
+    And I accept alert
     And I tap to edit my name
     And I attempt to enter <username1char> and press return
     Then I see error message asking for more characters
-    And I attempt to enter <username1char> and tap the screen
-    And I see error message asking for more characters
-    And I attempt to enter <username2chars> and press return
-    Then I see my new name <username2chars>
 
     Examples:
-      | Name      | username1char | username2chars |
-      | user1Name | c             | AB             |
+      | Name      | username1char |
+      | user1Name | c             |
 
   @C2888 @rc @regression @id3163
   Scenario Outline: Verify name change [LANDSCAPE]
@@ -103,6 +101,8 @@ Feature: Self Profile
     Given I see conversations list
     Given User <Name> sends 1 encrypted message to user <Contact>
     When I tap settings gear button
+    # This alert is sometimes not accepted automatically
+    And I accept alert
     And I tap to edit my name
     And I change my name to <NewUsername>
     And I close self profile
@@ -140,14 +140,15 @@ Feature: Self Profile
     Given I see conversations list
     When I tap settings gear button
     And I tap to add my phone number
-    And I enter phone number and verification code
+    And I enter phone number for Myself
+    And I enter registration verification code for Myself
     Then I see phone number attached to profile
 
     Examples:
       | Name      |
       | user1Name |
 
-  @C2866 @regression @noAcceptAlert @id3862 @ZIOS-5836
+  @C2866 @regression @noAcceptAlert @id3862
   Scenario Outline: Verify error message appears in case of registering already taken phone number [LANDSCAPE]
     Given There is 1 users where <Name> is me with email only
     Given I rotate UI to landscape
@@ -161,11 +162,11 @@ Feature: Self Profile
     When I tap settings gear button
     And I tap to add my phone number
     And I input phone number <Number> with code <Code>
-    Then I see already registered phone number alert
+    Then I verify the alert contains text <ExpectedText>
 
     Examples:
-      | Name      | Number        | Code |
-      | user1Name | 8301652248706 | +0   |
+      | Name      | Number        | Code | ExpectedText                |
+      | user1Name | 8301652248706 | +0   | has already been registered |
 
   @C2855 @rc @regression @id3986
   Scenario Outline: Verify theme switcher is not shown on the self profile [LANDSCAPE]

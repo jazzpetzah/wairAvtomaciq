@@ -1,20 +1,20 @@
 package com.wearezeta.auto.android_tablet.pages;
 
-import com.wearezeta.auto.android.pages.CallOngoingPage;
+import com.wearezeta.auto.android.pages.CallOngoingAudioPage;
 
 import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class TabletCallOngoingPage extends AndroidTabletPage {
+public class TabletCallOngoingAudioPage extends AndroidTabletPage {
 
-    public TabletCallOngoingPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+    public TabletCallOngoingAudioPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
-    private CallOngoingPage getPage() throws Exception {
-        return this.getAndroidPageInstance(CallOngoingPage.class);
+    private CallOngoingAudioPage getPage() throws Exception {
+        return this.getAndroidPageInstance(CallOngoingAudioPage.class);
     }
 
     public boolean waitUntilVisible() throws Exception {
@@ -39,10 +39,6 @@ public class TabletCallOngoingPage extends AndroidTabletPage {
 
     public void hangup() throws Exception {
         getPage().hangup();
-    }
-
-    public int getNumberOfParticipants() throws Exception {
-        return getPage().getNumberOfParticipants();
     }
 
     public BufferedImage getMuteButtonScreenshot() throws Exception {

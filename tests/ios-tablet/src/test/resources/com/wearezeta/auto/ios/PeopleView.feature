@@ -6,6 +6,8 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -26,6 +28,8 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -318,7 +322,7 @@ Feature: People View
     And I tap on start dialog button on other user profile page
     #And I dismiss popover on iPad
     And I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact2  | Contact3  | GroupChatName |
@@ -338,7 +342,7 @@ Feature: People View
     And I tap on start dialog button on other user profile page
     #And I dismiss popover on iPad
     And I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact2  | Contact3  | GroupChatName |
@@ -555,15 +559,9 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search UI
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact3>
-    And I see the conversation "<Contact3>" exists in Search results
-    And I click close button to dismiss people view
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     Then I see No Results label in People picker search result
@@ -580,14 +578,9 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
-    When I open search UI
-    And I input in People picker search field user name <Contact3>
-    And I see the conversation "<Contact3>" exists in Search results
-    And I click close button to dismiss people view
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
-    And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     Then I see No Results label in People picker search result
@@ -661,7 +654,8 @@ Feature: People View
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     Then I do not see conversation <GroupChatName> in conversations list
-    And I do not see Archive button at the bottom of conversations list
+    # Workaround for ZIOS-6195
+    # And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -688,14 +682,15 @@ Feature: People View
     Then I see the conversation "<GroupChatName>" does not exist in Search results
     When I click close button to dismiss people view
     Then I do not see conversation <GroupChatName> in conversations list
-    And I do not see Archive button at the bottom of conversations list
+    # Workaround for ZIOS-6195
+    # And I do not see Archive button at the bottom of conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C1833 @regression @id3975
-  Scenario Outline: Verify removing the content from the group conversation via participant view [PORTRAIT]
+  Scenario Outline: ZIOS-6809 Verify removing the content from the group conversation via participant view [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -712,6 +707,7 @@ Feature: People View
     And I confirm delete conversation content
     And I wait until popover is closed
     And I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -721,7 +717,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | ForDeletion   | testing.jpg |
 
   @C1834 @regression @id3976
-  Scenario Outline: Verify removing the content from the group conversation via participant view [LANDSCAPE]
+  Scenario Outline: ZIOS-6809 Verify removing the content from the group conversation via participant view [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -739,6 +735,7 @@ Feature: People View
     And I confirm delete conversation content
     And I wait until popover is closed
     And I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     When I tap on conversation <GroupChatName> in search result
     Then I see group chat page with users <Contact1>,<Contact2>
@@ -810,7 +807,6 @@ Feature: People View
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
-    And I see 3 conversation entries
     And I open group conversation details
     And I press leave conversation button
     And I see leave conversation alert
@@ -819,7 +815,7 @@ Feature: People View
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |
@@ -836,7 +832,6 @@ Feature: People View
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
-    And I see 3 conversation entries
     And I open group conversation details
     And I press leave conversation button
     And I see leave conversation alert
@@ -845,7 +840,7 @@ Feature: People View
     And I open archived conversations
     And I see conversation <GroupChatName> in conversations list
     And I tap on group chat with name <GroupChatName>
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       |

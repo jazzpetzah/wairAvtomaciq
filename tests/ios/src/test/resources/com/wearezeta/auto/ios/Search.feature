@@ -72,6 +72,7 @@ Feature: Search
     Given <Contact2> is connected to <UnconnectedUser>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <UnconnectedUser> exists in backend search results
     When I open search UI
     And I input in People picker search field conversation name <UnconnectedUser>
     And I tap on conversation <UnconnectedUser> in search result
@@ -107,18 +108,19 @@ Feature: Search
   @C3244 @regression @id1456
   Scenario Outline: Verify you can unblock someone from search list
     Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
+    Given <Contact> is connected to Myself
     Given User <Name> blocks user <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I do not see conversation <Contact> in conversations list
+    And I wait until <Contact> exists in backend search results
     And I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user
     And I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -171,7 +173,7 @@ Feature: Search
     And I choose a picture from camera roll
     And I confirm my choice
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
-    And I see 1 photo in the dialog
+    And I see 1 photo in the conversation view
     When I navigate back to conversations list
     Then I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>
 

@@ -6,9 +6,9 @@ Feature: Video Message
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
+    Given <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
-    When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
     And I see Video Message container in the conversation view
     And I tap Play button on the recent video message in the conversation view
     # Wait for the video to be fully loaded

@@ -14,7 +14,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 
 public class PersonalInfoPage extends IOSPage {
     private static final Function<String, String> xpathStrEmailFieldByValue = value ->
-            String.format("//*UIAStaticText[contains(@name, '%s')]", value);
+            String.format("//UIAStaticText[contains(@name, '%s')]", value);
 
     private static final By nameProfileSettingsButton = MobileBy.AccessibilityId("SettingsButton");
 
@@ -184,10 +184,6 @@ public class PersonalInfoPage extends IOSPage {
         final WebElement profileNameEditField = getElement(xpathProfileNameEditField, "Edit name field is not visible");
         DriverUtils.tapByCoordinates(this.getDriver(), profileNameEditField);
         profileNameEditField.sendKeys("\n");
-    }
-
-    public void tapOnPersonalPage() throws Exception {
-        getElement(nameMainWindow).click();
     }
 
     public void pressCameraButton() throws Exception {

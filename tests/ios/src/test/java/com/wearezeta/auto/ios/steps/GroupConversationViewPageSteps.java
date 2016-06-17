@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.Assert;
 
@@ -25,17 +24,10 @@ public class GroupConversationViewPageSteps {
     public void ThenISeeGroupChatPage(String participantNameAliases) throws Exception {
         participantNameAliases = usrMgr.replaceAliasesOccurences(participantNameAliases,
                 ClientUsersManager.FindBy.NAME_ALIAS);
-        final List<String> participantNames = CommonSteps.splitAliases(participantNameAliases).stream().
-                map(x -> {
-                    if (x.contains(" ")) {
-                        return x.substring(0, x.indexOf(" "));
-                    } else {
-                        return x;
-                    }
-                }).collect(Collectors.toList());
+        final List<String> participantNames = CommonSteps.splitAliases(participantNameAliases);
         Assert.assertTrue(
                 String.format("Users '%s' are not visible in the group conversation", participantNameAliases),
-                getGroupConversationViewPage().isChatMessageContainsStringsExist(participantNames));
+                getGroupConversationViewPage().isUpperToolbarContainNames(participantNames));
     }
 
     /**

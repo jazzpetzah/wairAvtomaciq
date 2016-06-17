@@ -113,7 +113,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  @C104 @regression @id2761
+  @C104 @rc @regression @id2761
   Scenario Outline: Verify conversations are sorted according to most recent activity
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -209,7 +209,7 @@ Feature: Conversation List
       | user1Name | user2Name | user3Name | LeaveActionMenu |
 
   @C840 @rc @clumsy @regression @id3315
-  Scenario Outline: Verify removing the content from the group conversation
+  Scenario Outline: ZIOS-6809 Verify removing the content from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -219,7 +219,7 @@ Feature: Conversation List
     Given User <Contact1> sends 1 encrypted message to group conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on contact name <GroupChatName>
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
     When I navigate back to conversations list
     And I swipe right on a <GroupChatName>
     And I tap Delete action button
@@ -235,7 +235,7 @@ Feature: Conversation List
       | user1Name | user2Name | user3Name | TESTCHAT      | testing.jpg |
 
   @C842 @rc @clumsy @regression @id3318
-  Scenario Outline: Verify removing the history from 1-to1 conversation
+  Scenario Outline: ZIOS-6809 Verify removing the history from 1-to1 conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
@@ -244,7 +244,7 @@ Feature: Conversation List
     Given User <Contact1> sends 1 encrypted message to user <Name>
     Given User Myself sends 1 encrypted message to user <Contact1>
     When I tap on contact name <Contact1>
-    Then I see 1 photo in the dialog
+    Then I see 1 photo in the conversation view
     When I navigate back to conversations list
     And I swipe right on a <Contact1>
     And I tap Delete action button
@@ -396,7 +396,7 @@ Feature: Conversation List
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
     When I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |

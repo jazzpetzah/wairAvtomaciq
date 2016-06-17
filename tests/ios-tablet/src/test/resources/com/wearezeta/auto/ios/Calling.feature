@@ -17,7 +17,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2407 @calling_basic @id2630
+  @C2407 @rc @calling_basic @id2630
   Scenario Outline: Verify calling from missed call indicator in conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -107,7 +107,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2427 @calling_advanced @id2652
+  @C2427 @rc @calling_advanced @id2652
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -211,7 +211,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2413 @calling_basic @id3812
+  @C2413 @rc @calling_basic @id3812
   Scenario Outline: Verify putting client to the background during 1-to-1 call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -230,3 +230,68 @@ Feature: Calling
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
+
+  @C145968 @calling_basic
+  Scenario Outline: Verify starting a group call [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    Then I tap on group chat with name <GroupChatName>
+    And I tap Audio Call button
+    And I see Calling overlay
+    When I tap Leave button on Calling overlay
+    Then I do not see Calling overlay
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | GROUPCALL     |
+
+  @C145969 @staging
+  Scenario Outline: Verify leaving and coming back to the call in 20 seconds [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact2> accepts next incoming call automatically
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    Given I remember the state of <GroupChatName> conversation item
+    When I tap on group chat with name <GroupChatName>
+    And I tap Audio Call button
+    Then I see call status message contains "<GroupChatName> ringing"
+    And I see <NumberOfAvatars> avatars on the Calling overlay
+    Then I tap Leave button on Calling overlay
+    And I do not see Calling overlay
+    Then I see the state of <GroupChatName> conversation item is changed
+    And I wait for 20 seconds
+    And I tap Audio Call button
+    Then I see <NumberOfAvatars> avatars on the Calling overlay
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | GROUPCALL     | chrome      | 2               |
+
+  @C145950 @staging
+  Scenario Outline: Verify joining 2 other people on the group call [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    And <Contact1> calls <GroupChatName>
+    Then I see call status message contains "<GroupChatName> ringing"
+    And I tap Accept button on Calling overlay
+    And I see <NumberOfAvatars> avatars on the Calling overlay
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | GROUPCALL     | chrome      | 2               |

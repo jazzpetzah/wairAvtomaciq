@@ -153,7 +153,7 @@ Feature: People View
     And I select participant <Contact1>
     And I tap on start dialog button on other user profile page
     And I type the default message and send it
-    Then I see 1 default message in the dialog
+    Then I see 1 default message in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -328,14 +328,15 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <Contact3> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact3>
     And I see the conversation "<Contact3>" exists in Search results
     And I click close button to dismiss people view
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
-    And I press Add button
     And I wait until <Contact2> exists in backend search results
+    And I press Add button
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact3>
     Then I see the conversation "<Contact3>" does not exist in Search results
@@ -393,7 +394,7 @@ Feature: People View
       | user1Name | user2Name | user3Name | ForDeletion   |
 
   @C1830 @regression @id3971
-  Scenario Outline: Verify removing the content from the group conversation via participant view
+  Scenario Outline: ZIOS-6809 Verify removing the content from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -437,7 +438,7 @@ Feature: People View
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I tap Open conversation action button on People picker page
-    Then I see the system message CONNECTED TO <Contact1> in the conversation view
+    Then I see the conversation with <Contact1>
 
     Examples:
       | Name      | Contact1  | Image       |
@@ -453,7 +454,6 @@ Feature: People View
     Given User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
     Given User Myself sends 1 encrypted message to group conversation <GroupChatName>
     When I tap on group chat with name <GroupChatName>
-    And I see 3 conversation entries
     And I open group conversation details
     And I press leave conversation button
     And I see leave conversation alert
@@ -519,38 +519,3 @@ Feature: People View
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | MaxGroupChatNameLenght |
       | user1Name | user2Name | user3Name | TESTCHAT      | 65                     |
-
-  @C80775 @regression
-  Scenario Outline: Verify adding people in group conversation via ADD PEOPLE button in the beginning of the conversation
-    Given There are 4 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    And I press Add People button in the beginning of conversation
-    And I tap on Search input on People picker page
-    And I input in People picker search field user name <Contact3>
-    And I tap on conversation <Contact3> in search result
-    And I click on Add to conversation button
-    #Wait needed because jenkins needs a bit more time to display the YOU ADDED message
-    And I wait for 5 seconds
-    Then I can see You Added <Contact3> message
-
-    Examples:
-      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
-      | user1Name | user2Name | user3Name | user4Name | TESTCHAT      |
-
-  @C80774 @regression
-  Scenario Outline: Verify system message and add people button appears for newly created group conversation
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I tap on group chat with name <GroupChatName>
-    Then I see new group chat UI elements in the beginning of the conversation view
-
-    Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | TESTCHAT      |

@@ -2,7 +2,9 @@ Feature: Localization
 
   @C77945 @regression
   Scenario Outline: Verify registration screen has German-localized strings
+    Given I switch to Sign In page
     When I switch language to <Language>
+    And I switch to registration page
     Then I see Registration page
     And I see a string <CreateAccountLink> on the page
     And I see a placeholder <NamePlaceholder> on the page
@@ -17,9 +19,9 @@ Feature: Localization
 
   @C77947 @regression
   Scenario Outline: Verify login screen has German-localized strings
-    When I switch language to <Language>
-    Then I see Registration page
-    And I switch to Sign In page
+    Given I switch to Sign In page
+    Given I switch language to <Language>
+    Given I switch to Sign In page
     Then I see a string <LoginLink> on the page
     And I see a placeholder <EmailPlaceholder> on the page
     And I see a placeholder <PasswordPlaceholder> on the page
@@ -62,7 +64,9 @@ Feature: Localization
     Given I Sign in using login <Login> and password <Password>
     Given I am signed in properly
     When I switch language to <Language>
-    And I open self profile
+    Then I see People Picker
+    And I close People Picker
+    Then I open self profile
     And I click gear button on self profile page
     And I select <SupportButton> menu item on self profile page
     And I switch to support page tab

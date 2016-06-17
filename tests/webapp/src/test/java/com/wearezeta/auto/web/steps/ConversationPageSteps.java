@@ -258,6 +258,12 @@ public class ConversationPageSteps {
                 .getOverlapScoreOfLastImage(pictureName), greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
     }
 
+    @Then("^I do not see any picture in the conversation view$")
+    public void ISeeSentPicture() throws Exception {
+        assertThat("I see a picture in the conversation", context.getPagesCollection().getPage(ConversationPage.class)
+                .isImageInvisible());
+    }
+
     /**
      * Verifies that only x images are in the conversation. Helps with checking for doubles.
      *
@@ -632,6 +638,16 @@ public class ConversationPageSteps {
     public void IDoNotSeeDeleteButton() throws Exception {
         assertFalse("Delete button is visible", context.getPagesCollection().getPage(ConversationPage.class)
                 .isDeleteButtonVisibleForLatestMessage());
+    }
+
+    @When("^I click reset session on the latest decryption error")
+    public void IClickToResetSession() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickToResetSessionOnLatestError();
+    }
+
+    @When("^I close reset session dialog$")
+    public void IClickConfirmToResetSession() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).setCloseResetSessionDialog();
     }
 
     /**
@@ -1100,6 +1116,16 @@ public class ConversationPageSteps {
     public void IClickOnPendingUserAvatar() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickUserAvatar();
     }
+    
+    @Then("^I see cancel pending request button in the conversation view$")
+    public void ISeeCancelRequestButton() throws Exception {
+        assertTrue("Cancel request is NOT visible in conversation list",context.getPagesCollection().getPage(ConversationPage.class).isCancelRequestButtonVisible());
+    }
+
+    @Then("^I click cancel pending request button in the conversation view$")
+    public void IClickOnCancelRequestButton() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickCancelPendingRequestButton();
+    }
 
     /**
      * Click on an avatar bubble inside the conversation view
@@ -1176,5 +1202,4 @@ public class ConversationPageSteps {
             processedMessages.add(currentMessage);
         }
     }
-
 }

@@ -643,7 +643,7 @@ Feature: E2EE
     When I open conversation with <Contact>
     And user <Name> adds a new device Device2 with label Label2
     #Then I see <NEW_DEVICE> action in conversation
-    And I verify a badge is shown on my avatar
+    And I verify a badge is shown on self profile button
     And I open self profile
     And I see connected devices dialog
     And I see Device2 on connected devices dialog
@@ -733,7 +733,7 @@ Feature: E2EE
       | user1Email | user1Password | user1Name | user2Name | All fingerprints are verified | started using a new device | Unverified hello |
 
   @C82513 @e2ee @regression
-  Scenario Outline: Verify you can recover from a broken session
+  Scenario Outline: Verify you can recover from a broken session through device management
     Given There are 2 users where <Name> is me
     Given user <Contact> adds a new device Device1 with label Label1
     Given Myself is connected to <Contact>
@@ -752,6 +752,29 @@ Feature: E2EE
     And I click on device Device1 of user <Contact> on Single User Profile popover
     And I click reset session on the Device Detail popover
     And I click People button in one to one conversation
+    And Contact <Contact> sends message <Message3> via device Device1 to user Myself
+    Then I see text message <Message3>
+
+    Examples:
+      | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT | Message1    | Message2     | Message3    |
+      | user1Email | user1Password | user1Name | user2Name | WAS NOT RECEIVED  | First hello | Second hello | Third hello |
+
+  @C147865 @e2ee @regression
+  Scenario Outline: Verify you can recover from a broken session directly through error message
+    Given There are 2 users where <Name> is me
+    Given user <Contact> adds a new device Device1 with label Label1
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    When I Sign in using login <Email> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact>
+    And Contact <Contact> sends message <Message1> via device Device1 to user Myself
+    Then I see text message <Message1>
+    When I break the session with device Device1 of user <Contact>
+    And Contact <Contact> sends message <Message2> via device Device1 to user Myself
+    Then I see <UNABLE_TO_DECRYPT> action in conversation
+    When I click reset session on the latest decryption error
+    And I close reset session dialog
     And Contact <Contact> sends message <Message3> via device Device1 to user Myself
     Then I see text message <Message3>
 

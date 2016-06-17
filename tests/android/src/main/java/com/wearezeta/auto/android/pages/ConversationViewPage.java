@@ -8,7 +8,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.misc.ElementState;
-import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -18,6 +17,7 @@ import org.openqa.selenium.WebElement;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import org.openqa.selenium.interactions.touch.TouchActions;
 
 public class ConversationViewPage extends AndroidPage {
 
@@ -75,11 +75,11 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idYoutubePlayButton = By.id("gtv__youtube_message__play");
 
-    private static final String strIdMediaBarControl = "gtv__conversation_header__mediabar__control";
+    private static final String strIdMediaToolbar = "tb__conversation_header__mediabar";
 
-    private static final By idMediaBarControl = By.id(strIdMediaBarControl);
+    private static final By idMediaBarPlayBtn = By.xpath(String.format("//*[@id='%s']/*[2]", strIdMediaToolbar));
 
-    private static final By xpathMediaBar = By.xpath(String.format("//*[@id='%s']/parent::*", strIdMediaBarControl));
+    private static final By idMediaToolbar = By.id(strIdMediaToolbar);
 
     private static final By idCursorSketch = By.id("cursor_menu_item_draw");
 
@@ -337,7 +337,7 @@ public class ConversationViewPage extends AndroidPage {
         getElement(idCursorAudioMessage, "Audio message button is not visible").click();
     }
 
-    public void longTapAudioMessagecursorBtn(int duration) throws Exception {
+    public void longTapAudioMessageCursorBtn(int duration) throws Exception {
         getDriver().longTap(getElement(idCursorAudioMessage), duration);
     }
 
@@ -349,7 +349,7 @@ public class ConversationViewPage extends AndroidPage {
     public void longTapAudioMessageCursorBtnAndRememberIcon(int longTapDurationMilliseconds, ElementState elementState)
             throws Exception {
         longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idCursorAudioMessage),
-                DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds, Optional.of(() -> elementState.remember()));
+                DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds, Optional.of(elementState::remember));
     }
 
     public boolean isPingButtonVisible() throws Exception {
@@ -623,11 +623,11 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void tapPlayPauseMediaBarBtn() throws Exception {
-        getElement(idMediaBarControl, "Media barr PlayPause button is not visible").click();
+        getElement(idMediaBarPlayBtn, "Media bar PlayPause button is not visible").click();
     }
 
     private boolean waitUntilMediaBarVisible(int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMediaBarControl, timeoutSeconds);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idMediaToolbar, timeoutSeconds);
     }
 
     public boolean waitUntilMissedCallMessageIsVisible(String expectedMessage) throws Exception {
@@ -719,7 +719,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public boolean isMediaBarBelowUptoolbar() throws Exception {
-        return isElementABelowElementB(getElement(xpathMediaBar), getElement(xpathToolbar),
+        return isElementABelowElementB(getElement(idMediaToolbar), getElement(xpathToolbar),
                 LOCATION_DIFFERENCE_BETWEEN_TOP_TOOLBAR_AND_MEDIA_BAR);
     }
 
@@ -932,13 +932,10 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void longAudioMessageContainer() throws Exception {
-        // FIXME: Workaround based on issue AN-4051, should be fixed by commented line
         WebElement el = getElement(idAudioMessageContainer);
         final Point location = el.getLocation();
         final Dimension size = el.getSize();
-        getDriver().longTap(location.x + 20, location.y + size.height / 2, DriverUtils.LONG_TAP_DURATION);
-
-        //getDriver().longTap(getElement(idAudioMessageContainer), DriverUtils.LONG_TAP_DURATION);
+        getDriver().longTap(location.x + size.width / 2, location.y + size.height / 5, DriverUtils.LONG_TAP_DURATION);
     }
 
     public boolean isVideoMessageButtonVisible() throws Exception {
@@ -951,5 +948,12 @@ public class ConversationViewPage extends AndroidPage {
 
     public Optional<BufferedImage> getAudioContainerButtonState() throws Exception {
         return getElementScreenshot(getElement(idAudioContainerButton));
+    }
+
+    public void longTapAndKeepAudioMessageCursorBtn() throws Exception {
+        final WebElement audioMsgButton = getElement(idCursorAudioMessage);
+        final int x = audioMsgButton.getLocation().getX() + audioMsgButton.getSize().getWidth() / 2;
+        final int y = audioMsgButton.getLocation().getY() + audioMsgButton.getSize().getHeight() / 2;
+        new TouchActions(getDriver()).down(x, y).perform();
     }
 }

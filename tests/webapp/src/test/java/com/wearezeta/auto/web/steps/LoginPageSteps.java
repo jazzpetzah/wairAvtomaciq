@@ -315,4 +315,17 @@ public class LoginPageSteps {
 				context.getPagesCollection().getPage(LoginPage.class)
 						.getDescriptionMessage());
 	}
+        
+        /**
+	 * Switch to Registration page
+	 * 
+	 * @step. ^I switch to registration page$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I switch to registration page$")
+	public void ISwitchToRegistrationPage() throws Exception {
+		context.getPagesCollection().getPage(LoginPage.class)
+				.switchToRegistrationPage();
+	}
 }

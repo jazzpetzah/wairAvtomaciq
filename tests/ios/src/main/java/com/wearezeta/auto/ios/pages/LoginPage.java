@@ -2,7 +2,9 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DummyElement;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.ios.IOSElement;
 import org.openqa.selenium.By;
@@ -29,14 +31,11 @@ public class LoginPage extends IOSPage {
 
     private static final By nameForgotPassword = MobileBy.AccessibilityId("FORGOT PASSWORD?");
 
-    private static final By namePhoneLoginButton = MobileBy.AccessibilityId("RegistrationRightButton");
-
     private static final By nameMaybeLater = MobileBy.AccessibilityId("MAYBE LATER");
 
-    private static final By nameCountryPickerButton = MobileBy.AccessibilityId("CountryPickerButton");
-
     private static final By xpathSetEmailPasswordSuggestionLabel = By.xpath(
-            "//UIAStaticText[contains(@name, 'Add email address and password')]");
+            "//UIAStaticText[contains(@name, 'Add your email and password.')]");
+
 
     public static final By nameResentIn10min = MobileBy.AccessibilityId(
             "We already sent you a code via SMS. Tap Resend after 10 minutes to get a new one.");
@@ -44,9 +43,6 @@ public class LoginPage extends IOSPage {
     private static final By nameSomethingWentWrong = MobileBy.AccessibilityId("Something went wrong, please try again");
 
     private static final By nameInvalidEmail = MobileBy.AccessibilityId("Please enter a valid email address");
-
-    private static final By nameAlreadyRegisteredNumber = MobileBy.AccessibilityId(
-            "The phone number you provided has already been registered. Please try again.");
 
     private static final By nameAlreadyRegisteredEmail =
             MobileBy.AccessibilityId("The email address you provided has already been registered. Please try again.");
@@ -63,10 +59,6 @@ public class LoginPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(nameStrMainWindow));
     }
 
-    public boolean isPhoneSignInButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), namePhoneLoginButton);
-    }
-
     public void switchToEmailLogin() throws Exception {
         final WebElement emailSwitchBtn = getElement(nameSwitchToEmailLogin);
         emailSwitchBtn.click();
@@ -81,7 +73,7 @@ public class LoginPage extends IOSPage {
     }
 
     public void waitForLoginToFinish() throws Exception {
-        if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), nameSwitchToLoginButton, 40)) {
+        if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(), nameSwitchToLoginButton, LOGIN_TIMEOUT_SECONDS)) {
             throw new IllegalStateException("Login button is still visible after the timeout");
         }
     }
@@ -98,7 +90,7 @@ public class LoginPage extends IOSPage {
         ((IOSElement) getElement(namePasswordField)).setValue(password);
     }
 
-    private static final int LOGIN_TIMEOUT_SECONDS = 30;
+    public static final int LOGIN_TIMEOUT_SECONDS = 30;
 
     public void dismissSettingsWarning() throws Exception {
         final WebElement maybeLaterBtn = getElement(nameMaybeLater, "MAYBE LATER link is not visible",
@@ -137,23 +129,16 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isResendIn10minAlertVisible() throws Exception {
-        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameResentIn10min);
+        return waitUntilAlertAppears() && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameResentIn10min);
     }
 
     public boolean isInvalidEmailAlertShown() throws Exception {
-        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidEmail);
-    }
-
-    public boolean isRegisteredNumberAlertShown() throws Exception {
-        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAlreadyRegisteredNumber);
+        return waitUntilAlertAppears() && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameInvalidEmail);
     }
 
     public boolean isAlreadyRegisteredEmailAlertShown() throws Exception {
-        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAlreadyRegisteredEmail);
+        return waitUntilAlertAppears() && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                nameAlreadyRegisteredEmail);
     }
 
     public void clickPhoneNotNow() throws Exception {
@@ -161,8 +146,7 @@ public class LoginPage extends IOSPage {
     }
 
     public boolean isSomethingWentWrongAlertShown() throws Exception {
-        return DriverUtils.waitUntilAlertAppears(getDriver()) &&
-                DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSomethingWentWrong);
+        return waitUntilAlertAppears() && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameSomethingWentWrong);
     }
 
     public void dismissSettingsWarningIfVisible(int timeoutSeconds) throws Exception {
@@ -171,10 +155,16 @@ public class LoginPage extends IOSPage {
 
     public void switchToLogin() throws Exception {
         final WebElement switchToLoginButton = getElement(nameSwitchToLoginButton);
+        // Wait for a while until the button is 100% accessible
+        Thread.sleep(1000);
         switchToLoginButton.click();
-        // sometimes switch does not work if clicked too early
-        if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLoginField, 5)) {
-            switchToLoginButton.click();
-        }
+    }
+
+    public void inputLoginCode(PhoneNumber forNumber) throws Exception {
+        final WebElement codeInput = getElement(RegistrationPage.xpathVerificationCodeInput,
+                "Login code input is not visible");
+        final String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(forNumber);
+        codeInput.sendKeys(code);
+        getElement(RegistrationPage.nameConfirmButton, "Confirm button is not visible", 2).click();
     }
 }

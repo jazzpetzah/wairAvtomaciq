@@ -110,3 +110,24 @@ Feature: Settings
     Examples:
       | Name      | Color  |
       | user1Name | Violet |
+
+  @C145961 @regression @useSpecialEmail
+  Scenario Outline: Verify deleting the account registered by email [LANDSCAPE]
+    Given There is 1 user where <Name> is me
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    When I tap settings gear button
+    And I click on Settings button on personal page
+    And I click on Settings button from the options menu
+    And I select settings item Account
+    And I start waiting for <Name> account removal notification
+    And I select settings item Delete Account
+    # FIXME: Sometimes the alert is not accepted automatically
+    And I accept alert
+    Then I see sign in screen
+    And I verify account removal notification is received
+
+    Examples:
+      | Name      |
+      | user1Name |
