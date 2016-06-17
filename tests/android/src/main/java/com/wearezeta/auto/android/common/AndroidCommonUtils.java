@@ -299,18 +299,18 @@ public class AndroidCommonUtils extends CommonUtils {
 
     /**
      * Install Testing Gallery, if SDK Version <= 4.3, which will not support Catching Notification Service
-     *
-     * @param c
-     * @throws Exception
      */
     public static void installTestingGalleryApp(Class<?> c) throws Exception {
-        if (compareAndroidVersion("4.3") <= 0) {
-            executeAdb(String.format("install -r %s/testing_gallery-debug.apk",
-                    getAndroidToolsPathFromConfig(c)));
+        final DefaultArtifactVersion deviceVersion =
+                new DefaultArtifactVersion(getPropertyFromAdb("ro.build.version.release"));
+        if (deviceVersion.compareTo(new DefaultArtifactVersion("4.3")) <= 0) {
+            executeAdb(String.format("install -r %s/testing_gallery-debug.apk", getAndroidToolsPathFromConfig(c)));
         } else {
-            executeAdb(String.format("install -r %s/testing_gallery-debug19.apk",
-                    getAndroidToolsPathFromConfig(c)));
-        }
+            executeAdb(String.format("install -r %s/testing_gallery-debug19.apk", getAndroidToolsPathFromConfig(c)));
+            if (deviceVersion.compareTo(new DefaultArtifactVersion("6.0")) >= 0) {
+                grantPermissionsTo("com.wire.testinggallery", "android.permission.WRITE_EXTERNAL_STORAGE");
+            }
+         }
     }
 
     public static void enableAutoAnswerCall(Class<?> c) throws Exception {
