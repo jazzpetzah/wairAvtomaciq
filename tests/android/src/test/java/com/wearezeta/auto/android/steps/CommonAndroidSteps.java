@@ -459,17 +459,14 @@ public class CommonAndroidSteps {
     @Then("^I verify the previous and the current screenshots are( not)? different$")
     public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent(String shouldBeEqual) throws Exception {
         final int timeoutSeconds = 10;
-        final double targetScore = 0.75d;
         if (shouldBeEqual == null) {
             Assert.assertTrue(
                     String.format("The current screen state seems to be similar to the previous one after %s seconds",
-                            timeoutSeconds),
-                    screenState.isChanged(timeoutSeconds, targetScore));
+                            timeoutSeconds), screenState.isChanged(timeoutSeconds, 0.97));
         } else {
             Assert.assertTrue(
                     String.format("The current screen state seems to be different to the previous one after %s seconds",
-                            timeoutSeconds),
-                    screenState.isNotChanged(timeoutSeconds, targetScore));
+                            timeoutSeconds), screenState.isNotChanged(timeoutSeconds, 0.75));
         }
     }
 

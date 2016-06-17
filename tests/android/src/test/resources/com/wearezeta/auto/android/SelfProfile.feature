@@ -5,14 +5,17 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
-    When I tap conversations list settings button
-    And I tap on personal info screen
-    And I remember my current profile picture
+    Given I see Contact list with contacts
+    # Given I see Contact list with no contacts
+    When I take screenshot
+    And I tap conversations list settings button
+    And I select "Account" settings menu item
+    And I select "Picture" settings menu item
     And I tap Gallery Camera button on Take Picture view
     And I tap Confirm button on Take Picture view
-    And I tap on personal info screen
-    Then I verify that my current profile picture is different from the previous one
+    And I press Back button
+    And I press Back button
+    Then I verify the previous and the current screenshots are different
 
     Examples:
       | Name      |
