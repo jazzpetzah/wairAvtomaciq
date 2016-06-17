@@ -5,8 +5,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    # Given I see Contact list with no contacts
+    Given I see Contact list with no contacts
     When I take screenshot
     And I tap conversations list settings button
     And I select "Account" settings menu item
