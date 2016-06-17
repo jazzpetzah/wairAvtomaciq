@@ -883,6 +883,7 @@ public class ConversationPage extends WebPage {
     }
 
     public boolean waitUntilVideoTimeChanges(String fileName) throws Exception {
+        hoverOverVideo(fileName);
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoTime, fileName));
         assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No time element found for locator " + locator;
         final String time = getDriver().findElement(locator).getText();
