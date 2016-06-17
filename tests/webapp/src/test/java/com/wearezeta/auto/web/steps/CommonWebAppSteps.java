@@ -52,6 +52,8 @@ public class CommonWebAppSteps {
     private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
     
     private final TestContext context;
+
+    private static final String VIDEO_MESSAGE_IMAGE = "userpicture_landscape.jpg";
     
     public CommonWebAppSteps() {
         this.context = new TestContext();
@@ -527,6 +529,18 @@ public class CommonWebAppSteps {
         context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "audio/mp4",
                 deviceName, isGroup);
     }
+
+    @When("^(.*) sends? (.*) sized video with name (.*) via device (.*) to (user|group conversation) (.*)$")
+    public void WhenISendVideo(String contact, String size, String fileName, String deviceName, String convoType,
+                                    String dstConvoName) throws Exception {
+        String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
+
+        final String picturePath = WebCommonUtils.getFullPicturePath(VIDEO_MESSAGE_IMAGE);
+        CommonUtils.generateVideoFile(path + "/" + fileName, size, picturePath);
+        boolean isGroup = !convoType.equals("user");
+        context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "video/mp4", deviceName, isGroup);
+    }
+
 
     /**
      * Send message to a conversation

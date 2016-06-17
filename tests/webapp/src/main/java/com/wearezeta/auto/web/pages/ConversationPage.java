@@ -864,6 +864,11 @@ public class ConversationPage extends WebPage {
         getDriver().findElement(locator).click();
     }
 
+    public boolean isPlayButtonVisible(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoPlay, fileName));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
+    }
+
     public void pauseVideo(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoPause, fileName));
         getDriver().findElement(locator).click();

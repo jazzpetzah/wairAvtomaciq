@@ -543,6 +543,12 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).playVideo(fileName);
     }
 
+    @Then("^I see play button of video (.*) in the conversation view$")
+    public void ISeePlayVideo(String fileName) throws Exception {
+        assertThat("Play button is not shown", context.getPagesCollection().getPage(ConversationPage.class)
+                .isPlayButtonVisible(fileName));
+    }
+
     @Then("^I click pause button of video (.*) in the conversation view$")
     public void IClickPauseVideo(String fileName) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).pauseVideo(fileName);
