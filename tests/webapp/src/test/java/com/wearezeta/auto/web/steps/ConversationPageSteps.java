@@ -1198,4 +1198,23 @@ public class ConversationPageSteps {
         }
     }
 
+    @When("^I( do not)? see long message warning dialog$")
+    public void ISeeLongMessageWarningDialog(String doNot) throws Exception {
+        if (doNot == null) {
+            assertThat(context.getPagesCollection().getPage(ConversationPage.class).isLongMessageWarnDialogShown(), is(true));}
+        else
+        {
+            assertThat(context.getPagesCollection().getPage(ConversationPage.class).isLongMessageWarnDialogNotShown(), is(true));
+        }
+    }
+
+    /**
+     * Clicks OK on long message warning dialog
+     *
+     * @step. "^I click OK on long message warning dialog$"
+     */
+    @When("^I click OK on long message warning dialog$")
+    public void IClickLogoutOnClearDataDialog() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickOKButtonOnLongMWarning();
+    }
 }

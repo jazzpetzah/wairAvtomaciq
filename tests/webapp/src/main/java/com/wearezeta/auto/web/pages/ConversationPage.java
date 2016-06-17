@@ -147,8 +147,14 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssDoDelete)
     private WebElement doDeleteButton;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssLongMessageDialog)
+    private WebElement longMessageDialog;
+
     @FindBy(css = WebAppLocators.ConversationPage.cssCloseResetSessionDialog)
     private WebElement closeResetSessionDialogButton;
+
+    @FindBy(css = WebAppLocators.ConversationPage.cssOKButtonOnLongMWarning)
+    private WebElement oKButtonOnLongMWarning;
 
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
@@ -1068,5 +1074,18 @@ public class ConversationPage extends WebPage {
     public boolean isImageInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
                 .cssFirstImage));
+    }
+
+    public boolean isLongMessageWarnDialogShown() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(), longMessageDialog);
+    }
+
+    public boolean isLongMessageWarnDialogNotShown() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+                .cssLongMessageDialog);
+    }
+
+    public void clickOKButtonOnLongMWarning() throws Exception {
+        oKButtonOnLongMWarning.click();
     }
 }

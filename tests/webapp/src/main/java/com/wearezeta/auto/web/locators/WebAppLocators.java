@@ -488,6 +488,15 @@ public final class WebAppLocators {
         public static final String cssConversationVerifiedIcon = ".conversation-verified";
 
         public static final String cssTitlebarLabel = ".conversation-titlebar-name-label";
+
+        //Long message warning modal
+
+        public static final String cssLongMessageDialog = "[data-uie-name='modal-too-long-message']";
+
+        public static final String cssOKButtonOnLongMWarning = "toadd";
+
+        public static final String xpathXButtonOnLongMWarning = "//div[contains(@class, 'detail-view-close-button')" +
+                "]//*[@data-uie-name='do-close-detail-view']";
     }
 
     public static final class ConnectToPage {
