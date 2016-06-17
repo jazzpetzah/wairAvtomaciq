@@ -937,7 +937,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | chrome      | 20      |
 
-  @regression @calling @group @calling_debug
+  @staging @calling @group @calling_debug
   Scenario Outline: Verify leaving and coming back to the call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
