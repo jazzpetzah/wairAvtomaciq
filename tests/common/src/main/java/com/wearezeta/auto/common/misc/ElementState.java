@@ -53,7 +53,7 @@ public class ElementState {
                 final double score = ImageUtil.getOverlapScore(
                         this.previousScreenshot.orElseThrow(
                                 () -> new IllegalStateException("Please remember the previous element state first")),
-                        currentState, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+                        currentState, ImageUtil.RESIZE_TO_MAX_SCORE);
                 log.debug(String.format("Actual score: %.4f; Time left: %s ms", score,
                         msTimeout + msStarted - System.currentTimeMillis()));
                 if (checkerFunc.apply(score)) {
