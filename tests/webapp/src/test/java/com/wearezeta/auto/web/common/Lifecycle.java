@@ -57,9 +57,9 @@ public class Lifecycle {
     public void setUp(Scenario scenario) throws Exception {
         String id = scenario.getId().substring(
                 scenario.getId().lastIndexOf(";") + 1);
-        setUp(scenario.getName()+"_"+id);
+        setUp(scenario.getName() + "_" + id);
     }
-    
+
     public void setUp(String testname) throws Exception {
 
         String[] command = new String[]{"/bin/sh", "-c", String.format("killall %s", "grunt")};
@@ -152,12 +152,6 @@ public class Lifecycle {
          */
         TestContext.COMPAT_WEB_DRIVER = lazyWebDriver;
         compatContext = new TestContext();
-        try {
-            compatContext.getDeviceManager().reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         compatContext.getDriver().get(url);
         compatContext.getPagesCollection().setFirstPage(new RegistrationPage(lazyWebDriver, url));
         /**
@@ -165,13 +159,6 @@ public class Lifecycle {
          */
 
         context = new TestContext(testname, lazyWebDriver);
-
-        try {
-            context.getDeviceManager().reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         context.getDriver().get(url);
         context.getPagesCollection().setFirstPage(new RegistrationPage(lazyWebDriver, url));
 
@@ -199,6 +186,26 @@ public class Lifecycle {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            /**
+             * #### START ############################################################ COMPATIBILITY INSTRUCTIONS
+             */
+            try {
+                log.debug("Releasing devices");
+                log.debug(compatContext.getUserManager().getCreatedUsers());
+                compatContext.getDeviceManager().releaseDevicesOfUsers(compatContext.getUserManager().getCreatedUsers());
+            } catch (Exception e) {
+                log.warn(e);
+            }
+            /**
+             * #### END ############################################################## COMPATIBILITY INSTRUCTIONS
+             */
+            try {
+                log.debug("Releasing devices");
+                log.debug(context.getUserManager().getCreatedUsers());
+                context.getDeviceManager().releaseDevicesOfUsers(context.getUserManager().getCreatedUsers());
+            } catch (Exception e) {
+                log.warn(e);
+            }
             try {
                 log.debug("Closing webdriver");
                 context.getDriver().quit();
@@ -318,13 +325,13 @@ public class Lifecycle {
         log.debug("Browser logging level has been set to '" + level.getName()
                 + "'");
     }
-    
+
     private String getUniqueTestName(String testname) {
         String browserName = WebAppExecutionContext.getBrowserName();
         String browserVersion = WebAppExecutionContext.getBrowserVersion();
         String platform = WebAppExecutionContext.getPlatform();
 
-        return testname +" on " + platform + " with "
+        return testname + " on " + platform + " with "
                 + browserName + " " + browserVersion;
     }
 

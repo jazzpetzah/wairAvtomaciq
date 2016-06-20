@@ -19,7 +19,6 @@ import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
-import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.DeleteAccountPage;
 import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
@@ -100,27 +99,27 @@ public class CommonWebAppSteps {
     
     @Given("^I switch language to (.*)$")
     public void ISwitchLanguageTo(String language) throws Exception {
-        WebappPagesCollection.getInstance().getPage(WebPage.class).switchLanguage(language);
+        context.getPagesCollection().getPage(WebPage.class).switchLanguage(language);
     }
 
     @Then("^I see a string (.*) on the page$")
     public void ISeeAStringOnPage(String string) throws Throwable {
-        assertThat(WebappPagesCollection.getInstance().getPage(WebPage.class).getText(), containsString(string));
+        assertThat(context.getPagesCollection().getPage(WebPage.class).getText(), containsString(string));
     }
 
     @Then("^I see a placeholder (.*) on the page$")
     public void ISeeAPlaceholderOnPage(String placeholder) throws Throwable {
-        assertThat(WebappPagesCollection.getInstance().getPage(WebPage.class).getPlaceholders(), hasItem(placeholder));
+        assertThat(context.getPagesCollection().getPage(WebPage.class).getPlaceholders(), hasItem(placeholder));
     }
 
     @Then("^I see a button with (.*) on the page$")
     public void ISeeAButtonOnPage(String value) throws Throwable {
-        assertThat(WebappPagesCollection.getInstance().getPage(WebPage.class).getButtonValues(), hasItem(value));
+        assertThat(context.getPagesCollection().getPage(WebPage.class).getButtonValues(), hasItem(value));
     }
 
     @Then("^I see a title (.*) on the page$")
     public void ISeeATitleOnPage(String title) throws Exception {
-        assertThat("Title on the page is not correct", WebappPagesCollection.getInstance().getPage(WebPage.class).getPageTitle(), equalTo(title));
+        assertThat("Title on the page is not correct", context.getPagesCollection().getPage(WebPage.class).getPageTitle(), equalTo(title));
     }
 
     @Given("^There is a known user (.*) with email (.*) and password (.*)$")

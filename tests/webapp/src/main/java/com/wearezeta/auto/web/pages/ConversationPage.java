@@ -1002,6 +1002,7 @@ public class ConversationPage extends WebPage {
             log.debug("message: " + message.getText());
             // Ignores system messages
             if (!message.findElements(By.cssSelector(".message-body")).isEmpty()) {
+           // if(!message.findElements(By.cssSelector(".text")).isEmpty()) {
                 String text = message.findElement(By.cssSelector(".text")).getText();
                 String time = message.findElement(By.cssSelector(".time")).getAttribute("data-timestamp");
                 String senderId = message.findElement(By.cssSelector("user-avatar")).getAttribute("user-id");
