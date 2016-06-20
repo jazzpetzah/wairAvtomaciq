@@ -60,7 +60,6 @@ public enum Browser {
 	public boolean isSupportingConsoleLogManagement() {
 		switch (this) {
 		case Chrome:
-		case Firefox:
 		case Opera:
 		case Safari:
 			return true;
