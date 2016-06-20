@@ -205,6 +205,8 @@ Feature: VideoCalling
     When <Contact> accepts next incoming video call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see ongoing video call
+    # To avoid race conditions on call setup
+    And I wait for 5 seconds
     When I hang up ongoing video call
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call

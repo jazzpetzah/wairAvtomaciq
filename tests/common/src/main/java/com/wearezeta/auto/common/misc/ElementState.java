@@ -45,6 +45,11 @@ public class ElementState {
     }
 
     private boolean checkState(Function<Double, Boolean> checkerFunc, int timeoutSeconds) throws Exception {
+        return checkState(checkerFunc, timeoutSeconds, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+    }
+
+    private boolean checkState(Function<Double, Boolean> checkerFunc, int timeoutSeconds, int resizeMode)
+            throws Exception {
         final long msTimeout = timeoutSeconds * 1000;
         final long msStarted = System.currentTimeMillis();
         do {
@@ -53,7 +58,7 @@ public class ElementState {
                 final double score = ImageUtil.getOverlapScore(
                         this.previousScreenshot.orElseThrow(
                                 () -> new IllegalStateException("Please remember the previous element state first")),
-                        currentState, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+                        currentState, resizeMode);
                 log.debug(String.format("Actual score: %.4f; Time left: %s ms", score,
                         msTimeout + msStarted - System.currentTimeMillis()));
                 if (checkerFunc.apply(score)) {
@@ -75,10 +80,24 @@ public class ElementState {
         return checkState((x) -> x < minScore, timeoutSeconds);
     }
 
+    public boolean isChanged(int timeoutSeconds, double minScore, int resizeMode) throws Exception {
+        log.debug(String.format(
+                "Checking if element state has been changed in %s seconds (Min score: %.4f)...",
+                timeoutSeconds, minScore));
+        return checkState((x) -> x < minScore, timeoutSeconds, resizeMode);
+    }
+
     public boolean isNotChanged(int timeoutSeconds, double minScore) throws Exception {
         log.debug(String.format(
                 "Checking if element state has NOT been changed in %s seconds (Min score: %.4f)...",
                 timeoutSeconds, minScore));
         return checkState((x) -> x >= minScore, timeoutSeconds);
+    }
+
+    public boolean isNotChanged(int timeoutSeconds, double minScore, int resizeMode) throws Exception {
+        log.debug(String.format(
+                "Checking if element state has NOT been changed in %s seconds (Min score: %.4f)...",
+                timeoutSeconds, minScore));
+        return checkState((x) -> x >= minScore, timeoutSeconds, resizeMode);
     }
 }

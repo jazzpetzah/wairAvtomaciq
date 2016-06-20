@@ -13,6 +13,7 @@ Feature: Lock/Unlock
     Given User <Contact1> sends encrypted message <Message1to1> to user Myself
     When I lock the device
     And I unlock the device
+    And I swipe right to show the conversations list
     Then I see the conversation <Contact1> in my conversations list
     When I open Search UI
     When I lock the device
@@ -25,14 +26,6 @@ Feature: Lock/Unlock
     And I unlock the device
     Then I see settings page
     When I navigate back
-    And I tap in the center of Self Profile page
-    And I tap Change Photo button on Take Picture view
-    And I tap Take Photo button on Take Picture view
-    And I lock the device
-    And I unlock the device
-    Then I see Take Photo button on Take Picture view
-    When I navigate back
-    And I navigate back
     And I tap the conversation <GroupChatName>
     And I lock the device
     And I unlock the device
@@ -55,5 +48,5 @@ Feature: Lock/Unlock
     Then I see the Single user popover
 
     Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName     | Message1to1 | MessageGroup | ItemName |
-      | user1Name | user2Name | user3Name | SendMessGroupChat | Msg1to1     | MsgGroup     | ABOUT    |
+      | Name      | Contact1  | Contact2  | GroupChatName     | Message1to1 | MessageGroup |
+      | user1Name | user2Name | user3Name | SendMessGroupChat | Msg1to1     | MsgGroup     |

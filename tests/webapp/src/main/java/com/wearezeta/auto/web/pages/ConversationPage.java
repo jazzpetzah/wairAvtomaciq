@@ -854,6 +854,13 @@ public class ConversationPage extends WebPage {
     public boolean waitUntilFileUploaded(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFile, fileName));
         DriverUtils.waitUntilLocatorAppears(getDriver(), locator, TIMEOUT_FILE_UPLOAD);
+        By locatorPlaceholder = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFileCancelUpload, fileName));
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locatorPlaceholder, TIMEOUT_FILE_UPLOAD);
+    }
+
+    public boolean waitUntilFilePlaceholderDisappears(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFile, fileName));
+        DriverUtils.waitUntilLocatorAppears(getDriver(), locator, TIMEOUT_FILE_UPLOAD);
         By locatorPlaceholder = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFilePlaceholder, fileName));
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locatorPlaceholder, TIMEOUT_FILE_UPLOAD);
     }
@@ -871,6 +878,11 @@ public class ConversationPage extends WebPage {
     public void playVideo(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoPlay, fileName));
         getDriver().findElement(locator).click();
+    }
+
+    public boolean isPlayButtonVisible(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoPlay, fileName));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
     public void pauseVideo(String fileName) throws Exception {
@@ -892,6 +904,7 @@ public class ConversationPage extends WebPage {
     }
 
     public boolean waitUntilVideoTimeChanges(String fileName) throws Exception {
+        hoverOverVideo(fileName);
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoTime, fileName));
         assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No time element found for locator " + locator;
         final String time = getDriver().findElement(locator).getText();

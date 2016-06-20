@@ -628,7 +628,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | GC1       | chrome      | 20      |
 
 
-  @staging @calling @group @calling_debug
+  @calling @group @calling_debug
   Scenario Outline: Verify receiving group call during group call
     Given My browser supports calling
     Given There are 5 users where <Name> is me
@@ -786,7 +786,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
 
-  @staging @calling
+  @calling
   Scenario Outline: Verify that outgoing call is terminated after within 1 minute timeout if nobody responds
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -859,7 +859,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome      | chrome      | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome      | firefox     | 20      |
 
-  @staging @calling @group @calling_debug
+  @calling @group @calling_debug
   Scenario Outline: Verify impossibility to connect 6th person to the call
     Given My browser supports calling
     Given There are 6 users where <Name> is me
@@ -937,7 +937,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | chrome      | 20      |
 
-  @regression @calling @group @calling_debug
+  @C150016 @staging @calling @group @calling_debug
   Scenario Outline: Verify leaving and coming back to the call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -967,7 +967,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox     | 20      |
 
-  @staging @calling @group @calling_debug
+  @calling @group @calling_debug
   Scenario Outline: Verify possibility to join call after 1 minutes of starting it
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -1032,7 +1032,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 20      |
 
 
-  @staging @calling @group @debug @id3073
+  @calling @group @debug
   Scenario Outline: Verify receiving 1-to-1 call during group call
     Given My browser supports calling
     Given There are 4 users where <Name> is me

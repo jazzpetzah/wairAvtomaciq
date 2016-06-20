@@ -20,8 +20,7 @@ Feature: Registration
     And I select Camera picture source on Unsplash Picture page
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
-    And I see the conversations list with no conversations
-    Then I see my name on Self Profile page
+    Then I see the conversations list with no conversations
 
     Examples:
       | Email      | Password      | Name      |
@@ -47,8 +46,7 @@ Feature: Registration
     And I select Camera picture source on Unsplash Picture page
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
-    And I see the conversations list with no conversations
-    Then I see my name on Self Profile page
+    Then I see the conversations list with no conversations
 
     Examples:
       | Email      | Password      | Name      |

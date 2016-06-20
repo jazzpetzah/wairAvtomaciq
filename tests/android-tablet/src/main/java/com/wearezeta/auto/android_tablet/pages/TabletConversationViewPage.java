@@ -65,16 +65,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public void tapPingButton() throws Exception {
-        getConversationViewPage().tapPingBtn();
-    }
-
-    public void tapAddPictureButton() throws Exception {
-        getConversationViewPage().tapAddPictureBtn();
-    }
-
-    public void tapTopToolbarTitle() throws Exception {
-        getConversationViewPage().tapTopToolbarTitle();
+    public void tapCursorToolButton(String name) throws Exception {
+        getConversationViewPage().tapCursorToolButton(name);
     }
 
     public boolean waitUntilPingMessageIsVisible(String expectedMessage) throws Exception {
@@ -180,14 +172,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getElement(idGiphyPreviewButton).click();
     }
 
-    public void tapSketchButton() throws Exception {
-        getConversationViewPage().tapSketchBtn();
-    }
-
-    public void tapFileButton() throws Exception {
-        getConversationViewPage().tapFileBtn();
-    }
-
     public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries) throws Exception {
         return getConversationViewPage().scrollUpUntilMediaBarVisible(maxScrollRetries);
     }
@@ -198,5 +182,9 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     public BufferedImage getMediaControlButtonState() throws Exception {
         return getConversationViewPage().getMediaButtonState();
+    }
+
+    public void tapTopToolbarTitle() throws Exception {
+        getConversationViewPage().tapTopToolbarTitle();
     }
 }

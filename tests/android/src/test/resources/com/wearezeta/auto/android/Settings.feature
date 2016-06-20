@@ -65,7 +65,7 @@ Feature: Settings
       | Name      | NewName     |
       | user1Name | NewTestName |
 
-  @C678 @id201 @regression @rc @torun
+  @C678 @id201 @regression @rc
   Scenario Outline: Change user picture using camera
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number

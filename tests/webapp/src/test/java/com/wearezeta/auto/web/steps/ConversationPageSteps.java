@@ -515,6 +515,12 @@ public class ConversationPageSteps {
                 .waitUntilFileUploaded(fileName));
     }
 
+    @Then("^I wait until placeholder for file (.*) disappears$")
+    public void IWaitUntilFilePlaceholderDisappears(String fileName) throws Exception {
+        assertThat("Upload still not finished for file " + fileName, context.getPagesCollection().getPage(ConversationPage.class)
+                .waitUntilFilePlaceholderDisappears(fileName));
+    }
+
     /**
      * Clicks on download button to download certain file
      *
@@ -539,8 +545,19 @@ public class ConversationPageSteps {
     }
 
     @Then("^I click play button of video (.*) in the conversation view$")
-    public void IClickPlay(String fileName) throws Exception {
+    public void IClickPlayVideo(String fileName) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).playVideo(fileName);
+    }
+
+    @Then("^I see play button of video (.*) in the conversation view$")
+    public void ISeePlayVideo(String fileName) throws Exception {
+        assertThat("Play button is not shown", context.getPagesCollection().getPage(ConversationPage.class)
+                .isPlayButtonVisible(fileName));
+    }
+
+    @Then("^I click pause button of video (.*) in the conversation view$")
+    public void IClickPauseVideo(String fileName) throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).pauseVideo(fileName);
     }
 
     @Then("^I wait until video (.*) is downloaded and starts to play$")
