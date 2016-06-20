@@ -4,10 +4,17 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.FindBy;
 
 import java.util.concurrent.Future;
 
 public class VideoCallPage extends WebPage {
+
+    @FindBy(css = WebAppLocators.VideoCallPage.cssEndVideoCallButton)
+    private WebElement endVideoCallButton;
+
+    @FindBy(css = WebAppLocators.VideoCallPage.cssMuteCallButton)
+    private WebElement muteVideoCallButton;
 
     public VideoCallPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
@@ -15,10 +22,7 @@ public class VideoCallPage extends WebPage {
     }
 
     public void clickEndVideoCallButton() throws Exception {
-        this.getDriver()
-                .executeScript(
-                        String.format("$(document).find(\"%s\").click();",
-                                WebAppLocators.VideoCallPage.cssEndVideoCallButton));
+        this.getDriver().executeScript("arguments[0].click();", endVideoCallButton);
     }
 
     public boolean isEndVideoCallButtonVisible() throws Exception {
@@ -37,10 +41,7 @@ public class VideoCallPage extends WebPage {
     }
 
     public void clickMuteCallButton() throws Exception {
-        this.getDriver()
-                .executeScript(
-                        String.format("$(document).find(\"%s\").click();",
-                                WebAppLocators.VideoCallPage.cssMuteCallButton));
+        this.getDriver().executeScript("arguments[0].click();", muteVideoCallButton);
     }
 
     public boolean isMuteCallButtonPressed() throws Exception {
