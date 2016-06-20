@@ -63,7 +63,7 @@ Feature: File transfer
     And I wait for 5 seconds
     And I tap on contact name <Contact1>
     And I tap File button from cursor toolbar
-    Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>" failed
+    Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <UploadingTimeout> seconds failed
     When I disable Airplane mode on the device
     And I wait for 10 seconds
     And I tap Retry button on file upload placeholder
