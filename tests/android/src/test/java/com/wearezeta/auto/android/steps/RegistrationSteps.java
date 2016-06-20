@@ -8,7 +8,6 @@ import com.wearezeta.auto.android.pages.RegistrationPage;
 import com.wearezeta.auto.common.email.ActivationMessage;
 import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import cucumber.api.java.it.Ma;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
