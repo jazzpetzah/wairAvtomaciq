@@ -75,7 +75,7 @@ public class ConversationPage extends WebPage {
 
     @FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
     private WebElement conversationInput;
-    
+
     @FindBy(css = WebAppLocators.ConversationPage.cssCancelRequestButton)
     private WebElement cancelRequestButton;
 
@@ -148,8 +148,17 @@ public class ConversationPage extends WebPage {
     @FindBy(css = WebAppLocators.ConversationPage.cssDoDelete)
     private WebElement doDeleteButton;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssLongMessageDialog)
+    private WebElement longMessageDialog;
+
     @FindBy(css = WebAppLocators.ConversationPage.cssCloseResetSessionDialog)
     private WebElement closeResetSessionDialogButton;
+
+    @FindBy(xpath = WebAppLocators.ConversationPage.xpathOKButtonOnLongMWarning)
+    private WebElement oKButtonOnLongMWarning;
+
+    @FindBy(xpath = WebAppLocators.ConversationPage.xpathXButtonOnLongMWarning)
+    private WebElement xButtonOnLongMWarning;
 
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
@@ -208,7 +217,7 @@ public class ConversationPage extends WebPage {
     }
 
     private static List<String> getTextOfPresentElements(By locator,
-            WebDriver driver) throws Exception {
+                                                         WebDriver driver) throws Exception {
         final List<WebElement> headers = driver.findElements(locator);
         return headers.stream().filter(a -> a.isDisplayed())
                 .map(a -> a.getText().replace("\n", ""))
@@ -216,7 +225,7 @@ public class ConversationPage extends WebPage {
     }
 
     private static List<String> getTextOfDisplayedElements(By locator,
-            WebDriver driver) throws Exception {
+                                                           WebDriver driver) throws Exception {
         final List<WebElement> headers = driver.findElements(locator);
         return headers.stream().filter(a -> DriverUtils.isElementPresentAndDisplayed((RemoteWebDriver) driver, a))
                 .map(a -> a.getText().replace("\n", ""))
@@ -224,7 +233,7 @@ public class ConversationPage extends WebPage {
     }
 
     private static boolean containsAllCaseInsensitive(String text,
-            Set<String> parts) {
+                                                      Set<String> parts) {
         for (String part : parts) {
             if (!text.replaceAll(" +", " ").toLowerCase()
                     .contains(part.toLowerCase())) {
@@ -279,7 +288,7 @@ public class ConversationPage extends WebPage {
     /**
      * An expectation for checking that a system message is visible that contains all strings of the expected strings.
      *
-     * @param locator used to find the element
+     * @param locator       used to find the element
      * @param expectedTexts the strings that should be found in a certain system message
      * @return returns true if found
      */
@@ -316,7 +325,7 @@ public class ConversationPage extends WebPage {
      * An expectation for checking that a system message is present in the dom that contains all strings of the expected
      * strings.
      *
-     * @param locator used to find the element
+     * @param locator       used to find the element
      * @param expectedTexts the strings that should be found in a certain system message
      * @return returns true if found
      */
@@ -350,7 +359,7 @@ public class ConversationPage extends WebPage {
     }
 
     public int getNumberOfElementsContainingText(final By locator,
-            final Set<String> expectedTexts) throws Exception {
+                                                 final Set<String> expectedTexts) throws Exception {
         int count = 0;
         List<String> elements = getTextOfDisplayedElements(locator, getDriver());
         for (String element : elements) {
@@ -523,7 +532,7 @@ public class ConversationPage extends WebPage {
                 locator, 2) : "Ping button has not been shown after 2 seconds";
         pingButton.click();
     }
-            
+
     public boolean isCancelRequestButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage.cssCancelRequestButton));
     }
@@ -992,7 +1001,7 @@ public class ConversationPage extends WebPage {
         for (WebElement message : messages) {
             log.debug("message: " + message.getText());
             // Ignores system messages
-            if(!message.findElements(By.cssSelector(".text")).isEmpty()) {
+            if (!message.findElements(By.cssSelector(".text")).isEmpty()) {
                 String text = message.findElement(By.cssSelector(".text")).getText();
                 String time = message.findElement(By.cssSelector(".time")).getAttribute("data-timestamp");
                 String senderId = message.findElement(By.cssSelector("user-avatar")).getAttribute("user-id");
@@ -1082,5 +1091,27 @@ public class ConversationPage extends WebPage {
     public boolean isImageInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
                 .cssFirstImage));
+    }
+
+    public boolean isLongMessageWarnDialogShown() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(), longMessageDialog);
+    }
+
+    public boolean isLongMessageWarnDialogNotShown() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+                .cssLongMessageDialog));
+    }
+
+    public void clickOKButtonOnLongMWarning() throws Exception {
+        oKButtonOnLongMWarning.click();
+    }
+
+    public void clickXButtonOnLongMWarning() throws Exception {
+        xButtonOnLongMWarning.click();
+    }
+
+    public void clearConversationInput() throws Exception {
+        conversationInput.sendKeys(Keys.BACK_SPACE);
+
     }
 }
