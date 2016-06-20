@@ -573,7 +573,7 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    protected Rectangle getElementBounds(String xpathExpr) throws Exception {
+    protected Optional<Rectangle> getElementBounds(String xpathExpr) throws Exception {
         final String docStr = getDriver().getPageSource();
         final Document doc = documentBuilder.parse(new InputSource(new StringReader(docStr)));
         final XPathFactory factory = XPathFactory.newInstance();
@@ -581,15 +581,15 @@ public abstract class IOSPage extends BasePage {
         final XPathExpression expr = xpath.compile(xpathExpr);
         final NodeList result = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
         if (result.getLength() == 0) {
-            throw new IllegalStateException(String.format("There are no nodes matching the xpath %s in\n%s",
-                    xpathExpr, docStr));
+            log.debug(docStr);
+            return Optional.empty();
         }
         final Node node = result.item(0);
         final NamedNodeMap attributes = node.getAttributes();
-        return new Rectangle((int) Double.parseDouble(attributes.getNamedItem("x").getNodeValue()),
+        return Optional.of(new Rectangle((int) Double.parseDouble(attributes.getNamedItem("x").getNodeValue()),
                 (int) Double.parseDouble(attributes.getNamedItem("y").getNodeValue()),
                 (int) Double.parseDouble(attributes.getNamedItem("width").getNodeValue()),
-                (int) Double.parseDouble(attributes.getNamedItem("height").getNodeValue()));
+                (int) Double.parseDouble(attributes.getNamedItem("height").getNodeValue())));
     }
 
     public void tapOnScreenCenter() throws Exception {
