@@ -53,6 +53,17 @@ public final class BackendAPIWrappers {
         return mbox.getMessage(expectedHeaders, ACTIVATION_TIMEOUT);
     }
 
+    public static Future<String> initMessageListener(String forEmail, String forPassword,
+                                                     Map<String, String> additionalExpectedHeaders) throws Exception {
+        IMAPSMailbox mbox = IMAPSMailbox.getInstance(forEmail, forPassword);
+        Map<String, String> expectedHeaders = new HashMap<>();
+        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, forEmail);
+        if (additionalExpectedHeaders != null) {
+            expectedHeaders.putAll(additionalExpectedHeaders);
+        }
+        return mbox.getMessage(expectedHeaders, ACTIVATION_TIMEOUT);
+    }
+
     /**
      * Creates a new user by sending the corresponding request to the backend
      *
