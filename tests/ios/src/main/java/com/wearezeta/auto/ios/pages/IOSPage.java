@@ -89,6 +89,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     private DocumentBuilder documentBuilder;
+    private XPath xpath;
 
     public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
@@ -98,6 +99,8 @@ public abstract class IOSPage extends BasePage {
         final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
         domFactory.setNamespaceAware(true);
         this.documentBuilder = domFactory.newDocumentBuilder();
+        final XPathFactory factory = XPathFactory.newInstance();
+        this.xpath = factory.newXPath();
     }
 
     @Override
@@ -576,11 +579,10 @@ public abstract class IOSPage extends BasePage {
     protected Optional<Rectangle> getElementBounds(String xpathExpr) throws Exception {
         final String docStr = getDriver().getPageSource();
         final Document doc = documentBuilder.parse(new InputSource(new StringReader(docStr)));
-        final XPathFactory factory = XPathFactory.newInstance();
-        final XPath xpath = factory.newXPath();
         final XPathExpression expr = xpath.compile(xpathExpr);
         final NodeList result = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
         if (result.getLength() == 0) {
+            log.debug(xpathExpr);
             log.debug(docStr);
             return Optional.empty();
         }

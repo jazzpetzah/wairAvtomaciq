@@ -35,7 +35,7 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
                 () -> new IllegalStateException(String.format("'%s' button is not visible", name))
         );
         getDriver().tap(1,
-                (int) bounds.getX() + (int) bounds.getX() / 2,
+                (int) bounds.getX() + (int) bounds.getWidth() / 2,
                 (int) bounds.getY() + (int) bounds.getHeight() / 2,
                 DriverUtils.SINGLE_TAP_DURATION);
     }
@@ -52,30 +52,26 @@ public class VideoCallingOverlayPage extends CallingOverlayPage {
 
     @Override
     public BufferedImage getMuteButtonScreenshot() throws Exception {
-        final Rectangle bounds = makeOverlayButtonVisible(nameStrMuteCallButton).orElseThrow(
+        final Rectangle bounds = makeOverlayButtonVisible("Mute").orElseThrow(
                 () -> new IllegalStateException("Mute button is not visible")
         );
-        final Optional<BufferedImage> screenshot = takeScreenshot();
-        if (screenshot.isPresent()) {
-            return screenshot.get().getSubimage(
-                    (int) bounds.getX(), (int) bounds.getY(),
-                    (int) bounds.getWidth(), (int) bounds.getHeight());
-        } else {
-            throw new IllegalStateException("Cannot make a screenshot");
-        }
+        final BufferedImage screenshot = takeScreenshot().orElseThrow(
+                () -> new IllegalStateException("Cannot make a screenshot")
+        );
+        return screenshot.getSubimage(
+                (int) bounds.getX(), (int) bounds.getY(),
+                (int) bounds.getWidth(), (int) bounds.getHeight());
     }
 
     public BufferedImage getVideoButtonScreenshot() throws Exception {
-        final Rectangle bounds = makeOverlayButtonVisible(nameStrCallVideoButton).orElseThrow(
+        final Rectangle bounds = makeOverlayButtonVisible("Call Video").orElseThrow(
                 () -> new IllegalStateException("Video button is not visible")
         );
-        final Optional<BufferedImage> screenshot = takeScreenshot();
-        if (screenshot.isPresent()) {
-            return screenshot.get().getSubimage(
-                    (int) bounds.getX(), (int) bounds.getY(),
-                    (int) bounds.getWidth(), (int) bounds.getHeight());
-        } else {
-            throw new IllegalStateException("Cannot make a screenshot");
-        }
+        final BufferedImage screenshot = takeScreenshot().orElseThrow(
+                () -> new IllegalStateException("Cannot make a screenshot")
+        );
+        return screenshot.getSubimage(
+                (int) bounds.getX(), (int) bounds.getY(),
+                (int) bounds.getWidth(), (int) bounds.getHeight());
     }
 }

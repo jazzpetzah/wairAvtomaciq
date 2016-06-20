@@ -48,15 +48,14 @@ Feature: Video Calling
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Video Call button
-    # And <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see Video Calling overlay
     And I tap Leave button on Video Calling overlay
     And I do not see Video Calling overlay
     Then I see conversation view page
 
     Examples:
-      | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | chrome      | 30      |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | chrome      |
 
   @C28855 @rc @calling_basic
   Scenario Outline: Verify ignoring Video call [LANDSCAPE]
