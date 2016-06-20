@@ -453,15 +453,17 @@ public class ConversationPage extends WebPage {
     }
 
     public void moveCssSelectorIntoViewport(String selector) throws Exception {
-        final String showPathInputJScript = "$(\"" + selector + "\").css({'left': -200});";
-        getDriver().executeScript(showPathInputJScript);
+        WebElement element = getDriver().findElement(By.cssSelector(selector));
+        final String showPathInputJScript = "arguments[0].style.left='200px';";
+        getDriver().executeScript(showPathInputJScript, element);
         assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(selector)) : "Could not move element "
                 + "with selector " + selector + " into viewport";
     }
 
     public void moveCssSelectorOutOfViewport(String selector) throws Exception {
-        final String showPathInputJScript = "$(\"" + selector + "\").css({'left': 200});";
-        getDriver().executeScript(showPathInputJScript);
+        WebElement element = getDriver().findElement(By.cssSelector(selector));
+        final String showPathInputJScript = "arguments[0].style.left='-200px';";
+        getDriver().executeScript(showPathInputJScript, element);
     }
 
     public void sendFile(String fileName) throws Exception {
