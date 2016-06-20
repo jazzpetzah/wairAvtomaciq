@@ -851,6 +851,12 @@ public class ConversationPage extends WebPage {
         getDriver().findElement(locator).click();
     }
 
+    public void cancelVideoUpload(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoCancelUpload, fileName));
+        assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No cancel element found for locator " + locator;
+        getDriver().findElement(locator).click();
+    }
+
     public boolean waitUntilFileUploaded(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFile, fileName));
         DriverUtils.waitUntilLocatorAppears(getDriver(), locator, TIMEOUT_FILE_UPLOAD);
@@ -878,6 +884,11 @@ public class ConversationPage extends WebPage {
     public void playVideo(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoPlay, fileName));
         getDriver().findElement(locator).click();
+    }
+
+    public boolean isCancelButtonVisible(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoCancelUpload, fileName));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
     public boolean isPlayButtonVisible(String fileName) throws Exception {

@@ -427,6 +427,17 @@ public class ConversationPageSteps {
     }
 
     /**
+     * Cancel video upload
+     *
+     * @param fileName the name of a file
+     * @throws Exception
+     */
+    @When("^I cancel video upload of video (.*)$")
+    public void ICancelVideoUpload(String fileName) throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).cancelVideoUpload(fileName);
+    }
+
+    /**
      * Verifies if the file transfer placeholder contains correct file name
      *
      * @param count the name of a file
@@ -548,6 +559,12 @@ public class ConversationPageSteps {
     @Then("^I click play button of video (.*) in the conversation view$")
     public void IClickPlayVideo(String fileName) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).playVideo(fileName);
+    }
+
+    @Then("^And I see cancel upload button for video (.*)$")
+    public void ISeeCancelUpload(String fileName) throws Exception {
+        assertThat("Cancel video upload button is not shown", context.getPagesCollection().getPage(ConversationPage.class)
+            .isCancelButtonVisible(fileName));
     }
 
     @Then("^I see play button of video (.*) in the conversation view$")
