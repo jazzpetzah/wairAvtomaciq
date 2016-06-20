@@ -142,22 +142,12 @@ public class ConversationViewPageSteps {
         if (longTap == null) {
             switch (btnName.toLowerCase()) {
                 case "video message":
-                    getConversationViewPage().tapVideoMessageCursorBtn();
-                    break;
                 case "audio message":
-                    getConversationViewPage().tapAudioMessageCursorBtn();
-                    break;
                 case "ping":
-                    getConversationViewPage().tapPingBtn();
-                    break;
                 case "add picture":
-                    getConversationViewPage().tapAddPictureBtn();
-                    break;
                 case "sketch":
-                    getConversationViewPage().tapSketchBtn();
-                    break;
                 case "file":
-                    getConversationViewPage().tapFileBtn();
+                    getConversationViewPage().tapCursorToolButton(btnName);
                     break;
                 default:
                     throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
@@ -981,31 +971,11 @@ public class ConversationViewPageSteps {
     @Then("^I( do not)? see cursor toolbar$")
     public void ThenISeeCursorToolbar(String doNotSee) throws Exception {
         if (doNotSee == null) {
-            Assert.assertTrue("Video button should be visible in cursor menu",
-                    getConversationViewPage().isVideoButtonVisible());
-            Assert.assertTrue("Ping button should be visible in cursor menu",
-                    getConversationViewPage().isPingButtonVisible());
-            Assert.assertTrue("Sketch button should be visible in cursor menu",
-                    getConversationViewPage().isSketchButtonVisible());
-            Assert.assertTrue("Add picture button should be visible in cursor menu",
-                    getConversationViewPage().isAddPictureButtonVisible());
-            Assert.assertTrue("File button should be visible in cursor menu",
-                    getConversationViewPage().isFileButtonVisible());
-            Assert.assertTrue("Audio message button should be visible in cursor menu",
-                    getConversationViewPage().isAudioButtonVisible());
+            Assert.assertTrue("Cursor toolbar is not visible",
+                    getConversationViewPage().isCursorToolbarVisible());
         } else {
-            Assert.assertTrue("Video button should be invisible in cursor menu",
-                    getConversationViewPage().isVideoButtonInvisible());
-            Assert.assertTrue("Ping button should be invisible in cursor menu",
-                    getConversationViewPage().isPingButtonInvisible());
-            Assert.assertTrue("Sketch button should be invisible in cursor menu",
-                    getConversationViewPage().isSketchButtonInvisible());
-            Assert.assertTrue("Add picture button should be invisible in cursor menu",
-                    getConversationViewPage().isAddPictureButtonInvisible());
-            Assert.assertTrue("File button should be invisible in cursor menu",
-                    getConversationViewPage().isFileButtonInvisible());
-            Assert.assertTrue("Audio message button should be invisible in cursor menu",
-                    getConversationViewPage().isAudioButtonInvisible());
+            Assert.assertTrue("Cursor toolbar is visible, but should be hidden",
+                    getConversationViewPage().isCursorToolbarInvisible());
         }
     }
 
@@ -1086,7 +1056,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I tap Audio message button from cursor toolbar and see hint message \"(.*)\"$")
     public void ISeeCursorHintMessage(String hintMessage) throws Exception {
-        getConversationViewPage().tapAudioMessageCursorBtn();
+        getConversationViewPage().tapCursorToolButton("audio message");
         Assert.assertTrue(String.format("The hint message '%s' of cursor button should be visible", hintMessage),
                 getConversationViewPage().isCursorHintVisible(hintMessage));
     }

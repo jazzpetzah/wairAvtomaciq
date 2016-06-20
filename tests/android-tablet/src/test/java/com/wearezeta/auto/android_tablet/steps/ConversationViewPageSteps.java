@@ -206,22 +206,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap (Ping|Add picture|Sketch|File) button from cursor toolbar$")
     public void WhenITapCursorToolButton(String btnName) throws Exception {
-        switch (btnName.toLowerCase()) {
-            case "ping":
-                getConversationViewPage().tapPingButton();
-                break;
-            case "add picture":
-                getConversationViewPage().tapAddPictureButton();
-                break;
-            case "sketch":
-                getConversationViewPage().tapSketchButton();
-                break;
-            case "file":
-                getConversationViewPage().tapFileButton();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
-        }
+        getConversationViewPage().tapCursorToolButton(btnName);
     }
 
     /**

@@ -32,6 +32,8 @@ public class ConversationViewPage extends AndroidPage {
 
     public static final By idCursorPing = By.id("cursor_menu_item_ping");
 
+    private static final By idCursorMore = By.id("cursor_menu_item_more");
+
     public static final By idCursorVideoMessage = By.id("cursor_menu_item_video");
 
     public static final By idCursorView = By.id("cal__cursor");
@@ -311,30 +313,34 @@ public class ConversationViewPage extends AndroidPage {
         }
     }
 
-    public void tapAddPictureBtn() throws Exception {
-        getElement(idCursorCamera, "Add picture button is not visible").click();
+    private By getCursorToolButtonLocatorByName(String name) {
+        switch (name.toLowerCase()) {
+            case "ping":
+                return idCursorPing;
+            case "add picture":
+                return idCursorCamera;
+            case "sketch":
+                return idCursorSketch;
+            case "file":
+                return idCursorFile;
+            case "audio message":
+                return idCursorAudioMessage;
+            case "video message":
+                return idCursorVideoMessage;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown tool button name '%s'", name));
+        }
     }
 
-    public void tapPingBtn() throws Exception {
-        getElement(idCursorPing, "Ping button is not visible").click();
-    }
-
-    public void tapSketchBtn() throws Exception {
-        getElement(idCursorSketch, "Sketch button is not visible").click();
-    }
-
-    public void tapFileBtn() throws Exception {
-        getElement(idCursorFile, "File button is not visible").click();
-        //wait for 2 seconds for animation
-        Thread.sleep(2000);
-    }
-
-    public void tapVideoMessageCursorBtn() throws Exception {
-        getElement(idCursorVideoMessage, "Video button is not visible").click();
-    }
-
-    public void tapAudioMessageCursorBtn() throws Exception {
-        getElement(idCursorAudioMessage, "Audio message button is not visible").click();
+    public void tapCursorToolButton(String name) throws Exception {
+        final By locator = getCursorToolButtonLocatorByName(name);
+        final Optional<WebElement> btn = getElementIfDisplayed(locator, 3);
+        if (btn.isPresent()) {
+            btn.get().click();
+        } else {
+            getElement(idCursorMore).click();
+            getElement(locator).click();
+        }
     }
 
     public void longTapAudioMessageCursorBtn(int duration) throws Exception {
@@ -350,54 +356,6 @@ public class ConversationViewPage extends AndroidPage {
             throws Exception {
         longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idCursorAudioMessage),
                 DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds, Optional.of(elementState::remember));
-    }
-
-    public boolean isPingButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorPing);
-    }
-
-    public boolean isSketchButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorSketch);
-    }
-
-    public boolean isAddPictureButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorCamera);
-    }
-
-    public boolean isFileButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorFile);
-    }
-
-    public boolean isAudioButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorAudioMessage);
-    }
-
-    public boolean isVideoButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idCursorVideoMessage);
-    }
-
-    public boolean isPingButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorPing);
-    }
-
-    public boolean isSketchButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorSketch);
-    }
-
-    public boolean isAddPictureButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorCamera);
-    }
-
-    public boolean isFileButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorFile);
-    }
-
-    public boolean isVideoButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorVideoMessage);
-    }
-
-    public boolean isAudioButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idCursorAudioMessage);
     }
 
     public boolean isCursorHintVisible(String hintMessage) throws Exception {
@@ -955,5 +913,13 @@ public class ConversationViewPage extends AndroidPage {
         final int x = audioMsgButton.getLocation().getX() + audioMsgButton.getSize().getWidth() / 2;
         final int y = audioMsgButton.getLocation().getY() + audioMsgButton.getSize().getHeight() / 2;
         new TouchActions(getDriver()).down(x, y).perform();
+    }
+
+    public boolean isCursorToolbarVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorMore);
+    }
+
+    public boolean isCursorToolbarInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorMore);
     }
 }
