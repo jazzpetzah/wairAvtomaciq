@@ -11,8 +11,7 @@ Feature: Log In
     And I tap Sign In button
     And I see First Time overlay
     And I tap Got It button on First Time overlay
-    And I see the Conversations list with no conversations
-    Then I see my name on Self Profile page
+    Then I see the Conversations list with no conversations
 
     Examples:
       | Login      | Password      | Name      |
@@ -29,8 +28,7 @@ Feature: Log In
     And I tap Sign In button
     And I see First Time overlay
     And I tap Got It button on First Time overlay
-    And I see the Conversations list with no conversations
-    Then I see my name on Self Profile page
+    Then I see the Conversations list with no conversations
 
     Examples:
       | Login      | Password      | Name      |
