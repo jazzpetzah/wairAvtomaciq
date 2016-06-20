@@ -116,7 +116,8 @@ public class PickleExecutor {
                     }
                 } catch (IllegalArgumentException | InvocationTargetException | IllegalAccessException | InstantiationException |
                         NoSuchMethodException ite) {
-                    throw new StepNotExecutableException(String.format("\n"
+                    endTime = Instant.now();
+                    throw new StepNotExecutableException(Duration.between(startTime, endTime).toNanos(), String.format("\n"
                             + ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n"
                             + "::   Execution of step\n"
                             + "::   '%s'\n"

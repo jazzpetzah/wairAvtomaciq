@@ -1,0 +1,25 @@
+#Common configuration file
+defaultPassword=aqa123456!
+defaultEmailServer=imap.gmail.com
+edgeBackendUrl=https://edge-nginz-https.zinfra.io
+stagingBackendUrl=https://staging-nginz-https.zinfra.io
+productionBackendUrl=https://prod-nginz-https.wire.com
+jenkinsSuLogin=jenkins
+jenkinsSuPassword=123456
+jenkinsProjectDir=/Project/
+defaultCallingServiceUrl=https://192.168.10.44:27443
+mailboxHandlerType=${mailboxHandlerType}
+defaultEmailListenerServiceHost=192.168.10.44
+defaultEmailListenerServicePort=21990
+makeScreenshots=${makeScreenshots}
+makeScreenshotOnPassedSteps=${makeScreenshotOnPassedSteps}
+initNodeIp=${initNodeIp}
+rcTestsCommentPath=${rcTestsCommentPath}
+testrailServerUrl=${testrailServerUrl}
+testrailProjectName=${testrailProjectName}
+testrailPlanName=${testrailPlanName}
+testrailRunName=${testrailRunName}
+testrailRunConfigName=${testrailRunConfigName}
+syncIsAutomated=${syncIsAutomated}
+syncIsMuted=${syncIsMuted}
+cachedOtrDevicesCount=1
