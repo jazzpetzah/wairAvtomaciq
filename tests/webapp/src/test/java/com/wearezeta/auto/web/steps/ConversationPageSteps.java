@@ -1229,24 +1229,16 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Clicks X on long message warning dialog
-     *
-     * @step. "^I click X button on long message warning dialog$"
+     * Deletes N characters from conversation input
+     * @param count count of characters
+     * @step. "^I delete (\d+) characters from the conversation input$"
      */
-    @When("^I click X button on long message warning dialog$")
-    public void IClickXOnLongMessageWarning() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clickXButtonOnLongMWarning();
+    @When("^I delete (\\d+) characters from the conversation input$")
+    public void IDeleteTypedMessage(int count) throws Exception {
+        int i = count;
+        while (i != 0) {
+                context.getPagesCollection().getPage(ConversationPage.class).clearConversationInput();
+            i--;
+        }
     }
-
-    /**
-     * Clears conversation input
-     *
-     * @step. "^I delete typed message from conversation input$"
-     */
-    @When("^I delete typed message from conversation input$")
-    public void IDeleteTypedMessage() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).clearConversationInput();
-    }
-
-
 }
