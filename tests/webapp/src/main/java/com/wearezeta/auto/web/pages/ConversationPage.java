@@ -454,7 +454,7 @@ public class ConversationPage extends WebPage {
 
     public void moveCssSelectorIntoViewport(String selector) throws Exception {
         WebElement element = getDriver().findElement(By.cssSelector(selector));
-        final String showPathInputJScript = "arguments[0].style.left='200px';";
+        final String showPathInputJScript = "arguments[0].style.right='-300px';";
         getDriver().executeScript(showPathInputJScript, element);
         assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(selector)) : "Could not move element "
                 + "with selector " + selector + " into viewport";
@@ -462,7 +462,7 @@ public class ConversationPage extends WebPage {
 
     public void moveCssSelectorOutOfViewport(String selector) throws Exception {
         WebElement element = getDriver().findElement(By.cssSelector(selector));
-        final String showPathInputJScript = "arguments[0].style.left='-200px';";
+        final String showPathInputJScript = "arguments[0].style.right='100px';";
         getDriver().executeScript(showPathInputJScript, element);
     }
 
