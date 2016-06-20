@@ -101,7 +101,6 @@ public enum Browser {
 	public boolean isSupportingNativeMouseActions() {
 		switch (this) {
 		case Chrome:
-		case Firefox:
 		case Opera:
 			return true;
 		default:
