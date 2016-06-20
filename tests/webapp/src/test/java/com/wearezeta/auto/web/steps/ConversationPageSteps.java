@@ -432,7 +432,7 @@ public class ConversationPageSteps {
      * @throws Exception
      */
     @When("^I cancel video upload of video (.*)$")
-    public void WhenICancelVideoUpload(String fileName) throws Exception {
+    public void ICancelVideoUpload(String fileName) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).cancelVideoUpload(fileName);
     }
 
@@ -562,7 +562,7 @@ public class ConversationPageSteps {
 
     @Then("^And I see cancel upload button for video (.*)$")
     public void ISeeCancelUpload(String fileName) throws Exception {
-        assertThat("Cancel button is not shown", context.getPagesCollection().getPage(ConversationPage.class)
+        assertThat("Cancel video upload button is not shown", context.getPagesCollection().getPage(ConversationPage.class)
             .isCancelButtonVisible(fileName));
     }
 
