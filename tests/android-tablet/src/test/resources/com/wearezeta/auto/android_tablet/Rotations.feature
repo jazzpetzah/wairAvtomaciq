@@ -1,31 +1,5 @@
 Feature: Rotations
 
-  @C474 @id2185 @regression
-  Scenario Outline: Self profile
-    Given There is 1 user where <Name> is me
-    Given I rotate UI to portrait
-    Given I sign in using my email
-    Given I accept First Time overlay as soon as it is visible
-    Given I see the conversations list with no conversations
-    When I tap conversations list settings button
-    And I see my name on Self Profile page
-    # We try to set the self name to make sure this action is really visible and available
-    And I tap my name field on Self Profile page
-    And I change my name to <Name> on Self Profile page
-    Then I see my name on Self Profile page
-    When I rotate UI to landscape
-    And I tap my name field on Self Profile page
-    And I change my name to <Name> on Self Profile page
-    Then I see my name on Self Profile page
-    When I rotate UI to portrait
-    And I tap my name field on Self Profile page
-    And I change my name to <Name> on Self Profile page
-    Then I see my name on Self Profile page
-
-    Examples:
-      | Name      |
-      | user1Name |
-
   @C476 @id2187 @regression
   Scenario Outline: Conversation view
     Given There are 2 users where <Name> is me
@@ -61,9 +35,9 @@ Feature: Rotations
     And I tap the found item <Contact2> on People Picker page
     Then I see Outgoing Connection popover
     When I rotate UI to landscape
-    Then I see Outgoing Connection popover
-    When I rotate UI to portrait
-    Then I see Outgoing Connection popover
+    Then I do not see Outgoing Connection popover
+#    When I rotate UI to portrait
+#    Then I see Outgoing Connection popover
 
     Examples:
       | Name      | Contact1  | Contact2  |
