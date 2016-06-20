@@ -291,6 +291,8 @@ Feature: Search
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     When I tap the found item <Contact1> on People Picker page
