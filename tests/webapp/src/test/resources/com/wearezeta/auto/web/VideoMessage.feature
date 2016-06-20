@@ -66,3 +66,22 @@ Feature: Video Message
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | File        | ChatName  | Size  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | example.mp4 | GroupChat | 15MB  |
+
+  @C123929 @videomessage @staging
+  Scenario Outline: Verify sender can cancel video message upload
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    Given I see Contact list with name <Contact>
+    When I open conversation with <Contact>
+    And I see file transfer button in conversation input
+    And I send <Size> sized video with name <File> to the current conversation
+    And And I see cancel upload button for video <File>
+    Then I cancel video upload of video <File>
+    And I do not see video message <File> in the conversation view
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | File        | Size  |
+      | user1Email | user1Password | user1Name | user2Name | example.mp4 | 20MB  |
