@@ -245,7 +245,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | AcceptingGROUPCALL | chrome      | chrome       | 1               |
+      | user1Name | user2Name | user3Name | AcceptingGROUPCALL | chrome      | chrome       | 2               |
 
   @C2047 @calling_basic @id2683
   Scenario Outline: Verify ignoring group call in foreground
