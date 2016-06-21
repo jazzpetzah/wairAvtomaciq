@@ -129,7 +129,7 @@ Feature: Connect
     And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
     And I tap Connect button on Group popover
-    And I see Pending button on Group popover
+    And I tap Connect button on Outgoing Connection popover
     And I tap conversation name from top toolbar
     Then I see the conversation <Contact2> in my conversations list
 
