@@ -286,7 +286,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
 
-  @C139862 @staging
+  @C139862 @regression
   Scenario Outline: Verify Soundcloud playback is stopped when audio message recording is started
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
