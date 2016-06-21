@@ -475,3 +475,30 @@ Feature: Conversation View
     Examples:
       | Login                         | Password   | ChatName    | File1          | File2              |
       | smoketester+68b16b1c@wire.com | aqa123456! | Lorem ipsum | over8000ch.txt | lessThan8000ch.txt |
+
+  @C149661 @staging
+  Scenario Outline: Verify maximum character limit dialog is shown when want to send a very long text message to 1:1 conversation
+    Given I switch to Sign In page
+    Given I Sign in temporary using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I paste message from file <File1>
+    And I send message
+    Then I see long message warning dialog
+    And I click OK on long message warning dialog
+    Then I do not see long message warning dialog
+    And I send message
+    Then I see long message warning dialog
+    And I click X button on long message warning dialog
+    Then I do not see long message warning dialog
+    And I do not see text message <File1>
+    And I delete 10 characters from the conversation input
+    And I send message
+    Then I do not see long message warning dialog
+    Then I verify the last text message equals file <File2>
+
+    Examples:
+      | Login                         | Password   | Contact  | File1          | File2              |
+      | smoketester+68b16b1c@wire.com | aqa123456! | 928d0420 | over8000ch.txt | lessThan8000ch.txt |
