@@ -78,3 +78,21 @@ Feature: Localization
       | Login      | Password      | Name      | Language | SupportButton | PageTitle      | SearchFieldPlaceholder |
       | user1Email | user1Password | user1Name | de       | Hilfe         | Wire Hilfe     | Gib ein Schlagwort ein |
       | user1Email | user1Password | user1Name | en       | Support       | Wire – Support | Enter a keyword        |
+
+  @C150023 @staging
+  Scenario Outline: Verify registration email is <Language>
+    When I switch language to <Language>
+    And I enter user name <Name> on Registration page
+    And I enter user email <Email> on Registration page
+    And I enter user password "<Password>" on Registration page
+    And I accept the Terms of Use
+    And I start activation email monitoring
+    And I submit registration form
+    Then I verify that an envelope icon is shown
+    And I see email <Email> on Verification page
+    And I see verification mail in <Language> with <Message>
+
+    Examples:
+      | Email      | Password      | Name      | Language | Message                                                                 |
+      | user1Email | user1Password | user1Name | de       | Wenn du kein Wire-Benutzerkonto mit dieser E-Mail-Adresse erstellt hast |
+      | user1Email | user1Password | user1Name | en       | If you didn't create a Wire account using this email address            |

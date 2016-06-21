@@ -234,6 +234,11 @@ public final class BackendAPIWrappers {
         return resetPassword.extractPasswordResetLink();
     }
 
+    public static String getMessageContent(Future<String> activationMessage) throws Exception {
+        ActivationMessage sentence = new ActivationMessage(activationMessage.get());
+        return sentence.getContent();
+    }
+
     public static void autoTestSendRequest(ClientUser userFrom, ClientUser userTo) throws Exception {
         sendConnectRequest(userFrom, userTo, userTo.getName(), CommonSteps.CONNECTION_MESSAGE);
     }
