@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.SettingsPage;
@@ -130,17 +131,36 @@ public class SettingsPageSteps {
     }
 
     /**
-     * Enter new name into the corresponding user name input dialog and commit it
+     * Enter new value into the corresponding user settings input dialog and commit it
      *
-     * @step. ^I commit my new name "(.*)"$
-     *
-     * @param newName the new self user name
+     * @param what either name|email|phone number
+     * @param newValue the new self user name/email or phone number
      * @throws Exception
+     * @step. ^I commit my new (name|email|phone number) "(.*)"$
      */
-    @And("^I commit my new name \"(.*)\"$")
-    public void ICommitNewUSerName(String newName) throws Exception {
+    @And("^I commit my new (name|email|phone number) \"(.*)\"$")
+    public void ICommitNewUSerName(String what, String newValue) throws Exception {
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
-        getSettingsPage().commitNewName(newName);
-        self.setName(newName);
+        switch (what) {
+            case "name":
+                newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.NAME_ALIAS);
+                getSettingsPage().commitNewName(newValue);
+                self.setName(newValue);
+                break;
+            case "email":
+                newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.EMAIL_ALIAS);
+                getSettingsPage().commitNewEmail(newValue);
+                self.setEmail(newValue);
+                break;
+            case "phone number":
+                newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+                final PhoneNumber newNumber = new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX,
+                        newValue.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
+                getSettingsPage().commitNewPhoneNumber(newNumber);
+                self.setPhoneNumber(newNumber);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown property '%s'", what));
+        }
     }
 }
