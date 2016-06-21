@@ -50,7 +50,7 @@ Feature: Audio Messaging
     Given I see audio message placeholder
     When I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item
-    And I accept alert
+    And I tap Delete button on the alert
     Then I do not see audio message placeholder
 
     Examples:
