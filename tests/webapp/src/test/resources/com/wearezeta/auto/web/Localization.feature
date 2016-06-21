@@ -82,7 +82,7 @@ Feature: Localization
   @C150023 @staging
   Scenario Outline: Verify registration email is <Language>
     When I switch language to <Language>
-    When I enter user name <Name> on Registration page
+    And I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
     And I accept the Terms of Use
@@ -90,7 +90,7 @@ Feature: Localization
     And I submit registration form
     Then I verify that an envelope icon is shown
     And I see email <Email> on Verification page
-    Then I see verification mail in <Language> with <Message>
+    And I see verification mail in <Language> with <Message>
 
     Examples:
       | Email      | Password      | Name      | Language | Message                                                                 |
