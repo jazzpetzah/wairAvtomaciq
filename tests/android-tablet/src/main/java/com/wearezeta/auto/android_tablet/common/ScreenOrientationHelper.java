@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
  */
 public final class ScreenOrientationHelper {
 
+    public static final long ROTATION_DELAY_MS = 2000;
     private static ScreenOrientationHelper instance;
 
     public static synchronized ScreenOrientationHelper getInstance() {
@@ -48,7 +49,7 @@ public final class ScreenOrientationHelper {
         final ScreenOrientation currentOrientation = driver.getOrientation();
         if (original != currentOrientation) {
             driver.rotate(original);
-            Thread.sleep(2000);
+            Thread.sleep(ROTATION_DELAY_MS);
             return original;
         }
         return currentOrientation;
