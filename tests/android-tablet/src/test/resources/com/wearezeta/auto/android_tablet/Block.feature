@@ -49,6 +49,7 @@ Feature: Block
     Then I see Blocked Connection popover
     When I tap Unblock button on Blocked Connection popover
     Then I do not see Blocked Connection popover
+    And I swipe right to show the conversations list
     # Workaround for https://wearezeta.atlassian.net/browse/AN-2560
     And I close the People Picker
     And I see the conversation <Contact> in my conversations list
