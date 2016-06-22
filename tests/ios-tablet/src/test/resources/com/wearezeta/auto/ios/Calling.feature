@@ -273,7 +273,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | GROUPCALL     | chrome      | 1               |
+      | user1Name | user2Name | user3Name | GROUPCALL     | chrome      | 2               |
 
   @C145950 @staging
   Scenario Outline: Verify joining 2 other people on the group call [LANDSCAPE]
