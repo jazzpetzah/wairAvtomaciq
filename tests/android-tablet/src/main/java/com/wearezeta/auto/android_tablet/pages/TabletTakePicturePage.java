@@ -3,6 +3,7 @@ package com.wearezeta.auto.android_tablet.pages;
 import com.wearezeta.auto.android.pages.TakePicturePage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import org.openqa.selenium.ScreenOrientation;
 
 import java.util.concurrent.Future;
 
@@ -11,29 +12,42 @@ public class TabletTakePicturePage extends AndroidTabletPage {
         super(lazyDriver);
     }
 
+    private ScreenOrientationHelper helper = ScreenOrientationHelper.getInstance();
+
     private TakePicturePage getAndroidTakePicturePage() throws Exception {
         return this.getAndroidPageInstance(TakePicturePage.class);
     }
 
     public void confirm() throws Exception {
         getAndroidTakePicturePage().confirm();
-        ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
+        helper.fixOrientation(getDriver());
+    }
+
+    private void adjustDefaultOrientation() throws Exception {
+        if (helper.getOriginalOrientation().isPresent() &&
+                helper.getOriginalOrientation().get() == ScreenOrientation.PORTRAIT) {
+            getDriver().rotate(ScreenOrientation.LANDSCAPE);
+            Thread.sleep(ScreenOrientationHelper.ROTATION_DELAY_MS);
+        }
     }
 
     public void takePhoto() throws Exception {
+        adjustDefaultOrientation();
         getAndroidTakePicturePage().takePhoto();
     }
 
     public void tapChangePhotoButton() throws Exception {
+        adjustDefaultOrientation();
         getAndroidTakePicturePage().tapChangePhotoButton();
     }
 
     public void cancel() throws Exception {
         getAndroidTakePicturePage().cancel();
-        ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
+        helper.fixOrientation(getDriver());
     }
 
     public void openGalleryFromCameraView() throws Exception {
+        adjustDefaultOrientation();
         getAndroidTakePicturePage().openGalleryFromCameraView();
     }
 
