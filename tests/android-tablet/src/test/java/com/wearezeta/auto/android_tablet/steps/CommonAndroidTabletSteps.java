@@ -342,7 +342,7 @@ public class CommonAndroidTabletSteps {
     @When("^I rotate UI to landscape$")
     public void WhenIRotateUILandscape() throws Exception {
         pagesCollection.getCommonPage().rotateLandscape();
-        screenOrientationHelper.setOrientation(ScreenOrientation.LANDSCAPE);
+        screenOrientationHelper.setOriginalOrientation(ScreenOrientation.LANDSCAPE);
     }
 
     /**
@@ -354,7 +354,7 @@ public class CommonAndroidTabletSteps {
     @When("^I rotate UI to portrait$")
     public void WhenIRotateUIPortrait() throws Exception {
         pagesCollection.getCommonPage().rotatePortrait();
-        screenOrientationHelper.setOrientation(ScreenOrientation.PORTRAIT);
+        screenOrientationHelper.setOriginalOrientation(ScreenOrientation.PORTRAIT);
     }
 
     /**
