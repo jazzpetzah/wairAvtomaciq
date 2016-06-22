@@ -33,7 +33,7 @@
         <syncIsMuted>False</syncIsMuted>
         <cachedOtrDevicesCount>3</cachedOtrDevicesCount>
         <!-- http://192.168.10.18:8081/nexus/content/repositories/releases/com/wearezeta/zmessaging-actor/ -->
-        <zmessaging.actor.version>73.470</zmessaging.actor.version>
+        <zmessaging.actor.version>72.459</zmessaging.actor.version>
     </properties>
 
     <dependencies>
