@@ -261,8 +261,7 @@ public class ConversationPage extends WebPage {
     public boolean waitForPresentMessageContains(String text) throws Exception {
         final By locator = By.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
         WebDriverWait wait = new WebDriverWait(getDriver(), TIMEOUT_I_SEE_MESSAGE);
-        return wait
-                .withTimeout(DriverUtils.getDefaultLookupTimeoutSeconds(), TimeUnit.SECONDS)
+        return wait.withTimeout(TIMEOUT_I_SEE_MESSAGE, TimeUnit.SECONDS)
                 .until(presenceOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
     }
 
