@@ -557,6 +557,21 @@ public class CommonWebAppSteps {
     }
 
     /**
+     * User sends location to a conversation via SEBridge
+     *
+     * @param userFromNameAlias user who want to mute conversation
+     * @param message message to send
+     * @param conversationName the name of existing conversation to send the message to
+     * @throws Exception
+     * @step. ^User (.*) sent message (.*) to conversation (.*)
+     */
+    @When("^User (.*) sends? location (.*) to conversation (.*)")
+    public void UserSentLocationToConversation(String userFromNameAlias,
+                                              String message, String conversationName) throws Exception {
+        context.getCommonSteps().UserSentMessageToConversation(userFromNameAlias,
+                conversationName, message);
+    }
+    /**
      * User X delete message from User/Group via specified device
      * Note : The recent message means the recent message sent from specified device by SE, the device should online.
      *

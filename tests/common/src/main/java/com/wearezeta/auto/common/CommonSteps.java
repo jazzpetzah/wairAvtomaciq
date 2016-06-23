@@ -460,6 +460,19 @@ public final class CommonSteps {
         }
     }
 
+    public void UserSentLocationToConversation(String msgFromUserNameAlias, String dstConversationName, float longitude,
+                                           float latitude, String deviceName, int zoom, boolean isGroup) throws Exception {
+        ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+
+        if (!isGroup) {
+            ClientUser msgToUser = usrMgr.findUserByNameOrNameAlias(dstConversationName);
+            SEBridge.getInstance().sendLocation(msgFromUser, msgToUser.getId(), longitude, latitude, deviceName, zoom);
+        } else {
+            String dstConvId = BackendAPIWrappers.getConversationIdByName(msgFromUser, dstConversationName);
+            SEBridge.getInstance().sendLocation(msgFromUser, dstConvId, longitude, latitude, deviceName, zoom);
+        }
+    }
+
     public void UserClearsConversation(String msgFromUserNameAlias, String dstConversationName, String deviceName,
             boolean isGroup) throws Exception {
         ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
