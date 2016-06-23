@@ -455,8 +455,7 @@ public class ConversationPage extends WebPage {
         }
         if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
             // manually trigger change event on input until https://bugzilla.mozilla.org/show_bug.cgi?id=1280947 is fixed
-            this.getDriver().executeScript("evt = document.createEvent(\"HTMLEvents\");evt.initEvent(\"change\", false, true)" +
-                    ";arguments[0].dispatchEvent(evt);", imagePathInput);
+            this.getDriver().executeScript("evt = new Event('change');arguments[0].dispatchEvent(evt);", imagePathInput);
         }
         moveCssSelectorOutOfViewport(WebAppLocators.ConversationPage.cssSendImageInput);
     }

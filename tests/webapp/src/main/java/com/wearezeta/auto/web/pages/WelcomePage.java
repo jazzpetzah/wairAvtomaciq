@@ -58,7 +58,7 @@ public class WelcomePage extends WebPage {
 		}
 		chooseYourOwnInput.sendKeys(picturePath);
 		// manually trigger change event on input
-		this.getDriver().executeScript("evt = document.createEvent(\"HTMLEvents\");evt.initEvent(\"change\", false, true);arguments[0].dispatchEvent(evt);", chooseYourOwnInput);
+		this.getDriver().executeScript("evt = new Event('change');arguments[0].dispatchEvent(evt);", chooseYourOwnInput);
 	}
 
 	public void keepPicture() throws Exception {
