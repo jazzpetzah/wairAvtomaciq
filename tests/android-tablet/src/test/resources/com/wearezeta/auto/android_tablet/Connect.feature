@@ -105,7 +105,6 @@ Feature: Connect
     And I tap Connect button on Outgoing Connection popover
     And I tap conversation name from top toolbar
     And I swipe right to show the conversations list
-    And I close People Picker
     Then I see the conversation <Contact2> in my conversations list
 
     Examples:
