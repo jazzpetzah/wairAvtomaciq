@@ -453,6 +453,11 @@ public class ConversationPage extends WebPage {
         } else {
             imagePathInput.sendKeys(picturePath);
         }
+        if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
+            // manually trigger change event on input until https://bugzilla.mozilla.org/show_bug.cgi?id=1280947 is fixed
+            this.getDriver().executeScript("evt = document.createEvent(\"HTMLEvents\");evt.initEvent(\"change\", false, true)" +
+                    ";arguments[0].dispatchEvent(evt);", imagePathInput);
+        }
         moveCssSelectorOutOfViewport(WebAppLocators.ConversationPage.cssSendImageInput);
     }
 
@@ -468,7 +473,7 @@ public class ConversationPage extends WebPage {
 
     public void moveCssSelectorIntoViewport(String selector) throws Exception {
         WebElement element = getDriver().findElement(By.cssSelector(selector));
-        final String showPathInputJScript = "arguments[0].style.left='200px';";
+        final String showPathInputJScript = "arguments[0].style.left='200px';arguments[0].style.zIndex='100';";
         getDriver().executeScript(showPathInputJScript, element);
         assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(selector)) : "Could not move element "
                 + "with selector " + selector + " into viewport";
@@ -476,7 +481,7 @@ public class ConversationPage extends WebPage {
 
     public void moveCssSelectorOutOfViewport(String selector) throws Exception {
         WebElement element = getDriver().findElement(By.cssSelector(selector));
-        final String showPathInputJScript = "arguments[0].style.left='-300px';";
+        final String showPathInputJScript = "arguments[0].style.left='-300px';arguments[0].style.zIndex='0';";
         getDriver().executeScript(showPathInputJScript, element);
     }
 
