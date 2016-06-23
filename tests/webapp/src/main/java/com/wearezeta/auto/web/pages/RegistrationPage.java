@@ -127,6 +127,8 @@ public class RegistrationPage extends WebPage {
 	}
 
 	public String getVerificationEmailAddress() throws Exception {
+		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.RegistrationPage
+				.cssVerificationEmail));
 		return verificationEmail.getText();
 	}
 
