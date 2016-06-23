@@ -187,7 +187,7 @@ public class ContactListPage extends WebPage {
 
     public boolean waitForContactListVisible() throws Exception {
         return DriverUtils
-                .waitUntilLocatorAppears(
+                .waitUntilLocatorIsDisplayed(
                         this.getDriver(),
                         By.cssSelector(WebAppLocators.ContactListPage.cssOpenStartUIButton));
 
