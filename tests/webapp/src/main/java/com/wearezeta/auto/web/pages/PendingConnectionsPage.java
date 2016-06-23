@@ -4,6 +4,8 @@ import com.wearezeta.auto.common.backend.AccentColor;
 
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.web.common.Browser;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -97,7 +99,14 @@ public class PendingConnectionsPage extends WebPage {
 				.findElement(By.cssSelector(css));
 		DriverUtils.waitUntilElementClickable(this.getDriver(), acceptButton);
 
-		String colorRgba = acceptButton.getCssValue(CSS_BACKGROUND_COLOR);
+		String colorRgba = "";
+		if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
+			// Workaround until getCssValue is fully implemented
+			colorRgba = (String) getDriver().executeScript("return window.getComputedStyle(arguments[0], null).getPropertyValue" +
+					"('background-color')", acceptButton);
+		} else {
+			colorRgba = acceptButton.getCssValue(CSS_BACKGROUND_COLOR);
+		}
 		return AccentColor.getByRgba(colorRgba);
 	}
 
