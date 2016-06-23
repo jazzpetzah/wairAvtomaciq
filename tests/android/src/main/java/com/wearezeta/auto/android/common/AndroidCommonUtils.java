@@ -44,7 +44,8 @@ public class AndroidCommonUtils extends CommonUtils {
             "android.permission.READ_CONTACTS",
             "android.permission.RECORD_AUDIO",
             "android.permission.CAMERA",
-            "android.permission.READ_PHONE_STATE"
+            "android.permission.READ_PHONE_STATE",
+            "android.permission.ACCESS_FINE_LOCATION"
     };
 
     public static void executeAdb(final String cmdline) throws Exception {
