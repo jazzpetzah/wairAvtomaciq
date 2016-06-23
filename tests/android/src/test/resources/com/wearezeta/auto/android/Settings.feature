@@ -84,3 +84,51 @@ Feature: Settings
     Examples:
       | Name      |
       | user1Name |
+
+  @C150018 @rc @regression @useSpecialEmail
+  Scenario Outline: CM-1003 Verify you can add an email from settings
+    Given There is 1 user with phone number only where <Name> is me
+    Given I sign in using my phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with no contacts
+    When I tap conversations list settings button
+    And I select "Account" settings menu item
+    And I select "Add email" settings menu item
+    And I start listening for confirmation email <NewEmail> with mailbox password <Password>
+    And I commit my new email "<NewEmail>"
+    And I verify email <NewEmail>
+    And I select "Log out" settings menu item
+    And I confirm sign out
+    Then I see welcome screen
+    When I sign in using my email
+    # Workaround
+    And I accept First Time overlay as soon as it is visible
+    Then I see Contact list with no contacts
+
+    Examples:
+      | Name      | NewEmail   | Password      |
+      | user1Name | user1Email | user1Password |
+
+  @C150020 @rc @regression @useSpecialEmail
+  Scenario Outline: Verify you can change an email from settings
+    Given There is 1 user where <Name> is me
+    Given I sign in using my phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with no contacts
+    When I tap conversations list settings button
+    And I select "Account" settings menu item
+    And I select "<CurrentEmail>" settings menu item
+    And I start listening for confirmation email <NewEmail> with mailbox password <Password>
+    And I commit my new email "<NewEmail>"
+    And I verify email <NewEmail>
+    And I select "Log out" settings menu item
+    And I confirm sign out
+    Then I see welcome screen
+    When I sign in using my email
+    # Workaround
+    And I accept First Time overlay as soon as it is visible
+    Then I see Contact list with no contacts
+
+    Examples:
+      | Name      | CurrentEmail | NewEmail   | Password      |
+      | user1Name | user1Email   | user2Email | user2Password |

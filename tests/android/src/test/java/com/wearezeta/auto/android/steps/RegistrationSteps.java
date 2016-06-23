@@ -137,34 +137,41 @@ public class RegistrationSteps {
                 getRegistrationPage().waitUntilUnsplashScreenIsVisible());
     }
 
-    private Future<String> emailConfirmMessage;
+    private Map<String, Future<String>> emailConfirmMessages = new HashMap<>();
 
     /**
      * Starts the internal email listener to get the confirmation email
      *
+     * @param email    email address/alias
+     * @param password password/alias
      * @throws Exception
-     * @step. ^I start listening for confirmation email$
+     * @step. ^I start listening for (.*) confirmation email$
      */
-    @When("^I start listening for confirmation email$")
-    public void IStartListeningForConfirmEmail() throws Exception {
+    @When("^I start listening for confirmation email (.*) with mailbox password (.*)$")
+    public void IStartListeningForConfirmEmail(String email, String password) throws Exception {
         final Map<String, String> additionalHeaders = new HashMap<>();
+        email = usrMgr.replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        password = usrMgr.replaceAliasesOccurences(password, ClientUsersManager.FindBy.PASSWORD_ALIAS);
         additionalHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME, ActivationMessage.MESSAGE_PURPOSE);
-        emailConfirmMessage = BackendAPIWrappers.initMessageListener(usrMgr.getSelfUserOrThrowError(),
-                additionalHeaders);
+        emailConfirmMessages.put(email,
+                BackendAPIWrappers.initMessageListener(email, password, additionalHeaders));
     }
 
     /**
      * Wait until confirmation email with confirmation link is delivered and
      * then activates the user using values from this email message
      *
+     * @param email email address/alias
      * @throws Exception
-     * @step. ^I verify my email$
+     * @step. ^I verify email (.*)
      */
-    @Then("^I verify my email$")
-    public void IVerifyMyRegistrationData() throws Exception {
-        BackendAPIWrappers.activateRegisteredUserByEmail(emailConfirmMessage);
-        if (!usrMgr.isSelfUserSet()) {
-            usrMgr.setSelfUser(userToRegister);
+    @Then("^I verify email (.*)")
+    public void IVerifyMyRegistrationData(String email) throws Exception {
+        email = usrMgr.replaceAliasesOccurences(email, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        if (emailConfirmMessages.containsKey(email)) {
+            BackendAPIWrappers.activateRegisteredUserByEmail(emailConfirmMessages.get(email));
+        } else {
+            throw new IllegalStateException(String.format("Email listener for email '%s' has not been started", email));
         }
     }
 }

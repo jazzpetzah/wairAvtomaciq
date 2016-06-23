@@ -91,7 +91,7 @@ Feature: Rich Media
       | Name      | Contact1  | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
-  @C139848 @staging
+  @C139848 @regression
   Scenario Outline: AN-4152 Verify that play of soundcloud track will be stopped by incoming voice call
     Given There are 2 users where <Name> is me
     Given <Name> is connected to <Contact>

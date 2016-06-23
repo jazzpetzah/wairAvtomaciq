@@ -253,19 +253,24 @@ public class ConversationPage extends WebPage {
                 .cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
         WebDriverWait wait = new WebDriverWait(getDriver(),
                 DriverUtils.getDefaultLookupTimeoutSeconds());
-        wait.until(visibilityOfTextInElementsLocated(locator, parts));
+        wait
+                .withTimeout(DriverUtils.getDefaultLookupTimeoutSeconds(), TimeUnit.SECONDS)
+                .until(visibilityOfTextInElementsLocated(locator, parts));
     }
 
     public boolean waitForPresentMessageContains(String text) throws Exception {
         final By locator = By.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
         WebDriverWait wait = new WebDriverWait(getDriver(), TIMEOUT_I_SEE_MESSAGE);
-        return wait.until(presenceOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
+        return wait.withTimeout(TIMEOUT_I_SEE_MESSAGE, TimeUnit.SECONDS)
+                .until(presenceOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
     }
 
     public boolean waitForDisplayedMessageContains(String text, int timeout) throws Exception {
         final By locator = By.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
         WebDriverWait wait = new WebDriverWait(getDriver(), timeout);
-        return wait.until(visibilityOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
+        return wait
+                .withTimeout(DriverUtils.getDefaultLookupTimeoutSeconds(), TimeUnit.SECONDS)
+                .until(visibilityOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
     }
 
     public boolean waitForDisplayedMessageContains(String text) throws Exception {

@@ -319,7 +319,8 @@ Feature: Conversation View
     When I swipe right on a <Contact1>
     And I tap Delete action button
     And I confirm delete conversation content
-    Then I do not see conversation <GroupChatName> in conversations list
+    Then I do not see conversation <Contact1> in conversations list
+    When I wait until <Contact1> exists in backend search results
     And I open search UI
     And I input in People picker search field conversation name <Contact1>
     And I tap on conversation <Contact1> in search result

@@ -5,17 +5,14 @@ import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import org.openqa.selenium.ScreenOrientation;
 
-import java.util.Optional;
 import java.util.concurrent.Future;
 
 public class TabletTakePicturePage extends AndroidTabletPage {
-
-    private static final long ROTATION_DELAY_MILLISECONDS = 3000;
-
-    public TabletTakePicturePage(Future<ZetaAndroidDriver> lazyDriver)
-            throws Exception {
+    public TabletTakePicturePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
+
+    private ScreenOrientationHelper helper = ScreenOrientationHelper.getInstance();
 
     private TakePicturePage getAndroidTakePicturePage() throws Exception {
         return this.getAndroidPageInstance(TakePicturePage.class);
@@ -23,25 +20,34 @@ public class TabletTakePicturePage extends AndroidTabletPage {
 
     public void confirm() throws Exception {
         getAndroidTakePicturePage().confirm();
-        restoreTestOrientation();
+        helper.fixOrientation(getDriver());
+    }
+
+    private void adjustDefaultOrientation() throws Exception {
+        if (helper.getOriginalOrientation().isPresent() &&
+                helper.getOriginalOrientation().get() == ScreenOrientation.PORTRAIT) {
+            getDriver().rotate(ScreenOrientation.LANDSCAPE);
+            Thread.sleep(ScreenOrientationHelper.ROTATION_DELAY_MS);
+        }
     }
 
     public void takePhoto() throws Exception {
+        adjustDefaultOrientation();
         getAndroidTakePicturePage().takePhoto();
     }
 
     public void tapChangePhotoButton() throws Exception {
-        setOrientationForTakePicture();
+        adjustDefaultOrientation();
         getAndroidTakePicturePage().tapChangePhotoButton();
     }
 
     public void cancel() throws Exception {
         getAndroidTakePicturePage().cancel();
-        restoreTestOrientation();
+        helper.fixOrientation(getDriver());
     }
 
     public void openGalleryFromCameraView() throws Exception {
-        setOrientationForTakePicture();
+        adjustDefaultOrientation();
         getAndroidTakePicturePage().openGalleryFromCameraView();
     }
 
@@ -76,29 +82,4 @@ public class TabletTakePicturePage extends AndroidTabletPage {
     public boolean isChangePhotoButtonInvisible() throws Exception {
         return getAndroidTakePicturePage().isChangePhotoButtonInvisible();
     }
-
-    /**
-     * Workaround for rotation issue
-     *
-     * @throws Exception
-     */
-    private void setOrientationForTakePicture() throws Exception {
-        this.getAndroidTakePicturePage().rotateLandscape();
-        Thread.sleep(ROTATION_DELAY_MILLISECONDS);
-    }
-
-    /**
-     * Workaround for rotation issue
-     *
-     * @throws Exception
-     */
-    private void restoreTestOrientation() throws Exception {
-        final Optional<ScreenOrientation> currentOrientation = ScreenOrientationHelper.getInstance().getOrientation();
-        if (currentOrientation.isPresent() && currentOrientation.get() == ScreenOrientation.PORTRAIT) {
-            this.getAndroidTakePicturePage().rotatePortrait();
-            Thread.sleep(ROTATION_DELAY_MILLISECONDS);
-        }
-    }
-
-
 }

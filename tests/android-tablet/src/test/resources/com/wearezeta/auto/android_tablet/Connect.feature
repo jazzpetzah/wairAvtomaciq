@@ -17,7 +17,6 @@ Feature: Connect
     And I see the name <Contact> on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
-    And I see People Picker page
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 
@@ -42,7 +41,7 @@ Feature: Connect
     And I see the name <Contact> on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
-    And I see People Picker page
+    And I swipe right to show the conversations list
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 
@@ -152,7 +151,7 @@ Feature: Connect
     And I see the name <Contact> on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
-    And I see People Picker page
+    And I swipe right to show the conversations list
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 
@@ -175,7 +174,6 @@ Feature: Connect
     And I see the name <Contact> on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
-    And I see People Picker page
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 
@@ -207,7 +205,7 @@ Feature: Connect
     And I see the name <Contact> on Incoming Connection popover
     And I tap Accept button on Incoming Connection popover
     And I do not see Incoming Connection popover
-    And I see People Picker page
+    And I swipe right to show the conversations list
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 
@@ -236,7 +234,6 @@ Feature: Connect
     And I see the name <Contact> on Incoming Connection popover
     And I tap Accept button on Incoming Connection popover
     And I do not see Incoming Connection popover
-    And I see People Picker page
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 

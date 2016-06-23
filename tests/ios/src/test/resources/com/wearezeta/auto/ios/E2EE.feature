@@ -208,8 +208,7 @@ Feature: E2EE
     Given I see conversations list
     And User Myself adds a new device <DeviceName> with label <DeviceLabel>
     When I tap settings gear button
-    # FIXME: Sometimes autoaccept fails
-    And I accept alert
+    And I tap OK button on the alert
     And I click on Settings button on personal page
     And I click on Settings button from the options menu
     And I select settings item Privacy & Security
