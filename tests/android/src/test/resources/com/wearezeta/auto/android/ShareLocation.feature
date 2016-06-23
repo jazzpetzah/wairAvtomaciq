@@ -1,7 +1,7 @@
 Feature: Share Location
 
   @C150028 @staging
-  Scenario Outline: AN-4188 Verify you can share your location
+  Scenario Outline: Verify you can share your location
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
