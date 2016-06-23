@@ -18,8 +18,7 @@ public class ShareLocationPage extends AndroidPage {
             case "send":
                 return idSendButton;
             default:
-                throw new IllegalArgumentException(String.format("Unknown button anme '%s'",
-                        name));
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
         }
     }
 
