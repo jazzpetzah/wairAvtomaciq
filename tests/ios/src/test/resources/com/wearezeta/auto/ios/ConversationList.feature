@@ -433,6 +433,7 @@ Feature: Conversation List
     And I confirm blocking alert
     Then I do not see conversation <Contact> in conversations list
     And I do not see Archive button at the bottom of conversations list
+    And I wait until <Contact> exists in backend search results
     And I open search UI
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
