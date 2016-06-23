@@ -415,6 +415,8 @@ public final class WebAppLocators {
 
         public static final String cssVideoTime = cssVideo + " [data-uie-name='status-video-time']";
 
+        public static final String cssVideoCancelUpload = cssVideo + " .media-button-lg";
+
         // images
 
         public static final String cssFirstImage = "[data-uie-name='go-image-detail'][data-uie-visible='true']:not(.image-loading)";
@@ -494,6 +496,16 @@ public final class WebAppLocators {
         public static final String cssConversationVerifiedIcon = ".conversation-verified";
 
         public static final String cssTitlebarLabel = ".conversation-titlebar-name-label";
+
+        //Long message warning modal
+
+        public static final String cssLongMessageDialog = "[data-uie-name='modal-too-long-message']";
+
+        public static final String xpathOKButtonOnLongMWarning = "//div[contains(@class, 'modal-too-long-message')" +
+                "]//*[@data-uie-name='do-close']";
+
+        public static final String xpathXButtonOnLongMWarning = "//div[contains(@class, 'modal-too-long-message')" +
+                "]//div[contains(@class, 'modal-close')]";
     }
 
     public static final class ConnectToPage {

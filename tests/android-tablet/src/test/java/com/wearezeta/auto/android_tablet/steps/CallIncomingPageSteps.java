@@ -52,7 +52,7 @@ public class CallIncomingPageSteps {
      */
     @When("^I swipe to (ignore|accept) the call$")
     public void ISwipeTo(String action) throws Exception {
-        final ScreenOrientation currentOrientation = screenOrientationHelper.getOrientation()
+        final ScreenOrientation currentOrientation = screenOrientationHelper.getOriginalOrientation()
                 .orElseThrow(() -> new IllegalStateException("Could not get device orientation"));
         switch (action.toLowerCase()) {
             case "ignore":

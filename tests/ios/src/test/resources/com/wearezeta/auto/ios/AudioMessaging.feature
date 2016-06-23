@@ -50,7 +50,7 @@ Feature: Audio Messaging
     Given I see audio message placeholder
     When I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item
-    And I accept alert
+    And I tap Delete button on the alert
     Then I do not see audio message placeholder
 
     Examples:
@@ -286,7 +286,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
 
-  @C139862 @staging
+  @C139862 @regression
   Scenario Outline: Verify Soundcloud playback is stopped when audio message recording is started
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

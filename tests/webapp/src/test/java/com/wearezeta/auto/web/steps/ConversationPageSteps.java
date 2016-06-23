@@ -30,6 +30,7 @@ import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -49,9 +50,9 @@ public class ConversationPageSteps {
     private static final String VIDEO_MESSAGE_IMAGE = "userpicture_landscape.jpg";
 
     private String randomMessage;
-    
+
     private final TestContext context;
-    
+
     public ConversationPageSteps() {
         this.context = new TestContext();
     }
@@ -334,16 +335,16 @@ public class ConversationPageSteps {
     /**
      * Generate and send a file with a specific size into current conversation
      *
-     * @param size the size of a file.
+     * @param size     the size of a file.
      * @param fileName the name of the file
      * @throws Exception
      */
     @When("^I send (.*) sized file with name (.*) to the current conversation$")
     public void WhenIXSizedSendFile(String size, String fileName) throws Exception {
         String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
-        path = path.replace("%40","@");
+        path = path.replace("%40", "@");
         RandomAccessFile f = new RandomAccessFile(path + "/" + fileName, "rws");
-        int fileSize = Integer.valueOf(size.replaceAll("\\D+","").trim());
+        int fileSize = Integer.valueOf(size.replaceAll("\\D+", "").trim());
         if (size.contains("MB")) {
             f.setLength(fileSize * 1024 * 1024);
         } else if (size.contains("KB")) {
@@ -358,14 +359,14 @@ public class ConversationPageSteps {
     /**
      * Generate and send a video with a specific size into current conversation
      *
-     * @param size the size of the video file.
+     * @param size     the size of the video file.
      * @param fileName the name of the file
      * @throws Exception
      */
     @When("^I send (.*) sized video with name (.*) to the current conversation$")
     public void WhenIXSizedSendVideo(String size, String fileName) throws Exception {
         String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
-        path = path.replace("%40","@");
+        path = path.replace("%40", "@");
         final String picturePath = WebCommonUtils.getFullPicturePath(VIDEO_MESSAGE_IMAGE);
         CommonUtils.generateVideoFile(path + "/" + fileName, size, picturePath);
         context.getPagesCollection().getPage(ConversationPage.class).sendFile(fileName);
@@ -374,7 +375,7 @@ public class ConversationPageSteps {
     /**
      * Generate and send a audio file with a specific size into current conversation
      *
-     * @param length the length in format 00:00 (minutes:seconds) of the audio file.
+     * @param length   the length in format 00:00 (minutes:seconds) of the audio file.
      * @param fileName the name of the file
      * @throws Exception
      */
@@ -426,6 +427,17 @@ public class ConversationPageSteps {
     }
 
     /**
+     * Cancel video upload
+     *
+     * @param fileName the name of a file
+     * @throws Exception
+     */
+    @When("^I cancel video upload of video (.*)$")
+    public void ICancelVideoUpload(String fileName) throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).cancelVideoUpload(fileName);
+    }
+
+    /**
      * Verifies if the file transfer placeholder contains correct file name
      *
      * @param count the name of a file
@@ -467,7 +479,7 @@ public class ConversationPageSteps {
      * Verifies if the file transfer placeholder contains correct file status
      *
      * @param fileName the name of a file
-     * @param status the status of the transfer
+     * @param status   the status of the transfer
      * @throws Exception
      * @step. ^I verify status of file (.*) is (.*) in the conversation view$
      */
@@ -499,7 +511,7 @@ public class ConversationPageSteps {
      * Verifies if the file transfer placeholder contains correct file type
      *
      * @param fileName the name of a file
-     * @param type the type of the file
+     * @param type     the type of the file
      * @throws Exception
      * @step. ^I verify status of file (.*) is (.*) in the conversation view$
      */
@@ -547,6 +559,12 @@ public class ConversationPageSteps {
     @Then("^I click play button of video (.*) in the conversation view$")
     public void IClickPlayVideo(String fileName) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).playVideo(fileName);
+    }
+
+    @Then("^And I see cancel upload button for video (.*)$")
+    public void ISeeCancelUpload(String fileName) throws Exception {
+        assertThat("Cancel video upload button is not shown", context.getPagesCollection().getPage(ConversationPage.class)
+            .isCancelButtonVisible(fileName));
     }
 
     @Then("^I see play button of video (.*) in the conversation view$")
@@ -693,7 +711,7 @@ public class ConversationPageSteps {
     /**
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
-     * @param doNot if not null, checks if the action message does not display
+     * @param doNot   if not null, checks if the action message does not display
      * @param message constant part of the system message
      * @throws Exception
      * @throws AssertionError if action message did not appear in conversation
@@ -712,7 +730,7 @@ public class ConversationPageSteps {
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
      * @param message constant part of the system message
-     * @param times number of times the message appears
+     * @param times   number of times the message appears
      * @throws Exception
      * @throws AssertionError if action message did not appear in conversation
      * @step. ^I see (.*) action in conversation$
@@ -726,8 +744,8 @@ public class ConversationPageSteps {
     /**
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
-     * @param doNot if not null, checks if the action message does not display
-     * @param message constant part of the system message
+     * @param doNot    if not null, checks if the action message does not display
+     * @param message  constant part of the system message
      * @param contacts list of comma separated contact names/aliases
      * @throws AssertionError if action message did not appear in conversation
      * @throws Exception
@@ -745,8 +763,8 @@ public class ConversationPageSteps {
     /**
      * Checks action message (e.g. you left, etc.) appear in conversation
      *
-     * @param message constant part of the system message
-     * @param times number of times the message appears
+     * @param message  constant part of the system message
+     * @param times    number of times the message appears
      * @param contacts list of comma separated contact names/aliases
      * @throws AssertionError if action message did not appear in conversation
      * @throws Exception
@@ -801,7 +819,7 @@ public class ConversationPageSteps {
     public void ISeeTextMessage(String message) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).waitForPresentMessageContains(message);
     }
-    
+
     /**
      * Verify a text message is visible in conversation.
      *
@@ -1128,10 +1146,10 @@ public class ConversationPageSteps {
     public void IClickOnPendingUserAvatar() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).clickUserAvatar();
     }
-    
+
     @Then("^I see cancel pending request button in the conversation view$")
     public void ISeeCancelRequestButton() throws Exception {
-        assertTrue("Cancel request is NOT visible in conversation list",context.getPagesCollection().getPage(ConversationPage.class).isCancelRequestButtonVisible());
+        assertTrue("Cancel request is NOT visible in conversation list", context.getPagesCollection().getPage(ConversationPage.class).isCancelRequestButtonVisible());
     }
 
     @Then("^I click cancel pending request button in the conversation view$")
@@ -1212,6 +1230,50 @@ public class ConversationPageSteps {
             log.info("Comparing " + rememberedMessage + " <> " + currentMessage + " = " + isEquals);
             //TODO comparision, correct timestamps. alternatively compare IDs
             processedMessages.add(currentMessage);
+        }
+    }
+
+    @When("^I( do not)? see long message warning dialog$")
+    public void ISeeLongMessageWarningDialog(String doNot) throws Exception {
+        if (doNot == null) {
+            assertThat(context.getPagesCollection().getPage(ConversationPage.class).isLongMessageWarnDialogShown(), is(true));
+        } else {
+            assertThat(context.getPagesCollection().getPage(ConversationPage.class).isLongMessageWarnDialogNotShown(), is(true));
+        }
+    }
+
+    /**
+     * Clicks OK on long message warning dialog
+     *
+     * @step. "^I click OK on long message warning dialog$"
+     */
+    @When("^I click OK on long message warning dialog$")
+    public void IClickOKOnLongMessageWarning() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickOKButtonOnLongMWarning();
+    }
+
+    /**
+     * Clicks X on long message warning dialog
+     *
+     * @step. "^I click X button on long message warning dialog$"
+     */
+    @When("^I click X button on long message warning dialog$")
+    public void IClickXOnLongMessageWarning() throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).clickXButtonOnLongMWarning();
+    }
+
+    /**
+     * Deletes N characters from conversation input
+     *
+     * @param count count of characters
+     * @step. "^I delete (\d+) characters from the conversation input$"
+     */
+    @When("^I delete (\\d+) characters from the conversation input$")
+    public void IDeleteTypedMessage(int count) throws Exception {
+        int i = count;
+        while (i != 0) {
+            context.getPagesCollection().getPage(ConversationPage.class).clearConversationInput();
+            i--;
         }
     }
 }

@@ -16,22 +16,6 @@ Feature: Conversation List
       | Name      | ArchivedUser |
       | user1Name | user2Name    |
 
-  @C352 @rc @clumsy @regression @id1332 @id2171 @id2172
-  Scenario Outline: Verify archive a conversation
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact>,<Contact2>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    When I swipe right on a <Contact>
-    And I tap Archive action button
-    Then I do not see conversation <Contact> in conversations list
-    And I open archived conversations
-    Then I see conversation <Contact> in conversations list
-
-    Examples:
-      | Name      | Contact   | Contact2  |
-      | user1Name | user2Name | user3Name |
-
   @C12 @regression @id1334
   Scenario Outline: Verify archiving silenced conversation
     Given There are 2 users where <Name> is me
@@ -167,7 +151,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C837 @regression @id3313
+  @C837 @rc @clumsy @regression @id3313
   Scenario Outline: Verify archiving from the action menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -449,6 +433,7 @@ Feature: Conversation List
     And I confirm blocking alert
     Then I do not see conversation <Contact> in conversations list
     And I do not see Archive button at the bottom of conversations list
+    And I wait until <Contact> exists in backend search results
     And I open search UI
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results

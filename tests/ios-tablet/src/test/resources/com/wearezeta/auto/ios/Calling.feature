@@ -263,7 +263,6 @@ Feature: Calling
     Given I remember the state of <GroupChatName> conversation item
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
-    Then I see call status message contains "<GroupChatName> ringing"
     And I see <NumberOfAvatars> avatars on the Calling overlay
     Then I tap Leave button on Calling overlay
     And I do not see Calling overlay
@@ -276,7 +275,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
       | user1Name | user2Name | user3Name | GROUPCALL     | chrome      | 2               |
 
-  @C145950 @staging
+  @C145950 @calling_basic
   Scenario Outline: Verify joining 2 other people on the group call [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
