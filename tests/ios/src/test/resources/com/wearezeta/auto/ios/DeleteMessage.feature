@@ -11,7 +11,7 @@ Feature: DeleteMessage
     Then I see 1 default message in the conversation view
     When I long tap default message in conversation view
     And I tap on Delete badge item
-    And I accept alert
+    And I tap Delete button on the alert
     Then I see 0 default messages in the conversation view
 
     Examples:
@@ -29,7 +29,7 @@ Feature: DeleteMessage
     Then I see 1 default message in the conversation view
     When I long tap default message in conversation view
     And I tap on Delete badge item
-    And I accept alert
+    And I tap Delete button on the alert
     Then I see 0 default messages in the conversation view
 
     Examples:
@@ -58,7 +58,7 @@ Feature: DeleteMessage
     When I long tap on image in conversation view
     And I tap on Delete badge item
     # Sometimes the alert is not accepted automatically
-    And I accept alert
+    And I tap Delete button on the alert
     Then I see 0 photos in the conversation view
 
     Examples:
@@ -74,7 +74,7 @@ Feature: DeleteMessage
     When I tap on contact name <Contact>
     And I long tap on media container in conversation view
     And I tap on Delete badge item
-    And I accept alert
+    And I tap Delete button on the alert
     Then I do not see the media container in the conversation view
 
     Examples:
@@ -92,7 +92,7 @@ Feature: DeleteMessage
     Then I see 1 message in the conversation view
     When I long tap "<Link>" message in conversation view
     And I tap on Delete badge item
-    And I accept alert
+    And I tap Delete button on the alert
     Then I see 0 messages in the conversation view
 
     Examples:
@@ -112,7 +112,7 @@ Feature: DeleteMessage
     And I wait for 10 seconds
     And I long tap on file transfer placeholder in conversation view
     And I tap on Delete badge item
-    And I accept alert
+    And I tap Delete button on the alert
     Then I do not see file transfer placeholder
 
     Examples:
