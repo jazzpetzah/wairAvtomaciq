@@ -6,8 +6,7 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 
 public class ShareLocationPage extends AndroidPage {
-
-    public static final By idSendButton = By.id("ttv__location_send_button");
+    private static final By idSendButton = By.id("ttv__location_send_button");
 
     public ShareLocationPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
