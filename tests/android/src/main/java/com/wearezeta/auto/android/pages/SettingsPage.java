@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.pages;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.*;
@@ -30,6 +31,8 @@ public class SettingsPage extends AndroidPage {
     private static final By idNameEdit = By.id("edit");
 
     private static final By xpathOKButton = By.xpath("//*[starts-with(@id, 'button') and @value='OK']");
+
+    private static final By idEmailEdit = By.id("acet__preferences__email");
 
     public SettingsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -99,6 +102,18 @@ public class SettingsPage extends AndroidPage {
         final WebElement nameEdit = getElement(idNameEdit);
         nameEdit.clear();
         nameEdit.sendKeys(newName);
+        getElement(xpathOKButton).click();
+    }
+
+    public void commitNewEmail(String newValue) throws Exception {
+        final WebElement emailEdit = getElement(idEmailEdit);
+        emailEdit.clear();
+        emailEdit.sendKeys(newValue);
+        getElement(xpathOKButton).click();
+    }
+
+    public void commitNewPhoneNumber(PhoneNumber phoneNumber) throws Exception {
+        // TODO: Implement phone number input
         getElement(xpathOKButton).click();
     }
 }

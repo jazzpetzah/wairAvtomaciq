@@ -132,8 +132,8 @@ Feature: Search
     Given <Contact> is connected to <Name>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
-    And I wait until <Contact> exists in backend search results
     And I input in People picker search field first 5 letters of user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 
@@ -147,6 +147,7 @@ Feature: Search
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result

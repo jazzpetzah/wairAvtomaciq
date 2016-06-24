@@ -136,8 +136,8 @@ Feature: Connect
     Given User <Contact> securely pings conversation Myself
     Given User <Contact> sends 1 encrypted message to user Myself
     Then I do not see conversation <Contact> in conversations list
-    When I open search UI
-    And I wait until <Contact> exists in backend search results
+    When I wait until <Contact> exists in backend search results
+    And I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I unblock user
@@ -167,7 +167,8 @@ Feature: Connect
     And I click Connect button on connect to dialog
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
-    When I open search UI
+    When I wait until <Contact> exists in backend search results
+    And I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     Then I see Cancel Request button on pending profile page

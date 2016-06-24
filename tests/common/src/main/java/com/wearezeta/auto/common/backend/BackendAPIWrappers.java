@@ -53,6 +53,17 @@ public final class BackendAPIWrappers {
         return mbox.getMessage(expectedHeaders, ACTIVATION_TIMEOUT);
     }
 
+    public static Future<String> initMessageListener(String forEmail, String forPassword,
+                                                     Map<String, String> additionalExpectedHeaders) throws Exception {
+        IMAPSMailbox mbox = IMAPSMailbox.getInstance(forEmail, forPassword);
+        Map<String, String> expectedHeaders = new HashMap<>();
+        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, forEmail);
+        if (additionalExpectedHeaders != null) {
+            expectedHeaders.putAll(additionalExpectedHeaders);
+        }
+        return mbox.getMessage(expectedHeaders, ACTIVATION_TIMEOUT);
+    }
+
     /**
      * Creates a new user by sending the corresponding request to the backend
      *
@@ -232,6 +243,11 @@ public final class BackendAPIWrappers {
     public static String getPasswordResetLink(Future<String> passwordResetMessage) throws Exception {
         PasswordResetMessage resetPassword = new PasswordResetMessage(passwordResetMessage.get());
         return resetPassword.extractPasswordResetLink();
+    }
+
+    public static String getMessageContent(Future<String> activationMessage) throws Exception {
+        ActivationMessage sentence = new ActivationMessage(activationMessage.get());
+        return sentence.getContent();
     }
 
     public static void autoTestSendRequest(ClientUser userFrom, ClientUser userTo) throws Exception {

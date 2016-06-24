@@ -18,7 +18,7 @@ Feature: E2EE
       | user1Name | user2Name | EncryptedYo      | SimpleYo      |
 
   @C3230 @regression @C145960
-  Scenario Outline: Verify you can remove extra devices and log in successfully if too many devices are registered for your account
+  Scenario Outline: AN-4162 Verify you can remove extra devices and log in successfully if too many devices are registered for your account
     Given There is 1 user where <Name> is me
     Given User <Name> adds new devices <DeviceToRemove>,<DeviceToRemoveWithoutPassword>,<OtherDevice>,Device4,Device5,Device6,Device7
     # Workaround for AN-3281

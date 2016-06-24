@@ -409,6 +409,8 @@ public final class WebAppLocators {
 
         public static final String cssVideoTime = cssVideo + " [data-uie-name='status-video-time']";
 
+        public static final String cssVideoCancelUpload = cssVideo + " .media-button-lg";
+
         // images
 
         public static final String cssFirstImage = "[data-uie-name='go-image-detail'][data-uie-visible='true']:not(.image-loading)";

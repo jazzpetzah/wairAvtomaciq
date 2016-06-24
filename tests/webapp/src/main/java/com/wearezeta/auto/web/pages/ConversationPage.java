@@ -253,19 +253,24 @@ public class ConversationPage extends WebPage {
                 .cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
         WebDriverWait wait = new WebDriverWait(getDriver(),
                 DriverUtils.getDefaultLookupTimeoutSeconds());
-        wait.until(visibilityOfTextInElementsLocated(locator, parts));
+        wait
+                .withTimeout(DriverUtils.getDefaultLookupTimeoutSeconds(), TimeUnit.SECONDS)
+                .until(visibilityOfTextInElementsLocated(locator, parts));
     }
 
     public boolean waitForPresentMessageContains(String text) throws Exception {
         final By locator = By.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
         WebDriverWait wait = new WebDriverWait(getDriver(), TIMEOUT_I_SEE_MESSAGE);
-        return wait.until(presenceOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
+        return wait.withTimeout(TIMEOUT_I_SEE_MESSAGE, TimeUnit.SECONDS)
+                .until(presenceOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
     }
 
     public boolean waitForDisplayedMessageContains(String text, int timeout) throws Exception {
         final By locator = By.cssSelector(WebAppLocators.ConversationPage.cssTextMessage);
         WebDriverWait wait = new WebDriverWait(getDriver(), timeout);
-        return wait.until(visibilityOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
+        return wait
+                .withTimeout(DriverUtils.getDefaultLookupTimeoutSeconds(), TimeUnit.SECONDS)
+                .until(visibilityOfTextInElementsLocated(locator, new HashSet<String>(Arrays.asList(text))));
     }
 
     public boolean waitForDisplayedMessageContains(String text) throws Exception {
@@ -851,6 +856,12 @@ public class ConversationPage extends WebPage {
         getDriver().findElement(locator).click();
     }
 
+    public void cancelVideoUpload(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoCancelUpload, fileName));
+        assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No cancel element found for locator " + locator;
+        getDriver().findElement(locator).click();
+    }
+
     public boolean waitUntilFileUploaded(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFile, fileName));
         DriverUtils.waitUntilLocatorAppears(getDriver(), locator, TIMEOUT_FILE_UPLOAD);
@@ -878,6 +889,11 @@ public class ConversationPage extends WebPage {
     public void playVideo(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoPlay, fileName));
         getDriver().findElement(locator).click();
+    }
+
+    public boolean isCancelButtonVisible(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoCancelUpload, fileName));
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
     }
 
     public boolean isPlayButtonVisible(String fileName) throws Exception {

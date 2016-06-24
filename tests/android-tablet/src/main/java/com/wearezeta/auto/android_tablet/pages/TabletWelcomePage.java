@@ -20,8 +20,7 @@ public class TabletWelcomePage extends AndroidTabletPage {
     }
 
     public boolean waitForInitialScreen() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-                idHaveAccountButton, 30);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idHaveAccountButton, 30);
     }
 
     public void tapSignInButton() throws Exception {

@@ -44,7 +44,8 @@ public class AndroidCommonUtils extends CommonUtils {
             "android.permission.READ_CONTACTS",
             "android.permission.RECORD_AUDIO",
             "android.permission.CAMERA",
-            "android.permission.READ_PHONE_STATE"
+            "android.permission.READ_PHONE_STATE",
+            "android.permission.ACCESS_FINE_LOCATION"
     };
 
     public static void executeAdb(final String cmdline) throws Exception {
@@ -740,6 +741,24 @@ public class AndroidCommonUtils extends CommonUtils {
 
     // ***
 
+
+    // ***
+    // http://stackoverflow.com/questions/11420617/android-emulator-screen-rotation/14253321#14253321
+
+    public static void disableAccelerometer() throws Exception {
+        executeAdb("shell content insert --uri content://settings/system " +
+                "--bind name:s:accelerometer_rotation --bind value:i:0");
+    }
+
+    public static void rotateLandscape() throws Exception {
+        executeAdb("shell content insert --uri content://settings/system --bind name:s:user_rotation --bind value:i:1");
+    }
+
+    public static void rotatePortrait() throws Exception {
+        executeAdb("shell content insert --uri content://settings/system --bind name:s:user_rotation --bind value:i:0");
+    }
+
+    // ***
 
     // ***
 
