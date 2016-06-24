@@ -343,6 +343,8 @@ public class CommonAndroidTabletSteps {
      */
     @When("^I rotate UI to (landscape|portrait$)$")
     public void WhenIRotateUILandscape(String orientation) throws Exception {
+        // tHis is to wait for driver init
+        pagesCollection.getCommonPage().printPageSource();
         switch (orientation.toLowerCase()) {
             case "landscape":
                 pagesCollection.getCommonPage().rotateLandscape();

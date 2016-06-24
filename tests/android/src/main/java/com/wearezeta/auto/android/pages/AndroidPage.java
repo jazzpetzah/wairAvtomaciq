@@ -40,8 +40,6 @@ public abstract class AndroidPage extends BasePage {
 
     protected static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
 
-    protected static final By idPager = By.id("conversation_pager");
-
     private static final By xpathInternetIndicator =
             By.xpath("//*[@id='civ__connectivity_indicator' and //*[@value='NO INTERNET']]");
 
@@ -402,5 +400,9 @@ public abstract class AndroidPage extends BasePage {
 
     private static int getNextCoord(double startC, double endC, double current, double duration) {
         return (int) Math.round(startC + (endC - startC) / duration * current);
+    }
+
+    public void printPageSource() throws Exception {
+        log.debug(getDriver().getPageSource());
     }
 }
