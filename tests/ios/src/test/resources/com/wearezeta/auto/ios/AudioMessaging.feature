@@ -170,6 +170,8 @@ Feature: Audio Messaging
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User Me sends 1 encrypted message to user <Contact1>
+    # Small wait to make the appearence of button on jenkins more stable
+    And I wait for 5 seconds
     When I tap Play audio message button on audio message placeholder number 2
     And I see state of button on audio message placeholder number 2 is pause
     And I tap Play audio message button on audio message placeholder number 1
