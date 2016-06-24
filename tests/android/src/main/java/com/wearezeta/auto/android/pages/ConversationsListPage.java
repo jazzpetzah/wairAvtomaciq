@@ -196,7 +196,7 @@ public class ConversationsListPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idConversationListHintContainer);
     }
 
-    private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
+    private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 15;
     private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = CONTACT_LIST_LOAD_TIMEOUT_SECONDS * 2;
 
     public void verifyContactListIsFullyLoaded() throws Exception {
@@ -240,6 +240,14 @@ public class ConversationsListPage extends AndroidPage {
     }
 
     public boolean isAnyConversationVisible() throws Exception {
+        final Optional<WebElement> lastEl = getElementIfDisplayed(xpathLastContact, CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
+        try {
+            if (lastEl.isPresent() && !lastEl.get().getText().equals(LOADING_CONVERSATION_NAME)) {
+                return true;
+            }
+        } catch (NoSuchElementException e) {
+            // pass silently
+        }
         for (int i = getElements(xpathContactListNames).size(); i >= 1; i--) {
             final By locator = By.xpath(xpathStrContactByIndex.apply(i));
             final Optional<WebElement> contactEl = getElementIfDisplayed(locator);
@@ -251,8 +259,7 @@ public class ConversationsListPage extends AndroidPage {
                 // pass silently
             }
         }
-        final Optional<WebElement> lastEl = getElementIfDisplayed(xpathLastContact, CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
-        return lastEl.isPresent() && !lastEl.get().getText().equals(LOADING_CONVERSATION_NAME);
+        return false;
     }
 
     public boolean isNoConversationsVisible() throws Exception {
