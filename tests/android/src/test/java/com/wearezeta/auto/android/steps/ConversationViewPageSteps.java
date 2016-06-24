@@ -622,17 +622,24 @@ public class ConversationViewPageSteps {
     /**
      * Wait to check whether the file placeholder action button is changed
      *
-     * @param timeout
+     * @param timeout timeout in seconds
+     * @param shouldNotBeChanged is not null if the button should not be changed
      * @throws Exception
      * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)
      * placeholder is changed$
      */
     @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)" +
-            " placeholder is changed$")
-    public void IWaitFileTransferActionButtonChanged(int timeout) throws Exception {
-        Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
-                timeout),
-                filePlaceHolderActionButtonState.isChanged(timeout, FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
+            " placeholder is (not )?changed$")
+    public void IWaitFileTransferActionButtonChanged(int timeout, String shouldNotBeChanged) throws Exception {
+        if (shouldNotBeChanged == null) {
+            Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
+                    timeout), filePlaceHolderActionButtonState.isChanged(timeout,
+                    FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
+        } else {
+            Assert.assertTrue(String.format("State of file transfer action button has been changed after %s seconds",
+                    timeout), filePlaceHolderActionButtonState.isNotChanged(timeout,
+                    FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
+        }
     }
 
     /**
