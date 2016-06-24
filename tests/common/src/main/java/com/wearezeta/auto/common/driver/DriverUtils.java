@@ -121,8 +121,8 @@ public class DriverUtils {
         try {
             final long millisecondsStarted = System.currentTimeMillis();
             do {
-                final List<WebElement> foundElements = driver.findElements(by);
                 try {
+                    final List<WebElement> foundElements = driver.findElements(by);
                     if (foundElements.size() > 0) {
                         for (WebElement foundElement : foundElements) {
                             if (isElementPresentAndDisplayed(driver, foundElement)) {
