@@ -109,13 +109,13 @@ public abstract class AndroidPage extends BasePage {
     }
 
     public void rotateLandscape() throws Exception {
-        // AndroidCommonUtils.rotateLanscape();
-        this.getDriver().rotate(ScreenOrientation.LANDSCAPE);
+        AndroidCommonUtils.rotateLandscape();
+        // this.getDriver().rotate(ScreenOrientation.LANDSCAPE);
     }
 
     public void rotatePortrait() throws Exception {
-        // AndroidCommonUtils.rotatePortrait();
-        this.getDriver().rotate(ScreenOrientation.PORTRAIT);
+        AndroidCommonUtils.rotatePortrait();
+        // this.getDriver().rotate(ScreenOrientation.PORTRAIT);
     }
 
     public void dialogsPagesSwipeUp(int durationMilliseconds) throws Exception {
@@ -130,8 +130,7 @@ public abstract class AndroidPage extends BasePage {
     public void swipeByCoordinates(int durationMilliseconds,
                                    int widthStartPercent, int heightStartPercent, int widthEndPercent,
                                    int heightEndPercent) throws Exception {
-        final Dimension screenDimension = getDriver().manage().window()
-                .getSize();
+        final Dimension screenDimension = getDriver().manage().window().getSize();
         this.getDriver().swipe(screenDimension.width * widthStartPercent / 100,
                 screenDimension.height * heightStartPercent / 100,
                 screenDimension.width * widthEndPercent / 100,

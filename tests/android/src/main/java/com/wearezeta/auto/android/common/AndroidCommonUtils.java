@@ -742,6 +742,24 @@ public class AndroidCommonUtils extends CommonUtils {
 
 
     // ***
+    // http://stackoverflow.com/questions/11420617/android-emulator-screen-rotation/14253321#14253321
+
+    public static void disableAccelerometer() throws Exception {
+        executeAdb("shell content insert --uri content://settings/system " +
+                "--bind name:s:accelerometer_rotation --bind value:i:0");
+    }
+
+    public static void rotateLandscape() throws Exception {
+        executeAdb("shell content insert --uri content://settings/system --bind name:s:user_rotation --bind value:i:1");
+    }
+
+    public static void rotatePortrait() throws Exception {
+        executeAdb("shell content insert --uri content://settings/system --bind name:s:user_rotation --bind value:i:0");
+    }
+
+    // ***
+
+    // ***
 
     public enum PadButton {
         RIGHT(22), LEFT(21), UP(19), DOWN(20), CENTER(23);

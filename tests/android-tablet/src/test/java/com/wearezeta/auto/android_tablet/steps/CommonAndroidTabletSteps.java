@@ -103,6 +103,7 @@ public class CommonAndroidTabletSteps {
         final String backendJSON =
                 AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidTabletSteps.class));
         AndroidCommonUtils.deployBackendFile(backendJSON);
+        AndroidCommonUtils.disableAccelerometer();
         return null;
     }
 
@@ -334,27 +335,27 @@ public class CommonAndroidTabletSteps {
     }
 
     /**
-     * Rotate device to landscape
+     * Rotate device
      *
+     * @param orientation either landscape or portrait
      * @throws Exception
-     * @step. ^I rotate UI to landscape$
+     * @step. ^I rotate UI to (landscape|portrait$)
      */
-    @When("^I rotate UI to landscape$")
-    public void WhenIRotateUILandscape() throws Exception {
-        pagesCollection.getCommonPage().rotateLandscape();
-        screenOrientationHelper.setOriginalOrientation(ScreenOrientation.LANDSCAPE);
-    }
+    @When("^I rotate UI to (landscape|portrait$)$")
+    public void WhenIRotateUILandscape(String orientation) throws Exception {
+        switch (orientation.toLowerCase()) {
+            case "landscape":
+                pagesCollection.getCommonPage().rotateLandscape();
+                screenOrientationHelper.setOriginalOrientation(ScreenOrientation.LANDSCAPE);
+                break;
+            case "portrait":
+                pagesCollection.getCommonPage().rotatePortrait();
+                screenOrientationHelper.setOriginalOrientation(ScreenOrientation.PORTRAIT);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown orientation value '%s'", orientation));
+        }
 
-    /**
-     * Rotate device to portrait
-     *
-     * @throws Exception
-     * @step. ^I rotate UI to portrait$
-     */
-    @When("^I rotate UI to portrait$")
-    public void WhenIRotateUIPortrait() throws Exception {
-        pagesCollection.getCommonPage().rotatePortrait();
-        screenOrientationHelper.setOriginalOrientation(ScreenOrientation.PORTRAIT);
     }
 
     /**
