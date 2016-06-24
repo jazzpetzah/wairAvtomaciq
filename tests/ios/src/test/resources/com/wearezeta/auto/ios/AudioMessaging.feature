@@ -160,7 +160,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
 
-  @torun @C131217 @rc @regression
+  @C131217 @rc @regression
   Scenario Outline: Verify playback is stopped when other audio message starts playing
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
