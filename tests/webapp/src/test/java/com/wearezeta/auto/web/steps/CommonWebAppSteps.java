@@ -543,7 +543,7 @@ public class CommonWebAppSteps {
     /**
      * Send message to a conversation
      *
-     * @param userFromNameAlias user who want to mute conversation
+     * @param userFromNameAlias user who wants to send a message
      * @param message message to send
      * @param conversationName the name of existing conversation to send the message to
      * @throws Exception
@@ -559,17 +559,17 @@ public class CommonWebAppSteps {
     /**
      * User sends location to a conversation via SEBridge
      *
-     * @param userFromNameAlias user who want to mute conversation
-     * @param message message to send
+     * @param userFromNameAlias user who wants to send location
+     * @param locationName name of location
      * @param conversationName the name of existing conversation to send the message to
      * @throws Exception
-     * @step. ^User (.*) sent message (.*) to conversation (.*)
+     * @step. ^User (.*) sends? location (.*) to conversation (.*)
      */
     @When("^User (.*) sends? location (.*) to conversation (.*)")
     public void UserSentLocationToConversation(String userFromNameAlias,
-                                              String message, String conversationName) throws Exception {
-        context.getCommonSteps().UserSentMessageToConversation(userFromNameAlias,
-                conversationName, message);
+                                              String locationName, String conversationName) throws Exception {
+        context.getCommonSteps().UserSentLocationToConversation(userFromNameAlias,
+                conversationName, locationName);
     }
     /**
      * User X delete message from User/Group via specified device
