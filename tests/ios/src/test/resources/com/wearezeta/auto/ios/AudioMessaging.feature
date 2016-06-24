@@ -324,7 +324,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | Duration |
       | user1Name | user2Name | 20       |
 
-  @C129342 @C129780 @regression
+  @C129342 @C129780 @rc @regression
   Scenario Outline: Verify playing/pausing a received voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
