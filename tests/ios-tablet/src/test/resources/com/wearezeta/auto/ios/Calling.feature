@@ -249,7 +249,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GROUPCALL     |
 
-  @C145969 @staging
+  @C145969 @calling_advanced
   Scenario Outline: Verify leaving and coming back to the call in 20 seconds [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
