@@ -691,13 +691,10 @@ public final class CommonSteps {
 
     public void UserSharesLocationTo(String senderAlias, String dstConversationName, boolean isGroup, String deviceName)
             throws Exception {
-        ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(senderAlias);
-        String dstConvId;
-        if (isGroup) {
-            dstConvId = BackendAPIWrappers.getConversationIdByName(msgFromUser, dstConversationName);
-        } else {
-            dstConvId = usrMgr.findUserByNameOrNameAlias(dstConversationName).getId();
-        }
+        final ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(senderAlias);
+        final String dstConvId = isGroup ?
+                BackendAPIWrappers.getConversationIdByName(msgFromUser, dstConversationName) :
+                usrMgr.findUserByNameOrNameAlias(dstConversationName).getId();
         SEBridge.getInstance().shareDefaultLocation(msgFromUser, dstConvId, deviceName);
     }
 }
