@@ -132,11 +132,11 @@ public class ConversationViewPageSteps {
      *                               release his finger after tap on an icon. Works for long tap on Audio Message
      *                               icon only
      * @throws Exception
-     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button (\d+ seconds )? from cursor
+     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location) button (\d+ seconds )? from cursor
      * toolbar( without releasing my finger)?$
      */
-    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button (\\d+ seconds )?" +
-            "from cursor toolbar( without releasing my finger)?$")
+    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location) button " +
+            "(\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
     public void WhenITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
                                          String shouldReleaseFinger) throws Exception {
         if (longTap == null) {
@@ -147,6 +147,7 @@ public class ConversationViewPageSteps {
                 case "add picture":
                 case "sketch":
                 case "file":
+                case "share location":
                     getConversationViewPage().tapCursorToolButton(btnName);
                     break;
                 default:
@@ -1173,9 +1174,10 @@ public class ConversationViewPageSteps {
      * @param shouldNotSee  equals to null if the container should be visible
      * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
      * @throws Exception
-     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message) container in the conversation view$
+     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) container in the conversation view$
      */
-    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message) container in the conversation view$")
+    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) " +
+            "container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (containerType.toLowerCase()) {
@@ -1198,6 +1200,10 @@ public class ConversationViewPageSteps {
             case "audio message":
                 verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isAudioMessageVisible :
                         getConversationViewPage()::isAudioMessageNotVisible;
+                break;
+            case "share location":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isShareLocationVisible :
+                        getConversationViewPage()::isShareLocationNotVisible;
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
