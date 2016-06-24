@@ -423,11 +423,8 @@ public class ConversationPage extends WebPage {
         assert matcher.find() : "Could not find Youtube id in URL: " + url;
         final String id = matcher.group();
 
-        final By locator = By
-                .xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById
-                        .apply(id));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                locator, 5);
+        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById.apply(id));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
     public void clickPeopleButton() throws Exception {
