@@ -17,3 +17,18 @@ Feature: Share Location
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C150029 @staging
+  Scenario Outline: Verify you can receive location sharing message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> shares his location to user Myself via device <DeviceName>
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    Then I see Share Location container in the conversation view
+
+    Examples:
+      | Name      | Contact   | DeviceName |
+      | user1Name | user2Name | device1    |
