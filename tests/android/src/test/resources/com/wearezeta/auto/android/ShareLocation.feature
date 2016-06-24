@@ -27,7 +27,8 @@ Feature: Share Location
     Given User <Contact> shares his location to user Myself via device <DeviceName>
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    Then I see Share Location container in the conversation view
+    And I tap Share Location container in the conversation view
+    Then I see the Wire app is not in foreground
 
     Examples:
       | Name      | Contact   | DeviceName |
