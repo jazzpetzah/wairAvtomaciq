@@ -934,11 +934,19 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorMore);
     }
 
-    public Boolean isShareLocationVisible() throws Exception {
+    public boolean isShareLocationVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idShareLocationContainer);
     }
 
-    public Boolean isShareLocationNotVisible() throws Exception {
+    public boolean isShareLocationNotVisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idShareLocationContainer);
+    }
+
+    public void longTapShareLocationContainer() throws Exception {
+        getDriver().longTap(getElement(idShareLocationContainer), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public void tapShareLocationContainer() throws Exception {
+        getElement(idShareLocationContainer).click();
     }
 }
