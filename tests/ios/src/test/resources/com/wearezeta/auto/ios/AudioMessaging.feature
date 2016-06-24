@@ -105,7 +105,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C131214 @regression
+  @C131218 @regression
   Scenario Outline: Verify not sent yet audio message is preserved on minimising the app
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -324,7 +324,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | Duration |
       | user1Name | user2Name | 20       |
 
-  @C129342 @C129780 @regression
+  @C129342 @C129780 @rc @regression
   Scenario Outline: Verify playing/pausing a received voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
