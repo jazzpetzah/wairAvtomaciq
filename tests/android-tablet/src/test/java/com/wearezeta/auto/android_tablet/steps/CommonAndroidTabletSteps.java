@@ -103,7 +103,7 @@ public class CommonAndroidTabletSteps {
         final String backendJSON =
                 AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidTabletSteps.class));
         AndroidCommonUtils.deployBackendFile(backendJSON);
-        AndroidCommonUtils.disableAccelerometer();
+        AndroidCommonUtils.changeAccelerometerState(true);
         return null;
     }
 
@@ -343,8 +343,6 @@ public class CommonAndroidTabletSteps {
      */
     @When("^I rotate UI to (landscape|portrait$)$")
     public void WhenIRotateUILandscape(String orientation) throws Exception {
-        // tHis is to wait for driver init
-        pagesCollection.getCommonPage().printPageSource();
         switch (orientation.toLowerCase()) {
             case "landscape":
                 pagesCollection.getCommonPage().rotateLandscape();

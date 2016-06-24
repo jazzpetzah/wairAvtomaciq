@@ -745,9 +745,9 @@ public class AndroidCommonUtils extends CommonUtils {
     // ***
     // http://stackoverflow.com/questions/11420617/android-emulator-screen-rotation/14253321#14253321
 
-    public static void disableAccelerometer() throws Exception {
-        executeAdb("shell content insert --uri content://settings/system " +
-                "--bind name:s:accelerometer_rotation --bind value:i:0");
+    public static void changeAccelerometerState(boolean isEnabled) throws Exception {
+        executeAdb(String.format("shell content insert --uri content://settings/system " +
+                "--bind name:s:accelerometer_rotation --bind value:i:%s", isEnabled ? "1" : "0"));
     }
 
     // ***

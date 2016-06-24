@@ -400,7 +400,33 @@ public abstract class AndroidPage extends BasePage {
         return (int) Math.round(startC + (endC - startC) / duration * current);
     }
 
-    public void printPageSource() throws Exception {
-        log.debug(getDriver().getPageSource());
+    @Override
+    protected WebElement getElement(By locator) throws Exception {
+        try {
+            return super.getElement(locator);
+        } catch (Exception e) {
+            log.debug(getDriver().getPageSource());
+            throw e;
+        }
+    }
+
+    @Override
+    protected WebElement getElement(By locator, String message) throws Exception {
+        try {
+            return super.getElement(locator, message);
+        } catch (Exception e) {
+            log.debug(getDriver().getPageSource());
+            throw e;
+        }
+    }
+
+    @Override
+    protected WebElement getElement(By locator, String message, int timeoutSeconds) throws Exception {
+        try {
+            return super.getElement(locator, message, timeoutSeconds);
+        } catch (Exception e) {
+            log.debug(getDriver().getPageSource());
+            throw e;
+        }
     }
 }
