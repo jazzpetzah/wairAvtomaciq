@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.pages.registration;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.RegistrationPage;
 import com.wearezeta.auto.android_tablet.pages.AndroidTabletPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -25,6 +26,7 @@ public class TabletUnsplashPicturePage extends AndroidTabletPage {
     }
 
     public void selectPictureSource(String src) throws Exception {
+        AndroidCommonUtils.rotateLandscape();
         getAndroidRegistrationPage().selectPictureSource(src);
     }
 }

@@ -1,6 +1,6 @@
 Feature: File Transfer
 
-  @C145955 @regression
+  @C145955 @rc @regression
   Scenario Outline: Verify sending the file in an empty conversation and text after it [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -18,7 +18,7 @@ Feature: File Transfer
       | Name      | Contact   | ItemName                   |
       | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |
 
-  @C145956 @regression
+  @C145956 @rc @regression
   Scenario Outline: Verify downloading and opening file for a preview [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -1,6 +1,6 @@
 Feature: Audio Messaging
 
-  @C145953 @regression
+  @C145953 @rc @regression
   Scenario Outline: Verify recording and sending an audio message [LANDSCAPE]
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -20,7 +20,7 @@ Feature: Audio Messaging
       | Name      | Contact   | Duration |
       | user1Name | user2Name | 50       |
 
-  @C145954 @regression
+  @C145954 @rc @regression
   Scenario Outline: Verify receiving and playing an audio message [LANDSCAPE]
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
