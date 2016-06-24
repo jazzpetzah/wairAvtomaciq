@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.pages;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.TakePicturePage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -26,7 +27,7 @@ public class TabletTakePicturePage extends AndroidTabletPage {
     private void adjustDefaultOrientation() throws Exception {
         if (helper.getOriginalOrientation().isPresent() &&
                 helper.getOriginalOrientation().get() == ScreenOrientation.PORTRAIT) {
-            getDriver().rotate(ScreenOrientation.LANDSCAPE);
+            AndroidCommonUtils.rotateLandscape();
             Thread.sleep(ScreenOrientationHelper.ROTATION_DELAY_MS);
         }
     }
