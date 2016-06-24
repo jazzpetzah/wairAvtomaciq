@@ -193,7 +193,7 @@ Feature: Conversation List
       | user1Name | user2Name | user3Name | LeaveActionMenu |
 
   @C840 @rc @clumsy @regression @id3315
-  Scenario Outline: ZIOS-6809 Verify removing the content from the group conversation
+  Scenario Outline: Verify removing the content from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -211,8 +211,7 @@ Feature: Conversation List
     And I open search UI
     And I input in People picker search field conversation name <GroupChatName>
     And I tap on conversation <GroupChatName> in search result
-    Then I see group chat page with users <Contact1>,<Contact2>
-    And I see 0 conversation entries
+    Then I see 0 conversation entries
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Picture     |

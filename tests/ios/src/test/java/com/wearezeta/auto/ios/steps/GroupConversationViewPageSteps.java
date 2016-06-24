@@ -26,7 +26,7 @@ public class GroupConversationViewPageSteps {
                 ClientUsersManager.FindBy.NAME_ALIAS);
         final List<String> participantNames = CommonSteps.splitAliases(participantNameAliases);
         Assert.assertTrue(
-                String.format("Users '%s' are not visible in the group conversation", participantNameAliases),
+                String.format("Users '%s' are not displayed on Upper Toolbar", participantNameAliases),
                 getGroupConversationViewPage().isUpperToolbarContainNames(participantNames));
     }
 
