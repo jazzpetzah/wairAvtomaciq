@@ -38,7 +38,8 @@ public class ConversationsListPage extends AndroidPage {
     private static final Function<Integer, String> xpathStrContactByIndex = index ->
             String.format("(%s)[%s]", xpathStrConvoListNames, index);
 
-    private static final By xpathLastContact = By.xpath(String.format("(%s)[last()]", xpathStrConvoListNames));
+    private static final By xpathLastContact = By.xpath(String.format("(%s)[last()][not(contains(@value,'%s'))]",
+            xpathStrConvoListNames, LOADING_CONVERSATION_NAME));
 
     public static final Function<String, String> xpathStrMutedIconByConvoName = convoName -> String
             .format("%s/parent::*//*[@id='tv_conv_list_voice_muted']", xpathStrContactByName.apply(convoName));
@@ -240,13 +241,8 @@ public class ConversationsListPage extends AndroidPage {
     }
 
     public boolean isAnyConversationVisible() throws Exception {
-        final Optional<WebElement> lastEl = getElementIfDisplayed(xpathLastContact, CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
-        try {
-            if (lastEl.isPresent() && !lastEl.get().getText().equals(LOADING_CONVERSATION_NAME)) {
-                return true;
-            }
-        } catch (NoSuchElementException e) {
-            // pass silently
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathLastContact, CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
+            return true;
         }
         for (int i = getElements(xpathContactListNames).size(); i >= 1; i--) {
             final By locator = By.xpath(xpathStrContactByIndex.apply(i));
