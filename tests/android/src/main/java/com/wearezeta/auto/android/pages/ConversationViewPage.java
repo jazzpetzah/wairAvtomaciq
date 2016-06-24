@@ -178,7 +178,7 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idAudioMessageContainer = By.id("tfll__audio_message_container");
 
-    private static final By idAudioContainerButton = By.id("gpv__row_conversation__audio_button");
+    private static final By idAudioContainerButton = By.id("aab__row_conversation__audio_button");
 
     private static final By idShareLocationContainer = By.id("cv__location_map_container");
 
