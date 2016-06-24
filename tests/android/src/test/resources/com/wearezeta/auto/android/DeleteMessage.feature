@@ -98,7 +98,7 @@ Feature: Delete Message
       | user1Name | user2Name | DeleteTextMessage |
 
   @C111643 @regression @rc
-  Scenario Outline: Verfiy deleting ping
+  Scenario Outline: Verify deleting ping
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given <Contact> starts instance using <CallBackend>
@@ -292,3 +292,21 @@ Feature: Delete Message
     Examples:
       | Name      | Contact   | FileName | MIMEType  | DeviceName |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
+
+  @C150030 @staging
+  Scenario Outline: Verify you can delete Share Location placeholder from conversation view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> shares his location to user Myself via device <DeviceName>
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When I long tap Share Location container in the conversation view
+    And I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    Then I do not see Share Location container in the conversation view
+
+    Examples:
+      | Name      | Contact   | DeviceName |
+      | user1Name | user2Name | device1    |

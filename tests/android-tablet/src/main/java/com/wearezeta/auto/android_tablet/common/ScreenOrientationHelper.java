@@ -42,7 +42,7 @@ public final class ScreenOrientationHelper {
         this.originalOrientation = Optional.empty();
     }
 
-    public ScreenOrientation fixOrientation(final ZetaAndroidDriver driver) throws InterruptedException {
+    public ScreenOrientation fixOrientation(final ZetaAndroidDriver driver) throws Exception {
         final ScreenOrientation original = this.originalOrientation.orElseThrow(
                 () -> new IllegalStateException("Original orientation value has not been set before")
         );

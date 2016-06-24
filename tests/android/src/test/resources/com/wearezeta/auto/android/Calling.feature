@@ -401,6 +401,8 @@ Feature: Calling
     Given I see Contact list with contacts
     When I minimize the application
     And <Contact1>,<Contact2> calls <GroupChatName>
+    # Wait for the call to appear
+    And I wait for 7 seconds
     Then I see incoming call
     Then I see incoming call from <GroupChatName>
     And I swipe to accept the call

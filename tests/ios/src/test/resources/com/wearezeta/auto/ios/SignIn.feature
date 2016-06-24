@@ -37,7 +37,7 @@ Feature: Sign In
     Given I switch to Phone Log In tab
     When I enter phone number for Myself
     And I enter login verification code for Myself
-    And I accept First Time overlay if it is visible
+    And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
 

@@ -36,6 +36,8 @@ public class ConversationViewPage extends AndroidPage {
 
     public static final By idCursorVideoMessage = By.id("cursor_menu_item_video");
 
+    private static final By idCursorShareLocation = By.id("cursor_menu_item_location");
+
     public static final By idCursorView = By.id("cal__cursor");
 
     public static final By idCursorSelfAvatar = By.id("civ__cursor__self_avatar");
@@ -104,7 +106,7 @@ public class ConversationViewPage extends AndroidPage {
     private static final By xpathAudioMessageDurationText =
             By.xpath("//*[@id='ttv__audio_message__recording__duration' and not(text())]");
 
-    private static final By idFileActionBtn = By.id("gtv__row_conversation__file__action");
+    private static final By idFileActionBtn = By.id("aab__row_conversation__action_button");
 
     private static final By idFileDialogActionOpenBtn = By.id("ttv__file_action_dialog__open");
 
@@ -176,7 +178,9 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idAudioMessageContainer = By.id("tfll__audio_message_container");
 
-    private static final By idAudioContainerButton = By.id("gpv__row_conversation__audio_button");
+    private static final By idAudioContainerButton = By.id("aab__row_conversation__audio_button");
+
+    private static final By idShareLocationContainer = By.id("cv__location_map_container");
 
     private static final By idAudioContainerSeekbar = By.id("sb__audio_progress");
 
@@ -328,6 +332,8 @@ public class ConversationViewPage extends AndroidPage {
                 return idCursorAudioMessage;
             case "video message":
                 return idCursorVideoMessage;
+            case "share location":
+                return idCursorShareLocation;
             default:
                 throw new IllegalArgumentException(String.format("Unknown tool button name '%s'", name));
         }
@@ -926,5 +932,21 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isCursorToolbarInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorMore);
+    }
+
+    public boolean isShareLocationVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idShareLocationContainer);
+    }
+
+    public boolean isShareLocationNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idShareLocationContainer);
+    }
+
+    public void longTapShareLocationContainer() throws Exception {
+        getDriver().longTap(getElement(idShareLocationContainer), DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public void tapShareLocationContainer() throws Exception {
+        getElement(idShareLocationContainer).click();
     }
 }

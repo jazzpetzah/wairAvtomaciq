@@ -132,11 +132,11 @@ public class ConversationViewPageSteps {
      *                               release his finger after tap on an icon. Works for long tap on Audio Message
      *                               icon only
      * @throws Exception
-     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button (\d+ seconds )? from cursor
+     * @step. ^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location) button (\d+ seconds )? from cursor
      * toolbar( without releasing my finger)?$
      */
-    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message) button (\\d+ seconds )?" +
-            "from cursor toolbar( without releasing my finger)?$")
+    @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location) button " +
+            "(\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
     public void WhenITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
                                          String shouldReleaseFinger) throws Exception {
         if (longTap == null) {
@@ -147,6 +147,7 @@ public class ConversationViewPageSteps {
                 case "add picture":
                 case "sketch":
                 case "file":
+                case "share location":
                     getConversationViewPage().tapCursorToolButton(btnName);
                     break;
                 default:
@@ -621,17 +622,24 @@ public class ConversationViewPageSteps {
     /**
      * Wait to check whether the file placeholder action button is changed
      *
-     * @param timeout
+     * @param timeout timeout in seconds
+     * @param shouldNotBeChanged is not null if the button should not be changed
      * @throws Exception
      * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)
      * placeholder is changed$
      */
     @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)" +
-            " placeholder is changed$")
-    public void IWaitFileTransferActionButtonChanged(int timeout) throws Exception {
-        Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
-                timeout),
-                filePlaceHolderActionButtonState.isChanged(timeout, FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
+            " placeholder is (not )?changed$")
+    public void IWaitFileTransferActionButtonChanged(int timeout, String shouldNotBeChanged) throws Exception {
+        if (shouldNotBeChanged == null) {
+            Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
+                    timeout), filePlaceHolderActionButtonState.isChanged(timeout,
+                    FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
+        } else {
+            Assert.assertTrue(String.format("State of file transfer action button has been changed after %s seconds",
+                    timeout), filePlaceHolderActionButtonState.isNotChanged(timeout,
+                    FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
+        }
     }
 
     /**
@@ -1173,9 +1181,10 @@ public class ConversationViewPageSteps {
      * @param shouldNotSee  equals to null if the container should be visible
      * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
      * @throws Exception
-     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message) container in the conversation view$
+     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) container in the conversation view$
      */
-    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message) container in the conversation view$")
+    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) " +
+            "container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (containerType.toLowerCase()) {
@@ -1199,6 +1208,10 @@ public class ConversationViewPageSteps {
                 verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isAudioMessageVisible :
                         getConversationViewPage()::isAudioMessageNotVisible;
                 break;
+            case "share location":
+                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isShareLocationVisible :
+                        getConversationViewPage()::isShareLocationNotVisible;
+                break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
         }
@@ -1210,11 +1223,12 @@ public class ConversationViewPageSteps {
      * Tap container
      *
      * @param isLongTap     equals to null if this should be ordinary single tap
-     * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
+     * @param containerType one of available container types
      * @throws Exception
-     * @step. ^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message|Audio Message) container in the conversation view$
+     * @step. ^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) container in the conversation view$
      */
-    @When("^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message|Audio Message) container in the conversation view$")
+    @When("^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) " +
+            "container in the conversation view$")
     public void ITapContainer(String isLongTap, String containerType) throws Exception {
         switch (containerType.toLowerCase()) {
             case "youtube":
@@ -1250,6 +1264,13 @@ public class ConversationViewPageSteps {
                     getConversationViewPage().tapAudioMessageContainer();
                 } else {
                     getConversationViewPage().longAudioMessageContainer();
+                }
+                break;
+            case "share location":
+                if (isLongTap == null) {
+                    getConversationViewPage().tapShareLocationContainer();
+                } else {
+                    getConversationViewPage().longTapShareLocationContainer();
                 }
                 break;
             default:

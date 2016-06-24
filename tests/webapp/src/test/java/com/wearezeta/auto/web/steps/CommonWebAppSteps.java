@@ -616,6 +616,7 @@ public class CommonWebAppSteps {
      */
     @Then("^I verify user (.*) has received (?:an |\\s*)email invitation$")
     public void IVerifyUserReceiverInvitation(String alias) throws Throwable {
+        context.startPinging();
         final ClientUser user = context.getUserManager().findUserByNameOrNameAlias(alias);
         assertTrue(
                 String.format("Invitation email for %s is not valid", user.getEmail()),
@@ -626,6 +627,7 @@ public class CommonWebAppSteps {
                             throw new IllegalStateException(
                                     "Invitation message has not been received");
                         }).isValid());
+        context.stopPinging();
     }
 
     @Then("^I delete account of user (.*) via email$")

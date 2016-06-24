@@ -15,7 +15,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C433 @id3245 @regression
+  @C43808 @id3245 @rc @regression
   Scenario Outline: Sign in to Wire by phone
     Given There are 1 users where <Name> is me
     When I sign in using my phone number
@@ -110,7 +110,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C131213 @rc @regression
+  @C131213 @rc @rc42 @regression
   Scenario Outline: Verify you see first time usage overlay on first login by mail
     Given There is 1 user where <Name> is me
     Given I sign in using my email
