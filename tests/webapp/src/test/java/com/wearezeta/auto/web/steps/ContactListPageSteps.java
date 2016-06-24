@@ -93,8 +93,6 @@ public class ContactListPageSteps {
         log.debug("Looking for contact with name " + name);
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
-        Assert.assertTrue("No contact list loaded.",
-                contactListPage.waitForContactListVisible());
 
         for (int i = 0; i < 5; i++) {
             if (contactListPage.isArchiveListEntryWithNameExist(name)) {
