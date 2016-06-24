@@ -2,7 +2,6 @@ package com.wearezeta.auto.android_tablet.common;
 
 import java.util.Optional;
 
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import org.openqa.selenium.ScreenOrientation;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -49,11 +48,7 @@ public final class ScreenOrientationHelper {
         );
         final ScreenOrientation currentOrientation = driver.getOrientation();
         if (original != currentOrientation) {
-            if(original == ScreenOrientation.PORTRAIT) {
-                AndroidCommonUtils.rotatePortrait();
-            } else {
-                AndroidCommonUtils.rotateLandscape();
-            }
+            driver.rotate(original);
             Thread.sleep(ROTATION_DELAY_MS);
             return original;
         }

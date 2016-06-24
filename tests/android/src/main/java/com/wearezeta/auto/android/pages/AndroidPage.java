@@ -107,13 +107,11 @@ public abstract class AndroidPage extends BasePage {
     }
 
     public void rotateLandscape() throws Exception {
-        AndroidCommonUtils.rotateLandscape();
-        // this.getDriver().rotate(ScreenOrientation.LANDSCAPE);
+        this.getDriver().rotate(ScreenOrientation.LANDSCAPE);
     }
 
     public void rotatePortrait() throws Exception {
-        AndroidCommonUtils.rotatePortrait();
-        // this.getDriver().rotate(ScreenOrientation.PORTRAIT);
+        this.getDriver().rotate(ScreenOrientation.PORTRAIT);
     }
 
     public void dialogsPagesSwipeUp(int durationMilliseconds) throws Exception {

@@ -750,14 +750,6 @@ public class AndroidCommonUtils extends CommonUtils {
                 "--bind name:s:accelerometer_rotation --bind value:i:0");
     }
 
-    public static void rotateLandscape() throws Exception {
-        executeAdb("shell content insert --uri content://settings/system --bind name:s:user_rotation --bind value:i:1");
-    }
-
-    public static void rotatePortrait() throws Exception {
-        executeAdb("shell content insert --uri content://settings/system --bind name:s:user_rotation --bind value:i:0");
-    }
-
     // ***
 
     // ***
