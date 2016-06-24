@@ -106,7 +106,7 @@ public class ConversationViewPage extends AndroidPage {
     private static final By xpathAudioMessageDurationText =
             By.xpath("//*[@id='ttv__audio_message__recording__duration' and not(text())]");
 
-    private static final By idFileActionBtn = By.id("gtv__row_conversation__file__action");
+    private static final By idFileActionBtn = By.id("aab__row_conversation__action_button");
 
     private static final By idFileDialogActionOpenBtn = By.id("ttv__file_action_dialog__open");
 
