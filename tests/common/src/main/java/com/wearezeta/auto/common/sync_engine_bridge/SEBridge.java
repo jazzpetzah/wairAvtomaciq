@@ -20,7 +20,7 @@ public class SEBridge {
     private static SEBridge instance = null;
 
     private static final Logger LOG = ZetaLogger.getLog(SEBridge.class.getSimpleName());
-    
+
     {
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
     }
@@ -113,9 +113,10 @@ public class SEBridge {
         getOrAddDevice(userFrom, deviceName).sendFile(convId, path, mime);
     }
 
-    public void sendLocation(ClientUser userFrom, String convId, float longitude, float latitude, String deviceName, int zoom)
+    public void sendLocation(ClientUser userFrom, String deviceName, String convId, float longitude, float latitude, String locationName,
+                             int zoom)
             throws Exception {
-        getOrAddDevice(userFrom, deviceName).sendLocation(convId, longitude, latitude, deviceName, zoom);
+        getOrAddDevice(userFrom, deviceName).shareLocation(convId, longitude, latitude, locationName, zoom);
     }
 
     public void deleteMessage(ClientUser userFrom, String convId, MessageId messageId, String deviceName)
@@ -131,13 +132,13 @@ public class SEBridge {
             throws Exception {
         return getOrAddDevice(userFrom, deviceName).getConversationMessages(convId);
     }
-    
+
     public void releaseDevicesOfUsers(Collection<ClientUser> users) throws Exception {
         for (ClientUser user : users) {
             getDevicePool().releaseDevices(getDevicePool().getDevices(user));
         }
     }
-    
+
     public void releaseDevicesOfUser(ClientUser user) throws Exception {
         getDevicePool().releaseDevices(getDevicePool().getDevices(user));
     }
@@ -145,7 +146,7 @@ public class SEBridge {
     public void reset() throws Exception {
         this.getDevicePool().reset();
     }
-    
+
     private void shutdown() {
         try {
             getDevicePool().shutdown();
@@ -153,7 +154,7 @@ public class SEBridge {
             e.printStackTrace();
         }
     }
-    
+
     private UserDevicePool getDevicePool() throws Exception {
         return this.devicePool;
     }
@@ -165,7 +166,7 @@ public class SEBridge {
     private IDevice getOrAddDevice(ClientUser user, String deviceName) throws Exception {
         return getDevicePool().getOrAddDevice(user, deviceName);
     }
-    
+
     private static void verifyPathExists(String path) {
         if (!new File(path).exists()) {
             throw new IllegalArgumentException(String.format("The file %s is not accessible", path));

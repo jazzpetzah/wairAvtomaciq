@@ -571,17 +571,18 @@ public class CommonWebAppSteps {
      * @param latitude          latitude of location
      * @param conversationName  the name of existing conversation to send the message to
      * @throws Exception
-     * @step. ^User (.*) sends? location (.*) with ([-+]?[0-9]*\.?[0-9]+) and ([-+]?[0-9]*\.?[0-9]+) to conversation (.*)
+     * @step. ^User (.*) sends? location (.*) with ([-+]?[0-9]*\.?[0-9]+) and ([-+]?[0-9]*\.?[0-9]+) to (user|group conversation) (.*) via device (.*)
      */
-    @When("^User (.*) sends? location (.*) with ([-+]?[0-9]*\\.?[0-9]+) and ([-+]?[0-9]*\\.?[0-9]+) to conversation (.*)")
+    @When("^User (.*) sends? location (.*) with ([-+]?[0-9]*\\.?[0-9]+) and ([-+]?[0-9]*\\.?[0-9]+) to (user|group conversation) (.*) via device (.*)")
     public void UserSentLocationToConversation(String userFromNameAlias,
-                                               String locationName, String longitude, String latitude, String conversationName)
+                                               String locationName, String longitude, String latitude, String convoType, String conversationName, String deviceName)
             throws Exception {
+        boolean isGroup = convoType.equals("group conversation");
         float longitudeFloat = Float.parseFloat(longitude);
         float latitudeFloat = Float.parseFloat(latitude);
         int zoom = 14;
-        context.getCommonSteps().UserSentLocationToConversation(userFromNameAlias, locationName,longitudeFloat, latitudeFloat,
-                conversationName, zoom);
+        context.getCommonSteps().UserSentLocationToConversation(userFromNameAlias, deviceName,
+                 conversationName, longitudeFloat, latitudeFloat, locationName, zoom, isGroup);
     }
 
     /**

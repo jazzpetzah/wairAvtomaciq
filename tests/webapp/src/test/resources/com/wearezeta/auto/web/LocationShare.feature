@@ -10,7 +10,7 @@ Feature: Location Share
     Given I am signed in properly
     Given I see Contact list with name <ChatName>
     When I open conversation with <ChatName>
-    And User <Contact1> sends location <LocationName> with <Longitude> and <Latitude> to conversation <ChatName>
+    And User <Contact1> sends location <LocationName> with <Longitude> and <Latitude> to group conversation <ChatName> via device Device1
     #Then I see location message in the conversation view
 
     Examples:
