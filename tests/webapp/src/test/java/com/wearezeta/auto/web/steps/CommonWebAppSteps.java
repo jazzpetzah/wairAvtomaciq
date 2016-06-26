@@ -579,8 +579,9 @@ public class CommonWebAppSteps {
             throws Exception {
         float longitudeFloat = Float.parseFloat(longitude);
         float latitudeFloat = Float.parseFloat(latitude);
+        int zoom = 14;
         context.getCommonSteps().UserSentLocationToConversation(userFromNameAlias, locationName,longitudeFloat, latitudeFloat,
-                conversationName);
+                conversationName, zoom);
     }
 
     /**
