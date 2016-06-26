@@ -32,9 +32,6 @@ public interface IDevice extends IRemoteEntity {
 
 	void sendFile(String convId, String path, String mime) throws Exception;
 
-    void sendLocation(String convId, float longitude, float latitude, String locationName, int zoom)
-            throws Exception;
-
     void deleteMessage(String convId, MessageId messageId) throws Exception;
 
     ActorMessage.MessageInfo[] getConversationMessages(String convId) throws Exception;
