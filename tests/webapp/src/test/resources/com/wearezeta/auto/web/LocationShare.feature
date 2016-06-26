@@ -10,9 +10,9 @@ Feature: Location Share
     Given I am signed in properly
     Given I see Contact list with name <ChatName>
     When I open conversation with <ChatName>
-    And User (.*) sends? location (.*) to conversation (.*)
+    And User <Contact1> sends location <LocationName> with <Longitude> and <Latitude> to conversation <ChatName>
     #Then I see location message in the conversation view
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | Longitude  | Latitude   | LocationName     |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | 52.5162731 | 13.3601958 | Brandenburg Gate |
