@@ -295,7 +295,7 @@ Feature: Delete Message
       | Name      | Contact   | FileName | MIMEType  | DeviceName |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
 
-  @C150030 @staging
+  @C150030 @regression
   Scenario Outline: Verify you can delete Share Location placeholder from conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
