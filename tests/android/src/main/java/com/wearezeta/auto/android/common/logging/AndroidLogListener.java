@@ -9,8 +9,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.common.process.AsyncProcess;
 
 public final class AndroidLogListener {
-    private static final Logger log = ZetaLogger
-            .getLog(AndroidLogListener.class.getSimpleName());
+    private static final Logger log = ZetaLogger.getLog(AndroidLogListener.class.getSimpleName());
 
     public static final String ADB_PREFIX = "";
 
@@ -30,8 +29,7 @@ public final class AndroidLogListener {
 
     private static Map<ListenerType, AndroidLogListener> instances = new HashMap<>();
 
-    public static synchronized AndroidLogListener getInstance(
-            ListenerType listenerType) {
+    public static synchronized AndroidLogListener getInstance(ListenerType listenerType) {
         if (instances.isEmpty()) {
             for (ListenerType type : ListenerType.values()) {
                 instances.put(type, new AndroidLogListener(type.getTags()));
@@ -40,17 +38,17 @@ public final class AndroidLogListener {
         return instances.get(listenerType);
     }
 
-    private String tags;
+    private Optional<String> tags = Optional.empty();
 
     private AndroidLogListener(String tags) {
-        this.tags = tags;
+        this.tags = Optional.ofNullable(tags);
     }
 
     public boolean isRunning() {
-        return listener != null && listener.isRunning();
+        return listener.isPresent() && listener.get().isRunning();
     }
 
-    private AsyncProcess listener;
+    private Optional<AsyncProcess> listener = Optional.empty();
 
     public void start() throws Exception {
         if (this.isRunning()) {
@@ -59,41 +57,33 @@ public final class AndroidLogListener {
         }
         AndroidCommonUtils.executeAdb("logcat -c");
         String adbCmd;
-        if (this.tags == null) {
-            adbCmd = ADB_PREFIX + "adb logcat -v time";
+        if (this.tags.isPresent()) {
+            adbCmd = ADB_PREFIX + String.format("adb logcat -v time -s %s", this.tags.get());
         } else {
-            adbCmd = ADB_PREFIX
-                    + String.format("adb logcat -v time -s %s", this.tags);
+            adbCmd = ADB_PREFIX + "adb logcat -v time";
         }
         final String[] cmd = new String[]{"/bin/bash", "-c", adbCmd};
-        listener = new AsyncProcess(cmd, (this.tags != null),
-                (this.tags != null));
-        listener.start();
+        listener = Optional.of(new AsyncProcess(cmd, this.tags.isPresent(), this.tags.isPresent()));
+        listener.get().start();
     }
 
     public void stop() throws Exception {
-        if (!this.isRunning()) {
-            throw new IllegalStateException(
-                    "The listener has to be started first");
-        }
-        this.listener.stop(2, new int[]{this.listener.getPid() + 1,
-                this.listener.getPid()}, 5000);
+        this.listener.orElseThrow(
+                () -> new IllegalStateException("The listener has to be started first")
+        ).stop(2, new int[]{this.listener.get().getPid() + 1, this.listener.get().getPid()}, 5000);
+        this.listener = Optional.empty();
     }
 
     public String getStdOut() {
-        if (this.listener == null) {
-            throw new IllegalStateException(
-                    "The listener has to be started first");
-        }
-        return this.listener.getStdout();
+        return this.listener.orElseThrow(
+                () -> new IllegalStateException("The listener has to be started first")
+        ).getStdout();
     }
 
     public String getStdErr() {
-        if (this.listener == null) {
-            throw new IllegalStateException(
-                    "The listener has to be started first");
-        }
-        return this.listener.getStderr();
+        return this.listener.orElseThrow(
+                () -> new IllegalStateException("The listener has to be started first")
+        ).getStderr();
     }
 
     private static boolean isLineSatisfyingPatterns(List<String> patterns, final String line) {
@@ -121,14 +111,12 @@ public final class AndroidLogListener {
             final Optional<List<String>> excludePatterns = loggingProfile.getExcludePatterns();
             if (includePatterns.isPresent()) {
                 if (isLineSatisfyingPatterns(includePatterns.get(), line)) {
-                    if (!(excludePatterns.isPresent() &&
-                            isLineSatisfyingPatterns(excludePatterns.get(), line))) {
+                    if (!(excludePatterns.isPresent() && isLineSatisfyingPatterns(excludePatterns.get(), line))) {
                         stdout.append(lineWithTerminator);
                     }
                 }
             } else {
-                if (!(excludePatterns.isPresent() &&
-                        isLineSatisfyingPatterns(excludePatterns.get(), line))) {
+                if (!(excludePatterns.isPresent() && isLineSatisfyingPatterns(excludePatterns.get(), line))) {
                     stdout.append(lineWithTerminator);
                 }
             }
@@ -136,8 +124,7 @@ public final class AndroidLogListener {
         if (stdout.toString().length() > 0) {
             log.debug("=== CAPTURED STDOUT LOGS ===\n");
             System.out.println(stdout.toString().trim());
-            log.debug("=== END OF CAPTURED STDOUT LOGS ===" +
-                    "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+            log.debug("=== END OF CAPTURED STDOUT LOGS ===" + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         }
     }
 
