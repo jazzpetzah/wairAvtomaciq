@@ -281,6 +281,8 @@ Feature: Delete Message
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
     When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
+    And I see Audio Message container in the conversation view
+    And I wait for 5 seconds
     And I enable Airplane mode on the device
     And I tap Play button on the recent audio message in the conversation view
     And I long tap Audio Message container in the conversation view
