@@ -365,6 +365,10 @@ public final class WebAppLocators {
 
         public static final String cssLastAction = cssLastMessage + " .action";
 
+        //Location sharing
+
+        public static final String cssSharedLocation = "[][data-uie-value='%s']";
+
         // File transfer
 
         public static final String cssFile = "[data-uie-name='file'][data-uie-value='%s']";

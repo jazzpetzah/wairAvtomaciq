@@ -1128,6 +1128,15 @@ public class ConversationPage extends WebPage {
 
     public void clearConversationInput() throws Exception {
         conversationInput.sendKeys(Keys.BACK_SPACE);
+    }
 
+    public boolean isLocationMessageVisible(String locationName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssSharedLocation, locationName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isLocationMessageInvisible(String locationName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssSharedLocation, locationName));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }

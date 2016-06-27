@@ -142,7 +142,7 @@ public class ConversationPageSteps {
      * @step. ^I send message$
      */
     @When("^I send message$")
-    public void WhenISendMessage() throws Exception {
+    public void ISendMessage() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).sendNewMessage();
     }
 
@@ -1274,6 +1274,20 @@ public class ConversationPageSteps {
         while (i != 0) {
             context.getPagesCollection().getPage(ConversationPage.class).clearConversationInput();
             i--;
+        }
+    }
+
+    /**
+     *
+     *
+     */
+    @Then("^I (do not )?see location message (.*) in the conversation view$")
+    public void ISeeLocationMessage(String doNot, String locationName) throws Exception {
+        ConversationPage page = context.getPagesCollection().getPage(ConversationPage.class);
+        if (doNot == null) {
+            assertThat("Could not find location message " + locationName, page.isLocationMessageVisible(locationName));
+        } else {
+            assertThat("Location message " + locationName + "is shown", page.isLocationMessageInvisible(locationName));
         }
     }
 }
