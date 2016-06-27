@@ -96,7 +96,7 @@ public final class AndroidLogListener {
         return this.listener.getStderr();
     }
 
-    private static boolean isLineSatisfyingePatterns(List<String> patterns, final String line) {
+    private static boolean isLineSatisfyingPatterns(List<String> patterns, final String line) {
         for (String patt : patterns) {
             if (line.contains((patt))) {
                 return true;
@@ -120,15 +120,15 @@ public final class AndroidLogListener {
             final Optional<List<String>> includePatterns = loggingProfile.getIncludePatterns();
             final Optional<List<String>> excludePatterns = loggingProfile.getExcludePatterns();
             if (includePatterns.isPresent()) {
-                if (isLineSatisfyingePatterns(includePatterns.get(), line)) {
+                if (isLineSatisfyingPatterns(includePatterns.get(), line)) {
                     if (!(excludePatterns.isPresent() &&
-                            isLineSatisfyingePatterns(excludePatterns.get(), line))) {
+                            isLineSatisfyingPatterns(excludePatterns.get(), line))) {
                         stdout.append(lineWithTerminator);
                     }
                 }
             } else {
                 if (!(excludePatterns.isPresent() &&
-                        isLineSatisfyingePatterns(excludePatterns.get(), line))) {
+                        isLineSatisfyingPatterns(excludePatterns.get(), line))) {
                     stdout.append(lineWithTerminator);
                 }
             }
