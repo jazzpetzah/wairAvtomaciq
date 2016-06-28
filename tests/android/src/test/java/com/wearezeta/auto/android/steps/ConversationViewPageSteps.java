@@ -1390,4 +1390,20 @@ public class ConversationViewPageSteps {
                 String.format("The height of '%s' message is not %s times greater than the height of '%s' message",
                         msg1, times, msg2), msg1Height > msg2Height * Double.parseDouble(times));
     }
+
+    /**
+     * Verify whether two strings in the conversation view have the same height
+     *
+     * @step. ^I see that messages "(.*)" and "(.*)" have equal height in the conversation view$
+     * @param msg1  the first conversation message text
+     * @param msg2  the second message text
+     * @throws Exception
+     */
+    @Then("^I see that messages \"(.*)\" and \"(.*)\" have equal height in the conversation view$")
+    public void ISeeMassagesHaveEqualHeight(String msg1, String msg2) throws Exception {
+        final int msg1Height = getConversationViewPage().getMessageHeight(msg1);
+        final int msg2Height = getConversationViewPage().getMessageHeight(msg2);
+        Assert.assertEquals(String.format("The height of '%s' message is not equal to the height of '%s' message",
+                msg1, msg2), msg1Height, msg2Height);
+    }
 }
