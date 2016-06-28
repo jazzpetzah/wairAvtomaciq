@@ -558,4 +558,20 @@ public class ConversationViewPageSteps {
     public void ITapActionBarButton(String btnName) throws Exception {
         getConversationViewPage().tapActionBarButton(btnName);
     }
+
+    /**
+     * Check the corresponding action mode bar button. The toolbar appears upon long tap on conversation item
+     *
+     * @param name one of possible toolbar button names
+     * @throws Exception
+     * @step. ^I (do not )?see (Delete|Copy|Close) button on the action mode bar$
+     */
+    @Then("^I (do not )?see (Delete|Copy|Close) button on the action mode bar$")
+    public void ITapTopToolbarButton(String shouldNotSee, String name) throws Exception {
+        final boolean condition = (shouldNotSee == null) ?
+                getConversationViewPage().isActionModeBarButtonVisible(name) :
+                getConversationViewPage().isActionModeBarButtonInvisible(name);
+        Assert.assertTrue(String.format("The top toolbar button '%s' should be %s", name,
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
 }

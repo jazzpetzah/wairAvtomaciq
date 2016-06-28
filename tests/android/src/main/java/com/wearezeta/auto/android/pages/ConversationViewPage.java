@@ -753,28 +753,14 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public boolean isDeleteActionModeBarButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idActionModeBarDeleteButton);
+    public boolean isActionModeBarButtonVisible(String btnNAme) throws Exception {
+        final By locator = getActionBarButtonLocatorByName(btnNAme);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isDeleteActionModeBarButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idActionModeBarDeleteButton);
-    }
-
-    public boolean isCopyActionModeBarButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idActionModeBarCopyButton);
-    }
-
-    public boolean isCopyActionModeBarButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idActionModeBarCopyButton);
-    }
-
-    public boolean isCloseActionModeBarButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idActionModeBarCloseButton);
-    }
-
-    public boolean isCloseActionModeBarButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idActionModeBarCloseButton);
+    public boolean isActionModeBarButtonInvisible(String btnNAme) throws Exception {
+        final By locator = getActionBarButtonLocatorByName(btnNAme);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public void longTapMessage(String msg) throws Exception {

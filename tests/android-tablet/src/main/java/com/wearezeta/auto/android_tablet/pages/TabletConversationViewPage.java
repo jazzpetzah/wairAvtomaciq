@@ -197,4 +197,12 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     public void tapActionBarButton(String btnName) throws Exception {
         getConversationViewPage().tapActionBarButton(btnName);
     }
+
+    public boolean isActionModeBarButtonVisible(String name) throws Exception {
+        return getConversationViewPage().isActionModeBarButtonVisible(name);
+    }
+
+    public boolean isActionModeBarButtonInvisible(String name) throws Exception {
+        return getConversationViewPage().isActionModeBarButtonInvisible(name);
+    }
 }
