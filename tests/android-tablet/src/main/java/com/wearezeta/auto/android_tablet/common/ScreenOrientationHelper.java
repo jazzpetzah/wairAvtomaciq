@@ -15,7 +15,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
  */
 public final class ScreenOrientationHelper {
 
-    public static final long ROTATION_DELAY_MS = 2000;
+    public static final long ROTATION_DELAY_MS = 1500;
     private static ScreenOrientationHelper instance;
 
     public static synchronized ScreenOrientationHelper getInstance() {

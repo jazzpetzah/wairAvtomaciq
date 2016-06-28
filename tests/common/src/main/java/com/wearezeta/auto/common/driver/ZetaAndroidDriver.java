@@ -386,18 +386,8 @@ public class ZetaAndroidDriver extends AndroidDriver<WebElement> implements Zeta
      */
     @Override
     public ScreenOrientation getOrientation() {
-        SurfaceOrientation value;
-        try {
-            value = getSurfaceOrientation();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return super.getOrientation();
-        }
-        if (value.getCode() % 2 == 1) {
-            return ScreenOrientation.LANDSCAPE;
-        } else {
-            return ScreenOrientation.PORTRAIT;
-        }
+        final Dimension dim = this.manage().window().getSize();
+        return (dim.getWidth() > dim.getHeight()) ? ScreenOrientation.LANDSCAPE : ScreenOrientation.PORTRAIT;
     }
 
     /**
