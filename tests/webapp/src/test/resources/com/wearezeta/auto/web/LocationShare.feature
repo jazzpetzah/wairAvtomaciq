@@ -1,7 +1,7 @@
 Feature: Location Share
 
-  @C150024 @staging
-  Scenario Outline: Verify you can see location shared from mobile
+  @C150033 @staging
+  Scenario Outline: Verify you can see location sent from mobile and delete it from conversation view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
@@ -12,6 +12,9 @@ Feature: Location Share
     When I open conversation with <ChatName>
     And User <Contact1> sends location <LocationName> with <Longitude> and <Latitude> to group conversation <ChatName> via device Device1
     Then I see location message <LocationName> in the conversation view
+    When I click to delete the latest message
+    And I click confirm to delete message
+    Then I do not see location message <LocationName> in the conversation view
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | Longitude  | Latitude  | LocationName |

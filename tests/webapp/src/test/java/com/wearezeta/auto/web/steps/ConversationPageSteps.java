@@ -1294,9 +1294,7 @@ public class ConversationPageSteps {
             assertThat("The link doesn't contain a proper location",
                     context.getPagesCollection().getPage(ConversationPage.class).getLocationNameFromLink(), containsString(locationName));
         } else {
-            assertThat("Location message " + locationName + "is shown", page.getLocationName(), equalTo(locationName));
-            assertThat("The location link for" + locationName + "is shown",
-                    context.getPagesCollection().getPage(ConversationPage.class).getLocationNameFromLink(), containsString(locationName));
+            assertThat("Location message " + locationName + "is shown", context.getPagesCollection().getPage(ConversationPage.class).isLocationNameNotShown());
         }
     }
 }
