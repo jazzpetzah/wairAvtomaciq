@@ -355,7 +355,6 @@ public class CommonAndroidTabletSteps {
             default:
                 throw new IllegalArgumentException(String.format("Unknown orientation value '%s'", orientation));
         }
-
     }
 
     /**

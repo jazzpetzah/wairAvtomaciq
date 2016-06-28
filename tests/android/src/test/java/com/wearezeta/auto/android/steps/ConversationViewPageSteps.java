@@ -1090,23 +1090,9 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see (Delete|Copy|Close) button on the action mode bar$")
     public void ITapTopToolbarButton(String shouldNotSee, String name) throws Exception {
-        boolean condition;
-        switch (name.toLowerCase()) {
-            case "delete":
-                condition = (shouldNotSee == null) ? getConversationViewPage().isDeleteActionModeBarButtonVisible() :
-                        getConversationViewPage().isDeleteActionModeBarButtonInvisible();
-                break;
-            case "copy":
-                condition = (shouldNotSee == null) ? getConversationViewPage().isCopyActionModeBarButtonVisible() :
-                        getConversationViewPage().isCopyActionModeBarButtonInvisible();
-                break;
-            case "close":
-                condition = (shouldNotSee == null) ? getConversationViewPage().isCloseActionModeBarButtonVisible() :
-                        getConversationViewPage().isCloseActionModeBarButtonInvisible();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("There is no '%s' button on the action bar", name));
-        }
+        final boolean condition = (shouldNotSee == null) ?
+                getConversationViewPage().isActionModeBarButtonVisible(name) :
+                getConversationViewPage().isActionModeBarButtonInvisible(name);
         Assert.assertTrue(String.format("The top toolbar button '%s' should be %s", name,
                 (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
@@ -1120,22 +1106,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap (Delete|Copy|Close|Forward) button on the action mode bar$")
     public void ITapTopToolbarButton(String name) throws Exception {
-        switch (name.toLowerCase()) {
-            case "delete":
-                getConversationViewPage().tapDeleteActionModeBarButton();
-                break;
-            case "copy":
-                getConversationViewPage().tapCopyTopActionModeBarButton();
-                break;
-            case "close":
-                getConversationViewPage().tapCloseTopActionModeBarButton();
-                break;
-            case "forward":
-                getConversationViewPage().tapForwardTopActionModeBarButton();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("There is no '%s' button on the top toolbar", name));
-        }
+        getConversationViewPage().tapActionBarButton(name);
     }
 
     /**
@@ -1186,37 +1157,11 @@ public class ConversationViewPageSteps {
     @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) " +
             "container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
-        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
-        switch (containerType.toLowerCase()) {
-            case "youtube":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isYoutubeContainerVisible :
-                        getConversationViewPage()::isYoutubeContainerInvisible;
-                break;
-            case "soundcloud":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isSoundcloudContainerVisible :
-                        getConversationViewPage()::isSoundcloudContainerInvisible;
-                break;
-            case "file upload":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isFileUploadContainerVisible :
-                        getConversationViewPage()::isFileUploadContainerInvisible;
-                break;
-            case "video message":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isVideoMessageVisible :
-                        getConversationViewPage()::isVideoMessageNotVisible;
-                break;
-            case "audio message":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isAudioMessageVisible :
-                        getConversationViewPage()::isAudioMessageNotVisible;
-                break;
-            case "share location":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isShareLocationVisible :
-                        getConversationViewPage()::isShareLocationNotVisible;
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
-        }
+        final boolean condition = (shouldNotSee == null) ?
+                getConversationViewPage().isContainerVisible(containerType) :
+                getConversationViewPage().isContainerInvisible(containerType);
         Assert.assertTrue(String.format("%s should be %s in the conversation view", containerType,
-                (shouldNotSee == null) ? "visible" : "invisible"), verificationFunc.call());
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
 
     /**
@@ -1230,51 +1175,10 @@ public class ConversationViewPageSteps {
     @When("^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) " +
             "container in the conversation view$")
     public void ITapContainer(String isLongTap, String containerType) throws Exception {
-        switch (containerType.toLowerCase()) {
-            case "youtube":
-                if (isLongTap == null) {
-                    getConversationViewPage().tapYoutubeContainer();
-                } else {
-                    getConversationViewPage().longTapYoutubeContainer();
-                }
-                break;
-            case "soundcloud":
-                if (isLongTap == null) {
-                    getConversationViewPage().tapSoundcloudContainer();
-                } else {
-                    getConversationViewPage().longTapSoundcloudContainer();
-                }
-                break;
-            case "file upload":
-                if (isLongTap == null) {
-                    getConversationViewPage().tapFileUploadContainer();
-                } else {
-                    getConversationViewPage().longTapFileUploadContainer();
-                }
-                break;
-            case "video message":
-                if (isLongTap == null) {
-                    getConversationViewPage().tapVideoMessageContainer();
-                } else {
-                    getConversationViewPage().longVideoMessageContainer();
-                }
-                break;
-            case "audio message":
-                if (isLongTap == null) {
-                    getConversationViewPage().tapAudioMessageContainer();
-                } else {
-                    getConversationViewPage().longAudioMessageContainer();
-                }
-                break;
-            case "share location":
-                if (isLongTap == null) {
-                    getConversationViewPage().tapShareLocationContainer();
-                } else {
-                    getConversationViewPage().longTapShareLocationContainer();
-                }
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
+        if (isLongTap == null) {
+            getConversationViewPage().tapContainer(containerType);
+        } else {
+            getConversationViewPage().longTapContainer(containerType);
         }
     }
 
@@ -1484,6 +1388,22 @@ public class ConversationViewPageSteps {
         final int msg2Height = getConversationViewPage().getMessageHeight(msg2);
         Assert.assertTrue(
                 String.format("The height of '%s' message is not %s times greater than the height of '%s' message",
-                msg1, times, msg2), msg1Height > msg2Height * Double.parseDouble(times));
+                        msg1, times, msg2), msg1Height > msg2Height * Double.parseDouble(times));
+    }
+
+    /**
+     * Verify whether two strings in the conversation view have the same height
+     *
+     * @step. ^I see that messages "(.*)" and "(.*)" have equal height in the conversation view$
+     * @param msg1  the first conversation message text
+     * @param msg2  the second message text
+     * @throws Exception
+     */
+    @Then("^I see that messages \"(.*)\" and \"(.*)\" have equal height in the conversation view$")
+    public void ISeeMassagesHaveEqualHeight(String msg1, String msg2) throws Exception {
+        final int msg1Height = getConversationViewPage().getMessageHeight(msg1);
+        final int msg2Height = getConversationViewPage().getMessageHeight(msg2);
+        Assert.assertEquals(String.format("The height of '%s' message is not equal to the height of '%s' message",
+                msg1, msg2), msg1Height, msg2Height);
     }
 }

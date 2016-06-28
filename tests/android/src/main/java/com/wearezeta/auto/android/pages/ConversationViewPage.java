@@ -753,40 +753,14 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public void tapDeleteActionModeBarButton() throws Exception {
-        getElement(idActionModeBarDeleteButton).click();
+    public boolean isActionModeBarButtonVisible(String btnNAme) throws Exception {
+        final By locator = getActionBarButtonLocatorByName(btnNAme);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public void tapCopyTopActionModeBarButton() throws Exception {
-        getElement(idActionModeBarCopyButton).click();
-    }
-
-    public void tapCloseTopActionModeBarButton() throws Exception {
-        getElement(idActionModeBarCloseButton).click();
-    }
-
-    public boolean isDeleteActionModeBarButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idActionModeBarDeleteButton);
-    }
-
-    public boolean isDeleteActionModeBarButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idActionModeBarDeleteButton);
-    }
-
-    public boolean isCopyActionModeBarButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idActionModeBarCopyButton);
-    }
-
-    public boolean isCopyActionModeBarButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idActionModeBarCopyButton);
-    }
-
-    public boolean isCloseActionModeBarButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idActionModeBarCloseButton);
-    }
-
-    public boolean isCloseActionModeBarButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idActionModeBarCloseButton);
+    public boolean isActionModeBarButtonInvisible(String btnNAme) throws Exception {
+        final By locator = getActionBarButtonLocatorByName(btnNAme);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public void longTapMessage(String msg) throws Exception {
@@ -799,52 +773,51 @@ public class ConversationViewPage extends AndroidPage {
         getElement(locator).click();
     }
 
-    public boolean isYoutubeContainerVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idYoutubeContainer);
+    private By getContainerLocatorByName(String containerType) {
+        switch (containerType.toLowerCase()) {
+            case "youtube":
+                return idYoutubeContainer;
+            case "soundcloud":
+                return idSoundcloudContainer;
+            case "file upload":
+                return idFileTransferContainer;
+            case "video message":
+                return idVideoMessageContainer;
+            case "audio message":
+                return idAudioMessageContainer;
+            case "share location":
+                return idShareLocationContainer;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
+        }
     }
 
-    public boolean isYoutubeContainerInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idYoutubeContainer);
+    public boolean isContainerVisible(String name) throws Exception {
+        final By locator = getContainerLocatorByName(name);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public void tapYoutubeContainer() throws Exception {
-        getElement(idYoutubeContainer).click();
+    public boolean isContainerInvisible(String name) throws Exception {
+        final By locator = getContainerLocatorByName(name);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public void longTapYoutubeContainer() throws Exception {
-        getDriver().longTap(getElement(idYoutubeContainer), DriverUtils.LONG_TAP_DURATION);
+    public void tapContainer(String name) throws Exception {
+        final By locator = getContainerLocatorByName(name);
+        getElement(locator).click();
     }
 
-    public boolean isSoundcloudContainerVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idSoundcloudContainer);
-    }
-
-    public boolean isSoundcloudContainerInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idSoundcloudContainer);
-    }
-
-    public void tapSoundcloudContainer() throws Exception {
-        getElement(idSoundcloudContainer).click();
-    }
-
-    public void longTapSoundcloudContainer() throws Exception {
-        getDriver().longTap(getElement(idSoundcloudContainer), DriverUtils.LONG_TAP_DURATION);
-    }
-
-    public boolean isFileUploadContainerVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idFileTransferContainer);
-    }
-
-    public boolean isFileUploadContainerInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idFileTransferContainer);
-    }
-
-    public void tapFileUploadContainer() throws Exception {
-        getElement(idFileTransferContainer).click();
-    }
-
-    public void longTapFileUploadContainer() throws Exception {
-        getDriver().longTap(getElement(idFileTransferContainer), DriverUtils.LONG_TAP_DURATION);
+    public void longTapContainer(String name) throws Exception {
+        final By locator = getContainerLocatorByName(name);
+        if (locator.equals(idAudioMessageContainer)) {
+            // workaround for audio messages
+            final WebElement el = getElement(locator);
+            final Point location = el.getLocation();
+            final Dimension size = el.getSize();
+            getDriver().longTap(location.x + size.width / 2, location.y + size.height / 5, DriverUtils.LONG_TAP_DURATION);
+        } else {
+            getDriver().longTap(getElement(locator), DriverUtils.LONG_TAP_DURATION);
+        }
     }
 
     public void tapPingMessage(String message) throws Exception {
@@ -860,47 +833,12 @@ public class ConversationViewPage extends AndroidPage {
         getDriver().longTap(getElement(xpathLastPicture), DriverUtils.LONG_TAP_DURATION);
     }
 
-    public boolean isVideoMessageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idVideoMessageContainer);
-    }
-
-    public boolean isVideoMessageNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idVideoMessageContainer);
-    }
-
-    public boolean isAudioMessageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idAudioMessageContainer);
-    }
-
-    public boolean isAudioMessageNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idAudioMessageContainer);
-    }
-
     public void tapVideoMessageButton() throws Exception {
         getElement(idVideoContainerButton).click();
     }
 
     public void tapAudioMessageButton() throws Exception {
         getElement(idAudioContainerButton).click();
-    }
-
-    public void tapVideoMessageContainer() throws Exception {
-        getElement(idVideoMessageContainer).click();
-    }
-
-    public void longVideoMessageContainer() throws Exception {
-        getDriver().longTap(getElement(idVideoMessageContainer), DriverUtils.LONG_TAP_DURATION);
-    }
-
-    public void tapAudioMessageContainer() throws Exception {
-        getElement(idAudioMessageContainer).click();
-    }
-
-    public void longAudioMessageContainer() throws Exception {
-        WebElement el = getElement(idAudioMessageContainer);
-        final Point location = el.getLocation();
-        final Dimension size = el.getSize();
-        getDriver().longTap(location.x + size.width / 2, location.y + size.height / 5, DriverUtils.LONG_TAP_DURATION);
     }
 
     public boolean isVideoMessageButtonVisible() throws Exception {
@@ -922,10 +860,6 @@ public class ConversationViewPage extends AndroidPage {
         new TouchActions(getDriver()).down(x, y).perform();
     }
 
-    public void tapForwardTopActionModeBarButton() throws Exception {
-        getElement(idActionModeBarForwardButton).click();
-    }
-
     public boolean isCursorToolbarVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorMore);
     }
@@ -934,24 +868,28 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorMore);
     }
 
-    public boolean isShareLocationVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idShareLocationContainer);
-    }
-
-    public boolean isShareLocationNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idShareLocationContainer);
-    }
-
-    public void longTapShareLocationContainer() throws Exception {
-        getDriver().longTap(getElement(idShareLocationContainer), DriverUtils.LONG_TAP_DURATION);
-    }
-
-    public void tapShareLocationContainer() throws Exception {
-        getElement(idShareLocationContainer).click();
-    }
-
     public int getMessageHeight(String msg) throws Exception {
         final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
         return Integer.parseInt(getElement(locator).getAttribute("height"));
+    }
+
+    private By getActionBarButtonLocatorByName(String btnName) {
+        switch (btnName.toLowerCase()) {
+            case "delete":
+                return idActionModeBarDeleteButton;
+            case "copy":
+                return idActionModeBarCopyButton;
+            case "close":
+                return idActionModeBarCloseButton;
+            case "forward":
+                return idActionModeBarForwardButton;
+            default:
+                throw new IllegalArgumentException(String.format("There is no '%s' button on the actions bar",
+                        btnName));
+        }
+    }
+
+    public void tapActionBarButton(String name) throws Exception {
+        getElement(getActionBarButtonLocatorByName(name)).click();
     }
 }

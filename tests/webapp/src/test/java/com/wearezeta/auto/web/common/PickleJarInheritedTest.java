@@ -97,7 +97,7 @@ public class PickleJarInheritedTest extends PickleJarTest {
     @Override
     public void tearDown() throws Exception {
         super.tearDown();
-        lifecycle.tearDown();
+        lifecycle.tearDown(getReportScenario());
     }
 
     @AfterClass
