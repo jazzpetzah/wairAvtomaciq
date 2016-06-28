@@ -36,6 +36,8 @@ public class ConversationViewPage extends AndroidPage {
 
     public static final By idCursorVideoMessage = By.id("cursor_menu_item_video");
 
+    private static final By idCursorShareLocation = By.id("cursor_menu_item_location");
+
     public static final By idCursorView = By.id("cal__cursor");
 
     public static final By idCursorSelfAvatar = By.id("civ__cursor__self_avatar");
@@ -95,16 +97,16 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idAudioMessageRecordingSileControl = By.id("fl__audio_message__recording__slide_control");
 
-    private static final By idAudioMessageSendButton = By.id("fl__audio_message__recording__send_button_container");
+    private static final By idAudioRecordingSendButton = By.id("fl__audio_message__recording__send_button_container");
 
-    private static final By idAudioMessagePlayButton = By.id("fl__audio_message__recording__bottom_button_container");
+    private static final By idAudioRecordingPlayButton = By.id("fl__audio_message__recording__bottom_button_container");
 
-    private static final By idAudioMessageCancelButton = By.id("fl__audio_message__recording__cancel_button_container");
+    private static final By idAudioRecordingCancelButton = By.id("fl__audio_message__recording__cancel_button_container");
 
     private static final By xpathAudioMessageDurationText =
             By.xpath("//*[@id='ttv__audio_message__recording__duration' and not(text())]");
 
-    private static final By idFileActionBtn = By.id("gtv__row_conversation__file__action");
+    private static final By idFileActionBtn = By.id("aab__row_conversation__action_button");
 
     private static final By idFileDialogActionOpenBtn = By.id("ttv__file_action_dialog__open");
 
@@ -176,7 +178,9 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idAudioMessageContainer = By.id("tfll__audio_message_container");
 
-    private static final By idAudioContainerButton = By.id("gpv__row_conversation__audio_button");
+    private static final By idAudioContainerButton = By.id("aab__row_conversation__audio_button");
+
+    private static final By idShareLocationContainer = By.id("cv__location_map_container");
 
     private static final By idAudioContainerSeekbar = By.id("sb__audio_progress");
 
@@ -247,7 +251,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public BufferedImage getAudioMessagePreviewMicrophoneButtonState() throws Exception {
-        return this.getElementScreenshot(getElement(idAudioMessagePlayButton)).orElseThrow(
+        return this.getElementScreenshot(getElement(idAudioRecordingPlayButton)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of Audio message recording slide microphone button")
         );
     }
@@ -328,6 +332,8 @@ public class ConversationViewPage extends AndroidPage {
                 return idCursorAudioMessage;
             case "video message":
                 return idCursorVideoMessage;
+            case "share location":
+                return idCursorShareLocation;
             default:
                 throw new IllegalArgumentException(String.format("Unknown tool button name '%s'", name));
         }
@@ -349,7 +355,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void longTapAudioMessageCursorBtnAndSwipeUp(int longTapDurationMilliseconds) throws Exception {
-        longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idAudioMessageSendButton),
+        longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idAudioRecordingSendButton),
                 DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds);
     }
 
@@ -368,33 +374,35 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessageRecordingSileControl);
     }
 
-    public boolean isAudioMessageSendButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessageSendButton);
-    }
-
-    public boolean isAudioMessagePlayButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessagePlayButton);
-    }
-
-    public boolean isAudioMessageCancelButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessageCancelButton);
+    public boolean isAudioRecordingButtonVisible(String name) throws Exception {
+        final By locator = getAudioRecordingButtonLocator(name);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isAudioMessageRecordingDurationVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathAudioMessageDurationText);
     }
 
-    public void tapAudioMessageSendButton() throws Exception {
-        // Workaround cause click doesn't work, it seems need real touch
-        getDriver().longTap(getElement(idAudioMessageSendButton), DriverUtils.SINGLE_TAP_DURATION);
+    private By getAudioRecordingButtonLocator(String btnName) {
+        switch (btnName.toLowerCase()) {
+            case "send":
+                return idAudioRecordingSendButton;
+            case "cancel":
+                return idAudioRecordingCancelButton;
+            case "play":
+                return idAudioRecordingPlayButton;
+            default:
+                throw new IllegalStateException(String.format("Cannot identify audio recording button '%s'", btnName));
+        }
     }
 
-    public void tapAudioMessageCancelButton() throws Exception {
-        getElement(idAudioMessageCancelButton).click();
-    }
-
-    public void tapAudioMessagePlayButton() throws Exception {
-        getElement(idAudioMessagePlayButton).click();
+    public void tapAudioRecordingButton(String name) throws Exception {
+        final By locator = getAudioRecordingButtonLocator(name);
+        if (locator.equals(idAudioRecordingSendButton)) {
+            getDriver().longTap(getElement(idAudioRecordingSendButton), DriverUtils.SINGLE_TAP_DURATION);
+        } else {
+            getElement(locator).click();
+        }
     }
 
     //endregion
@@ -747,40 +755,14 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public void tapDeleteActionModeBarButton() throws Exception {
-        getElement(idActionModeBarDeleteButton).click();
+    public boolean isActionModeBarButtonVisible(String btnNAme) throws Exception {
+        final By locator = getActionBarButtonLocatorByName(btnNAme);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public void tapCopyTopActionModeBarButton() throws Exception {
-        getElement(idActionModeBarCopyButton).click();
-    }
-
-    public void tapCloseTopActionModeBarButton() throws Exception {
-        getElement(idActionModeBarCloseButton).click();
-    }
-
-    public boolean isDeleteActionModeBarButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idActionModeBarDeleteButton);
-    }
-
-    public boolean isDeleteActionModeBarButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idActionModeBarDeleteButton);
-    }
-
-    public boolean isCopyActionModeBarButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idActionModeBarCopyButton);
-    }
-
-    public boolean isCopyActionModeBarButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idActionModeBarCopyButton);
-    }
-
-    public boolean isCloseActionModeBarButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idActionModeBarCloseButton);
-    }
-
-    public boolean isCloseActionModeBarButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idActionModeBarCloseButton);
+    public boolean isActionModeBarButtonInvisible(String btnNAme) throws Exception {
+        final By locator = getActionBarButtonLocatorByName(btnNAme);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
     public void longTapMessage(String msg) throws Exception {
@@ -793,52 +775,51 @@ public class ConversationViewPage extends AndroidPage {
         getElement(locator).click();
     }
 
-    public boolean isYoutubeContainerVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idYoutubeContainer);
+    private By getContainerLocatorByName(String containerType) {
+        switch (containerType.toLowerCase()) {
+            case "youtube":
+                return idYoutubeContainer;
+            case "soundcloud":
+                return idSoundcloudContainer;
+            case "file upload":
+                return idFileTransferContainer;
+            case "video message":
+                return idVideoMessageContainer;
+            case "audio message":
+                return idAudioMessageContainer;
+            case "share location":
+                return idShareLocationContainer;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
+        }
     }
 
-    public boolean isYoutubeContainerInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idYoutubeContainer);
+    public boolean isContainerVisible(String name) throws Exception {
+        final By locator = getContainerLocatorByName(name);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public void tapYoutubeContainer() throws Exception {
-        getElement(idYoutubeContainer).click();
+    public boolean isContainerInvisible(String name) throws Exception {
+        final By locator = getContainerLocatorByName(name);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public void longTapYoutubeContainer() throws Exception {
-        getDriver().longTap(getElement(idYoutubeContainer), DriverUtils.LONG_TAP_DURATION);
+    public void tapContainer(String name) throws Exception {
+        final By locator = getContainerLocatorByName(name);
+        getElement(locator).click();
     }
 
-    public boolean isSoundcloudContainerVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idSoundcloudContainer);
-    }
-
-    public boolean isSoundcloudContainerInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idSoundcloudContainer);
-    }
-
-    public void tapSoundcloudContainer() throws Exception {
-        getElement(idSoundcloudContainer).click();
-    }
-
-    public void longTapSoundcloudContainer() throws Exception {
-        getDriver().longTap(getElement(idSoundcloudContainer), DriverUtils.LONG_TAP_DURATION);
-    }
-
-    public boolean isFileUploadContainerVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idFileTransferContainer);
-    }
-
-    public boolean isFileUploadContainerInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idFileTransferContainer);
-    }
-
-    public void tapFileUploadContainer() throws Exception {
-        getElement(idFileTransferContainer).click();
-    }
-
-    public void longTapFileUploadContainer() throws Exception {
-        getDriver().longTap(getElement(idFileTransferContainer), DriverUtils.LONG_TAP_DURATION);
+    public void longTapContainer(String name) throws Exception {
+        final By locator = getContainerLocatorByName(name);
+        if (locator.equals(idAudioMessageContainer)) {
+            // workaround for audio messages
+            final WebElement el = getElement(locator);
+            final Point location = el.getLocation();
+            final Dimension size = el.getSize();
+            getDriver().longTap(location.x + size.width / 2, location.y + size.height / 5, DriverUtils.LONG_TAP_DURATION);
+        } else {
+            getDriver().longTap(getElement(locator), DriverUtils.LONG_TAP_DURATION);
+        }
     }
 
     public void tapPingMessage(String message) throws Exception {
@@ -854,47 +835,12 @@ public class ConversationViewPage extends AndroidPage {
         getDriver().longTap(getElement(xpathLastPicture), DriverUtils.LONG_TAP_DURATION);
     }
 
-    public boolean isVideoMessageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idVideoMessageContainer);
-    }
-
-    public boolean isVideoMessageNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idVideoMessageContainer);
-    }
-
-    public boolean isAudioMessageVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idAudioMessageContainer);
-    }
-
-    public boolean isAudioMessageNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), idAudioMessageContainer);
-    }
-
     public void tapVideoMessageButton() throws Exception {
         getElement(idVideoContainerButton).click();
     }
 
     public void tapAudioMessageButton() throws Exception {
         getElement(idAudioContainerButton).click();
-    }
-
-    public void tapVideoMessageContainer() throws Exception {
-        getElement(idVideoMessageContainer).click();
-    }
-
-    public void longVideoMessageContainer() throws Exception {
-        getDriver().longTap(getElement(idVideoMessageContainer), DriverUtils.LONG_TAP_DURATION);
-    }
-
-    public void tapAudioMessageContainer() throws Exception {
-        getElement(idAudioMessageContainer).click();
-    }
-
-    public void longAudioMessageContainer() throws Exception {
-        WebElement el = getElement(idAudioMessageContainer);
-        final Point location = el.getLocation();
-        final Dimension size = el.getSize();
-        getDriver().longTap(location.x + size.width / 2, location.y + size.height / 5, DriverUtils.LONG_TAP_DURATION);
     }
 
     public boolean isVideoMessageButtonVisible() throws Exception {
@@ -916,15 +862,36 @@ public class ConversationViewPage extends AndroidPage {
         new TouchActions(getDriver()).down(x, y).perform();
     }
 
-    public void tapForwardTopActionModeBarButton() throws Exception {
-        getElement(idActionModeBarForwardButton).click();
-    }
-
     public boolean isCursorToolbarVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorMore);
     }
 
     public boolean isCursorToolbarInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCursorMore);
+    }
+
+    public int getMessageHeight(String msg) throws Exception {
+        final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
+        return Integer.parseInt(getElement(locator).getAttribute("height"));
+    }
+
+    private By getActionBarButtonLocatorByName(String btnName) {
+        switch (btnName.toLowerCase()) {
+            case "delete":
+                return idActionModeBarDeleteButton;
+            case "copy":
+                return idActionModeBarCopyButton;
+            case "close":
+                return idActionModeBarCloseButton;
+            case "forward":
+                return idActionModeBarForwardButton;
+            default:
+                throw new IllegalArgumentException(String.format("There is no '%s' button on the actions bar",
+                        btnName));
+        }
+    }
+
+    public void tapActionBarButton(String name) throws Exception {
+        getElement(getActionBarButtonLocatorByName(name)).click();
     }
 }

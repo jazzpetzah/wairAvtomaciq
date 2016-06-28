@@ -236,10 +236,10 @@ public class CommonAndroidSteps {
 
         isAutoAnswerCallEnabled = scenario.getSourceTagNames().contains("@calling_autoAnswer");
 
+        if (scenario.getSourceTagNames().contains("@performance")) {
+            AndroidLogListener.getInstance(ListenerType.PERF).start();
+        }
         if (isLogcatEnabled) {
-            if (scenario.getSourceTagNames().contains("@performance")) {
-                AndroidLogListener.getInstance(ListenerType.PERF).start();
-            }
             AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
         }
 
@@ -249,6 +249,54 @@ public class CommonAndroidSteps {
         }
         final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(getUrl(), appPath);
         updateDriver(lazyDriver);
+    }
+
+    @After
+    public void tearDown(Scenario scenario) {
+        try {
+            AndroidCommonUtils.setAirplaneMode(false);
+        } catch (Exception e) {
+            // do not fail if smt fails here
+            e.printStackTrace();
+        }
+
+        try {
+            // async calls/waiting instances cleanup
+            CommonCallingSteps2.getInstance().cleanup();
+        } catch (Exception e) {
+            // do not fail if smt fails here
+            e.printStackTrace();
+        }
+
+        pagesCollection.clearAllPages();
+
+        try {
+            if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            usrMgr.resetUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        AndroidLogListener.forceStopAll();
+        LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
+        if (!scenario.getStatus().equals(Result.PASSED)) {
+            loggingProfile = new RegressionFailedLoggingProfile();
+        }
+        if (isLogcatEnabled) {
+            try {
+                AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener.getInstance(ListenerType.DEFAULT),
+                        loggingProfile);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void updateDriver(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -894,54 +942,6 @@ public class CommonAndroidSteps {
         }
     }
 
-    @After
-    public void tearDown(Scenario scenario) {
-        try {
-            AndroidCommonUtils.setAirplaneMode(false);
-        } catch (Exception e) {
-            // do not fail if smt fails here
-            e.printStackTrace();
-        }
-
-        try {
-            // async calls/waiting instances cleanup
-            CommonCallingSteps2.getInstance().cleanup();
-        } catch (Exception e) {
-            // do not fail if smt fails here
-            e.printStackTrace();
-        }
-
-        pagesCollection.clearAllPages();
-
-        try {
-            if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-                PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            usrMgr.resetUsers();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        AndroidLogListener.forceStopAll();
-        LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
-        if (!scenario.getStatus().equals(Result.PASSED)) {
-            loggingProfile = new RegressionFailedLoggingProfile();
-        }
-        if (isLogcatEnabled) {
-            try {
-                AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener.getInstance(ListenerType.DEFAULT),
-                        loggingProfile);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     /**
      * Rotate device to landscape or portrait
      *
@@ -1274,10 +1274,10 @@ public class CommonAndroidSteps {
      * User X delete message from User/Group via specified device
      * Note : The recent message means the recent message sent from specified device by SE, the device should online.
      *
-     * @param userNameAlias
-     * @param convoType
-     * @param dstNameAlias
-     * @param deviceName
+     * @param userNameAlias user name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  destination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
      * @throws Exception
      * @step. ^User (.*) deletes? the recent message from (user|group conversation) (.*) via device (.*)$
      */
@@ -1291,10 +1291,10 @@ public class CommonAndroidSteps {
     /**
      * Remember the recent message Id
      *
-     * @param userNameAlias
-     * @param convoType
-     * @param dstNameAlias
-     * @param deviceName
+     * @param userNameAlias user name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  destination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
      * @throws Exception
      * @step. ^User (.*) remembers? the recent message from (user|group conversation) (.*) via device (.*)$
      */
@@ -1309,33 +1309,31 @@ public class CommonAndroidSteps {
     /**
      * Check the rememberd message is changed
      *
-     * @param userNameAlias
-     * @param convoType
-     * @param dstNameAlias
-     * @param deviceName
+     * @param userNameAlias user name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  destination user name/alias or group convo name
+     * @param deviceName    source device name. Will be created if does not exist yet
      * @throws Exception
      * @step. ^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed$
      */
     @Then("^User (.*) see the recent message from (user|group conversation) (.*) via device (.*) is changed$")
-    public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
-            throws Exception {
+    public void UserXFoundLastMessageChanged(String userNameAlias, String convoType, String dstNameAlias,
+                                             String deviceName) throws Exception {
         if (recentMessageId.equals(Optional.empty())) {
             throw new IllegalStateException("You should remember the recent message befor you check it");
         }
-
-        boolean isGroup = convoType.equals("group conversation");
-        Optional<String> actualMessageId = commonSteps.UserGetRecentMessageId(userNameAlias, dstNameAlias, deviceName, isGroup);
-
-        Assert.assertTrue(String.format("Remembered message Id should not equal to '%s'", actualMessageId),
-                actualMessageId.get() != recentMessageId.get());
+        final Optional<String> actualMessageId = commonSteps.UserGetRecentMessageId(userNameAlias,
+                dstNameAlias, deviceName, convoType.equals("group conversation"));
+        Assert.assertFalse(String.format("Remembered message Id should not equal to '%s'", actualMessageId),
+                actualMessageId.get().equals(recentMessageId.get()));
     }
 
     /**
      * Verify the downloaded file are saved correctly
      *
-     * @param size
-     * @param fileFullName
-     * @param timeoutSeconds
+     * @param size           the expected file size. 3 MB for example
+     * @param fileFullName   file name with extension
+     * @param timeoutSeconds max seconds to wait until the file appears on the device
      * @throws Exception
      * @step. ^I wait up (\d+) seconds? until (.*) file having name "(.*)" is downloaded to the device$
      */
@@ -1538,5 +1536,23 @@ public class CommonAndroidSteps {
             Assert.assertTrue("Chathead notification is still visible",
                     pagesCollection.getCommonPage().waitUntilChatheadNotificationInvisible());
         }
+    }
+
+
+    /**
+     * Send location sharing message
+     *
+     * @param userNameAlias sender name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  user name/alias or group conversation name
+     * @param deviceName    destination device
+     * @throws Exception
+     * @step. ^User (.*) shares? his location to (user|group conversation) (.*) via device (.*)
+     */
+    @When("^User (.*) shares? his location to (user|group conversation) (.*) via device (.*)")
+    public void UserXSharesLocationTo(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        commonSteps.UserSharesLocationTo(userNameAlias, dstNameAlias, convoType.equals("group conversation"),
+                deviceName);
     }
 }

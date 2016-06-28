@@ -40,8 +40,6 @@ public abstract class AndroidPage extends BasePage {
 
     protected static final Logger log = ZetaLogger.getLog(CommonUtils.class.getSimpleName());
 
-    protected static final By idPager = By.id("conversation_pager");
-
     private static final By xpathInternetIndicator =
             By.xpath("//*[@id='civ__connectivity_indicator' and //*[@value='NO INTERNET']]");
 
@@ -109,12 +107,10 @@ public abstract class AndroidPage extends BasePage {
     }
 
     public void rotateLandscape() throws Exception {
-        // AndroidCommonUtils.rotateLanscape();
         this.getDriver().rotate(ScreenOrientation.LANDSCAPE);
     }
 
     public void rotatePortrait() throws Exception {
-        // AndroidCommonUtils.rotatePortrait();
         this.getDriver().rotate(ScreenOrientation.PORTRAIT);
     }
 
@@ -130,8 +126,7 @@ public abstract class AndroidPage extends BasePage {
     public void swipeByCoordinates(int durationMilliseconds,
                                    int widthStartPercent, int heightStartPercent, int widthEndPercent,
                                    int heightEndPercent) throws Exception {
-        final Dimension screenDimension = getDriver().manage().window()
-                .getSize();
+        final Dimension screenDimension = getDriver().manage().window().getSize();
         this.getDriver().swipe(screenDimension.width * widthStartPercent / 100,
                 screenDimension.height * heightStartPercent / 100,
                 screenDimension.width * widthEndPercent / 100,
@@ -403,5 +398,35 @@ public abstract class AndroidPage extends BasePage {
 
     private static int getNextCoord(double startC, double endC, double current, double duration) {
         return (int) Math.round(startC + (endC - startC) / duration * current);
+    }
+
+    @Override
+    protected WebElement getElement(By locator) throws Exception {
+        try {
+            return super.getElement(locator);
+        } catch (Exception e) {
+            log.debug(getDriver().getPageSource());
+            throw e;
+        }
+    }
+
+    @Override
+    protected WebElement getElement(By locator, String message) throws Exception {
+        try {
+            return super.getElement(locator, message);
+        } catch (Exception e) {
+            log.debug(getDriver().getPageSource());
+            throw e;
+        }
+    }
+
+    @Override
+    protected WebElement getElement(By locator, String message, int timeoutSeconds) throws Exception {
+        try {
+            return super.getElement(locator, message, timeoutSeconds);
+        } catch (Exception e) {
+            log.debug(getDriver().getPageSource());
+            throw e;
+        }
     }
 }

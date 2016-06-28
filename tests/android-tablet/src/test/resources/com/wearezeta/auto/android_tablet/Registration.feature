@@ -4,9 +4,7 @@ Feature: Registration
   Scenario Outline: Register new user using front camera in landscape mode
     Given I see welcome screen
     Given I rotate UI to landscape
-    Given I see welcome screen
     When I tap Register button
-    And I see the Registration form
     And I enter the registration name "<Name>"
     And I enter the registration email "<Email>"
     And I enter the registration password "<Password>"
@@ -30,9 +28,7 @@ Feature: Registration
   Scenario Outline: Register new user using front camera in portrait mode
     Given I see welcome screen
     Given I rotate UI to portrait
-    Given I see welcome screen
     When I tap Register button
-    And I see the Registration form
     And I enter the registration name "<Name>"
     And I enter the registration email "<Email>"
     And I enter the registration password "<Password>"
@@ -56,9 +52,7 @@ Feature: Registration
   Scenario Outline: (AN-2965) Verify automatic email verification is performed (portrait)
     Given I see welcome screen
     Given I rotate UI to portrait
-    Given I see welcome screen
     When I tap Register button
-    And I see the Registration form
     And I enter the registration name "<Name>"
     And I enter the registration email "<Email>"
     And I enter the registration password "<Password>"
@@ -80,9 +74,7 @@ Feature: Registration
   Scenario Outline: (AN-2965) Verify automatic email verification is performed (landscape)
     Given I see welcome screen
     Given I rotate UI to landscape
-    Given I see welcome screen
     When I tap Register button
-    And I see the Registration form
     And I enter the registration name "<Name>"
     And I enter the registration email "<Email>"
     And I enter the registration password "<Password>"

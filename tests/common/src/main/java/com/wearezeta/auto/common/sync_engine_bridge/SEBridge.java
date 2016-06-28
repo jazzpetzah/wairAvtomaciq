@@ -118,6 +118,10 @@ public class SEBridge {
         getOrAddDevice(userFrom, deviceName).deleteMessage(convId, messageId);
     }
 
+    public void shareDefaultLocation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).shareLocation(convId);
+    }
+
     public ActorMessage.MessageInfo[] getConversationMessages(ClientUser userFrom, String convId, String deviceName)
             throws Exception {
         return getOrAddDevice(userFrom, deviceName).getConversationMessages(convId);

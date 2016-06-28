@@ -1,9 +1,11 @@
 package com.wearezeta.auto.android_tablet.pages.registration;
 
 import com.wearezeta.auto.android.pages.RegistrationPage;
+import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.android_tablet.pages.AndroidTabletPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
+import org.openqa.selenium.ScreenOrientation;
 
 import java.util.concurrent.Future;
 
@@ -25,6 +27,8 @@ public class TabletUnsplashPicturePage extends AndroidTabletPage {
     }
 
     public void selectPictureSource(String src) throws Exception {
+        getDriver().rotate(ScreenOrientation.LANDSCAPE);
+        Thread.sleep(ScreenOrientationHelper.ROTATION_DELAY_MS);
         getAndroidRegistrationPage().selectPictureSource(src);
     }
 }

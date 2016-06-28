@@ -20,7 +20,6 @@ import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.performance.PerformanceCommon;
-import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.common.performance.PerformanceHelpers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -170,12 +169,7 @@ public class PerformanceSteps {
 
         // Visit the conversation for the first time
         visitConversationWhenAvailable(destConvoName);
-
-        perfCommon.runPerformanceLoop(new PerformanceLoop() {
-            public void run() throws Exception {
-                visitConversationWhenAvailable(destConvoName);
-            }
-        }, timeout);
+        perfCommon.runPerformanceLoop(() -> visitConversationWhenAvailable(destConvoName), timeout);
     }
 
     /**

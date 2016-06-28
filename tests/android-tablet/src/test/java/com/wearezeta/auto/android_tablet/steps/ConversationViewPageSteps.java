@@ -202,11 +202,24 @@ public class ConversationViewPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Ping|Add picture|Sketch|File) button$ from cursor toolbar$
+     * @step. ^I tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) button$ from cursor toolbar$
      */
-    @When("^I tap (Ping|Add picture|Sketch|File) button from cursor toolbar$")
-    public void WhenITapCursorToolButton(String btnName) throws Exception {
-        getConversationViewPage().tapCursorToolButton(btnName);
+    @When("^I (long )?tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) "  +
+            "button from cursor toolbar( for \\d+ seconds?)?$")
+    public void WhenITapCursorToolButton(String isLongTap, String btnName, String duration) throws Exception {
+        if (isLongTap == null) {
+            getConversationViewPage().tapCursorToolButton(btnName);
+        } else {
+            if (!btnName.equals("Audio message")) {
+                throw new IllegalArgumentException("Long tap is inl;y supported for audio messages");
+            }
+            if (duration == null) {
+                getConversationViewPage().longTapAudioMessageCursorBtn(btnName);
+            } else {
+                getConversationViewPage().longTapAudioMessageCursorBtn(btnName,
+                        Integer.parseInt(duration.replaceAll("[\\D]", "")));
+            }
+        }
     }
 
     /**
@@ -529,4 +542,98 @@ public class ConversationViewPageSteps {
                     mediaButtonState.isNotChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE));
         }
     }
+
+    /**
+     * Tap the corresponding message in the conversation
+     *
+     * @param isLongTap equals to null if this should be regular tap
+     * @param msg       message to tap
+     * @throws Exception
+     * @step. ^I (long )?tap the message "(.*)" in the conversation view$
+     */
+    @When("^I (long )?tap the message \"(.*)\" in the conversation view$")
+    public void ITapMessage(String isLongTap, String msg) throws Exception {
+        if (isLongTap == null) {
+            getConversationViewPage().tapMessage(msg);
+        } else {
+            getConversationViewPage().longTapMessage(msg);
+        }
+    }
+
+    /**
+     * Tap the corresponding actions bar button
+     *
+     * @param btnName one of available button names
+     * @throws Exception
+     * @step. ^I tap (Delete|Copy|Close|Forward) button on the action mode bar$"
+     */
+    @When("^I tap (Delete|Copy|Close|Forward) button on the action mode bar$")
+    public void ITapActionBarButton(String btnName) throws Exception {
+        getConversationViewPage().tapActionBarButton(btnName);
+    }
+
+    /**
+     * Check the corresponding action mode bar button. The toolbar appears upon long tap on conversation item
+     *
+     * @param name one of possible toolbar button names
+     * @throws Exception
+     * @step. ^I (do not )?see (Delete|Copy|Close) button on the action mode bar$
+     */
+    @Then("^I (do not )?see (Delete|Copy|Close) button on the action mode bar$")
+    public void ITapTopToolbarButton(String shouldNotSee, String name) throws Exception {
+        final boolean condition = (shouldNotSee == null) ?
+                getConversationViewPage().isActionModeBarButtonVisible(name) :
+                getConversationViewPage().isActionModeBarButtonInvisible(name);
+        Assert.assertTrue(String.format("The top toolbar button '%s' should be %s", name,
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Verify whether container is visible in the conversation
+     *
+     * @param shouldNotSee  equals to null if the container should be visible
+     * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
+     * @throws Exception
+     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) container in the conversation view$
+     */
+    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) " +
+            "container in the conversation view$")
+    public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
+        final boolean condition = (shouldNotSee == null) ?
+                getConversationViewPage().isContainerVisible(containerType) :
+                getConversationViewPage().isContainerInvisible(containerType);
+        Assert.assertTrue(String.format("%s should be %s in the conversation view", containerType,
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+
+    /**
+     * Check the cursor bar only contains ping, sketch, add picture, people and file buttons in cursor bar
+     *
+     * @throws Exception
+     * @step. ^I( do not)? see cursor toolbar$
+     */
+    @Then("^I( do not)? see cursor toolbar$")
+    public void ThenISeeCursorToolbar(String doNotSee) throws Exception {
+        if (doNotSee == null) {
+            Assert.assertTrue("Cursor toolbar is not visible",
+                    getConversationViewPage().isCursorToolbarVisible());
+        } else {
+            Assert.assertTrue("Cursor toolbar is visible, but should be hidden",
+                    getConversationViewPage().isCursorToolbarInvisible());
+        }
+    }
+
+    /**
+     * Tap on send button within Audio message slide
+     *
+     * @param name could be send or cancel or play
+     * @throws Exception
+     * @step. ^I tap audio recording (Send|Cancel|Play) button$
+     */
+    @When("^I tap audio recording (Send|Cancel|Play) button$")
+    public void WhenITapAudioMessageSendButton(String name) throws Exception {
+        getConversationViewPage().tapAudioRecordingButton(name);
+    }
+
 }

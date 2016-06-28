@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.CommonSteps;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -55,7 +54,7 @@ public class ConversationPageSteps {
      */
     @When("^I write random message$")
     public void WhenIWriteRandomMessage() throws Exception {
-        randomMessage = CommonUtils.generateGUID();
+        randomMessage = UUID.randomUUID().toString();
         IWriteMessage(randomMessage);
     }
 
