@@ -48,7 +48,7 @@ Feature: DeleteMessage
     When I long tap on image in conversation view
     And I tap on Delete badge item
     # FIXME: Sometimes autoaccept fails
-    And I accept alert
+    And I tap Delete button on the alert
     Then I see 0 photos in the conversation view
     And I type tag for giphy preview <GiphyTag> and open preview overlay
     # Wait for GIF picture to be downloaded

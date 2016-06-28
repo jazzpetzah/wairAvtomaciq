@@ -281,6 +281,8 @@ Feature: Delete Message
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
     When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
+    And I see Audio Message container in the conversation view
+    And I wait for 5 seconds
     And I enable Airplane mode on the device
     And I tap Play button on the recent audio message in the conversation view
     And I long tap Audio Message container in the conversation view
@@ -293,7 +295,7 @@ Feature: Delete Message
       | Name      | Contact   | FileName | MIMEType  | DeviceName |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
 
-  @C150030 @staging
+  @C150030 @regression
   Scenario Outline: Verify you can delete Share Location placeholder from conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

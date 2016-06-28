@@ -622,7 +622,7 @@ public class ConversationViewPageSteps {
     /**
      * Wait to check whether the file placeholder action button is changed
      *
-     * @param timeout timeout in seconds
+     * @param timeout            timeout in seconds
      * @param shouldNotBeChanged is not null if the button should not be changed
      * @throws Exception
      * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)
@@ -1467,5 +1467,23 @@ public class ConversationViewPageSteps {
         Assert.assertTrue("The audio message recording duration should be visible",
                 getConversationViewPage().isAudioMessageRecordingDurationVisible());
 
+    }
+
+    /**
+     * Verify whether the height of one conversation message is greater than the heigth of the second one
+     *
+     * @param msg1  the first conversation message text
+     * @param times minimum size multiplier. Can be float number
+     * @param msg2  the second message text
+     * @throws Exception
+     * @step. ^I see that the message "(.*)" is at least ([0-9\.]+) times? higher than "(.*)" in the conversation view$
+     */
+    @Then("^I see that the message \"(.*)\" is at least ([0-9\\.]+) times? higher than \"(.*)\" in the conversation view$")
+    public void ISeeMessageHigher(String msg1, String times, String msg2) throws Exception {
+        final int msg1Height = getConversationViewPage().getMessageHeight(msg1);
+        final int msg2Height = getConversationViewPage().getMessageHeight(msg2);
+        Assert.assertTrue(
+                String.format("The height of '%s' message is not %s times greater than the height of '%s' message",
+                msg1, times, msg2), msg1Height > msg2Height * Double.parseDouble(times));
     }
 }
