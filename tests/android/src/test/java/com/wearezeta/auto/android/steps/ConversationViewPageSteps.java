@@ -1120,22 +1120,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap (Delete|Copy|Close|Forward) button on the action mode bar$")
     public void ITapTopToolbarButton(String name) throws Exception {
-        switch (name.toLowerCase()) {
-            case "delete":
-                getConversationViewPage().tapDeleteActionModeBarButton();
-                break;
-            case "copy":
-                getConversationViewPage().tapCopyTopActionModeBarButton();
-                break;
-            case "close":
-                getConversationViewPage().tapCloseTopActionModeBarButton();
-                break;
-            case "forward":
-                getConversationViewPage().tapForwardTopActionModeBarButton();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("There is no '%s' button on the top toolbar", name));
-        }
+        getConversationViewPage().tapActionBarButton(name);
     }
 
     /**

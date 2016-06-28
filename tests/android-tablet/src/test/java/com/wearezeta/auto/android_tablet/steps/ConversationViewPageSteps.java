@@ -529,4 +529,33 @@ public class ConversationViewPageSteps {
                     mediaButtonState.isNotChanged(MEDIA_BUTTON_STATE_CHANGE_TIMEOUT, MEDIA_BUTTON_MIN_SIMILARITY_SCORE));
         }
     }
+
+    /**
+     * Tap the corresponding message in the conversation
+     *
+     * @param isLongTap equals to null if this should be regular tap
+     * @param msg       message to tap
+     * @throws Exception
+     * @step. ^I (long )?tap the message "(.*)" in the conversation view$
+     */
+    @When("^I (long )?tap the message \"(.*)\" in the conversation view$")
+    public void ITapMessage(String isLongTap, String msg) throws Exception {
+        if (isLongTap == null) {
+            getConversationViewPage().tapMessage(msg);
+        } else {
+            getConversationViewPage().longTapMessage(msg);
+        }
+    }
+
+    /**
+     * Tap the corresponding actions bar button
+     *
+     * @param btnName one of available button names
+     * @throws Exception
+     * @step. ^I tap (Delete|Copy|Close|Forward) button on the action mode bar$"
+     */
+    @When("^I tap (Delete|Copy|Close|Forward) button on the action mode bar$")
+    public void ITapActionBarButton(String btnName) throws Exception {
+        getConversationViewPage().tapActionBarButton(btnName);
+    }
 }

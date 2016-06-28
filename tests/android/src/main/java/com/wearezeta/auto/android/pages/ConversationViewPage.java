@@ -753,18 +753,6 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
     }
 
-    public void tapDeleteActionModeBarButton() throws Exception {
-        getElement(idActionModeBarDeleteButton).click();
-    }
-
-    public void tapCopyTopActionModeBarButton() throws Exception {
-        getElement(idActionModeBarCopyButton).click();
-    }
-
-    public void tapCloseTopActionModeBarButton() throws Exception {
-        getElement(idActionModeBarCloseButton).click();
-    }
-
     public boolean isDeleteActionModeBarButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idActionModeBarDeleteButton);
     }
@@ -922,10 +910,6 @@ public class ConversationViewPage extends AndroidPage {
         new TouchActions(getDriver()).down(x, y).perform();
     }
 
-    public void tapForwardTopActionModeBarButton() throws Exception {
-        getElement(idActionModeBarForwardButton).click();
-    }
-
     public boolean isCursorToolbarVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCursorMore);
     }
@@ -953,5 +937,25 @@ public class ConversationViewPage extends AndroidPage {
     public int getMessageHeight(String msg) throws Exception {
         final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
         return Integer.parseInt(getElement(locator).getAttribute("height"));
+    }
+
+    private By getActionBarButtonLocatorByName(String btnName) {
+        switch (btnName.toLowerCase()) {
+            case "delete":
+                return idActionModeBarDeleteButton;
+            case "copy":
+                return idActionModeBarCopyButton;
+            case "close":
+                return idActionModeBarCloseButton;
+            case "forward":
+                return idActionModeBarForwardButton;
+            default:
+                throw new IllegalArgumentException(String.format("There is no '%s' button on the actions bar",
+                        btnName));
+        }
+    }
+
+    public void tapActionBarButton(String name) throws Exception {
+        getElement(getActionBarButtonLocatorByName(name)).click();
     }
 }
