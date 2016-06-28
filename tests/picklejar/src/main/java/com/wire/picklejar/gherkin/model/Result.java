@@ -21,6 +21,10 @@ public class Result implements Serializable {
         this.status = status;
         this.error_message = error_message;
     }
+
+    public String getStatus() {
+        return status;
+    }
     
     @Override
     public String toString() {
