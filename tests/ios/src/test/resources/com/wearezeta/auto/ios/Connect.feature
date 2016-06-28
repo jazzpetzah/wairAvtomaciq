@@ -264,6 +264,7 @@ Feature: Connect
     Given I sent connection request to <Contact1>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <Contact1> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
