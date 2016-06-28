@@ -949,4 +949,9 @@ public class ConversationViewPage extends AndroidPage {
     public void tapShareLocationContainer() throws Exception {
         getElement(idShareLocationContainer).click();
     }
+
+    public int getMessageHeight(String msg) throws Exception {
+        final By locator = By.xpath(xpathStrConversationMessageByText.apply(msg));
+        return Integer.parseInt(getElement(locator).getAttribute("height"));
+    }
 }
