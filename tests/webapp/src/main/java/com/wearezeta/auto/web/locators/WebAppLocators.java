@@ -367,7 +367,7 @@ public final class WebAppLocators {
 
         //Location sharing
 
-        public static final String cssSharedLocation = "[][data-uie-value='%s']";
+        public static final String cssSharedLocation = ".location-label";
 
         // File transfer
 
