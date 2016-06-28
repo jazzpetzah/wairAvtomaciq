@@ -564,7 +564,7 @@ public class ConversationPageSteps {
     @Then("^And I see cancel upload button for video (.*)$")
     public void ISeeCancelUpload(String fileName) throws Exception {
         assertThat("Cancel video upload button is not shown", context.getPagesCollection().getPage(ConversationPage.class)
-            .isCancelButtonVisible(fileName));
+                .isCancelButtonVisible(fileName));
     }
 
     @Then("^I see play button of video (.*) in the conversation view$")
@@ -1278,16 +1278,25 @@ public class ConversationPageSteps {
     }
 
     /**
+     * Verifies whether location message is shown in the conversation view or not.
      *
-     *
+     * @param doNot        is set to null if "do not" part does not exist
+     * @param locationName name of the shared location
+     * @throws java.lang.Exception
+     * @step. ^I (do not )?see location message (.*) in the conversation view$
      */
     @Then("^I (do not )?see location message (.*) in the conversation view$")
     public void ISeeLocationMessage(String doNot, String locationName) throws Exception {
         ConversationPage page = context.getPagesCollection().getPage(ConversationPage.class);
         if (doNot == null) {
-            assertThat("Could not find location message " + locationName, page.isLocationMessageVisible(locationName));
+            assertThat("Could not find location message " + locationName,
+                    context.getPagesCollection().getPage(ConversationPage.class).getLocationName(), equalTo(locationName));
+            assertThat("The link doesn't contain a proper location",
+                    context.getPagesCollection().getPage(ConversationPage.class).getLocationNameFromLink(), containsString(locationName));
         } else {
-            assertThat("Location message " + locationName + "is shown", page.isLocationMessageInvisible(locationName));
+            assertThat("Location message " + locationName + "is shown", page.getLocationName(), equalTo(locationName));
+            assertThat("The location link for" + locationName + "is shown",
+                    context.getPagesCollection().getPage(ConversationPage.class).getLocationNameFromLink(), containsString(locationName));
         }
     }
 }

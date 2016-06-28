@@ -160,6 +160,12 @@ public class ConversationPage extends WebPage {
     @FindBy(xpath = WebAppLocators.ConversationPage.xpathXButtonOnLongMWarning)
     private WebElement xButtonOnLongMWarning;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssSharedLocation)
+    private WebElement locationName;
+
+    @FindBy(xpath = WebAppLocators.ConversationPage.xpathSharedLocationLink)
+    private WebElement locationLink;
+
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -1130,13 +1136,11 @@ public class ConversationPage extends WebPage {
         conversationInput.sendKeys(Keys.BACK_SPACE);
     }
 
-    public boolean isLocationMessageVisible(String locationName) throws Exception {
-        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssSharedLocation, locationName));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    public String getLocationName() {
+        return locationName.getText();
     }
 
-    public boolean isLocationMessageInvisible(String locationName) throws Exception {
-        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssSharedLocation, locationName));
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    public String getLocationNameFromLink() {
+        return locationLink.getAttribute("href");
     }
 }
