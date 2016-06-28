@@ -1,6 +1,6 @@
 Feature: Video Messaging
 
-  @C145952 @staging
+  @C145952 @rc @regression
   Scenario Outline: Verify receiving and playing a video message [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -17,7 +17,7 @@ Feature: Video Messaging
       | Name      | Contact   | FileName    | MIMEType  | DeviceName | DownloadTimeout |
       | user1Name | user2Name | testing.mp4 | video/mp4 | Device1    | 6               |
 
-  @C145951 @staging
+  @C145951 @rc @regression
   Scenario Outline: Verify recording a video message [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

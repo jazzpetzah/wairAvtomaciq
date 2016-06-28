@@ -33,7 +33,7 @@ public class RegistrationPageSteps {
      * @param name User name alias
      * @throws Exception
      */
-    @When("^I enter phone number for user (.*)$")
+    @When("^I enter phone number for (.*)$")
     public void IEnterPhoneNumber(String name) throws Exception {
         this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
         getRegistrationPage().inputPhoneNumber(this.userToRegister.getPhoneNumber());

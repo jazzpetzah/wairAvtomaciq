@@ -4,10 +4,13 @@ import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.common.rc.BasicScenarioResultToTestrailTransformer;
+import com.wearezeta.auto.common.testrail.TestrailSyncUtilities;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
 import com.wearezeta.auto.web.steps.CommonWebAppSteps;
 import static com.wearezeta.auto.web.steps.CommonWebAppSteps.log;
+import com.wire.picklejar.gherkin.model.Step;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -17,11 +20,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.Dimension;
@@ -53,13 +58,19 @@ public class Lifecycle {
         return context;
     }
 
+    // #### START ############################################################ COMPATIBILITY INSTRUCTIONS
     @Before("~@performance")
     public void setUp(Scenario scenario) throws Exception {
         String id = scenario.getId().substring(
                 scenario.getId().lastIndexOf(";") + 1);
-        setUp(scenario.getName()+"_"+id);
+        setUp(scenario.getName() + "_" + id);
     }
-    
+    @After
+    public void tearDown(Scenario scenario) throws Exception {
+        tearDown();
+    }
+    // #### END ############################################################## COMPATIBILITY INSTRUCTIONS
+
     public void setUp(String testname) throws Exception {
 
         String[] command = new String[]{"/bin/sh", "-c", String.format("killall %s", "grunt")};
@@ -152,12 +163,6 @@ public class Lifecycle {
          */
         TestContext.COMPAT_WEB_DRIVER = lazyWebDriver;
         compatContext = new TestContext();
-        try {
-            compatContext.getDeviceManager().reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         compatContext.getDriver().get(url);
         compatContext.getPagesCollection().setFirstPage(new RegistrationPage(lazyWebDriver, url));
         /**
@@ -165,22 +170,31 @@ public class Lifecycle {
          */
 
         context = new TestContext(testname, lazyWebDriver);
-
-        try {
-            context.getDeviceManager().reset();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         context.getDriver().get(url);
         context.getPagesCollection().setFirstPage(new RegistrationPage(lazyWebDriver, url));
 
         ZetaFormatter.setLazyDriver(lazyWebDriver);
     }
-
-    @After
-    public void tearDown(Scenario scenario) throws Exception {
+    
+    public void tearDown(com.wire.picklejar.gherkin.model.Scenario scenario) throws Exception {
+        try {
+            Set<String> tagSet = scenario.getTags().stream()
+                    .map((tag) -> tag.getName())
+                    .collect(Collectors.toSet());
+            TestrailSyncUtilities.syncExecutedScenarioWithTestrail(scenario.getName(),
+                    new BasicScenarioResultToTestrailTransformer(mapScenario(scenario)).transform(), tagSet);
+        } catch (Exception e) {
+            log.warn(e);
+        }
         tearDown();
+    }
+    
+    private Map<String, String> mapScenario(com.wire.picklejar.gherkin.model.Scenario scenario){
+        HashMap<String, String> stepResultMap = new HashMap<>();
+        for (Step step : scenario.getSteps()) {
+            stepResultMap.put(step.getName(), step.getResult().getStatus());
+        }
+        return stepResultMap;
     }
 
     public void tearDown() {
@@ -197,8 +211,28 @@ public class Lifecycle {
                 driver.executeScript(logoutScript);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn(e);
         } finally {
+            /**
+             * #### START ############################################################ COMPATIBILITY INSTRUCTIONS
+             */
+            try {
+                log.debug("Releasing devices");
+                log.debug(compatContext.getUserManager().getCreatedUsers());
+                compatContext.getDeviceManager().releaseDevicesOfUsers(compatContext.getUserManager().getCreatedUsers());
+            } catch (Exception e) {
+                log.warn(e);
+            }
+            /**
+             * #### END ############################################################## COMPATIBILITY INSTRUCTIONS
+             */
+            try {
+                log.debug("Releasing devices");
+                log.debug(context.getUserManager().getCreatedUsers());
+                context.getDeviceManager().releaseDevicesOfUsers(context.getUserManager().getCreatedUsers());
+            } catch (Exception e) {
+                log.warn(e);
+            }
             try {
                 log.debug("Closing webdriver");
                 context.getDriver().quit();
@@ -318,13 +352,13 @@ public class Lifecycle {
         log.debug("Browser logging level has been set to '" + level.getName()
                 + "'");
     }
-    
+
     private String getUniqueTestName(String testname) {
         String browserName = WebAppExecutionContext.getBrowserName();
         String browserVersion = WebAppExecutionContext.getBrowserVersion();
         String platform = WebAppExecutionContext.getPlatform();
 
-        return testname +" on " + platform + " with "
+        return testname + " on " + platform + " with "
                 + browserName + " " + browserVersion;
     }
 

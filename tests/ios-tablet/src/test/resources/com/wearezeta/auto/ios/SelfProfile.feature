@@ -107,6 +107,8 @@ Feature: Self Profile
     And I change my name to <NewUsername>
     And I close self profile
     And I tap on contact name <Contact>
+    # Wait for conversation view to be loaded
+    And I wait for 3 seconds
     Then I see my user name <NewUsername> in conversation
 
     Examples:
@@ -140,7 +142,8 @@ Feature: Self Profile
     Given I see conversations list
     When I tap settings gear button
     And I tap to add my phone number
-    And I enter phone number and verification code
+    And I enter phone number for Myself
+    And I enter registration verification code for Myself
     Then I see phone number attached to profile
 
     Examples:

@@ -196,6 +196,7 @@ Feature: VideoCalling
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
+    Given I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
@@ -204,6 +205,8 @@ Feature: VideoCalling
     When <Contact> accepts next incoming video call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see ongoing video call
+    # To avoid race conditions on call setup
+    And I wait for 5 seconds
     When I hang up ongoing video call
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And I do not see ongoing video call
@@ -268,6 +271,8 @@ Feature: VideoCalling
     And I see incoming video call
     And I swipe to ignore the call
     Then <Contact> verifies that call status to me is changed to connecting in <Timeout> seconds
+    # Sometimes previous steps are done too fast
+    And I wait for 5 seconds
     When I tap Audio Call button from top toolbar
     Then I see alert message containing "<ExpectedMsg>" in the body
     And <Contact> verifies that call status to me is changed to connecting in 3 seconds

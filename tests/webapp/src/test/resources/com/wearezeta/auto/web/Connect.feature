@@ -394,7 +394,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact1  | Contact2  |
       | user1Name | user1Email | user1Password | user2Name | user3Name |
 
-  @C1785 @legacy
+  @C1785 @legacy @C147867
   Scenario Outline: Verify you get auto-connected to people on sign-in
     Given There is 2 user where <Me> is me
     # we need to wait a bit, otherwise backend throws a 429 status
@@ -423,14 +423,14 @@ Feature: Connect
     Given User <Me> has contact <Contact> in address book
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     # we need to wait a bit, otherwise backend throws a 429 status
     And I wait for 10 seconds
     When User <Contact> has contact <Me> in address book
-    When I open conversation with <Contact>
+    And I open conversation with <Contact>
     Then I see CONNECTED TO action for <Contact> in conversation
-    Then I see START A CONVERSATION action for <Contact> in conversation
-    Then I do not see text message
+    And I see START A CONVERSATION action for <Contact> in conversation
+    And I do not see text message
 
     Examples: 
       | Me        | MyEmail    | MyPassword    | Contact   |
@@ -446,6 +446,7 @@ Feature: Connect
     And I see my avatar on top of Contact list
     And I wait until <Contact1> exists in backend search results
     When I open People Picker from Contact List
+    And I wait for the search field of People Picker to be empty
     And I type <Contact1Email> in search field of People Picker
     Then I see user <Contact1> found in People Picker
     When I click on pending user <Contact1> found in People Picker
@@ -504,7 +505,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact2  | ConvOption1 | ConvOption2    | ConvOption3 | Contact1Email | Contact1Password |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Archive     | Cancel request | Block       | user2Email    | user2Password    |
 
-  @C145967 @staging
+  @C145967 @regression
   Scenario Outline: I want to archive a pending request from conversation list
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>
@@ -518,7 +519,7 @@ Feature: Connect
     And I see a conversation option <ConvOption2> on the page
     And I see a conversation option <ConvOption3> on the page
     When I click archive in the options popover
-    And I do not see connection request from one user
+    Then I do not see connection request from one user
     When I open archive
     Then I see archive list with name <Contact1>
 
@@ -526,7 +527,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact2  | ConvOption1 | ConvOption2    | ConvOption3 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Archive     | Cancel request | Block       |
 
-  @C147863 @staging
+  @C147863 @regression
   Scenario Outline: Verify you can cancel a pending request from conversation view
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>
@@ -542,3 +543,30 @@ Feature: Connect
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @C145966 @regression
+  Scenario Outline: Verify you can block a user who sent you an incoming connection request from conversation list
+    Given There are 3 users where <Name> is me
+    Given I sent connection request to <Contact1>
+    Given Myself is connected to <Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <Contact1>
+    When I click on options button for conversation <Contact1>
+    Then I see a conversation option <ConvOption1> on the page
+    And I see a conversation option <ConvOption2> on the page
+    And I see a conversation option <ConvOption3> on the page
+    When I click the option to block in the options popover
+    Then I see a block warning modal
+    When I click cancel button in the block warning
+    Then I see Contact list with name <Contact1>
+    When I click on options button for conversation <Contact1>
+    And I click the option to block in the options popover
+    Then I see a block warning modal
+    When I click block button in the block warning
+    Then I do not see connection request from one user
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ConvOption1 | ConvOption2    | ConvOption3 |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | Archive     | Cancel request | Block       |

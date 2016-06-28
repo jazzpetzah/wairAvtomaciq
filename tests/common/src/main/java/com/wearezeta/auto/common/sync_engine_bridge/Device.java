@@ -260,6 +260,28 @@ class Device extends RemoteEntity implements IDevice {
         return null;
     }
 
+    public static final int DEFAULT_GMAP_ZOOM_LEVEL = 14;
+
+    @Override
+    public void shareLocation(String convId, float lon, float lat, String address, int zoom) throws Exception {
+        try {
+            askActor(this.ref(), new ActorMessage.SendLocation(new RConvId(convId), lon, lat, address,
+                    zoom));
+        } catch (TimeoutException e) {
+            // recreate process and retry
+            respawn();
+            if (hasLoggedInUser()) {
+                logInWithUser(this.loggedInUser.get());
+                askActor(this.ref(), new ActorMessage.SendLocation(new RConvId(convId), lon, lat, address, zoom));
+            }
+        }
+    }
+
+    @Override
+    public void shareLocation(String convId) throws Exception {
+        shareLocation(convId, 1.0f, 1.0f, "", DEFAULT_GMAP_ZOOM_LEVEL);
+    }
+
     @Override
     public String getId() throws Exception {
         if (!this.id.isPresent()) {

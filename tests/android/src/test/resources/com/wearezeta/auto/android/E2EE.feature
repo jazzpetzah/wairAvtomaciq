@@ -18,7 +18,7 @@ Feature: E2EE
       | user1Name | user2Name | EncryptedYo      | SimpleYo      |
 
   @C3230 @regression @C145960
-  Scenario Outline: Verify you can remove extra devices and log in successfully if too many devices are registered for your account
+  Scenario Outline: AN-4162 Verify you can remove extra devices and log in successfully if too many devices are registered for your account
     Given There is 1 user where <Name> is me
     Given User <Name> adds new devices <DeviceToRemove>,<DeviceToRemoveWithoutPassword>,<OtherDevice>,Device4,Device5,Device6,Device7
     # Workaround for AN-3281
@@ -32,7 +32,8 @@ Feature: E2EE
     And I see device removal password confirmation dialog
     And I enter <Password> into the device removal password confirmation dialog
     And I tap OK button on the device removal password confirmation dialog
-    # Delete device will take time, should verify at first it already return back to device list view
+    # Delete device will take time, should verify at first it already return back to device list view, also the list is already updated
+    And I wait for 5 seconds
     And I see "<DeviceToRemoveWithoutPassword>" settings menu item
     And I do not see "<DeviceToRemove>" settings menu item
     # C145960
@@ -40,7 +41,7 @@ Feature: E2EE
     And I select "Remove device" settings menu item
     And I see "<OtherDevice>" settings menu item
     And I do not see "<DeviceToRemoveWithoutPassword>" settings menu item
-    And I press Back button 3 times
+    And I press Back button 2 times
     When I do not see Manage Devices overlay
     Then I see Contact list with no contacts
 
@@ -199,10 +200,10 @@ Feature: E2EE
       | user1Name | user2Name | Msg1     |
 
   @C3232 @regression
-  Scenario Outline: Verify the device id is not changed after relogin
+  Scenario Outline: CM-997 Verify the device id is not changed after relogin
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
+    Given I sign in using my phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When User <Contact1> sends encrypted message <EncMessage> to user Myself
@@ -210,15 +211,10 @@ Feature: E2EE
     Then I see message <EncMessage> 1 times in the conversation view
     When I press back button
     And I tap conversations list settings button
-    And I tap options button
-    And I tap settings button
-    When I select "Privacy & Security" settings menu item
     And I select "Devices" settings menu item
     And I tap current device in devices settings menu
     Then I remember the device id shown in the device detail view
-    When I press back button
-    And I press back button
-    And I press back button
+    When I press back button 2 times
     When I select "Account" settings menu item
     And I select "Log out" settings menu item
     Then I confirm sign out
@@ -229,9 +225,6 @@ Feature: E2EE
     Then I see message <EncMessage> 1 times in the conversation view
     When I press back button
     And I tap conversations list settings button
-    And I tap options button
-    And I tap settings button
-    When I select "Privacy & Security" settings menu item
     And I select "Devices" settings menu item
     And I tap current device in devices settings menu
     Then I verify the remembered device id is shown in the device detail view
@@ -477,7 +470,7 @@ Feature: E2EE
     When I see takeover screen from user "<Contact1>"
     Then I tap send anyway button
     And I do not see takeover screen
-    Then I see message <Message2> 1 times in the conversation view
+    Then I see message <Message2> 1 time in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | Message1 | Message2 | GroupChatName |

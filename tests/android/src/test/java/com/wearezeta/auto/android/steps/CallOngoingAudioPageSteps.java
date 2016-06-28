@@ -1,6 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
-import com.wearezeta.auto.android.pages.CallOngoingPage;
+import com.wearezeta.auto.android.pages.CallOngoingAudioPage;
 import com.wearezeta.auto.common.misc.ElementState;
 
 import cucumber.api.java.en.Then;
@@ -10,15 +10,15 @@ import org.junit.Assert;
 
 import static org.junit.Assert.assertTrue;
 
-public class CallOngoingPageSteps {
+public class CallOngoingAudioPageSteps {
 
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
 
     private final ElementState specialButtonState = new ElementState(() -> getPage().getSpecialButtonScreenshot());
     private final ElementState muteButtonState = new ElementState(() -> getPage().getMuteButtonScreenshot());
 
-    private CallOngoingPage getPage() throws Exception {
-        return pagesCollection.getPage(CallOngoingPage.class);
+    private CallOngoingAudioPage getPage() throws Exception {
+        return pagesCollection.getPage(CallOngoingAudioPage.class);
     }
 
     /**
@@ -45,23 +45,6 @@ public class CallOngoingPageSteps {
             assertTrue("Ongoing call not visible", getPage().waitUntilVisible());
         } else {
             assertTrue("Ongoing call should not be visible", getPage().waitUntilNotVisible());
-        }
-    }
-
-    /**
-     * Check whether expected number of users present in call
-     *
-     * @throws Exception
-     * @step. ^I see (\\d+) users? take part in call$
-     */
-    @When("^I see (\\d+) users? take part in call$")
-    public void ISeeXUsersTakePartInGroupCall(final int expectedUsersCount)
-            throws Exception {
-        int actualUsersCount = getPage().getNumberOfParticipants();
-        if (actualUsersCount != expectedUsersCount) {
-            throw new AssertionError(String.format(
-                    "The actual count of users in call %s does not equal to the expected count %s",
-                    actualUsersCount, expectedUsersCount));
         }
     }
 

@@ -213,6 +213,7 @@ Feature: Sign In
 
   @C125734 @regression
   Scenario Outline: Verify you see a description about Wire when being redirected from get.wire.com
+    Given I switch to sign in page
     Given I open <Language> login page as if I was redirected from get.wire.com
     Then I see Registration page
     And I verify description message is visible

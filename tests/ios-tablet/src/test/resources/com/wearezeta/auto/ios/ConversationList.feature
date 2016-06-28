@@ -260,7 +260,7 @@ Feature: Conversation List
       | user1Name | user2Name |
 
   @C2553 @rc @regression @id3970
-  Scenario Outline: Verify posting in a group conversation without content [LANDSCAPE]
+  Scenario Outline: ZIOS-6809 Verify posting in a group conversation without content [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -386,6 +386,7 @@ Feature: Conversation List
     And I confirm blocking alert
     Then I do not see conversation <Contact> in conversations list
     And I do not see Archive button at the bottom of conversations list
+    And I wait until <Contact> exists in backend search results
     And I open search UI
     And I input in People picker search field user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results

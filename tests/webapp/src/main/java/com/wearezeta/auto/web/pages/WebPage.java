@@ -88,12 +88,23 @@ public class WebPage extends BasePage {
     public void switchLanguage(String language) throws Exception {
         String currentUrl = this.getDriver().getCurrentUrl();
         log.info("Current URL: " + currentUrl);
-        URL url = new URL(currentUrl);
-        if (url.getQuery() == null) {
-            this.getDriver().get(currentUrl + "?hl=" + language);
+        URL oldUrl = new URL(currentUrl);
+        StringBuilder newUrl = new StringBuilder();
+        newUrl.append(oldUrl.getProtocol())
+                .append("://")
+                .append(oldUrl.getHost())
+                .append(oldUrl.getPath());
+        if (oldUrl.getQuery() == null) {
+            newUrl.append("?");
         } else {
-            this.getDriver().get(currentUrl + "&hl=" + language);
+            newUrl.append(oldUrl.getQuery()).append("&");
         }
+        newUrl.append("hl=").append(language);
+        if (oldUrl.getRef() != null) {
+            newUrl.append("#").append(oldUrl.getRef());
+        }
+        log.debug("Visiting URL: " + newUrl);
+        this.getDriver().get(newUrl.toString());
     }
 
     /**

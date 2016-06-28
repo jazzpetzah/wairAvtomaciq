@@ -63,7 +63,7 @@ Feature: File transfer
     And I wait for 5 seconds
     And I tap on contact name <Contact1>
     And I tap File button from cursor toolbar
-    Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>" failed
+    Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <UploadingTimeout> seconds failed
     When I disable Airplane mode on the device
     And I wait for 10 seconds
     And I tap Retry button on file upload placeholder
@@ -107,7 +107,7 @@ Feature: File transfer
     And I see the result of <FileSize> file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <ReceivingTimeout> seconds
     And I remember the state of Download button on file download placeholder
     And I tap Download button on file download placeholder
-    And I wait up to <DownloadTimeout> seconds until the state of Download button on file download placeholder is changed
+    And I wait up to <DownloadTimeout> seconds until the state of Download button on file download placeholder is not changed
     And I tap View button on file download placeholder
     And I save file from file dialog
     Then I wait up <DownloadTimeout> seconds until <FileExactSize> file having name "<FileName>.<FileExtension>" is downloaded to the device

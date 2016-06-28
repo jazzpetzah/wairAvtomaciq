@@ -125,8 +125,8 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
-  @C12097 @videocalling
-  Scenario Outline: Verify I can have video call more than 15 mins
+  @C12097 @videocalling @long-call
+  Scenario Outline: Verify I can have video call more than 30 mins
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -156,6 +156,7 @@ Feature: VideoCalling
     And I wait for 60 seconds
     And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 5 minutes
     And I wait for 60 seconds
     And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -171,6 +172,7 @@ Feature: VideoCalling
     And I wait for 60 seconds
     And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 10 minutes
     And I wait for 60 seconds
     And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -186,6 +188,55 @@ Feature: VideoCalling
     And I wait for 60 seconds
     And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 15 minutes
+    And I wait for 60 seconds
+    And I see end video call button
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see end video call button
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see end video call button
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see end video call button
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see end video call button
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 20 minutes
+    And I wait for 60 seconds
+    And I see end video call button
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see end video call button
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see end video call button
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see end video call button
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see end video call button
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 25 minutes
+    And I wait for 60 seconds
+    And I see end video call button
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see end video call button
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see end video call button
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see end video call button
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I wait for 60 seconds
+    And I see end video call button
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+# 30 minutes
     And I wait for 60 seconds
     And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds

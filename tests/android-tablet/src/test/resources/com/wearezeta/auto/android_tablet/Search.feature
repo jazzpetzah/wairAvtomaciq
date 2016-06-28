@@ -1,21 +1,4 @@
 Feature: Search
-  @C471 @id2180 @regression
-  Scenario Outline: I should able to swipe to conversation when search is opened (portrait only)
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to Myself
-    Given I rotate UI to portrait
-    Given I sign in using my email
-    Given I accept First Time overlay as soon as it is visible
-    Given I see the conversations list with conversations
-    When I open Search UI
-    And I swipe left to show the conversation view
-    Then I do not see People Picker page
-    When I swipe right to show the conversations list
-    Then I see People Picker page
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
 
   @C490 @id2848 @regression
   Scenario Outline: I ignore someone from search and clear my inbox (portrait)
@@ -31,9 +14,6 @@ Feature: Search
     And I tap the found item <Contact> on People Picker page
     And I see the Incoming connections page
     And I ignore incoming connection request from <Contact> on Incoming connections page
-    # Workaround for a bug
-    And I tap in the center of Self Profile page
-    And I tap in the center of Self Profile page
     And I swipe right to show the conversations list
     Then I see the Conversations list with no conversations
 
@@ -183,27 +163,7 @@ Feature: Search
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
-    And I open Search UI
-    And I enter "<Contact>" into Search input on People Picker page
-    And I tap the found item <Contact> on People Picker page
-    When I tap Send Image action button on People Picker page
-    And I tap Take Photo button on Take Picture view
-    And I tap Confirm button on Take Picture view
-    Then I see a new picture in the conversation view
-    And I do not see People Picker page
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C544 @id3893 @regression
-  Scenario Outline: Verify sending a photo with action button (portrait)
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to portrait
-    Given I sign in using my email
-    Given I accept First Time overlay as soon as it is visible
-    Given I see the Conversations list with conversations
+    Given I wait until <Contact> exists in backend search results
     And I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
@@ -255,6 +215,8 @@ Feature: Search
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     And I tap the found item <Contact1> on People Picker page
@@ -283,6 +245,8 @@ Feature: Search
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     When I tap the found item <Contact1> on People Picker page
@@ -307,6 +271,8 @@ Feature: Search
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     And I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     When I tap the found item <Contact1> on People Picker page

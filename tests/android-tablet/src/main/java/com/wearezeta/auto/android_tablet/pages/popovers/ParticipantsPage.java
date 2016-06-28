@@ -13,7 +13,7 @@ public class ParticipantsPage extends AbstractConversationDetailsPage {
     public static final By xpathConfirmLeaveButton = By.xpath("//*[@id='positive' and @value='LEAVE']");
 
     public static final Function<String, String> xpathStrParticipantAvatarByName = name -> String
-            .format("//*[@id='pgv__participants']//*[@id='ttv__text_view' and @value='%s']/parent::*/parent::*",
+            .format("//*[@id='pgv__participants']//*[@id='ttv__text_view' and @value='%s']/parent::*",
                     name.toUpperCase());
 
     private static final String idStrConvoNameInput = "taet__participants__header__editable";
@@ -23,6 +23,9 @@ public class ParticipantsPage extends AbstractConversationDetailsPage {
 
     private static final Function<String, String> xpathStrSubheaderByValue = value -> String
             .format("//*[@id='ttv__participants__sub_header' and @value='%s']", value);
+
+    public final static By xpathAddPeopleButton =
+            By.xpath("//*[@id='ttv__participants__left_label' and @value='ADD PEOPLE']");
 
     public ParticipantsPage(Future<ZetaAndroidDriver> lazyDriver, GroupPopover container) throws Exception {
         super(lazyDriver, container);
@@ -65,4 +68,7 @@ public class ParticipantsPage extends AbstractConversationDetailsPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
+    public void tapAddPeopleButton() throws Exception {
+        getElement(xpathAddPeopleButton).click();
+    }
 }

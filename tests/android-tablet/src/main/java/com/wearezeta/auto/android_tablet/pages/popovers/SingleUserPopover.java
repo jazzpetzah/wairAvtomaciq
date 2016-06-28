@@ -43,8 +43,8 @@ public class SingleUserPopover extends AbstractPopoverContainer {
 		return this.singleConnectedUserDetailsPage.waitUntilUserEmailVisible(expectedEmail);
 	}
 
-	public void tapAddPeopleButton() throws Exception {
-		this.singleConnectedUserDetailsPage.tapAddPeopleButton();
+	public void tapCreateGroupButton() throws Exception {
+		this.singleConnectedUserDetailsPage.tapCreateGroupButton();
 	}
 
 	public void enterSearchText(String text) throws Exception {

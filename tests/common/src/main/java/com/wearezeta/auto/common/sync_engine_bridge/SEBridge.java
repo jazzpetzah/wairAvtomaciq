@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -19,8 +20,12 @@ public class SEBridge {
     private static SEBridge instance = null;
 
     private static final Logger LOG = ZetaLogger.getLog(SEBridge.class.getSimpleName());
+    
+    {
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
+    }
 
-    private SEBridge() throws Exception {
+    protected SEBridge() throws Exception {
         this.devicePool = new UserDevicePool(CommonUtils.getBackendType(CommonUtils.class),
                 CommonUtils.getOtrOnly(CommonUtils.class));
     }
@@ -34,29 +39,6 @@ public class SEBridge {
             }
         }
         return instance;
-    }
-
-    private UserDevicePool getDevicePool() throws Exception {
-        return this.devicePool;
-    }
-
-    private void login(ClientUser user, IDevice dstDevice) throws Exception {
-        if (!(dstDevice.hasLoggedInUser() && dstDevice.isLoggedInUser(user))) {
-            LOG.info("Login as user " + user.getName() + " with device " + dstDevice.name());
-            dstDevice.logInWithUser(user);
-        }
-    }
-
-    private IDevice getOrAddRandomDevice(ClientUser user) throws Exception {
-        IDevice dstDevice = getDevicePool().getOrAddRandomDevice(user);
-        this.login(user, dstDevice);
-        return dstDevice;
-    }
-
-    private IDevice getOrAddDevice(ClientUser user, String deviceName) throws Exception {
-        IDevice dstDevice = getDevicePool().getOrAddDevice(user, deviceName);
-        this.login(user, dstDevice);
-        return dstDevice;
     }
 
     public List<String> getDeviceIds(ClientUser user) throws Exception {
@@ -84,12 +66,6 @@ public class SEBridge {
                 new IllegalStateException(String.format("There is no device '%s' owned by user '%s'", deviceName,
                         user.getName()))
         ).getFingerprint();
-    }
-
-    private static void verifyPathExists(String path) {
-        if (!new File(path).exists()) {
-            throw new IllegalArgumentException(String.format("The file %s is not accessible", path));
-        }
     }
 
     public void sendConversationMessage(ClientUser userFrom, String convId, String message) throws Exception {
@@ -142,11 +118,29 @@ public class SEBridge {
         getOrAddDevice(userFrom, deviceName).deleteMessage(convId, messageId);
     }
 
+    public void shareDefaultLocation(ClientUser userFrom, String convId, String deviceName) throws Exception {
+        getOrAddDevice(userFrom, deviceName).shareLocation(convId);
+    }
+
     public ActorMessage.MessageInfo[] getConversationMessages(ClientUser userFrom, String convId, String deviceName)
             throws Exception {
         return getOrAddDevice(userFrom, deviceName).getConversationMessages(convId);
     }
+    
+    public void releaseDevicesOfUsers(Collection<ClientUser> users) throws Exception {
+        for (ClientUser user : users) {
+            getDevicePool().releaseDevices(getDevicePool().getDevices(user));
+        }
+    }
+    
+    public void releaseDevicesOfUser(ClientUser user) throws Exception {
+        getDevicePool().releaseDevices(getDevicePool().getDevices(user));
+    }
 
+    public void reset() throws Exception {
+        this.getDevicePool().reset();
+    }
+    
     private void shutdown() {
         try {
             getDevicePool().shutdown();
@@ -154,12 +148,22 @@ public class SEBridge {
             e.printStackTrace();
         }
     }
-
-    {
-        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
+    
+    private UserDevicePool getDevicePool() throws Exception {
+        return this.devicePool;
     }
 
-    public void reset() throws Exception {
-        this.getDevicePool().reset();
+    private IDevice getOrAddRandomDevice(ClientUser user) throws Exception {
+        return getDevicePool().getOrAddRandomDevice(user);
+    }
+
+    private IDevice getOrAddDevice(ClientUser user, String deviceName) throws Exception {
+        return getDevicePool().getOrAddDevice(user, deviceName);
+    }
+    
+    private static void verifyPathExists(String path) {
+        if (!new File(path).exists()) {
+            throw new IllegalArgumentException(String.format("The file %s is not accessible", path));
+        }
     }
 }

@@ -7,27 +7,9 @@ Feature: Settings
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I tap conversations list settings button
-    And I tap options button
-    And I tap settings button
     Then I see settings page
     When I press back button
-    Then I see personal info page
-
-    Examples:
-      | Name      |
-      | user1Name |
-
-  @C376 @id71 @regression
-  Scenario Outline: Can not open Settings page when editing user name
-    Given There are 1 user where <Name> is me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
-    And I tap conversations list settings button
-    And I tap on my name
-    And I see edit name field with my name
-    When I tap options button
-    Then I do not see ABOUT item in Options menu
+    Then I see Contact list with no contacts
 
     Examples:
       | Name      |
@@ -40,13 +22,113 @@ Feature: Settings
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
     When I tap conversations list settings button
-    And I tap options button
-    And I tap about button
-    Then I see About page
-    When I tap on About page
-    Then I see personal info page
+    And I select "About" settings menu item
+    Then I see "Wire Website" settings menu item
 
     Examples:
       | Name      |
       | user1Name |
 
+  @C679 @id205 @regression @rc @rc42
+  Scenario Outline: Change user picture with gallery image
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with no contacts
+    When I take screenshot
+    And I tap conversations list settings button
+    And I select "Account" settings menu item
+    And I select "Picture" settings menu item
+    And I tap Gallery Camera button on Take Picture view
+    And I tap Confirm button on Take Picture view
+    And I press Back button
+    And I press Back button
+    Then I verify the previous and the current screenshots are different
+
+    Examples:
+      | Name      |
+      | user1Name |
+
+  @C691 @id328 @regression @rc @rc42
+  Scenario Outline: I can change my name
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with no contacts
+    When I tap conversations list settings button
+    And I select "Account" settings menu item
+    And I select "<Name>" settings menu item
+    And I commit my new name "<NewName>"
+    Then I see "<NewName>" settings menu item
+
+    Examples:
+      | Name      | NewName     |
+      | user1Name | NewTestName |
+
+  @C678 @id201 @regression @rc
+  Scenario Outline: Change user picture using camera
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with no contacts
+    When I take screenshot
+    And I tap conversations list settings button
+    And I select "Account" settings menu item
+    And I select "Picture" settings menu item
+    And I tap Take Photo button on Take Picture view
+    And I tap Confirm button on Take Picture view
+    And I press Back button
+    And I press Back button
+    Then I verify the previous and the current screenshots are different
+
+    Examples:
+      | Name      |
+      | user1Name |
+
+  @C150018 @rc @regression @useSpecialEmail
+  Scenario Outline: CM-1003 Verify you can add an email from settings
+    Given There is 1 user with phone number only where <Name> is me
+    Given I sign in using my phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with no contacts
+    When I tap conversations list settings button
+    And I select "Account" settings menu item
+    And I select "Add email" settings menu item
+    And I start listening for confirmation email <NewEmail> with mailbox password <Password>
+    And I commit my new email "<NewEmail>"
+    And I verify email <NewEmail>
+    And I select "Log out" settings menu item
+    And I confirm sign out
+    Then I see welcome screen
+    When I sign in using my email
+    # Workaround
+    And I accept First Time overlay as soon as it is visible
+    Then I see Contact list with no contacts
+
+    Examples:
+      | Name      | NewEmail   | Password      |
+      | user1Name | user1Email | user1Password |
+
+  @C150020 @rc @regression @useSpecialEmail
+  Scenario Outline: Verify you can change an email from settings
+    Given There is 1 user where <Name> is me
+    Given I sign in using my phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with no contacts
+    When I tap conversations list settings button
+    And I select "Account" settings menu item
+    And I select "<CurrentEmail>" settings menu item
+    And I start listening for confirmation email <NewEmail> with mailbox password <Password>
+    And I commit my new email "<NewEmail>"
+    And I verify email <NewEmail>
+    And I select "Log out" settings menu item
+    And I confirm sign out
+    Then I see welcome screen
+    When I sign in using my email
+    # Workaround
+    And I accept First Time overlay as soon as it is visible
+    Then I see Contact list with no contacts
+
+    Examples:
+      | Name      | CurrentEmail | NewEmail   | Password      |
+      | user1Name | user1Email   | user2Email | user2Password |

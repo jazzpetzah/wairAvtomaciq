@@ -17,7 +17,6 @@ Feature: Connect
     And I see the name <Contact> on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
-    And I see People Picker page
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 
@@ -42,7 +41,7 @@ Feature: Connect
     And I see the name <Contact> on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
-    And I see People Picker page
+    And I swipe right to show the conversations list
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 
@@ -87,7 +86,7 @@ Feature: Connect
       | user1Name | user2Name | 1 person waiting |
 
   @C491 @id2852 @regression
-  Scenario Outline: (AN-2389) I want to send connection request by selecting unconnected user from a group conversation (portrait)
+  Scenario Outline: I want to send connection request by selecting unconnected user from a group conversation (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to Myself,<Contact2>
@@ -96,24 +95,24 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
-    And I do not see the conversation <Contact2> in my conversations list
-    And I tap the conversation <GroupChatName>
+    Given I do not see the conversation <Contact2> in my conversations list
+    Given I tap the conversation <GroupChatName>
     When I tap conversation name from top toolbar
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
     And I tap Connect button on Group popover
-    Then I see Pending button on Group popover
-    When I tap conversation name from top toolbar
-    Then I do not see the Group popover
-    And I see the conversation <Contact2> in my conversations list
+    And I tap Connect button on Outgoing Connection popover
+    And I tap conversation name from top toolbar
+    And I swipe right to show the conversations list
+    Then I see the conversation <Contact2> in my conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName        |
       | user1Name | user2Name | user3Name | NonConnectedUserChat |
 
   @C519 @id3119 @regression
-  Scenario Outline: (AN-2389) I want to send connection request by selecting unconnected user from a group conversation (landscape)
+  Scenario Outline: I want to send connection request by selecting unconnected user from a group conversation (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to Myself,<Contact2>
@@ -122,17 +121,16 @@ Feature: Connect
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with conversations
-    And I do not see the conversation <Contact2> in my conversations list
-    And I tap the conversation <GroupChatName>
+    Given I do not see the conversation <Contact2> in my conversations list
+    Given I tap the conversation <GroupChatName>
     When I tap conversation name from top toolbar
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
     And I tap Connect button on Group popover
-    Then I see Pending button on Group popover
-    When I tap conversation name from top toolbar
-    Then I do not see the Group popover
-    And I see the conversation <Contact2> in my conversations list
+    And I tap Connect button on Outgoing Connection popover
+    And I tap conversation name from top toolbar
+    Then I see the conversation <Contact2> in my conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName        |
@@ -153,7 +151,7 @@ Feature: Connect
     And I see the name <Contact> on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
-    And I see People Picker page
+    And I swipe right to show the conversations list
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 
@@ -176,7 +174,6 @@ Feature: Connect
     And I see the name <Contact> on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
-    And I see People Picker page
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 
@@ -197,8 +194,6 @@ Feature: Connect
     And I ignore incoming connection request from <Contact> on Incoming connections page
     # Workaround for a bug
     And I wait for 3 seconds
-    And I tap in the center of Self Profile page
-    And I tap in the center of Self Profile page
     And I swipe right to show the conversations list
     Then I do not see the conversation <Contact> in my conversations list
     And I do not see the conversation <WaitingMess> in my conversations list
@@ -210,7 +205,7 @@ Feature: Connect
     And I see the name <Contact> on Incoming Connection popover
     And I tap Accept button on Incoming Connection popover
     And I do not see Incoming Connection popover
-    And I see People Picker page
+    And I swipe right to show the conversations list
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 
@@ -239,7 +234,6 @@ Feature: Connect
     And I see the name <Contact> on Incoming Connection popover
     And I tap Accept button on Incoming Connection popover
     And I do not see Incoming Connection popover
-    And I see People Picker page
     And I close People Picker
     Then I see the conversation <Contact> in my conversations list
 

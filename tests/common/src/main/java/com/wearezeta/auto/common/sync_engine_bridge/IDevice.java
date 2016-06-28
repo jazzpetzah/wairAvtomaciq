@@ -36,6 +36,10 @@ public interface IDevice extends IRemoteEntity {
 
     ActorMessage.MessageInfo[] getConversationMessages(String convId) throws Exception;
 
+    void shareLocation(String convId, float lon, float lat, String address, int zoom) throws Exception;
+
+    void shareLocation(String convId) throws Exception;
+
     void setLabel(String label) throws Exception;
 
     String getId() throws Exception;

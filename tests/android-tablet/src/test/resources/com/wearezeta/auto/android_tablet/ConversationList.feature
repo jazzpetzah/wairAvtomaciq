@@ -130,8 +130,8 @@ Feature: Conversation List
     Then I see Play button next to the conversation name <Contact>
 
     Examples:
-      | Name      | Contact   | SoundCloudLink                                             |
-      | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
+      | Name      | Contact   | SoundCloudLink                                                      |
+      | user1Name | user2Name | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi |
 
   @C652 @id3140 @regression
   Scenario Outline: (AN-3300) Verify play/pause controls are visible in the list if there is active media item in other conversation (landscape)
@@ -150,8 +150,8 @@ Feature: Conversation List
     Then I see Play button next to the conversation name <Contact>
 
     Examples:
-      | Name      | Contact   | SoundCloudLink                                             |
-      | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
+      | Name      | Contact   | SoundCloudLink                                                      |
+      | user1Name | user2Name | https://soundcloud.com/scottisbell/scott-isbell-tonight-feat-adessi |
 
   @C823 @id4046 @regression @rc @rc44
   Scenario Outline: Verify I can delete a 1:1 conversation from conversation list (landscape)
@@ -168,6 +168,7 @@ Feature: Conversation List
     And I confirm conversation deletion on Conversation Actions overlay
     Then I do not see Conversation Actions overlay
     And I do not see conversation <Contact1> in my conversations list
+    And I wait until <Contact1> exists in backend search results
     When I open Search UI
     And I enter "<Contact1>" into Search input on People Picker page
     Then I see "<Contact1>" avatar on People Picker page

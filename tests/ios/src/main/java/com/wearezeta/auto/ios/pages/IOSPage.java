@@ -76,6 +76,11 @@ public abstract class IOSPage extends BasePage {
 
     private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
 
+    private static final By classAlert = By.className("UIAAlert");
+
+    private static final Function<String, String> xpathStrAlertButtonByCaption = caption ->
+            String.format("//UIAAlert//UIAButton[@label='%s']", caption);
+
     private IOSKeyboard onScreenKeyboard;
 
     protected long getDriverInitializationTimeout() {
@@ -84,6 +89,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     private DocumentBuilder documentBuilder;
+    private XPath xpath;
 
     public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
         super(driver);
@@ -93,6 +99,8 @@ public abstract class IOSPage extends BasePage {
         final DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
         domFactory.setNamespaceAware(true);
         this.documentBuilder = domFactory.newDocumentBuilder();
+        final XPathFactory factory = XPathFactory.newInstance();
+        this.xpath = factory.newXPath();
     }
 
     @Override
@@ -293,35 +301,22 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void acceptAlertIfVisible() throws Exception {
-        try {
-            final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver());
-            if (alert.isPresent()) {
-                alert.get().accept();
-            }
-        } catch (WebDriverException e) {
-            // ignore
-        }
+        acceptAlertIfVisible(DriverUtils.getDefaultLookupTimeoutSeconds());
     }
 
     public void acceptAlertIfVisible(int timeoutSeconds) throws Exception {
-        try {
-            final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver(), timeoutSeconds);
-            if (alert.isPresent()) {
-                alert.get().accept();
-            }
-        } catch (WebDriverException e) {
-            // ignore
+        if (waitUntilAlertAppears(timeoutSeconds)) {
+            getDriver().switchTo().alert().accept();
         }
     }
 
     public void dismissAlertIfVisible() throws Exception {
-        try {
-            final Optional<Alert> alert = DriverUtils.getAlertIfDisplayed(getDriver());
-            if (alert.isPresent()) {
-                alert.get().dismiss();
-            }
-        } catch (WebDriverException e) {
-            // ignore
+        dismissAlertIfVisible(DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    public void dismissAlertIfVisible(int timeoutSeconds) throws Exception {
+        if (waitUntilAlertAppears(timeoutSeconds)) {
+            getDriver().switchTo().alert().dismiss();
         }
     }
 
@@ -581,26 +576,46 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    protected Rectangle getElementBounds(String xpathExpr) throws Exception {
+    protected Optional<Rectangle> getElementBounds(String xpathExpr) throws Exception {
         final String docStr = getDriver().getPageSource();
         final Document doc = documentBuilder.parse(new InputSource(new StringReader(docStr)));
-        final XPathFactory factory = XPathFactory.newInstance();
-        final XPath xpath = factory.newXPath();
         final XPathExpression expr = xpath.compile(xpathExpr);
         final NodeList result = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
         if (result.getLength() == 0) {
-            throw new IllegalStateException(String.format("There are no nodes matching the xpath %s in\n%s",
-                    xpathExpr, docStr));
+            log.debug(xpathExpr);
+            log.debug(docStr);
+            return Optional.empty();
         }
         final Node node = result.item(0);
         final NamedNodeMap attributes = node.getAttributes();
-        return new Rectangle((int) Double.parseDouble(attributes.getNamedItem("x").getNodeValue()),
+        return Optional.of(new Rectangle((int) Double.parseDouble(attributes.getNamedItem("x").getNodeValue()),
                 (int) Double.parseDouble(attributes.getNamedItem("y").getNodeValue()),
                 (int) Double.parseDouble(attributes.getNamedItem("width").getNodeValue()),
-                (int) Double.parseDouble(attributes.getNamedItem("height").getNodeValue()));
+                (int) Double.parseDouble(attributes.getNamedItem("height").getNodeValue())));
     }
 
     public void tapOnScreenCenter() throws Exception {
         DriverUtils.genericTap(getDriver(), 50, 50);
+    }
+
+    public boolean waitUntilAlertAppears() throws Exception {
+        return waitUntilAlertAppears(DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    public boolean waitUntilAlertAppears(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classAlert, timeoutSeconds);
+    }
+
+    public boolean waitUntilAlertDisappears() throws Exception {
+        return waitUntilAlertDisappears(DriverUtils.getDefaultLookupTimeoutSeconds());
+    }
+
+    public boolean waitUntilAlertDisappears(int timeoutSeconds) throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), classAlert, timeoutSeconds);
+    }
+
+    public void tapAlertButton(String caption) throws Exception {
+        final By locator = By.xpath(xpathStrAlertButtonByCaption.apply(caption));
+        getElement(locator).click();
     }
 }

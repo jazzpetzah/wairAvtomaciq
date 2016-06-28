@@ -36,25 +36,6 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-
-  @C738 @id2254 @regression @rc
-  Scenario Outline: Send Camera picture to contact in portrait mode
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to portrait
-    Given I sign in using my email
-    Given I accept First Time overlay as soon as it is visible
-    Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
-    When I tap Add picture button from cursor toolbar
-    And I tap Take Photo button on Take Picture view
-    And I tap Confirm button on Take Picture view
-    Then I see a new picture in the conversation view
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @C728 @id2240 @regression @rc @rc44
   Scenario Outline: Send Camera picture to contact in landscape mode
     Given There are 2 users where <Name> is me
@@ -84,7 +65,7 @@ Feature: Conversation View
     And I tap the conversation <Contact1>
     And I tap conversation name from top toolbar
     And I see the Single user popover
-    When I tap Add People button on Single user popover
+    When I tap Create Group button on Single user popover
     And I enter "<Contact2>" into the Search input on Single user popover
     And I tap the avatar of <Contact2> in search results on Single user popover
     And I tap the Add To Conversation button on Single user popover
@@ -107,8 +88,9 @@ Feature: Conversation View
     And I tap the conversation <Contact1>
     And I tap conversation name from top toolbar
     And I see the Single user popover
-    When I tap Add People button on Single user popover
+    When I tap Create Group button on Single user popover
     And I enter "<Contact2>" into the Search input on Single user popover
+    And I hide keyboard
     And I tap the avatar of <Contact2> in search results on Single user popover
     And I tap the Add To Conversation button on Single user popover
     Then I see the system message contains "<Action>" text on conversation view page
@@ -178,6 +160,7 @@ Feature: Conversation View
     When I tap outside of Single user popover
     Then I do not see the Single user popover
     And I tap on text input
+    And I hide keyboard
     When I tap conversation name from top toolbar
     Then I see the Single user popover
     When I navigate back
@@ -212,25 +195,6 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C482 @id2825 @regression
-  Scenario Outline: Send image with camera in group chat (portrait)
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I rotate UI to portrait
-    Given I sign in using my email
-    Given I accept First Time overlay as soon as it is visible
-    Given I see the conversations list with conversations
-    And I tap the conversation <GroupChatName>
-    When I tap Add picture button from cursor toolbar
-    And I tap Take Photo button on Take Picture view
-    And I tap Confirm button on Take Picture view
-    Then I see a new picture in the conversation view
-
-    Examples:
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | ChatWithImg   |
-
   @C483 @id2827 @regression
   Scenario Outline: Send image with camera in group chat (landscape)
     Given There are 3 users where <Name> is me
@@ -255,24 +219,6 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
-    Given I sign in using my email
-    Given I accept First Time overlay as soon as it is visible
-    Given I see the conversations list with conversations
-    And I tap the conversation <Contact>
-    When I tap Add picture button from cursor toolbar
-    And I tap Gallery Camera button on Take Picture view
-    And I tap Confirm button on Take Picture view
-    Then I see a new picture in the conversation view
-
-    Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @C758 @id2829 @regression @rc
-  Scenario Outline: Send existing image from gallery in 1:1 chat (portrait)
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations

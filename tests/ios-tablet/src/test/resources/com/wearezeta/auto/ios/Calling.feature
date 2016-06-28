@@ -231,7 +231,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C145968 @staging
+  @C145968 @rc @calling_basic
   Scenario Outline: Verify starting a group call [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -249,7 +249,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GROUPCALL     |
 
-  @C145969 @staging
+  @C145969 @calling_advanced
   Scenario Outline: Verify leaving and coming back to the call in 20 seconds [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -263,7 +263,6 @@ Feature: Calling
     Given I remember the state of <GroupChatName> conversation item
     When I tap on group chat with name <GroupChatName>
     And I tap Audio Call button
-    Then I see call status message contains "<GroupChatName> ringing"
     And I see <NumberOfAvatars> avatars on the Calling overlay
     Then I tap Leave button on Calling overlay
     And I do not see Calling overlay
@@ -271,6 +270,26 @@ Feature: Calling
     And I wait for 20 seconds
     And I tap Audio Call button
     Then I see <NumberOfAvatars> avatars on the Calling overlay
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | GROUPCALL     | chrome      | 2               |
+
+  @C145950 @rc @calling_basic
+  Scenario Outline: Verify joining 2 other people on the group call [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    And <Contact1> calls <GroupChatName>
+    Then I see call status message contains "<GroupChatName> ringing"
+    And I tap Accept button on Calling overlay
+    And I see <NumberOfAvatars> avatars on the Calling overlay
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |

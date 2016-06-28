@@ -18,21 +18,21 @@ Feature: Utility
 
   @C3264 @utility
   Scenario: Verify buttons on invitation page for osx
-    When I use generic invitation link for invitation for osx
+    Given I switch to sign in page
     When I use generic invitation link for invitation for osx
     And I see You are invited page
     Then I see 'Open Wire' button
 
   @C3265 @utility
   Scenario: Verify buttons on invitation page for windows
-    When I use generic invitation link for invitation for windows
+    Given I switch to sign in page
     When I use generic invitation link for invitation for windows
     And I see You are invited page
     Then I see 'Open Wire' button
 
   @C3257 @utility
   Scenario: Verify buttons on download page
-    When I navigate to download page
+    Given I switch to sign in page
     When I navigate to download page
     Then I see button for iOS
     And I see button for Android
@@ -42,7 +42,7 @@ Feature: Utility
 
   @C3283 @utility
   Scenario Outline: Verify that there are no dead links on start page for <Agent>
-    When I navigate to start page for <Agent>
+    Given I switch to sign in page
     When I navigate to start page for <Agent>
     Then I can see no dead links
 
@@ -55,7 +55,7 @@ Feature: Utility
 
   @C77922 @utility
   Scenario Outline: Verify that there are no dead links on privacy page for <Agent>
-    When I navigate to privacy page for <Agent>
+    Given I switch to sign in page
     When I navigate to privacy page for <Agent>
     Then I can see no dead links
 
@@ -66,9 +66,9 @@ Feature: Utility
       | osx     |
       | windows |
 
-  @C139985 @utility 
+  @C139985 @utility
   Scenario Outline: Verify that there are no dead links on unsupported browser page for <Agent>
-    When I navigate to unsupported page for <Agent>
+    Given I switch to sign in page
     When I navigate to unsupported page for <Agent>
     Then I can see no dead links
 
@@ -81,7 +81,7 @@ Feature: Utility
 
   @C12086 @utility
   Scenario Outline: Verify that there are no dead links on german start page for <Agent>
-    When I navigate to start page for <Agent>
+    Given I switch to sign in page
     When I navigate to start page for <Agent>
     And I change language to german
     And start page for <Agent> is german
@@ -96,7 +96,7 @@ Feature: Utility
 
   @C77923 @utility
   Scenario Outline: Verify that there are no dead links on german privacy page for <Agent>
-    When I navigate to privacy page for <Agent>
+    Given I switch to sign in page
     When I navigate to privacy page for <Agent>
     And I change language to german
     And privacy page for <Agent> is german
@@ -111,6 +111,7 @@ Feature: Utility
 
   @C139986 @utility
   Scenario Outline: Verify that there are no dead links on german unsupported browser page for <Agent>
+    Given I switch to sign in page
     When I navigate to unsupported page for <Agent>
     And I change language to german
     And unsupported page for <Agent> is german
@@ -125,6 +126,7 @@ Feature: Utility
 
   @C139987 @utility
     Scenario Outline: Verify I get redirected to unsupported browser page
+    Given I switch to sign in page
     When I navigate to login page for <Agent>
     Then I see unsupported browser page
     
@@ -167,6 +169,7 @@ Feature: Utility
 
   @C5233 @utility
   Scenario Outline: Check password reset with unregistered email for all agents
+    Given I switch to sign in page
     When I go to Password Change Reset page for <Agent>
     Then I see Password Change Request page
     And I enter unregistered email <UnregisteredMail>
@@ -217,20 +220,20 @@ Feature: Utility
 
   @C3277 @utility
   Scenario: Verify buttons from verification link for osx
-    When I go to verify page for osx
+    Given I switch to sign in page
     When I go to verify page for osx
     Then I see download button for osx
     And I see webapp button
 
   @C3278 @utility
   Scenario: Verify buttons from verification link for windows
-    When I go to verify page for windows
+    Given I switch to sign in page
     When I go to verify page for windows
     Then I see download button for windows
 
   @C5236 @utility
   Scenario Outline: Verify error message by broken verification link for <Agent>
-    When I go to broken verify page for <Agent>
+    Given I switch to sign in page
     When I go to broken verify page for <Agent>
     Then I see error message
 
@@ -343,7 +346,7 @@ Feature: Utility
 
   @C49970 @utility
   Scenario Outline: Verify that language switch works for <Agent>
-    When I navigate to <Page> page for <Agent>
+    Given I switch to sign in page
     When I navigate to <Page> page for <Agent>
     And I can see language switch button for english on <Page> for <Agent>
     Then I change language to german

@@ -217,14 +217,35 @@ Feature: Conversation View
     And I click People button in group conversation
     And I see Group Participants popover
     When I click Add People button on Group Participants popover
-    And I select the first 125 participants from Group Participants popover search results
+    And I select the first 122 participants from Group Participants popover search results
+    And I choose to create group conversation from Group Participants popover
+    When I click People button in group conversation
+    And I see Group Participants popover
+    Then I see 124 participants in the Group Participants popover
+    When I click Add People button on Group Participants popover
+    And I select the first 4 participants from Group Participants popover search results
+    And I choose to create group conversation from Group Participants popover
+    And I see full house warning modal
+    And I see a string 3 more people on the page
+    And I click on close button in full house warning modal
+    And I do not see full house warning modal
+    #Next step: Check if text gives 3 remaining
+    When I click People button in group conversation
+    And I see Group Participants popover
+    When I click Add People button on Group Participants popover
+    And I select the first 3 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
     When I click People button in group conversation
     And I see Group Participants popover
     Then I see 127 participants in the Group Participants popover
+    #Next step: Check if text gives 0 remaining
     When I click Add People button on Group Participants popover
     And I select the first 1 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
+    And I see full house warning modal
+    And I see a string 0 more people on the page
+    And I click on close button in full house warning modal
+    And I do not see full house warning modal
     When I click People button in group conversation
     And I see Group Participants popover
     Then I see 127 participants in the Group Participants popover
@@ -417,6 +438,7 @@ Feature: Conversation View
     When I open self profile
     And Contact <Contact> sends 35 messages with prefix <UNREAD> via device Device1 to user <Name>
     And I wait for 5 seconds
+    Then I see unread dot in conversation <Contact>
     When I open conversation with <Contact>
     Then I do not see text message <READ>33
     And I do not see text message <READ>0
@@ -426,3 +448,57 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   | READ | UNREAD |
       | user1Email | user1Password | user1Name | user2Name | Read | Unread |
+
+  @C149662 @staging
+  Scenario Outline: Verify maximum character limit dialog is shown when want to send a very long text message to group conversation
+    Given I switch to Sign In page
+    Given I Sign in temporary using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When I open conversation with <ChatName>
+    And I paste message from file <File1>
+    And I send message
+    Then I see long message warning dialog
+    And I click OK on long message warning dialog
+    Then I do not see long message warning dialog
+    And I send message
+    Then I see long message warning dialog
+    And I click X button on long message warning dialog
+    Then I do not see long message warning dialog
+    And I do not see text message <File1>
+    And I delete 10 characters from the conversation input
+    And I send message
+    Then I do not see long message warning dialog
+    Then I verify the last text message equals file <File2>
+
+    Examples:
+      | Login                         | Password   | ChatName    | File1          | File2              |
+      | smoketester+68b16b1c@wire.com | aqa123456! | Lorem ipsum | over8000ch.txt | lessThan8000ch.txt |
+
+  @C149661 @staging
+  Scenario Outline: Verify maximum character limit dialog is shown when want to send a very long text message to 1:1 conversation
+    Given I switch to Sign In page
+    Given I Sign in temporary using login <Login> and password <Password>
+    Given I see the history info page
+    Given I click confirm on history info page
+    Given I am signed in properly
+    When I open conversation with <Contact>
+    And I paste message from file <File1>
+    And I send message
+    Then I see long message warning dialog
+    And I click OK on long message warning dialog
+    Then I do not see long message warning dialog
+    And I send message
+    Then I see long message warning dialog
+    And I click X button on long message warning dialog
+    Then I do not see long message warning dialog
+    And I do not see text message <File1>
+    And I delete 10 characters from the conversation input
+    And I send message
+    Then I do not see long message warning dialog
+    Then I verify the last text message equals file <File2>
+
+    Examples:
+      | Login                         | Password   | Contact  | File1          | File2              |
+      | smoketester+68b16b1c@wire.com | aqa123456! | 928d0420 | over8000ch.txt | lessThan8000ch.txt |

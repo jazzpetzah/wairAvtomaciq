@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import com.wearezeta.auto.android.pages.TakePicturePage;
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.android.pages.ConversationViewPage;
@@ -15,7 +14,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class TabletConversationViewPage extends AndroidTabletPage {
 
     public static final Function<String, String> xpathStrSystemMessageByContent = content -> String
-            .format("//*[@id='ltv__row_conversation__message' and contains(@value, '%s')]", content);
+            .format("//*[starts-with(@id, 'ttv__row_conversation') and contains(@value, '%s')]", content.toUpperCase());
 
     private static final Function<String, String> xpathStrOutgoingInvitationMessageByContent = content -> String
             .format("//*[@id='ttv__connect_request__first_message' and @value='%s']", content);
@@ -66,16 +65,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public void tapPingButton() throws Exception {
-        getConversationViewPage().tapPingBtn();
-    }
-
-    public void tapAddPictureButton() throws Exception {
-        getConversationViewPage().tapAddPictureBtn();
-    }
-
-    public void tapTopToolbarTitle() throws Exception {
-        getConversationViewPage().tapTopToolbarTitle();
+    public void tapCursorToolButton(String name) throws Exception {
+        getConversationViewPage().tapCursorToolButton(name);
     }
 
     public boolean waitUntilPingMessageIsVisible(String expectedMessage) throws Exception {
@@ -124,8 +115,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getConversationViewPage().tapRecentImage();
     }
 
-    public boolean waitForSystemConnectionMessageContains(String expectedMessage)
-            throws Exception {
+    public boolean waitForSystemConnectionMessageContains(String expectedMessage) throws Exception {
         final By locator = By.xpath(xpathStrSystemConnectionMessageByContent
                 .apply(expectedMessage));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -160,8 +150,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idCloseImageBtn);
     }
 
-    public boolean waitUntilClosePicturePreviewButtonInvisible()
-            throws Exception {
+    public boolean waitUntilClosePicturePreviewButtonInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), idCloseImageBtn);
     }
 
@@ -181,14 +170,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         getElement(idGiphyPreviewButton).click();
     }
 
-    public void tapSketchButton() throws Exception {
-        getConversationViewPage().tapSketchBtn();
-    }
-
-    public void tapFileButton() throws Exception {
-        getConversationViewPage().tapFileBtn();
-    }
-
     public boolean scrollUpUntilMediaBarVisible(final int maxScrollRetries) throws Exception {
         return getConversationViewPage().scrollUpUntilMediaBarVisible(maxScrollRetries);
     }
@@ -199,5 +180,57 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     public BufferedImage getMediaControlButtonState() throws Exception {
         return getConversationViewPage().getMediaButtonState();
+    }
+
+    public void tapTopToolbarTitle() throws Exception {
+        getConversationViewPage().tapTopToolbarTitle();
+    }
+
+    public void tapMessage(String msg) throws Exception {
+        getConversationViewPage().tapMessage(msg);
+    }
+
+    public void longTapMessage(String msg) throws Exception {
+        getConversationViewPage().longTapMessage(msg);
+    }
+
+    public void tapActionBarButton(String btnName) throws Exception {
+        getConversationViewPage().tapActionBarButton(btnName);
+    }
+
+    public boolean isActionModeBarButtonVisible(String name) throws Exception {
+        return getConversationViewPage().isActionModeBarButtonVisible(name);
+    }
+
+    public boolean isActionModeBarButtonInvisible(String name) throws Exception {
+        return getConversationViewPage().isActionModeBarButtonInvisible(name);
+    }
+
+    public boolean isContainerVisible(String containerType) throws Exception {
+        return getConversationViewPage().isContainerVisible(containerType);
+    }
+
+    public boolean isContainerInvisible(String containerType) throws Exception {
+        return getConversationViewPage().isContainerInvisible(containerType);
+    }
+
+    public boolean isCursorToolbarVisible() throws Exception {
+        return getConversationViewPage().isCursorToolbarVisible();
+    }
+
+    public boolean isCursorToolbarInvisible() throws Exception {
+        return getConversationViewPage().isCursorToolbarInvisible();
+    }
+
+    public void longTapAudioMessageCursorBtn(String btnName) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtn(DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public void longTapAudioMessageCursorBtn(String btnName, int durationSecords) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtn(durationSecords * 1000);
+    }
+
+    public void tapAudioRecordingButton(String name) throws Exception {
+        getConversationViewPage().tapAudioRecordingButton(name);
     }
 }

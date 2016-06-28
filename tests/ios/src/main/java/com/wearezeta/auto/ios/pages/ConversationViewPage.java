@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.TouchAction;
@@ -64,7 +65,7 @@ public class ConversationViewPage extends IOSPage {
             String.format("%s[contains(@value, '%s')]/parent::*", xpathStrAllTextMessages, text);
 
     private static final Function<String, String> xpathStrSystemMessageByText = text ->
-            String.format("%s[@name='%s']", xpathStrAllEntries, text.toUpperCase());
+            String.format("//UIATableCell[@name='%s']", text.toUpperCase());
 
     private static final String xpathStrImageCells = xpathStrAllEntries + "[@name='ImageCell']";
     private static final By xpathImageCell = By.xpath(xpathStrImageCells);
@@ -171,7 +172,12 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameSendAudioMessageButton = MobileBy.AccessibilityId("audioRecorderSend");
 
-    private static final By namePlayAudioMessageButton = MobileBy.AccessibilityId("audioRecorderPlay");
+    private static final String strNamePlayAudioRecorderButton = "audioRecorderPlay";
+
+    private static final By namePlayAudioRecorderButton = MobileBy.AccessibilityId(strNamePlayAudioRecorderButton);
+
+    private static final Function<String, String> recordControlButtonWithState = state ->
+            String.format("//UIAButton[@name='%s' and @value='%s']", strNamePlayAudioRecorderButton, state);
 
     private static final By nameAudioRecordTimeLabel = MobileBy.AccessibilityId("audioRecorderTimeLabel");
 
@@ -185,6 +191,10 @@ public class ConversationViewPage extends IOSPage {
 
     private static final Function<String, String> placeholderAudioMessageButtonState = buttonState ->
             String.format("//UIAButton[@name='%s' and @value='%s']", strNameAudioActionButton, buttonState);
+
+    private static final FunctionFor2Parameters<String, String, Integer> placeholderAudioMessageButtonStateByIndex =
+            (buttonState, index) ->
+            String.format("(//UIAButton[@name='%s'])[%s][@value='%s']", strNameAudioActionButton, index, buttonState);
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -477,6 +487,7 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isUserNameDisplayedInConversationView(String name) throws Exception {
         final By locator = By.xpath(xpathUserNameByText.apply(name));
+        this.printPageSource();
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -579,6 +590,7 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isSystemMessageVisible(String expectedMsg) throws Exception {
         final By locator = By.xpath(xpathStrSystemMessageByText.apply(expectedMsg));
+        this.printPageSource();
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
@@ -764,7 +776,7 @@ public class ConversationViewPage extends IOSPage {
             case "cancel":
                 return nameAudioRecorderCancelButton;
             case "play":
-                return namePlayAudioMessageButton;
+                return namePlayAudioRecorderButton;
             default:
                 throw new IllegalArgumentException("Not know record control button");
         }
@@ -836,10 +848,14 @@ public class ConversationViewPage extends IOSPage {
         return getElement(nameAudioPlaceholderTimeLabel).getAttribute("value");
     }
 
-
     public boolean isPlaceholderAudioMessageButtonState(String buttonState) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(placeholderAudioMessageButtonState.apply
                 (buttonState)));
+    }
+
+    public boolean isPlaceholderAudioMessageButtonState(String buttonState, int index) throws Exception {
+        final By locator = By.xpath(placeholderAudioMessageButtonStateByIndex.apply(buttonState, index));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isPlaceholderTimeLabelValueChanging() throws Exception {
@@ -858,6 +874,11 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isUserNameVisibleOnUpperToolbar(String contact) throws Exception {
         final By locator = By.xpath(xpathStrToolbarByConversationName.apply(contact));
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isRecordControlButtonState(String buttonState) throws Exception {
+        final By locator = By.xpath(recordControlButtonWithState.apply(buttonState));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 }

@@ -320,30 +320,42 @@ public class ContactListPage extends WebPage {
     }
 
     public void clickArchiveConversation() throws Exception {
-        waitForOptionButtonsToBeClickable();
         archiveButton.click();
     }
 
     public void clickMuteConversation() throws Exception {
-        waitForOptionButtonsToBeClickable();
         muteButton.click();
     }
 
-    private void waitForOptionButtonsToBeClickable() throws Exception {
-        assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+    public boolean isMuteButtonClickable() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(),muteButton);
+    }
+
+    public boolean isUnmuteButtonClickable() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(),unmuteButton);
+    }
+
+    public boolean isDeleteButtonClickable() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(),deleteButton);
+    }
+
+    public boolean isLeaveButtonClickable() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(),leaveButton);
+    }
+
+    public boolean isArchiveButtonClickable() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(),
                 archiveButton);
-        assert (DriverUtils
-                .waitUntilLocatorIsDisplayed(
-                        this.getDriver(),
-                        By.cssSelector(WebAppLocators.ContactListPage.cssMuteButton),
-                        3) && DriverUtils.waitUntilElementClickable(
-                this.getDriver(), muteButton, 3))
-                || (DriverUtils
-                .waitUntilLocatorIsDisplayed(
-                        this.getDriver(),
-                        By.cssSelector(WebAppLocators.ContactListPage.cssUnmuteButton),
-                        3) && DriverUtils.waitUntilElementClickable(
-                this.getDriver(), this.unmuteButton, 3));
+    }
+
+    public boolean isBlockButtonClickable() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(),
+                blockButton);
+    }
+
+    public boolean isCancelRequestButtonClickable() throws Exception {
+        return DriverUtils.waitUntilElementClickable(this.getDriver(),
+                cancelRequestButton);
     }
 
     public boolean isConversationMuted(String conversationName)
@@ -496,18 +508,11 @@ public class ContactListPage extends WebPage {
     }
 
     public void clickUnmuteConversation() throws Exception {
-        waitForOptionButtonsToBeClickable();
         unmuteButton.click();
     }
 
     public void clickLeaveConversation() throws Exception {
-        waitForOptionButtonsToBeClickable();
         leaveButton.click();
-    }
-
-    public void clickBlockConversation() throws Exception {
-        waitForOptionButtonsToBeClickable();
-        blockButton.click();
     }
 
     public void unarchiveConversation(String conversationName) throws Exception {
@@ -619,14 +624,15 @@ public class ContactListPage extends WebPage {
         final WebElement entry = getDriver().findElement(locator);
         return AccentColor.getByRgba(entry.getCssValue("color"));
     }
+    
+    public boolean isUnreadDotVisibleForConversation(String name) throws Exception {
+        final By locator = By.xpath(WebAppLocators.ContactListPage.xpathUnreadDotByContactName.apply(name));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+    }
 
-    public AccentColor getCurrentUnreadDotAccentColor(String name)
-            throws Exception {
-        final By locator = By
-                .xpath(WebAppLocators.ContactListPage.xpathUnreadDotByContactName
-                        .apply(name));
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                locator);
+    public AccentColor getCurrentUnreadDotAccentColor(String name) throws Exception {
+        final By locator = By.xpath(WebAppLocators.ContactListPage.xpathUnreadDotByContactName.apply(name));
+        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
         final WebElement entry = getDriver().findElement(locator);
         return AccentColor.getByRgba(entry.getCssValue("background-color"));
     }
@@ -686,7 +692,6 @@ public class ContactListPage extends WebPage {
     }
 
     public void clickDeleteConversation() throws Exception {
-        waitForOptionButtonsToBeClickable();
         deleteButton.click();
     }
 
@@ -732,8 +737,8 @@ public class ContactListPage extends WebPage {
         cancelRequestButton.click();
     }
 
-    public void clickArchiveButton() throws Exception {
-        archiveButton.click();
+    public void clickBlockButton() throws Exception {
+        blockButton.click();
     }
 
         // only for Wrapper

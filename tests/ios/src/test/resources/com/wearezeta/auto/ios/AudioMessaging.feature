@@ -24,12 +24,15 @@ Feature: Audio Messaging
     And I long tap Audio Message button for <Duration> seconds from input tools
     And I tap Send record control button
     Then I see audio message placeholder
+    When I remember the state of Play button on audio message placeholder
     When I tap Play audio message button
     Then I see state of button on audio message placeholder is pause
-    And I see the audio message in placeholder gets played
+    # TODO: Should be uncommented once ZIOS-6798 is fixed
+    #And I see the audio message in placeholder gets played
     When I tap Pause audio message button
     Then I see state of button on audio message placeholder is play
-    And I see the audio message in placeholder gets paused
+    # TODO: Should be uncommented once ZIOS-6798 is fixed
+    #And I see the audio message in placeholder gets paused
 
     Examples:
       | Name      | Contact   | Duration |
@@ -43,11 +46,11 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User Me sends 1 encrypted message to user <Contact1>
     Given I see audio message placeholder
     When I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item
-    And I accept alert
+    And I tap Delete button on the alert
     Then I do not see audio message placeholder
 
     Examples:
@@ -95,14 +98,14 @@ Feature: Audio Messaging
     And I tap Play audio message button
     And I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item
-    And I accept alert
+    And I tap Delete button on the alert
     Then I do not see audio message placeholder
 
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C131214 @regression
+  @C131218 @regression
   Scenario Outline: Verify not sent yet audio message is preserved on minimising the app
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -144,7 +147,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     When User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    And User <Contact1> sends 1 encrypted message to user Myself
+    And User Me sends 1 encrypted message to user <Contact1>
     And I long tap on audio message placeholder in conversation view
     Then I do not see Save badge item
     When I tap Play audio message button
@@ -166,22 +169,20 @@ Feature: Audio Messaging
     Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact1> sends 1 encrypted message to user Myself
+    Given User Me sends 1 encrypted message to user <Contact1>
+    # Small wait to make the appearence of button on jenkins more stable
+    And I wait for 5 seconds
     When I tap Play audio message button on audio message placeholder number 2
-    # Wait until the audio is downloaded and starts playback
-    And I wait for <AudioDownloadTimeout> seconds
-    And I remember the state of Pause button on the second audio message placeholder
+    And I see state of button on audio message placeholder number 2 is pause
     And I tap Play audio message button on audio message placeholder number 1
-    # Wait until the audio is downloaded
-    And I wait for <AudioDownloadTimeout> seconds
-    Then I verify the state of Pause button on audio message placeholder is changed
+    Then I see state of button on audio message placeholder number 2 is play
 
     Examples:
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
 
 
-  @C139855 @staging
+  @C139855 @regression
   Scenario Outline: (ZIOS-6759) Verify playback is stopped when incoming call has appeared
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -190,7 +191,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact>
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User Me sends 1 encrypted message to user <Contact>
     And I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait to make sure the audio file is downloaded and starts playback
@@ -233,7 +234,7 @@ Feature: Audio Messaging
     Given I tap on contact name <Contact>
     Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
     Given User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact> sends 1 encrypted message to user Myself
+    Given User Me sends 1 encrypted message to user <Contact>
     When I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
@@ -245,15 +246,15 @@ Feature: Audio Messaging
       | Name      | Contact   | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout | SoundCloudLink                                                   |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
-  @C131215 @staging
-  Scenario Outline: Verify playback is stopped when audio message recording is started
+  @C131215 @regression
+  Scenario Outline: (ZIOS-6759) Verify playback is stopped when audio message recording is started
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact1> sends 1 encrypted messages to user <Name>
+    Given User Me sends 1 encrypted message to user <Contact1>
     And I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
@@ -266,7 +267,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
 
-  @C139856 @staging
+  @C139856 @regression
   Scenario Outline: (ZIOS-6759) Verify playback is stopped when outgoing call is started
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -274,7 +275,7 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
-    Given User <Contact1> sends 1 encrypted messages to user <Name>
+    Given User Me sends 1 encrypted message to user <Contact1>
     And I remember the state of Play button on audio message placeholder
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
@@ -287,7 +288,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice | AudioDownloadTimeout |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       | 7                    |
 
-  @C139862 @staging
+  @C139862 @regression
   Scenario Outline: Verify Soundcloud playback is stopped when audio message recording is started
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -295,17 +296,17 @@ Feature: Audio Messaging
     Given I see conversations list
     When User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     And I tap on contact name <Contact>
-    And I tap media container
     And I remember media container state
+    And I tap media container
     And I long tap Audio Message button from input tools
     Then I see audio message record container
-    And I see media container state is changed
+    And I see media container state is not changed
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                                   |
       | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
-  @C129325 @C129324 @staging
+  @C129325 @C129324 @regression
   Scenario Outline: Verify playing the message by tapping on the play icon on record toolbar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -313,15 +314,19 @@ Feature: Audio Messaging
     Given I see conversations list
     Given I tap on contact name <Contact1>
     # Let it record something for specific duration
+    Given I see Audio Message button in input tools palette
     When I long tap Audio Message button for <Duration> seconds from input tools
+    And I see Play record control button
     And I tap Play record control button
-    Then I see the audio message in record toolbar gets played
+    Then I see state of button on record toolbar is playing
+    # TODO: Should be uncommented once ZIOS-6798 is fixed
+    #And I see the audio message in record toolbar gets played
 
     Examples:
       | Name      | Contact1  | Duration |
       | user1Name | user2Name | 20       |
 
-  @C129342 @C129780 @staging
+  @C129342 @C129780 @rc @regression
   Scenario Outline: Verify playing/pausing a received voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -329,15 +334,38 @@ Feature: Audio Messaging
     Given I see conversations list
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     When I tap on contact name <Contact1>
-    And User <Contact1> sends 1 encrypted message to user Myself
+    And User Me sends 1 encrypted message to user <Contact1>
     And I see audio message placeholder
     And I tap Play audio message button
     Then I see state of button on audio message placeholder is pause
-    And I see the audio message in placeholder gets played
+    # TODO: Should be uncommented once ZIOS-6798 is fixed
+    #And I see the audio message in placeholder gets played
     When I tap Pause audio message button
     Then I see state of button on audio message placeholder is play
-    And I see the audio message in placeholder gets paused
+    # TODO: Should be uncommented once ZIOS-6798 is fixed
+    #And I see the audio message in placeholder gets paused
 
     Examples:
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
+
+  @C139861 @regression
+  Scenario Outline: Verify Soundcloud playback is stopped when audio message playback is started
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
+    And User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
+    And I tap on contact name <Contact>
+    And User Me sends 1 encrypted message to user <Contact>
+    And I remember media container state
+    And I tap media container
+    And I see media container state is changed
+    And I remember media container state
+    And I tap Play audio message button
+    Then I see media container state is changed
+
+    Examples:
+      | Name      | Contact   | SoundCloudLink                                                   | FileName | FileMIME  | ContactDevice |
+      | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic | test.m4a | audio/mp4 | Device1       |

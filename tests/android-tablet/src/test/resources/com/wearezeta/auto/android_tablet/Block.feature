@@ -49,6 +49,7 @@ Feature: Block
     Then I see Blocked Connection popover
     When I tap Unblock button on Blocked Connection popover
     Then I do not see Blocked Connection popover
+    And I swipe right to show the conversations list
     # Workaround for https://wearezeta.atlassian.net/browse/AN-2560
     And I close the People Picker
     And I see the conversation <Contact> in my conversations list
@@ -96,10 +97,10 @@ Feature: Block
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
-    And I see the Conversations list with no conversations
-    And I wait until <Contact> exists in backend search results
+    Given I see the Conversations list with no conversations
+    Given I wait until <Contact> exists in backend search results
     When I open Search UI
-    When I enter "<Contact>" into Search input on People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
     Then I see "<Contact>" avatar on People Picker page
     And I remember <Contact> avatar on People Picker page
     When I tap the found item <Contact> on People Picker page
@@ -123,6 +124,7 @@ Feature: Block
     Given I see the Conversations list with no conversations
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Given User <Contact> sends encrypted message "<Message>" to user Myself
+    Given I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
     Then I see "<Contact>" avatar on People Picker page

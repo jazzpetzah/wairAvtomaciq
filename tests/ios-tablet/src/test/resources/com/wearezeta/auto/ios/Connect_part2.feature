@@ -45,6 +45,7 @@ Feature: Connect
     And I tap Cancel Request button on pending profile page
     And I confirm Cancel Request action on pending profile page
     And I navigate back to conversations list
+    And I wait until <Contact1> exists in backend search results
     And I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -69,6 +70,7 @@ Feature: Connect
     And I open conversation details
     And I tap Cancel Request button on pending profile page
     And I confirm Cancel Request action on pending profile page
+    And I wait until <Contact1> exists in backend search results
     And I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -88,6 +90,7 @@ Feature: Connect
     Given Me sent connection request to <Contact1>
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until <Contact1> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
@@ -106,6 +109,7 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until <Contact1> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result

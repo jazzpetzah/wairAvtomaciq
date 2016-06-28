@@ -20,9 +20,9 @@ public class TakePicturePageSteps {
      *
      * @param buttonName the button to press
      * @throws Exception
-     * @step. ^I tap "(Take Photo|Confirm|Cancel|Gallery|Image Close|Switch Camera|Sketch Image Paint|Close)" button on Take Picture view$
+     * @step. ^I tap "(Take Photo|Confirm|Cancel|Image Close|Switch Camera|Sketch Image Paint|Close)" button on Take Picture view$
      */
-    @When("^I tap (Take Photo|Change Photo|Confirm|Cancel|Gallery|Gallery Camera|Image Close|Switch Camera|Sketch Image Paint|Close) button on Take Picture view$")
+    @When("^I tap (Take Photo|Change Photo|Confirm|Cancel|Gallery Camera|Image Close|Switch Camera|Sketch Image Paint|Close) button on Take Picture view$")
     public void WhenIPressButton(String buttonName) throws Exception {
         switch (buttonName.toLowerCase()) {
             case "take photo":
@@ -37,11 +37,8 @@ public class TakePicturePageSteps {
             case "cancel":
                 getTakePicturePage().cancel();
                 break;
-            case "gallery":
-                getTakePicturePage().openGallery();
-                break;
             case "gallery camera":
-                getTakePicturePage().openGalleryFromCamera();
+                getTakePicturePage().openGalleryFromCameraView();
                 break;
             case "image close":
                 getTakePicturePage().closeFullScreenImage();
@@ -71,7 +68,7 @@ public class TakePicturePageSteps {
      * @throws Exception
      * @step. ^I (do not )?see (Take Photo|Change Photo) button on Take Picture view$
      */
-    @Then("^I (do not )?see (Take Photo|Change Photo|Gallery) button on Take Picture view$")
+    @Then("^I (do not )?see (Take Photo|Change Photo) button on Take Picture view$")
     public void ISeeButtonOnTakePictureView(String shouldNotSee, String buttonName) throws Exception {
         FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
         switch (buttonName.toLowerCase()) {
@@ -82,10 +79,6 @@ public class TakePicturePageSteps {
             case "change photo":
                 verificationFunc = (shouldNotSee == null) ? getTakePicturePage()::isChangePhotoButtonVisible :
                         getTakePicturePage()::isChangePhotoButtonInvisible;
-                break;
-            case "gallery":
-                verificationFunc = (shouldNotSee == null) ? getTakePicturePage()::isGalleryButtonVisible :
-                        getTakePicturePage()::isGalleryButtonInvisible;
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name: '%s'", buttonName));

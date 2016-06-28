@@ -63,13 +63,21 @@ public final class PlatformDrivers {
         return resetDriver(url, capabilities, 1, null, null);
     }
 
-    public static void setImplicitWaitTimeout(RemoteWebDriver driver, int count, TimeUnit unit) throws Exception {
+    private static void setImplicitWaitTimeout(RemoteWebDriver driver, int count, TimeUnit unit) throws Exception {
         driver.manage().timeouts().implicitlyWait(count, unit);
     }
 
+    public static boolean isMobileDriver(RemoteWebDriver driver) {
+        return (driver instanceof ZetaIOSDriver) || (driver instanceof ZetaAndroidDriver);
+    }
+
     public static void setDefaultImplicitWaitTimeout(RemoteWebDriver driver) throws Exception {
-        setImplicitWaitTimeout(driver, Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(PlatformDrivers.class)),
-                TimeUnit.SECONDS);
+        if (isMobileDriver(driver)) {
+            setImplicitWaitTimeout(driver, 0, TimeUnit.SECONDS);
+        } else {
+            setImplicitWaitTimeout(driver,
+                    Integer.parseInt(CommonUtils.getDriverTimeoutFromConfig(PlatformDrivers.class)), TimeUnit.SECONDS);
+        }
     }
 
     public Future<? extends RemoteWebDriver> getDriver(Platform platform) {

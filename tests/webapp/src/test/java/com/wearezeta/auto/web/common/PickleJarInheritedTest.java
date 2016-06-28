@@ -67,7 +67,9 @@ public class PickleJarInheritedTest extends PickleJarTest {
                     byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
                     saveScreenshot(reportStep, screenshot);
                 } catch (Throwable e) {
+                    long execTime = 1L;
                     if (e instanceof StepNotExecutableException) {
+                        execTime = ((StepNotExecutableException) e).getExecutionTime();
                         ex = e.getCause().getCause();
                     }else{
                         ex = e;
@@ -76,7 +78,7 @@ public class PickleJarInheritedTest extends PickleJarTest {
                     StringWriter sw = new StringWriter();
                     ex.printStackTrace(new PrintWriter(sw));
                     String stacktrace = sw.toString();
-                    reportStep.setResult(new Result(1L, "failed", stacktrace));
+                    reportStep.setResult(new Result(execTime, "failed", stacktrace));
                     byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
                     saveScreenshot(reportStep, screenshot);
                     
@@ -95,7 +97,7 @@ public class PickleJarInheritedTest extends PickleJarTest {
     @Override
     public void tearDown() throws Exception {
         super.tearDown();
-        lifecycle.tearDown();
+        lifecycle.tearDown(getReportScenario());
     }
 
     @AfterClass

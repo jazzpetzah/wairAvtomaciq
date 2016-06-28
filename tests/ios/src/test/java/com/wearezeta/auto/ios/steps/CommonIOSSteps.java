@@ -24,6 +24,7 @@ import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import com.wearezeta.auto.ios.tools.RealDeviceHelpers;
 import cucumber.api.PendingException;
 import cucumber.api.Scenario;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import gherkin.formatter.model.Result;
 import org.apache.commons.io.FileUtils;
@@ -393,6 +394,18 @@ public class CommonIOSSteps {
     @When("^I accept alert$")
     public void IAcceptAlert() throws Exception {
         pagesCollection.getCommonPage().acceptAlertIfVisible();
+    }
+
+    /**
+     * Tap the corresponding button on an alert
+     *
+     * @param caption button namem as it is visible in UI
+     * @throws Exception
+     * @step. ^I tap (.*) button on the alert$
+     */
+    @And("^I tap (.*) button on the alert$")
+    public void ITapAlertButton(String caption) throws Exception {
+        pagesCollection.getCommonPage().tapAlertButton(caption);
     }
 
     @When("^I dismiss alert$")
@@ -1112,9 +1125,9 @@ public class CommonIOSSteps {
      * under particular user, skipping the whole login flow in UI, which is supposed to be quite faster
      * in comparison to the "classic" flow
      *
-     * @step. ^I prepare Wire to perform fast log in by email as (.*)
      * @param alias user name/alias to sign in as. This user should have his email address registered on the backedn
      * @throws Exception
+     * @step. ^I prepare Wire to perform fast log in by email as (.*)
      */
     @Given("^I prepare Wire to perform fast log in by email as (.*)")
     public void IDoFastLogin(String alias) throws Exception {

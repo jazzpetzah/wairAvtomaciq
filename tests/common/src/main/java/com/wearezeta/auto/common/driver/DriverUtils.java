@@ -51,7 +51,11 @@ public class DriverUtils {
     public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver, final WebElement element) {
         try {
             final boolean result = element.isDisplayed();
-            return result && isElementInScreenRect(driver, element);
+            if (driver instanceof ZetaIOSDriver) {
+                return result;
+            } else {
+                return result && isElementInScreenRect(driver, element);
+            }
         } catch (NoSuchElementException e) {
             return false;
         }
@@ -71,7 +75,9 @@ public class DriverUtils {
 
     public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
                                                       final By by, int timeoutSeconds) throws Exception {
-        turnOffImplicitWait(driver);
+        if (!PlatformDrivers.isMobileDriver(driver)) {
+            turnOffImplicitWait(driver);
+        }
         try {
             Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
                     .withTimeout(timeoutSeconds, TimeUnit.SECONDS)
@@ -86,6 +92,8 @@ public class DriverUtils {
                         for (WebElement element : foundElements) {
                             if (isElementPresentAndDisplayed(driver, element)) {
                                 return true;
+                            } else {
+                                log.debug("Element is not in viewport: " + element);
                             }
                         }
                     }
@@ -95,7 +103,9 @@ public class DriverUtils {
                 return false;
             }
         } finally {
-            restoreImplicitWait(driver);
+            if (!PlatformDrivers.isMobileDriver(driver)) {
+                restoreImplicitWait(driver);
+            }
         }
     }
 
@@ -105,16 +115,18 @@ public class DriverUtils {
 
     public static Optional<WebElement> getElementIfDisplayed(RemoteWebDriver driver,
                                                              final By by, int timeoutSeconds) throws Exception {
-        turnOffImplicitWait(driver);
+        if (!PlatformDrivers.isMobileDriver(driver)) {
+            turnOffImplicitWait(driver);
+        }
         try {
             final long millisecondsStarted = System.currentTimeMillis();
             do {
-                final List<WebElement> foundElements = driver.findElements(by);
                 try {
+                    final List<WebElement> foundElements = driver.findElements(by);
                     if (foundElements.size() > 0) {
-                        for (WebElement foundeLement : foundElements) {
-                            if (isElementPresentAndDisplayed(driver, foundeLement)) {
-                                return Optional.of(foundeLement);
+                        for (WebElement foundElement : foundElements) {
+                            if (isElementPresentAndDisplayed(driver, foundElement)) {
+                                return Optional.of(foundElement);
                             }
                         }
                     }
@@ -125,7 +137,9 @@ public class DriverUtils {
             } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
             return Optional.empty();
         } finally {
-            restoreImplicitWait(driver);
+            if (!PlatformDrivers.isMobileDriver(driver)) {
+                restoreImplicitWait(driver);
+            }
         }
     }
 
@@ -136,7 +150,9 @@ public class DriverUtils {
 
     public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
                                                      final By by, int timeoutSeconds) throws Exception {
-        turnOffImplicitWait(driver);
+        if (!PlatformDrivers.isMobileDriver(driver)) {
+            turnOffImplicitWait(driver);
+        }
         try {
             Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
                     .withTimeout(timeoutSeconds, TimeUnit.SECONDS)
@@ -157,7 +173,9 @@ public class DriverUtils {
         } catch (TimeoutException ex) {
             return false;
         } finally {
-            restoreImplicitWait(driver);
+            if (!PlatformDrivers.isMobileDriver(driver)) {
+                restoreImplicitWait(driver);
+            }
         }
     }
 
@@ -168,7 +186,9 @@ public class DriverUtils {
 
     public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,
                                                   final By locator, int timeoutSeconds) throws Exception {
-        turnOffImplicitWait(driver);
+        if (!PlatformDrivers.isMobileDriver(driver)) {
+            turnOffImplicitWait(driver);
+        }
         try {
             Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
                     .withTimeout(timeoutSeconds, TimeUnit.SECONDS)
@@ -180,7 +200,9 @@ public class DriverUtils {
         } catch (TimeoutException ex) {
             return false;
         } finally {
-            restoreImplicitWait(driver);
+            if (!PlatformDrivers.isMobileDriver(driver)) {
+                restoreImplicitWait(driver);
+            }
         }
     }
 
@@ -190,7 +212,9 @@ public class DriverUtils {
 
     public static Optional<WebElement> getElementIfPresentInDOM(RemoteWebDriver driver,
                                                                 final By by, int timeoutSeconds) throws Exception {
-        turnOffImplicitWait(driver);
+        if (!PlatformDrivers.isMobileDriver(driver)) {
+            turnOffImplicitWait(driver);
+        }
         try {
             final long millisecondsStarted = System.currentTimeMillis();
             do {
@@ -206,7 +230,9 @@ public class DriverUtils {
             } while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
             return Optional.empty();
         } finally {
-            restoreImplicitWait(driver);
+            if (!PlatformDrivers.isMobileDriver(driver)) {
+                restoreImplicitWait(driver);
+            }
         }
     }
 
@@ -217,7 +243,9 @@ public class DriverUtils {
 
     public static boolean waitUntilElementClickable(RemoteWebDriver driver,
                                                     final WebElement element, int timeoutSeconds) throws Exception {
-        turnOffImplicitWait(driver);
+        if (!PlatformDrivers.isMobileDriver(driver)) {
+            turnOffImplicitWait(driver);
+        }
         try {
             Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
                     .withTimeout(timeoutSeconds, TimeUnit.SECONDS)
@@ -229,47 +257,9 @@ public class DriverUtils {
         } catch (TimeoutException e) {
             return false;
         } finally {
-            restoreImplicitWait(driver);
-        }
-    }
-
-    public static boolean waitUntilAlertAppears(AppiumDriver<? extends WebElement> driver) throws Exception {
-        return waitUntilAlertAppears(driver, getDefaultLookupTimeoutSeconds());
-    }
-
-    public static boolean waitUntilAlertAppears(AppiumDriver<? extends WebElement> driver, long timeout)
-            throws Exception {
-        DriverUtils.turnOffImplicitWait(driver);
-        try {
-            Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-                    .withTimeout(timeout, TimeUnit.SECONDS)
-                    .pollingEvery(1, TimeUnit.SECONDS)
-                    .ignoring(NoSuchElementException.class);
-            return (wait.until(ExpectedConditions.alertIsPresent()) != null);
-        } catch (TimeoutException e) {
-            return false;
-        } finally {
-            restoreImplicitWait(driver);
-        }
-    }
-
-    public static Optional<Alert> getAlertIfDisplayed(AppiumDriver<? extends WebElement> driver) throws Exception {
-        return getAlertIfDisplayed(driver, getDefaultLookupTimeoutSeconds());
-    }
-
-    public static Optional<Alert> getAlertIfDisplayed(AppiumDriver<? extends WebElement> driver,
-                                                      int timeoutSeconds) throws Exception {
-        DriverUtils.turnOffImplicitWait(driver);
-        try {
-            Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-                    .withTimeout(timeoutSeconds, TimeUnit.SECONDS)
-                    .pollingEvery(1, TimeUnit.SECONDS)
-                    .ignoring(NoSuchElementException.class);
-            return Optional.ofNullable(wait.until(ExpectedConditions.alertIsPresent()));
-        } catch (TimeoutException e) {
-            return Optional.empty();
-        } finally {
-            restoreImplicitWait(driver);
+            if (!PlatformDrivers.isMobileDriver(driver)) {
+                restoreImplicitWait(driver);
+            }
         }
     }
 
@@ -301,10 +291,8 @@ public class DriverUtils {
 
     }
 
-    public static void swipeRight(AppiumDriver<? extends WebElement> driver,
-                                  WebElement element, int time) {
-        swipeRight(driver, element, time,
-                SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, DEFAULT_PERCENTAGE);
+    public static void swipeRight(AppiumDriver<? extends WebElement> driver, WebElement element, int time) {
+        swipeRight(driver, element, time, SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, DEFAULT_PERCENTAGE);
     }
 
     public static void swipeElementPointToPoint(
@@ -338,10 +326,9 @@ public class DriverUtils {
         driver.swipe(startX, startY, endX, endY, durationMilleseconds);
     }
 
-    public static void swipeByCoordinates(
-            AppiumDriver<? extends WebElement> driver, int time,
-            int startPercentX, int startPercentY, int endPercentX,
-            int endPercentY) throws Exception {
+    public static void swipeByCoordinates(AppiumDriver<? extends WebElement> driver, int time,
+                                          int startPercentX, int startPercentY, int endPercentX,
+                                          int endPercentY) throws Exception {
         final Dimension screenSize = driver.manage().window().getSize();
 
         final int startX = screenSize.width * startPercentX / 100;
@@ -356,14 +343,11 @@ public class DriverUtils {
     public static final int DEFAULT_FINGERS = 1;
 
     public static void genericTap(AppiumDriver<? extends WebElement> driver) {
-        genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS,
-                DEFAULT_PERCENTAGE, DEFAULT_PERCENTAGE);
+        genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, DEFAULT_PERCENTAGE, DEFAULT_PERCENTAGE);
     }
 
-    public static void genericTap(AppiumDriver<? extends WebElement> driver,
-                                  int percentX, int percentY) {
-        genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, percentX,
-                percentY);
+    public static void genericTap(AppiumDriver<? extends WebElement> driver, int percentX, int percentY) {
+        genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, percentX, percentY);
     }
 
     public static void genericTap(AppiumDriver<? extends WebElement> driver,
@@ -374,9 +358,8 @@ public class DriverUtils {
         driver.tap(fingers, xCoords, yCoords, time);
     }
 
-    public static void tapByCoordinates(
-            AppiumDriver<? extends WebElement> driver, WebElement element,
-            int offsetX, int offsetY) {
+    public static void tapByCoordinates(AppiumDriver<? extends WebElement> driver, WebElement element,
+                                        int offsetX, int offsetY) {
         final Point coords = element.getLocation();
         final Dimension elementSize = element.getSize();
         driver.tap(1, (coords.x + offsetX + elementSize.width) - elementSize.width / 2,
@@ -384,8 +367,7 @@ public class DriverUtils {
                 SINGLE_TAP_DURATION);
     }
 
-    public static void tapByCoordinates(
-            AppiumDriver<? extends WebElement> driver, WebElement element) {
+    public static void tapByCoordinates(AppiumDriver<? extends WebElement> driver, WebElement element) {
         tapByCoordinates(driver, element, 0, 0);
     }
 
@@ -437,17 +419,14 @@ public class DriverUtils {
         driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
     }
 
-    public static void restoreImplicitWait(RemoteWebDriver driver)
-            throws Exception {
+    public static void restoreImplicitWait(RemoteWebDriver driver) throws Exception {
         PlatformDrivers.setDefaultImplicitWaitTimeout(driver);
     }
 
     public static Optional<BufferedImage> takeFullScreenShot(ZetaDriver driver) throws Exception {
         try {
-            final byte[] srcImage = ((TakesScreenshot) driver)
-                    .getScreenshotAs(OutputType.BYTES);
-            final BufferedImage bImageFromConvert = ImageIO
-                    .read(new ByteArrayInputStream(srcImage));
+            final byte[] srcImage = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+            final BufferedImage bImageFromConvert = ImageIO.read(new ByteArrayInputStream(srcImage));
             return Optional.ofNullable(bImageFromConvert);
         } catch (WebDriverException | NoClassDefFoundError e) {
             // e.printStackTrace();
@@ -506,6 +485,7 @@ public class DriverUtils {
         assert xOffset != 0 || yOffset != 0;
         final Point coords = element.getLocation();
         final Dimension size = element.getSize();
+        final Dimension screenSize = driver.manage().window().getSize();
         int dstX, dstY;
         if (xOffset > 0) {
             dstX = coords.getX() + size.getWidth() + xOffset;
@@ -517,10 +497,8 @@ public class DriverUtils {
         } else {
             dstY = coords.getY() - yOffset;
         }
-        dstY = (driver.manage().window().getSize().getHeight() < dstY) ? driver
-                .manage().window().getSize().getHeight() : dstY;
-        dstX = (driver.manage().window().getSize().getWidth() < dstX) ? driver
-                .manage().window().getSize().getWidth() : dstX;
+        dstY = (screenSize.getHeight() < dstY) ? screenSize.getHeight() : dstY;
+        dstX = (screenSize.getWidth() < dstX) ? screenSize.getWidth() : dstX;
         dstY = (dstY < 0) ? 0 : dstY;
         dstX = (dstX < 0) ? 0 : dstX;
         log.info("Tap on " + dstX + ":" + dstY);

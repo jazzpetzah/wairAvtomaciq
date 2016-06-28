@@ -72,6 +72,7 @@ Feature: Search
     Given <Contact2> is connected to <UnconnectedUser>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <UnconnectedUser> exists in backend search results
     When I open search UI
     And I input in People picker search field conversation name <UnconnectedUser>
     And I tap on conversation <UnconnectedUser> in search result
@@ -107,11 +108,12 @@ Feature: Search
   @C3244 @regression @id1456
   Scenario Outline: Verify you can unblock someone from search list
     Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
+    Given <Contact> is connected to Myself
     Given User <Name> blocks user <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I do not see conversation <Contact> in conversations list
+    And I wait until <Contact> exists in backend search results
     And I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
@@ -130,8 +132,8 @@ Feature: Search
     Given <Contact> is connected to <Name>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
-    And I wait until <Contact> exists in backend search results
     And I input in People picker search field first 5 letters of user name <Contact>
     Then I see the conversation "<Contact>" exists in Search results
 
@@ -145,6 +147,7 @@ Feature: Search
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result

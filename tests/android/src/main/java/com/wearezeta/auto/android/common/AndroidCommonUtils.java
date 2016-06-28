@@ -10,6 +10,7 @@ import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ScreenOrientation;
 
@@ -43,7 +44,8 @@ public class AndroidCommonUtils extends CommonUtils {
             "android.permission.READ_CONTACTS",
             "android.permission.RECORD_AUDIO",
             "android.permission.CAMERA",
-            "android.permission.READ_PHONE_STATE"
+            "android.permission.READ_PHONE_STATE",
+            "android.permission.ACCESS_FINE_LOCATION"
     };
 
     public static void executeAdb(final String cmdline) throws Exception {
@@ -254,10 +256,10 @@ public class AndroidCommonUtils extends CommonUtils {
      * device's version
      * @throws Exception
      */
-    public static int compareAndroidVersion(String targetVersion)
-            throws Exception {
-        String deviceVersion = readDeviceInfo().getOperatingSystemBuild();
-        return deviceVersion.compareTo(targetVersion);
+    public static int compareAndroidVersion(String targetVersion) throws Exception {
+        final DefaultArtifactVersion deviceVersion =
+                new DefaultArtifactVersion(getPropertyFromAdb("ro.build.version.release"));
+        return deviceVersion.compareTo(new DefaultArtifactVersion(targetVersion));
     }
 
     /**
@@ -296,14 +298,25 @@ public class AndroidCommonUtils extends CommonUtils {
         return output.contains(androidPackage);
     }
 
+    /**
+     * Install Testing Gallery, if SDK Version <= 4.3, which will not support Catching Notification Service
+     */
     public static void installTestingGalleryApp(Class<?> c) throws Exception {
-        executeAdb(String.format("install -r %s/testing_gallery-debug.apk",
-                getAndroidToolsPathFromConfig(c)));
+        final DefaultArtifactVersion deviceVersion =
+                new DefaultArtifactVersion(getPropertyFromAdb("ro.build.version.release"));
+        if (deviceVersion.compareTo(new DefaultArtifactVersion("4.3")) <= 0) {
+            executeAdb(String.format("install -r %s/testing_gallery-debug.apk", getAndroidToolsPathFromConfig(c)));
+        } else {
+            executeAdb(String.format("install -r %s/testing_gallery-debug19.apk", getAndroidToolsPathFromConfig(c)));
+            if (deviceVersion.compareTo(new DefaultArtifactVersion("6.0")) >= 0) {
+                grantPermissionsTo("com.wire.testinggallery", "android.permission.WRITE_EXTERNAL_STORAGE");
+            }
+         }
     }
 
-    public static void installUnlockApp(Class<?> c) throws Exception {
-        executeAdb(String.format("install -r %s/unlock_apk-fixed.apk",
-                getAndroidToolsPathFromConfig(c)));
+    public static void enableAutoAnswerCall(Class<?> c) throws Exception {
+        executeAdb("shell am broadcast -a com.waz.zclient.intent.action.AUTO_ANSWER_CALL " +
+                "--ez AUTO_ANSWER_CALL_EXTRA_KEY true");
     }
 
     public static boolean isAppInForeground(String packageId, long timeoutMillis) throws Exception {
@@ -711,6 +724,34 @@ public class AndroidCommonUtils extends CommonUtils {
         executeAdb(String.format("shell am broadcast -a clipper.set -e text \"%s\"", content));
     }
 
+
+    // ***
+
+    /**
+     * this method requires TestingGallery app to be installed on the target device
+     * See https://github.com/wearezeta/zclient-android/pull/3317/ for more details
+     */
+    public static String getWirePushNotifications() throws Exception {
+        return getAdbOutput("shell am broadcast -a com.wire.testinggallery.notification --es command get");
+    }
+
+    public static String clearWirePushNotifications() throws Exception {
+        return getAdbOutput("shell am broadcast -a com.wire.testinggallery.notification --es command clear");
+    }
+
+    // ***
+
+
+    // ***
+    // http://stackoverflow.com/questions/11420617/android-emulator-screen-rotation/14253321#14253321
+
+    public static void changeAccelerometerState(boolean isEnabled) throws Exception {
+        executeAdb(String.format("shell content insert --uri content://settings/system " +
+                "--bind name:s:accelerometer_rotation --bind value:i:%s", isEnabled ? "1" : "0"));
+    }
+
+    // ***
+
     // ***
 
     public enum PadButton {
@@ -736,18 +777,18 @@ public class AndroidCommonUtils extends CommonUtils {
      * Grant permission to the particular application with bundleId identifier
      *
      * @param bundleId app identifier, dor example com.wire.x
-     * @param perms array of permission name. See https://developer.android.com/reference/android/Manifest.permission.html
-     *              for more details
+     * @param perms    array of permission name. See https://developer.android.com/reference/android/Manifest.permission.html
+     *                 for more details
      * @throws Exception
      */
     public static void grantPermissionsTo(String bundleId, String... perms) throws Exception {
-        for (String permissionName: perms) {
+        for (String permissionName : perms) {
             executeAdb(String.format("shell pm grant %s %s", bundleId, permissionName));
         }
     }
 
     public static void revokePermissionsFrom(String bundleId, String... perms) throws Exception {
-        for (String permissionName: perms) {
+        for (String permissionName : perms) {
             executeAdb(String.format("shell pm revoke %s %s", bundleId, permissionName));
         }
     }

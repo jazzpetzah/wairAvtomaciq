@@ -2,7 +2,9 @@ Feature: Localization
 
   @C77945 @regression
   Scenario Outline: Verify registration screen has German-localized strings
+    Given I switch to Sign In page
     When I switch language to <Language>
+    And I switch to registration page
     Then I see Registration page
     And I see a string <CreateAccountLink> on the page
     And I see a placeholder <NamePlaceholder> on the page
@@ -17,9 +19,9 @@ Feature: Localization
 
   @C77947 @regression
   Scenario Outline: Verify login screen has German-localized strings
-    When I switch language to <Language>
-    Then I see Registration page
-    And I switch to Sign In page
+    Given I switch to Sign In page
+    Given I switch language to <Language>
+    Given I switch to Sign In page
     Then I see a string <LoginLink> on the page
     And I see a placeholder <EmailPlaceholder> on the page
     And I see a placeholder <PasswordPlaceholder> on the page
@@ -76,3 +78,21 @@ Feature: Localization
       | Login      | Password      | Name      | Language | SupportButton | PageTitle      | SearchFieldPlaceholder |
       | user1Email | user1Password | user1Name | de       | Hilfe         | Wire Hilfe     | Gib ein Schlagwort ein |
       | user1Email | user1Password | user1Name | en       | Support       | Wire – Support | Enter a keyword        |
+
+  @C150023 @staging
+  Scenario Outline: Verify registration email is <Language>
+    When I switch language to <Language>
+    And I enter user name <Name> on Registration page
+    And I enter user email <Email> on Registration page
+    And I enter user password "<Password>" on Registration page
+    And I accept the Terms of Use
+    And I start activation email monitoring
+    And I submit registration form
+    Then I verify that an envelope icon is shown
+    And I see email <Email> on Verification page
+    And I see verification mail in <Language> with <Message>
+
+    Examples:
+      | Email      | Password      | Name      | Language | Message                                                                 |
+      | user1Email | user1Password | user1Name | de       | Wenn du kein Wire-Benutzerkonto mit dieser E-Mail-Adresse erstellt hast |
+      | user1Email | user1Password | user1Name | en       | If you didn't create a Wire account using this email address            |

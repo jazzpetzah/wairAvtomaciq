@@ -54,9 +54,9 @@ Feature: Sign In
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    When I enter phone number for user <Name>
-    Then I see verification code page
-    When I enter verification code for user <Name>
+    When I enter phone number for Myself
+    When I enter login verification code for Myself
+    And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
 
@@ -71,9 +71,8 @@ Feature: Sign In
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    When I enter phone number for user <Name>
-    Then I see verification code page
-    When I enter verification code for user <Name>
+    When I enter phone number for Myself
+    When I enter login verification code for Myself
     Then I see set email/password suggesstion page
     When I have entered login <Email>
     And I start activation email monitoring
@@ -81,6 +80,7 @@ Feature: Sign In
     When I click DONE keyboard button
     Then I see email verification reminder
     When I verify registration address
+    And I dismiss settings warning
     Then I see conversations list
 
     Examples:
@@ -94,9 +94,8 @@ Feature: Sign In
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    And I enter phone number for user <Name>
-    And I see verification code page
-    When I enter random verification code
+    And I enter phone number for Myself
+    When I enter random verification code for Myself
     Then I see wrong credentials notification
 
     Examples:
@@ -110,8 +109,7 @@ Feature: Sign In
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    And I enter phone number for user <Name>
-    And I see verification code page
+    And I enter phone number for Myself
     When I tap RESEND code button
     Then I see Resend will be possible after 10 min alert
 
@@ -133,16 +131,15 @@ Feature: Sign In
       | Name      | ExpectedText               |
       | user1Name | enter a valid phone number |
 
-  @C2862 @regression @id3853 @useSpecialEmail
+  @C2861 @regression @id3853 @useSpecialEmail
   Scenario Outline: Verify adding email to the contact signed up with phone number [LANDSCAPE]
     Given There is 1 user where <Name> is me with phone number only
     Given I rotate UI to landscape
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    And I enter phone number for user <Name>
-    And I see verification code page
-    And I enter verification code for user <Name>
+    And I enter phone number for Myself
+    And I enter login verification code for Myself
     And I see set email/password suggesstion page
     And I have entered login <Email>
     And I start activation email monitoring
@@ -166,9 +163,8 @@ Feature: Sign In
     Given I see sign in screen
     Given I switch to Log In tab
     Given I switch to Phone Log In tab
-    When I enter phone number for user <Name>
-    Then I see verification code page
-    When I enter verification code for user <Name>
+    When I enter phone number for Myself
+    When I enter login verification code for Myself
     And I accept alert
     And I see set email/password suggesstion page
     When I have entered login <Email>

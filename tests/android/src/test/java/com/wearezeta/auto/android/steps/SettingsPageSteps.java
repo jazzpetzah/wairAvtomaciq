@@ -1,6 +1,8 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.SettingsPage;
@@ -41,6 +43,9 @@ public class SettingsPageSteps {
      */
     @When("^I select \"(.*)\" settings menu item$")
     public void ISelectSettingsMenuItem(String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         getSettingsPage().selectMenuItem(name);
     }
 
@@ -54,6 +59,9 @@ public class SettingsPageSteps {
      */
     @When("^I (do not )?see \"(.*)\" settings menu item$")
     public void ISeeSettingsMenuItem(String shouldNotSee, String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.NAME_ALIAS);
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        name = usrMgr.replaceAliasesOccurences(name, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("Settings menu item '%s' is not visible", name),
                     getSettingsPage().waitUntilMenuItemVisible(name));
@@ -120,5 +128,39 @@ public class SettingsPageSteps {
     @And("^I tap current device in devices settings menu$")
     public void ITapCurrentDeviceInDevicesSettingsMenu() throws Exception {
         getSettingsPage().tapCurrentDevice();
+    }
+
+    /**
+     * Enter new value into the corresponding user settings input dialog and commit it
+     *
+     * @param what either name|email|phone number
+     * @param newValue the new self user name/email or phone number
+     * @throws Exception
+     * @step. ^I commit my new (name|email|phone number) "(.*)"$
+     */
+    @And("^I commit my new (name|email|phone number) \"(.*)\"$")
+    public void ICommitNewUSerName(String what, String newValue) throws Exception {
+        final ClientUser self = usrMgr.getSelfUserOrThrowError();
+        switch (what) {
+            case "name":
+                newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.NAME_ALIAS);
+                getSettingsPage().commitNewName(newValue);
+                self.setName(newValue);
+                break;
+            case "email":
+                newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.EMAIL_ALIAS);
+                getSettingsPage().commitNewEmail(newValue);
+                self.setEmail(newValue);
+                break;
+            case "phone number":
+                newValue = usrMgr.replaceAliasesOccurences(newValue, ClientUsersManager.FindBy.PHONENUMBER_ALIAS);
+                final PhoneNumber newNumber = new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX,
+                        newValue.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
+                getSettingsPage().commitNewPhoneNumber(newNumber);
+                self.setPhoneNumber(newNumber);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown property '%s'", what));
+        }
     }
 }

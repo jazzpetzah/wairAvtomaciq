@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import static com.wire.picklejar.gherkin.model.CucumberReport.MAPPER;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,6 +42,10 @@ public class Step implements Serializable {
         this.result = result;
     }
 
+    public Result getResult() {
+        return result;
+    }
+    
     public String getName() {
         return name;
     }

@@ -98,7 +98,7 @@ Feature: Delete Message
       | user1Name | user2Name | DeleteTextMessage |
 
   @C111643 @regression @rc
-  Scenario Outline: Verfiy deleting ping
+  Scenario Outline: Verify deleting ping
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given <Contact> starts instance using <CallBackend>
@@ -121,7 +121,7 @@ Feature: Delete Message
       | user1Name | user2Name | You pinged | autocall    | user2Name pinged |
 
   @C111642 @regression @rc
-  Scenario Outline: Verify deleting the shared file
+  Scenario Outline: AN-4171 Verify deleting the shared file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -281,6 +281,8 @@ Feature: Delete Message
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
     When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
+    And I see Audio Message container in the conversation view
+    And I wait for 5 seconds
     And I enable Airplane mode on the device
     And I tap Play button on the recent audio message in the conversation view
     And I long tap Audio Message container in the conversation view
@@ -292,3 +294,21 @@ Feature: Delete Message
     Examples:
       | Name      | Contact   | FileName | MIMEType  | DeviceName |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1    |
+
+  @C150030 @regression
+  Scenario Outline: Verify you can delete Share Location placeholder from conversation view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> shares his location to user Myself via device <DeviceName>
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When I long tap Share Location container in the conversation view
+    And I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    Then I do not see Share Location container in the conversation view
+
+    Examples:
+      | Name      | Contact   | DeviceName |
+      | user1Name | user2Name | device1    |

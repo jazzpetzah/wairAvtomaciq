@@ -17,8 +17,7 @@ public class SingleUserPopoverSteps {
 			.getInstance();
 
 	private SingleUserPopover getSingleUserPopover() throws Exception {
-		return (SingleUserPopover) pagesCollection
-				.getPage(SingleUserPopover.class);
+		return  pagesCollection.getPage(SingleUserPopover.class);
 	}
 
 	/**
@@ -129,9 +128,9 @@ public class SingleUserPopoverSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@And("^I tap Add People button on [Ss]ingle user popover$")
-	public void ITapAddPeople() throws Exception {
-		getSingleUserPopover().tapAddPeopleButton();
+	@And("^I tap Create Group button on [Ss]ingle user popover$")
+	public void ITapCreateGroup() throws Exception {
+		getSingleUserPopover().tapCreateGroupButton();
 	}
 
 	/**

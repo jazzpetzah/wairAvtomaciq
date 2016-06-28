@@ -262,4 +262,20 @@ public class WarningPageSteps {
 			throws Exception {
 		context.getPagesCollection().getPage(WarningPage.class).clickOKInFileTransferLimitWarningModal();
 	}
+
+	@Then("^I( do not)? see full house warning modal$")
+	public void ISeeFullHouseWarningModal(String doNot) throws Exception {
+		if (doNot == null) {
+			Assert.assertTrue("Full house warning modal is not visible",
+					context.getPagesCollection().getPage(WarningPage.class).isFullHouseWarningModalVisible());
+		} else {
+			Assert.assertTrue("Full house warning modal is visible",
+					context.getPagesCollection().getPage(WarningPage.class).isFullHouseWarningModalInvisible());
+		}
+	}
+
+	@Then("^I click on close button in full house warning modal$")
+	public void IClickButtonInFileTransferLimitWarningModal() throws Exception {
+		context.getPagesCollection().getPage(WarningPage.class).clickCloseOnFullHouseWarningModal();
+	}
 }

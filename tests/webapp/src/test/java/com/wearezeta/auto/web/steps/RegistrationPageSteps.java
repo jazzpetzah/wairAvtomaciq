@@ -362,6 +362,21 @@ public class RegistrationPageSteps {
 		context.getPagesCollection().getPage(LoginPage.class).waitForLogin();
 	}
 
+	@Then("^I see verification mail in (.*) with (.*)$")
+	public void ISeeVerificationMailInLanguage(String language, String message) throws Exception {
+		final String content = BackendAPIWrappers
+				.getMessageContent(this.activationMessage);
+		switch (language) {
+			case "de":
+				assertThat("E-Mail is not German.", content, containsString(message));
+				break;
+			case "en":
+				assertThat("E-Mail is not English.", content, containsString(message));
+				break;
+			default: break;
+		}
+	}
+
 	/**
 	 * Switch to Sign In page
 	 * 
@@ -374,7 +389,7 @@ public class RegistrationPageSteps {
 		context.getPagesCollection().getPage(RegistrationPage.class)
 				.switchToLoginPage();
 	}
-
+        
 	/**
 	 * Clicks on Verify later button on Verification page
 	 * 

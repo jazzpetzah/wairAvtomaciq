@@ -69,16 +69,17 @@ Feature: File Transfer
     Then I see file transfer button in conversation input
     When I send <Size> sized file with name <File> to the current conversation
     Then I verify status of file <File> is UPLOADING… in the conversation view if possible
-    And I verify icon of file <File> in the conversation view
     And I see file transfer for file <File> in the conversation view
     And I verify size of file <File> is <Size> in the conversation view
     When I wait until file <File> is uploaded completely
+    And I verify icon of file <File> in the conversation view
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
     When I click icon to download file <File> in the conversation view
     Then I verify status of file <File> is DOWNLOADING… in the conversation view if possible
     When I wait until file <File> is downloaded completely
     Then I verify size of file <File> is <Size> in the conversation view
+    And I verify icon of file <File> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
   # And I verify the downloaded file is the same as the uploaded file <File>
 
@@ -198,7 +199,7 @@ Feature: File Transfer
     Given I see Contact list with name <Contact>
     When I open conversation with <Contact>
     When <Contact> sends <Size> sized file with name <File> via device Device1 to user <Name>
-    When I wait until file <File> is uploaded completely
+    When I wait until placeholder for file <File> disappears
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
     When I click icon to download file <File> in the conversation view
@@ -224,7 +225,7 @@ Feature: File Transfer
     Given I see Contact list with name <ChatName>
     When I open conversation with <ChatName>
     When <Contact1> sends <Size> sized file with name <File> via device Device1 to group conversation <ChatName>
-    When I wait until file <File> is uploaded completely
+    When I wait until placeholder for file <File> disappears
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
     When I click icon to download file <File> in the conversation view
@@ -251,7 +252,7 @@ Feature: File Transfer
     Given I see Contact list with name <Contact>
     When I open conversation with <Contact>
     When <Name> sends <Size> sized file with name <File> via device Device1 to user <Contact>
-    When I wait until file <File> is uploaded completely
+    When I wait until placeholder for file <File> disappears
     Then I verify size of file <File> is <Size> in the conversation view
     And I verify type of file <File> is <Type> in the conversation view
     When I click icon to download file <File> in the conversation view

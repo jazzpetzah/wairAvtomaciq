@@ -52,8 +52,10 @@ public class Scenario implements Serializable {
     public String getName() {
         return name;
     }
-    
-    
+
+    public List<Tag> getTags() {
+        return tags;
+    }
     
     @Override
     public String toString() {

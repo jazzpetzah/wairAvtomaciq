@@ -35,7 +35,7 @@ public class CallIncomingPageSteps {
      */
     @When("^I (do not )?see incoming (video )?call$")
     public void ISeeIncomingCall(String not, String isVideoCall) throws Exception {
-        String subtitle = isVideoCall == null ? "CALLING" : "VIDEO CALLING";
+        String subtitle = isVideoCall == null ? "Calling" : "Video calling";
         if (not == null) {
             assertTrue("Incoming call not visible", getPage().waitUntilVisible(subtitle));
         } else {
@@ -52,7 +52,7 @@ public class CallIncomingPageSteps {
      */
     @When("^I swipe to (ignore|accept) the call$")
     public void ISwipeTo(String action) throws Exception {
-        final ScreenOrientation currentOrientation = screenOrientationHelper.getOrientation()
+        final ScreenOrientation currentOrientation = screenOrientationHelper.getOriginalOrientation()
                 .orElseThrow(() -> new IllegalStateException("Could not get device orientation"));
         switch (action.toLowerCase()) {
             case "ignore":

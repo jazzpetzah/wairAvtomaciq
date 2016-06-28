@@ -245,7 +245,7 @@ Feature: Calling
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | CallBackend2 | NumberOfAvatars |
-      | user1Name | user2Name | user3Name | AcceptingGROUPCALL | chrome      | chrome       | 1               |
+      | user1Name | user2Name | user3Name | AcceptingGROUPCALL | chrome      | chrome       | 2               |
 
   @C2047 @calling_basic @id2683
   Scenario Outline: Verify ignoring group call in foreground
@@ -367,7 +367,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
       | user1Name | user2Name | user3Name | WaitGROUPCALL | chrome      | 2               |
 
-  @C2068 @2068 @calling_basic @id880
+  @C2068 @rc @calling_basic @id880
   Scenario Outline: Verify putting client to the background during 1-to-1 call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

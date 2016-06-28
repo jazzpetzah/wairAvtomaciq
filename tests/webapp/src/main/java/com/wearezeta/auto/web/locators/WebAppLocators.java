@@ -108,7 +108,7 @@ public final class WebAppLocators {
         public static final String xpathContactListEntries = xpathParentContactListItem
                 + "//*[@data-uie-name='item-conversation' or @data-uie-name='item-call']";
 
-        public static final String xpathActiveConversationEntry = xpathParentArchiveListItem
+        public static final String xpathActiveConversationEntry = xpathParentContactListItem
                 + "//*[contains(@class, 'text-theme')]//*[@data-uie-name='item-conversation' or @data-uie-name='item-call']";
 
         public static final Function<Integer, String> xpathContactListEntryByIndex = (
@@ -342,6 +342,15 @@ public final class WebAppLocators {
 
         public static final String cssDoDelete = "[data-uie-name='do-delete']";
 
+        // TODO: replace the bottom css with this, when implemented by developers
+        //public static final Function<String, String> cssResetSessionByMessageId = text -> String
+        //        .format("[data-uie-name='item-message'][data-uie-uid='%s'] [data-uie-name='do-reset-session']", text);
+
+        public static final Function<String, String> cssResetSessionByMessageId = text -> String
+                .format("[data-uie-name='item-message'][data-uie-uid='%s'] .message-header-decrypt-reset-session span", text);
+
+        public static final String cssCloseResetSessionDialog = "[data-uie-name='modal-session-reset'] [data-uie-name='do-close']";
+
         public static final String cssLastMessage = "[data-uie-name='item-message']:last-child";
 
         public static final String cssSecondLastMessage = "[data-uie-name='item-message']:nth-last-child(2)";
@@ -368,9 +377,11 @@ public final class WebAppLocators {
 
         public static final String cssFileStatus = cssFile + " [data-uie-name='file-status']";
 
+        public static final String cssFilePlaceholder = cssFile + " .asset-placeholder";
+
         public static final String cssFileType = cssFile + " [data-uie-name='file-type']";
 
-        public static final String cssFileCancelUpload = cssFile + " [data-uie-name='file-cancel']";
+        public static final String cssFileCancelUpload = cssFile + " .icon-close";
 
         // Audio message
 
@@ -397,6 +408,8 @@ public final class WebAppLocators {
         public static final String cssVideoSeekbar = cssVideo + " [data-ui-name='status-video-seekbar']";
 
         public static final String cssVideoTime = cssVideo + " [data-uie-name='status-video-time']";
+
+        public static final String cssVideoCancelUpload = cssVideo + " .media-button-lg";
 
         // images
 
@@ -477,6 +490,16 @@ public final class WebAppLocators {
         public static final String cssConversationVerifiedIcon = ".conversation-verified";
 
         public static final String cssTitlebarLabel = ".conversation-titlebar-name-label";
+
+        //Long message warning modal
+
+        public static final String cssLongMessageDialog = "[data-uie-name='modal-too-long-message']";
+
+        public static final String xpathOKButtonOnLongMWarning = "//div[contains(@class, 'modal-too-long-message')" +
+                "]//*[@data-uie-name='do-close']";
+
+        public static final String xpathXButtonOnLongMWarning = "//div[contains(@class, 'modal-too-long-message')" +
+                "]//div[contains(@class, 'modal-close')]";
     }
 
     public static final class ConnectToPage {
@@ -729,6 +752,12 @@ public final class WebAppLocators {
         public static final String cssFileTransferLimitWarningModal = ".modal-asset-upload-too-large";
         public static final String cssFileTransferLimitWarningModalButton = cssFileTransferLimitWarningModal + " " +
                 "[data-uie-name='do-close']";
+
+        public static final String cssFullHouseWarningModal = cssWarningModalRootDiv
+                + " .modal-too-many-members.modal-show";
+
+        public static final String cssFullHouseWarningModalClose = cssFullHouseWarningModal
+                + " [data-uie-name='do-close']";
     }
 
     public static final class PhoneNumberVerificationPage {

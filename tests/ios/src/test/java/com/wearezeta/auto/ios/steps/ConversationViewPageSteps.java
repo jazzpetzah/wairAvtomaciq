@@ -208,8 +208,7 @@ public class ConversationViewPageSteps {
      * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)?
      * from input tool( without releasing my finger)?s$
      */
-    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)? " +
-            "from input tools( without releasing my finger)?$")
+    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)? from input tools( without releasing my finger)?$")
     public void IPressAddPictureButton(String isLongTap, String btnName, String durationSeconds,
                                        String shouldKeepTap) throws Exception {
         if (isLongTap == null) {
@@ -229,9 +228,9 @@ public class ConversationViewPageSteps {
      *
      * @param btnName one of available button names
      * @throws Exception
-     * @step. ^I (do not)?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$
+     * @step. ^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$
      */
-    @When("^I (do not)?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$")
+    @When("^I (do not )?see (Add Picture|Ping|Sketch|File Transfer|Audio Message|Video Message) button in input tools palette$")
     public void VerifyButtonVisibilityInInputTools(String shouldNot, String btnName) throws Exception {
         if (shouldNot == null) {
             Assert.assertTrue(btnName + "button in input tools palette is not visible",
@@ -1156,9 +1155,9 @@ public class ConversationViewPageSteps {
      * Verify visibility of the corresponding record control button
      *
      * @throws Exception
-     * @step. ^I see (Send|Cancel) record control button$
+     * @step. ^I see (Send|Cancel|Play) record control button$
      */
-    @Then("^I see (Send|Cancel) record control button$")
+    @Then("^I see (Send|Cancel|Play) record control button$")
     public void ISeeRecordControlButton(String buttonName) throws Exception {
         Assert.assertTrue(String.format("Record control button '%s' is not visible", buttonName),
                 getConversationViewPage().isRecordControlButtonVisible(buttonName));
@@ -1238,7 +1237,7 @@ public class ConversationViewPageSteps {
      * Tap Play/Pause audio message button
      *
      * @param placeholderIndex optional parameter. If exists then button state for the particular placeholder will
-     *                         be verified.
+     *                         be tap.
      *                         The most recent  audio message placeholder is the conversation view will have index 1
      * @throws Exception
      * @step. ^I tap (?:Play|Pause) audio message button (on audio message placeholder number \d+)?$
@@ -1330,13 +1329,30 @@ public class ConversationViewPageSteps {
     /**
      * Verify play/pause button state in audio message placeholder
      *
-     * @param buttonState play or pause
+     * @param placeholderIndex optional parameter. If exists then button state for the particular placeholder will
+     *                         be verified.
+     *                         The most recent  audio message placeholder is the conversation view will have index 1
+     * @param buttonState      play or pause
      * @throws Exception
-     * @step. ^I see state of button on audio message placeholder is (play|pause)$
+     * @step. ^I see state of button on audio message placeholder (number \d+ )?is (play|pause)$
      */
-    @Then("^I see state of button on audio message placeholder is (play|pause)$")
-    public void ISeeAudioMessageControlButtonStateIs(String buttonState) throws Exception {
-        Assert.assertTrue(String.format("Wrong button state. Espected state is '%s'", buttonState),
-                getConversationViewPage().isPlaceholderAudioMessageButtonState(buttonState));
+    @Then("^I see state of button on audio message placeholder (number \\d+ )?is (play|pause)$")
+    public void ISeeAudioMessageControlButtonStateIs(String placeholderIndex, String buttonState) throws Exception {
+        Assert.assertTrue(String.format("Wrong button state. Expected state is '%s'", buttonState),
+                getConversationViewPage().isPlaceholderAudioMessageButtonState(buttonState,
+                        (placeholderIndex == null) ? 1 : Integer.parseInt(placeholderIndex.replaceAll("[\\D]", ""))));
+    }
+
+    /**
+     * Verify state of record control button playing or idle
+     *
+     * @param buttonState should be "playing" or "idle"
+     * @throws Exception
+     * @step. ^I see state of button on record toolbar is (playing|idle)$
+     */
+    @Then("^I see state of button on record toolbar is (playing|idle)$")
+    public void IseeRecordToolbarButtonStateIs(String buttonState) throws Exception {
+        Assert.assertTrue(String.format("Wrong button state. Expected state is '%s'", buttonState),
+                getConversationViewPage().isRecordControlButtonState(buttonState));
     }
 }

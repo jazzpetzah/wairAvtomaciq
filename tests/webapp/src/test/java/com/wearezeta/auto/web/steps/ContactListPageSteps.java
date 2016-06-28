@@ -21,8 +21,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 public class ContactListPageSteps {
 
@@ -177,6 +175,7 @@ public class ContactListPageSteps {
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
         contactListPage.clickOptionsButtonForContact(contact);
+        Assert.assertTrue("Archive button is not clickable",contactListPage.isArchiveButtonClickable());
         contactListPage.clickArchiveConversation();
     }
 
@@ -308,6 +307,7 @@ public class ContactListPageSteps {
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
         contactListPage.clickOptionsButtonForContact(contact);
+        Assert.assertTrue("Mute button is not clickable",contactListPage.isMuteButtonClickable());
         contactListPage.clickMuteConversation();
     }
 
@@ -325,6 +325,7 @@ public class ContactListPageSteps {
         ContactListPage contactListPage = context.getPagesCollection()
                 .getPage(ContactListPage.class);
         contactListPage.clickOptionsButtonForContact(contact);
+        Assert.assertTrue("Unmute button is not clickable",contactListPage.isUnmuteButtonClickable());
         contactListPage.clickUnmuteConversation();
     }
 
@@ -558,6 +559,18 @@ public class ContactListPageSteps {
                 conversationName);
         Assert.assertEquals(expectedColor, unreadDotColor);
     }
+    
+    /*
+     * Verifies that unread dot for given conversation is visible.
+     *
+     * @throws Exception
+     */
+    @Then("^I see unread dot in conversation (\\w+)$")
+    public void IVerifySeeUnreadDot(String conversationName) throws Exception {
+        conversationName = context.getUserManager().replaceAliasesOccurences(conversationName, FindBy.NAME_ALIAS);
+        assertTrue(String.format("Unread dot for conversation %s is NOT visible", conversationName), 
+                context.getPagesCollection().getPage(ContactListPage.class).isUnreadDotVisibleForConversation(conversationName));
+    }
 
     /*
      * Verify if there is a ping icon in contact list in conversation with user
@@ -675,6 +688,8 @@ public class ContactListPageSteps {
      */
     @When("^I click the option to leave in the options popover$")
     public void IClickLeaveButton() throws Exception {
+        Assert.assertTrue("Leave button is not clickable", context.getPagesCollection().getPage(ContactListPage.class)
+                .isLeaveButtonClickable());
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickLeaveConversation();
     }
@@ -687,8 +702,9 @@ public class ContactListPageSteps {
      */
     @When("^I click the option to block in the options popover$")
     public void IClickBlockButton() throws Exception {
-        context.getPagesCollection().getPage(ContactListPage.class)
-                .clickBlockConversation();
+        Assert.assertTrue("Block button is not shown in the option popover",
+                context.getPagesCollection().getPage(ContactListPage.class).isBlockButtonClickable());
+        context.getPagesCollection().getPage(ContactListPage.class).clickBlockButton();
     }
 
     /**
@@ -768,15 +784,16 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Click the delete option
+     * Click the delete option in the options popover
      *
      * @throws Exception
      * @step. ^I click delete in the options popover$
      */
     @When("^I click delete in the options popover$")
     public void IClickDeleteButton() throws Exception {
-        context.getPagesCollection().getPage(ContactListPage.class)
-                .clickDeleteConversation();
+        Assert.assertTrue("Delete button is not shown in the option popover",
+                context.getPagesCollection().getPage(ContactListPage.class).isDeleteButtonClickable());
+        context.getPagesCollection().getPage(ContactListPage.class).clickDeleteConversation();
     }
 
     /**
@@ -884,6 +901,8 @@ public class ContactListPageSteps {
      */
     @When("^I click cancel request in the options popover$")
     public void IClickCancelRequestButton() throws Exception {
+        Assert.assertTrue("Cancel request button is not shown in the option popover",
+                context.getPagesCollection().getPage(ContactListPage.class).isCancelRequestButtonClickable());
         context.getPagesCollection().getPage(ContactListPage.class)
                 .clickCancelRequest();
     }
@@ -896,7 +915,9 @@ public class ContactListPageSteps {
      */
     @When("^I click archive in the options popover$")
     public void IClickArchiveButton() throws Exception {
+        Assert.assertTrue("Archive button is not shown in the option popover",
+                context.getPagesCollection().getPage(ContactListPage.class).isArchiveButtonClickable());
         context.getPagesCollection().getPage(ContactListPage.class)
-                .clickArchiveButton();
+                .clickArchiveConversation();
     }
 }

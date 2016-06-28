@@ -9,7 +9,7 @@ Feature: Connect
     Given I see conversations list
     When I open search UI
     And I tap on Search input on People picker page
-    And I wait until <ContactEmail> exists in backend search results
+    And I wait until <Contact> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
@@ -21,9 +21,9 @@ Feature: Connect
     When I open conversation details
     Then I see <Contact> user pending profile popover on iPad
 
-    Examples: 
-      | Name      | Contact   | ContactEmail | Contact2  |
-      | user1Name | user2Name | user2Email   | user3Name |
+    Examples:
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C2489 @rc @regression @id3009
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [LANDSCAPE]
@@ -35,7 +35,7 @@ Feature: Connect
     Given I see conversations list
     When I open search UI
     And I tap on Search input on People picker page
-    And I wait until <ContactEmail> exists in backend search results
+    And I wait until <Contact> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
@@ -47,9 +47,9 @@ Feature: Connect
     When I open conversation details
     Then I see <Contact> user pending profile popover on iPad
 
-    Examples: 
-      | Name      | Contact   | ContactEmail | Contact2  |
-      | user1Name | user2Name | user2Email   | user3Name |
+    Examples:
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C2483 @regression @id2354 @id2610
   Scenario Outline: Send connection request to unconnected participant in a group chat [PORTRAIT]
@@ -67,7 +67,7 @@ Feature: Connect
     And I navigate back to conversations list
     Then I see first item in contact list named <UnconnectedUser>
 
-    Examples: 
+    Examples:
       | Name      | GroupCreator | GroupChatName | UnconnectedUser |
       | user1Name | user2Name    | TESTCHAT      | user3Name       |
 
@@ -87,7 +87,7 @@ Feature: Connect
     And I dismiss popover on iPad
     Then I see first item in contact list named <UnconnectedUser>
 
-    Examples: 
+    Examples:
       | Name      | GroupCreator | GroupChatName | UnconnectedUser |
       | user1Name | user2Name    | TESTCHAT      | user3Name       |
 
@@ -112,7 +112,7 @@ Feature: Connect
     And I tap on conversation <Contact1> in search result
     Then I see incoming pending popover from user <Contact1> on iPad
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
@@ -139,7 +139,7 @@ Feature: Connect
     And I tap on conversation <Contact1> in search result
     Then I see incoming pending popover from user <Contact1> on iPad
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
@@ -161,7 +161,7 @@ Feature: Connect
     And I see conversation <Contact2> in conversations list
     And I see conversation <Contact3> in conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
@@ -183,7 +183,7 @@ Feature: Connect
     And I see conversation <Contact2> in conversations list
     And I see conversation <Contact3> in conversations list
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
@@ -199,7 +199,7 @@ Feature: Connect
     And I see Pending Connect to <Contact> message on Dialog page
     Then I do not see text input in conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -216,7 +216,7 @@ Feature: Connect
     And I see Pending Connect to <Contact> message on Dialog page
     Then I do not see text input in conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
@@ -230,9 +230,10 @@ Feature: Connect
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Given User <Contact> securely pings conversation <Name>
     Given User <Contact> sends 1 encrypted message to user Myself
-    When I wait for 10 seconds
+    When I wait for 5 seconds
     Then I do not see conversation <Contact> in conversations list
-    When I open search UI
+    When I wait until <Contact> exists in backend search results
+    And I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -240,7 +241,7 @@ Feature: Connect
     Then I see 0 default messages in the conversation view
     And I see 0 photos in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
@@ -255,9 +256,10 @@ Feature: Connect
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     Given User <Contact> securely pings conversation <Name>
     Given User <Contact> sends 1 encrypted message to user Myself
-    When I wait for 10 seconds
+    When I wait for 5 seconds
     Then I do not see conversation <Contact> in conversations list
-    When I open search UI
+    When I wait until <Contact> exists in backend search results
+    And I open search UI
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
@@ -265,7 +267,7 @@ Feature: Connect
     Then I see 0 default messages in the conversation view
     And I see 0 photos in the conversation view
 
-    Examples: 
+    Examples:
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
@@ -277,9 +279,9 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     Given I see conversations list
+    Given I wait until <Contact> exists in backend search results
     When I open search UI
     And I tap on Search input on People picker page
-    And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
@@ -292,9 +294,9 @@ Feature: Connect
     And I tap on conversation <Contact> in search result
     And I see <Contact> user pending profile popover on iPad
 
-    Examples: 
-      | Name      | Contact   | ContactEmail | Contact2   |
-      | user1Name | user2Name | user2Email   | user3Name  |
+    Examples:
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @C2796 @rc @regression @id3017
   Scenario Outline: Verify you can send an invitation via mail [LANDSCAPE]
@@ -315,6 +317,6 @@ Feature: Connect
     And I paste and commit the text
     Then I verify that pasted message contains MyEmail
 
-    Examples: 
+    Examples:
       | Name      | Contact   |
       | user1Name | user2Name |

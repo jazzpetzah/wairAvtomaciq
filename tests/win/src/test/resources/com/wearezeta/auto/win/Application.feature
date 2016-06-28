@@ -48,9 +48,9 @@ Feature: Application
     And I resize the app to the min by hand
     Then I verify app width is 403 px and height is 618 px
 
-  @C2337 @staging
+  @C2337 @smoke
   Scenario: I verify the installed app is not too big
-    When I verify the app is not bigger than 400 MB
+    When I verify the app is not bigger than 200 MB
 
   @C2313 @smoke
   Scenario Outline: Verify existing About page
@@ -69,7 +69,7 @@ Feature: Application
       | user1Email | user1Password | user1Name | user2Name |
 
   @C2324 @smoke
-  Scenario Outline: Sign Out
+  Scenario Outline: Sign out with menu bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
