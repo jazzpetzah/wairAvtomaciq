@@ -97,11 +97,11 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idAudioMessageRecordingSileControl = By.id("fl__audio_message__recording__slide_control");
 
-    private static final By idAudioMessageSendButton = By.id("fl__audio_message__recording__send_button_container");
+    private static final By idAudioRecordingSendButton = By.id("fl__audio_message__recording__send_button_container");
 
-    private static final By idAudioMessagePlayButton = By.id("fl__audio_message__recording__bottom_button_container");
+    private static final By idAudioRecordingPlayButton = By.id("fl__audio_message__recording__bottom_button_container");
 
-    private static final By idAudioMessageCancelButton = By.id("fl__audio_message__recording__cancel_button_container");
+    private static final By idAudioRecordingCancelButton = By.id("fl__audio_message__recording__cancel_button_container");
 
     private static final By xpathAudioMessageDurationText =
             By.xpath("//*[@id='ttv__audio_message__recording__duration' and not(text())]");
@@ -251,7 +251,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public BufferedImage getAudioMessagePreviewMicrophoneButtonState() throws Exception {
-        return this.getElementScreenshot(getElement(idAudioMessagePlayButton)).orElseThrow(
+        return this.getElementScreenshot(getElement(idAudioRecordingPlayButton)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of Audio message recording slide microphone button")
         );
     }
@@ -355,7 +355,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void longTapAudioMessageCursorBtnAndSwipeUp(int longTapDurationMilliseconds) throws Exception {
-        longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idAudioMessageSendButton),
+        longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idAudioRecordingSendButton),
                 DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds);
     }
 
@@ -374,33 +374,35 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessageRecordingSileControl);
     }
 
-    public boolean isAudioMessageSendButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessageSendButton);
-    }
-
-    public boolean isAudioMessagePlayButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessagePlayButton);
-    }
-
-    public boolean isAudioMessageCancelButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idAudioMessageCancelButton);
+    public boolean isAudioRecordingButtonVisible(String name) throws Exception {
+        final By locator = getAudioRecordingButtonLocator(name);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isAudioMessageRecordingDurationVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathAudioMessageDurationText);
     }
 
-    public void tapAudioMessageSendButton() throws Exception {
-        // Workaround cause click doesn't work, it seems need real touch
-        getDriver().longTap(getElement(idAudioMessageSendButton), DriverUtils.SINGLE_TAP_DURATION);
+    private By getAudioRecordingButtonLocator(String btnName) {
+        switch (btnName.toLowerCase()) {
+            case "send":
+                return idAudioRecordingSendButton;
+            case "cancel":
+                return idAudioRecordingCancelButton;
+            case "play":
+                return idAudioRecordingPlayButton;
+            default:
+                throw new IllegalStateException(String.format("Cannot identify audio recording button '%s'", btnName));
+        }
     }
 
-    public void tapAudioMessageCancelButton() throws Exception {
-        getElement(idAudioMessageCancelButton).click();
-    }
-
-    public void tapAudioMessagePlayButton() throws Exception {
-        getElement(idAudioMessagePlayButton).click();
+    public void tapAudioRecordingButton(String name) throws Exception {
+        final By locator = getAudioRecordingButtonLocator(name);
+        if (locator.equals(idAudioRecordingSendButton)) {
+            getDriver().longTap(getElement(idAudioRecordingSendButton), DriverUtils.SINGLE_TAP_DURATION);
+        } else {
+            getElement(locator).click();
+        }
     }
 
     //endregion

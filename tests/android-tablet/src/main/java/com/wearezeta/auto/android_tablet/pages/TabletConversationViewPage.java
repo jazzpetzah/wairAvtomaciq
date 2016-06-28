@@ -213,4 +213,24 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     public boolean isContainerInvisible(String containerType) throws Exception {
         return getConversationViewPage().isContainerInvisible(containerType);
     }
+
+    public boolean isCursorToolbarVisible() throws Exception {
+        return getConversationViewPage().isCursorToolbarVisible();
+    }
+
+    public boolean isCursorToolbarInvisible() throws Exception {
+        return getConversationViewPage().isCursorToolbarInvisible();
+    }
+
+    public void longTapAudioMessageCursorBtn(String btnName) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtn(DriverUtils.LONG_TAP_DURATION);
+    }
+
+    public void longTapAudioMessageCursorBtn(String btnName, int durationSecords) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtn(durationSecords * 1000);
+    }
+
+    public void tapAudioRecordingButton(String name) throws Exception {
+        getConversationViewPage().tapAudioRecordingButton(name);
+    }
 }
