@@ -64,7 +64,7 @@ Feature: Video Message
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size  |
-      | user1Email | user1Password | user1Name | user2Name | example.mp4 | 10MB  |
+      | user1Email | user1Password | user1Name | user2Name | example.mp4 | 15MB  |
 
   @C123939 @videomessage @staging
   Scenario Outline: Verify receivers can play video message in group
