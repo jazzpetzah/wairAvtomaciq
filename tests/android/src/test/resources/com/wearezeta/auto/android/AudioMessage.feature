@@ -54,7 +54,7 @@ Feature: Audio Message
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
     When I long tap Audio message button <TapDuration> seconds from cursor toolbar
-    And I tap on audio message send button
+    And I tap audio recording Send button
     Then I see cursor toolbar
     And I see Audio Message container in the conversation view
     And I wait for 15 seconds until audio message upload completed
@@ -125,7 +125,7 @@ Feature: Audio Message
     # Wait for network is totally disabled
     And I wait for 3 seconds
     And I long tap Audio message button <TapDuration> seconds from cursor toolbar
-    And I tap on audio message send button
+    And I tap audio recording Send button
     And I see Audio Message container in the conversation view
     And I remember the state of Retry button on the recent audio message in the conversation view
     And I disable Airplane mode on the device
@@ -153,9 +153,9 @@ Feature: Audio Message
     Given I tap on contact name <Contact>
     When I long tap Audio message button <TapDuration> seconds from cursor toolbar
     And I remember the state of audio message preview seekbar
-    And I tap on audio message play button
+    And I tap audio recording Play button
     And I verify the state of audio message preview seekbar is changed
-    And I tap on audio message cancel button
+    And I tap audio recording Cancel button
     Then I see cursor toolbar
     And I do not see Audio Message container in the conversation view
 
