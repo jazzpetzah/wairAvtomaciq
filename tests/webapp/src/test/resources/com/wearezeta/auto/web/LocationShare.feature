@@ -14,5 +14,5 @@ Feature: Location Share
     Then I see location message <LocationName> in the conversation view
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | Longitude  | Latitude   | LocationName     |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | 52.5162731 | 13.3601958 | Brandenburg Gate |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName  | Longitude  | Latitude  | LocationName |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat | 54.2954593 | 12.945651 | Stralsund    |
