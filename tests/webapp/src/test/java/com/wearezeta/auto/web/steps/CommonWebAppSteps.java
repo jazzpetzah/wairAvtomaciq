@@ -85,6 +85,7 @@ public class CommonWebAppSteps {
                         + " does not support calling.");
             }
         } else // should not support calling
+        {
             if (WebAppExecutionContext.getBrowser().isSupportingCalls()) {
                 throw new PendingException(
                         "Browser "
@@ -92,6 +93,7 @@ public class CommonWebAppSteps {
                                 .toString()
                                 + " does support calling but this test is just for browsers without support.");
             }
+        }
     }
 
     @Then("^I skip if my browser does not support inline video messages$")
@@ -582,7 +584,7 @@ public class CommonWebAppSteps {
         float latitudeFloat = Float.parseFloat(latitude);
         int zoom = 14;
         context.getCommonSteps().UserSentLocationToConversation(userFromNameAlias, deviceName,
-                 conversationName, longitudeFloat, latitudeFloat, locationName, zoom, isGroup);
+                conversationName, longitudeFloat, latitudeFloat, locationName, zoom, isGroup);
     }
 
     /**
@@ -876,5 +878,4 @@ public class CommonWebAppSteps {
     public void UserKeepsXOtrClients(String userAs, int clientsCount) throws Exception {
         context.getCommonSteps().UserKeepsXOtrClients(userAs, clientsCount);
     }
-
 }

@@ -1140,11 +1140,11 @@ public class ConversationPage extends WebPage {
         return locationName.getText();
     }
 
-    public String getLocationNameFromLink() {
+    public String getParametersFromLink() {
         return locationLink.getAttribute("href");
     }
 
-    public boolean isLocationNameNotShown() throws Exception{
+    public boolean isLocationNotShownInConversationView() throws Exception{
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),By.cssSelector(WebAppLocators.ConversationPage.cssSharedLocation));
     }
 }
