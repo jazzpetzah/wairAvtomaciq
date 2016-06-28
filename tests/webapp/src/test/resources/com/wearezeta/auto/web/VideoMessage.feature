@@ -43,6 +43,29 @@ Feature: Video Message
       | Login      | Password      | Name      | Contact   | File        | Size |
       | user1Email | user1Password | user1Name | user2Name | example.mp4 | 5MB  |
 
+  @C123926 @videomessage @staging
+  Scenario Outline: Verify receiver can play video message in 1:1
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I see Contact list with name <Contact>
+    And I open conversation with <Contact>
+    And <Contact> sends <Size> sized video with name <File> via device Device1 to user <Name>
+    Then I see video message <File> in the conversation view
+    And I wait until video <File> is downloaded and starts to play
+    When I click play button of video <File> in the conversation view
+    Then I wait until video <File> is downloaded and starts to play
+    And I verify seek bar is shown for video <File> in the conversation view
+    And I verify time for video <File> is changing in the conversation view
+    When I click pause button of video <File> in the conversation view
+    Then I see play button of video <File> in the conversation view
+
+    Examples:
+      | Login      | Password      | Name      | Contact   | File        | Size  |
+      | user1Email | user1Password | user1Name | user2Name | example.mp4 | 10MB  |
+
   @C123939 @videomessage @staging
   Scenario Outline: Verify receivers can play video message in group
     Given There are 3 users where <Name> is me
