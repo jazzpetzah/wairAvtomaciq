@@ -205,4 +205,12 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     public boolean isActionModeBarButtonInvisible(String name) throws Exception {
         return getConversationViewPage().isActionModeBarButtonInvisible(name);
     }
+
+    public boolean isContainerVisible(String containerType) throws Exception {
+        return getConversationViewPage().isContainerVisible(containerType);
+    }
+
+    public boolean isContainerInvisible(String containerType) throws Exception {
+        return getConversationViewPage().isContainerInvisible(containerType);
+    }
 }

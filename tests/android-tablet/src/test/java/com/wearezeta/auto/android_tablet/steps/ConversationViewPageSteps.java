@@ -202,9 +202,9 @@ public class ConversationViewPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Ping|Add picture|Sketch|File) button$ from cursor toolbar$
+     * @step. ^I tap (Ping|Add picture|Sketch|File|Share location|Audio Message|Video message) button$ from cursor toolbar$
      */
-    @When("^I tap (Ping|Add picture|Sketch|File) button from cursor toolbar$")
+    @When("^I tap (Ping|Add picture|Sketch|File|Share location|Audio Message|Video message) button from cursor toolbar$")
     public void WhenITapCursorToolButton(String btnName) throws Exception {
         getConversationViewPage().tapCursorToolButton(btnName);
     }
@@ -572,6 +572,24 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().isActionModeBarButtonVisible(name) :
                 getConversationViewPage().isActionModeBarButtonInvisible(name);
         Assert.assertTrue(String.format("The top toolbar button '%s' should be %s", name,
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Verify whether container is visible in the conversation
+     *
+     * @param shouldNotSee  equals to null if the container should be visible
+     * @param containerType euiter Youtube or Soundcloud or File Upload or Video Message
+     * @throws Exception
+     * @step. ^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) container in the conversation view$
+     */
+    @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) " +
+            "container in the conversation view$")
+    public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
+        final boolean condition = (shouldNotSee == null) ?
+                getConversationViewPage().isContainerVisible(containerType) :
+                getConversationViewPage().isContainerInvisible(containerType);
+        Assert.assertTrue(String.format("%s should be %s in the conversation view", containerType,
                 (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
 }
