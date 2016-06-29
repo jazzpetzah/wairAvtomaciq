@@ -30,10 +30,6 @@ public class PeoplePickerPage extends AndroidPage {
 
     public static final By idQuickMenuVideoCallButton = By.id("gtv__conversation_quick_menu__video_call_button");
 
-    public static final By idPickUserToolbar = By.id("t_pickuser_toolbar");
-
-    public static final By idPickUserToolbarTitle = By.id("ttv__pickuser__add_header");
-
     private static final Function<String, String> xpathStrPeoplePickerGroupByName = name -> String
             .format("//*[@id='ttv_pickuser_searchconversation_name' and @value='%s']", name);
 
@@ -51,9 +47,6 @@ public class PeoplePickerPage extends AndroidPage {
 
     public static final Function<String, String> xpathStrPeopleSearchFieldByName = name -> String
             .format("//*[@id='puet_pickuser__searchbox' and @value='%s']", name);
-
-    public static final Function<String, String> xpathStrExistedContactUserByName = name -> String
-            .format("//*[@id='ttv__contactlist__user__name' and @value='%s']", name);
 
     public static final Function<String, String> xpathStrToolbarTitleByName = name -> String
             .format("//*[@id='ttv__pickuser__add_header' and @value='%s']", name);
@@ -187,11 +180,6 @@ public class PeoplePickerPage extends AndroidPage {
         return scrollUntilLocatorVisible(locator).isPresent();
     }
 
-    public boolean isContactVisible(String name) throws Exception {
-        final By locator = By.xpath(xpathStrExistedContactUserByName.apply(name));
-        return scrollUntilLocatorVisible(locator).isPresent();
-    }
-
     public boolean isUserInvisible(String name) throws Exception {
         return !DriverUtils.waitUntilLocatorAppears(this.getDriver(),
                 By.xpath(xpathStrPeoplePickerContactByName.apply(name)), 2);
@@ -200,15 +188,6 @@ public class PeoplePickerPage extends AndroidPage {
     public boolean isGroupInvisible(String name) throws Exception {
         return !DriverUtils.waitUntilLocatorAppears(this.getDriver(),
                 By.xpath(xpathStrPeoplePickerGroupByName.apply(name)), 2);
-    }
-
-    public boolean isContactInvisible(String name) throws Exception {
-        return !DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.xpath(xpathStrExistedContactUserByName.apply(name)), 2);
-    }
-
-    public boolean isToolbarVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idPickUserToolbar);
     }
 
     public boolean isToolbarTitleVisible(String name) throws Exception {

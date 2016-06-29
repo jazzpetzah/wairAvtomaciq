@@ -202,20 +202,11 @@ public class ConversationViewPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Audio Call|Video Call) button from top toolbar$
+     * @step. ^I tap (Audio Call|Video Call|Back) button from top toolbar$
      */
-    @When("^I tap (Audio Call|Video Call) button from top toolbar$")
+    @When("^I tap (Audio Call|Video Call|Back) button from top toolbar$")
     public void WhenITapTopToolbarButton(String btnName) throws Exception {
-        switch (btnName.toLowerCase()) {
-            case "audio call":
-                getConversationViewPage().tapAudioCallBtn();
-                break;
-            case "video call":
-                getConversationViewPage().tapVideoCallBtn();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
-        }
+        getConversationViewPage().tapTopBarButton(btnName);
     }
 
     /**
@@ -417,25 +408,13 @@ public class ConversationViewPageSteps {
     /**
      * Tap on send button within Audio message slide
      *
-     * @param buttonType could be send or cancel or play
+     * @param name could be send or cancel or play
      * @throws Exception
-     * @step. ^I tap on audio message (send|cancel|play) button$"
+     * @step. ^I tap audio recording (Send|Cancel|Play) button$
      */
-    @When("^I tap on audio message (send|cancel|play) button$")
-    public void WhenITapAudioMessageSendButton(String buttonType) throws Exception {
-        switch (buttonType.toLowerCase()) {
-            case "send":
-                getConversationViewPage().tapAudioMessageSendButton();
-                break;
-            case "cancel":
-                getConversationViewPage().tapAudioMessageCancelButton();
-                break;
-            case "play":
-                getConversationViewPage().tapAudioMessagePlayButton();
-                break;
-            default:
-                throw new IllegalStateException(String.format("Cannot identify the button type '%s'", buttonType));
-        }
+    @When("^I tap audio recording (Send|Cancel|Play) button$")
+    public void WhenITapAudioMessageSendButton(String name) throws Exception {
+        getConversationViewPage().tapAudioRecordingButton(name);
     }
 
     /**
@@ -447,16 +426,8 @@ public class ConversationViewPageSteps {
      */
     @When("^I see (Send|Cancel|Play) button on audio message recorder$")
     public void ISeeAudioRecorderButton(String buttonType) throws Exception {
-        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
-        switch (buttonType.toLowerCase()) {
-            case "cancel":
-                verificationFunc = getConversationViewPage()::isAudioMessageCancelButtonVisible;
-                break;
-            default:
-                throw new IllegalStateException(String.format("Cannot identify the button type '%s'", buttonType));
-        }
         Assert.assertTrue(String.format("The %s button is exoected to be visible on audio recorder control",
-                buttonType), verificationFunc.call());
+                buttonType), getConversationViewPage().isAudioRecordingButtonVisible(buttonType));
     }
 
     /**
@@ -622,7 +593,7 @@ public class ConversationViewPageSteps {
     /**
      * Wait to check whether the file placeholder action button is changed
      *
-     * @param timeout timeout in seconds
+     * @param timeout            timeout in seconds
      * @param shouldNotBeChanged is not null if the button should not be changed
      * @throws Exception
      * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)
@@ -640,17 +611,6 @@ public class ConversationViewPageSteps {
                     timeout), filePlaceHolderActionButtonState.isNotChanged(timeout,
                     FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
         }
-    }
-
-    /**
-     * Tap back arrow button in upper toolbar
-     *
-     * @throws Exception
-     * @step. ^I tap back button in upper toolbar$
-     */
-    @When("^I tap back button in upper toolbar$")
-    public void TapBackbuttonInUpperToolbar() throws Exception {
-        getConversationViewPage().tapTopToolbarBackButton();
     }
 
     /**
@@ -1090,23 +1050,9 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see (Delete|Copy|Close) button on the action mode bar$")
     public void ITapTopToolbarButton(String shouldNotSee, String name) throws Exception {
-        boolean condition;
-        switch (name.toLowerCase()) {
-            case "delete":
-                condition = (shouldNotSee == null) ? getConversationViewPage().isDeleteActionModeBarButtonVisible() :
-                        getConversationViewPage().isDeleteActionModeBarButtonInvisible();
-                break;
-            case "copy":
-                condition = (shouldNotSee == null) ? getConversationViewPage().isCopyActionModeBarButtonVisible() :
-                        getConversationViewPage().isCopyActionModeBarButtonInvisible();
-                break;
-            case "close":
-                condition = (shouldNotSee == null) ? getConversationViewPage().isCloseActionModeBarButtonVisible() :
-                        getConversationViewPage().isCloseActionModeBarButtonInvisible();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("There is no '%s' button on the action bar", name));
-        }
+        final boolean condition = (shouldNotSee == null) ?
+                getConversationViewPage().isActionModeBarButtonVisible(name) :
+                getConversationViewPage().isActionModeBarButtonInvisible(name);
         Assert.assertTrue(String.format("The top toolbar button '%s' should be %s", name,
                 (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
@@ -1120,22 +1066,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap (Delete|Copy|Close|Forward) button on the action mode bar$")
     public void ITapTopToolbarButton(String name) throws Exception {
-        switch (name.toLowerCase()) {
-            case "delete":
-                getConversationViewPage().tapDeleteActionModeBarButton();
-                break;
-            case "copy":
-                getConversationViewPage().tapCopyTopActionModeBarButton();
-                break;
-            case "close":
-                getConversationViewPage().tapCloseTopActionModeBarButton();
-                break;
-            case "forward":
-                getConversationViewPage().tapForwardTopActionModeBarButton();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("There is no '%s' button on the top toolbar", name));
-        }
+        getConversationViewPage().tapActionBarButton(name);
     }
 
     /**
@@ -1186,37 +1117,11 @@ public class ConversationViewPageSteps {
     @Then("^I (do not )?see (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) " +
             "container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
-        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
-        switch (containerType.toLowerCase()) {
-            case "youtube":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isYoutubeContainerVisible :
-                        getConversationViewPage()::isYoutubeContainerInvisible;
-                break;
-            case "soundcloud":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isSoundcloudContainerVisible :
-                        getConversationViewPage()::isSoundcloudContainerInvisible;
-                break;
-            case "file upload":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isFileUploadContainerVisible :
-                        getConversationViewPage()::isFileUploadContainerInvisible;
-                break;
-            case "video message":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isVideoMessageVisible :
-                        getConversationViewPage()::isVideoMessageNotVisible;
-                break;
-            case "audio message":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isAudioMessageVisible :
-                        getConversationViewPage()::isAudioMessageNotVisible;
-                break;
-            case "share location":
-                verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isShareLocationVisible :
-                        getConversationViewPage()::isShareLocationNotVisible;
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
-        }
+        final boolean condition = (shouldNotSee == null) ?
+                getConversationViewPage().isContainerVisible(containerType) :
+                getConversationViewPage().isContainerInvisible(containerType);
         Assert.assertTrue(String.format("%s should be %s in the conversation view", containerType,
-                (shouldNotSee == null) ? "visible" : "invisible"), verificationFunc.call());
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
 
     /**
@@ -1230,51 +1135,10 @@ public class ConversationViewPageSteps {
     @When("^I (long )?tap (Youtube|Soundcloud|File Upload|Video Message|Audio Message|Share Location) " +
             "container in the conversation view$")
     public void ITapContainer(String isLongTap, String containerType) throws Exception {
-        switch (containerType.toLowerCase()) {
-            case "youtube":
-                if (isLongTap == null) {
-                    getConversationViewPage().tapYoutubeContainer();
-                } else {
-                    getConversationViewPage().longTapYoutubeContainer();
-                }
-                break;
-            case "soundcloud":
-                if (isLongTap == null) {
-                    getConversationViewPage().tapSoundcloudContainer();
-                } else {
-                    getConversationViewPage().longTapSoundcloudContainer();
-                }
-                break;
-            case "file upload":
-                if (isLongTap == null) {
-                    getConversationViewPage().tapFileUploadContainer();
-                } else {
-                    getConversationViewPage().longTapFileUploadContainer();
-                }
-                break;
-            case "video message":
-                if (isLongTap == null) {
-                    getConversationViewPage().tapVideoMessageContainer();
-                } else {
-                    getConversationViewPage().longVideoMessageContainer();
-                }
-                break;
-            case "audio message":
-                if (isLongTap == null) {
-                    getConversationViewPage().tapAudioMessageContainer();
-                } else {
-                    getConversationViewPage().longAudioMessageContainer();
-                }
-                break;
-            case "share location":
-                if (isLongTap == null) {
-                    getConversationViewPage().tapShareLocationContainer();
-                } else {
-                    getConversationViewPage().longTapShareLocationContainer();
-                }
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
+        if (isLongTap == null) {
+            getConversationViewPage().tapContainer(containerType);
+        } else {
+            getConversationViewPage().longTapContainer(containerType);
         }
     }
 
@@ -1459,13 +1323,48 @@ public class ConversationViewPageSteps {
         Assert.assertTrue("The audio message recording slide should be visible",
                 getConversationViewPage().isAudioMessageRecordingSlideVisible());
         Assert.assertTrue("The audio message recording play button should be visible",
-                getConversationViewPage().isAudioMessagePlayButtonVisible());
+                getConversationViewPage().isAudioRecordingButtonVisible("Play"));
         Assert.assertTrue("The audio message recording send button should be visible",
-                getConversationViewPage().isAudioMessageSendButtonVisible());
+                getConversationViewPage().isAudioRecordingButtonVisible("Send"));
         Assert.assertTrue("The audio message recording cancel button should be visible",
-                getConversationViewPage().isAudioMessageCancelButtonVisible());
+                getConversationViewPage().isAudioRecordingButtonVisible("Cancel"));
         Assert.assertTrue("The audio message recording duration should be visible",
                 getConversationViewPage().isAudioMessageRecordingDurationVisible());
 
+    }
+
+    /**
+     * Verify the difference between the height of two strings
+     *
+     * @param msg1               the first conversation message text
+     * @param isNot              equals to null is the current percentage should be greater or equal to the expected one
+     * @param msg2               the second message text
+     * @param expectedPercentage the expected diff percentage
+     * @throws Exception
+     * @step. ^I see that the difference in height of "(.*)" and "(.*)" messages is (not )?greater than (\d+) percent$
+     */
+    @Then("^I see that the difference in height of \"(.*)\" and \"(.*)\" messages is (not )?greater than (\\d+) percent$")
+    public void ISeeMassagesHaveEqualHeight(String msg1, String msg2, String isNot, int expectedPercentage) throws Exception {
+        final int msg1Height = getConversationViewPage().getMessageHeight(msg1);
+        assert msg1Height > 0;
+        final int msg2Height = getConversationViewPage().getMessageHeight(msg2);
+        assert msg2Height > 0;
+        int currentPercentage = 0;
+        if (msg1Height > msg2Height) {
+            currentPercentage = msg1Height * 100 / msg2Height - 100;
+        } else if (msg1Height < msg2Height) {
+            currentPercentage = msg2Height * 100 / msg1Height - 100;
+        }
+        if (isNot == null) {
+            Assert.assertTrue(
+                    String.format("The height of '%s' message (%s) is less than %s%% different than the height of '%s' message (%s)",
+                            msg1, msg1Height, expectedPercentage, msg2, msg2Height),
+                    currentPercentage >= expectedPercentage);
+        } else {
+            Assert.assertTrue(
+                    String.format("The height of '%s' message (%s) is more than %s%% different than the height of '%s' message (%s)",
+                            msg1, msg1Height, expectedPercentage, msg2, msg2Height),
+                    currentPercentage <= expectedPercentage);
+        }
     }
 }

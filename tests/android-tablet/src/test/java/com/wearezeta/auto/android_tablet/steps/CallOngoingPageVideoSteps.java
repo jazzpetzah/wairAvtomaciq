@@ -28,8 +28,7 @@ public class CallOngoingPageVideoSteps {
      * @step. ^I hang up ongoing video call$
      */
     @When("^I hang up ongoing video call$")
-    public void IHangUp()
-            throws Exception {
+    public void IHangUp() throws Exception {
         getPage().hangup();
     }
 

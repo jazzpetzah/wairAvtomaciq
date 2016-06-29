@@ -1,0 +1,24 @@
+Feature: Video Calling
+
+  @C164773 @staging
+  Scenario Outline: Verify I can start Video call from the conversation
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
+    Given I tap the conversation <Contact>
+    And I tap Video Call button from top toolbar
+    Then I see outgoing video call
+    When <Contact> accepts next incoming video call automatically
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see ongoing video call
+    When I hang up ongoing video call
+    Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+    And I do not see ongoing video call
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |

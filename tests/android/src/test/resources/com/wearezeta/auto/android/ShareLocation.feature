@@ -1,6 +1,6 @@
 Feature: Share Location
 
-  @C150028 @staging
+  @C150028 @rc @rc42 @regression
   Scenario Outline: Verify you can share your location
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -18,7 +18,7 @@ Feature: Share Location
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C150029 @staging
+  @C150029 @rc @rc42 @regression
   Scenario Outline: Verify you can receive location sharing message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

@@ -81,6 +81,7 @@ Feature: Localization
 
   @C150023 @staging
   Scenario Outline: Verify registration email is <Language>
+    Given I see Registration page
     When I switch language to <Language>
     And I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page

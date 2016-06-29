@@ -25,6 +25,11 @@ import org.openqa.selenium.OutputType;
 public class PickleJarInheritedTest extends PickleJarTest {
 
     private Lifecycle lifecycle;
+    
+    private static final String SKIPPED = "skipped";
+    private static final String UNDEFINED = "undefined";
+    private static final String PASSED = "passed";
+    private static final String FAILED = "failed";
 
     @Parameters(name = "{0}: {1} {2}")
     public static Collection<Object[]> getTestcases() throws IOException {
@@ -39,15 +44,21 @@ public class PickleJarInheritedTest extends PickleJarTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         PickleJarTest.setUpClass();
-        System.out.println("### Before inherited full testrun");
     }
 
     @Before
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        lifecycle = new Lifecycle();
-        lifecycle.setUp(getTestcase());
+        getReportScenario().getSteps().stream().forEach((s) -> s.setResult(new Result(1L, SKIPPED, null)));
+        try {
+            lifecycle = new Lifecycle();
+            lifecycle.setUp(getTestcase());
+        } catch (Exception e) {
+            getReportScenario().getSteps().stream().findFirst().ifPresent((s) -> s.setResult(new Result(1L, FAILED,
+                    getThrowableStacktraceString(e))));
+            throw e;
+        }
     }
 
     @Test
@@ -62,8 +73,9 @@ public class PickleJarInheritedTest extends PickleJarTest {
             final Step reportStep = reportSteps.get(i);
             if (!failed) {
                 try {
-                    long execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.getContext());
-                    reportStep.setResult(new Result(execTime, "passed", null));
+                    long execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.
+                            getContext());
+                    reportStep.setResult(new Result(execTime, PASSED, null));
                     byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
                     saveScreenshot(reportStep, screenshot);
                 } catch (Throwable e) {
@@ -71,21 +83,19 @@ public class PickleJarInheritedTest extends PickleJarTest {
                     if (e instanceof StepNotExecutableException) {
                         execTime = ((StepNotExecutableException) e).getExecutionTime();
                         ex = e.getCause().getCause();
-                    }else{
+                    } else {
                         ex = e;
                     }
                     failed = true;
-                    StringWriter sw = new StringWriter();
-                    ex.printStackTrace(new PrintWriter(sw));
-                    String stacktrace = sw.toString();
-                    reportStep.setResult(new Result(execTime, "failed", stacktrace));
+                    String stacktrace = getThrowableStacktraceString(ex);
+                    reportStep.setResult(new Result(execTime, FAILED, stacktrace));
                     byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
                     saveScreenshot(reportStep, screenshot);
-                    
+
                     continue;
                 }
             } else {
-                reportStep.setResult(new Result(1L, "skipped", null));
+                reportStep.setResult(new Result(1L, SKIPPED, null));
             }
         }
         if (failed) {
@@ -97,13 +107,18 @@ public class PickleJarInheritedTest extends PickleJarTest {
     @Override
     public void tearDown() throws Exception {
         super.tearDown();
-        lifecycle.tearDown();
+        lifecycle.tearDown(getReportScenario());
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
         PickleJarTest.tearDownClass();
-        System.out.println("### After inherited full testrun");
+    }
+    
+    private static String getThrowableStacktraceString(Throwable e) {
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        return sw.toString();
     }
 
 }

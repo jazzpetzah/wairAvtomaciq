@@ -51,6 +51,6 @@ public class VideoPlayerPage extends IOSPage {
     }
 
     public boolean isVideoMessagePlayerPageDoneButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), nameVideoDoneButton);
+        return DriverUtils.waitUntilLocatorAppears(this.getDriver(), nameVideoDoneButton, 20);
     }
 }

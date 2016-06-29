@@ -30,6 +30,8 @@ Feature: Audio Messaging
     When User <Contact> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     And I tap on contact name <Contact>
     And User <Contact> sends 1 encrypted message to user Myself
+    # Wait until the media is loaded
+    And I wait for 5 seconds
     And I see state of button on audio message placeholder is play
     And I tap Play audio message button
     #This step waits until state is changed, no need for download sleep anymore
