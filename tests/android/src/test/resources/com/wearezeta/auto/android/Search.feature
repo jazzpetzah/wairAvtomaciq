@@ -102,8 +102,6 @@ Feature: Search
     And I open Search UI
     Then I see the search text is empty
     And I do not see search suggestions
-    And I see user <Contact1> in contact list of People picker page
-    And I do not see user <Contact2> in contact list of People picker page
 
     Examples:
       | Name      | Contact1  | Contact2  |

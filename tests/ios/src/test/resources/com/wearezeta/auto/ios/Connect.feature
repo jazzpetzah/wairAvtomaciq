@@ -41,7 +41,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C987 @rc @regression @id576
+  @C987 @regression @id576
   Scenario Outline: Send connection request to unconnected participant in a group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -387,3 +387,17 @@ Feature: Connect
     Examples:
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
+
+  @C25 @staging
+  Scenario Outline: Verify accepting incoming connection request
+    Given There are 2 users where <Name> is me
+    Given <Contact> sent connection request to Me
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I click on Pending request link in conversations list
+    And I click Connect button on Pending request page
+    Then I see conversation view page
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |

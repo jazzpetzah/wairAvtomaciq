@@ -202,20 +202,11 @@ public class ConversationViewPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Audio Call|Video Call) button from top toolbar$
+     * @step. ^I tap (Audio Call|Video Call|Back) button from top toolbar$
      */
-    @When("^I tap (Audio Call|Video Call) button from top toolbar$")
+    @When("^I tap (Audio Call|Video Call|Back) button from top toolbar$")
     public void WhenITapTopToolbarButton(String btnName) throws Exception {
-        switch (btnName.toLowerCase()) {
-            case "audio call":
-                getConversationViewPage().tapAudioCallBtn();
-                break;
-            case "video call":
-                getConversationViewPage().tapVideoCallBtn();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
-        }
+        getConversationViewPage().tapTopBarButton(btnName);
     }
 
     /**
@@ -417,25 +408,13 @@ public class ConversationViewPageSteps {
     /**
      * Tap on send button within Audio message slide
      *
-     * @param buttonType could be send or cancel or play
+     * @param name could be send or cancel or play
      * @throws Exception
-     * @step. ^I tap on audio message (send|cancel|play) button$"
+     * @step. ^I tap audio recording (Send|Cancel|Play) button$
      */
-    @When("^I tap on audio message (send|cancel|play) button$")
-    public void WhenITapAudioMessageSendButton(String buttonType) throws Exception {
-        switch (buttonType.toLowerCase()) {
-            case "send":
-                getConversationViewPage().tapAudioMessageSendButton();
-                break;
-            case "cancel":
-                getConversationViewPage().tapAudioMessageCancelButton();
-                break;
-            case "play":
-                getConversationViewPage().tapAudioMessagePlayButton();
-                break;
-            default:
-                throw new IllegalStateException(String.format("Cannot identify the button type '%s'", buttonType));
-        }
+    @When("^I tap audio recording (Send|Cancel|Play) button$")
+    public void WhenITapAudioMessageSendButton(String name) throws Exception {
+        getConversationViewPage().tapAudioRecordingButton(name);
     }
 
     /**
@@ -447,16 +426,8 @@ public class ConversationViewPageSteps {
      */
     @When("^I see (Send|Cancel|Play) button on audio message recorder$")
     public void ISeeAudioRecorderButton(String buttonType) throws Exception {
-        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
-        switch (buttonType.toLowerCase()) {
-            case "cancel":
-                verificationFunc = getConversationViewPage()::isAudioMessageCancelButtonVisible;
-                break;
-            default:
-                throw new IllegalStateException(String.format("Cannot identify the button type '%s'", buttonType));
-        }
         Assert.assertTrue(String.format("The %s button is exoected to be visible on audio recorder control",
-                buttonType), verificationFunc.call());
+                buttonType), getConversationViewPage().isAudioRecordingButtonVisible(buttonType));
     }
 
     /**
@@ -640,17 +611,6 @@ public class ConversationViewPageSteps {
                     timeout), filePlaceHolderActionButtonState.isNotChanged(timeout,
                     FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
         }
-    }
-
-    /**
-     * Tap back arrow button in upper toolbar
-     *
-     * @throws Exception
-     * @step. ^I tap back button in upper toolbar$
-     */
-    @When("^I tap back button in upper toolbar$")
-    public void TapBackbuttonInUpperToolbar() throws Exception {
-        getConversationViewPage().tapTopToolbarBackButton();
     }
 
     /**
@@ -1363,47 +1323,48 @@ public class ConversationViewPageSteps {
         Assert.assertTrue("The audio message recording slide should be visible",
                 getConversationViewPage().isAudioMessageRecordingSlideVisible());
         Assert.assertTrue("The audio message recording play button should be visible",
-                getConversationViewPage().isAudioMessagePlayButtonVisible());
+                getConversationViewPage().isAudioRecordingButtonVisible("Play"));
         Assert.assertTrue("The audio message recording send button should be visible",
-                getConversationViewPage().isAudioMessageSendButtonVisible());
+                getConversationViewPage().isAudioRecordingButtonVisible("Send"));
         Assert.assertTrue("The audio message recording cancel button should be visible",
-                getConversationViewPage().isAudioMessageCancelButtonVisible());
+                getConversationViewPage().isAudioRecordingButtonVisible("Cancel"));
         Assert.assertTrue("The audio message recording duration should be visible",
                 getConversationViewPage().isAudioMessageRecordingDurationVisible());
 
     }
 
     /**
-     * Verify whether the height of one conversation message is greater than the heigth of the second one
+     * Verify the difference between the height of two strings
      *
-     * @param msg1  the first conversation message text
-     * @param times minimum size multiplier. Can be float number
-     * @param msg2  the second message text
+     * @param msg1               the first conversation message text
+     * @param isNot              equals to null is the current percentage should be greater or equal to the expected one
+     * @param msg2               the second message text
+     * @param expectedPercentage the expected diff percentage
      * @throws Exception
-     * @step. ^I see that the message "(.*)" is at least ([0-9\.]+) times? higher than "(.*)" in the conversation view$
+     * @step. ^I see that the difference in height of "(.*)" and "(.*)" messages is (not )?greater than (\d+) percent$
      */
-    @Then("^I see that the message \"(.*)\" is at least ([0-9\\.]+) times? higher than \"(.*)\" in the conversation view$")
-    public void ISeeMessageHigher(String msg1, String times, String msg2) throws Exception {
+    @Then("^I see that the difference in height of \"(.*)\" and \"(.*)\" messages is (not )?greater than (\\d+) percent$")
+    public void ISeeMassagesHaveEqualHeight(String msg1, String msg2, String isNot, int expectedPercentage) throws Exception {
         final int msg1Height = getConversationViewPage().getMessageHeight(msg1);
+        assert msg1Height > 0;
         final int msg2Height = getConversationViewPage().getMessageHeight(msg2);
-        Assert.assertTrue(
-                String.format("The height of '%s' message is not %s times greater than the height of '%s' message",
-                        msg1, times, msg2), msg1Height > msg2Height * Double.parseDouble(times));
-    }
-
-    /**
-     * Verify whether two strings in the conversation view have the same height
-     *
-     * @step. ^I see that messages "(.*)" and "(.*)" have equal height in the conversation view$
-     * @param msg1  the first conversation message text
-     * @param msg2  the second message text
-     * @throws Exception
-     */
-    @Then("^I see that messages \"(.*)\" and \"(.*)\" have equal height in the conversation view$")
-    public void ISeeMassagesHaveEqualHeight(String msg1, String msg2) throws Exception {
-        final int msg1Height = getConversationViewPage().getMessageHeight(msg1);
-        final int msg2Height = getConversationViewPage().getMessageHeight(msg2);
-        Assert.assertEquals(String.format("The height of '%s' message is not equal to the height of '%s' message",
-                msg1, msg2), msg1Height, msg2Height);
+        assert msg2Height > 0;
+        int currentPercentage = 0;
+        if (msg1Height > msg2Height) {
+            currentPercentage = msg1Height * 100 / msg2Height - 100;
+        } else if (msg1Height < msg2Height) {
+            currentPercentage = msg2Height * 100 / msg1Height - 100;
+        }
+        if (isNot == null) {
+            Assert.assertTrue(
+                    String.format("The height of '%s' message (%s) is less than %s%% different than the height of '%s' message (%s)",
+                            msg1, msg1Height, expectedPercentage, msg2, msg2Height),
+                    currentPercentage >= expectedPercentage);
+        } else {
+            Assert.assertTrue(
+                    String.format("The height of '%s' message (%s) is more than %s%% different than the height of '%s' message (%s)",
+                            msg1, msg1Height, expectedPercentage, msg2, msg2Height),
+                    currentPercentage <= expectedPercentage);
+        }
     }
 }

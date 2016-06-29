@@ -23,6 +23,7 @@ import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -838,5 +839,17 @@ public class CommonAndroidTabletSteps {
     public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias, int size) throws Exception {
         commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
                 searchByNameAlias, size);
+    }
+
+    /**
+     * Tap the corresponding button on alert message
+     *
+     * @param caption button caption as it is shown in @value property
+     * @throws Exception
+     * @step. ^I tap (.*) button on the alert$
+     */
+    @And("^I tap (.*) button on the alert$")
+    public void ITapAlertButton(String caption) throws Exception {
+        pagesCollection.getCommonPage().tapAlertButton(caption);
     }
 }

@@ -202,11 +202,24 @@ public class ConversationViewPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Ping|Add picture|Sketch|File|Share location|Audio Message|Video message) button$ from cursor toolbar$
+     * @step. ^I tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) button$ from cursor toolbar$
      */
-    @When("^I tap (Ping|Add picture|Sketch|File|Share location|Audio Message|Video message) button from cursor toolbar$")
-    public void WhenITapCursorToolButton(String btnName) throws Exception {
-        getConversationViewPage().tapCursorToolButton(btnName);
+    @When("^I (long )?tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) " +
+            "button from cursor toolbar( for \\d+ seconds?)?$")
+    public void WhenITapCursorToolButton(String isLongTap, String btnName, String duration) throws Exception {
+        if (isLongTap == null) {
+            getConversationViewPage().tapCursorToolButton(btnName);
+        } else {
+            if (!btnName.equals("Audio message")) {
+                throw new IllegalArgumentException("Long tap is inl;y supported for audio messages");
+            }
+            if (duration == null) {
+                getConversationViewPage().longTapAudioMessageCursorBtn();
+            } else {
+                getConversationViewPage().longTapAudioMessageCursorBtn(
+                        Integer.parseInt(duration.replaceAll("[\\D]", "")));
+            }
+        }
     }
 
     /**
@@ -591,5 +604,58 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().isContainerInvisible(containerType);
         Assert.assertTrue(String.format("%s should be %s in the conversation view", containerType,
                 (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Long tap on Audio message cursor button , and then move finger up to send button within Audio message slide
+     *
+     * @param durationSeconds number of seconds to keep audio message button pressed
+     * @throws Exception
+     * @step. ^I long tap Audio message cursor button (\d+) seconds and swipe up$
+     */
+    @When("^I long tap Audio message cursor button (\\d+) seconds and swipe up$")
+    public void LongTapAudioMessageCursorAndSwipeUp(int durationSeconds) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtnAndSwipeUp(durationSeconds);
+    }
+
+    /**
+     * Check the cursor bar only contains ping, sketch, add picture, people and file buttons in cursor bar
+     *
+     * @throws Exception
+     * @step. ^I( do not)? see cursor toolbar$
+     */
+    @Then("^I( do not)? see cursor toolbar$")
+    public void ThenISeeCursorToolbar(String doNotSee) throws Exception {
+        if (doNotSee == null) {
+            Assert.assertTrue("Cursor toolbar is not visible",
+                    getConversationViewPage().isCursorToolbarVisible());
+        } else {
+            Assert.assertTrue("Cursor toolbar is visible, but should be hidden",
+                    getConversationViewPage().isCursorToolbarInvisible());
+        }
+    }
+
+    /**
+     * Tap on send button within Audio message slide
+     *
+     * @param name could be send or cancel or play
+     * @throws Exception
+     * @step. ^I tap audio recording (Send|Cancel|Play) button$
+     */
+    @When("^I tap audio recording (Send|Cancel|Play) button$")
+    public void WhenITapAudioMessageSendButton(String name) throws Exception {
+        getConversationViewPage().tapAudioRecordingButton(name);
+    }
+
+    /**
+     * Press the corresponding button in the top toolbar
+     *
+     * @param btnName button name
+     * @throws Exception
+     * @step. ^I tap (Audio Call|Video Call|Back) button from top toolbar$
+     */
+    @When("^I tap (Audio Call|Video Call|Back) button from top toolbar$")
+    public void WhenITapTopToolbarButton(String btnName) throws Exception {
+        getConversationViewPage().tapTopBarButton(btnName);
     }
 }

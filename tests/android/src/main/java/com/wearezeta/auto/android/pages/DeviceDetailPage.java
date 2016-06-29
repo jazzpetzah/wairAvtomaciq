@@ -5,6 +5,8 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.*;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.ws.rs.NotSupportedException;
 import org.openqa.selenium.By;
 
@@ -14,7 +16,7 @@ public class DeviceDetailPage extends AndroidPage {
 
     private static final By xpathDeviceId = By.xpath("//*[@id='summary']");
     
-    private static final By idDeviceHeader = By.id("ttv__row__otr_header");
+//    private static final By idDeviceHeader = By.id("ttv__row__otr_header");
     
     private static final Function<String,String> xpathDeviceHeaderMatch = 
             (expected) -> String.format("//*[@id='ttv__row__otr_header' and @value='%s']", expected);
@@ -35,10 +37,6 @@ public class DeviceDetailPage extends AndroidPage {
         throw new NotSupportedException("Not implemented yet");
     }
 
-    public String getModel() throws Exception {
-        return getElement(xpathDeviceId).getText().replaceAll("(\\s\\nID:.*$)", "").toLowerCase();
-    }
-
     /**
      * Id will be retrieved from summary, which will be separated into 2 parts by comma
      *
@@ -46,16 +44,13 @@ public class DeviceDetailPage extends AndroidPage {
      * @throws Exception
      */
     public String getId() throws Exception {
-        final String[] summaryParts = getElement(xpathDeviceId).getText().split(",");
-        return summaryParts[0].replaceAll("(^.*\\nID:)|(\\n(.*)$)|(\\s)", "").toLowerCase();
+        final String summary = getElement(xpathDeviceId).getText();
+        final Pattern p =
+                Pattern.compile("ID:\\s+(\\w{2}\\s+\\w{2}\\s+\\w{2}\\s+\\w{2}\\s+\\w{2}\\s+\\w{2}\\s+\\w{2}\\s+\\w{2})");
+        final Matcher m = p.matcher(summary);
+        if (m.find()) {
+            return m.group(1);
+        }
+        throw new IllegalStateException(String.format("Cannot parse id from device summary string '%s'", summary));
     }
-
-    public String getActivationInfo() throws Exception {
-        return getElement(xpathDeviceId).getText().replaceAll("(^.*\\nID:.*\\n)", "").toLowerCase();
-    }
-
-    public String getFingerprint() throws Exception {
-        throw new NotSupportedException("Not implemented yet");
-    }
-    
 }

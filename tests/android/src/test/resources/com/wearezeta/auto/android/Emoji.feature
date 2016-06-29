@@ -10,11 +10,11 @@ Feature: Emoji
     Given User <Contact> sends encrypted message <EmojiText> to user Myself
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    Then I see that the message "<EmojiText>" is at least 2 times higher than "<NormalText>" in the conversation view
+    Then I see that the difference in height of "<EmojiText>" and "<NormalText>" messages is greater than <MinHeightDiff> percent
 
     Examples:
-      | Name      | Contact   | NormalText | EmojiText |
-      | user1Name | user2Name | Yo         | 👿        |
+      | Name      | Contact   | NormalText | EmojiText | MinHeightDiff |
+      | user1Name | user2Name | Yo         | 👿        | 120           |
 
   @C162665 @staging
   Scenario Outline: Verify the height of received message stays unchanged if the string contains both emoji and normal characters
@@ -26,8 +26,8 @@ Feature: Emoji
     Given User <Contact> sends encrypted message <MixedText> to user Myself
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    Then I see that messages "<MixedText>" and "<NormalText>" have equal height in the conversation view
+    Then I see that the difference in height of "<MixedText>" and "<NormalText>" messages is not greater than <MaxHeightDiff> percent
 
     Examples:
-      | Name      | Contact   | NormalText | MixedText |
-      | user1Name | user2Name | Yo         | 👿?       |
+      | Name      | Contact   | NormalText | MixedText | MaxHeightDiff |
+      | user1Name | user2Name | Yo         | 👿?       | 20            |
