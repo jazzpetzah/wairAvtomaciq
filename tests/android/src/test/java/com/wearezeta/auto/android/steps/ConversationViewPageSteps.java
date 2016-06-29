@@ -1369,10 +1369,10 @@ public class ConversationViewPageSteps {
         assert msg1Height > 0;
         final int msg2Height = getConversationViewPage().getMessageHeight(msg2);
         assert msg2Height > 0;
-        int currentPercentage;
+        int currentPercentage = 0;
         if (msg1Height > msg2Height) {
             currentPercentage = msg1Height * 100 / msg2Height;
-        } else {
+        } else if (msg1Height < msg2Height) {
             currentPercentage = msg2Height * 100 / msg1Height;
         }
         if (isNot == null) {
