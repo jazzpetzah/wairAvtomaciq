@@ -418,20 +418,26 @@ public class ConversationViewPage extends AndroidPage {
         swipeByCoordinates(SCROLL_TO_BOTTOM_INTERVAL_MILLISECONDS, 50, 75, 50, 40);
     }
 
-    public void tapAudioCallBtn() throws Exception {
-        getElement(idAudioCall, "Audio Call button is not visible").click();
+    private By getTopBarButtonLocator(String btnName) {
+        switch (btnName.toLowerCase()) {
+            case "audio call":
+                return idAudioCall;
+            case "video call":
+                return idVideoCall;
+            case "back":
+                return xpathToolBarNavigation;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown top bar button name '%s'", btnName));
+        }
     }
 
-    public void tapVideoCallBtn() throws Exception {
-        getElement(idVideoCall, "Video Call button is not visible").click();
+    public void tapTopBarButton(String name) throws Exception {
+        final By locator = getTopBarButtonLocator(name);
+        getElement(locator).click();
     }
 
     public void tapTopToolbarTitle() throws Exception {
         getElement(xpathToolbar, "Top toolbar title is not visible").click();
-    }
-
-    public void tapTopToolbarBackButton() throws Exception {
-        getElement(xpathToolBarNavigation, "Top toolbar back button is not visible").click();
     }
 
     public void closeInputOptions() throws Exception {

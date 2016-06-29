@@ -5,14 +5,15 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <GroupChatName>
-    When <Contact1> calls <GroupChatName> using <CallBackend>
+    When <Contact1> calls <GroupChatName>
     And I see incoming call
-    And <Contact1> stops all calls to <GroupChatName>
+    And <Contact1> stops calling
     Then I do not see incoming call
     And I see missed group call notification in the conversation view
 
@@ -24,12 +25,13 @@ Feature: Calling
   Scenario Outline: Calling bar buttons are clickable and change its state (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    And <Contact> calls me using <CallBackend>
+    And <Contact> calls me
     Then I see incoming call
     When I swipe to accept the call
     Then I see ongoing call
@@ -52,14 +54,15 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact2>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
+    Given <Contact2>,<Contact3>,<Contact4> start instance using <CallBackend>
+    Given <Contact1> starts instance using <CallBackend2>
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given <Contact2>,<Contact3>,<Contact4> accepts next incoming call automatically
     And I tap the conversation <GroupChatName>
-    And <Contact1> calls <GroupChatName> using <CallBackend2>
+    And <Contact1> calls <GroupChatName>
     Then I see incoming call
     When I swipe to accept the call
     Then I see ongoing call
@@ -76,12 +79,13 @@ Feature: Calling
   Scenario Outline: Calling bar buttons are clickable and change its state (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    And <Contact> calls me using <CallBackend>
+    And <Contact> calls me
     Then I see incoming call
     When I swipe to accept the call
     Then I see ongoing call
@@ -103,14 +107,15 @@ Feature: Calling
   Scenario Outline: (AN-3145) I see miss call notification on the list and inside conversation view (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact2> starts instance using <CallBackend>
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact1>
-    When <Contact2> calls me using <CallBackend>
+    When <Contact2> calls me
     And I see incoming call
-    And <Contact2> stops all calls to me
+    And <Contact2> stops calling
     Then I do not see incoming call
     When I swipe right to show the conversations list
     Then I see missed call notification near <Contact2> conversations list item
@@ -127,14 +132,15 @@ Feature: Calling
   Scenario Outline: I see miss call notification on the list and inside conversation view (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact2> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact1>
-    When <Contact2> calls me using <CallBackend>
+    When <Contact2> calls me
     And I see incoming call
-    And <Contact2> stops all calls to me
+    And <Contact2> stops calling
     Then I do not see incoming call
     And I see missed call notification near <Contact2> conversations list item
     When I tap the conversation <Contact2>
@@ -149,17 +155,18 @@ Feature: Calling
   Scenario Outline: Receive call while Wire is running in the background (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I minimize the application
-    When <Contact> calls me using <CallBackend>
+    When <Contact> calls me
     And I wait for 7 seconds
     Then I see incoming call from <Contact>
     When I swipe to accept the call
     Then I see ongoing call
-    And <Contact> stops all calls to me
+    And <Contact> stops calling
     When I restore the application
     Then I do not see ongoing call
 
@@ -171,17 +178,18 @@ Feature: Calling
   Scenario Outline: Receive call while tablet in sleeping mode (screen locked) (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     When I lock the device
-    And <Contact> calls me using <CallBackend>
+    And <Contact> calls me
     And I wait for 7 seconds
     Then I see incoming call from <Contact>
     When I swipe to accept the call
     Then I see ongoing call
-    And <Contact> stops all calls to me
+    And <Contact> stops calling
     When I unlock the device
     Then I do not see ongoing call
 
@@ -193,15 +201,16 @@ Feature: Calling
   Scenario Outline: Other wire user trying to call me while I'm already in wire call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> start instance using <CallBackend>
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
-    When <Contact1> calls me using <CallBackend>
+    When <Contact1> calls me
     Then I see incoming call from <Contact1>
     When I swipe to accept the call
     Then I see ongoing call
-    When <Contact2> calls me using <CallBackend>
+    When <Contact2> calls me
     Then I do not see incoming call
     # Then I see incoming call
     # Then I see incoming call from <Contact1>
@@ -214,12 +223,13 @@ Feature: Calling
   Scenario Outline: Silence an incoming call (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    And <Contact> calls me using <CallBackend>
+    And <Contact> calls me
     And I see incoming call
     When I swipe to ignore the call
     Then I do not see incoming call
@@ -232,12 +242,13 @@ Feature: Calling
   Scenario Outline: Silence an incoming call (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
+    Given <Contact> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact>
-    And <Contact> calls me using <CallBackend>
+    And <Contact> calls me
     And I see incoming call
     When I swipe to ignore the call
     Then I do not see incoming call
