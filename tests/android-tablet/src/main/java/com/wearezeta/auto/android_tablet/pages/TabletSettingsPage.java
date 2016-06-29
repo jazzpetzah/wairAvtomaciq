@@ -55,11 +55,11 @@ public class TabletSettingsPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilMenuItemVisible(String name) throws Exception {
-        getSettingsPage().waitUntilVisible();
+        return getSettingsPage().waitUntilMenuItemVisible(name);
     }
 
     public boolean waitUntilMenuItemInvisible(String name) throws Exception {
-        getSettingsPage().waitUntilMenuItemInvisible(name);
+        return  getSettingsPage().waitUntilMenuItemInvisible(name);
     }
 
     public void commitNewName(String newName) throws Exception {
