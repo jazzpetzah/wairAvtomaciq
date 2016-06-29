@@ -284,7 +284,6 @@ public class CommonAndroidSteps {
             e.printStackTrace();
         }
 
-        AndroidLogListener.forceStopAll();
         LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
         if (!scenario.getStatus().equals(Result.PASSED)) {
             loggingProfile = new RegressionFailedLoggingProfile();
@@ -297,6 +296,7 @@ public class CommonAndroidSteps {
                 e.printStackTrace();
             }
         }
+        AndroidLogListener.forceStopAll();
     }
 
     private void updateDriver(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
