@@ -26,7 +26,7 @@ public class ActivationMessage extends WireMessage {
 	public String extractActivationLink() throws Exception {
 		ArrayList<String> links = new ArrayList<String>();
 
-		String regex = "<a href=\"([^\"]*)\"[^>]*>VERIFY</a>";
+		String regex = "<a href=\"([^\"]*)\"[^>]*>VERIF.*</a>";
 		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
 		Matcher urlMatcher = p.matcher(this.getContent());
 		while (urlMatcher.find()) {
