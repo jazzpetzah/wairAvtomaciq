@@ -14,7 +14,7 @@ Feature: Emoji
 
     Examples:
       | Name      | Contact   | NormalText | EmojiText | MinHeightDiff |
-      | user1Name | user2Name | Yo         | 👿        | 200           |
+      | user1Name | user2Name | Yo         | 👿        | 120           |
 
   @C162665 @staging
   Scenario Outline: Verify the height of received message stays unchanged if the string contains both emoji and normal characters
