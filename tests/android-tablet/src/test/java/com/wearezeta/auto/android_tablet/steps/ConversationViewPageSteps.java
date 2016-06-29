@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.misc.ElementState;
 import org.junit.Assert;
 
@@ -657,5 +658,90 @@ public class ConversationViewPageSteps {
     @When("^I tap (Audio Call|Video Call|Back) button from top toolbar$")
     public void WhenITapTopToolbarButton(String btnName) throws Exception {
         getConversationViewPage().tapTopBarButton(btnName);
+    }
+
+    private static final double FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE = 0.4;
+    private final ElementState filePlaceHolderActionButtonState = new ElementState(
+            () -> getConversationViewPage().getFilePlaceholderActionButtonState());
+
+    /**
+     * Store the screenshot of current file placeholder action button
+     *
+     * @throws Exception
+     * @step. ^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder$
+     */
+    @When("^I remember the state of (?:Download|View) button on file (?:upload|download) placeholder$")
+    public void IRememberFileTransferActionBtnState() throws Exception {
+        filePlaceHolderActionButtonState.remember();
+    }
+
+    /**
+     * Wait until the file uploading completely
+     *
+     * @param timeoutSeconds the timeout in seconds for uploading
+     * @param size           should be good formated value, such as 5.00MB rather tha 5MB
+     * @param extension
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until (.*) file with extension "(\w+)" is uploaded$"
+     */
+    @When("^I wait up to (\\d+) seconds? until (.*) file with extension \"(\\w+)\" is uploaded$")
+    public void IWaitFileUploadingComplete(int timeoutSeconds, String size, String extension) throws Exception {
+        getConversationViewPage().waitUntilFileUploadIsCompleted(timeoutSeconds, size, extension);
+    }
+
+    /**
+     * Check whether the file transfer placeholder of expected filew is visible
+     *
+     * @param doNotSee      equal null means should see the place holder
+     * @param size          the expected size displayed, value should be good formatted, such as 3.00MB rather than 3MB
+     * @param loadDirection could be upload or received
+     * @param fileFullName  the expected file name displayed
+     * @param extension     the extension of the file uploaded
+     * @param timeout       (optional) to define the validation should be complete within timeout
+     * @param actionFailed  equals null means current action successfully
+     * @throws Exception
+     * @step. ^I( do not)? see the result of (.*) file (upload|received)? having name "(.*)" and extension "(\w+)"( in \d+
+     * seconds)?( failed)?$
+     */
+    @Then("^I( do not)? see the result of (.*) file (upload|received)? having name \"(.*)\"" +
+            " and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
+    public void ThenISeeTheResultOfXFileUpload(String doNotSee, String size, String loadDirection, String fileFullName,
+                                               String extension, String timeout, String actionFailed) throws Exception {
+        int lookUpTimeoutSeconds = (timeout == null) ? DriverUtils.getDefaultLookupTimeoutSeconds()
+                : Integer.parseInt(timeout.replaceAll("[\\D]", ""));
+        boolean isUpload = loadDirection.equals("upload");
+        boolean isSuccess = (actionFailed == null);
+        if (doNotSee == null) {
+            Assert.assertTrue("The placeholder of sending file should be visible",
+                    getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload,
+                            isSuccess, lookUpTimeoutSeconds));
+        } else {
+            Assert.assertTrue("The placeholder of sending file should be invisible",
+                    getConversationViewPage().isFilePlaceHolderInvisible(fileFullName, size, extension, isUpload,
+                            isSuccess, lookUpTimeoutSeconds));
+        }
+    }
+
+    /**
+     * Wait to check whether the file placeholder action button is changed
+     *
+     * @param timeout            timeout in seconds
+     * @param shouldNotBeChanged is not null if the button should not be changed
+     * @throws Exception
+     * @step. ^I wait up to (\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)
+     * placeholder is changed$
+     */
+    @When("^I wait up to (\\d+) seconds? until the state of (?:Download|View) button on file (?:upload|download)" +
+            " placeholder is (not )?changed$")
+    public void IWaitFileTransferActionButtonChanged(int timeout, String shouldNotBeChanged) throws Exception {
+        if (shouldNotBeChanged == null) {
+            Assert.assertTrue(String.format("State of file transfer action button has not been changed after %s seconds",
+                    timeout), filePlaceHolderActionButtonState.isChanged(timeout,
+                    FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
+        } else {
+            Assert.assertTrue(String.format("State of file transfer action button has been changed after %s seconds",
+                    timeout), filePlaceHolderActionButtonState.isNotChanged(timeout,
+                    FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
+        }
     }
 }

@@ -241,4 +241,24 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     public void tapTopBarButton(String btnName) throws Exception {
         getConversationViewPage().tapTopBarButton(btnName);
     }
+
+    public BufferedImage getFilePlaceholderActionButtonState() throws Exception {
+        return getConversationViewPage().getFilePlaceholderActionButtonState();
+    }
+
+    public void waitUntilFileUploadIsCompleted(int timeoutSeconds, String size, String extension) throws Exception {
+        getConversationViewPage().waitUntilFileUploadIsCompleted(timeoutSeconds, size, extension);
+    }
+
+    public boolean isFilePlaceHolderVisible(String fileFullName, String size, String extension, boolean isUpload,
+                                            boolean isSuccess, int lookUpTimeoutSeconds) throws Exception {
+        return getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload, isSuccess,
+                lookUpTimeoutSeconds);
+    }
+
+    public boolean isFilePlaceHolderInvisible(String fileFullName, String size, String extension, boolean isUpload,
+                                              boolean isSuccess, int lookUpTimeoutSeconds) throws Exception {
+        return getConversationViewPage().isFilePlaceHolderInvisible(fileFullName, size, extension, isUpload, isSuccess,
+                lookUpTimeoutSeconds);
+    }
 }
