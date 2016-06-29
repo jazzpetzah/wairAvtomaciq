@@ -9,19 +9,21 @@ import java.util.concurrent.Future;
 
 public class HistoryInfoPage extends WebPage {
 
-	@FindBy(css = "[data-uie-name='do-history-confirm']")
-	WebElement confirmButton;
+    public static final String cssConfirmButton = "[data-uie-name='do-history-confirm']";
 
-	public HistoryInfoPage(Future<ZetaWebAppDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
-	}
+    @FindBy(css = cssConfirmButton)
+    WebElement confirmButton;
 
-	public boolean isConfirmButtonVisible() throws Exception {
-		return DriverUtils.waitUntilElementClickable(getDriver(), confirmButton);
-	}
+    public HistoryInfoPage(Future<ZetaWebAppDriver> lazyDriver)
+            throws Exception {
+        super(lazyDriver);
+    }
 
-	public void clickConfirmButton() {
-		confirmButton.click();
-	}
+    public boolean isConfirmButtonVisible() throws Exception {
+        return DriverUtils.waitUntilElementClickable(getDriver(), confirmButton);
+    }
+
+    public void clickConfirmButton() {
+        confirmButton.click();
+    }
 }
