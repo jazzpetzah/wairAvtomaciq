@@ -1282,22 +1282,20 @@ public class ConversationPageSteps {
      *
      * @param doNot        is set to null if "do not" part does not exist
      * @param locationName name of the shared location
+     * @param longitude    longitude of the shared location, float
+     * @param latitude     latitude of the shared location, float
      * @throws java.lang.Exception
      * @step. ^I (do not )?see location message (.*) with ([-+]?[0-9]*\.?[0-9]+) and ([-+]?[0-9]*\.?[0-9]+) in the conversation view$
      */
     @Then("^I (do not )?see location message (.*) with ([-+]?[0-9]*\\.?[0-9]+) and ([-+]?[0-9]*\\.?[0-9]+) in the conversation view$")
     public void ISeeLocationMessage(String doNot, String locationName, float longitude, float latitude) throws Exception {
-        ConversationPage page = context.getPagesCollection().getPage(ConversationPage.class);
         if (doNot == null) {
             assertThat("Could not find location message " + locationName,
                     context.getPagesCollection().getPage(ConversationPage.class).getLocationName(), equalTo(locationName));
             assertThat("The link doesn't contain a proper location",
-                    context.getPagesCollection().getPage(ConversationPage.class).getParametersFromLink(), containsString(locationName));
-            assertThat("The link doesn't contain a proper longitude",
-                    context.getPagesCollection().getPage(ConversationPage.class).getParametersFromLink(), containsString(Float.toString(longitude)));
-            assertThat("The link doesn't contain a proper latitude",
-                    context.getPagesCollection().getPage(ConversationPage.class).getParametersFromLink(), containsString(Float.toString(latitude)));
-
+                    context.getPagesCollection().getPage(ConversationPage.class).getLocationNameFromLink(), containsString(locationName));
+            assertThat("The link doesn't contain proper coordinates",
+                    context.getPagesCollection().getPage(ConversationPage.class).getCoordinatesFromLink(), hasItems(longitude, latitude));
         } else {
             assertThat("Location message " + locationName + "is shown",
                     context.getPagesCollection().getPage(ConversationPage.class).isLocationNotShownInConversationView());
