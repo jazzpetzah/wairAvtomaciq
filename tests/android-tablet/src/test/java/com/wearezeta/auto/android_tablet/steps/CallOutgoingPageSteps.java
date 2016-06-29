@@ -53,7 +53,7 @@ public class CallOutgoingPageSteps {
             assertTrue(String.format("Outgoing %s call not visible", isVideoCall ? "Video" : "Audio"),
                     isVideoCall ? getVideoPage().waitUntilVisible() : getAudioPage().waitUntilVisible());
         } else {
-            assertTrue(String.format("Outgoing %s onooing call should not be visible", isVideoCall ? "Video" : "Audio"),
+            assertTrue(String.format("Outgoing %s call should not be visible", isVideoCall ? "Video" : "Audio"),
                     isVideoCall ? getVideoPage().waitUntilInvisible() : getAudioPage().waitUntilInvisible());
         }
     }
