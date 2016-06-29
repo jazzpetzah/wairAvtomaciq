@@ -43,25 +43,25 @@ public class CommonWebAppSteps {
 
     public static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class
             .getSimpleName());
-    
+
     private static final int DELETION_RECEIVING_TIMEOUT = 120;
 
     private String rememberedPage = null;
 
     private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
-    
+
     private final TestContext context;
 
     private static final String VIDEO_MESSAGE_IMAGE = "userpicture_landscape.jpg";
-    
+
     public CommonWebAppSteps() {
         this.context = new TestContext();
     }
-    
+
     public CommonWebAppSteps(TestContext context) {
         this.context = context;
     }
-    
+
     /**
      * This step will throw special PendingException whether the current browser does support calling or not. This will cause
      * Cucumber interpreter to skip the current test instead of failing it.
@@ -80,23 +80,25 @@ public class CommonWebAppSteps {
                         + " does not support calling.");
             }
         } else // should not support calling
-        if (WebAppExecutionContext.getBrowser().isSupportingCalls()) {
-            throw new PendingException(
-                    "Browser "
-                    + WebAppExecutionContext.getBrowser()
-                    .toString()
-                    + " does support calling but this test is just for browsers without support.");
+        {
+            if (WebAppExecutionContext.getBrowser().isSupportingCalls()) {
+                throw new PendingException(
+                        "Browser "
+                        + WebAppExecutionContext.getBrowser()
+                        .toString()
+                        + " does support calling but this test is just for browsers without support.");
+            }
         }
     }
 
     @Then("^I skip if my browser does not support inline video messages$")
     public void MyBrowserSupportsInlineVideo() throws Exception {
         if (!WebAppExecutionContext.getBrowser().isSupportingInlineVideo()) {
-            throw new PendingException("Browser " + WebAppExecutionContext.getBrowser().toString() + " does not support " +
-                    "inline video.");
+            throw new PendingException("Browser " + WebAppExecutionContext.getBrowser().toString() + " does not support "
+                    + "inline video.");
         }
     }
-    
+
     @Given("^I switch language to (.*)$")
     public void ISwitchLanguageTo(String language) throws Exception {
         context.getPagesCollection().getPage(WebPage.class).switchLanguage(language);
@@ -119,7 +121,8 @@ public class CommonWebAppSteps {
 
     @Then("^I see a title (.*) on the page$")
     public void ISeeATitleOnPage(String title) throws Exception {
-        assertThat("Title on the page is not correct", context.getPagesCollection().getPage(WebPage.class).getPageTitle(), equalTo(title));
+        assertThat("Title on the page is not correct", context.getPagesCollection().getPage(WebPage.class).getPageTitle(),
+                equalTo(title));
     }
 
     @Given("^There is a known user (.*) with email (.*) and password (.*)$")
@@ -349,15 +352,16 @@ public class CommonWebAppSteps {
     /**
      * Mute conversation
      *
-     * @param userToNameAlias   user who want to mute conversation
+     * @param userToNameAlias user who want to mute conversation
      * @param muteUserNameAlias conversation or user to be muted
      * @throws Exception
      * @step. ^(.*) muted conversation with (.*)$
      */
     @When("^(.*) muted conversation with (user|group) (.*) on device (.*)$")
     public void MuteConversationWithUser(String userToNameAlias, String convType,
-                                         String muteUserNameAlias, String deviceName) throws Exception {
-        context.getCommonSteps().UserMutesConversation(userToNameAlias, muteUserNameAlias, deviceName, convType.equals("group"));
+            String muteUserNameAlias, String deviceName) throws Exception {
+        context.getCommonSteps().UserMutesConversation(userToNameAlias, muteUserNameAlias, deviceName + context.getTestname().
+                hashCode(), convType.equals("group"));
     }
 
     /**
@@ -406,37 +410,43 @@ public class CommonWebAppSteps {
         final String msgToSend = (msg == null || msg.trim().length() == 0)
                 ? CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
-            context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
+            context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend,
+                    deviceName + context.getTestname().hashCode());
         } else {
-            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
+            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend,
+                    deviceName + context.getTestname().hashCode());
         }
     }
 
     @When("^Contact (.*) sends? (\\d+) messages with prefix (.*) via device (.*) to (user|group conversation) (.*)$")
     public void UserSendAmountOfMessages(String msgFromUserNameAlias, int amount, String prefix, String deviceName,
-                                         String convoType, String dstConvoName) throws Exception {
+            String convoType, String dstConvoName) throws Exception {
         ClientUser user = context.getUserManager().findUserByNameOrNameAlias(msgFromUserNameAlias);
         if (convoType.equals("user")) {
             for (int i = 0; i < amount; i++) {
                 context.getConversationStates().addMessage(dstConvoName, new Message(prefix + i, user.getId()));
-                context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, prefix + i, deviceName);
+                context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, prefix + i,
+                        deviceName + context.getTestname().hashCode());
             }
         } else {
             for (int i = 0; i < amount; i++) {
                 context.getConversationStates().addMessage(dstConvoName, new Message(prefix + i, user.getId()));
-                context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, prefix + i, deviceName);
+                context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, prefix + i,
+                        deviceName + context.getTestname().hashCode());
             }
         }
     }
 
     @When("^Contact (.*) sends? long message from file \"?(.*?)\"?\\s?(?:via device (.*)\\s)?to (user|group conversation) (.*)$")
     public void UserSendLongMessageToConversation(String msgFromUserNameAlias,
-                                              String file, String deviceName, String convoType, String dstConvoName) throws Exception {
+            String file, String deviceName, String convoType, String dstConvoName) throws Exception {
         String message = WebCommonUtils.getTextFromFile(file);
         if (convoType.equals("user")) {
-            context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, message, deviceName);
+            context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, message, deviceName + context.
+                    getTestname().hashCode());
         } else {
-            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, message, deviceName);
+            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, message,
+                    deviceName + context.getTestname().hashCode());
         }
     }
 
@@ -471,29 +481,31 @@ public class CommonWebAppSteps {
      */
     @When("^User (.*) sends image (.*) to (single user|group) conversation (.*)")
     public void ContactSendImageToConversation(String imageSenderUserNameAlias,
-                                               String imageFileName, String conversationType,
-                                               String dstConversationName) throws Exception {
+            String imageFileName, String conversationType,
+            String dstConversationName) throws Exception {
         final String imagePath = WebCommonUtils.getFullPicturePath(imageFileName);
         final boolean isGroup = conversationType.equals("group");
-        context.getCommonSteps().UserSentImageToConversationOtr(imageSenderUserNameAlias, imagePath, dstConversationName, isGroup);
+        context.getCommonSteps().UserSentImageToConversationOtr(imageSenderUserNameAlias, imagePath, dstConversationName,
+                isGroup);
     }
 
     @When("^I break the session with device (.*) of user (.*)$")
     public void IBreakTheSession(String deviceName, String userAlias) throws Exception {
         ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
-        String deviceId = context.getDeviceManager().getDeviceId(user, deviceName);
+        String deviceId = context.getDeviceManager().getDeviceId(user, deviceName + context.getTestname().hashCode());
         // we have to strip leading zeros since we don't want to use the padding for UI
         int limit = deviceId.length();
-        while(deviceId.startsWith("0") && limit >= 0){
+        while (deviceId.startsWith("0") && limit >= 0) {
             deviceId = deviceId.substring(1);
             limit--;
         }
         context.getPagesCollection().getPage(WebPage.class).breakSession(deviceId);
     }
-    
+
     /**
      * Disables the native app ad in webapp. It's mandatory to call this step right after clicking the login button!
-     * @throws Exception 
+     *
+     * @throws Exception
      */
     @When("^I disable ad banner$")
     public void IDisableAdBanner() throws Exception {
@@ -502,11 +514,11 @@ public class CommonWebAppSteps {
 
     @When("^(.*) sends? (.*) sized file with name (.*) via device (.*) to (user|group conversation) (.*)$")
     public void WhenIXSizedSendFile(String contact, String size, String fileName, String deviceName, String convoType,
-                                    String dstConvoName) throws Exception {
+            String dstConvoName) throws Exception {
         String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
-        path = path.replace("%40","@");
+        path = path.replace("%40", "@");
         RandomAccessFile f = new RandomAccessFile(path + "/" + fileName, "rws");
-        int fileSize = Integer.valueOf(size.replaceAll("\\D+","").trim());
+        int fileSize = Integer.valueOf(size.replaceAll("\\D+", "").trim());
         if (size.contains("MB")) {
             f.setLength(fileSize * 1024 * 1024);
         } else if (size.contains("KB")) {
@@ -516,30 +528,32 @@ public class CommonWebAppSteps {
         }
         f.close();
         boolean isGroup = convoType.equals("user") ? false : true;
-        context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "plain/text", deviceName, isGroup);
+        context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "plain/text",
+                deviceName + context.getTestname().hashCode(), isGroup);
     }
 
     @When("^(.*) sends? audio file (.*) via device (.*) to (user|group conversation) (.*)$")
-    public void WhenISendAudioFile(String contact, String fileName, String deviceName, String convoType, String
-            dstConvoName) throws Exception {
+    public void WhenISendAudioFile(String contact, String fileName, String deviceName, String convoType, String dstConvoName)
+            throws Exception {
         String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
         path = path.replace("%40", "@");
         boolean isGroup = !convoType.equals("user");
         context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "audio/mp4",
-                deviceName, isGroup);
+                deviceName + context.getTestname().hashCode(), isGroup);
     }
 
     @When("^(.*) sends? (.*) sized video with name (.*) via device (.*) to (user|group conversation) (.*)$")
     public void WhenISendVideo(String contact, String size, String fileName, String deviceName, String convoType,
-                                    String dstConvoName) throws Exception {
+            String dstConvoName) throws Exception {
         String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
 
         final String picturePath = WebCommonUtils.getFullPicturePath(VIDEO_MESSAGE_IMAGE);
         CommonUtils.generateVideoFile(path + "/" + fileName, size, picturePath);
         boolean isGroup = !convoType.equals("user");
-        context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "video/mp4", deviceName, isGroup);
+        context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "video/mp4",
+                deviceName + context.getTestname().hashCode(), isGroup);
     }
-    
+
     /**
      * Send message to a conversation
      *
@@ -557,8 +571,8 @@ public class CommonWebAppSteps {
     }
 
     /**
-     * User X delete message from User/Group via specified device
-     * Note : The recent message means the recent message sent from specified device by SE, the device should online.
+     * User X delete message from User/Group via specified device Note : The recent message means the recent message sent from
+     * specified device by SE, the device should online.
      *
      * @param userNameAlias
      * @param convoType
@@ -568,11 +582,13 @@ public class CommonWebAppSteps {
      * @step. ^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) via device (.*)$
      */
     @When("^User (.*) deletes? the recent (\\d+) messages? from (user|group conversation) (.*) via device (.*)$")
-    public void UserXDeleteLastMessage(String userNameAlias,int amount, String convoType, String dstNameAlias, String deviceName)
+    public void UserXDeleteLastMessage(String userNameAlias, int amount, String convoType, String dstNameAlias,
+            String deviceName)
             throws Exception {
         boolean isGroup = convoType.equals("group conversation");
         for (int deleteCounter = 0; deleteCounter < amount; deleteCounter++) {
-            context.getCommonSteps().UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup);
+            context.getCommonSteps().UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName + context.getTestname().
+                    hashCode(), isGroup);
         }
     }
 
@@ -735,7 +751,9 @@ public class CommonWebAppSteps {
     public void UserAddRemoteDeviceToAccount(String userNameAlias,
             String deviceName, String label) throws Exception {
         context.startPinging();
-        context.getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
+
+        context.getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias, deviceName + context.getTestname().hashCode(),
+                label);
         context.stopPinging();
     }
 
@@ -823,7 +841,7 @@ public class CommonWebAppSteps {
         context.getPagesCollection().getPage(RegistrationPage.class)
                 .openSignInPage();
     }
-    
+
     /**
      * Remove all registered OTR clients for the particular user
      *
@@ -835,11 +853,11 @@ public class CommonWebAppSteps {
     public void UserRemovesAllRegisteredOtrClients(String userAs) throws Exception {
         context.getCommonSteps().UserRemovesAllRegisteredOtrClients(userAs);
     }
-    
+
     /**
      * Remove all registered OTR clients for the particular user except of the X most recent ones
      *
-     * @param userAs       user name/alias
+     * @param userAs user name/alias
      * @param clientsCount the count of recents OTR clients to keep
      * @throws Exception
      * @step. ^User (.*) only keeps his (\d+) most recent OTR clients$

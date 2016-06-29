@@ -24,14 +24,14 @@ public class DeviceDetailPopoverPageSteps {
     @When("^I verify id of device (.*) of user (.*) on device detail page of Single User Profile popover$")
     public void IVerifyDeviceId(String deviceName, String userAlias) throws Exception {
         ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
-        String id = context.getDeviceManager().getDeviceId(user, deviceName);
+        String id = context.getDeviceManager().getDeviceId(user, deviceName+context.getTestname().hashCode());
         assertThat(context.getPagesCollection().getPage(DeviceDetailPopoverPage.class).getDeviceId(), equalTo(id));
     }
 
     @When("^I verify fingerprint of device (.*) of user (.*) on device detail page of Single User Profile popover$")
     public void IVerifyFingerPrint(String deviceName, String userAlias) throws Exception {
         ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
-        String fingerprint = context.getDeviceManager().getDeviceFingerprint(user, deviceName);
+        String fingerprint = context.getDeviceManager().getDeviceFingerprint(user, deviceName+context.getTestname().hashCode());
         assertThat(context.getPagesCollection().getPage(DeviceDetailPopoverPage.class).getFingerPrint(), equalTo(fingerprint));
     }
 
