@@ -350,19 +350,19 @@ public class ConversationViewPage extends AndroidPage {
         }
     }
 
-    public void longTapAudioMessageCursorBtn(int duration) throws Exception {
-        getDriver().longTap(getElement(idCursorAudioMessage), duration);
+    public void longTapAudioMessageCursorBtn(int durationMillis) throws Exception {
+        getDriver().longTap(getElement(idCursorAudioMessage), durationMillis);
     }
 
-    public void longTapAudioMessageCursorBtnAndSwipeUp(int longTapDurationMilliseconds) throws Exception {
+    public void longTapAudioMessageCursorBtnAndSwipeUp(int durationMillis) throws Exception {
         longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idAudioRecordingSendButton),
-                DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds);
+                DEFAULT_SWIPE_DURATION, durationMillis);
     }
 
-    public void longTapAudioMessageCursorBtnAndRememberIcon(int longTapDurationMilliseconds, ElementState elementState)
+    public void longTapAudioMessageCursorBtnAndRememberIcon(int durationMillis, ElementState elementState)
             throws Exception {
         longTapAndSwipe(getElement(idCursorAudioMessage), () -> getElement(idCursorAudioMessage),
-                DEFAULT_SWIPE_DURATION, longTapDurationMilliseconds, Optional.of(elementState::remember));
+                DEFAULT_SWIPE_DURATION, durationMillis, Optional.of(elementState::remember));
     }
 
     public boolean isCursorHintVisible(String hintMessage) throws Exception {

@@ -222,15 +222,19 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return getConversationViewPage().isCursorToolbarInvisible();
     }
 
-    public void longTapAudioMessageCursorBtn(String btnName) throws Exception {
+    public void longTapAudioMessageCursorBtn() throws Exception {
         getConversationViewPage().longTapAudioMessageCursorBtn(DriverUtils.LONG_TAP_DURATION);
     }
 
-    public void longTapAudioMessageCursorBtn(String btnName, int durationSecords) throws Exception {
-        getConversationViewPage().longTapAudioMessageCursorBtn(durationSecords * 1000);
+    public void longTapAudioMessageCursorBtn(int durationSeconds) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtn(durationSeconds * 1000);
     }
 
     public void tapAudioRecordingButton(String name) throws Exception {
         getConversationViewPage().tapAudioRecordingButton(name);
+    }
+
+    public void longTapAudioMessageCursorBtnAndSwipeUp(int durationSeconds) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtnAndSwipeUp(durationSeconds * 1000);
     }
 }

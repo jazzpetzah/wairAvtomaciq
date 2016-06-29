@@ -204,7 +204,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) button$ from cursor toolbar$
      */
-    @When("^I (long )?tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) "  +
+    @When("^I (long )?tap (Ping|Add picture|Sketch|File|Share location|Audio message|Video message) " +
             "button from cursor toolbar( for \\d+ seconds?)?$")
     public void WhenITapCursorToolButton(String isLongTap, String btnName, String duration) throws Exception {
         if (isLongTap == null) {
@@ -214,9 +214,9 @@ public class ConversationViewPageSteps {
                 throw new IllegalArgumentException("Long tap is inl;y supported for audio messages");
             }
             if (duration == null) {
-                getConversationViewPage().longTapAudioMessageCursorBtn(btnName);
+                getConversationViewPage().longTapAudioMessageCursorBtn();
             } else {
-                getConversationViewPage().longTapAudioMessageCursorBtn(btnName,
+                getConversationViewPage().longTapAudioMessageCursorBtn(
                         Integer.parseInt(duration.replaceAll("[\\D]", "")));
             }
         }
@@ -606,6 +606,17 @@ public class ConversationViewPageSteps {
                 (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
 
+    /**
+     * Long tap on Audio message cursor button , and then move finger up to send button within Audio message slide
+     *
+     * @param durationSeconds number of seconds to keep audio message button pressed
+     * @throws Exception
+     * @step. ^I long tap Audio message cursor button (\d+) seconds and swipe up$
+     */
+    @When("^I long tap Audio message cursor button (\\d+) seconds and swipe up$")
+    public void LongTapAudioMessageCursorAndSwipeUp(int durationSeconds) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtnAndSwipeUp(durationSeconds);
+    }
 
     /**
      * Check the cursor bar only contains ping, sketch, add picture, people and file buttons in cursor bar
