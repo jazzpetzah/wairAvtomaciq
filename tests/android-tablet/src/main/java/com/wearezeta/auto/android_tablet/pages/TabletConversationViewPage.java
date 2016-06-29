@@ -237,4 +237,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
     public void longTapAudioMessageCursorBtnAndSwipeUp(int durationSeconds) throws Exception {
         getConversationViewPage().longTapAudioMessageCursorBtnAndSwipeUp(durationSeconds * 1000);
     }
+
+    public void tapTopBarButton(String btnName) throws Exception {
+        getConversationViewPage().tapTopBarButton(btnName);
+    }
 }

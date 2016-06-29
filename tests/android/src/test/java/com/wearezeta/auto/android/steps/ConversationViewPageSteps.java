@@ -202,20 +202,11 @@ public class ConversationViewPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Audio Call|Video Call) button from top toolbar$
+     * @step. ^I tap (Audio Call|Video Call|Back) button from top toolbar$
      */
-    @When("^I tap (Audio Call|Video Call) button from top toolbar$")
+    @When("^I tap (Audio Call|Video Call|Back) button from top toolbar$")
     public void WhenITapTopToolbarButton(String btnName) throws Exception {
-        switch (btnName.toLowerCase()) {
-            case "audio call":
-                getConversationViewPage().tapAudioCallBtn();
-                break;
-            case "video call":
-                getConversationViewPage().tapVideoCallBtn();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
-        }
+        getConversationViewPage().tapTopBarButton(btnName);
     }
 
     /**
@@ -620,17 +611,6 @@ public class ConversationViewPageSteps {
                     timeout), filePlaceHolderActionButtonState.isNotChanged(timeout,
                     FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
         }
-    }
-
-    /**
-     * Tap back arrow button in upper toolbar
-     *
-     * @throws Exception
-     * @step. ^I tap back button in upper toolbar$
-     */
-    @When("^I tap back button in upper toolbar$")
-    public void TapBackbuttonInUpperToolbar() throws Exception {
-        getConversationViewPage().tapTopToolbarBackButton();
     }
 
     /**
