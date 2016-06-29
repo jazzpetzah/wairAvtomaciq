@@ -133,10 +133,10 @@ Feature: Settings
       | Name      | CurrentEmail | NewEmail   | Password      |
       | user1Name | user1Email   | user2Email | user2Password |
 
-  @C165103
+  @C165103 @staging
   Scenario Outline: Verify I can delete multiple devices without filling password every time
     Given There is 1 user where <Name> is me
-    Given User <Name> adds new devices <DeviceToRemove>,<DeviceToRemoveWithoutPassword>,<OtherDevice>,Device4
+    Given User <Name> adds new devices Device1,<DeviceToRemove>,<DeviceToRemoveWithoutPassword>,<OtherDevice>,Device5
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with no contacts
@@ -162,4 +162,4 @@ Feature: Settings
 
     Examples:
       | Name      | Password      | DeviceToRemoveWithoutPassword | DeviceToRemove | OtherDevice |
-      | user1Name | user1Password | Device1                       | Device2        | Device3     |
+      | user1Name | user1Password | Device2                       | Device3        | Device4     |
