@@ -1,15 +1,13 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.pages.SettingsPage;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-import org.junit.Assert;
-
-import com.wearezeta.auto.android.pages.SettingsPage;
-
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.junit.Assert;
 
 public class SettingsPageSteps {
 
@@ -121,7 +119,7 @@ public class SettingsPageSteps {
     /**
      * Enter new value into the corresponding user settings input dialog and commit it
      *
-     * @param what either name|email|phone number
+     * @param what     either name|email|phone number
      * @param newValue the new self user name/email or phone number
      * @throws Exception
      * @step. ^I commit my new (name|email|phone number) "(.*)"$

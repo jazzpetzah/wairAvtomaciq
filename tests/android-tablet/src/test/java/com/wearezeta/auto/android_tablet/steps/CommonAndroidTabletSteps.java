@@ -882,4 +882,18 @@ public class CommonAndroidTabletSteps {
                     "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
         }
     }
+
+    /**
+     * Presses the android back button X times
+     *
+     * @param times how many times to press
+     * @throws Exception
+     * @step. ^I press [Bb]ack button (\\d+) times$
+     */
+    @When("^I press [Bb]ack button (\\d+) times$")
+    public void PressBackButtonXTimes(int times) throws Exception {
+        for (int i = 0; i < times; i++) {
+            pagesCollection.getCommonPage().navigateBack();
+        }
+    }
 }
