@@ -395,7 +395,6 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see conversations list
     When I click on Pending request link in conversations list
-    And I see Pending request page
     And I click Connect button on Pending request page
     Then I see conversation view page
 
