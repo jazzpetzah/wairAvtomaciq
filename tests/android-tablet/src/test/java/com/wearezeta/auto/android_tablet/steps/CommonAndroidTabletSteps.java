@@ -243,7 +243,6 @@ public class CommonAndroidTabletSteps {
             e.printStackTrace();
         }
 
-        AndroidLogListener.forceStopAll();
         LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
         if (!scenario.getStatus().equals(Result.PASSED)) {
             loggingProfile = new RegressionFailedLoggingProfile();
@@ -256,6 +255,7 @@ public class CommonAndroidTabletSteps {
                 e.printStackTrace();
             }
         }
+        AndroidLogListener.forceStopAll();
     }
 
     /**
