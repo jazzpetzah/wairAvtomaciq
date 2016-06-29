@@ -83,18 +83,6 @@ public class SettingsPageSteps {
     }
 
     /**
-     * Verify whether password confirmation dialog is visible
-     *
-     * @throws Exception
-     * @step. ^I see device removal password confirmation dialog$"
-     */
-    @Then("^I see device removal password confirmation dialog$")
-    public void ISeePasswordConfirmation() throws Exception {
-        Assert.assertTrue("The password confirmation is not visible",
-                getSettingsPage().waitUntilPasswordConfirmationIsVisible());
-    }
-
-    /**
      * Type the password into the confirmation dialog
      *
      * @param passwordAlias password string or an alias

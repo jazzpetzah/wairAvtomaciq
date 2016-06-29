@@ -66,10 +66,6 @@ public class SettingsPage extends AndroidPage {
         getElement(locator, "Log out confirmation is not visible").click();
     }
 
-    public boolean waitUntilPasswordConfirmationIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idPasswordConfirmationInput);
-    }
-
     public void enterConfirmationPassword(String password) throws Exception {
         final WebElement confirmationPasswordInput = getElement(idPasswordConfirmationInput);
         confirmationPasswordInput.click();
@@ -77,11 +73,7 @@ public class SettingsPage extends AndroidPage {
     }
 
     public void tapOKButtonOnPasswordConfirmationDialog() throws Exception {
-        final WebElement okBtn = getElement(xpathConfirmationInputOKButton);
-        okBtn.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConfirmationInputOKButton, 5)) {
-            okBtn.click();
-        }
+        getElement(xpathConfirmationInputOKButton).click();
     }
 
     public void tapCurrentDevice() throws Exception {
