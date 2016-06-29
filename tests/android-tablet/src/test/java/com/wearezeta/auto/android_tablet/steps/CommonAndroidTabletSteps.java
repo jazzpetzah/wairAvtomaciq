@@ -840,4 +840,34 @@ public class CommonAndroidTabletSteps {
         commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
                 searchByNameAlias, size);
     }
+
+    /**
+     * User adds multiple devices to his list of devices
+     *
+     * @param userNameAlias user name/alias
+     * @param deviceNames   unique name of devices, comma-separated list
+     * @throws Exception
+     * @step. User (.*) adds new devices (.*)$
+     */
+    @When("^User (.*) adds new devices? (.*)$")
+    public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
+        final List<String> names = CommonSteps.splitAliases(deviceNames);
+        final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
+        final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
+        for (String name : names) {
+            pool.submit(() -> {
+                try {
+                    commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, name, CommonUtils.generateRandomString(10));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        pool.shutdown();
+        final int secondsTimeout = (names.size() / poolSize + 1) * 60;
+        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS)) {
+            throw new IllegalStateException(String.format(
+                    "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
+        }
+    }
 }
