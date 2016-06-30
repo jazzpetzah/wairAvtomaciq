@@ -58,7 +58,7 @@ Feature: Localization
       | user1Email | user1Password | user1Name | user2Name | de       | HINZUGEFÜGT          | KONTAKTE         | Namen oder E-Mail-Adresse suchen | Stummschalten | Archivieren | Löschen     | Blockieren  |
 
   @C136458 @regression
-  Scenario Outline: Verify support pages are opened in correct language (<Language>)
+  Scenario Outline: Verify support pages are opened in language <Language>
     Given There is 1 user where <Name> is me
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
