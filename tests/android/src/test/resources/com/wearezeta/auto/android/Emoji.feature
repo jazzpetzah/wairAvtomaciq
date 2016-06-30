@@ -1,6 +1,6 @@
 Feature: Emoji
 
-  @C162664 @staging
+  @C162664 @regression @rc
   Scenario Outline: Verify that received message containing emoji characters only is 3 times bigger, than normal text messages
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -16,7 +16,7 @@ Feature: Emoji
       | Name      | Contact   | NormalText | EmojiText | MinHeightDiff |
       | user1Name | user2Name | Yo         | 👿        | 120           |
 
-  @C162665 @staging
+  @C162665 @regression @rc
   Scenario Outline: Verify the height of received message stays unchanged if the string contains both emoji and normal characters
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
