@@ -362,9 +362,8 @@ public class CommonWebAppSteps {
      * @step. ^(.*) muted conversation with (.*)$
      */
     @When("^(.*) muted conversation with (user|group) (.*) on device (.*)$")
-    public void MuteConversationWithUser(String userToNameAlias, String convType,
-                                         String muteUserNameAlias, String deviceName) throws Exception {
-        context.getCommonSteps().UserMutesConversation(userToNameAlias, muteUserNameAlias, deviceName, convType.equals("group"));
+    public void MuteConversationWithUser(String userToNameAlias, String convType, String muteUserNameAlias, String deviceName) throws Exception {
+        context.getCommonSteps().UserMutesConversation(userToNameAlias, muteUserNameAlias, deviceName + context.getTestname().hashCode(), convType.equals("group"));
     }
 
     /**
