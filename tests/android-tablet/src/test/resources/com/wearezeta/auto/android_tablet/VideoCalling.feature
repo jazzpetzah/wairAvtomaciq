@@ -1,6 +1,6 @@
 Feature: Video Calling
 
-  @C164773 @staging
+  @C164773 @regression @rc
   Scenario Outline: Verify I can start Video call from the conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -23,7 +23,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C164775 @staging
+  @C164775 @regression @rc
   Scenario Outline: Verify the video call is not terminated if I lock and unlock device
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

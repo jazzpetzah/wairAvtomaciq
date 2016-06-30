@@ -1,6 +1,6 @@
 Feature: Video Message
 
-  @C164772 @staging
+  @C164772 @regression @rc
   Scenario Outline: Verify I can send video message
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
