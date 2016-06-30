@@ -18,6 +18,7 @@ public class SEBridge {
 
     private volatile UserDevicePool devicePool;
     private static SEBridge instance = null;
+    protected static int MAX_PROCESS_NUM = 25;
 
     private static final Logger LOG = ZetaLogger.getLog(SEBridge.class.getSimpleName());
 
@@ -27,7 +28,7 @@ public class SEBridge {
 
     protected SEBridge() throws Exception {
         this.devicePool = new UserDevicePool(CommonUtils.getBackendType(CommonUtils.class),
-                CommonUtils.getOtrOnly(CommonUtils.class));
+                CommonUtils.getOtrOnly(CommonUtils.class), MAX_PROCESS_NUM);
     }
 
     public static synchronized SEBridge getInstance() {

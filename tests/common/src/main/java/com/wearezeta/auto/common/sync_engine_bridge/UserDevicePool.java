@@ -17,9 +17,9 @@ public class UserDevicePool {
     private static final Logger LOG = ZetaLogger.getLog(UserDevicePool.class.getSimpleName());
     private static final FiniteDuration ACTOR_DURATION = new FiniteDuration(60, TimeUnit.SECONDS);
     private static int INITIAL_CACHE_SIZE = 3;
-    private static final int MAX_POOL_SIZE = 25;
     private static final int PROCESS_CREATION_TIMEOUT = 90; // seconds
 
+    private final int MAX_POOL_SIZE;
     private Coordinator coordinator;
     private final String backendType;
     private final boolean otrOnly;
@@ -34,10 +34,11 @@ public class UserDevicePool {
         }
     }
 
-    public UserDevicePool(String backendType, boolean otrOnly) {
+    public UserDevicePool(String backendType, boolean otrOnly, int maxPoolSize) {
         this.coordinator = Coordinator.getInstance();
         this.backendType = backendType;
         this.otrOnly = otrOnly;
+        this.MAX_POOL_SIZE = maxPoolSize;
         prefillCache();
     }
 
@@ -47,11 +48,17 @@ public class UserDevicePool {
 
     public IDevice addDevice(ClientUser user, String deviceName) {
         LOG.info("Add new device for user " + user.getName() + " with device name " + deviceName);
+        IDevice device = null;
         try {
-            final IDevice device = putDeviceInCache(deviceName);
+            device = putDeviceInCache(deviceName);
             device.logInWithUser(user);
             return device;
         } catch (Exception e) {
+            try {
+                releaseDevice(device);
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
             Throwables.propagate(e);
             return null;
         }
@@ -116,10 +123,8 @@ public class UserDevicePool {
         cachedDevicesGuard.acquire();
         try {
             for (Future<IRemoteProcess> p : cachedDevices.keySet()) {
-                if (cachedDevices.get(p).isPresent() && cachedDevices.get(p).get().get().getId().equals(device.getId())) {
+                if (cachedDevices.get(p).isPresent() && cachedDevices.get(p).get().get() == device) {
                     try {
-                        LOG.info(String.format("Releasing device %s of user %s", device.getId(), device.getLoggedInUser().
-                                orElse(new ClientUser(null, null, null, "NONE")).getName()));
                         cachedDevices.get(p).get().get().destroy();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -185,6 +190,7 @@ public class UserDevicePool {
             for (Future<IRemoteProcess> p : cachedDevices.keySet()) {
                 if (!cachedDevices.get(p).isPresent()) {
                     targetProcess = p;
+                    LOG.debug(String.format("Attaching device to existing process %s", targetProcess.get().name()));
                     break;
                 }
             }
@@ -194,6 +200,7 @@ public class UserDevicePool {
                     final ExecutorService pool = Executors.newSingleThreadExecutor();
                     targetProcess = pool.submit(() -> createNewProcess());
                     pool.shutdown();
+                    LOG.debug(String.format("Attaching device to new process %s", targetProcess.get().name()));
                 } else {
                     throw new IllegalStateException(String.format(
                             "Cannot create more than %s devices. Make sure you've reset SE Bridge after the previous test",

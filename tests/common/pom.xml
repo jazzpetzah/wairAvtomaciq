@@ -203,6 +203,7 @@
                 <version>2.19.1</version>
                 <configuration>
                     <skipTests>true</skipTests>
+                    <trimStackTrace>false</trimStackTrace>  
                     <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
                     <failIfNoTests>false</failIfNoTests>
                 </configuration>
