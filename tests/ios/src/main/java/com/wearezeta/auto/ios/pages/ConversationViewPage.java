@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
-import com.wearezeta.auto.common.sync_engine_bridge.Device;
+import com.wearezeta.auto.common.sync_engine_bridge.Constants;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.TouchAction;
@@ -199,7 +199,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By classNameShareLocationContainer = MobileBy.className("UIAMapView");
 
-    private static final By nameShareLocationAddress = MobileBy.AccessibilityId(Device.DEFAULT_GMAP_ADDRESS);
+    private static final By nameShareLocationAddress = MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
