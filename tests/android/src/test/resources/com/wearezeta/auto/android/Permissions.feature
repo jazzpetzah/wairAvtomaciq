@@ -29,6 +29,11 @@ Feature: Permissions
     When I long tap Audio message button from cursor toolbar
     And I dismiss security alert
     Then I see conversation view
+    # --- Share Location ---
+    When I tap Share location button from cursor toolbar
+    And I dismiss security alert
+    And I tap Send button on Share Location page
+    Then I see Share Location container in the conversation view
     # --- Unfortunately, File Upload cannot be tested  ---
     # --- Audio call from toolbar ---
     When I tap Audio Call button from top toolbar
@@ -64,15 +69,14 @@ Feature: Permissions
     And <Contact2> stops calling me
     # --- Select Profile Picture ---
     When I navigate back from dialog page
-    # TODO: Implement updated change profile picture flow
-    #    And I tap conversations list settings button
-    #    And I tap on personal info screen
-    #    And I dismiss security alert
-    #    And I tap Change Photo button on Take Picture view
-    #    And I dismiss security alert
-    #    Then I do not see Take Photo button on Take Picture view
-    #    And I tap Close button on Take Picture view
-    #    When I close Personal Info Page
+    And I tap conversations list settings button
+    And I select "Account" settings menu item
+    And I select "Picture" settings menu item
+    And I dismiss security alert
+    Then I do not see Take Photo button on Take Picture view
+    And I press Back button
+    And I press Back button
+    And I press Back button
     # --- Verify no user if visible in invites list if contacts access is denied
     And I open Search UI
     Then I do not see <Contact3> in the invites list

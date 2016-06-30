@@ -123,7 +123,7 @@ Feature: Block
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    Given User <Contact> sends encrypted message "<Message>" to user Myself
+    Given User <Contact> sends encrypted message <Message> to user Myself
     Given I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page

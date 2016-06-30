@@ -119,7 +119,7 @@ Feature: Settings
     And I start waiting for <Name> account removal notification
     And I select settings item Delete Account
     # FIXME: Sometimes the alert is not accepted automatically
-    And I accept alert
+    And I tap OK button on the alert
     Then I see sign in screen
     And I verify account removal notification is received
 

@@ -23,6 +23,7 @@ import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -99,10 +100,7 @@ public class CommonAndroidTabletSteps {
         AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidTabletSteps.class);
-        // FIXME: This is handled by TestingGallery now
-        final String backendJSON =
-                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidTabletSteps.class));
-        AndroidCommonUtils.deployBackendFile(backendJSON);
+        AndroidCommonUtils.changeAccelerometerState(true);
         return null;
     }
 
@@ -163,7 +161,7 @@ public class CommonAndroidTabletSteps {
         } while (System.currentTimeMillis() - millisecondsStarted <= INTERFACE_INIT_TIMEOUT_MILLISECONDS);
         if (System.currentTimeMillis() - millisecondsStarted > INTERFACE_INIT_TIMEOUT_MILLISECONDS) {
             log.error(String
-                    .format("UI views have not been initialized properly after %s seconds. Restarting Selendroid usually helps ;-)",
+                    .format("UI views were not initialized properly after %s seconds. Restarting Selendroid usually helps ;-)",
                             INTERFACE_INIT_TIMEOUT_MILLISECONDS));
             throw savedException;
         }
@@ -241,7 +239,6 @@ public class CommonAndroidTabletSteps {
             e.printStackTrace();
         }
 
-        AndroidLogListener.forceStopAll();
         LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
         if (!scenario.getStatus().equals(Result.PASSED)) {
             loggingProfile = new RegressionFailedLoggingProfile();
@@ -254,6 +251,7 @@ public class CommonAndroidTabletSteps {
                 e.printStackTrace();
             }
         }
+        AndroidLogListener.forceStopAll();
     }
 
     /**
@@ -334,27 +332,26 @@ public class CommonAndroidTabletSteps {
     }
 
     /**
-     * Rotate device to landscape
+     * Rotate device
      *
+     * @param orientation either landscape or portrait
      * @throws Exception
-     * @step. ^I rotate UI to landscape$
+     * @step. ^I rotate UI to (landscape|portrait$)
      */
-    @When("^I rotate UI to landscape$")
-    public void WhenIRotateUILandscape() throws Exception {
-        pagesCollection.getCommonPage().rotateLandscape();
-        screenOrientationHelper.setOriginalOrientation(ScreenOrientation.LANDSCAPE);
-    }
-
-    /**
-     * Rotate device to portrait
-     *
-     * @throws Exception
-     * @step. ^I rotate UI to portrait$
-     */
-    @When("^I rotate UI to portrait$")
-    public void WhenIRotateUIPortrait() throws Exception {
-        pagesCollection.getCommonPage().rotatePortrait();
-        screenOrientationHelper.setOriginalOrientation(ScreenOrientation.PORTRAIT);
+    @When("^I rotate UI to (landscape|portrait$)$")
+    public void WhenIRotateUILandscape(String orientation) throws Exception {
+        switch (orientation.toLowerCase()) {
+            case "landscape":
+                pagesCollection.getCommonPage().rotateLandscape();
+                screenOrientationHelper.setOriginalOrientation(ScreenOrientation.LANDSCAPE);
+                break;
+            case "portrait":
+                pagesCollection.getCommonPage().rotatePortrait();
+                screenOrientationHelper.setOriginalOrientation(ScreenOrientation.PORTRAIT);
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown orientation value '%s'", orientation));
+        }
     }
 
     /**
@@ -838,5 +835,74 @@ public class CommonAndroidTabletSteps {
     public void UserWaitsUntilContactExistsInTopPeopleResults(String searchByNameAlias, int size) throws Exception {
         commonSteps.WaitUntilTopPeopleContactsIsFoundInSearch(
                 searchByNameAlias, size);
+    }
+
+    /**
+     * Tap the corresponding button on alert message
+     *
+     * @param caption button caption as it is shown in @value property
+     * @throws Exception
+     * @step. ^I tap (.*) button on the alert$
+     */
+    @And("^I tap (.*) button on the alert$")
+    public void ITapAlertButton(String caption) throws Exception {
+        pagesCollection.getCommonPage().tapAlertButton(caption);
+    }
+
+    /**
+     * User adds multiple devices to his list of devices
+     *
+     * @param userNameAlias user name/alias
+     * @param deviceNames   unique name of devices, comma-separated list
+     * @throws Exception
+     * @step. User (.*) adds new devices (.*)$
+     */
+    @When("^User (.*) adds new devices? (.*)$")
+    public void UserAddRemoteDeviceToAccount(String userNameAlias, String deviceNames) throws Exception {
+        final List<String> names = CommonSteps.splitAliases(deviceNames);
+        final int poolSize = 2;  // Runtime.getRuntime().availableProcessors()
+        final ExecutorService pool = Executors.newFixedThreadPool(poolSize);
+        for (String name : names) {
+            pool.submit(() -> {
+                try {
+                    commonSteps.UserAddsRemoteDeviceToAccount(userNameAlias, name, CommonUtils.generateRandomString(10));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        pool.shutdown();
+        final int secondsTimeout = (names.size() / poolSize + 1) * 60;
+        if (!pool.awaitTermination(secondsTimeout, TimeUnit.SECONDS)) {
+            throw new IllegalStateException(String.format(
+                    "Devices '%s' were not created within %s seconds timeout", names, secondsTimeout));
+        }
+    }
+
+    /**
+     * Presses the android back button X times
+     *
+     * @param times how many times to press
+     * @throws Exception
+     * @step. ^I press [Bb]ack button (\\d+) times$
+     */
+    @When("^I press [Bb]ack button (\\d+) times$")
+    public void PressBackButtonXTimes(int times) throws Exception {
+        for (int i = 0; i < times; i++) {
+            pagesCollection.getCommonPage().navigateBack();
+        }
+    }
+
+    /**
+     * Prepare file in /mnt/sdcard/Download/
+     *
+     * @param size         such as 5MB, 30MB
+     * @param fileFullName the name of the file with extension
+     * @throws Exception
+     * @step. ^I push (.*) file having name \"(.*)\" to the device$
+     */
+    @Given("^I push ([^\\s-]*) (video )?file having name \"(.*)\" to the device$")
+    public void IPushXFileHavingNameYToDevice(String size, String isVideoFile, String fileFullName) throws Exception {
+        AndroidCommonUtils.pushRandomFileToSdcardDownload(fileFullName, size, isVideoFile != null);
     }
 }

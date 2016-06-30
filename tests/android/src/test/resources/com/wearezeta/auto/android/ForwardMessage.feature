@@ -2,7 +2,7 @@ Feature: Forward Message
 
   @C150008 @regression
   Scenario Outline: Check text message forwarding into other conversation
-    Given There are 3 users where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible

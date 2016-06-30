@@ -16,7 +16,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -141,19 +140,6 @@ public class RegistrationSteps {
         if (!usrMgr.isSelfUserSet()) {
             usrMgr.setSelfUser(userToRegister);
         }
-    }
-
-    /**
-     * Verify that registration data input form is visible
-     *
-     * @throws Exception
-     * @step. ^I see (?:the |\\s*)[Rr]egistration form$
-     */
-    @When("^I see (?:the |\\s*)[Rr]egistration form$")
-    public void IseeRegistrationForm() throws Exception {
-        Assert.assertTrue(
-                "The registration form is not visible after the timeout",
-                getRegistrationFormPage().waitUntilVisible());
     }
 
     /**

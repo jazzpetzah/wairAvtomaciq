@@ -107,6 +107,8 @@ Feature: Self Profile
     And I change my name to <NewUsername>
     And I close self profile
     And I tap on contact name <Contact>
+    # Wait for conversation view to be loaded
+    And I wait for 3 seconds
     Then I see my user name <NewUsername> in conversation
 
     Examples:

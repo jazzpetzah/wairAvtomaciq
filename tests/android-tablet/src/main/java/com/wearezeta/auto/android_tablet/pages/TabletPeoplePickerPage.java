@@ -37,7 +37,6 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
     }
 
     public void tapFoundItem(String item) throws Exception {
-        this.hideKeyboard();
         final By locator = By.xpath(PeoplePickerPage.xpathStrPeoplePickerContactByName.apply(item));
         getElement(locator,
                 String.format("The item '%s' is not visible in People Picker search list after the defualt timeout expired",

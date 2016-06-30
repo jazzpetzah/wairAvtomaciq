@@ -462,8 +462,8 @@ public class CommonUtils {
 
     private static final int MAX_PHONE_SCREENSHOT_WIDTH = 480;
     private static final int MAX_PHONE_SCREENSHOT_HEIGHT = 800;
-    private static final int MAX_TABLET_SCREENSHOT_WIDTH = 1600;
-    private static final int MAX_TABLET_SCREENSHOT_HEIGHT = 900;
+    private static final int MAX_TABLET_SCREENSHOT_WIDTH = 1440;
+    private static final int MAX_TABLET_SCREENSHOT_HEIGHT = 800;
 
 
     public static void takeAndroidScreenshot(ZetaAndroidDriver driver, File resultScreenshot, boolean shouldApplyScale)

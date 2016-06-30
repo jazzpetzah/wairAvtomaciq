@@ -231,7 +231,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C145968 @calling_basic
+  @C145968 @rc @calling_basic
   Scenario Outline: Verify starting a group call [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -249,7 +249,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GROUPCALL     |
 
-  @C145969 @staging
+  @C145969 @calling_advanced
   Scenario Outline: Verify leaving and coming back to the call in 20 seconds [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -275,7 +275,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend | NumberOfAvatars |
       | user1Name | user2Name | user3Name | GROUPCALL     | chrome      | 2               |
 
-  @C145950 @calling_basic
+  @C145950 @rc @calling_basic
   Scenario Outline: Verify joining 2 other people on the group call [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

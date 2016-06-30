@@ -52,7 +52,7 @@ public class UnsplashPicturePageSteps {
      */
     @When("^I select (Camera|Gallery) picture source on Unsplash Picture page$")
     public void ISelectPictureSource(String src) throws Exception {
-        getUnsplashPicturePage().selectPictureSource(src);
+		getUnsplashPicturePage().selectPictureSource(src);
     }
 
 }

@@ -15,7 +15,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C433 @id3245 @regression
+  @C43808 @id3245 @rc @regression
   Scenario Outline: Sign in to Wire by phone
     Given There are 1 users where <Name> is me
     When I sign in using my phone number
@@ -110,7 +110,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @C131213 @rc @regression
+  @C131213 @rc @rc42 @regression
   Scenario Outline: Verify you see first time usage overlay on first login by mail
     Given There is 1 user where <Name> is me
     Given I sign in using my email
@@ -121,3 +121,34 @@ Feature: Sign In
     Examples:
       | Name      |
       | user1Name |
+
+  @C3230 @regression @C145960
+  Scenario Outline: AN-4162 When I see too many devices screen - I can remove devices without filling password every time and log in successfully
+    Given There is 1 user where <Name> is me
+    Given User <Name> adds new devices <DeviceToRemove>,<DeviceToRemoveWithoutPassword>,<OtherDevice>,Device4,Device5,Device6,Device7
+    # Workaround for AN-3281
+    # Given I sign in using my email or phone number
+    Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
+    When I see Manage Devices overlay
+    And I tap Manage Devices button on Manage Devices overlay
+    And I select "<DeviceToRemove>" settings menu item
+    And I select "Remove device" settings menu item
+    And I enter <Password> into the device removal password confirmation dialog
+    And I tap OK button on the device removal password confirmation dialog
+    # Delete device will take time, should verify at first it already return back to device list view, also the list is already updated
+    And I wait for 5 seconds
+    And I see "<DeviceToRemoveWithoutPassword>" settings menu item
+    And I do not see "<DeviceToRemove>" settings menu item
+    # C145960
+    And I select "<DeviceToRemoveWithoutPassword>" settings menu item
+    And I select "Remove device" settings menu item
+    And I see "<OtherDevice>" settings menu item
+    And I do not see "<DeviceToRemoveWithoutPassword>" settings menu item
+    And I press Back button 2 times
+    When I do not see Manage Devices overlay
+    Then I see Contact list with no contacts
+
+    Examples:
+      | Password      | Name      | DeviceToRemoveWithoutPassword | DeviceToRemove | OtherDevice |
+      | user1Password | user1Name | Device1                       |  Device2       | Device3     |

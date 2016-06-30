@@ -142,7 +142,7 @@ public class ConversationPageSteps {
      * @step. ^I send message$
      */
     @When("^I send message$")
-    public void WhenISendMessage() throws Exception {
+    public void ISendMessage() throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).sendNewMessage();
     }
 
@@ -564,7 +564,7 @@ public class ConversationPageSteps {
     @Then("^I see cancel upload button for video (.*)$")
     public void ISeeCancelUpload(String fileName) throws Exception {
         assertThat("Cancel video upload button is not shown", context.getPagesCollection().getPage(ConversationPage.class)
-            .isCancelButtonVisible(fileName));
+                .isCancelButtonVisible(fileName));
     }
 
     @Then("^I see play button of video (.*) in the conversation view$")
@@ -1274,6 +1274,38 @@ public class ConversationPageSteps {
         while (i != 0) {
             context.getPagesCollection().getPage(ConversationPage.class).clearConversationInput();
             i--;
+        }
+    }
+
+
+     /**
+     * Verifies whether location message is shown in the conversation view or not.
+     *
+     * @param doNot        is set to null if "do not" part does not exist
+     * @param locationName name of the shared location
+     * @param longitude    longitude of the shared location, float
+     * @param latitude     latitude of the shared location, float
+     * @throws java.lang.Exception
+     * @step. ^I (do not )?see location message (.*) with ([-+]?[0-9]*\.?[0-9]+) and ([-+]?[0-9]*\.?[0-9]+) in the conversation view$
+     */
+    @Then("^I (do not )?see location message (.*) with ([-+]?[0-9]*\\.?[0-9]+) and ([-+]?[0-9]*\\.?[0-9]+) in the conversation view$")
+    public void ISeeLocationMessage(String doNot, String locationName, float longitude, float latitude) throws Exception {
+        if (doNot == null) {
+            String locationLinkValue = context.getPagesCollection().getPage(ConversationPage.class).getLocationNameFromLink();
+            assertThat("Could not find location message " + locationName,
+                    context.getPagesCollection().getPage(ConversationPage.class).getLocationName(), equalTo(locationName));
+            assertThat("The link doesn't contain a proper location", locationLinkValue, containsString(locationName));
+            //getting coordinates from location link
+            ArrayList<Float> listCoordinates = new ArrayList<>();
+            Pattern p = Pattern.compile("[-]?[0-9]*\\.?[0-9]+");
+            Matcher m = p.matcher(locationLinkValue);
+            while (m.find()) {
+                listCoordinates.add(Float.parseFloat(m.group()));
+            }
+            assertThat("The link doesn't contain proper coordinates", listCoordinates, hasItems(longitude, latitude));
+        } else {
+            assertThat("Location message " + locationName + "is shown",
+                    context.getPagesCollection().getPage(ConversationPage.class).isLocationNotShownInConversationView());
         }
     }
 
