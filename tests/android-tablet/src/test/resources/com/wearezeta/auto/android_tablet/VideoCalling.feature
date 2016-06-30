@@ -67,3 +67,22 @@ Feature: Video Calling
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
+
+  @C164774 @staging
+  Scenario Outline: I can accept Video call with the app in the foreground
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
+    When <Contact> starts a video call to me
+    Then I see incoming video call
+    When I swipe to accept the call
+    Then I see ongoing video call
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
