@@ -1355,4 +1355,22 @@ public class ConversationViewPageSteps {
         Assert.assertTrue(String.format("Wrong button state. Expected state is '%s'", buttonState),
                 getConversationViewPage().isRecordControlButtonState(buttonState));
     }
+
+    @Then("I (do not )?see Share Location container in the conversation view")
+    public void VerifyShareLocationContainerVisibility(String shouldNotSee) throws Exception {
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
+        verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isShareLocationContainerVisible :
+                getConversationViewPage()::isShareLocationContainerNotVisible;
+        Assert.assertTrue(String.format("Share Location container should be %s in the conversation view",
+                (shouldNotSee == null) ? "visible" : "invisible"), verificationFunc.call());
+    }
+
+    @Then("I (do not )?see Share Location address in the conversation view")
+    public void VerifyShareLocationAddressVisibility(String shouldNotSee) throws Exception {
+        FunctionalInterfaces.ISupplierWithException<Boolean> verificationFunc;
+        verificationFunc = (shouldNotSee == null) ? getConversationViewPage()::isShareLocationAddressVisible :
+                getConversationViewPage()::isShareLocationAddressNotVisible;
+        Assert.assertTrue(String.format("Share Location address should be %s in the conversation view",
+                (shouldNotSee == null) ? "visible" : "invisible"), verificationFunc.call());
+    }
 }

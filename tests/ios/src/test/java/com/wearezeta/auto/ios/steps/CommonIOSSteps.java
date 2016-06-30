@@ -1139,4 +1139,21 @@ public class CommonIOSSteps {
         }
         updateDriver(flc.executeDriverCreation(usrMgr.findUserByNameOrNameAlias(alias)));
     }
+
+    /**
+     * Send location sharing message
+     *
+     * @param userNameAlias sender name/alias
+     * @param convoType     either 'user' or 'group conversation'
+     * @param dstNameAlias  user name/alias or group conversation name
+     * @param deviceName    destination device
+     * @throws Exception
+     * @step. ^User (.*) shares? his location to (user|group conversation) (.*) via device (.*)
+     */
+    @When("^User (.*) shares? his location to (user|group conversation) (.*) via device (.*)")
+    public void UserXSharesLocationTo(String userNameAlias, String convoType, String dstNameAlias, String deviceName)
+            throws Exception {
+        commonSteps.UserSharesLocationTo(userNameAlias, dstNameAlias, convoType.equals("group conversation"),
+                deviceName);
+    }
 }

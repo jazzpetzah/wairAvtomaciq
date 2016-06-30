@@ -20,7 +20,7 @@ import scala.concurrent.duration.FiniteDuration;
 
 import static akka.pattern.Patterns.gracefulStop;
 
-class Device extends RemoteEntity implements IDevice {
+public class Device extends RemoteEntity implements IDevice {
 
     private Optional<ClientUser> loggedInUser = Optional.empty();
     private Optional<String> id = Optional.empty();
@@ -260,7 +260,8 @@ class Device extends RemoteEntity implements IDevice {
         return null;
     }
 
-    public static final int DEFAULT_GMAP_ZOOM_LEVEL = 14;
+    public static final int DEFAULT_GMAP_ZOOM_LEVEL = 7;
+    public static final String DEFAULT_GMAP_ADDRESS = "Wire St, 1, WireTown, Wirestan";
 
     @Override
     public void shareLocation(String convId, float lon, float lat, String address, int zoom) throws Exception {
@@ -279,7 +280,7 @@ class Device extends RemoteEntity implements IDevice {
 
     @Override
     public void shareLocation(String convId) throws Exception {
-        shareLocation(convId, 1.0f, 1.0f, "", DEFAULT_GMAP_ZOOM_LEVEL);
+        shareLocation(convId, 13.0f, 52.0f, DEFAULT_GMAP_ADDRESS, DEFAULT_GMAP_ZOOM_LEVEL);
     }
 
     @Override
