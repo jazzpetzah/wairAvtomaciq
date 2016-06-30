@@ -165,7 +165,7 @@ public class CommonAndroidTabletSteps {
         } while (System.currentTimeMillis() - millisecondsStarted <= INTERFACE_INIT_TIMEOUT_MILLISECONDS);
         if (System.currentTimeMillis() - millisecondsStarted > INTERFACE_INIT_TIMEOUT_MILLISECONDS) {
             log.error(String
-                    .format("UI views have not been initialized properly after %s seconds. Restarting Selendroid usually helps ;-)",
+                    .format("UI views were not initialized properly after %s seconds. Restarting Selendroid usually helps ;-)",
                             INTERFACE_INIT_TIMEOUT_MILLISECONDS));
             throw savedException;
         }

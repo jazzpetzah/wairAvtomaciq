@@ -1,12 +1,9 @@
 package com.wearezeta.auto.android_tablet.pages;
 
 import java.util.concurrent.Future;
-import java.util.function.Function;
 
 import com.wearezeta.auto.android.pages.SettingsPage;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import org.openqa.selenium.By;
 
 public class TabletSettingsPage extends AndroidTabletPage {
 
@@ -16,18 +13,6 @@ public class TabletSettingsPage extends AndroidTabletPage {
 
     private SettingsPage getSettingsPage() throws Exception {
         return this.getAndroidPageInstance(SettingsPage.class);
-    }
-
-    private boolean scrollUntilMenuElementVisible(By locator, int maxScrolls) throws Exception {
-        int nScrolls = 0;
-        while (nScrolls < maxScrolls) {
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
-                return true;
-            }
-            this.swipeUpCoordinates(500, 50);
-            nScrolls++;
-        }
-        return false;
     }
 
     public boolean waitUntilVisible() throws Exception {
@@ -59,7 +44,7 @@ public class TabletSettingsPage extends AndroidTabletPage {
     }
 
     public boolean waitUntilMenuItemInvisible(String name) throws Exception {
-        return  getSettingsPage().waitUntilMenuItemInvisible(name);
+        return getSettingsPage().waitUntilMenuItemInvisible(name);
     }
 
     public void commitNewName(String newName) throws Exception {

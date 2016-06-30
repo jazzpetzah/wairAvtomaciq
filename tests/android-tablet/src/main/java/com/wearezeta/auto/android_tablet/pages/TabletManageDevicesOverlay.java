@@ -1,12 +1,9 @@
 package com.wearezeta.auto.android_tablet.pages;
 
-import com.wearezeta.auto.android.pages.ManageDevicesOverlay;
-
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.android.pages.ManageDevicesOverlay;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import org.openqa.selenium.By;
 
 public class TabletManageDevicesOverlay extends AndroidTabletPage {
 
