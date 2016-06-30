@@ -37,6 +37,7 @@ Feature: VideoCalling
     Then I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>
     And I see decline call button for conversation <Contact>
+    And I see my self video view
     And I accept the call from conversation <Contact>
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
@@ -64,6 +65,7 @@ Feature: VideoCalling
     Then I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>
     And I see decline call button for conversation <Contact>
+    And I see my self video view
     When I ignore the call from conversation <Contact>
     Then I do not see the call controls for conversation <Contact>
     And I do not see accept video call button for conversation <Contact>
