@@ -37,6 +37,9 @@ public class SelfProfilePage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.SelfProfilePage.cssSelectPicture)
 	private WebElement selectPictureInput;
 
+	@FindBy(how = How.CSS, using = WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput)
+	private WebElement chooseYourOwnInput;
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathSelfUserName)
 	private WebElement userName;
 
@@ -263,11 +266,8 @@ public class SelfProfilePage extends WebPage {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
 		if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
-			this.getDriver()
-					.executeScript(
-							"$(\""
-									+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
-									+ "\").css({'left': '0', 'opacity': '100', 'z-index': '100'});");
+			this.getDriver().executeScript("arguments[0].style.left='0';arguments[0].style.opacity='100';arguments[0].style" +
+					".zIndex='100';", chooseYourOwnInput);
 		}
 		if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
 			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
@@ -275,9 +275,7 @@ public class SelfProfilePage extends WebPage {
 		} else {
 			selectPictureInput.sendKeys(picturePath);
 			// manually trigger change event on input
-			this.getDriver().executeScript("e = $.Event('change');$(\""
-						+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
-						+ "\").trigger(e);");
+			this.getDriver().executeScript("evt = new Event('change');arguments[0].dispatchEvent(evt);", chooseYourOwnInput);
 		}
 	}
 }
