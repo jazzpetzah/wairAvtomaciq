@@ -106,7 +106,9 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		return leaveButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
 
-	public String getPeopleCountInfo() {
+	public String getPeopleCountInfo() throws Exception {
+		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(PopoverLocators.GroupPopover.ParticipantsListPage
+				.cssPeopleCount));
 		return peopleCount.getText();
 	}
 
