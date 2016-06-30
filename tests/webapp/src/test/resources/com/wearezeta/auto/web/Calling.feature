@@ -955,9 +955,8 @@ Feature: Calling
     When I join call of conversation <ChatName>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
-    And <Contact1>,<Contact2> verify to have 3 flows
+    And <Contact1>,<Contact2> verify to have 2 flows
     And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
-    And I see the ongoing call controls for conversation <ChatName>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend | Timeout |
