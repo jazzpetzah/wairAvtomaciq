@@ -1355,4 +1355,34 @@ public class ConversationViewPageSteps {
         Assert.assertTrue(String.format("Wrong button state. Expected state is '%s'", buttonState),
                 getConversationViewPage().isRecordControlButtonState(buttonState));
     }
+
+    /**
+     * Verify visibility of Share Location container
+     *
+     * @param shouldNotSee equals to null if text input should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see Share Location container in the conversation view$
+     */
+    @Then("^I (do not )?see Share Location container in the conversation view$")
+    public void VerifyShareLocationContainerVisibility(String shouldNotSee) throws Exception {
+        boolean condition = (shouldNotSee == null) ? getConversationViewPage().isShareLocationContainerVisible() :
+                getConversationViewPage().isShareLocationContainerNotVisible();
+        Assert.assertTrue(String.format("Share Location container should be %s in the conversation view",
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Verify visibility of default Share Location address
+     *
+     * @param shouldNotSee equals to null if text input should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see the default Share Location address in the conversation view$
+     */
+    @Then("^I (do not )?see the default Share Location address in the conversation view$")
+    public void VerifyShareLocationAddressVisibility(String shouldNotSee) throws Exception {
+        boolean condition = (shouldNotSee == null) ? getConversationViewPage().isDefaultShareLocationAddressVisible() :
+                getConversationViewPage().isDefaultShareLocationAddressNotVisible();
+        Assert.assertTrue(String.format("Share Location address should be %s in the conversation view",
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
 }
