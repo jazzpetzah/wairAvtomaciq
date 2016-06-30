@@ -123,10 +123,6 @@ public class CommonAndroidSteps {
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidSteps.class);
         AndroidCommonUtils.installClipperApp(CommonAndroidSteps.class);
-        // FIXME: This is handled by TestingGallery now
-        final String backendJSON =
-                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
-        AndroidCommonUtils.deployBackendFile(backendJSON);
         return null;
     }
 
@@ -284,7 +280,6 @@ public class CommonAndroidSteps {
             e.printStackTrace();
         }
 
-        AndroidLogListener.forceStopAll();
         LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
         if (!scenario.getStatus().equals(Result.PASSED)) {
             loggingProfile = new RegressionFailedLoggingProfile();
@@ -297,6 +292,7 @@ public class CommonAndroidSteps {
                 e.printStackTrace();
             }
         }
+        AndroidLogListener.forceStopAll();
     }
 
     private void updateDriver(Future<ZetaAndroidDriver> lazyDriver) throws Exception {

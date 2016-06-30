@@ -56,9 +56,12 @@ Feature: File Transfer
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
     Given I sign in using my email or phone number
+    Given User <Contact1> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to group conversation <GroupChatName> using device <ContactDevice>
+    Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list
     When I tap on contact name <GroupChatName>
-    And User <Contact1> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to group conversation <GroupChatName> using device <ContactDevice>
+    # Wait for the placeholder
+    And I wait for 3 seconds
     Then I wait up to <Timeout> seconds until the file <FileName>.<FileExt> with size <FileSize> is ready for download from conversation view
     When I tap file transfer placeholder
     Then I wait up to <Timeout> seconds until I see generic file share menu

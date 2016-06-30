@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
+import com.wearezeta.auto.common.sync_engine_bridge.Constants;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.TouchAction;
@@ -195,6 +196,10 @@ public class ConversationViewPage extends IOSPage {
     private static final FunctionFor2Parameters<String, String, Integer> placeholderAudioMessageButtonStateByIndex =
             (buttonState, index) ->
             String.format("(//UIAButton[@name='%s'])[%s][@value='%s']", strNameAudioActionButton, index, buttonState);
+
+    private static final By classNameShareLocationContainer = MobileBy.className("UIAMapView");
+
+    private static final By nameDefaultShareLocationAddress = MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -880,5 +885,21 @@ public class ConversationViewPage extends IOSPage {
     public boolean isRecordControlButtonState(String buttonState) throws Exception {
         final By locator = By.xpath(recordControlButtonWithState.apply(buttonState));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isShareLocationContainerVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classNameShareLocationContainer);
+    }
+
+    public boolean isShareLocationContainerNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultShareLocationAddress);
+    }
+
+    public boolean isDefaultShareLocationAddressVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultShareLocationAddress);
+    }
+
+    public boolean isDefaultShareLocationAddressNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultShareLocationAddress);
     }
 }

@@ -202,20 +202,11 @@ public class ConversationViewPageSteps {
      *
      * @param btnName button name
      * @throws Exception
-     * @step. ^I tap (Audio Call|Video Call) button from top toolbar$
+     * @step. ^I tap (Audio Call|Video Call|Back) button from top toolbar$
      */
-    @When("^I tap (Audio Call|Video Call) button from top toolbar$")
+    @When("^I tap (Audio Call|Video Call|Back) button from top toolbar$")
     public void WhenITapTopToolbarButton(String btnName) throws Exception {
-        switch (btnName.toLowerCase()) {
-            case "audio call":
-                getConversationViewPage().tapAudioCallBtn();
-                break;
-            case "video call":
-                getConversationViewPage().tapVideoCallBtn();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name '%s'", btnName));
-        }
+        getConversationViewPage().tapTopBarButton(btnName);
     }
 
     /**
@@ -623,17 +614,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap back arrow button in upper toolbar
-     *
-     * @throws Exception
-     * @step. ^I tap back button in upper toolbar$
-     */
-    @When("^I tap back button in upper toolbar$")
-    public void TapBackbuttonInUpperToolbar() throws Exception {
-        getConversationViewPage().tapTopToolbarBackButton();
-    }
-
-    /**
      * Wait until the file uploading completely
      *
      * @param timeoutSeconds the timeout in seconds for uploading
@@ -998,7 +978,6 @@ public class ConversationViewPageSteps {
                     getConversationViewPage().isFilePlaceHolderInvisible(fileFullName, size, extension, isUpload,
                             isSuccess, lookUpTimeoutSeconds));
         }
-
     }
 
     /**
@@ -1354,36 +1333,37 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify whether the height of one conversation message is greater than the heigth of the second one
+     * Verify the difference between the height of two strings
      *
-     * @param msg1  the first conversation message text
-     * @param times minimum size multiplier. Can be float number
-     * @param msg2  the second message text
+     * @param msg1               the first conversation message text
+     * @param isNot              equals to null is the current percentage should be greater or equal to the expected one
+     * @param msg2               the second message text
+     * @param expectedPercentage the expected diff percentage
      * @throws Exception
-     * @step. ^I see that the message "(.*)" is at least ([0-9\.]+) times? higher than "(.*)" in the conversation view$
+     * @step. ^I see that the difference in height of "(.*)" and "(.*)" messages is (not )?greater than (\d+) percent$
      */
-    @Then("^I see that the message \"(.*)\" is at least ([0-9\\.]+) times? higher than \"(.*)\" in the conversation view$")
-    public void ISeeMessageHigher(String msg1, String times, String msg2) throws Exception {
+    @Then("^I see that the difference in height of \"(.*)\" and \"(.*)\" messages is (not )?greater than (\\d+) percent$")
+    public void ISeeMassagesHaveEqualHeight(String msg1, String msg2, String isNot, int expectedPercentage) throws Exception {
         final int msg1Height = getConversationViewPage().getMessageHeight(msg1);
+        assert msg1Height > 0;
         final int msg2Height = getConversationViewPage().getMessageHeight(msg2);
-        Assert.assertTrue(
-                String.format("The height of '%s' message is not %s times greater than the height of '%s' message",
-                        msg1, times, msg2), msg1Height > msg2Height * Double.parseDouble(times));
-    }
-
-    /**
-     * Verify whether two strings in the conversation view have the same height
-     *
-     * @step. ^I see that messages "(.*)" and "(.*)" have equal height in the conversation view$
-     * @param msg1  the first conversation message text
-     * @param msg2  the second message text
-     * @throws Exception
-     */
-    @Then("^I see that messages \"(.*)\" and \"(.*)\" have equal height in the conversation view$")
-    public void ISeeMassagesHaveEqualHeight(String msg1, String msg2) throws Exception {
-        final int msg1Height = getConversationViewPage().getMessageHeight(msg1);
-        final int msg2Height = getConversationViewPage().getMessageHeight(msg2);
-        Assert.assertEquals(String.format("The height of '%s' message is not equal to the height of '%s' message",
-                msg1, msg2), msg1Height, msg2Height);
+        assert msg2Height > 0;
+        int currentPercentage = 0;
+        if (msg1Height > msg2Height) {
+            currentPercentage = msg1Height * 100 / msg2Height - 100;
+        } else if (msg1Height < msg2Height) {
+            currentPercentage = msg2Height * 100 / msg1Height - 100;
+        }
+        if (isNot == null) {
+            Assert.assertTrue(
+                    String.format("The height of '%s' message (%s) is less than %s%% different than the height of '%s' message (%s)",
+                            msg1, msg1Height, expectedPercentage, msg2, msg2Height),
+                    currentPercentage >= expectedPercentage);
+        } else {
+            Assert.assertTrue(
+                    String.format("The height of '%s' message (%s) is more than %s%% different than the height of '%s' message (%s)",
+                            msg1, msg1Height, expectedPercentage, msg2, msg2Height),
+                    currentPercentage <= expectedPercentage);
+        }
     }
 }

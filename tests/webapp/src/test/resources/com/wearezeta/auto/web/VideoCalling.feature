@@ -37,6 +37,7 @@ Feature: VideoCalling
     Then I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>
     And I see decline call button for conversation <Contact>
+    And I see my self video view
     And I accept the call from conversation <Contact>
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
@@ -64,6 +65,7 @@ Feature: VideoCalling
     Then I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>
     And I see decline call button for conversation <Contact>
+    And I see my self video view
     When I ignore the call from conversation <Contact>
     Then I do not see the call controls for conversation <Contact>
     And I do not see accept video call button for conversation <Contact>
@@ -541,3 +543,22 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
+
+  @C165120 @calling @staging
+  Scenario Outline: Verify that outgoing video call is terminated after within 1 minute timeout if nobody responds
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I am signed in properly
+    Then I open conversation with <Contact>
+    When I start a video call
+    Then I see my self video view
+    And I see the outgoing call controls for conversation <Contact>
+    When I wait for 65 seconds
+    Then I do not see the outgoing call controls for conversation <Contact>
+
+    Examples:
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

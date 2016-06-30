@@ -460,6 +460,19 @@ public final class CommonSteps {
         }
     }
 
+    public void UserSentLocationToConversation(String msgFromUserNameAlias, String deviceName, String dstConversationName, float longitude,
+                                           float latitude, String locationName, int zoom, boolean isGroup) throws Exception {
+        ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
+
+        if (!isGroup) {
+            ClientUser msgToUser = usrMgr.findUserByNameOrNameAlias(dstConversationName);
+            SEBridge.getInstance().sendLocation(msgFromUser, deviceName, msgToUser.getId(), longitude, latitude, locationName, zoom);
+        } else {
+            String dstConvId = BackendAPIWrappers.getConversationIdByName(msgFromUser, dstConversationName);
+            SEBridge.getInstance().sendLocation(msgFromUser, deviceName, dstConvId, longitude, latitude, locationName, zoom);
+        }
+    }
+
     public void UserClearsConversation(String msgFromUserNameAlias, String dstConversationName, String deviceName,
                                        boolean isGroup) throws Exception {
         ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
@@ -679,7 +692,16 @@ public final class CommonSteps {
         if (allOtrClients.size() > clientsCountToKeep) {
             for (OtrClient c : allOtrClients.subList(clientsCountToKeep, allOtrClients.size())) {
                 log.debug(String.format("Removing client with ID %s", c.getId()));
-                BackendAPIWrappers.removeOtrClient(usr, c);
+                try {
+                    BackendAPIWrappers.removeOtrClient(usr, c);
+                } catch (BackendRequestException e) {
+                    if (e.getReturnCode() == 404) {
+                        // To avoid multithreading issues
+                        e.printStackTrace();
+                    } else {
+                        throw e;
+                    }
+                }
             }
         }
     }

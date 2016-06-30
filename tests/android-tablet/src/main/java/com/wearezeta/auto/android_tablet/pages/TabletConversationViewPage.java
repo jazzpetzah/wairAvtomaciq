@@ -222,15 +222,43 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return getConversationViewPage().isCursorToolbarInvisible();
     }
 
-    public void longTapAudioMessageCursorBtn(String btnName) throws Exception {
+    public void longTapAudioMessageCursorBtn() throws Exception {
         getConversationViewPage().longTapAudioMessageCursorBtn(DriverUtils.LONG_TAP_DURATION);
     }
 
-    public void longTapAudioMessageCursorBtn(String btnName, int durationSecords) throws Exception {
-        getConversationViewPage().longTapAudioMessageCursorBtn(durationSecords * 1000);
+    public void longTapAudioMessageCursorBtn(int durationSeconds) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtn(durationSeconds * 1000);
     }
 
     public void tapAudioRecordingButton(String name) throws Exception {
         getConversationViewPage().tapAudioRecordingButton(name);
+    }
+
+    public void longTapAudioMessageCursorBtnAndSwipeUp(int durationSeconds) throws Exception {
+        getConversationViewPage().longTapAudioMessageCursorBtnAndSwipeUp(durationSeconds * 1000);
+    }
+
+    public void tapTopBarButton(String btnName) throws Exception {
+        getConversationViewPage().tapTopBarButton(btnName);
+    }
+
+    public BufferedImage getFilePlaceholderActionButtonState() throws Exception {
+        return getConversationViewPage().getFilePlaceholderActionButtonState();
+    }
+
+    public void waitUntilFileUploadIsCompleted(int timeoutSeconds, String size, String extension) throws Exception {
+        getConversationViewPage().waitUntilFileUploadIsCompleted(timeoutSeconds, size, extension);
+    }
+
+    public boolean isFilePlaceHolderVisible(String fileFullName, String size, String extension, boolean isUpload,
+                                            boolean isSuccess, int lookUpTimeoutSeconds) throws Exception {
+        return getConversationViewPage().isFilePlaceHolderVisible(fileFullName, size, extension, isUpload, isSuccess,
+                lookUpTimeoutSeconds);
+    }
+
+    public boolean isFilePlaceHolderInvisible(String fileFullName, String size, String extension, boolean isUpload,
+                                              boolean isSuccess, int lookUpTimeoutSeconds) throws Exception {
+        return getConversationViewPage().isFilePlaceHolderInvisible(fileFullName, size, extension, isUpload, isSuccess,
+                lookUpTimeoutSeconds);
     }
 }

@@ -1,6 +1,6 @@
 Feature: Share Location
 
-  @C162657 @staging
+  @C162657 @regression @rc
   Scenario Outline: Verify you can share Location from conversation view
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact>

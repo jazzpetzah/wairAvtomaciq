@@ -371,6 +371,12 @@ public final class WebAppLocators {
 
         public static final String cssLastAction = cssLastMessage + " .action";
 
+        //Location sharing
+
+        public static final String cssSharedLocation = ".location-label";
+
+        public static final String xpathSharedLocationLink = "//div[contains(@class, 'location-body')]//a";
+
         // File transfer
 
         public static final String cssFile = "[data-uie-name='file'][data-uie-value='%s']";

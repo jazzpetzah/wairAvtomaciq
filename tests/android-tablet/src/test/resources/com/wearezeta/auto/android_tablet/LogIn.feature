@@ -95,3 +95,33 @@ Feature: Log In
     Examples:
       | Email      | Password      | ErrMessage                                           | Name      |
       | user1Email | user1Password | Please check your Internet connection and try again. | user1Name |
+
+  @C162658 @regression @rc
+  Scenario Outline: Verify you can remove extra devices and log in successfully if too many devices are registered for your account
+    Given There is 1 user where <Name> is me
+    Given User <Name> adds new devices Device1,<DeviceToRemove>,<DeviceToRemoveWithoutPassword>,<OtherDevice>,Device5,Device6,Device7
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
+    When I see Manage Devices overlay
+    And I tap Manage Devices button on Manage Devices overlay
+    And I select "<DeviceToRemove>" settings menu item
+    And I select "Remove device" settings menu item
+    And I enter <Password> into the device removal password confirmation dialog
+    And I tap OK button on the device removal password confirmation dialog
+      # Delete device will take time, should verify at first it already return back to device list view, also the list is already updated
+    And I wait for 5 seconds
+    And I see "<DeviceToRemoveWithoutPassword>" settings menu item
+    And I do not see "<DeviceToRemove>" settings menu item
+      # C145960
+    And I select "<DeviceToRemoveWithoutPassword>" settings menu item
+    And I select "Remove device" settings menu item
+    And I see "<OtherDevice>" settings menu item
+    And I do not see "<DeviceToRemoveWithoutPassword>" settings menu item
+    And I press Back button 2 times
+    When I do not see Manage Devices overlay
+    Then I see the Conversations list with no conversations
+
+    Examples:
+      | Password      | Name      | DeviceToRemoveWithoutPassword | DeviceToRemove | OtherDevice |
+      | user1Password | user1Name | Device2                       | Device3        | Device4     |

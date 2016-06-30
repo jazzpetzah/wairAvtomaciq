@@ -141,9 +141,9 @@ public class SettingsPageSteps {
 		List<String> labels = context.getPagesCollection().getPage(SettingsPage.class)
 				.getDeviceLabels();
 		if (donot == null) {
-			assertThat(labels, hasItem(device.toUpperCase()));
+			assertThat(labels, hasItem((device+context.getTestname().hashCode()).toUpperCase()));
 		} else {
-			assertThat(labels, not(hasItem(device.toUpperCase())));
+			assertThat(labels, not(hasItem((device+context.getTestname().hashCode()).toUpperCase())));
 		}
 	}
 
@@ -158,7 +158,7 @@ public class SettingsPageSteps {
 	 */
 	@When("^I click on the device (.*) in the devices section$")
 	public void IClickOnDevice(String device) throws Exception {
-		context.getPagesCollection().getPage(SettingsPage.class).clickDevice(device);
+		context.getPagesCollection().getPage(SettingsPage.class).clickDevice(device+context.getTestname().hashCode());
 	}
 
 	/**
