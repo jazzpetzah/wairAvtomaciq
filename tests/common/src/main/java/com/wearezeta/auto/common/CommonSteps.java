@@ -692,7 +692,16 @@ public final class CommonSteps {
         if (allOtrClients.size() > clientsCountToKeep) {
             for (OtrClient c : allOtrClients.subList(clientsCountToKeep, allOtrClients.size())) {
                 log.debug(String.format("Removing client with ID %s", c.getId()));
-                BackendAPIWrappers.removeOtrClient(usr, c);
+                try {
+                    BackendAPIWrappers.removeOtrClient(usr, c);
+                } catch (BackendRequestException e) {
+                    if (e.getReturnCode() == 404) {
+                        // To avoid multithreading issues
+                        e.printStackTrace();
+                    } else {
+                        throw e;
+                    }
+                }
             }
         }
     }
