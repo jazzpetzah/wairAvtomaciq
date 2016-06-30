@@ -1290,12 +1290,11 @@ public class ConversationPageSteps {
     @Then("^I (do not )?see location message (.*) with ([-+]?[0-9]*\\.?[0-9]+) and ([-+]?[0-9]*\\.?[0-9]+) in the conversation view$")
     public void ISeeLocationMessage(String doNot, String locationName, float longitude, float latitude) throws Exception {
         if (doNot == null) {
+            String locationLinkValue = context.getPagesCollection().getPage(ConversationPage.class).getLocationNameFromLink();
             assertThat("Could not find location message " + locationName,
                     context.getPagesCollection().getPage(ConversationPage.class).getLocationName(), equalTo(locationName));
-            assertThat("The link doesn't contain a proper location",
-                    context.getPagesCollection().getPage(ConversationPage.class).getLocationNameFromLink(), containsString(locationName));
+            assertThat("The link doesn't contain a proper location", locationLinkValue, containsString(locationName));
             //getting coordinates from location link
-            String locationLinkValue = context.getPagesCollection().getPage(ConversationPage.class).getLocationNameFromLink();
             ArrayList<Float> listCoordinates = new ArrayList<>();
             Pattern p = Pattern.compile("[-]?[0-9]*\\.?[0-9]+");
             Matcher m = p.matcher(locationLinkValue);
