@@ -47,7 +47,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C164776 @staging
+  @C164776 @regression @rc
   Scenario Outline: Verify I can accept Video call from locked device (app in background)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -68,7 +68,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C164774 @staging
+  @C164774 @regression @rc
   Scenario Outline: I can accept Video call with the app in the foreground
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
