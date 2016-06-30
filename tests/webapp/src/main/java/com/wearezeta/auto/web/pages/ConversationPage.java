@@ -1147,16 +1147,4 @@ public class ConversationPage extends WebPage {
     public boolean isLocationNotShownInConversationView() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage.cssSharedLocation));
     }
-
-    public ArrayList<Float> getCoordinatesFromLink() throws Exception {
-        By locationLink = By.xpath(WebAppLocators.ConversationPage.xpathSharedLocationLink);
-        String locationLinkValue = getDriver().findElement(locationLink).getAttribute("href");
-        ArrayList<Float> listCoordinates = new ArrayList<Float>();
-        Pattern p = Pattern.compile("[-]?[0-9]*\\.?[0-9]+");
-        Matcher m = p.matcher(locationLinkValue);
-        while (m.find()) {
-            listCoordinates.add(Float.parseFloat(m.group()));
-        }
-        return listCoordinates;
-    }
 }

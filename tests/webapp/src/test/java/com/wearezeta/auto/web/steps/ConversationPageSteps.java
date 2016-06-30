@@ -1294,8 +1294,15 @@ public class ConversationPageSteps {
                     context.getPagesCollection().getPage(ConversationPage.class).getLocationName(), equalTo(locationName));
             assertThat("The link doesn't contain a proper location",
                     context.getPagesCollection().getPage(ConversationPage.class).getLocationNameFromLink(), containsString(locationName));
-            assertThat("The link doesn't contain proper coordinates",
-                    context.getPagesCollection().getPage(ConversationPage.class).getCoordinatesFromLink(), hasItems(longitude, latitude));
+            //getting coordinates from location link
+            String locationLinkValue = context.getPagesCollection().getPage(ConversationPage.class).getLocationNameFromLink();
+            ArrayList<Float> listCoordinates = new ArrayList<>();
+            Pattern p = Pattern.compile("[-]?[0-9]*\\.?[0-9]+");
+            Matcher m = p.matcher(locationLinkValue);
+            while (m.find()) {
+                listCoordinates.add(Float.parseFloat(m.group()));
+            }
+            assertThat("The link doesn't contain proper coordinates", listCoordinates, hasItems(longitude, latitude));
         } else {
             assertThat("Location message " + locationName + "is shown",
                     context.getPagesCollection().getPage(ConversationPage.class).isLocationNotShownInConversationView());
