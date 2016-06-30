@@ -100,10 +100,6 @@ public class CommonAndroidTabletSteps {
         AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidTabletSteps.class);
-        // FIXME: This is handled by TestingGallery now
-        final String backendJSON =
-                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidTabletSteps.class));
-        AndroidCommonUtils.deployBackendFile(backendJSON);
         AndroidCommonUtils.changeAccelerometerState(true);
         return null;
     }

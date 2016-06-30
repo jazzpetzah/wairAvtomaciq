@@ -123,10 +123,6 @@ public class CommonAndroidSteps {
         AndroidCommonUtils.disableHockeyUpdates();
         AndroidCommonUtils.installTestingGalleryApp(CommonAndroidSteps.class);
         AndroidCommonUtils.installClipperApp(CommonAndroidSteps.class);
-        // FIXME: This is handled by TestingGallery now
-        final String backendJSON =
-                AndroidCommonUtils.createBackendJSON(CommonUtils.getBackendType(CommonAndroidSteps.class));
-        AndroidCommonUtils.deployBackendFile(backendJSON);
         return null;
     }
 
