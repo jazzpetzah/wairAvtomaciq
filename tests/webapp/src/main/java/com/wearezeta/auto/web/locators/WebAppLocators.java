@@ -417,7 +417,7 @@ public final class WebAppLocators {
 
         public static final String cssVideoCancelUpload = cssVideo + " .media-button-lg";
 
-        public static final String cssVideoCancelDownload = cssVideo + " ";
+        public static final String cssVideoCancelDownload = cssVideo + " [data-uie-name='status-loading-media']";
 
         // images
 

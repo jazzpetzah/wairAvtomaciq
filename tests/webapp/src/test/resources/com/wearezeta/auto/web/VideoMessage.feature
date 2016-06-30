@@ -122,7 +122,6 @@ Feature: Video Message
     And <Contact1> sends <Size> sized video with name <File> via device Device1 to group conversation <ChatName>
     Then I see video message <File> in the conversation view
     When I click play button of video <File> in the conversation view
-    #Then I wait until video <File> is downloaded and starts to play
     Then I cancel video download of video <File>
     And I do not see video message <File> in the conversation view
 
