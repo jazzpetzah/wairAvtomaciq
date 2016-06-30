@@ -26,8 +26,6 @@ public class SettingsPage extends AndroidPage {
 
     private static final By idPasswordConfirmationInput = By.id("acet__remove_otr__password");
 
-    private static final By xpathConfirmationInputOKButton = By.xpath("//*[starts-with(@id, 'button') and @value='OK']");
-
     private static final By idNameEdit = By.id("edit");
 
     private static final By xpathOKButton = By.xpath("//*[starts-with(@id, 'button') and @value='OK']");
@@ -73,7 +71,11 @@ public class SettingsPage extends AndroidPage {
     }
 
     public void tapOKButtonOnPasswordConfirmationDialog() throws Exception {
-        getElement(xpathConfirmationInputOKButton).click();
+        getElement(xpathOKButton).click();
+        // TODO: How to defect that element has changed his location?
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOKButton, 5)) {
+            DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(), getElement(xpathOKButton), 50, -200);
+        }
     }
 
     public void tapCurrentDevice() throws Exception {

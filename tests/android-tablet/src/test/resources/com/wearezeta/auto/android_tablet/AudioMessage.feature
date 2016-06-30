@@ -1,6 +1,6 @@
 Feature: Audio Message
 
-  @C162660 @staging
+  @C162660 @regression @rc
   Scenario Outline: Verify sending voice message by long tap > release the thumb > tap on icon
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -18,7 +18,7 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C162661 @staging
+  @C162661 @regression @rc
   Scenario Outline: Verify cancelling sending voice message
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -36,7 +36,7 @@ Feature: Audio Message
       | Name      | Contact   | TapDuration |
       | user1Name | user2Name | 5           |
 
-  @C162659 @staging
+  @C162659 @regression @rc
   Scenario Outline: Verify sending voice message by long tap > swipe up
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

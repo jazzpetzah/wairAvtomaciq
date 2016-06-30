@@ -7,6 +7,7 @@ loginActivity=${loginActivity}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 resultImage=${resultImage}
 defaultImagesPath=${project.build.directory}/../../tools/img/
+projectBuildPath=${project.build.directory}
 pictureResultsPath=${pictureResultsPath}
 androidClientInfoPath=${androidClientInfoPath}
 androidAppiumLogPath=${androidAppiumLogPath}

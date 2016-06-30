@@ -1,6 +1,6 @@
 Feature: Video Calling
 
-  @C164773 @staging
+  @C164773 @regression @rc
   Scenario Outline: Verify I can start Video call from the conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -23,7 +23,7 @@ Feature: Video Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
 
-  @C164775 @staging
+  @C164775 @regression @rc
   Scenario Outline: Verify the video call is not terminated if I lock and unlock device
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -42,6 +42,46 @@ Feature: Video Calling
     And I unlock the device
     Then I see ongoing video call
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
+
+  @C164776 @staging
+  Scenario Outline: Verify I can accept Video call from locked device (app in background)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
+    When I minimize the application
+    And I lock the device
+    And <Contact> starts a video call to me
+    Then I see incoming video call
+    When I swipe to accept the call
+    Then I see ongoing video call
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+
+    Examples:
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | chrome      | 60      |
+
+  @C164774 @staging
+  Scenario Outline: I can accept Video call with the app in the foreground
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts instance using <CallBackend>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
+    Given I see the conversations list with conversations
+    When <Contact> starts a video call to me
+    Then I see incoming video call
+    When I swipe to accept the call
+    Then I see ongoing video call
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
     Examples:
       | Name      | Contact   | CallBackend | Timeout |

@@ -57,6 +57,7 @@ Feature: File Transfer
     Given I create temporary file <FileSize> in size with name "<FileName>" and extension "<FileExt>"
     Given I sign in using my email or phone number
     Given User <Contact1> sends temporary file <FileName>.<FileExt> having MIME type <FileMIME> to group conversation <GroupChatName> using device <ContactDevice>
+    Given User <Contact1> sends 1 encrypted message to user Myself
     Given I see conversations list
     When I tap on contact name <GroupChatName>
     # Wait for the placeholder

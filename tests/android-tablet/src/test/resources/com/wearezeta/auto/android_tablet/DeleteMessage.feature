@@ -1,6 +1,6 @@
 Feature: Delete Message
 
-  @C164770 @staging
+  @C164770 @regression @rc
   Scenario Outline: Verify deleting received text message
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

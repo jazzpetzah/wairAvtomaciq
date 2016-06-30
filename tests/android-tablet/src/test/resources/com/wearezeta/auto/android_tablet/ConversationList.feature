@@ -305,6 +305,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1> starts instance using <CallBackend>
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
@@ -334,7 +335,7 @@ Feature: Conversation List
     When I select <DeleteItem> menu item on Conversation Actions overlay
     And I confirm conversation deletion on Conversation Actions overlay
     Then I do not see conversation <GroupChatName> in my conversations list
-    When <Contact1> calls <GroupChatName> using <CallBackend>
+    When <Contact1> calls <GroupChatName>
     Then I see conversation <GroupChatName> in my conversations list
 
     Examples:
@@ -346,6 +347,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact1> starts instance using <CallBackend>
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
@@ -374,7 +376,7 @@ Feature: Conversation List
     When I select <DeleteItem> menu item on Conversation Actions overlay
     And I confirm conversation deletion on Conversation Actions overlay
     Then I do not see conversation <GroupChatName> in my conversations list
-    When <Contact1> calls <GroupChatName> using <CallBackend>
+    When <Contact1> calls <GroupChatName>
     Then I see conversation <GroupChatName> in my conversations list
 
     Examples:
