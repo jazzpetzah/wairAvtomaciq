@@ -1,6 +1,6 @@
 Feature: Forward Message
 
-  @C162655 @staging
+  @C162655 @regression @rc
   Scenario Outline: Text message forwarding into other conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

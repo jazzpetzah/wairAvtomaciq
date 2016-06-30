@@ -1,6 +1,6 @@
 Feature: Copy Message
 
-  @C162656 @staging
+  @C162656 @regression @rc
   Scenario Outline: Verify long tap on the message shows menu "Copy, Delete"
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

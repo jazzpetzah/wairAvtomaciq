@@ -243,7 +243,6 @@ public class CommonAndroidTabletSteps {
             e.printStackTrace();
         }
 
-        AndroidLogListener.forceStopAll();
         LoggingProfile loggingProfile = new RegressionPassedLoggingProfile();
         if (!scenario.getStatus().equals(Result.PASSED)) {
             loggingProfile = new RegressionFailedLoggingProfile();
@@ -256,6 +255,7 @@ public class CommonAndroidTabletSteps {
                 e.printStackTrace();
             }
         }
+        AndroidLogListener.forceStopAll();
     }
 
     /**
@@ -851,5 +851,18 @@ public class CommonAndroidTabletSteps {
     @And("^I tap (.*) button on the alert$")
     public void ITapAlertButton(String caption) throws Exception {
         pagesCollection.getCommonPage().tapAlertButton(caption);
+    }
+
+    /**
+     * Prepare file in /mnt/sdcard/Download/
+     *
+     * @param size         such as 5MB, 30MB
+     * @param fileFullName the name of the file with extension
+     * @throws Exception
+     * @step. ^I push (.*) file having name \"(.*)\" to the device$
+     */
+    @Given("^I push ([^\\s-]*) (video )?file having name \"(.*)\" to the device$")
+    public void IPushXFileHavingNameYToDevice(String size, String isVideoFile, String fileFullName) throws Exception {
+        AndroidCommonUtils.pushRandomFileToSdcardDownload(fileFullName, size, isVideoFile != null);
     }
 }

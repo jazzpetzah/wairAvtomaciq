@@ -1,4 +1,4 @@
-Feature: File transfer
+Feature: File Transfer
 
   @C87628 @rc @regression
   Scenario Outline: Verify placeholder is shown for the sender

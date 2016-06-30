@@ -13,7 +13,7 @@ Feature: Calling
     And I tap the conversation <GroupChatName>
     When <Contact1> calls <GroupChatName>
     And I see incoming call
-    And <Contact1> stops calling
+    And <Contact1> stops calling <GroupChatName>
     Then I do not see incoming call
     And I see missed group call notification in the conversation view
 
@@ -115,7 +115,7 @@ Feature: Calling
     And I tap the conversation <Contact1>
     When <Contact2> calls me
     And I see incoming call
-    And <Contact2> stops calling
+    And <Contact2> stops calling me
     Then I do not see incoming call
     When I swipe right to show the conversations list
     Then I see missed call notification near <Contact2> conversations list item
@@ -140,7 +140,7 @@ Feature: Calling
     And I tap the conversation <Contact1>
     When <Contact2> calls me
     And I see incoming call
-    And <Contact2> stops calling
+    And <Contact2> stops calling me
     Then I do not see incoming call
     And I see missed call notification near <Contact2> conversations list item
     When I tap the conversation <Contact2>
@@ -166,7 +166,7 @@ Feature: Calling
     Then I see incoming call from <Contact>
     When I swipe to accept the call
     Then I see ongoing call
-    And <Contact> stops calling
+    And <Contact> stops calling me
     When I restore the application
     Then I do not see ongoing call
 
@@ -189,7 +189,7 @@ Feature: Calling
     Then I see incoming call from <Contact>
     When I swipe to accept the call
     Then I see ongoing call
-    And <Contact> stops calling
+    And <Contact> stops calling me
     When I unlock the device
     Then I do not see ongoing call
 
