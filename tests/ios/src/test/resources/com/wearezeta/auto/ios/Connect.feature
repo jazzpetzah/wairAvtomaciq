@@ -388,7 +388,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C25 @staging
+  @C25 @regression @rc
   Scenario Outline: Verify accepting incoming connection request
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
