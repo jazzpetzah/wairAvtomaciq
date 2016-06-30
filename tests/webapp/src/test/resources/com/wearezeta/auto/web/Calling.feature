@@ -964,7 +964,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox     | 20      |
 
-  @calling @group @calling_debug
+  @C165123 @staging @calling @group @calling_debug
   Scenario Outline: Verify possibility to join call after 1 minutes of starting it
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -980,14 +980,14 @@ Feature: Calling
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And I see the incoming call controls for conversation <ChatName>
-    And I wait for 20 seconds
+    And I wait for 50 seconds
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    Then I join call of conversation <ChatName>
+    When I accept the call from conversation <ChatName>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    And <Contact1> verify to have 3 flows
-    And <Contact1> verify that all flows have greater than 0 bytes
+    And <Contact1>,<Contact2> verify to have 2 flows
+    And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
     And I see the ongoing call controls for conversation <ChatName>
 
     Examples:
