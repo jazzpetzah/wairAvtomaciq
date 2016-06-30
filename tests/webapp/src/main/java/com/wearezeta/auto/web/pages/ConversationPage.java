@@ -682,9 +682,12 @@ public class ConversationPage extends WebPage {
     }
 
     public void clickOnBlackBorder() throws Exception {
-        Actions builder = new Actions(getDriver());
-        builder.moveToElement(fullscreenImage, -10, -10).click().build()
-                .perform();
+        if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
+            Actions builder = new Actions(getDriver());
+            builder.moveToElement(fullscreenImage, -10, -10).click().build().perform();
+        } else {
+            throw new Exception("This browser does not support native mouse actions");
+        }
     }
 
     public void clickGIFButton() throws Exception {
