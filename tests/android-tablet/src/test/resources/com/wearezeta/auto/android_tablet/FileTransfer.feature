@@ -1,6 +1,6 @@
 Feature: File Transfer
 
-  @C164771 @staging
+  @C164771 @regression @rc
   Scenario Outline: Verify I can send file and placeholder is shown
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

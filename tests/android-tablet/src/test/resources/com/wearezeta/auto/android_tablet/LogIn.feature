@@ -96,7 +96,7 @@ Feature: Log In
       | Email      | Password      | ErrMessage                                           | Name      |
       | user1Email | user1Password | Please check your Internet connection and try again. | user1Name |
 
-  @C162658 @staging
+  @C162658 @regression @rc
   Scenario Outline: Verify you can remove extra devices and log in successfully if too many devices are registered for your account
     Given There is 1 user where <Name> is me
     Given User <Name> adds new devices Device1,<DeviceToRemove>,<DeviceToRemoveWithoutPassword>,<OtherDevice>,Device5,Device6,Device7
