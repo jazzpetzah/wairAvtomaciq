@@ -978,7 +978,6 @@ public class ConversationViewPageSteps {
                     getConversationViewPage().isFilePlaceHolderInvisible(fileFullName, size, extension, isUpload,
                             isSuccess, lookUpTimeoutSeconds));
         }
-
     }
 
     /**
