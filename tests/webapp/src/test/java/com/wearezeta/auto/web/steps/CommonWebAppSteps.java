@@ -412,9 +412,9 @@ public class CommonWebAppSteps {
         final String msgToSend = (msg == null || msg.trim().length() == 0)
                 ? CommonUtils.generateRandomString(10) : msg.trim();
         if (convoType.equals("user")) {
-            context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
+            context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName + context.getTestname().hashCode());
         } else {
-            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName);
+            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, msgToSend, deviceName + context.getTestname().hashCode());
         }
     }
 
@@ -425,12 +425,14 @@ public class CommonWebAppSteps {
         if (convoType.equals("user")) {
             for (int i = 0; i < amount; i++) {
                 context.getConversationStates().addMessage(dstConvoName, new Message(prefix + i, user.getId()));
-                context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, prefix + i, deviceName);
+                context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, prefix + i,
+                        deviceName + context.getTestname().hashCode());
             }
         } else {
             for (int i = 0; i < amount; i++) {
                 context.getConversationStates().addMessage(dstConvoName, new Message(prefix + i, user.getId()));
-                context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, prefix + i, deviceName);
+                context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, prefix + i,
+                        deviceName + context.getTestname().hashCode());
             }
         }
     }
@@ -440,9 +442,11 @@ public class CommonWebAppSteps {
                                                   String file, String deviceName, String convoType, String dstConvoName) throws Exception {
         String message = WebCommonUtils.getTextFromFile(file);
         if (convoType.equals("user")) {
-            context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, message, deviceName);
+            context.getCommonSteps().UserSentOtrMessageToUser(msgFromUserNameAlias, dstConvoName, message, deviceName + context.
+                    getTestname().hashCode());
         } else {
-            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, message, deviceName);
+            context.getCommonSteps().UserSentOtrMessageToConversation(msgFromUserNameAlias, dstConvoName, message,
+                    deviceName + context.getTestname().hashCode());
         }
     }
 
@@ -487,7 +491,7 @@ public class CommonWebAppSteps {
     @When("^I break the session with device (.*) of user (.*)$")
     public void IBreakTheSession(String deviceName, String userAlias) throws Exception {
         ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
-        String deviceId = context.getDeviceManager().getDeviceId(user, deviceName);
+        String deviceId = context.getDeviceManager().getDeviceId(user, deviceName + context.getTestname().hashCode());
         // we have to strip leading zeros since we don't want to use the padding for UI
         int limit = deviceId.length();
         while (deviceId.startsWith("0") && limit >= 0) {
@@ -508,7 +512,7 @@ public class CommonWebAppSteps {
     }
 
     @When("^(.*) sends? (.*) sized file with name (.*) via device (.*) to (user|group conversation) (.*)$")
-    public void WhenIXSizedSendFile(String contact, String size, String fileName, String deviceName, String convoType,
+    public void IXSizedSendFile(String contact, String size, String fileName, String deviceName, String convoType,
                                     String dstConvoName) throws Exception {
         String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
         path = path.replace("%40", "@");
@@ -523,28 +527,30 @@ public class CommonWebAppSteps {
         }
         f.close();
         boolean isGroup = convoType.equals("user") ? false : true;
-        context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "plain/text", deviceName, isGroup);
+        context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "plain/text",
+                deviceName + context.getTestname().hashCode(), isGroup);
     }
 
     @When("^(.*) sends? audio file (.*) via device (.*) to (user|group conversation) (.*)$")
-    public void WhenISendAudioFile(String contact, String fileName, String deviceName, String convoType, String
+    public void ISendAudioFile(String contact, String fileName, String deviceName, String convoType, String
             dstConvoName) throws Exception {
         String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
         path = path.replace("%40", "@");
         boolean isGroup = !convoType.equals("user");
         context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "audio/mp4",
-                deviceName, isGroup);
+                deviceName + context.getTestname().hashCode(), isGroup);
     }
 
     @When("^(.*) sends? (.*) sized video with name (.*) via device (.*) to (user|group conversation) (.*)$")
-    public void WhenISendVideo(String contact, String size, String fileName, String deviceName, String convoType,
+    public void ISendVideo(String contact, String size, String fileName, String deviceName, String convoType,
                                String dstConvoName) throws Exception {
         String path = WebCommonUtils.class.getResource("/filetransfer/").getPath();
 
         final String picturePath = WebCommonUtils.getFullPicturePath(VIDEO_MESSAGE_IMAGE);
         CommonUtils.generateVideoFile(path + "/" + fileName, size, picturePath);
         boolean isGroup = !convoType.equals("user");
-        context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "video/mp4", deviceName, isGroup);
+        context.getCommonSteps().UserSentFileToConversation(contact, dstConvoName, path + "/" + fileName, "video/mp4",
+                deviceName + context.getTestname().hashCode(), isGroup);
     }
 
     /**
@@ -582,8 +588,8 @@ public class CommonWebAppSteps {
         float longitudeFloat = Float.parseFloat(longitude);
         float latitudeFloat = Float.parseFloat(latitude);
         int zoom = 14;
-        context.getCommonSteps().UserSentLocationToConversation(userFromNameAlias, deviceName,
-                conversationName, longitudeFloat, latitudeFloat, locationName, zoom, isGroup);
+        context.getCommonSteps().UserSentLocationToConversation(userFromNameAlias, deviceName + context.getTestname().
+                hashCode(), conversationName, longitudeFloat, latitudeFloat, locationName, zoom, isGroup);
     }
 
     /**
@@ -602,7 +608,8 @@ public class CommonWebAppSteps {
             throws Exception {
         boolean isGroup = convoType.equals("group conversation");
         for (int deleteCounter = 0; deleteCounter < amount; deleteCounter++) {
-            context.getCommonSteps().UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName, isGroup);
+            context.getCommonSteps().UserDeleteLatestMessage(userNameAlias, dstNameAlias, deviceName + context.getTestname().
+                    hashCode(), isGroup);
         }
     }
 
@@ -746,10 +753,8 @@ public class CommonWebAppSteps {
      * @step. ^I verify that current profile picture snapshot of (.*) differs? from the previous one$
      */
     @Then("^I verify that current profile picture snapshot of (.*) differs? from the previous one$")
-    public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
-            String userNameAlias) throws Exception {
-        context.getCommonSteps()
-                .UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias);
+    public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(String userNameAlias) throws Exception {
+        context.getCommonSteps().UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias);
     }
 
     /**
@@ -764,7 +769,7 @@ public class CommonWebAppSteps {
     public void UserAddRemoteDeviceToAccount(String userNameAlias,
                                              String deviceName, String label) throws Exception {
         context.startPinging();
-        context.getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias, deviceName, label);
+        context.getCommonSteps().UserAddsRemoteDeviceToAccount(userNameAlias, deviceName + context.getTestname().hashCode(), label);
         context.stopPinging();
     }
 
