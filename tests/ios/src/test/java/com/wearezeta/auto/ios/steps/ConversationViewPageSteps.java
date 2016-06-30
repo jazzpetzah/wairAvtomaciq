@@ -1365,14 +1365,14 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see Share Location container in the conversation view$")
     public void VerifyShareLocationContainerVisibility(String shouldNotSee) throws Exception {
-        boolean verification = (shouldNotSee == null) ? getConversationViewPage().isShareLocationContainerVisible() :
+        boolean condition = (shouldNotSee == null) ? getConversationViewPage().isShareLocationContainerVisible() :
                 getConversationViewPage().isShareLocationContainerNotVisible();
         Assert.assertTrue(String.format("Share Location container should be %s in the conversation view",
-                (shouldNotSee == null) ? "visible" : "invisible"), verification);
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
 
     /**
-     * Verify visibility of Share Location address
+     * Verify visibility of default Share Location address
      *
      * @param shouldNotSee equals to null if text input should be visible
      * @throws Exception
@@ -1380,9 +1380,9 @@ public class ConversationViewPageSteps {
      */
     @Then("^I (do not )?see the default Share Location address in the conversation view$")
     public void VerifyShareLocationAddressVisibility(String shouldNotSee) throws Exception {
-        boolean verification = (shouldNotSee == null) ? getConversationViewPage().isShareLocationContainerNotVisible() :
-                getConversationViewPage().isShareLocationAddressNotVisible();
+        boolean condition = (shouldNotSee == null) ? getConversationViewPage().isDefaultShareLocationAddressVisible() :
+                getConversationViewPage().isDefaultShareLocationAddressNotVisible();
         Assert.assertTrue(String.format("Share Location address should be %s in the conversation view",
-                (shouldNotSee == null) ? "visible" : "invisible"), verification);
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
 }

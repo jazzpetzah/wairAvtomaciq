@@ -199,7 +199,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By classNameShareLocationContainer = MobileBy.className("UIAMapView");
 
-    private static final By nameShareLocationAddress = MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
+    private static final By nameDefaultShareLocationAddress = MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -892,14 +892,14 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isShareLocationContainerNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameShareLocationAddress);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultShareLocationAddress);
     }
 
-    public boolean isShareLocationAddressVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameShareLocationAddress);
+    public boolean isDefaultShareLocationAddressVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultShareLocationAddress);
     }
 
-    public boolean isShareLocationAddressNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameShareLocationAddress);
+    public boolean isDefaultShareLocationAddressNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultShareLocationAddress);
     }
 }
