@@ -144,7 +144,6 @@ Feature: Settings
     And I select "Devices" settings menu item
     And I select "<DeviceToRemove>" settings menu item
     And I select "Remove device" settings menu item
-    And I see device removal password confirmation dialog
     And I enter <Password> into the device removal password confirmation dialog
     And I tap OK button on the device removal password confirmation dialog
     # Delete device will take time, should verify at first it already return back to device list view, also the list is already updated
