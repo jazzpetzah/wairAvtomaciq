@@ -67,5 +67,3 @@ Feature: Video Calling
     Examples:
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | chrome      | 60      |
-
-
