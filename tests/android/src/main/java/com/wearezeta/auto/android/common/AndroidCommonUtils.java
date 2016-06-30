@@ -309,7 +309,7 @@ public class AndroidCommonUtils extends CommonUtils {
         } else {
             executeAdb(String.format("install -r %s/testing_gallery-debug19.apk", getAndroidToolsPathFromConfig(c)));
             if (deviceVersion.compareTo(new DefaultArtifactVersion("6.0")) >= 0) {
-                grantPermissionsTo("com.wire.testinggallery", "android.permission.WRITE_EXTERNAL_STORAGE");
+                grantPermissionsTo("com.wire.testinggallery", "android.permission.READ_EXTERNAL_STORAGE");
             }
          }
     }
