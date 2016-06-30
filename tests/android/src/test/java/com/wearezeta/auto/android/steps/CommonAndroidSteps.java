@@ -234,6 +234,8 @@ public class CommonAndroidSteps {
 
         if (scenario.getSourceTagNames().contains("@performance")) {
             AndroidLogListener.getInstance(ListenerType.PERF).start();
+        } else if (scenario.getSourceTagNames().contains("@analytics")) {
+            AndroidLogListener.getInstance(ListenerType.ANALYTICS).start();
         }
         if (isLogcatEnabled) {
             AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
@@ -1534,7 +1536,6 @@ public class CommonAndroidSteps {
         }
     }
 
-
     /**
      * Send location sharing message
      *
@@ -1550,5 +1551,30 @@ public class CommonAndroidSteps {
             throws Exception {
         commonSteps.UserSharesLocationTo(userNameAlias, dstNameAlias, convoType.equals("group conversation"),
                 deviceName);
+    }
+
+    private static final long LOG_SEARCH_TIMEOUT_MILLIS = 5000;
+
+    /**
+     * Verify whether the particular string is present in the logcat output
+     *
+     * @param logType        one of possible log types. See AndroidLogListener.ListenerType enumeration for more details
+     * @param expectedString the string to verify
+     * @throws Exception
+     * @step. ^I verify that (PERF|ANALYTICS|DEFAULT) log contains string "(.*)"$
+     */
+    @Then("^I verify that (PERF|ANALYTICS|DEFAULT) log contains string \"(.*)\"$")
+    public void IVerifyLogContains(String logType, String expectedString) throws Exception {
+        boolean result;
+        final long msStarted = System.currentTimeMillis();
+        do {
+            result = pagesCollection.getCommonPage().isLogContain(ListenerType.valueOf(logType), expectedString);
+            if (result) {
+                break;
+            } else {
+                Thread.sleep(100);
+            }
+        } while (System.currentTimeMillis() - msStarted <= LOG_SEARCH_TIMEOUT_MILLIS);
+        Assert.assertTrue(String.format("The %s log does not contain '%s' substring", logType, expectedString), result);
     }
 }

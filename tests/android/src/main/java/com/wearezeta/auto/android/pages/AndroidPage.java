@@ -2,6 +2,8 @@ package com.wearezeta.auto.android.pages;
 
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.logging.AndroidLogListener;
+import com.wearezeta.auto.android.common.logging.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.common.uiautomation.UIAutomatorDriver;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
@@ -20,6 +22,7 @@ import org.openqa.selenium.interactions.touch.TouchActions;
 import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 public abstract class AndroidPage extends BasePage {
     private static final Function<String, String> xpathStrAlertMessageByText =
@@ -428,5 +431,10 @@ public abstract class AndroidPage extends BasePage {
             log.debug(getDriver().getPageSource());
             throw e;
         }
+    }
+
+    public boolean isLogContain(ListenerType listenerType, String expectedString) throws Exception {
+        final AndroidLogListener dstListener = AndroidLogListener.getInstance(listenerType);
+        return dstListener.getStdOut().matches("(?s).*\\b" + Pattern.quote(expectedString) + "\\b.*");
     }
 }
