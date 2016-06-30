@@ -783,7 +783,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
 
-  @calling
+  @C165119 @calling @staging
   Scenario Outline: Verify that outgoing call is terminated after within 1 minute timeout if nobody responds
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -794,7 +794,7 @@ Feature: Calling
     And I open conversation with <Contact>
     When I call
     And I see the outgoing call controls for conversation <Contact>
-    And I wait for 20 seconds
+    And I wait for 65 seconds
     And I do not see the outgoing call controls for conversation <Contact>
 
     Examples:
