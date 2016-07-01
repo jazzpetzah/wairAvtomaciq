@@ -100,12 +100,12 @@ public class PendingConnectionsPage extends WebPage {
 		DriverUtils.waitUntilElementClickable(this.getDriver(), acceptButton);
 
 		String colorRgba = "";
-		if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
-			// Workaround until getCssValue is fully implemented
-			colorRgba = (String) getDriver().executeScript("return window.getComputedStyle(arguments[0], null).getPropertyValue" +
-					"('background-color')", acceptButton);
-		} else {
+		if (WebAppExecutionContext.getBrowser().isSupportingGetCssValue()) {
 			colorRgba = acceptButton.getCssValue(CSS_BACKGROUND_COLOR);
+		} else {
+			// Workaround until getCssValue is fully implemented
+			colorRgba = (String) getDriver().executeScript("return window.getComputedStyle(arguments[0], null)" +
+					".getPropertyValue('background-color')", acceptButton);
 		}
 		return AccentColor.getByRgba(colorRgba);
 	}

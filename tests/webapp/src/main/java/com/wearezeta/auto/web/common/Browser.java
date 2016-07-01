@@ -108,9 +108,9 @@ public enum Browser {
 		}
 	}
 
-	public boolean isSupportingDiabledButtonDetection() {
+	public boolean isSupportingGetCssValue() {
 		switch (this) {
-		case Safari:
+		case Firefox:
 			return false;
 		default:
 			return true;
