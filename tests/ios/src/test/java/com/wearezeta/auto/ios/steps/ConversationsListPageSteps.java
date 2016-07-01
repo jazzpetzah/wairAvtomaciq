@@ -414,11 +414,11 @@ public class ConversationsListPageSteps {
     /**
      * Tap specified button in action menu
      *
-     * @param buttonTitle Silence|Notify|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel
+     * @param buttonTitle Mute|Unmute|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel
      * @throws Exception
-     * @step. ^I tap (Silence|Notify|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel) action button$
+     * @step. ^I tap (Mute|Unmute|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel) action button$
      */
-    @And("^I tap (Silence|Notify|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel) action button$")
+    @And("^I tap (Mute|Unmute|Delete|Leave|Archive|Unarchive|Block|Cancel Request|Cancel) action button$")
     public void ITapXButtonInActionMenu(String buttonTitle) throws Exception {
         getConversationsListPage().tapButtonInActionMenu(buttonTitle);
     }

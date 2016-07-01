@@ -310,7 +310,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see conversations list
     When I swipe right on a <Contact>
-    And I tap Silence action button
+    And I tap Mute action button
     When I swipe right on a <Contact>
     And I tap Archive action button
     Then I do not see conversation <Contact> in conversations list
