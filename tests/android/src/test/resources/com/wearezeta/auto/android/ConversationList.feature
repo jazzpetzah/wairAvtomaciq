@@ -199,7 +199,7 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I swipe right on a <Contact1>
-    And I select SILENCE from conversation settings menu
+    And I select MUTE from conversation settings menu
     Then Contact <Contact1> is muted
 
     Examples:
@@ -216,7 +216,7 @@ Feature: Conversation List
     Given I see Contact list with contacts
     And Contact <Contact1> is muted
     And I swipe right on a <Contact1>
-    And I select NOTIFY from conversation settings menu
+    And I select UNMUTE from conversation settings menu
     Then Contact <Contact1> is not muted
 
     Examples:
@@ -232,7 +232,7 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     And I swipe right on a <GroupChatName>
-    And I select SILENCE from conversation settings menu
+    And I select MUTE from conversation settings menu
     Then Contact <GroupChatName> is muted
 
     Examples:
@@ -250,7 +250,7 @@ Feature: Conversation List
     Given I see Contact list with contacts
     And Contact <GroupChatName> is muted
     And I swipe right on a <GroupChatName>
-    And I select NOTIFY from conversation settings menu
+    And I select UNMUTE from conversation settings menu
     Then Contact <GroupChatName> is not muted
 
     Examples:
@@ -294,7 +294,7 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I swipe right on a <Contact1>
-    Then I see SILENCE button in conversation settings menu
+    Then I see MUTE button in conversation settings menu
     And I see ARCHIVE button in conversation settings menu
     And I see DELETE button in conversation settings menu
     And I see BLOCK button in conversation settings menu
@@ -302,7 +302,7 @@ Feature: Conversation List
     When I tap on contact name <Contact1>
     And I tap conversation name from top toolbar
     When I press options menu button
-    Then I see SILENCE button in option menu
+    Then I see MUTE button in option menu
     And I see ARCHIVE button in option menu
     And I see DELETE button in option menu
     And I see BLOCK button in option menu
@@ -320,7 +320,7 @@ Feature: Conversation List
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I swipe right on a <GroupChatName>
-    Then I see SILENCE button in conversation settings menu
+    Then I see MUTE button in conversation settings menu
     And I see ARCHIVE button in conversation settings menu
     And I see DELETE button in conversation settings menu
     And I see LEAVE button in conversation settings menu
@@ -328,7 +328,7 @@ Feature: Conversation List
     When I tap on contact name <GroupChatName>
     And I tap conversation name from top toolbar
     When I press options menu button
-    Then I see SILENCE button in option menu
+    Then I see MUTE button in option menu
     And I see RENAME button in option menu
     And I see ARCHIVE button in option menu
     And I see DELETE button in option menu
@@ -365,7 +365,7 @@ Feature: Conversation List
     When I short swipe right on a <Contact1>
     And I see three dots option menu button
     And I press the three dots option menu button
-    Then I see SILENCE button in conversation settings menu
+    Then I see MUTE button in conversation settings menu
 
     Examples:
       | Name      | Contact1  |

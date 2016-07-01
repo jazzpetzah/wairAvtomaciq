@@ -10,7 +10,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I tap conversation name from top toolbar
     And I press options menu button
-    And I press SILENCE conversation menu button
+    And I press MUTE conversation menu button
     And I press back button
     And I press back button
     Then Contact <Contact1> is muted
@@ -31,7 +31,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I tap conversation name from top toolbar
     And I press options menu button
-    And I press NOTIFY conversation menu button
+    And I press UNMUTE conversation menu button
     And I press back button
     And I navigate back from dialog page
     Then Contact <Contact1> is not muted
