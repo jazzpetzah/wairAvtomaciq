@@ -265,8 +265,7 @@ public class ClientUsersManager {
                 throw new RuntimeException(String.format("Unsupported FindBy criteria '%s'", findByAliasType));
             }
             for (String alias : aliases) {
-                result = result.replaceAll("(?i)\\b(" + alias + ")\\b",
-                        replacement);
+                result = result.replaceAll("(?i)\\b(" + alias + ")\\b", replacement);
             }
         }
         return result;
