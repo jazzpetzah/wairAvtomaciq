@@ -783,7 +783,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
 
-  @C165119 @calling @staging
+  @C165119 @calling @staging @WEBAPP-1536
   Scenario Outline: Verify that outgoing call is terminated after within 1 minute timeout if nobody responds
     Given My browser supports calling
     Given There are 2 users where <Name> is me
