@@ -30,7 +30,7 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact   | ItemSilence | ItemNotify |
-      | user1Name | user2Name | SILENCE     | NOTIFY     |
+      | user1Name | user2Name | MUTE        | UNMUTE     |
 
   @C741 @id2260 @regression @rc
   Scenario Outline: Mute and unmute conversation from conversation details in portrait mode
@@ -64,7 +64,7 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact   | ItemSilence | ItemNotify |
-      | user1Name | user2Name | SILENCE     | NOTIFY     |
+      | user1Name | user2Name | MUTE        | UNMUTE     |
 
   @C503 @id2888 @regression
   Scenario Outline: Mute and unmute conversation from conversations list in portrait mode
@@ -87,7 +87,7 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact1  | Contact2  | ItemSilence | ItemNotify |
-      | user1Name | user2Name | user3Name | SILENCE     | NOTIFY     |
+      | user1Name | user2Name | user3Name | MUTE        | UNMUTE     |
 
   @C527 @id3137 @regression
   Scenario Outline: Mute and unmute conversation from conversations list in landscape mode
@@ -110,7 +110,7 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact1  | Contact2  | ItemSilence | ItemNotify |
-      | user1Name | user2Name | user3Name | SILENCE     | NOTIFY     |
+      | user1Name | user2Name | user3Name | MUTE        | UNMUTE     |
 
   @C771 @id2881 @regression @rc
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (portrait)
@@ -398,7 +398,7 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact1  | SilenceItem |
-      | user1Name | user2Name | SILENCE     |
+      | user1Name | user2Name | MUTE        |
 
   @C563 @id4083 @regression
   Scenario Outline: I can mute 1:1 conversation from the conversation list (landscape)
@@ -415,7 +415,7 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact1  | SilenceItem |
-      | user1Name | user2Name | SILENCE     |
+      | user1Name | user2Name | MUTE        |
 
   @C560 @id4080 @regression
   Scenario Outline: I can unmute 1:1 conversation from the conversation list (portrait)
@@ -434,7 +434,7 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact1  | NotifyItem |
-      | user1Name | user2Name | NOTIFY     |
+      | user1Name | user2Name | UNMUTE     |
 
   @C561 @id4081 @regression
   Scenario Outline: I can unmute 1:1 conversation from the conversation list (landscape)
@@ -453,7 +453,7 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact1  | NotifyItem |
-      | user1Name | user2Name | NOTIFY     |
+      | user1Name | user2Name | UNMUTE     |
 
   @C558 @id4076 @regression
   Scenario Outline: I can mute group conversation from the conversation list (portrait)
@@ -471,7 +471,7 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | SilenceItem |
-      | user1Name | user2Name | user3Name | SILENCE       | SILENCE     |
+      | user1Name | user2Name | user3Name | MUTE          | MUTE        |
 
   @C559 @id4077 @regression
   Scenario Outline: I can mute group conversation from the conversation list (landscape)
@@ -489,7 +489,7 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | SilenceItem |
-      | user1Name | user2Name | user3Name | SILENCE       | SILENCE     |
+      | user1Name | user2Name | user3Name | MUTE          | MUTE        |
 
   @C556 @id4074 @regression
   Scenario Outline: I can unmute group conversation from the conversation list (portrait)
@@ -509,7 +509,7 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact1  | Contact2  | NotifyItem | GroupChatName |
-      | user1Name | user2Name | user3Name | NOTIFY     | NOTIFY        |
+      | user1Name | user2Name | user3Name | UNMUTE     | UNMUTE        |
 
   @C557 @id4075 @regression
   Scenario Outline: I can unmute group conversation from the conversation list (landscape)
@@ -529,7 +529,7 @@ Feature: Conversation List
 
     Examples:
       | Name      | Contact1  | Contact2  | NotifyItem | GroupChatName |
-      | user1Name | user2Name | user3Name | NOTIFY     | NOTIFY        |
+      | user1Name | user2Name | user3Name | UNMUTE     | UNMUTE        |
 
 
 
