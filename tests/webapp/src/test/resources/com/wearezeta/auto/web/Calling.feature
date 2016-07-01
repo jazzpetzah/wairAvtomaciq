@@ -1097,7 +1097,7 @@ Feature: Calling
     And I click on participant <Contact2> on Group Participants popover
     And I click Remove button on Group Participants popover
     And I confirm remove from group chat on Group Participants popover
-    And I click People button in group conversation
+    And I click back button on Group Participants popover
     Then I see 0 participants in the Group Participants popover
     And I do not see calling button
     When I type shortcut combination to start a call

@@ -833,7 +833,6 @@ Feature: E2EE
     When I Sign in using login <Email> and password <Password>
     And I see the history info page
     And I click confirm on history info page
-    And I disable ad banner
     And I am signed in properly
     And I open conversation with <Contact>
     And Contact <Name> sends message <StartMessage> via device Device1 to user <Contact>
@@ -843,7 +842,6 @@ Feature: E2EE
     And Contact <Contact> sends 50 messages with prefix <PREFIX1> via device Device1 to user <Name>
     And Contact <Name> sends 50 messages with prefix <PREFIX2> via device Device1 to user <Contact>
     And I navigate to previously remembered page
-    And I disable ad banner
     And Contact <Contact> sends 60 messages with prefix <PREFIX3> via device Device1 to user <Name>
     And Contact <Name> sends 60 messages with prefix <PREFIX4> via device Device1 to user <Contact>
     And I am signed in properly

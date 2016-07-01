@@ -168,22 +168,4 @@ public class WebPage extends BasePage {
                 "cs.session_states = {};";
         getDriver().executeScript(breakSession);
     }
-
-    /**
-     * Disables the Ad banner for the webapp to make sure tests are not affected by it.
-     *
-     * @throws Exception
-     */
-    public void disableAdBanner() throws Exception {
-        Boolean wireLoaded;
-        int retry = WIRE_LOADED_MAX_RETRY;
-        do{
-            wireLoaded = (Boolean) getDriver().executeScript("console.log('checking for app wire');\n"
-                + "return typeof wire !== \"undefined\" && typeof wire.app !== \"undefined\" && typeof wire.app.repository !== \"undefined\"");
-            retry--;
-            Thread.sleep(WIRE_LOADED_WAIT_MS);
-        }while(!wireLoaded && retry > 0);
-        getDriver().executeScript("console.log('setting banner true');\n"
-                + "wire.app.repository.user.properties.app_banner = true");
-    }
 }

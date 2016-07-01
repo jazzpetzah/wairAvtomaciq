@@ -429,11 +429,8 @@ public class ConversationPage extends WebPage {
         assert matcher.find() : "Could not find Youtube id in URL: " + url;
         final String id = matcher.group();
 
-        final By locator = By
-                .xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById
-                        .apply(id));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                locator, 5);
+        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById.apply(id));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
     public void clickPeopleButton() throws Exception {
@@ -685,9 +682,12 @@ public class ConversationPage extends WebPage {
     }
 
     public void clickOnBlackBorder() throws Exception {
-        Actions builder = new Actions(getDriver());
-        builder.moveToElement(fullscreenImage, -10, -10).click().build()
-                .perform();
+        if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
+            Actions builder = new Actions(getDriver());
+            builder.moveToElement(fullscreenImage, -10, -10).click().build().perform();
+        } else {
+            throw new Exception("This browser does not support native mouse actions");
+        }
     }
 
     public void clickGIFButton() throws Exception {
