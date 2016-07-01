@@ -22,3 +22,23 @@ Feature: Notifications
     Examples:
       | Name      | Contact   | Message |
       | user1Name | user2Name | hello   |
+
+  @C165125 @staging
+  Scenario Outline: CM-1023 Verify no GCM notifications are shown for muted chats
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given User <Contact> sends encrypted message <Message> to user Myself
+    Given I swipe right on a <Contact>
+    Given I select MUTE from conversation settings menu
+    Given Contact <Contact> is muted
+    When I minimize the application
+    And I wait for 2 seconds
+    And User <Contact> sends encrypted message <Message> to user Myself
+    Then I do not see the message "<Message>" in push notifications list
+
+    Examples:
+      | Name      | Contact   | Message |
+      | user1Name | user2Name | hello   |
