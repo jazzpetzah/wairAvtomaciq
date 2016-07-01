@@ -64,17 +64,6 @@ public class TabletGroupConversationDetailPopoverPageSteps {
     }
 
     /**
-     * Presses in the ellipses menu on the RENAME button
-     *
-     * @throws Exception
-     * @step. ^I press RENAME on the menu on iPad$
-     */
-    @When("^I press RENAME on the menu on iPad$")
-    public void IPressRENAMEOnTheMenuOniPad() throws Exception {
-        getTabletGroupConversationDetailPopoverPage().pressRenameEllipsesButton();
-    }
-
-    /**
      * Checks that the number of participants in a group is correct on the
      * popover
      *
@@ -91,25 +80,15 @@ public class TabletGroupConversationDetailPopoverPageSteps {
     }
 
     /**
-     * Clicks on the SILENCE button in the iPad popover ellipsis menu
+     * Clicks on the corresponding button in the iPad popover ellipsis menu
      *
      * @throws Exception
-     * @step. ^I click SILENCE button on iPad ellipsis menu$
+     * @param actionName one of possible action names
+     * @step. ^I select (Mute|Unmute|Rename) action from iPad ellipsis menu$$
      */
-    @When("^I click SILENCE button on iPad ellipsis menu$")
-    public void IClickSILENCEButtonOniPadEllipsisMenu() throws Exception {
-        getTabletGroupConversationDetailPopoverPage().pressSilenceEllipsisButton();
-    }
-
-    /**
-     * Clicks on the NOTIFY button in the iPad popover ellipsis menu
-     *
-     * @throws Exception
-     * @step. ^I click NOTIFY button on iPad ellipsis menu$
-     */
-    @When("^I click NOTIFY button on iPad ellipsis menu$")
-    public void IClickNOTIFYButtonOniPadEllipsisMenu() throws Exception {
-        getTabletGroupConversationDetailPopoverPage().pressNotifyEllipsisButton();
+    @When("^I select (Mute|Unmute|Rename) action from iPad ellipsis menu$")
+    public void ISelectOption(String actionName) throws Exception {
+        getTabletGroupConversationDetailPopoverPage().selectEllipsisMenuAction(actionName);
     }
 
     /**
