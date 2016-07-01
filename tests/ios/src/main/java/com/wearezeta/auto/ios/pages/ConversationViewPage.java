@@ -824,6 +824,10 @@ public class ConversationViewPage extends IOSPage {
         getElement(nameAudioActionButton).click();
     }
 
+    public void tapAndHoldLocation() throws Exception {
+        this.getDriver().tap(1, getElement(classNameShareLocationContainer), DriverUtils.LONG_TAP_DURATION);
+    }
+
     public BufferedImage getPlayAudioMessageButtonScreenshot(int placeholderIndex) throws Exception {
         final By locator = By.xpath(xpathStrAudioActionButtonByIndex.apply(placeholderIndex));
         return this.getElementScreenshot(getElement(locator)).orElseThrow(

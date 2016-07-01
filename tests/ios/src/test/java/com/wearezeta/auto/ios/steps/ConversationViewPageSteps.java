@@ -1213,7 +1213,7 @@ public class ConversationViewPageSteps {
      * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in
      * conversation view$")
      */
-    @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in conversation view$")
+    @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder|location map) in conversation view$")
     public void ITapAndHoldAudioMessagePlaceholder(String conversationItem) throws Exception {
         switch (conversationItem) {
             case "image":
@@ -1227,6 +1227,9 @@ public class ConversationViewPageSteps {
                 break;
             case "audio message placeholder":
                 getConversationViewPage().tapAndHoldAudioMessage();
+                break;
+            case "location map":
+                getConversationViewPage().tapAndHoldLocation();
                 break;
             default:
                 throw new IllegalArgumentException("Not known conversation item. Please use only items pointed in the step");
