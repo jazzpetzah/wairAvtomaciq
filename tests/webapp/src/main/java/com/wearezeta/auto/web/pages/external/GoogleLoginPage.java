@@ -104,7 +104,7 @@ public class GoogleLoginPage extends WebPage {
                 return input.getWindowHandles().size() < handles.size();
             }
         });
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         // switch back to main window
         this.getDriver().switchTo().window(this.getDriver().getWindowHandles().iterator().next());
     }
