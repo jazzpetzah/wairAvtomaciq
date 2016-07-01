@@ -8,7 +8,7 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Login button
-    And I accept First Time overlay if it is visible
+    And I accept First Time overlay
     And I dismiss settings warning
     Then I see conversations list
 
