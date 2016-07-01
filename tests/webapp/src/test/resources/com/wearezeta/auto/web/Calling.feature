@@ -1028,7 +1028,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 20      |
 
 
-  @C165115 @staging @calling @group @debug
+  @C165115 @regression @calling @group @debug
   Scenario Outline: Verify receiving 1-to-1 call during group call
     Given My browser supports calling
     Given There are 4 users where <Name> is me
