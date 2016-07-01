@@ -50,7 +50,7 @@ public class TestContext {
      * Constructor for downward compatibility with cucumber execution mechanisms
      */
     public TestContext() {
-        this.testname = null;
+        this.testname = "";
         this.driver = COMPAT_WEB_DRIVER;
         this.userManager = ClientUsersManager.getInstance();
         this.deviceManager = SEBridge.getInstance();

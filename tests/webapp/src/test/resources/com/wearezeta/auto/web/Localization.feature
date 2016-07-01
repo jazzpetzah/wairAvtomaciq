@@ -79,7 +79,7 @@ Feature: Localization
       | user1Email | user1Password | user1Name | de       | Hilfe         | Wire Hilfe     | Gib ein Schlagwort ein |
       | user1Email | user1Password | user1Name | en       | Support       | Wire – Support | Enter a keyword        |
 
-  @C150023 @staging
+  @C150023 @regression
   Scenario Outline: Verify registration email is <Language>
     Given I see Registration page
     When I switch language to <Language>

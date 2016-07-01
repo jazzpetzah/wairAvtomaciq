@@ -561,7 +561,7 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).playVideo(fileName);
     }
 
-    @Then("^And I see cancel upload button for video (.*)$")
+    @Then("^I see cancel upload button for video (.*)$")
     public void ISeeCancelUpload(String fileName) throws Exception {
         assertThat("Cancel video upload button is not shown", context.getPagesCollection().getPage(ConversationPage.class)
                 .isCancelButtonVisible(fileName));
@@ -1277,7 +1277,8 @@ public class ConversationPageSteps {
         }
     }
 
-    /**
+
+     /**
      * Verifies whether location message is shown in the conversation view or not.
      *
      * @param doNot        is set to null if "do not" part does not exist
@@ -1306,5 +1307,16 @@ public class ConversationPageSteps {
             assertThat("Location message " + locationName + "is shown",
                     context.getPagesCollection().getPage(ConversationPage.class).isLocationNotShownInConversationView());
         }
+    }
+
+    /**
+     * Cancel video download
+     *
+     * @param fileName the name of a video file
+     * @throws Exception
+     */
+    @When("^I cancel video download of video (.*)$")
+    public void ICancelVideoDownload(String fileName) throws Exception {
+        context.getPagesCollection().getPage(ConversationPage.class).cancelVideoDownload(fileName);
     }
 }

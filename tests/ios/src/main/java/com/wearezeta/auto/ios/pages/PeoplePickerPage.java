@@ -20,7 +20,7 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameKeyboardEnterButton = MobileBy.AccessibilityId("Return");
 
-    private static final By nameCreateConversationButton = MobileBy.AccessibilityId("CREATE");
+    private static final By nameCreateConversationButton = MobileBy.AccessibilityId("CREATE GROUP");
 
     private static final By namePeoplePickerTopPeopleLabel = MobileBy.AccessibilityId("TOP PEOPLE");
 
