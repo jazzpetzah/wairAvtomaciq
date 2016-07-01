@@ -14,8 +14,12 @@ public final class AndroidLogListener {
     public static final String ADB_PREFIX = "";
 
     public enum ListenerType {
-        DEFAULT(null), PERF("LoadTimeLoggerController"), ANALYTICS("LoggingTrackingController");
+        DEFAULT(null),
+        PERF("LoadTimeLoggerController"),
+        ANALYTICS("LoggingTrackingController TrackingController");
 
+        // https://developer.android.com/studio/command-line/logcat.html
+        // Check 'Filtering Log Output' section to know more about the expected string format
         private final String tags;
 
         ListenerType(String tags) {
