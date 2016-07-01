@@ -1479,17 +1479,18 @@ public class CommonAndroidSteps {
         commonSteps.ThereAreXAdditionalUsers(CURRENT_PLATFORM, count);
     }
 
-    private static final int PUSH_NOTIFICATION_TIMEOUT_SEC = 20;
+    private static final int PUSH_NOTIFICATION_TIMEOUT_SEC = 15;
 
     /**
-     * Verify whether the paricular string is present in Wire push messages
+     * Verify whether the particular string is present in Wire push messages
      *
      * @param expectedMessage the expected push message
+     * @param shouldNotSee    equals to null if the message should be visible
      * @throws Exception
      * @step. ^I see the message "(.*)" in push notifications list$
      */
-    @Then("^I see the message \"(.*)\" in push notifications list$")
-    public void ISeePushMessage(String expectedMessage) throws Exception {
+    @Then("^I (do not )?see the message \"(.*)\" in push notifications list$")
+    public void ISeePushMessage(String shouldNotSee, String expectedMessage) throws Exception {
         boolean isMsgFound = false;
         final Pattern pattern = Pattern.compile("\\b" + Pattern.quote(expectedMessage) + "\\b");
         final long millisecondsStarted = System.currentTimeMillis();
@@ -1502,9 +1503,14 @@ public class CommonAndroidSteps {
             }
             Thread.sleep(500);
         } while (System.currentTimeMillis() - millisecondsStarted <= PUSH_NOTIFICATION_TIMEOUT_SEC * 1000);
-        Assert.assertTrue(String.format("Push message '%s' has not been received within %s seconds timeout OR "
-                        + "TestingGallery app has no access to read push notifications (please check phone settings)",
-                expectedMessage, PUSH_NOTIFICATION_TIMEOUT_SEC), isMsgFound);
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("Push message '%s' has not been received within %s seconds timeout OR "
+                            + "TestingGallery app has no access to read push notifications (please check phone settings)",
+                    expectedMessage, PUSH_NOTIFICATION_TIMEOUT_SEC), isMsgFound);
+        } else {
+            Assert.assertFalse(String.format("Push message '%s' has been received, although it is not expected",
+                    expectedMessage), isMsgFound);
+        }
     }
 
     /**
