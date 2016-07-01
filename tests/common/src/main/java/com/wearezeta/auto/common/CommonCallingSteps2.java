@@ -60,7 +60,7 @@ public final class CommonCallingSteps2 {
     }
 
     private static final String FIREFOX_DEFAULT_VERSION = "46.0.1";
-    private static final String CHROME_DEFAULT_VERSION = "51.0.2704.84";
+    private static final String CHROME_DEFAULT_VERSION = "51.0.2704.106";
 
     // Request timeout of 180 secs is set by callingservice, we add additional
     // 10 seconds on the client side to actually get a timeout response to
