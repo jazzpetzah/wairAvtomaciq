@@ -1210,7 +1210,7 @@ public class ConversationViewPageSteps {
      *
      * @param conversationItem item name
      * @throws Exception
-     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in
+     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder|location map) in
      * conversation view$")
      */
     @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder|location map) in conversation view$")

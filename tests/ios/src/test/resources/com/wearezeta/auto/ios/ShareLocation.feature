@@ -29,6 +29,7 @@ Feature: Share Location
     And I tap on Delete badge item
     # Sometimes the alert is not accepted automatically
     And I tap Delete button on the alert
+    Then I do not see Share Location container in the conversation view
     Then I do not see the default Share Location address in the conversation view
 
     Examples:
