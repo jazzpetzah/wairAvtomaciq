@@ -165,7 +165,19 @@ public class PickleExecutor {
                 try {
                     return Integer.parseInt(thingToCast);
                 } catch (NumberFormatException e) {
-                    // Fallthrough
+                    return thingToCast;
+                }
+            case "float":
+                try {
+                    return Float.parseFloat(thingToCast);
+                } catch (NumberFormatException e) {
+                    return thingToCast;
+                }
+            case "double":
+                try {
+                    return Double.parseDouble(thingToCast);
+                } catch (NumberFormatException e) {
+                    return thingToCast;
                 }
             case "class java.lang.String":
             default:
