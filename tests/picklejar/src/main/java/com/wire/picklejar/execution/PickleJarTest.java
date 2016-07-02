@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 
 public abstract class PickleJarTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PickleJarTest.class.getSimpleName());
+    protected static final Logger LOG = LoggerFactory.getLogger(PickleJarTest.class.getSimpleName());
 
     static final Map<Feature, List<Scenario>> FEATURE_SCENARIO_MAP = new ConcurrentHashMap<>();
     private static final AtomicInteger TEST_COUNTER = new AtomicInteger(0);

@@ -8,6 +8,9 @@ import com.wire.picklejar.execution.PickleExecutor;
 import com.wire.picklejar.execution.PickleJarTest;
 import com.wire.picklejar.execution.exception.StepNotExecutableException;
 import com.wire.picklejar.gherkin.model.Result;
+import static com.wire.picklejar.gherkin.model.Result.FAILED;
+import static com.wire.picklejar.gherkin.model.Result.PASSED;
+import static com.wire.picklejar.gherkin.model.Result.SKIPPED;
 import com.wire.picklejar.gherkin.model.Step;
 import java.io.IOException;
 import java.util.Collection;
@@ -25,11 +28,6 @@ public class PickleJarInheritedTest extends PickleJarTest {
 
     private Lifecycle lifecycle;
     
-    private static final String SKIPPED = "skipped";
-    private static final String UNDEFINED = "undefined";
-    private static final String PASSED = "passed";
-    private static final String FAILED = "failed";
-
     @Parameters(name = "{0}: {1} {2}")
     public static Collection<Object[]> getTestcases() throws IOException {
         return PickleJar.getTestcases();
@@ -49,12 +47,11 @@ public class PickleJarInheritedTest extends PickleJarTest {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        getReportScenario().getSteps().stream().forEach((s) -> s.setResult(new Result(1L, SKIPPED, null)));
         try {
             lifecycle = new Lifecycle();
             lifecycle.setUp(getTestcase());
         } catch (Exception e) {
-            getReportScenario().getSteps().stream().findFirst().ifPresent((s) -> s.setResult(new Result(1L, FAILED,
+            getReportScenario().getSteps().stream().findFirst().ifPresent((s) -> setResult(s, new Result(1L, FAILED,
                     PickleExecutor.getThrowableStacktraceString(e))));
             throw e;
         }
@@ -74,27 +71,25 @@ public class PickleJarInheritedTest extends PickleJarTest {
                 try {
                     long execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.
                             getContext());
-                    reportStep.setResult(new Result(execTime, PASSED, null));
+                    setResult(reportStep, new Result(execTime, PASSED, null));
                     byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
                     saveScreenshot(reportStep, screenshot);
                 } catch (Throwable e) {
                     long execTime = 1L;
+                    ex = e;
                     if (e instanceof StepNotExecutableException) {
                         execTime = ((StepNotExecutableException) e).getExecutionTime();
                         ex = PickleExecutor.getLastCause(e);
-                    } else {
-                        ex = e;
                     }
                     failed = true;
-                    String stacktrace = PickleExecutor.getThrowableStacktraceString(ex);
-                    reportStep.setResult(new Result(execTime, FAILED, stacktrace));
+                    setResult(reportStep, new Result(execTime, FAILED, PickleExecutor.getThrowableStacktraceString(ex)));
                     byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
                     saveScreenshot(reportStep, screenshot);
 
                     continue;
                 }
             } else {
-                reportStep.setResult(new Result(1L, SKIPPED, null));
+                setResult(reportStep, new Result(1L, SKIPPED, null));
             }
         }
         if (failed) {
@@ -112,6 +107,11 @@ public class PickleJarInheritedTest extends PickleJarTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
         PickleJarTest.tearDownClass();
+    }
+    
+    private void setResult(Step reportStep, Result result){
+        LOG.info("Setting result \""+result+"\" for step \""+reportStep.getName()+"\"");
+        reportStep.setResult(result);
     }
     
 }
