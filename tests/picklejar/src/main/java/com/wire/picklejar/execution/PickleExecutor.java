@@ -164,24 +164,58 @@ public class PickleExecutor {
 
     private static Object tryCast(String thingToCast, Class<?> clazz) {
         switch (clazz.toString()) {
-            case "int":
+            case "short":
+            case "class java.lang.Short":
                 try {
                     return Integer.parseInt(thingToCast);
                 } catch (NumberFormatException e) {
                     return thingToCast;
                 }
+            case "int":
+            case "class java.lang.Integer":
+                try {
+                    return Integer.parseInt(thingToCast);
+                } catch (NumberFormatException e) {
+                    return thingToCast;
+                }
+            case "long":
+            case "class java.lang.Long":
+                try {
+                    return Long.parseLong(thingToCast);
+                } catch (NumberFormatException e) {
+                    return thingToCast;
+                }
             case "float":
+            case "class java.lang.Float":
                 try {
                     return Float.parseFloat(thingToCast);
                 } catch (NumberFormatException e) {
                     return thingToCast;
                 }
             case "double":
+            case "class java.lang.Double":
                 try {
                     return Double.parseDouble(thingToCast);
                 } catch (NumberFormatException e) {
                     return thingToCast;
                 }
+            case "char":
+            case "class java.lang.Character":
+                try {
+                    return thingToCast.charAt(0);
+                } catch (IndexOutOfBoundsException e) {
+                    return thingToCast;
+                }
+            case "byte":
+            case "class java.lang.Byte":
+                try {
+                    return Byte.parseByte(thingToCast);
+                } catch (NumberFormatException e) {
+                    return thingToCast;
+                }
+            case "boolean":
+            case "class java.lang.Boolean":
+                return Boolean.parseBoolean(thingToCast);
             case "class java.lang.String":
             default:
                 return thingToCast;
