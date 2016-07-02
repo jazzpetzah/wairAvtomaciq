@@ -85,25 +85,26 @@ public class PickleExecutor {
             final Matcher matcher = pattern.matcher(step);
 
             if (matcher.matches()) {
-                LOG.debug("Method {} matches", method.getName());
+                LOG.trace("Method {} matches", method.getName());
 
                 if (matcher.groupCount() == method.getParameterTypes().length) {
-                    LOG.debug("Number of Regex groups and number of method paramaters match");
+                    LOG.trace("Number of Regex groups and number of method paramaters match");
                 } else {
-                    LOG.debug("Number of Regex groups and number of method paramaters do not match:\n"
+                    LOG.trace("Number of Regex groups and number of method paramaters do not match:\n"
                             + "Regex groups: {}\n"
                             + "Method paramaters: {}", new Object[]{matcher.groupCount(), method.getParameterTypes().length});
-                    LOG.info("Parameters do not match - Looking for other method");
+                    LOG.debug("Parameters do not match - Looking for other method");
                     continue;
                 }
 
                 final List<Object> params = new ArrayList<>();
                 Class<?>[] types = method.getParameterTypes();
-                LOG.debug("Expected parameter types: \n{}", new Object[]{Arrays.asList(types)});
+                LOG.trace("Expected parameter types: \n{}", new Object[]{Arrays.asList(types)});
                 for (int i = 1; i <= matcher.groupCount(); i++) {
                     params.add(tryCast(matcher.group(i), types[i - 1]));
                 }
-                LOG.debug("Actual parameters: \n{}", new Object[]{params});
+                LOG.trace("Actual parameters: \n{}", new Object[]{params});
+                LOG.info("Executing method {} {}", method.getName(), params);
 
                 startTime = Instant.now();
                 try {
@@ -149,8 +150,8 @@ public class PickleExecutor {
             final List<Object> constructorParamsList = Arrays.asList(constructorParams);
             final List<Class<?>> constructorParamTypesList = constructorParamsList.stream().map((object) -> object.getClass()).
                     collect(Collectors.toList());
-            LOG.debug("Step constructor param list size: {}", constructorParamsList.size());
-            LOG.debug("Step constructor param type list size: {}", constructorParamTypesList.size());
+            LOG.trace("Step constructor param list size: {}", constructorParamsList.size());
+            LOG.trace("Step constructor param type list size: {}", constructorParamTypesList.size());
 
             final Constructor<?> ctor = method.getDeclaringClass().getConstructor(constructorParamTypesList.toArray(
                     new Class<?>[constructorParamTypesList.size()]));

@@ -10,7 +10,6 @@ import com.wire.picklejar.execution.exception.StepNotExecutableException;
 import com.wire.picklejar.gherkin.model.Result;
 import static com.wire.picklejar.gherkin.model.Result.FAILED;
 import static com.wire.picklejar.gherkin.model.Result.PASSED;
-import static com.wire.picklejar.gherkin.model.Result.SKIPPED;
 import com.wire.picklejar.gherkin.model.Step;
 import java.io.IOException;
 import java.util.Collection;
@@ -27,7 +26,7 @@ import org.openqa.selenium.OutputType;
 public class PickleJarInheritedTest extends PickleJarTest {
 
     private Lifecycle lifecycle;
-    
+
     @Parameters(name = "{0}: {1} {2}")
     public static Collection<Object[]> getTestcases() throws IOException {
         return PickleJar.getTestcases();
@@ -61,39 +60,28 @@ public class PickleJarInheritedTest extends PickleJarTest {
     @Override
     public void test() throws Throwable {
         super.test();
-        boolean failed = false;
         Throwable ex = null;
         List<Step> reportSteps = getReportScenario().getSteps();
         for (int i = 0; i < getSteps().size(); i++) {
             final String rawStep = getSteps().get(i);
             final Step reportStep = reportSteps.get(i);
-            if (!failed) {
-                try {
-                    long execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.
-                            getContext());
-                    setResult(reportStep, new Result(execTime, PASSED, null));
-                    byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
-                    saveScreenshot(reportStep, screenshot);
-                } catch (Throwable e) {
-                    long execTime = 1L;
-                    ex = e;
-                    if (e instanceof StepNotExecutableException) {
-                        execTime = ((StepNotExecutableException) e).getExecutionTime();
-                        ex = PickleExecutor.getLastCause(e);
-                    }
-                    failed = true;
-                    setResult(reportStep, new Result(execTime, FAILED, PickleExecutor.getThrowableStacktraceString(ex)));
-                    byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
-                    saveScreenshot(reportStep, screenshot);
-
-                    continue;
+            long execTime = 1L;
+            try {
+                execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.getContext());
+                setResult(reportStep, new Result(execTime, PASSED, null));
+            } catch (Throwable e) {
+                ex = e;
+                if (e instanceof StepNotExecutableException) {
+                    execTime = ((StepNotExecutableException) e).getExecutionTime();
+                    ex = PickleExecutor.getLastCause(e);
                 }
-            } else {
-                setResult(reportStep, new Result(1L, SKIPPED, null));
+                setResult(reportStep, new Result(execTime, FAILED, PickleExecutor.getThrowableStacktraceString(ex)));
             }
-        }
-        if (failed) {
-            throw ex;
+            byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
+            saveScreenshot(reportStep, screenshot);
+            if (ex != null) {
+                throw ex;
+            }
         }
     }
 
@@ -108,10 +96,10 @@ public class PickleJarInheritedTest extends PickleJarTest {
     public static void tearDownClass() throws Exception {
         PickleJarTest.tearDownClass();
     }
-    
-    private void setResult(Step reportStep, Result result){
-        LOG.info("Setting result \""+result+"\" for step \""+reportStep.getName()+"\"");
+
+    private void setResult(Step reportStep, Result result) {
+        LOG.info("\n::          {}", result.getStatus().toUpperCase());
         reportStep.setResult(result);
     }
-    
+
 }
