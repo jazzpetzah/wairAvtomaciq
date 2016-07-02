@@ -4,13 +4,12 @@ import java.util.List;
 import java.util.Map;
 import org.junit.runner.RunWith;
 import com.wire.picklejar.PickleJar;
+import com.wire.picklejar.execution.PickleExecutor;
 import com.wire.picklejar.execution.PickleJarTest;
 import com.wire.picklejar.execution.exception.StepNotExecutableException;
 import com.wire.picklejar.gherkin.model.Result;
 import com.wire.picklejar.gherkin.model.Step;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Collection;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -56,7 +55,7 @@ public class PickleJarInheritedTest extends PickleJarTest {
             lifecycle.setUp(getTestcase());
         } catch (Exception e) {
             getReportScenario().getSteps().stream().findFirst().ifPresent((s) -> s.setResult(new Result(1L, FAILED,
-                    getThrowableStacktraceString(e))));
+                    PickleExecutor.getThrowableStacktraceString(e))));
             throw e;
         }
     }
@@ -82,12 +81,12 @@ public class PickleJarInheritedTest extends PickleJarTest {
                     long execTime = 1L;
                     if (e instanceof StepNotExecutableException) {
                         execTime = ((StepNotExecutableException) e).getExecutionTime();
-                        ex = e.getCause().getCause();
+                        ex = PickleExecutor.getLastCause(e);
                     } else {
                         ex = e;
                     }
                     failed = true;
-                    String stacktrace = getThrowableStacktraceString(ex);
+                    String stacktrace = PickleExecutor.getThrowableStacktraceString(ex);
                     reportStep.setResult(new Result(execTime, FAILED, stacktrace));
                     byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
                     saveScreenshot(reportStep, screenshot);
@@ -115,10 +114,4 @@ public class PickleJarInheritedTest extends PickleJarTest {
         PickleJarTest.tearDownClass();
     }
     
-    private static String getThrowableStacktraceString(Throwable e) {
-        StringWriter sw = new StringWriter();
-        e.printStackTrace(new PrintWriter(sw));
-        return sw.toString();
-    }
-
 }

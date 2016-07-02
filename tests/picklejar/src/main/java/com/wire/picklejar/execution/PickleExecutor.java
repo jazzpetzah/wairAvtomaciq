@@ -10,6 +10,8 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -190,6 +192,16 @@ public class PickleExecutor {
             rawStep = rawStep.replaceAll("<" + key + ">", exampleParams.get(key));
         }
         return rawStep;
+    }
+    
+    public static Throwable getLastCause(Throwable e) {
+        return e.getCause() != null ? getLastCause(e.getCause()) : e;
+    }
+    
+    public static String getThrowableStacktraceString(Throwable e) {
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        return sw.toString();
     }
 
 }
