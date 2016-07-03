@@ -218,7 +218,7 @@ public class Lifecycle {
              * #### START ############################################################ COMPATIBILITY INSTRUCTIONS
              */
             try {
-                log.debug("Releasing devices");
+                log.debug("COMPAT: Releasing devices");
                 log.debug(compatContext.getUserManager().getCreatedUsers());
                 compatContext.getDeviceManager().releaseDevicesOfUsers(compatContext.getUserManager().getCreatedUsers());
             } catch (Exception e) {
@@ -243,6 +243,7 @@ public class Lifecycle {
             try {
                 log.debug("Cleaning up calling instances");
                 context.getCallingManager().cleanup();
+                log.debug("COMPAT: Cleaning up calling instances");
                 compatContext.getCallingManager().cleanup();
             } catch (Exception e) {
                 log.warn(e);
@@ -250,6 +251,7 @@ public class Lifecycle {
             try {
                 log.debug("Clearing pages collection");
                 context.getPagesCollection().clearAllPages();
+                log.debug("COMPAT: Clearing pages collection");
                 compatContext.getPagesCollection().clearAllPages();
                 WebPage.clearPagesCollection();
             } catch (Exception e) {
@@ -258,6 +260,7 @@ public class Lifecycle {
             try {
                 log.debug("Resetting users");
                 context.getUserManager().resetUsers();
+                log.debug("COMPAT: Resetting users");
                 compatContext.getUserManager().resetUsers();
             } catch (Exception e) {
                 log.warn(e);
