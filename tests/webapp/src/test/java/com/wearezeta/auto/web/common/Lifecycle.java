@@ -415,7 +415,7 @@ public class Lifecycle {
         capabilities.setCapability("name", uniqueTestName);
         capabilities.setCapability("resolution", "1280x1024");
         capabilities.setCapability("browserstack.debug", "true");
-        capabilities.setCapability("project", System.getenv("BUILD_ID"));
+        capabilities.setCapability("project", System.getenv("JOB_NAME"));
         capabilities.setCapability("build", System.getenv("BUILD_NUMBER"));
 
         return capabilities;
