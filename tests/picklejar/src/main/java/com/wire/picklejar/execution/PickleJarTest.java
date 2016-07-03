@@ -65,12 +65,16 @@ public abstract class PickleJarTest {
 
     @BeforeClass
     protected static void setUpClass() throws Exception {
-        LOG.info("### Before full testrun");
     }
 
     @Before
     protected void setUp() throws Exception {
         LOG.info("### Before testcase Count: {}", TEST_COUNTER.incrementAndGet());
+        LOG.info("\n"
+                + ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,\n"
+                + "::          [{} {}: {}]\n"
+                + "''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''", 
+                new Object[]{tags, feature, testcase});
         pickle.reset();
         List<Scenario> scenariosForFeature = FEATURE_SCENARIO_MAP.getOrDefault(reportFeature, new ArrayList<>());
         scenariosForFeature.add(reportScenario);
@@ -79,7 +83,6 @@ public abstract class PickleJarTest {
 
     @Test
     protected void test() throws Throwable {
-        LOG.info("Executing {}: {}", new Object[]{feature, testcase});
     }
 
     @After
@@ -90,7 +93,6 @@ public abstract class PickleJarTest {
 
     @AfterClass
     protected static void tearDownClass() throws Exception {
-        LOG.info("### After full testrun");
     }
 
     protected void saveScreenshot(Step step, byte[] screenshot) throws IOException {

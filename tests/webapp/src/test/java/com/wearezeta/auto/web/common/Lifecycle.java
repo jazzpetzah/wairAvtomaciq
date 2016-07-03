@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -190,7 +191,7 @@ public class Lifecycle {
     }
     
     private Map<String, String> mapScenario(com.wire.picklejar.gherkin.model.Scenario scenario){
-        HashMap<String, String> stepResultMap = new HashMap<>();
+        Map<String, String> stepResultMap = new LinkedHashMap<>();
         for (Step step : scenario.getSteps()) {
             stepResultMap.put(step.getName(), step.getResult().getStatus());
         }
