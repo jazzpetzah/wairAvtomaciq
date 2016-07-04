@@ -87,10 +87,10 @@ public class VideoCallPageSteps {
     }
 
     /**
-     * Click minimise button on video call page
+     * Click minimize button on video call page
      *
      * @throws Exception
-     * @step. ^I minimise video call$
+     * @step. ^I minimize video call$
      */
     @When("^I minimize video call$")
     public void IMinimizeVideoCall() throws Exception {
@@ -98,7 +98,7 @@ public class VideoCallPageSteps {
     }
 
     /**
-     * Checks if the minimise button is visible on video call page
+     * Checks if the minimize button is visible on video call page
      *
      * @param doNot is set to null if "do not" part does not exist
      * @throws Exception
