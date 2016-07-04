@@ -119,6 +119,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameFileTransferButton = MobileBy.AccessibilityId("uploadFileButton");
     private static final By nameVideoMessageButton = MobileBy.AccessibilityId("videoButton");
     private static final By nameAudioMessageButton = MobileBy.AccessibilityId("audioButton");
+    private static final By nameShareLocationButton = MobileBy.AccessibilityId("locationButton");
 
     private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[./UIAButton[@name='Back']]";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
@@ -635,6 +636,8 @@ public class ConversationViewPage extends IOSPage {
                 return nameVideoMessageButton;
             case "audio message":
                 return nameAudioMessageButton;
+            case "share location":
+                return nameShareLocationButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
         }
