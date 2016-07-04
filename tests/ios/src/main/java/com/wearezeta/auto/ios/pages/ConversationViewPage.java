@@ -127,6 +127,9 @@ public class ConversationViewPage extends IOSPage {
     private static Function<String, String> xpathStrToolbarByExpr = expr ->
             String.format("%s/UIAButton[%s]", xpathStrConversationViewTopBar, expr);
 
+    // FIXME: Replace with Accessibility Id
+    private static final By xpathEllipsisButton =
+            By.xpath("//UIAButton[@name='audioButton']/following-sibling::UIAButton");
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
     private static final By xpathVideoCallButton = MobileBy.AccessibilityId("videoCallBarButton");
     private static final By xpathConversationDetailsButton = By.xpath(xpathStrConversationViewTopBar +
@@ -648,7 +651,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public void tapInputToolButtonByName(String name) throws Exception {
-        getElement(getInputToolButtonByName(name)).click();
+        locateCursorToolButton(getInputToolButtonByName(name)).click();
     }
 
     public boolean waitUntilDownloadReadyPlaceholderVisible(String expectedFileName, String expectedSize,
@@ -734,16 +737,27 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameVideoMessageActionButton);
     }
 
-    public void longTapInputToolButtonByName(String btnName, boolean shouldKeepTap) throws Exception {
-        if (shouldKeepTap) {
-            new TouchAction(getDriver()).press(getElement(getInputToolButtonByName(btnName))).perform();
+    private WebElement locateCursorToolButton(By locator) throws Exception {
+        final Optional<WebElement> toolButton = getElementIfDisplayed(locator, 3);
+        if (toolButton.isPresent()) {
+            return toolButton.get();
         } else {
-            getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_DURATION);
+            DriverUtils.tapOnPercentOfElement(getDriver(), getElement(xpathEllipsisButton), 50, 50);
+            return getElement(locator);
+        }
+    }
+
+    public void longTapInputToolButtonByName(String btnName, boolean shouldKeepTap) throws Exception {
+        final WebElement dstElement = locateCursorToolButton(getInputToolButtonByName(btnName));
+        if (shouldKeepTap) {
+            new TouchAction(getDriver()).press(dstElement).perform();
+        } else {
+            getDriver().tap(1, dstElement, DriverUtils.LONG_TAP_DURATION);
         }
     }
 
     public void longTapWithDurationInputToolButtonByName(String btnName, int durationSeconds) throws Exception {
-        getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), durationSeconds * 1000);
+        getDriver().tap(1, locateCursorToolButton(getInputToolButtonByName(btnName)), durationSeconds * 1000);
     }
 
     public boolean isAudioMessageRecordCancelVisible() throws Exception {
