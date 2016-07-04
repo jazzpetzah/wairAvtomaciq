@@ -23,7 +23,7 @@ Feature: Notifications
       | Name      | Contact   | Message |
       | user1Name | user2Name | hello   |
 
-  @C165125 @staging
+  @C165125 @regression @rc
   Scenario Outline: CM-1023 Verify no GCM notifications are shown for muted chats
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

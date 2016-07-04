@@ -133,7 +133,7 @@ Feature: Settings
       | Name      | CurrentEmail | NewEmail   | Password      |
       | user1Name | user1Email   | user2Email | user2Password |
 
-  @C165103 @staging
+  @C165103 @regression
   Scenario Outline: Verify I can delete multiple devices without filling password every time
     Given There is 1 user where <Name> is me
     Given User <Name> adds new devices Device1,<DeviceToRemove>,<DeviceToRemoveWithoutPassword>,<OtherDevice>,Device5
