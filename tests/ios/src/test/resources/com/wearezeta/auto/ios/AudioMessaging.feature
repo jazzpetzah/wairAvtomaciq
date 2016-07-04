@@ -298,7 +298,7 @@ Feature: Audio Messaging
     And I tap on contact name <Contact>
     And I remember media container state
     And I tap media container
-    And I long tap Audio Message button from input tools
+    And I long tap Audio Message button for 5 seconds from input tools
     Then I see audio message record container
     And I see media container state is not changed
 

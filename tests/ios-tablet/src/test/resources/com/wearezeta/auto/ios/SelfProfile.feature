@@ -102,7 +102,7 @@ Feature: Self Profile
     Given User <Name> sends 1 encrypted message to user <Contact>
     When I tap settings gear button
     # This alert is sometimes not accepted automatically
-    And I accept alert
+    And I tap OK button on the alert
     And I tap to edit my name
     And I change my name to <NewUsername>
     And I close self profile

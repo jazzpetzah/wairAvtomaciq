@@ -6,6 +6,7 @@ Feature: Video Message
     Given <Contact> is connected to me
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I push <FileSize> video file having name "<FileFullName>" to the device
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     Given I tap the conversation <Contact>
@@ -13,5 +14,5 @@ Feature: Video Message
     Then I see Video Message container in the conversation view
 
     Examples:
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | FileSize | FileFullName      |
+      | user1Name | user2Name | 10.00MB  | random_video.mp4  |

@@ -8,6 +8,7 @@ tests/picklejar/target/
 .DS_Store
 tests/common/bin/*
 tests/webapp/bin/*
+tests/webapp/.idea/
 nbactions.xml
 nb-configuration.xml
 tests/tools/jenkins_controller/.idea

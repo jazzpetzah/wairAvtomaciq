@@ -628,7 +628,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | GC1       | chrome      | 20      |
 
 
-  @C165112 @staging @calling @group @calling_debug
+  @C165112 @regression @calling @group @calling_debug
   Scenario Outline: Verify receiving group call during group call
     Given My browser supports calling
     Given There are 5 users where <Name> is me
@@ -782,24 +782,6 @@ Feature: Calling
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
-
-  @C165119 @calling @staging @WEBAPP-1536
-  Scenario Outline: Verify that outgoing call is terminated after within 1 minute timeout if nobody responds
-    Given My browser supports calling
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    And I am signed in properly
-    And I open conversation with <Contact>
-    When I call
-    And I see the outgoing call controls for conversation <Contact>
-    And I wait for 65 seconds
-    And I do not see the outgoing call controls for conversation <Contact>
-
-    Examples:
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
 
   @C1798 @regression @calling @group @calling_debug
   Scenario Outline: Verify initiator is not a host for the call

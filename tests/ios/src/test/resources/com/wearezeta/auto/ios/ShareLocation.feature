@@ -15,7 +15,7 @@ Feature: Share Location
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C150027 @staging
+  @C150027 @regression
   Scenario Outline: Verify deleting shared location
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>

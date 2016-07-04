@@ -1,6 +1,6 @@
 Feature: Analytics
 
-  @C165111 @staging @analytics
+  @C165111 @regression @rc @analytics
   Scenario Outline: Verify registration statistics is sent
     When I see welcome screen
     And I verify that <LogType> log contains string "registration.opened_phone_signup"
