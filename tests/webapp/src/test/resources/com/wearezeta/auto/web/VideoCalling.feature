@@ -579,8 +579,10 @@ Feature: VideoCalling
     Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verify to have 1 flows
     And <Contact1> verify that all flows have greater than 0 bytes
+    Then I see my self video view
     When I minimize video call
     Then I see video call is minimized
+    Then I do not see my self video view
     When I write random message
     And I send message
     Then I see random message in conversation
