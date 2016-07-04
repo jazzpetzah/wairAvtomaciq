@@ -562,3 +562,41 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @C165108 @videocalling @calling @staging
+  Scenario Outline: Verify you can multitask while video call is minimized
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1> starts instance using <CallBackend>
+    Given <Contact1> accepts next incoming video call automatically
+    Given <Contact1> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    When I open conversation with <Contact1>
+    And I start a video call
+    Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact1> verify to have 1 flows
+    And <Contact1> verify that all flows have greater than 0 bytes
+    When I minimise video call
+    Then I see video call is minimised
+    When I write random message
+    And I send message
+    Then I see random message in conversation
+    When I send picture <PictureName> to the current conversation
+    Then I see sent picture <PictureName> in the conversation view
+    When I open conversation with <Contact2>
+    And I write random message
+    And I send message
+    Then I see random message in conversation
+    When I send picture <PictureName> to the current conversation
+    Then I see sent picture <PictureName> in the conversation view
+    When I maximise video call
+    Then I see minimise button on video call page
+    When I end the video call
+    Then I do not see my self video view
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout | PictureName               |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 30      | userpicture_landscape.jpg |

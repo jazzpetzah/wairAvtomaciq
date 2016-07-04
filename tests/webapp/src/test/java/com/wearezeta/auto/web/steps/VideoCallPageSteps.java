@@ -85,4 +85,15 @@ public class VideoCallPageSteps {
             Assert.assertTrue("Duration Timer is visible", videoCallPage.isDurationTimerNotVisible());
         }
     }
+
+    /**
+     * Click minimise button on video call page
+     *
+     * @throws Exception
+     * @step. ^I minimise video call$
+     */
+    @When("^I minimise video call$")
+    public void IMinimiseVideoCall() throws Exception {
+        context.getPagesCollection().getPage(VideoCallPage.class).clickMinimiseVideoCallButton();
+    }
 }

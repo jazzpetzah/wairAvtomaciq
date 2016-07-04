@@ -62,4 +62,11 @@ public class VideoCallPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.cssSelector(WebAppLocators.VideoCallPage.cssDurationTimer));
     }
+
+    public void clickMinimiseVideoCallButton() throws Exception {
+        this.getDriver()
+                .executeScript(
+                        String.format("$(document).find(\"%s\").click();",
+                                WebAppLocators.VideoCallPage.cssMinimiseVideoCallButton));
+    }
 }

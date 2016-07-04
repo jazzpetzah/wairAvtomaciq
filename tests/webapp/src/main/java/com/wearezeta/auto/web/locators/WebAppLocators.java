@@ -693,6 +693,8 @@ public final class WebAppLocators {
 
         public static final String cssMuteCallButton = "[data-uie-name='do-call-controls-video-call-mute']";
 
+        public static final String cssMinimiseVideoCallButton = "[data-uie-name='do-call-controls-video-call-minimize']";
+
         public static final String cssDurationTimer = ".video-timer";
 
         public static final String xpathMuteCallButtonPressed = "//div[@data-uie-name='do-call-controls-video-call-mute'" +
