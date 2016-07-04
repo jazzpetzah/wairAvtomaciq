@@ -127,9 +127,7 @@ public class ConversationViewPage extends IOSPage {
     private static Function<String, String> xpathStrToolbarByExpr = expr ->
             String.format("%s/UIAButton[%s]", xpathStrConversationViewTopBar, expr);
 
-    // FIXME: Replace with Accessibility Id
-    private static final By xpathEllipsisButton =
-            By.xpath("//UIAButton[@name='audioButton']/following-sibling::UIAButton");
+    private static final By nameEllipsisButton = MobileBy.AccessibilityId("showOtherRowButton");
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
     private static final By xpathVideoCallButton = MobileBy.AccessibilityId("videoCallBarButton");
     private static final By xpathConversationDetailsButton = By.xpath(xpathStrConversationViewTopBar +
@@ -742,7 +740,7 @@ public class ConversationViewPage extends IOSPage {
         if (toolButton.isPresent()) {
             return toolButton.get();
         } else {
-            DriverUtils.tapOnPercentOfElement(getDriver(), getElement(xpathEllipsisButton), 50, 50);
+            DriverUtils.tapOnPercentOfElement(getDriver(), getElement(nameEllipsisButton), 50, 50);
             return getElement(locator);
         }
     }
