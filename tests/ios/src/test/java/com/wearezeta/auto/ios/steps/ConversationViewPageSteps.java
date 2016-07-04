@@ -923,7 +923,7 @@ public class ConversationViewPageSteps {
                 isYouCalledMessageAndButtonVisible());
     }
 
-    private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
+    private static final double MAX_SIMILARITY_THRESHOLD = 0.98;
 
     /**
      * Verify whether the particular picture is animated
