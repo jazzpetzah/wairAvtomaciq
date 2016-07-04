@@ -628,7 +628,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | GC1       | chrome      | 20      |
 
 
-  @C165112 @staging @calling @group @calling_debug
+  @C165112 @regression @calling @group @calling_debug
   Scenario Outline: Verify receiving group call during group call
     Given My browser supports calling
     Given There are 5 users where <Name> is me

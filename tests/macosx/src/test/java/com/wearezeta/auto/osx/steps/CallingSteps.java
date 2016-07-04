@@ -1,6 +1,5 @@
 package com.wearezeta.auto.osx.steps;
 
-import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
@@ -259,9 +258,7 @@ public class CallingSteps {
                         LOG.error("Cannot stop call " + i + " " + ex);
                     }
                 }
-                for (String callee : calleeList) {
-                    commonCalling.stopWaitingCall(callee);
-                }
+                commonCalling.stopIncomingCall(calleeList);
                 LOG.info("All instances are stopped");
             } catch (Throwable e) {
                 LOG.error("Can not stop waiting call " + i + " " + e);
