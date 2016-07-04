@@ -85,4 +85,46 @@ public class VideoCallPageSteps {
             Assert.assertTrue("Duration Timer is visible", videoCallPage.isDurationTimerNotVisible());
         }
     }
+
+    /**
+     * Click minimize button on video call page
+     *
+     * @throws Exception
+     * @step. ^I minimize video call$
+     */
+    @When("^I minimize video call$")
+    public void IMinimizeVideoCall() throws Exception {
+        context.getPagesCollection().getPage(VideoCallPage.class).clickMinimizeVideoCallButton();
+    }
+
+    /**
+     * Maximizes video call
+     *
+     * @throws Exception
+     * @step. ^I maximize video call$
+     */
+    @When("^I maximize video call$")
+    public void IMaximizeVideoCall() throws Exception {
+        context.getPagesCollection().getPage(VideoCallPage.class).clickMaximizeVideoCallButton();
+    }
+
+    /**
+     * Checks if the video call minimized/maximized
+     *
+     * @param videoCallSize is either minimized|maximized
+     * @throws Exception
+     * @step. ^I see video call is (minimized|maximized)$
+     */
+    @Then("^I see video call is (minimized|maximized)$")
+    public void ISeeVideoCallMinimized(String videoCallSize) throws Exception {
+        VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
+        if (videoCallSize.equals("minimized")) {
+            Assert.assertTrue("Maximize Video Call button is not visible", videoCallPage.isMaximizeVideoCallButtonVisible());
+            Assert.assertTrue("Minimize Video Call button is visible", videoCallPage.isMinimizeVideoCallButtonNotVisible());
+        } else {
+            Assert.assertTrue("Maximize Video Call button is visible", videoCallPage.isMaximizeVideoCallButtonNotVisible());
+            Assert.assertTrue("Minimize Video Call button is not visible", videoCallPage.isMinimizeVideoCallButtonVisible());
+
+        }
+    }
 }
