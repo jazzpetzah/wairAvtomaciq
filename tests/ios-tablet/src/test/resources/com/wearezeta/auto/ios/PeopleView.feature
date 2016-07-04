@@ -404,7 +404,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
-    And I click SILENCE button on iPad ellipsis menu
+    And I select Mute action from iPad ellipsis menu
     And I dismiss popover on iPad
     And I navigate back to conversations list
     Then I see the state of <GroupChatName> conversation item is changed on iPad
@@ -426,7 +426,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press conversation menu button on iPad
-    And I click SILENCE button on iPad ellipsis menu
+    And I select Mute action from iPad ellipsis menu
     And I dismiss popover on iPad
     Then I see the state of <GroupChatName> conversation item is changed on iPad
 

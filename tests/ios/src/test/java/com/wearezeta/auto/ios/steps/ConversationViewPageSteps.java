@@ -923,7 +923,7 @@ public class ConversationViewPageSteps {
                 isYouCalledMessageAndButtonVisible());
     }
 
-    private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
+    private static final double MAX_SIMILARITY_THRESHOLD = 0.98;
 
     /**
      * Verify whether the particular picture is animated
@@ -1210,10 +1210,10 @@ public class ConversationViewPageSteps {
      *
      * @param conversationItem item name
      * @throws Exception
-     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in
+     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder|location map) in
      * conversation view$")
      */
-    @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in conversation view$")
+    @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder|location map) in conversation view$")
     public void ITapAndHoldAudioMessagePlaceholder(String conversationItem) throws Exception {
         switch (conversationItem) {
             case "image":
@@ -1227,6 +1227,9 @@ public class ConversationViewPageSteps {
                 break;
             case "audio message placeholder":
                 getConversationViewPage().tapAndHoldAudioMessage();
+                break;
+            case "location map":
+                getConversationViewPage().tapAndHoldLocation();
                 break;
             default:
                 throw new IllegalArgumentException("Not known conversation item. Please use only items pointed in the step");

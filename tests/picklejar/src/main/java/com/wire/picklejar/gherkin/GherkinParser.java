@@ -33,10 +33,11 @@ public class GherkinParser {
     
     private static Map<String, File> getFeatureFiles() {
         final Map<String, File> featureFiles = new HashMap<>();
+        LOG.debug("Searching feature files...");
         try {
             Collection<File> resource = JavaSeeker.getResource(Config.FEATURE_PACKAGE, Config.FEATURE_EXTENSION);
             for (File file : resource) {
-                LOG.debug(file.getAbsolutePath());
+                LOG.trace(file.getAbsolutePath());
                 featureFiles.put(file.getName(), file);
             }
         } catch (IOException ex) {
@@ -47,6 +48,7 @@ public class GherkinParser {
 
     private static Map<String, String> getFeatureContents(Map<String, File> featureFiles) {
         final Map<String, String> featureContents = new ConcurrentHashMap<>();
+        LOG.debug("Reading feature files...");
         for (Map.Entry<String, File> entry : featureFiles.entrySet()) {
             try {
                 featureContents.put(entry.getKey(), PickleFeatureReader.readFile(entry.getValue()));

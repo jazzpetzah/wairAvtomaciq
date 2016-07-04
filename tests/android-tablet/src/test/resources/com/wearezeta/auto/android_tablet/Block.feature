@@ -107,6 +107,7 @@ Feature: Block
     And I see Blocked Connection popover
     And I tap Unblock button on Blocked Connection popover
     And I do not see Blocked Connection popover
+    And I swipe right to show the conversations list
     Then I verify <Contact> avatar on People Picker page is not the same as the previous one
 
     Examples:
