@@ -681,7 +681,8 @@ public class ConversationPage extends WebPage {
             Actions builder = new Actions(getDriver());
             builder.moveToElement(fullscreenImage, -10, -10).click().build().perform();
         } else {
-            throw new Exception("This browser does not support native mouse actions");
+            WebElement blackBorder = getDriver().findElement(By.cssSelector("#detail-view.modal"));
+            getDriver().executeScript("var evt = new MouseEvent('click', {view: window});arguments[0].dispatchEvent(evt);", blackBorder);
         }
     }
 
