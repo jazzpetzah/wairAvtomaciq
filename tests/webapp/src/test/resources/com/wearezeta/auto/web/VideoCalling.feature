@@ -580,6 +580,7 @@ Feature: VideoCalling
     And <Contact1> verify to have 1 flows
     And <Contact1> verify that all flows have greater than 0 bytes
     Then I see my self video view
+    And I see video call is maximized
     When I minimize video call
     Then I see video call is minimized
     Then I do not see my self video view
@@ -595,7 +596,7 @@ Feature: VideoCalling
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
     When I maximize video call
-    Then I see minimize button on video call page
+    Then I see video call is maximized
     When I end the video call
     Then I do not see my self video view
 
