@@ -10,36 +10,10 @@ import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
-
-import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
-
 import cucumber.api.PendingException;
-
-import java.awt.image.BufferedImage;
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.InvalidElementStateException;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
+import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -48,6 +22,17 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.awt.image.BufferedImage;
+import java.time.Instant;
+import java.util.*;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
 
 public class ConversationPage extends WebPage {
 
@@ -1065,12 +1050,18 @@ public class ConversationPage extends WebPage {
 
     private void hoverOverMessage(String id) throws Exception {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssMessagesById.apply(id));
+        WebElement element = getDriver().findElement(locator);
         if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
             // native mouse over
-            DriverUtils.moveMouserOver(this.getDriver(), getDriver().findElement(locator));
+            DriverUtils.moveMouserOver(this.getDriver(), element);
         } else {
-            throw new Exception("hovering over a message is not implemented for this browser");
+            hoverOverElementWithJavascript(element);
         }
+    }
+
+    private void hoverOverElementWithJavascript(WebElement element) throws Exception {
+        getDriver().executeScript("var evt = new MouseEvent('mouseover', {view: window});"
+                + "arguments[0].dispatchEvent(evt);", element);
     }
 
     public void clickToResetSessionOnLatestError() throws Exception {
@@ -1083,21 +1074,23 @@ public class ConversationPage extends WebPage {
 
     private void hoverOverVideo(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideo, fileName));
+        WebElement element = getDriver().findElement(locator);
         if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
             // native mouse over
-            DriverUtils.moveMouserOver(this.getDriver(), getDriver().findElement(locator));
+            DriverUtils.moveMouserOver(this.getDriver(), element);
         } else {
-            throw new Exception("hovering over a video is not implemented for this browser");
+            hoverOverElementWithJavascript(element);
         }
     }
 
     private void hoverOverDownload(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFile, fileName));
+        WebElement element = getDriver().findElement(locator);
         if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
             // native mouse over
-            DriverUtils.moveMouserOver(this.getDriver(), getDriver().findElement(locator));
+            DriverUtils.moveMouserOver(this.getDriver(), element);
         } else {
-            throw new Exception("hovering over a video is not implemented for this browser");
+            hoverOverElementWithJavascript(element);
         }
     }
 
