@@ -693,7 +693,9 @@ public final class WebAppLocators {
 
         public static final String cssMuteCallButton = "[data-uie-name='do-call-controls-video-call-mute']";
 
-        public static final String cssMinimiseVideoCallButton = "[data-uie-name='do-call-controls-video-call-minimize']";
+        public static final String cssMinimizeVideoCallButton = "[data-uie-name='do-call-controls-video-minimize']";
+
+        public static final String cssMaximizeVideoCallButton = "[data-uie-name='do-call-controls-video-maximize']";
 
         public static final String cssDurationTimer = ".video-timer";
 

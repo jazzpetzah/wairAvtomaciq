@@ -579,8 +579,8 @@ Feature: VideoCalling
     Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verify to have 1 flows
     And <Contact1> verify that all flows have greater than 0 bytes
-    When I minimise video call
-    Then I see video call is minimised
+    When I minimize video call
+    Then I see video call is minimized
     When I write random message
     And I send message
     Then I see random message in conversation
@@ -592,8 +592,8 @@ Feature: VideoCalling
     Then I see random message in conversation
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
-    When I maximise video call
-    Then I see minimise button on video call page
+    When I maximize video call
+    Then I see minimize button on video call page
     When I end the video call
     Then I do not see my self video view
 

@@ -63,10 +63,37 @@ public class VideoCallPage extends WebPage {
                 By.cssSelector(WebAppLocators.VideoCallPage.cssDurationTimer));
     }
 
-    public void clickMinimiseVideoCallButton() throws Exception {
+    public void clickMinimizeVideoCallButton() throws Exception {
         this.getDriver()
                 .executeScript(
                         String.format("$(document).find(\"%s\").click();",
-                                WebAppLocators.VideoCallPage.cssMinimiseVideoCallButton));
+                                WebAppLocators.VideoCallPage.cssMinimizeVideoCallButton));
+    }
+
+    public boolean isMinimizeVideoCallButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.cssSelector(WebAppLocators.VideoCallPage.cssMinimizeVideoCallButton));
+    }
+
+    public boolean isMinimizeVideoCallButtonNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.cssSelector(WebAppLocators.VideoCallPage.cssMinimizeVideoCallButton));
+    }
+
+    public boolean isMaximizeVideoCallButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+                By.cssSelector(WebAppLocators.VideoCallPage.cssMaximizeVideoCallButton));
+    }
+
+    public boolean isMaximizeVideoCallButtonNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+                By.cssSelector(WebAppLocators.VideoCallPage.cssMaximizeVideoCallButton));
+    }
+
+    public void clickMaximizeVideoCallButton() throws Exception {
+        this.getDriver()
+                .executeScript(
+                        String.format("$(document).find(\"%s\").click();",
+                                WebAppLocators.VideoCallPage.cssMaximizeVideoCallButton));
     }
 }
