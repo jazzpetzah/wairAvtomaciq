@@ -37,6 +37,7 @@ import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIB
 public class ConversationPage extends WebPage {
 
     private static final int TIMEOUT_I_SEE_MESSAGE = 20; // seconds
+    private static final int TIMEOUT_LONG_MESSAGE = 30; // seconds
     private static final int TIMEOUT_IMAGE_MESSAGE_UPLOAD = 40; // seconds
     private static final int TIMEOUT_FILE_UPLOAD = 100; // seconds
     private static final int TIMEOUT_VIDEO_UPLOAD = 120; // seconds
@@ -177,21 +178,7 @@ public class ConversationPage extends WebPage {
     }
 
     public void writeNewMessage(String message) throws Exception {
-        if (WebAppExecutionContext.getBrowser()
-                .equals(Browser.InternetExplorer)) {
-            // IE11 has a bug that sends the form when pressing SHIFT+ENTER
-            message = message
-                    .replace(Keys.chord(Keys.SHIFT, Keys.ENTER), "\\n");
-            String addMessageToInput = "var a=arguments[0];a.value=a.value+'"
-                    + message + "';";
-            JavascriptExecutor js = (JavascriptExecutor) getDriver();
-            js.executeScript(addMessageToInput, conversationInput);
-            // since we did not press any keys, we fake input by sending a space
-            // and then removing it again
-            conversationInput.sendKeys(" " + Keys.BACK_SPACE);
-        } else {
-            conversationInput.sendKeys(message);
-        }
+        conversationInput.sendKeys(message);
     }
 
     public void sendNewMessage() {
@@ -617,7 +604,7 @@ public class ConversationPage extends WebPage {
 
     public String getLastTextMessage() throws Exception {
         DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
-                .cssLastTextMessage));
+                .cssLastTextMessage), TIMEOUT_LONG_MESSAGE);
         return lastTextMessage.getText();
     }
 

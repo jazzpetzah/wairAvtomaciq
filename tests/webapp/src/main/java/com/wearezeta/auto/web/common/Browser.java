@@ -116,4 +116,14 @@ public enum Browser {
 			return true;
 		}
 	}
+
+	public boolean isSupportingKeys() {
+		switch (this) {
+			case Chrome:
+			case Opera:
+				return true;
+			default:
+				return false;
+		}
+	}
 }
