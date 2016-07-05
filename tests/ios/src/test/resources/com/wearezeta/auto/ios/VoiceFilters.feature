@@ -40,3 +40,24 @@ Feature: Voice Filters
     Examples:
       | Name      | Contact   | ButtonsCount |
       | user1Name | user2Name | 2            |
+
+  @C165140 @staging
+  Scenario Outline: Verify you can retry recording of filtered voice message
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I tap Audio Message button from input tools
+    And I tap Start Recording button on Voice Filters overlay
+    And I wait for 2 seconds
+    And I tap Stop Recording button on Voice Filters overlay
+    And I tap <ButtonsCount> random effect buttons on Voice Filters overlay
+    And I tap Redo button on Voice Filters overlay
+    Then I see Start Recording button on Voice Filters overlay
+
+    Examples:
+      | Name      | Contact   | ButtonsCount |
+      | user1Name | user2Name | 1            |
+
+
