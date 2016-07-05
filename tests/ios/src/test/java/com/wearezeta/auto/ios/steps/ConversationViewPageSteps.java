@@ -972,8 +972,6 @@ public class ConversationViewPageSteps {
         }
     }
 
-    //toremove
-
     /**
      * Tap the most recent visible transfer placeholder
      *
@@ -1233,7 +1231,8 @@ public class ConversationViewPageSteps {
 
         }
         if (tapFunc == null) {
-            throw new IllegalArgumentException("Not known tap function. Please check if missing function implementation");
+            throw new IllegalArgumentException(String.format("Cannot perform%s tap on '%s' container, because it is not implemented",
+                    isLongTap == null ? "" : " long", conversationItem));
         }
         tapFunc.run();
     }
