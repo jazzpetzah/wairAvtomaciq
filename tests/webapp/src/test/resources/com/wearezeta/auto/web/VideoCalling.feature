@@ -37,6 +37,7 @@ Feature: VideoCalling
     Then I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>
     And I see decline call button for conversation <Contact>
+    And I see my self video view
     And I accept the call from conversation <Contact>
     Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
@@ -64,6 +65,7 @@ Feature: VideoCalling
     Then I see the incoming call controls for conversation <Contact>
     And I see accept video call button for conversation <Contact>
     And I see decline call button for conversation <Contact>
+    And I see my self video view
     When I ignore the call from conversation <Contact>
     Then I do not see the call controls for conversation <Contact>
     And I do not see accept video call button for conversation <Contact>
@@ -541,3 +543,105 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
+
+  @C165108 @videocalling @calling @staging
+  Scenario Outline: Verify you can multitask while video call is minimized
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1> starts instance using <CallBackend>
+    Given <Contact1> accepts next incoming video call automatically
+    Given <Contact1> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    When I open conversation with <Contact1>
+    And I start a video call
+    Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact1> verify to have 1 flows
+    And <Contact1> verify that all flows have greater than 0 bytes
+    Then I see my self video view
+    And I see video call is maximized
+    When I minimize video call
+    Then I see video call is minimized
+    Then I do not see my self video view
+    When I write random message
+    And I send message
+    Then I see random message in conversation
+    When I send picture <PictureName> to the current conversation
+    Then I see sent picture <PictureName> in the conversation view
+    When I open conversation with <Contact2>
+    And I write random message
+    And I send message
+    Then I see random message in conversation
+    When I send picture <PictureName> to the current conversation
+    Then I see sent picture <PictureName> in the conversation view
+    When I maximize video call
+    Then I see video call is maximized
+    When I end the video call
+    Then I do not see my self video view
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout | PictureName               |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 30      | userpicture_landscape.jpg |
+
+  @C165129 @staging @videocalling @calling_debug
+  Scenario Outline: Verify that current video call is terminated if you want to call someone else
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts instance using <CallBackend>    
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I am signed in properly
+    And I open conversation with <Contact1>
+    Then <Contact1> accept next incoming video call automatically
+    And <Contact2> accept next incoming call automatically
+    And <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
+    When I start a video call
+    Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies that all flows have greater than 0 bytes
+    And I see my self video view
+    And I see video call is maximized
+    When I minimize video call
+    Then I see video call is minimized
+    When I open conversation with <Contact2>
+    And I call
+    Then I see another call warning modal
+    When I close the another call warning modal
+    Then I do not see another call warning modal
+    And I see video call is minimized
+    And I see the ongoing call controls for conversation <Contact1>
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies that all flows have greater than 0 bytes
+    When I call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    And I see video call is minimized
+    And I see the ongoing call controls for conversation <Contact1>
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies that all flows have greater than 0 bytes
+    When I call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    And I see video call is minimized
+    And I see the ongoing call controls for conversation <Contact1>
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies that all flows have greater than 0 bytes
+    When I call
+    Then I see another call warning modal
+    When I click on "Hang Up" button in another call warning modal
+    Then I do not see another call warning modal
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I do not see the ongoing call controls for conversation <Contact1>
+    And I see the ongoing call controls for conversation <Contact2>
+    And <Contact2> verifies to have 1 flow
+    And <Contact2> verifies that all flows have greater than 0 bytes
+    And I hang up call with conversation <Contact2>
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 20      |

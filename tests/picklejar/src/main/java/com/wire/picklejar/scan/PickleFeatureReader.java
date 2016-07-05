@@ -59,7 +59,7 @@ public class PickleFeatureReader {
     }
 
     public static String readFile(File file) throws IOException {
-        LOG.info("Reading file: {}", file.getName());
+        LOG.trace("Reading file: {}", file.getName());
         if (!file.isFile() || !file.getName().contains(".feature")) {
             throw new IllegalArgumentException("Provided file is a folder or does not have extension '.feature'");
         }

@@ -20,7 +20,8 @@ public class SettingsPage extends IOSPage {
 
     private static final By nameBackButton = MobileBy.AccessibilityId("Back");
 
-    private static final By xpathAllSoundAlertsButton = By.xpath("//UIATableCell[@name='All']");
+    private static final By xpathAllSoundAlertsButton =
+            By.xpath("//UIATableCell[@name='Sound Alerts']/*[@value='All']");
 
     private static final By nameEditButton = MobileBy.AccessibilityId("Edit");
 

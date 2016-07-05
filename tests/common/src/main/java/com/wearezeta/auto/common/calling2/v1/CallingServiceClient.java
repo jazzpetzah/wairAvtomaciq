@@ -7,7 +7,6 @@ import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceCallExcepti
 import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceInstanceException;
 import com.wearezeta.auto.common.calling2.v1.model.BackendType;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
-import com.wearezeta.auto.common.calling2.v1.model.CallStatus;
 import com.wearezeta.auto.common.calling2.v1.model.Instance;
 import com.wearezeta.auto.common.calling2.v1.model.InstanceStatus;
 import com.wearezeta.auto.common.calling2.v1.model.CallRequest;
@@ -75,20 +74,6 @@ public class CallingServiceClient {
         return CALL_RESOURCE.startVideo(instance, callRequest);
     }
 
-    /**
-     * Deprecated use getCall instead
-     * @param instance
-     * @param call
-     * @return
-     * @throws CallingServiceCallException
-     * @deprecated
-     */
-    @Deprecated
-    public CallStatus getCallStatus(Instance instance, Call call)
-            throws CallingServiceCallException {
-        return CALL_RESOURCE.getCall(instance, call).getStatus();
-    }
-    
     public Call getCall(Instance instance, Call call)
             throws CallingServiceCallException {
         return CALL_RESOURCE.getCall(instance, call);

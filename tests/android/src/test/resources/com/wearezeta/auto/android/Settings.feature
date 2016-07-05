@@ -101,7 +101,7 @@ Feature: Settings
     And I confirm sign out
     Then I see welcome screen
     When I sign in using my email
-    # Workaround
+      # Workaround
     And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
 
@@ -125,10 +125,40 @@ Feature: Settings
     And I confirm sign out
     Then I see welcome screen
     When I sign in using my email
-    # Workaround
+      # Workaround
     And I accept First Time overlay as soon as it is visible
     Then I see Contact list with no contacts
 
     Examples:
       | Name      | CurrentEmail | NewEmail   | Password      |
       | user1Name | user1Email   | user2Email | user2Password |
+
+  @C165103 @regression
+  Scenario Outline: Verify I can delete multiple devices without filling password every time
+    Given There is 1 user where <Name> is me
+    Given User <Name> adds new devices Device1,<DeviceToRemove>,<DeviceToRemoveWithoutPassword>,<OtherDevice>,Device5
+    Given I sign in using my email
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with no contacts
+    When I tap conversations list settings button
+    And I select "Devices" settings menu item
+    And I select "<DeviceToRemove>" settings menu item
+    And I select "Remove device" settings menu item
+    And I enter <Password> into the device removal password confirmation dialog
+    And I tap OK button on the device removal password confirmation dialog
+    # Delete device will take time, should verify at first it already return back to device list view, also the list is already updated
+    And I wait for 5 seconds
+    And I see "<DeviceToRemoveWithoutPassword>" settings menu item
+    And I do not see "<DeviceToRemove>" settings menu item
+    # C145960
+    And I select "<DeviceToRemoveWithoutPassword>" settings menu item
+    And I select "Remove device" settings menu item
+    And I see "<OtherDevice>" settings menu item
+    And I do not see "<DeviceToRemoveWithoutPassword>" settings menu item
+    And I press Back button 2 times
+    When I do not see Manage Devices overlay
+    Then I see Contact list with no contacts
+
+    Examples:
+      | Name      | Password      | DeviceToRemoveWithoutPassword | DeviceToRemove | OtherDevice |
+      | user1Name | user1Password | Device2                       | Device3        | Device4     |

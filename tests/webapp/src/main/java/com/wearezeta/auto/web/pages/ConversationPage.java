@@ -160,6 +160,12 @@ public class ConversationPage extends WebPage {
     @FindBy(xpath = WebAppLocators.ConversationPage.xpathXButtonOnLongMWarning)
     private WebElement xButtonOnLongMWarning;
 
+    @FindBy(css = WebAppLocators.ConversationPage.cssSharedLocation)
+    private WebElement locationName;
+
+    @FindBy(xpath = WebAppLocators.ConversationPage.xpathSharedLocationLink)
+    private WebElement locationLink;
+
     public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -423,11 +429,8 @@ public class ConversationPage extends WebPage {
         assert matcher.find() : "Could not find Youtube id in URL: " + url;
         final String id = matcher.group();
 
-        final By locator = By
-                .xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById
-                        .apply(id));
-        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                locator, 5);
+        final By locator = By.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById.apply(id));
+        return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
     }
 
     public void clickPeopleButton() throws Exception {
@@ -679,9 +682,12 @@ public class ConversationPage extends WebPage {
     }
 
     public void clickOnBlackBorder() throws Exception {
-        Actions builder = new Actions(getDriver());
-        builder.moveToElement(fullscreenImage, -10, -10).click().build()
-                .perform();
+        if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
+            Actions builder = new Actions(getDriver());
+            builder.moveToElement(fullscreenImage, -10, -10).click().build().perform();
+        } else {
+            throw new Exception("This browser does not support native mouse actions");
+        }
     }
 
     public void clickGIFButton() throws Exception {
@@ -858,6 +864,12 @@ public class ConversationPage extends WebPage {
 
     public void cancelVideoUpload(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoCancelUpload, fileName));
+        assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No cancel element found for locator " + locator;
+        getDriver().findElement(locator).click();
+    }
+
+    public void cancelVideoDownload(String fileName) throws Exception {
+        By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideoCancelDownload, fileName));
         assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : "No cancel element found for locator " + locator;
         getDriver().findElement(locator).click();
     }
@@ -1128,6 +1140,17 @@ public class ConversationPage extends WebPage {
 
     public void clearConversationInput() throws Exception {
         conversationInput.sendKeys(Keys.BACK_SPACE);
+    }
 
+    public String getLocationName() {
+        return locationName.getText();
+    }
+
+    public String getLocationNameFromLink() {
+        return locationLink.getAttribute("href");
+    }
+
+    public boolean isLocationNotShownInConversationView() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage.cssSharedLocation));
     }
 }

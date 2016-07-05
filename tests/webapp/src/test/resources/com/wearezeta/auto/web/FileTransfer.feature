@@ -107,7 +107,7 @@ Feature: File Transfer
       | Login      | Password      | Name      | Contact   | File        | Size |
       | user1Email | user1Password | user1Name | user2Name | example.txt | 26MB |
 
-  @C82818 @filetransfer @staging
+  @C82818 @filetransfer @mute
   Scenario Outline: Verify error on sender side is shown if upload breaks
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

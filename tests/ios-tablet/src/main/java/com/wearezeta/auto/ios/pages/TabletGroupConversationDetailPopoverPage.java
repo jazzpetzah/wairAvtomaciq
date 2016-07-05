@@ -13,14 +13,8 @@ import org.openqa.selenium.WebElement;
 public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage {
     private static final By nameConversationMenu = MobileBy.AccessibilityId("metaControllerRightButton");
 
-    private static final By nameRenameButtonEllipsisMenu = MobileBy.AccessibilityId("RENAME");
-
     public static final String xpathStrPopover = "//UIAPopover[@visible='true']";
     private static final By xpathPopover = By.xpath(xpathStrPopover);
-
-    private static final By xpathSilenceButtonEllipsisMenu = By.xpath(xpathStrPopover + "//UIAButton[@name='SILENCE']");
-
-    private static final By xpathNotifyButtonEllipsisMenu = By.xpath(xpathStrPopover + "//UIAButton[@name='NOTIFY']");
 
     private static final Function<String, String> xpathStrPopoverParticipantByName = name ->
             String.format("%s//UIAStaticText[@name='%s']/parent::*", xpathStrPopover, name.toUpperCase());
@@ -57,21 +51,12 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
         getElement(locator).click();
     }
 
-    public void pressRenameEllipsesButton() throws Exception {
-        getElement(nameRenameButtonEllipsisMenu).click();
-    }
-
     public boolean isNumberOfPeopleInGroupEqualToExpected(int expectedNumber) throws Exception {
         final By locator = By.xpath(xpathStrGroupCountByNumber.apply(expectedNumber));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public void pressSilenceEllipsisButton() throws Exception {
-        getElement(xpathSilenceButtonEllipsisMenu).click();
+    public void selectEllipsisMenuAction(String actionName) throws Exception {
+        getElement(MobileBy.AccessibilityId(actionName.toUpperCase())).click();
     }
-
-    public void pressNotifyEllipsisButton() throws Exception {
-        getElement(xpathNotifyButtonEllipsisMenu).click();
-    }
-
 }

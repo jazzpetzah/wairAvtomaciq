@@ -628,7 +628,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | GC1       | chrome      | 20      |
 
 
-  @calling @group @calling_debug
+  @C165112 @regression @calling @group @calling_debug
   Scenario Outline: Verify receiving group call during group call
     Given My browser supports calling
     Given There are 5 users where <Name> is me
@@ -641,18 +641,17 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     Then I am signed in properly
     When I open conversation with <ChatName1>
-    And <Contact1>,<Contact2> accept next incoming call automatically
-    Then <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
     And I call
-    Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the outgoing call controls for conversation <ChatName1>
-    And I see joined group call notification for conversation <ChatName1>
+    And <Contact1>,<Contact2> accept next incoming call automatically
+    Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    And I see the ongoing call controls for conversation <ChatName1>
     When <Contact4> calls <ChatName2>
     Then I see the incoming call controls for conversation <ChatName2>
     When I ignore the call from conversation <ChatName2>
-    And I open conversation with <ChatName1>
-    And I see the outgoing call controls for conversation <ChatName1>
+    And I see the ongoing call controls for conversation <ChatName1>
     Then I do not see the incoming call controls for conversation  <ChatName2>
+    And I see the join call controls for conversation <ChatName2>
     When <Contact4> stops calling <ChatName2>
     And <Contact4> calls <ChatName2>
     Then I see the incoming call controls for conversation <ChatName2>
@@ -662,7 +661,7 @@ Feature: Calling
     Then I do not see another call warning modal
     When <Contact4> stops calling <ChatName2>
     And <Contact4> calls <ChatName2>
-    Then I see the incoming call controls for conversation <Contact4>
+    Then I see the incoming call controls for conversation <ChatName2>
     When I accept the call from conversation <ChatName2>
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
@@ -676,9 +675,7 @@ Feature: Calling
     When I click on "Answer" button in another call warning modal
     Then I do not see another call warning modal
     And I see the ongoing call controls for conversation <ChatName2>
-    And I see joined group call notification for conversation <ChatName2>
-    And I do not see joined group call notification for conversation <ChatName1>
-    And I see unjoined group call notification for conversation <ChatName1>
+    And I see the join call controls for conversation <ChatName1>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | ChatName2 | CallBackend | WaitBackend | Timeout |
@@ -785,24 +782,6 @@ Feature: Calling
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 20      |
-
-  @calling
-  Scenario Outline: Verify that outgoing call is terminated after within 1 minute timeout if nobody responds
-    Given My browser supports calling
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    And I am signed in properly
-    And I open conversation with <Contact>
-    When I call
-    And I see the outgoing call controls for conversation <Contact>
-    And I wait for 20 seconds
-    And I do not see the outgoing call controls for conversation <Contact>
-
-    Examples:
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
 
   @C1798 @regression @calling @group @calling_debug
   Scenario Outline: Verify initiator is not a host for the call
@@ -937,7 +916,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | chrome      | 20      |
 
-  @C150016 @staging @calling @group @calling_debug
+  @C150016 @staging @calling @group @calling_debug @WEBAPP-2626
   Scenario Outline: Verify leaving and coming back to the call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -958,16 +937,15 @@ Feature: Calling
     When I join call of conversation <ChatName>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
-    And <Contact1>,<Contact2> verify to have 3 flows
+    And <Contact1>,<Contact2> verify to have 2 flows
     And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
-    And I see the ongoing call controls for conversation <ChatName>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox     | 20      |
 
-  @calling @group @calling_debug
+  @C165123 @staging @calling @group @calling_debug
   Scenario Outline: Verify possibility to join call after 1 minutes of starting it
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -983,14 +961,14 @@ Feature: Calling
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And I see the incoming call controls for conversation <ChatName>
-    And I wait for 20 seconds
+    And I wait for 50 seconds
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    Then I join call of conversation <ChatName>
+    When I accept the call from conversation <ChatName>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    And <Contact1> verify to have 3 flows
-    And <Contact1> verify that all flows have greater than 0 bytes
+    And <Contact1>,<Contact2> verify to have 2 flows
+    And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
     And I see the ongoing call controls for conversation <ChatName>
 
     Examples:
@@ -1032,52 +1010,51 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 20      |
 
 
-  @calling @group @debug
+  @C165115 @regression @calling @group @debug
   Scenario Outline: Verify receiving 1-to-1 call during group call
     Given My browser supports calling
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts instance using <WaitBackend>
-    Given <Contact1>,<Contact2> accept next incoming call automatically
-    Given <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
+    Given <Contact3> starts instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I am signed in properly
     When I open conversation with <ChatName1>
     And I call
-    Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the outgoing call controls for conversation <ChatName1>
-    And I see joined group call notification for conversation <ChatName1>
-    When <Contact3> calls me using <CallBackend>
+    When <Contact1>,<Contact2> accept next incoming call automatically
+    Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    And I see the ongoing call controls for conversation <ChatName1>
+    When <Contact3> calls me
     Then I see the incoming call controls for conversation <Contact3>
     When I ignore the call from conversation <Contact3>
-    Then I see the outgoing call controls for conversation <ChatName1>
+    Then I see the ongoing call controls for conversation <ChatName1>
     Then I do not see the incoming call controls for conversation <Contact3>
-    When <Contact3> stops all calls to me
-    And <Contact3> calls me using <CallBackend>
+    When <Contact3> stops calling me
+    And <Contact3> calls me
     Then I see the incoming call controls for conversation <Contact3>
     When I accept the call from conversation <Contact3>
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    When <Contact3> stops all calls to me
-    And <Contact3> calls me using <CallBackend>
+    When <Contact3> stops calling me
+    And <Contact3> calls me
     Then I see the incoming call controls for conversation <Contact3>
     When I accept the call from conversation <Contact3>
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
-    When <Contact3> stops all calls to me
-    And <Contact3> calls me using <CallBackend>
+    When <Contact3> stops calling me
+    And <Contact3> calls me
+    Then I see the incoming call controls for conversation <Contact3>
     When I accept the call from conversation <Contact3>
     Then I see another call warning modal
     When I click on "Answer" button in another call warning modal
     Then I do not see another call warning modal
-    And I see the incoming call controls for conversation <ChatName1>
-    And I see joined group call notification for conversation <Contact3>
-    And I do not see joined group call notification for conversation <ChatName1>
-    And I see unjoined group call notification for conversation <ChatName1>
+    And I see the ongoing call controls for conversation <Contact3>
+    And I see the join call controls for conversation <ChatName1>
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName1 | CallBackend | WaitBackend | Timeout |
@@ -1102,7 +1079,7 @@ Feature: Calling
     And I click on participant <Contact2> on Group Participants popover
     And I click Remove button on Group Participants popover
     And I confirm remove from group chat on Group Participants popover
-    And I click People button in group conversation
+    And I click back button on Group Participants popover
     Then I see 0 participants in the Group Participants popover
     And I do not see calling button
     When I type shortcut combination to start a call

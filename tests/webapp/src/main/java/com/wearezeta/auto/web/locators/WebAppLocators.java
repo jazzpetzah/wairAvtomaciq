@@ -365,6 +365,12 @@ public final class WebAppLocators {
 
         public static final String cssLastAction = cssLastMessage + " .action";
 
+        //Location sharing
+
+        public static final String cssSharedLocation = ".location-label";
+
+        public static final String xpathSharedLocationLink = "//div[contains(@class, 'location-body')]//a";
+
         // File transfer
 
         public static final String cssFile = "[data-uie-name='file'][data-uie-value='%s']";
@@ -410,6 +416,8 @@ public final class WebAppLocators {
         public static final String cssVideoTime = cssVideo + " [data-uie-name='status-video-time']";
 
         public static final String cssVideoCancelUpload = cssVideo + " .media-button-lg";
+
+        public static final String cssVideoCancelDownload = cssVideo + " [data-uie-name='status-loading-media']";
 
         // images
 
@@ -684,6 +692,10 @@ public final class WebAppLocators {
         public static final String cssEndVideoCallButton = "[data-uie-name='do-call-controls-video-call-cancel']";
 
         public static final String cssMuteCallButton = "[data-uie-name='do-call-controls-video-call-mute']";
+
+        public static final String cssMinimizeVideoCallButton = "[data-uie-name='do-call-controls-video-minimize']";
+
+        public static final String cssMaximizeVideoCallButton = "[data-uie-name='do-call-controls-video-maximize']";
 
         public static final String cssDurationTimer = ".video-timer";
 

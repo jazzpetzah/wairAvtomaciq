@@ -95,7 +95,7 @@ public class PickleJarScanner {
                                 + "Steps: " + Arrays.toString(steps.toArray()) + "\n"
                                 + "Examples: " + Arrays.toString(exampleRowWithHeader.keySet().toArray()) + "\n"
                                 + "Examples: " + Arrays.toString(exampleRowWithHeader.values().toArray()) + "\n"
-                                + "Examples: " + Arrays.toString(scenarioDefinition.getTags().toArray()));
+                                + "Tags: " + scenarioArray[5]);
 
                         scenarios.add(scenarioArray);
                     }
@@ -119,7 +119,7 @@ public class PickleJarScanner {
                         + "ExampleNumber: " + scenarioArray[2] + "\n"
                         + "Steps: " + Arrays.toString(steps.toArray()) + "\n"
                         + "Examples: " + scenarioArray[4] + "\n"
-                        + "Examples: " + scenarioArray[5]);
+                        + "Tags: " + scenarioArray[5]);
 
                 scenarios.add(scenarioArray);
             }

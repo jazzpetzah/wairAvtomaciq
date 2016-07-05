@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
+import com.wearezeta.auto.common.sync_engine_bridge.Constants;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.TouchAction;
@@ -118,6 +119,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameFileTransferButton = MobileBy.AccessibilityId("uploadFileButton");
     private static final By nameVideoMessageButton = MobileBy.AccessibilityId("videoButton");
     private static final By nameAudioMessageButton = MobileBy.AccessibilityId("audioButton");
+    private static final By nameShareLocationButton = MobileBy.AccessibilityId("locationButton");
 
     private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[./UIAButton[@name='Back']]";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
@@ -126,14 +128,12 @@ public class ConversationViewPage extends IOSPage {
     private static Function<String, String> xpathStrToolbarByExpr = expr ->
             String.format("%s/UIAButton[%s]", xpathStrConversationViewTopBar, expr);
 
+    private static final By nameEllipsisButton = MobileBy.AccessibilityId("showOtherRowButton");
     private static final By xpathAudioCallButton = MobileBy.AccessibilityId("audioCallBarButton");
     private static final By xpathVideoCallButton = MobileBy.AccessibilityId("videoCallBarButton");
     private static final By xpathConversationDetailsButton = By.xpath(xpathStrConversationViewTopBar +
             "/UIAButton[@name='Back']/following-sibling::" +
             "UIAButton[not(@name='ConversationBackButton') and boolean(string(@label))]");
-
-    private final By[] inputTools = new By[]{namePingButton, nameCursorSketchButton, nameAddPictureButton,
-            nameFileTransferButton};
 
     private static final By nameToManyPeopleAlert = MobileBy.AccessibilityId("Too many people to call");
 
@@ -189,12 +189,16 @@ public class ConversationViewPage extends IOSPage {
     private static final Function<Integer, String> xpathStrAudioActionButtonByIndex = index ->
             String.format("(//*[@name='%s'])[%s]", strNameAudioActionButton, index);
 
-    private static final Function<String, String> placeholderAudioMessageButtonState = buttonState ->
-            String.format("//UIAButton[@name='%s' and @value='%s']", strNameAudioActionButton, buttonState);
-
     private static final FunctionFor2Parameters<String, String, Integer> placeholderAudioMessageButtonStateByIndex =
             (buttonState, index) ->
-            String.format("(//UIAButton[@name='%s'])[%s][@value='%s']", strNameAudioActionButton, index, buttonState);
+                    String.format("(//UIAButton[@name='%s'])[%s][@value='%s']", strNameAudioActionButton, index, buttonState);
+
+    private static final By classNameShareLocationContainer = MobileBy.className("UIAMapView");
+
+    private static final By nameDefaultShareLocationAddress = MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
+
+    private static final By nameDefaultSimulatorShareLocationAddress = MobileBy.AccessibilityId("1800 Ellis St, San " +
+            "Francisco, CA  94102");
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -566,21 +570,11 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean areInputToolsVisible() throws Exception {
-        for (By inputTool : inputTools) {
-            if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), inputTool, 2)) {
-                return false;
-            }
-        }
-        return true;
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameVideoMessageButton);
     }
 
     public boolean areInputToolsInvisible() throws Exception {
-        for (By inputTool : inputTools) {
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), inputTool, 2)) {
-                return false;
-            }
-        }
-        return true;
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameVideoMessageButton);
     }
 
     public boolean isMissedCallButtonVisibleFor(String username) throws Exception {
@@ -645,21 +639,36 @@ public class ConversationViewPage extends IOSPage {
                 return nameVideoMessageButton;
             case "audio message":
                 return nameAudioMessageButton;
+            case "share location":
+                return nameShareLocationButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
         }
     }
 
     public boolean isInputToolButtonByNameVisible(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getInputToolButtonByName(name));
+        final By locator = getInputToolButtonByName(name);
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)) {
+            return true;
+        } else {
+            DriverUtils.tapOnPercentOfElement(getDriver(), getElement(nameEllipsisButton), 50, 50);
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+        }
     }
 
     public boolean isInputToolButtonByNameNotVisible(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), getInputToolButtonByName(name));
+        final By locator = getInputToolButtonByName(name);
+        if (DriverUtils.waitUntilLocatorDissapears(getDriver(), locator) &&
+                DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEllipsisButton)) {
+            return true;
+        } else {
+            DriverUtils.tapOnPercentOfElement(getDriver(), getElement(nameEllipsisButton), 50, 50);
+            return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3);
+        }
     }
 
     public void tapInputToolButtonByName(String name) throws Exception {
-        getElement(getInputToolButtonByName(name)).click();
+        locateCursorToolButton(getInputToolButtonByName(name)).click();
     }
 
     public boolean waitUntilDownloadReadyPlaceholderVisible(String expectedFileName, String expectedSize,
@@ -745,20 +754,27 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameVideoMessageActionButton);
     }
 
-    public void tapVideoMessageContainerButton() throws Exception {
-        getElement(nameVideoMessageActionButton).click();
+    private WebElement locateCursorToolButton(By locator) throws Exception {
+        final Optional<WebElement> toolButton = getElementIfDisplayed(locator, 3);
+        if (toolButton.isPresent()) {
+            return toolButton.get();
+        } else {
+            DriverUtils.tapOnPercentOfElement(getDriver(), getElement(nameEllipsisButton), 50, 50);
+            return getElement(locator);
+        }
     }
 
     public void longTapInputToolButtonByName(String btnName, boolean shouldKeepTap) throws Exception {
+        final WebElement dstElement = locateCursorToolButton(getInputToolButtonByName(btnName));
         if (shouldKeepTap) {
-            new TouchAction(getDriver()).press(getElement(getInputToolButtonByName(btnName))).perform();
+            new TouchAction(getDriver()).press(dstElement).perform();
         } else {
-            getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), DriverUtils.LONG_TAP_DURATION);
+            getDriver().tap(1, dstElement, DriverUtils.LONG_TAP_DURATION);
         }
     }
 
     public void longTapWithDurationInputToolButtonByName(String btnName, int durationSeconds) throws Exception {
-        getDriver().tap(1, getElement(getInputToolButtonByName(btnName)), durationSeconds * 1000);
+        getDriver().tap(1, locateCursorToolButton(getInputToolButtonByName(btnName)), durationSeconds * 1000);
     }
 
     public boolean isAudioMessageRecordCancelVisible() throws Exception {
@@ -819,6 +835,10 @@ public class ConversationViewPage extends IOSPage {
         getElement(nameAudioActionButton).click();
     }
 
+    public void tapAndHoldLocation() throws Exception {
+        this.getDriver().tap(1, getElement(classNameShareLocationContainer), DriverUtils.LONG_TAP_DURATION);
+    }
+
     public BufferedImage getPlayAudioMessageButtonScreenshot(int placeholderIndex) throws Exception {
         final By locator = By.xpath(xpathStrAudioActionButtonByIndex.apply(placeholderIndex));
         return this.getElementScreenshot(getElement(locator)).orElseThrow(
@@ -848,11 +868,6 @@ public class ConversationViewPage extends IOSPage {
         return getElement(nameAudioPlaceholderTimeLabel).getAttribute("value");
     }
 
-    public boolean isPlaceholderAudioMessageButtonState(String buttonState) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(placeholderAudioMessageButtonState.apply
-                (buttonState)));
-    }
-
     public boolean isPlaceholderAudioMessageButtonState(String buttonState, int index) throws Exception {
         final By locator = By.xpath(placeholderAudioMessageButtonStateByIndex.apply(buttonState, index));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
@@ -880,5 +895,32 @@ public class ConversationViewPage extends IOSPage {
     public boolean isRecordControlButtonState(String buttonState) throws Exception {
         final By locator = By.xpath(recordControlButtonWithState.apply(buttonState));
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isShareLocationContainerVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classNameShareLocationContainer);
+    }
+
+    public boolean isShareLocationContainerNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), classNameShareLocationContainer);
+    }
+
+    public boolean isDefaultShareLocationAddressVisible() throws Exception {
+        // If we share current address from simulator it allways shares constant address from nameDefaultSimulatorShareLocationAddress.
+        // So we verify this address if it was shared by user from conversation view.
+        // We verify nameDefaultShareLocationAddress address if it was shared in preparation step UserXSharesLocationTo.
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSimulatorShareLocationAddress);
+        } else {
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultShareLocationAddress);
+        }
+    }
+
+    public boolean isDefaultShareLocationAddressNotVisible() throws Exception {
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSimulatorShareLocationAddress);
+        } else {
+            return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultShareLocationAddress);
+        }
     }
 }

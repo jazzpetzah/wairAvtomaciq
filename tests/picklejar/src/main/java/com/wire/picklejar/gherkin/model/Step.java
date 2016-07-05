@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import static com.wire.picklejar.gherkin.model.CucumberReport.MAPPER;
+import static com.wire.picklejar.gherkin.model.Result.SKIPPED;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -35,10 +36,10 @@ public class Step implements Serializable {
         this.name = name;
         this.keyword = "And ";
         this.match = new Match();
+        this.result = new Result(1L, SKIPPED, null);
     }
 
     public void setResult(Result result) {
-        System.out.println("setting result for step "+name+" to "+result);
         this.result = result;
     }
 

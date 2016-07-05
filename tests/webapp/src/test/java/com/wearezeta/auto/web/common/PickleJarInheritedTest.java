@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.Map;
 import org.junit.runner.RunWith;
 import com.wire.picklejar.PickleJar;
+import com.wire.picklejar.execution.PickleExecutor;
 import com.wire.picklejar.execution.PickleJarTest;
 import com.wire.picklejar.execution.exception.StepNotExecutableException;
 import com.wire.picklejar.gherkin.model.Result;
+import static com.wire.picklejar.gherkin.model.Result.FAILED;
+import static com.wire.picklejar.gherkin.model.Result.PASSED;
 import com.wire.picklejar.gherkin.model.Step;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Collection;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -39,57 +40,48 @@ public class PickleJarInheritedTest extends PickleJarTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         PickleJarTest.setUpClass();
-        System.out.println("### Before inherited full testrun");
     }
 
     @Before
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        lifecycle = new Lifecycle();
-        lifecycle.setUp(getTestcase());
+        try {
+            lifecycle = new Lifecycle();
+            lifecycle.setUp(getTestcase());
+        } catch (Exception e) {
+            getReportScenario().getSteps().stream().findFirst().ifPresent((s) -> setResult(s, new Result(1L, FAILED,
+                    PickleExecutor.getThrowableStacktraceString(e))));
+            throw e;
+        }
     }
 
     @Test
     @Override
     public void test() throws Throwable {
         super.test();
-        boolean failed = false;
         Throwable ex = null;
         List<Step> reportSteps = getReportScenario().getSteps();
         for (int i = 0; i < getSteps().size(); i++) {
             final String rawStep = getSteps().get(i);
             final Step reportStep = reportSteps.get(i);
-            if (!failed) {
-                try {
-                    long execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.getContext());
-                    reportStep.setResult(new Result(execTime, "passed", null));
-                    byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
-                    saveScreenshot(reportStep, screenshot);
-                } catch (Throwable e) {
-                    long execTime = 1L;
-                    if (e instanceof StepNotExecutableException) {
-                        execTime = ((StepNotExecutableException) e).getExecutionTime();
-                        ex = e.getCause().getCause();
-                    }else{
-                        ex = e;
-                    }
-                    failed = true;
-                    StringWriter sw = new StringWriter();
-                    ex.printStackTrace(new PrintWriter(sw));
-                    String stacktrace = sw.toString();
-                    reportStep.setResult(new Result(execTime, "failed", stacktrace));
-                    byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
-                    saveScreenshot(reportStep, screenshot);
-                    
-                    continue;
+            long execTime = 1L;
+            try {
+                execTime = getPickle().getExecutor().invokeMethodForStep(rawStep, getExampleRow(), lifecycle.getContext());
+                setResult(reportStep, new Result(execTime, PASSED, null));
+            } catch (Throwable e) {
+                ex = e;
+                if (e instanceof StepNotExecutableException) {
+                    execTime = ((StepNotExecutableException) e).getExecutionTime();
+                    ex = PickleExecutor.getLastCause(e);
                 }
-            } else {
-                reportStep.setResult(new Result(1L, "skipped", null));
+                setResult(reportStep, new Result(execTime, FAILED, PickleExecutor.getThrowableStacktraceString(ex)));
             }
-        }
-        if (failed) {
-            throw ex;
+            byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
+            saveScreenshot(reportStep, screenshot);
+            if (ex != null) {
+                throw ex;
+            }
         }
     }
 
@@ -103,7 +95,11 @@ public class PickleJarInheritedTest extends PickleJarTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
         PickleJarTest.tearDownClass();
-        System.out.println("### After inherited full testrun");
+    }
+
+    private void setResult(Step reportStep, Result result) {
+        LOG.info("\n::          {}", result.getStatus().toUpperCase());
+        reportStep.setResult(result);
     }
 
 }

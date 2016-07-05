@@ -429,7 +429,6 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I disable ad banner
     And I am signed in properly
     When I open conversation with <Contact>
     And Contact <Contact> sends 35 messages with prefix <READ> via device Device1 to user <Name>

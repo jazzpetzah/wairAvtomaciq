@@ -205,11 +205,11 @@ public class ConversationViewPageSteps {
      *                        Works with long tap only
      * @param durationSeconds specific time duration you press the button
      * @throws Exception
-     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)?
+     * @step. ^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)?
      * from input tool( without releasing my finger)?s$
      */
-    @When("^I (long )?tap (Add Picture|Ping|Sketch|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)? from input tools( without releasing my finger)?$")
-    public void IPressAddPictureButton(String isLongTap, String btnName, String durationSeconds,
+    @When("^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)? from input tools( without releasing my finger)?$")
+    public void ITapButtonByNameFromInputTools(String isLongTap, String btnName, String durationSeconds,
                                        String shouldKeepTap) throws Exception {
         if (isLongTap == null) {
             getConversationViewPage().tapInputToolButtonByName(btnName);
@@ -923,7 +923,7 @@ public class ConversationViewPageSteps {
                 isYouCalledMessageAndButtonVisible());
     }
 
-    private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
+    private static final double MAX_SIMILARITY_THRESHOLD = 0.98;
 
     /**
      * Verify whether the particular picture is animated
@@ -1210,10 +1210,10 @@ public class ConversationViewPageSteps {
      *
      * @param conversationItem item name
      * @throws Exception
-     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in
+     * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder|location map) in
      * conversation view$")
      */
-    @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder) in conversation view$")
+    @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder|location map) in conversation view$")
     public void ITapAndHoldAudioMessagePlaceholder(String conversationItem) throws Exception {
         switch (conversationItem) {
             case "image":
@@ -1227,6 +1227,9 @@ public class ConversationViewPageSteps {
                 break;
             case "audio message placeholder":
                 getConversationViewPage().tapAndHoldAudioMessage();
+                break;
+            case "location map":
+                getConversationViewPage().tapAndHoldLocation();
                 break;
             default:
                 throw new IllegalArgumentException("Not known conversation item. Please use only items pointed in the step");
@@ -1354,5 +1357,35 @@ public class ConversationViewPageSteps {
     public void IseeRecordToolbarButtonStateIs(String buttonState) throws Exception {
         Assert.assertTrue(String.format("Wrong button state. Expected state is '%s'", buttonState),
                 getConversationViewPage().isRecordControlButtonState(buttonState));
+    }
+
+    /**
+     * Verify visibility of Share Location container
+     *
+     * @param shouldNotSee equals to null if text input should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see Share Location container in the conversation view$
+     */
+    @Then("^I (do not )?see Share Location container in the conversation view$")
+    public void VerifyShareLocationContainerVisibility(String shouldNotSee) throws Exception {
+        boolean condition = (shouldNotSee == null) ? getConversationViewPage().isShareLocationContainerVisible() :
+                getConversationViewPage().isShareLocationContainerNotVisible();
+        Assert.assertTrue(String.format("Share Location container should be %s in the conversation view",
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Verify visibility of default Share Location address
+     *
+     * @param shouldNotSee equals to null if text input should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see the default Share Location address in the conversation view$
+     */
+    @Then("^I (do not )?see the default Share Location address in the conversation view$")
+    public void VerifyShareLocationAddressVisibility(String shouldNotSee) throws Exception {
+        boolean condition = (shouldNotSee == null) ? getConversationViewPage().isDefaultShareLocationAddressVisible() :
+                getConversationViewPage().isDefaultShareLocationAddressNotVisible();
+        Assert.assertTrue(String.format("Share Location address should be %s in the conversation view",
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
 }

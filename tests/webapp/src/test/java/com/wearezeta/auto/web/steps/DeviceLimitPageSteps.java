@@ -13,7 +13,7 @@ import cucumber.api.java.en.When;
 public class DeviceLimitPageSteps {
 
     private final TestContext context;
-    
+
     public DeviceLimitPageSteps() {
         this.context = new TestContext();
     }
@@ -48,12 +48,12 @@ public class DeviceLimitPageSteps {
      */
     @Then("I( do not)? see a device named (.*) with label (.*) under managed devices$")
     public void ISeeACertainDevice(String doNot, String name, String label) throws Exception {
-        if(doNot == null) {
+        if (doNot == null) {
             assertThat(context.getPagesCollection().getPage(DeviceLimitPage.class)
-                    .getDevicesNames(), hasItem(name));
+                    .getDevicesNames(), hasItem(name + context.getTestname().hashCode()));
         } else {
             assertThat(context.getPagesCollection().getPage(DeviceLimitPage.class)
-                    .getDevicesNames(), not(hasItem(name)));
+                    .getDevicesNames(), not(hasItem(name + context.getTestname().hashCode())));
         }
     }
 
@@ -65,17 +65,20 @@ public class DeviceLimitPageSteps {
 
     @Then("I click remove device button for device named (.*) on the device limit page")
     public void IClickRemoveDevice(String deviceName) throws Exception {
-        context.getPagesCollection().getPage(DeviceLimitPage.class).clickRemoveDeviceButton(deviceName);
+        context.getPagesCollection().getPage(DeviceLimitPage.class).clickRemoveDeviceButton(deviceName + context.getTestname().
+                hashCode());
     }
 
     @Then("I click remove button for device named (.*) on the device limit page")
     public void IClickRemove(String deviceName) throws Exception {
-        context.getPagesCollection().getPage(DeviceLimitPage.class).clickRemoveButton(deviceName);
+        context.getPagesCollection().getPage(DeviceLimitPage.class).clickRemoveButton(deviceName + context.getTestname().
+                hashCode());
     }
 
     @Then("I click cancel button for device named (.*) on the device limit page")
     public void IClickCancel(String deviceName) throws Exception {
-        context.getPagesCollection().getPage(DeviceLimitPage.class).clickCancelButton(deviceName);
+        context.getPagesCollection().getPage(DeviceLimitPage.class).clickCancelButton(deviceName + context.getTestname().
+                hashCode());
     }
 
     @Then("I enter password \"([^\"]*)\" to remove device named (.*) on the device limit page")
@@ -85,6 +88,7 @@ public class DeviceLimitPageSteps {
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
-        context.getPagesCollection().getPage(DeviceLimitPage.class).enterPassword(deviceName, password);
+        context.getPagesCollection().getPage(DeviceLimitPage.class).enterPassword(deviceName + context.getTestname().hashCode(),
+                password);
     }
 }

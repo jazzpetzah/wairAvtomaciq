@@ -41,7 +41,7 @@ Feature: Delete Message
     Then I see the message "<Message>" in the conversation view
     When User Myself delete the recent message from user <Contact1> via device <Device>
     Then I do not see the message "<Message>" in the conversation view
-    When I tap back button in upper toolbar
+    When I tap Back button from top toolbar
     And I tap on contact name <GroupChatName>
     And User Myself send encrypted message "<Message>" via device <Device> to group conversation <GroupChatName>
     Then I see the message "<Message>" in the conversation view
@@ -152,11 +152,11 @@ Feature: Delete Message
     And I see Contact list with contacts
     And I tap on contact name <Contact1>
     And User Myself send encrypted message "<Message>" via device <Device> to user <Contact1>
-    And I tap back button in upper toolbar
+    And I tap Back button from top toolbar
     And I tap on contact name <GroupChatName>
     And User Myself send encrypted message "<Message>" via device <Device> to group conversation <GroupChatName>
     # The following step should be delete , which is blocked by AN-3934
-    And I tap back button in upper toolbar
+    And I tap Back button from top toolbar
     And I enable Airplane mode on the device
     And User Myself deletes the recent message from user <Contact1> via device <Device>
     And User Myself deletes the recent message from group conversation <GroupChatName> via device <Device>
@@ -166,7 +166,7 @@ Feature: Delete Message
     # This line also should be deleted when AN-3934 fixed
     And I tap on contact name <GroupChatName>
     Then I do not see the message "<Message>" in the conversation view
-    When I tap back button in upper toolbar
+    When I tap Back button from top toolbar
     And I tap on contact name <Contact1>
     Then I do not see the message "<Message>" in the conversation view
     When I type the message "<Message2>" and send it
@@ -238,7 +238,7 @@ Feature: Delete Message
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
     When I long tap Audio message button <TapDuration> seconds from cursor toolbar
-    And I tap on audio message send button
+    And I tap audio recording Send button
     # Wait for the audio to be fully uploaded
     And I wait for 5 seconds
     And I long tap Audio Message container in the conversation view
@@ -261,7 +261,7 @@ Feature: Delete Message
     Given I tap on contact name <Contact>
     When I enable Airplane mode on the device
     And I long tap Audio message button <TapDuration> seconds from cursor toolbar
-    And I tap on audio message send button
+    And I tap audio recording Send button
     And I long tap Audio Message container in the conversation view
     Then I do not see Copy button on the action mode bar
     When I tap Delete button on the action mode bar

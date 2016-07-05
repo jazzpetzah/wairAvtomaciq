@@ -14,8 +14,12 @@ public final class AndroidLogListener {
     public static final String ADB_PREFIX = "";
 
     public enum ListenerType {
-        DEFAULT(null), PERF("LoadTimeLoggerController");
+        DEFAULT(null),
+        PERF("LoadTimeLoggerController"),
+        ANALYTICS("LoggingTrackingController TrackingController");
 
+        // https://developer.android.com/studio/command-line/logcat.html
+        // Check 'Filtering Log Output' section to know more about the expected string format
         private final String tags;
 
         ListenerType(String tags) {
@@ -80,10 +84,22 @@ public final class AndroidLogListener {
         ).getStdout();
     }
 
+    public void resetStdOut() {
+        this.listener.orElseThrow(
+                () -> new IllegalStateException("The listener has to be started first")
+        ).resetStdOut();
+    }
+
     public String getStdErr() {
         return this.listener.orElseThrow(
                 () -> new IllegalStateException("The listener has to be started first")
         ).getStderr();
+    }
+
+    public void resetStErrt() {
+        this.listener.orElseThrow(
+                () -> new IllegalStateException("The listener has to be started first")
+        ).resetStdErr();
     }
 
     private static boolean isLineSatisfyingPatterns(List<String> patterns, final String line) {

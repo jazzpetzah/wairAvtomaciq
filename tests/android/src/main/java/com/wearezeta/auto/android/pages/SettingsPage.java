@@ -26,8 +26,6 @@ public class SettingsPage extends AndroidPage {
 
     private static final By idPasswordConfirmationInput = By.id("acet__remove_otr__password");
 
-    private static final By xpathConfirmationInputOKButton = By.xpath("//*[starts-with(@id, 'button') and @value='OK']");
-
     private static final By idNameEdit = By.id("edit");
 
     private static final By xpathOKButton = By.xpath("//*[starts-with(@id, 'button') and @value='OK']");
@@ -66,10 +64,6 @@ public class SettingsPage extends AndroidPage {
         getElement(locator, "Log out confirmation is not visible").click();
     }
 
-    public boolean waitUntilPasswordConfirmationIsVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idPasswordConfirmationInput);
-    }
-
     public void enterConfirmationPassword(String password) throws Exception {
         final WebElement confirmationPasswordInput = getElement(idPasswordConfirmationInput);
         confirmationPasswordInput.click();
@@ -77,10 +71,10 @@ public class SettingsPage extends AndroidPage {
     }
 
     public void tapOKButtonOnPasswordConfirmationDialog() throws Exception {
-        final WebElement okBtn = getElement(xpathConfirmationInputOKButton);
-        okBtn.click();
-        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConfirmationInputOKButton, 5)) {
-            okBtn.click();
+        getElement(xpathOKButton).click();
+        // TODO: How to defect that element has changed his location?
+        if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathOKButton, 5)) {
+            DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(), getElement(xpathOKButton), 50, -200);
         }
     }
 

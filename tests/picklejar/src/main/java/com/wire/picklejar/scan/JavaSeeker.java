@@ -29,6 +29,7 @@ public class JavaSeeker {
                 getStandardFileManager(null, null, null);
         final Spliterator<JavaFileObject> classesSpliterator = fileManager.list(StandardLocation.CLASS_PATH, pack, Collections.
                 singleton(JavaFileObject.Kind.CLASS), true).spliterator();
+        LOG.debug("Loading classes...");
         return StreamSupport.stream(classesSpliterator, false)
                 .map(javaFileObject -> {
                     try {
@@ -40,7 +41,7 @@ public class JavaSeeker {
                                 replace(")", "");
                         final String fullClassName = strippedFullClassNamePath.
                                 replaceAll(Pattern.quote(File.separator), ".");
-                        LOG.debug("Loading class: {}", fullClassName);
+                        LOG.trace("Loading class: {}", fullClassName);
                         return Class.forName(fullClassName);
                     } catch (ClassNotFoundException e) {
                         throw new RuntimeException(e);

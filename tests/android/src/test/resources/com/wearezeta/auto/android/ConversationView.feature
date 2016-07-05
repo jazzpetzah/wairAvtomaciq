@@ -10,7 +10,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I tap conversation name from top toolbar
     And I press options menu button
-    And I press SILENCE conversation menu button
+    And I press MUTE conversation menu button
     And I press back button
     And I press back button
     Then Contact <Contact1> is muted
@@ -31,7 +31,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I tap conversation name from top toolbar
     And I press options menu button
-    And I press NOTIFY conversation menu button
+    And I press UNMUTE conversation menu button
     And I press back button
     And I navigate back from dialog page
     Then Contact <Contact1> is not muted
@@ -342,11 +342,11 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     Then I see the upper toolbar
-    And I tap back button in upper toolbar
+    And I tap Back button from top toolbar
     Then I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     Then I see the upper toolbar
-    And I tap back button in upper toolbar
+    And I tap Back button from top toolbar
     Then I see Contact list with contacts
 
     Examples:
@@ -389,7 +389,7 @@ Feature: Conversation View
     And the conversation title should be "<Contact2>"
     And I tap conversation name from top toolbar
     And I press back button
-    When I tap back button in upper toolbar
+    When I tap Back button from top toolbar
     And I tap on contact name <Contact1>
     And User <Contact2> send message "<Message2>" to user Myself
     And I see new message notification "<Message2>"

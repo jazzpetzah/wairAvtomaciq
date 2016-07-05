@@ -107,6 +107,7 @@ Feature: Block
     And I see Blocked Connection popover
     And I tap Unblock button on Blocked Connection popover
     And I do not see Blocked Connection popover
+    And I swipe right to show the conversations list
     Then I verify <Contact> avatar on People Picker page is not the same as the previous one
 
     Examples:
@@ -123,7 +124,7 @@ Feature: Block
     Given I accept First Time overlay as soon as it is visible
     Given I see the Conversations list with no conversations
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
-    Given User <Contact> sends encrypted message "<Message>" to user Myself
+    Given User <Contact> sends encrypted message <Message> to user Myself
     Given I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page

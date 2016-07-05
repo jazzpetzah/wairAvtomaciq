@@ -260,8 +260,6 @@ class Device extends RemoteEntity implements IDevice {
         return null;
     }
 
-    public static final int DEFAULT_GMAP_ZOOM_LEVEL = 14;
-
     @Override
     public void shareLocation(String convId, float lon, float lat, String address, int zoom) throws Exception {
         try {
@@ -279,7 +277,8 @@ class Device extends RemoteEntity implements IDevice {
 
     @Override
     public void shareLocation(String convId) throws Exception {
-        shareLocation(convId, 1.0f, 1.0f, "", DEFAULT_GMAP_ZOOM_LEVEL);
+        shareLocation(convId, Constants.DEFAULT_GMAP_LON, Constants.DEFAULT_GMAP_LAT, Constants.DEFAULT_GMAP_ADDRESS,
+                Constants.DEFAULT_GMAP_ZOOM_LEVEL);
     }
 
     @Override

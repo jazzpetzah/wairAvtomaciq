@@ -1,6 +1,6 @@
 Feature: Delete
 
-  @C111956 @regression
+  @C111956 @regression @CM-1029
   Scenario Outline: Verify I can delete messages in 1:1 and from second device
     Given There are 2 users where <Name> is me
     Given user <Name> adds a new device SecondDevice with label Label1

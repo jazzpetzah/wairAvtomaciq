@@ -37,7 +37,7 @@ public final class CommonCallingSteps2 {
 
     private static final String CALL_BACKEND_VERSION_SEPARATOR = ":";
 
-    private static final String ZCALL_DEFAULT_VERSION = "2.5.7";
+    private static final String ZCALL_DEFAULT_VERSION = "2.5.14";
     private String zcallVersion = ZCALL_DEFAULT_VERSION;
 
     public String getZcallVersion() {
@@ -48,7 +48,7 @@ public final class CommonCallingSteps2 {
         this.zcallVersion = zcallVersion;
     }
 
-    private static final String AUTOCALL_DEFAULT_VERSION = "2.5.7";
+    private static final String AUTOCALL_DEFAULT_VERSION = "2.5.14";
     private String autocallVersion = AUTOCALL_DEFAULT_VERSION;
 
     public String getAutocallVersion() {
@@ -60,7 +60,7 @@ public final class CommonCallingSteps2 {
     }
 
     private static final String FIREFOX_DEFAULT_VERSION = "46.0.1";
-    private static final String CHROME_DEFAULT_VERSION = "51.0.2704.84";
+    private static final String CHROME_DEFAULT_VERSION = "51.0.2704.106";
 
     // Request timeout of 180 secs is set by callingservice, we add additional
     // 10 seconds on the client side to actually get a timeout response to
@@ -127,32 +127,6 @@ public final class CommonCallingSteps2 {
     }
 
     /**
-     * Calls to a given conversation with a given user. Instances are automatically created.
-     * <p>
-     *
-     * @param callerName the name of the caller
-     * @param conversationName the name of the conversation to call
-     * @param instanceType the {@code InstanceType} to call with as String
-     * @throws Exception
-     * @see com.wearezeta.auto.common.calling2.v1.model.InstanceType
-     */
-    @Deprecated
-    public void callToConversation(String callerName, String conversationName,
-            String instanceType) throws Exception {
-        ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
-
-        final String convId = getConversationId(userAs, conversationName);
-
-        Instance instance = client.startInstance(userAs,
-                convertTypeStringToTypeObject(instanceType),
-                ZetaFormatter.getScenario());
-        addInstance(instance, userAs);
-
-        final Call call = client.callToUser(instance, convId);
-        addCall(call, userAs, convId);
-    }
-
-    /**
      * Start video calls to a given conversation with given users. Instances are NOT automatically created.
      * <p>
      *
@@ -170,32 +144,6 @@ public final class CommonCallingSteps2 {
             final Call call = client.videoCallToUser(instance, convId);
             addCall(call, callerUser, convId);
         }
-    }
-
-    /**
-     * Start video calls to a given conversation with a given user. Instances are automatically created.
-     * <p>
-     *
-     * @param callerName the name of the caller
-     * @param conversationName the name of the conversation to call
-     * @param instanceType the {@code InstanceType} to call with as String
-     * @throws Exception
-     * @see com.wearezeta.auto.common.calling2.v1.model.InstanceType
-     */
-    @Deprecated
-    public void startVideoCallToConversation(String callerName, String conversationName,
-            String instanceType) throws Exception {
-        ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
-
-        final String convId = getConversationId(userAs, conversationName);
-
-        Instance instance = client.startInstance(userAs,
-                convertTypeStringToTypeObject(instanceType),
-                ZetaFormatter.getScenario());
-        addInstance(instance, userAs);
-
-        final Call call = client.videoCallToUser(instance, convId);
-        addCall(call, userAs, convId);
     }
 
     /**
@@ -252,23 +200,6 @@ public final class CommonCallingSteps2 {
      * @see com.wearezeta.auto.common.calling2.v1.model.InstanceType
      */
     public void startInstances(List<String> calleeNames, String instanceType) throws Exception {
-        LOG.debug("Creating instances for " + Arrays.toString(calleeNames.toArray()));
-        createInstances(calleeNames, instanceType);
-    }
-
-    /**
-     * Starts one or more calling instances in parallel that can wait for an incoming call and accept it. For accepting an
-     * incoming call with such an instance use the method {@code CommonCallingSteps2#acceptNextCall}.
-     * <p>
-     *
-     * @param calleeNames list of callee names
-     * @param instanceType the {@code InstanceType} to call with as String
-     * @throws Exception
-     * @see com.wearezeta.auto.common.calling2.v1.model.InstanceType
-     * @see #acceptNextCall(java.lang.String)
-     */
-    @Deprecated
-    public void startWaitingInstances(List<String> calleeNames, String instanceType) throws Exception {
         LOG.debug("Creating instances for " + Arrays.toString(calleeNames.toArray()));
         createInstances(calleeNames, instanceType);
     }
@@ -339,20 +270,6 @@ public final class CommonCallingSteps2 {
      * Stops a call of a waiting instance.
      * <p>
      *
-     * @param calleeName the name of the callee
-     * @throws Exception
-     */
-    @Deprecated
-    public void stopWaitingCall(String calleeName) throws Exception {
-        ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
-        client.stopCall(getInstance(userAs),
-                getIncomingCall(userAs));
-    }
-
-    /**
-     * Stops a call of a waiting instance.
-     * <p>
-     *
      * @param calleeNames the names of the callees
      * @throws Exception
      */
@@ -362,23 +279,6 @@ public final class CommonCallingSteps2 {
             client.stopCall(getInstance(userAs),
                     getIncomingCall(userAs));
         }
-    }
-
-    /**
-     * Stops a call to a given conversation.
-     * <p>
-     *
-     * @param callerName the name of the caller
-     * @param conversationName the name of the conversation to stop call to
-     * @throws Exception
-     */
-    @Deprecated
-    public void stopCall(String callerName, String conversationName)
-            throws Exception {
-        ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
-        final String convId = getConversationId(userAs, conversationName);
-        client.stopCall(getInstance(userAs),
-                getOutgoingCall(userAs, convId));
     }
 
     /**

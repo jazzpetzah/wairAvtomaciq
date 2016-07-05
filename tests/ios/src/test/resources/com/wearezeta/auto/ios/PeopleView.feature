@@ -252,7 +252,7 @@ Feature: People View
     And I tap on contact name <Contact>
     And I open conversation details
     And I press conversation menu button
-    And I tap Silence action button
+    And I tap Mute action button
     And I click close user profile page button
     And I navigate back to conversations list
     And I see conversations list
@@ -274,7 +274,7 @@ Feature: People View
     And I tap on contact name <Contact>
     And I open conversation details
     And I press conversation menu button
-    And I tap Notify action button
+    And I tap Unmute action button
     And I click close user profile page button
     And I navigate back to conversations list
     And I see conversations list
@@ -366,7 +366,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ForDeletion   |
 
-  @C1831 @rc @regression @id3972
+  @C1831 @regression @id3972
   Scenario Outline: Verify removing the content and leaving from the group conversation via participant view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

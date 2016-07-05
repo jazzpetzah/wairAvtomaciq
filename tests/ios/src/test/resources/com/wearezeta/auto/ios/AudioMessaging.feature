@@ -14,7 +14,7 @@ Feature: Audio Messaging
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C129327 @C129343 @rc @regression
+  @C129327 @rc @regression
   Scenario Outline: Verify sending voice message by check icon tap and playing it
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -298,7 +298,7 @@ Feature: Audio Messaging
     And I tap on contact name <Contact>
     And I remember media container state
     And I tap media container
-    And I long tap Audio Message button from input tools
+    And I long tap Audio Message button for 5 seconds from input tools
     Then I see audio message record container
     And I see media container state is not changed
 
@@ -326,7 +326,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | Duration |
       | user1Name | user2Name | 20       |
 
-  @C129342 @C129780 @rc @regression
+  @C129342 @rc @regression
   Scenario Outline: Verify playing/pausing a received voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

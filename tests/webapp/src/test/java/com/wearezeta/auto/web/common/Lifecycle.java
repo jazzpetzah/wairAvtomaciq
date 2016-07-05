@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -190,7 +191,7 @@ public class Lifecycle {
     }
     
     private Map<String, String> mapScenario(com.wire.picklejar.gherkin.model.Scenario scenario){
-        HashMap<String, String> stepResultMap = new HashMap<>();
+        Map<String, String> stepResultMap = new LinkedHashMap<>();
         for (Step step : scenario.getSteps()) {
             stepResultMap.put(step.getName(), step.getResult().getStatus());
         }
@@ -217,7 +218,7 @@ public class Lifecycle {
              * #### START ############################################################ COMPATIBILITY INSTRUCTIONS
              */
             try {
-                log.debug("Releasing devices");
+                log.debug("COMPAT: Releasing devices");
                 log.debug(compatContext.getUserManager().getCreatedUsers());
                 compatContext.getDeviceManager().releaseDevicesOfUsers(compatContext.getUserManager().getCreatedUsers());
             } catch (Exception e) {
@@ -242,6 +243,7 @@ public class Lifecycle {
             try {
                 log.debug("Cleaning up calling instances");
                 context.getCallingManager().cleanup();
+                log.debug("COMPAT: Cleaning up calling instances");
                 compatContext.getCallingManager().cleanup();
             } catch (Exception e) {
                 log.warn(e);
@@ -249,6 +251,7 @@ public class Lifecycle {
             try {
                 log.debug("Clearing pages collection");
                 context.getPagesCollection().clearAllPages();
+                log.debug("COMPAT: Clearing pages collection");
                 compatContext.getPagesCollection().clearAllPages();
                 WebPage.clearPagesCollection();
             } catch (Exception e) {
@@ -257,6 +260,7 @@ public class Lifecycle {
             try {
                 log.debug("Resetting users");
                 context.getUserManager().resetUsers();
+                log.debug("COMPAT: Resetting users");
                 compatContext.getUserManager().resetUsers();
             } catch (Exception e) {
                 log.warn(e);
@@ -411,6 +415,8 @@ public class Lifecycle {
         capabilities.setCapability("name", uniqueTestName);
         capabilities.setCapability("resolution", "1280x1024");
         capabilities.setCapability("browserstack.debug", "true");
+        capabilities.setCapability("project", System.getenv("JOB_NAME"));
+        capabilities.setCapability("build", System.getenv("BUILD_NUMBER"));
 
         return capabilities;
     }
