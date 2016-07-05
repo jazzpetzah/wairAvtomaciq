@@ -17,7 +17,6 @@ Feature: Registration
     And I tap Choose My Own button on Unsplash Picture page
     And I select Camera picture source on Unsplash Picture page
     And I tap Take Photo button on Take Picture view
-    And I tap Confirm button on Take Picture view
     Then I see the conversations list with no conversations
 
     Examples:
@@ -41,7 +40,6 @@ Feature: Registration
     And I tap Choose My Own button on Unsplash Picture page
     And I select Camera picture source on Unsplash Picture page
     And I tap Take Photo button on Take Picture view
-    And I tap Confirm button on Take Picture view
     Then I see the conversations list with no conversations
 
     Examples:
