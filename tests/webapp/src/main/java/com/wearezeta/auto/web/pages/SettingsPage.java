@@ -46,6 +46,18 @@ public class SettingsPage extends WebPage {
     @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssImportButton)
     private WebElement importButton;
 
+    @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssBackButton)
+    private WebElement backButton;
+
+    @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssVerificationToggle)
+    private WebElement verificationToggle;
+
+    @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssDeviceIds)
+    private WebElement firstDevice;
+
+    @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssDevices)
+    private List<WebElement> devices;
+
     public SettingsPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
@@ -145,6 +157,7 @@ public class SettingsPage extends WebPage {
     public void clickDevice(String device) throws Exception {
         final String locator = WebAppLocators.SettingsPage.xpathDeviceLabel
                 .apply(device);
+        DriverUtils.waitUntilElementClickable(getDriver(), getDriver().findElement(By.xpath(locator)));
         getDriver().findElement(By.xpath(locator)).click();
     }
 
@@ -175,4 +188,39 @@ public class SettingsPage extends WebPage {
         DriverUtils.waitUntilElementClickable(getDriver(), importButton);
         importButton.click();
     }
+
+    public void clickBackButton() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), backButton);
+        backButton.click();
+    }
+
+    public void verifyDevice() throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), verificationToggle);
+        verificationToggle.click();
+    }
+
+    public boolean waitForDevices() throws Exception {
+        // Unfortunately there is no other workaround than waiting for 1 second
+        Thread.sleep(1000);
+        return DriverUtils.waitUntilElementClickable(this.getDriver(), firstDevice);
+    }
+
+    public List<String> getVerifiedDeviceIds() throws Exception {
+        final By useElement = By.xpath("//*");
+//        final By useElement = By.cssSelector("//use']");
+        final By deviceIdElement = By.cssSelector("[data-uie-name='device-id']");
+        return devices.stream()
+//                .filter(w -> "user-device-verified".equals(w.findElement(useElement).getAttribute("data-uie-name")))
+                .filter(w -> "#icon-verified".equals(w.findElement(useElement).getAttribute("href")))
+                .filter((w) -> {
+                    return true;
+                })
+                .map(w -> w.findElement(deviceIdElement).getText())
+                .filter((did) -> {
+                    return true;
+                })
+                .collect(Collectors.toList());
+    }
+
+
 }
