@@ -322,6 +322,10 @@ public class Lifecycle {
         profile.setPreference("dom.webnotifications.enabled", false);
         // allow skipping the security prompt for sharing the media device
         profile.setPreference("media.navigator.permission.disabled", true);
+        // do not store any form data automatically
+        profile.setPreference("signon.autofillForms", false);
+        profile.setPreference("signon.rememberSignons", false);
+        profile.setPreference("signon.storeWhenAutocompleteOff", false);
         capabilities.setCapability("firefox_profile", profile);
         capabilities.setCapability("marionette", true);
     }
