@@ -19,9 +19,9 @@ public class VoiceFiltersOverlaySteps {
      *
      * @param name one of available button names
      * @throws Exception
-     * @step. ^I tap (Start Recording|Stop Recording|Confirm|Redo) button on Voice Filters overlay$
+     * @step. ^I tap (Start Recording|Stop Recording|Confirm|Redo|Cancel) button on Voice Filters overlay$
      */
-    @When("^I tap (Start Recording|Stop Recording|Confirm|Redo) button on Voice Filters overlay$")
+    @When("^I tap (Start Recording|Stop Recording|Confirm|Redo|Cancel) button on Voice Filters overlay$")
     public void ITapButton(String name) throws Exception {
         getVoiceFiltersOverlay().tapButton(name);
     }
