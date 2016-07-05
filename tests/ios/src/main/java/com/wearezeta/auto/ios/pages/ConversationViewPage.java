@@ -893,6 +893,9 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isDefaultShareLocationAddressVisible() throws Exception {
+        // If we share current address from simulator it allways shares constant address from nameDefaultSimulatorShareLocationAddress.
+        // So we verify this address if it was shared by user from conversation view.
+        // We verify nameDefaultShareLocationAddress address if it was shared in preparation step UserXSharesLocationTo.
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
             return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSimulatorShareLocationAddress);
         } else {
