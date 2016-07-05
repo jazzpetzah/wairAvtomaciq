@@ -59,5 +59,3 @@ Feature: Voice Filters
     Examples:
       | Name      | Contact   | ButtonsCount |
       | user1Name | user2Name | 1            |
-
-
