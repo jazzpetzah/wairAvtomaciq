@@ -53,3 +53,22 @@ Feature: Share Location
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C165126 @staging
+  Scenario Outline: Verify sending location from a map view (group conversation)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>, <Contact2>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on group chat with name <GroupChatName>
+    And I tap Share Location button from input tools
+    # Small delay waiting location detection animation to finish
+    And I wait for 5 seconds
+    And I tap Send location button from map view
+    Then I see Share Location container in the conversation view
+    And I see the default Share Location address in the conversation view
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | ShareInGroup  |
