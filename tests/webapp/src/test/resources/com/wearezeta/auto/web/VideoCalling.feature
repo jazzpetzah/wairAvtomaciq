@@ -110,18 +110,24 @@ Feature: VideoCalling
     And I am signed in properly
     And I open conversation with <Contact>
     When I start a video call
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see my self video view
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
-    And I end the video call
-    Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
-    And <Contact> accepts next incoming video call automatically
-    When I start a video call
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    When I end the video call
+    Then I do not see my self video view
+    And <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+    When <Contact> accepts next incoming video call automatically
+    And I start a video call
+    Then I see my self video view
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
-    And I end the video call
+    When I end the video call
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+    And I do not see my self video view
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
