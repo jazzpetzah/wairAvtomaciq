@@ -1378,21 +1378,13 @@ public class ConversationViewPageSteps {
      * Verify visibility of default Share Location address
      *
      * @param shouldNotSee equals to null if text input should be visible
-     * @param isSimulator  equal to null if it is not Simulator
      * @throws Exception
-     * @step. ^I (do not )?see the default (Simulator )?Share Location address in the conversation view$
+     * @step. ^I (do not )?see the default Share Location address in the conversation view$
      */
-    @Then("^I (do not )?see the default (Simulator )?Share Location address in the conversation view$")
-    public void VerifyShareLocationAddressVisibility(String shouldNotSee, String isSimulator) throws Exception {
-        boolean condition;
-        if (isSimulator == null) {
-            condition = (shouldNotSee == null) ? getConversationViewPage().isDefaultShareLocationAddressVisible() :
-                    getConversationViewPage().isDefaultShareLocationAddressNotVisible();
-        } else {
-            condition = (shouldNotSee == null) ? getConversationViewPage()
-                    .isDefaultSimulatorShareLocationAddressVisible() :
-                    getConversationViewPage().isDefaultSimulatorShareLocationAddressNotVisible();
-        }
+    @Then("^I (do not )?see the default Share Location address in the conversation view$")
+    public void VerifyShareLocationAddressVisibility(String shouldNotSee) throws Exception {
+        boolean condition = (shouldNotSee == null) ? getConversationViewPage().isDefaultShareLocationAddressVisible() :
+                getConversationViewPage().isDefaultShareLocationAddressNotVisible();
         Assert.assertTrue(String.format("Share Location address should be %s in the conversation view",
                 (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }

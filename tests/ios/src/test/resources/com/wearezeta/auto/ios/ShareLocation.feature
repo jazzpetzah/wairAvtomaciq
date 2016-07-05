@@ -44,11 +44,11 @@ Feature: Share Location
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Share Location button from input tools
-    # Small delay for current location detection
+    # Small delay waiting location detection animation to finish
     And I wait for 5 seconds
     And I tap Send location button from map view
     Then I see Share Location container in the conversation view
-    And I see the default Simulator Share Location address in the conversation view
+    And I see the default Share Location address in the conversation view
 
     Examples:
       | Name      | Contact   |

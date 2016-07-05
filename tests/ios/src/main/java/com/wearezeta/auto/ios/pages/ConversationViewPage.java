@@ -197,8 +197,8 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameDefaultShareLocationAddress = MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
 
-    private static final By nameDefaultSimulatorShareLocationAddress = MobileBy.AccessibilityId(Constants
-            .DEFAULT_SIMULATOR_GMAP_ADDRESS);
+    private static final By nameDefaultSimulatorShareLocationAddress = MobileBy.AccessibilityId("1800 Ellis St, San " +
+            "Francisco, CA  94102");
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -893,18 +893,18 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isDefaultShareLocationAddressVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultShareLocationAddress);
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSimulatorShareLocationAddress);
+        } else {
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultShareLocationAddress);
+        }
     }
 
     public boolean isDefaultShareLocationAddressNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultShareLocationAddress);
-    }
-
-    public boolean isDefaultSimulatorShareLocationAddressVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSimulatorShareLocationAddress);
-    }
-
-    public boolean isDefaultSimulatorShareLocationAddressNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultSimulatorShareLocationAddress);
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSimulatorShareLocationAddress);
+        } else {
+            return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultShareLocationAddress);
+        }
     }
 }
