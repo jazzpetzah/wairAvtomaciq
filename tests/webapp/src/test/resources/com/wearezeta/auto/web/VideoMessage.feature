@@ -120,11 +120,12 @@ Feature: Video Message
     When I open conversation with <ChatName>
     And <Contact1> sends <Size> sized video with name <File> via device Device1 to group conversation <ChatName>
     Then I see video message <File> in the conversation view
-    And I wait until video <File> is downloaded and starts to play
+    And I wait until video <File> is uploaded completely
+    And I see play button of video <File> in the conversation view
     When I click play button of video <File> in the conversation view
     Then I cancel video download of video <File>
     And I see play button of video <File> in the conversation view
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | File        | ChatName  | Size  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | example.mp4 | GroupChat | 15MB  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | example.mp4 | GroupChat | 10MB  |

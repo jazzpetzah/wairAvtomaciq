@@ -60,7 +60,6 @@ public enum Browser {
 	public boolean isSupportingConsoleLogManagement() {
 		switch (this) {
 		case Chrome:
-		case Firefox:
 		case Opera:
 		case Safari:
 			return true;
@@ -102,7 +101,6 @@ public enum Browser {
 	public boolean isSupportingNativeMouseActions() {
 		switch (this) {
 		case Chrome:
-		case Firefox:
 		case Opera:
 			return true;
 		default:
@@ -110,9 +108,9 @@ public enum Browser {
 		}
 	}
 
-	public boolean isSupportingDiabledButtonDetection() {
+	public boolean isSupportingGetCssValue() {
 		switch (this) {
-		case Safari:
+		case Firefox:
 			return false;
 		default:
 			return true;

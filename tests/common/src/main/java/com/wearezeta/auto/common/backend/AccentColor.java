@@ -82,7 +82,7 @@ public enum AccentColor {
 
 	private static String rgbaToHexColor(String colorRgba) {
 		Pattern pattern = Pattern
-				.compile("^rgba\\((\\d+), (\\d+), (\\d+).*\\)$");
+				.compile("^rgba?\\((\\d+), (\\d+), (\\d+).*\\)$");
 		Matcher matcher = pattern.matcher(colorRgba);
 		Integer red = 255;
 		Integer green = 255;

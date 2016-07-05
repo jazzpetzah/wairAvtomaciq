@@ -70,7 +70,8 @@ Feature: Localization
     And I click gear button on self profile page
     And I select <SupportButton> menu item on self profile page
     And I switch to support page tab
-    Then I see a title <PageTitle> on the page
+    Then I see ask support link
+    And I see a title <PageTitle> on the page
     And I see a placeholder <SearchFieldPlaceholder> on the page
     And I see localized <Language> support page
 

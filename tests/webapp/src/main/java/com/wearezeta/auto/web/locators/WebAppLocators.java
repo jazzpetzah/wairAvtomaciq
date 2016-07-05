@@ -59,8 +59,9 @@ public final class WebAppLocators {
         public static final String cssParentContactListItem = "#conversation-list";
         public static final String cssParentArchiveListItem = "#archive";
 
-        public static final String cssIncomingPendingConvoItem = cssParentContactListItem
-                + " [data-uie-name='item-pending-requests']";
+        public static final String cssIncomingPendingConvoItem = "[data-uie-name='item-pending-requests']";
+        public static final String cssSelectedIncomingPendingConvoItem = ".conversation-list-item.text-theme " +
+                cssIncomingPendingConvoItem;
 
         public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
@@ -91,6 +92,11 @@ public final class WebAppLocators {
                                 "div[data-uie-name='item-call'][data-uie-value='%s']",
                         cssParentContactListItem, name,
                         cssParentContactListItem, name);
+
+        public static final Function<String, String> cssSelectedContactListEntryByName = (
+                name) -> String
+                .format(".conversation-list-item.text-theme div[data-uie-name='item-conversation'][data-uie-value='%s'], " +
+                                "div[data-uie-name='item-call'][data-uie-value='%s'].text-theme", name, name);
 
         public static final Function<String, String> cssOptionsButtonByContactName = (
                 name) -> String
@@ -792,5 +798,9 @@ public final class WebAppLocators {
     public static final class PhoneNumberLoginPage {
 
         public static final String cssErrorMessage = "#login-method-phone [data-uie-name='status-error']";
+    }
+
+    public static final class HistoryInfoPage {
+        public static final String cssConfirmButton = "[data-uie-name='do-history-confirm']";
     }
 }
