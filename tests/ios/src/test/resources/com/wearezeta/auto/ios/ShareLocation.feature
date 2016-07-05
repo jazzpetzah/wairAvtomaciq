@@ -36,7 +36,7 @@ Feature: Share Location
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C165104 @C165105 @staging
+  @C165104 @C165105 @staging @torun
   Scenario Outline: Verify sending location from a map view (1to1)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
