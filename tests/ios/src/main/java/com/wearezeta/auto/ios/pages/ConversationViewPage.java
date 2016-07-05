@@ -641,11 +641,24 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isInputToolButtonByNameVisible(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getInputToolButtonByName(name));
+        final By locator = getInputToolButtonByName(name);
+        if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)) {
+            return true;
+        } else {
+            DriverUtils.tapOnPercentOfElement(getDriver(), getElement(nameEllipsisButton), 50, 50);
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
+        }
     }
 
     public boolean isInputToolButtonByNameNotVisible(String name) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), getInputToolButtonByName(name));
+        final By locator = getInputToolButtonByName(name);
+        if (DriverUtils.waitUntilLocatorDissapears(getDriver(), locator) &&
+                DriverUtils.waitUntilLocatorDissapears(getDriver(), nameEllipsisButton)) {
+            return true;
+        } else {
+            DriverUtils.tapOnPercentOfElement(getDriver(), getElement(nameEllipsisButton), 50, 50);
+            return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3);
+        }
     }
 
     public void tapInputToolButtonByName(String name) throws Exception {
