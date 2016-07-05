@@ -435,7 +435,6 @@ public class ConversationPage extends WebPage {
 
     public void sendPicture(String pictureName) throws Exception {
         final String picturePath = WebCommonUtils.getFullPicturePath(pictureName);
-        moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendImageInput);
         if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
             WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver().getNodeIp());
         } else {
@@ -445,7 +444,6 @@ public class ConversationPage extends WebPage {
             // manually trigger change event on input until https://bugzilla.mozilla.org/show_bug.cgi?id=1280947 is fixed
             this.getDriver().executeScript("evt = new Event('change');arguments[0].dispatchEvent(evt);", imagePathInput);
         }
-        moveCssSelectorOutOfViewport(WebAppLocators.ConversationPage.cssSendImageInput);
     }
 
     private void hoverOverConversation() throws Exception {
@@ -458,29 +456,13 @@ public class ConversationPage extends WebPage {
         }
     }
 
-    public void moveCssSelectorIntoViewport(String selector) throws Exception {
-        WebElement element = getDriver().findElement(By.cssSelector(selector));
-        final String showPathInputJScript = "arguments[0].style.left='200px';arguments[0].style.zIndex='100';";
-        getDriver().executeScript(showPathInputJScript, element);
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(selector)) : "Could not move element "
-                + "with selector " + selector + " into viewport";
-    }
-
-    public void moveCssSelectorOutOfViewport(String selector) throws Exception {
-        WebElement element = getDriver().findElement(By.cssSelector(selector));
-        final String showPathInputJScript = "arguments[0].style.left='-300px';arguments[0].style.zIndex='0';";
-        getDriver().executeScript(showPathInputJScript, element);
-    }
-
     public void sendFile(String fileName) throws Exception {
         final String filePath = WebCommonUtils.getFullFilePath("filetransfer/" + fileName);
-        moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendFileInput);
         filePathInput.sendKeys(filePath);
         if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
             // manually trigger change event on input until https://bugzilla.mozilla.org/show_bug.cgi?id=1280947 is fixed
             this.getDriver().executeScript("evt = new Event('change');arguments[0].dispatchEvent(evt);", filePathInput);
         }
-        moveCssSelectorOutOfViewport(WebAppLocators.ConversationPage.cssSendFileInput);
     }
 
     public double getOverlapScoreOfLastImage(String pictureName)

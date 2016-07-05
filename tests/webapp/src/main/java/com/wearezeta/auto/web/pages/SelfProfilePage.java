@@ -265,15 +265,12 @@ public class SelfProfilePage extends WebPage {
 	public void uploadPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
-		if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
-			this.getDriver().executeScript("arguments[0].style.left='0';arguments[0].style.opacity='100';arguments[0].style" +
-					".zIndex='100';", chooseYourOwnInput);
-		}
 		if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
-			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
-					.getNodeIp());
+			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver().getNodeIp());
 		} else {
 			selectPictureInput.sendKeys(picturePath);
+		}
+		if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
 			// manually trigger change event on input
 			this.getDriver().executeScript("evt = new Event('change');arguments[0].dispatchEvent(evt);", chooseYourOwnInput);
 		}
