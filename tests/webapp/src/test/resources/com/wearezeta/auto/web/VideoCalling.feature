@@ -13,7 +13,9 @@ Feature: VideoCalling
     And I am signed in properly
     And I open conversation with <Contact>
     When I start a video call
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see my self video view
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     When I end the video call
@@ -39,7 +41,9 @@ Feature: VideoCalling
     And I see decline call button for conversation <Contact>
     And I see my self video view
     And I accept the call from conversation <Contact>
-    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    Then I see my self video view
+    And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     When I end the video call
@@ -146,7 +150,9 @@ Feature: VideoCalling
     And I am signed in properly
     And I open conversation with <Contact>
     When I start a video call
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see my self video view
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     And I wait for 60 seconds
@@ -247,7 +253,9 @@ Feature: VideoCalling
 # 30 minutes
     And I wait for 60 seconds
     And I see end video call button
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see my self video view
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     And I end the video call
@@ -294,7 +302,9 @@ Feature: VideoCalling
     And I am signed in properly
     When I open conversation with <Contact>
     And I start a video call
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see my self video view
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     When I see mute button on video call page is not pressed
@@ -323,8 +333,10 @@ Feature: VideoCalling
     And I see mute button for conversation <Contact> is not pressed
     Then I click mute call button for conversation <Contact>
     And I see mute button for conversation <Contact> is pressed
-    And <Contact> accepts next incoming video call automatically
+    When <Contact> accepts next incoming video call automatically
+    Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     When I see mute button on video call page is pressed
@@ -355,8 +367,10 @@ Feature: VideoCalling
     And I click Video Call button on People Picker page
     Then I see the outgoing call controls for conversation <Contact>
     When <Contact> accepts next incoming video call automatically
-    Then I see the ongoing call controls for conversation <Contact>
+    Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see the ongoing call controls for conversation <Contact>
+    And I see video call is maximized
     And <Contact> verifies to have 1 flow
     And <Contact> verifies that all flows have greater than 0 bytes
     When I end the video call
@@ -406,7 +420,9 @@ Feature: VideoCalling
     Then I do not see the call controls for conversation <Contact>
     And I open conversation with <Contact>
     When I start a video call
-    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    Then I see my self video view
+    And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     When I end the video call
@@ -460,7 +476,11 @@ Feature: VideoCalling
     And I am signed in properly
     Then I see the incoming call controls for conversation <Contact>
     And I accept the call from conversation <Contact>
-    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    Then I see my self video view
+    And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And I see video call is maximized
+    And <Contact> verify to have 1 flows
+    And <Contact> verify that all flows have greater than 0 bytes
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
 
