@@ -119,6 +119,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameFileTransferButton = MobileBy.AccessibilityId("uploadFileButton");
     private static final By nameVideoMessageButton = MobileBy.AccessibilityId("videoButton");
     private static final By nameAudioMessageButton = MobileBy.AccessibilityId("audioButton");
+    private static final By nameShareLocationButton = MobileBy.AccessibilityId("locationButton");
 
     private static final String xpathStrConversationViewTopBar = "//UIANavigationBar[./UIAButton[@name='Back']]";
     private static final By xpathConversationViewTopBar = By.xpath(xpathStrConversationViewTopBar);
@@ -195,6 +196,9 @@ public class ConversationViewPage extends IOSPage {
     private static final By classNameShareLocationContainer = MobileBy.className("UIAMapView");
 
     private static final By nameDefaultShareLocationAddress = MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
+
+    private static final By nameDefaultSimulatorShareLocationAddress = MobileBy.AccessibilityId("1800 Ellis St, San " +
+            "Francisco, CA  94102");
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -635,6 +639,8 @@ public class ConversationViewPage extends IOSPage {
                 return nameVideoMessageButton;
             case "audio message":
                 return nameAudioMessageButton;
+            case "share location":
+                return nameShareLocationButton;
             default:
                 throw new IllegalArgumentException(String.format("Unknown input tools button name %s", btnName));
         }
@@ -896,14 +902,25 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isShareLocationContainerNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultShareLocationAddress);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), classNameShareLocationContainer);
     }
 
     public boolean isDefaultShareLocationAddressVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultShareLocationAddress);
+        // If we share current address from simulator it allways shares constant address from nameDefaultSimulatorShareLocationAddress.
+        // So we verify this address if it was shared by user from conversation view.
+        // We verify nameDefaultShareLocationAddress address if it was shared in preparation step UserXSharesLocationTo.
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSimulatorShareLocationAddress);
+        } else {
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultShareLocationAddress);
+        }
     }
 
     public boolean isDefaultShareLocationAddressNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultShareLocationAddress);
+        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSimulatorShareLocationAddress);
+        } else {
+            return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultShareLocationAddress);
+        }
     }
 }
