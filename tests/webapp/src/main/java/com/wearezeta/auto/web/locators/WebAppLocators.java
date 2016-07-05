@@ -799,4 +799,8 @@ public final class WebAppLocators {
 
         public static final String cssErrorMessage = "#login-method-phone [data-uie-name='status-error']";
     }
+
+    public static final class HistoryInfoPage {
+        public static final String cssConfirmButton = "[data-uie-name='do-history-confirm']";
+    }
 }
