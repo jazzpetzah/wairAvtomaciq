@@ -107,7 +107,7 @@ public class SettingsPage extends WebPage {
 
     public void setSoundAlertsLevel(SoundAlertsLevel newLevel) throws Exception {
         assert SoundAlertsLevel.values().length > 1;
-        if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
+        if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
             final Actions builder = new Actions(this.getDriver());
             final int width = soundAlertsLevel.getSize().width;
             final int height = soundAlertsLevel.getSize().height;
@@ -119,16 +119,17 @@ public class SettingsPage extends WebPage {
                     .moveToElement(soundAlertsLevel, dstX, dstY).release()
                     .build().perform();
         } else {
-            // Workaround for browsers, which don't support native events
-            // TODO: workaround should be clicking instead of sliding and not JS
-            final String[] sliderMoveCode = new String[]{
-                    "$(\"" + WebAppLocators.SettingsPage.cssSoundAlertsLevel
-                            + "\").val(" + newLevel.getIntRepresenation()
-                            + ");",
-                    "wire.app.view.content.self_profile.user_repository.save_property_sound_alerts('"
-                            + newLevel.toString().toLowerCase() + "');"};
-            this.getDriver().executeScript(
-                    StringUtils.join(sliderMoveCode, "\n"));
+            if (WebAppExecutionContext.getBrowser().isSupportingAccessToJavascriptContext()) {
+                // Workaround for browsers, which don't support native events
+                final String[] sliderMoveCode = new String[]{"$(\"" + WebAppLocators.SettingsPage.cssSoundAlertsLevel + "\")" +
+                        ".val(" + newLevel.getIntRepresenation() + ");", "wire.app.view.content.self_profile.user_repository" +
+                        ".save_property_sound_alerts('" + newLevel.toString().toLowerCase() + "');"};
+                this.getDriver().executeScript(
+                        StringUtils.join(sliderMoveCode, "\n"));
+            } else {
+                throw new Exception("Geckodriver is unable to access script context in Firefox < 48. See https://bugzilla" +
+                        ".mozilla.org/show_bug.cgi?id=1123506");
+            }
         }
     }
 
