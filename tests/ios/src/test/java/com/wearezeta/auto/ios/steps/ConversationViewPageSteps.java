@@ -1388,4 +1388,31 @@ public class ConversationViewPageSteps {
         Assert.assertTrue(String.format("Share Location address should be %s in the conversation view",
                 (shouldNotSee == null) ? "visible" : "invisible"), condition);
     }
+
+    /**
+     * Tap the share location map
+     *
+     * @throws Exception
+     * @step. ^I tap on location map in conversation view
+     */
+    @When("^I tap on location map in conversation view$")
+    public void ITapOnLocationMapInConversationView() throws Throwable {
+        getConversationViewPage().tapLocationContainer();
+    }
+
+    /**
+     * Verify visibility of default Map application
+     *
+     * @param shouldNotSee equals to null if object should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see map application is opened$
+     */
+    @Then("^I (do not )?see map application is opened$")
+    public void VerifyMapDefaultApplicationVisibility(String shouldNotSee) throws Throwable {
+        boolean condition = (shouldNotSee == null) ? getConversationViewPage().isDefaultMapApplicationVisible() :
+                getConversationViewPage().isDefaultMapApplicationNotVisible();
+        Assert.assertTrue(String.format("Default map application should be %s ",
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+
+    }
 }
