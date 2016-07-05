@@ -323,6 +323,7 @@ public class Lifecycle {
         // allow skipping the security prompt for sharing the media device
         profile.setPreference("media.navigator.permission.disabled", true);
         capabilities.setCapability("firefox_profile", profile);
+        capabilities.setCapability("marionette", true);
     }
 
     private static void setCustomSafariProfile(DesiredCapabilities capabilities) {

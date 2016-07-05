@@ -24,7 +24,7 @@ Feature: Search
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   @C1723 @regression
-  Scenario Outline: Verify the new conversation is created on the other end (Search UI source)
+  Scenario Outline: Verify the new conversation is created on the other end from Search UI
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page

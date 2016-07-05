@@ -3,19 +3,17 @@ package com.wearezeta.auto.web.steps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.WebPage;
+import com.wearezeta.auto.web.pages.external.StartPage;
+import com.wearezeta.auto.web.pages.external.SupportPage;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.web.common.WebAppConstants;
-import com.wearezeta.auto.web.pages.external.StartPage;
-
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -184,6 +182,11 @@ public class StartPageSteps {
 	@Then("I switch to support page tab$")
 	public void ISwitchToSupportPageTab() throws Exception {
 		context.getPagesCollection().getPage(StartPage.class).switchToSupportPageTab();
+	}
+
+	@Then("I see ask support link")
+	public void ISeeAskSupportLink() throws Exception {
+		assertTrue("No 'Ask Support' link", context.getPagesCollection().getPage(SupportPage.class).isAskSupportVisible());
 	}
 
 	@Then("^I see localized (.*) support page$")

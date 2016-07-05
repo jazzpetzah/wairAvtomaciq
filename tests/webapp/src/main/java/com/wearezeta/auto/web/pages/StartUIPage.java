@@ -134,10 +134,8 @@ public class StartUIPage extends WebPage {
 	}
 
 	public void searchForUser(String name) throws Exception {
-		if (!WebCommonUtils.isElementFocused(this.getDriver(),
-				WebAppLocators.StartUIPage.cssNameSearchInput)) {
-			WebCommonUtils.setFocusToElement(this.getDriver(),
-					WebAppLocators.StartUIPage.cssNameSearchInput);
+		if (!WebCommonUtils.isElementFocused(this.getDriver(), searchInput)) {
+			WebCommonUtils.setFocusToElement(this.getDriver(), searchInput);
 		}
 		searchInput.sendKeys(name);
 	}

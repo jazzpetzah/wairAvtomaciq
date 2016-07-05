@@ -128,6 +128,7 @@ Feature: E2EE
     And I navigate to download page
     And User <Name> removes all his registered OTR clients
     And I navigate to previously remembered page
+    And I see Sign In page
     And I enter email "<Email>"
     And I enter password "<Password>"
     And I press Sign In button

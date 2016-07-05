@@ -54,19 +54,11 @@ public class WelcomePage extends WebPage {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
 		if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
-			this.getDriver()
-					.executeScript(
-							"$(\""
-									+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
-									+ "\").css({'left': '0', 'opacity': '100', 'z-index': '100'});");
+			this.getDriver().executeScript("arguments[0].style.left='0';arguments[0].style.opacity='100';arguments[0].style.zIndex='100';", chooseYourOwnInput);
 		}
 		chooseYourOwnInput.sendKeys(picturePath);
 		// manually trigger change event on input
-		this.getDriver()
-				.executeScript(
-						"e = $.Event('change');$(\""
-								+ WebAppLocators.SelfPictureUploadPage.cssChooseYourOwnInput
-								+ "\").trigger(e);");
+		this.getDriver().executeScript("evt = new Event('change');arguments[0].dispatchEvent(evt);", chooseYourOwnInput);
 	}
 
 	public void keepPicture() throws Exception {
