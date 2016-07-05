@@ -39,7 +39,7 @@ public class ConversationPage extends WebPage {
     private static final int TIMEOUT_I_SEE_MESSAGE = 20; // seconds
     private static final int TIMEOUT_IMAGE_MESSAGE_UPLOAD = 40; // seconds
     private static final int TIMEOUT_FILE_UPLOAD = 100; // seconds
-    private static final int TIMEOUT_VIDEO_UPLOAD = 100; // seconds
+    private static final int TIMEOUT_VIDEO_UPLOAD = 120; // seconds
     private static final int TIMEOUT_AUDIO_UPLOAD = 100; // seconds
 
     private static final Logger log = ZetaLogger.getLog(ConversationPage.class
