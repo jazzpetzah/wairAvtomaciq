@@ -309,11 +309,6 @@ public class ConversationViewPageSteps {
         IClickPopupPasteAndCommitText();
     }
 
-    @When("^I tap media container$")
-    public void ITapMediaContainer() throws Throwable {
-        getConversationViewPage().startMediaContent();
-    }
-
     @When("^I scroll media out of sight until media bar appears$")
     public void IScrollMediaOutOfSightUntilMediaBarAppears() throws Exception {
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
@@ -437,11 +432,6 @@ public class ConversationViewPageSteps {
                 getConversationViewPage().isLastMessageContain(link));
         Assert.assertTrue("View did not scroll back", getConversationViewPage()
                 .isMediaContainerVisible());
-    }
-
-    @When("I tap and hold image to open full screen")
-    public void ITapImageToOpenFullScreen() throws Throwable {
-        getConversationViewPage().tapImageToOpen();
     }
 
     @Then("^I navigate back to conversations list")
@@ -982,6 +972,8 @@ public class ConversationViewPageSteps {
         }
     }
 
+    //toremove
+
     /**
      * Tap the most recent visible transfer placeholder
      *
@@ -1209,31 +1201,41 @@ public class ConversationViewPageSteps {
      * Long tap on a conversation view item
      *
      * @param conversationItem item name
+     * @param isLongTap        equals to null if simple tap should be performed
+     *                         Works with long tap only
      * @throws Exception
      * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder|location map) in
      * conversation view$")
      */
-    @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder|location map) in conversation view$")
-    public void ITapAndHoldAudioMessagePlaceholder(String conversationItem) throws Exception {
+    @When("^I (long )?tap on (image|media container|file transfer placeholder|audio message placeholder|location map) in conversation view$")
+    public void ITapAndHoldAudioMessagePlaceholder(String isLongTap, String conversationItem) throws Exception {
+        FunctionalInterfaces.RunnableWithException tapFunc;
         switch (conversationItem) {
             case "image":
-                getConversationViewPage().tapHoldImageWithRetry();
+                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapImageToOpen : null;
                 break;
             case "media container":
-                getConversationViewPage().tapAndHoldMediaContainer();
-                break;
-            case "file transfer placeholder":
-                getConversationViewPage().tapAndHoldFileTransferPlaceholder();
-                break;
-            case "audio message placeholder":
-                getConversationViewPage().tapAndHoldAudioMessage();
+                tapFunc = (isLongTap == null) ? getConversationViewPage()::startMediaContent :
+                        getConversationViewPage()::tapAndHoldMediaContainer;
                 break;
             case "location map":
-                getConversationViewPage().tapAndHoldLocation();
+                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapLocationContainer :
+                        getConversationViewPage()::tapAndHoldLocation;
+                break;
+            case "file transfer placeholder":
+                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapFileTransferPlaceholder : null;
+                break;
+            case "audio message placeholder":
+                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapAndHoldAudioMessage : null;
                 break;
             default:
                 throw new IllegalArgumentException("Not known conversation item. Please use only items pointed in the step");
+
         }
+        if (tapFunc == null) {
+            throw new IllegalArgumentException("Not known tap function. Please check if missing function implementation");
+        }
+        tapFunc.run();
     }
 
     /**
@@ -1390,29 +1392,14 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Tap the share location map
-     *
-     * @throws Exception
-     * @step. ^I tap on location map in conversation view
-     */
-    @When("^I tap on location map in conversation view$")
-    public void ITapOnLocationMapInConversationView() throws Throwable {
-        getConversationViewPage().tapLocationContainer();
-    }
-
-    /**
      * Verify visibility of default Map application
      *
-     * @param shouldNotSee equals to null if object should be visible
      * @throws Exception
-     * @step. ^I (do not )?see map application is opened$
+     * @step. ^I see map application is opened$
      */
-    @Then("^I (do not )?see map application is opened$")
-    public void VerifyMapDefaultApplicationVisibility(String shouldNotSee) throws Throwable {
-        boolean condition = (shouldNotSee == null) ? getConversationViewPage().isDefaultMapApplicationVisible() :
-                getConversationViewPage().isDefaultMapApplicationNotVisible();
-        Assert.assertTrue(String.format("Default map application should be %s ",
-                (shouldNotSee == null) ? "visible" : "invisible"), condition);
-
+    @Then("^I see map application is opened$")
+    public void VerifyMapDefaultApplicationVisibility() throws Throwable {
+        Assert.assertTrue(String.format("Default map application' is not visible"),
+                getConversationViewPage().isDefaultMapApplicationVisible());
     }
 }

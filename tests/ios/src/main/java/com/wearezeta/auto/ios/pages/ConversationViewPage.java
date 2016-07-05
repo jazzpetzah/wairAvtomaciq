@@ -196,8 +196,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameDefaultShareLocationAddress = MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
 
-    private static final Function<String, String> xpathDefaultMapApplication = appName ->
-            String.format("//UIAApplication[@name='%s']", appName);
+    private static final String xpathDefaultMapApplication = "//UIAApplication[@name='Maps']";
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -915,12 +914,8 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isDefaultMapApplicationVisible() throws Exception {
-        final By locator = By.xpath(xpathDefaultMapApplication.apply(Constants.DEFAULT_IOS_MAP_APPLICATION));
+        final By locator = By.xpath(xpathDefaultMapApplication);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isDefaultMapApplicationNotVisible() throws Exception {
-        final By locator = By.xpath(xpathDefaultMapApplication.apply(Constants.DEFAULT_IOS_MAP_APPLICATION));
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
-    }
 }

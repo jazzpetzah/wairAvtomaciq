@@ -239,7 +239,7 @@ Feature: Audio Messaging
     And I tap Play audio message button
     # Wait until the audio is downloaded and starts playback
     And I wait for <AudioDownloadTimeout> seconds
-    And I tap media container
+    And I tap on media container in conversation view
     Then I verify the state of Pause button on audio message placeholder is not changed
 
     Examples:
@@ -297,7 +297,7 @@ Feature: Audio Messaging
     When User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     And I tap on contact name <Contact>
     And I remember media container state
-    And I tap media container
+    And I tap on media container in conversation view
     And I long tap Audio Message button for 5 seconds from input tools
     Then I see audio message record container
     And I see media container state is not changed
@@ -360,7 +360,7 @@ Feature: Audio Messaging
     And I tap on contact name <Contact>
     And User Me sends 1 encrypted message to user <Contact>
     And I remember media container state
-    And I tap media container
+    And I tap on media container in conversation view
     And I see media container state is changed
     And I remember media container state
     And I tap Play audio message button

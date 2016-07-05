@@ -27,7 +27,7 @@ Feature: Conversation View
     And I choose a picture from camera roll
     And I confirm my choice
     And I see 1 photo in the conversation view
-    And I tap and hold image to open full screen
+    And I tap on image in conversation view
     And I see Full Screen Page opened
     And I see sender first name <Name> on fullscreen page
     And I see send date on fullscreen page
@@ -55,7 +55,7 @@ Feature: Conversation View
     And I choose a picture from camera roll
     And I confirm my choice
     And I see 1 photo in the conversation view
-    And I tap and hold image to open full screen
+    And I tap on image in conversation view
     And I see Full Screen Page opened
     And I see sender first name <Name> on fullscreen page
     And I see send date on fullscreen page
@@ -116,7 +116,7 @@ Feature: Conversation View
     And I choose a picture from camera roll
     And I confirm my choice
     And I see 1 photo in the conversation view
-    And I tap and hold image to open full screen
+    And I tap on image in conversation view
     And I see Full Screen Page opened
     And I rotate UI to portrait
     Then I see Full Screen Page opened
@@ -341,7 +341,7 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
     And I see 1 photo in the conversation view
-    And I tap and hold image to open full screen
+    And I tap on image in conversation view
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
@@ -365,7 +365,7 @@ Feature: Conversation View
     Given I see conversations list
     Given User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     And I see 1 photo in the conversation view
-    And I tap and hold image to open full screen
+    And I tap on image in conversation view
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
@@ -429,7 +429,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     Then I see 1 photo in the conversation view
     And I see the picture in the conversation view is animated
-    When I tap and hold image to open full screen
+    When I tap on image in conversation view
     Then I see the picture on image fullscreen page is animated
 
     Examples:

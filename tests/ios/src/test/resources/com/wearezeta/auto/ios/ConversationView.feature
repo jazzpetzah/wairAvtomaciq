@@ -165,7 +165,7 @@ Feature: Conversation View
     And I choose a picture from camera roll
     And I confirm my choice
     And I see 1 photo in the conversation view
-    And I tap and hold image to open full screen
+    And I tap on image in conversation view
     And I see Full Screen Page opened
     And I see sender first name <Name> on fullscreen page
     And I see send date on fullscreen page
@@ -189,7 +189,7 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     And I tap on contact name <Contact>
     And I see 1 photo in the conversation view
-    And I tap and hold image to open full screen
+    And I tap on image in conversation view
     And I see Full Screen Page opened
     When I rotate UI to landscape
     Then I see Full Screen Page opened
@@ -288,7 +288,7 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
     And I see 1 photo in the conversation view
-    And I tap and hold image to open full screen
+    And I tap on image in conversation view
     And I see Full Screen Page opened
     And I press Sketch button on image fullscreen page
     And I draw a random sketch
@@ -431,7 +431,7 @@ Feature: Conversation View
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     When I tap on contact name <Contact>
     And I see 1 photo in the conversation view
-    And I tap and hold image to open full screen
+    And I tap on image in conversation view
     And I see Full Screen Page opened
     And I see download button shown on fullscreen page
     And I tap download button on fullscreen page
@@ -599,13 +599,13 @@ Feature: Conversation View
     Given I see conversations list
     When I tap on contact name <Contact>
     Then I see 1 photo in the conversation view
-    When I tap and hold image to open full screen
+    When I tap on image in conversation view
     Then I see Full Screen Page opened
     And I tap close fullscreen page button
-    When I tap and hold image to open full screen
+    When I tap on image in conversation view
     Then I see Full Screen Page opened
     And I tap close fullscreen page button
-    When I tap and hold image to open full screen
+    When I tap on image in conversation view
     Then I see Full Screen Page opened
 
     Examples:

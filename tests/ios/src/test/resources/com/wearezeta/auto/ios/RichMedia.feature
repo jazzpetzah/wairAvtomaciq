@@ -27,7 +27,7 @@ Feature: Rich Media
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I tap on text input
-    And I tap media container
+    And I tap on media container in conversation view
     And I scroll media out of sight until media bar appears
     And I pause playing the media in media bar
     Then I see media is paused on Media Bar
@@ -50,7 +50,7 @@ Feature: Rich Media
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     When I tap on contact name <Contact>
     And I scroll to the bottom of the conversation
-    And I tap media container
+    And I tap on media container in conversation view
     And I scroll media out of sight until media bar appears
     And I tap on the media bar
     Then I see conversation view is scrolled back to the playing media link <SoundCloudLink>
@@ -69,7 +69,7 @@ Feature: Rich Media
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact>
     And I tap on contact name <Contact>
     And I scroll to the bottom of the conversation
-    When I tap media container
+    When I tap on media container in conversation view
     And I scroll media out of sight until media bar appears
     Then I wait up to 35 seconds for media bar to disappear
 
@@ -87,7 +87,7 @@ Feature: Rich Media
     Given User <Name> sends encrypted message "<SoundCloudLink>" to user <Contact1>
     When I tap on contact name <Contact1>
     And I scroll to the bottom of the conversation
-    And I tap media container
+    And I tap on media container in conversation view
     When I scroll media out of sight until media bar appears
     And I scroll to the bottom of the conversation
     Then I dont see media bar on dialog page
@@ -108,11 +108,11 @@ Feature: Rich Media
     Given User Myself sends 40 encrypted messages to user <Contact2>
     Given User Myself sends encrypted message "<SoundCloudLink>" to user <Contact2>
     When I tap on contact name <Contact1>
-    And I tap media container
+    And I tap on media container in conversation view
     And I navigate back to conversations list
     And I tap Pause button in conversations list next to <Contact1>
     And I tap on contact name <Contact2>
-    And I tap media container
+    And I tap on media container in conversation view
     And I navigate back to conversations list
     And I tap Pause button in conversations list next to <Contact2>
     And I tap on contact name <Contact2>
@@ -133,7 +133,7 @@ Feature: Rich Media
     Given User <Contact> sends encrypted message "<SoundCloudLink>" to user Myself
     When I tap on contact name <Contact>
     And I remember media container state
-    And I tap media container
+    And I tap on media container in conversation view
     And I navigate back to conversations list
     And I wait for 1 second
     And I tap Pause button in conversations list next to <Contact>

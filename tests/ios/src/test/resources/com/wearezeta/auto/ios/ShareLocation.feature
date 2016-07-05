@@ -1,6 +1,6 @@
 Feature: Share Location
 
-  @C150025 @C150026 @staging
+  @C150025 @C150026 @regression
   Scenario Outline: Map is shown in the conversation view
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
