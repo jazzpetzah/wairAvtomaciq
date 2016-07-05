@@ -126,4 +126,14 @@ public enum Browser {
 				return false;
 		}
 	}
+
+	public boolean isSupportingAccessToJavascriptContext() {
+		switch (this) {
+			case Chrome:
+			case Opera:
+				return true;
+			default:
+				return false;
+		}
+	}
 }
