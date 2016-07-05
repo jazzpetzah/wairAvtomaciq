@@ -72,3 +72,20 @@ Feature: Share Location
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ShareInGroup  |
+
+  @C150032 @staging
+  Scenario Outline: Verify copying and pasting the shared location
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given User <Contact> shares the default location to user Myself via device <DeviceName>
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I long tap on location map in conversation view
+    And I tap on Copy badge item
+    And I paste and commit the text
+    Then I verify that pasted message contains <ExpectedText>
+
+    Examples:
+      | Name      | Contact   | DeviceName | ExpectedText |
+      | user1Name | user2Name | device1    | Wirestan     |
