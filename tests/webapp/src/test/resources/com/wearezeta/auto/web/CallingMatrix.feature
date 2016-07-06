@@ -334,3 +334,61 @@ Feature: Calling_Matrix
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.46  | zcall:2.2.38 | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.38  | zcall:2.2.38 | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.38  | zcall:2.2.46 | 30      |
+
+  @C5370 @calling_matrix @calling
+  Scenario Outline: Verify I can create, leave and rejoin a group call with <WaitBackend>
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts instance using <WaitBackend>
+    Given <Contact1>,<Contact2> accept next incoming call automatically
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <ChatName>
+    When I call
+    And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    And I see the ongoing call controls for conversation <ChatName>
+    When I hang up call with conversation <ChatName>
+    And I see the join call controls for conversation <ChatName>
+    And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    When I join call of conversation <ChatName>
+    And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    And I see the ongoing call controls for conversation <ChatName>
+    And <Contact1>,<Contact2> verify to have 2 flows
+    And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend          | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome:51.0.2704.106 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome:50.0.2661.75  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:46.0.1       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:45.0.1       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:44.0.2       | 30      |
+
+  @C5370 @calling_matrix @calling
+  Scenario Outline: Verify I can create, leave and rejoin a group call with AVS <WaitBackend>
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts instance using <WaitBackend>
+    Given <Contact1>,<Contact2> accept next incoming call automatically
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I am signed in properly
+    And I open conversation with <ChatName>
+    When I call
+    And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    And I see the ongoing call controls for conversation <ChatName>
+    When I hang up call with conversation <ChatName>
+    And I see the join call controls for conversation <ChatName>
+    And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    When I join call of conversation <ChatName>
+    And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    And I see the ongoing call controls for conversation <ChatName>
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend  | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:2.5.14 | 30      |

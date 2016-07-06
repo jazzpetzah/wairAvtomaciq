@@ -24,9 +24,9 @@ Feature: File Transfer
     # And I verify the downloaded file is the same as the uploaded file <File>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Size  | Type |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 0B    | TXT  |
-      | user1Email | user1Password | user1Name | user2Name | example.zip | 512KB | ZIP  |
+      | Login      | Password      | Name      | Contact   | File       | Size  | Type |
+      | user1Email | user1Password | user1Name | user2Name | C82815.txt | 0B    | TXT  |
+      | user1Email | user1Password | user1Name | user2Name | C82815.zip | 512KB | ZIP  |
 
   @C95632 @filetransfer @regression
   Scenario Outline: Verify file can be uploaded and re-downloaded by sender himself in group
@@ -53,9 +53,9 @@ Feature: File Transfer
   # And I verify the downloaded file is the same as the uploaded file <File>
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | File           | Size  | Type   | ChatName          |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | example.txt    | 0B    | TXT    | SendFileGroupChat |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | example.tar.gz | 512KB | TAR.GZ | SendFileGroupChat |
+      | Login      | Password      | Name      | Contact1  | Contact2  | File          | Size  | Type   | ChatName          |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | C95632.txt    | 0B    | TXT    | SendFileGroupChat |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | C95632.tar.gz | 512KB | TAR.GZ | SendFileGroupChat |
 
   @C82816 @filetransfer @regression
   Scenario Outline: Verify big file can be uploaded and re-downloaded by sender himself in 1:1
@@ -84,8 +84,8 @@ Feature: File Transfer
   # And I verify the downloaded file is the same as the uploaded file <File>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Type | Size |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | TXT  | 24MB |
+      | Login      | Password      | Name      | Contact   | File       | Type | Size |
+      | user1Email | user1Password | user1Name | user2Name | C82816.txt | TXT  | 24MB |
 
   @C82817 @filetransfer @regression
   Scenario Outline: Verify warning is shown if file size is too big
@@ -104,8 +104,8 @@ Feature: File Transfer
     And I do not see file transfer for file <File> in the conversation view
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Size |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 26MB |
+      | Login      | Password      | Name      | Contact   | File       | Size |
+      | user1Email | user1Password | user1Name | user2Name | C82817.txt | 26MB |
 
   @C82818 @filetransfer @mute
   Scenario Outline: Verify error on sender side is shown if upload breaks
@@ -123,8 +123,8 @@ Feature: File Transfer
     Then I verify status of file <File> is UPLOAD FAILED in the conversation view
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Size |
-      | user1Email | user1Password | user1Name | user2Name | example.jpg | 24MB |
+      | Login      | Password      | Name      | Contact   | File       | Size |
+      | user1Email | user1Password | user1Name | user2Name | C82818.jpg | 24MB |
 
   @C82819 @filetransfer @regression
   Scenario Outline: Verify re-download is possible on sender side if download is interrupted
@@ -146,8 +146,8 @@ Feature: File Transfer
     # Then I verify the downloaded file is the same as the uploaded file <File>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Size | Type |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 24MB | TXT  |
+      | Login      | Password      | Name      | Contact   | File       | Size | Type |
+      | user1Email | user1Password | user1Name | user2Name | C82819.txt | 24MB | TXT  |
 
   @C82822 @filetransfer @regression
   Scenario Outline: Verify sender is able to cancel upload
@@ -185,8 +185,8 @@ Feature: File Transfer
     Then I do not see file transfer for file <File> in the conversation view
 
     Examples:
-      | Login      | Password      | Name      | Contact2  | File        | Size | Login2     | Password2     |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 24MB | user2Email | user2Password |
+      | Login      | Password      | Name      | Contact2  | File       | Size | Login2     | Password2     |
+      | user1Email | user1Password | user1Name | user2Name | C82822.txt | 24MB | user2Email | user2Password |
 
   @C87933 @filetransfer @regression
   Scenario Outline: Verify file can be downloaded and decrypted by receiver in 1:1
@@ -210,8 +210,8 @@ Feature: File Transfer
   # And I verify the downloaded file is the same as the uploaded file <File>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Size | Type |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 15MB | TXT  |
+      | Login      | Password      | Name      | Contact   | File       | Size | Type |
+      | user1Email | user1Password | user1Name | user2Name | C87933.txt | 15MB | TXT  |
 
   @C95631 @filetransfer @regression
   Scenario Outline: Verify file can be downloaded and decrypted by receiver in group
@@ -236,8 +236,8 @@ Feature: File Transfer
   # And I verify the downloaded file is the same as the uploaded file <File>
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | File        | Size | Type | ChatName  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | example.txt | 24MB | TXT  | GroupChat |
+      | Login      | Password      | Name      | Contact1  | Contact2  | File       | Size | Type | ChatName  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | C95631.txt | 24MB | TXT  | GroupChat |
 
   @C95630 @filetransfer @regression
   Scenario Outline: Verify file can be downloaded and decrypted by sender on second device
@@ -262,5 +262,5 @@ Feature: File Transfer
 # And I verify the downloaded file is the same as the uploaded file <File>
 
     Examples:
-      | Login      | Password      | Name      | Contact   | File        | Size | Type |
-      | user1Email | user1Password | user1Name | user2Name | example.txt | 15MB | TXT  |
+      | Login      | Password      | Name      | Contact   | File       | Size | Type |
+      | user1Email | user1Password | user1Name | user2Name | C95630.txt | 15MB | TXT  |

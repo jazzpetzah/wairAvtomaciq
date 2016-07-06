@@ -90,8 +90,7 @@ public class RegistrationPage extends WebPage {
 	}
 
 	public String getEnteredName() throws Exception {
-		return getDriver().executeScript(
-				"return $('#wire-register-name').val()").toString();
+		return nameField.getAttribute("value");
 	}
 
 	public void enterEmail(String email) throws Exception {
@@ -101,8 +100,7 @@ public class RegistrationPage extends WebPage {
 	}
 
 	public String getEnteredEmail() throws Exception {
-		return getDriver().executeScript(
-				"return $('#wire-register-email').val()").toString();
+		return emailField.getAttribute("value");
 	}
 
 	public void enterPassword(String password) throws Exception {
@@ -127,6 +125,8 @@ public class RegistrationPage extends WebPage {
 	}
 
 	public String getVerificationEmailAddress() throws Exception {
+		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.RegistrationPage
+				.cssVerificationEmail));
 		return verificationEmail.getText();
 	}
 

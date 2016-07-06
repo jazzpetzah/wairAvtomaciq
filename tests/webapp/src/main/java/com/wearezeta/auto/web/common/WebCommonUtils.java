@@ -194,17 +194,14 @@ public class WebCommonUtils extends CommonUtils {
 		}
 	}
 
-	public static boolean isElementFocused(RemoteWebDriver driver,
-			String cssLocator) {
-		final String isFocusedScript = "return $(\"" + cssLocator
-				+ "\").is(':focus');";
-		return (Boolean) driver.executeScript(isFocusedScript);
+	public static boolean isElementFocused(RemoteWebDriver driver, WebElement element) {
+		final String isFocusedScript = "return arguments[0] === document.activeElement;";
+		return (Boolean) driver.executeScript(isFocusedScript, element);
 	}
 
-	public static void setFocusToElement(RemoteWebDriver driver,
-			String cssLocator) {
-		final String setFocusScript = "$(\"" + cssLocator + "\").focus();";
-		driver.executeScript(setFocusScript);
+	public static void setFocusToElement(RemoteWebDriver driver, WebElement element) {
+		final String setFocusScript = "arguments[0].focus();";
+		driver.executeScript(setFocusScript, element);
 	}
 
 	private static void openNewTabInSafari(String url, String nodeIp)

@@ -9,6 +9,7 @@ import com.wearezeta.auto.web.locators.PopoverLocators;
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -35,7 +36,8 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 	public void setConversationTitle(String newTitle) {
 		conversationTitle.click();
 		conversationTitleInput.clear();
-		conversationTitleInput.sendKeys(newTitle + "\n");
+		conversationTitleInput.sendKeys(newTitle);
+		conversationTitleInput.sendKeys(Keys.ENTER);
 	}
 
 	public void clickLeaveGroupChat() {

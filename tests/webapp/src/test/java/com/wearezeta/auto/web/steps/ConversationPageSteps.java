@@ -109,15 +109,24 @@ public class ConversationPageSteps {
     public void IPasteMessageFromFile(String file) throws Exception {
         String s = WebCommonUtils.getTextFromFile(file);
         String message = "";
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (c == '\n') {
-                message = message + Keys.chord(Keys.SHIFT, Keys.ENTER);
-            } else {
-                message = message + c;
+        if(WebAppExecutionContext.getBrowser().isSupportingKeys()) {
+            for (int i = 0; i < s.length(); i++) {
+                char c = s.charAt(i);
+                if (c == '\n') {
+                    message = message + Keys.chord(Keys.SHIFT, Keys.ENTER);
+                } else {
+                    message = message + c;
+                }
             }
+        } else {
+            message = s;
         }
-        context.getPagesCollection().getPage(ConversationPage.class).writeNewMessage(message);
+        int index = 0;
+        while (index < message.length()) {
+            String chunk = message.substring(index, Math.min(index + 100, message.length()));
+            context.getPagesCollection().getPage(ConversationPage.class).writeNewMessage(chunk);
+            index += 100;
+        }
     }
 
     /**
@@ -131,7 +140,11 @@ public class ConversationPageSteps {
     public void IWriteXNewLines(int amount) throws Exception {
         String message = "";
         for (int i = 0; i < amount; i++) {
-            message = message + Keys.chord(Keys.SHIFT, Keys.ENTER);
+            if(WebAppExecutionContext.getBrowser().isSupportingKeys()) {
+                message = message + Keys.chord(Keys.SHIFT, Keys.ENTER);
+            } else {
+                message = message + "\n";
+            }
         }
         context.getPagesCollection().getPage(ConversationPage.class).writeNewMessage(message);
     }

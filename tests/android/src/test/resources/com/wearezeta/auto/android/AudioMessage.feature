@@ -267,3 +267,28 @@ Feature: Audio Message
     Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
+
+  @C165127 @C165128 @C165137 @staging
+  Scenario Outline: Single tap on mic button open voice recording dialog
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When I tap Audio message button from cursor toolbar
+    # C165127
+    Then I see Voice filters overlay
+    When I tap Start Record button on Voice filters overlay
+    And I wait for <MessageDuration> seconds
+    And I tap Stop Record button on Voice filters overlay
+    And I tap the 3rd Filter button on Voice filters overlay
+    # C165137
+    Then I see voice graph on Voice filters overlay
+    When I tap Approve button on Voice filters overlay
+    # C165128
+    Then I see Audio Message container in the conversation view
+
+    Examples:
+      | Name      | Contact   | MessageDuration |
+      | user1Name | user2Name | 5               |

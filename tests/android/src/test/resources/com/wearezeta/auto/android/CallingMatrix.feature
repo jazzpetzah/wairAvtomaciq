@@ -50,6 +50,7 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact   | CallBackend    | Timeout |
+      | user1Name | user2Name | zcall:2.5.7    | 20      |
       | user1Name | user2Name | zcall:2.4.5    | 20      |
       | user1Name | user2Name | zcall:2.3.8    | 20      |
 
@@ -104,6 +105,7 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | CallBackend      | Timeout |
+      | user1Name | user2Name | autocall:2.5.7   | 60      |
       | user1Name | user2Name | autocall:2.4.5   | 60      |
       | user1Name | user2Name | autocall:2.3.8   | 60      |
 
@@ -157,6 +159,7 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend   | Timeout |
+      | user1Name | user2Name | user3Name | GroupCall     | zcall:2.5.7   | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | zcall:2.4.5   | 20      |
       | user1Name | user2Name | user3Name | GroupCall     | zcall:2.3.8   | 20      |
 
@@ -220,6 +223,12 @@ Feature: Calling Matrix
       | user1Name | user2Name | user3Name | GroupCall     | firefox:46.0.1      | 20      | autocall:2.4.5 |
       | user1Name | user2Name | user3Name | GroupCall     | firefox:45.0.1      | 20      | autocall:2.4.5 |
       | user1Name | user2Name | user3Name | GroupCall     | firefox:44.0.2      | 20      | autocall:2.4.5 |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:50.0.2661.75 | 20      | autocall:2.5.7 |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:49.0.2623.75 | 20      | autocall:2.5.7 |
+      | user1Name | user2Name | user3Name | GroupCall     | chrome:47.0.2526.73 | 20      | autocall:2.5.7 |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:46.0.1      | 20      | autocall:2.5.7 |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:45.0.1      | 20      | autocall:2.5.7 |
+      | user1Name | user2Name | user3Name | GroupCall     | firefox:44.0.2      | 20      | autocall:2.5.7 |
 
   @calling_matrix
   Scenario Outline: Verify I can join group call with ZCall <WaitBackend> and <CallBackend>
@@ -243,7 +252,12 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend      | Timeout | WaitBackend |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.5.7   | 20      | zcall:2.5.7 |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.5.7   | 20      | zcall:2.4.5 |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.5.7   | 20      | zcall:2.3.8 |
       | user1Name | user2Name | user3Name | GroupCall     | autocall:2.4.5   | 20      | zcall:2.4.5 |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.4.5   | 20      | zcall:2.5.7 |
+      | user1Name | user2Name | user3Name | GroupCall     | autocall:2.3.8   | 20      | zcall:2.5.7 |
       | user1Name | user2Name | user3Name | GroupCall     | autocall:2.3.8   | 20      | zcall:2.3.8 |
       | user1Name | user2Name | user3Name | GroupCall     | autocall:2.4.5   | 20      | zcall:2.3.8 |
       | user1Name | user2Name | user3Name | GroupCall     | autocall:2.3.8   | 20      | zcall:2.4.5 |
@@ -268,6 +282,7 @@ Feature: Calling Matrix
 
     Examples:
       | Name      | Contact   | CallBackend       | Timeout |
+      | user1Name | user2Name | autocall:2.5.7    | 20      |
       | user1Name | user2Name | autocall:2.4.5    | 20      |
       | user1Name | user2Name | autocall:2.3.8    | 20      |
 
@@ -345,3 +360,4 @@ Feature: Calling Matrix
       | Name      | Contact   | CallBackend    | Timeout |
       | user1Name | user2Name | autocall:2.3.8 | 20      |
       | user1Name | user2Name | autocall:2.4.5 | 20      |
+      | user1Name | user2Name | autocall:2.5.7 | 20      |

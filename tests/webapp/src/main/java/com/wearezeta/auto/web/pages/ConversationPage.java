@@ -10,36 +10,10 @@ import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
-
-import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
-
 import cucumber.api.PendingException;
-
-import java.awt.image.BufferedImage;
-import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
-import org.openqa.selenium.InvalidElementStateException;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
+import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -49,12 +23,24 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.awt.image.BufferedImage;
+import java.time.Instant;
+import java.util.*;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
+
 public class ConversationPage extends WebPage {
 
     private static final int TIMEOUT_I_SEE_MESSAGE = 20; // seconds
+    private static final int TIMEOUT_LONG_MESSAGE = 30; // seconds
     private static final int TIMEOUT_IMAGE_MESSAGE_UPLOAD = 40; // seconds
     private static final int TIMEOUT_FILE_UPLOAD = 100; // seconds
-    private static final int TIMEOUT_VIDEO_UPLOAD = 100; // seconds
+    private static final int TIMEOUT_VIDEO_UPLOAD = 120; // seconds
     private static final int TIMEOUT_AUDIO_UPLOAD = 100; // seconds
 
     private static final Logger log = ZetaLogger.getLog(ConversationPage.class
@@ -192,21 +178,7 @@ public class ConversationPage extends WebPage {
     }
 
     public void writeNewMessage(String message) throws Exception {
-        if (WebAppExecutionContext.getBrowser()
-                .equals(Browser.InternetExplorer)) {
-            // IE11 has a bug that sends the form when pressing SHIFT+ENTER
-            message = message
-                    .replace(Keys.chord(Keys.SHIFT, Keys.ENTER), "\\n");
-            String addMessageToInput = "var a=arguments[0];a.value=a.value+'"
-                    + message + "';";
-            JavascriptExecutor js = (JavascriptExecutor) getDriver();
-            js.executeScript(addMessageToInput, conversationInput);
-            // since we did not press any keys, we fake input by sending a space
-            // and then removing it again
-            conversationInput.sendKeys(" " + Keys.BACK_SPACE);
-        } else {
-            conversationInput.sendKeys(message);
-        }
+        conversationInput.sendKeys(message);
     }
 
     public void sendNewMessage() {
@@ -450,13 +422,15 @@ public class ConversationPage extends WebPage {
 
     public void sendPicture(String pictureName) throws Exception {
         final String picturePath = WebCommonUtils.getFullPicturePath(pictureName);
-        moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendImageInput);
         if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
             WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver().getNodeIp());
         } else {
             imagePathInput.sendKeys(picturePath);
         }
-        moveCssSelectorOutOfViewport(WebAppLocators.ConversationPage.cssSendImageInput);
+        if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
+            // manually trigger change event on input until https://bugzilla.mozilla.org/show_bug.cgi?id=1280947 is fixed
+            this.getDriver().executeScript("evt = new Event('change');arguments[0].dispatchEvent(evt);", imagePathInput);
+        }
     }
 
     private void hoverOverConversation() throws Exception {
@@ -469,23 +443,13 @@ public class ConversationPage extends WebPage {
         }
     }
 
-    public void moveCssSelectorIntoViewport(String selector) throws Exception {
-        final String showPathInputJScript = "$(\"" + selector + "\").css({'left': -200});";
-        getDriver().executeScript(showPathInputJScript);
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(selector)) : "Could not move element "
-                + "with selector " + selector + " into viewport";
-    }
-
-    public void moveCssSelectorOutOfViewport(String selector) throws Exception {
-        final String showPathInputJScript = "$(\"" + selector + "\").css({'left': 200});";
-        getDriver().executeScript(showPathInputJScript);
-    }
-
     public void sendFile(String fileName) throws Exception {
         final String filePath = WebCommonUtils.getFullFilePath("filetransfer/" + fileName);
-        moveCssSelectorIntoViewport(WebAppLocators.ConversationPage.cssSendFileInput);
         filePathInput.sendKeys(filePath);
-        moveCssSelectorOutOfViewport(WebAppLocators.ConversationPage.cssSendFileInput);
+        if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
+            // manually trigger change event on input until https://bugzilla.mozilla.org/show_bug.cgi?id=1280947 is fixed
+            this.getDriver().executeScript("evt = new Event('change');arguments[0].dispatchEvent(evt);", filePathInput);
+        }
     }
 
     public double getOverlapScoreOfLastImage(String pictureName)
@@ -640,7 +604,7 @@ public class ConversationPage extends WebPage {
 
     public String getLastTextMessage() throws Exception {
         DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
-                .cssLastTextMessage));
+                .cssLastTextMessage), TIMEOUT_LONG_MESSAGE);
         return lastTextMessage.getText();
     }
 
@@ -686,7 +650,8 @@ public class ConversationPage extends WebPage {
             Actions builder = new Actions(getDriver());
             builder.moveToElement(fullscreenImage, -10, -10).click().build().perform();
         } else {
-            throw new Exception("This browser does not support native mouse actions");
+            WebElement blackBorder = getDriver().findElement(By.cssSelector("#detail-view.modal"));
+            getDriver().executeScript("var evt = new MouseEvent('click', {view: window});arguments[0].dispatchEvent(evt);", blackBorder);
         }
     }
 
@@ -1055,12 +1020,18 @@ public class ConversationPage extends WebPage {
 
     private void hoverOverMessage(String id) throws Exception {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssMessagesById.apply(id));
+        WebElement element = getDriver().findElement(locator);
         if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
             // native mouse over
-            DriverUtils.moveMouserOver(this.getDriver(), getDriver().findElement(locator));
+            DriverUtils.moveMouserOver(this.getDriver(), element);
         } else {
-            throw new Exception("hovering over a message is not implemented for this browser");
+            hoverOverElementWithJavascript(element);
         }
+    }
+
+    private void hoverOverElementWithJavascript(WebElement element) throws Exception {
+        getDriver().executeScript("var evt = new MouseEvent('mouseover', {view: window});"
+                + "arguments[0].dispatchEvent(evt);", element);
     }
 
     public void clickToResetSessionOnLatestError() throws Exception {
@@ -1073,21 +1044,23 @@ public class ConversationPage extends WebPage {
 
     private void hoverOverVideo(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideo, fileName));
+        WebElement element = getDriver().findElement(locator);
         if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
             // native mouse over
-            DriverUtils.moveMouserOver(this.getDriver(), getDriver().findElement(locator));
+            DriverUtils.moveMouserOver(this.getDriver(), element);
         } else {
-            throw new Exception("hovering over a video is not implemented for this browser");
+            hoverOverElementWithJavascript(element);
         }
     }
 
     private void hoverOverDownload(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFile, fileName));
+        WebElement element = getDriver().findElement(locator);
         if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
             // native mouse over
-            DriverUtils.moveMouserOver(this.getDriver(), getDriver().findElement(locator));
+            DriverUtils.moveMouserOver(this.getDriver(), element);
         } else {
-            throw new Exception("hovering over a video is not implemented for this browser");
+            hoverOverElementWithJavascript(element);
         }
     }
 

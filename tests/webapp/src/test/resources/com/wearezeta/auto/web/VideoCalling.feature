@@ -13,7 +13,9 @@ Feature: VideoCalling
     And I am signed in properly
     And I open conversation with <Contact>
     When I start a video call
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see my self video view
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     When I end the video call
@@ -39,7 +41,9 @@ Feature: VideoCalling
     And I see decline call button for conversation <Contact>
     And I see my self video view
     And I accept the call from conversation <Contact>
-    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    Then I see my self video view
+    And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     When I end the video call
@@ -110,18 +114,24 @@ Feature: VideoCalling
     And I am signed in properly
     And I open conversation with <Contact>
     When I start a video call
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see my self video view
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
-    And I end the video call
-    Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
-    And <Contact> accepts next incoming video call automatically
-    When I start a video call
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    When I end the video call
+    Then I do not see my self video view
+    And <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+    When <Contact> accepts next incoming video call automatically
+    And I start a video call
+    Then I see my self video view
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
-    And I end the video call
+    When I end the video call
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
+    And I do not see my self video view
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
@@ -140,7 +150,9 @@ Feature: VideoCalling
     And I am signed in properly
     And I open conversation with <Contact>
     When I start a video call
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see my self video view
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     And I wait for 60 seconds
@@ -241,7 +253,9 @@ Feature: VideoCalling
 # 30 minutes
     And I wait for 60 seconds
     And I see end video call button
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see my self video view
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     And I end the video call
@@ -288,7 +302,9 @@ Feature: VideoCalling
     And I am signed in properly
     When I open conversation with <Contact>
     And I start a video call
-    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see my self video view
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     When I see mute button on video call page is not pressed
@@ -317,8 +333,10 @@ Feature: VideoCalling
     And I see mute button for conversation <Contact> is not pressed
     Then I click mute call button for conversation <Contact>
     And I see mute button for conversation <Contact> is pressed
-    And <Contact> accepts next incoming video call automatically
+    When <Contact> accepts next incoming video call automatically
+    Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     When I see mute button on video call page is pressed
@@ -349,8 +367,10 @@ Feature: VideoCalling
     And I click Video Call button on People Picker page
     Then I see the outgoing call controls for conversation <Contact>
     When <Contact> accepts next incoming video call automatically
-    Then I see the ongoing call controls for conversation <Contact>
+    Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see the ongoing call controls for conversation <Contact>
+    And I see video call is maximized
     And <Contact> verifies to have 1 flow
     And <Contact> verifies that all flows have greater than 0 bytes
     When I end the video call
@@ -400,7 +420,9 @@ Feature: VideoCalling
     Then I do not see the call controls for conversation <Contact>
     And I open conversation with <Contact>
     When I start a video call
-    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    Then I see my self video view
+    And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And I see video call is maximized
     And <Contact> verify to have 1 flows
     And <Contact> verify that all flows have greater than 0 bytes
     When I end the video call
@@ -454,7 +476,11 @@ Feature: VideoCalling
     And I am signed in properly
     Then I see the incoming call controls for conversation <Contact>
     And I accept the call from conversation <Contact>
-    Then <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    Then I see my self video view
+    And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
+    And I see video call is maximized
+    And <Contact> verify to have 1 flows
+    And <Contact> verify that all flows have greater than 0 bytes
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
 
@@ -584,3 +610,128 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 30      | userpicture_landscape.jpg |
+
+  @C165129 @staging @videocalling @calling_debug
+  Scenario Outline: Verify that current video call is terminated if you want to call someone else
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts instance using <CallBackend>    
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I am signed in properly
+    And I open conversation with <Contact1>
+    Then <Contact1> accept next incoming video call automatically
+    And <Contact2> accept next incoming call automatically
+    And <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
+    When I start a video call
+    Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies that all flows have greater than 0 bytes
+    And I see my self video view
+    And I see video call is maximized
+    When I minimize video call
+    Then I see video call is minimized
+    When I open conversation with <Contact2>
+    And I call
+    Then I see another call warning modal
+    When I close the another call warning modal
+    Then I do not see another call warning modal
+    And I see video call is minimized
+    And I see the ongoing call controls for conversation <Contact1>
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies that all flows have greater than 0 bytes
+    When I call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    And I see video call is minimized
+    And I see the ongoing call controls for conversation <Contact1>
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies that all flows have greater than 0 bytes
+    When I call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    And I see video call is minimized
+    And I see the ongoing call controls for conversation <Contact1>
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies that all flows have greater than 0 bytes
+    When I call
+    Then I see another call warning modal
+    When I click on "Hang Up" button in another call warning modal
+    Then I do not see another call warning modal
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I do not see the ongoing call controls for conversation <Contact1>
+    And I see the ongoing call controls for conversation <Contact2>
+    And <Contact2> verifies to have 1 flow
+    And <Contact2> verifies that all flows have greater than 0 bytes
+    And I hang up call with conversation <Contact2>
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 20      |
+
+  @C165142 @staging @videocalling @calling_debug
+  Scenario Outline: Verify that current video call is terminated if you want to videocall someone else
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts instance using <CallBackend>    
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I am signed in properly
+    And I open conversation with <Contact1>
+    Then <Contact1> accept next incoming video call automatically
+    And <Contact2> accept next incoming video call automatically
+    And <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
+    When I start a video call
+    Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies that all flows have greater than 0 bytes
+    And I see my self video view
+    And I see video call is maximized
+    When I minimize video call
+    Then I see video call is minimized
+    When I open conversation with <Contact2>
+    When I start a video call
+    Then I see another call warning modal
+    When I close the another call warning modal
+    Then I do not see another call warning modal
+    And I see video call is minimized
+    And I see the ongoing call controls for conversation <Contact1>
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies that all flows have greater than 0 bytes
+    When I start a video call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    And I see video call is minimized
+    And I see the ongoing call controls for conversation <Contact1>
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies that all flows have greater than 0 bytes
+    When I start a video call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    And I see video call is minimized
+    And I see the ongoing call controls for conversation <Contact1>
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies that all flows have greater than 0 bytes
+    When I start a video call
+    Then I see another call warning modal
+    When I click on "Hang Up" button in another call warning modal
+    Then I do not see another call warning modal
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see my self video view
+    And I see video call is maximized
+    And <Contact2> verifies to have 1 flow
+    And <Contact2> verifies that all flows have greater than 0 bytes
+    When I minimize video call
+    Then I see video call is minimized
+    And I do not see the ongoing call controls for conversation <Contact1>
+    And I see the ongoing call controls for conversation <Contact2>
+
+    Examples:
+      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 20      |
