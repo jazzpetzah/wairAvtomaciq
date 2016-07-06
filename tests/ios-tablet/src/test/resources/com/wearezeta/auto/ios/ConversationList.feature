@@ -175,7 +175,7 @@ Feature: Conversation List
     And I see conversations list
     When I swipe right on a <GroupChatName>
     Then I see conversation <GroupChatName> name in action menu in Contact List
-    And I see Silence action button
+    And I see Mute action button
     And I see Archive action button
     And I see Delete action button
     And I see Leave action button
@@ -194,7 +194,7 @@ Feature: Conversation List
     And I see conversations list
     When I swipe right on a <Contact>
     Then I see conversation <Contact> name in action menu in Contact List
-    And I see Silence action button
+    And I see Mute action button
     And I see Archive action button
     And I see Delete action button
     And I see Block action button
