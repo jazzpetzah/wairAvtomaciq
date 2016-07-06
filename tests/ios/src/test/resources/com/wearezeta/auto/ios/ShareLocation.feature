@@ -9,7 +9,7 @@ Feature: Share Location
     Given I see conversations list
     When I tap on contact name <Contact>
     Then I see Share Location container in the conversation view
-    And I see the default Share Location address in the conversation view
+    And I see the default received Share Location address in the conversation view
     When I tap on location map in conversation view
     Then I see map application is opened
 
@@ -26,13 +26,13 @@ Feature: Share Location
     Given I see conversations list
     When I tap on contact name <Contact>
     Then I see Share Location container in the conversation view
-    And I see the default Share Location address in the conversation view
+    And I see the default received Share Location address in the conversation view
     And I long tap on location map in conversation view
     And I tap on Delete badge item
     # Sometimes the alert is not accepted automatically
     And I tap Delete button on the alert
     Then I do not see Share Location container in the conversation view
-    Then I do not see the default Share Location address in the conversation view
+    Then I do not see the default received Share Location address in the conversation view
 
     Examples:
       | Name      | Contact   | DeviceName |
@@ -50,7 +50,7 @@ Feature: Share Location
     And I wait for 5 seconds
     And I tap Send location button from map view
     Then I see Share Location container in the conversation view
-    And I see the default Share Location address in the conversation view
+    And I see the default sent Share Location address in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -69,7 +69,7 @@ Feature: Share Location
     And I wait for 5 seconds
     And I tap Send location button from map view
     Then I see Share Location container in the conversation view
-    And I see the default Share Location address in the conversation view
+    And I see the default sent Share Location address in the conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
