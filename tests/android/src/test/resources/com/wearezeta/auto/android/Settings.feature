@@ -86,7 +86,7 @@ Feature: Settings
       | user1Name |
 
   @C150018 @rc @regression @useSpecialEmail
-  Scenario Outline: CM-1003 Verify you can add an email from settings
+  Scenario Outline: Verify you can add an email from settings
     Given There is 1 user with phone number only where <Name> is me
     Given I sign in using my phone number
     Given I accept First Time overlay as soon as it is visible
@@ -97,6 +97,7 @@ Feature: Settings
     And I start listening for confirmation email <NewEmail> with mailbox password <Password>
     And I commit my new email "<NewEmail>"
     And I verify email <NewEmail>
+    And User Myself resets password to "<Password>"
     And I select "Log out" settings menu item
     And I confirm sign out
     Then I see welcome screen

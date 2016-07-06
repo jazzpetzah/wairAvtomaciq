@@ -1583,4 +1583,17 @@ public class CommonAndroidSteps {
         } while (System.currentTimeMillis() - msStarted <= LOG_SEARCH_TIMEOUT_MILLIS);
         Assert.assertTrue(String.format("The %s log does not contain '%s' substring", logType, expectedString), result);
     }
+
+    /**
+     * Rest exist user password
+     *
+     * @param userNmaeAlias name alias of the contact
+     * @throws Exception
+     * @step. ^User (.*) resets password to default$
+     */
+    @When("^User (.*) resets password to \"(.*)\"")
+    public void UserXRestesPassword(String userNmaeAlias, String newPassword) throws Exception {
+        newPassword = usrMgr.replaceAliasesOccurences(newPassword, ClientUsersManager.FindBy.PASSWORD_ALIAS);
+        commonSteps.UserResetsPassword(userNmaeAlias, newPassword);
+    }
 }
