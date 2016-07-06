@@ -27,9 +27,9 @@ public class ContactListPageSteps {
     private static final Logger log = ZetaLogger
             .getLog(ContactListPageSteps.class.getSimpleName());
 
-    private static final String TOOLTIP_SILENCE = "Silence";
-    private static final String SHORTCUT_SILENCE_WIN = "(Ctrl + Alt + S)";
-    private static final String SHORTCUT_SILENCE_MAC = "(⌘⌥S)";
+    private static final String TOOLTIP_MUTE = "Mute";
+    private static final String SHORTCUT_MUTE_WIN = "(Ctrl + Alt + S)";
+    private static final String SHORTCUT_MUTE_MAC = "(⌘⌥S)";
     
     private final TestContext context;
     
@@ -644,20 +644,20 @@ public class ContactListPageSteps {
     }
 
     /**
-     * Verifies whether silence button tool tip is correct or not.
+     * Verifies whether mute button tool tip is correct or not.
      *
      * @throws Exception
-     * @step. ^I see correct tooltip for silence button in options popover$
+     * @step. ^I see correct tooltip for mute button in options popover$
      */
-    @Then("^I see correct tooltip for silence button in options popover$")
+    @Then("^I see correct tooltip for mute button in options popover$")
     public void ISeeCorrectTooltipForSilenceButton() throws Exception {
-        String tooltip = TOOLTIP_SILENCE + " ";
+        String tooltip = TOOLTIP_MUTE + " ";
         if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-            tooltip = tooltip + SHORTCUT_SILENCE_WIN;
+            tooltip = tooltip + SHORTCUT_MUTE_WIN;
         } else {
-            tooltip = tooltip + SHORTCUT_SILENCE_MAC;
+            tooltip = tooltip + SHORTCUT_MUTE_MAC;
         }
-        assertThat("Silence button tooltip",
+        assertThat("Mute button tooltip",
                 context.getPagesCollection().getPage(ContactListPage.class)
                         .getMuteButtonToolTip(), equalTo(tooltip));
     }

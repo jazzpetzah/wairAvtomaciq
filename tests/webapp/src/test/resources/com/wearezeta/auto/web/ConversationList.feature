@@ -85,7 +85,7 @@ Feature: Conversation List
       | user1Email | user1Password | user1Name | StrongBlue | user2Name |
 
   @C1796 @regression
-  Scenario Outline: Verify you silence the conversation when you press ⌥⇧⌘S (Mac) or alt + ctrl + S (Win)
+  Scenario Outline: Verify you mute the conversation when you press ⌥⇧⌘S (Mac) or alt + ctrl + S (Win)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -94,7 +94,7 @@ Feature: Conversation List
     And I open conversation with <Contact>
     And I see that conversation <Contact> is not muted
     When I click on options button for conversation <Contact>
-    Then I see correct tooltip for silence button in options popover
+    Then I see correct tooltip for mute button in options popover
     When I type shortcut combination to mute or unmute the conversation <Contact>
     Then I see that conversation <Contact> is muted
     When I type shortcut combination to mute or unmute the conversation <Contact>
