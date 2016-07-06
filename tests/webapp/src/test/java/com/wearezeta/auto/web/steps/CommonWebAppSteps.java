@@ -14,8 +14,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.Lifecycle;
 
-import static com.wearezeta.auto.web.common.Lifecycle.DRIVER_INIT_TIMEOUT;
-
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
@@ -32,7 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -788,9 +785,7 @@ public class CommonWebAppSteps {
             try {
                 if (WebAppExecutionContext.getBrowser()
                         .isSupportingConsoleLogManagement()) {
-                    List<LogEntry> browserLog = Lifecycle.getBrowserLog(PlatformDrivers
-                            .getInstance().getDriver(context.getCurrentPlatform())
-                            .get(DRIVER_INIT_TIMEOUT, TimeUnit.MILLISECONDS));
+                    List<LogEntry> browserLog = Lifecycle.getBrowserLog(context.getDriver());
 
                     StringBuilder bLog = new StringBuilder("\n");
                     browserLog.stream().forEach(
