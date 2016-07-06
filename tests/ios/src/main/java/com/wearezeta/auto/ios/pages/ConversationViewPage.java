@@ -795,15 +795,16 @@ public class ConversationViewPage extends IOSPage {
             case "play":
                 return namePlayAudioRecorderButton;
             default:
-                throw new IllegalArgumentException("Not known record control button");
+                throw new IllegalArgumentException(String.format("Button '%s' is not known record control button", buttonName));
         }
     }
 
     public void tapRecordControlButton(String buttonName) throws Exception {
-        if(buttonName.toLowerCase().equals("play")) {
-            getElement(getRecordControlButtonByName(buttonName)).click();
+        By button = getRecordControlButtonByName(buttonName);
+        if(button.equals(namePlayAudioRecorderButton)) {
+            getElement(button).click();
         } else {
-            clickElementWithRetryIfStillDisplayed(getRecordControlButtonByName(buttonName));
+            clickElementWithRetryIfStillDisplayed(button);
         }
     }
 
