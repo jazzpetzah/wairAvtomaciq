@@ -97,12 +97,17 @@ public abstract class PickleJarTest {
 
     protected void saveScreenshot(Step step, byte[] screenshot) throws IOException {
         final String featureName = reportFeature.getName().replaceAll("[^a-zA-Z0-9]", "_");
-        final String scenarioName = reportScenario.getName().replaceAll("[^a-zA-Z0-9]", "_");
         
-        // QUICKFIX: cucumber does not replace characters like " with _ but just removes them beforehand
+        // cucumber does not replace characters like " with _ but just removes them beforehand
         // needs more investigation what characters are removed and which are replaced by _
         // known removed characters are: ', ", !
-        String stepName = step.getName().replaceAll("[\"!']", "");
+        String scenarioName = reportScenario.getName().replaceAll("[\"!,']", "");
+        scenarioName = scenarioName.replaceAll("[^a-zA-Z0-9]", "_");
+        
+        // cucumber does not replace characters like " with _ but just removes them beforehand
+        // needs more investigation what characters are removed and which are replaced by _
+        // known removed characters are: ', ", !
+        String stepName = step.getName().replaceAll("[\"!,']", "");
         stepName = stepName.replaceAll("[^a-zA-Z0-9]", "_");
         stepName = stepName.replaceAll("__", "_").replaceAll("__", "_");
         Path path = Paths.get(Paths.get(SCREENSHOT_PATH).toAbsolutePath() + "/" + featureName + "/" + scenarioName + "/");

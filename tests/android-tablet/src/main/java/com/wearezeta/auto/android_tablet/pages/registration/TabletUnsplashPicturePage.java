@@ -27,8 +27,6 @@ public class TabletUnsplashPicturePage extends AndroidTabletPage {
     }
 
     public void selectPictureSource(String src) throws Exception {
-        getDriver().rotate(ScreenOrientation.LANDSCAPE);
-        Thread.sleep(ScreenOrientationHelper.ROTATION_DELAY_MS);
         getAndroidRegistrationPage().selectPictureSource(src);
     }
 }

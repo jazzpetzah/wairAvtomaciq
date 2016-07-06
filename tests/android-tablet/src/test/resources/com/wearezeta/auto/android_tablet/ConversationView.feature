@@ -47,7 +47,6 @@ Feature: Conversation View
     And I tap the conversation <Contact>
     When I tap Add picture button from cursor toolbar
     And I tap Take Photo button on Take Picture view
-    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
 
     Examples:
@@ -207,7 +206,6 @@ Feature: Conversation View
     And I tap the conversation <GroupChatName>
     When I tap Add picture button from cursor toolbar
     And I tap Take Photo button on Take Picture view
-    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
 
     Examples:
@@ -225,7 +223,6 @@ Feature: Conversation View
     And I tap the conversation <Contact>
     When I tap Add picture button from cursor toolbar
     And I tap Gallery Camera button on Take Picture view
-    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
 
     Examples:
