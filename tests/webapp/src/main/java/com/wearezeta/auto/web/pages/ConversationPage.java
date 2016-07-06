@@ -1021,17 +1021,7 @@ public class ConversationPage extends WebPage {
     private void hoverOverMessage(String id) throws Exception {
         By locator = By.cssSelector(WebAppLocators.ConversationPage.cssMessagesById.apply(id));
         WebElement element = getDriver().findElement(locator);
-        if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
-            // native mouse over
-            DriverUtils.moveMouserOver(this.getDriver(), element);
-        } else {
-            hoverOverElementWithJavascript(element);
-        }
-    }
-
-    private void hoverOverElementWithJavascript(WebElement element) throws Exception {
-        getDriver().executeScript("var evt = new MouseEvent('mouseover', {view: window});"
-                + "arguments[0].dispatchEvent(evt);", element);
+        WebCommonUtils.hoverOverElement(getDriver(), element);
     }
 
     public void clickToResetSessionOnLatestError() throws Exception {
@@ -1045,23 +1035,13 @@ public class ConversationPage extends WebPage {
     private void hoverOverVideo(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssVideo, fileName));
         WebElement element = getDriver().findElement(locator);
-        if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
-            // native mouse over
-            DriverUtils.moveMouserOver(this.getDriver(), element);
-        } else {
-            hoverOverElementWithJavascript(element);
-        }
+        WebCommonUtils.hoverOverElement(getDriver(), element);
     }
 
     private void hoverOverDownload(String fileName) throws Exception {
         By locator = By.cssSelector(String.format(WebAppLocators.ConversationPage.cssFile, fileName));
         WebElement element = getDriver().findElement(locator);
-        if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
-            // native mouse over
-            DriverUtils.moveMouserOver(this.getDriver(), element);
-        } else {
-            hoverOverElementWithJavascript(element);
-        }
+        WebCommonUtils.hoverOverElement(getDriver(), element);
     }
 
     public void confirmDelete() throws Exception {

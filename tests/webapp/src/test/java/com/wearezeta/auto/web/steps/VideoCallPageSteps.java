@@ -119,10 +119,10 @@ public class VideoCallPageSteps {
     public void ISeeVideoCallMinimized(String videoCallSize) throws Exception {
         VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
         if (videoCallSize.equals("minimized")) {
+            //Assert.assertTrue("Video is in portrait mode", videoCallPage.isVideoNotInPortrait());
             Assert.assertTrue("Maximize Video Call button is not visible", videoCallPage.isMaximizeVideoCallButtonVisible());
-            Assert.assertTrue("Minimize Video Call button is visible", videoCallPage.isMinimizeVideoCallButtonNotVisible());
         } else {
-            Assert.assertTrue("Maximize Video Call button is visible", videoCallPage.isMaximizeVideoCallButtonNotVisible());
+            //Assert.assertTrue("Video is not in portrait mode", videoCallPage.isVideoInPortrait());
             Assert.assertTrue("Minimize Video Call button is not visible", videoCallPage.isMinimizeVideoCallButtonVisible());
 
         }
