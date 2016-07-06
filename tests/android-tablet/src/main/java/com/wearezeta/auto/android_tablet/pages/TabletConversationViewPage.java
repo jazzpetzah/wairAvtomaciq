@@ -28,6 +28,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
     private static final By idMissedCallImage = By.id("sci__conversation__missed_call__image");
 
+    private static final By idSketchButtonOnPicturePreviewOverlay = By.id("gtv__single_image_message__sketch");
+
     public static final Function<String, String> xpathConversationMessageByValue = value -> String
             .format("//*[@id='ltv__row_conversation__message' and @value='%s']", value);
 
@@ -111,7 +113,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
         return getConversationViewPage().getPreviewPictureScreenshot();
     }
 
-    public void tapRecentPicture() throws Exception {
+    public void tapRecentImage() throws Exception {
         getConversationViewPage().tapRecentImage();
     }
 
@@ -260,5 +262,9 @@ public class TabletConversationViewPage extends AndroidTabletPage {
                                               boolean isSuccess, int lookUpTimeoutSeconds) throws Exception {
         return getConversationViewPage().isFilePlaceHolderInvisible(fileFullName, size, extension, isUpload, isSuccess,
                 lookUpTimeoutSeconds);
+    }
+
+    public void tapSketchOnPicturePreviewOverlay() throws Exception {
+        getElement(idSketchButtonOnPicturePreviewOverlay).click();
     }
 }
