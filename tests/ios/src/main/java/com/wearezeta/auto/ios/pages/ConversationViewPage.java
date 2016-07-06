@@ -795,7 +795,7 @@ public class ConversationViewPage extends IOSPage {
             case "play":
                 return namePlayAudioRecorderButton;
             default:
-                throw new IllegalArgumentException(String.format("Button '%s' is not known record control button", buttonName));
+                throw new IllegalArgumentException(String.format("Button '%s' is not known as a record control button", buttonName));
         }
     }
 
