@@ -77,8 +77,12 @@ public class PickleJarInheritedTest extends PickleJarTest {
                 }
                 setResult(reportStep, new Result(execTime, FAILED, PickleExecutor.getThrowableStacktraceString(ex)));
             }
-            byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
-            saveScreenshot(reportStep, screenshot);
+            try {
+                byte[] screenshot = lifecycle.getContext().getDriver().getScreenshotAs(OutputType.BYTES);
+                saveScreenshot(reportStep, screenshot);
+            } catch (Exception e) {
+                LOG.warn("Can not make sceenshot", e);
+            }
             if (ex != null) {
                 throw ex;
             }
