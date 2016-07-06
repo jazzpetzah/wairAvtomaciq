@@ -41,10 +41,11 @@ Feature: Voice Filters
       | Name      | Contact   | ButtonsCount |
       | user1Name | user2Name | 2            |
 
-  @C165141 @regression
-  Scenario Outline: Verify voice filter control disappears if you switch current conversation
+  @C165156 @staging
+  Scenario Outline: ZIOS-6903 Verify voice filter control is not dismissed if audio recording is in progress and other UI event happens
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact1>
@@ -57,12 +58,17 @@ Feature: Voice Filters
     And I navigate back to conversations list
     And I tap on contact name <Contact1>
     Then I do not see audio message placeholder
-    And I do not see Confirm button on Voice Filters overlay
-    And I do not see Start Recording button on Voice Filters overlay
+    And I see Confirm button on Voice Filters overlay
+    When I close the app for 5 seconds
+    Then I see Confirm button on Voice Filters overlay
+    When <Contact1> calls me
+    And I tap Ignore button on Calling overlay
+    And I do not see Calling overlay
+    Then I see Confirm button on Voice Filters overlay
 
     Examples:
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  | CallBackend |
+      | user1Name | user2Name | user3Name | autocall    |
 
   @C165140 @regression
   Scenario Outline: Verify you can retry recording of filtered voice message
