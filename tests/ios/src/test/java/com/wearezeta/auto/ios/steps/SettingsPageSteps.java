@@ -68,8 +68,8 @@ public class SettingsPageSteps {
      */
     @When("^I verify sound alerts settings are set to default values$")
     public void IVerifyAllIsDefaultValue() throws Exception {
-        Assert.assertTrue("Sound alerts settings are NOT set to their default values", getSettingsPage()
-                .isSoundAlertsSetToDefault());
+        Assert.assertTrue("Sound alerts settings are NOT set to their default values",
+                getSettingsPage().isSoundAlertsSetToDefault());
     }
 
     /**

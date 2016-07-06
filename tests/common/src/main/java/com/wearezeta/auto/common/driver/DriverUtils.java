@@ -447,11 +447,9 @@ public class DriverUtils {
 
     // in milliseconds (http://stackoverflow.com/questions/13670094/duration-of-a-single-tap-and-long-tap-in-android)
     public static final int SINGLE_TAP_DURATION = 125;
-    public static final int LONG_TAP_DURATION = 1000;
+    public static final int LONG_TAP_DURATION = 2000;
 
-
-    public static void tapInTheCenterOfTheElement(
-            AppiumDriver<? extends WebElement> driver, WebElement element) {
+    public static void tapInTheCenterOfTheElement(AppiumDriver<? extends WebElement> driver, WebElement element) {
         final Point coords = element.getLocation();
         final Dimension size = element.getSize();
         final int x = coords.x + size.getWidth() / 2;

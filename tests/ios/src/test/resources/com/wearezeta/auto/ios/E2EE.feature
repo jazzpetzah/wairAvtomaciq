@@ -37,7 +37,7 @@ Feature: E2EE
       | user1Name | user2Name | Device1     | Device2     | Device3     |
 
   @C3290 @noAcceptAlert @rc @regression
-  Scenario Outline: (ZIOS-5741) Verify new device is added to device management after sign in
+  Scenario Outline: Verify new device is added to device management after sign in
     Given There is 1 user where <Name> is me
     Given User Myself removes his avatar picture
     Given I sign in using my email
@@ -202,7 +202,7 @@ Feature: E2EE
       | user1Name | Device1    | user1Password |
 
   @C3509 @regression
-  Scenario Outline: (ZIOS-5741) Verify verifying/unverifying one of the devices
+  Scenario Outline: Verify verifying/unverifying one of the devices
     Given There is 1 user where <Name> is me
     Given I sign in using my email
     Given I see conversations list
