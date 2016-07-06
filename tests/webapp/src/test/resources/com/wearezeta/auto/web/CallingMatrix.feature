@@ -26,7 +26,6 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | chrome:50.0.2661.75  | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:46.0.1       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:44.0.2       | 20      |
 
   @C5360 @calling_matrix @calling
   Scenario Outline: Verify I can make 1:1 video call to <CallBackend>
@@ -54,7 +53,6 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | chrome:50.0.2661.75  | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:46.0.1       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:44.0.2       | 20      |
 
   @C5361 @calling_matrix @calling
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
@@ -107,7 +105,6 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | chrome:50.0.2661.75  | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:46.0.1       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:44.0.2       | 20      |
 
   @C5363 @calling_matrix @calling
   Scenario Outline: Verify I can receive 1:1 video call from <CallBackend>
@@ -135,7 +132,6 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | chrome:50.0.2661.75  | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:46.0.1       | 20      |
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
-      | user1Email | user1Password | user1Name | user2Name | firefox:44.0.2       | 20      |
 
   @C5364 @calling_matrix @calling
   Scenario Outline: Verify I can receive 1:1 call from AVS <CallBackend>
@@ -195,7 +191,6 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:50.0.2661.75  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:46.0.1       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.0.1       | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:44.0.2       | 30      |
 
   @C5366 @calling_matrix @calling
   Scenario Outline: Verify I can make group call with multiple AVS <WaitBackend>
@@ -256,7 +251,6 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome:50.0.2661.75  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:46.0.1       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.0.1       | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:44.0.2       | 30      |
       
 
   @C5368 @calling_matrix @calling
@@ -296,13 +290,11 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.5.14  | chrome:50.0.2661.75  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.5.14  | firefox:46.0.1       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.5.14  | firefox:45.0.1       | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.5.14  | firefox:44.0.2       | 30      |
 # not necessary due to same versions in android and ios
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | chrome:51.0.2704.106 | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | chrome:50.0.2661.75  | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | firefox:46.0.1       | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | firefox:45.0.1       | 30      |
-#      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | firefox:44.0.2       | 30      |
 
   @C5369 @calling_matrix @calling
   Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
@@ -365,7 +357,6 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome:50.0.2661.75  | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:46.0.1       | 30      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:45.0.1       | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:44.0.2       | 30      |
 
   @C5370 @calling_matrix @calling
   Scenario Outline: Verify I can create, leave and rejoin a group call with AVS <WaitBackend>
