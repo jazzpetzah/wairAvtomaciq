@@ -14,9 +14,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Set;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -385,5 +387,15 @@ public class WebCommonUtils extends CommonUtils {
 		File srcScript = new File(new URI(url.toString()).getPath());
 		putFileOnExecutionNode(nodeIp, srcScript, dstScriptPath);
 		executeAppleScriptFileOnNode(nodeIp, dstScriptPath);
+	}
+
+	public static void hoverOverElement(RemoteWebDriver driver, WebElement element) {
+		if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
+			// native mouse over
+			DriverUtils.moveMouserOver(driver, element);
+		} else {
+			driver.executeScript("var evt = new MouseEvent('mouseover', {view: window});"
+					+ "arguments[0].dispatchEvent(evt);", element);
+		}
 	}
 }

@@ -710,6 +710,8 @@ public final class WebAppLocators {
 
         public static final String xpathMuteCallButtonNotPressed = "//div[@data-uie-name='do-call-controls-video-call-mute'" +
                 " and not(contains(@class, 'toggled'))]";
+
+        public static final String cssVideoPortrait = ".video-mode-portrait";
     }
 
     public static final class WarningPage {
