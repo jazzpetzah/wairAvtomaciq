@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import com.wearezeta.auto.common.sync_engine_bridge.Constants;
+import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.TouchAction;
@@ -794,12 +795,16 @@ public class ConversationViewPage extends IOSPage {
             case "play":
                 return namePlayAudioRecorderButton;
             default:
-                throw new IllegalArgumentException("Not know record control button");
+                throw new IllegalArgumentException("Not known record control button");
         }
     }
 
     public void tapRecordControlButton(String buttonName) throws Exception {
-        getElement(getRecordControlButtonByName(buttonName)).click();
+        if(buttonName.toLowerCase().equals("play")) {
+            getElement(getRecordControlButtonByName(buttonName)).click();
+        } else {
+            clickElementWithRetryIfStillDisplayed(getRecordControlButtonByName(buttonName));
+        }
     }
 
     public boolean isAudioActionButtonVisible() throws Exception {
