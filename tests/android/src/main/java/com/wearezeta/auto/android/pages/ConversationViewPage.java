@@ -182,6 +182,8 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idShareLocationContainer = By.id("cv__location_map_container");
 
+    private static final By idLinkPreviewContainer = By.id("cv__row_conversation__link_preview__container");
+
     private static final By idAudioContainerSeekbar = By.id("sb__audio_progress");
 
     private static final By idAudioMessagePreviewSeekbar = By.id("sb__voice_message__recording__seekbar");
@@ -795,6 +797,8 @@ public class ConversationViewPage extends AndroidPage {
                 return idAudioMessageContainer;
             case "share location":
                 return idShareLocationContainer;
+            case "link preview":
+                return idLinkPreviewContainer;
             default:
                 throw new IllegalArgumentException(String.format("Unknown container type: '%s'", containerType));
         }
