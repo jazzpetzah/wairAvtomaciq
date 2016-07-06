@@ -11,7 +11,6 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces.FunctionFor2Parameters;
 import com.wearezeta.auto.common.sync_engine_bridge.Constants;
-import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.TouchAction;
@@ -196,10 +195,9 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By classNameShareLocationContainer = MobileBy.className("UIAMapView");
 
-    private static final By nameDefaultShareLocationAddress = MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
+    private static final By nameDefaultRecievedLocationAddress = MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
 
-    private static final By nameDefaultSimulatorShareLocationAddress =
-            MobileBy.AccessibilityId("Wire St, 1, WireTown, Wirestan");
+    private static final By nameDefaultSentLocationAddress = MobileBy.AccessibilityId("1800 Ellis St, San Francisco, CA  94102");
 
     private static final String xpathDefaultMapApplication = "//UIAApplication[@name='Maps']";
 
@@ -917,23 +915,20 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), classNameShareLocationContainer);
     }
 
-    public boolean isDefaultShareLocationAddressVisible() throws Exception {
-        // If we share current address from simulator it allways shares constant address from nameDefaultSimulatorShareLocationAddress.
-        // So we verify this address if it was shared by user from conversation view.
-        // We verify nameDefaultShareLocationAddress address if it was shared in preparation step UserXSharesLocationTo.
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSimulatorShareLocationAddress);
-        } else {
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultShareLocationAddress);
-        }
+    public boolean isDefaultRecievedShareLocationAddressVisible() throws Exception {
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultRecievedLocationAddress);
     }
 
-    public boolean isDefaultShareLocationAddressNotVisible() throws Exception {
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSimulatorShareLocationAddress);
-        } else {
-            return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultShareLocationAddress);
-        }
+    public boolean isDefaultRecievedShareLocationAddressNotVisible() throws Exception {
+            return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultRecievedLocationAddress);
+    }
+
+    public boolean isDefaultSentShareLocationAddressVisible() throws Exception {
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSentLocationAddress);
+    }
+
+    public boolean isDefaultSentShareLocationAddressNotVisible() throws Exception {
+            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSentLocationAddress);
     }
 
     public boolean isDefaultMapApplicationVisible() throws Exception {
