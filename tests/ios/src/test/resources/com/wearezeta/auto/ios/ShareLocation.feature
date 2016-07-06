@@ -38,7 +38,7 @@ Feature: Share Location
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C165104 @C165105 @staging
+  @C165104 @C165105 @regression
   Scenario Outline: Verify sending location from a map view (1to1)
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -56,7 +56,7 @@ Feature: Share Location
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C165126 @staging
+  @C165126 @regression
   Scenario Outline: Verify sending location from a map view (group conversation)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
@@ -75,7 +75,7 @@ Feature: Share Location
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ShareInGroup  |
 
-  @C150032 @staging
+  @C150032 @regression
   Scenario Outline: Verify copying and pasting the shared location
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

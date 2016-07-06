@@ -1,6 +1,6 @@
 Feature: Voice Filters
 
-  @C165138 @staging
+  @C165138 @regression
   Scenario Outline: Verify you can record an audio message and apply voice filter to it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -20,7 +20,7 @@ Feature: Voice Filters
       | Name      | Contact   | ButtonsCount |
       | user1Name | user2Name | 4            |
 
-  @C165139 @staging
+  @C165139 @regression
   Scenario Outline: Verify you can cancel filtered voice message sending
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -41,7 +41,7 @@ Feature: Voice Filters
       | Name      | Contact   | ButtonsCount |
       | user1Name | user2Name | 2            |
 
-  @C165141 @staging
+  @C165141 @regression
   Scenario Outline: Verify voice filter control disappears if you switch current conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -64,7 +64,7 @@ Feature: Voice Filters
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @C165140 @staging
+  @C165140 @regression
   Scenario Outline: Verify you can retry recording of filtered voice message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
