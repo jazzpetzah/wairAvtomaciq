@@ -173,6 +173,8 @@ Feature: Audio Message
     Given I tap on contact name <Contact>
     When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
     And I see Audio Message container in the conversation view
+    # Wait until the seekbar initialized completely
+    And I wait for 3 seconds
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
     Then I wait for 15 seconds until audio message download completed

@@ -905,4 +905,16 @@ public class CommonAndroidTabletSteps {
     public void IPushXFileHavingNameYToDevice(String size, String isVideoFile, String fileFullName) throws Exception {
         AndroidCommonUtils.pushRandomFileToSdcardDownload(fileFullName, size, isVideoFile != null);
     }
+
+    /**
+     * Prepare file in /mnt/sdcard/Download/
+     *
+     * @param fileFullName the name of file that located in Android Tool Path
+     * @throws Exception
+     * @step. ^I push local file named \"(.*)\" to the device$
+     */
+    @Given("^I push local file named \"(.*)\" to the device$")
+    public void IPushLocalFileNamedYToDevice(String fileFullName) throws Exception {
+        AndroidCommonUtils.pushLocalFileToSdcardDownload(fileFullName);
+    }
 }
