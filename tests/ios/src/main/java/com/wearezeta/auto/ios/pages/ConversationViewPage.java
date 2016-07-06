@@ -197,8 +197,8 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameDefaultShareLocationAddress = MobileBy.AccessibilityId(Constants.DEFAULT_GMAP_ADDRESS);
 
-    private static final By nameDefaultSimulatorShareLocationAddress = MobileBy.AccessibilityId("1800 Ellis St, San " +
-            "Francisco, CA  94102");
+    private static final By nameDefaultSimulatorShareLocationAddress =
+            MobileBy.AccessibilityId("Wire St, 1, WireTown, Wirestan");
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
