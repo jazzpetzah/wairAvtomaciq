@@ -276,6 +276,7 @@ Feature: Conversation List
     And I confirm delete conversation content
     Then I do not see conversation <GroupChatName> in conversations list
     When I open search UI
+    And I tap on Search input on People picker page
     And I input in People picker search field conversation name <GroupChatName>
     And I tap on conversation <GroupChatName> in search result
     Then I see empty group chat page with users <Contact1>,<Contact2> with only system message
