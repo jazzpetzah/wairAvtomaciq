@@ -284,7 +284,7 @@ Feature: Conversation View
     And I draw a sketch with <NumColors> colors on Sketch page
     When I tap Send button on Sketch page
     Then I see a new picture in the conversation view
-    And I tap the new picture in the conversation view
+    And I tap the recent picture in the conversation view
 
     Examples:
       | Name      | Contact1  | NumColors |
@@ -296,17 +296,21 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I sign in using my email
+    Given I push local file named "<FileName>" to the device
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with conversations
     And I tap the conversation <Contact1>
     When I tap Add picture button from cursor toolbar
     And I tap Gallery Camera button on Take Picture view
-    And I tap Sketch Image Paint button on Take Picture view
+    # FIXME: Based on AN PR https://github.com/wearezeta/zclient-android/pull/3380, we will skip the image confirmation process
+    And I see a new picture in the conversation view
+    And I tap the recent picture in the conversation view
+    And I tap Sketch Image Paint button on Picture preview overlay
     And I draw a sketch with <NumColors> colors on Sketch page
     And I tap Send button on Sketch page
     Then I see a new picture in the conversation view
-    And I tap the new picture in the conversation view
+    And I tap the recent picture in the conversation view
 
     Examples:
-      | Name      | Contact1  | NumColors |
-      | user1Name | user2Name | 6         |
+      | Name      | Contact1  | NumColors | FileName       |
+      | user1Name | user2Name | 6         | avatarTest.png |

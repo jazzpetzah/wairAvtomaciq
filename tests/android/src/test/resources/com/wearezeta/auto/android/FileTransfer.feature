@@ -79,7 +79,7 @@ Feature: File Transfer
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I push local file named "<FileName>.<FileExtension>" to the device
+    Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
     Given I remove the file "1_<FileName>.<FileExtension>" from device's sdcard
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
@@ -88,11 +88,13 @@ Feature: File Transfer
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     And I tap View button on file upload placeholder
     And I save file from file dialog
-    Then I wait up <DownloadTimeout> seconds until <FileExactSize> file having name "1_<FileName>.<FileExtension>" is downloaded to the device
+    # Wait for saving
+    And I wait for 5 seconds
+    Then I wait up <DownloadTimeout> seconds until <FileSize> file having name "1_<FileName>.<FileExtension>" is downloaded to the device
 
     Examples:
-      | Name      | Contact1  | FileName | FileExtension | FileSize | UploadingTimeout | DownloadTimeout | FileExactSize |
-      | user1Name | user2Name | animated | gif           | 440KB    | 20               | 10              | 451009B       |
+      | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout | DownloadTimeout |
+      | user1Name | user2Name | qa_random | txt           | 5.00MB   | 20               | 10              |
 
   @C87634 @rc @regression
   Scenario Outline: Verify downloading file by receiver

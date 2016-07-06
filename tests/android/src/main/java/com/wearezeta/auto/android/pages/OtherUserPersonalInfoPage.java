@@ -105,7 +105,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     private static By[] getOneToOneOptionsMenuLocators() {
         return new By[]{
                 By.xpath(xpathConvOptionsMenuItemByName.apply("BLOCK")),
-                By.xpath(xpathConvOptionsMenuItemByName.apply("SILENCE")),
+                By.xpath(xpathConvOptionsMenuItemByName.apply("MUTE")),
                 By.xpath(xpathConvOptionsMenuItemByName.apply("DELETE")),
                 By.xpath(xpathConvOptionsMenuItemByName.apply("ARCHIVE"))};
     }

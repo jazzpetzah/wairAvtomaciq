@@ -39,7 +39,10 @@ public class TabletTakePicturePage extends AndroidTabletPage {
     }
 
     public void tapSketchOnImageButton() throws Exception {
-        getAndroidTakePicturePage().tapSketchOnImageButton();
+        // FIXEME : once AN-4223 fixed or automation find a workaround for tablet rotation issue, should remove this
+        //getAndroidTakePicturePage().tapSketchOnImageButton();
+        throw new IllegalStateException("Based on PR https://github.com/wearezeta/zclient-android/pull/3380, " +
+                "we will skip the image confirm process");
     }
 
     public boolean isTakePhotoButtonVisible() throws Exception {

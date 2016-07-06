@@ -248,11 +248,11 @@ public class ConversationViewPageSteps {
      * Tap the recent picture in the conversation view to open a preview
      *
      * @throws Exception
-     * @step. ^I tap the new picture in (?:the |\\s*)[Cc]onversation view$
+     * @step. ^I tap the recent (?:image|picture) in the conversation view
      */
-    @When("^I tap the new picture in (?:the |\\s*)[Cc]onversation view$")
-    public void ITapNewPicture() throws Exception {
-        getConversationViewPage().tapRecentPicture();
+    @When("^I tap the recent (?:image|picture) in the conversation view$")
+    public void ITapRecentImage() throws Exception {
+        getConversationViewPage().tapRecentImage();
     }
 
     /**
@@ -743,5 +743,16 @@ public class ConversationViewPageSteps {
                     timeout), filePlaceHolderActionButtonState.isNotChanged(timeout,
                     FILE_TRANSFER_ACTION_BUTTON_MIN_SIMILARITY_SCORE));
         }
+    }
+
+    /**
+     * Tap sketch image paint button on Picture preview overlay
+     *
+     * @throws Exception
+     * @step. ^I tap Sketch Image Paint button on Picture preview overlay$
+     */
+    @When("^I tap Sketch Image Paint button on Picture preview overlay$")
+    public void ITapSketchOnPictureView() throws Exception {
+        getConversationViewPage().tapSketchOnPicturePreviewOverlay();
     }
 }
