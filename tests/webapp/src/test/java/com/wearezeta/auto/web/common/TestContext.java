@@ -20,7 +20,7 @@ public class TestContext {
     private static final Logger LOG = ZetaLogger.getLog(TestContext.class.getSimpleName());
     
     // IDLE_TIMEOUT 90s https://www.browserstack.com/automate/timeouts
-    private static final long DRIVER_INIT_TIMEOUT = 91; //seconds
+    private static final long DRIVER_INIT_TIMEOUT = 360; //seconds
     
     static Future<ZetaWebAppDriver> COMPAT_WEB_DRIVER;
 
