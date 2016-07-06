@@ -223,7 +223,7 @@ public final class BackendAPIWrappers {
         activateRegisteredUserByPhoneNumber(user.getPhoneNumber(), activationCode, false);
     }
 
-    private static void changeUserPassword(ClientUser user, String oldPassword, String newPassword) throws Exception {
+    public static void changeUserPassword(ClientUser user, String oldPassword, String newPassword) throws Exception {
         BackendREST.updateSelfPassword(receiveAuthToken(user), oldPassword, newPassword);
         user.setPassword(newPassword);
     }

@@ -461,7 +461,7 @@ public final class CommonSteps {
     }
 
     public void UserSentLocationToConversation(String msgFromUserNameAlias, String deviceName, String dstConversationName, float longitude,
-                                           float latitude, String locationName, int zoom, boolean isGroup) throws Exception {
+                                               float latitude, String locationName, int zoom, boolean isGroup) throws Exception {
         ClientUser msgFromUser = usrMgr.findUserByNameOrNameAlias(msgFromUserNameAlias);
 
         if (!isGroup) {
@@ -718,5 +718,10 @@ public final class CommonSteps {
                 BackendAPIWrappers.getConversationIdByName(msgFromUser, dstConversationName) :
                 usrMgr.findUserByNameOrNameAlias(dstConversationName).getId();
         SEBridge.getInstance().shareDefaultLocation(msgFromUser, dstConvId, deviceName);
+    }
+
+    public void UserResetsPassword(String nameAlias, String newPassword) throws Exception {
+        final ClientUser usr = usrMgr.findUserByNameOrNameAlias(nameAlias);
+        BackendAPIWrappers.changeUserPassword(usr, usr.getPassword(), newPassword);
     }
 }
