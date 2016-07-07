@@ -16,7 +16,7 @@ public final class AndroidLogListener {
     public enum ListenerType {
         DEFAULT(null),
         PERF("LoadTimeLoggerController"),
-        ANALYTICS("LoggingTrackingController TrackingController");
+        ANALYTICS("TrackingController");
 
         // https://developer.android.com/studio/command-line/logcat.html
         // Check 'Filtering Log Output' section to know more about the expected string format

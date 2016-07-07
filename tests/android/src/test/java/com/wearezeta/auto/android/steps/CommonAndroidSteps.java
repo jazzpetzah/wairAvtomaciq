@@ -1565,23 +1565,29 @@ public class CommonAndroidSteps {
      * Verify whether the particular string is present in the logcat output
      *
      * @param logType        one of possible log types. See AndroidLogListener.ListenerType enumeration for more details
+     * @param expectedTimes  the times of appearance
      * @param expectedString the string to verify
      * @throws Exception
-     * @step. ^I verify that (PERF|ANALYTICS|DEFAULT) log contains string "(.*)"$
+     * @step. ^I verify that (PERF|ANALYTICS|DEFAULT) log contains string "(.*)"( \d+ times?)?$
      */
-    @Then("^I verify that (PERF|ANALYTICS|DEFAULT) log contains string \"(.*)\"$")
-    public void IVerifyLogContains(String logType, String expectedString) throws Exception {
-        boolean result;
+    @Then("^I verify that (PERF|ANALYTICS|DEFAULT) log contains string \"(.*)\"( \\d+ times?)?$")
+    public void IVerifyLogContains(String logType, String expectedString, String expectedTimesStr) throws Exception {
+        int result;
+        int expectedTimes = (expectedTimesStr == null) ? 1 : Integer.parseInt(expectedTimesStr.replaceAll("[\\D]", ""));
+
         final long msStarted = System.currentTimeMillis();
         do {
-            result = pagesCollection.getCommonPage().isLogContain(ListenerType.valueOf(logType), expectedString);
-            if (result) {
+            result = pagesCollection.getCommonPage().countOfLogContain(ListenerType.valueOf(logType), expectedString);
+            if (result >= expectedTimes) {
                 break;
             } else {
                 Thread.sleep(100);
             }
         } while (System.currentTimeMillis() - msStarted <= LOG_SEARCH_TIMEOUT_MILLIS);
-        Assert.assertTrue(String.format("The %s log does not contain '%s' substring", logType, expectedString), result);
+
+        Assert.assertTrue(
+                String.format("The %s log does not contain '%s' substring %d times, (actural %d times)",
+                        logType, expectedString, expectedTimes, result), result >= expectedTimes);
     }
 
     /**
