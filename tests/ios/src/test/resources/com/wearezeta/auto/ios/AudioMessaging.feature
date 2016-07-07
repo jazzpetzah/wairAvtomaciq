@@ -94,7 +94,7 @@ Feature: Audio Messaging
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I record 60 seconds long audio message and send it using swipe up gesture
+    And I record 6 seconds long audio message and send it using swipe up gesture
     And I tap Play audio message button
     And I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item

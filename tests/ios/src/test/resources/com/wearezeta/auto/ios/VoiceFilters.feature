@@ -41,7 +41,7 @@ Feature: Voice Filters
       | Name      | Contact   | ButtonsCount |
       | user1Name | user2Name | 2            |
 
-  @C165156 @staging
+  @C165156 @regression
   Scenario Outline: ZIOS-6904 Verify voice filter control is not dismissed if audio recording is in progress and other UI event happens
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -69,7 +69,7 @@ Feature: Voice Filters
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @C165155 @staging
+  @C165155 @regression
   Scenario Outline: ZIOS-6903 Voice Filters: Verify voice filter control is preserved if one has already recorded something
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

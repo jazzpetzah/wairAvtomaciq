@@ -199,7 +199,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameDefaultSentLocationAddress = MobileBy.AccessibilityId("1800 Ellis St, San Francisco, CA  94102");
 
-    private static final String xpathDefaultMapApplication = "//UIAApplication[@name='Maps']";
+    private static final By xpathDefaultMapApplication = By.xpath("//UIAApplication[@name='Maps']");
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -505,21 +505,8 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathGiphyImage);
     }
 
-    public void tapHoldImage() {
-        try {
-            this.getDriver().tap(1, getElement(xpathLastImageCell), 1000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void tapHoldImageWithRetry() throws Exception {
-        for (int i = 0; i < 3; i++) {
-            tapHoldImage();
-            if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameEditingItemDelete, 5)) {
-                break;
-            }
-        }
+    public void longTapImage() throws Exception {
+        this.getDriver().tap(1, getElement(xpathLastImageCell), DriverUtils.LONG_TAP_DURATION);
     }
 
     public boolean isUserAvatarNextToInputVisible() throws Exception {
@@ -743,11 +730,11 @@ public class ConversationViewPage extends IOSPage {
         DriverUtils.tapOnPercentOfElement(getDriver(), lastMessage, 10, 50, 1000);
     }
 
-    public void tapAndHoldMediaContainer() throws Exception {
+    public void longTapMediaContainer() throws Exception {
         this.getDriver().tap(1, getElement(xpathMediaContainerCell), DriverUtils.LONG_TAP_DURATION);
     }
 
-    public void tapAndHoldFileTransferPlaceholder() throws Exception {
+    public void longTapFileTransferPlaceholder() throws Exception {
         this.getDriver().tap(1, getElement(nameFileTransferTopLabel), DriverUtils.LONG_TAP_DURATION);
     }
 
@@ -801,7 +788,7 @@ public class ConversationViewPage extends IOSPage {
 
     public void tapRecordControlButton(String buttonName) throws Exception {
         By button = getRecordControlButtonByName(buttonName);
-        if(button.equals(namePlayAudioRecorderButton)) {
+        if (button.equals(namePlayAudioRecorderButton)) {
             getElement(button).click();
         } else {
             clickElementWithRetryIfStillDisplayed(button);
@@ -828,7 +815,7 @@ public class ConversationViewPage extends IOSPage {
                 ().perform();
     }
 
-    public void tapAndHoldAudioMessage() throws Exception {
+    public void longTapAudioMessage() throws Exception {
         this.getDriver().tap(1, getElement(nameAudioActionButton), DriverUtils.LONG_TAP_DURATION);
     }
 
@@ -841,7 +828,7 @@ public class ConversationViewPage extends IOSPage {
         getElement(nameAudioActionButton).click();
     }
 
-    public void tapAndHoldLocation() throws Exception {
+    public void longTapLocationContainer() throws Exception {
         this.getDriver().tap(1, getElement(classNameShareLocationContainer), DriverUtils.LONG_TAP_DURATION);
     }
 
@@ -915,25 +902,24 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), classNameShareLocationContainer);
     }
 
-    public boolean isDefaultRecievedShareLocationAddressVisible() throws Exception {
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultRecievedLocationAddress);
+    public boolean isDefaultReceivedShareLocationAddressVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultRecievedLocationAddress);
     }
 
-    public boolean isDefaultRecievedShareLocationAddressNotVisible() throws Exception {
-            return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultRecievedLocationAddress);
+    public boolean isDefaultReceivedShareLocationAddressNotVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultRecievedLocationAddress);
     }
 
     public boolean isDefaultSentShareLocationAddressVisible() throws Exception {
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSentLocationAddress);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSentLocationAddress);
     }
 
     public boolean isDefaultSentShareLocationAddressNotVisible() throws Exception {
-            return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSentLocationAddress);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultSentLocationAddress);
     }
 
     public boolean isDefaultMapApplicationVisible() throws Exception {
-        final By locator = By.xpath(xpathDefaultMapApplication);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathDefaultMapApplication, 15);
     }
 
 }

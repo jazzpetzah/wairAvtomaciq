@@ -1,6 +1,6 @@
 Feature: Location Share
 
-  @C150033 @staging
+  @C150033 @regression
   Scenario Outline: Verify you can see location sent from mobile and delete it from conversation view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
