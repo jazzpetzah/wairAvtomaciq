@@ -42,8 +42,7 @@ public class ConversationPageSteps {
     private static final String SHORTCUT_PING_WIN = "(Ctrl + Alt + K)";
     private static final String SHORTCUT_PING_MAC = "(⌘⌥K)";
     private static final String TOOLTIP_CALL = "Call";
-    private static final String SHORTCUT_CALL_WIN = "(Ctrl + Alt + R)";
-    private static final String SHORTCUT_CALL_MAC = "(⌘⌥R)";
+    private static final String TOOLTIP_VIDEO_CALL = "Video Call";
 
     @SuppressWarnings("unused")
     private static final Logger log = ZetaLogger.getLog(ConversationPageSteps.class.getSimpleName());
@@ -930,14 +929,30 @@ public class ConversationPageSteps {
      *
      * @param doNot is set to null if "do not" part does not exist
      * @throws java.lang.Exception
-     * @step. ^I can see calling button$
+     * @step. ^I( do not)? see call button$
      */
-    @Then("^I( do not)? see calling button$")
+    @Then("^I( do not)? see call button$")
     public void ISeeCallButton(String doNot) throws Exception {
         if (doNot == null) {
             assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isCallButtonVisible());
         } else {
-            assertFalse(context.getPagesCollection().getPage(ConversationPage.class).isCallButtonVisible());
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isCallButtonInvisible());
+        }
+    }
+    
+    /**
+     * Verifies whether video calling button is visible or not.
+     *
+     * @param doNot is set to null if "do not" part does not exist
+     * @throws java.lang.Exception
+     * @step. ^I( do not)? see video call button$
+     */
+    @Then("^I( do not)? see video call button$")
+    public void ISeeVideoCallButton(String doNot) throws Exception {
+        if (doNot == null) {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isVideoCallButtonVisible());
+        } else {
+            assertTrue(context.getPagesCollection().getPage(ConversationPage.class).isVideoCallButtonInvisible());
         }
     }
 
@@ -1072,17 +1087,6 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Hovers ping button
-     *
-     * @throws Exception
-     * @step. ^I hover ping button$
-     */
-    @Then("^I hover ping button$")
-    public void IHoverPingButton() throws Exception {
-        context.getPagesCollection().getPage(ConversationPage.class).hoverPingButton();
-    }
-
-    /**
      * Types shortcut combination to ping
      *
      * @throws Exception
@@ -1112,30 +1116,26 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Hovers call button
-     *
-     * @step. ^I hover call button$
-     */
-    @When("^I hover call button$")
-    public void IHoverCallButton() throws Throwable {
-        context.getPagesCollection().getPage(ConversationPage.class).hoverCallButton();
-    }
-
-    /**
      * Verifies whether call button tool tip is correct or not.
      *
      * @step. ^I see correct call button tool tip$
      */
     @Then("^I see correct call button tooltip$")
     public void ISeeCorrectCallButtonTooltip() throws Exception {
-
-        String tooltip = TOOLTIP_CALL + " ";
-        if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-            tooltip = tooltip + SHORTCUT_CALL_WIN;
-        } else {
-            tooltip = tooltip + SHORTCUT_CALL_MAC;
-        }
+        String tooltip = TOOLTIP_CALL;
         assertThat("Call button tooltip", context.getPagesCollection().getPage(ConversationPage.class).getCallButtonToolTip(),
+                equalTo(tooltip));
+    }
+    
+    /**
+     * Verifies whether video call button tool tip is correct or not.
+     *
+     * @step. ^I see correct call button tool tip$
+     */
+    @Then("^I see correct video call button tooltip$")
+    public void ISeeCorrectVideoCallButtonTooltip() throws Exception {
+        String tooltip = TOOLTIP_VIDEO_CALL;
+        assertThat("Video Call button tooltip", context.getPagesCollection().getPage(ConversationPage.class).getVideoCallButtonToolTip(),
                 equalTo(tooltip));
     }
 

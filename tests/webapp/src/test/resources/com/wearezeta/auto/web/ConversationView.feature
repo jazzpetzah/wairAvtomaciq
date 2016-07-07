@@ -394,7 +394,6 @@ Feature: Conversation View
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I open conversation with <Contact>
-    When I hover ping button
     Then I see correct ping button tooltip
     When I type shortcut combination to ping
     Then I see <PING> action in conversation
@@ -403,7 +402,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PING       |
       | user1Email | user1Password | user1Name | user2Name | you pinged |
 
-  @C1795 @regression @WEBAPP-2961
+  @C1795 @regression @mute
   Scenario Outline: Verify you start a call in a conversation when you press ⌥ ⌘ R (Mac) or alt + ctrl + R (Win)
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -412,8 +411,7 @@ Feature: Conversation View
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I open conversation with <Contact>
-    And I see calling button
-    When I hover call button
+    And I see call button
     Then I see correct call button tooltip
     When I type shortcut combination to start a call
     Then I see the outgoing call controls for conversation <Contact>

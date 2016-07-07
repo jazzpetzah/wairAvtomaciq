@@ -433,16 +433,6 @@ public class ConversationPage extends WebPage {
         }
     }
 
-    private void hoverOverConversation() throws Exception {
-        if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
-            // native mouse over
-            DriverUtils.moveMouserOver(this.getDriver(), conversation);
-        } else {
-            // safari workaround
-            DriverUtils.addClass(this.getDriver(), conversation, "hover");
-        }
-    }
-
     public void sendFile(String fileName) throws Exception {
         final String filePath = WebCommonUtils.getFullFilePath("filetransfer/" + fileName);
         filePathInput.sendKeys(filePath);
@@ -521,6 +511,21 @@ public class ConversationPage extends WebPage {
     public boolean isCallButtonVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.
                 cssSelector(WebAppLocators.ConversationPage.cssCallButton));
+    }
+    
+    public boolean isCallButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.
+                cssSelector(WebAppLocators.ConversationPage.cssCallButton));
+    }
+    
+    public boolean isVideoCallButtonVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.
+                cssSelector(WebAppLocators.ConversationPage.cssVideoCallButton));
+    }
+    
+    public boolean isVideoCallButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.
+                cssSelector(WebAppLocators.ConversationPage.cssVideoCallButton));
     }
 
     public boolean isNobodyToCallMsgVisible() throws Exception {
@@ -672,17 +677,6 @@ public class ConversationPage extends WebPage {
         }
     }
 
-    public void hoverPingButton() throws Exception {
-        hoverOverConversation();
-        final By locator = By
-                .cssSelector(WebAppLocators.ConversationPage.cssPingButton);
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                locator, 2) : "Ping button has not been shown after 2 seconds";
-        assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-                pingButton) : "Ping button has to be clickable";
-
-    }
-
     public void pressShortCutForPing() throws Exception {
         if (WebAppExecutionContext.isCurrentPlatformWindows()) {
             conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "k"));
@@ -696,14 +690,12 @@ public class ConversationPage extends WebPage {
         return pingButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
     }
 
-    public void hoverCallButton() throws Exception {
-        hoverOverConversation();
-        assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-                By.cssSelector(WebAppLocators.ConversationPage.cssCallButton));
-    }
-
     public String getCallButtonToolTip() {
         return callButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
+    }
+    
+    public String getVideoCallButtonToolTip() {
+        return videoCallButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
     }
 
     public void pressShortCutForCall() throws Exception {

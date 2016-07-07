@@ -12,6 +12,8 @@ Feature: VideoCalling
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I open conversation with <Contact>
+    When I see video call button
+    Then I see correct video call button tooltip
     When I start a video call
     Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds

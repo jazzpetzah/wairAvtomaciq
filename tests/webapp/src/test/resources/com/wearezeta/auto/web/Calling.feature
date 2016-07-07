@@ -10,6 +10,8 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I open conversation with <Contact>
+    And I see call button
+    Then I see correct call button tooltip
     When I call
     Then I see the outgoing call controls for conversation <Contact>
     When <Contact> accepts next incoming call automatically
@@ -1087,7 +1089,7 @@ Feature: Calling
     And I confirm remove from group chat on Group Participants popover
     And I click back button on Group Participants popover
     Then I see 0 participants in the Group Participants popover
-    And I do not see calling button
+    And I do not see call button
     When I type shortcut combination to start a call
     Then I see nobody to call message
 
