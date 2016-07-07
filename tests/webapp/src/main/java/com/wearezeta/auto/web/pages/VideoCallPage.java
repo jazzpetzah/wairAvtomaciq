@@ -53,11 +53,13 @@ public class VideoCallPage extends WebPage {
     }
 
     public boolean isMuteCallButtonPressed() throws Exception {
+        WebCommonUtils.hoverOverElement(getDriver(), muteVideoCallButton);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(WebAppLocators.VideoCallPage.xpathMuteCallButtonPressed));
     }
 
     public boolean isMuteCallButtonNotPressed() throws Exception {
+        WebCommonUtils.hoverOverElement(getDriver(), muteVideoCallButton);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
                 By.xpath(WebAppLocators.VideoCallPage.xpathMuteCallButtonNotPressed));
     }
