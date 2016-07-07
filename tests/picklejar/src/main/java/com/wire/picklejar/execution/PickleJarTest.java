@@ -103,11 +103,12 @@ public abstract class PickleJarTest {
         // known removed characters are: ', ", !
         String scenarioName = reportScenario.getName().replaceAll("[\"!,']", "");
         scenarioName = scenarioName.replaceAll("[^a-zA-Z0-9]", "_");
+        scenarioName = scenarioName.replaceAll("__", "_").replaceAll("__", "_");
         
         // cucumber does not replace characters like " with _ but just removes them beforehand
         // needs more investigation what characters are removed and which are replaced by _
         // known removed characters are: ', ", !
-        String stepName = step.getName().replaceAll("[\"!,']", "");
+        String stepName = step.getName().replaceAll("[\"!']", "");
         stepName = stepName.replaceAll("[^a-zA-Z0-9]", "_");
         stepName = stepName.replaceAll("__", "_").replaceAll("__", "_");
         Path path = Paths.get(Paths.get(SCREENSHOT_PATH).toAbsolutePath() + "/" + featureName + "/" + scenarioName + "/");
