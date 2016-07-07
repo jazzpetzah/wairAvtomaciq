@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.Message;
 import com.wearezeta.auto.web.common.Lifecycle;
 
@@ -93,11 +94,11 @@ public class CommonWebAppSteps {
         }
     }
 
-    @Then("^I skip if my browser does not support inline video messages$")
+    @Then("^my browser supports video message feature$")
     public void MyBrowserSupportsInlineVideo() throws Exception {
-        if (!WebAppExecutionContext.getBrowser().isSupportingInlineVideo()) {
-            throw new PendingException("Browser " + WebAppExecutionContext.getBrowser().toString() + " does not support " +
-                    "inline video.");
+        if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
+            throw new PendingException("Video messages are disabled for Firefox < 49 because of https://wearezeta" +
+                    ".atlassian.net/browse/WEBAPP-2723");
         }
     }
 
