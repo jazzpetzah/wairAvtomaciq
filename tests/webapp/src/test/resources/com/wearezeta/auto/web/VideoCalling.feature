@@ -570,7 +570,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |
 
-  @C165108 @videocalling @calling @staging
+  @C165108 @videocalling @calling @regression
   Scenario Outline: Verify you can multitask while video call is minimized
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -672,7 +672,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 20      |
 
-  @C165142 @staging @videocalling @calling_debug
+  @C165142 @regression @videocalling @calling_debug
   Scenario Outline: Verify that current video call is terminated if you want to videocall someone else
     Given My browser supports calling
     Given There are 3 users where <Name> is me
