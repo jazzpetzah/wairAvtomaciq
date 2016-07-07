@@ -54,7 +54,7 @@ Feature: Video Message
     And I open conversation with <Contact>
     And <Contact> sends <Size> sized video with name <File> via device Device1 to user <Name>
     Then I see video message <File> in the conversation view
-    And I wait until video <File> is downloaded and starts to play
+    And I wait until video <File> is uploaded completely
     When I click play button of video <File> in the conversation view
     Then I wait until video <File> is downloaded and starts to play
     And I verify seek bar is shown for video <File> in the conversation view
@@ -79,7 +79,7 @@ Feature: Video Message
     When I open conversation with <ChatName>
     And <Contact1> sends <Size> sized video with name <File> via device Device1 to group conversation <ChatName>
     Then I see video message <File> in the conversation view
-    And I wait until video <File> is downloaded and starts to play
+    And I wait until video <File> is uploaded completely
     When I click play button of video <File> in the conversation view
     Then I wait until video <File> is downloaded and starts to play
     And I verify seek bar is shown for video <File> in the conversation view
@@ -109,7 +109,7 @@ Feature: Video Message
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size  |
-      | user1Email | user1Password | user1Name | user2Name | C123929.mp4 | 20MB  |
+      | user1Email | user1Password | user1Name | user2Name | C123929.mp4 | 19MB  |
 
   @C123928 @videomessage @staging
   Scenario Outline: Verify receiver can cancel video message download
