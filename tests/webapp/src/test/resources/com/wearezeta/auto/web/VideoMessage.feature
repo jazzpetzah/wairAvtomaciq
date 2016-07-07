@@ -109,7 +109,7 @@ Feature: Video Message
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size  |
-      | user1Email | user1Password | user1Name | user2Name | C123929.mp4 | 20MB  |
+      | user1Email | user1Password | user1Name | user2Name | C123929.mp4 | 19MB  |
 
   @C123928 @videomessage @staging
   Scenario Outline: Verify receiver can cancel video message download
