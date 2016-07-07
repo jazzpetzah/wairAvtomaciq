@@ -838,34 +838,40 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome      | chrome      | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome      | firefox     | 20      |
 
-  @calling @group @calling_debug
-  Scenario Outline: Verify impossibility to connect 6th person to the call
+  @C167027 @staging @calling @group @calling_debug
+  Scenario Outline: Verify impossibility to connect 11th person to the call
     Given My browser supports calling
-    Given There are 6 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
-    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
-    Given <Contact2>,<Contact3>,<Contact4>,<Contact5> starts instance using <WaitBackend>
-    Given <Contact2>,<Contact3>,<Contact4>,<Contact5> accept next incoming call automatically
+    Given There are 11 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10>
+    Given <Contact1> starts instance using <CallBackend>
+    Given <Contact2>,<Contact3>,<Contact4> starts instance using <WaitBackend>
+    Given <Contact5>,<Contact6>,<Contact7> starts instance using <WaitBackend>
+    Given <Contact8>,<Contact9>,<Contact10> starts instance using <WaitBackend>
+    Given <Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     And I open conversation with <ChatName>
-    When <Contact1> calls <ChatName> using <CallBackend>
-    And <Contact2>,<Contact3>,<Contact4>,<Contact5> verify that waiting instance status is changed to active in <Timeout> seconds
+    When <Contact1> calls <ChatName>
+    And <Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And I see the incoming call controls for conversation <ChatName>
     When I accept the call from conversation <ChatName>
     And I wait for 1 seconds
     Then I see full call warning modal
     And I close the full call warning modal
-    When I join call of conversation <ChatName>
+    When I accept the call from conversation <ChatName>
     And I wait for 1 seconds
     Then I see full call warning modal
     And I click on "Ok" button in full call warning modal
+    When <Contact1> stops calling <ChatName>
+    And I accept the call from conversation <ChatName>
+    Then I see the ongoing call controls for conversation <ChatName>
 
     Examples:
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | ChatName              | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GroupCallConversation | chrome      | chrome      | 20      |
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | Contact10  | ChatName              | CallBackend | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | GroupCallConversation | chrome      | chrome      | 20      |
 
   @C1813 @regression @calling @group @calling_debug
   Scenario Outline: Verify initiating group call
