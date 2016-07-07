@@ -30,7 +30,8 @@ public class VideoCallPage extends WebPage {
     }
 
     public void clickEndVideoCallButton() throws Exception {
-        this.getDriver().executeScript("arguments[0].click();", endVideoCallButton);
+        WebCommonUtils.hoverOverElement(getDriver(), endVideoCallButton);
+        endVideoCallButton.click();
     }
 
     public boolean isEndVideoCallButtonVisible() throws Exception {
@@ -49,7 +50,8 @@ public class VideoCallPage extends WebPage {
     }
 
     public void clickMuteCallButton() throws Exception {
-        this.getDriver().executeScript("arguments[0].click();", muteVideoCallButton);
+        WebCommonUtils.hoverOverElement(getDriver(), muteVideoCallButton);
+        muteVideoCallButton.click();
     }
 
     public boolean isMuteCallButtonPressed() throws Exception {
