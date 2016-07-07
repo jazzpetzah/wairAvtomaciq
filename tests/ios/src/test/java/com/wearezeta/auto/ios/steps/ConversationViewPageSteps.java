@@ -210,7 +210,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I (long )?tap (Add Picture|Ping|Sketch|Share Location|File Transfer|Video Message|Audio Message) button( for \\d+ seconds?)? from input tools( without releasing my finger)?$")
     public void ITapButtonByNameFromInputTools(String isLongTap, String btnName, String durationSeconds,
-                                       String shouldKeepTap) throws Exception {
+                                               String shouldKeepTap) throws Exception {
         if (isLongTap == null) {
             getConversationViewPage().tapInputToolButtonByName(btnName);
         } else {
@@ -1210,29 +1210,31 @@ public class ConversationViewPageSteps {
         FunctionalInterfaces.RunnableWithException tapFunc;
         switch (conversationItem) {
             case "image":
-                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapImageToOpen : null;
+                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapImageToOpen :
+                        getConversationViewPage()::longTapImage;
                 break;
             case "media container":
                 tapFunc = (isLongTap == null) ? getConversationViewPage()::startMediaContent :
-                        getConversationViewPage()::tapAndHoldMediaContainer;
+                        getConversationViewPage()::longTapMediaContainer;
                 break;
             case "location map":
                 tapFunc = (isLongTap == null) ? getConversationViewPage()::tapLocationContainer :
-                        getConversationViewPage()::tapAndHoldLocation;
+                        getConversationViewPage()::longTapLocationContainer;
                 break;
             case "file transfer placeholder":
-                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapFileTransferPlaceholder : null;
+                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapFileTransferPlaceholder :
+                        getConversationViewPage()::longTapFileTransferPlaceholder;
                 break;
             case "audio message placeholder":
-                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapAndHoldAudioMessage : null;
+                tapFunc = (isLongTap == null) ? null : getConversationViewPage()::longTapAudioMessage;
                 break;
             default:
                 throw new IllegalArgumentException("Not known conversation item. Please use only items pointed in the step");
-
         }
         if (tapFunc == null) {
-            throw new IllegalArgumentException(String.format("Cannot perform%s tap on '%s' container, because it is not implemented",
-                    isLongTap == null ? "" : " long", conversationItem));
+            throw new IllegalArgumentException(
+                    String.format("Cannot perform%s tap on '%s' container, because it is not implemented",
+                    (isLongTap == null) ? "" : " long", conversationItem));
         }
         tapFunc.run();
     }
