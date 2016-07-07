@@ -1389,8 +1389,8 @@ public class ConversationViewPageSteps {
     public void VerifyShareLocationAddressVisibility(String shouldNotSee, String origin) throws Exception {
         boolean condition;
         if (origin.equals("received")) {
-            condition = (shouldNotSee == null) ? getConversationViewPage().isDefaultRecievedShareLocationAddressVisible() :
-                    getConversationViewPage().isDefaultRecievedShareLocationAddressNotVisible();
+            condition = (shouldNotSee == null) ? getConversationViewPage().isDefaultReceivedShareLocationAddressVisible() :
+                    getConversationViewPage().isDefaultReceivedShareLocationAddressNotVisible();
         } else {
             condition = (shouldNotSee == null) ? getConversationViewPage().isDefaultSentShareLocationAddressVisible() :
                     getConversationViewPage().isDefaultSentShareLocationAddressNotVisible();
@@ -1406,8 +1406,8 @@ public class ConversationViewPageSteps {
      * @step. ^I see map application is opened$
      */
     @Then("^I see map application is opened$")
-    public void VerifyMapDefaultApplicationVisibility() throws Throwable {
-        Assert.assertTrue(String.format("Default map application' is not visible"),
+    public void VerifyMapDefaultApplicationVisibility() throws Exception {
+        Assert.assertTrue("The default map application is not visible",
                 getConversationViewPage().isDefaultMapApplicationVisible());
     }
 }

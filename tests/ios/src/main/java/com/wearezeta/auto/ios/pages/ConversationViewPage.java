@@ -199,7 +199,7 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameDefaultSentLocationAddress = MobileBy.AccessibilityId("1800 Ellis St, San Francisco, CA  94102");
 
-    private static final String xpathDefaultMapApplication = "//UIAApplication[@name='Maps']";
+    private static final By xpathDefaultMapApplication = By.xpath("//UIAApplication[@name='Maps']");
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -902,11 +902,11 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), classNameShareLocationContainer);
     }
 
-    public boolean isDefaultRecievedShareLocationAddressVisible() throws Exception {
+    public boolean isDefaultReceivedShareLocationAddressVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultRecievedLocationAddress);
     }
 
-    public boolean isDefaultRecievedShareLocationAddressNotVisible() throws Exception {
+    public boolean isDefaultReceivedShareLocationAddressNotVisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameDefaultRecievedLocationAddress);
     }
 
@@ -919,8 +919,7 @@ public class ConversationViewPage extends IOSPage {
     }
 
     public boolean isDefaultMapApplicationVisible() throws Exception {
-        final By locator = By.xpath(xpathDefaultMapApplication);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathDefaultMapApplication, 15);
     }
 
 }
