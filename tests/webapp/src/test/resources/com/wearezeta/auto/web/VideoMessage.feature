@@ -20,7 +20,7 @@ Feature: Video Message
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size  |
-      | user1Email | user1Password | user1Name | user2Name | example.mp4 | 20MB  |
+      | user1Email | user1Password | user1Name | user2Name | C123927.mp4 | 20MB  |
 
   @C123938 @videomessage @regression
   Scenario Outline: Verify user can delete video message
@@ -40,7 +40,7 @@ Feature: Video Message
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size |
-      | user1Email | user1Password | user1Name | user2Name | example.mp4 | 5MB  |
+      | user1Email | user1Password | user1Name | user2Name | C123938.mp4 | 5MB  |
 
   @C123926 @videomessage @staging
   Scenario Outline: Verify receiver can play video message in 1:1
@@ -64,7 +64,7 @@ Feature: Video Message
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size  |
-      | user1Email | user1Password | user1Name | user2Name | example.mp4 | 15MB  |
+      | user1Email | user1Password | user1Name | user2Name | C123926.mp4 | 15MB  |
 
   @C123939 @videomessage @staging
   Scenario Outline: Verify receivers can play video message in group
@@ -89,7 +89,7 @@ Feature: Video Message
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | File        | ChatName  | Size  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | example.mp4 | GroupChat | 15MB  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | C123939.mp4 | GroupChat | 15MB  |
 
   @C123929 @videomessage @staging
   Scenario Outline: Verify sender can cancel video message upload
@@ -109,7 +109,7 @@ Feature: Video Message
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size  |
-      | user1Email | user1Password | user1Name | user2Name | example.mp4 | 20MB  |
+      | user1Email | user1Password | user1Name | user2Name | C123929.mp4 | 20MB  |
 
   @C123928 @videomessage @staging
   Scenario Outline: Verify receiver can cancel video message download
@@ -132,4 +132,4 @@ Feature: Video Message
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | File        | ChatName  | Size  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | example.mp4 | GroupChat | 10MB  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | C123928.mp4 | GroupChat | 10MB  |
