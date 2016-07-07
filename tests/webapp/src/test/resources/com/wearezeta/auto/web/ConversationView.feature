@@ -403,7 +403,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PING       |
       | user1Email | user1Password | user1Name | user2Name | you pinged |
 
-  @C1795 @regression
+  @C1795 @regression @WEBAPP-2961
   Scenario Outline: Verify you start a call in a conversation when you press ⌥ ⌘ R (Mac) or alt + ctrl + R (Win)
     Given My browser supports calling
     Given There are 2 users where <Name> is me
