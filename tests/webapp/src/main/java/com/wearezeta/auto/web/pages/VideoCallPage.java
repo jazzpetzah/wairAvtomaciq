@@ -129,11 +129,13 @@ public class VideoCallPage extends WebPage {
     }
 
     public boolean isVideoButtonPressed() throws Exception {
+        WebCommonUtils.hoverOverElement(getDriver(), cameraButton);
         By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssCameraButtonPressed);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
     public boolean isVideoButtonUnPressed() throws Exception {
+        WebCommonUtils.hoverOverElement(getDriver(), cameraButton);
         By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssCameraButtonNotPressed);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
