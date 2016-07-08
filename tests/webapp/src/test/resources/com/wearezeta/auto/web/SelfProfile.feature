@@ -6,7 +6,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    Given I am signed in properly
     When I open self profile
     And I see user name on self profile page <Name>
     And I change username to <NewName>
