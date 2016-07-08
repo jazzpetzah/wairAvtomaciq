@@ -26,6 +26,10 @@ public class ConnectToPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), xpathConnectOtherUserButton);
     }
 
+    public boolean isConnectButtonInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), xpathConnectOtherUserButton);
+    }
+
     public void tapConnectButton() throws Exception {
         final Optional<WebElement> connectOtherUserButton = getElementIfDisplayed(xpathConnectOtherUserButton);
         if (connectOtherUserButton.isPresent()) {

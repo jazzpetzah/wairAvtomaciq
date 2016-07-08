@@ -12,7 +12,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
-    And I click Connect button on connect to dialog
+    And I tap Connect button on connect to dialog
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
@@ -52,7 +52,7 @@ Feature: Connect
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <UnconnectedUser>
-    And I click Connect button on connect to dialog
+    And I tap Connect button on connect to dialog
     And I see Connect dialog is closed
     And I close group info page
     And I navigate back to conversations list
@@ -116,7 +116,7 @@ Feature: Connect
     And I wait until <Contact> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I click Connect button on connect to dialog
+    And I tap Connect button on connect to dialog
     And I tap on conversation <Contact> in search result
     And I see <Contact> user pending profile page
     And I see Cancel Request button on pending profile page
@@ -164,7 +164,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
-    And I click Connect button on connect to dialog
+    And I tap Connect button on connect to dialog
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     When I wait until <Contact> exists in backend search results
@@ -250,7 +250,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I see connect to <Contact1> dialog
-    And I click Connect button on connect to dialog
+    And I tap Connect button on connect to dialog
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact1>
 

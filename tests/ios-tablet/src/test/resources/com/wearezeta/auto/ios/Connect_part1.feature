@@ -13,7 +13,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
-    And I click Connect button on connect to dialog
+    And I tap Connect button on connect to dialog
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
@@ -39,7 +39,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
-    And I click Connect button on connect to dialog
+    And I tap Connect button on connect to dialog
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
@@ -285,7 +285,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
     And I see connect to <Contact> dialog
-    And I click Connect button on connect to dialog
+    And I tap Connect button on connect to dialog
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     When I open search UI

@@ -50,7 +50,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I see connect to <Contact1> dialog
-    And I click Connect button on connect to dialog
+    And I tap Connect button on connect to dialog
     And I see Connect dialog is closed
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact1>
@@ -75,7 +75,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
     And I see connect to <Contact1> dialog
-    And I click Connect button on connect to dialog
+    And I tap Connect button on connect to dialog
     And I see Connect dialog is closed
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact1>

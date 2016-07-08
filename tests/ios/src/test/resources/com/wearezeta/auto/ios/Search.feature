@@ -77,7 +77,7 @@ Feature: Search
     And I input in People picker search field conversation name <UnconnectedUser>
     And I tap on conversation <UnconnectedUser> in search result
     Then I see connect to <UnconnectedUser> dialog
-    And I click Connect button on connect to dialog
+    And I tap Connect button on connect to dialog
     And I click close button to dismiss people view
     And I tap on contact name <UnconnectedUser>
     And I open conversation details

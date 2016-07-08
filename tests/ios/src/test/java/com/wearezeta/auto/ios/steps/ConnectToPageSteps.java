@@ -8,35 +8,37 @@ import com.wearezeta.auto.ios.pages.ConnectToPage;
 import cucumber.api.java.en.When;
 
 public class ConnectToPageSteps {
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
+    private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-	private ConnectToPage getConnectToPage() throws Exception {
-		return pagesCollection.getPage(ConnectToPage.class);
-	}
+    private ConnectToPage getConnectToPage() throws Exception {
+        return pagesCollection.getPage(ConnectToPage.class);
+    }
 
-	@When("^I see connect to (.*) dialog$")
-	public void WhenISeeConnectToUserDialog(String name) throws Exception {
-		Assert.assertTrue("Connection input is not visible", getConnectToPage()
-				.isConnectToUserDialogVisible());
-	}
+    /**
+     * Verify visibility of connect dialog
+     *
+     * @param isClosed equals to null if should be visible
+     * @throws Exception
+     * @step. ^I see [Cc]onnect dialog( is closed)?
+     */
+    @When("^I see [Cc]onnect (to .*)?dialog( is closed)?$")
+    public void WhenISeeConnectToUserDialog(String isClosed) throws Exception {
+        boolean condition = (isClosed == null) ? getConnectToPage().isConnectToUserDialogVisible() :
+                getConnectToPage().isConnectButtonInvisible();
+        Assert.assertTrue(String.format("Connect dialog is %s but shouldn't be.", (isClosed == null) ? "invisible" :
+                "visible"), condition);
+    }
 
-	@When("I click Connect button on connect to dialog")
-	public void IClickConnectButtonConnectDialog() throws Exception {
-		getConnectToPage().tapConnectButton();
-	}
-
-	/**
-	 * Verify if connect dialog closed
-	 * 
-	 * @step. ^I see Connect dialog is closed$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I see Connect dialog is closed$")
-	public void ISeeConnectDialogClosed() throws Exception {
-		Assert.assertFalse("Connect dialog still shown", getConnectToPage()
-				.isConnectButtonVisible());
-	}
+    /**
+     * Tap Connect button on connect dialog
+     *
+     * @throws Exception
+     * @step. ^I tap Connect button on connect to dialog$
+     */
+    @When("^I tap Connect button on connect to dialog$")
+    public void IClickConnectButtonConnectDialog() throws Exception {
+        getConnectToPage().tapConnectButton();
+    }
 }
