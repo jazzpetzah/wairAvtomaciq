@@ -1332,4 +1332,17 @@ public class ConversationPageSteps {
     public void ICancelVideoDownload(String fileName) throws Exception {
         context.getPagesCollection().getPage(ConversationPage.class).cancelVideoDownload(fileName);
     }
+
+    @When("^I see the video button is( not)? pulsating$")
+    public void ISeeVideoButtonPulsating(String not) throws Exception {
+        if (not == null) {
+            // video button pulsating?
+            assertThat("Video button is not pulsating :(",
+                    context.getPagesCollection().getPage(ConversationPage.class).isVideoCallButtonPulsating());
+        } else {
+            // video button not pulsating?
+            assertThat("Video button is pulsating",
+                    context.getPagesCollection().getPage(ConversationPage.class).isVideoCallButtonNotPulsating());
+        }
+    }
 }

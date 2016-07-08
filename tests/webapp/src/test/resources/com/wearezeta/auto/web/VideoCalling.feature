@@ -593,6 +593,7 @@ Feature: VideoCalling
     When I minimize video call
     Then I see video call is minimized
     Then I do not see my self video view
+    And I see the video button is pulsating
     When I write random message
     And I send message
     Then I see random message in conversation
@@ -604,6 +605,7 @@ Feature: VideoCalling
     Then I see random message in conversation
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
+    And I see the video button is pulsating
     When I maximize video call
     Then I see video call is maximized
     When I end the video call
@@ -634,6 +636,7 @@ Feature: VideoCalling
     And I see video call is maximized
     When I minimize video call
     Then I see video call is minimized
+    And I see the video button is pulsating
     When I open conversation with <Contact2>
     And I call
     Then I see another call warning modal
@@ -641,6 +644,7 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
+    And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies that all flows have greater than 0 bytes
     When I call
@@ -649,6 +653,7 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
+    And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies that all flows have greater than 0 bytes
     When I call
@@ -657,6 +662,7 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
+    And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies that all flows have greater than 0 bytes
     When I call
@@ -695,6 +701,7 @@ Feature: VideoCalling
     And I see video call is maximized
     When I minimize video call
     Then I see video call is minimized
+    And I see the video button is pulsating
     When I open conversation with <Contact2>
     When I start a video call
     Then I see another call warning modal
@@ -702,6 +709,7 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
+    And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies that all flows have greater than 0 bytes
     When I start a video call
@@ -710,6 +718,7 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
+    And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies that all flows have greater than 0 bytes
     When I start a video call
@@ -718,6 +727,7 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
+    And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies that all flows have greater than 0 bytes
     When I start a video call
@@ -733,6 +743,7 @@ Feature: VideoCalling
     Then I see video call is minimized
     And I do not see the ongoing call controls for conversation <Contact1>
     And I see the ongoing call controls for conversation <Contact2>
+    And I see the video button is pulsating
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
