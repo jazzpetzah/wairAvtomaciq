@@ -146,7 +146,7 @@ public class VideoCallPageSteps {
      * @throws Exception
      * @step. ^I see video call is (minimized|maximized)$
      */
-    @When("^I see video button unpressed|pressed$")
+    @When("^I see video button (unpressed|pressed)$")
     public void ISeeVideoButtonPressed(String videoButtonState) throws Exception {
         VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
         if (videoButtonState.equals("unpressed")) {
@@ -162,9 +162,9 @@ public class VideoCallPageSteps {
      * @throws Exception
      * @step. ^I see my self video black$
      */
-    @Then("^I see my self video black$")
-    public void ISeeSelfVideoBlack() throws Exception {
-        VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
-        Assert.assertTrue("Self video is black", videoCallPage.isSelfVideoBlack());
-    }
+    //@Then("^I see my self video black$")
+    //public void ISeeSelfVideoBlack() throws Exception {
+    //   VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
+    //    Assert.assertTrue("Self video is black", videoCallPage.isSelfVideoBlack());
+    //}
 }

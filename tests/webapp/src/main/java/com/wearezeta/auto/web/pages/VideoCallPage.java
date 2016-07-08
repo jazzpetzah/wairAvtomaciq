@@ -138,7 +138,4 @@ public class VideoCallPage extends WebPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isSelfVideoBlack() throws Exception {
-
-    }
 }
