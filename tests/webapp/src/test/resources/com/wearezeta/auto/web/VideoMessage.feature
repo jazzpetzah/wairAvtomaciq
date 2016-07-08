@@ -82,8 +82,8 @@ Feature: Video Message
     And I wait until video <File> is uploaded completely
     When I click play button of video <File> in the conversation view
     Then I wait until video <File> is downloaded and starts to play
+    And I verify time for video <File> is changing in the conversation view
     And I verify seek bar is shown for video <File> in the conversation view
-    And I verify time for video example.mp4 is changing in the conversation view
     When I click pause button of video <File> in the conversation view
     Then I see play button of video <File> in the conversation view
 

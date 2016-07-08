@@ -900,7 +900,16 @@ public class ConversationPage extends WebPage {
                 .ignoring(StaleElementReferenceException.class)
                 .withMessage("Waited for time " + time + " to change, but is still " + getDriver().findElement(locator)
                         .getText() + " on locator " + locator);
-        wait.until(d -> !d.findElement(locator).getText().equals(time));
+        wait.until(new Function<WebDriver, Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                try {
+                    hoverOverVideo(fileName);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return !driver.findElement(locator).getText().equals(time);
+            }
+        });
         return true;
     }
 
@@ -1097,5 +1106,15 @@ public class ConversationPage extends WebPage {
 
     public boolean isLocationNotShownInConversationView() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage.cssSharedLocation));
+    }
+
+    public boolean isVideoCallButtonPulsating() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+                .cssVideoCallButtonPulsating));
+    }
+
+    public boolean isVideoCallButtonNotPulsating() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+                .cssVideoCallButtonPulsating));
     }
 }
