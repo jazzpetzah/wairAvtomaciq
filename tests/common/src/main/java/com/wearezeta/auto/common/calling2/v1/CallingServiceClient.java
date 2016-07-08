@@ -114,4 +114,14 @@ public class CallingServiceClient {
             throws CallingServiceInstanceException {
         return INSTANCE_RESOURCE.getLog(instance);
     }
+
+    public Call switchVideoOn(Instance instance, Call call)
+            throws CallingServiceCallException {
+        return CALL_RESOURCE.switchVideoOn(instance, call);
+    }
+
+    public Call switchVideoOff(Instance instance, Call call)
+            throws CallingServiceCallException {
+        return CALL_RESOURCE.switchVideoOff(instance, call);
+    }
 }

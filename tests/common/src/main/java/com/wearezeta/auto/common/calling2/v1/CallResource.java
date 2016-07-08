@@ -164,4 +164,25 @@ public class CallResource {
         }
     }
 
+    public Call switchVideoOn(Instance instance, Call call) throws CallingServiceCallException {
+        final String target = String.format("%s/api/v%s/instance/%s/call/%s/switchVideoOn", callingServiceAdress,
+                callingServiceVersion, instance.getId(), call.getId());
+        try {
+            return restHandler.httpPut(buildDefaultRequest(target, MediaType.APPLICATION_JSON), "", Call.class,
+                    new int[]{HttpStatus.SC_OK});
+        } catch (RESTError ex) {
+            throw new CallingServiceCallException(ex);
+        }
+    }
+
+    public Call switchVideoOff(Instance instance, Call call) throws CallingServiceCallException {
+        final String target = String.format("%s/api/v%s/instance/%s/call/%s/switchVideoOff", callingServiceAdress,
+                callingServiceVersion, instance.getId(), call.getId());
+        try {
+            return restHandler.httpPut(buildDefaultRequest(target, MediaType.APPLICATION_JSON), "", Call.class,
+                    new int[]{HttpStatus.SC_OK});
+        } catch (RESTError ex) {
+            throw new CallingServiceCallException(ex);
+        }
+    }
 }

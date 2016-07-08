@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
+import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceCallException;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.calling2.v1.CallingServiceClient;
@@ -506,4 +507,21 @@ public final class CommonCallingSteps2 {
         }
         return convId;
     }
+
+    public void switchVideoOn(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
+            CallingServiceCallException {
+        for (String calleeName : calleeNames) {
+            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            client.switchVideoOn(getInstance(userAs), getInstance(userAs).getCurrentCall());
+        }
+    }
+
+    public void switchVideoOff(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
+            CallingServiceCallException {
+        for (String calleeName : calleeNames) {
+            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            client.switchVideoOff(getInstance(userAs), getInstance(userAs).getCurrentCall());
+        }
+    }
+
 }
