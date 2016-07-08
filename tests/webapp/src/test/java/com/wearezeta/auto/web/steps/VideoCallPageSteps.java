@@ -124,7 +124,47 @@ public class VideoCallPageSteps {
         } else {
             //Assert.assertTrue("Video is not in portrait mode", videoCallPage.isVideoInPortrait());
             Assert.assertTrue("Minimize Video Call button is not visible", videoCallPage.isMinimizeVideoCallButtonVisible());
-
         }
+    }
+
+    /**
+     * Turn off and on the camera on video call page
+     *
+     * @throws Exception
+     * @step. ^I see video call is (minimized|maximized)$
+     */
+    @When("^I click on video button$")
+    public void IClickVideoButton() throws Exception {
+        VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
+            videoCallPage.clickVideoButton();
+    }
+
+    /**
+     * Checks if the camera on video call page off or on
+     *
+     * @param videoButtonState pressed|unpressed
+     * @throws Exception
+     * @step. ^I see video call is (minimized|maximized)$
+     */
+    @When("^I see video button unpressed|pressed$")
+    public void ISeeVideoButtonPressed(String videoButtonState) throws Exception {
+        VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
+        if (videoButtonState.equals("unpressed")) {
+            Assert.assertTrue("Video Button is pressed", videoCallPage.isVideoButtonUnPressed());
+        } else {
+            Assert.assertTrue("Video Button is not pressed", videoCallPage.isVideoButtonPressed());
+        }
+    }
+
+    /**
+     * Checks if the self video is black
+     *
+     * @throws Exception
+     * @step. ^I see my self video black$
+     */
+    @Then("^I see my self video black$")
+    public void ISeeSelfVideoBlack() throws Exception {
+        VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
+        Assert.assertTrue("Self video is black", videoCallPage.isSelfVideoBlack());
     }
 }

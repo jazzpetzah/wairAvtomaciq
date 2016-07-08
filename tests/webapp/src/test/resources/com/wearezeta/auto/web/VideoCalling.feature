@@ -737,3 +737,44 @@ Feature: VideoCalling
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 20      |
+
+    @C12074 @videocalling @staging
+    Scenario Outline: Verify I can disable video in Video call and enable it back
+      Given My browser supports calling
+      Given There are 2 users where <Name> is me
+      Given Myself is connected to <Contact>
+      Given <Contact> starts instance using <CallBackend>
+      Given <Contact> accepts next incoming video call automatically
+      Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+      Given I switch to Sign In page
+      Given I Sign in using login <Login> and password <Password>
+      And I am signed in properly
+      And I open conversation with <Contact>
+      When I start a video call
+      Then I see my self video view
+      And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+      And I see video call is maximized
+      And <Contact> verify to have 1 flows
+      And <Contact> verify that all flows have greater than 0 bytes
+      When I click on video button
+      And I see video button unpressed
+      Then I see my self video black
+      And I see video from user
+      When I click on video button
+      And I see video button pressed
+      Then I see my self video not black
+      And I see video from user
+      When I minimize video call
+      Then I see the video button is pulsating
+      When I click on video button
+      And I see video button unpressed
+      Then I see the video button is not pulsating
+      When I click on video button
+      Then I see the video button is pulsating
+      When I end the video call
+      Then I do not see the call controls for conversation <Contact>
+      And I do not see my self video view
+
+      Examples:
+        | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+        | user1Email | user1Password | user1Name | user2Name | chrome      | 30      |

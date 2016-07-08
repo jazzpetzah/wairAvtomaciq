@@ -24,6 +24,9 @@ public class VideoCallPage extends WebPage {
     @FindBy(css = WebAppLocators.VideoCallPage.cssMaximizeVideoCallButton)
     private WebElement maximizeVideoCallButton;
 
+    @FindBy(css = WebAppLocators.VideoCallPage.cssCameraButton)
+    private WebElement cameraButton;
+
     public VideoCallPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -118,5 +121,24 @@ public class VideoCallPage extends WebPage {
     public boolean isVideoNotInPortrait() throws Exception {
         By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssVideoPortrait);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public void clickVideoButton() throws Exception {
+        WebCommonUtils.hoverOverElement(getDriver(), cameraButton);
+        cameraButton.click();
+    }
+
+    public boolean isVideoButtonPressed() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssCameraButtonPressed);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isVideoButtonUnPressed() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssCameraButtonNotPressed);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isSelfVideoBlack() throws Exception {
+
     }
 }

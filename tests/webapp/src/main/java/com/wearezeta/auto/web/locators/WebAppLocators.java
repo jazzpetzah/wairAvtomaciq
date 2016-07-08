@@ -712,6 +712,12 @@ public final class WebAppLocators {
                 " and not(contains(@class, 'toggled'))]";
 
         public static final String cssVideoPortrait = ".video-mode-portrait";
+
+        public static final String cssCameraButton = ".icon-video";
+
+        public static final String cssCameraButtonPressed = cssCameraButton + ".toggled";
+
+        public static final String cssCameraButtonNotPressed = cssCameraButton + ":not(.toggled)";
     }
 
     public static final class WarningPage {
