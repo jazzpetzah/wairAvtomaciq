@@ -473,6 +473,8 @@ public final class WebAppLocators {
 
         public static final String cssVideoCallButton = "[data-uie-name='do-video-call']";
 
+        public static final String cssVideoCallButtonPulsating = ".icon-video.button-round-pulsate";
+
         public static final String cssGIFButton = "[data-uie-name='do-giphy-popover']";
 
         // call controls

@@ -1098,4 +1098,14 @@ public class ConversationPage extends WebPage {
     public boolean isLocationNotShownInConversationView() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage.cssSharedLocation));
     }
+
+    public boolean isVideoCallButtonPulsating() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+                .cssVideoCallButtonPulsating));
+    }
+
+    public boolean isVideoCallButtonNotPulsating() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
+                .cssVideoCallButtonPulsating));
+    }
 }
