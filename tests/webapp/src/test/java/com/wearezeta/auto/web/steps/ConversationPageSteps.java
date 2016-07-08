@@ -1341,7 +1341,7 @@ public class ConversationPageSteps {
                     context.getPagesCollection().getPage(ConversationPage.class).isVideoCallButtonPulsating());
         } else {
             // video button not pulsating?
-            assertThat("Video button is pulsating",
+            assertThat("Video button is pulsating :(",
                     context.getPagesCollection().getPage(ConversationPage.class).isVideoCallButtonNotPulsating());
         }
     }
