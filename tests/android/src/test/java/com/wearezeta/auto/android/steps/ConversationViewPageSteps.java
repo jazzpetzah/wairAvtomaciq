@@ -1110,6 +1110,18 @@ public class ConversationViewPageSteps {
     }
 
     /**
+     * Verify the url and title of Link Preview are both visible
+     *
+     * @throws Exception
+     * @step. ^I see Link Preview title and url$
+     */
+    @Then("^I see Link Preview title and url$")
+    public void ISeeLinkAndTextInLinkPreview() throws Exception {
+        Assert.assertTrue(String.format("The url and the title within Link Preview should be visible"),
+                getConversationViewPage().isTextAndUrlInLinkPreviewContainerVisible());
+    }
+
+    /**
      * Tap container
      *
      * @param isLongTap     equals to null if this should be ordinary single tap
