@@ -1,19 +1,5 @@
 Feature: Audio Message
 
-  @C131173 @regression @rc @rc42
-  Scenario Outline: Verify hint appears on voice icon tapping
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I tap on contact name <Contact>
-    Then I tap Audio message button from cursor toolbar and see hint message "<HintMessage>"
-
-    Examples:
-      | Name      | Contact   | HintMessage                           |
-      | user1Name | user2Name | Tap and hold to send an audio message |
-
   @C131179 @C131175 @regression @rc @rc42
   Scenario Outline: Verify sending voice message by long tap > swipe up
     Given There are 2 users where <Name> is me
