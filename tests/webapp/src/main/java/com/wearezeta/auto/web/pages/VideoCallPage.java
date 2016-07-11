@@ -125,7 +125,7 @@ public class VideoCallPage extends WebPage {
 
     public void clickVideoButton() throws Exception {
         WebCommonUtils.hoverOverElement(getDriver(), cameraButton);
-        cameraButton.click();
+        getDriver().executeScript("arguments[0].click()", cameraButton);
     }
 
     public boolean isVideoButtonPressed() throws Exception {

@@ -124,4 +124,8 @@ public class CallingServiceClient {
             throws CallingServiceCallException {
         return CALL_RESOURCE.switchVideoOff(instance, call);
     }
+
+    public Call getCurrentCall(Instance instance) throws CallingServiceInstanceException {
+        return INSTANCE_RESOURCE.getInstance(instance).getCurrentCall();
+    }
 }

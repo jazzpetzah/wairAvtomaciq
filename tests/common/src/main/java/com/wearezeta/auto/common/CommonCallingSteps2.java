@@ -114,7 +114,6 @@ public final class CommonCallingSteps2 {
      * @param callerNames List of caller names who call to a conversation
      * @param conversationName the name of the conversation to call
      * @throws Exception
-     * @see com.wearezeta.auto.common.calling2.v1.model.InstanceType
      */
     public void callToConversation(List<String> callerNames, String conversationName) throws Exception {
         for (String callerName : callerNames) {
@@ -134,7 +133,6 @@ public final class CommonCallingSteps2 {
      * @param callerNames list of caller names
      * @param conversationName the name of the conversation to call
      * @throws Exception
-     * @see com.wearezeta.auto.common.calling2.v1.model.InstanceType
      */
     public void startVideoCallToConversation(List<String> callerNames, String conversationName) throws Exception {
         for (String callerName : callerNames) {
@@ -198,7 +196,6 @@ public final class CommonCallingSteps2 {
      * @param calleeNames list of callee names
      * @param instanceType the {@code InstanceType} to call with as String
      * @throws Exception
-     * @see com.wearezeta.auto.common.calling2.v1.model.InstanceType
      */
     public void startInstances(List<String> calleeNames, String instanceType) throws Exception {
         LOG.debug("Creating instances for " + Arrays.toString(calleeNames.toArray()));
@@ -442,6 +439,10 @@ public final class CommonCallingSteps2 {
         }
     }
 
+    private synchronized Call getCurrentCall(Instance instance) throws CallingServiceInstanceException {
+        return client.getCurrentCall(instance);
+    }
+
     private synchronized Call getIncomingCall(ClientUser callee)
             throws CallNotFoundException {
         final String callKey = makeKey(callee);
@@ -509,18 +510,20 @@ public final class CommonCallingSteps2 {
     }
 
     public void switchVideoOn(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
-            CallingServiceCallException {
+            CallingServiceCallException, CallingServiceInstanceException {
         for (String calleeName : calleeNames) {
             final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
-            client.switchVideoOn(getInstance(userAs), getInstance(userAs).getCurrentCall());
+            Instance instance = getInstance(userAs);
+            client.switchVideoOn(instance, getCurrentCall(instance));
         }
     }
 
     public void switchVideoOff(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
-            CallingServiceCallException {
+            CallingServiceCallException, CallingServiceInstanceException {
         for (String calleeName : calleeNames) {
             final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
-            client.switchVideoOff(getInstance(userAs), getInstance(userAs).getCurrentCall());
+            Instance instance = getInstance(userAs);
+            client.switchVideoOff(instance, getCurrentCall(instance));
         }
     }
 
