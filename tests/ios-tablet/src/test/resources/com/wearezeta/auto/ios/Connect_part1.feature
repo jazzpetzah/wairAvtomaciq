@@ -16,7 +16,7 @@ Feature: Connect
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page
+    And I see Pending Connect to <Contact> message in the conversation view
     When I open conversation details
     Then I see <Contact> user pending profile popover on iPad
 
@@ -41,7 +41,7 @@ Feature: Connect
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page
+    And I see Pending Connect to <Contact> message in the conversation view
     When I open conversation details
     Then I see <Contact> user pending profile popover on iPad
 
@@ -194,7 +194,7 @@ Feature: Connect
     Given I see conversations list
     And I see conversation <Contact> in conversations list
     When I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page
+    And I see Pending Connect to <Contact> message in the conversation view
     Then I do not see text input in conversation view
 
     Examples:
@@ -211,7 +211,7 @@ Feature: Connect
     Given I see conversations list
     And I see conversation <Contact> in conversations list
     When I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page
+    And I see Pending Connect to <Contact> message in the conversation view
     Then I do not see text input in conversation view
 
     Examples:

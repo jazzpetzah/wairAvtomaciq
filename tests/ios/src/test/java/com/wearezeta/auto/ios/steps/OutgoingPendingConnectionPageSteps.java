@@ -6,7 +6,7 @@ import com.wearezeta.auto.ios.pages.PendingOutgoingConnectionPage;
 
 import cucumber.api.java.en.When;
 
-public class ConnectToPageSteps {
+public class OutgoingPendingConnectionPageSteps {
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
     private PendingOutgoingConnectionPage getPendingOutgoingConnectionPage() throws Exception {
