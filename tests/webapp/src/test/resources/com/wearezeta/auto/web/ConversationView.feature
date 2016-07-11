@@ -428,7 +428,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | READ | UNREAD |
       | user1Email | user1Password | user1Name | user2Name | Read | Unread |
 
-  @C149662 @staging
+  @C149662 @staging @WEBAPP-2921
   Scenario Outline: Verify maximum character limit dialog is shown when want to send a very long text message to group conversation
     Given I switch to Sign In page
     Given I Sign in temporary using login <Login> and password <Password>
