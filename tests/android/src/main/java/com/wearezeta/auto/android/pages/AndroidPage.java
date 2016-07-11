@@ -437,4 +437,8 @@ public abstract class AndroidPage extends BasePage {
         final AndroidLogListener dstListener = AndroidLogListener.getInstance(listenerType);
         return dstListener.getStdOut().matches("(?s).*\\b" + Pattern.quote(expectedString) + "\\b.*");
     }
+
+    public void logUIAutomatorSource() throws Exception {
+        log.info(UIAutomatorDriver.getUIDump());
+    }
 }

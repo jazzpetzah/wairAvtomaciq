@@ -45,7 +45,7 @@ public class PerformanceSteps {
         return pagesCollection.getPage(ConversationsListPage.class);
     }
 
-    private ConversationViewPage getDialogPage() throws Exception {
+    private ConversationViewPage getConversationViewPage() throws Exception {
         return pagesCollection.getPage(ConversationViewPage.class);
     }
 
@@ -125,12 +125,15 @@ public class PerformanceSteps {
                 e.printStackTrace();
             }
             Thread.sleep(10000);
-        } while (!getDialogPage().isDialogVisible() &&
+        } while (!getConversationViewPage().isConversationVisible() &&
                 System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
-        assert getDialogPage().isDialogVisible() : "The conversation has not been opened after "
-                + timeoutSeconds + " seconds timeout";
-        getDialogPage().scrollToTheBottom();
-        getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
+        if (!getConversationViewPage().isConversationVisible()) {
+            pagesCollection.getCommonPage().logUIAutomatorSource();
+            throw new IllegalStateException(
+                    String.format("The conversation has not been opened after %s seconds timeout", timeoutSeconds));
+        }
+        getConversationViewPage().scrollToTheBottom();
+        getConversationViewPage().navigateBack(DEFAULT_SWIPE_TIME);
     }
 
     /**
