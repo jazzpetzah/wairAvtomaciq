@@ -2,43 +2,41 @@ package com.wearezeta.auto.ios.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.ConnectToPage;
+import com.wearezeta.auto.ios.pages.PendingOutgoingConnectionPage;
 
 import cucumber.api.java.en.When;
 
 public class ConnectToPageSteps {
-    private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
     private final IOSPagesCollection pagesCollection = IOSPagesCollection.getInstance();
 
-    private ConnectToPage getConnectToPage() throws Exception {
-        return pagesCollection.getPage(ConnectToPage.class);
+    private PendingOutgoingConnectionPage getPendingOutgoingConnectionPage() throws Exception {
+        return pagesCollection.getPage(PendingOutgoingConnectionPage.class);
     }
 
     /**
-     * Verify visibility of connect dialog
+     * Verify visibility of pending outgoing connection
      *
-     * @param isClosed equals to null if should be visible
+     * @param shouldNotBeVisible equals to null if the view should be visible
      * @throws Exception
-     * @step. ^I see [Cc]onnect dialog( is closed)?
+     * @step. ^I (do not )?see Pending outgoing connection page$
      */
-    @When("^I see [Cc]onnect (to .*)?dialog( is closed)?$")
-    public void WhenISeeConnectToUserDialog(String isClosed) throws Exception {
-        boolean condition = (isClosed == null) ? getConnectToPage().isConnectToUserDialogVisible() :
-                getConnectToPage().isConnectButtonInvisible();
-        Assert.assertTrue(String.format("Connect dialog is %s but shouldn't be.", (isClosed == null) ? "invisible" :
-                "visible"), condition);
+    @When("^I (do not )?see Pending outgoing connection page$")
+    public void ISeeView(String shouldNotBeVisible) throws Exception {
+        boolean condition = (shouldNotBeVisible == null) ?
+                getPendingOutgoingConnectionPage().isConnectButtonVisible() :
+                getPendingOutgoingConnectionPage().isConnectButtonInvisible();
+        Assert.assertTrue(String.format("Connect dialog is %s but shouldn't be.",
+                (shouldNotBeVisible == null) ? "invisible" : "visible"), condition);
     }
 
     /**
-     * Tap Connect button on connect dialog
+     * Tap Connect button on Pending outgoing connection page
      *
      * @throws Exception
-     * @step. ^I tap Connect button on connect to dialog$
+     * @step. ^I tap Connect button on Pending outgoing connection page$
      */
-    @When("^I tap Connect button on connect to dialog$")
-    public void IClickConnectButtonConnectDialog() throws Exception {
-        getConnectToPage().tapConnectButton();
+    @When("^I tap Connect button on Pending outgoing connection page$")
+    public void ITapButton() throws Exception {
+        getPendingOutgoingConnectionPage().tapConnectButton();
     }
 }

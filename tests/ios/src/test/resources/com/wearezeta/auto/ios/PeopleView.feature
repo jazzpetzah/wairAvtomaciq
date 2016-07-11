@@ -170,7 +170,7 @@ Feature: People View
     And I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <NonConnectedContact>
-    Then I see connect to <NonConnectedContact> dialog
+    Then I see Pending outgoing connection page
 
     Examples:
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |

@@ -12,8 +12,7 @@ Feature: Connect
     And I wait until <Contact> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I see connect to <Contact> dialog
-    And I tap Connect button on connect to dialog
+    And I tap Connect button on Pending outgoing connection page
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
@@ -38,8 +37,7 @@ Feature: Connect
     And I wait until <Contact> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I see connect to <Contact> dialog
-    And I tap Connect button on connect to dialog
+    And I tap Connect button on Pending outgoing connection page
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
@@ -284,8 +282,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I see connect to <Contact> dialog
-    And I tap Connect button on connect to dialog
+    And I tap Connect button on Pending outgoing connection page
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     When I open search UI
