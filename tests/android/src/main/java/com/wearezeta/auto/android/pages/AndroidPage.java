@@ -22,6 +22,7 @@ import org.openqa.selenium.interactions.touch.TouchActions;
 import java.util.Optional;
 import java.util.concurrent.*;
 import java.util.function.Function;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class AndroidPage extends BasePage {
@@ -433,9 +434,13 @@ public abstract class AndroidPage extends BasePage {
         }
     }
 
-    public boolean isLogContain(ListenerType listenerType, String expectedString) throws Exception {
+    public int countOfLogContain(ListenerType listenerType, String expectedString) throws Exception {
         final AndroidLogListener dstListener = AndroidLogListener.getInstance(listenerType);
-        return dstListener.getStdOut().matches("(?s).*\\b" + Pattern.quote(expectedString) + "\\b.*");
+        Pattern pattern = Pattern.compile(".*\\b" + Pattern.quote(expectedString) + "\\b.*");
+        Matcher matcher = pattern.matcher(dstListener.getStdOut());
+        int count;
+        for (count = 0; matcher.find(); count++) ;
+        return count;
     }
 
     public void logUIAutomatorSource() throws Exception {

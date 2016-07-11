@@ -141,7 +141,7 @@ Feature: Delete Message
       | user1Name | user2Name | qa_random | txt           | 1.00MB   | 20               |
 
   @C111645 @regression @rc @C111647
-  Scenario Outline: (AN-3934) Verify deleting is synchronised across own devices when one of them was offline
+  Scenario Outline: Verify deleting is synchronised across own devices when one of them was offline
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -155,16 +155,12 @@ Feature: Delete Message
     And I tap Back button from top toolbar
     And I tap on contact name <GroupChatName>
     And User Myself send encrypted message "<Message>" via device <Device> to group conversation <GroupChatName>
-    # The following step should be delete , which is blocked by AN-3934
-    And I tap Back button from top toolbar
     And I enable Airplane mode on the device
     And User Myself deletes the recent message from user <Contact1> via device <Device>
     And User Myself deletes the recent message from group conversation <GroupChatName> via device <Device>
     And I disable Airplane mode on the device
     # Wait for sync
     And I wait for 10 seconds
-    # This line also should be deleted when AN-3934 fixed
-    And I tap on contact name <GroupChatName>
     Then I do not see the message "<Message>" in the conversation view
     When I tap Back button from top toolbar
     And I tap on contact name <Contact1>
@@ -181,8 +177,8 @@ Feature: Delete Message
     Then User Myself see the recent message from user <Contact1> via device <Device> is changed
 
     Examples:
-      | Name      | Contact1  | Contact2  | Message           | Device  | ContactDevice | GroupChatName | Message2  |
-      | user1Name | user2Name | user3Name | DeleteTextMessage | Device1 | Device2       | MyGroup       | MyMessage |
+      | Name      | Contact1  | Contact2  | Message          | Device  | ContactDevice | GroupChatName | Message2        |
+      | user1Name | user2Name | user3Name | MessageRemoteDel | Device1 | Device2       | MyGroup       | MessageLocalDel |
 
   @C111640 @regression @rc
   Scenario Outline: Verify deleting the picture, gif from Giphy
@@ -312,21 +308,3 @@ Feature: Delete Message
     Examples:
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
-
-  @C165145 @staging
-  Scenario Outline: I can delete link preview (Not impelemented)
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> send encrypted message "<Link>" to user Myself
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
-    When I long tap Link Preview container in the conversation view
-    And I tap Delete button on the action mode bar
-    And I tap Delete button on the alert
-    Then I do not see Link Preview container in the conversation view
-
-    Examples:
-      | Name      | Contact   | Link                                                                                               |
-      | user1Name | user2Name | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 |
