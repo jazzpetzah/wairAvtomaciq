@@ -36,7 +36,7 @@ Feature: Audio Messaging
 
     Examples:
       | Name      | Contact   | Duration |
-      | user1Name | user2Name | 50       |
+      | user1Name | user2Name | 30       |
 
   @C129341 @C129345 @rc @regression
   Scenario Outline: Verify receiving a voice message and deleting it
