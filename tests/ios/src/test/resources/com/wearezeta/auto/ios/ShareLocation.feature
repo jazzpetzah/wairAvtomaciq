@@ -93,3 +93,20 @@ Feature: Share Location
     Examples:
       | Name      | Contact   | DeviceName | ExpectedText |
       | user1Name | user2Name | device1    | Wirestan     |
+
+  @C165116 @staging @noAcceptAlert
+  Scenario Outline: Verify permissions are asked first time on the map opening
+    Given There are 2 user where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I tap Share Location button from input tools
+    Then I verify the alert contains text <ExpectedAlertText>
+    When I dismiss alert
+    And I tap Send location button from map view
+    Then I see Share Location container in the conversation view
+
+    Examples:
+      | Name      | Contact   | ExpectedAlertText                                           |
+      | user1Name | user2Name | Allow “Wire” to access your location while you use the app? |
