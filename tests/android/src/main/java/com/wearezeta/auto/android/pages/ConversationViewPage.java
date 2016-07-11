@@ -184,6 +184,10 @@ public class ConversationViewPage extends AndroidPage {
 
     private static final By idLinkPreviewContainer = By.id("cv__row_conversation__link_preview__container");
 
+    private static final By idLinkPreviewTitle = By.id("ttv__row_conversation__link_preview__title");
+
+    private static final By idLinkPreviewUrl = By.id("ttv__row_conversation__link_preview__url");
+
     private static final By idAudioContainerSeekbar = By.id("sb__audio_progress");
 
     private static final By idAudioMessagePreviewSeekbar = By.id("sb__voice_message__recording__seekbar");
@@ -903,5 +907,10 @@ public class ConversationViewPage extends AndroidPage {
 
     public void tapActionBarButton(String name) throws Exception {
         getElement(getActionBarButtonLocatorByName(name)).click();
+    }
+
+    public boolean isTextAndUrlInLinkPreviewContainerVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idLinkPreviewTitle)
+                && DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idLinkPreviewUrl);
     }
 }
