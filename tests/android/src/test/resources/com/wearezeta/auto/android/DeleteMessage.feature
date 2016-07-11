@@ -308,3 +308,21 @@ Feature: Delete Message
     Examples:
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
+
+  @C165145 @staging
+  Scenario Outline: I can delete link preview
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> send encrypted message "<Link>" to user Myself
+    Given I see Contact list with contacts
+    Given I tap on contact name <Contact>
+    When I long tap Link Preview container in the conversation view
+    And I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    Then I do not see Link Preview container in the conversation view
+
+    Examples:
+      | Name      | Contact   | Link                                                                                               |
+      | user1Name | user2Name | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 |
