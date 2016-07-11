@@ -134,3 +134,24 @@ Feature: File Transfer
     Examples:
       | Name      | Contact1  | FileName  | FileExtension | FileSize |
       | user1Name | user2Name | qa_random | txt           | 24.00MB  |
+
+  @C87645 @staging
+  Scenario Outline: Verify I see usual image if it was sent by file transfer
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I push local file named "<ImageFile>" to the device
+    Given I accept First Time overlay as soon as it is visible
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And I tap File button from cursor toolbar
+    Then I see a picture in the conversation view
+    When I long tap the recent picture in the conversation view
+    And I tap Delete button on the action mode bar
+    And I tap Delete button on the alert
+    And User <Contact1> sends encrypted image <ImageFile> to single user conversation Myself
+    Then I see a picture in the conversation view
+
+    Examples:
+      | Name      | Contact1  | ImageFile      |
+      | user1Name | user2Name | avatarTest.png |
