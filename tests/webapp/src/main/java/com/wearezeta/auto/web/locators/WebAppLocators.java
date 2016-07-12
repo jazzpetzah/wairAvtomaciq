@@ -726,6 +726,10 @@ public final class WebAppLocators {
         public static final String cssMinimizedRemoteVideo = "#video-element-remote";
 
         public static final String cssMaximizedRemoteVideo = ".video-mode-portrait";
+
+        public static final String cssScreenShareButton = ".icon-screensharing";
+
+        public static final String cssLocalScreenShareVideo = ".video-element-local";
     }
 
     public static final class WarningPage {

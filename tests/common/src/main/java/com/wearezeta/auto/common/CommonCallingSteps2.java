@@ -2,7 +2,12 @@ package com.wearezeta.auto.common;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
@@ -29,7 +34,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+
+import javax.imageio.ImageIO;
 import javax.management.InstanceNotFoundException;
+import javax.xml.bind.DatatypeConverter;
 
 public final class CommonCallingSteps2 {
 
@@ -322,6 +330,13 @@ public final class CommonCallingSteps2 {
             calls.add(client.getCall(getInstance(userAs), getIncomingCall(userAs)));
         }
         return calls;
+    }
+
+    public BufferedImage getScreenshot(ClientUser userAs) throws InstanceNotFoundException, IOException {
+        final Instance instance = getInstance(userAs);
+        String dataUrl = instance.getScreenshot();
+        byte[] imagedata = DatatypeConverter.parseBase64Binary(dataUrl);
+        return ImageIO.read(new ByteArrayInputStream(imagedata));
     }
 
     /**
