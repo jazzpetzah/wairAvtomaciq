@@ -20,21 +20,21 @@ Feature: Links Preview
       | Name      | Contact   | Link                                                                                               | DeadLink      |
       | user1Name | user2Name | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 | http://q.qqqq |
 
-
   @C165144 @staging @C165148
-  Scenario Outline: I see preview with title and url for received link
+  Scenario Outline: I can receive preview for link mixed with text
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given User <Contact> send encrypted message "<Link>" to user Myself
+    Given User <Contact> send encrypted message "<Message>" to user Myself
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    Then I see Link Preview title and url
+    Then I see Link Preview container in the conversation view
+    And I see the message "<Message>" in the conversation view
 
     Examples:
-      | Name      | Contact   | Link                                                                                               |
-      | user1Name | user2Name | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 |
+      | Name      | Contact   | Message                                                                                                       |
+      | user1Name | user2Name | My message http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 |
 
   @C165151 @staging
   Scenario Outline: Link sent from offline should have correct preview when I back to online
@@ -64,30 +64,35 @@ Feature: Links Preview
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
-    And I type the message "<url1>" and send it
+    And I type the message "<TextLink>" and send it
     Then I see Link Preview container in the conversation view
+    And I see the message "<TextLink>" in the conversation view
     When I long tap Link Preview container in the conversation view
     And I tap Delete button on the action mode bar
     And I tap Delete button on the alert
-    And I type the message "<url2>" and send it
+    And I type the message "<LinkText>" and send it
     Then I see Link Preview container in the conversation view
+    And I see the message "<LinkText>" in the conversation view
     When I long tap Link Preview container in the conversation view
     And I tap Delete button on the action mode bar
     And I tap Delete button on the alert
-    And I type the message "<url3>" and send it
+    And I type the message "<TextLinkText>" and send it
     Then I see Link Preview container in the conversation view
+    And I see the message "<TextLinkText>" in the conversation view
     When I long tap Link Preview container in the conversation view
     And I tap Delete button on the action mode bar
     And I tap Delete button on the alert
     And I type the message "<url4>" and send it
     Then I see Link Preview container in the conversation view
+    And I do not see the message "<url4>" in the conversation view
     When I long tap Link Preview container in the conversation view
     And I tap Delete button on the action mode bar
     And I tap Delete button on the alert
     And I type the message "<url5>" and send it
     Then I see Link Preview container in the conversation view
+    And I do not see the message "<url5>" in the conversation view
 
     Examples:
-      | Name      | Contact   | url1                | url2                 | url3                    | url4                | url5                |
-      | user1Name | user2Name | http://facebook.com | https://facebook.com | http://www.facebook.com | Http://facebook.com | HTTP://FACEBOOK.COM |
+      | Name      | Contact   | TextLink                 | LinkText                  | TextLinkText                      | url4                | url5                |
+      | user1Name | user2Name | text http://facebook.com | https://facebook.com text | text http://www.facebook.com text | Http://facebook.com | HTTP://FACEBOOK.COM |
 
