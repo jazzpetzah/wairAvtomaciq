@@ -94,7 +94,7 @@ Feature: Share Location
       | Name      | Contact   | DeviceName | ExpectedText |
       | user1Name | user2Name | device1    | Wirestan     |
 
-  @C165116 @staging @noAcceptAlert
+  @C165116 @regression @noAcceptAlert
   Scenario Outline: Verify permissions are asked first time on the map opening
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
