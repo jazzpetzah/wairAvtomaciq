@@ -11,8 +11,7 @@ Feature: Links Preview
     And I type the message "<DeadLink>" and send it
     # C165147
     Then I do not see Link Preview container in the conversation view
-    When I tap on contact name <Contact>
-    And I type the message "<Link>" and send it
+    When I type the message "<Link>" and send it
     # C165143
     Then I see Link Preview container in the conversation view
 

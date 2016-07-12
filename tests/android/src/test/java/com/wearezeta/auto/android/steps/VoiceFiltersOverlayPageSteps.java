@@ -37,7 +37,7 @@ public class VoiceFiltersOverlayPageSteps {
      */
     @Then("^I see Voice filters overlay$")
     public void ISeeVoiceRecordingDialog() throws Exception {
-        Assert.assertTrue("The voice recording dialog should be visible", getVoiceFiltersOverlayPage().isVoiceRecordingDialogVisible());
+        Assert.assertTrue("The voice recording overlay should be visible", getVoiceFiltersOverlayPage().isVoiceRecordingDialogVisible());
     }
 
     /**
