@@ -8,6 +8,9 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 public class VideoCallPage extends WebPage {
@@ -26,6 +29,15 @@ public class VideoCallPage extends WebPage {
 
     @FindBy(css = WebAppLocators.VideoCallPage.cssCameraButton)
     private WebElement cameraButton;
+
+    @FindBy(css = WebAppLocators.VideoCallPage.cssSelfVideo)
+    private WebElement selfVideo;
+
+    @FindBy(css = WebAppLocators.VideoCallPage.cssMinimizedRemoteVideo)
+    private WebElement minimizedRemoteVideo;
+
+    @FindBy(css = WebAppLocators.VideoCallPage.cssMaximizedRemoteVideo)
+    private WebElement maximizedRemoteVideo;
 
     public VideoCallPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
@@ -140,4 +152,15 @@ public class VideoCallPage extends WebPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
+    public Optional<BufferedImage> getSelfVideo() throws Exception {
+        return getElementScreenshot(selfVideo);
+    }
+
+    public Optional<BufferedImage> getMinimizedRemoteVideo() throws Exception {
+        return getElementScreenshot(minimizedRemoteVideo);
+    }
+
+    public Optional<BufferedImage> getMaximizedRemoteVideo() throws Exception {
+        return getElementScreenshot(maximizedRemoteVideo);
+    }
 }

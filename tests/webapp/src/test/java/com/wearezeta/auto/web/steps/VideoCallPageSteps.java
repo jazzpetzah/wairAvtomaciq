@@ -1,11 +1,21 @@
 package com.wearezeta.auto.web.steps;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Optional;
+
 import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.VideoCallPage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import cucumber.api.java.en.And;
 import org.junit.Assert;
+
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
+import static org.junit.Assert.assertThat;
 
 public class VideoCallPageSteps {
 
@@ -160,11 +170,60 @@ public class VideoCallPageSteps {
      * Checks if the self video is black
      *
      * @throws Exception
-     * @step. ^I see my self video black$
+     * @step. ^I see my self video is black$
      */
-    //@Then("^I see my self video black$")
-    //public void ISeeSelfVideoBlack() throws Exception {
-    //   VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
-    //    Assert.assertTrue("Self video is black", videoCallPage.isSelfVideoBlack());
-    //}
+    @Then("^I see my self video is( not)? black$")
+    public void ISeeSelfVideoBlack(String not) throws Exception {
+        VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
+        Optional<BufferedImage> selfVideo = videoCallPage.getSelfVideo();
+        Assert.assertTrue("Self video is not present", selfVideo.isPresent());
+        BufferedImage image = selfVideo.get();
+        Color pixel = new Color(image.getRGB(image.getWidth() / 2, image.getHeight() / 2));
+        if(not == null) {
+            assertThat("RGB red", pixel.getRed(), lessThan(2));
+            assertThat("RGB green", pixel.getGreen(), lessThan(2));
+            assertThat("RGB blue", pixel.getBlue(), lessThan(2));
+        } else {
+            assertThat("All RGB values summarized", pixel.getRed() + pixel.getGreen() + pixel.getGreen(), greaterThan(20));
+        }
+    }
+
+    /**
+     * Check if minimized video is black
+     *
+     * @throws Exception
+     */
+    @Then("^I see minimized video is black$")
+    public void ISeeMinimizedVideoBlack() throws Exception {
+        VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
+        Optional<BufferedImage> minimizedRemoteVideo = videoCallPage.getMinimizedRemoteVideo();
+        Assert.assertTrue("Minimized remote video is not present", minimizedRemoteVideo.isPresent());
+        BufferedImage image = minimizedRemoteVideo.get();
+        Color pixel = new Color(image.getRGB(20, 20));
+        assertThat("RGB red", pixel.getRed(), lessThan(2));
+        assertThat("RGB green", pixel.getGreen(), lessThan(2));
+        assertThat("RGB blue", pixel.getBlue(), lessThan(2));
+    }
+
+    /**
+     * Check if remote video in fullscreen is black or not
+     *
+     * @param not
+     * @throws Exception
+     */
+    @Then("^I see video from other user is( not)? black$")
+    public void ISeeRemoteVideoBlack(String not) throws Exception {
+        VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
+        Optional<BufferedImage> maximizedRemoteVideo = videoCallPage.getMaximizedRemoteVideo();
+        Assert.assertTrue("Maximized remote video is not present", maximizedRemoteVideo.isPresent());
+        BufferedImage image = maximizedRemoteVideo.get();
+        Color pixel = new Color(image.getRGB(image.getWidth() / 2, image.getHeight() / 2));
+        if(not == null) {
+            assertThat("RGB red", pixel.getRed(), lessThan(2));
+            assertThat("RGB green", pixel.getGreen(), lessThan(2));
+            assertThat("RGB blue", pixel.getBlue(), lessThan(2));
+        } else {
+            assertThat("All RGB values summarized", pixel.getRed() + pixel.getGreen() + pixel.getGreen(), greaterThan(20));
+        }
+    }
 }

@@ -770,12 +770,12 @@ Feature: VideoCalling
       And <Contact> verify that all flows have greater than 0 bytes
       When I click on video button
       And I see video button unpressed
-      #Then I see my self video is black
-      #And I see video from other user is not black
+      Then I see my self video is black
+      And I see video from other user is not black
       When I click on video button
       And I see video button pressed
-      #Then I see my self video is not black
-      #And I see video from other user is not black
+      Then I see my self video is not black
+      And I see video from other user is not black
       When I minimize video call
       Then I see the video button is pulsating
       When I click on video button
@@ -785,11 +785,11 @@ Feature: VideoCalling
       Then I see video button pressed
       And I see the video button is pulsating
       When <Contact> switches video off
-      #Then I see minimized video is black
+      Then I see minimized video is black
       When I maximize video call
-      #Then I see video from other user is black
+      Then I see video from other user is black
       When <Contact> switches video on
-      #Then I see video from other user is not black
+      Then I see video from other user is not black
       When I end the video call
       Then I do not see the call controls for conversation <Contact>
       And I do not see my self video view
