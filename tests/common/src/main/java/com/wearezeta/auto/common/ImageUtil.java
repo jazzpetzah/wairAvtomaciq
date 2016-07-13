@@ -234,13 +234,17 @@ public class ImageUtil {
         int width = originalImage.getWidth();
         float resizeRatio = 1;
         if (width > maxWidth || height > maxHeight) {
-            float resizeRatioW1 = (float) maxWidth / width;
-            float resizeRatioW2 = (float) maxWidth / height;
-            float resizeRatioH1 = (float) maxHeight / width;
-            float resizeRatioH2 = (float) maxHeight / height;
+            final float resizeRatioW1 = (float) maxWidth / width;
+            final float resizeRatioW2 = (float) maxWidth / height;
+            final float resizeRatioH1 = (float) maxHeight / width;
+            final float resizeRatioH2 = (float) maxHeight / height;
             float resizeRatioH = (resizeRatioH1 < resizeRatioH2) ? resizeRatioH1 : resizeRatioH2;
             float resizeRatioW = (resizeRatioW1 < resizeRatioW2) ? resizeRatioW1 : resizeRatioW2;
-            resizeRatio = (resizeRatioH > resizeRatioW) ? resizeRatioH : resizeRatioW;
+            final float resizeRatioLimitedW = (resizeRatioH > resizeRatioW) ? resizeRatioH : resizeRatioW;
+            resizeRatioH = (resizeRatioH1 > resizeRatioH2) ? resizeRatioH1 : resizeRatioH2;
+            resizeRatioW = (resizeRatioW1 > resizeRatioW2) ? resizeRatioW1 : resizeRatioW2;
+            final float resizeRatioLimitedH = (resizeRatioH < resizeRatioW) ? resizeRatioH : resizeRatioW;
+            resizeRatio = (resizeRatioLimitedW < resizeRatioLimitedH) ? resizeRatioLimitedW : resizeRatioLimitedH;
         }
         try {
             return ImageUtil.resizeImage(originalImage, resizeRatio);
