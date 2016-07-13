@@ -332,9 +332,9 @@ public final class CommonCallingSteps2 {
         return calls;
     }
 
-    public BufferedImage getScreenshot(ClientUser userAs) throws InstanceNotFoundException, IOException {
+    public BufferedImage getScreenshot(ClientUser userAs) throws InstanceNotFoundException, IOException, CallingServiceInstanceException {
         final Instance instance = getInstance(userAs);
-        String dataUrl = instance.getScreenshot();
+        String dataUrl = client.getScreenshot(instance);
         byte[] imagedata = DatatypeConverter.parseBase64Binary(dataUrl);
         return ImageIO.read(new ByteArrayInputStream(imagedata));
     }

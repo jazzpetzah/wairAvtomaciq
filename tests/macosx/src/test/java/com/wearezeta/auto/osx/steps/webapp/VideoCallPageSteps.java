@@ -3,6 +3,7 @@ package com.wearezeta.auto.osx.steps.webapp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Optional;
+import java.util.Properties;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.ImageUtil;
@@ -12,10 +13,15 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.osx.pages.osx.MainWirePage;
 import com.wearezeta.auto.osx.pages.osx.OSXPage;
 import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
+import com.wearezeta.auto.web.common.TestContext;
 import com.wearezeta.auto.web.pages.VideoCallPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.core.Is.is;
 
 public class VideoCallPageSteps {
 
@@ -53,25 +59,51 @@ public class VideoCallPageSteps {
     @Then("^I verify my self video shows my screen$")
     public void IVerifyMySelfVideoShowsScreen() throws Exception {
         VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
-        Optional<BufferedImage> localScreenshot = osxPagesCollection.getPage(MainWirePage.class).getScreenshot();
+
+        // get screenshot of self video
         BufferedImage localScreenShareVideo = osxPagesCollection.getPage(MainWirePage.class).getElementScreenshot
                 (videoCallPage.getLocalScreenShareVideoElement()).get();
+
+        // get local screenshot and resize to remote size
+        Optional<BufferedImage> localScreenshot = osxPagesCollection.getPage(MainWirePage.class).getScreenshot();
         Assert.assertTrue("Fullscreen screenshot cannot be captured", localScreenshot.isPresent());
         BufferedImage resizedScreenshot = ImageUtil.scaleTo(localScreenshot.get(), localScreenShareVideo.getWidth(),
                 localScreenShareVideo.getHeight());
-        ImageUtil.storeImage(localScreenShareVideo, new File("/var/tmp/localScreenshot.png"));
-        ImageUtil.storeImage(resizedScreenshot, new File("/var/tmp/resizedScreenshot.png"));
+
+        // Write images to disk
+        String resizedScreenshotName = "target/resizedScreenshot" + System.currentTimeMillis() + ".png";
+        String localScreenShareVideoName = "target/remoteScreenshot" + System.currentTimeMillis() + ".png";
+        ImageUtil.storeImage(resizedScreenshot, new File(resizedScreenshotName));
+        ImageUtil.storeImage(localScreenShareVideo, new File(localScreenShareVideoName));
+        String reportPath = "../artifact/tests/macosx/";
+
+        // do feature Matching + homography to find objects
+        assertThat("Not enough good matches between " +
+                "<a href='" + reportPath + resizedScreenshotName + "'>screenshot</a> and <a href='" + reportPath + localScreenShareVideoName + "'>self video</a>", ImageUtil.getMatches(resizedScreenshot, localScreenShareVideo), greaterThan(50));
     }
 
     @Then("^I verify (.*) sees my screen$")
     public void IVerifyUserXVideoShowsScreen(String userAlias) throws Exception {
         final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(userAlias);
+
+        // get screenshot from remote user
         BufferedImage remoteScreenshot = commonCallingSteps.getScreenshot(userAs);
+
+        // get local screenshot and resize to remote size
         Optional<BufferedImage> localScreenshot = osxPagesCollection.getPage(MainWirePage.class).getScreenshot();
         Assert.assertTrue("Fullscreen screenshot cannot be captured", localScreenshot.isPresent());
         BufferedImage resizedScreenshot = ImageUtil.scaleTo(localScreenshot.get(), remoteScreenshot.getWidth(),
                 remoteScreenshot.getHeight());
-        ImageUtil.storeImage(remoteScreenshot, new File("/var/tmp/remoteScreenshot.png"));
-        ImageUtil.storeImage(resizedScreenshot, new File("/var/tmp/resizedScreenshot.png"));
+
+        // Write images to disk
+        String resizedScreenshotName = "target/resizedScreenshot" + System.currentTimeMillis() + ".png";
+        String remoteScreenshotName = "target/remoteScreenshot" + System.currentTimeMillis() + ".png";
+        ImageUtil.storeImage(resizedScreenshot, new File(resizedScreenshotName));
+        ImageUtil.storeImage(remoteScreenshot, new File(remoteScreenshotName));
+        String reportPath = "../artifact/tests/macosx/";
+
+        // do feature Matching + homography to find objects
+        assertThat("Not enough good matches between " +
+                "<a href='" + reportPath + resizedScreenshotName + "'>screenshot</a> and <a href='" + reportPath + remoteScreenshotName + "'>remote</a>", ImageUtil.getMatches(resizedScreenshot, remoteScreenshot), greaterThan(50));
     }
 }
