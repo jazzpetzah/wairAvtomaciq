@@ -131,8 +131,8 @@ public class ZetaFormatter implements Formatter, Reporter {
         stepStartedTimestamp = System.currentTimeMillis();
     }
 
-    private static final int MAX_SCREENSHOT_WIDTH = 1600;
-    private static final int MAX_SCREENSHOT_HEIGHT = 900;
+    private static final int MAX_SCREENSHOT_WIDTH = 1440;
+    private static final int MAX_SCREENSHOT_HEIGHT = 800;
 
     private void takeStepScreenshot(final Result stepResult, final String stepName) throws Exception {
         final ZetaDriver driver = getDriver().orElse(null);
