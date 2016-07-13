@@ -132,8 +132,7 @@ public abstract class PickleJarTest {
 
     private byte[] adjustScreenshotSize (byte[] screenshot, final int maxWidth, final int maxHeight) throws IOException {
         final BufferedImage imgScreenshot = ImageUtil.scaleTo(ImageUtil.readImageFromBytes(screenshot), maxWidth, maxHeight);
-        screenshot = ImageUtil.readBytesFromImage(imgScreenshot);
-        return screenshot;
+        return ImageUtil.readBytesFromImage(imgScreenshot);
     }
 
     protected PickleJar getPickle() {
