@@ -238,9 +238,9 @@ public class ImageUtil {
             float resizeRatioW2 = (float) maxWidth / height;
             float resizeRatioH1 = (float) maxHeight / width;
             float resizeRatioH2 = (float) maxHeight / height;
-            float resizeRatioH = (resizeRatioH1 > resizeRatioH2) ? resizeRatioH1 : resizeRatioH2;
-            float resizeRatioW = (resizeRatioW1 > resizeRatioW2) ? resizeRatioW1 : resizeRatioW2;
-            resizeRatio = (resizeRatioH > resizeRatioW) ? resizeRatioW : resizeRatioH;
+            float resizeRatioH = (resizeRatioH1 < resizeRatioH2) ? resizeRatioH1 : resizeRatioH2;
+            float resizeRatioW = (resizeRatioW1 < resizeRatioW2) ? resizeRatioW1 : resizeRatioW2;
+            resizeRatio = (resizeRatioH > resizeRatioW) ? resizeRatioH : resizeRatioW;
         }
         try {
             return ImageUtil.resizeImage(originalImage, resizeRatio);

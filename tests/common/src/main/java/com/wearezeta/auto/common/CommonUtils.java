@@ -460,8 +460,9 @@ public class CommonUtils {
         return initialScreenshot;
     }
 
-    private static final int MAX_PHONE_SCREENSHOT_WIDTH = 480;
     private static final int MAX_PHONE_SCREENSHOT_HEIGHT = 800;
+    private static final int MAX_PHONE_SCREENSHOT_WIDTH = 480;
+
     private static final int MAX_TABLET_SCREENSHOT_WIDTH = 1440;
     private static final int MAX_TABLET_SCREENSHOT_HEIGHT = 800;
 
