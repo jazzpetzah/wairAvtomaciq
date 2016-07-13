@@ -2,6 +2,7 @@ package com.wire.picklejar.execution;
 
 import static com.wire.picklejar.Config.SCREENSHOT_PATH;
 import com.wire.picklejar.PickleJar;
+import com.wearezeta.auto.common.ImageUtil;
 import java.util.List;
 import java.util.Map;
 import com.wire.picklejar.PickleJarJUnitProvider;
@@ -10,6 +11,7 @@ import com.wire.picklejar.gherkin.model.Feature;
 import com.wire.picklejar.gherkin.model.Scenario;
 import com.wire.picklejar.gherkin.model.Step;
 import com.wire.picklejar.gherkin.model.Tag;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,6 +45,9 @@ public abstract class PickleJarTest {
     private final Feature reportFeature;
     private final Scenario reportScenario;
     private final List<Step> reportSteps = new ArrayList<>();
+
+    private static final int MAX_SCREENSHOT_WIDTH = 1440;
+    private static final int MAX_SCREENSHOT_HEIGHT = 800;
 
     protected PickleJarTest(String feature, String testcase, Integer exampleNum, List<String> steps,
             Map<String, String> exampleRow, List<String> tags)
@@ -121,7 +126,14 @@ public abstract class PickleJarTest {
             index++;
             desiredPicture = Paths.get(path.toString(), stepName + "_" + index + ".png");
         }
+        screenshot = adjustScreenshotSize(screenshot, MAX_SCREENSHOT_WIDTH, MAX_SCREENSHOT_HEIGHT);
         Files.write(desiredPicture, screenshot);
+    }
+
+    private byte[] adjustScreenshotSize (byte[] screenshot, final int maxWidth, final int maxHeight) throws IOException {
+        final BufferedImage imgScreenshot = ImageUtil.scaleTo(ImageUtil.readImageFromBytes(screenshot), maxWidth, maxHeight);
+        screenshot = ImageUtil.readBytesFromImage(imgScreenshot);
+        return screenshot;
     }
 
     protected PickleJar getPickle() {

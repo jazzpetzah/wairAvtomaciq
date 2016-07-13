@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -162,6 +164,17 @@ public class ImageUtil {
 
     public static BufferedImage readImageFromFile(String filePath) throws IOException {
         return ImageIO.read(new File(filePath));
+    }
+
+    public static BufferedImage readImageFromBytes(byte[] srcImage) throws IOException {
+        return ImageIO.read(new ByteArrayInputStream(srcImage));
+    }
+
+    public static byte[] readBytesFromImage(BufferedImage srcImage) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(srcImage, "png", baos);
+        byte[] imageInByte = baos.toByteArray();
+        return imageInByte;
     }
 
     /**
