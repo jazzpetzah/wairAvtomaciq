@@ -59,7 +59,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
     private static final By idParticipantsHeaderEditable = By.id("taet__participants__header__editable");
 
+    private static final By idSingleParticipantClose = By.id("gtv__single_participants__close");
+
     private static final By idUserProfileConfirmationMenu = By.id("user_profile_confirmation_menu");
+
+    public static final By idParticipantsClose = By.id("gtv__participants__close");
 
     private static final Function<String, String> xpathConvOptionsMenuItemByName = name -> String
             .format("//*[@id='fl__participant__settings_box']"
@@ -170,8 +174,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     private static By[] getParticipantPageLocators() {
-        return new By[]{PeoplePickerPage.idParticipantsClose,
-                idParticipantsSubHeader, idParticipantsHeader};
+        return new By[]{idParticipantsClose, idParticipantsSubHeader, idParticipantsHeader};
     }
 
     public boolean isParticipatPageUIContentNotVisible() throws Exception {
@@ -266,7 +269,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public void tapCloseButton() throws Exception {
-        final WebElement closeButton = getElement(PeoplePickerPage.idParticipantsClose,
+        final WebElement closeButton = getElement(idParticipantsClose,
                 "Close participants button is not visible");
         final int halfHeight = this.getDriver().manage().window().getSize().getHeight() / 2;
         int ntry = 1;
@@ -274,7 +277,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         do {
             closeButton.click();
             ntry++;
-        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.idParticipantsClose, 1)
+        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idParticipantsClose, 1)
                 && closeButton.getLocation().getY() < halfHeight
                 && ntry <= maxRetries);
         if (ntry > maxRetries) {
@@ -284,7 +287,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
     }
 
     public void tapSingleParticipantCloseButton() throws Exception {
-        final WebElement closeButton = getElement(PeoplePickerPage.idSingleParticipantClose,
+        final WebElement closeButton = getElement(idSingleParticipantClose,
                 "Close single participant button is not visible");
         final int halfHeight = this.getDriver().manage().window().getSize().getHeight() / 2;
         int ntry = 1;
@@ -292,7 +295,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
         do {
             closeButton.click();
             ntry++;
-        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), PeoplePickerPage.idSingleParticipantClose, 1)
+        } while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), idSingleParticipantClose, 1)
                 && closeButton.getLocation().getY() < halfHeight
                 && ntry <= maxRetries);
         if (ntry > maxRetries) {

@@ -85,8 +85,8 @@ Feature: Conversation View
     And I see <Contact1> user profile page
     And I press add contact button
     And I tap on Search input on People picker page
-    And I enter "<Contact2>" into Search input on People Picker page
-    And I see user <Contact2> found on People picker page
+    And I type user name "<Contact2>" in search field
+    And I see user <Contact2> in Search result list
     And I tap on user name found on People picker page <Contact2>
     And I see Add to conversation button
     And I click on Add to conversation button
@@ -449,7 +449,7 @@ Feature: Conversation View
     And I confirm leaving
     And I see Contact list
     And I open Search UI
-    And I enter "<GroupChatName>" into Search input on People Picker page
+    And I type group name "<GroupChatName>" in search field
     And I tap on group found on People picker page <GroupChatName>
     Then I see the upper toolbar
     And I do not see text input

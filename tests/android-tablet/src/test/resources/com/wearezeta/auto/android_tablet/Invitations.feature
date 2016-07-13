@@ -10,7 +10,7 @@ Feature: Invitations
     Given I accept First Time overlay as soon as it is visible
     Given I see the conversations list with no conversations
     When I open Search UI
-    Then I do not see <Contact> in the invites list
+    Then I do not see "<Contact>" avatar in Contact list
 
     Examples:
       | Name      | Contact   |

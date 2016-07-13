@@ -72,7 +72,7 @@ Feature: Conversation List
     Then I see Contact list with no contacts
     When I wait until <Contact1> exists in backend search results
     And I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
+    And I type user name "<Contact1>" in search field
     And I tap on user name found on People picker page <Contact1>
     And I tap Open Conversation action button on People Picker page
     Then I see conversation view
@@ -121,8 +121,8 @@ Feature: Conversation List
     And I press DELETE on the confirm alert
     Then I do not see contact list with name <GroupChatName>
     And I open Search UI
-    And I enter "<GroupChatName>" into Search input on People Picker page
-    And I see group <GroupChatName> in People Picker
+    And I type group name "<GroupChatName>" in search field
+    And I see group <GroupChatName> in Search result list
     When I press Clear button
     And User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
     Then I see contact list with name <GroupChatName>
@@ -147,8 +147,8 @@ Feature: Conversation List
     And I press DELETE on the confirm alert
     Then I do not see contact list with name <GroupChatName>
     And I open Search UI
-    And I enter "<GroupChatName>" into Search input on People Picker page
-    Then I do not see group <GroupChatName> in People picker
+    And I type group name "<GroupChatName>" in search field
+    Then I do not see group <GroupChatName> in Search result list
     And I press Clear button
     And User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
     Then I do not see contact list with name <GroupChatName>
