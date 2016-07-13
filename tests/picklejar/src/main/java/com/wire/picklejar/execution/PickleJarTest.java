@@ -148,16 +148,20 @@ public abstract class PickleJarTest {
         final int width = originalImage.getWidth();
         float resizeRatio = 1;
         if (width > maxWidth || height > maxHeight) {
-            float resizeRatioW1 = (float) maxWidth / width;
-            float resizeRatioW2 = (float) maxWidth / height;
-            float resizeRatioH1 = (float) maxHeight / width;
-            float resizeRatioH2 = (float) maxHeight / height;
+            final float resizeRatioW1 = (float) maxWidth / width;
+            final float resizeRatioW2 = (float) maxWidth / height;
+            final float resizeRatioH1 = (float) maxHeight / width;
+            final float resizeRatioH2 = (float) maxHeight / height;
             float resizeRatioH = (resizeRatioH1 < resizeRatioH2) ? resizeRatioH1 : resizeRatioH2;
             float resizeRatioW = (resizeRatioW1 < resizeRatioW2) ? resizeRatioW1 : resizeRatioW2;
-            resizeRatio = (resizeRatioH > resizeRatioW) ? resizeRatioH : resizeRatioW;
+            final float resizeRatioLimitedW = (resizeRatioH > resizeRatioW) ? resizeRatioH : resizeRatioW;
+            resizeRatioH = (resizeRatioH1 > resizeRatioH2) ? resizeRatioH1 : resizeRatioH2;
+            resizeRatioW = (resizeRatioW1 > resizeRatioW2) ? resizeRatioW1 : resizeRatioW2;
+            final float resizeRatioLimitedH = (resizeRatioH < resizeRatioW) ? resizeRatioH : resizeRatioW;
+            resizeRatio = (resizeRatioLimitedW < resizeRatioLimitedH) ? resizeRatioLimitedW : resizeRatioLimitedH;
         }
-        int scaledW = Math.round(width * resizeRatio);
-        int scaledH = Math.round(height * resizeRatio);
+        final int scaledW = Math.round(width * resizeRatio);
+        final int scaledH = Math.round(height * resizeRatio);
         BufferedImage resizedImage = new BufferedImage(scaledW, scaledH, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = resizedImage.createGraphics();
         g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
