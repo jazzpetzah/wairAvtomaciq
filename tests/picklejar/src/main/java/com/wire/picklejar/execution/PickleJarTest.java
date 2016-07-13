@@ -2,7 +2,7 @@ package com.wire.picklejar.execution;
 
 import static com.wire.picklejar.Config.SCREENSHOT_PATH;
 import com.wire.picklejar.PickleJar;
-import com.wearezeta.auto.common.ImageUtil;
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
 import com.wire.picklejar.PickleJarJUnitProvider;
@@ -12,6 +12,8 @@ import com.wire.picklejar.gherkin.model.Scenario;
 import com.wire.picklejar.gherkin.model.Step;
 import com.wire.picklejar.gherkin.model.Tag;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import javax.imageio.ImageIO;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -131,8 +134,35 @@ public abstract class PickleJarTest {
     }
 
     private byte[] adjustScreenshotSize (byte[] screenshot, final int maxWidth, final int maxHeight) throws IOException {
-        final BufferedImage imgScreenshot = ImageUtil.scaleTo(ImageUtil.readImageFromBytes(screenshot), maxWidth, maxHeight);
-        return ImageUtil.readBytesFromImage(imgScreenshot);
+        BufferedImage imgScreenshot =  ImageIO.read(new ByteArrayInputStream(screenshot));
+        try {
+            imgScreenshot = scaleTo(imgScreenshot, maxWidth, maxHeight);
+        } catch (IOException e){}
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(imgScreenshot, "png", baos);
+        return baos.toByteArray();
+    }
+
+    private static BufferedImage scaleTo(BufferedImage originalImage, final int maxWidth, final int maxHeight) throws IOException {
+        final int height = originalImage.getHeight();
+        final int width = originalImage.getWidth();
+        float resizeRatio = 1;
+        if (width > maxWidth || height > maxHeight) {
+            float resizeRatioW1 = (float) maxWidth / width;
+            float resizeRatioW2 = (float) maxWidth / height;
+            float resizeRatioH1 = (float) maxHeight / width;
+            float resizeRatioH2 = (float) maxHeight / height;
+            float resizeRatioH = (resizeRatioH1 < resizeRatioH2) ? resizeRatioH1 : resizeRatioH2;
+            float resizeRatioW = (resizeRatioW1 < resizeRatioW2) ? resizeRatioW1 : resizeRatioW2;
+            resizeRatio = (resizeRatioH > resizeRatioW) ? resizeRatioH : resizeRatioW;
+        }
+        int scaledW = Math.round(width * resizeRatio);
+        int scaledH = Math.round(height * resizeRatio);
+        BufferedImage resizedImage = new BufferedImage(scaledW, scaledH, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2d = resizedImage.createGraphics();
+        g2d.addRenderingHints(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY));
+        g2d.drawImage(originalImage, 0, 0, scaledW, scaledH, null);
+        return resizedImage;
     }
 
     protected PickleJar getPickle() {
