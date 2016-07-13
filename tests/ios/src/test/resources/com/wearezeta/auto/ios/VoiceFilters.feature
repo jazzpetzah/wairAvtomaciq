@@ -127,9 +127,9 @@ Feature: Voice Filters
     And I tap Audio Message button from input tools
     And I tap Start Recording button on Voice Filters overlay
     And I wait for 2 seconds
-    When I long tap Audio Message button for <Duration> seconds from input tools
-    And I do not see audio message record container
-    Then I tap Stop Recording button on Voice Filters overlay
+    And I long tap Audio Message button for <Duration> seconds from input tools
+    Then I do not see audio message record container
+    And I tap Stop Recording button on Voice Filters overlay
 
     Examples:
       | Name      | Contact   | Duration |
