@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @C2400 @C2409 @calling_basic @id2709 @id2623
+  @C2400 @C2409 @calling_basic
   Scenario Outline: Verify starting and ending outgoing call by same person [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -17,7 +17,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2407 @rc @calling_basic @id2630
+  @C2407 @rc @calling_basic
   Scenario Outline: Verify calling from missed call indicator in conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -37,7 +37,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2410 @calling_basic @id2712
+  @C2410 @calling_basic
   Scenario Outline: Verify ignoring of incoming call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -54,7 +54,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2411 @rc @calling_basic @id2713
+  @C2411 @rc @calling_basic
   Scenario Outline: Verify accepting incoming call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -72,7 +72,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2399 @calling_basic @id2622
+  @C2399 @calling_basic
   Scenario Outline: Receiving missed call notification from one user [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -90,7 +90,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2408 @calling_basic @id2631
+  @C2408 @calling_basic
   Scenario Outline: Screenlock device when in the call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -107,7 +107,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2427 @rc @calling_advanced @id2652
+  @C2427 @rc @calling_advanced
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -136,7 +136,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | chrome      | chrome       |
 
-  @C2395 @calling_basic @id2618
+  @C2395 @calling_basic
   Scenario Outline: Put app into background after initiating call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -153,7 +153,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C2404 @calling_basic @id2627
+  @C2404 @calling_basic
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button) [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -170,7 +170,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2404 @calling_basic @id2627
+  @C2404 @calling_basic
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button) [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -188,7 +188,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2401 @calling_basic @id2624
+  @C2401 @calling_basic
   Scenario Outline: I want to end the call from the ongoing voice overlay [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -211,7 +211,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | chrome      |
 
-  @C2413 @rc @calling_basic @id3812
+  @C2413 @rc @calling_basic
   Scenario Outline: Verify putting client to the background during 1-to-1 call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
