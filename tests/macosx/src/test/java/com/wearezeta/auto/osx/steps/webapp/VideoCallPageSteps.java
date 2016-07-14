@@ -18,6 +18,9 @@ import com.wearezeta.auto.web.pages.VideoCallPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
@@ -60,13 +63,23 @@ public class VideoCallPageSteps {
     public void IVerifyMySelfVideoShowsScreen() throws Exception {
         VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
 
-        // get screenshot of self video
-        BufferedImage localScreenShareVideo = osxPagesCollection.getPage(MainWirePage.class).getElementScreenshot
-                (videoCallPage.getLocalScreenShareVideoElement()).get();
+        // get position and size of self video element
+        WebElement element = videoCallPage.getLocalScreenShareVideoElement();
+        final Point elementLocation = element.getLocation();
+        final Dimension elementSize = element.getSize();
 
-        // get local screenshot and resize to remote size
-        Optional<BufferedImage> localScreenshot = osxPagesCollection.getPage(MainWirePage.class).getScreenshot();
+        // get local screenshot
+        MainWirePage mainWirePage = osxPagesCollection.getPage(MainWirePage.class);
+        Optional<BufferedImage> localScreenshot = mainWirePage.getScreenshot();
         Assert.assertTrue("Fullscreen screenshot cannot be captured", localScreenshot.isPresent());
+
+        // cutout from screenshot
+        int x = mainWirePage.getX();
+        int y = mainWirePage.getY();
+        BufferedImage localScreenShareVideo = localScreenshot.get().getSubimage(x + elementLocation.getX(),
+                y + elementLocation.getY(), elementSize.getWidth(), elementSize.getHeight());
+
+        // resize local screenshot to cutout
         BufferedImage resizedScreenshot = ImageUtil.scaleTo(localScreenshot.get(), localScreenShareVideo.getWidth(),
                 localScreenShareVideo.getHeight());
 
