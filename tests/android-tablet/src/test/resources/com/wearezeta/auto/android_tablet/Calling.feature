@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @C426 @id3175 @calling_basic
+  @C426 @calling_basic
   Scenario Outline: Verify receiving "missed call" notification (GCM) after ending group call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -21,7 +21,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-  @C783 @id2910 @calling_basic @rc @rc44
+  @C783 @calling_basic @rc @rc44
   Scenario Outline: Calling bar buttons are clickable and change its state (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -49,7 +49,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C821 @id4009 @regression @rc @rc44
+  @C821 @regression @rc @rc44
   Scenario Outline: I can join group call in foreground (landscape)
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -75,7 +75,7 @@ Feature: Calling
       | CallBackend | CallBackend2 | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    |
       | chrome      | autocall     | user1Name | user2Name | user3Name | user4Name | user5Name | ChatForGroupCall |
 
-  @C794 @id3123 @calling_basic @rc @rc44
+  @C794 @calling_basic @rc @rc44
   Scenario Outline: Calling bar buttons are clickable and change its state (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -103,7 +103,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C487 @id2842 @calling_basic
+  @C487 @calling_basic
   Scenario Outline: (AN-3145) I see miss call notification on the list and inside conversation view (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -128,7 +128,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  |
       | autocall    | user1Name | user2Name | user3Name |
 
-  @C521 @id3125 @calling_basic
+  @C521 @calling_basic
   Scenario Outline: I see miss call notification on the list and inside conversation view (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -151,7 +151,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  |
       | autocall    | user1Name | user2Name | user3Name |
 
-  @C811 @id3259 @calling_basic @rc
+  @C811 @calling_basic @rc
   Scenario Outline: Receive call while Wire is running in the background (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -174,7 +174,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C770 @id2875 @calling_basic @rc
+  @C770 @calling_basic @rc
   Scenario Outline: Receive call while tablet in sleeping mode (screen locked) (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -197,7 +197,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C486 @id2841 @calling_advanced
+  @C486 @calling_advanced
   Scenario Outline: Other wire user trying to call me while I'm already in wire call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -219,7 +219,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @C813 @id3801 @calling_basic @rc
+  @C813 @calling_basic @rc
   Scenario Outline: Silence an incoming call (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -238,7 +238,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C814 @id3802 @calling_basic @rc
+  @C814 @calling_basic @rc
   Scenario Outline: Silence an incoming call (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
