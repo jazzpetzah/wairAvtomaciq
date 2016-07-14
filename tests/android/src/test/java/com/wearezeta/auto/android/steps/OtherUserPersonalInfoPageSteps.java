@@ -39,7 +39,7 @@ public class OtherUserPersonalInfoPageSteps {
      * @step. ^I see (.*) user profile page$
      */
     @When("^I see (.*) user profile page$")
-    public void WhenISeeOherUserProfilePage(String name) throws Exception {
+    public void ISeeOherUserProfilePage(String name) throws Exception {
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
@@ -55,7 +55,7 @@ public class OtherUserPersonalInfoPageSteps {
      * @step. ^I click Remove$
      */
     @When("^I click Remove$")
-    public void WhenIClickRemove() throws Exception {
+    public void IClickRemove() throws Exception {
         getOtherUserPersonalInfoPage().tapRightActionButton();
     }
 
@@ -66,7 +66,7 @@ public class OtherUserPersonalInfoPageSteps {
      * @step. ^I see warning message$
      */
     @When("^I see warning message$")
-    public void WhenISeeWarningMessage() throws Exception {
+    public void ISeeWarningMessage() throws Exception {
         Assert.assertTrue("Warning message is not shown", getOtherUserPersonalInfoPage().isConversationAlertVisible());
     }
 
@@ -77,7 +77,7 @@ public class OtherUserPersonalInfoPageSteps {
      * @step. ^I confirm remove$
      */
     @When("^I confirm remove$")
-    public void WhenIConfirmRemove() throws Exception {
+    public void IConfirmRemove() throws Exception {
         getOtherUserPersonalInfoPage().tapConfirmRemoveButton();
     }
 
@@ -88,7 +88,7 @@ public class OtherUserPersonalInfoPageSteps {
      * @step. ^I confirm block$
      */
     @When("^I confirm block$")
-    public void WhenIConfirmBlock() throws Exception {
+    public void IConfirmBlock() throws Exception {
         getOtherUserPersonalInfoPage().pressConfirmBlock();
     }
 
@@ -100,13 +100,13 @@ public class OtherUserPersonalInfoPageSteps {
      * @step. ^I press (?:add contact|create group) button$
      */
     @When("^I press (?:add contact|create group) button$")
-    public void WhenIPressAddContactButton() throws Exception {
+    public void IPressAddContactButton() throws Exception {
         getOtherUserPersonalInfoPage().tapLeftActionBtn();
     }
 
     /**
      * Checks to see that we can see a given user's profile -duplicate of
-     * WhenISeeOherUserProfilePage(String)
+     * ISeeOherUserProfilePage(String)
      *
      * @param contact
      * @throws Exception
@@ -143,7 +143,7 @@ public class OtherUserPersonalInfoPageSteps {
      * @step. ^I select single participant tab (.*)$
      */
     @When("^I select single participant tab \"(.*)\"$")
-    public void WhenISelectSingleParticipantTab(String tabName) throws Exception {
+    public void ISelectSingleParticipantTab(String tabName) throws Exception {
         getOtherUserPersonalInfoPage().selectSingleParticipantTab(tabName);
     }
 
@@ -235,7 +235,7 @@ public class OtherUserPersonalInfoPageSteps {
      * @step. ^I tap on group chat contact (.*)$
      */
     @When("^I tap on group chat contact (.*)$")
-    public void WhenITapOnGroupChatContact(String contact) throws Exception {
+    public void ITapOnGroupChatContact(String contact) throws Exception {
         try {
             contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         } catch (NoSuchUserException e) {
@@ -252,7 +252,7 @@ public class OtherUserPersonalInfoPageSteps {
      * @step. ^I press Right conversation button$
      */
     @When("^I press options menu button$")
-    public void WhenIPressOptionsMenuButton() throws Exception {
+    public void IPressOptionsMenuButton() throws Exception {
         getOtherUserPersonalInfoPage().pressOptionsMenuButton();
     }
 
@@ -288,19 +288,19 @@ public class OtherUserPersonalInfoPageSteps {
      * @step. ^I confirm leaving$
      */
     @When("^I confirm leaving$")
-    public void WhenIConfirmLeaving() throws Exception {
+    public void IConfirmLeaving() throws Exception {
         getOtherUserPersonalInfoPage().pressConfirmLeaveBtn();
     }
 
     /**
-     * -duplicate of WhenITapOnGroupChatContact(String)
+     * -duplicate of ITapOnGroupChatContact(String)
      *
      * @param name
      * @throws Exception
      * @step. ^I select contact (.*)$
      */
     @When("^I select contact (.*)$")
-    public void WhenISelectContact(String name) throws Exception {
+    public void ISelectContact(String name) throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
         getOtherUserPersonalInfoPage().tapOnParticipant(name);
     }

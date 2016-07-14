@@ -69,7 +69,7 @@ public class ConversationsListPageSteps {
      * @step. ^I tap on contact name (.*)$
      */
     @When("^I tap on contact name (.*)$")
-    public void WhenITapOnContactName(String contactName) throws Exception {
+    public void ITapOnContactName(String contactName) throws Exception {
         try {
             contactName = usrMgr.findUserByNameOrNameAlias(contactName).getName();
         } catch (NoSuchUserException e) {
