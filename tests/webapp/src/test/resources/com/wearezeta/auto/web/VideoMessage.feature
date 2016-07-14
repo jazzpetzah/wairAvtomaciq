@@ -42,7 +42,7 @@ Feature: Video Message
       | Login      | Password      | Name      | Contact   | File        | Size |
       | user1Email | user1Password | user1Name | user2Name | C123938.mp4 | 5MB  |
 
-  @C123926 @videomessage @staging
+  @C123926 @videomessage @regression
   Scenario Outline: Verify receiver can play video message in 1:1
     Given my browser supports video message feature
     Given There are 2 users where <Name> is me
@@ -66,7 +66,7 @@ Feature: Video Message
       | Login      | Password      | Name      | Contact   | File        | Size  |
       | user1Email | user1Password | user1Name | user2Name | C123926.mp4 | 15MB  |
 
-  @C123939 @videomessage @staging
+  @C123939 @videomessage @regression
   Scenario Outline: Verify receivers can play video message in group
     Given my browser supports video message feature
     Given There are 3 users where <Name> is me
@@ -111,7 +111,7 @@ Feature: Video Message
       | Login      | Password      | Name      | Contact   | File        | Size  |
       | user1Email | user1Password | user1Name | user2Name | C123929.mp4 | 19MB  |
 
-  @C123928 @videomessage @staging
+  @C123928 @videomessage @regression
   Scenario Outline: Verify receiver can cancel video message download
     Given my browser supports video message feature
     Given There are 3 users where <Name> is me

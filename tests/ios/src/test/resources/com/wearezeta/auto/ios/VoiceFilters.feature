@@ -116,3 +116,21 @@ Feature: Voice Filters
     Examples:
       | Name      | Contact   | ButtonsCount |
       | user1Name | user2Name | 1            |
+
+  @C165178 @staging
+  Scenario Outline: Verify only one recorder works at a time
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I tap Audio Message button from input tools
+    And I tap Start Recording button on Voice Filters overlay
+    And I wait for 2 seconds
+    And I long tap Audio Message button for <Duration> seconds from input tools
+    Then I do not see audio message record container
+    And I tap Stop Recording button on Voice Filters overlay
+
+    Examples:
+      | Name      | Contact   | Duration |
+      | user1Name | user2Name | 5        |

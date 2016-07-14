@@ -615,7 +615,7 @@ Feature: VideoCalling
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | chrome      | 30      | userpicture_landscape.jpg |
 
-  @C165129 @staging @videocalling @calling_debug
+  @C165129 @regression @videocalling @calling_debug
   Scenario Outline: Verify that current video call is terminated if you want to call someone else
     Given My browser supports calling
     Given There are 3 users where <Name> is me

@@ -604,17 +604,6 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Hovers ping button
-     *
-     * @step. ^I hover ping button$
-     * @throws Exception
-     */
-    @Then("^I hover ping button$")
-    public void IHoverPingButton() throws Exception {
-        webappPagesCollection.getPage(ConversationPage.class).hoverPingButton();
-    }
-
-    /**
      * Verifies whether ping button tool tip is correct or not.
      *
      * @step. ^I see correct ping button tool tip$
@@ -632,16 +621,6 @@ public class ConversationPageSteps {
         assertThat("Ping button tooltip",
                 webappPagesCollection.getPage(ConversationPage.class)
                 .getPingButtonToolTip(), equalTo(tooltip));
-    }
-
-    /**
-     * Hovers call button
-     *
-     * @step. ^I hover call button$
-     */
-    @When("^I hover call button$")
-    public void IHoverCallButton() throws Throwable {
-        webappPagesCollection.getPage(ConversationPage.class).hoverCallButton();
     }
 
     /**

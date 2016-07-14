@@ -21,7 +21,7 @@ public class SketchPageSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I draw a sketch( on image)? with (.*) colors$")
+	@When("^I draw a sketch( on image)? with (.*) colors?$")
 	public void WhenIDrawASketchWithXColors(String onImage, int numColors)
 			throws Exception {
 		SketchPage page = getSketchPage();

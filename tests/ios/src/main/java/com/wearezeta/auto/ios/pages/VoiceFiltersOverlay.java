@@ -66,7 +66,7 @@ public class VoiceFiltersOverlay extends IOSPage {
     public void tapButton(String name) throws Exception {
         final By locator = getButtonLocatorByName(name);
         if (locator.equals(nameConfirmRecordButton)) {
-            this.clickElementWithRetryIfStillDisplayed(locator, 3);
+            DriverUtils.tapByCoordinatesWithPercentOffcet(getDriver(), getElement(locator), 50, 50);
         } else {
             getElement(locator).click();
         }

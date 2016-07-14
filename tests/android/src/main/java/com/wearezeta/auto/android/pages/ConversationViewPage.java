@@ -560,7 +560,7 @@ public class ConversationViewPage extends AndroidPage {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), idVideoCall);
     }
 
-    public boolean isDialogVisible() throws Exception {
+    public boolean isConversationVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), idDialogRoot);
     }
 

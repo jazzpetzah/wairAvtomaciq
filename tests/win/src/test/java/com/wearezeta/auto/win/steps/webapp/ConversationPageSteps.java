@@ -583,18 +583,6 @@ public class ConversationPageSteps {
     }
 
     /**
-     * Hovers ping button
-     *
-     * @step. ^I hover ping button$
-     * @throws Exception
-     */
-    @Then("^I hover ping button$")
-    public void IHoverPingButton() throws Exception {
-        WebappPagesCollection.getInstance().getPage(ConversationPage.class)
-                .hoverPingButton();
-    }
-
-    /**
      * Types shortcut combination to ping
      *
      * @step. ^I type shortcut combination to ping$
@@ -696,17 +684,6 @@ public class ConversationPageSteps {
     public void ITypeShortcutCombinationToCopy() throws Exception {
         WebappPagesCollection.getInstance().getPage(ConversationPage.class)
                 .pressShortCutForCopy();
-    }
-
-    /**
-     * Hovers call button
-     *
-     * @step. ^I hover call button$
-     */
-    @When("^I hover call button$")
-    public void IHoverCallButton() throws Throwable {
-        WebappPagesCollection.getInstance().getPage(ConversationPage.class)
-                .hoverCallButton();
     }
 
     /**

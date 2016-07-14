@@ -9,7 +9,7 @@ import java.util.function.Function;
 
 public class VoiceFiltersOverlayPage extends AndroidPage {
 
-    private static final By idVoiceRecordingContainer = By.id("ttv__voice_filter__tap_to_record");
+    private static final By idVoiceRecordingContainer = By.id("vfc");
     private static final By idRecordButton = By.id("gtv__record_button");
     private static final By idApproveButton = By.id("v__voice_approve");
     private static final By idVoiceGraph = By.id("wbv__voice_filter");

@@ -11,12 +11,11 @@ Feature: Connect
     When I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I see connect to <Contact> dialog
-    And I click Connect button on connect to dialog
+    And I tap Connect button on Pending outgoing connection page
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page
+    And I see Pending Connect to <Contact> message in the conversation view
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -52,8 +51,8 @@ Feature: Connect
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select participant <UnconnectedUser>
-    And I click Connect button on connect to dialog
-    And I see Connect dialog is closed
+    And I tap Connect button on Pending outgoing connection page
+    And I do not see Pending outgoing connection page
     And I close group info page
     And I navigate back to conversations list
     Then I see first item in contact list named <UnconnectedUser>
@@ -116,7 +115,7 @@ Feature: Connect
     And I wait until <Contact> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I click Connect button on connect to dialog
+    And I tap Connect button on Pending outgoing connection page
     And I tap on conversation <Contact> in search result
     And I see <Contact> user pending profile page
     And I see Cancel Request button on pending profile page
@@ -163,8 +162,7 @@ Feature: Connect
     When I open search UI
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I see connect to <Contact> dialog
-    And I click Connect button on connect to dialog
+    And I tap Connect button on Pending outgoing connection page
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     When I wait until <Contact> exists in backend search results
@@ -211,7 +209,7 @@ Feature: Connect
     And I click close button to dismiss people view
     And I see first item in contact list named <UnconnectedUser>
     And I tap on contact name <UnconnectedUser>
-    Then I see Pending Connect to <UnconnectedUser> message on Dialog page
+    Then I see Pending Connect to <UnconnectedUser> message in the conversation view
 
     Examples:
       | Name      | UnconnectedUser | ContactEmail |
@@ -249,8 +247,7 @@ Feature: Connect
     And I open search UI
     And I input in People picker search field user name <Contact1>
     And I tap on conversation <Contact1> in search result
-    And I see connect to <Contact1> dialog
-    And I click Connect button on connect to dialog
+    And I tap Connect button on Pending outgoing connection page
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact1>
 

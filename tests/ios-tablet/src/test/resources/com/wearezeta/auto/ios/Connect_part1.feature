@@ -12,12 +12,11 @@ Feature: Connect
     And I wait until <Contact> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I see connect to <Contact> dialog
-    And I click Connect button on connect to dialog
+    And I tap Connect button on Pending outgoing connection page
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page
+    And I see Pending Connect to <Contact> message in the conversation view
     When I open conversation details
     Then I see <Contact> user pending profile popover on iPad
 
@@ -38,12 +37,11 @@ Feature: Connect
     And I wait until <Contact> exists in backend search results
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I see connect to <Contact> dialog
-    And I click Connect button on connect to dialog
+    And I tap Connect button on Pending outgoing connection page
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     And I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page
+    And I see Pending Connect to <Contact> message in the conversation view
     When I open conversation details
     Then I see <Contact> user pending profile popover on iPad
 
@@ -196,7 +194,7 @@ Feature: Connect
     Given I see conversations list
     And I see conversation <Contact> in conversations list
     When I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page
+    And I see Pending Connect to <Contact> message in the conversation view
     Then I do not see text input in conversation view
 
     Examples:
@@ -213,7 +211,7 @@ Feature: Connect
     Given I see conversations list
     And I see conversation <Contact> in conversations list
     When I tap on contact name <Contact>
-    And I see Pending Connect to <Contact> message on Dialog page
+    And I see Pending Connect to <Contact> message in the conversation view
     Then I do not see text input in conversation view
 
     Examples:
@@ -284,8 +282,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I tap on conversation <Contact> in search result
-    And I see connect to <Contact> dialog
-    And I click Connect button on connect to dialog
+    And I tap Connect button on Pending outgoing connection page
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
     When I open search UI

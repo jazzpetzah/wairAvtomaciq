@@ -257,7 +257,7 @@ public class ConversationViewPageSteps {
         }
     }
 
-    @Then("^I see Pending Connect to (.*) message on Dialog page$")
+    @Then("^I see Pending Connect to (.*) message in the conversation view$")
     public void ISeePendingConnectMessage(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         Assert.assertTrue(String.format("Connecting to %s is not visible", contact),

@@ -1,19 +1,5 @@
 Feature: Audio Message
 
-  @C131173 @regression @rc @rc42
-  Scenario Outline: Verify hint appears on voice icon tapping
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I tap on contact name <Contact>
-    Then I tap Audio message button from cursor toolbar and see hint message "<HintMessage>"
-
-    Examples:
-      | Name      | Contact   | HintMessage                           |
-      | user1Name | user2Name | Tap and hold to send an audio message |
-
   @C131179 @C131175 @regression @rc @rc42
   Scenario Outline: Verify sending voice message by long tap > swipe up
     Given There are 2 users where <Name> is me
@@ -126,16 +112,16 @@ Feature: Audio Message
     And I wait for 3 seconds
     And I long tap Audio message button <TapDuration> seconds from cursor toolbar
     And I tap audio recording Send button
-    And I see Audio Message container in the conversation view
-    And I remember the state of Retry button on the recent audio message in the conversation view
+    Then I see Audio Message container in the conversation view
+    When I remember the state of Retry button on the recent audio message in the conversation view
     And I disable Airplane mode on the device
     # Wait for sync
     And I wait for 10 seconds
     And I tap Retry button on the recent audio message in the conversation view
     # Retry button changes to Play button
     Then I verify the state of Retry button on the recent audio message in the conversation view is changed
-    Then I wait for 15 seconds until audio message upload completed
-    And I remember the state of Play button on the recent audio message in the conversation view
+    And I wait for 15 seconds until audio message upload completed
+    When I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
     Then I verify the state of Play button on the recent audio message in the conversation view is changed
 
@@ -154,8 +140,8 @@ Feature: Audio Message
     When I long tap Audio message button <TapDuration> seconds from cursor toolbar
     And I remember the state of audio message preview seekbar
     And I tap audio recording Play button
-    And I verify the state of audio message preview seekbar is changed
-    And I tap audio recording Cancel button
+    Then I verify the state of audio message preview seekbar is changed
+    When I tap audio recording Cancel button
     Then I see cursor toolbar
     And I do not see Audio Message container in the conversation view
 
@@ -172,15 +158,15 @@ Feature: Audio Message
     Given I see Contact list with contacts
     Given I tap on contact name <Contact>
     When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
-    And I see Audio Message container in the conversation view
+    Then I see Audio Message container in the conversation view
     # Wait until the seekbar initialized completely
     And I wait for 3 seconds
-    And I remember the state of recent audio message seekbar
+    When I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
     Then I wait for 15 seconds until audio message download completed
-    Then I verify the state of recent audio message seekbar in the conversation view is changed
+    And I verify the state of recent audio message seekbar in the conversation view is changed
     # Wait until play button changes to pause button
-    When I wait for 2 seconds
+    And I wait for 2 seconds
     When I remember the state of Pause button on the recent audio message in the conversation view
     And I minimize the application
     # Wait until Wire is minimized
@@ -211,7 +197,7 @@ Feature: Audio Message
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
     Then I wait for 15 seconds until audio message download completed
-    Then I verify the state of recent audio message seekbar in the conversation view is changed
+    And I verify the state of recent audio message seekbar in the conversation view is changed
     When I remember the state of Pause button on the recent audio message in the conversation view
     And <Contact> calls me
     And I see incoming call from <Contact>
@@ -237,9 +223,9 @@ Feature: Audio Message
     And I remember the state of recent audio message seekbar
     And I tap Play button on the recent audio message in the conversation view
     Then I wait for 15 seconds until audio message download completed
-    Then I verify the state of recent audio message seekbar in the conversation view is changed
+    And I verify the state of recent audio message seekbar in the conversation view is changed
     When I remember the state of Pause button on the recent audio message in the conversation view
-    When <Contact> starts a video call to me
+    And <Contact> starts a video call to me
     And I see incoming video call
     And <Contact> stops calling me
     And I do not see incoming video call

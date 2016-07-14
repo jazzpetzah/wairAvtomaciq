@@ -58,3 +58,20 @@ Feature: Copy Message
     Examples:
       | Name      | Contact   | Message                                     |
       | user1Name | user2Name | https://www.youtube.com/watch?v=gIQS9uUVmgk |
+
+  @C165146 @staging
+  Scenario Outline: Verify copy link preview
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I accept First Time overlay as soon as it is visible
+    Given User <Contact> send encrypted message "<Link>" to user Myself
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I long tap Link Preview container in the conversation view
+    And  I tap Copy button on the action mode bar
+    Then I verify that Android clipboard content equals to "<Link>"
+
+    Examples:
+      | Name      | Contact   | Link                                                                                               |
+      | user1Name | user2Name | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 |
