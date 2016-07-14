@@ -28,7 +28,7 @@ public class PeoplePickerPageSteps {
      * @throws Exception
      * @step. ^I see People picker page$
      */
-    @When("^I see People picker page$")
+    @Then("^I see People picker page$")
     public void WhenISeePeoplePickerPage() throws Exception {
         Assert.assertTrue("People Picker is not visible", getPeoplePickerPage()
                 .isPeoplePickerPageVisible());
@@ -191,7 +191,7 @@ public class PeoplePickerPageSteps {
      * @throws Exception
      * @step. ^I see user (.*) found on People picker page$
      */
-    @When("^I( do not)? see user (.*) found on People picker page$")
+    @Then("^I( do not)? see user (.*) found on People picker page$")
     public void WhenISeeUserFoundOnPeoplePickerPage(String shouldNotSee, String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
