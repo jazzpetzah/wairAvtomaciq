@@ -1564,9 +1564,9 @@ public class CommonAndroidSteps {
     /**
      * Verify whether the particular string is present in the logcat output
      *
-     * @param logType        one of possible log types. See AndroidLogListener.ListenerType enumeration for more details
-     * @param expectedTimes  the times of appearance
-     * @param expectedString the string to verify
+     * @param logType          one of possible log types. See AndroidLogListener.ListenerType enumeration for more details
+     * @param expectedTimesStr the times of appearance
+     * @param expectedString   the string to verify
      * @throws Exception
      * @step. ^I verify that (PERF|ANALYTICS|DEFAULT) log contains string "(.*)"( \d+ times?)?$
      */

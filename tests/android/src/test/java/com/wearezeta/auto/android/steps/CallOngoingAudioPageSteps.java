@@ -39,7 +39,7 @@ public class CallOngoingAudioPageSteps {
      * @throws Exception
      * @step. ^I (do not )?see ongoing call$
      */
-    @When("^I (do not )?see ongoing call$")
+    @Then("^I (do not )?see ongoing call$")
     public void ISeeOngoingCall(String not) throws Exception {
         if (not == null) {
             assertTrue("Ongoing call not visible", getPage().waitUntilVisible());

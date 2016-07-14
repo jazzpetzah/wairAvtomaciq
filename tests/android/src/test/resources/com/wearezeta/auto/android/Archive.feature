@@ -15,11 +15,11 @@ Feature: Archive
     When I swipe right on a <Contact1>
     And I select ARCHIVE from conversation settings menu
     Then I do not see contact list with name <Contact1>
-    And I swipe up contact list
-    And I see contact list with name <Contact1>
-    And I swipe right on a <Contact1>
+    When I swipe up contact list
+    Then I see contact list with name <Contact1>
+    When I swipe right on a <Contact1>
     And I select UNARCHIVE from conversation settings menu
-    And I see conversation view
+    Then I see conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -36,16 +36,16 @@ Feature: Archive
     # This is to eliminate invitation banner
     Given I open Search UI
     Given I press Clear button
-    And I see contact list with name <GroupChatName>
+    Then I see contact list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I select ARCHIVE from conversation settings menu
     And I navigate back from dialog page
     Then I do not see contact list with name <GroupChatName>
-    And I swipe up contact list
-    And I see contact list with name <GroupChatName>
+    Then I swipe up contact list
+    When I see contact list with name <GroupChatName>
     And I swipe right on a <GroupChatName>
     And I select UNARCHIVE from conversation settings menu
-    And I see conversation view
+    Then I see conversation view
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName     |

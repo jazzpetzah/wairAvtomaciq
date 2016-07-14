@@ -9,11 +9,11 @@ Feature: Archive
     Given I sign in using my email or phone number
     Given I see conversations list
     And I do not see conversation <ArchivedUser> in conversations list
-    Given User <ArchivedUser> sends 1 encrypted message to user Myself
+    And User <ArchivedUser> sends 1 encrypted message to user Myself
     Then I see first item in contact list named <ArchivedUser>
     When User Myself archives single user conversation <ArchivedUser>
     And I do not see conversation <ArchivedUser> in conversations list
-    Given User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
+    And User <ArchivedUser> sends encrypted image <Picture> to single user conversation Myself
     Then I see first item in contact list named <ArchivedUser>
     When User Myself archives single user conversation <ArchivedUser>
     And I do not see conversation <ArchivedUser> in conversations list
