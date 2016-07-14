@@ -122,12 +122,12 @@ Feature: Calling Matrix
     And I tap Audio Call button from top toolbar
     Then I see outgoing call
     When <Contact1>,<Contact2> accept next incoming call automatically
-    And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1>,<Contact2> verify to have 2 flows
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
     When I hang up ongoing call
-    And I do not see ongoing call
-    Then <Contact1>,<Contact2> verifies to have 1 flow
+    Then I do not see ongoing call
+    And <Contact1>,<Contact2> verifies to have 1 flow
     And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
 
     Examples:
@@ -153,8 +153,8 @@ Feature: Calling Matrix
     And I tap Audio Call button from top toolbar
     Then I see outgoing call
     When <Contact1>,<Contact2> accept next incoming call automatically
-    And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    And I hang up ongoing call
+    Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    When I hang up ongoing call
     Then I do not see ongoing call
 
     Examples:
@@ -210,10 +210,10 @@ Feature: Calling Matrix
     And <Contact1> calls <GroupChatName>
     Then I see incoming call
     When I swipe to accept the call
-    And I see ongoing call
+    Then I see ongoing call
     And <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    And I hang up ongoing call
-    And I do not see ongoing call
+    When I hang up ongoing call
+    Then I do not see ongoing call
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | WaitBackend         | Timeout | CallBackend    |
@@ -245,10 +245,10 @@ Feature: Calling Matrix
     And <Contact1> calls <GroupChatName>
     Then I see incoming call
     When I swipe to accept the call
-    And I see ongoing call
+    Then I see ongoing call
     And <Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
-    And I hang up ongoing call
-    And I do not see ongoing call
+    When I hang up ongoing call
+    Then I do not see ongoing call
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | CallBackend      | Timeout | WaitBackend |
@@ -271,8 +271,8 @@ Feature: Calling Matrix
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When <Contact> calls me
-    And I see incoming call
-    And I swipe to accept the call
+    Then I see incoming call
+    When I swipe to accept the call
     Then I see ongoing call
     When I minimize the application
     And I wait for 5 seconds
@@ -320,7 +320,7 @@ Feature: Calling Matrix
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
-    And I tap on contact name <Contact>
+    When I tap on contact name <Contact>
     And I tap Audio Call button from top toolbar
     Then I see outgoing call
     When <Contact> accepts next incoming call automatically

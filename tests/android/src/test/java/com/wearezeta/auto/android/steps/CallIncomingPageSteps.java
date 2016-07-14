@@ -5,6 +5,7 @@ import com.wearezeta.auto.android.pages.CallIncomingPage;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.When;
+import cucumber.api.java.en.Then;
 import org.junit.Assert;
 import static org.junit.Assert.assertTrue;
 
@@ -25,7 +26,7 @@ public class CallIncomingPageSteps {
      * @throws Exception
      * @step. ^I (do not )?see incoming (video )?call$
      */
-    @When("^I (do not )?see incoming (video )?call$")
+    @Then("^I (do not )?see incoming (video )?call$")
     public void ISeeIncomingCall(String not, String isVideoCall) throws Exception {
         String subtitle = isVideoCall == null ? "Calling" : "Video calling";
         if (not == null) {
