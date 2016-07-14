@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @C667 @id9 @regression @rc
+  @C667 @regression @rc
   Scenario Outline: Register new user by phone and set profile picture using camera
     Given I see welcome screen
     When I input a new phone number for user <Name>
@@ -31,7 +31,7 @@ Feature: Registration
       | Name      |
       | user1Name |
 
-  @C566 @id4094 @regression @noAcceptAlert
+  @C566 @regression @noAcceptAlert
   Scenario Outline: Wrong phone activation code is followed by correct error message
     Given I see welcome screen
     When I input a new phone number for user <Name>
