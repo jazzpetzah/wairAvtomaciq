@@ -15,7 +15,7 @@ import org.openqa.selenium.Dimension;
 public class MainWirePageSteps {
 
     private final static int OSX_TITLEBAR_HEIGHT = 24;
-    private final static int DEVIATION_ALLOWANCE_IN_PX = 5;
+    private final static int DEVIATION_ALLOWANCE_IN_PX = 15;
 
     private final OSXPagesCollection osxPagesCollection = OSXPagesCollection
             .getInstance();
