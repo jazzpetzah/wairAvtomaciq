@@ -28,7 +28,7 @@ public class IncomingPendingConnectionsPageSteps {
 	 *            The name of the user with whom you are not yet connected.
 	 * @throws Throwable
 	 */
-	@When("^I see connect to (.*) dialog$")
+	@Then("^I see connect to (.*) dialog$")
 	public void WhenISeeConnectToUserDialog(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(
@@ -130,7 +130,7 @@ public class IncomingPendingConnectionsPageSteps {
 	 * @throws Exception
 	 */
 	@Then("^I see that connection is pending$")
-	public void ThenConnectionIsPending() throws Exception {
+	public void ConnectionIsPending() throws Exception {
 		Assert.assertTrue("Pending connection screen is not visible",
 				getIncomingPendingConnectionsPage().isPending());
 	}
@@ -145,7 +145,7 @@ public class IncomingPendingConnectionsPageSteps {
 	 * @throws Throwable
 	 */
 	@Then("^I see connect button enabled state is (.*)$")
-	public void ThenISeeConnectButtonIsDisabled(boolean state) throws Throwable {
+	public void ISeeConnectButtonIsDisabled(boolean state) throws Throwable {
 		Assert.assertEquals(state, getIncomingPendingConnectionsPage().getConnectButtonState());
 	}
 
@@ -159,7 +159,7 @@ public class IncomingPendingConnectionsPageSteps {
 	 * @throws Throwable
 	 */
 	@Then("^I see counter value (.*)$")
-	public void ThenISeeCounterValue(int value) throws Throwable {
+	public void ISeeCounterValue(int value) throws Throwable {
 		Assert.assertEquals(value, getIncomingPendingConnectionsPage().getCharCounterValue());
 	}
 
@@ -171,7 +171,7 @@ public class IncomingPendingConnectionsPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I click left Connect button$")
-	public void WhenIClickLeftConnectButton() throws Exception {
+	public void IClickLeftConnectButton() throws Exception {
 		getIncomingPendingConnectionsPage().pressLeftConnectButton();
 	}
 
@@ -183,7 +183,7 @@ public class IncomingPendingConnectionsPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I click [Cc]onnect button on connect to page$")
-	public void WhenIClickConnectButton() throws Exception {
+	public void IClickConnectButton() throws Exception {
 		getIncomingPendingConnectionsPage().pressConnectButton();
 	}
 
@@ -232,7 +232,7 @@ public class IncomingPendingConnectionsPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I confirm block on connect to page$")
-	public void WhenIConfirmBlock() throws Exception {
+	public void IConfirmBlock() throws Exception {
 		getIncomingPendingConnectionsPage().tapConfirmBlockButton();
 	}
 
@@ -245,7 +245,7 @@ public class IncomingPendingConnectionsPageSteps {
 	 * @throws Exception
 	 */
 	@Then("I close Connect To dialog")
-	public void ThenCloseConnectToDialog() throws Exception {
+	public void CloseConnectToDialog() throws Exception {
 		getIncomingPendingConnectionsPage().clickCloseButton();
 	}
 }
