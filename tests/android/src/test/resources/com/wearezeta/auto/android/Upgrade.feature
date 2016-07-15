@@ -6,14 +6,14 @@ Feature: Upgrade
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given User <Contact> sends encrypted message <Message> to user Myself
     Given User <Contact> sends encrypted image <Picture> to single user conversation Myself
     # Let the content to be delivered
     Given I wait for 10 seconds
     Given I upgrade Wire to the recent version
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     Then I see the message "<Message>" in the conversation view
     And I see 1 image in the conversation view
     When User <Contact> sends encrypted image <Picture> to single user conversation Myself

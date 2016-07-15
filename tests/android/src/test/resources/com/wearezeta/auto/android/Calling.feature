@@ -7,13 +7,13 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When <Contact> calls me
     Then I see incoming call
     When <Contact> stops calling me
     Then <Contact> verifies that call status to <Name> is changed to destroyed in <Timeout> seconds
     And I do not see incoming call
-    When I tap on contact name <Contact>
+    When I tap on conversation name <Contact>
     Then I see dialog with missed call from <Contact>
 
     Examples:
@@ -27,7 +27,7 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When <Contact> calls me
     Then I see incoming call
     And I see incoming call from <Contact>
@@ -45,8 +45,8 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap Audio Call button from top toolbar
     Then I see outgoing call
     When <Contact> accepts next incoming call automatically
@@ -68,7 +68,7 @@ Feature: Calling
     Given <Contact1> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When <Contact1> calls me
     Then I see incoming call
     And I see incoming call from <Contact1>
@@ -90,7 +90,7 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When I minimize the application
     And <Contact> calls me
     # Wait for the call to appear in UI
@@ -115,7 +115,7 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When I lock the device
     And <Contact> calls me
     # Wait for the call to appear in UI
@@ -140,8 +140,8 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And <Contact> calls me
     Then I see incoming call
     And I see incoming call from <Contact>
@@ -168,8 +168,8 @@ Feature: Calling
     Given <Contact1>,<Contact2> start instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And <Contact1> calls <GroupChatName>
     And <Contact2> calls <GroupChatName>
     Then I see incoming call
@@ -196,8 +196,8 @@ Feature: Calling
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And I tap Audio Call button from top toolbar
     Then I see outgoing call
     When <Contact1>,<Contact2> accept next incoming call automatically
@@ -218,8 +218,8 @@ Feature: Calling
     Given <Contact2>,<Contact3>,<Contact4> start instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     And <Contact1> calls <GroupChatName>
     # TODO: activity check
@@ -246,8 +246,8 @@ Feature: Calling
     Given <Contact2> starts instance using chrome
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And <Contact2> accepts next incoming call automatically
     And <Contact1> calls <GroupChatName>
     Then I see incoming call
@@ -267,8 +267,8 @@ Feature: Calling
     Given <Contact1>,<Contact2> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And <Contact1>,<Contact2> calls <GroupChatName>
     Then I see incoming call
     When I swipe to accept the call
@@ -291,8 +291,8 @@ Feature: Calling
     Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And <Contact1>,<Contact2>,<Contact3>,<Contact4> calls <GroupChatName>
     Then I see incoming call
     When I swipe to accept the call
@@ -309,8 +309,8 @@ Feature: Calling
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>, <Contact10>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And I tap Audio Call button from top toolbar
     Then I see alert message containing "<AlertTitle>" in the title
 
@@ -326,8 +326,8 @@ Feature: Calling
     Given <Contact1>,<Contact2>,<Contact3> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And <Contact1>,<Contact2> calls <GroupChatName>
     Then I see incoming call
     When I swipe to accept the call
@@ -347,8 +347,8 @@ Feature: Calling
     Given <Contact1>,<Contact2>,<Contact3> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact3>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact3>
     And <Contact3> calls <Name>
     Then I see incoming call
     When I swipe to accept the call
@@ -373,8 +373,8 @@ Feature: Calling
     Given <Contact1>,<Contact2>,<Contact3> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And <Contact1>,<Contact2> calls <GroupChatName>
     Then I see incoming call
     When I swipe to accept the call
@@ -398,7 +398,7 @@ Feature: Calling
     Given <Contact1>,<Contact2> starts instance using <CallBackend>
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When I minimize the application
     And <Contact1>,<Contact2> calls <GroupChatName>
     # Wait for the call to appear
@@ -418,8 +418,8 @@ Feature: Calling
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    And I tap on conversation name <Contact>
     And I tap Audio Call button from top toolbar
     And I see outgoing call
     When I lock the device
@@ -438,7 +438,7 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When <Contact> calls me
     Then I see incoming call
     When I swipe to accept the call
@@ -459,8 +459,8 @@ Feature: Calling
     Given <Contact1>,<Contact2> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And <Contact1> calls me
     Then I see incoming call from <Contact1>
     When I swipe to accept the call
@@ -481,7 +481,7 @@ Feature: Calling
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When <Contact> calls me
     Then I see ongoing call
 
