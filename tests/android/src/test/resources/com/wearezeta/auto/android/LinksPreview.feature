@@ -1,6 +1,6 @@
 Feature: Links Preview
 
-  @C165143 @staging @C165147
+  @C165143 @staging @C165147 @C169222
   Scenario Outline: I see preview for sent link and no preview for dead link
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -11,13 +11,19 @@ Feature: Links Preview
     And I type the message "<DeadLink>" and send it
     # C165147
     Then I do not see Link Preview container in the conversation view
+    And I see the message "<DeadLink>" in the conversation view
+    When I type the message "<ShortenUrl>" and send it
+    # C169222
+    Then I do not see Link Preview container in the conversation view
+    And I see the message "<ShortenUrl>" in the conversation view
     When I type the message "<Link>" and send it
     # C165143
     Then I see Link Preview container in the conversation view
+    And I do not see the message "<Link>" in the conversation view
 
     Examples:
-      | Name      | Contact   | Link                                                                                               | DeadLink      |
-      | user1Name | user2Name | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 | http://q.qqqq |
+      | Name      | Contact   | Link                                                                                               | DeadLink      | ShortenUrl           |
+      | user1Name | user2Name | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 | http://q.qqqq | http://goo.gl/bnKrzm |
 
   @C165144 @staging @C165148
   Scenario Outline: I can receive preview for link mixed with text
