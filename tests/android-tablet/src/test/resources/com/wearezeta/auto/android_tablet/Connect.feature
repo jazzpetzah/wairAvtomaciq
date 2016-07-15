@@ -1,7 +1,7 @@
 Feature: Connect
 
   @C747 @regression @rc @rc44
-  Scenario Outline: Send connection request from search by name in landscape
+  Scenario Outline: (AN-4282 for android 4.4) Send connection request from search by name in landscape
     Given There are 3 users where <Name> is me
     Given Myself is connected to <IntermediateContact>
     Given <IntermediateContact> is connected to <Contact>
