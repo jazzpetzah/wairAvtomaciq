@@ -1,6 +1,6 @@
 Feature: Invitations
 
-  @C824 @id4161 @regression @rc @useSpecialEmail
+  @C824 @regression @rc @useSpecialEmail
   Scenario Outline: (AN-4019) Invitations (Conversations List): I can send an email notification from conversations list
     Given I delete all contacts from Address Book
     Given There is 1 user where <Name> is me
@@ -23,7 +23,7 @@ Feature: Invitations
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @C825 @id4162 @regression @rc @useSpecialEmail
+  @C825 @regression @rc @useSpecialEmail
   Scenario Outline: Invitations (Registration): I can receive and accept an email notification
     Given There is 1 user where <Name> is me
     Given I start listening to invitation messages for <Contact>
@@ -51,7 +51,7 @@ Feature: Invitations
       | Name      | Contact   | ContactEmail | ContactPassword | Message |
       | user1Name | user2Name | user2Email   | user2Password   | Hello   |
 
-  @C567 @id4160 @regression
+  @C567 @regression
   Scenario Outline: Verify that swipe do nothing in invites page
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -71,7 +71,7 @@ Feature: Invitations
       | Name      |
       | user1Name |
 
-  @C568 @id4172 @regression @rc
+  @C568 @regression @rc
   Scenario Outline: Sending invite to user which already on Wire create pending connection request
     Given I delete all contacts from Address Book
     Given There are 2 users where <Name> is me

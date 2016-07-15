@@ -1,6 +1,6 @@
 Feature: Rich Media
 
-  @C714 @C77959 @id1504 @regression @rc @rc42
+  @C714 @C77959 @regression @rc @rc42
   Scenario Outline: Verify you can play/pause SoundCloud media from the Media Bar in conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -30,7 +30,7 @@ Feature: Rich Media
       | Name      | Contact1  | SoundCloudLink                                   |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
-  @C717 @id1510 @regression @rc
+  @C717 @regression @rc
   Scenario Outline: Verify conversation list play/pause controls can change playing SoundCloud media state
     Given There are 2 users where <Name> is me
     Given <Name> is connected to <Contact1>
@@ -50,7 +50,7 @@ Feature: Rich Media
       | Name      | Contact1  | SoudCloudLink                                    |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
-  @C412 @id1505 @regression
+  @C412 @regression
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (SoundCloud)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -75,7 +75,7 @@ Feature: Rich Media
       | Name      | Contact1  | Contact2  | SoundCloudLink                                   |
       | user1Name | user2Name | user3Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
-  @C675 @id170 @regression @rc @rc42
+  @C675 @regression @rc @rc42
   Scenario Outline: Verify you can send youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

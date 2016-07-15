@@ -1,6 +1,6 @@
 Feature: People View
 
-  @C402 @id87 @regression
+  @C402 @regression
   Scenario Outline: I can access user details page from group chat and see user name, email and photo
     Given There are 3 users where <Name> is me
     Given <Contact1> has an avatar picture from file <Picture>
@@ -21,7 +21,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |
       | user1Name | user2Name | user3Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg | aqaPictureContact |
 
-  @C685 @id321 @regression @rc @rc42
+  @C685 @regression @rc @rc42
   Scenario Outline: Leave group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -40,7 +40,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @C686 @id322 @regression @rc @rc42
+  @C686 @regression @rc @rc42
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -63,7 +63,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | YOU REMOVED |
 
-  @C697 @id594 @regression @rc
+  @C697 @regression @rc
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given <Contact1> has an avatar picture from file <Picture>
@@ -92,7 +92,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName       |
       | user1Name | user3Name | user2Name | 2                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | aqaPictureContact | aqaAvatarTestContact  |
 
-  @C715 @id1507 @regression @rc @rc42
+  @C715 @regression @rc @rc42
   Scenario Outline: Verify editing the conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -113,7 +113,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
       | user1Name | user2Name | user3Name | oldGroupChat     | newGroupName        |
 
-  @C395 @id2236 @regression
+  @C395 @regression
   Scenario Outline: Check interaction with options menu
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -145,7 +145,7 @@ Feature: People View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C716 @id1509 @regression @rc
+  @C716 @regression @rc
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
@@ -168,7 +168,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     |
 
-  @C396 @id2291 @regression
+  @C396 @regression
   Scenario Outline: Check interaction with participants view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -203,7 +203,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  | ParticipantNumber |
       | user1Name | user2Name | user3Name | GroupInfoCheck | 2                 |
 
-  @C397 @id2292 @regression
+  @C397 @regression
   Scenario Outline: Start 1to1 conversation from participants view
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
@@ -225,7 +225,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     |
 
-  @C689 @id325 @regression @rc
+  @C689 @regression @rc
   Scenario Outline: Check contact personal info in one to one conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

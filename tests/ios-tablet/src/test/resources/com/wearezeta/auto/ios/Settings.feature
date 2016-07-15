@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @C2905 @regression @id3021
+  @C2905 @regression
   Scenario Outline: Verify user can access settings [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -15,7 +15,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C2906 @regression @id3022 @rc
+  @C2906 @regression @rc
   Scenario Outline: Attempt to open About screen in settings [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -32,7 +32,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C2907 @regression @id3023
+  @C2907 @regression
   Scenario Outline: Verify reset password page is accessible from settings [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -50,7 +50,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C2908 @regression @id3024
+  @C2908 @regression
   Scenario Outline: Verify default value for sound settings is all [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -66,7 +66,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C2909 @regression @id3025
+  @C2909 @regression
   Scenario Outline: Verify you can access Help site within the app [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -81,7 +81,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C2911 @regression @id3156
+  @C2911 @regression
   Scenario Outline: Verify about screen contains all the required information [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given User me change accent color to <Color>
