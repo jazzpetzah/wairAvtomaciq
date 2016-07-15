@@ -11,6 +11,8 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class IncomingPendingConnectionsPage extends AndroidPage {
+    private static final By idSendConnectionRequestButton = By.id("zb__send_connect_request__connect_button");
+
     private static final Function<String, String> xpathStrConnectToHeaderByText = text -> String
             .format("//*[@id='taet__participants__header' and contains(@value, '%s')]", text);
 
@@ -115,7 +117,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     }
 
     public void pressConnectButton() throws Exception {
-        getElement(PeoplePickerPage.idSendConnectionRequestButton, "Connect button is not visible").click();
+        getElement(idSendConnectionRequestButton, "Connect button is not visible").click();
     }
 
     public void waitUntilIgnoreButtonIsClickable() throws Exception {
@@ -125,7 +127,7 @@ public class IncomingPendingConnectionsPage extends AndroidPage {
     }
 
     public boolean getConnectButtonState() throws Exception {
-        String state = getElement(PeoplePickerPage.idSendConnectionRequestButton).getAttribute("enabled");
+        String state = getElement(idSendConnectionRequestButton).getAttribute("enabled");
         return Boolean.parseBoolean(state);
     }
 

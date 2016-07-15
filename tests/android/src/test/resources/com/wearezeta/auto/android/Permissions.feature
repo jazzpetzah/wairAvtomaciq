@@ -79,7 +79,7 @@ Feature: Permissions
     And I press Back button
     # --- Verify no user if visible in invites list if contacts access is denied
     And I open Search UI
-    Then I do not see <Contact3> in the invites list
+    Then I do not see user <Contact3> in Contact list
 
     Examples:
       | Name      | Contact1  | Contact2  | Contact3  | CallBackend | CallBackend2 |
