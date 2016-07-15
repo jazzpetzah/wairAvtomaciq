@@ -77,7 +77,7 @@ Feature: Block
     And I wait until <Contact> exists in backend search results
     When I open Search UI
     When I enter "<Contact>" into Search input on People Picker page
-    Then I see "<Contact>" avatar on People Picker page
+    Then I see "<Contact>" avatar in Search result list
     And I remember <Contact> avatar on People Picker page
     When I tap the found item <Contact> on People Picker page
     And I see Blocked Connection popover
@@ -101,7 +101,7 @@ Feature: Block
     Given I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
-    Then I see "<Contact>" avatar on People Picker page
+    Then I see "<Contact>" avatar in Search result list
     And I remember <Contact> avatar on People Picker page
     When I tap the found item <Contact> on People Picker page
     And I see Blocked Connection popover
@@ -128,7 +128,7 @@ Feature: Block
     Given I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
-    Then I see "<Contact>" avatar on People Picker page
+    Then I see "<Contact>" avatar in Search result list
     When I tap the found item <Contact> on People Picker page
     And I see Blocked Connection popover
     And I tap Unblock button on Blocked Connection popover

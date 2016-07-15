@@ -11,8 +11,8 @@ Feature: Search
     When I tap on contact name <Contact2>
     And I navigate back from dialog page
     And I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
-    Then I see user <Contact1> in People picker
+    And I type user name "<Contact1>" in search field
+    Then I see user <Contact1> in Search result list
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -27,8 +27,8 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I open Search UI
-    And I enter "<GroupChatName>" into Search input on People Picker page
-    Then I see group <GroupChatName> in People picker
+    And I type group name "<GroupChatName>" in search field
+    Then I see group <GroupChatName> in Search result list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName          |
@@ -45,15 +45,15 @@ Feature: Search
     When I tap on contact name <Contact2>
     And I navigate back from dialog page
     And I open Search UI
-    And I input in search field part <Size> of user name to connect to <Contact1>
-    Then I see user <Contact1> in People picker
+    And I type the first <Size> chars of user name "<Contact1>" in search field
+    Then I see user <Contact1> in Search result list
 
     Examples:
       | Name      | Contact1  | Contact2  | Size |
       | user1Name | user2Name | user3Name | 7    |
 
   @C380 @regression
-  Scenario Outline: I can search group converation by partial name
+  Scenario Outline: I can search group conversation by partial name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -61,8 +61,8 @@ Feature: Search
     Given I accept First Time overlay as soon as it is visible
     Given I see Contact list with contacts
     When I open Search UI
-    And I input in search field part <Size> of user name to connect to <GroupChatName>
-    Then I see group <GroupChatName> in People picker
+    And I type the first <Size> chars of group name "<GroupChatName>" in search field
+    Then I see group <GroupChatName> in Search result list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName           | Size |
@@ -94,9 +94,9 @@ Feature: Search
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
     When I open Search UI
-    And I enter "<Contact2>" into Search input on People Picker page
-    And I see user <Contact2> found on People picker page
-    And I do not see user <Contact1> found on People picker page
+    And I type user name "<Contact2>" in search field
+    And I see user <Contact2> in Search result list
+    And I do not see user <Contact1> in Search result list
     And I clear search result by tap clear button or back button
     And I see Contact list
     And I open Search UI
@@ -117,9 +117,9 @@ Feature: Search
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
     And I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
+    And I type user name "<Contact1>" in search field
     And I tap on user name found on People picker page <Contact1>
-    And I add in search field user name to connect to <Contact2>
+    And I type user name "<Contact2>" in search field
     And I tap on user name found on People picker page <Contact2>
     And I tap on create conversation
     # Workaround for AN-4011, for following two steps
@@ -158,7 +158,7 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
+    And I type user name "<Contact1>" in search field
     And I tap on user name found on People picker page <Contact1>
     Then I see Open Conversation action button on People Picker page
 
@@ -175,7 +175,7 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
+    And I type user name "<Contact1>" in search field
     And I tap on user name found on People picker page <Contact1>
     And I tap Open Conversation action button on People Picker page
     Then I see conversation view
@@ -193,7 +193,7 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
+    And I type user name "<Contact1>" in search field
     And I tap on user name found on People picker page <Contact1>
     And I tap Send Image action button on People Picker page
     And I tap Gallery Camera button on Take Picture view
@@ -213,7 +213,7 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
+    And I type user name "<Contact1>" in search field
     And I tap on user name found on People picker page <Contact1>
     And I tap Call action button on People Picker page
     Then I see outgoing call
@@ -231,10 +231,10 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
+    And I type user name "<Contact1>" in search field
     And I tap on user name found on People picker page <Contact1>
     And I tap on Search input on People picker page
-    And I enter "<Contact2>" into Search input on People Picker page
+    And I type user name "<Contact2>" in search field
     And I tap on user name found on People picker page <Contact2>
     And I tap Send Image action button on People Picker page
     And I tap Gallery Camera button on Take Picture view
@@ -297,10 +297,10 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
+    And I type user name "<Contact1>" in search field
     And I tap on user name found on People picker page <Contact1>
     And I tap on Search input on People picker page
-    And I enter "<Contact2>" into Search input on People Picker page
+    And I type user name "<Contact2>" in search field
     And I tap on user name found on People picker page <Contact2>
     And I see Create Conversation action button on People Picker page
     And I tap Create Conversation action button on People Picker page
@@ -322,10 +322,10 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact1> exists in backend search results
     When I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
+    And I type user name "<Contact1>" in search field
     And I tap on user name found on People picker page <Contact1>
     And I tap on Search input on People picker page
-    And I enter "<Contact2>" into Search input on People Picker page
+    And I type user name "<Contact2>" in search field
     And I tap on user name found on People picker page <Contact2>
     And I tap Call action button on People Picker page
     Then I see outgoing call
@@ -345,10 +345,10 @@ Feature: Search
     Given I see Contact list with contacts
     Given I wait until <Contact> exists in backend search results
     And I open Search UI
-    And I enter "<Contact>" into Search input on People Picker page
-    When I see user <Contact> in People Picker
+    And I type user name "<Contact>" in search field
+    And I see user <Contact> in Search result list
     And I swipe right on contact avatar <Contact> in People Picker
-    Then I see user <Contact> in People Picker
+    Then I see user <Contact> in Search result list
 
     Examples:
       | Name      | Contact   |
@@ -364,10 +364,10 @@ Feature: Search
     # Top people will be generated in 15 minutes after sign up
     Given Myself wait until 2 people are in the Top People list on the backend
     When I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
+    And I type user name "<Contact1>" in search field
     And I tap on user name found on People picker page <Contact1>
     Then I see Video Call action button on People Picker page
-    When I add in search field user name to connect to <Contact2>
+    When I type user name "<Contact2>" in search field
     And I tap on user name found on People picker page <Contact2>
     Then I do not see Video Call action button on People Picker page
     When I tap on user name found on People picker page <Contact2>

@@ -10,7 +10,7 @@ Feature: Connect
     Given I see Contact list with contacts
     And I wait until <Contact> exists in backend search results
     When I open Search UI
-    And I enter "<Contact>" into Search input on People Picker page
+    And I type user name "<Contact>" in search field
     And I tap on user name found on People picker page <Contact>
     Then I see connect to <Contact> dialog
     When I click Connect button on connect to page
@@ -75,7 +75,7 @@ Feature: Connect
     And I see contact list with name <WaitingMess3>
     And I wait until <Contact3> exists in backend search results
     When I open Search UI
-    And I enter "<Contact3>" into Search input on People Picker page
+    And I type user name "<Contact3>" in search field
     And I tap on user name found on People picker page <Contact3>
     And I press Ignore connect button
     And I navigate back from connect page
@@ -105,7 +105,7 @@ Feature: Connect
     Then I see contact list with name <WaitingMess1>
     And I wait until <Contact3> exists in backend search results
     When I open Search UI
-    And I enter "<Contact3>" into Search input on People Picker page
+    And I type user name "<Contact3>" in search field
     And I tap on user name found on People picker page <Contact3>
     Then I see Accept and Ignore buttons
     When I scroll to inbox contact <Contact3>
@@ -132,7 +132,7 @@ Feature: Connect
     Then I do not see contact list with name <WaitingMess>
     And I wait until <Contact> exists in backend search results
     When I open Search UI
-    And I enter "<Contact>" into Search input on People Picker page
+    And I type user name "<Contact>" in search field
     And I tap on user name found on People picker page <Contact>
     Then I see connect to <Contact> dialog
     When I Connect with contact by pressing button
@@ -153,7 +153,7 @@ Feature: Connect
     Then I see contact list with name <WaitingMess>
     And I wait until <Contact> exists in backend search results
     When I open Search UI
-    And I enter "<Contact>" into Search input on People Picker page
+    And I type user name "<Contact>" in search field
     And I tap on user name found on People picker page <Contact>
     Then I see connect to <Contact> dialog
     And I do not see text input
@@ -175,7 +175,7 @@ Feature: Connect
     Given I see Contact list with contacts
     And I wait until <Contact> exists in backend search results
     When I open Search UI
-    And I enter "<Contact>" into Search input on People Picker page
+    And I type user name "<Contact>" in search field
     And I tap on user name found on People picker page <Contact>
     Then I see connect to <Contact> dialog
     When I click Connect button on connect to page
@@ -221,7 +221,7 @@ Feature: Connect
     Given I see Contact list with contacts
     When I open Search UI
     And I wait until <Contact> exists in backend search results
-    And I enter "<Contact>" into Search input on People Picker page
+    And I type user name "<Contact>" in search field
     And I tap on user name found on People picker page <Contact>
     Then I see connect to <Contact> dialog
     When I click Connect button on connect to page
@@ -247,7 +247,7 @@ Feature: Connect
     Given I see Contact list with contacts
     When I open Search UI
     And I wait until <Contact> exists in backend search results
-    And I enter "<Contact>" into Search input on People Picker page
+    And I type user name "<Contact>" in search field
     And I tap on user name found on People picker page <Contact>
     Then I see connect to <Contact> dialog
     And I close Connect To dialog
@@ -297,8 +297,8 @@ Feature: Connect
     Then I do not see contact list with name <Contact1>
     And I wait until <Contact1> exists in backend search results
     When I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
-    And I see user <Contact1> found on People picker page
+    And I type user name "<Contact1>" in search field
+    And I see user <Contact1> in Search result list
     And I tap on user name found on People picker page <Contact1>
     Then User info should be shown with Unblock button
 
@@ -318,7 +318,7 @@ Feature: Connect
     Given I see Contact list with contacts
     When I open Search UI
     And I wait until <Contact2> exists in backend search results
-    And I enter "<Contact2>" into Search input on People Picker page
+    And I type user name "<Contact2>" in search field
     And I tap on user name found on People picker page <Contact2>
     Then I see connect to <Contact2> dialog
     When I click Connect button on connect to page
@@ -333,8 +333,8 @@ Feature: Connect
     And I do not see contact list with name <Contact2>
     And I wait until <Contact2> exists in backend search results
     When I open Search UI
-    And I enter "<Contact2>" into Search input on People Picker page
-    And I see user <Contact2> found on People picker page
+    And I type user name "<Contact2>" in search field
+    And I see user <Contact2> in Search result list
     And I tap on user name found on People picker page <Contact2>
     Then User info should be shown with Unblock button
     When I click Unblock button
@@ -358,8 +358,8 @@ Feature: Connect
     And I see contact list with name <Contact2>
     And I wait until <Contact1> exists in backend search results
     When I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
-    Then I see user <Contact1> found on People picker page
+    And I type user name "<Contact1>" in search field
+    Then I see user <Contact1> in Search result list
 
     Examples:
       | Name      | Contact1  | Contact2  |
@@ -378,8 +378,8 @@ Feature: Connect
     And I navigate back from dialog page
     And I wait until <Contact1> exists in backend search results
     And I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
-    And I see user <Contact1> found on People picker page
+    And I type user name "<Contact1>" in search field
+    And I see user <Contact1> in Search result list
     And I tap on user name found on People picker page <Contact1>
     Then User info should be shown with Unblock button
     When I click Unblock button
@@ -402,12 +402,12 @@ Feature: Connect
     Given I see Contact list with contacts
     When I open Search UI
     And I wait until <Contact> exists in backend search results
-    And I enter "<Contact>" into Search input on People Picker page
+    And I type user name "<Contact>" in search field
     And I tap on user name found on People picker page <Contact>
     Then I see connect to <Contact> dialog
     When I click Connect button on connect to page
     Then I see People picker page
-    And I see user <Contact> found on People picker page
+    And I see user <Contact> in Search result list
     When I tap on user name found on People picker page <Contact>
     Then I see that connection is pending
 
@@ -446,7 +446,7 @@ Feature: Connect
     When I tap on contact name <Contact2>
     And I tap conversation name from top toolbar
     And I press create group button
-    And I enter "<Contact1>" into Search input on People Picker page
+    And I type user name "<Contact1>" in search field
     And I tap on user name found on People picker page <Contact1>
     And I click on Add to conversation button
     Then I see Unable to Create Group Conversation overlay
