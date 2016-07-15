@@ -29,7 +29,7 @@ public class IncomingPendingConnectionsPageSteps {
 	 * @throws Throwable
 	 */
 	@Then("^I see connect to (.*) dialog$")
-	public void WhenISeeConnectToUserDialog(String contact) throws Throwable {
+	public void ISeeConnectToUserDialog(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(
 				String.format(
@@ -50,7 +50,7 @@ public class IncomingPendingConnectionsPageSteps {
 	 * @throws Throwable
 	 */
 	@When("^I scroll to inbox contact (.*)$")
-	public void WhenIScrollToInboxContact(String contact) throws Throwable {
+	public void IScrollToInboxContact(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		getIncomingPendingConnectionsPage().scrollToInboxContact(contact, MAX_USERS);
 	}
@@ -93,7 +93,7 @@ public class IncomingPendingConnectionsPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I Connect with contact by pressing button$")
-	public void WhenIConnectWithContactByPressionButton() throws Exception {
+	public void IConnectWithContactByPressionButton() throws Exception {
 		getIncomingPendingConnectionsPage().pressAcceptConnectButton();
 	}
 
@@ -106,7 +106,7 @@ public class IncomingPendingConnectionsPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I press Ignore connect button$")
-	public void WhenIPressIgnoreConnectButton() throws Exception {
+	public void IPressIgnoreConnectButton() throws Exception {
 		getIncomingPendingConnectionsPage().pressIgnoreButton();
 	}
 
@@ -118,7 +118,7 @@ public class IncomingPendingConnectionsPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I navigate back from connect page$")
-	public void WhenINavigateBackFromDialogPage() throws Exception {
+	public void INavigateBackFromDialogPage() throws Exception {
 		getIncomingPendingConnectionsPage().navigateBack();
 	}
 

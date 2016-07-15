@@ -35,7 +35,7 @@ public class RegistrationSteps {
      * @step. ^I press Picture button$
      */
     @When("^I press Picture button$")
-    public void WhenIPressPictureButton() throws Exception {
+    public void IPressPictureButton() throws Exception {
         getRegistrationPage().selectPicture();
     }
 

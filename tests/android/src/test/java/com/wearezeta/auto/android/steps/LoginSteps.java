@@ -115,7 +115,7 @@ public class LoginSteps {
      * @step. ^I have entered login (.*)$
      */
     @When("^I have entered login (.*)$")
-    public void WhenIHaveEnteredLogin(String login) throws Exception {
+    public void IHaveEnteredLogin(String login) throws Exception {
         try {
             login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
         } catch (NoSuchUserException e) {
@@ -132,7 +132,7 @@ public class LoginSteps {
      * @step. ^I have entered password (.*)$
      */
     @When("I have entered password (.*)")
-    public void WhenIHaveEnteredPassword(String password) throws Exception {
+    public void IHaveEnteredPassword(String password) throws Exception {
         try {
             password = usrMgr.findUserByPasswordAlias(password).getPassword();
         } catch (NoSuchUserException e) {
@@ -148,7 +148,7 @@ public class LoginSteps {
      * @step. ^I press Log in button$
      */
     @When("I press Log in button")
-    public void WhenIPressLogInButton() throws Exception {
+    public void IPressLogInButton() throws Exception {
         getEmailSignInPage().logIn(false, DEFAULT_LOGIN_SCREEN_TIMEOUT_SECONDS);
     }
 

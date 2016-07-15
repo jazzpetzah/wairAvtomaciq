@@ -75,7 +75,7 @@ public class WelcomePageSteps {
 	 * @throws Exception
 	 */
 	@When("^I input a new phone number for user (.*)$")
-	public void WhenIInputANewPhoneNumber(String name) throws Exception {
+	public void IInputANewPhoneNumber(String name) throws Exception {
 		getWelcomePage().clickAreaCodeSelector();
 		getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
 
