@@ -1301,26 +1301,29 @@ public class ConversationPageSteps {
      * @throws java.lang.Exception
      * @step. ^I (do not )?see location message (.*) with ([-+]?[0-9]*\.?[0-9]+) and ([-+]?[0-9]*\.?[0-9]+) in the conversation view$
      */
-    @Then("^I (do not )?see location message (.*) with ([-+]?[0-9]*\\.?[0-9]+) and ([-+]?[0-9]*\\.?[0-9]+) in the conversation view$")
-    public void ISeeLocationMessage(String doNot, String locationName, float longitude, float latitude) throws Exception {
-        if (doNot == null) {
-            String locationLinkValue = context.getPagesCollection().getPage(ConversationPage.class).getLocationNameFromLink();
-            assertThat("Could not find location message " + locationName,
-                    context.getPagesCollection().getPage(ConversationPage.class).getLocationName(), equalTo(locationName));
-            assertThat("The link doesn't contain a proper location", locationLinkValue, containsString(locationName));
-            //getting coordinates from location link
-            ArrayList<Float> listCoordinates = new ArrayList<>();
-            Pattern p = Pattern.compile("[-]?[0-9]*\\.?[0-9]+");
-            Matcher m = p.matcher(locationLinkValue);
-            while (m.find()) {
-                listCoordinates.add(Float.parseFloat(m.group()));
-            }
-            assertThat("The link doesn't contain proper coordinates", listCoordinates, hasItems(longitude, latitude));
-        } else {
-            assertThat("Location message " + locationName + "is shown",
-                    context.getPagesCollection().getPage(ConversationPage.class).isLocationNotShownInConversationView());
-        }
-    }
+     @Then("^I (do not )?see location message (.*) with ([-+]?[0-9]*\\.?[0-9]+) and ([-+]?[0-9]*\\.?[0-9]+) in the conversation view$")
+     public void ISeeLocationMessage(String doNot, String locationName, float longitude, float latitude) throws Exception {
+         if (doNot == null) {
+             //check location name:
+             assertThat("Could not find location message " + locationName,
+                     context.getPagesCollection().getPage(ConversationPage.class).getLocationName(), equalTo(locationName));
+             String locationLinkValue = context.getPagesCollection().getPage(ConversationPage.class).getLocationNameFromLink();
+             assertThat("The link doesn't contain a proper location", locationLinkValue, containsString(locationName));
+             //getting coordinates from location link
+             ArrayList<Float> listCoordinates = new ArrayList<>();
+             Pattern p = Pattern.compile("[-]?[0-9]*\\.?[0-9]+");
+             Matcher m = p.matcher(locationLinkValue);
+             while (m.find()) {
+                 listCoordinates.add(Float.parseFloat(m.group()));
+             }
+             assertThat("The link doesn't contain proper coordinates", listCoordinates, hasItems(longitude, latitude));
+         }
+              else {
+             assertThat("Location message " + locationName + "is shown",
+                     context.getPagesCollection().getPage(ConversationPage.class).isLocationNotShownInConversationView());
+         }
+     }
+
 
     /**
      * Cancel video download
