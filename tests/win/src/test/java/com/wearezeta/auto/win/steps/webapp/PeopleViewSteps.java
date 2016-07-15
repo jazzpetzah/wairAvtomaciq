@@ -76,17 +76,16 @@ public class PeopleViewSteps {
         }
     }
 
-    /**
-     * Verifies there is a question if you want to add people
-     *
-     * @step. ^I see Add People message on Group Participants popover$
-     * @throws Exception
-     *
-     */
-    @When("^I see Add People message on Group Participants popover$")
-    public void ISeeAddPeopleMessage() throws Exception {
-        Assert.assertTrue(webappPagesCollection.getPage(GroupPeoplePopoverPage.class)
-                .isAddPeopleMessageShown());
+    @When("^I input user name (.*) in search field on Group Participants popover$")
+    public void ISearchForUser(String name) throws Exception {
+        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+        webappPagesCollection.getPage(GroupPeoplePopoverPage.class).searchForUser(name);
+    }
+
+    @When("^I select user (.*) from Group Participants popover search results$")
+    public void ISelectUserFromSearchResults(String user) throws Exception {
+        user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+        webappPagesCollection.getPage(GroupPeoplePopoverPage.class).selectUserFromSearchResult(user);
     }
 
     /**
