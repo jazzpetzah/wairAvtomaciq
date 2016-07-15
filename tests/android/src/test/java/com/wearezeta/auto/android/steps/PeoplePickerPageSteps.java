@@ -29,7 +29,7 @@ public class PeoplePickerPageSteps {
      * @step. ^I see People picker page$
      */
     @Then("^I see People picker page$")
-    public void WhenISeePeoplePickerPage() throws Exception {
+    public void ISeePeoplePickerPage() throws Exception {
         Assert.assertTrue("People Picker is not visible", getPeoplePickerPage()
                 .isPeoplePickerPageVisible());
     }
@@ -41,7 +41,7 @@ public class PeoplePickerPageSteps {
      * @step. ^I tap on Search input on People picker page$
      */
     @When("^I tap on Search input on People picker page$")
-    public void WhenITapOnSearchInputOnPeoplePickerPage() throws Exception {
+    public void ITapOnSearchInputOnPeoplePickerPage() throws Exception {
         getPeoplePickerPage().tapPeopleSearch();
     }
 
@@ -53,7 +53,7 @@ public class PeoplePickerPageSteps {
      * @step. ^I tap on (.*) in Top People$
      */
     @When("^I tap on (.*) in Top People$")
-    public void WhenITapInTopPeople(String contact) throws Exception {
+    public void ITapInTopPeople(String contact) throws Exception {
         try {
             contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         } catch (NoSuchUserException e) {
@@ -69,7 +69,7 @@ public class PeoplePickerPageSteps {
      * @step. ^I tap on create conversation$
      */
     @When("^I tap on create conversation$")
-    public void WhenITapOnCreateConversation() throws Exception {
+    public void ITapOnCreateConversation() throws Exception {
         getPeoplePickerPage().tapCreateConversation();
     }
 
@@ -80,7 +80,7 @@ public class PeoplePickerPageSteps {
      * @step. ^I press Clear button$
      */
     @When("^I press Clear button$")
-    public void WhenIPressClearButton() throws Exception {
+    public void IPressClearButton() throws Exception {
         getPeoplePickerPage().tapClearButton();
     }
 
@@ -91,9 +91,9 @@ public class PeoplePickerPageSteps {
      * @step. ^I clear search result by press clear button or back button$
      */
     @When("^I clear search result by tap clear button or back button$")
-    public void WhenIClearSearchResultByPressClearButtonOrPressBackButton() throws Exception {
+    public void IClearSearchResultByPressClearButtonOrPressBackButton() throws Exception {
         if (random.nextInt(100) % 2 == 0) {
-            WhenIPressClearButton();
+            IPressClearButton();
         } else {
             pagesCollection.getCommonPage().navigateBack();
         }
@@ -107,7 +107,7 @@ public class PeoplePickerPageSteps {
      * @step. ^I input in People picker search field user name (.*)$
      */
     @When("^I input in People picker search field user name (.*)$")
-    public void WhenIInputInPeoplePickerSearchFieldUserName(String contact)
+    public void IInputInPeoplePickerSearchFieldUserName(String contact)
             throws Exception {
         try {
             contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
@@ -125,7 +125,7 @@ public class PeoplePickerPageSteps {
      * @step. ^I input in People picker search field user email (.*)$
      */
     @When("^I input in People picker search field user email (.*)$")
-    public void WhenIInputInPeoplePickerSearchFieldUserEmail(String email) throws Exception {
+    public void IInputInPeoplePickerSearchFieldUserEmail(String email) throws Exception {
         try {
             email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
         } catch (NoSuchUserException e) {
@@ -144,7 +144,7 @@ public class PeoplePickerPageSteps {
      * (.*)$
      */
     @When("^I input in search field part (.*) of user name to connect to (.*)$")
-    public void WhenIInputInPeoplePickerSearchFieldPartOfUserName(String part,
+    public void IInputInPeoplePickerSearchFieldPartOfUserName(String part,
                                                                   String contact) throws Exception {
         try {
             contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
@@ -179,7 +179,7 @@ public class PeoplePickerPageSteps {
      * @step. ^I add in search field user name to connect to (.*)$
      */
     @When("^I add in search field user name to connect to (.*)$")
-    public void WhenIAddInSearchFieldUserNameToConnectTo(String contact) throws Exception {
+    public void IAddInSearchFieldUserNameToConnectTo(String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         getPeoplePickerPage().addTextToPeopleSearch(contact);
     }
@@ -192,7 +192,7 @@ public class PeoplePickerPageSteps {
      * @step. ^I see user (.*) found on People picker page$
      */
     @Then("^I( do not)? see user (.*) found on People picker page$")
-    public void WhenISeeUserFoundOnPeoplePickerPage(String shouldNotSee, String contact) throws Exception {
+    public void ISeeUserFoundOnPeoplePickerPage(String shouldNotSee, String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("User '%s' is not visible on People Picker page", contact),
@@ -239,7 +239,7 @@ public class PeoplePickerPageSteps {
      * @step. ^I tap on user name found on People picker page (.*)$
      */
     @When("^I tap on user name found on People picker page (.*)$")
-    public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact)
+    public void ITapOnUserNameFoundOnPeoplePickerPage(String contact)
             throws Exception {
         try {
             contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
@@ -257,7 +257,7 @@ public class PeoplePickerPageSteps {
      * @step. ^I tap on group found on People picker page (.*)$
      */
     @When("^I tap on group found on People picker page (.*)$")
-    public void WhenITapOnGroupFoundOnPeoplePickerPage(String contact)
+    public void ITapOnGroupFoundOnPeoplePickerPage(String contact)
             throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         getPeoplePickerPage().selectGroup(contact);
@@ -270,7 +270,7 @@ public class PeoplePickerPageSteps {
      * @step. ^I see (?:Add to|Create) to conversation button$
      */
     @When("^I see (?:Add to|Create) conversation button$")
-    public void WhenISeeAddToConversationButton() throws Exception {
+    public void ISeeAddToConversationButton() throws Exception {
         Assert.assertTrue("Add to/Create conversation button is not visible",
                 getPeoplePickerPage().isPickUserConfirmationBtnVisible());
     }
@@ -282,7 +282,7 @@ public class PeoplePickerPageSteps {
      * @step. ^I click on (?:Add to|Create) to conversation button$
      */
     @When("^I click on (?:Add to|Create) conversation button$")
-    public void WhenIClickOnAddToConversationButton() throws Exception {
+    public void IClickOnAddToConversationButton() throws Exception {
         getPeoplePickerPage().tapPickUserConfirmationButton();
     }
 

@@ -26,7 +26,7 @@ public class TakeoverPageSteps {
      * @step. ^I tap on (?:cancel|close) button [oi]n (?:[Tt]akeover|[Aa]lert) (?:page|screen)$
      */
     @When("^I tap on (?:cancel|close) button [oi]n (?:[Tt]akeover|[Aa]lert) (?:page|screen)$")
-    public void WhenITapOnCancel() throws Exception {
+    public void ITapOnCancel() throws Exception {
         getTakeoverPage().tapCloseBtn();
     }
 

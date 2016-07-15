@@ -55,7 +55,7 @@ public class CallOngoingVideoPageSteps {
      * @step. I tap (mute|video) button for ongoing video call
      */
     @When("^I tap (mute|video) button for ongoing video call$")
-    public void WhenITapButton(String btnName) throws Exception {
+    public void ITapButton(String btnName) throws Exception {
         switch (btnName) {
             case "mute":
                 getPage().toggleMute();

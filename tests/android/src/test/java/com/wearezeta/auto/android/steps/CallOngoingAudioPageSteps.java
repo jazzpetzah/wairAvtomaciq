@@ -56,7 +56,7 @@ public class CallOngoingAudioPageSteps {
      * @step. I tap (speaker|mute) button for ongoing call
      */
     @When("^I tap (speaker|mute) button for ongoing call$")
-    public void WhenITapButton(String btnName) throws Exception {
+    public void ITapButton(String btnName) throws Exception {
         switch (btnName) {
             case "mute":
                 getPage().toggleMute();

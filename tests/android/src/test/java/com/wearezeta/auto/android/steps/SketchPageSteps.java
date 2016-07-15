@@ -22,7 +22,7 @@ public class SketchPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I draw a sketch( on image)? with (.*) colors?$")
-	public void WhenIDrawASketchWithXColors(String onImage, int numColors)
+	public void IDrawASketchWithXColors(String onImage, int numColors)
 			throws Exception {
 		SketchPage page = getSketchPage();
 		for (int i = 0; i < numColors; i++) {
@@ -39,7 +39,7 @@ public class SketchPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I send my sketch$")
-	public void WhenISendMySketch() throws Exception {
+	public void ISendMySketch() throws Exception {
 		getSketchPage().tapSendButton();
 	}
 

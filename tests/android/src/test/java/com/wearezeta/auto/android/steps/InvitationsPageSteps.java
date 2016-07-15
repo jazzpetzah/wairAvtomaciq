@@ -166,7 +166,7 @@ public class InvitationsPageSteps {
      * @step. ^I tap search in invites page?
      */
     @When("^I tap search in invites page$")
-    public void WhenITapSearchFieldInInvitePage() throws Exception {
+    public void ITapSearchFieldInInvitePage() throws Exception {
         getInvitationsPage().tapOnInviteSearchField();
     }
 
@@ -177,7 +177,7 @@ public class InvitationsPageSteps {
      * @step. ^I tap invites page close button?
      */
     @When("I tap invites page close button$")
-    public void WhenITapCloseBtnInInvitePage() throws Exception {
+    public void ITapCloseBtnInInvitePage() throws Exception {
         getInvitationsPage().tapOnInvitePageCloseBtn();
     }
 

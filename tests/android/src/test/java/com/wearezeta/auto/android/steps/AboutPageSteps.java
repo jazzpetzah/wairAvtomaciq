@@ -21,7 +21,7 @@ public class AboutPageSteps {
      * @step. ^I tap on About page$
      */
     @When("^I tap on About page$")
-    public void WhenITapOnAboutPage() throws Exception {
+    public void ITapOnAboutPage() throws Exception {
         getAboutPage().tapOnVersion();
     }
 
@@ -33,7 +33,7 @@ public class AboutPageSteps {
      * @step. ^I( do not)? see [Aa]bout page$"
      */
     @Then("^I( do not)? see [Aa]bout page$")
-    public void ThenISeeAboutPage(String shouldNotBeVisible) throws Exception {
+    public void ISeeAboutPage(String shouldNotBeVisible) throws Exception {
         if (shouldNotBeVisible == null) {
             Assert.assertTrue("About page is not visible after timeout",
                     getAboutPage().isVisible());
