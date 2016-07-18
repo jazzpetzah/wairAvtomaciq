@@ -1,6 +1,6 @@
 Feature: Block
 
-  @C520 @id3120 @regression
+  @C520 @regression
   Scenario Outline: (AN-2798) I want to unblock someone from pop-over opened from search (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -32,7 +32,7 @@ Feature: Block
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
-  @C496 @id2861 @regression
+  @C496 @regression
   Scenario Outline: (AN-2798) I want to unblock someone from pop-over opened from search (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -65,7 +65,7 @@ Feature: Block
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
-  @C765 @id2859 @regression @rc @rc44
+  @C765 @regression @rc @rc44
   Scenario Outline: I block user from 1:1 pop-over and can see blocked user in search results with blocked badge (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -77,7 +77,7 @@ Feature: Block
     And I wait until <Contact> exists in backend search results
     When I open Search UI
     When I enter "<Contact>" into Search input on People Picker page
-    Then I see "<Contact>" avatar on People Picker page
+    Then I see "<Contact>" avatar in Search result list
     And I remember <Contact> avatar on People Picker page
     When I tap the found item <Contact> on People Picker page
     And I see Blocked Connection popover
@@ -89,7 +89,7 @@ Feature: Block
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C764 @id2858 @regression @rc
+  @C764 @regression @rc
   Scenario Outline: I block user from 1:1 pop-over and can see blocked user in search results with blocked badge (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -101,7 +101,7 @@ Feature: Block
     Given I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
-    Then I see "<Contact>" avatar on People Picker page
+    Then I see "<Contact>" avatar in Search result list
     And I remember <Contact> avatar on People Picker page
     When I tap the found item <Contact> on People Picker page
     And I see Blocked Connection popover
@@ -114,7 +114,7 @@ Feature: Block
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C767 @id2866 @regression @rc
+  @C767 @regression @rc
   Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -128,7 +128,7 @@ Feature: Block
     Given I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
-    Then I see "<Contact>" avatar on People Picker page
+    Then I see "<Contact>" avatar in Search result list
     When I tap the found item <Contact> on People Picker page
     And I see Blocked Connection popover
     And I tap Unblock button on Blocked Connection popover

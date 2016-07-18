@@ -373,9 +373,9 @@ public final class WebAppLocators {
 
         //Location sharing
 
-        public static final String cssSharedLocation = ".location-label";
+        public static final String cssSharedLocation = "[data-uie-name='location-name']";
 
-        public static final String xpathSharedLocationLink = "//div[contains(@class, 'location-body')]//a";
+        public static final String xpathSharedLocationLink = "//div[contains(@data-uie-name, 'location-name')]/following-sibling::a[last()]";
 
         // File transfer
 
@@ -606,8 +606,9 @@ public final class WebAppLocators {
 
         public static final String cssSearchField = "[data-uie-name='enter-users']";
 
-        public static final String cssBringFriendsFromGMailButton = ".start-ui-import-buttons";
+        public static final String cssBringFriendsFromGMailButton = "[data-uie-name='from-gmail']";
 
+        public static final String cssBringFriendsFromContactsButton = "[data-uie-name='from-contacts']";
     }
 
     public static final class RegistrationPage {

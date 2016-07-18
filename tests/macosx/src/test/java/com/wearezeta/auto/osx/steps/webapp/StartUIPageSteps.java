@@ -226,8 +226,7 @@ public class StartUIPageSteps {
      */
     @And("^I click button to bring friends from Gmail$")
     public void IClickButtonToBringFriendsFromGmail() throws Exception {
-        webappPagesCollection.getPage(StartUIPage.class)
-                .clickBringFriendsFromGmailButton();
+        webappPagesCollection.getPage(StartUIPage.class).clickBringFriendsFromGmailButton();
     }
 
     /**

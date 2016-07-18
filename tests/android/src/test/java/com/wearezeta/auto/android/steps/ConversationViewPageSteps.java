@@ -77,9 +77,9 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I see conversation view$
      */
-    @When("^I see conversation view$")
+    @Then("^I see conversation view$")
     //TODO : Refactory See dialog page,
-    public void WhenISeeConversationPage() throws Exception {
+    public void ISeeConversationPage() throws Exception {
         Assert.assertTrue("The cursor is not visible in the conversation view",
                 getConversationViewPage().isCursorViewVisible());
     }
@@ -91,7 +91,7 @@ public class ConversationViewPageSteps {
      * @step. ^I tap on text input$
      */
     @When("^I tap on text input$")
-    public void WhenITapOnTextInput() throws Exception {
+    public void ITapOnTextInput() throws Exception {
         getConversationViewPage().tapOnTextInput();
     }
 
@@ -137,7 +137,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location) button " +
             "(\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
-    public void WhenITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
+    public void ITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
                                          String shouldReleaseFinger) throws Exception {
         if (longTap == null) {
             switch (btnName.toLowerCase()) {
@@ -205,7 +205,7 @@ public class ConversationViewPageSteps {
      * @step. ^I tap (Audio Call|Video Call|Back) button from top toolbar$
      */
     @When("^I tap (Audio Call|Video Call|Back) button from top toolbar$")
-    public void WhenITapTopToolbarButton(String btnName) throws Exception {
+    public void ITapTopToolbarButton(String btnName) throws Exception {
         getConversationViewPage().tapTopBarButton(btnName);
     }
 
@@ -238,7 +238,7 @@ public class ConversationViewPageSteps {
      * @step. ^I tap conversation name from top toolbar$
      */
     @When("^I tap conversation name from top toolbar$")
-    public void WhenITapConversationDetailsBottom() throws Exception {
+    public void ITapConversationDetailsBottom() throws Exception {
         getConversationViewPage().tapTopToolbarTitle();
     }
 
@@ -249,7 +249,7 @@ public class ConversationViewPageSteps {
      * @step. ^I tap (?:Play|Pause) button on SoundCloud container$
      */
     @When("^I tap (?:Play|Pause) button on SoundCloud container$")
-    public void WhenIPressPlayPauseButton() throws Exception {
+    public void IPressPlayPauseButton() throws Exception {
         getConversationViewPage().tapPlayPauseBtn();
     }
 
@@ -272,7 +272,7 @@ public class ConversationViewPageSteps {
      * @step. ^I press PlayPause on Mediabar button$
      */
     @When("^I press PlayPause on Mediabar button$")
-    public void WhenIPressPlayPauseOnMediaBarButton() throws Exception {
+    public void IPressPlayPauseOnMediaBarButton() throws Exception {
         getConversationViewPage().tapPlayPauseMediaBarBtn();
     }
 
@@ -285,7 +285,7 @@ public class ConversationViewPageSteps {
      * @step. ^I (do not )?see Ping message "(.*)" in the conversation view
      */
     @Then("^I (do not )?see Ping message \"(.*)\" in the conversation view")
-    public void ThenISeePingMessageInTheDialog(String doNotSee, String message) throws Exception {
+    public void ISeePingMessageInTheDialog(String doNotSee, String message) throws Exception {
         message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
         if (doNotSee == null) {
             Assert.assertTrue(String.format("Ping message '%s' is not visible after the timeout", message),
@@ -305,7 +305,7 @@ public class ConversationViewPageSteps {
      * @step. ^I (do not )?see the message "(.*)" in the conversation view$
      */
     @Then("^I (do not )?see the message \"(.*)\" in the conversation view$")
-    public void ThenISeeMyMessageInTheDialog(String shouldNotSee, String msg) throws Exception {
+    public void ISeeMyMessageInTheDialog(String shouldNotSee, String msg) throws Exception {
         msg = expandMessage(msg);
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", msg),
@@ -358,7 +358,7 @@ public class ConversationViewPageSteps {
      * @step. ^I scroll (up|down) the conversation view$
      */
     @When("^I scroll (up|down) the conversation view$")
-    public void WhenIScroll(String swipeDirection) throws Exception {
+    public void IScroll(String swipeDirection) throws Exception {
         switch (swipeDirection.toLowerCase()) {
             case "up":
                 getConversationViewPage().dialogsPagesSwipeUp(SWIPE_DURATION_MILLISECONDS);
@@ -389,7 +389,7 @@ public class ConversationViewPageSteps {
      * @step. ^I navigate back from dialog page$
      */
     @When("^I navigate back from dialog page$")
-    public void WhenINavigateBackFromDialogPage() throws Exception {
+    public void INavigateBackFromDialogPage() throws Exception {
         getConversationViewPage().navigateBack(1000);
     }
 
@@ -401,7 +401,7 @@ public class ConversationViewPageSteps {
      * @step. ^I tap new message notification "(.*)"$
      */
     @When("^I tap new message notification \"(.*)\"$")
-    public void WhenIChangeConversationByClickMessageNotification(String message) throws Exception {
+    public void IChangeConversationByClickMessageNotification(String message) throws Exception {
         getConversationViewPage().tapMessageNotification(message);
     }
 
@@ -413,7 +413,7 @@ public class ConversationViewPageSteps {
      * @step. ^I tap audio recording (Send|Cancel|Play) button$
      */
     @When("^I tap audio recording (Send|Cancel|Play) button$")
-    public void WhenITapAudioMessageSendButton(String name) throws Exception {
+    public void ITapAudioMessageSendButton(String name) throws Exception {
         getConversationViewPage().tapAudioRecordingButton(name);
     }
 
@@ -438,7 +438,7 @@ public class ConversationViewPageSteps {
      * @step. ^I see new message notification "(.*)"$
      */
     @Then("^I see new message notification \"(.*)\"$")
-    public void WhenISeeNewMessageNotification(String message) throws Exception {
+    public void ISeeNewMessageNotification(String message) throws Exception {
         Assert.assertTrue(String.format("The notification message of '%s' should be visible", message),
                 getConversationViewPage().waitForMessageNotification(message));
     }
@@ -451,7 +451,7 @@ public class ConversationViewPageSteps {
      * @step. ^I see group chat page with users (.*)$
      */
     @Then("^I see group chat page with users (.*)$")
-    public void ThenISeeGroupChatPage(String participantNameAliases) throws Exception {
+    public void ISeeGroupChatPage(String participantNameAliases) throws Exception {
         List<String> participantNames = new ArrayList<>();
         for (String nameAlias : CommonSteps.splitAliases(participantNameAliases)) {
             participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias).getName());
@@ -469,7 +469,7 @@ public class ConversationViewPageSteps {
      * @step. ^I see message (.*) contact (.*) on group page$
      */
     @Then("^I see message (.*) contact (.*) on group page$")
-    public void ThenISeeMessageContactOnGroupPage(String message, String contact) throws Exception {
+    public void ISeeMessageContactOnGroupPage(String message, String contact) throws Exception {
         contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         final String expectedMsg = message + " " + contact;
         Assert.assertTrue(String.format("The message '%s' is not visible in the conversation view", expectedMsg),
@@ -484,7 +484,7 @@ public class ConversationViewPageSteps {
      * @step. ^I see a message informing me that I renamed the conversation to (.*)$
      */
     @Then("^I see a message informing me that I renamed the conversation to (.*)$")
-    public void ThenISeeMessageInformingGroupRename(String newConversationName) throws Exception {
+    public void ISeeMessageInformingGroupRename(String newConversationName) throws Exception {
         Assert.assertTrue(
                 String.format("The new conversation name '%s' has not been shown in the conversation view",
                         newConversationName),
@@ -500,7 +500,7 @@ public class ConversationViewPageSteps {
      * @step. ^I see a message informing me conversation is (not )?verified(?: caused by user (.*))?$
      */
     @Then("^I see a message informing me conversation is (not )?verified(?: caused by user (.*))?$")
-    public void ThenISeeVerifiedConversationMessage(String nonVerified, String userName) throws Exception {
+    public void ISeeVerifiedConversationMessage(String nonVerified, String userName) throws Exception {
         if (nonVerified == null) {
             Assert.assertTrue("The otr verified conversation message has not been shown in the conversation view",
                     getConversationViewPage().waitForOtrVerifiedMessage());
@@ -682,7 +682,7 @@ public class ConversationViewPageSteps {
      * @step. ^I see dialog with missed call from (.*)$
      */
     @Then("^I see dialog with missed call from (.*)$")
-    public void ThenISeeDialogWithMissedCallFrom(String contact) throws Exception {
+    public void ISeeDialogWithMissedCallFrom(String contact) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
         final String expectedMessage = contact + " CALLED";
         Assert.assertTrue(String.format("Missed call message '%s' is not visible in the conversation view", expectedMessage),
@@ -844,7 +844,7 @@ public class ConversationViewPageSteps {
      * @step. ^I see unsent indicator next to "(.*)" in the conversation view$
      */
     @Then("^I see unsent indicator next to \"(.*)\" in the conversation view$")
-    public void ThenISeeUnsentIndicatorNextToTheMessage(String msg) throws Exception {
+    public void ISeeUnsentIndicatorNextToTheMessage(String msg) throws Exception {
         Assert.assertTrue(String.format(
                 "Unsent indicator has not been shown next to the '%s' message in the conversation view", msg),
                 getConversationViewPage().waitForUnsentIndicator(msg));
@@ -861,7 +861,7 @@ public class ConversationViewPageSteps {
      * @step. ^I see the upper toolbar$
      */
     @Then("^I see the upper toolbar$")
-    public void ThenISeeTopToolbar() throws Exception {
+    public void ISeeTopToolbar() throws Exception {
         Assert.assertTrue("The upper toolbar is invisible", getConversationViewPage().isTopToolbarVisible());
     }
 
@@ -873,7 +873,7 @@ public class ConversationViewPageSteps {
      * @step. I(do not)? see the (audio|video) call button in upper toolbar$
      */
     @Then("I( do not)? see the (audio|video) call button in upper toolbar$")
-    public void ThenIseeVideoCallButtonInUpperToolbar(String doNotSee, String callType) throws Exception {
+    public void ISeeVideoCallButtonInUpperToolbar(String doNotSee, String callType) throws Exception {
         if (doNotSee == null) {
             switch (callType) {
                 case "audio":
@@ -911,7 +911,7 @@ public class ConversationViewPageSteps {
      * @step. ^the conversation title should be "(.*)"$
      */
     @Then("^the conversation title should be \"(.*)\"$")
-    public void ThenTheConversationTitleShouldBe(String conversationNameAliases) throws Exception {
+    public void TheConversationTitleShouldBe(String conversationNameAliases) throws Exception {
         String expectedConversationNames = usrMgr.replaceAliasesOccurences(conversationNameAliases, FindBy.NAME_ALIAS)
                 .replaceAll(",", ", ");
         Assert.assertTrue(String.format("The conversation title should be %s", expectedConversationNames),
@@ -925,7 +925,7 @@ public class ConversationViewPageSteps {
      * @step. ^I see the media bar is below the upper toolbar$
      */
     @Then("^I see the media bar is below the upper toolbar$")
-    public void ThenISeeTheMediaBarIsBelowUpperToolbar() throws Exception {
+    public void ISeeTheMediaBarIsBelowUpperToolbar() throws Exception {
         Assert.assertTrue("The media bar should below the upper toolbar",
                 getConversationViewPage().isMediaBarBelowUptoolbar());
     }
@@ -937,7 +937,7 @@ public class ConversationViewPageSteps {
      * @step. ^I( do not)? see cursor toolbar$
      */
     @Then("^I( do not)? see cursor toolbar$")
-    public void ThenISeeCursorToolbar(String doNotSee) throws Exception {
+    public void ISeeCursorToolbar(String doNotSee) throws Exception {
         if (doNotSee == null) {
             Assert.assertTrue("Cursor toolbar is not visible",
                     getConversationViewPage().isCursorToolbarVisible());
@@ -963,7 +963,7 @@ public class ConversationViewPageSteps {
      */
     @Then("^I( do not)? see the result of (.*) file (upload|received)? having name \"(.*)\"" +
             " and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
-    public void ThenISeeTheResultOfXFileUpload(String doNotSee, String size, String loadDirection, String fileFullName,
+    public void ISeeTheResultOfXFileUpload(String doNotSee, String size, String loadDirection, String fileFullName,
                                                String extension, String timeout, String actionFailed) throws Exception {
         int lookUpTimeoutSeconds = (timeout == null) ? DriverUtils.getDefaultLookupTimeoutSeconds()
                 : Integer.parseInt(timeout.replaceAll("[\\D]", ""));
@@ -988,7 +988,7 @@ public class ConversationViewPageSteps {
      * @step. ^I( do not)? see text input$
      */
     @Then("^I( do not)? see text input$")
-    public void ThenISeeTextInput(String doNotSee) throws Exception {
+    public void ISeeTextInput(String doNotSee) throws Exception {
         if (doNotSee == null) {
             Assert.assertTrue("The text input should be visible", getConversationViewPage().isTextInputVisible());
         } else {
@@ -1004,7 +1004,7 @@ public class ConversationViewPageSteps {
      * @step. ^I( do not)? see tooltip of text input$
      */
     @Then("^I( do not)? see tooltip of text input$")
-    public void ThenISeeTooltipOfTextInput(String doNotSee) throws Exception {
+    public void ISeeTooltipOfTextInput(String doNotSee) throws Exception {
         if (doNotSee == null) {
             Assert.assertTrue("The tooltip of text input should be visible",
                     getConversationViewPage().isTooltipOfTextInputVisible());
@@ -1021,7 +1021,7 @@ public class ConversationViewPageSteps {
      * @step. ^I see self avatar on text input$
      */
     @Then("^I see self avatar on text input$")
-    public void ThenISeeSelfAvatarOnTextInput() throws Exception {
+    public void ISeeSelfAvatarOnTextInput() throws Exception {
         Assert.assertTrue("The self avatar should be visible on text input",
                 getConversationViewPage().isSelfAvatarOnTextInputVisible());
     }
@@ -1050,7 +1050,7 @@ public class ConversationViewPageSteps {
      * @step. ^I tap (Delete|Copy|Close|Forward) button on the action mode bar$
      */
     @When("^I tap (Delete|Copy|Close|Forward) button on the action mode bar$")
-    public void ITapTopToolbarButton(String name) throws Exception {
+    public void ITapTopToolbarActionButton(String name) throws Exception {
         getConversationViewPage().tapActionBarButton(name);
     }
 

@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @C688 @id324 @regression @rc
+  @C688 @regression @rc
   Scenario Outline: Mute conversation from conversation view
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -19,7 +19,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C414 @id1514 @regression
+  @C414 @regression
   Scenario Outline: Verify unsilence the conversation from conversation view
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to me
@@ -40,7 +40,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @C381 @id316 @regression
+  @C381 @regression
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -56,7 +56,7 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C682 @id318 @regression @rc @rc42
+  @C682 @regression @rc @rc42
   Scenario Outline: Send Camera picture to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -73,7 +73,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C700 @id1262 @regression @rc @rc42
+  @C700 @regression @rc @rc42
   Scenario Outline: Create group conversation from 1:1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -85,8 +85,8 @@ Feature: Conversation View
     And I see <Contact1> user profile page
     And I press add contact button
     And I tap on Search input on People picker page
-    And I enter "<Contact2>" into Search input on People Picker page
-    And I see user <Contact2> found on People picker page
+    And I type user name "<Contact2>" in search field
+    And I see user <Contact2> in Search result list
     And I tap on user name found on People picker page <Contact2>
     And I see Add to conversation button
     And I click on Add to conversation button
@@ -119,7 +119,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName      |
       | user1Name | user2Name | user3Name | MeAddedToGroupChat |
 
-  @C684 @id320 @regression @rc
+  @C684 @regression @rc
   Scenario Outline: Send message to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -136,7 +136,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName     | Message |
       | user1Name | user2Name | user3Name | SendMessGroupChat | Yo      |
 
-  @C671 @id143 @regression @rc
+  @C671 @regression @rc
   Scenario Outline: Send Long Message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -152,7 +152,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C379 @id163 @regression
+  @C379 @regression
   Scenario Outline: Send existing image from gallery (portrait) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -169,7 +169,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C419 @id2078 @regression
+  @C419 @regression
   Scenario Outline: I want to exit fullscreen view in landscape (rotations)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -196,7 +196,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C809 @id3242 @regression @rc @rc42
+  @C809 @regression @rc @rc42
   Scenario Outline: (CM-717) I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -213,7 +213,7 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 2         |
 
-  @C810 @id3243 @regression @rc @rc42
+  @C810 @regression @rc @rc42
   Scenario Outline: (CM-717) I can send sketch on image from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -232,7 +232,7 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 2         |
 
-  @C432 @id3244 @regression
+  @C432 @regression
   Scenario Outline: I can send sketch on photo
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -251,7 +251,7 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
-  @C787 @id2990 @regression @rc @rc42
+  @C787 @regression @rc @rc42
   Scenario Outline: I can send giphy image by typing some massage and clicking GIF button
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -271,7 +271,7 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @C674 @id165 @regression @rc
+  @C674 @regression @rc
   Scenario Outline: Send GIF format pic
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -290,7 +290,7 @@ Feature: Conversation View
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
 
-  @C672 @id159 @regression @rc
+  @C672 @regression @rc
   Scenario Outline: Send image with non default camera (portrait) in group chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -449,7 +449,7 @@ Feature: Conversation View
     And I confirm leaving
     And I see Contact list
     And I open Search UI
-    And I enter "<GroupChatName>" into Search input on People Picker page
+    And I type group name "<GroupChatName>" in search field
     And I tap on group found on People picker page <GroupChatName>
     Then I see the upper toolbar
     And I do not see text input

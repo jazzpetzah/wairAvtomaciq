@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @C1019 @clumsy @regression @rc @id589
+  @C1019 @clumsy @regression @rc
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
     When I enter phone number for <Name>
@@ -27,7 +27,7 @@ Feature: Registration
       | Count | ExpectedText               |
       | 16    | enter a valid phone number |
 
-  @C2652 @regression @noAcceptAlert @id2742
+  @C2652 @regression @noAcceptAlert
   Scenario Outline: Verify notification appearance in case of incorrect code
     Given I see sign in screen
     When I enter phone number for <Name>

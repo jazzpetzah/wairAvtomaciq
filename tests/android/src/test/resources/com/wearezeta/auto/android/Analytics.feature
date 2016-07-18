@@ -4,11 +4,11 @@ Feature: Analytics
   Scenario Outline: Verify registration statistics is sent
     When I see welcome screen
     And I verify that <LogType> log contains string "registration.opened_phone_signup"
-    When I input a new phone number for user <Name>
+    And I input a new phone number for user <Name>
     Then I verify that <LogType> log contains string "registration.entered_phone"
     When I input the verification code
     And I verify that <LogType> log contains string "registration.verified_phone"
-    When I input my name
+    And I input my name
     Then I verify that <LogType> log contains string "registration.entered_name"
     And I verify that <LogType> log contains string "registration.succeeded"
     When I select to choose my own picture

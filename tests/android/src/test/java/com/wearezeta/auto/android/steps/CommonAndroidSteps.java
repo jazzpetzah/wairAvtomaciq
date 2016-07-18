@@ -467,7 +467,7 @@ public class CommonAndroidSteps {
      * @step. ^I take screenshot$
      */
     @When("^I take screenshot$")
-    public void WhenITake1stScreenshot() throws Exception {
+    public void ITake1stScreenshot() throws Exception {
         screenState.remember();
     }
 
@@ -492,7 +492,7 @@ public class CommonAndroidSteps {
      * @step. ^I tap on center of screen$
      */
     @When("^I tap on center of screen")
-    public void WhenITapOnCenterOfScreen() throws Throwable {
+    public void ITapOnCenterOfScreen() throws Throwable {
         pagesCollection.getCommonPage().tapByCoordinates(50, 40);
     }
 
@@ -948,7 +948,7 @@ public class CommonAndroidSteps {
      * @step. ^I rotate UI to (landscape|portrait)$
      */
     @When("^I rotate UI to (landscape|portrait)$")
-    public void WhenIRotateUI(String direction) throws Exception {
+    public void IRotateUI(String direction) throws Exception {
         if (direction.equals("landscape")) {
             pagesCollection.getCommonPage().rotateLandscape();
         } else {
@@ -1564,9 +1564,9 @@ public class CommonAndroidSteps {
     /**
      * Verify whether the particular string is present in the logcat output
      *
-     * @param logType        one of possible log types. See AndroidLogListener.ListenerType enumeration for more details
-     * @param expectedTimes  the times of appearance
-     * @param expectedString the string to verify
+     * @param logType          one of possible log types. See AndroidLogListener.ListenerType enumeration for more details
+     * @param expectedTimesStr the times of appearance
+     * @param expectedString   the string to verify
      * @throws Exception
      * @step. ^I verify that (PERF|ANALYTICS|DEFAULT) log contains string "(.*)"( \d+ times?)?$
      */

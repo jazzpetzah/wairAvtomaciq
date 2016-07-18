@@ -1,9 +1,10 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import com.wearezeta.auto.android_tablet.pages.TabletContactListPage;
 import com.wearezeta.auto.common.misc.ElementState;
 import org.junit.Assert;
 
-import com.wearezeta.auto.android_tablet.pages.TabletPeoplePickerPage;
+import com.wearezeta.auto.android_tablet.pages.TabletSearchListPage;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
@@ -16,8 +17,12 @@ public class PeoplePickerPageSteps {
 
     private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection.getInstance();
 
-    private TabletPeoplePickerPage getPeoplePickerPage() throws Exception {
-        return pagesCollection.getPage(TabletPeoplePickerPage.class);
+    private TabletSearchListPage getSearchListPage() throws Exception {
+        return pagesCollection.getPage(TabletSearchListPage.class);
+    }
+
+    private TabletContactListPage getContactListPage() throws Exception {
+        return pagesCollection.getPage(TabletContactListPage.class);
     }
 
     /**
@@ -32,10 +37,10 @@ public class PeoplePickerPageSteps {
     @When("^I (do not )?see People Picker page$")
     public void WhenITapOnTabletCreateConversation(String shouldNotBeVisible) throws Exception {
         if (shouldNotBeVisible == null) {
-            Assert.assertTrue("People Picker page is not visible", getPeoplePickerPage().waitUntilVisible());
+            Assert.assertTrue("People Picker page is not visible", getContactListPage().waitUntilPageVisible());
         } else {
             Assert.assertTrue(
-                    "People Picker page is visible, but should be hidden", getPeoplePickerPage().waitUntilInvisible());
+                    "People Picker page is visible, but should be hidden", getContactListPage().waitUntilPageInvisible());
         }
     }
 
@@ -51,7 +56,7 @@ public class PeoplePickerPageSteps {
         searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.EMAIL_ALIAS);
         searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.NAME_ALIAS);
         searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.PHONENUMBER_ALIAS);
-        getPeoplePickerPage().typeTextInPeopleSearch(searchCriteria);
+        getContactListPage().typeTextInPeopleSearch(searchCriteria);
     }
 
     /**
@@ -66,7 +71,7 @@ public class PeoplePickerPageSteps {
         item = usrMgr.replaceAliasesOccurences(item, FindBy.EMAIL_ALIAS);
         item = usrMgr.replaceAliasesOccurences(item, FindBy.NAME_ALIAS);
         item = usrMgr.replaceAliasesOccurences(item, FindBy.PHONENUMBER_ALIAS);
-        getPeoplePickerPage().tapFoundItem(item);
+        getSearchListPage().tapOnUserAvatar(item);
     }
 
     /**
@@ -75,34 +80,32 @@ public class PeoplePickerPageSteps {
      * @param shouldNotSee equals to null if "do not " part does not exist in the step
      *                     description
      * @param name         user name/alias
-     * @param isGroup      is not null if group avatar should be verified instead of single user avatar
+     * @param isGroupStr   is not null if group avatar should be verified instead of single user avatar
+     * @param listType     determine currently worked on which list, which could be contact list or search result list
      * @throws Exception
      * @step. ^I see "(.*)" (group )?avatar on [Pp]eople [Pp]icker page$
      */
-    @When("^I (do not )?see \"(.*)\" (group )?avatar on [Pp]eople [Pp]icker page$")
-    public void ISeeContactAvatar(String shouldNotSee, String name, String isGroup) throws Exception {
+    @When("^I (do not )?see \"(.*)\" (group )?avatar in (Search result|Contact)? list$")
+    public void ISeeContactAvatar(String shouldNotSee, String name, String isGroupStr, String listType) throws Exception {
+        boolean isGroup = (isGroupStr != null);
         name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        if (shouldNotSee == null) {
-            if (isGroup == null) {
-                Assert.assertTrue(String.format(
-                        "The avatar for contact '%s' is not visible", name),
-                        getPeoplePickerPage().waitUntilAvatarIsVisible(name));
-            } else {
-                Assert.assertTrue(String.format(
-                        "The group avatar '%s' is not visible", name),
-                        getPeoplePickerPage().waitUntilGroupAvatarIsVisible(name));
-            }
-        } else {
-            if (isGroup == null) {
-                Assert.assertTrue(String.format(
-                        "The avatar for contact '%s' is visible", name),
-                        getPeoplePickerPage().waitUntilAvatarIsInvisible(name));
-            } else {
-                Assert.assertTrue(String.format(
-                        "The group avatar '%s' is visible", name),
-                        getPeoplePickerPage().waitUntilGroupAvatarIsInvisible(name));
-            }
 
+        if (shouldNotSee == null) {
+            Assert.assertTrue(
+                    String.format("The %s '%s' should be visible in %s list",
+                            isGroup ? "group" : "user", name, listType),
+                    listType.toLowerCase().equals("contact")
+                            ? getContactListPage().waitUntilNameVisible(isGroup, name)
+                            : getSearchListPage().waitUntilNameVisible(isGroup, name)
+            );
+        } else {
+            Assert.assertTrue(
+                    String.format("The %s '%s' should be invisible in %s list",
+                            isGroup ? "group" : "user", name, listType),
+                    listType.toLowerCase().equals("contact")
+                            ? getContactListPage().waitUntilNameInvisible(isGroup, name)
+                            : getSearchListPage().waitUntilNameInvisible(isGroup, name)
+            );
         }
     }
 
@@ -120,7 +123,7 @@ public class PeoplePickerPageSteps {
     public void ITakeScreenshotOfContactAvatar(String name) throws Exception {
         final String convoName = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
         this.rememberedAvatar = new ElementState(
-                () -> getPeoplePickerPage().takeAvatarScreenshot(convoName).orElseThrow(IllegalStateException::new)
+                () -> getSearchListPage().getUserAvatarScreenshot(convoName).orElseThrow(IllegalStateException::new)
         ).remember();
     }
 
@@ -152,7 +155,7 @@ public class PeoplePickerPageSteps {
      */
     @And("^I close (?:the |\\s*)People Picker$")
     public void IClosePeoplePicker() throws Exception {
-        getPeoplePickerPage().tapCloseButton();
+        getSearchListPage().tapClearButton();
     }
 
     /**
@@ -165,19 +168,19 @@ public class PeoplePickerPageSteps {
     @When("^I tap (.*) avatar in Top People$")
     public void ITapAvatarInTopPeople(String name) throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        getPeoplePickerPage().tapTopPeopleAvatar(name);
+        getContactListPage().tapOnTopPeople(name);
     }
 
     /**
      * Tap the corresponding action button
      *
-     * @param buttonName   one of possible action button names
+     * @param buttonName one of possible action button names
      * @throws Exception
      * @step. ^I tap (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on [Pp]eople [Pp]ickerpage$
      */
     @When("^I tap (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on [Pp]eople [Pp]icker page$")
     public void ITapActionButtons(String buttonName) throws Exception {
-        getPeoplePickerPage().tapActionButton(buttonName);
+        getSearchListPage().tapActionButton(buttonName);
     }
 
     /**
@@ -192,10 +195,10 @@ public class PeoplePickerPageSteps {
     public void ISeeActionButton(String shouldNotSee, String buttonName) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("'%s' action button is not visible", buttonName),
-                    getPeoplePickerPage().waitUntilActionButtonIsVisible(buttonName));
+                    getSearchListPage().waitUntilActionButtonIsVisible(buttonName));
         } else {
             Assert.assertTrue(String.format("'%s' action button is not visible", buttonName),
-                    getPeoplePickerPage().waitUntilActionButtonIsInvisible(buttonName));
+                    getSearchListPage().waitUntilActionButtonIsInvisible(buttonName));
         }
     }
 
@@ -207,6 +210,6 @@ public class PeoplePickerPageSteps {
      */
     @When("^I type backspace in Search input on [Pp]eople [Pp]icker page$")
     public void ITypeBackspace() throws Exception {
-        getPeoplePickerPage().typeBackspaceInSearchInput();
+        getSearchListPage().typeBackspaceInSearchInput();
     }
 }
