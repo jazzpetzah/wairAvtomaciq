@@ -204,8 +204,7 @@ public class ConversationViewPage extends IOSPage {
     private static final By nameLinkPreviewContainer = MobileBy.AccessibilityId("linkPreviewContent");
 
     private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("LinkPreviewImage");
-
-
+    
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
