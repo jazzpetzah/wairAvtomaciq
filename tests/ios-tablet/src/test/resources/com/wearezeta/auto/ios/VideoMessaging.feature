@@ -26,7 +26,7 @@ Feature: Video Messaging
     Given I Sign in on tablet using my email
     Given I see conversations list
     And I tap Video Message button from input tools
-    Then I see a preview of video message
+    Then I see video message container in the conversation view
 
     Examples:
       | Name      | Contact   | FileName    |

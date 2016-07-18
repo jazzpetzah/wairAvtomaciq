@@ -288,8 +288,8 @@ public class ConversationViewPageSteps {
         getConversationViewPage().clickOnPlayVideoButton();
     }
 
-    @When("^I post media link (.*)$")
-    public void IPostMediaLink(String link) throws Throwable {
+    @When("^I post url link (.*)$")
+    public void IPostURLLink(String link) throws Throwable {
         getConversationViewPage().typeAndSendConversationMessage(link);
     }
 
@@ -1084,53 +1084,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verifies if media container is visible or not in the conversation view
-     *
-     * @param shouldNotBeVisible equals to null if the media container should be visible
-     * @throws Exception
-     * @step. ^I (do not )?see the media container in the conversation view$
-     */
-    @Then("^I (do not )?see the media container in the conversation view$")
-    public void ISeeTheMediaContainerInTheConversationView(String shouldNotBeVisible) throws Exception {
-        if (shouldNotBeVisible == null) {
-            Assert.assertTrue("Media container is not visible in the conversation view",
-                    getConversationViewPage().isMediaContainerVisible());
-        } else {
-            Assert.assertTrue("Media container is visible in the conversation view",
-                    getConversationViewPage().isMediaContainerInvisible());
-        }
-    }
-
-    /**
-     * Wait for a while until video message container is shown in the conversation view
-     *
-     * @throws Exception
-     * @step. ^I see a preview of video message$"
-     */
-    @Then("^I see a preview of video message$")
-    public void IWaitForVideoMessage() throws Exception {
-        Assert.assertTrue("Video message container has not been shown",
-                getConversationViewPage().isVideoMessageContainerVisible());
-    }
-
-    /**
-     * Verify whether audio message record progress control is visible
-     *
-     * @throws Exception
-     * @step. ^I see audio message record container$
-     */
-    @Then("^I (do not )?see audio message record container$")
-    public void ISeeAudioRecordProgress(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue("Audio message record progress control has not been shown",
-                    getConversationViewPage().isAudioMessageRecordCancelVisible());
-        } else {
-            Assert.assertTrue("Audio message record progress control is shown",
-                    getConversationViewPage().isAudioMessageRecordCancelInvisible());
-        }
-    }
-
-    /**
      * Tap pointed control button
      *
      * @throws Exception
@@ -1151,24 +1104,6 @@ public class ConversationViewPageSteps {
     public void ISeeRecordControlButton(String buttonName) throws Exception {
         Assert.assertTrue(String.format("Record control button '%s' is not visible", buttonName),
                 getConversationViewPage().isRecordControlButtonVisible(buttonName));
-    }
-
-    /**
-     * Verify visibility of audio message placeholder
-     *
-     * @param shouldNotSee equals to null if the placeholder should be visible
-     * @throws Exception
-     * @step. ^I (do not )?see audio message placeholder$"
-     */
-    @Then("^I (do not )?see audio message placeholder$")
-    public void ISeeAudioMessagePlaceholder(String shouldNotSee) throws Exception {
-        if (shouldNotSee == null) {
-            Assert.assertTrue("Audio message placeholder is not shown",
-                    getConversationViewPage().isAudioActionButtonVisible());
-        } else {
-            Assert.assertTrue("Audio message placeholder should not be visible",
-                    getConversationViewPage().isAudioActionButtonInvisible());
-        }
     }
 
     /**
@@ -1363,21 +1298,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify visibility of Share Location container
-     *
-     * @param shouldNotSee equals to null if text input should be visible
-     * @throws Exception
-     * @step. ^I (do not )?see Share Location container in the conversation view$
-     */
-    @Then("^I (do not )?see Share Location container in the conversation view$")
-    public void VerifyShareLocationContainerVisibility(String shouldNotSee) throws Exception {
-        boolean condition = (shouldNotSee == null) ? getConversationViewPage().isShareLocationContainerVisible() :
-                getConversationViewPage().isShareLocationContainerNotVisible();
-        Assert.assertTrue(String.format("Share Location container should be %s in the conversation view",
-                (shouldNotSee == null) ? "visible" : "invisible"), condition);
-    }
-
-    /**
      * Verify visibility of default received|sent Share Location address
      *
      * @param shouldNotSee equals to null if text input should be visible
@@ -1409,5 +1329,43 @@ public class ConversationViewPageSteps {
     public void VerifyMapDefaultApplicationVisibility() throws Exception {
         Assert.assertTrue("The default map application is not visible",
                 getConversationViewPage().isDefaultMapApplicationVisible());
+    }
+
+    /**
+     * Verify whether container is visible in the conversation
+     *
+     * @param shouldNotSee  equals to null if the container should be visible
+     * @param containerType media|video message|audio message record|location map|link previeww
+     * @throws Exception
+     * @step. ^I (do not )?see (media|video message|audio message record|location map|link preview) container in the conversation view$
+     */
+    @Then("^I (do not )?see (media|video message|audio message recorder|audio message|location map) " +
+            "container in the conversation view$")
+    public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
+        final boolean condition = (shouldNotSee == null) ?
+                getConversationViewPage().isContainerVisible(containerType) :
+                getConversationViewPage().isContainerInvisible(containerType);
+        Assert.assertTrue(String.format("%s should be %s in the conversation view", containerType,
+                (shouldNotSee == null) ? "visible" : "invisible"), condition);
+    }
+
+    /**
+     * Verify link preview container visibility
+     *
+     * @param shouldNotBeVisible equals to null if the placeholder should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see link preview container in the conversation view
+     */
+    @When("^I (do not )?see link preview container in the conversation view$")
+    public void ISeeLinkPreviewContainer(String shouldNotBeVisible) throws Exception {
+        if (shouldNotBeVisible == null) {
+            Assert.assertTrue("Link preview container is not visible",
+                    getConversationViewPage().isLinkPreviewImageVisible() &&
+                            getConversationViewPage().isLinkPreviewContentVisible());
+        } else {
+            Assert.assertTrue("Link preview is visible, but should be hidden",
+                    getConversationViewPage().isLinkPreviewImageInvisible() &&
+                            getConversationViewPage().isLinkPreviewContentInvisible());
+        }
     }
 }

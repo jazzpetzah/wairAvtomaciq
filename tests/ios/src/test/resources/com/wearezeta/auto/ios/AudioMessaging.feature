@@ -8,7 +8,7 @@ Feature: Audio Messaging
     Given I see conversations list
     When I tap on contact name <Contact>
     And I long tap Audio Message button from input tools
-    Then I see audio message record container
+    Then I see audio message recorder container in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -23,7 +23,7 @@ Feature: Audio Messaging
     When I tap on contact name <Contact>
     And I long tap Audio Message button for <Duration> seconds from input tools
     And I tap Send record control button
-    Then I see audio message placeholder
+    Then I see audio message container in the conversation view
     When I remember the state of Play button on audio message placeholder
     When I tap Play audio message button
     Then I see state of button on audio message placeholder is pause
@@ -47,11 +47,11 @@ Feature: Audio Messaging
     Given I tap on contact name <Contact1>
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     Given User Me sends 1 encrypted message to user <Contact1>
-    Given I see audio message placeholder
+    Given I see audio message container in the conversation view
     When I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item
     And I tap Delete button on the alert
-    Then I do not see audio message placeholder
+    Then I do not see audio message container in the conversation view
 
     Examples:
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
@@ -65,7 +65,7 @@ Feature: Audio Messaging
     Given I see conversations list
     When I tap on contact name <Contact>
     And I record 5 seconds long audio message and send it using swipe up gesture
-    Then I see audio message placeholder
+    Then I see audio message container in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -80,7 +80,7 @@ Feature: Audio Messaging
     When I tap on contact name <Contact>
     And I long tap Audio Message button from input tools
     And I tap Cancel record control button
-    Then I do not see audio message placeholder
+    Then I do not see audio message container in the conversation view
     And I see Audio Message button in input tools palette
 
     Examples:
@@ -99,7 +99,7 @@ Feature: Audio Messaging
     And I long tap on audio message placeholder in conversation view
     And I tap on Delete badge item
     And I tap Delete button on the alert
-    Then I do not see audio message placeholder
+    Then I do not see audio message container in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -114,7 +114,7 @@ Feature: Audio Messaging
     When I tap on contact name <Contact>
     And I long tap Audio Message button from input tools
     And I close the app for 3 seconds
-    Then I see audio message record container
+    Then I see audio message recorder container in the conversation view
 
     Examples:
       | Name      | Contact   |
@@ -128,12 +128,12 @@ Feature: Audio Messaging
     Given I see conversations list
     When I tap on contact name <Contact>
     And I long tap Audio Message button from input tools
-    Then I see audio message record container
+    Then I see audio message recorder container in the conversation view
     When I navigate back to conversations list
     And I tap on contact name <Contact2>
     And I navigate back to conversations list
     And I tap on contact name <Contact>
-    Then I do not see audio message record container
+    Then I do not see audio message recorder container in the conversation view
 
     Examples:
       | Name      | Contact   | Contact2  |
@@ -299,7 +299,7 @@ Feature: Audio Messaging
     And I remember media container state
     And I tap on media container in conversation view
     And I long tap Audio Message button for 5 seconds from input tools
-    Then I see audio message record container
+    Then I see audio message recorder container in the conversation view
     And I see media container state is not changed
 
     Examples:
@@ -335,7 +335,7 @@ Feature: Audio Messaging
     Given User <Contact1> sends file <FileName> having MIME type <FileMIME> to single user conversation <Name> using device <ContactDevice>
     When I tap on contact name <Contact1>
     And User Me sends 1 encrypted message to user <Contact1>
-    And I see audio message placeholder
+    And I see audio message container in the conversation view
     And I tap Play audio message button
     Then I see state of button on audio message placeholder is pause
     # TODO: Should be uncommented once ZIOS-6798 is fixed

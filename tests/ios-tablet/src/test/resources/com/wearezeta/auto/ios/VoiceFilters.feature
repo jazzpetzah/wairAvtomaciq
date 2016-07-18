@@ -14,7 +14,7 @@ Feature: Voice Filters
     And I tap Stop Recording button on Voice Filters overlay
     And I tap <ButtonsCount> random effect buttons on Voice Filters overlay
     And I tap Confirm button on Voice Filters overlay
-    Then I see audio message placeholder
+    Then I see audio message container in the conversation view
     And I do not see Confirm button on Voice Filters overlay
 
     Examples:
@@ -34,7 +34,7 @@ Feature: Voice Filters
     And I wait for 3 seconds
     And I tap Stop Recording button on Voice Filters overlay
     And I tap Confirm button on Voice Filters overlay
-    Then I see audio message placeholder
+    Then I see audio message container in the conversation view
     And I do not see Confirm button on Voice Filters overlay
 
     Examples:

@@ -8,7 +8,7 @@ Feature: Share Location
     Given User <Contact> shares the default location to user Myself via device <DeviceName>
     Given I see conversations list
     When I tap on contact name <Contact>
-    Then I see Share Location container in the conversation view
+    Then I see location map container in the conversation view
     And I see the default received Share Location address in the conversation view
     When I tap on location map in conversation view
     Then I see map application is opened
@@ -25,13 +25,13 @@ Feature: Share Location
     Given User <Contact> shares the default location to user Myself via device <DeviceName>
     Given I see conversations list
     When I tap on contact name <Contact>
-    Then I see Share Location container in the conversation view
+    Then I see location map container in the conversation view
     And I see the default received Share Location address in the conversation view
     And I long tap on location map in conversation view
     And I tap on Delete badge item
     # Sometimes the alert is not accepted automatically
     And I tap Delete button on the alert
-    Then I do not see Share Location container in the conversation view
+    Then I do not see location map container in the conversation view
     Then I do not see the default received Share Location address in the conversation view
 
     Examples:
@@ -49,7 +49,7 @@ Feature: Share Location
     # Small delay waiting location detection animation to finish
     And I wait for 5 seconds
     And I tap Send location button from map view
-    Then I see Share Location container in the conversation view
+    Then I see location map container in the conversation view
     #TODO Stabilize sent address verification step
     #And I see the default sent Share Location address in the conversation view
 
@@ -69,7 +69,7 @@ Feature: Share Location
     # Small delay waiting location detection animation to finish
     And I wait for 5 seconds
     And I tap Send location button from map view
-    Then I see Share Location container in the conversation view
+    Then I see location map container in the conversation view
     #TODO Stabilize sent address verification step
     #And I see the default sent Share Location address in the conversation view
 
@@ -105,7 +105,7 @@ Feature: Share Location
     Then I verify the alert contains text <ExpectedAlertText>
     When I dismiss alert
     And I tap Send location button from map view
-    Then I see Share Location container in the conversation view
+    Then I see location map container in the conversation view
 
     Examples:
       | Name      | Contact   | ExpectedAlertText                                           |
