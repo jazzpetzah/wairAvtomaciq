@@ -138,7 +138,7 @@ public class ConversationViewPageSteps {
     @When("^I (long )?tap (Video message|Ping|Add picture|Sketch|File|Audio message|Share location) button " +
             "(\\d+ seconds )?from cursor toolbar( without releasing my finger)?$")
     public void ITapCursorToolButton(String longTap, String btnName, String longTapDurationSeconds,
-                                         String shouldReleaseFinger) throws Exception {
+                                     String shouldReleaseFinger) throws Exception {
         if (longTap == null) {
             switch (btnName.toLowerCase()) {
                 case "video message":
@@ -964,7 +964,7 @@ public class ConversationViewPageSteps {
     @Then("^I( do not)? see the result of (.*) file (upload|received)? having name \"(.*)\"" +
             " and extension \"(\\w+)\"( in \\d+ seconds)?( failed)?$")
     public void ISeeTheResultOfXFileUpload(String doNotSee, String size, String loadDirection, String fileFullName,
-                                               String extension, String timeout, String actionFailed) throws Exception {
+                                           String extension, String timeout, String actionFailed) throws Exception {
         int lookUpTimeoutSeconds = (timeout == null) ? DriverUtils.getDefaultLookupTimeoutSeconds()
                 : Integer.parseInt(timeout.replaceAll("[\\D]", ""));
         boolean isUpload = loadDirection.equals("upload");
@@ -1196,6 +1196,8 @@ public class ConversationViewPageSteps {
         }
     }
 
+    private static final double MIN_UPLOAD_TO_PLAY_SCORE = 0.75;
+
     /**
      * Wait until audio message upload completed
      *
@@ -1210,10 +1212,10 @@ public class ConversationViewPageSteps {
         audioMessagePlayButtonState.remember(cancelBntInitialState);
         Assert.assertTrue(String.format(
                 "After %s seconds audio message is still being uploaded", timeoutSeconds),
-                audioMessagePlayButtonState.isChanged(timeoutSeconds, MIN_PLAY_BUTTON_SCORE, ImageUtil.RESIZE_TO_MAX_SCORE));
+                audioMessagePlayButtonState.isChanged(timeoutSeconds, MIN_UPLOAD_TO_PLAY_SCORE, ImageUtil.RESIZE_TO_MAX_SCORE));
     }
 
-    private static final double MIN_PLAY_BUTTON_SCORE = 0.9;
+    private static final double MIN_PLAY_BUTTON_SCORE = 0.82;
     private static final int PLAY_BUTTON_STATE_CHANGE_TIMEOUT = 10; //seconds
 
     /**

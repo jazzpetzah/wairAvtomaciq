@@ -27,7 +27,6 @@ Feature: E2EE
     When User <Contact> sends encrypted image <ImageName> to single user conversation Myself
     And User <Contact> sends image <ImageName> to single user conversation Myself
     And I tap on conversation name <Contact>
-    And I scroll to the bottom of conversation view
     Then I see 1 image in the conversation view
 
     Examples:
@@ -45,13 +44,15 @@ Feature: E2EE
     And User <Contact1> sends encrypted message <Message1> to user Myself
     Then I see the most recent conversation message is "<Message1>"
     When I enable Airplane mode on the device
+    And I see No Internet bar in 15 seconds
     And User <Contact1> sends encrypted image <Picture> to single user conversation Myself
     Then I do not see any pictures in the conversation view
     When User <Contact1> sends encrypted message <Message2> to user Myself
     Then I see the most recent conversation message is "<Message1>"
     When I disable Airplane mode on the device
+    And I do not see No Internet bar in 15 seconds
     # Wait for sync
-    And I wait for 10 seconds
+    And I wait for 5 seconds
     And I scroll to the bottom of conversation view
     Then I see the most recent conversation message is "<Message2>"
     And I see a picture in the conversation view

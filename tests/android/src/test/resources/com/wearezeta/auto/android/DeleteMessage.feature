@@ -121,7 +121,7 @@ Feature: Delete Message
       | user1Name | user2Name | You pinged | autocall    | user2Name pinged |
 
   @C111642 @regression @rc
-  Scenario Outline: AN-4171 Verify deleting the shared file
+  Scenario Outline: (AN-4171) Verify deleting the shared file
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
