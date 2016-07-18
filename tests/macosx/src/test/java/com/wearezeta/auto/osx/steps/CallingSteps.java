@@ -5,6 +5,7 @@ import com.wearezeta.auto.common.CommonCallingSteps2;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.pages.VideoCallPage;
 import com.wearezeta.auto.web.steps.CallPageSteps;
 import com.wearezeta.auto.web.steps.ConversationPageSteps;
 import com.wearezeta.auto.web.steps.WarningPageSteps;
@@ -15,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
+import org.junit.Assert;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 

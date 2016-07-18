@@ -2,8 +2,10 @@ package com.wearezeta.auto.osx.pages.osx;
 
 import static com.wearezeta.auto.osx.common.OSXConstants.Scripts.PASTE_SCRIPT;
 
+import java.awt.image.BufferedImage;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;

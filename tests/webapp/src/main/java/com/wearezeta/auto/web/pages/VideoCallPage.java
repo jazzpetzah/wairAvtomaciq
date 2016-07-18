@@ -2,13 +2,11 @@ package com.wearezeta.auto.web.pages;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -38,6 +36,12 @@ public class VideoCallPage extends WebPage {
 
     @FindBy(css = WebAppLocators.VideoCallPage.cssMaximizedRemoteVideo)
     private WebElement maximizedRemoteVideo;
+
+    @FindBy(css = WebAppLocators.VideoCallPage.cssScreenShareButton)
+    private WebElement screenShareButton;
+
+    @FindBy(css = WebAppLocators.VideoCallPage.cssLocalScreenShareVideo)
+    private WebElement localScreenShareVideo;
 
     public VideoCallPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
@@ -162,5 +166,14 @@ public class VideoCallPage extends WebPage {
 
     public Optional<BufferedImage> getMaximizedRemoteVideo() throws Exception {
         return getElementScreenshot(maximizedRemoteVideo);
+    }
+
+    public void clickScreenShareButton() throws Exception {
+        WebCommonUtils.hoverOverElement(getDriver(), screenShareButton);
+        getDriver().executeScript("arguments[0].click()", screenShareButton);
+    }
+
+    public WebElement getLocalScreenShareVideoElement() throws Exception {
+        return localScreenShareVideo;
     }
 }

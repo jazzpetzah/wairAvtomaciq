@@ -128,4 +128,8 @@ public class CallingServiceClient {
     public Call getCurrentCall(Instance instance) throws CallingServiceInstanceException {
         return INSTANCE_RESOURCE.getInstance(instance).getCurrentCall();
     }
+
+    public String getScreenshot(Instance instance) throws CallingServiceInstanceException {
+        return INSTANCE_RESOURCE.getInstance(instance).getScreenshot();
+    }
 }
