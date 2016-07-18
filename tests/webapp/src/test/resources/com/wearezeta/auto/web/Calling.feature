@@ -840,7 +840,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome      | chrome      | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | chrome      | firefox     | 20      |
 
-  @C167027 @staging @calling @group @calling_debug
+  @C167027 @regression @calling @group @calling_debug
   Scenario Outline: Verify impossibility to connect 11th person to the call
     Given My browser supports calling
     Given There are 11 users where <Name> is me
@@ -924,7 +924,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | chrome      | 20      |
 
-  @C150016 @staging @calling @group @calling_debug
+  @C150016 @regression @calling @group @calling_debug
   Scenario Outline: Verify leaving and coming back to the call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -953,7 +953,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | chrome      | 20      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox     | 20      |
 
-  @C165123 @staging @calling @group @calling_debug
+  @C165123 @regression @calling @group @calling_debug
   Scenario Outline: Verify possibility to join call after 1 minutes of starting it
     Given My browser supports calling
     Given There are 3 users where <Name> is me
