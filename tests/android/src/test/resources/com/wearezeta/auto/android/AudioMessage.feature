@@ -6,8 +6,8 @@ Feature: Audio Message
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I long tap Audio message cursor button <TapDuration> seconds and swipe up
     Then I see cursor toolbar
     And I see Audio Message container in the conversation view
@@ -22,8 +22,8 @@ Feature: Audio Message
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I long tap Audio message microphone button <TapDuration> seconds and remember icon
     And I verify the state of audio message microphone button in the conversation view is changed
 
@@ -37,8 +37,8 @@ Feature: Audio Message
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I long tap Audio message button <TapDuration> seconds from cursor toolbar
     And I tap audio recording Send button
     Then I see cursor toolbar
@@ -62,8 +62,8 @@ Feature: Audio Message
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact2>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact2>
     When <Contact1> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
     Then I see new message notification "<Notification>"
 
@@ -77,8 +77,8 @@ Feature: Audio Message
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
     # C131189
     Then I see Audio Message container in the conversation view
@@ -105,8 +105,8 @@ Feature: Audio Message
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I enable Airplane mode on the device
     # Wait for network is totally disabled
     And I wait for 3 seconds
@@ -135,8 +135,8 @@ Feature: Audio Message
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I long tap Audio message button <TapDuration> seconds from cursor toolbar
     And I remember the state of audio message preview seekbar
     And I tap audio recording Play button
@@ -155,8 +155,8 @@ Feature: Audio Message
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
     Then I see Audio Message container in the conversation view
     # Wait until the seekbar initialized completely
@@ -190,8 +190,8 @@ Feature: Audio Message
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     Given <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
     When I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
@@ -216,8 +216,8 @@ Feature: Audio Message
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     Given <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
     When I see Audio Message container in the conversation view
     And I remember the state of recent audio message seekbar
@@ -242,8 +242,8 @@ Feature: Audio Message
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I long tap Audio message button from cursor toolbar without releasing my finger
     And I wait for 3 seconds
     And <Contact> calls me
@@ -262,8 +262,8 @@ Feature: Audio Message
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I tap Audio message button from cursor toolbar
     # C165127
     Then I see Voice filters overlay

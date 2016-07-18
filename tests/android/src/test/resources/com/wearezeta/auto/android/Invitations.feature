@@ -7,7 +7,7 @@ Feature: Invitations
     Given I add <Contact> into Address Book
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Conversations list with no conversations
     And I open Search UI
     And I see user <Contact> in Contact list
     And I remember the state of <Contact> avatar in Contact list
@@ -42,8 +42,8 @@ Feature: Invitations
     And I tap Confirm button on Take Picture view
     And I add <Contact> to the list of test case users
     And User <Contact> is me without picture
-    Then I see Contact list with contacts
-    When I tap on contact name <Name>
+    Then I see Conversations list with conversations
+    When I tap on conversation name <Name>
     Then I see conversation view
 
     Examples:
@@ -55,7 +55,7 @@ Feature: Invitations
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Conversations list with no conversations
     When I open Search UI
     And I hide keyboard
     And I take screenshot
@@ -77,7 +77,7 @@ Feature: Invitations
     Given I add <Contact> into Address Book
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Conversations list with no conversations
     And I open Search UI
     And I see user <Contact> in Contact list
     And I tap Invite button next to <Contact>
@@ -85,8 +85,8 @@ Feature: Invitations
     And I tap OK button on the alert
     And I hide keyboard
     When I press back button
-    Then I see contact list with name <Contact>
-    When I tap on contact name <Contact>
+    Then I see Conversations list with name <Contact>
+    When I tap on conversation name <Contact>
     Then I see outgoing pending connection to <Contact>
 
     Examples:

@@ -7,16 +7,16 @@ Feature: Archive
     Given Myself is connected to <Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     # This is to eliminate invitation banner
     Given I open Search UI
     Given I press Clear button
-    And I see contact list with name <Contact1>
+    And I see Conversations list with name <Contact1>
     When I swipe right on a <Contact1>
     And I select ARCHIVE from conversation settings menu
-    Then I do not see contact list with name <Contact1>
-    When I swipe up contact list
-    Then I see contact list with name <Contact1>
+    Then I do not see Conversations list with name <Contact1>
+    When I swipe up Conversations list
+    Then I see Conversations list with name <Contact1>
     When I swipe right on a <Contact1>
     And I select UNARCHIVE from conversation settings menu
     Then I see conversation view
@@ -32,17 +32,17 @@ Feature: Archive
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     # This is to eliminate invitation banner
     Given I open Search UI
     Given I press Clear button
-    Then I see contact list with name <GroupChatName>
+    Then I see Conversations list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I select ARCHIVE from conversation settings menu
     And I navigate back from dialog page
-    Then I do not see contact list with name <GroupChatName>
-    Then I swipe up contact list
-    When I see contact list with name <GroupChatName>
+    Then I do not see Conversations list with name <GroupChatName>
+    Then I swipe up Conversations list
+    When I see Conversations list with name <GroupChatName>
     And I swipe right on a <GroupChatName>
     And I select UNARCHIVE from conversation settings menu
     Then I see conversation view

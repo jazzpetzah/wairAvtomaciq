@@ -8,8 +8,8 @@ Feature: Emoji
     Given I accept First Time overlay as soon as it is visible
     Given User <Contact> sends encrypted message <NormalText> to user Myself
     Given User <Contact> sends encrypted message <EmojiText> to user Myself
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     Then I see that the difference in height of "<EmojiText>" and "<NormalText>" messages is greater than <MinHeightDiff> percent
 
     Examples:
@@ -24,8 +24,8 @@ Feature: Emoji
     Given I accept First Time overlay as soon as it is visible
     Given User <Contact> sends encrypted message <NormalText> to user Myself
     Given User <Contact> sends encrypted message <MixedText> to user Myself
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     Then I see that the difference in height of "<MixedText>" and "<NormalText>" messages is not greater than <MaxHeightDiff> percent
 
     Examples:

@@ -6,14 +6,14 @@ Feature: Conversation View
     Given <Contact1> is connected to <Name>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I press options menu button
     And I press MUTE conversation menu button
     And I press back button
     And I press back button
-    Then Contact <Contact1> is muted
+    Then Conversation <Contact1> is muted
 
     Examples: 
       | Name      | Contact1  |
@@ -26,15 +26,15 @@ Feature: Conversation View
     Given <Contact1> is silenced to user <Name>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given Contact <Contact1> is muted
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    Given Conversation <Contact1> is muted
+    When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I press options menu button
     And I press UNMUTE conversation menu button
     And I press back button
     And I navigate back from dialog page
-    Then Contact <Contact1> is not muted
+    Then Conversation <Contact1> is not muted
 
     Examples: 
       | Name      | Contact1  |
@@ -46,8 +46,8 @@ Feature: Conversation View
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap on text input
     And I type the message "<Message>" and send it
     Then I see the message "<Message>" in the conversation view
@@ -62,8 +62,8 @@ Feature: Conversation View
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap Add picture button from cursor toolbar
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
@@ -79,8 +79,8 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I see <Contact1> user profile page
     And I press add contact button
@@ -107,9 +107,9 @@ Feature: Conversation View
     Given <Contact1> is connected to <Name>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
-    When I tap on contact name <GroupChatName>
+    When I tap on conversation name <GroupChatName>
     # Workaround for AN-4011, for following two steps
     And I tap conversation name from top toolbar
     And I press back button
@@ -126,8 +126,8 @@ Feature: Conversation View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And I tap on text input
     And I type the message "<Message>" and send it
     Then I see the message "<Message>" in the conversation view
@@ -142,8 +142,8 @@ Feature: Conversation View
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap on text input
     And I type the message "LONG_MESSAGE" and send it
     Then I see the message "LONG_MESSAGE" in the conversation view
@@ -158,8 +158,8 @@ Feature: Conversation View
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap Add picture button from cursor toolbar
     And I tap Gallery Camera button on Take Picture view
     And I tap Confirm button on Take Picture view
@@ -175,8 +175,8 @@ Feature: Conversation View
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap Add picture button from cursor toolbar
     And I tap Gallery Camera button on Take Picture view
     And I tap Confirm button on Take Picture view
@@ -190,7 +190,7 @@ Feature: Conversation View
     And I tap Image Close button on Take Picture view
     Then I rotate UI to portrait
     And I navigate back from dialog page
-    And I see Contact list
+    And I see Conversations list
 
     Examples:
       | Name      | Contact   |
@@ -202,8 +202,8 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And I tap Sketch button from cursor toolbar
     And I draw a sketch with <NumColors> colors
     And I send my sketch
@@ -219,8 +219,8 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And I tap Add picture button from cursor toolbar
     And I tap Gallery Camera button on Take Picture view
     And I tap Sketch Image Paint button on Take Picture view
@@ -238,8 +238,8 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And I tap Add picture button from cursor toolbar
     And I tap Take Photo button on Take Picture view
     And I tap Sketch Image Paint button on Take Picture view
@@ -257,8 +257,8 @@ Feature: Conversation View
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap on text input
     And I type the message "<Message>"
     And I click on the GIF button
@@ -277,9 +277,9 @@ Feature: Conversation View
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given User <Contact> sends encrypted image <GifName> to single user conversation Myself
-    When I tap on contact name <Contact>
+    When I tap on conversation name <Contact>
     And I scroll to the bottom of conversation view
     Then I see a picture in the conversation view
     And I see the picture in the dialog is animated
@@ -296,8 +296,8 @@ Feature: Conversation View
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap Add picture button from cursor toolbar
     And I tap Switch Camera button on Take Picture view
     And I tap Take Photo button on Take Picture view
@@ -314,8 +314,8 @@ Feature: Conversation View
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap on text input
     And I type the message "<Message>"
     And I click on the GIF button
@@ -333,21 +333,21 @@ Feature: Conversation View
       | user1Name | user2Name | Yo      |
 
   @C77948 @C77950 @regression @rc
-  Scenario Outline: Upper toolbar displayed in conversation view, I can back to conversation list by toolbar arrow
+  Scenario Outline: Upper toolbar displayed in conversation view, I can back to Conversations list by toolbar arrow
     Given There is 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     Then I see the upper toolbar
     And I tap Back button from top toolbar
-    Then I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Then I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     Then I see the upper toolbar
     And I tap Back button from top toolbar
-    Then I see Contact list with contacts
+    Then I see Conversations list with conversations
 
     Examples:
       | Name      | Contact1   | Contact2   | GroupChatName |
@@ -359,14 +359,14 @@ Feature: Conversation View
     Given <Contact1> is connected to <Name>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
-    When I tap on contact name <GroupChatName>
+    When I tap on conversation name <GroupChatName>
     Then I see the audio call button in upper toolbar
     And I do not see the video call button in upper toolbar
     And I navigate back from dialog page
-    And I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    And I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     Then I see the audio call button in upper toolbar
     And I see the video call button in upper toolbar
 
@@ -380,8 +380,8 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And the conversation title should be "<Contact1>"
     And User <Contact2> send message "<Message1>" to user Myself
     And I tap new message notification "<Message1>"
@@ -390,7 +390,7 @@ Feature: Conversation View
     And I tap conversation name from top toolbar
     And I press back button
     When I tap Back button from top toolbar
-    And I tap on contact name <Contact1>
+    And I tap on conversation name <Contact1>
     And User <Contact2> send message "<Message2>" to user Myself
     And I see new message notification "<Message2>"
     Then the conversation title should be "<Contact1>"
@@ -405,8 +405,8 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     Then I see cursor toolbar
     And I see text input
 
@@ -420,8 +420,8 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And I tap Ping button from cursor toolbar
     Then I see tooltip of text input
     When I tap on text input
@@ -441,13 +441,13 @@ Feature: Conversation View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I press options menu button
     And I press LEAVE conversation menu button
     And I confirm leaving
-    And I see Contact list
+    And I see Conversations list
     And I open Search UI
     And I type group name "<GroupChatName>" in search field
     And I tap on group found on People picker page <GroupChatName>
@@ -471,8 +471,8 @@ Feature: Conversation View
     Given Myself is unarchived group chat <GroupChatName>
     When I sign in using my email or phone number
     And I accept First Time overlay as soon as it is visible
-    And I see Contact list with contacts
-    And I tap on contact name <GroupChatName>
+    And I see Conversations list with conversations
+    And I tap on conversation name <GroupChatName>
     Then I do not see text input
     And I do not see cursor toolbar
 
