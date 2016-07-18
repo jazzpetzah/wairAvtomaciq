@@ -66,7 +66,7 @@ Feature: Block
       | user1Name | user2Name | Hellow friend |
 
   @C765 @regression @rc @rc44
-  Scenario Outline: I block user from 1:1 pop-over and can see blocked user in search results with blocked badge (landscape)
+  Scenario Outline: (AN-4282 for android 4.4) I block user from 1:1 pop-over and can see blocked user in search results with blocked badge (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given User Myself blocks user <Contact>
@@ -77,7 +77,7 @@ Feature: Block
     And I wait until <Contact> exists in backend search results
     When I open Search UI
     When I enter "<Contact>" into Search input on People Picker page
-    Then I see "<Contact>" avatar on People Picker page
+    Then I see "<Contact>" avatar in Search result list
     And I remember <Contact> avatar on People Picker page
     When I tap the found item <Contact> on People Picker page
     And I see Blocked Connection popover
@@ -101,7 +101,7 @@ Feature: Block
     Given I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
-    Then I see "<Contact>" avatar on People Picker page
+    Then I see "<Contact>" avatar in Search result list
     And I remember <Contact> avatar on People Picker page
     When I tap the found item <Contact> on People Picker page
     And I see Blocked Connection popover
@@ -128,7 +128,7 @@ Feature: Block
     Given I wait until <Contact> exists in backend search results
     When I open Search UI
     And I enter "<Contact>" into Search input on People Picker page
-    Then I see "<Contact>" avatar on People Picker page
+    Then I see "<Contact>" avatar in Search result list
     When I tap the found item <Contact> on People Picker page
     And I see Blocked Connection popover
     And I tap Unblock button on Blocked Connection popover

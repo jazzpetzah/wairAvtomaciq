@@ -13,12 +13,20 @@ import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
+import org.apache.log4j.Logger;
 import org.opencv.core.Core;
 import org.opencv.core.Core.MinMaxLocResult;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfDMatch;
+import org.opencv.core.MatOfKeyPoint;
 import org.opencv.core.Size;
+import org.opencv.features2d.DMatch;
+import org.opencv.features2d.DescriptorExtractor;
+import org.opencv.features2d.DescriptorMatcher;
+import org.opencv.features2d.FeatureDetector;
 import org.opencv.imgproc.Imgproc;
 
 public class ImageUtil {
@@ -28,6 +36,8 @@ public class ImageUtil {
     public static final int RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION = 2;
     public static final int RESIZE_TEMPLATE_TO_RESOLUTION = 5;
     public static final int RESIZE_TO_MAX_SCORE = 7;
+
+    private static final Logger log = ZetaLogger.getLog(ImageUtil.class.getSimpleName());
 
     static {
         String arch = System.getProperty("sun.arch.data.model");
@@ -158,6 +168,47 @@ public class ImageUtil {
 
         MinMaxLocResult minMaxLocResult = Core.minMaxLoc(res);
         return minMaxLocResult.maxVal;
+    }
+
+    /**
+     * Based on http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_feature2d/py_feature_homography/py_feature_homography.html
+     */
+    public static int getMatches(BufferedImage refImage, BufferedImage tplImage) {
+        refImage = convertToBufferedImageOfType(refImage, BufferedImage.TYPE_3BYTE_BGR);
+        tplImage = convertToBufferedImageOfType(tplImage, BufferedImage.TYPE_3BYTE_BGR);
+        Mat ref = convertImageToOpenCVMat(refImage);
+        Mat tpl = convertImageToOpenCVMat(tplImage);
+
+        MatOfKeyPoint kpRef = new MatOfKeyPoint();
+        MatOfKeyPoint kpTpl = new MatOfKeyPoint();
+        FeatureDetector featureDetector = FeatureDetector.create(FeatureDetector.SIFT);
+        featureDetector.detect(ref, kpRef);
+        featureDetector.detect(tpl, kpTpl);
+
+        DescriptorExtractor extractor = DescriptorExtractor.create(DescriptorExtractor.SIFT);
+        Mat desRef = new Mat();
+        Mat desTpl = new Mat();
+        extractor.compute(ref, kpRef, desRef);
+        extractor.compute(tpl, kpTpl, desTpl);
+
+        List<DMatch> good = new ArrayList<>();
+
+        DescriptorMatcher matcher = DescriptorMatcher.create(DescriptorMatcher.FLANNBASED);
+
+        List<MatOfDMatch> matches = new ArrayList<>();
+        matcher.knnMatch(desRef, desTpl, matches, 2);
+
+        for(MatOfDMatch match: matches) {
+            DMatch m = match.toList().get(0);
+            DMatch n = match.toList().get(1);
+            if(m.distance < 0.7*n.distance) {
+                good.add(m);
+            }
+        }
+
+        log.info(good.size() + " good matches!");
+
+        return good.size();
     }
 
     public static BufferedImage readImageFromFile(String filePath) throws IOException {

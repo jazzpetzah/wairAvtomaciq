@@ -6,8 +6,8 @@ Feature: Offline
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    And I tap on conversation name <Contact>
     When User <Contact> sends encrypted message <Message1> to user Myself
     Then I see the most recent conversation message is "<Message1>"
     When I enable Airplane mode on the device
@@ -30,8 +30,8 @@ Feature: Offline
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    And I tap on conversation name <Contact>
     And I enable Airplane mode on the device
     When I tap on text input
     And I type the message "<Message>" and send it

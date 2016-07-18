@@ -1,4 +1,4 @@
-Feature: Conversation List
+Feature: Conversations list
 
   @C56396 @regression
   Scenario Outline: (AN-3523) Verify contacts banner does not appear anymore after you opened contacts once
@@ -16,7 +16,7 @@ Feature: Conversation List
     And I sign in using my email
     # Workaround, it should not see First time overlay
     Then I accept First Time overlay as soon as it is visible
-    And I see Contact list
+    And I see Conversations list
     And I do not see contact hint banner
 
     Examples:
@@ -29,8 +29,8 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    And I tap on conversation name <Contact1>
     And I scroll to the bottom of conversation view
     And I navigate back from dialog page
     And I remember unread messages indicator state for conversation <Contact1>
@@ -40,7 +40,7 @@ Feature: Conversation List
     And User <Contact1> sends 8 encrypted messages to user Myself
     Then I see unread messages indicator state is changed for conversation <Contact1>
     When I remember unread messages indicator state for conversation <Contact1>
-    And I tap on contact name <Contact1>
+    And I tap on conversation name <Contact1>
     And I scroll to the bottom of conversation view
     And I navigate back from dialog page
     Then I see unread messages indicator state is changed for conversation <Contact1>
@@ -50,14 +50,14 @@ Feature: Conversation List
       | user1Name | user2Name |
 
   @C822 @regression @rc
-  Scenario Outline: CM-998 Verify I can delete a 1:1 conversation from conversation list
+  Scenario Outline: CM-998 Verify I can delete a 1:1 conversation from Conversations list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     # Workaround for AN-4115, need to open conversation view before receiving message
-    Given I tap on contact name <Contact1>
+    Given I tap on conversation name <Contact1>
     Given User <Contact1> sends encrypted message <SpotifyLink> to user Myself
     Given User <Contact1> sends encrypted image <Image> to single user conversation Myself
     Given User <Contact1> sends encrypted message <Message> to user Myself
@@ -69,10 +69,10 @@ Feature: Conversation List
     And I swipe right on a <Contact1>
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
     When I wait until <Contact1> exists in backend search results
     And I open Search UI
-    And I enter "<Contact1>" into Search input on People Picker page
+    And I type user name "<Contact1>" in search field
     And I tap on user name found on People picker page <Contact1>
     And I tap Open Conversation action button on People Picker page
     Then I see conversation view
@@ -87,8 +87,8 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I see contact list with name <Contact>
+    Given I see Conversations list with conversations
+    And I see Conversations list with name <Contact>
     When User Myself adds new device <DeviceName>
     And User <Contact> sends encrypted message blabla to user Myself
     And User Myself deletes single user conversation <Contact> using device <DeviceName>
@@ -99,15 +99,15 @@ Feature: Conversation List
       | user1Name | user2Name | device1    | 15      |
 
   @C444 @regression
-  Scenario Outline: Verify I can delete a group conversation from conversation list
+  Scenario Outline: Verify I can delete a group conversation from Conversations list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     # Workaround AN-4115, open conversation before receiving
-    Given I tap on contact name <GroupChatName>
+    Given I tap on conversation name <GroupChatName>
     Given User <Contact1> sends encrypted message <SpotifyLink> to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Image> to group conversation Myself
     Given User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
@@ -119,14 +119,14 @@ Feature: Conversation List
     And I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
-    Then I do not see contact list with name <GroupChatName>
+    Then I do not see Conversations list with name <GroupChatName>
     And I open Search UI
-    And I enter "<GroupChatName>" into Search input on People Picker page
-    And I see group <GroupChatName> in People Picker
+    And I type group name "<GroupChatName>" in search field
+    And I see group <GroupChatName> in Search result list
     When I press Clear button
     And User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
-    Then I see contact list with name <GroupChatName>
-    When I tap on contact name <GroupChatName>
+    Then I see Conversations list with name <GroupChatName>
+    When I tap on conversation name <GroupChatName>
     Then I see the most recent conversation message is "<Message>"
 
     Examples:
@@ -134,124 +134,124 @@ Feature: Conversation List
       | user1Name | user2Name | user3Name | DELETE        | Tschuessii | testing.jpg | https://open.spotify.com/track/0p6GeAWS4VCZddxNbBtEss |
 
   @C445 @regression
-  Scenario Outline: (BUG AN-3438) Verify I can delete and leave a group conversation from conversation list
+  Scenario Outline: (BUG AN-3438) Verify I can delete and leave a group conversation from Conversations list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     And I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
     And I click the Leave check box
     And I press DELETE on the confirm alert
-    Then I do not see contact list with name <GroupChatName>
+    Then I do not see Conversations list with name <GroupChatName>
     And I open Search UI
-    And I enter "<GroupChatName>" into Search input on People Picker page
-    Then I do not see group <GroupChatName> in People picker
+    And I type group name "<GroupChatName>" in search field
+    Then I do not see group <GroupChatName> in Search result list
     And I press Clear button
     And User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
-    Then I do not see contact list with name <GroupChatName>
-    And I swipe up contact list
-    Then I do not see contact list with name <GroupChatName>
+    Then I do not see Conversations list with name <GroupChatName>
+    And I swipe up Conversations list
+    Then I do not see Conversations list with name <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Message |
       | user1Name | user2Name | user3Name | DELETELeave   | tututu  |
 
   @C446 @regression
-  Scenario Outline: (AN-3448) Verify I see picture, ping and call after I delete a group conversation from conversation list
+  Scenario Outline: (AN-3448) Verify I see picture, ping and call after I delete a group conversation from Conversations list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact1> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
-    Then I do not see contact list with name <GroupChatName>
+    Then I do not see Conversations list with name <GroupChatName>
     When User <Contact1> sends encrypted image <Image> to group conversation <GroupChatName>
-    Then I see contact list with name <GroupChatName>
+    Then I see Conversations list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
-    Then I do not see contact list with name <GroupChatName>
+    Then I do not see Conversations list with name <GroupChatName>
     When User <Contact1> securely pings conversation <GroupChatName>
-    Then I see contact list with name <GroupChatName>
+    Then I see Conversations list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
     And I press DELETE on the confirm alert
-    Then I do not see contact list with name <GroupChatName>
+    Then I do not see Conversations list with name <GroupChatName>
     When <Contact1> calls <GroupChatName>
-    Then I see contact list with name <GroupChatName>
+    Then I see Conversations list with name <GroupChatName>
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Image       | CallBackend |
       | user1Name | user2Name | user3Name | DELETE        | testing.jpg | autocall    |
 
   @C451 @regression
-  Scenario Outline: I can mute 1:1 conversation from the conversation list
+  Scenario Outline: I can mute 1:1 conversation from the Conversations list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     And I swipe right on a <Contact1>
     And I select MUTE from conversation settings menu
-    Then Contact <Contact1> is muted
+    Then Conversation <Contact1> is muted
 
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
   @C452 @regression
-  Scenario Outline: I can unmute 1:1 conversation from the conversation list
+  Scenario Outline: I can unmute 1:1 conversation from the Conversations list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is silenced to user <Name>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And Contact <Contact1> is muted
+    Given I see Conversations list with conversations
+    And Conversation <Contact1> is muted
     And I swipe right on a <Contact1>
     And I select UNMUTE from conversation settings menu
-    Then Contact <Contact1> is not muted
+    Then Conversation <Contact1> is not muted
 
     Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
   @C453 @regression
-  Scenario Outline: I can mute group conversation from the conversation list
+  Scenario Outline: I can mute group conversation from the Conversations list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     And I swipe right on a <GroupChatName>
     And I select MUTE from conversation settings menu
-    Then Contact <GroupChatName> is muted
+    Then Conversation <GroupChatName> is muted
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | MUTE          |
 
   @C454 @regression
-  Scenario Outline: I can unmute group conversation from the conversation list
+  Scenario Outline: I can unmute group conversation from the Conversations list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given Group <GroupChatName> gets silenced for user <Name>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And Contact <GroupChatName> is muted
+    Given I see Conversations list with conversations
+    And Conversation <GroupChatName> is muted
     And I swipe right on a <GroupChatName>
     And I select UNMUTE from conversation settings menu
-    Then Contact <GroupChatName> is not muted
+    Then Conversation <GroupChatName> is not muted
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
@@ -263,7 +263,7 @@ Feature: Conversation List
     Given Myself sent connection request to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When I swipe right on a <Contact>
     Then I see ARCHIVE button in conversation settings menu
     And I see BLOCK button in conversation settings menu
@@ -278,9 +278,9 @@ Feature: Conversation List
     Given <Contact> sent connection request to <Name>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see contact list with name <WaitingMess1>
+    Given I see Conversations list with name <WaitingMess1>
     When I swipe right on a <WaitingMess1>
-    Then I see contact list with name <WaitingMess1>
+    Then I see Conversations list with name <WaitingMess1>
 
     Examples:
       | Name      | Contact   | WaitingMess1     |
@@ -292,14 +292,14 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When I swipe right on a <Contact1>
     Then I see MUTE button in conversation settings menu
     And I see ARCHIVE button in conversation settings menu
     And I see DELETE button in conversation settings menu
     And I see BLOCK button in conversation settings menu
     And I press back button
-    When I tap on contact name <Contact1>
+    When I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     When I press options menu button
     Then I see MUTE button in option menu
@@ -318,14 +318,14 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When I swipe right on a <GroupChatName>
     Then I see MUTE button in conversation settings menu
     And I see ARCHIVE button in conversation settings menu
     And I see DELETE button in conversation settings menu
     And I see LEAVE button in conversation settings menu
     And I press back button
-    When I tap on contact name <GroupChatName>
+    When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     When I press options menu button
     Then I see MUTE button in option menu
@@ -346,7 +346,7 @@ Feature: Conversation List
     Given <Contact1> removes <Name> from group <GroupChatName>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When I swipe right on a <GroupChatName>
     And I select DELETE from conversation settings menu
     Then I do not see the Leave check box
@@ -361,7 +361,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When I short swipe right on a <Contact1>
     And I see three dots option menu button
     And I press the three dots option menu button

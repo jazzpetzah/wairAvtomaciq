@@ -6,10 +6,10 @@ Feature: E2EE
     Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact> sends encrypted message <EncryptedMessage> to user Myself
     And User <Contact> sends message <SimpleMessage> to user Myself
-    And I tap on contact name <Contact>
+    And I tap on conversation name <Contact>
     Then I see message <SimpleMessage> 1 time in the conversation view
     And I see message <EncryptedMessage> 1 time in the conversation view
 
@@ -23,10 +23,10 @@ Feature: E2EE
     Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact> sends encrypted image <ImageName> to single user conversation Myself
     And User <Contact> sends image <ImageName> to single user conversation Myself
-    And I tap on contact name <Contact>
+    And I tap on conversation name <Contact>
     And I scroll to the bottom of conversation view
     Then I see 1 image in the conversation view
 
@@ -40,8 +40,8 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And User <Contact1> sends encrypted message <Message1> to user Myself
     Then I see the most recent conversation message is "<Message1>"
     When I enable Airplane mode on the device
@@ -67,8 +67,8 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And User <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
     Then I see the most recent conversation message is "<Message1>"
     When I enable Airplane mode on the device
@@ -94,10 +94,10 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact1> sends encrypted message <EncryptedMessage> to group conversation <GroupChatName>
     And User <Contact2> sends message <SimpleMessage> to group conversation <GroupChatName>
-    And I tap on contact name <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     Then I see message <SimpleMessage> 1 time in the conversation view
     And I see message <EncryptedMessage> 1 time in the conversation view
 
@@ -112,10 +112,10 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact1> sends encrypted image <ImageName> to group conversation <GroupChatName>
     And User <Contact1> sends image <ImageName> to group conversation <GroupChatName>
-    And I tap on contact name <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I scroll to the bottom of conversation view
     Then I see 1 image in the conversation view
 
@@ -130,10 +130,10 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
     And User <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
-    And I tap on contact name <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I select contact <Contact1>
     And I select single participant tab "Devices"
@@ -155,9 +155,9 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact1> sends encrypted message <Message1> to user Myself
-    And I tap on contact name <Contact1>
+    And I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
@@ -173,9 +173,9 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given I sign in using my phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact1> sends encrypted message <EncMessage> to user Myself
-    And I tap on contact name <Contact1>
+    And I tap on conversation name <Contact1>
     Then I see message <EncMessage> 1 times in the conversation view
     When I press back button
     And I tap conversations list settings button
@@ -188,8 +188,8 @@ Feature: E2EE
     Then I confirm sign out
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
-    And I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    And I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     Then I see message <EncMessage> 1 times in the conversation view
     When I press back button
     And I tap conversations list settings button
@@ -208,13 +208,13 @@ Feature: E2EE
     Given <Contact1> has group chat <GroupChatName> with <Contact2>,<Contact3>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact1> sends encrypted message <EncMessage> to group conversation <GroupChatName>
     And User <Contact2> sends encrypted message <EncMessage> to group conversation <GroupChatName>
     And User <Contact3> sends encrypted message <EncMessage> to group conversation <GroupChatName>
     And I wait for 5 seconds
     And User <Contact1> adds user Myself to group chat <GroupChatName>
-    And I tap on contact name <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     Then I see message <EncMessage> 0 times in the conversation view
 
     Examples:
@@ -243,8 +243,8 @@ Feature: E2EE
     Then I sign in using my email
     And I see First Time overlay
     When I tap Got It button on First Time overlay
-    Then I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Then I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     Then I see message <EncMessage> 0 times in the conversation view
 
     Examples:
@@ -257,9 +257,9 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact1> sends encrypted message <Message1> to user Myself
-    And I tap on contact name <Contact1>
+    And I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
@@ -278,9 +278,9 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact1> sends encrypted message "<Message1>" to user Myself
-    And I tap on contact name <Contact1>
+    And I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
@@ -302,10 +302,10 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact1> sends encrypted message "<Message1>" to group conversation <GroupChatName>
     When User <Contact2> sends encrypted message "<Message1>" to group conversation <GroupChatName>
-    And I tap on contact name <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I select contact <Contact1>
     And I select single participant tab "Devices"
@@ -333,9 +333,9 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact1> sends encrypted message "<Message1>" to user Myself
-    And I tap on contact name <Contact1>
+    And I tap on conversation name <Contact1>
     And I remember verified conversation shield state
     And I tap conversation name from top toolbar
     And I select single participant tab "Devices"
@@ -357,9 +357,9 @@ Feature: E2EE
     Given User <Contact1> adds new devices Device1,Device2
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact2> sends encrypted message "<Message1>" to group conversation <GroupChatName>
-    And I tap on contact name <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I select contact <Contact1>
     And I select single participant tab "Devices"
@@ -388,10 +388,10 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
     And User <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
-    And I tap on contact name <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I select contact <Contact1>
     And I select single participant tab "Devices"
@@ -417,10 +417,10 @@ Feature: E2EE
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
     And User <Contact2> sends encrypted message <Message1> to group conversation <GroupChatName>
-    And I tap on contact name <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I select contact <Contact1>
     And I select single participant tab "Devices"
@@ -450,8 +450,8 @@ Feature: E2EE
     Given <Contact> is connected to Myself
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    And I tap on conversation name <Contact>
     When I tap conversation name from top toolbar
     And I select single participant tab "Devices"
     Then I see no encrypted device text for user <Contact> in header of device detail page
@@ -470,7 +470,7 @@ Feature: E2EE
     And I have entered password <Password>
     And I press Log in button
     And I accept First Time overlay as soon as it is visible
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Name      | Email      | Password      | Device  |
@@ -482,9 +482,9 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact1> sends encrypted message "<Message1>" to user Myself
-    And I tap on contact name <Contact1>
+    And I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab
@@ -510,9 +510,9 @@ Feature: E2EE
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When User <Contact1> sends encrypted message "<Message1>" to user Myself
-    And I tap on contact name <Contact1>
+    And I tap on conversation name <Contact1>
     And I tap conversation name from top toolbar
     And I select single participant tab "Devices"
     Then I see 1 device is shown in single participant devices tab

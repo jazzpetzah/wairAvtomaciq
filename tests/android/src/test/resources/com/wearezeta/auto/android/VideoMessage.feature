@@ -7,8 +7,8 @@ Feature: Video Message
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     And I see Video Message container in the conversation view
     And I tap Play button on the recent video message in the conversation view
     # Wait for the video to be fully loaded
@@ -25,8 +25,8 @@ Feature: Video Message
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When <Contact> sends local file named "<FileName>" and MIME type "<MIMEType>" via device <DeviceName> to user Myself
     And I see Video Message container in the conversation view
     And I remember the state of Play button on the recent video message in the conversation view
@@ -56,8 +56,8 @@ Feature: Video Message
     Given I sign in using my email or phone number
     Given I push <FileSize> video file having name "<FileFullName>" to the device
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I tap Video message button from cursor toolbar
     Then I see Video Message container in the conversation view
 

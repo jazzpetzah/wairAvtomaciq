@@ -251,7 +251,7 @@ Feature: Conversation View
       | user1Name | user2Name | user3Name | GroupChat     | NewChatName      |
 
   @C800 @regression @rc @rc44
-  Scenario Outline: Verify editing the conversation name (landscape)
+  Scenario Outline: (AN-4282 for android 4.4) Verify editing the conversation name (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>

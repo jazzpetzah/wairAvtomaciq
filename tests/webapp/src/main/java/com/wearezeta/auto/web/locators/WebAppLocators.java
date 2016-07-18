@@ -606,8 +606,9 @@ public final class WebAppLocators {
 
         public static final String cssSearchField = "[data-uie-name='enter-users']";
 
-        public static final String cssBringFriendsFromGMailButton = ".start-ui-import-buttons";
+        public static final String cssBringFriendsFromGMailButton = "[data-uie-name='from-gmail']";
 
+        public static final String cssBringFriendsFromContactsButton = "[data-uie-name='from-contacts']";
     }
 
     public static final class RegistrationPage {
@@ -726,6 +727,10 @@ public final class WebAppLocators {
         public static final String cssMinimizedRemoteVideo = "#video-element-remote";
 
         public static final String cssMaximizedRemoteVideo = ".video-mode-portrait";
+
+        public static final String cssScreenShareButton = ".icon-screensharing";
+
+        public static final String cssLocalScreenShareVideo = ".video-element-local";
     }
 
     public static final class WarningPage {

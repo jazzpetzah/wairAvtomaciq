@@ -7,8 +7,8 @@ Feature: Chatheads
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact2>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact2>
     When User <Contact1> sends encrypted message <Message1> to group conversation <GroupChatName>
     And I tap the chathead notification
     Then I see the message "<Message1>" in the conversation view
