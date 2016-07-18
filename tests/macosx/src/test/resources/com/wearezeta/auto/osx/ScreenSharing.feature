@@ -11,11 +11,9 @@ Feature: Screen Sharing
     Given I am signed in properly
     When I start a video call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    #And <Contact> verifies to have 1 flow
-    #And <Contact> verifies that all flows have greater than 0 bytes
     And I click on screen share button
     And I wait for 5 seconds
-    Then I verify my self video shows my screen
+    #Then I verify my self video shows my screen
     Then I verify <Contact> sees my screen
 
     Examples:
