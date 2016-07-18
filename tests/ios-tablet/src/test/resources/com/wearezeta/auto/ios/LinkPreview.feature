@@ -9,7 +9,6 @@ Feature: Link Preview
     Given I see conversations list
     When I tap on contact name <Contact>
     And I post url link <Link>
-    And I wait for 5 seconds
     # Will uncomment this when iOS dev adds the identifiers
     # Then I see link preview container in the conversation view
 

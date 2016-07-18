@@ -1339,7 +1339,7 @@ public class ConversationViewPageSteps {
      * @throws Exception
      * @step. ^I (do not )?see (media|video message|audio message record|location map|link preview) container in the conversation view$
      */
-    @Then("^I (do not )?see (media|video message|audio message recorder|audio message|location map) " +
+    @Then("^I (do not )?see (media|video message|audio message recorder|audio message|location map|link preview) " +
             "container in the conversation view$")
     public void ISeeContainer(String shouldNotSee, String containerType) throws Exception {
         final boolean condition = (shouldNotSee == null) ?
@@ -1350,22 +1350,20 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Verify link preview container visibility
+     * Verify link preview image visibility
      *
      * @param shouldNotBeVisible equals to null if the placeholder should be visible
      * @throws Exception
-     * @step. ^I (do not )?see link preview container in the conversation view
+     * @step. ^I (do not )?see link preview image in the conversation view
      */
-    @When("^I (do not )?see link preview container in the conversation view$")
-    public void ISeeLinkPreviewContainer(String shouldNotBeVisible) throws Exception {
+    @When("^I (do not )?see link preview image in the conversation view$")
+    public void ISeeLinkPreviewImage(String shouldNotBeVisible) throws Exception {
         if (shouldNotBeVisible == null) {
-            Assert.assertTrue("Link preview container is not visible",
-                    getConversationViewPage().isLinkPreviewImageVisible() &&
-                            getConversationViewPage().isLinkPreviewContentVisible());
+            Assert.assertTrue("Link preview image is not visible",
+                    getConversationViewPage().isLinkPreviewImageVisible());
         } else {
-            Assert.assertTrue("Link preview is visible, but should be hidden",
-                    getConversationViewPage().isLinkPreviewImageInvisible() &&
-                            getConversationViewPage().isLinkPreviewContentInvisible());
+            Assert.assertTrue("Link preview image is visible, but should be hidden",
+                    getConversationViewPage().isLinkPreviewImageInvisible());
         }
     }
 }

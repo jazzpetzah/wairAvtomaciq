@@ -201,10 +201,10 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By xpathDefaultMapApplication = By.xpath("//UIAApplication[@name='Maps']");
 
-    private static final By nameLinkPreviewContainer = MobileBy.AccessibilityId("linkPreviewContent");
+    private static final By nameLinkPreviewContent = MobileBy.AccessibilityId("linkPreviewContent");
 
     private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("LinkPreviewImage");
-    
+
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -910,6 +910,8 @@ public class ConversationViewPage extends IOSPage {
                 return nameAudioActionButton;
             case "location map":
                 return classNameShareLocationContainer;
+            case "link preview":
+                return nameLinkPreviewContent;
             default:
                 throw new IllegalArgumentException(String.format("Unknown container %s", name));
         }
@@ -932,11 +934,5 @@ public class ConversationViewPage extends IOSPage {
     public boolean isLinkPreviewImageInvisible() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLinkPreviewImage);
     }
-    public boolean isLinkPreviewContentVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLinkPreviewContainer);
-    }
 
-    public boolean isLinkPreviewContentInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLinkPreviewContainer);
-    }
 }
