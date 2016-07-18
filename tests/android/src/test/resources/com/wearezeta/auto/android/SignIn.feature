@@ -9,7 +9,7 @@ Feature: Sign In
     And I have entered password <Password>
     And I press Log in button
     And I accept First Time overlay as soon as it is visible
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Login      | Password      | Name      |
@@ -19,7 +19,7 @@ Feature: Sign In
   Scenario Outline: Sign in to Wire by phone
     Given There are 1 users where <Name> is me
     When I sign in using my phone number
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Name      |
@@ -30,7 +30,7 @@ Feature: Sign In
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Conversations list with no conversations
     When I tap conversations list settings button
     And I select "Account" settings menu item
     And I select "Log out" settings menu item
@@ -38,7 +38,7 @@ Feature: Sign In
     When User <Name2> is me
     And I sign in using my email or phone number
     And I accept First Time overlay as soon as it is visible
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Name      | Name2     |
@@ -72,7 +72,7 @@ Feature: Sign In
     And I accept the error message
     And I press Log in button
     And I accept First Time overlay as soon as it is visible
-    Then I see Contact list with contacts
+    Then I see Conversations list with conversations
 
     Examples:
       | Name      | Email      | Password      | Contact   | ErrMessage                                           |
@@ -88,7 +88,7 @@ Feature: Sign In
     And I press Log in button
     And I input a new phone number for user <Name>
     And I input the verification code
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Login      | Password      | Name      |
@@ -104,7 +104,7 @@ Feature: Sign In
     And I press Log in button
     And I postpone Add Phone Number action
     And I accept First Time overlay as soon as it is visible
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Login      | Password      | Name      |
@@ -116,7 +116,7 @@ Feature: Sign In
     Given I sign in using my email
     Given I see First Time overlay
     Given I tap Got It button on First Time overlay
-    Given I see Contact list with no contacts
+    Given I see Conversations list with no conversations
 
     Examples:
       | Name      |
@@ -147,7 +147,7 @@ Feature: Sign In
     And I do not see "<DeviceToRemoveWithoutPassword>" settings menu item
     And I press Back button 2 times
     When I do not see Manage Devices overlay
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Password      | Name      | DeviceToRemoveWithoutPassword | DeviceToRemove | OtherDevice |

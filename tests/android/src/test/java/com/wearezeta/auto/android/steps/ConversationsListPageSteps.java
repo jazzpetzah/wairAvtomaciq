@@ -33,10 +33,10 @@ public class ConversationsListPageSteps {
      * Verify whether conversations list is visible or not
      *
      * @throws Exception
-     * @step. ^I see Contact list with (no )?contacts$
+     * @step. ^I see Conversations list with (no )?conversations?
      */
-    @Given("^I see Contact list with (no )?contacts$")
-    public void GivenISeeContactList(String shouldNotBeVisible) throws Exception {
+    @Given("^I see Conversations list with (no )?conversations?")
+    public void GivenISeeConversationList(String shouldNotBeVisible) throws Exception {
         getConversationsListPage().verifyContactListIsFullyLoaded();
         if (shouldNotBeVisible == null) {
             Assert.assertTrue(
@@ -54,28 +54,28 @@ public class ConversationsListPageSteps {
      * Verify whether conversations list is visible
      *
      * @throws Exception
-     * @step. ^I see Contact list$
+     * @step. ^I see Conversations list$
      */
-    @Given("^I see Contact list$")
-    public void GivenISeeContactList() throws Exception {
+    @Given("^I see Conversations list$")
+    public void GivenISeeConversationList() throws Exception {
         getConversationsListPage().verifyContactListIsFullyLoaded();
     }
 
     /**
      * Taps on a given contact name
      *
-     * @param contactName the contact to tap on
+     * @param conversationName the contact to tap on
      * @throws Exception
-     * @step. ^I tap on contact name (.*)$
+     * @step. ^I tap on conversation name (.*)$
      */
-    @When("^I tap on contact name (.*)$")
-    public void ITapOnContactName(String contactName) throws Exception {
+    @When("^I tap on conversation name (.*)$")
+    public void ITapOnContactName(String conversationName) throws Exception {
         try {
-            contactName = usrMgr.findUserByNameOrNameAlias(contactName).getName();
+            conversationName = usrMgr.findUserByNameOrNameAlias(conversationName).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
-        getConversationsListPage().tapOnName(contactName);
+        getConversationsListPage().tapOnName(conversationName);
     }
 
     /**
@@ -137,9 +137,9 @@ public class ConversationsListPageSteps {
      * Swipes up on the contact list to reveal archived conversations
      *
      * @throws Exception
-     * @step. ^I swipe up contact list$
+     * @step. ^I swipe up Conversations list$
      */
-    @When("^I swipe up contact list$")
+    @When("^I swipe up Conversations list$")
     public void ISwipeUpContactList() throws Exception {
         getConversationsListPage().doLongSwipeUp();
     }
@@ -195,9 +195,9 @@ public class ConversationsListPageSteps {
      * @param userName     the username to check for in the contact list
      * @param shouldNotSee equals to null if "do not" part does not exist
      * @throws Exception
-     * @step. ^I( do not)? see contact list with name (.*)$
+     * @step. ^I( do not)? see Conversations list with name (.*)$
      */
-    @Then("^I( do not)? see contact list with name (.*)$")
+    @Then("^I( do not)? see Conversations list with name (.*)$")
     public void ISeeUserNameInContactList(String shouldNotSee, String userName)
             throws Exception {
         try {
@@ -242,9 +242,9 @@ public class ConversationsListPageSteps {
      * @param contact          user name/alias
      * @param shouldNotBeMuted is set to null if 'not' part does not exist
      * @throws Exception
-     * @step. "^Contact (.*) is (not )?muted$
+     * @step. "^Conversation (.*) is (not )?muted$
      */
-    @Then("^Contact (.*) is (not )?muted$")
+    @Then("^Conversation (.*) is (not )?muted$")
     public void ContactIsMutedOrNot(String contact, String shouldNotBeMuted)
             throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);

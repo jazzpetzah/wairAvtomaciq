@@ -9,10 +9,10 @@ Feature: People View
     Given <Contact1> has a name <Contact1NewName>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I see contact list with name <Contact1>
-    And I see contact list with name <Contact2>
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    And I see Conversations list with name <Contact1>
+    And I see Conversations list with name <Contact2>
+    When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact1NewName>
     Then I see <Contact1> user name and email
@@ -28,13 +28,13 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I press options menu button
     And I press LEAVE conversation menu button
     And I confirm leaving
-    Then I see Contact list
+    Then I see Conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
@@ -47,10 +47,10 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I see contact list with name <Contact1>
-    And I see contact list with name <Contact2>
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    And I see Conversations list with name <Contact1>
+    And I see Conversations list with name <Contact2>
+    When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact2>
     And I click Remove
@@ -75,16 +75,16 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I see contact list with name <Contact1>
-    And I see contact list with name <Contact2>
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    And I see Conversations list with name <Contact1>
+    And I see Conversations list with name <Contact2>
+    When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     Then I see that the conversation name is <GroupChatName>
     And I see the correct number of participants in the title <ParticipantNumber>
     And I close participants page by UI button
     When I navigate back from dialog page
-    And I tap on contact name <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     Then I see the correct participant avatars for <Contact1NewName>,<Contact2NewName>
 
@@ -99,15 +99,15 @@ Feature: People View
     Given Myself has group chat <OldGroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <OldGroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <OldGroupChatName>
     And I tap conversation name from top toolbar
     And I rename group conversation to <NewConversationName>
     # Clicking X button to close participants view crashes the app
     And I press back button
     Then I see a message informing me that I renamed the conversation to <NewConversationName>
     And I navigate back from dialog page
-    And I see contact list with name <NewConversationName>
+    And I see Conversations list with name <NewConversationName>
 
     Examples:
       | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
@@ -119,8 +119,8 @@ Feature: People View
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap conversation name from top toolbar
     And I see <Contact> user profile page
     And I press options menu button
@@ -152,8 +152,8 @@ Feature: People View
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact2>
     Then I see user name <Contact2> on non connected user page
@@ -175,10 +175,10 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I see contact list with name <Contact1>
-    And I see contact list with name <Contact2>
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    And I see Conversations list with name <Contact1>
+    And I see Conversations list with name <Contact2>
+    When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     Then I see participants page
     And I see that the conversation name is <GroupChatName>
@@ -210,8 +210,8 @@ Feature: People View
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact1>
     Then I see <Contact1> user profile page
@@ -231,8 +231,8 @@ Feature: People View
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap conversation name from top toolbar
     Then I see <Contact> user name and email
 

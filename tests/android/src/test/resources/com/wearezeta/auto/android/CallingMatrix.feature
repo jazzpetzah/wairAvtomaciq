@@ -7,8 +7,8 @@ Feature: Calling Matrix
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap Audio Call button from top toolbar
     Then I see outgoing call
     When <Contact> accepts next incoming call automatically
@@ -37,8 +37,8 @@ Feature: Calling Matrix
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap Audio Call button from top toolbar
     Then I see outgoing call
     When <Contact> accepts next incoming call automatically
@@ -61,7 +61,7 @@ Feature: Calling Matrix
     Given <Contact1> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When <Contact1> calls me
     Then I see incoming call
     And I see incoming call from <Contact1>
@@ -90,7 +90,7 @@ Feature: Calling Matrix
     Given <Contact1> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When <Contact1> calls me
     Then I see incoming call
     And I see incoming call from <Contact1>
@@ -117,8 +117,8 @@ Feature: Calling Matrix
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And I tap Audio Call button from top toolbar
     Then I see outgoing call
     When <Contact1>,<Contact2> accept next incoming call automatically
@@ -148,8 +148,8 @@ Feature: Calling Matrix
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And I tap Audio Call button from top toolbar
     Then I see outgoing call
     When <Contact1>,<Contact2> accept next incoming call automatically
@@ -171,8 +171,8 @@ Feature: Calling Matrix
     Given <Contact2>,<Contact1> start instance using <Backend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And <Contact2> accept next incoming call automatically
     And <Contact1> calls <GroupChatName>
     Then I see incoming call
@@ -204,8 +204,8 @@ Feature: Calling Matrix
     Given <Contact2> start instance using <WaitBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And <Contact2> accept next incoming call automatically
     And <Contact1> calls <GroupChatName>
     Then I see incoming call
@@ -239,8 +239,8 @@ Feature: Calling Matrix
     Given <Contact2> start instance using <WaitBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And <Contact2> accept next incoming call automatically
     And <Contact1> calls <GroupChatName>
     Then I see incoming call
@@ -269,7 +269,7 @@ Feature: Calling Matrix
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When <Contact> calls me
     Then I see incoming call
     When I swipe to accept the call
@@ -294,8 +294,8 @@ Feature: Calling Matrix
     Given <Contact> accepts next incoming call automatically
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap Audio Call button from top toolbar
     And I minimize the application
     And I wait for 5 seconds
@@ -319,8 +319,8 @@ Feature: Calling Matrix
     Given <Contact> starts instance using <WaitBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap Audio Call button from top toolbar
     Then I see outgoing call
     When <Contact> accepts next incoming call automatically
@@ -348,8 +348,8 @@ Feature: Calling Matrix
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I lock the device
     And <Contact> calls me
     And I swipe to accept the call

@@ -10,7 +10,7 @@ Feature: Registration
     And I select Camera as picture source
     And I tap Take Photo button on Take Picture view
     And I tap Confirm button on Take Picture view
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Name      |
@@ -25,7 +25,7 @@ Feature: Registration
     And I select to choose my own picture
     And I select Gallery as picture source
     And I tap Confirm button on Take Picture view
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Name      |

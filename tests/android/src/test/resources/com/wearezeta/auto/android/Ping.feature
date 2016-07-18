@@ -6,8 +6,8 @@ Feature: Ping
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap Ping button from cursor toolbar
     Then I see Ping message "<Msg>" in the conversation view
 
@@ -22,8 +22,8 @@ Feature: Ping
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And I tap Ping button from cursor toolbar
     Then I see Ping message "<Msg1>" in the conversation view
     And I tap Ping button from cursor toolbar
@@ -40,8 +40,8 @@ Feature: Ping
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And User <Contact1> securely pings conversation <GroupChatName>
     And I see Ping message "<Action1>" in the conversation view
     And User <Contact1> securely hotpings conversation <GroupChatName>

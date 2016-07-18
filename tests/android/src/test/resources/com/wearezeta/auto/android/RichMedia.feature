@@ -6,8 +6,8 @@ Feature: Rich Media
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And I see the upper toolbar
     And I remember the state of upper toolbar
     And User <Contact1> sends 18 encrypted messages to user Myself
@@ -31,13 +31,13 @@ Feature: Rich Media
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
   @C717 @regression @rc
-  Scenario Outline: Verify conversation list play/pause controls can change playing SoundCloud media state
+  Scenario Outline: Verify Conversations list play/pause controls can change playing SoundCloud media state
     Given There are 2 users where <Name> is me
     Given <Name> is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And I tap on text input
     And I type the message "<SoudCloudLink>" and send it
     # Workaround for bug with autoscroll
@@ -56,15 +56,15 @@ Feature: Rich Media
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And I tap on text input
     And I type the message "<SoundCloudLink>" and send it
     And I scroll to the bottom of conversation view
     And I tap Play button on SoundCloud container
     And I press back button
     Then I see PlayPause media content button for conversation <Contact1>
-    When I tap on contact name <Contact2>
+    When I tap on conversation name <Contact2>
     And I press back button
     Then I see PlayPause media content button for conversation <Contact1>
     When I remember the state of PlayPause button next to the <Contact1> conversation
@@ -81,8 +81,8 @@ Feature: Rich Media
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And I tap on text input
     And I type the message "<YoutubeLink>" and send it
     Then I see Play button on Youtube container
@@ -99,8 +99,8 @@ Feature: Rich Media
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given User <Contact> sends encrypted message <SoundCloudLink> to user Myself
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     When I scroll to the bottom of conversation view
     And I tap Play button on SoundCloud container
     And I remember the state of Pause button on SoundCloud container
@@ -122,9 +122,9 @@ Feature: Rich Media
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given User <Contact> sends encrypted message <SoundCloudLink> to user Myself
-    Given I tap on contact name <Contact>
+    Given I tap on conversation name <Contact>
     When I scroll to the bottom of conversation view
     And I tap Play button on SoundCloud container
     And I remember the state of Pause button on SoundCloud container

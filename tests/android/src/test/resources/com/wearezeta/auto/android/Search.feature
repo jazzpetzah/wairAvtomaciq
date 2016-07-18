@@ -6,9 +6,9 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given I wait until <Contact1> exists in backend search results
-    When I tap on contact name <Contact2>
+    When I tap on conversation name <Contact2>
     And I navigate back from dialog page
     And I open Search UI
     And I type user name "<Contact1>" in search field
@@ -25,7 +25,7 @@ Feature: Search
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When I open Search UI
     And I type group name "<GroupChatName>" in search field
     Then I see group <GroupChatName> in Search result list
@@ -41,8 +41,8 @@ Feature: Search
     Given I sign in using my email or phone number
     Given I wait until <Contact1> exists in backend search results
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact2>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact2>
     And I navigate back from dialog page
     And I open Search UI
     And I type the first <Size> chars of user name "<Contact1>" in search field
@@ -59,7 +59,7 @@ Feature: Search
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When I open Search UI
     And I type the first <Size> chars of group name "<GroupChatName>" in search field
     Then I see group <GroupChatName> in Search result list
@@ -73,10 +73,10 @@ Feature: Search
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Conversations list with no conversations
     When I open Search UI
     And I press Clear button
-    Then I see Contact list
+    Then I see Conversations list
 
     Examples:
       | Name      |
@@ -90,7 +90,7 @@ Feature: Search
     Given <Contact1> is connected to <Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
     When I open Search UI
@@ -98,7 +98,7 @@ Feature: Search
     And I see user <Contact2> in Search result list
     And I do not see user <Contact1> in Search result list
     And I clear search result by tap clear button or back button
-    And I see Contact list
+    And I see Conversations list
     And I open Search UI
     Then I see the search text is empty
     And I do not see search suggestions
@@ -113,7 +113,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given I wait until <Contact1> exists in backend search results
     Given I wait until <Contact2> exists in backend search results
     And I open Search UI
@@ -137,7 +137,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given Myself wait until 1 person is in the Top People list on the backend
     When I open Search UI
     And I wait until Top People list appears
@@ -155,7 +155,7 @@ Feature: Search
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given I wait until <Contact1> exists in backend search results
     When I open Search UI
     And I type user name "<Contact1>" in search field
@@ -172,7 +172,7 @@ Feature: Search
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given I wait until <Contact1> exists in backend search results
     When I open Search UI
     And I type user name "<Contact1>" in search field
@@ -190,7 +190,7 @@ Feature: Search
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given I wait until <Contact1> exists in backend search results
     When I open Search UI
     And I type user name "<Contact1>" in search field
@@ -210,7 +210,7 @@ Feature: Search
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given I wait until <Contact1> exists in backend search results
     When I open Search UI
     And I type user name "<Contact1>" in search field
@@ -228,7 +228,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given I wait until <Contact1> exists in backend search results
     When I open Search UI
     And I type user name "<Contact1>" in search field
@@ -251,7 +251,7 @@ Feature: Search
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given Myself wait until 1 person is in the Top People list on the backend
     When I open Search UI
     And I wait until Top People list appears
@@ -270,7 +270,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given Myself wait until 2 people are in the Top People list on the backend
     When I open Search UI
     And I wait until Top People list appears
@@ -294,7 +294,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given I wait until <Contact1> exists in backend search results
     When I open Search UI
     And I type user name "<Contact1>" in search field
@@ -319,7 +319,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given I wait until <Contact1> exists in backend search results
     When I open Search UI
     And I type user name "<Contact1>" in search field
@@ -342,7 +342,7 @@ Feature: Search
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given I wait until <Contact> exists in backend search results
     And I open Search UI
     And I type user name "<Contact>" in search field
@@ -360,7 +360,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     # Top people will be generated in 15 minutes after sign up
     Given Myself wait until 2 people are in the Top People list on the backend
     When I open Search UI

@@ -12,8 +12,8 @@ Feature: Permissions
     When I sign in using my phone number
     And I wait for 3 seconds
     Then I dismiss security alert if it is visible
-    And I see Contact list with contacts
-    And I tap on contact name <Contact1>
+    And I see Conversations list with conversations
+    And I tap on conversation name <Contact1>
     # --- Add Picture ---
     When I tap Add picture button from cursor toolbar
     And I dismiss security alert
@@ -100,7 +100,7 @@ Feature: Permissions
     # Workaround for AN-4119
     And I press Back button
     And I select to keep the current picture
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Name      |

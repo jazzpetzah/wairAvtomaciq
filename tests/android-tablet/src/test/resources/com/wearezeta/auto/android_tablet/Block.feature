@@ -66,7 +66,7 @@ Feature: Block
       | user1Name | user2Name | Hellow friend |
 
   @C765 @regression @rc @rc44
-  Scenario Outline: I block user from 1:1 pop-over and can see blocked user in search results with blocked badge (landscape)
+  Scenario Outline: (AN-4282 for android 4.4) I block user from 1:1 pop-over and can see blocked user in search results with blocked badge (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given User Myself blocks user <Contact>
