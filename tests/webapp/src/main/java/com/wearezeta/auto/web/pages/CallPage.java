@@ -175,6 +175,7 @@ public class CallPage extends ContactListPage {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         final String locator = WebAppLocators.CallPage.xpathDeclineCallButtonByConversationName.apply(conversationName);
         WebElement declineCallButton = getDriver().findElementByXPath(locator);
+        DriverUtils.waitUntilElementClickable(getDriver(), declineCallButton);
         declineCallButton.click();
     }
 
@@ -182,6 +183,7 @@ public class CallPage extends ContactListPage {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         final String locator = WebAppLocators.CallPage.xpathAcceptCallButtonByConversationName.apply(conversationName);
         WebElement acceptCallButton = getDriver().findElementByXPath(locator);
+        DriverUtils.waitUntilElementClickable(getDriver(), acceptCallButton);
         acceptCallButton.click();
     }
 
