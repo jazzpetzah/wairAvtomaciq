@@ -1,6 +1,6 @@
 Feature: Autoconnect
 
-  @torun @C2034 @C2035 @real @noAcceptAlert
+  @C2034 @C2035 @real @noAcceptAlert
   Scenario Outline: Verify autoconnect users by phones and mail
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
