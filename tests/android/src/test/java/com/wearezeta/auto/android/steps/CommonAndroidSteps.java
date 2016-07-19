@@ -524,7 +524,7 @@ public class CommonAndroidSteps {
      * @step. ^(.*) sent connection request to (.*)$
      */
     @Given("^(.*) sent connection request to (.*)$")
-    public void GivenConnectionRequestIsSentTo(String userFromNameAlias, String usersToNameAliases) throws Throwable {
+    public void ConnectionRequestIsSentTo(String userFromNameAlias, String usersToNameAliases) throws Throwable {
         commonSteps.ConnectionRequestIsSentTo(userFromNameAlias, usersToNameAliases);
     }
 
@@ -539,7 +539,7 @@ public class CommonAndroidSteps {
      * @step. ^(.*) has an avatar picture from file (.*)$
      */
     @Given("^(.*) has an avatar picture from file (.*)$")
-    public void GivenUserHasAnAvatarPicture(String name, String picture) throws Exception {
+    public void UserHasAnAvatarPicture(String name, String picture) throws Exception {
         String picturePath = CommonUtils.getImagesPath(CommonAndroidSteps.class) + "/" + picture;
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
@@ -558,7 +558,7 @@ public class CommonAndroidSteps {
      * @step. ^(.*) has an accent color (.*)$
      */
     @Given("^(.*) has an accent color (.*)$")
-    public void GivenUserHasAnAccentColor(String name, String colorName) throws Throwable {
+    public void UserHasAnAccentColor(String name, String colorName) throws Throwable {
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
@@ -576,7 +576,7 @@ public class CommonAndroidSteps {
      * @step. ^(.*) has a name (.*)$
      */
     @Given("^(.*) has a name (.*)$")
-    public void GivenUserHasAName(String name, String newName) throws Throwable {
+    public void UserHasAName(String name, String newName) throws Throwable {
         try {
             name = usrMgr.findUserByNameOrNameAlias(name).getName();
         } catch (NoSuchUserException e) {
@@ -814,7 +814,7 @@ public class CommonAndroidSteps {
     @Given("^There (?:are|is) (\\d+) users? where (.*) is me$")
     public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias) throws Exception {
         commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
-        GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
+        UserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
     }
 
     /**
@@ -834,7 +834,7 @@ public class CommonAndroidSteps {
         } else {
             commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(count, myNameAlias);
         }
-        GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
+        UserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
     }
 
     /**
@@ -862,7 +862,7 @@ public class CommonAndroidSteps {
     @Given("^User (\\w+) is [Mm]e$")
     public void UserXIsMe(String nameAlias) throws Exception {
         commonSteps.UserXIsMe(nameAlias);
-        GivenUserHasAnAvatarPicture(nameAlias, DEFAULT_USER_AVATAR);
+        UserHasAnAvatarPicture(nameAlias, DEFAULT_USER_AVATAR);
     }
 
     /**

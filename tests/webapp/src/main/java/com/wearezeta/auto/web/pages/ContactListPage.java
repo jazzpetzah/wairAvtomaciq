@@ -436,7 +436,9 @@ public class ContactListPage extends WebPage {
         conversationName = fixDefaultGroupConvoName(conversationName, false);
         By locator = By.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName.apply(conversationName));
         DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
-        this.getDriver().findElement(locator).click();
+        WebElement conversation = getDriver().findElement(locator);
+        DriverUtils.waitUntilElementClickable(this.getDriver(), conversation);
+        conversation.click();
         By selected = By.cssSelector(WebAppLocators.ContactListPage.cssSelectedContactListEntryByName.apply(conversationName));
         assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
                 selected, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation is not selected within "
