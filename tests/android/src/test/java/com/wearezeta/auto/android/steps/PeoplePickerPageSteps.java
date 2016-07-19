@@ -1,5 +1,12 @@
 package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.email.InvitationMessage;
+import com.wearezeta.auto.common.email.MessagingUtils;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
+import com.wearezeta.auto.common.misc.ElementState;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
@@ -11,16 +18,25 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.Future;
 
 public class PeoplePickerPageSteps {
     private final AndroidPagesCollection pagesCollection = AndroidPagesCollection.getInstance();
     private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
     private static final Random random = new Random();
 
-    private PeoplePickerPage getPeoplePickerPage() throws Exception {
-        return pagesCollection.getPage(PeoplePickerPage.class);
+    private SearchListPage getSearchListPage() throws Exception {
+        return pagesCollection.getPage(SearchListPage.class);
     }
+
+    private ContactListPage getContactListPage() throws Exception {
+        return pagesCollection.getPage(ContactListPage.class);
+    }
+
+    private ElementState avatarState = null;
 
     /**
      * Checks to see that the people picker page (search view) is visible
@@ -28,10 +44,9 @@ public class PeoplePickerPageSteps {
      * @throws Exception
      * @step. ^I see People picker page$
      */
-    @When("^I see People picker page$")
-    public void WhenISeePeoplePickerPage() throws Exception {
-        Assert.assertTrue("People Picker is not visible", getPeoplePickerPage()
-                .isPeoplePickerPageVisible());
+    @Then("^I see People picker page$")
+    public void ISeePeoplePickerPage() throws Exception {
+        Assert.assertTrue("People Picker is not visible", getSearchListPage().waitUntilPageVisible());
     }
 
     /**
@@ -41,8 +56,8 @@ public class PeoplePickerPageSteps {
      * @step. ^I tap on Search input on People picker page$
      */
     @When("^I tap on Search input on People picker page$")
-    public void WhenITapOnSearchInputOnPeoplePickerPage() throws Exception {
-        getPeoplePickerPage().tapPeopleSearch();
+    public void ITapOnSearchInputOnPeoplePickerPage() throws Exception {
+        getSearchListPage().tapPeopleSearch();
     }
 
     /**
@@ -53,13 +68,13 @@ public class PeoplePickerPageSteps {
      * @step. ^I tap on (.*) in Top People$
      */
     @When("^I tap on (.*) in Top People$")
-    public void WhenITapInTopPeople(String contact) throws Exception {
+    public void ITapInTopPeople(String contact) throws Exception {
         try {
             contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
-        getPeoplePickerPage().tapOnContactInTopPeoples(contact);
+        getContactListPage().tapOnTopPeople(contact);
     }
 
     /**
@@ -69,8 +84,8 @@ public class PeoplePickerPageSteps {
      * @step. ^I tap on create conversation$
      */
     @When("^I tap on create conversation$")
-    public void WhenITapOnCreateConversation() throws Exception {
-        getPeoplePickerPage().tapCreateConversation();
+    public void ITapOnCreateConversation() throws Exception {
+        getSearchListPage().tapCreateConversation();
     }
 
     /**
@@ -80,8 +95,8 @@ public class PeoplePickerPageSteps {
      * @step. ^I press Clear button$
      */
     @When("^I press Clear button$")
-    public void WhenIPressClearButton() throws Exception {
-        getPeoplePickerPage().tapClearButton();
+    public void IPressClearButton() throws Exception {
+        getSearchListPage().tapClearButton();
     }
 
     /**
@@ -91,115 +106,60 @@ public class PeoplePickerPageSteps {
      * @step. ^I clear search result by press clear button or back button$
      */
     @When("^I clear search result by tap clear button or back button$")
-    public void WhenIClearSearchResultByPressClearButtonOrPressBackButton() throws Exception {
+    public void IClearSearchResultByPressClearButtonOrPressBackButton() throws Exception {
         if (random.nextInt(100) % 2 == 0) {
-            WhenIPressClearButton();
+            IPressClearButton();
         } else {
             pagesCollection.getCommonPage().navigateBack();
         }
     }
 
     /**
-     * Types a user name into the people picker search field.
+     * Type UserName/UserNameAlias, UserEmail/UserEmailAlias, UserPhone/UserPhoneAlias into search filed
+     * Support type partial words
      *
-     * @param contact user name/alias
+     * @param partialWords if not null, means only type the part of word[Start from index 0]
+     * @param text         the text to type
      * @throws Exception
-     * @step. ^I input in People picker search field user name (.*)$
+     * @step. ^I type (the first \d+ chars? of )?(?:user name|user email|user phone number|group name) "(.*)" in search field$
      */
-    @When("^I input in People picker search field user name (.*)$")
-    public void WhenIInputInPeoplePickerSearchFieldUserName(String contact)
-            throws Exception {
-        try {
-            contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
+    @When("^I type (the first \\d+ chars? of )?(?:user name|user email|user phone number|group name) \"(.*)\" in search field$")
+    public void ITypeWordInSearchFiled(String partialWords, String text) throws Exception {
+        text = usrMgr.replaceAliasesOccurences(text, FindBy.EMAIL_ALIAS);
+        text = usrMgr.replaceAliasesOccurences(text, FindBy.NAME_ALIAS);
+        text = usrMgr.replaceAliasesOccurences(text, FindBy.PHONENUMBER_ALIAS);
+        if (partialWords != null) {
+            int partialSize = Integer.parseInt(partialWords.replaceAll("[\\D]", ""));
+            text = (partialSize < text.length()) ? text.substring(0, partialSize) : text;
         }
-        getPeoplePickerPage().typeTextInPeopleSearch(contact);
-    }
-
-    /**
-     * Types a user email address into the people picker search field
-     *
-     * @param email user email/alias
-     * @throws Exception
-     * @step. ^I input in People picker search field user email (.*)$
-     */
-    @When("^I input in People picker search field user email (.*)$")
-    public void WhenIInputInPeoplePickerSearchFieldUserEmail(String email) throws Exception {
-        try {
-            email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
-        getPeoplePickerPage().typeTextInPeopleSearch(email);
-    }
-
-    /**
-     * Inputs a part of a username into the search field.
-     *
-     * @param part    a part of user name
-     * @param contact user name/alias
-     * @throws Exception
-     * @step. ^I input in search field part (.*) of user name to connect to
-     * (.*)$
-     */
-    @When("^I input in search field part (.*) of user name to connect to (.*)$")
-    public void WhenIInputInPeoplePickerSearchFieldPartOfUserName(String part,
-                                                                  String contact) throws Exception {
-        try {
-            contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        } catch (NoSuchUserException e) {
-            // Ignore silently
-        }
-        String[] list = contact.split("(?<=\\G.{" + part + "})");
-        getPeoplePickerPage().typeTextInPeopleSearch(list[0]);
-    }
-
-    /**
-     * Enter user name or email into the corresponding People Picker field
-     *
-     * @param searchCriteria user name/email/phone number or the corresponding aliases
-     * @throws Exception
-     * @step. ^I enter \"(.*)\" into Search input on People [Pp]icker page$
-     */
-    @When("^I enter \"(.*)\" into Search input on People [Pp]icker page")
-    public void IEnterStringIntoSearchField(String searchCriteria) throws Exception {
-        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.EMAIL_ALIAS);
-        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.NAME_ALIAS);
-        searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria, FindBy.PHONENUMBER_ALIAS);
-        getPeoplePickerPage().typeTextInPeopleSearch(searchCriteria);
+        getSearchListPage().typeTextInPeopleSearch(text);
         CommonSteps.getInstance().WaitForTime(2);
     }
 
     /**
-     * Adds user name to search field (existing content is not cleaned)
+     * Wait for a user/group in the search result/contact list
      *
      * @param contact user name/alias
      * @throws Exception
-     * @step. ^I add in search field user name to connect to (.*)$
+     * @step. ^I( do not)? see (user|group)? (.*) in (Search result|Contact)? list$
      */
-    @When("^I add in search field user name to connect to (.*)$")
-    public void WhenIAddInSearchFieldUserNameToConnectTo(String contact) throws Exception {
-        contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-        getPeoplePickerPage().addTextToPeopleSearch(contact);
-    }
-
-    /**
-     * Wait for a user in the people picker search list
-     *
-     * @param contact user name/alias
-     * @throws Exception
-     * @step. ^I see user (.*) found on People picker page$
-     */
-    @When("^I( do not)? see user (.*) found on People picker page$")
-    public void WhenISeeUserFoundOnPeoplePickerPage(String shouldNotSee, String contact) throws Exception {
+    @When("^I( do not)? see (user|group)? (.*) in (Search result|Contact)? list$")
+    public void ISeeUser(String shouldNotSee, String group, String contact, String listType) throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+        boolean isGroup = group.toLowerCase().equals("group");
+
         if (shouldNotSee == null) {
-            Assert.assertTrue(String.format("User '%s' is not visible on People Picker page", contact),
-                    getPeoplePickerPage().isUserVisible(contact));
+            Assert.assertTrue(String.format("The %s '%s' should be visible in %s list", group, contact, listType),
+                    listType.toLowerCase().equals("contact")
+                            ? getContactListPage().waitUntilNameVisible(isGroup, contact)
+                            : getSearchListPage().waitUntilNameVisible(isGroup, contact)
+            );
         } else {
-            Assert.assertTrue(String.format("User '%s' should not visible on People Picker page", contact),
-                    getPeoplePickerPage().isUserInvisible(contact));
+            Assert.assertTrue(String.format("The %s '%s' should be invisible in %s list", group, contact, listType),
+                    listType.toLowerCase().equals("contact")
+                            ? getContactListPage().waitUntilNameInvisible(isGroup, contact)
+                            : getSearchListPage().waitUntilNameInvisible(isGroup, contact)
+            );
         }
     }
 
@@ -212,7 +172,7 @@ public class PeoplePickerPageSteps {
     @Then("^I see that no results found$")
     public void ISeeNoResultsFound() throws Exception {
         Assert.assertTrue("Some results were found in People Picker",
-                getPeoplePickerPage().isErrorVisible());
+                getSearchListPage().isErrorVisible());
     }
 
     /**
@@ -224,10 +184,10 @@ public class PeoplePickerPageSteps {
      */
     @Then("^I( do not)? see No matching result placeholder on People picker page$")
     public void ISeeTheAddPeopleErrorMessage(String shouldNotSee) throws Exception {
-        if(shouldNotSee == null) {
-            Assert.assertTrue("Add people error message should be visible", getPeoplePickerPage().isErrorVisible());
-        }else {
-            Assert.assertTrue("Add people error message should be invisible", getPeoplePickerPage().isErrorInvisible());
+        if (shouldNotSee == null) {
+            Assert.assertTrue("Add people error message should be visible", getSearchListPage().isErrorVisible());
+        } else {
+            Assert.assertTrue("Add people error message should be invisible", getSearchListPage().isErrorInvisible());
         }
     }
 
@@ -239,14 +199,14 @@ public class PeoplePickerPageSteps {
      * @step. ^I tap on user name found on People picker page (.*)$
      */
     @When("^I tap on user name found on People picker page (.*)$")
-    public void WhenITapOnUserNameFoundOnPeoplePickerPage(String contact)
+    public void ITapOnUserNameFoundOnPeoplePickerPage(String contact)
             throws Exception {
         try {
             contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
         } catch (NoSuchUserException e) {
             // Ignore silently
         }
-        getPeoplePickerPage().selectUser(contact);
+        getSearchListPage().tapOnUserName(contact);
     }
 
     /**
@@ -257,10 +217,10 @@ public class PeoplePickerPageSteps {
      * @step. ^I tap on group found on People picker page (.*)$
      */
     @When("^I tap on group found on People picker page (.*)$")
-    public void WhenITapOnGroupFoundOnPeoplePickerPage(String contact)
+    public void ITapOnGroupFoundOnPeoplePickerPage(String contact)
             throws Exception {
         contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        getPeoplePickerPage().selectGroup(contact);
+        getSearchListPage().tapOnGroupName(contact);
     }
 
     /**
@@ -270,9 +230,9 @@ public class PeoplePickerPageSteps {
      * @step. ^I see (?:Add to|Create) to conversation button$
      */
     @When("^I see (?:Add to|Create) conversation button$")
-    public void WhenISeeAddToConversationButton() throws Exception {
+    public void ISeeAddToConversationButton() throws Exception {
         Assert.assertTrue("Add to/Create conversation button is not visible",
-                getPeoplePickerPage().isPickUserConfirmationBtnVisible());
+                getSearchListPage().isPickUserConfirmationBtnVisible());
     }
 
     /**
@@ -282,42 +242,8 @@ public class PeoplePickerPageSteps {
      * @step. ^I click on (?:Add to|Create) to conversation button$
      */
     @When("^I click on (?:Add to|Create) conversation button$")
-    public void WhenIClickOnAddToConversationButton() throws Exception {
-        getPeoplePickerPage().tapPickUserConfirmationButton();
-    }
-
-    /**
-     * Check that user exists in People picker
-     *
-     * @param contact user name/alias
-     * @throws Exception
-     * @step. ^I see user (.*) in [Pp]eople [Pp]icker$
-     */
-    @Then("^I see user (.*) in [Pp]eople [Pp]icker$")
-    public void ThenISeeUserInPeoplePicker(String contact) throws Exception {
-        contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-        Assert.assertTrue(String.format("User '%s' is not visible in People Picker", contact),
-                getPeoplePickerPage().isUserVisible(contact));
-    }
-
-    /**
-     * Looks for a group chat in the people picker search view
-     *
-     * @param shouldNotSee equals to null if "do not" part does not exist
-     * @param name         group name/alias
-     * @throws Exception
-     * @step. ^I (do not )?see group (.*) in [Pp]eople [Pp]icker$
-     */
-    @Then("^I (do not )?see group (.*) in [Pp]eople [Pp]icker$")
-    public void ThenISeeGroupInPeoplePicker(String shouldNotSee, String name) throws Exception {
-        name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-        if (shouldNotSee == null) {
-            Assert.assertTrue(String.format("Group '%s' is not visible in search results", name),
-                    getPeoplePickerPage().isGroupVisible(name));
-        } else {
-            Assert.assertTrue(String.format("Group '%s' is visible in search results, but should be hidden", name),
-                    getPeoplePickerPage().isGroupInvisible(name));
-        }
+    public void IClickOnAddToConversationButton() throws Exception {
+        getSearchListPage().tapPickUserConfirmationButton();
     }
 
     /**
@@ -333,11 +259,11 @@ public class PeoplePickerPageSteps {
         if (shouldNotBeVisible == null) {
             Assert.assertTrue(
                     "TOP PEOPLE overlay is hidden, but it should be visible",
-                    getPeoplePickerPage().isTopPeopleHeaderVisible());
+                    getContactListPage().waitUntilTopPeopleHeaderVisible());
         } else {
             Assert.assertTrue(
                     "TOP PEOPLE overlay is visible, but it should be hidden",
-                    getPeoplePickerPage().waitUntilTopPeopleHeaderInvisible());
+                    getContactListPage().waitUntilTopPeopleHeaderInvisible());
         }
     }
 
@@ -350,7 +276,7 @@ public class PeoplePickerPageSteps {
     @When("^I wait until Top People list appears$")
     public void WaitForTopPeople() throws Exception {
         Assert.assertTrue("Top People list is not visible",
-                getPeoplePickerPage().isTopPeopleHeaderVisible());
+                getContactListPage().waitUntilTopPeopleHeaderVisible());
     }
 
     /**
@@ -365,10 +291,10 @@ public class PeoplePickerPageSteps {
     public void ISeeActionButton(String shouldNotSee, String buttonName) throws Exception {
         if (shouldNotSee == null) {
             Assert.assertTrue(String.format("'%s' action button is not visible", buttonName),
-                    getPeoplePickerPage().waitUntilActionButtonIsVisible(buttonName));
+                    getSearchListPage().waitUntilActionButtonIsVisible(buttonName));
         } else {
             Assert.assertTrue(String.format("'%s' action button is not visible", buttonName),
-                    getPeoplePickerPage().waitUntilActionButtonIsInvisible(buttonName));
+                    getSearchListPage().waitUntilActionButtonIsInvisible(buttonName));
         }
     }
 
@@ -380,9 +306,8 @@ public class PeoplePickerPageSteps {
      */
     @Then("^I see the search text is empty$")
     public void SearchTextIsEmpty() throws Exception {
-        Assert.assertTrue("The search text should be empty", getPeoplePickerPage().isPeopleSearchTextEmpty());
+        Assert.assertTrue("The search text should be empty", getSearchListPage().isPeopleSearchTextEmpty());
     }
-
 
     /**
      * Verify the search suggestion is visible
@@ -393,28 +318,12 @@ public class PeoplePickerPageSteps {
      */
     @Then("^I( do not)? see search suggestions$")
     public void ISeeSearchSuggestions(String shouldNotSee) throws Exception {
-        if(shouldNotSee == null)
-        {
-            Assert.assertTrue("The search suggestion should not be empty", getPeoplePickerPage().isSuggestionVisible());
-        }else
-        {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("The search suggestion should not be empty", getSearchListPage().isSuggestionVisible());
+        } else {
             Assert.assertTrue("The search suggestion should be presented, but cannot see any suggestions",
-                    getPeoplePickerPage().isSuggestionInvisible());
+                    getSearchListPage().isSuggestionInvisible());
         }
-    }
-
-
-    /**
-     * Verify the toolbar title in People picker page
-     *
-     * @param title
-     * @throws Exception
-     * @step. ^the toolbar title in [Pp]eople [Pp]icker page should be "(.*)"$
-     */
-    @Then("^the toolbar title in [Pp]eople [Pp]icker page should be \"(.*)\"$")
-    public void ISeeToolbarTitleIs(String title) throws Exception {
-        Assert.assertTrue(String.format("The toolbar title in people picker page should be %s", title),
-                getPeoplePickerPage().isToolbarTitleVisible(title));
     }
 
     /**
@@ -426,7 +335,7 @@ public class PeoplePickerPageSteps {
      */
     @When("^I tap (Open Conversation|Create Conversation|Send Image|Call|Video Call) action button on People Picker page$")
     public void ITapActionButtons(String buttonName) throws Exception {
-        getPeoplePickerPage().tapActionButton(buttonName);
+        getSearchListPage().tapActionButton(buttonName);
     }
 
     /**
@@ -439,6 +348,123 @@ public class PeoplePickerPageSteps {
     @When("^I swipe right on contact avatar (.*) in [Pp]eople [Pp]icker$")
     public void ISwipeRightOnContact(String name) throws Exception {
         name = usrMgr.findUserByNameOrNameAlias(name).getName();
-        getPeoplePickerPage().swipeRightOnContactAvatar(name);
+        getSearchListPage().swipeRightOnContactAvatar(name);
+    }
+
+    /**
+     * Store a screenshot of user avatar for a future comparison
+     *
+     * @param alias user name/alias
+     * @throws Exception
+     * @step. ^I remember the state of (.*) avatar in contact list$
+     */
+    @When("^I remember the state of (.*) avatar in Contact list$")
+    public void IRememberTheStateOfAvatar(String alias) throws Exception {
+        final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
+        this.avatarState = new ElementState(
+                () -> getSearchListPage().getUserAvatarScreenshot(name).orElseThrow(IllegalStateException::new)
+        ).remember();
+    }
+
+    /**
+     * Verify that avatar state of a user in the list is changed since the last snapshot
+     *
+     * @param alias user name/alias
+     * @throws Exception
+     * @step. ^I verify the state of (.*) avatar in contact list is changed$"
+     */
+    @Then("^I verify the state of (.*) avatar in Contact list is changed$")
+    public void IVerifyTheAvatarStateIsChanged(String alias) throws Exception {
+        if (this.avatarState == null) {
+            throw new IllegalStateException("Please take a screenshot of previous avatar state first");
+        }
+        final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
+        final double minSimilarity = 0.97;
+        Assert.assertTrue(String.format("User avatar for '%s' seems to be the same", name),
+                this.avatarState.isChanged(10, minSimilarity));
+    }
+
+    /**
+     * Tap the Invote button next to a particular user name
+     *
+     * @param alias user name/alias
+     * @throws Exception
+     * @step. ^I tap Invite button next to (.*)
+     */
+    @When("^I tap Invite button next to (.*)")
+    public void ITapInviteButton(String alias) throws Exception {
+        final String name = usrMgr.findUserByNameOrNameAlias(alias).getName();
+        getSearchListPage().tapInviteButtonFor(name);
+    }
+
+    /**
+     * Select the corresponding email on the invitation alert
+     *
+     * @param alias email address/alias
+     * @throws Exception
+     * @step. ^I select (.*) email on invitation sending alert$
+     */
+    @When("^I select (.*) email on invitation sending alert$")
+    public void ISelectEmailOnInvitationAlert(String alias) throws Exception {
+        final String email = usrMgr.replaceAliasesOccurences(alias, ClientUsersManager.FindBy.EMAIL_ALIAS);
+        getContactListPage().selectEmailOnAlert(email);
+    }
+
+    /**
+     * Verify that invitation email exists in user's mailbox
+     *
+     * @param alias user name/alias
+     * @throws Exception
+     * @step. ^I verify user (.*) has received (?:an |\s*)email invitation$
+     */
+    @Then("^I verify user (.*) has received (?:an |\\s*)email invitation$")
+    public void IVerifyUserReceiverInvitation(String alias) throws Exception {
+        final ClientUser user = usrMgr.findUserByNameOrNameAlias(alias);
+        if (!invitationMessages.containsKey(user)) {
+            throw new IllegalStateException(String.format("Please start invitation message listener for '%s' first",
+                    user.getName()));
+        }
+        final String receivedMessage = invitationMessages.get(user).get();
+        Assert.assertTrue(String.format("Invitation email for %s has not been received", user.getEmail()),
+                new InvitationMessage(receivedMessage).isValid());
+    }
+
+    private Map<ClientUser, Future<String>> invitationMessages = new HashMap<>();
+
+    /**
+     * Start invitation messages listener for the particular user
+     *
+     * @param forUser user name/alias
+     * @throws Exception
+     * @step. ^I start listening to invitation messages for (.*)
+     */
+    @When("^I start listening to invitation messages for (.*)")
+    public void IStartListeningToInviteMessages(String forUser) throws Exception {
+        final ClientUser user = usrMgr.findUserByNameOrNameAlias(forUser);
+        IMAPSMailbox mbox = IMAPSMailbox.getInstance(user.getEmail(), user.getPassword());
+        Map<String, String> expectedHeaders = new HashMap<>();
+        expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
+        invitationMessages.put(user,
+                mbox.getMessage(expectedHeaders, BackendAPIWrappers.INVITATION_RECEIVING_TIMEOUT));
+    }
+
+    /**
+     * Broadcast the link parsed from the recent invitation email for receiver
+     *
+     * @param receiver email/alias
+     * @throws Exception
+     * @step. ^I broadcast the invitation for (.*)
+     */
+    @When("^I broadcast the invitation for (.*)")
+    public void IBroadcastInvitation(String receiver) throws Exception {
+        final ClientUser user = usrMgr.findUserByEmailOrEmailAlias(receiver);
+        if (!invitationMessages.containsKey(user)) {
+            throw new IllegalStateException(String.format("There are no invitation messages for user %s",
+                    user.getName()));
+        }
+        final String receivedMessage = invitationMessages.get(user).get();
+        final String invitationLink = new InvitationMessage(receivedMessage).extractInvitationLink();
+        final String code = invitationLink.substring(invitationLink.indexOf("/i/") + 3, invitationLink.length());
+        AndroidCommonUtils.broadcastInvitationCode(code);
     }
 }

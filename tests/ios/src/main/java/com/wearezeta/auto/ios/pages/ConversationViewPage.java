@@ -201,6 +201,10 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By xpathDefaultMapApplication = By.xpath("//UIAApplication[@name='Maps']");
 
+    private static final By nameLinkPreviewContent = MobileBy.AccessibilityId("linkPreviewContent");
+
+    private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("LinkPreviewImage");
+
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -415,10 +419,6 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isMediaContainerVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), xpathMediaContainerCell);
-    }
-
-    public boolean isMediaContainerInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), xpathMediaContainerCell);
     }
 
     public boolean isMediaBarDisplayed() throws Exception {
@@ -738,10 +738,6 @@ public class ConversationViewPage extends IOSPage {
         this.getDriver().tap(1, getElement(nameFileTransferTopLabel), DriverUtils.LONG_TAP_DURATION);
     }
 
-    public boolean isVideoMessageContainerVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameVideoMessageActionButton);
-    }
-
     private WebElement locateCursorToolButton(By locator) throws Exception {
         final Optional<WebElement> toolButton = getElementIfDisplayed(locator, 3);
         if (toolButton.isPresent()) {
@@ -765,14 +761,6 @@ public class ConversationViewPage extends IOSPage {
         getDriver().tap(1, locateCursorToolButton(getInputToolButtonByName(btnName)), durationSeconds * 1000);
     }
 
-    public boolean isAudioMessageRecordCancelVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAudioRecorderCancelButton);
-    }
-
-    public boolean isAudioMessageRecordCancelInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameAudioRecorderCancelButton);
-    }
-
     private By getRecordControlButtonByName(String buttonName) {
         switch (buttonName.toLowerCase()) {
             case "send":
@@ -793,14 +781,6 @@ public class ConversationViewPage extends IOSPage {
         } else {
             clickElementWithRetryIfStillDisplayed(button);
         }
-    }
-
-    public boolean isAudioActionButtonVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameAudioActionButton);
-    }
-
-    public boolean isAudioActionButtonInvisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameAudioActionButton);
     }
 
     public void tapVideoMessageContainer(String username) throws Exception {
@@ -898,14 +878,6 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
 
-    public boolean isShareLocationContainerVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classNameShareLocationContainer);
-    }
-
-    public boolean isShareLocationContainerNotVisible() throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), classNameShareLocationContainer);
-    }
-
     public boolean isDefaultReceivedShareLocationAddressVisible() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameDefaultRecievedLocationAddress);
     }
@@ -924,6 +896,43 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isDefaultMapApplicationVisible() throws Exception {
         return DriverUtils.waitUntilLocatorAppears(getDriver(), xpathDefaultMapApplication, 15);
+    }
+
+    private By getContainerIdentifier(String name) {
+        switch (name.toLowerCase()) {
+            case "media":
+                return xpathMediaContainerCell;
+            case "video message":
+                return nameVideoMessageActionButton;
+            case "audio message recorder":
+                return nameAudioRecorderCancelButton;
+            case "audio message":
+                return nameAudioActionButton;
+            case "location map":
+                return classNameShareLocationContainer;
+            case "link preview":
+                return nameLinkPreviewContent;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown container %s", name));
+        }
+    }
+
+    public boolean isContainerVisible(String name) throws Exception {
+        final By locator = getContainerIdentifier(name);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isContainerInvisible(String name) throws Exception {
+        final By locator = getContainerIdentifier(name);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public boolean isLinkPreviewImageVisible() throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), nameLinkPreviewImage);
+    }
+
+    public boolean isLinkPreviewImageInvisible() throws Exception {
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLinkPreviewImage);
     }
 
 }

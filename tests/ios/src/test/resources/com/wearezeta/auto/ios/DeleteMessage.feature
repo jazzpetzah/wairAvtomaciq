@@ -75,7 +75,7 @@ Feature: DeleteMessage
     And I long tap on media container in conversation view
     And I tap on Delete badge item
     And I tap Delete button on the alert
-    Then I do not see the media container in the conversation view
+    Then I do not see media container in the conversation view
 
     Examples:
       | Name      | Contact   | SoundCloudLink                                   |

@@ -1,6 +1,6 @@
 Feature: People View
 
-  @C402 @id87 @regression
+  @C402 @regression
   Scenario Outline: I can access user details page from group chat and see user name, email and photo
     Given There are 3 users where <Name> is me
     Given <Contact1> has an avatar picture from file <Picture>
@@ -9,10 +9,10 @@ Feature: People View
     Given <Contact1> has a name <Contact1NewName>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I see contact list with name <Contact1>
-    And I see contact list with name <Contact2>
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    And I see Conversations list with name <Contact1>
+    And I see Conversations list with name <Contact2>
+    When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact1NewName>
     Then I see <Contact1> user name and email
@@ -21,36 +21,36 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |
       | user1Name | user2Name | user3Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg | aqaPictureContact |
 
-  @C685 @id321 @regression @rc @rc42
+  @C685 @regression @rc @rc42
   Scenario Outline: Leave group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I press options menu button
     And I press LEAVE conversation menu button
     And I confirm leaving
-    Then I see Contact list
+    Then I see Conversations list
 
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @C686 @id322 @regression @rc @rc42
+  @C686 @regression @rc @rc42
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I see contact list with name <Contact1>
-    And I see contact list with name <Contact2>
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    And I see Conversations list with name <Contact1>
+    And I see Conversations list with name <Contact2>
+    When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact2>
     And I click Remove
@@ -63,7 +63,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | YOU REMOVED |
 
-  @C697 @id594 @regression @rc
+  @C697 @regression @rc
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given <Contact1> has an avatar picture from file <Picture>
@@ -75,16 +75,16 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I see contact list with name <Contact1>
-    And I see contact list with name <Contact2>
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    And I see Conversations list with name <Contact1>
+    And I see Conversations list with name <Contact2>
+    When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     Then I see that the conversation name is <GroupChatName>
     And I see the correct number of participants in the title <ParticipantNumber>
     And I close participants page by UI button
     When I navigate back from dialog page
-    And I tap on contact name <GroupChatName>
+    And I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     Then I see the correct participant avatars for <Contact1NewName>,<Contact2NewName>
 
@@ -92,35 +92,35 @@ Feature: People View
       | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName       |
       | user1Name | user3Name | user2Name | 2                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | aqaPictureContact | aqaAvatarTestContact  |
 
-  @C715 @id1507 @regression @rc @rc42
+  @C715 @regression @rc @rc42
   Scenario Outline: Verify editing the conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <OldGroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <OldGroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <OldGroupChatName>
     And I tap conversation name from top toolbar
     And I rename group conversation to <NewConversationName>
     # Clicking X button to close participants view crashes the app
     And I press back button
     Then I see a message informing me that I renamed the conversation to <NewConversationName>
     And I navigate back from dialog page
-    And I see contact list with name <NewConversationName>
+    And I see Conversations list with name <NewConversationName>
 
     Examples:
       | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
       | user1Name | user2Name | user3Name | oldGroupChat     | newGroupName        |
 
-  @C395 @id2236 @regression
+  @C395 @regression
   Scenario Outline: Check interaction with options menu
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap conversation name from top toolbar
     And I see <Contact> user profile page
     And I press options menu button
@@ -145,15 +145,15 @@ Feature: People View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C716 @id1509 @regression @rc
+  @C716 @regression @rc
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact2>
     Then I see user name <Contact2> on non connected user page
@@ -168,17 +168,17 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     |
 
-  @C396 @id2291 @regression
+  @C396 @regression
   Scenario Outline: Check interaction with participants view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I see contact list with name <Contact1>
-    And I see contact list with name <Contact2>
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    And I see Conversations list with name <Contact1>
+    And I see Conversations list with name <Contact2>
+    When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     Then I see participants page
     And I see that the conversation name is <GroupChatName>
@@ -203,15 +203,15 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  | ParticipantNumber |
       | user1Name | user2Name | user3Name | GroupInfoCheck | 2                 |
 
-  @C397 @id2292 @regression
+  @C397 @regression
   Scenario Outline: Start 1to1 conversation from participants view
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <GroupChatName>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <GroupChatName>
     And I tap conversation name from top toolbar
     And I tap on group chat contact <Contact1>
     Then I see <Contact1> user profile page
@@ -225,14 +225,14 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     |
 
-  @C689 @id325 @regression @rc
+  @C689 @regression @rc
   Scenario Outline: Check contact personal info in one to one conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I tap conversation name from top toolbar
     Then I see <Contact> user name and email
 

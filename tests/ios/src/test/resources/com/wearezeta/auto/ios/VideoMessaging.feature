@@ -9,7 +9,7 @@ Feature: Video Messaging
     Given I see conversations list
     When I tap on contact name <Contact>
     And I tap Video Message button from input tools
-    Then I see a preview of video message
+    Then I see video message container in the conversation view
 
     Examples:
       | Name      | Contact   | FileName    |

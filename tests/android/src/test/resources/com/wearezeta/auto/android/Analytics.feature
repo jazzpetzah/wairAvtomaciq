@@ -4,11 +4,11 @@ Feature: Analytics
   Scenario Outline: Verify registration statistics is sent
     When I see welcome screen
     And I verify that <LogType> log contains string "registration.opened_phone_signup"
-    When I input a new phone number for user <Name>
+    And I input a new phone number for user <Name>
     Then I verify that <LogType> log contains string "registration.entered_phone"
     When I input the verification code
     And I verify that <LogType> log contains string "registration.verified_phone"
-    When I input my name
+    And I input my name
     Then I verify that <LogType> log contains string "registration.entered_name"
     And I verify that <LogType> log contains string "registration.succeeded"
     When I select to choose my own picture
@@ -17,7 +17,7 @@ Feature: Analytics
     And I tap Confirm button on Take Picture view
     Then I verify that <LogType> log contains string "registration.added_photo"
     And I verify that <LogType> log contains string "session"
-    And I see Contact list with no contacts
+    And I see Conversations list with no conversations
 
     Examples:
       | Name      | LogType   |
@@ -32,8 +32,8 @@ Feature: Analytics
     Given I push 1.00MB video file having name "random_qa.mp4" to the device
     Given I push local file named "avatarTest.png" to the device
     Given I push 1.00MB file having name "qa_random.txt" to the device
-    Given I see Contact list with contacts
-    Given I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    Given I tap on conversation name <Contact>
     # Text message
     When I type the message "<Message>" and send it
     Then I verify that <LogType> log contains string "media.completed_media_action"

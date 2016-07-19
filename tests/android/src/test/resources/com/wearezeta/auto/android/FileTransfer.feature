@@ -7,8 +7,8 @@ Feature: File Transfer
     Given I sign in using my email or phone number
     Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And I tap File button from cursor toolbar
     And I remember the state of View button on file upload placeholder
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
@@ -26,8 +26,8 @@ Feature: File Transfer
     Given I sign in using my email or phone number
     Given I push <FileSize> file having name "<FileFullName>" to the device
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And I tap File button from cursor toolbar
     Then I see alert message containing "<AlertMessage>" in the body
 
@@ -41,8 +41,8 @@ Feature: File Transfer
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And <Contact1> sends <FileSize> file having name "<FileName>.<FileExtension>" and MIME type "<MimeType>" via device Device1 to user Myself
     Then I see new message notification "Shared a file"
     And I see the result of <FileSize> file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
@@ -58,10 +58,10 @@ Feature: File Transfer
     Given I sign in using my email or phone number
     Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     When I enable Airplane mode on the device
     And I wait for 5 seconds
-    And I tap on contact name <Contact1>
+    And I tap on conversation name <Contact1>
     And I tap File button from cursor toolbar
     Then I see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <UploadingTimeout> seconds failed
     When I disable Airplane mode on the device
@@ -82,8 +82,8 @@ Feature: File Transfer
     Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
     Given I remove the file "1_<FileName>.<FileExtension>" from device's sdcard
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And I tap File button from cursor toolbar
     And I wait up to <UploadingTimeout> seconds until <FileSize> file with extension "<FileExtension>" is uploaded
     And I tap View button on file upload placeholder
@@ -103,8 +103,8 @@ Feature: File Transfer
     Given I sign in using my email or phone number
     Given I remove the file "<FileName>.<FileExtension>" from device's sdcard
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And <Contact1> sends local file named "<FileName>.<FileExtension>" and MIME type "<MIMEType>" via device Device1 to user Myself
     And I see the result of <FileSize> file received having name "<FileName>.<FileExtension>" and extension "<FileExtension>" in <ReceivingTimeout> seconds
     And I remember the state of Download button on file download placeholder
@@ -125,8 +125,8 @@ Feature: File Transfer
     Given I sign in using my email or phone number
     Given I push <FileSize> file having name "<FileName>.<FileExtension>" to the device
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And I tap File button from cursor toolbar
     And I tap Cancel button on file upload placeholder
     Then I do not see the result of <FileSize> file upload having name "<FileName>.<FileExtension>" and extension "<FileExtension>"
@@ -142,8 +142,8 @@ Feature: File Transfer
     Given I sign in using my email or phone number
     Given I push local file named "<ImageFile>" to the device
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact1>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact1>
     And I tap File button from cursor toolbar
     Then I see a picture in the conversation view
     When I long tap the recent picture in the conversation view

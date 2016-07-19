@@ -17,6 +17,9 @@ public class GroupPeoplePopoverPage extends WebPage {
     @FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantsListPage.xpathConversationTitle)
     private WebElement conversationTitle;
 
+    @FindBy(how = How.CSS, using = ".participants [data-uie-name='enter-users']")
+    private WebElement searchInputField;
+
     public GroupPeoplePopoverPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
         super(lazyDriver);
@@ -50,5 +53,17 @@ public class GroupPeoplePopoverPage extends WebPage {
 
     public String getConversationTitle() {
         return conversationTitle.getText();
+    }
+
+    public void searchForUser(String searchText) throws Exception {
+        DriverUtils.waitUntilElementClickable(getDriver(), searchInputField);
+        searchInputField.clear();
+        searchInputField.sendKeys(searchText);
+    }
+
+    public void selectUserFromSearchResult(String name) throws Exception {
+        By locator = By.xpath(PopoverLocators.Shared.xpathSearchResultByName.apply(name));
+        DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        getDriver().findElement(locator).click();
     }
 }

@@ -2,12 +2,13 @@ package com.wearezeta.auto.web.pages;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 
+import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 public class VideoCallPage extends WebPage {
@@ -23,6 +24,24 @@ public class VideoCallPage extends WebPage {
 
     @FindBy(css = WebAppLocators.VideoCallPage.cssMaximizeVideoCallButton)
     private WebElement maximizeVideoCallButton;
+
+    @FindBy(css = WebAppLocators.VideoCallPage.cssCameraButton)
+    private WebElement cameraButton;
+
+    @FindBy(css = WebAppLocators.VideoCallPage.cssSelfVideo)
+    private WebElement selfVideo;
+
+    @FindBy(css = WebAppLocators.VideoCallPage.cssMinimizedRemoteVideo)
+    private WebElement minimizedRemoteVideo;
+
+    @FindBy(css = WebAppLocators.VideoCallPage.cssMaximizedRemoteVideo)
+    private WebElement maximizedRemoteVideo;
+
+    @FindBy(css = WebAppLocators.VideoCallPage.cssScreenShareButton)
+    private WebElement screenShareButton;
+
+    @FindBy(css = WebAppLocators.VideoCallPage.cssLocalScreenShareVideo)
+    private WebElement localScreenShareVideo;
 
     public VideoCallPage(Future<ZetaWebAppDriver> lazyDriver)
             throws Exception {
@@ -118,5 +137,43 @@ public class VideoCallPage extends WebPage {
     public boolean isVideoNotInPortrait() throws Exception {
         By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssVideoPortrait);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
+
+    public void clickVideoButton() throws Exception {
+        WebCommonUtils.hoverOverElement(getDriver(), cameraButton);
+        getDriver().executeScript("arguments[0].click()", cameraButton);
+    }
+
+    public boolean isVideoButtonPressed() throws Exception {
+        WebCommonUtils.hoverOverElement(getDriver(), cameraButton);
+        By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssCameraButtonPressed);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public boolean isVideoButtonUnPressed() throws Exception {
+        WebCommonUtils.hoverOverElement(getDriver(), cameraButton);
+        By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssCameraButtonNotPressed);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+
+    public Optional<BufferedImage> getSelfVideo() throws Exception {
+        return getElementScreenshot(selfVideo);
+    }
+
+    public Optional<BufferedImage> getMinimizedRemoteVideo() throws Exception {
+        return getElementScreenshot(minimizedRemoteVideo);
+    }
+
+    public Optional<BufferedImage> getMaximizedRemoteVideo() throws Exception {
+        return getElementScreenshot(maximizedRemoteVideo);
+    }
+
+    public void clickScreenShareButton() throws Exception {
+        WebCommonUtils.hoverOverElement(getDriver(), screenShareButton);
+        getDriver().executeScript("arguments[0].click()", screenShareButton);
+    }
+
+    public WebElement getLocalScreenShareVideoElement() throws Exception {
+        return localScreenShareVideo;
     }
 }

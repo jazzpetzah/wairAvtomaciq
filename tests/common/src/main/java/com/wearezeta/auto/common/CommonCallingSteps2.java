@@ -2,11 +2,17 @@ package com.wearezeta.auto.common;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
+import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceCallException;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.calling2.v1.CallingServiceClient;
@@ -28,7 +34,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+
+import javax.imageio.ImageIO;
 import javax.management.InstanceNotFoundException;
+import javax.xml.bind.DatatypeConverter;
 
 public final class CommonCallingSteps2 {
 
@@ -113,7 +122,6 @@ public final class CommonCallingSteps2 {
      * @param callerNames List of caller names who call to a conversation
      * @param conversationName the name of the conversation to call
      * @throws Exception
-     * @see com.wearezeta.auto.common.calling2.v1.model.InstanceType
      */
     public void callToConversation(List<String> callerNames, String conversationName) throws Exception {
         for (String callerName : callerNames) {
@@ -133,7 +141,6 @@ public final class CommonCallingSteps2 {
      * @param callerNames list of caller names
      * @param conversationName the name of the conversation to call
      * @throws Exception
-     * @see com.wearezeta.auto.common.calling2.v1.model.InstanceType
      */
     public void startVideoCallToConversation(List<String> callerNames, String conversationName) throws Exception {
         for (String callerName : callerNames) {
@@ -197,7 +204,6 @@ public final class CommonCallingSteps2 {
      * @param calleeNames list of callee names
      * @param instanceType the {@code InstanceType} to call with as String
      * @throws Exception
-     * @see com.wearezeta.auto.common.calling2.v1.model.InstanceType
      */
     public void startInstances(List<String> calleeNames, String instanceType) throws Exception {
         LOG.debug("Creating instances for " + Arrays.toString(calleeNames.toArray()));
@@ -326,6 +332,13 @@ public final class CommonCallingSteps2 {
         return calls;
     }
 
+    public BufferedImage getScreenshot(ClientUser userAs) throws InstanceNotFoundException, IOException, CallingServiceInstanceException {
+        final Instance instance = getInstance(userAs);
+        String dataUrl = client.getScreenshot(instance);
+        byte[] imagedata = DatatypeConverter.parseBase64Binary(dataUrl);
+        return ImageIO.read(new ByteArrayInputStream(imagedata));
+    }
+
     /**
      * Stops and terminates all instances and calls in parallel.
      *
@@ -441,6 +454,10 @@ public final class CommonCallingSteps2 {
         }
     }
 
+    private synchronized Call getCurrentCall(Instance instance) throws CallingServiceInstanceException {
+        return client.getCurrentCall(instance);
+    }
+
     private synchronized Call getIncomingCall(ClientUser callee)
             throws CallNotFoundException {
         final String callKey = makeKey(callee);
@@ -506,4 +523,23 @@ public final class CommonCallingSteps2 {
         }
         return convId;
     }
+
+    public void switchVideoOn(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
+            CallingServiceCallException, CallingServiceInstanceException {
+        for (String calleeName : calleeNames) {
+            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            Instance instance = getInstance(userAs);
+            client.switchVideoOn(instance, getCurrentCall(instance));
+        }
+    }
+
+    public void switchVideoOff(List<String> calleeNames) throws NoSuchUserException, InstanceNotFoundException,
+            CallingServiceCallException, CallingServiceInstanceException {
+        for (String calleeName : calleeNames) {
+            final ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+            Instance instance = getInstance(userAs);
+            client.switchVideoOff(instance, getCurrentCall(instance));
+        }
+    }
+
 }

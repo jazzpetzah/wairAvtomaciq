@@ -49,7 +49,7 @@ public class WelcomePageSteps {
 	 * @throws Exception
 	 */
 	@Given("^I see [Ww]elcome screen$")
-	public void GivenISeeWelcomeScreen() throws Exception {
+	public void ISeeWelcomeScreen() throws Exception {
 		Assert.assertTrue("Welcome page is not shown", getWelcomePage().waitForInitialScreen());
 	}
 
@@ -75,7 +75,7 @@ public class WelcomePageSteps {
 	 * @throws Exception
 	 */
 	@When("^I input a new phone number for user (.*)$")
-	public void WhenIInputANewPhoneNumber(String name) throws Exception {
+	public void IInputANewPhoneNumber(String name) throws Exception {
 		getWelcomePage().clickAreaCodeSelector();
 		getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
 

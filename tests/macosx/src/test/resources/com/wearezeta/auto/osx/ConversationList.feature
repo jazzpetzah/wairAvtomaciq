@@ -60,9 +60,9 @@ Feature: Conversation List
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     When I open conversation with <Contact>
-    And I click menu bar item "Conversation" and menu item "Silence"
+    And I click menu bar item "Conversation" and menu item "Mute"
     Then I see that conversation <Contact> is muted
-    When I click menu bar item "Conversation" and menu item "Silence"
+    When I click menu bar item "Conversation" and menu item "Mute"
     Then I see that conversation <Contact> is not muted
 
     Examples: 
@@ -115,9 +115,9 @@ Feature: Conversation List
     Given I Sign in using login <Login> and password <Password>
     And I am signed in properly
     When I open conversation with <ChatName>
-    And I click menu bar item "Conversation" and menu item "Silence"
+    And I click menu bar item "Conversation" and menu item "Mute"
     Then I see that conversation <ChatName> is muted
-    When I click menu bar item "Conversation" and menu item "Silence"
+    When I click menu bar item "Conversation" and menu item "Mute"
     Then I see that conversation <ChatName> is not muted
 
     Examples: 
