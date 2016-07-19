@@ -201,9 +201,9 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By xpathDefaultMapApplication = By.xpath("//UIAApplication[@name='Maps']");
 
-    private static final By nameLinkPreviewContent = MobileBy.AccessibilityId("linkPreviewContent");
+    private static final By nameLinkPreviewSource = MobileBy.AccessibilityId("linkPreviewSource");
 
-    private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("LinkPreviewImage");
+    private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("linkPreviewImage");
 
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
@@ -911,7 +911,7 @@ public class ConversationViewPage extends IOSPage {
             case "location map":
                 return classNameShareLocationContainer;
             case "link preview":
-                return nameLinkPreviewContent;
+                return nameLinkPreviewSource;
             default:
                 throw new IllegalArgumentException(String.format("Unknown container %s", name));
         }
