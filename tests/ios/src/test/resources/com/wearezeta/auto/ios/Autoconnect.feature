@@ -12,5 +12,5 @@ Feature: Autoconnect
     And I see conversation AutoconnectUser3 in conversations list
 
     Examples:
-      | Name      | AutoconnectUser2 | AutoconnectUser3 |
-      | user1Name | AutoconnectUser2 | AutoconnectUser3 |
+      | Name      |
+      | user1Name |
