@@ -2,7 +2,9 @@ package com.wearezeta.auto.web.steps;
 
 import java.util.List;
 
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 import org.junit.Assert;
 
 import com.wearezeta.auto.web.pages.SettingsPage;
@@ -10,6 +12,8 @@ import com.wearezeta.auto.web.pages.SettingsPage.SoundAlertsLevel;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -125,6 +129,18 @@ public class SettingsPageSteps {
 	}
 
 	/**
+	 * Wait for devices to show up
+	 *
+	 * @param amount amount of added devices including current device
+	 *
+	 * @throws Exception
+     */
+	@When("^I wait for devices$")
+	public void IWaitForDevices() throws Exception {
+		context.getPagesCollection().getPage(SettingsPage.class).waitForDevices();
+	}
+
+	/**
 	 * Verify if you see a device in the device list (or not)
 	 * 
 	 * @step. I( do not)? see a device named (.*) in the devices section
@@ -159,6 +175,29 @@ public class SettingsPageSteps {
 	@When("^I click on the device (.*) in the devices section$")
 	public void IClickOnDevice(String device) throws Exception {
 		context.getPagesCollection().getPage(SettingsPage.class).clickDevice(device+context.getTestname().hashCode());
+	}
+
+	@When("^I click back button on self settings Device Detail section$")
+	public void IClickBackButton() throws Exception {
+		context.getPagesCollection().getPage(SettingsPage.class).clickBackButton();
+	}
+
+	@When("^I verify device on self settings Device Detail section$")
+	public void IVerifyDevice() throws Exception {
+		context.getPagesCollection().getPage(SettingsPage.class).verifyDevice();
+	}
+
+	@Then("^I( do not)? see device (.*) of user (.*) is verified in device section$")
+	public void ISeeVerifiedDevice(String donot, String deviceName, String userAlias) throws Exception {
+		ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
+		String id = context.getDeviceManager().getDeviceId(user, deviceName);
+		context.getPagesCollection().getPage(SettingsPage.class).waitForDevices();
+		List<String> devices = context.getPagesCollection().getPage(SettingsPage.class).getVerifiedDeviceIds();
+		if (donot != null) {
+			assertThat("Device id is in verified devices", !devices.contains(id.toUpperCase()));
+		} else {
+			assertThat("Device id is NOT in verified devices", devices, hasItem(id.toUpperCase()));
+		}
 	}
 
 	/**
