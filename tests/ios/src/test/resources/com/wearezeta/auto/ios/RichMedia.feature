@@ -1,13 +1,13 @@
 Feature: Rich Media
 
-  @C3183 @rc @regression @IPv6 @id526
+  @C3183 @rc @regression @IPv6
   Scenario Outline: I can send and play inline youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I post media link <YouTubeLink>
+    And I post url link <YouTubeLink>
     And I click video container for the first time
     # Wait until web page is loaded
     And I wait for 5 seconds
@@ -17,7 +17,7 @@ Feature: Rich Media
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @C3210 @rc @regression @IPv6 @id1468
+  @C3210 @rc @regression @IPv6
   Scenario Outline: (MediaBar disappears on Simulator) Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -40,7 +40,7 @@ Feature: Rich Media
       | Name      | Contact   | SoundCloudLink                                                   |
       | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
-  @C3205 @regression @id384
+  @C3205 @regression
   Scenario Outline: (MediaBar disappears on Simulator) Conversation gets scrolled back to playing media when clicking on media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -59,7 +59,7 @@ Feature: Rich Media
       | Name      | Contact   | SoundCloudLink                                   |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
-  @C3206 @regression @id385
+  @C3206 @regression
   Scenario Outline: (MediaBar disappears on Simulator) Verify the Media Bar dissapears after playback finishes - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -77,7 +77,7 @@ Feature: Rich Media
       | Name      | Contact   | SoundCloudLink                                                   |
       | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
-  @C3207 @regression @id386
+  @C3207 @regression
   Scenario Outline: (MediaBar disappears on Simulator) Verify the Media Bar disappears when playing media is back in view - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -97,7 +97,7 @@ Feature: Rich Media
       | user1Name | user2Name | https://soundcloud.com/tiffaniafifa2/overdose-exo-short-acoustic |
 
 
-  @C140 @regression @id1388
+  @C140 @regression
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation - SoundCloud
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -124,7 +124,7 @@ Feature: Rich Media
       | user1Name | user2Name | user3Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
 
-  @C141 @rc @regression @id1476
+  @C141 @rc @regression
   Scenario Outline: Play/pause controls can change playing media state (SoundCloud)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

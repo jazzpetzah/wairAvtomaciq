@@ -1,26 +1,26 @@
 Feature: Settings
 
-  @C669 @id67 @regression @rc
+  @C669 @regression @rc
   Scenario Outline: Open and Close settings page
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Conversations list with no conversations
     When I tap conversations list settings button
     Then I see settings page
     When I press back button
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Name      |
       | user1Name |
 
-  @C670 @id92 @regression @rc
+  @C670 @regression @rc
   Scenario Outline: Check About page in settings menu
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Conversations list with no conversations
     When I tap conversations list settings button
     And I select "About" settings menu item
     Then I see "Wire Website" settings menu item
@@ -29,12 +29,12 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C679 @id205 @regression @rc @rc42
+  @C679 @regression @rc @rc42
   Scenario Outline: Change user picture with gallery image
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Conversations list with no conversations
     When I take screenshot
     And I tap conversations list settings button
     And I select "Account" settings menu item
@@ -49,12 +49,12 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @C691 @id328 @regression @rc @rc42
+  @C691 @regression @rc @rc42
   Scenario Outline: I can change my name
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Conversations list with no conversations
     When I tap conversations list settings button
     And I select "Account" settings menu item
     And I select "<Name>" settings menu item
@@ -65,12 +65,12 @@ Feature: Settings
       | Name      | NewName     |
       | user1Name | NewTestName |
 
-  @C678 @id201 @regression @rc
+  @C678 @regression @rc
   Scenario Outline: Change user picture using camera
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Conversations list with no conversations
     When I take screenshot
     And I tap conversations list settings button
     And I select "Account" settings menu item
@@ -90,7 +90,7 @@ Feature: Settings
     Given There is 1 user with phone number only where <Name> is me
     Given I sign in using my phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Conversations list with no conversations
     When I tap conversations list settings button
     And I select "Account" settings menu item
     And I select "Add email" settings menu item
@@ -104,7 +104,7 @@ Feature: Settings
     When I sign in using my email
       # Workaround
     And I accept First Time overlay as soon as it is visible
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Name      | NewEmail   | Password      |
@@ -115,7 +115,7 @@ Feature: Settings
     Given There is 1 user where <Name> is me
     Given I sign in using my phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Conversations list with no conversations
     When I tap conversations list settings button
     And I select "Account" settings menu item
     And I select "<CurrentEmail>" settings menu item
@@ -128,7 +128,7 @@ Feature: Settings
     When I sign in using my email
       # Workaround
     And I accept First Time overlay as soon as it is visible
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Name      | CurrentEmail | NewEmail   | Password      |
@@ -140,7 +140,7 @@ Feature: Settings
     Given User <Name> adds new devices Device1,<DeviceToRemove>,<DeviceToRemoveWithoutPassword>,<OtherDevice>,Device5
     Given I sign in using my email
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with no contacts
+    Given I see Conversations list with no conversations
     When I tap conversations list settings button
     And I select "Devices" settings menu item
     And I select "<DeviceToRemove>" settings menu item
@@ -158,7 +158,7 @@ Feature: Settings
     And I do not see "<DeviceToRemoveWithoutPassword>" settings menu item
     And I press Back button 2 times
     When I do not see Manage Devices overlay
-    Then I see Contact list with no contacts
+    Then I see Conversations list with no conversations
 
     Examples:
       | Name      | Password      | DeviceToRemoveWithoutPassword | DeviceToRemove | OtherDevice |

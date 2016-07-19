@@ -6,8 +6,8 @@ Feature: Copy Message
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    And I tap on conversation name <Contact>
     And I tap on text input
     And I type the message "<Message>" and send it
     When I long tap the Text message "<Message>" in the conversation view
@@ -24,12 +24,12 @@ Feature: Copy Message
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     Given User <Contact> sends encrypted image <ImageName> to single user conversation Myself
     Given User <Contact> sends encrypted message "<Message>" to user Myself
     # Wait for the content to sync up
     Given I wait for 5 seconds
-    And I tap on contact name <Contact>
+    And I tap on conversation name <Contact>
     And I scroll to the bottom of conversation view
     When I long tap the Text message "<Message>" in the conversation view
     And I tap the recent picture in the conversation view
@@ -47,8 +47,8 @@ Feature: Copy Message
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
-    And I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    And I tap on conversation name <Contact>
     When User <Contact> sends encrypted message "<Message>" to user Myself
     Then I see Play button on Youtube container
     When I long tap the Text message "<Message>" in the conversation view
@@ -66,8 +66,8 @@ Feature: Copy Message
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given User <Contact> send encrypted message "<Link>" to user Myself
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    Given I see Conversations list with conversations
+    When I tap on conversation name <Contact>
     And I long tap Link Preview container in the conversation view
     And  I tap Copy button on the action mode bar
     Then I verify that Android clipboard content equals to "<Link>"

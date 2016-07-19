@@ -147,7 +147,7 @@ public class PerformanceSteps {
      * from (.*)
      */
     @When("^I start test cycle for (\\d+) minutes? with messages received from (.*)")
-    public void WhenIStartTestCycleForNMinutes(int timeout, String fromContact) throws Exception {
+    public void IStartTestCycleForNMinutes(int timeout, String fromContact) throws Exception {
         waitUntilConversationsListIsFullyLoaded();
         final String destConvoName = usrMgr.findUserByNameOrNameAlias(fromContact).getName();
         String firstConvoName = getContactListPage().getFirstVisibleConversationName();

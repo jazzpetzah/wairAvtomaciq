@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @C3211 @regression @id344
+  @C3211 @regression
   Scenario Outline: Change your profile picture
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -19,7 +19,7 @@ Feature: Self Profile
       | Name      | Timeout |
       | user1Name | 60      |
 
-  @C1092 @regression @id1055
+  @C1092 @regression
   Scenario Outline: Attempt to enter a name with 0 chars
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -35,7 +35,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C1093 @regression @id1056
+  @C1093 @regression
   Scenario Outline: Attempt to enter a name with 1 char
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -51,7 +51,7 @@ Feature: Self Profile
       | Name      | username |
       | user1Name | c        |
 
-  @C1097 @regression @rc @clumsy @id1463
+  @C1097 @regression @rc @clumsy
   Scenario Outline: Verify name change
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -70,7 +70,7 @@ Feature: Self Profile
       | Name      | NewUsername |
       | user1Name | New Name    |
 
-  @C1085 @clumsy @rc @regression @id3849
+  @C1085 @clumsy @rc @regression
   Scenario Outline: Verify adding phone number to the contact signed up with email
     Given There is 1 user where <Name> is me with email only
     Given I sign in using my email
@@ -88,7 +88,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C1087 @regression @id3854
+  @C1087 @regression
   Scenario Outline: Verify error message appears in case of entering a not valid phone number
     Given There is 1 user where <Name> is me with email only
     Given I sign in using my email
@@ -105,7 +105,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @C1088 @regression @noAcceptAlert @id3860
+  @C1088 @regression @noAcceptAlert
   Scenario Outline: Verify error message appears in case of registering already taken phone number
     Given There is 1 user where <Name> is me with email only
     Given I sign in using my email
@@ -125,7 +125,7 @@ Feature: Self Profile
       | Name      | Number        | Code | ExpectedText                |
       | user1Name | 8301652248706 | +0   | has already been registered |
 
-  @C1081 @regression @rc @id3990
+  @C1081 @regression @rc
   Scenario Outline: Verify theme switcher is shown on the self profile
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number

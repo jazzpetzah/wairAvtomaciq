@@ -1,6 +1,6 @@
 Feature: Rotations
 
-  @C476 @id2187 @regression
+  @C476 @regression
   Scenario Outline: Conversation view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -20,7 +20,7 @@ Feature: Rotations
       | Name      | Contact   | Message |
       | user1Name | user2Name | Msg1    |
 
-  @C475 @id2186 @regression
+  @C475 @regression
   Scenario Outline: (AN-2901) Search (people picker)
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to me

@@ -330,4 +330,12 @@ public class CallingSteps {
         }
     }
 
+    @When("(.*) switch(?:es) video (off|on)$")
+    public void UserXSwitchesVideo(String callees, String toggle) throws Exception {
+        if (toggle.equals("on")) {
+            context.getCallingManager().switchVideoOn(splitAliases(callees));
+        } else {
+            context.getCallingManager().switchVideoOff(splitAliases(callees));
+        }
+    }
 }

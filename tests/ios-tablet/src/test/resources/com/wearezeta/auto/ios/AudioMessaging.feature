@@ -10,7 +10,7 @@ Feature: Audio Messaging
     When I tap on contact name <Contact>
     And I long tap Audio Message button for <Duration> seconds from input tools
     And I tap Send record control button
-    Then I see audio message placeholder
+    Then I see audio message container in the conversation view
     When I tap Play audio message button
     Then I see state of button on audio message placeholder is pause
     # TODO: Should be uncommented once ZIOS-6798 is fixed

@@ -7,7 +7,9 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
+import java.awt.image.BufferedImage;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -142,5 +144,9 @@ public abstract class OSXPage extends BasePage {
                     + " of apple script: " + e);
         }
         return dimension;
+    }
+
+    public Optional<BufferedImage> getScreenshot() throws Exception {
+        return DriverUtils.takeFullScreenShot(getDriver());
     }
 }

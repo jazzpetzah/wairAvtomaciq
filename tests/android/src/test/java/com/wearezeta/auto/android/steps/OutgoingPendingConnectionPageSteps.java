@@ -23,7 +23,7 @@ public class OutgoingPendingConnectionPageSteps {
      * @step. ^I see outgoing pending connection to (.*)
      */
     @Then("^I see outgoing pending connection to (.*)")
-    public void GivenOPCTo(String expectedName) throws Exception {
+    public void OPCTo(String expectedName) throws Exception {
         expectedName = usrMgr.findUserByNameOrNameAlias(expectedName).getName();
         Assert.assertTrue(String.format("User name '%s' is not visible on Outgoing Pending Connection page",
                 expectedName), getOPCPage().waitUntilNameVisible(expectedName));

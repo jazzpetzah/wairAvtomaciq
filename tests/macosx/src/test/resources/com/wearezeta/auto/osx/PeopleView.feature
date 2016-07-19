@@ -60,7 +60,8 @@ Feature: People View
     And I open conversation with <ChatName>
     And I click menu bar item "Conversation" and menu item "Add People…"
     Then I see Group Participants popover
-    And I see Add People message on Group Participants popover
+    And I input user name <Contact3> in search field on Group Participants popover
+    And I select user <Contact3> from Group Participants popover search results
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName      |

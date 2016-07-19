@@ -10,14 +10,14 @@ Feature: Share Location
     Given User <Contact1> shares the default location to user Myself via device <DeviceName>
     Given I see conversations list
     When I tap on contact name <Contact1>
-    Then I see Share Location container in the conversation view
+    Then I see location map container in the conversation view
     And I see the default received Share Location address in the conversation view
     When I tap on group chat with name <GroupChatName>
     And I tap Share Location button from input tools
     # Small delay waiting location detection animation to finish(animation for iPad takes longer)
     And I wait for 10 seconds
     And I tap Send location button from map view
-    Then I see Share Location container in the conversation view
+    Then I see location map container in the conversation view
     #TODO Stabilize sent address verification step
     #And I see the default sent Share Location address in the conversation view
     When I tap on location map in conversation view

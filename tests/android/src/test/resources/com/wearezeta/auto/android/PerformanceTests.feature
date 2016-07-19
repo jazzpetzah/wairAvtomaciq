@@ -26,7 +26,7 @@ Feature: Performance Tests
     Given <Contact> starts instance using <CallBackend>
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
-    Given I see Contact list with contacts
+    Given I see Conversations list with conversations
     And <Contact> calls me
     And I answer the call from the overlay bar
     Then I see ongoing call

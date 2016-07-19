@@ -1,6 +1,6 @@
 Feature: Archive
 
-  @C2389 @regression @id3991
+  @C2389 @regression
   Scenario Outline: Verify unarchive by receiving data [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -31,7 +31,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | chrome      |
 
-  @C2390 @regression @id3992
+  @C2390 @regression
   Scenario Outline: Verify unarchiving silenced conversation only by call [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -57,7 +57,7 @@ Feature: Archive
       | Name      | ArchivedUser | Picture     | CallBackend |
       | user1Name | user2Name    | testing.jpg | chrome      |
 
-  @C2392 @regression @id3994
+  @C2392 @regression
   Scenario Outline: Verify restoring from archive after adding to conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
