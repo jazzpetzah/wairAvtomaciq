@@ -42,7 +42,7 @@ Feature: Offline
     Then I see unsent indicator next to "<Message>" in the conversation view
     When I hide keyboard
     And I tap Add picture button from cursor toolbar
-    And I tap Take Photo button on Take Picture view
+    And I tap Take Photo button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     And I scroll to the bottom of conversation view
     Then I see unsent indicator next to new picture in the dialog

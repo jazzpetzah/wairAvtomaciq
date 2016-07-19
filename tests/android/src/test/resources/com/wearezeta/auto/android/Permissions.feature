@@ -16,10 +16,11 @@ Feature: Permissions
     And I tap on conversation name <Contact1>
     # --- Add Picture ---
     When I tap Add picture button from cursor toolbar
+    ## for camera
     And I dismiss security alert
-    And I do not see Take Photo button on Take Picture view
-    And I tap Close button on Take Picture view
-    Then I do not see any pictures in the conversation view
+    ## for gallery
+    And I dismiss security alert
+    Then I do not see extended cursor camera overlay
     # --- Record Video ---
     When I tap Video message button from cursor toolbar
     And I dismiss security alert

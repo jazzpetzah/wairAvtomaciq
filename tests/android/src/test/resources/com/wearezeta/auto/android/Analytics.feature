@@ -54,12 +54,12 @@ Feature: Analytics
     Then I verify that <LogType> log contains string "ACTION=photo" 2 times
     # Photo from camera
     When I tap Add picture button from cursor toolbar
-    And I tap Take Photo button on Take Picture view
+    And I tap Take Photo button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     Then I verify that <LogType> log contains string "ACTION=photo" 3 times
     # Photo from gallery
     When I tap Add picture button from cursor toolbar
-    And I tap Gallery Camera button on Take Picture view
+    And I tap Gallery button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     Then I verify that <LogType> log contains string "ACTION=photo" 4 times
     # Location
