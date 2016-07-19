@@ -117,7 +117,7 @@ Feature: Voice Filters
       | Name      | Contact   | ButtonsCount |
       | user1Name | user2Name | 1            |
 
-  @C165178 @staging
+  @C165178 @regression
   Scenario Outline: Verify only one recorder works at a time
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
