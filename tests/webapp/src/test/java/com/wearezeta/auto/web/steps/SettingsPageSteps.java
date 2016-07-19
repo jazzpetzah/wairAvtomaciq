@@ -187,13 +187,17 @@ public class SettingsPageSteps {
 		context.getPagesCollection().getPage(SettingsPage.class).verifyDevice();
 	}
 
-	@Then("^I see device (.*) of user (.*) is verified in device section$")
-	public void ISeeVerifiedDevice(String deviceName, String userAlias) throws Exception {
+	@Then("^I( do not)? see device (.*) of user (.*) is verified in device section$")
+	public void ISeeVerifiedDevice(String donot, String deviceName, String userAlias) throws Exception {
 		ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
 		String id = context.getDeviceManager().getDeviceId(user, deviceName);
 		context.getPagesCollection().getPage(SettingsPage.class).waitForDevices();
 		List<String> devices = context.getPagesCollection().getPage(SettingsPage.class).getVerifiedDeviceIds();
-		assertThat("Device id is NOT in verified devices", devices, hasItem(id.toUpperCase()));
+		if (donot != null) {
+			assertThat("Device id is in verified devices", !devices.contains(id.toUpperCase()));
+		} else {
+			assertThat("Device id is NOT in verified devices", devices, hasItem(id.toUpperCase()));
+		}
 	}
 
 	/**

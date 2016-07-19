@@ -879,11 +879,13 @@ Feature: E2EE
     And I verify device on self settings Device Detail section
     And I click back button on self settings Device Detail section
     Then I see device Device1 of user <Name> is verified in device section
+    Then I do not see device Device2 of user <Name> is verified in device section
     When I see a device named Device2 in the devices section
     And I click on the device Device2 in the devices section
     Then I see a device named Device2 with label Label2 in the device details
     And I verify device on self settings Device Detail section
     And I click back button on self settings Device Detail section
+    Then I see device Device1 of user <Name> is verified in device section
     Then I see device Device2 of user <Name> is verified in device section
 
     Examples:
