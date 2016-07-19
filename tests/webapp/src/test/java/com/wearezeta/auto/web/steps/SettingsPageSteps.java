@@ -129,6 +129,18 @@ public class SettingsPageSteps {
 	}
 
 	/**
+	 * Wait for devices to show up
+	 *
+	 * @param amount amount of added devices including current device
+	 *
+	 * @throws Exception
+     */
+	@When("^I wait for devices$")
+	public void IWaitForDevices() throws Exception {
+		context.getPagesCollection().getPage(SettingsPage.class).waitForDevices();
+	}
+
+	/**
 	 * Verify if you see a device in the device list (or not)
 	 * 
 	 * @step. I( do not)? see a device named (.*) in the devices section
@@ -178,13 +190,9 @@ public class SettingsPageSteps {
 	@Then("^I see device (.*) of user (.*) is verified in device section$")
 	public void ISeeVerifiedDevice(String deviceName, String userAlias) throws Exception {
 		ClientUser user = context.getUserManager().findUserByNameOrNameAlias(userAlias);
-		System.out.println("USER: " + user);
-		System.out.println("DEVICE: " + deviceName);
-		System.out.println("ID: " + context.getDeviceManager().getDeviceId(user, deviceName));
 		String id = context.getDeviceManager().getDeviceId(user, deviceName);
 		context.getPagesCollection().getPage(SettingsPage.class).waitForDevices();
 		List<String> devices = context.getPagesCollection().getPage(SettingsPage.class).getVerifiedDeviceIds();
-		System.out.println("DEVICE LIST: " + devices);
 		assertThat("Device id is NOT in verified devices", devices, hasItem(id.toUpperCase()));
 	}
 

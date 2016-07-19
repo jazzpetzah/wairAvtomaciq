@@ -856,7 +856,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT | StartMessage | PREFIX1 | PREFIX2 | PREFIX3 | PREFIX4 |
       | user1Email | user1Password | user1Name | user2Name | WAS NOT RECEIVED  | Let's start  | First   | Second  | Third   | Four    |
 
-  @C82814 @staging @torun
+  @C82814 @staging
   Scenario Outline: Verify I can trust all my own devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -872,20 +872,20 @@ Feature: E2EE
     And I click gear button on self profile page
     And I select Settings menu item on self profile page
     When I see Settings dialog
-# Wait is needed, TODO: Workaround
-    And I wait for 1 second
+    And I wait for devices
     And I see a device named Device1 in the devices section
     And I click on the device Device1 in the devices section
-#    And I verify device on self settings Device Detail section
+    Then I see a device named Device1 with label Label1 in the device details
+    And I verify device on self settings Device Detail section
     And I click back button on self settings Device Detail section
     Then I see device Device1 of user <Name> is verified in device section
     When I see a device named Device2 in the devices section
     And I click on the device Device2 in the devices section
+    Then I see a device named Device2 with label Label2 in the device details
     And I verify device on self settings Device Detail section
     And I click back button on self settings Device Detail section
     Then I see device Device2 of user <Name> is verified in device section
-    And I wait for 15 seconds
-    
+
     Examples:
       | Email      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |

@@ -273,7 +273,6 @@ public final class WebAppLocators {
         public static final String cssBackButton = "[data-uie-name='do-device-close']";
         public static final String cssVerificationToggle = ".button-label";
         public static final String cssDeviceIds = ".self-settings-device-list .device-info [data-uie-name='device-id']";
-        public static final String cssDevices = ".form-control .self-settings-device";
     }
 
     public static final class SelfProfilePage {

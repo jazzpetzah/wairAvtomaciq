@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.Future;
@@ -54,9 +55,6 @@ public class SettingsPage extends WebPage {
 
     @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssDeviceIds)
     private WebElement firstDevice;
-
-    @FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssDevices)
-    private List<WebElement> devices;
 
     public SettingsPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -206,21 +204,16 @@ public class SettingsPage extends WebPage {
     }
 
     public List<String> getVerifiedDeviceIds() throws Exception {
-        final By useElement = By.xpath("//*");
-//        final By useElement = By.cssSelector("//use']");
-        final By deviceIdElement = By.cssSelector("[data-uie-name='device-id']");
-        return devices.stream()
-//                .filter(w -> "user-device-verified".equals(w.findElement(useElement).getAttribute("data-uie-name")))
-                .filter(w -> "#icon-verified".equals(w.findElement(useElement).getAttribute("href")))
-                .filter((w) -> {
-                    return true;
-                })
-                .map(w -> w.findElement(deviceIdElement).getText())
-                .filter((did) -> {
-                    return true;
-                })
-                .collect(Collectors.toList());
+        final By useElement = By.xpath(".//*[local-name()='use']");
+        List<WebElement> deviceList = getDriver().findElements(useElement);
+        List<String> idList = new ArrayList<>();
+
+        for (int i=0; i < deviceList.size(); i++) {
+            if ("user-device-verified".equals(deviceList.get(i).getAttribute("data-uie-name"))) {
+                WebElement parent = deviceList.get(i).findElement(By.xpath("parent::*"));
+                idList.add(parent.getAttribute("data-uie-value").toUpperCase());
+            }
+        }
+        return idList;
     }
-
-
 }
