@@ -1,7 +1,7 @@
 Feature: Autoconnect
 
   @C2034 @C2035 @real @noAcceptAlert
-  Scenario Outline: Verify autoconnect users by phones and mail
+  Scenario Outline: Verify autoconnect users by direct match and delayed direct match of phone numbers
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see conversations list
