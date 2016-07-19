@@ -74,3 +74,72 @@ Feature: Link Preview
     Examples:
       | Name      | Contact   | Shortenlink          |
       | user1Name | user2Name | http://goo.gl/pA9mgH |
+
+  @C167039 @staging
+  Scenario Outline: Verify preview is shown for different formats of link
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    When I post url link <Link>
+    And I navigate back to conversations list
+    And I tap on contact name <Contact>
+    Then I see link preview container in the conversation view
+    When I long tap on link preview in conversation view
+    And I tap on Delete badge item
+    # Sometimes the alert is not accepted automatically
+    And I tap Delete button on the alert
+    When I post url link <Link1>
+    And I navigate back to conversations list
+    And I tap on contact name <Contact>
+    Then I see link preview container in the conversation view
+    When I long tap on link preview in conversation view
+    And I tap on Delete badge item
+    # Sometimes the alert is not accepted automatically
+    And I tap Delete button on the alert
+    When I post url link <Link2>
+    And I navigate back to conversations list
+    And I tap on contact name <Contact>
+    Then I see link preview container in the conversation view
+    When I long tap on link preview in conversation view
+    And I tap on Delete badge item
+    # Sometimes the alert is not accepted automatically
+    And I tap Delete button on the alert
+    When I post url link <Link3>
+    And I navigate back to conversations list
+    And I tap on contact name <Contact>
+    Then I see link preview container in the conversation view
+    When I long tap on link preview in conversation view
+    And I tap on Delete badge item
+    # Sometimes the alert is not accepted automatically
+    And I tap Delete button on the alert
+    When I post url link <Link4>
+    And I navigate back to conversations list
+    And I tap on contact name <Contact>
+    Then I see link preview container in the conversation view
+
+    Examples:
+      | Name      | Contact   | Link                | Link1                | Link2                   | Link3               | Link4               |
+      | user1Name | user2Name | http://facebook.com | https://facebook.com | http://www.facebook.com | Http://facebook.com | HTTP://FACEBOOK.COM |
+
+  @C167038 @staging
+  Scenario Outline: Verify copying link preview
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>, <Contact1>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And I post url link <Link>
+    When I long tap on link preview in conversation view
+    And I tap on Copy badge item
+    And I navigate back to conversations list
+    And I tap on contact name <Contact1>
+    And I paste and commit the text
+    And I navigate back to conversations list
+    When I tap on contact name <Contact1>
+    Then I see link preview container in the conversation view
+
+    Examples:
+      | Name      | Contact   | Contact1  | Link                                                                                  |
+      | user1Name | user2Name | user3Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 |

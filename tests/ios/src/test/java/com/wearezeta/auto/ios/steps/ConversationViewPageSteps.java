@@ -1140,7 +1140,7 @@ public class ConversationViewPageSteps {
      * @step. @When("^I long tap on (image|media container|file transfer placeholder|audio message placeholder|location map) in
      * conversation view$")
      */
-    @When("^I (long )?tap on (image|media container|file transfer placeholder|audio message placeholder|location map) in conversation view$")
+    @When("^I (long )?tap on (image|media container|file transfer placeholder|audio message placeholder|location map|link preview) in conversation view$")
     public void ITapAndHoldAudioMessagePlaceholder(String isLongTap, String conversationItem) throws Exception {
         FunctionalInterfaces.RunnableWithException tapFunc;
         switch (conversationItem) {
@@ -1162,6 +1162,10 @@ public class ConversationViewPageSteps {
                 break;
             case "audio message placeholder":
                 tapFunc = (isLongTap == null) ? null : getConversationViewPage()::longTapAudioMessage;
+                break;
+            case "link preview":
+                tapFunc = (isLongTap == null) ? getConversationViewPage()::tapLocationContainer :
+                        getConversationViewPage()::longTapLinkPreviewContainer;
                 break;
             default:
                 throw new IllegalArgumentException("Not known conversation item. Please use only items pointed in the step");
