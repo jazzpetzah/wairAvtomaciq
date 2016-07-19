@@ -49,7 +49,7 @@ public class WelcomePageSteps {
 	 * @throws Exception
 	 */
 	@Given("^I see [Ww]elcome screen$")
-	public void GivenISeeWelcomeScreen() throws Exception {
+	public void ISeeWelcomeScreen() throws Exception {
 		Assert.assertTrue("Welcome page is not shown", getWelcomePage().waitForInitialScreen());
 	}
 

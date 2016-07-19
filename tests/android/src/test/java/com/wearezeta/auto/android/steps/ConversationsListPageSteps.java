@@ -36,7 +36,7 @@ public class ConversationsListPageSteps {
      * @step. ^I see Conversations list with (no )?conversations?
      */
     @Given("^I see Conversations list with (no )?conversations?")
-    public void GivenISeeConversationList(String shouldNotBeVisible) throws Exception {
+    public void ISeeConversationList(String shouldNotBeVisible) throws Exception {
         getConversationsListPage().verifyContactListIsFullyLoaded();
         if (shouldNotBeVisible == null) {
             Assert.assertTrue(
@@ -57,7 +57,7 @@ public class ConversationsListPageSteps {
      * @step. ^I see Conversations list$
      */
     @Given("^I see Conversations list$")
-    public void GivenISeeConversationList() throws Exception {
+    public void ISeeConversationList() throws Exception {
         getConversationsListPage().verifyContactListIsFullyLoaded();
     }
 
