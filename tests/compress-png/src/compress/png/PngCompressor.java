@@ -178,7 +178,9 @@ public class PngCompressor {
             if (Files.isRegularFile(filePath) && filePath.toString().toLowerCase().endsWith(".png")) {
                 try {
                     PngCompressor.compress(filePath.toFile(), filePath.toFile());
-                    System.out.println("processing " + filePath);
+                    if (!verbose) {
+                        System.out.println("Processing: " + filePath);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -202,7 +204,7 @@ public class PngCompressor {
     }
 
     private static void showCommandLineHelp() {
-        System.out.println("How to run PngCompressor:\n\n    java [options] -jar compress-png.jar <FolderPath>\n" +
+        System.out.println("How to run PngCompressor:\n\n    java [options] -jar compress-png.jar <File/Folder Path>\n" +
                 "Example: java -Dverbose=true -jar compress-png.jar <FolderPath>");
     }
 }
