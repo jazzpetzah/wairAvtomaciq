@@ -251,13 +251,13 @@ public class CommonAndroidSteps {
 
     @After
     public void tearDown(Scenario scenario) {
-        try {
-            System.out.println("Compressing screens in "+AndroidCommonUtils.getPictureResultsPathFromConfig(getClass()));
-            ImageUtil.compressPngsInFolder(AndroidCommonUtils.getPictureResultsPathFromConfig(getClass()));
-        } catch (Exception e) {
-            // do not fail if smt fails here
-            e.printStackTrace();
-        }
+//        try {
+//            System.out.println("Compressing screens in "+AndroidCommonUtils.getPictureResultsPathFromConfig(getClass()));
+//            ImageUtil.compressPngsInFolder(AndroidCommonUtils.getPictureResultsPathFromConfig(getClass()));
+//        } catch (Exception e) {
+//            // do not fail if smt fails here
+//            e.printStackTrace();
+//        }
         try {
             AndroidCommonUtils.setAirplaneMode(false);
         } catch (Exception e) {
