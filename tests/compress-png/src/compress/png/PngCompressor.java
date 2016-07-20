@@ -175,17 +175,16 @@ public class PngCompressor {
 
     public static void compressPngsInFolder(final String folderPath) throws Exception {
         Files.walk(Paths.get(folderPath)).forEach(filePath -> {
-            if (Files.isRegularFile(filePath) && filePath.toString().toLowerCase().endsWith(".png")) {
-                try {
-                    PngCompressor.compress(filePath.toFile(), filePath.toFile());
-                    if (!verbose) {
-                        System.out.println("Processing: " + filePath);
+                    if (Files.isRegularFile(filePath) && filePath.toString().toLowerCase().endsWith(".png")) {
+                        try {
+                            PngCompressor.compress(filePath.toFile(), filePath.toFile());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
-        });
+
+        );
     }
 
     public static void main(String[] args) throws Exception {
