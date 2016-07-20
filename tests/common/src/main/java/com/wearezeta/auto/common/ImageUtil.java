@@ -317,20 +317,4 @@ public class ImageUtil {
             e.printStackTrace();
         }
     }
-
-    public static void compressPngsInFolder(final String folderPath) throws Exception {
-        System.out.println("Starting PNG compression...");
-        final long startTime = System.currentTimeMillis();
-        Files.walk(Paths.get(folderPath)).forEach(filePath -> {
-            if (Files.isRegularFile(filePath) && filePath.toString().toLowerCase().endsWith(".png")) {
-                try {
-                    PngCompressor.compress(filePath.toFile(), filePath.toFile());
-                    System.out.println("processing "+filePath);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        System.out.println("PNG compression finished after " + (System.currentTimeMillis() - startTime) / 1000 + " seconds");
-    }
 }
