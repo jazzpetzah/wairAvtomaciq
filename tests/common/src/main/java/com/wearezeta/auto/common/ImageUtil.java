@@ -1,8 +1,6 @@
 package com.wearezeta.auto.common;
 
-import java.awt.AlphaComposite;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
@@ -198,10 +196,10 @@ public class ImageUtil {
         List<MatOfDMatch> matches = new ArrayList<>();
         matcher.knnMatch(desRef, desTpl, matches, 2);
 
-        for(MatOfDMatch match: matches) {
+        for (MatOfDMatch match : matches) {
             DMatch m = match.toList().get(0);
             DMatch n = match.toList().get(1);
-            if(m.distance < 0.7*n.distance) {
+            if (m.distance < 0.7 * n.distance) {
                 good.add(m);
             }
         }
