@@ -8,6 +8,8 @@ Feature: Link Preview
     Given I see conversations list
     When I tap on contact name <Contact>
     And I post url link <Link>
+    # Sometimes the test fail with fetching picture so wait 1s here
+    And I wait for 1 seconds
     # This is to make the keyboard invisible as sometimes the keyboard is still visible after posting the link
     And I navigate back to conversations list
     And I tap on contact name <Contact>
