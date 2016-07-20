@@ -106,11 +106,10 @@ Feature: Conversations list
     Given I sign in using my email or phone number
     Given I accept First Time overlay as soon as it is visible
     Given I see Conversations list with conversations
-    # Workaround AN-4115, open conversation before receiving
-    Given I tap on conversation name <GroupChatName>
     Given User <Contact1> sends encrypted message <SpotifyLink> to group conversation <GroupChatName>
     Given User <Contact1> sends encrypted image <Image> to group conversation Myself
     Given User <Contact1> sends encrypted message <Message> to group conversation <GroupChatName>
+    Given I tap on conversation name <GroupChatName>
     # Wait for sync
     Given I wait for 10 seconds
     When I scroll to the bottom of conversation view

@@ -157,8 +157,8 @@ Feature: Settings
     And I see "<OtherDevice>" settings menu item
     And I do not see "<DeviceToRemoveWithoutPassword>" settings menu item
     And I press Back button 2 times
-    When I do not see Manage Devices overlay
-    Then I see Conversations list with no conversations
+    Then I do not see Manage Devices overlay
+    And I see Conversations list with no conversations
 
     Examples:
       | Name      | Password      | DeviceToRemoveWithoutPassword | DeviceToRemove | OtherDevice |
