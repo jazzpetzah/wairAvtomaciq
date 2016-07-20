@@ -161,10 +161,14 @@ public class ConversationViewPage extends AndroidPage {
     private static final Function<String, String> xpathCursorHintByValue = value -> String
             .format("//*[@id='ctv__cursor' and @value='%s']", value);
 
+    private static final Function<String, String> xpathMoreActionButton = value -> String
+            .format("//*[@value='%s']", value);
+
     private static final By idActionModeBarForwardButton = By.id("action_fwd");
     private static final By idActionModeBarDeleteButton = By.id("action_delete");
     private static final By idActionModeBarCopyButton = By.id("action_copy");
     private static final By idActionModeBarCloseButton = By.id("action_mode_close_button");
+    private static final By nameActionModeBarMoreButton = By.name("More options");
 
     private static final By idYoutubeContainer = By.id("fl__youtube_image_container");
 
@@ -567,6 +571,12 @@ public class ConversationViewPage extends AndroidPage {
     private static final double MAX_BUTTON_STATE_OVERLAP = 0.5;
 
     public void tapPlayPauseBtn() throws Exception {
+        // TODO: Remove this workaround once when swipe on SoundCloud container doesn't trigger long tap
+        Optional<WebElement> actionCloseButton = getElementIfDisplayed(idActionModeBarCloseButton, 3);
+        if(actionCloseButton.isPresent()) {
+            actionCloseButton.get().click();
+        }
+
         final WebElement playPauseBtn = getElement(idPlayPauseMedia, "Play/Pause button is not visible");
         if (!DriverUtils.waitUntilElementClickable(getDriver(), playPauseBtn)) {
             throw new IllegalStateException("Play/Pause button is not clickable");
@@ -699,6 +709,7 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void waitUntilFileUploadIsCompleted(int timeoutSeconds, String size, String extension) throws Exception {
+        Thread.sleep(2000);
         String fileInfo = StringUtils.isEmpty(extension) ? size :
                 size + FILE_MESSAGE_SEPARATOR + extension.toUpperCase();
         fileInfo = String.format("%s%s%s", fileInfo, FILE_MESSAGE_SEPARATOR, FILE_UPLOADING_MESSAGE);
@@ -765,12 +776,42 @@ public class ConversationViewPage extends AndroidPage {
 
     public boolean isActionModeBarButtonVisible(String btnNAme) throws Exception {
         final By locator = getActionBarButtonLocatorByName(btnNAme);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        // FIXME: Workaround for AN-4268
+        final Optional<WebElement> btn = getElementIfDisplayed(locator, 3);
+        if (btn.isPresent()) {
+            return true;
+        } else {
+            boolean isPresent = false;
+            Optional<WebElement> moreActionButton = getElementIfDisplayed(nameActionModeBarMoreButton, 3);
+            if (moreActionButton.isPresent()) {
+                moreActionButton.get().click();
+                String buttonValue = btnNAme.substring(0, 1).toUpperCase() + btnNAme.substring(1).toLowerCase();
+                isPresent = getElementIfDisplayed(By.xpath(xpathMoreActionButton.apply(buttonValue)), 3).isPresent();
+                navigateBack();
+            }
+            return isPresent;
+        }
     }
 
     public boolean isActionModeBarButtonInvisible(String btnNAme) throws Exception {
         final By locator = getActionBarButtonLocatorByName(btnNAme);
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+        // FIXME: Workaround for AN-4268
+        final Optional<WebElement> btn = getElementIfDisplayed(locator, 3);
+        if (btn.isPresent()) {
+            return false;
+        } else {
+            boolean isNotPresent = false;
+            Optional<WebElement> moreActionButton = getElementIfDisplayed(nameActionModeBarMoreButton, 3);
+            if (moreActionButton.isPresent()) {
+                moreActionButton.get().click();
+                String buttonValue = btnNAme.substring(0, 1).toUpperCase() + btnNAme.substring(1).toLowerCase();
+                isNotPresent = !getElementIfDisplayed(By.xpath(xpathMoreActionButton.apply(buttonValue)), 3).isPresent();
+                navigateBack();
+            } else {
+                isNotPresent = true;
+            }
+            return isNotPresent;
+        }
     }
 
     public void longTapMessage(String msg) throws Exception {
@@ -902,6 +943,15 @@ public class ConversationViewPage extends AndroidPage {
     }
 
     public void tapActionBarButton(String name) throws Exception {
-        getElement(getActionBarButtonLocatorByName(name)).click();
+        final By locator = getActionBarButtonLocatorByName(name);
+        // FIXME: Workaround for AN-4268
+        final Optional<WebElement> btn = getElementIfDisplayed(locator, 3);
+        if (btn.isPresent()) {
+            btn.get().click();
+        } else {
+            getElement(nameActionModeBarMoreButton).click();
+            String buttonValue = name.substring(0, 1).toUpperCase() + name.substring(1);
+            getElement(By.xpath(xpathMoreActionButton.apply(buttonValue))).click();
+        }
     }
 }

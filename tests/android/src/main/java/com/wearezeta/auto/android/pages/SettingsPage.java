@@ -1,8 +1,10 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import org.openqa.selenium.By;
 
@@ -32,15 +34,23 @@ public class SettingsPage extends AndroidPage {
 
     private static final By idEmailEdit = By.id("acet__preferences__email");
 
+    private static final int SCREEN_HEIGHT_THRESHOLD = 10;
+
     public SettingsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
     }
 
     private boolean scrollUntilMenuElementVisible(By locator, int maxScrolls) throws Exception {
         int nScrolls = 0;
+        int screenHeight = AndroidCommonUtils.getScreenSize(getDriver()).getHeight();
+
         while (nScrolls < maxScrolls) {
             if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
-                return true;
+                WebElement menuElement = getElement(locator);
+                if (menuElement.getLocation().getY() + menuElement.getSize().getHeight()
+                        <= screenHeight + SCREEN_HEIGHT_THRESHOLD) {
+                    return true;
+                }
             }
             this.swipeUpCoordinates(500, 50);
             nScrolls++;

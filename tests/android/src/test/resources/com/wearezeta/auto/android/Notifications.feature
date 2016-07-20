@@ -2,7 +2,7 @@ Feature: Notifications
 
   @C147866 @regression @rc
   Scenario Outline: Verify push notifications are received after successful registration
-    Given I am on Android 4.0 or better
+    Given I am on Android 4.4 or better
     Given I see welcome screen
     Given I input a new phone number for user <Name>
     Given I input the verification code
@@ -25,6 +25,7 @@ Feature: Notifications
 
   @C165125 @regression @rc
   Scenario Outline: CM-1023 Verify no GCM notifications are shown for muted chats
+    Given I am on Android 4.4 or better
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number

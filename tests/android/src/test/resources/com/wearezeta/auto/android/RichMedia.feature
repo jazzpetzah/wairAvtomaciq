@@ -40,8 +40,9 @@ Feature: Rich Media
     When I tap on conversation name <Contact1>
     And I tap on text input
     And I type the message "<SoudCloudLink>" and send it
-    # Workaround for bug with autoscroll
+    # Workaround for bug with autoscroll for next two lines
     And I scroll to the bottom of conversation view
+    And I scroll up the conversation view
     And I tap Play button on SoundCloud container
     And I press back button
     Then I see PlayPause media content button for conversation <Contact1>

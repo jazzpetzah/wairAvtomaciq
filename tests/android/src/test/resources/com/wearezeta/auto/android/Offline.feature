@@ -11,11 +11,15 @@ Feature: Offline
     When User <Contact> sends encrypted message <Message1> to user Myself
     Then I see the most recent conversation message is "<Message1>"
     When I enable Airplane mode on the device
+    And I see No Internet bar in 15 seconds
     And User <Contact> sends encrypted image <Picture> to single user conversation <Name>
     Then I do not see any pictures in the conversation view
     When User <Contact> sends encrypted message <Message2> to user Myself
     Then I see the most recent conversation message is "<Message1>"
     When I disable Airplane mode on the device
+    And I do not see No Internet bar in 15 seconds
+    # Wait for sync
+    And I wait for 5 seconds
     And I scroll to the bottom of conversation view
     Then I see the most recent conversation message is "<Message2>"
     And I see a picture in the conversation view

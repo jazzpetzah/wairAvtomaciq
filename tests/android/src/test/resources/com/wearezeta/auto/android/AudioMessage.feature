@@ -43,7 +43,7 @@ Feature: Audio Message
     And I tap audio recording Send button
     Then I see cursor toolbar
     And I see Audio Message container in the conversation view
-    And I wait for 15 seconds until audio message upload completed
+    And I wait for 25 seconds until audio message upload completed
     When I remember the state of recent audio message seekbar
     And I remember the state of Play button on the recent audio message in the conversation view
     And I tap Play button on the recent audio message in the conversation view
@@ -54,7 +54,7 @@ Feature: Audio Message
 
     Examples:
       | Name      | Contact   | TapDuration |
-      | user1Name | user2Name | 10          |
+      | user1Name | user2Name | 15          |
 
   @C131188 @regression @rc
   Scenario Outline: Verify getting a chathead when voice message is sent in the other conversation
