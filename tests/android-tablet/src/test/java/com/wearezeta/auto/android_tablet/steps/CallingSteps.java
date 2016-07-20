@@ -165,8 +165,8 @@ public class CallingSteps {
     public void UserXVerifesHavingXFlows(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
             for (Flow flow : commonCallingSteps.getFlows(callee)) {
-                assertThat("incoming bytes", flow.getBytesIn(), greaterThan(0L));
-                assertThat("outgoing bytes", flow.getBytesOut(),
+                assertThat("incoming bytes", flow.getTelemetry().getStats().getAudio().getBytesReceived(), greaterThan(0L));
+                assertThat("outgoing bytes", flow.getTelemetry().getStats().getAudio().getBytesSent(),
                         greaterThan(0L));
             }
         }

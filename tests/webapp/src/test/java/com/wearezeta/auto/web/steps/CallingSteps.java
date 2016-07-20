@@ -187,8 +187,8 @@ public class CallingSteps {
             List<Flow> flows = context.getCallingManager().getFlows(callee);
             for (Flow flow : flows) {
                 LOG.info("flows: \n"+flows);
-                assertThat("incoming bytes: \n" + flow, flow.getBytesIn(), greaterThan(0L));
-                assertThat("outgoing bytes: \n" + flow, flow.getBytesOut(), greaterThan(0L));
+                assertThat("incoming bytes: \n" + flow, flow.getTelemetry().getStats().getAudio().getBytesReceived(), greaterThan(0L));
+                assertThat("outgoing bytes: \n" + flow, flow.getTelemetry().getStats().getAudio().getBytesSent(), greaterThan(0L));
             }
         }
     }
@@ -319,14 +319,14 @@ public class CallingSteps {
             String callee, int participantSize) throws Exception {
         UserXVerifesHavingXFlows(callee, participantSize);
         for (Flow flow : context.getCallingManager().getFlows(callee)) {
-            Flow oldFlow = flowMap.get(callee + flow.getRemoteUserId());
+            Flow oldFlow = flowMap.get(callee + flow.getMeta().getRemoteUserId());
             if (oldFlow != null) {
-                assertThat("incoming bytes", flow.getBytesIn(),
-                        greaterThan(oldFlow.getBytesIn()));
-                assertThat("outgoing bytes", flow.getBytesOut(),
-                        greaterThan(oldFlow.getBytesOut()));
+                assertThat("incoming bytes", flow.getTelemetry().getStats().getAudio().getBytesReceived(),
+                        greaterThan(oldFlow.getTelemetry().getStats().getAudio().getBytesReceived()));
+                assertThat("outgoing bytes", flow.getTelemetry().getStats().getAudio().getBytesSent(),
+                        greaterThan(oldFlow.getTelemetry().getStats().getAudio().getBytesSent()));
             }
-            flowMap.put(callee + flow.getRemoteUserId(), flow);
+            flowMap.put(callee + flow.getMeta().getRemoteUserId(), flow);
         }
     }
 

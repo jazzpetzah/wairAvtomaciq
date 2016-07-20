@@ -115,8 +115,8 @@ public class CallingSteps {
     public void UserXVerifesHavingXFlows(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
             for (Flow flow : commonCallingSteps.getFlows(callee)) {
-                Assert.assertTrue("There is no incoming bytes", flow.getBytesIn() > 0L);
-                Assert.assertTrue("There is no outgoing bytes", flow.getBytesOut() > 0L);
+                Assert.assertTrue("There is no incoming bytes", flow.getTelemetry().getStats().getAudio().getBytesReceived() > 0L);
+                Assert.assertTrue("There is no outgoing bytes", flow.getTelemetry().getStats().getAudio().getBytesSent() > 0L);
             }
         }
     }
