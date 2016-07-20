@@ -32,16 +32,15 @@ public class D4 {
         int cDiff = diff(a, r, g, b, closest);
         int found = 0;
 
-        for(int i = 1; i < 256; ++i) {
+        for (int i = 1; i < 256; ++i) {
             D4 n = palette[i];
             int nDiff = diff(a, r, g, b, n);
-            if(nDiff < cDiff) {
+            if (nDiff < cDiff) {
                 closest = n;
                 found = i;
                 cDiff = nDiff;
             }
         }
-
         return new int[]{closest.argb, found};
     }
 
@@ -52,7 +51,7 @@ public class D4 {
         int y;
         int x;
         int argb;
-        for(int indexedPixels = 0; indexedPixels < 256; ++indexedPixels) {
+        for (int indexedPixels = 0; indexedPixels < 256; ++indexedPixels) {
             y = trns[indexedPixels] & 255;
             x = colorPalette[p++] & 255;
             argb = colorPalette[p++] & 255;
@@ -63,12 +62,12 @@ public class D4 {
         byte[] var26 = new byte[h * w];
         p = 0;
 
-        for(y = 0; y < h; ++y) {
-            for(x = 0; x < w; ++x) {
+        for (y = 0; y < h; ++y) {
+            for (x = 0; x < w; ++x) {
                 argb = image[y][x];
                 int[] var27 = findClosest(argb, palette);
                 int nextArgb = var27[0];
-                var26[p++] = (byte)var27[1];
+                var26[p++] = (byte) var27[1];
                 int a = argb >> 24 & 255;
                 int r = argb >> 16 & 255;
                 int g = argb >> 8 & 255;
@@ -82,26 +81,25 @@ public class D4 {
                 int errG = g - ng;
                 int errB = b - nb;
                 int update;
-                if(x + 1 < w) {
+                if (x + 1 < w) {
                     update = applyFloyd(image[y][x + 1], errA, errR, errG, errB, 7);
                     image[y][x + 1] = update;
-                    if(y + 1 < h) {
+                    if (y + 1 < h) {
                         update = applyFloyd(image[y + 1][x + 1], errA, errR, errG, errB, 1);
                         image[y + 1][x + 1] = update;
                     }
                 }
 
-                if(y + 1 < h) {
+                if (y + 1 < h) {
                     update = applyFloyd(image[y + 1][x], errA, errR, errG, errB, 5);
                     image[y + 1][x] = update;
-                    if(x - 1 >= 0) {
+                    if (x - 1 >= 0) {
                         update = applyFloyd(image[y + 1][x - 1], errA, errR, errG, errB, 3);
                         image[y + 1][x - 1] = update;
                     }
                 }
             }
         }
-
         return var26;
     }
 
@@ -114,30 +112,29 @@ public class D4 {
         r += errR * mul / 16;
         g += errG * mul / 16;
         b += errB * mul / 16;
-        if(a < 0) {
+        if (a < 0) {
             a = 0;
-        } else if(a > 255) {
+        } else if (a > 255) {
             a = 255;
         }
 
-        if(r < 0) {
+        if (r < 0) {
             r = 0;
-        } else if(r > 255) {
+        } else if (r > 255) {
             r = 255;
         }
 
-        if(g < 0) {
+        if (g < 0) {
             g = 0;
-        } else if(g > 255) {
+        } else if (g > 255) {
             g = 255;
         }
 
-        if(b < 0) {
+        if (b < 0) {
             b = 0;
-        } else if(b > 255) {
+        } else if (b > 255) {
             b = 255;
         }
-
         return a << 24 | r << 16 | g << 8 | b;
     }
 }

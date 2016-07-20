@@ -24,34 +24,74 @@ public class Quant32 {
     }
 
     private static double volume(Quant32.Cube cube, long[] moment) {
-        return (double)(moment[indexify(cube.R1, cube.G1, cube.B1, cube.A1)] - moment[indexify(cube.R1, cube.G1, cube.B1, cube.A0)] - moment[indexify(cube.R1, cube.G1, cube.B0, cube.A1)] + moment[indexify(cube.R1, cube.G1, cube.B0, cube.A0)] - moment[indexify(cube.R1, cube.G0, cube.B1, cube.A1)] + moment[indexify(cube.R1, cube.G0, cube.B1, cube.A0)] + moment[indexify(cube.R1, cube.G0, cube.B0, cube.A1)] - moment[indexify(cube.R1, cube.G0, cube.B0, cube.A0)] - moment[indexify(cube.R0, cube.G1, cube.B1, cube.A1)] + moment[indexify(cube.R0, cube.G1, cube.B1, cube.A0)] + moment[indexify(cube.R0, cube.G1, cube.B0, cube.A1)] - moment[indexify(cube.R0, cube.G1, cube.B0, cube.A0)] + moment[indexify(cube.R0, cube.G0, cube.B1, cube.A1)] - moment[indexify(cube.R0, cube.G0, cube.B1, cube.A0)] - moment[indexify(cube.R0, cube.G0, cube.B0, cube.A1)] + moment[indexify(cube.R0, cube.G0, cube.B0, cube.A0)]);
+        return (double) (moment[indexify(cube.R1, cube.G1, cube.B1, cube.A1)] - moment[indexify(cube.R1, cube.G1, cube.B1,
+                cube.A0)] - moment[indexify(cube.R1, cube.G1, cube.B0, cube.A1)] + moment[indexify(cube.R1, cube.G1, cube.B0,
+                cube.A0)] - moment[indexify(cube.R1, cube.G0, cube.B1, cube.A1)] + moment[indexify(cube.R1, cube.G0, cube.B1,
+                cube.A0)] + moment[indexify(cube.R1, cube.G0, cube.B0, cube.A1)] - moment[indexify(cube.R1, cube.G0, cube.B0,
+                cube.A0)] - moment[indexify(cube.R0, cube.G1, cube.B1, cube.A1)] + moment[indexify(cube.R0, cube.G1, cube.B1,
+                cube.A0)] + moment[indexify(cube.R0, cube.G1, cube.B0, cube.A1)] - moment[indexify(cube.R0, cube.G1, cube.B0,
+                cube.A0)] + moment[indexify(cube.R0, cube.G0, cube.B1, cube.A1)] - moment[indexify(cube.R0, cube.G0, cube.B1,
+                cube.A0)] - moment[indexify(cube.R0, cube.G0, cube.B0, cube.A1)] + moment[indexify(cube.R0, cube.G0, cube.B0,
+                cube.A0)]);
     }
 
     private static long base(Quant32.Cube cube, int direction, long[] moment) {
-        switch(direction) {
+        switch (direction) {
             case 0:
-                return -moment[indexify(cube.R1, cube.G1, cube.B1, cube.A0)] + moment[indexify(cube.R1, cube.G1, cube.B0, cube.A0)] + moment[indexify(cube.R1, cube.G0, cube.B1, cube.A0)] - moment[indexify(cube.R1, cube.G0, cube.B0, cube.A0)] + moment[indexify(cube.R0, cube.G1, cube.B1, cube.A0)] - moment[indexify(cube.R0, cube.G1, cube.B0, cube.A0)] - moment[indexify(cube.R0, cube.G0, cube.B1, cube.A0)] + moment[indexify(cube.R0, cube.G0, cube.B0, cube.A0)];
+                return -moment[indexify(cube.R1, cube.G1, cube.B1, cube.A0)] + moment[indexify(cube.R1, cube.G1, cube.B0,
+                        cube.A0)] + moment[indexify(cube.R1, cube.G0, cube.B1, cube.A0)] - moment[indexify(cube.R1, cube.G0,
+                        cube.B0, cube.A0)] + moment[indexify(cube.R0, cube.G1, cube.B1, cube.A0)] - moment[indexify(cube.R0,
+                        cube.G1, cube.B0, cube.A0)] - moment[indexify(cube.R0, cube.G0, cube.B1, cube.A0)] + moment[indexify
+                        (cube.R0, cube.G0, cube.B0, cube.A0)];
             case 1:
-                return -moment[indexify(cube.R1, cube.G1, cube.B0, cube.A1)] + moment[indexify(cube.R1, cube.G1, cube.B0, cube.A0)] + moment[indexify(cube.R1, cube.G0, cube.B0, cube.A1)] - moment[indexify(cube.R1, cube.G0, cube.B0, cube.A0)] + moment[indexify(cube.R0, cube.G1, cube.B0, cube.A1)] - moment[indexify(cube.R0, cube.G1, cube.B0, cube.A0)] - moment[indexify(cube.R0, cube.G0, cube.B0, cube.A1)] + moment[indexify(cube.R0, cube.G0, cube.B0, cube.A0)];
+                return -moment[indexify(cube.R1, cube.G1, cube.B0, cube.A1)] + moment[indexify(cube.R1, cube.G1, cube.B0,
+                        cube.A0)] + moment[indexify(cube.R1, cube.G0, cube.B0, cube.A1)] - moment[indexify(cube.R1, cube.G0,
+                        cube.B0, cube.A0)] + moment[indexify(cube.R0, cube.G1, cube.B0, cube.A1)] - moment[indexify(cube.R0,
+                        cube.G1, cube.B0, cube.A0)] - moment[indexify(cube.R0, cube.G0, cube.B0, cube.A1)] + moment[indexify
+                        (cube.R0, cube.G0, cube.B0, cube.A0)];
             case 2:
-                return -moment[indexify(cube.R1, cube.G0, cube.B1, cube.A1)] + moment[indexify(cube.R1, cube.G0, cube.B1, cube.A0)] + moment[indexify(cube.R1, cube.G0, cube.B0, cube.A1)] - moment[indexify(cube.R1, cube.G0, cube.B0, cube.A0)] + moment[indexify(cube.R0, cube.G0, cube.B1, cube.A1)] - moment[indexify(cube.R0, cube.G0, cube.B1, cube.A0)] - moment[indexify(cube.R0, cube.G0, cube.B0, cube.A1)] + moment[indexify(cube.R0, cube.G0, cube.B0, cube.A0)];
+                return -moment[indexify(cube.R1, cube.G0, cube.B1, cube.A1)] + moment[indexify(cube.R1, cube.G0, cube.B1,
+                        cube.A0)] + moment[indexify(cube.R1, cube.G0, cube.B0, cube.A1)] - moment[indexify(cube.R1, cube.G0,
+                        cube.B0, cube.A0)] + moment[indexify(cube.R0, cube.G0, cube.B1, cube.A1)] - moment[indexify(cube.R0,
+                        cube.G0, cube.B1, cube.A0)] - moment[indexify(cube.R0, cube.G0, cube.B0, cube.A1)] + moment[indexify
+                        (cube.R0, cube.G0, cube.B0, cube.A0)];
             case 3:
-                return -moment[indexify(cube.R0, cube.G1, cube.B1, cube.A1)] + moment[indexify(cube.R0, cube.G1, cube.B1, cube.A0)] + moment[indexify(cube.R0, cube.G1, cube.B0, cube.A1)] - moment[indexify(cube.R0, cube.G1, cube.B0, cube.A0)] + moment[indexify(cube.R0, cube.G0, cube.B1, cube.A1)] - moment[indexify(cube.R0, cube.G0, cube.B1, cube.A0)] - moment[indexify(cube.R0, cube.G0, cube.B0, cube.A1)] + moment[indexify(cube.R0, cube.G0, cube.B0, cube.A0)];
+                return -moment[indexify(cube.R0, cube.G1, cube.B1, cube.A1)] + moment[indexify(cube.R0, cube.G1, cube.B1,
+                        cube.A0)] + moment[indexify(cube.R0, cube.G1, cube.B0, cube.A1)] - moment[indexify(cube.R0, cube.G1,
+                        cube.B0, cube.A0)] + moment[indexify(cube.R0, cube.G0, cube.B1, cube.A1)] - moment[indexify(cube.R0,
+                        cube.G0, cube.B1, cube.A0)] - moment[indexify(cube.R0, cube.G0, cube.B0, cube.A1)] + moment[indexify
+                        (cube.R0, cube.G0, cube.B0, cube.A0)];
             default:
                 return 0L;
         }
     }
 
     private static long findTop(Quant32.Cube cube, int direction, int position, long[] moment) {
-        switch(direction) {
+        switch (direction) {
             case 0:
-                return moment[indexify(cube.R1, cube.G1, cube.B1, position)] - moment[indexify(cube.R1, cube.G1, cube.B0, position)] - moment[indexify(cube.R1, cube.G0, cube.B1, position)] + moment[indexify(cube.R1, cube.G0, cube.B0, position)] - moment[indexify(cube.R0, cube.G1, cube.B1, position)] + moment[indexify(cube.R0, cube.G1, cube.B0, position)] + moment[indexify(cube.R0, cube.G0, cube.B1, position)] - moment[indexify(cube.R0, cube.G0, cube.B0, position)];
+                return moment[indexify(cube.R1, cube.G1, cube.B1, position)] - moment[indexify(cube.R1, cube.G1, cube.B0,
+                        position)] - moment[indexify(cube.R1, cube.G0, cube.B1, position)] + moment[indexify(cube.R1, cube
+                        .G0, cube.B0, position)] - moment[indexify(cube.R0, cube.G1, cube.B1, position)] + moment[indexify
+                        (cube.R0, cube.G1, cube.B0, position)] + moment[indexify(cube.R0, cube.G0, cube.B1, position)] -
+                        moment[indexify(cube.R0, cube.G0, cube.B0, position)];
             case 1:
-                return moment[indexify(cube.R1, cube.G1, position, cube.A1)] - moment[indexify(cube.R1, cube.G1, position, cube.A0)] - moment[indexify(cube.R1, cube.G0, position, cube.A1)] + moment[indexify(cube.R1, cube.G0, position, cube.A0)] - moment[indexify(cube.R0, cube.G1, position, cube.A1)] + moment[indexify(cube.R0, cube.G1, position, cube.A0)] + moment[indexify(cube.R0, cube.G0, position, cube.A1)] - moment[indexify(cube.R0, cube.G0, position, cube.A0)];
+                return moment[indexify(cube.R1, cube.G1, position, cube.A1)] - moment[indexify(cube.R1, cube.G1, position,
+                        cube.A0)] - moment[indexify(cube.R1, cube.G0, position, cube.A1)] + moment[indexify(cube.R1, cube.G0,
+                        position, cube.A0)] - moment[indexify(cube.R0, cube.G1, position, cube.A1)] + moment[indexify(cube
+                        .R0, cube.G1, position, cube.A0)] + moment[indexify(cube.R0, cube.G0, position, cube.A1)] -
+                        moment[indexify(cube.R0, cube.G0, position, cube.A0)];
             case 2:
-                return moment[indexify(cube.R1, position, cube.B1, cube.A1)] - moment[indexify(cube.R1, position, cube.B1, cube.A0)] - moment[indexify(cube.R1, position, cube.B0, cube.A1)] + moment[indexify(cube.R1, position, cube.B0, cube.A0)] - moment[indexify(cube.R0, position, cube.B1, cube.A1)] + moment[indexify(cube.R0, position, cube.B1, cube.A0)] + moment[indexify(cube.R0, position, cube.B0, cube.A1)] - moment[indexify(cube.R0, position, cube.B0, cube.A0)];
+                return moment[indexify(cube.R1, position, cube.B1, cube.A1)] - moment[indexify(cube.R1, position, cube.B1,
+                        cube.A0)] - moment[indexify(cube.R1, position, cube.B0, cube.A1)] + moment[indexify(cube.R1,
+                        position, cube.B0, cube.A0)] - moment[indexify(cube.R0, position, cube.B1, cube.A1)] +
+                        moment[indexify(cube.R0, position, cube.B1, cube.A0)] + moment[indexify(cube.R0, position, cube.B0,
+                        cube.A1)] - moment[indexify(cube.R0, position, cube.B0, cube.A0)];
             case 3:
-                return moment[indexify(position, cube.G1, cube.B1, cube.A1)] - moment[indexify(position, cube.G1, cube.B1, cube.A0)] - moment[indexify(position, cube.G1, cube.B0, cube.A1)] + moment[indexify(position, cube.G1, cube.B0, cube.A0)] - moment[indexify(position, cube.G0, cube.B1, cube.A1)] + moment[indexify(position, cube.G0, cube.B1, cube.A0)] + moment[indexify(position, cube.G0, cube.B0, cube.A1)] - moment[indexify(position, cube.G0, cube.B0, cube.A0)];
+                return moment[indexify(position, cube.G1, cube.B1, cube.A1)] - moment[indexify(position, cube.G1, cube.B1,
+                        cube.A0)] - moment[indexify(position, cube.G1, cube.B0, cube.A1)] + moment[indexify(position, cube
+                        .G1, cube.B0, cube.A0)] - moment[indexify(position, cube.G0, cube.B1, cube.A1)] + moment[indexify
+                        (position, cube.G0, cube.B1, cube.A0)] + moment[indexify(position, cube.G0, cube.B0, cube.A1)] -
+                        moment[indexify(position, cube.G0, cube.B0, cube.A0)];
             default:
                 return 0L;
         }
@@ -63,10 +103,10 @@ public class Quant32 {
         int h = image.length;
         int w = image[0].length;
 
-        for(int y = 0; y < h; ++y) {
+        for (int y = 0; y < h; ++y) {
             int[] temp = image[y];
 
-            for(int x = 0; x < w; ++x) {
+            for (int x = 0; x < w; ++x) {
                 int val = temp[x];
                 int a = val >> 24 & 255;
                 int r = val >> 16 & 255;
@@ -78,20 +118,19 @@ public class Quant32 {
                 int ina = a >> nn;
                 int ind = indexify(inr + 1, ing + 1, inb + 1, ina + 1);
                 ++this.vwt[ind];
-                this.vmr[ind] += (long)r;
-                this.vmg[ind] += (long)g;
-                this.vmb[ind] += (long)b;
-                this.vma[ind] += (long)a;
-                this.m2[ind] += (double)(r * r + g * g + b * b + a * a);
+                this.vmr[ind] += (long) r;
+                this.vmg[ind] += (long) g;
+                this.vmb[ind] += (long) b;
+                this.vma[ind] += (long) a;
+                this.m2[ind] += (double) (r * r + g * g + b * b + a * a);
             }
         }
-
     }
 
     private void M3d() {
         short multiCount = 585;
 
-        for(int r = 1; r < 65; ++r) {
+        for (int r = 1; r < 65; ++r) {
             long[] volume = new long[multiCount];
             long[] volR = new long[multiCount];
             long[] volG = new long[multiCount];
@@ -99,7 +138,7 @@ public class Quant32 {
             long[] volA = new long[multiCount];
             double[] volTemp = new double[multiCount];
 
-            for(int g = 1; g < 65; ++g) {
+            for (int g = 1; g < 65; ++g) {
                 long[] area = new long[9];
                 long[] areaR = new long[9];
                 long[] areaG = new long[9];
@@ -107,7 +146,7 @@ public class Quant32 {
                 long[] areaA = new long[9];
                 double[] areaTemp = new double[9];
 
-                for(int b = 1; b < 65; ++b) {
+                for (int b = 1; b < 65; ++b) {
                     long line = 0L;
                     long line_r = 0L;
                     long line_g = 0L;
@@ -115,7 +154,7 @@ public class Quant32 {
                     long line_a = 0L;
                     double line2 = 0.0D;
 
-                    for(int a = 1; a < 9; ++a) {
+                    for (int a = 1; a < 9; ++a) {
                         int ind1 = indexify(r, g, b, a);
                         line += this.vwt[ind1];
                         line_r += this.vmr[ind1];
@@ -147,7 +186,6 @@ public class Quant32 {
                 }
             }
         }
-
     }
 
     private double variance(Quant32.Cube cube) {
@@ -155,11 +193,20 @@ public class Quant32 {
         double dg = volume(cube, this.vmg);
         double db = volume(cube, this.vmb);
         double da = volume(cube, this.vma);
-        double cc = this.m2[indexify(cube.R1, cube.G1, cube.B1, cube.A1)] - this.m2[indexify(cube.R1, cube.G1, cube.B1, cube.A0)] - this.m2[indexify(cube.R1, cube.G1, cube.B0, cube.A1)] + this.m2[indexify(cube.R1, cube.G1, cube.B0, cube.A0)] - this.m2[indexify(cube.R1, cube.G0, cube.B1, cube.A1)] + this.m2[indexify(cube.R1, cube.G0, cube.B1, cube.A0)] + this.m2[indexify(cube.R1, cube.G0, cube.B0, cube.A1)] - this.m2[indexify(cube.R1, cube.G0, cube.B0, cube.A0)] - this.m2[indexify(cube.R0, cube.G1, cube.B1, cube.A1)] + this.m2[indexify(cube.R0, cube.G1, cube.B1, cube.A0)] + this.m2[indexify(cube.R0, cube.G1, cube.B0, cube.A1)] - this.m2[indexify(cube.R0, cube.G1, cube.B0, cube.A0)] + this.m2[indexify(cube.R0, cube.G0, cube.B1, cube.A1)] - this.m2[indexify(cube.R0, cube.G0, cube.B1, cube.A0)] - this.m2[indexify(cube.R0, cube.G0, cube.B0, cube.A1)] + this.m2[indexify(cube.R0, cube.G0, cube.B0, cube.A0)];
+        double cc = this.m2[indexify(cube.R1, cube.G1, cube.B1, cube.A1)] - this.m2[indexify(cube.R1, cube.G1, cube.B1, cube
+                .A0)] - this.m2[indexify(cube.R1, cube.G1, cube.B0, cube.A1)] + this.m2[indexify(cube.R1, cube.G1, cube.B0,
+                cube.A0)] - this.m2[indexify(cube.R1, cube.G0, cube.B1, cube.A1)] + this.m2[indexify(cube.R1, cube.G0, cube
+                .B1, cube.A0)] + this.m2[indexify(cube.R1, cube.G0, cube.B0, cube.A1)] - this.m2[indexify(cube.R1, cube.G0,
+                cube.B0, cube.A0)] - this.m2[indexify(cube.R0, cube.G1, cube.B1, cube.A1)] + this.m2[indexify(cube.R0, cube
+                .G1, cube.B1, cube.A0)] + this.m2[indexify(cube.R0, cube.G1, cube.B0, cube.A1)] - this.m2[indexify(cube.R0,
+                cube.G1, cube.B0, cube.A0)] + this.m2[indexify(cube.R0, cube.G0, cube.B1, cube.A1)] - this.m2[indexify(cube
+                .R0, cube.G0, cube.B1, cube.A0)] - this.m2[indexify(cube.R0, cube.G0, cube.B0, cube.A1)] + this.m2[indexify
+                (cube.R0, cube.G0, cube.B0, cube.A0)];
         return cc - (dr * dr + dg * dg + db * db + da * da) / volume(cube, this.vwt);
     }
 
-    private Object[] maximize(Quant32.Cube cube, int direction, int first, int last, double whole_r, double whole_g, double whole_b, double whole_a, double whole_w) {
+    private Object[] maximize(Quant32.Cube cube, int direction, int first, int last, double whole_r, double whole_g, double
+            whole_b, double whole_a, double whole_w) {
         long base_r = base(cube, direction, this.vmr);
         long base_g = base(cube, direction, this.vmg);
         long base_b = base(cube, direction, this.vmb);
@@ -168,29 +215,28 @@ public class Quant32 {
         double max = 0.0D;
         int cut = -1;
 
-        for(int i = first; i < last; ++i) {
-            double half_r = (double)(base_r + findTop(cube, direction, i, this.vmr));
-            double half_g = (double)(base_g + findTop(cube, direction, i, this.vmg));
-            double half_b = (double)(base_b + findTop(cube, direction, i, this.vmb));
-            double half_a = (double)(base_a + findTop(cube, direction, i, this.vma));
-            double half_w = (double)(base_w + findTop(cube, direction, i, this.vwt));
-            if(half_w != 0.0D) {
+        for (int i = first; i < last; ++i) {
+            double half_r = (double) (base_r + findTop(cube, direction, i, this.vmr));
+            double half_g = (double) (base_g + findTop(cube, direction, i, this.vmg));
+            double half_b = (double) (base_b + findTop(cube, direction, i, this.vmb));
+            double half_a = (double) (base_a + findTop(cube, direction, i, this.vma));
+            double half_w = (double) (base_w + findTop(cube, direction, i, this.vwt));
+            if (half_w != 0.0D) {
                 double temp = (half_r * half_r + half_g * half_g + half_b * half_b + half_a * half_a) / half_w;
                 half_r = whole_r - half_r;
                 half_g = whole_g - half_g;
                 half_b = whole_b - half_b;
                 half_a = whole_a - half_a;
                 half_w = whole_w - half_w;
-                if(half_w != 0.0D) {
+                if (half_w != 0.0D) {
                     temp += (half_r * half_r + half_g * half_g + half_b * half_b + half_a * half_a) / half_w;
-                    if(temp > max) {
+                    if (temp > max) {
                         max = temp;
                         cut = i;
                     }
                 }
             }
         }
-
         return new Object[]{Integer.valueOf(cut), Double.valueOf(max)};
     }
 
@@ -201,26 +247,26 @@ public class Quant32 {
         double whole_a = volume(set1, this.vma);
         double whole_w = volume(set1, this.vwt);
         Object[] temp = this.maximize(set1, 3, set1.R0 + 1, set1.R1, whole_r, whole_g, whole_b, whole_a, whole_w);
-        int cutr = ((Integer)temp[0]).intValue();
-        double maxr = ((Double)temp[1]).doubleValue();
+        int cutr = ((Integer) temp[0]).intValue();
+        double maxr = ((Double) temp[1]).doubleValue();
         temp = this.maximize(set1, 2, set1.G0 + 1, set1.G1, whole_r, whole_g, whole_b, whole_a, whole_w);
-        int cutg = ((Integer)temp[0]).intValue();
-        double maxg = ((Double)temp[1]).doubleValue();
+        int cutg = ((Integer) temp[0]).intValue();
+        double maxg = ((Double) temp[1]).doubleValue();
         temp = this.maximize(set1, 1, set1.B0 + 1, set1.B1, whole_r, whole_g, whole_b, whole_a, whole_w);
-        int cutb = ((Integer)temp[0]).intValue();
-        double maxb = ((Double)temp[1]).doubleValue();
+        int cutb = ((Integer) temp[0]).intValue();
+        double maxb = ((Double) temp[1]).doubleValue();
         temp = this.maximize(set1, 0, set1.A0 + 1, set1.A1, whole_r, whole_g, whole_b, whole_a, whole_w);
-        int cuta = ((Integer)temp[0]).intValue();
-        double maxa = ((Double)temp[1]).doubleValue();
+        int cuta = ((Integer) temp[0]).intValue();
+        double maxa = ((Double) temp[1]).doubleValue();
         byte dir;
-        if(maxr >= maxg && maxr >= maxb && maxr >= maxa) {
+        if (maxr >= maxg && maxr >= maxb && maxr >= maxa) {
             dir = 3;
-            if(cutr < 0) {
+            if (cutr < 0) {
                 return false;
             }
-        } else if(maxg >= maxr && maxg >= maxb && maxg >= maxa) {
+        } else if (maxg >= maxr && maxg >= maxb && maxg >= maxa) {
             dir = 2;
-        } else if(maxb >= maxr && maxb >= maxg && maxb >= maxa) {
+        } else if (maxb >= maxr && maxb >= maxg && maxb >= maxa) {
             dir = 1;
         } else {
             dir = 0;
@@ -230,7 +276,7 @@ public class Quant32 {
         set2.G1 = set1.G1;
         set2.B1 = set1.B1;
         set2.A1 = set1.A1;
-        switch(dir) {
+        switch (dir) {
             case 0:
                 set2.A0 = set1.A1 = cuta;
                 set2.R0 = set1.R0;
@@ -265,7 +311,7 @@ public class Quant32 {
         double[] vv = new double[colorCount];
 
         int next;
-        for(next = 0; next < colorCount; ++next) {
+        for (next = 0; next < colorCount; ++next) {
             cube[next] = new Quant32.Cube();
         }
 
@@ -274,10 +320,10 @@ public class Quant32 {
         cube[0].A1 = 8;
         next = 0;
 
-        for(int i = 1; i < colorCount; ++i) {
-            if(this.cut(cube[next], cube[i])) {
-                vv[next] = cube[next].Volume > 1?this.variance(cube[next]):0.0D;
-                vv[i] = cube[i].Volume > 1?this.variance(cube[i]):0.0D;
+        for (int i = 1; i < colorCount; ++i) {
+            if (this.cut(cube[next], cube[i])) {
+                vv[next] = cube[next].Volume > 1 ? this.variance(cube[next]) : 0.0D;
+                vv[i] = cube[i].Volume > 1 ? this.variance(cube[i]) : 0.0D;
             } else {
                 vv[next] = 0.0D;
                 --i;
@@ -286,18 +332,17 @@ public class Quant32 {
             next = 0;
             double temp = vv[0];
 
-            for(int k = 1; k <= i; ++k) {
-                if(vv[k] > temp) {
+            for (int k = 1; k <= i; ++k) {
+                if (vv[k] > temp) {
                     temp = vv[k];
                     next = k;
                 }
             }
 
-            if(temp <= 0.0D) {
+            if (temp <= 0.0D) {
                 break;
             }
         }
-
     }
 
     public Object[] getPalette(int[][] image) {
@@ -310,18 +355,17 @@ public class Quant32 {
         byte[] trns = new byte[256];
         int z = 0;
 
-        for(int k = 0; k < colorCount; ++k) {
+        for (int k = 0; k < colorCount; ++k) {
             double weight = volume(cube[k], this.vwt);
-            if(weight != 0.0D) {
-                trns[k] = (byte)((int)(volume(cube[k], this.vma) / weight));
-                palette[z++] = (byte)((int)(volume(cube[k], this.vmr) / weight));
-                palette[z++] = (byte)((int)(volume(cube[k], this.vmg) / weight));
-                palette[z++] = (byte)((int)(volume(cube[k], this.vmb) / weight));
+            if (weight != 0.0D) {
+                trns[k] = (byte) ((int) (volume(cube[k], this.vma) / weight));
+                palette[z++] = (byte) ((int) (volume(cube[k], this.vmr) / weight));
+                palette[z++] = (byte) ((int) (volume(cube[k], this.vmg) / weight));
+                palette[z++] = (byte) ((int) (volume(cube[k], this.vmb) / weight));
             } else {
                 z += 4;
             }
         }
-
         return new Object[]{palette, trns};
     }
 

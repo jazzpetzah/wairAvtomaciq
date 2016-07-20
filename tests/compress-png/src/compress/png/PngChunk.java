@@ -4,12 +4,13 @@ import java.nio.ByteBuffer;
 import java.util.zip.CRC32;
 
 public class PngChunk {
-    public static final byte[] SIGNATURE = new byte[]{(byte)-119, (byte)80, (byte)78, (byte)71, (byte)13, (byte)10, (byte)26, (byte)10};
-    public static final byte[] IHDR = new byte[]{(byte)73, (byte)72, (byte)68, (byte)82};
-    public static final byte[] PLTE = new byte[]{(byte)80, (byte)76, (byte)84, (byte)69};
-    public static final byte[] tRNS = new byte[]{(byte)116, (byte)82, (byte)78, (byte)83};
-    public static final byte[] IDAT = new byte[]{(byte)73, (byte)68, (byte)65, (byte)84};
-    public static final byte[] IEND = new byte[]{(byte)73, (byte)69, (byte)78, (byte)68};
+    public static final byte[] SIGNATURE = new byte[]{(byte) -119, (byte) 80, (byte) 78, (byte) 71, (byte) 13, (byte) 10,
+            (byte) 26, (byte) 10};
+    public static final byte[] IHDR = new byte[]{(byte) 73, (byte) 72, (byte) 68, (byte) 82};
+    public static final byte[] PLTE = new byte[]{(byte) 80, (byte) 76, (byte) 84, (byte) 69};
+    public static final byte[] tRNS = new byte[]{(byte) 116, (byte) 82, (byte) 78, (byte) 83};
+    public static final byte[] IDAT = new byte[]{(byte) 73, (byte) 68, (byte) 65, (byte) 84};
+    public static final byte[] IEND = new byte[]{(byte) 73, (byte) 69, (byte) 78, (byte) 68};
     private final byte[] length;
     private final byte[] name;
     private final byte[] data;
@@ -20,7 +21,8 @@ public class PngChunk {
         this.data = data;
     }
 
-    public static PngChunk createHeaderChunk(int width, int height, byte bitDepth, byte colorType, byte compression, byte filter, byte interlace) {
+    public static PngChunk createHeaderChunk(int width, int height, byte bitDepth, byte colorType, byte compression, byte
+            filter, byte interlace) {
         ByteBuffer buff = ByteBuffer.allocate(13);
         buff.putInt(width);
         buff.putInt(height);
@@ -58,11 +60,13 @@ public class PngChunk {
     }
 
     public static byte[] intToBytes(int value) {
-        return new byte[]{(byte)(value >> 24), (byte)(value >> 16), (byte)(value >> 8), (byte)value};
+        return new byte[]{(byte) (value >> 24), (byte) (value >> 16), (byte) (value >> 8), (byte) value};
     }
 
     private static byte[] longToBytes(long value) {
-        return new byte[]{(byte)((int)(value >> 56)), (byte)((int)(value >> 48)), (byte)((int)(value >> 40)), (byte)((int)(value >> 32)), (byte)((int)(value >> 24)), (byte)((int)(value >> 16)), (byte)((int)(value >> 8)), (byte)((int)value)};
+        return new byte[]{(byte) ((int) (value >> 56)), (byte) ((int) (value >> 48)), (byte) ((int) (value >> 40)), (byte) (
+                (int) (value >> 32)), (byte) ((int) (value >> 24)), (byte) ((int) (value >> 16)), (byte) ((int) (value >> 8))
+                , (byte) ((int) value)};
     }
 
     public byte[] getLength() {

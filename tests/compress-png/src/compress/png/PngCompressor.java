@@ -69,7 +69,6 @@ public class PngCompressor {
                 diffMessage = " (" + String.format("%.02f", new Object[]{Float.valueOf(diff)}) + "% larger)";
             }
         }
-
         System.out.println("Original size: " + originalSize);
         System.out.println("Compressed size: " + compressedSize + diffMessage);
     }
@@ -183,7 +182,6 @@ public class PngCompressor {
                         }
                     }
                 }
-
         );
     }
 
