@@ -325,6 +325,7 @@ public class ImageUtil {
             if (Files.isRegularFile(filePath) && filePath.toString().toLowerCase().endsWith(".png")) {
                 try {
                     PngCompressor.compress(filePath.toFile(), filePath.toFile());
+                    System.out.println("processing "+filePath);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
