@@ -1,18 +1,19 @@
 package com.wearezeta.auto.common;
 
-import java.awt.AlphaComposite;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
+import com.idrsolutions.image.png.PngCompressor;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.apache.log4j.Logger;
@@ -198,10 +199,10 @@ public class ImageUtil {
         List<MatOfDMatch> matches = new ArrayList<>();
         matcher.knnMatch(desRef, desTpl, matches, 2);
 
-        for(MatOfDMatch match: matches) {
+        for (MatOfDMatch match : matches) {
             DMatch m = match.toList().get(0);
             DMatch n = match.toList().get(1);
-            if(m.distance < 0.7*n.distance) {
+            if (m.distance < 0.7 * n.distance) {
                 good.add(m);
             }
         }
@@ -315,5 +316,20 @@ public class ImageUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void compressPngsInFolder(final String folderPath) throws Exception {
+        System.out.println("Starting PNG compression...");
+        final long startTime = System.currentTimeMillis();
+        Files.walk(Paths.get(folderPath)).forEach(filePath -> {
+            if (Files.isRegularFile(filePath) && filePath.toString().toLowerCase().endsWith(".png")) {
+                try {
+                    PngCompressor.compress(filePath.toFile(), filePath.toFile());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        System.out.println("PNG compression finished after " + (System.currentTimeMillis() - startTime) / 1000 + " seconds");
     }
 }
