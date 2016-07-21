@@ -9,8 +9,6 @@ Feature: Link Preview
     Given I see conversations list
     When I tap on contact name <Contact>
     And I post url link <Link>
-    # Sometimes the test fail with fetching picture so wait 1s here
-    And I wait for 1 seconds
     Then I see link preview container in the conversation view
 
     Examples:
@@ -26,9 +24,7 @@ Feature: Link Preview
     Given I see conversations list
     When I tap on contact name <Contact>
     And I post url link <Link>
-    # Sometimes the test fail with fetching picture so wait 1s here
-    And I wait for 1 seconds
-    And I see link preview container in the conversation view
+    Then I see link preview container in the conversation view
     When I long tap on link preview in conversation view
     And I tap on Delete badge item
     # Sometimes the alert is not accepted automatically
@@ -47,7 +43,7 @@ Feature: Link Preview
     Given I Sign in on tablet using my email
     Given User <Contact> sends encrypted message "<Link>" to user Myself
     Given I see conversations list
-    Given I tap on contact name <Contact>
+    When I tap on contact name <Contact>
     Then I see link preview container in the conversation view
 
     Examples:
