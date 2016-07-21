@@ -8,8 +8,6 @@ Feature: Link Preview
     Given I see conversations list
     When I tap on contact name <Contact>
     And I post url link <Link>
-    # Sometimes the test fail with fetching picture so wait 1s here
-    And I wait for 1 seconds
     # This is to make the keyboard invisible as sometimes the keyboard is still visible after posting the link
     And I navigate back to conversations list
     And I tap on contact name <Contact>
@@ -30,8 +28,6 @@ Feature: Link Preview
     When I tap on contact name <Contact>
     # Check link + text
     And I post url link <Link> <Text>
-    # Sometimes the test fail with link with text so wait 1s here
-    And I wait for 1 seconds
     # This is to make the keyboard invisible
     And I navigate back to conversations list
     And I tap on contact name <Contact>
@@ -39,8 +35,6 @@ Feature: Link Preview
     And I see the conversation view contains message <Link> <Text>
     # Check text + link
     When I post url link <Text1> <Link>
-    # Sometimes the test fail with link with text so wait 1s here
-    And I wait for 1 seconds
     # This is to make the keyboard invisible
     And I navigate back to conversations list
     And I tap on contact name <Contact>
@@ -49,8 +43,6 @@ Feature: Link Preview
     And I see link preview container in the conversation view
     # Check text + link + text
     When I post url link <Text1> <Link> <Text>
-    # Sometimes the test fail with link with text so wait 1s here
-    And I wait for 1 seconds
     # This is to make the keyboard invisible
     And I navigate back to conversations list
     And I tap on contact name <Contact>
