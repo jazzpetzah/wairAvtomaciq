@@ -13,6 +13,8 @@ import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Time;
+import java.sql.Date;
 
 import javax.imageio.ImageIO;
 
@@ -78,12 +80,16 @@ public class PngCompressor {
         try {
             image = ImageIO.read(input);
         } catch (IOException var6) {
-            System.out.println("error: Failed to read image " + input.getAbsolutePath());
+            System.out.println(new Date(System.currentTimeMillis()) + " " +
+                    new Time(System.currentTimeMillis()) +
+                    " error: Failed to read image " + input.getAbsolutePath());
             throw new IOException(var6);
         }
 
         if (image == null) {
-            throw new IOException("error: Failed to read image " + input.getAbsolutePath());
+            throw new IOException(new Date(System.currentTimeMillis()) + " " +
+                    new Time(System.currentTimeMillis()) +
+                    "error: Failed to read image " + input.getAbsolutePath());
         } else {
             int inputLen = (int) input.length();
             byte[] compressedImage = getCompressedImageAsByteArray(image, inputLen);
@@ -126,12 +132,16 @@ public class PngCompressor {
         try {
             image = ImageIO.read(byteArrayInputStream);
         } catch (IOException var6) {
-            System.out.println("error: Failed to read image");
+            System.out.println(new Date(System.currentTimeMillis()) + " " +
+                    new Time(System.currentTimeMillis()) +
+                    "error: Failed to read image");
             throw new IOException(var6);
         }
 
         if (image == null) {
-            throw new IOException("error: Failed to read image");
+            throw new IOException(new Date(System.currentTimeMillis()) + " " +
+                    new Time(System.currentTimeMillis()) +
+                    "error: Failed to read image");
         } else {
             byte[] compressedImage = getCompressedImageAsByteArray(image, originalImage.length);
             if (verbose) {
