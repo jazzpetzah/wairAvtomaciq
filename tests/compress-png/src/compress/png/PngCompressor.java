@@ -77,7 +77,7 @@ public class PngCompressor {
         System.out.println("Compressed size: " + compressedSize + diffMessage);
     }
 
-    public static void compress(File input, File output, int minSize) throws IOException {
+    public static void compress(File input, File output, int minSize, int maxSize) throws IOException {
         final int currentSize = (int) input.length();
         if (currentSize >= minSize && currentSize <= maxSize)
             compress(input, output);
@@ -199,11 +199,11 @@ public class PngCompressor {
         return buffer.toByteArray();
     }
 
-    private static void compressPngsInFolder(final String folderPath) throws Exception {
+    private static void compressPngsInFolder(final String folderPath, final int minSize, final int maxSize) throws Exception {
         Files.walk(Paths.get(folderPath)).forEach(filePath -> {
                     if (Files.isRegularFile(filePath) && filePath.toString().toLowerCase().endsWith(".png")) {
                         try {
-                            PngCompressor.compress(filePath.toFile(), filePath.toFile(), minSize);
+                            PngCompressor.compress(filePath.toFile(), filePath.toFile(), minSize, maxSize);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -223,23 +223,31 @@ public class PngCompressor {
                 try {
                     minSize = Integer.parseInt(System.getProperty("minSize"));
                 } catch (NumberFormatException e) {
+                    // Set default to 0 bytes
                     minSize = 0;
                 }
-                // Don't limit files > 1Mb
+                // If minSize too big - set minSize to 1 Mb
                 if (minSize > 1000000) minSize = 100000;
                 try {
-                    minSize = Integer.parseInt(System.getProperty("maxSize"));
+                    maxSize = Integer.parseInt(System.getProperty("maxSize"));
                 } catch (NumberFormatException e) {
+                    // Set default to 10 Mb
                     maxSize = 10000000;
                 }
-                // Limit files up to 10Mb
-                if (maxSize > 10000000) minSize = 10000000;
+                if (maxSize < minSize) {
+                    //swap
+                    final int tmp = minSize;
+                    minSize = maxSize;
+                    maxSize = tmp;
+                }
+                // Limit files up to 10 Mb
+                if (maxSize > 10000000) maxSize = 10000000;
 
                 System.out.println("verbose=" + verbose);
                 System.out.println("minSize=" + minSize);
                 System.out.println("maxSize=" + maxSize);
 
-                compressPngsInFolder(args[0]);
+                compressPngsInFolder(args[0], minSize, maxSize);
                 System.out.println("PNG compression finished after " + (System.currentTimeMillis() - startTime) / 1000 + " " +
                         "seconds");
             } else System.out.println("<Path> to compress is missed");
