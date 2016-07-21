@@ -21,6 +21,7 @@ import javax.imageio.ImageIO;
 public class PngCompressor {
     private static boolean verbose;
     private static int minSize;
+    private static int maxSize;
 
     public PngCompressor() {
     }
@@ -77,10 +78,12 @@ public class PngCompressor {
     }
 
     public static void compress(File input, File output, int minSize) throws IOException {
-        if ((int) input.length() > minSize)
+        final int currentSize = (int) input.length();
+        if (currentSize > minSize && currentSize < maxSize)
             compress(input, output);
         else
-            System.out.println(input.toString() + " size is " + input.length() + "\nSkipping...");
+            System.out.println(input.toString() + " size is " + input.length() + ". Expected size between "
+                    + minSize + "~" + maxSize + "\nSkipping...");
     }
 
     public static void compress(File input, File output) throws IOException {
@@ -224,9 +227,17 @@ public class PngCompressor {
                 }
                 // Don't limit files > 1Mb
                 if (minSize > 1000000) minSize = 100000;
+                try {
+                    minSize = Integer.parseInt(System.getProperty("maxSize"));
+                } catch (NumberFormatException e) {
+                    maxSize = 10000000;
+                }
+                // Limit files up to 10Mb
+                if (maxSize > 10000000) minSize = 10000000;
 
                 System.out.println("verbose=" + verbose);
                 System.out.println("minSize=" + minSize);
+                System.out.println("maxSize=" + maxSize);
 
                 compressPngsInFolder(args[0]);
                 System.out.println("PNG compression finished after " + (System.currentTimeMillis() - startTime) / 1000 + " " +
@@ -237,6 +248,6 @@ public class PngCompressor {
 
     private static void showCommandLineHelp() {
         System.out.println("How to run PngCompressor:\n\n    java [options] -jar compress-png.jar <File/Folder Path>\n" +
-                "Example: java -Dverbose=true -DminSize=50000 -jar compress-png.jar <FolderPath>");
+                "Example: java -Dverbose=true -DminSize=50000 -DmaxSize=100000 -jar compress-png.jar <FolderPath>");
     }
 }
