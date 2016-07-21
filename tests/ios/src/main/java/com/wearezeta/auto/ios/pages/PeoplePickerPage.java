@@ -20,7 +20,7 @@ public class PeoplePickerPage extends IOSPage {
 
     private static final By nameKeyboardEnterButton = MobileBy.AccessibilityId("Return");
 
-    private static final By nameCreateConversationButton = MobileBy.AccessibilityId("CREATE GROUP");
+    private static final By xpathCreateConversationButton = By.xpath("//UIAButton[@name='CREATE GROUP']");
 
     private static final By namePeoplePickerTopPeopleLabel = MobileBy.AccessibilityId("TOP PEOPLE");
 
@@ -230,7 +230,7 @@ public class PeoplePickerPage extends IOSPage {
     private By getActionButtonByName(String name) {
         switch (name) {
             case "Create conversation":
-                return nameCreateConversationButton;
+                return xpathCreateConversationButton;
             case "Open conversation":
                 return nameOpenConversationButton;
             case "Video call":
