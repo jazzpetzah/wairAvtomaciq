@@ -16,7 +16,7 @@ Feature: Calling_Matrix
     And I see the ongoing call controls for conversation <Contact>
     And I wait for 5 seconds
     And <Contact> verifies to have 1 flows
-    And <Contact> verifies that all flows have greater than 0 bytes
+    And <Contact> verifies that all audio flows have greater than 0 bytes
     And I hang up call with conversation <Contact>
     Then I do not see the call controls for conversation <Contact>
 
@@ -43,7 +43,8 @@ Feature: Calling_Matrix
 #    And I see the ongoing call controls for conversation <Contact>
     And I wait for 5 seconds
     And <Contact> verifies to have 1 flows
-    And <Contact> verifies that all flows have greater than 0 bytes
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     And I end the video call
 #    Then I do not see the call controls for conversation <Contact>
 
@@ -95,7 +96,7 @@ Feature: Calling_Matrix
     Then I see the ongoing call controls for conversation <Contact>
     And I wait for 5 seconds
     And <Contact> verifies to have 1 flows
-    And <Contact> verifies that all flows have greater than 0 bytes
+    And <Contact> verifies that all audio flows have greater than 0 bytes
     And I hang up call with conversation <Contact>
     And I do not see the call controls for conversation <Contact>
 
@@ -122,7 +123,8 @@ Feature: Calling_Matrix
 #    Then I see the ongoing call controls for conversation <Contact>
     And I wait for 5 seconds
     And <Contact> verifies to have 1 flows
-    And <Contact> verifies that all flows have greater than 0 bytes
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     And I end the video call
 #    And I do not see the call controls for conversation <Contact>
 
@@ -176,12 +178,12 @@ Feature: Calling_Matrix
     And I see the ongoing call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies to have 4 flows
-    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies that all flows have greater than 0 bytes
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies that all audio flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
     And I see the join call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies to have 3 flows
-    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies that all flows have greater than 0 bytes
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies that all audio flows have greater than 0 bytes
     # Stops all waiting instance calls
     And <Contact1>,<Contact2>,<Contact3> stops calling
 
@@ -236,12 +238,12 @@ Feature: Calling_Matrix
     And I see the ongoing call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact1>,<Contact2> verify to have 2 flows
-    And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
+    And <Contact1>,<Contact2> verify that all audio flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
     And I see the join call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact1>,<Contact2> verifies to have 1 flows
-    And <Contact1>,<Contact2> verifies that all flows have greater than 0 bytes
+    And <Contact1>,<Contact2> verifies that all audio flows have greater than 0 bytes
     # Stops all waiting instance calls
     And <Contact1> stops calling
 
@@ -275,12 +277,12 @@ Feature: Calling_Matrix
     And I see row of avatars on call controls with users <Contact1>
     And I wait for 10 seconds
     And <Contact2> verifies to have 2 flows
-    And <Contact2> verifies that all flows have greater than 0 bytes
+    And <Contact2> verifies that all audio flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
     And I see the join call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact2> verifies to have 1 flows
-    And <Contact2> verifies that all flows have greater than 0 bytes
+    And <Contact2> verifies that all audio flows have greater than 0 bytes
     # Stops all autocall instance calls
     And <Contact1> stops calling <ChatName1>
 
@@ -349,7 +351,7 @@ Feature: Calling_Matrix
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
     And <Contact1>,<Contact2> verify to have 2 flows
-    And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
+    And <Contact1>,<Contact2> verify that all audio flows have greater than 0 bytes
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend          | Timeout |

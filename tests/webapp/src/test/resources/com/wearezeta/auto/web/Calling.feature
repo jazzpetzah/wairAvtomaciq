@@ -123,7 +123,7 @@ Feature: Calling
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
     And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
+    And <Contact> verify that all audio flows have greater than 0 bytes
     When I hang up call with conversation <Contact>
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
@@ -132,7 +132,7 @@ Feature: Calling
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
     And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
+    And <Contact> verify that all audio flows have greater than 0 bytes
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
@@ -154,7 +154,7 @@ Feature: Calling
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
+    And <Contact> verify that all audio flows have greater than 0 bytes
     And I wait for 60 seconds
     And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -255,7 +255,7 @@ Feature: Calling
     And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact> verify to have 1 flows
-    And <Contact> verify that all flows have greater than 0 bytes
+    And <Contact> verify that all audio flows have greater than 0 bytes
     And I hang up call with conversation <Contact>
 
     Examples:
@@ -278,7 +278,7 @@ Feature: Calling
     And I call
     Then <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact>,<Contact2> verify to have 2 flows
-    And <Contact>,<Contact2> verify that all flows have greater than 0 bytes
+    And <Contact>,<Contact2> verify that all audio flows have greater than 0 bytes
     And I wait for 60 seconds
     And I see the ongoing call controls for conversation <ChatName1>
     And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -379,7 +379,7 @@ Feature: Calling
     And I see the ongoing call controls for conversation <ChatName1>
     And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact>,<Contact2> verify to have 2 flows
-    And <Contact>,<Contact2> verify that all flows have greater than 0 bytes
+    And <Contact>,<Contact2> verify that all audio flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
 
     Examples:
@@ -831,7 +831,7 @@ Feature: Calling
     Then I see the ongoing call controls for conversation <ChatName>
     And I wait for 10 seconds
     And <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
-    And <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
+    And <Contact2>,<Contact3>,<Contact4> verify that all audio flows have greater than 0 bytes
     When I hang up call with conversation <ChatName>
     Then I see the join call controls for conversation <ChatName>
 
@@ -946,7 +946,7 @@ Feature: Calling
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
     And <Contact1>,<Contact2> verify to have 2 flows
-    And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
+    And <Contact1>,<Contact2> verify that all audio flows have greater than 0 bytes
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend | Timeout |
@@ -976,7 +976,7 @@ Feature: Calling
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And <Contact1>,<Contact2> verify to have 2 flows
-    And <Contact1>,<Contact2> verify that all flows have greater than 0 bytes
+    And <Contact1>,<Contact2> verify that all audio flows have greater than 0 bytes
     And I see the ongoing call controls for conversation <ChatName>
 
     Examples:

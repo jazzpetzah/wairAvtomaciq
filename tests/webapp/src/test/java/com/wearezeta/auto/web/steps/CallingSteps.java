@@ -172,23 +172,43 @@ public class CallingSteps {
             assertThat("# of flows don't match "+numberOfFlows , flows, hasSize(numberOfFlows));
         }
     }
-
+    
     /**
-     * Verify that each flow of the instance had incoming and outgoing bytes running over the line
+     * Verify that each audio flow of the instance had incoming and outgoing bytes running over the line
      *
-     * @step. (.*) verif(?:ies|y) that all flows have greater than 0 bytes$
+     * @step. (.*) verif(?:ies|y) that all audio flows have greater than 0 bytes$
      *
      * @param callees comma separated list of callee names/aliases
      * @throws Exception
      */
-    @Then("(.*) verif(?:ies|y) that all flows have greater than 0 bytes$")
-    public void UserXVerifesHavingXFlows(String callees) throws Exception {
+    @Then("(.*) verif(?:ies|y) that all audio flows have greater than 0 bytes$")
+    public void UserXVerifesAllAudioFlowBytesGreaterZero(String callees) throws Exception {
         for (String callee : splitAliases(callees)) {
             List<Flow> flows = context.getCallingManager().getFlows(callee);
             for (Flow flow : flows) {
                 LOG.info("flows: \n"+flows);
-                assertThat("incoming bytes: \n" + flow, flow.getTelemetry().getStats().getAudio().getBytesReceived(), greaterThan(0L));
-                assertThat("outgoing bytes: \n" + flow, flow.getTelemetry().getStats().getAudio().getBytesSent(), greaterThan(0L));
+                assertThat("incoming audio bytes: \n" + flow, flow.getTelemetry().getStats().getAudio().getBytesReceived(), greaterThan(0L));
+                assertThat("outgoing audio bytes: \n" + flow, flow.getTelemetry().getStats().getAudio().getBytesSent(), greaterThan(0L));
+            }
+        }
+    }
+    
+    /**
+     * Verify that each video flow of the instance had incoming and outgoing bytes running over the line
+     *
+     * @step. (.*) verif(?:ies|y) that all video flows have greater than 0 bytes$
+     *
+     * @param callees comma separated list of callee names/aliases
+     * @throws Exception
+     */
+    @Then("(.*) verif(?:ies|y) that all video flows have greater than 0 bytes$")
+    public void UserXVerifesAllVideoFlowBytesGreaterZero(String callees) throws Exception {
+        for (String callee : splitAliases(callees)) {
+            List<Flow> flows = context.getCallingManager().getFlows(callee);
+            for (Flow flow : flows) {
+                LOG.info("flows: \n"+flows);
+                assertThat("incoming video bytes: \n" + flow, flow.getTelemetry().getStats().getVideo().getBytesReceived(), greaterThan(0L));
+                assertThat("outgoing video bytes: \n" + flow, flow.getTelemetry().getStats().getVideo().getBytesSent(), greaterThan(0L));
             }
         }
     }
