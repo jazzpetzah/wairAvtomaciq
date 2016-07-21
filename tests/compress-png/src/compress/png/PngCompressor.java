@@ -20,7 +20,7 @@ import javax.imageio.ImageIO;
 
 public class PngCompressor {
     private static boolean verbose;
-    private static int minSize = 0;
+    private static int minSize;
 
     public PngCompressor() {
     }
@@ -217,8 +217,17 @@ public class PngCompressor {
             final long startTime = System.currentTimeMillis();
             if (args.length > 0) {
                 verbose = "true".equalsIgnoreCase(System.getProperty("verbose"));
-                if (Integer.getInteger(System.getProperty("minSize")) > 0)
-                    minSize = Integer.getInteger(System.getProperty("minSize"));
+                try {
+                    minSize = Integer.parseInt(System.getProperty("minSize"));
+                } catch (NumberFormatException e) {
+                    minSize = 0;
+                }
+                // Don't limit files > 1Mb
+                if (minSize > 1000000) minSize = 100000;
+
+                System.out.println("verbose=" + verbose);
+                System.out.println("minSize=" + minSize);
+
                 compressPngsInFolder(args[0]);
                 System.out.println("PNG compression finished after " + (System.currentTimeMillis() - startTime) / 1000 + " " +
                         "seconds");
