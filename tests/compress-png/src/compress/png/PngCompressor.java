@@ -13,13 +13,14 @@ import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Time;
 import java.sql.Date;
+import java.sql.Time;
 
 import javax.imageio.ImageIO;
 
 public class PngCompressor {
     private static boolean verbose;
+    private static int minSize = 0;
 
     public PngCompressor() {
     }
@@ -75,6 +76,13 @@ public class PngCompressor {
         System.out.println("Compressed size: " + compressedSize + diffMessage);
     }
 
+    public static void compress(File input, File output, int minSize) throws IOException {
+        if ((int) input.length() > minSize)
+            compress(input, output);
+        else
+            System.out.println(input.toString() + " size is " + input.length() + "\nSkipping...");
+    }
+
     public static void compress(File input, File output) throws IOException {
         BufferedImage image;
         try {
@@ -122,6 +130,12 @@ public class PngCompressor {
                 System.out.println();
             }
         }
+    }
+
+    public static void compress(InputStream inputStream, OutputStream outputStream, int minSize) throws IOException {
+        byte[] originalImage = getByteArrayFromInputStream(inputStream);
+        if (originalImage.length > minSize)
+            compress(inputStream, outputStream);
     }
 
     public static void compress(InputStream inputStream, OutputStream outputStream) throws IOException {
@@ -182,11 +196,11 @@ public class PngCompressor {
         return buffer.toByteArray();
     }
 
-    public static void compressPngsInFolder(final String folderPath) throws Exception {
+    private static void compressPngsInFolder(final String folderPath) throws Exception {
         Files.walk(Paths.get(folderPath)).forEach(filePath -> {
                     if (Files.isRegularFile(filePath) && filePath.toString().toLowerCase().endsWith(".png")) {
                         try {
-                            PngCompressor.compress(filePath.toFile(), filePath.toFile());
+                            PngCompressor.compress(filePath.toFile(), filePath.toFile(), minSize);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -203,6 +217,8 @@ public class PngCompressor {
             final long startTime = System.currentTimeMillis();
             if (args.length > 0) {
                 verbose = "true".equalsIgnoreCase(System.getProperty("verbose"));
+                if (Integer.getInteger(System.getProperty("minSize")) > 0)
+                    minSize = Integer.getInteger(System.getProperty("minSize"));
                 compressPngsInFolder(args[0]);
                 System.out.println("PNG compression finished after " + (System.currentTimeMillis() - startTime) / 1000 + " " +
                         "seconds");
@@ -212,6 +228,6 @@ public class PngCompressor {
 
     private static void showCommandLineHelp() {
         System.out.println("How to run PngCompressor:\n\n    java [options] -jar compress-png.jar <File/Folder Path>\n" +
-                "Example: java -Dverbose=true -jar compress-png.jar <FolderPath>");
+                "Example: java -Dverbose=true -DminSize=50000 -jar compress-png.jar <FolderPath>");
     }
 }
