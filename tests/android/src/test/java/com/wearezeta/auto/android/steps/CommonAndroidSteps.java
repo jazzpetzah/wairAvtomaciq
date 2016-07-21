@@ -508,7 +508,7 @@ public class CommonAndroidSteps {
         if (shouldBeEqual == null) {
             Assert.assertTrue(
                     String.format("The current screen state seems to be similar to the previous one after %s seconds",
-                            timeoutSeconds), screenState.isChanged(timeoutSeconds, 0.975));
+                            timeoutSeconds), screenState.isChanged(timeoutSeconds, 0.98));
         } else {
             Assert.assertTrue(
                     String.format("The current screen state seems to be different to the previous one after %s seconds",
