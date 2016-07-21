@@ -79,10 +79,10 @@ public class PngCompressor {
 
     public static void compress(File input, File output, int minSize) throws IOException {
         final int currentSize = (int) input.length();
-        if (currentSize > minSize && currentSize < maxSize)
+        if (currentSize >= minSize && currentSize <= maxSize)
             compress(input, output);
         else
-            System.out.println(input.toString() + " size is " + input.length() + ". Expected size between "
+            System.out.println(input.toString() + " size is " + input.length() + ". Expected size "
                     + minSize + "~" + maxSize + "\nSkipping...");
     }
 
