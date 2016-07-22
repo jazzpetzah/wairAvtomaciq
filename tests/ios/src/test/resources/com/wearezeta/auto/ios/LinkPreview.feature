@@ -139,7 +139,7 @@ Feature: Link Preview
       | Name      | Contact   | Contact1  | Link                                                                                  |
       | user1Name | user2Name | user3Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 |
 
-  @C167033 @staging
+  @C167033 @staging @torun
   Scenario Outline: Verify preview is shown without picture when there are none
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
