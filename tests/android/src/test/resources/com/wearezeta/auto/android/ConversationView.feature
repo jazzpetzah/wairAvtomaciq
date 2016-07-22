@@ -65,7 +65,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap Add picture button from cursor toolbar
-    And I tap Take Photo button on Take Picture view
+    And I tap Take Photo button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
 
@@ -161,7 +161,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap Add picture button from cursor toolbar
-    And I tap Gallery Camera button on Take Picture view
+    And I tap Gallery button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
 
@@ -178,7 +178,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap Add picture button from cursor toolbar
-    And I tap Gallery Camera button on Take Picture view
+    And I tap Gallery button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
     And I tap the recent picture in the conversation view
@@ -222,7 +222,7 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap Add picture button from cursor toolbar
-    And I tap Gallery Camera button on Take Picture view
+    And I tap Gallery button on Extended cursor camera overlay
     And I tap Sketch Image Paint button on Take Picture view
     And I draw a sketch on image with <NumColors> colors
     Then I send my sketch
@@ -241,10 +241,10 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact1>
     And I tap Add picture button from cursor toolbar
-    And I tap Take Photo button on Take Picture view
+    And I tap Take Photo button on Extended cursor camera overlay
     And I tap Sketch Image Paint button on Take Picture view
     And I draw a sketch on image with <NumColors> colors
-    And I send my sketch
+    Then I send my sketch
     And I tap the recent picture in the conversation view
 
     Examples:
@@ -299,8 +299,8 @@ Feature: Conversation View
     Given I see Conversations list with conversations
     When I tap on conversation name <Contact>
     And I tap Add picture button from cursor toolbar
-    And I tap Switch Camera button on Take Picture view
-    And I tap Take Photo button on Take Picture view
+    And I tap Switch Camera button on Extended cursor camera overlay
+    And I tap Take Photo button on Extended cursor camera overlay
     And I tap Confirm button on Take Picture view
     Then I see a picture in the conversation view
 
