@@ -855,7 +855,7 @@ Feature: E2EE
       | Email      | Password      | Name      | Contact   | UNABLE_TO_DECRYPT | StartMessage | PREFIX1 | PREFIX2 | PREFIX3 | PREFIX4 |
       | user1Email | user1Password | user1Name | user2Name | WAS NOT RECEIVED  | Let's start  | First   | Second  | Third   | Four    |
 
-  @C82814 @staging
+  @C82814 @regression
   Scenario Outline: Verify I can trust all my own devices
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
