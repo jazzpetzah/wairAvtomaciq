@@ -82,7 +82,7 @@ public class PngCompressor {
         if (currentSize >= minSize && currentSize <= maxSize)
             compress(input, output);
         else
-            System.out.println(input.toString() + " size is " + input.length() + ". Expected size "
+            System.out.println(input.toString() + " size is " + input.length() + ". Allowed size "
                     + minSize + "~" + maxSize + "\nSkipping...");
     }
 
