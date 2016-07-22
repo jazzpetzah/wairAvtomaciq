@@ -117,7 +117,7 @@ Feature: Link Preview
       | Name      | Contact   | Link                | Link1                | Link2                   | Link3               | Link4               |
       | user1Name | user2Name | http://facebook.com | https://facebook.com | http://www.facebook.com | Http://facebook.com | HTTP://FACEBOOK.COM |
 
-  @C167038 @staging
+  @C167038 @regression
   Scenario Outline: Verify copying link preview
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>, <Contact1>
