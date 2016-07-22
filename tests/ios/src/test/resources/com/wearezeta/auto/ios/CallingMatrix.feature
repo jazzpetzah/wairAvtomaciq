@@ -24,6 +24,7 @@ Feature: Calling Matrix
       | user1Name | user2Name | firefox:46.0.1       | 20      |
       | user1Name | user2Name | firefox:45.0.1       | 20      |
 
+  @calling_matrix
   Scenario Outline: Verify I can make 1:1 call to AVS <CallBackend>
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
