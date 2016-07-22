@@ -72,7 +72,7 @@ Feature: File Transfer
 
     Examples:
       | Name      | Contact1  | FileName  | FileExtension | FileSize | UploadingTimeout |
-      | user1Name | user2Name | qa_random | txt           | 9.00MB   | 20               |
+      | user1Name | user2Name | qa_random | txt           | 2.00MB   | 20               |
 
   @C87635 @rc @regression
   Scenario Outline: Verify downloading file by sender

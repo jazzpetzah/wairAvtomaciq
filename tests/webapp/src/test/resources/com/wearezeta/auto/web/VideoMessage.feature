@@ -91,7 +91,7 @@ Feature: Video Message
       | Login      | Password      | Name      | Contact1  | Contact2  | File        | ChatName  | Size  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | C123939.mp4 | GroupChat | 15MB  |
 
-  @C123929 @videomessage @staging
+  @C123929 @videomessage @regression
   Scenario Outline: Verify sender can cancel video message upload
     Given my browser supports video message feature
     Given There are 2 users where <Name> is me
@@ -109,7 +109,7 @@ Feature: Video Message
 
     Examples:
       | Login      | Password      | Name      | Contact   | File        | Size  |
-      | user1Email | user1Password | user1Name | user2Name | C123929.mp4 | 19MB  |
+      | user1Email | user1Password | user1Name | user2Name | C123929.mp4 | 18MB  |
 
   @C123928 @videomessage @regression
   Scenario Outline: Verify receiver can cancel video message download
@@ -132,4 +132,4 @@ Feature: Video Message
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | File        | ChatName  | Size  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | C123928.mp4 | GroupChat | 10MB  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | C123928.mp4 | GroupChat | 18MB  |

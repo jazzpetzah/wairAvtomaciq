@@ -117,7 +117,7 @@ Feature: Link Preview
       | Name      | Contact   | Link                | Link1                | Link2                   | Link3               | Link4               |
       | user1Name | user2Name | http://facebook.com | https://facebook.com | http://www.facebook.com | Http://facebook.com | HTTP://FACEBOOK.COM |
 
-  @C167038 @staging
+  @C167038 @regression
   Scenario Outline: Verify copying link preview
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>, <Contact1>
@@ -125,6 +125,7 @@ Feature: Link Preview
     Given I see conversations list
     When I tap on contact name <Contact>
     And I post url link <Link>
+    Then I see link preview container in the conversation view
     When I long tap on link preview in conversation view
     And I tap on Copy badge item
     And I navigate back to conversations list
