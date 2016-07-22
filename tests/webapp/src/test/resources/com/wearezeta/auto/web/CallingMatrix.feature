@@ -76,7 +76,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend     | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | zcall:2.5.14    | 20      |
+      | user1Email | user1Password | user1Name | user2Name | zcall:2.7.21    | 20      |
 # not necessary due to same versions in android and ios
 #      | user1Email | user1Password | user1Name | user2Name | zcall:2.3.8    | 20      |
 
@@ -156,7 +156,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend       | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | autocall:2.5.14   | 20      |
+      | user1Email | user1Password | user1Name | user2Name | autocall:2.7.21   | 20      |
 # not necessary due to same versions in android and ios
 #      | user1Email | user1Password | user1Name | user2Name | autocall:2.3.8   | 20      |
 
@@ -214,7 +214,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | WaitBackend    | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.5.14    | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.7.21   | 30      |
 # not necessary due to same versions in android and ios
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.3.8    | 30      |
 
@@ -288,10 +288,10 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName1 | Backend          | WaitBackend          | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.5.14  | chrome:51.0.2704.106 | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.5.14  | chrome:50.0.2661.75  | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.5.14  | firefox:46.0.1       | 30      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.5.14  | firefox:45.0.1       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.7.21  | chrome:51.0.2704.106 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.7.21  | chrome:50.0.2661.75  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.7.21  | firefox:46.0.1       | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.7.21  | firefox:45.0.1       | 30      |
 # not necessary due to same versions in android and ios
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | chrome:51.0.2704.106 | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | chrome:50.0.2661.75  | 30      |
@@ -323,7 +323,7 @@ Feature: Calling_Matrix
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName1 | Backend           | WaitBackend   | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.5.14   | zcall:2.5.14  | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.7.21   | zcall:2.7.21  | 30      |
 # not necessary due to same versions in android and ios
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.46  | zcall:2.2.38 | 30      |
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.38  | zcall:2.2.38 | 30      |
@@ -384,4 +384,4 @@ Feature: Calling_Matrix
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName              | WaitBackend  | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:2.5.14 | 30      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | zcall:2.7.21 | 30      |
