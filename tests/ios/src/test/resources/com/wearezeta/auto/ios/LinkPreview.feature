@@ -1,6 +1,6 @@
 Feature: Link Preview
 
-  @C167029 @staging
+  @C167029 @regression
   Scenario Outline: Verify preview is shown for sent link (link only)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -19,7 +19,7 @@ Feature: Link Preview
       | Name      | Contact   | Link                                                                                  |
       | user1Name | user2Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 |
 
-  @C167030 @C167032 @staging
+  @C167030 @C167032 @regression
   Scenario Outline: Verify preview is shown for mixed link and text
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -53,7 +53,7 @@ Feature: Link Preview
       | Name      | Contact   | Link                                                                                  | Text       | Text1      |
       | user1Name | user2Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 | My text    | Text first |
 
-  @C169224 @staging
+  @C169224 @regression
   Scenario Outline: Verify preview is shown for shortened URL
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -69,7 +69,7 @@ Feature: Link Preview
       | Name      | Contact   | Shortenlink          |
       | user1Name | user2Name | http://goo.gl/pA9mgH |
 
-  @C167039 @staging
+  @C167039 @regression
   Scenario Outline: Verify preview is shown for different formats of link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
