@@ -133,6 +133,7 @@ Feature: Rich Media
     And I see incoming video call
     And <Contact> stops calling me
     And I do not see incoming video call
+    And I scroll to the bottom of conversation view
     Then I verify the state of Pause button on SoundCloud container is changed
 
     Examples:
