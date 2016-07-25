@@ -167,6 +167,7 @@ Feature: Link Preview
     When User <Contact> sends encrypted message "<SoundCloudLink>" to user <Name>
     Then I see the conversation view contains message <SoundCloudLink>
     And I do not see link preview container in the conversation view
+  #Vimeo link verification is commented due to ZIOS-6982 - app crash
     #When User <Contact> sends encrypted message "<VimeoLink>" to user <Name>
     #Then I see the conversation view contains message <VimeoLink>
     #And I do not see link preview container in the conversation view
