@@ -1,7 +1,7 @@
 Feature: Calling_Matrix
 
   @C5359 @calling_matrix @calling
-  Scenario Outline: Verify I can make 1:1 call to <CallBackend>
+  Scenario Outline: Verify I can make 1:1 audio call to <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -15,7 +15,8 @@ Feature: Calling_Matrix
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
     And I wait for 5 seconds
-    And <Contact> verifies to have 1 flows
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
     And <Contact> verifies that all audio flows have greater than 0 bytes
     And I hang up call with conversation <Contact>
     Then I do not see the call controls for conversation <Contact>
@@ -42,7 +43,9 @@ Feature: Calling_Matrix
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
 #    And I see the ongoing call controls for conversation <Contact>
     And I wait for 5 seconds
-    And <Contact> verifies to have 1 flows
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
     And <Contact> verifies that all audio flows have greater than 0 bytes
     And <Contact> verifies that all video flows have greater than 0 bytes
     And I end the video call
@@ -81,7 +84,7 @@ Feature: Calling_Matrix
 #      | user1Email | user1Password | user1Name | user2Name | zcall:2.3.8    | 20      |
 
   @C5362 @calling_matrix @calling
-  Scenario Outline: Verify I can receive 1:1 call from <CallBackend>
+  Scenario Outline: Verify I can receive 1:1 audio call from <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -95,7 +98,8 @@ Feature: Calling_Matrix
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     Then I see the ongoing call controls for conversation <Contact>
     And I wait for 5 seconds
-    And <Contact> verifies to have 1 flows
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
     And <Contact> verifies that all audio flows have greater than 0 bytes
     And I hang up call with conversation <Contact>
     And I do not see the call controls for conversation <Contact>
@@ -122,7 +126,9 @@ Feature: Calling_Matrix
     Then <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 #    Then I see the ongoing call controls for conversation <Contact>
     And I wait for 5 seconds
-    And <Contact> verifies to have 1 flows
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
     And <Contact> verifies that all audio flows have greater than 0 bytes
     And <Contact> verifies that all video flows have greater than 0 bytes
     And I end the video call
@@ -136,7 +142,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | firefox:45.0.1       | 20      |
 
   @C5364 @calling_matrix @calling
-  Scenario Outline: Verify I can receive 1:1 call from AVS <CallBackend>
+  Scenario Outline: Verify I can receive 1:1 audio call from AVS <CallBackend>
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -161,7 +167,7 @@ Feature: Calling_Matrix
 #      | user1Email | user1Password | user1Name | user2Name | autocall:2.3.8   | 20      |
 
   @C5365 @calling_matrix @calling
-  Scenario Outline: Verify I can make group call with multiple <WaitBackend>
+  Scenario Outline: Verify I can make audio group call with multiple <WaitBackend>
     Given My browser supports calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -177,13 +183,14 @@ Feature: Calling_Matrix
     Then <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName1>
     And I wait for 10 seconds
-    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies to have 4 flows
-    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies that all audio flows have greater than 0 bytes
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify to have 4 flows
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify to get audio data from me
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that all audio flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
     And I see the join call controls for conversation <ChatName1>
     And I wait for 10 seconds
-    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies to have 3 flows
-    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies that all audio flows have greater than 0 bytes
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify to have 3 flows
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that all audio flows have greater than 0 bytes
     # Stops all waiting instance calls
     And <Contact1>,<Contact2>,<Contact3> stops calling
 
@@ -195,7 +202,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | firefox:45.0.1       | 30      |
 
   @C5366 @calling_matrix @calling
-  Scenario Outline: Verify I can make group call with multiple AVS <WaitBackend>
+  Scenario Outline: Verify I can make audio group call with multiple AVS <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -219,7 +226,7 @@ Feature: Calling_Matrix
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | zcall:2.3.8    | 30      |
 
   @C5367 @calling_matrix @calling
-  Scenario Outline: Verify I can join group call with multiple <Backend>
+  Scenario Outline: Verify I can join audio group call with multiple <Backend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -238,12 +245,13 @@ Feature: Calling_Matrix
     And I see the ongoing call controls for conversation <ChatName1>
     And I wait for 10 seconds
     And <Contact1>,<Contact2> verify to have 2 flows
+    And <Contact1>,<Contact2> verify to get audio data from me
     And <Contact1>,<Contact2> verify that all audio flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
     And I see the join call controls for conversation <ChatName1>
     And I wait for 10 seconds
-    And <Contact1>,<Contact2> verifies to have 1 flows
-    And <Contact1>,<Contact2> verifies that all audio flows have greater than 0 bytes
+    And <Contact1>,<Contact2> verify to have 1 flow
+    And <Contact1>,<Contact2> verify that all audio flows have greater than 0 bytes
     # Stops all waiting instance calls
     And <Contact1> stops calling
 
@@ -256,7 +264,7 @@ Feature: Calling_Matrix
       
 
   @C5368 @calling_matrix @calling
-  Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
+  Scenario Outline: Verify I can join audio group call with AVS <Backend> and <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -277,11 +285,12 @@ Feature: Calling_Matrix
     And I see row of avatars on call controls with users <Contact1>
     And I wait for 10 seconds
     And <Contact2> verifies to have 2 flows
+    And <Contact2> verifies to get audio data from me
     And <Contact2> verifies that all audio flows have greater than 0 bytes
     And I hang up call with conversation <ChatName1>
     And I see the join call controls for conversation <ChatName1>
     And I wait for 10 seconds
-    And <Contact2> verifies to have 1 flows
+    And <Contact2> verifies to have 1 flow
     And <Contact2> verifies that all audio flows have greater than 0 bytes
     # Stops all autocall instance calls
     And <Contact1> stops calling <ChatName1>
@@ -299,7 +308,7 @@ Feature: Calling_Matrix
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCall | autocall:2.2.38 | firefox:45.0.1       | 30      |
 
   @C5369 @calling_matrix @calling
-  Scenario Outline: Verify I can join group call with AVS <Backend> and <WaitBackend>
+  Scenario Outline: Verify I can join audio group call with AVS <Backend> and <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -330,7 +339,7 @@ Feature: Calling_Matrix
 #      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCall | autocall:2.2.38  | zcall:2.2.46 | 30      |
 
   @C5370 @calling_matrix @calling
-  Scenario Outline: Verify I can create, leave and rejoin a group call with <WaitBackend>
+  Scenario Outline: Verify I can create, leave and rejoin an audio group call with <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -351,6 +360,7 @@ Feature: Calling_Matrix
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
     And <Contact1>,<Contact2> verify to have 2 flows
+    And <Contact1>,<Contact2> verify to get audio data from me
     And <Contact1>,<Contact2> verify that all audio flows have greater than 0 bytes
 
     Examples:
@@ -361,7 +371,7 @@ Feature: Calling_Matrix
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallConversation | firefox:45.0.1       | 30      |
 
   @C5370 @calling_matrix @calling
-  Scenario Outline: Verify I can create, leave and rejoin a group call with AVS <WaitBackend>
+  Scenario Outline: Verify I can create, leave and rejoin an audio group call with AVS <WaitBackend>
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

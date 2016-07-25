@@ -17,6 +17,9 @@ Feature: Calling
     When <Contact> accepts next incoming call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
     When I write random message
     And I send message
     And I click ping button
@@ -24,6 +27,8 @@ Feature: Calling
     Then I see random message in conversation
     And I see <PING> action in conversation
     And I see sent picture <PictureName> in the conversation view
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
     When I hang up call with conversation <Contact>
     And I do not see the call controls for conversation <Contact>
 
@@ -45,8 +50,12 @@ Feature: Calling
     And <Contact> accepts next incoming call automatically
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verify that all audio flows have greater than 0 bytes
     And User <Contact> pinged in the conversation with <Contact>
     And I see <PING> action in conversation
+    And <Contact> verifies to get audio data from me
     And I hang up call with conversation <Contact>
 
     Examples:
@@ -70,6 +79,9 @@ Feature: Calling
     And I see conversation <Contact1> is on the top
     Then <Contact1> accepts next incoming call automatically
     And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verify that all audio flows have greater than 0 bytes
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact1> is on the top
     And I hang up call with conversation <Contact1>
@@ -97,7 +109,10 @@ Feature: Calling
     And I see conversation <Contact1> is on the top
     When I accept the call from conversation <Contact1>
     Then I see the ongoing call controls for conversation <Contact1>
-    #And I see conversation <Contact1> is on the top
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verify that all audio flows have greater than 0 bytes
+#    And I see conversation <Contact1> is on the top
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact1> is on the top
     And I hang up call with conversation <Contact1>
@@ -122,7 +137,8 @@ Feature: Calling
     Then <Contact> accepts next incoming call automatically
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
-    And <Contact> verify to have 1 flows
+    And <Contact> verify to have 1 flow
+    And <Contact> verifies to get audio data from me
     And <Contact> verify that all audio flows have greater than 0 bytes
     When I hang up call with conversation <Contact>
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
@@ -131,8 +147,8 @@ Feature: Calling
     When I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact>
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all audio flows have greater than 0 bytes
+    And <Contact> verify to have 1 flow
+    And <Contact> verifies to get audio data from me
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
@@ -153,7 +169,8 @@ Feature: Calling
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact> verify to have 1 flows
+    And <Contact> verify to have 1 flow
+    And <Contact> verifies to get audio data from me
     And <Contact> verify that all audio flows have greater than 0 bytes
     And I wait for 60 seconds
     And I see the ongoing call controls for conversation <Contact>
@@ -254,8 +271,8 @@ Feature: Calling
     And I wait for 60 seconds
     And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all audio flows have greater than 0 bytes
+    And <Contact> verify to have 1 flow
+    And <Contact> verifies to get audio data from me
     And I hang up call with conversation <Contact>
 
     Examples:
@@ -278,6 +295,7 @@ Feature: Calling
     And I call
     Then <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact>,<Contact2> verify to have 2 flows
+    And <Contact>,<Contact2> verify to get audio data from me
     And <Contact>,<Contact2> verify that all audio flows have greater than 0 bytes
     And I wait for 60 seconds
     And I see the ongoing call controls for conversation <ChatName1>
@@ -379,7 +397,7 @@ Feature: Calling
     And I see the ongoing call controls for conversation <ChatName1>
     And <Contact>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact>,<Contact2> verify to have 2 flows
-    And <Contact>,<Contact2> verify that all audio flows have greater than 0 bytes
+    And <Contact>,<Contact2> verify to get audio data from me
     And I hang up call with conversation <ChatName1>
 
     Examples:
@@ -522,6 +540,9 @@ Feature: Calling
     When I call
     And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact1>
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies that all audio flows have greater than 0 bytes
     And I open conversation with <Contact2>
     When I call
     Then I see another call warning modal
@@ -544,6 +565,8 @@ Feature: Calling
     Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact2>
+    And <Contact2> verifies to have 1 flow
+    And <Contact2> verifies to get audio data from me
     And I hang up call with conversation <Contact2>
 
     Examples:
@@ -567,6 +590,9 @@ Feature: Calling
     And I see the incoming call controls for conversation <Contact1>
     When I accept the call from conversation <Contact1>
     Then <Contact1> verifies that call status to me is changed to active in <Timeout> seconds
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies that all audio flows have greater than 0 bytes
     Then I see the ongoing call controls for conversation <Contact1>
     And I open conversation with <Contact2>
     When I call
@@ -590,6 +616,8 @@ Feature: Calling
     Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I see the ongoing call controls for conversation <Contact2>
+    And <Contact2> verifies to have 1 flow
+    And <Contact2> verifies to get audio data from me
     And I hang up call with conversation <Contact2>
 
     Examples:
@@ -624,7 +652,6 @@ Feature: Calling
     Then <Contact1> verify that waiting instance status is changed to active in <Timeout> seconds
     Then I see the ongoing call controls for conversation <ChatName1>
     
-
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | Contact10  | ChatName1 | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | GC1       | chrome      | 20      |
@@ -648,6 +675,9 @@ Feature: Calling
     And <Contact1>,<Contact2> accept next incoming call automatically
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact1>,<Contact2> verifies to have 2 flows
+    And <Contact1>,<Contact2> verify to get audio data from me
+    And <Contact1>,<Contact2> verify that all audio flows have greater than 0 bytes
     When <Contact4> calls <ChatName2>
     Then I see the incoming call controls for conversation <ChatName2>
     When I ignore the call from conversation <ChatName2>
@@ -677,6 +707,8 @@ Feature: Calling
     When I click on "Answer" button in another call warning modal
     Then I do not see another call warning modal
     And I see the ongoing call controls for conversation <ChatName2>
+    And <Contact3>,<Contact4> verifies to have 2 flows
+    And <Contact3>,<Contact4> verifies to get audio data from me
     And I see the join call controls for conversation <ChatName1>
 
     Examples:
@@ -741,6 +773,9 @@ Feature: Calling
     When <Contact2> accepts next incoming call automatically
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <Contact2>
+    And <Contact2> verifies to have 1 flow
+    And <Contact2> verifies to get audio data from me
+    And <Contact2> verifies that all audio flows have greater than 0 bytes
     When I hang up call with conversation <Contact2>
     Then I do not see the call controls for conversation <Contact2>
 
@@ -800,6 +835,9 @@ Feature: Calling
     When I call
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
+    And <Contact1>,<Contact2> verifies to have 2 flows
+    And <Contact1>,<Contact2> verify to get audio data from me
+    And <Contact1>,<Contact2> verify that all audio flows have greater than 0 bytes
     When I hang up call with conversation <ChatName>
     And I see the join call controls for conversation <ChatName>
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
@@ -830,7 +868,11 @@ Feature: Calling
     When I accept the call from conversation <ChatName>
     Then I see the ongoing call controls for conversation <ChatName>
     And I wait for 10 seconds
+    And <Contact1> verifies to have 4 flows
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies that all audio flows have greater than 0 bytes
     And <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
+    And <Contact2>,<Contact3>,<Contact4> verify to get audio data from me
     And <Contact2>,<Contact3>,<Contact4> verify that all audio flows have greater than 0 bytes
     When I hang up call with conversation <ChatName>
     Then I see the join call controls for conversation <ChatName>
@@ -892,6 +934,9 @@ Feature: Calling
     When I call
     And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify to have 4 flows
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify to get audio data from me
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that all audio flows have greater than 0 bytes
     When I hang up call with conversation <ChatName>
     Then I see the join call controls for conversation <ChatName>
 
@@ -946,6 +991,7 @@ Feature: Calling
     And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName>
     And <Contact1>,<Contact2> verify to have 2 flows
+    And <Contact1>,<Contact2> verify to get audio data from me
     And <Contact1>,<Contact2> verify that all audio flows have greater than 0 bytes
 
     Examples:
@@ -976,6 +1022,7 @@ Feature: Calling
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And <Contact1>,<Contact2> verify to have 2 flows
+    And <Contact1>,<Contact2> verify to get audio data from me
     And <Contact1>,<Contact2> verify that all audio flows have greater than 0 bytes
     And I see the ongoing call controls for conversation <ChatName>
 
@@ -1017,7 +1064,6 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 20      |
 
-
   @C165115 @regression @calling @group @debug
   Scenario Outline: Verify receiving 1-to-1 call during group call
     Given My browser supports calling
@@ -1035,6 +1081,9 @@ Feature: Calling
     When <Contact1>,<Contact2> accept next incoming call automatically
     Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     And I see the ongoing call controls for conversation <ChatName1>
+    And <Contact1>,<Contact2> verify to have 2 flows
+    And <Contact1>,<Contact2> verify to get audio data from me
+    And <Contact1>,<Contact2> verify that all audio flows have greater than 0 bytes
     When <Contact3> calls me
     Then I see the incoming call controls for conversation <Contact3>
     When I ignore the call from conversation <Contact3>
@@ -1062,6 +1111,9 @@ Feature: Calling
     When I click on "Answer" button in another call warning modal
     Then I do not see another call warning modal
     And I see the ongoing call controls for conversation <Contact3>
+    And <Contact3> verifies to have 1 flow
+    And <Contact3> verifies to get audio data from me
+    And <Contact3> verifies that all audio flows have greater than 0 bytes
     And I see the join call controls for conversation <ChatName1>
 
     Examples:

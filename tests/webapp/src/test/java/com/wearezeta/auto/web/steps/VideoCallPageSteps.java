@@ -13,9 +13,8 @@ import org.junit.Assert;
 
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class VideoCallPageSteps {
 
@@ -185,6 +184,22 @@ public class VideoCallPageSteps {
             assertThat("RGB blue", pixel.getBlue(), lessThan(2));
         } else {
             assertThat("All RGB values summarized", pixel.getRed() + pixel.getGreen() + pixel.getGreen(), greaterThan(20));
+        }
+    }
+    
+    /**
+     * Checks whether the self video is on or off
+     *
+     * @throws Exception
+     * @step. ^I see my self video is (off|on)$
+     */
+    @Then("^I see my self video is (off|on)$")
+    public void ISeeSelfVideoOff(String onOffToggle) throws Exception {
+        VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
+        if ("off".equals(onOffToggle)) {
+            assertTrue("Disabled video icon is still shown", videoCallPage.isDisabledVideoIconVisible());
+        }else{
+            assertTrue("Disabled video icon is not shown", videoCallPage.isDisabledVideoIconInvisible());
         }
     }
 

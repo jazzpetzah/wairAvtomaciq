@@ -155,6 +155,16 @@ public class VideoCallPage extends WebPage {
         By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssCameraButtonNotPressed);
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
     }
+    
+    public boolean isDisabledVideoIconVisible() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssSelfVideoOff);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+    }
+    
+    public boolean isDisabledVideoIconInvisible() throws Exception {
+        By locator = By.cssSelector(WebAppLocators.VideoCallPage.cssSelfVideoOff);
+        return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+    }
 
     public Optional<BufferedImage> getSelfVideo() throws Exception {
         return getElementScreenshot(selfVideo);

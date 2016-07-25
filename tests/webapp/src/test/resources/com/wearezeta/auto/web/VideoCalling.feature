@@ -18,9 +18,11 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all audio flows have greater than 0 bytes
-    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
     And I do not see my self video view
@@ -47,9 +49,11 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all audio flows have greater than 0 bytes
-    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
     And I do not see accept video call button for conversation <Contact>
@@ -121,9 +125,11 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all audio flows have greater than 0 bytes
-    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I end the video call
     Then I do not see my self video view
     And <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
@@ -132,9 +138,11 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all audio flows have greater than 0 bytes
-    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I end the video call
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
     And I do not see my self video view
@@ -159,9 +167,11 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all audio flows have greater than 0 bytes
-    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     And I wait for 60 seconds
     And I see end video call button
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -263,9 +273,9 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all audio flows have greater than 0 bytes
-    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
     And I end the video call
     Then <Contact> verifies that waiting instance status is changed to destroyed in <Timeout> seconds
 
@@ -313,14 +323,20 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all audio flows have greater than 0 bytes
-    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I see mute button on video call page is not pressed
     And I click mute button on video call page
     Then I see mute button on video call page is pressed
+#    And <Contact> verifies to not get audio data from me
     When I click mute button on video call page
     Then I see mute button on video call page is not pressed
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
     When I end the video call
     Then I do not see my self video view
 
@@ -346,12 +362,17 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all audio flows have greater than 0 bytes
-    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+#    And <Contact> verifies to not get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I see mute button on video call page is pressed
     And I click mute button on video call page
     Then I see mute button on video call page is not pressed
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
     When I end the video call
     Then I do not see my self video view
 
@@ -382,8 +403,10 @@ Feature: VideoCalling
     Then I see the ongoing call controls for conversation <Contact>
     And I see video call is maximized
     And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
     And <Contact> verifies that all audio flows have greater than 0 bytes
-    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
 
@@ -434,9 +457,11 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all audio flows have greater than 0 bytes
-    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
     And I do not see my self video view
@@ -491,9 +516,11 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see video call is maximized
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all audio flows have greater than 0 bytes
-    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I end the video call
     Then I do not see the call controls for conversation <Contact>
 
@@ -574,7 +601,8 @@ Feature: VideoCalling
     And I call
     Then I see the outgoing call controls for conversation <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact> verifies to have 1 flows
+    And <Contact> verifies to have 1 flow
+    And <Contact> verifies to get audio data from me
     And <Contact> verifies that all audio flows have greater than 0 bytes
     When I hang up call with conversation <Contact>
     Then I do not see the call controls for conversation <Contact>
@@ -597,9 +625,11 @@ Feature: VideoCalling
     When I open conversation with <Contact1>
     And I start a video call
     Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact1> verify to have 1 flows
-    And <Contact1> verify that all audio flows have greater than 0 bytes
-    And <Contact1> verify that all video flows have greater than 0 bytes
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
+    And <Contact1> verifies that all audio flows have greater than 0 bytes
+    And <Contact1> verifies that all video flows have greater than 0 bytes
     Then I see my self video view
     And I see video call is maximized
     When I minimize video call
@@ -620,6 +650,9 @@ Feature: VideoCalling
     And I see the video button is pulsating
     When I maximize video call
     Then I see video call is maximized
+    And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
     When I end the video call
     Then I do not see my self video view
 
@@ -643,8 +676,10 @@ Feature: VideoCalling
     When I start a video call
     Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
     And <Contact1> verifies that all audio flows have greater than 0 bytes
-    And <Contact1> verify that all video flows have greater than 0 bytes
+    And <Contact1> verifies that all video flows have greater than 0 bytes
     And I see my self video view
     And I see video call is maximized
     When I minimize video call
@@ -659,8 +694,8 @@ Feature: VideoCalling
     And I see the ongoing call controls for conversation <Contact1>
     And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
-    And <Contact1> verifies that all audio flows have greater than 0 bytes
-    And <Contact1> verify that all video flows have greater than 0 bytes
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
@@ -669,8 +704,8 @@ Feature: VideoCalling
     And I see the ongoing call controls for conversation <Contact1>
     And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
-    And <Contact1> verifies that all audio flows have greater than 0 bytes
-    And <Contact1> verify that all video flows have greater than 0 bytes
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
     When I call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
@@ -679,8 +714,8 @@ Feature: VideoCalling
     And I see the ongoing call controls for conversation <Contact1>
     And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
-    And <Contact1> verifies that all audio flows have greater than 0 bytes
-    And <Contact1> verify that all video flows have greater than 0 bytes
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
     When I call
     Then I see another call warning modal
     When I click on "Hang Up" button in another call warning modal
@@ -689,6 +724,7 @@ Feature: VideoCalling
     And I do not see the ongoing call controls for conversation <Contact1>
     And I see the ongoing call controls for conversation <Contact2>
     And <Contact2> verifies to have 1 flow
+    And <Contact2> verifies to get audio data from me
     And <Contact2> verifies that all audio flows have greater than 0 bytes
     And I hang up call with conversation <Contact2>
 
@@ -712,8 +748,10 @@ Feature: VideoCalling
     When I start a video call
     Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verifies to have 1 flow
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
     And <Contact1> verifies that all audio flows have greater than 0 bytes
-    And <Contact1> verify that all video flows have greater than 0 bytes
+    And <Contact1> verifies that all video flows have greater than 0 bytes
     And I see my self video view
     And I see video call is maximized
     When I minimize video call
@@ -728,8 +766,8 @@ Feature: VideoCalling
     And I see the ongoing call controls for conversation <Contact1>
     And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
-    And <Contact1> verifies that all audio flows have greater than 0 bytes
-    And <Contact1> verify that all video flows have greater than 0 bytes
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
     When I start a video call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
@@ -738,8 +776,8 @@ Feature: VideoCalling
     And I see the ongoing call controls for conversation <Contact1>
     And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
-    And <Contact1> verifies that all audio flows have greater than 0 bytes
-    And <Contact1> verify that all video flows have greater than 0 bytes
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
     When I start a video call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
@@ -748,8 +786,8 @@ Feature: VideoCalling
     And I see the ongoing call controls for conversation <Contact1>
     And I see the video button is pulsating
     And <Contact1> verifies to have 1 flow
-    And <Contact1> verifies that all audio flows have greater than 0 bytes
-    And <Contact1> verify that all video flows have greater than 0 bytes
+    And <Contact1> verifies to get audio data from me
+    And <Contact1> verifies to get video data from me
     When I start a video call
     Then I see another call warning modal
     When I click on "Hang Up" button in another call warning modal
@@ -758,6 +796,8 @@ Feature: VideoCalling
     And I see my self video view
     And I see video call is maximized
     And <Contact2> verifies to have 1 flow
+    And <Contact2> verifies to get audio data from me
+    And <Contact2> verifies to get video data from me
     And <Contact2> verifies that all audio flows have greater than 0 bytes
     And <Contact2> verify that all video flows have greater than 0 bytes
     When I minimize video call
@@ -787,16 +827,25 @@ Feature: VideoCalling
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see video call is maximized
     And I see video button pressed
-    And <Contact> verify to have 1 flows
-    And <Contact> verify that all audio flows have greater than 0 bytes
-    And <Contact> verify that all video flows have greater than 0 bytes
+    And <Contact> verifies to have 1 flows
+    And <Contact> verifies to get audio data from me
+    And <Contact> verifies to get video data from me
+    And <Contact> verifies that all audio flows have greater than 0 bytes
+    And <Contact> verifies that all video flows have greater than 0 bytes
     When I click on video button
     And I see video button unpressed
+    And <Contact> verify that all audio flows have greater than 0 bytes
+    And <Contact> verify that all video flows have greater than 0 bytes
+#    And <Contact> verifies to not get video data from me
     Then I see my self video is black
+    Then I see my self video is off
     And I see video from other user is not black
     When I click on video button
     And I see video button pressed
+    And <Contact> verify that all audio flows have greater than 0 bytes
+    And <Contact> verify that all video flows have greater than 0 bytes
     Then I see my self video is not black
+    Then I see my self video is on
     And I see video from other user is not black
     When I minimize video call
     Then I see the video button is pulsating

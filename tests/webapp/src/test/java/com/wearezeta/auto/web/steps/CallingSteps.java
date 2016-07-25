@@ -3,8 +3,11 @@ package com.wearezeta.auto.web.steps;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
+import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceInstanceException;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.common.TestContext;
 
 import cucumber.api.java.en.Then;
@@ -12,6 +15,8 @@ import cucumber.api.java.en.When;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import javax.management.InstanceNotFoundException;
 import org.apache.log4j.Logger;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNotNull;
@@ -22,9 +27,10 @@ public class CallingSteps {
 
     private static final Logger LOG = ZetaLogger.getLog(CallingSteps.class
             .getName());
+    private static final int FLOW_UPDATE_WAIT_MS = 5000;
 
     private final TestContext context;
-    
+
     public CallingSteps() {
         this.context = new TestContext();
     }
@@ -168,11 +174,11 @@ public class CallingSteps {
             throws Exception {
         for (String callee : splitAliases(callees)) {
             final List<Flow> flows = context.getCallingManager().getFlows(callee);
-            LOG.info("flows: \n"+ flows);
-            assertThat("# of flows don't match "+numberOfFlows , flows, hasSize(numberOfFlows));
+            LOG.info("flows: \n" + flows);
+            assertThat("# of flows don't match " + numberOfFlows, flows, hasSize(numberOfFlows));
         }
     }
-    
+
     /**
      * Verify that each audio flow of the instance had incoming and outgoing bytes running over the line
      *
@@ -186,13 +192,15 @@ public class CallingSteps {
         for (String callee : splitAliases(callees)) {
             List<Flow> flows = context.getCallingManager().getFlows(callee);
             for (Flow flow : flows) {
-                LOG.info("flows: \n"+flows);
-                assertThat("incoming audio bytes: \n" + flow, flow.getTelemetry().getStats().getAudio().getBytesReceived(), greaterThan(0L));
-                assertThat("outgoing audio bytes: \n" + flow, flow.getTelemetry().getStats().getAudio().getBytesSent(), greaterThan(0L));
+                LOG.info("flows: \n" + flows);
+                assertThat("incoming audio bytes: \n" + flow, flow.getTelemetry().getStats().getAudio().getBytesReceived(),
+                        greaterThan(0L));
+                assertThat("outgoing audio bytes: \n" + flow, flow.getTelemetry().getStats().getAudio().getBytesSent(),
+                        greaterThan(0L));
             }
         }
     }
-    
+
     /**
      * Verify that each video flow of the instance had incoming and outgoing bytes running over the line
      *
@@ -206,11 +214,114 @@ public class CallingSteps {
         for (String callee : splitAliases(callees)) {
             List<Flow> flows = context.getCallingManager().getFlows(callee);
             for (Flow flow : flows) {
-                LOG.info("flows: \n"+flows);
-                assertThat("incoming video bytes: \n" + flow, flow.getTelemetry().getStats().getVideo().getBytesReceived(), greaterThan(0L));
-                assertThat("outgoing video bytes: \n" + flow, flow.getTelemetry().getStats().getVideo().getBytesSent(), greaterThan(0L));
+                LOG.info("flows: \n" + flows);
+                assertThat("incoming video bytes: \n" + flow, flow.getTelemetry().getStats().getVideo().getBytesReceived(),
+                        greaterThan(0L));
+                assertThat("outgoing video bytes: \n" + flow, flow.getTelemetry().getStats().getVideo().getBytesSent(),
+                        greaterThan(0L));
             }
         }
+    }
+
+    /**
+     * Verify that the flow of the given user of the instance has incoming video data running over the line
+     *
+     * @step. (.*) verif(?:ies|y) to( not)? get video data from (.*)$
+     *
+     * @param callees comma separated list of callee names/aliases
+     * @param not whether data should flow or not
+     * @param caller the user caller where the data comes from
+     * @throws Exception
+     */
+    @Then("(.*) verif(?:ies|y) to( not)? get video data from (.*)$")
+    public void UserXVerifesToGetVideoDataFromY(String callees, String not, String caller) throws Exception {
+        ClientUser sender = context.getUserManager().findUserByNameOrNameAlias(caller);
+        List<String> splitAliases = splitAliases(callees);
+        Map<String, Flow> oldFlows = new HashMap<>();
+        Map<String, Flow> newFlows = new HashMap<>();
+
+        for (String callee : splitAliases) {
+            oldFlows.putAll(getFlows(callee));
+            if (oldFlows.isEmpty()) {
+                throw new Exception(String.format("Could not get flows from callee %s with caller %s", callee, sender.getId()));
+            }
+        }
+        LOG.info("old flows: \n" + oldFlows);
+        Thread.sleep(FLOW_UPDATE_WAIT_MS);
+        for (String callee : splitAliases) {
+            newFlows.putAll(getFlows(callee));
+        }
+        for (Map.Entry<String, Flow> newFlowEntry : newFlows.entrySet()) {
+            final Flow newFlow = newFlowEntry.getValue();
+            final Flow oldFlow = oldFlows.get(newFlowEntry.getKey());
+            if (not == null) {
+                assertThat(
+                        "There is no video data flowing: \n" + newFlow.getTelemetry().getStats().getVideo()+ "\n\n" + oldFlow.
+                        getTelemetry().getStats().getVideo(),
+                        newFlow.getTelemetry().getStats().getVideo().getBytesReceived(),
+                        greaterThan(oldFlow.getTelemetry().getStats().getVideo().getBytesReceived()));
+            } else {
+                assertThat(
+                        "There is video data flowing: \n" + newFlow.getTelemetry().getStats().getVideo() + "\n\n" + oldFlow.
+                        getTelemetry().getStats().getVideo(),
+                        newFlow.getTelemetry().getStats().getVideo().getBytesReceived(),
+                        equalTo(oldFlow.getTelemetry().getStats().getVideo().getBytesReceived()));
+            }
+        }
+    }
+
+    /**
+     * Verify that the flow of the given user of the instance has incoming audio data running over the line
+     *
+     * @step. (.*) verif(?:ies|y) to( not)? get audio data from (.*)$
+     *
+     * @param callees comma separated list of callee names/aliases
+     * @param not whether data should flow or not
+     * @param caller the user caller where the data comes from
+     * @throws Exception
+     */
+    @Then("(.*) verif(?:ies|y) to( not)? get audio data from (.*)$")
+    public void UserXVerifesToGetAudioDataFromY(String callees, String not, String caller) throws Exception {
+        ClientUser sender = context.getUserManager().findUserByNameOrNameAlias(caller);
+        List<String> splitAliases = splitAliases(callees);
+        Map<String, Flow> oldFlows = new HashMap<>();
+        Map<String, Flow> newFlows = new HashMap<>();
+
+        for (String callee : splitAliases) {
+            oldFlows.putAll(getFlows(callee));
+            if (oldFlows.isEmpty()) {
+                throw new Exception(String.format("Could not get flows from callee %s with caller %s", callee, sender.getId()));
+            }
+        }
+        LOG.info("old flows: \n" + oldFlows);
+        Thread.sleep(FLOW_UPDATE_WAIT_MS);
+        for (String callee : splitAliases) {
+            newFlows.putAll(getFlows(callee));
+        }
+        LOG.info("new flows: \n" + newFlows);
+        for (Map.Entry<String, Flow> newFlowEntry : newFlows.entrySet()) {
+            final Flow newFlow = newFlowEntry.getValue();
+            final Flow oldFlow = oldFlows.get(newFlowEntry.getKey());
+            if (not == null) {
+                assertThat(
+                        "There is no audio data flowing: \n" + newFlow.getTelemetry().getStats().getAudio() + "\n\n" + oldFlow.
+                        getTelemetry().getStats().getAudio(),
+                        newFlow.getTelemetry().getStats().getAudio().getBytesReceived(),
+                        greaterThan(oldFlow.getTelemetry().getStats().getAudio().getBytesReceived()));
+            } else {
+                assertThat(
+                        "There is audio data flowing: \n" + newFlow.getTelemetry().getStats().getAudio() + "\n\n" + oldFlow.
+                        getTelemetry().getStats().getAudio(),
+                        newFlow.getTelemetry().getStats().getAudio().getBytesReceived(),
+                        equalTo(oldFlow.getTelemetry().getStats().getAudio().getBytesReceived()));
+            }
+        }
+    }
+
+    private Map<String, Flow> getFlows(String callee) throws CallingServiceInstanceException, NoSuchUserException,
+            InstanceNotFoundException {
+        return context.getCallingManager().getFlows(callee).stream()
+                .collect(Collectors.toMap(f -> String.format("%s_%s", callee, f.getMeta().getRemoteUserId()), f -> f));
     }
 
     /**

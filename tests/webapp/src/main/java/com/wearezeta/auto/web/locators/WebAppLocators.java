@@ -726,10 +726,12 @@ public final class WebAppLocators {
         public static final String cssCameraButtonNotPressed = cssCameraButton + ":not(.toggled)";
 
         public static final String cssSelfVideo = ".video-element-mirrored";
+        
+        public static final String cssSelfVideoOff = ".video-element-overlay.icon-video-off";
 
         public static final String cssMinimizedRemoteVideo = "#video-element-remote";
 
-        public static final String cssMaximizedRemoteVideo = ".video-mode-portrait";
+        public static final String cssMaximizedRemoteVideo = ".video-element-portrait";
 
         public static final String cssScreenShareButton = ".icon-screensharing";
 
