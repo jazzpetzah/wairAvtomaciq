@@ -19,7 +19,7 @@ Feature: Link Preview
       | Name      | Contact   | Link                                                                                  |
       | user1Name | user2Name | http://www.mirror.co.uk/sport/football/match-centre/portugal-shock-france-1-0-8044835 |
 
-  @C167030 @C167032 @regression
+  @C167030 @C167031 @C167032 @regression
   Scenario Outline: Verify preview is shown for mixed link and text
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
