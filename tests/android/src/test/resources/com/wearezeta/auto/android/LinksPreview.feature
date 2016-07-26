@@ -1,6 +1,6 @@
 Feature: Links Preview
 
-  @C165143 @staging @C165147 @C169222
+  @C165143 @regression @C165147 @C169222
   Scenario Outline: I see preview for sent link and no preview for dead link
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -25,7 +25,7 @@ Feature: Links Preview
       | Name      | Contact   | Link                                                                                               | DeadLink      | ShortenUrl           |
       | user1Name | user2Name | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 | http://q.qqqq | http://goo.gl/bnKrzm |
 
-  @C165144 @staging @C165148
+  @C165144 @regression @C165148
   Scenario Outline: I can receive preview for link mixed with text
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -41,7 +41,7 @@ Feature: Links Preview
       | Name      | Contact   | Message                                                                                                       |
       | user1Name | user2Name | My message http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 |
 
-  @C165151 @staging
+  @C165151 @regression
   Scenario Outline: Link sent from offline should have correct preview when I back to online
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -61,7 +61,7 @@ Feature: Links Preview
       | Name      | Contact   | Link                                                                                               |
       | user1Name | user2Name | http://www.lequipe.fr/Football/Actualites/L-olympique-lyonnais-meilleur-centre-de-formation/703676 |
 
-  @C165152 @staging
+  @C165152 @regression
   Scenario Outline: Show different link for link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
