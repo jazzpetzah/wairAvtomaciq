@@ -3,10 +3,10 @@ package com.wearezeta.auto.android.pages;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.misc.FunctionalInterfaces;
 import org.openqa.selenium.By;
 
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 public class ExtendedCursorCameraOverlayPage extends AndroidPage {
 
@@ -26,11 +26,12 @@ public class ExtendedCursorCameraOverlayPage extends AndroidPage {
 
     private static final By idNavigationCameraBackButton = By.id("gtv__cursor_image__nav_camera_back");
 
-    private static final By idPictureThumbnail = By.id(String.format("%s1", strIdPictureThumbnail));
+    private static final By idPictureThumbnail = By.id(strIdPictureThumbnail);
 
-    private static final FunctionalInterfaces.FunctionFor2Parameters<String, Integer, Integer>
-            xpathStrGalleryImageItem = (row, column)
-            -> String.format("(//*[@id='%s%d'])[%d]", strIdPictureThumbnail, row, column);
+    private static final Function<Integer, String>
+            xpathStrThumbnailItem = index -> String.format("(//*[@id='%s'])[%d]", strIdPictureThumbnail, index);
+
+    private static final int NUMBER_OF_EACH_COLUMN = 3;
 
     public ExtendedCursorCameraOverlayPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
         super(lazyDriver);
@@ -47,7 +48,8 @@ public class ExtendedCursorCameraOverlayPage extends AndroidPage {
             throw new IllegalStateException(
                     String.format("The row and col of thumbnail should be start from 1. (%d,%d)", row, col));
         }
-        By locator = By.xpath(xpathStrGalleryImageItem.apply(row, col));
+        int index = (row - 1) * NUMBER_OF_EACH_COLUMN + col;
+        By locator = By.xpath(xpathStrThumbnailItem.apply(index));
         getElement(locator, String.format("Cannot find the thumbnail in row %d, col %d", row, col)).click();
     }
 

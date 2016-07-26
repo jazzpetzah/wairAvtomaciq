@@ -36,7 +36,7 @@ public class ExtendedCursorCameraOverlayPageSteps {
     }
 
     /**
-     * Tap on thumbnail
+     * Tap on thumbnail by row and column IN CURRENT VIEW
      *
      * @param row start from 1
      * @param col start from 1
