@@ -923,7 +923,7 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isContainerVisible(String name) throws Exception {
         final By locator = getContainerIdentifier(name);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 20);
     }
 
     public boolean isContainerInvisible(String name) throws Exception {
