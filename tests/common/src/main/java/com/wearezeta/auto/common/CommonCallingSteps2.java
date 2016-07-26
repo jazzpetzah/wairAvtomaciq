@@ -5,9 +5,7 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
@@ -46,7 +44,7 @@ public final class CommonCallingSteps2 {
 
     private static final String CALL_BACKEND_VERSION_SEPARATOR = ":";
 
-    private static final String ZCALL_DEFAULT_VERSION = "2.7.17";
+    private static final String ZCALL_DEFAULT_VERSION = "2.7.21";
     private String zcallVersion = ZCALL_DEFAULT_VERSION;
 
     public String getZcallVersion() {
@@ -57,7 +55,7 @@ public final class CommonCallingSteps2 {
         this.zcallVersion = zcallVersion;
     }
 
-    private static final String AUTOCALL_DEFAULT_VERSION = "2.7.17";
+    private static final String AUTOCALL_DEFAULT_VERSION = "2.7.21";
     private String autocallVersion = AUTOCALL_DEFAULT_VERSION;
 
     public String getAutocallVersion() {
@@ -69,7 +67,7 @@ public final class CommonCallingSteps2 {
     }
 
     private static final String FIREFOX_DEFAULT_VERSION = "46.0.1";
-    private static final String CHROME_DEFAULT_VERSION = "51.0.2704.106";
+    private static final String CHROME_DEFAULT_VERSION = "52.0.2743.82";
 
     // Request timeout of 180 secs is set by callingservice, we add additional
     // 10 seconds on the client side to actually get a timeout response to
