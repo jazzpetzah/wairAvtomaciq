@@ -55,7 +55,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
     And I select the first picture from Keyboard Gallery
-    And I confirm my choice
+    And I tap Confirm button on Camera preview page
     Then I see 1 photo in the conversation view
 
     Examples:
@@ -161,7 +161,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
     And I select the first picture from Keyboard Gallery
-    And I confirm my choice
+    And I tap Confirm button on Picture preview page
     And I see 1 photo in the conversation view
     And I tap on image in conversation view
     And I see Full Screen Page opened
@@ -306,10 +306,10 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
     And I select the first picture from Keyboard Gallery
-    And I tap Sketch button on Camera preview page
+    And I tap Sketch button on Picture preview page
     And I draw a random sketch
     And I send my sketch
-    And I confirm my choice
+    And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
 
     Examples:
@@ -405,7 +405,7 @@ Feature: Conversation View
     And I tap close fullscreen page button
     And I tap Add Picture button from input tools
     And I select the first picture from Keyboard Gallery
-    And I confirm my choice
+    And I tap Confirm button on Picture preview page
     And I see 2 photos in the conversation view
 
     Examples:
@@ -457,7 +457,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
     And I tap Camera Shutter button on Keyboard Gallery overlay
-    And I confirm my choice
+    And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
 
     Examples:
@@ -474,7 +474,7 @@ Feature: Conversation View
     And I tap Add Picture button from input tools
     And I tap Toggle Camera button on Keyboard Gallery overlay
     And I tap Camera Shutter button on Keyboard Gallery overlay
-    And I confirm my choice
+    And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
 
     Examples:

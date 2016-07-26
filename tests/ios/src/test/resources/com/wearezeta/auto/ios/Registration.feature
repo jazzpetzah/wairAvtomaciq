@@ -49,7 +49,7 @@ Feature: Registration
     And I press Take Photo button
     And I tap Camera Shutter button on Keyboard Gallery overlay
     And I remember current screen state
-    And I confirm my choice
+    And I tap Confirm button on Picture preview page
     And I tap Share Contacts button on Share Contacts overlay
     And I tap settings gear button
     And I tap on personal screen

@@ -1006,7 +1006,7 @@ public class CommonIOSSteps {
                 pagesCollection.getCommonPage().tapConfirmButton();
                 break;
             case "discard":
-                pagesCollection.getCommonPage().tapDiscardButton();
+                pagesCollection.getCommonPage().tapCancelButton();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Illegal action name: '%s'", action));

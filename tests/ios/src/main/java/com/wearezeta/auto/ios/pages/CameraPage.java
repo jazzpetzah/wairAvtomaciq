@@ -13,8 +13,6 @@ public class CameraPage extends IOSPage {
 
     private static final By nameTakePhotoButton = MobileBy.AccessibilityId("PhotoCapture");
 
-    private static final By nameSketchButton = MobileBy.AccessibilityId("editNotConfirmedImageButton");
-
     // private static final By nameCancelButton = MobileBy.AccessibilityId("Cancel");
 
     private boolean isTestImageUploaded = false;
@@ -33,9 +31,5 @@ public class CameraPage extends IOSPage {
             isTestImageUploaded = true;
         }
         getElement(nameCameraRollButton).click();
-    }
-
-    public void tapSketchButton() throws Exception {
-        getElement(nameSketchButton).click();
     }
 }

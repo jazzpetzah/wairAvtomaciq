@@ -311,7 +311,7 @@ Feature: Connect
     Then I see 1 default message in the conversation view
     When I tap Add Picture button from input tools
     And I select the first picture from Keyboard Gallery
-    And I confirm my choice
+    And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
 
     Examples:

@@ -22,7 +22,7 @@ Feature: Upgrade
     Then I see 2 default messages in the conversation view
     When I tap Add Picture button from input tools
     And I select the first picture from Keyboard Gallery
-    And I confirm my choice
+    And I tap Confirm button on Picture preview page
     Then I see 2 photos in the conversation view
     When I restart Wire
     Then I see 2 photos in the conversation view

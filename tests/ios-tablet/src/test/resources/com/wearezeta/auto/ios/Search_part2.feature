@@ -47,7 +47,7 @@ Feature: Search
     Then I tap on first 3 top connections
     And I tap Send image action button on People picker page
     And I select the first picture from Keyboard Gallery
-    And I confirm my choice
+    And I tap Confirm button on Picture preview page
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the conversation view
     When I navigate back to conversations list
@@ -70,7 +70,7 @@ Feature: Search
     Then I tap on first 3 top connections
     And I tap Send image action button on People picker page
     And I select the first picture from Keyboard Gallery
-    And I confirm my choice
+    And I tap Confirm button on Picture preview page
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the conversation view
     And I see in conversations list group chat with <Contact1>,<Contact2>,<Contact3>

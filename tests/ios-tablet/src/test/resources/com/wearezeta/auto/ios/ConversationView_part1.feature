@@ -39,7 +39,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I press Add Picture button on iPad
     And I select the first picture from Keyboard Gallery
-    And I confirm my choice
+    And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
 
     Examples:
@@ -56,7 +56,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I press Add Picture button on iPad
     And I select the first picture from Keyboard Gallery
-    And I confirm my choice
+    And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
 
     Examples:
