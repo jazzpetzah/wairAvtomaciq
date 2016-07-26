@@ -13,8 +13,6 @@ public class CameraPage extends IOSPage {
 
     private static final By nameTakePhotoButton = MobileBy.AccessibilityId("PhotoCapture");
 
-    // private static final By nameCancelButton = MobileBy.AccessibilityId("Cancel");
-
     private boolean isTestImageUploaded = false;
 
     public CameraPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
