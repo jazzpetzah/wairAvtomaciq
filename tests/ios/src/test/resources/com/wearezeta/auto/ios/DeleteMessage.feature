@@ -81,7 +81,7 @@ Feature: DeleteMessage
       | Name      | Contact   | SoundCloudLink                                   |
       | user1Name | user2Name | https://soundcloud.com/sodab/256-ra-robag-wruhme |
 
-  @C111961 @regression
+  @C167037 @regression
   Scenario Outline: Verify deleting messages containing links
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
