@@ -186,7 +186,7 @@ public class PersonalInfoPage extends IOSPage {
         profileNameEditField.sendKeys("\n");
     }
 
-    public void pressCameraButton() throws Exception {
+    public void tapCameraButton() throws Exception {
         getElement(namePictureButton).click();
     }
 

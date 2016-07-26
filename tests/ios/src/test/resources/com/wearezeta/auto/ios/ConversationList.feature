@@ -495,7 +495,7 @@ Feature: Conversation List
     And I tap Invite more people button
     Then I see Share Contacts settings warning
     When I dismiss settings warning
-    And I tap Cancel button
+    And I discard my choice
     And I tap Invite more people button
     Then I see Share Contacts settings warning
 

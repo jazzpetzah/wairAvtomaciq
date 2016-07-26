@@ -535,7 +535,7 @@ public abstract class IOSPage extends BasePage {
         }
     }
 
-    public void pressConfirmButton() throws Exception {
+    public void tapConfirmButton() throws Exception {
         getElement(xpathConfirmButton).click();
     }
 
@@ -560,7 +560,7 @@ public abstract class IOSPage extends BasePage {
         return result;
     }
 
-    public void tapCancelButton() throws Exception {
+    public void tapDiscardButton() throws Exception {
         getElement(nameCancelButton).click();
     }
 

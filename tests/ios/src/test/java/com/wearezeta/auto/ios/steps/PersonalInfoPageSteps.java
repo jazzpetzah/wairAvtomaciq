@@ -220,9 +220,9 @@ public class PersonalInfoPageSteps {
         getPersonalInfoPage().tapOnScreenCenter();
     }
 
-    @When("^I press Camera button$")
-    public void IPressCameraButton() throws Exception {
-        getPersonalInfoPage().pressCameraButton();
+    @When("^I tap Camera button on personal screen$")
+    public void ITapCameraButton() throws Exception {
+        getPersonalInfoPage().tapCameraButton();
     }
 
     private ElementState previousProfilePictureScreenshot = new ElementState(

@@ -9,7 +9,7 @@ Feature: Registration
     And I input name <Name> and hit Enter
     And I press Choose Own Picture button
     And I press Choose Photo button
-    And I choose a picture from camera roll
+    And I select the first picture from Camera Roll
     And I tap Share Contacts button on Share Contacts overlay
     Then I see conversations list
 
@@ -47,7 +47,7 @@ Feature: Registration
     And I input name <Name> and hit Enter
     And I press Choose Own Picture button
     And I press Take Photo button
-    And I tap Camera Shutter button
+    And I tap Camera Shutter button on Keyboard Gallery overlay
     And I remember current screen state
     And I confirm my choice
     And I tap Share Contacts button on Share Contacts overlay

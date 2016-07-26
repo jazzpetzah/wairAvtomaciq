@@ -310,8 +310,7 @@ Feature: Connect
     And I type the default message and send it
     Then I see 1 default message in the conversation view
     When I tap Add Picture button from input tools
-    And I press Camera Roll button
-    And I choose a picture from camera roll
+    And I select the first picture from Keyboard Gallery
     And I confirm my choice
     Then I see 1 photo in the conversation view
 

@@ -21,9 +21,12 @@ import org.apache.log4j.Logger;
 
 import static com.wearezeta.auto.common.CommonUtils.getDeviceName;
 import static com.wearezeta.auto.common.CommonUtils.getIOSToolsRoot;
+import static com.wearezeta.auto.common.CommonUtils.getImagesPath;
 
 public class IOSSimulatorHelper {
     public static final int SIMULATOR_INTERACTION_TIMEOUT = 3 * 60; //seconds
+
+    private static final String TESTING_IMAGE_NAME = "testing.jpg";
 
     private static Logger log = ZetaLogger.getLog(IOSSimulatorHelper.class.getSimpleName());
 
@@ -285,8 +288,13 @@ public class IOSSimulatorHelper {
                     "Please make sure the image %s exists and is accessible", img.getCanonicalPath()
             ));
         }
-        executeSimctl(new String[]{"addphoto", "booted", img.getCanonicalPath()
-        });
+        executeSimctl(new String[]{"addphoto", "booted", img.getCanonicalPath()});
+        // Let Simulator to update the lib
+        Thread.sleep(3000);
+    }
+
+    public static void uploadImage() throws Exception {
+        uploadImage(new File(getImagesPath(IOSSimulatorHelper.class) + File.separator + TESTING_IMAGE_NAME));
     }
 
     public static void copySystemClipboardToSimulatorClipboard() throws Exception {

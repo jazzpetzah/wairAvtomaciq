@@ -993,14 +993,24 @@ public class CommonIOSSteps {
     }
 
     /**
-     * Click OK button on the current page
+     * Tap OK/Cancel button on the current page
      *
      * @throws Exception
-     * @step. ^I confirm my choice$
+     * @param action either 'confirm' or 'deny'
+     * @step. ^I (confirm|discard) my choice$
      */
-    @When("^I confirm my choice$")
-    public void IConfirmImageSelection() throws Exception {
-        pagesCollection.getCommonPage().pressConfirmButton();
+    @When("^I (confirm|discard) my choice$")
+    public void IDoChoice(String action) throws Exception {
+        switch (action.toLowerCase()) {
+            case "confirm":
+                pagesCollection.getCommonPage().tapConfirmButton();
+                break;
+            case "discard":
+                pagesCollection.getCommonPage().tapDiscardButton();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Illegal action name: '%s'", action));
+        }
     }
 
     /**
@@ -1074,17 +1084,6 @@ public class CommonIOSSteps {
     @When("^I lock screen on real device$")
     public void ILockScreenOnRealDevice() throws Exception {
         pagesCollection.getCommonPage().lockScreenOnRealDevice();
-    }
-
-    /**
-     * Taps cancel button
-     *
-     * @throws Exception
-     * @step. ^I tap Cancel button$
-     */
-    @When("^I tap Cancel button$")
-    public void ITapCancelButton() throws Exception {
-        pagesCollection.getCommonPage().tapCancelButton();
     }
 
     /**

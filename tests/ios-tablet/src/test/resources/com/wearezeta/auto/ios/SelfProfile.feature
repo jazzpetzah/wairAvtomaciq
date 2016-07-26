@@ -30,8 +30,7 @@ Feature: Self Profile
     And I wait for 10 seconds
     And I remember my current profile picture
     And I tap on personal screen
-    And I press Camera Roll button
-    And I choose a picture from camera roll
+    And I select the first picture from Camera Roll
     And I confirm my choice
     Then I wait up to <Timeout> seconds until my profile picture is changed
 
@@ -50,8 +49,7 @@ Feature: Self Profile
     And I wait for 10 seconds
     And I remember my current profile picture
     And I tap on personal screen
-    And I press Camera Roll button
-    And I choose a picture from camera roll
+    And I select the first picture from Camera Roll
     And I confirm my choice
     Then I wait up to <Timeout> seconds until my profile picture is changed
 

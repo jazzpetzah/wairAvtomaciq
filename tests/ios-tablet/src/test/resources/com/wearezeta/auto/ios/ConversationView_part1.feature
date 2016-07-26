@@ -38,8 +38,7 @@ Feature: Conversation View
     And I see conversations list
     When I tap on contact name <Contact>
     And I press Add Picture button on iPad
-    And I press Camera Roll button
-    And I choose a picture from camera roll
+    And I select the first picture from Keyboard Gallery
     And I confirm my choice
     Then I see 1 photo in the conversation view
 
@@ -56,8 +55,7 @@ Feature: Conversation View
     And I see conversations list
     When I tap on contact name <Contact>
     And I press Add Picture button on iPad
-    And I press Camera Roll button
-    And I choose a picture from camera roll
+    And I select the first picture from Keyboard Gallery
     And I confirm my choice
     Then I see 1 photo in the conversation view
 

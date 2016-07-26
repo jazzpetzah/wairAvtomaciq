@@ -169,8 +169,8 @@ Feature: Search
     Then I tap on first 3 top connections
     When I see Send image action button on People picker page
     And I tap Send image action button on People picker page
-    And I press Camera Roll button
-    And I choose a picture from camera roll
+    And I tap Camera Roll button on Camera page
+    And I select the first picture from Camera Roll
     And I confirm my choice
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the conversation view

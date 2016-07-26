@@ -21,8 +21,7 @@ Feature: Upgrade
     When I tap on contact name <Contact>
     Then I see 2 default messages in the conversation view
     When I tap Add Picture button from input tools
-    And I press Camera Roll button
-    And I choose a picture from camera roll
+    And I select the first picture from Keyboard Gallery
     And I confirm my choice
     Then I see 2 photos in the conversation view
     When I restart Wire
