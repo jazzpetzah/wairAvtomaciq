@@ -153,3 +153,32 @@ Feature: Link Preview
     Examples:
       | Name      | Contact   | Link                                               |
       | user1Name | user2Name | https://en.wikipedia.org/wiki/Provincial_Secretary |
+
+  @C167041 @staging
+  Scenario Outline: Verify link preview isn't shown for YouTube, SoundCloud, Vimeo, Giphy
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    When I tap on contact name <Contact>
+    And User <Contact> sends encrypted message "<YouTubeLink>" to user <Name>
+    Then I see the conversation view contains message <YouTubeLink>
+    And I do not see link preview container in the conversation view
+    When User <Contact> sends encrypted message "<SoundCloudLink>" to user <Name>
+    Then I see the conversation view contains message <SoundCloudLink>
+    And I do not see link preview container in the conversation view
+  #Vimeo link verification is commented due to ZIOS-6982 - app crash
+    #When User <Contact> sends encrypted message "<VimeoLink>" to user <Name>
+    #Then I see the conversation view contains message <VimeoLink>
+    #And I do not see link preview container in the conversation view
+    When I type tag for giphy preview <GiphyTag> and open preview overlay
+    # Wait for GIF picture to be downloaded
+    And I wait for 10 seconds
+    And I send gif from giphy preview page
+    Then I see 1 photo in the conversation view
+    And I see last message in dialog is expected message <GiphyTag> · via giphy.com
+    And I do not see link preview container in the conversation view
+
+    Examples:
+      | Name      | Contact   | YouTubeLink                                | SoundCloudLink                                   | VimeoLink                   | GiphyTag |
+      | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU | https://soundcloud.com/sodab/256-ra-robag-wruhme | https://vimeo.com/129426512 | hi       |

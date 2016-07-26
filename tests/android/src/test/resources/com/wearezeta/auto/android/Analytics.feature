@@ -23,7 +23,7 @@ Feature: Analytics
       | Name      | LogType   |
       | user1Name | ANALYTICS |
 
-  @C167026 @analytics @staging
+  @C167026 @analytics @regression
   Scenario Outline: Verify media statistics is sent
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

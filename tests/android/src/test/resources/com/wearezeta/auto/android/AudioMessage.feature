@@ -256,7 +256,7 @@ Feature: Audio Message
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @C165127 @C165128 @C165137 @staging
+  @C165127 @C165128 @C165137 @regression
   Scenario Outline: Single tap on mic button open voice recording dialog
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

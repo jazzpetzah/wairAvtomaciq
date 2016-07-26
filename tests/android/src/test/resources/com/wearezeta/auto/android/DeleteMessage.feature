@@ -309,7 +309,7 @@ Feature: Delete Message
       | Name      | Contact   | DeviceName |
       | user1Name | user2Name | device1    |
 
-  @C165145 @staging
+  @C165145 @regression
   Scenario Outline: I can delete link preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

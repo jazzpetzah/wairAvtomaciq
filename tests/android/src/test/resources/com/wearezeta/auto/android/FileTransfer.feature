@@ -135,7 +135,7 @@ Feature: File Transfer
       | Name      | Contact1  | FileName  | FileExtension | FileSize |
       | user1Name | user2Name | qa_random | txt           | 24.00MB  |
 
-  @C87645 @staging
+  @C87645 @regression
   Scenario Outline: Verify I see usual image if it was sent by file transfer
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
