@@ -344,36 +344,6 @@ Feature: Conversation View
       | Name      | Contact1  | VimeoLink                   |
       | user1Name | user2Name | https://vimeo.com/129426512 |
 
-  @C941 @regression
-  Scenario Outline: Verify sending link and opening it
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    Given User Myself sends encrypted message "<Link>" to user <Contact1>
-    When I tap on contact name <Contact1>
-    And I tap on message "<Link>"
-    Then I see WireWebsitePage
-
-    Examples:
-      | Name      | Contact1  | Link                  |
-      | user1Name | user2Name | https://www.wire.com/ |
-
-  @C942 @regression
-  Scenario Outline: Verify sending link and text in one message and opening the link
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
-    Given I see conversations list
-    Given User Myself sends encrypted message "<MessageAndLink>" to user <Contact1>
-    When I tap on contact name <Contact1>
-    And I tap on message "<MessageAndLink>"
-    Then I see WireWebsitePage
-
-    Examples:
-      | Name      | Contact1  | MessageAndLink                                |
-      | user1Name | user2Name | https://www.wire.com/ is the best of the best |
-
   @C845 @regression
   Scenario Outline: Verify posting in a 1-to-1 conversation without content
     Given There are 2 users where <Name> is me
