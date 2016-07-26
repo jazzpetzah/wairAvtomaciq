@@ -57,7 +57,7 @@ Feature: Audio Messaging
       | Name      | Contact1  | FileName | FileMIME  | ContactDevice |
       | user1Name | user2Name | test.m4a | audio/mp4 | Device1       |
 
-  @C129326 @rc @regression @torun
+  @C129326 @rc @regression
   Scenario Outline: Verify sending voice message by swipe up
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
