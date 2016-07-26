@@ -2,7 +2,9 @@ package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.ios.pages.KeyboardGalleryPage;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.junit.Assert;
 
 public class KeyboardGalleryPageSteps {
 
@@ -30,23 +32,30 @@ public class KeyboardGalleryPageSteps {
      * @throws Exception
      * @step.
      */
-    @When("^I tap (Camera Shutter|Camera Roll|Toggle Camera|Fullscreen Camera) button on Keyboard Gallery overlay$")
+    @When("^I tap (Camera Shutter|Camera Roll|Toggle Camera|Fullscreen Camera|Back) button on Keyboard Gallery overlay$")
     public void ITapButton(String name) throws Exception {
-        switch (name.toLowerCase()) {
-            case "camera shutter":
-                getKeyboardGalleryPage().tapTakePictureButton();
-                break;
-            case "camera roll":
-                getKeyboardGalleryPage().tapCameraRollButton();
-                break;
-            case "toggle camera":
-                getKeyboardGalleryPage().tapToggleCameraButton();
-                break;
-            case "fullscreen camera":
-                getKeyboardGalleryPage().tapFullscreenButton();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
+        getKeyboardGalleryPage().tapButton(name);
+    }
+
+    /**
+     * Verify whether the corresponding button is present on the overlay
+     *
+     * @param shouldNotSee equals to null if the button should be visible
+     * @param name         one of possible button names
+     * @throws Exception
+     * @step. ^I (do not )?see (Camera Shutter|Camera Roll|Toggle Camera|Fullscreen Camera|Back)
+     * button on Keyboard Gallery overlay$
+     */
+    @Then("^I (do not )?see (Camera Shutter|Camera Roll|Toggle Camera|Fullscreen Camera|Back) " +
+            "button on Keyboard Gallery overlay$")
+    public void ISeeButton(String shouldNotSee, String name) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue(String.format("The '%s' button is not visible on the Keyboard Gallery overlay", name),
+                    getKeyboardGalleryPage().isButtonVisible(name));
+        } else {
+            Assert.assertTrue(
+                    String.format("The '%s' button should not be visible on the Keyboard Gallery overlay", name),
+                    getKeyboardGalleryPage().isButtonInvisible(name));
         }
     }
 }
