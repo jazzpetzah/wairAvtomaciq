@@ -205,6 +205,8 @@ public class ConversationViewPage extends IOSPage {
 
     private static final By nameLinkPreviewImage = MobileBy.AccessibilityId("linkPreviewImage");
 
+    private static final int MAX_CONTAINER_APPEARANCE_TIME = 20;
+
     private static final Logger log = ZetaLogger.getLog(ConversationViewPage.class.getSimpleName());
 
     public ConversationViewPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -923,7 +925,7 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isContainerVisible(String name) throws Exception {
         final By locator = getContainerIdentifier(name);
-        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 20);
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, MAX_CONTAINER_APPEARANCE_TIME);
     }
 
     public boolean isContainerInvisible(String name) throws Exception {
