@@ -176,6 +176,7 @@ Feature: Link Preview
     And I wait for 10 seconds
     And I send gif from giphy preview page
     Then I see 1 photo in the conversation view
+    And I see last message in dialog is expected message <GiphyTag> · via giphy.com
     And I do not see link preview container in the conversation view
 
     Examples:
