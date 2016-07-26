@@ -31,7 +31,7 @@ Feature: Self Profile
     And I remember my current profile picture
     And I tap on personal screen
     And I select the first picture from Camera Roll
-    And I confirm my choice
+    And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
 
     Examples:
@@ -50,7 +50,7 @@ Feature: Self Profile
     And I remember my current profile picture
     And I tap on personal screen
     And I select the first picture from Camera Roll
-    And I confirm my choice
+    And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
 
     Examples:

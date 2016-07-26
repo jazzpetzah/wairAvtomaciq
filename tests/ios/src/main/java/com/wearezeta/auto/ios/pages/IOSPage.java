@@ -560,7 +560,7 @@ public abstract class IOSPage extends BasePage {
         return result;
     }
 
-    public void tapDiscardButton() throws Exception {
+    public void tapCancelButton() throws Exception {
         getElement(nameCancelButton).click();
     }
 

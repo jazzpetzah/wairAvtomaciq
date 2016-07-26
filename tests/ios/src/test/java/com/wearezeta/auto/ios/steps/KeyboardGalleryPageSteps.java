@@ -30,7 +30,7 @@ public class KeyboardGalleryPageSteps {
      * @throws Exception
      * @step.
      */
-    @When("^I tap (Camera Shutter|Camera Roll|Sketch|Toggle Camera) button on Keyboard Gallery overlay$")
+    @When("^I tap (Camera Shutter|Camera Roll|Toggle Camera|Fullscreen Camera) button on Keyboard Gallery overlay$")
     public void ITapButton(String name) throws Exception {
         switch (name.toLowerCase()) {
             case "camera shutter":
@@ -39,11 +39,11 @@ public class KeyboardGalleryPageSteps {
             case "camera roll":
                 getKeyboardGalleryPage().tapCameraRollButton();
                 break;
-            case "sketch":
-                getKeyboardGalleryPage().tapSketchButton();
-                break;
             case "toggle camera":
                 getKeyboardGalleryPage().tapToggleCameraButton();
+                break;
+            case "fullscreen camera":
+                getKeyboardGalleryPage().tapFullscreenButton();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));

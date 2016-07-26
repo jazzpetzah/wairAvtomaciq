@@ -11,14 +11,12 @@ import java.util.concurrent.Future;
 public class CameraPage extends IOSPage {
     private static final By nameCameraRollButton = MobileBy.AccessibilityId("Camera Roll");
 
-    private static final By nameTakePhotoButton = MobileBy.AccessibilityId("cameraButton");
+    private static final By nameTakePhotoButton = MobileBy.AccessibilityId("PhotoCapture");
+
+    private boolean isTestImageUploaded = false;
 
     public CameraPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
         super(lazyDriver);
-
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            IOSSimulatorHelper.uploadImage();
-        }
     }
 
     public void tapTakePhotoButton() throws Exception {
@@ -26,6 +24,10 @@ public class CameraPage extends IOSPage {
     }
 
     public void tapCameraRollButton() throws Exception {
+        if (!isTestImageUploaded && CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            IOSSimulatorHelper.uploadImage();
+            isTestImageUploaded = true;
+        }
         getElement(nameCameraRollButton).click();
     }
 }

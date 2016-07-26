@@ -14,7 +14,8 @@ public class CameraPageSteps {
     /**
      * Tap the corresponding button on Camera page
      *
-     * @step. I tap (Take Photo|Camera Roll) button on Camera page$
+     * @step. ^I tap (Take Photo|Camera Roll) button on Camera page$
+     * @param name one of possible button names
      * @throws Exception
      */
     @When("^I tap (Take Photo|Camera Roll) button on Camera page$")
