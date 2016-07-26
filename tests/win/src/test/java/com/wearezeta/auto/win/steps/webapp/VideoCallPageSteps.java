@@ -13,6 +13,7 @@ import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.win.pages.win.MainWirePage;
 import com.wearezeta.auto.win.pages.win.WinPagesCollection;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -128,5 +129,16 @@ public class VideoCallPageSteps {
         // do feature Matching + homography to find objects
         assertThat("Not enough good matches between " +
                 "<a href='" + reportPath + resizedScreenshotName + "'>screenshot</a> and <a href='" + reportPath + remoteScreenshotName + "'>remote</a>", ImageUtil.getMatches(resizedScreenshot, remoteScreenshot), greaterThan(50));
+    }
+
+    /**
+     * Click minimize button on video call page
+     *
+     * @throws Exception
+     * @step. ^I minimize video call$
+     */
+    @When("^I minimize video call$")
+    public void IMinimizeVideoCall() throws Exception {
+        webappPagesCollection.getPage(VideoCallPage.class).clickMinimizeVideoCallButton();
     }
 }
