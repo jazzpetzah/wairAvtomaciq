@@ -17,11 +17,35 @@ public class ExtendedCursorCameraOverlayPageSteps {
      *
      * @param buttonName the button name in overlay
      * @throws Exception
-     * @step. ^I tap (Take Photo|Switch Camera|Gallery) button on Extended cursor camera overlay$
+     * @step. ^I tap (Take Photo|Switch Camera|Gallery|External Camera|External Video|Back) button on Extended cursor camera overlay$
      */
-    @When("^I tap (Take Photo|Switch Camera|Gallery) button on Extended cursor camera overlay$")
+    @When("^I tap (Take Photo|Switch Camera|Gallery|External Camera|External Video|Back) button on Extended cursor camera overlay$")
     public void ITapButton(String buttonName) throws Exception {
         getExtendedCursorCameraOverlayPage().tapOnButton(buttonName);
+    }
+
+    /**
+     * Swipe left on extended cursor camera
+     *
+     * @throws Exception
+     * @step. ^I swipe left on Extended cursor camera overlay$
+     */
+    @When("^I swipe left on Extended cursor camera overlay$")
+    public void IScrollLeft() throws Exception {
+        getExtendedCursorCameraOverlayPage().swipeLeftOnOverlay(3000);
+    }
+
+    /**
+     * Tap on thumbnail
+     *
+     * @param row start from 1
+     * @param col start from 1
+     * @throws Exception
+     * @step. ^I select thumbnail in row (\d+) and col (\d+) on Extended cursor camera overlay$
+     */
+    @When("^I select thumbnail in row (\\d+) and col (\\d+) on Extended cursor camera overlay$")
+    public void ISelectThumbnail(int row, int col) throws Exception {
+        getExtendedCursorCameraOverlayPage().tapOnThumbnail(row, col);
     }
 
     /**
@@ -43,14 +67,32 @@ public class ExtendedCursorCameraOverlayPageSteps {
     }
 
     /**
-     * Close extended cursor camera overlay
+     * Verify whether the photo thumbnails are visible
      *
      * @throws Exception
-     * @step ^I close Extended cursor camera overlay$
+     * @step. ^I see thumbnails in extended cursor camera overlay$
      */
-    @When("^I close Extended cursor camera overlay$")
-    public void ICloseOverly() throws Exception {
-        getExtendedCursorCameraOverlayPage().navigateBack();
+    @Then("^I see thumbnails in extended cursor camera overlay$")
+    public void ISeeThumbnails() throws Exception {
+        Assert.assertTrue("The thumbnails in extended cursor camera overlay should be visible",
+                getExtendedCursorCameraOverlayPage().waitUntilThumbnailsVisible());
+    }
+
+    /**
+     * Verify whether the button is visible
+     *
+     * @param shouldNotSee equal null means the button should be visible
+     * @param buttonName   button name
+     * @throws Exception
+     * @step. ^I see (Take Photo|Switch Camera|Gallery|External Camera|External Video) button on Extended cursor camera overlay$
+     */
+    @Then("^I (do not )?see (Take Photo|Switch Camera|Gallery|External Camera|External Video|Back) button on Extended cursor camera overlay$")
+    public void ISeeButton(String shouldNotSee, String buttonName) throws Exception {
+        if (shouldNotSee == null) {
+            getExtendedCursorCameraOverlayPage().waitUntilButtonVisible(buttonName);
+        } else {
+            getExtendedCursorCameraOverlayPage().waitUntilButtonInvisible(buttonName);
+        }
     }
 
 

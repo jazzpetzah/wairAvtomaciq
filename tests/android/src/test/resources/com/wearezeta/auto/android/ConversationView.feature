@@ -15,7 +15,7 @@ Feature: Conversation View
     And I press back button
     Then Conversation <Contact1> is muted
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -36,7 +36,7 @@ Feature: Conversation View
     And I navigate back from dialog page
     Then Conversation <Contact1> is not muted
 
-    Examples: 
+    Examples:
       | Name      | Contact1  |
       | user1Name | user2Name |
 
@@ -100,7 +100,7 @@ Feature: Conversation View
     Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
-      
+
   @C18044 @regression
   Scenario Outline: I see creation header when someone create group conversation with me
     Given There are 3 users where <Name> is me
@@ -152,7 +152,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C379 @regression
+  @C379 @regression @C183868
   Scenario Outline: Send existing image from gallery (portrait) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -350,8 +350,8 @@ Feature: Conversation View
     Then I see Conversations list with conversations
 
     Examples:
-      | Name      | Contact1   | Contact2   | GroupChatName |
-      | user1Name | user2Name  | user3Name  | GroupChat     |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | GroupChat     |
 
   @C77958 @regression
   Scenario Outline: Verify video call icon is not shown in a group conversation on the upper toolbar
@@ -396,8 +396,8 @@ Feature: Conversation View
     Then the conversation title should be "<Contact1>"
 
     Examples:
-      | Name      | Contact1  | Contact2  |  Message1 | Message2 |
-      | user1Name | user2Name | user3Name |  Msg1     | Msg2     |
+      | Name      | Contact1  | Contact2  | Message1 | Message2 |
+      | user1Name | user2Name | user3Name | Msg1     | Msg2     |
 
   @C77966 @C87626 @C111617 @regression @rc @rc42
   Scenario Outline: Verify there are no video and audio calling icons under the + button bar
