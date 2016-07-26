@@ -89,11 +89,11 @@ Feature: DeleteMessage
     Given I see conversations list
     Given User Myself sends encrypted message "Try this app <Link>" to user <Contact>
     When I tap on contact name <Contact>
-    Then I see 1 message in the conversation view
-    When I long tap "<Link>" message in conversation view
+    Then I see link preview container in the conversation view
+    When I long tap on link preview in conversation view
     And I tap on Delete badge item
     And I tap Delete button on the alert
-    Then I see 0 messages in the conversation view
+    Then I do not see link preview container in the conversation view
 
     Examples:
       | Name      | Contact   | Link                  |
