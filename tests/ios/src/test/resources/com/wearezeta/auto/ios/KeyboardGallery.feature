@@ -1,6 +1,6 @@
 Feature: Keyboard Gallery
 
-  @C169229 @real @torun
+  @C169229 @real
   Scenario Outline: Verify full screen camera is opened by tapping on arrows icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
