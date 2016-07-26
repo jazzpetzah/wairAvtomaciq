@@ -655,8 +655,16 @@ public class ConversationViewPage extends IOSPage {
         }
     }
 
+    private boolean isTestImageUploaded = false;
+
     public void tapInputToolButtonByName(String name) throws Exception {
-        locateCursorToolButton(getInputToolButtonByName(name)).click();
+        final By locator = getInputToolButtonByName(name);
+        if (locator.equals(nameAddPictureButton) && !isTestImageUploaded &&
+                CommonUtils.getIsSimulatorFromConfig(getClass())) {
+            IOSSimulatorHelper.uploadImage();
+            isTestImageUploaded = true;
+        }
+        locateCursorToolButton(locator).click();
     }
 
     public boolean waitUntilDownloadReadyPlaceholderVisible(String expectedFileName, String expectedSize,

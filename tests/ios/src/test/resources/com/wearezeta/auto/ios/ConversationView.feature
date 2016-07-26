@@ -306,7 +306,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
     And I select the first picture from Keyboard Gallery
-    And I tap Sketch button on Keyboard Gallery overlay
+    And I tap Sketch button on Camera preview page
     And I draw a random sketch
     And I send my sketch
     And I confirm my choice

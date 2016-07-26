@@ -14,10 +14,10 @@ public class CameraPageSteps {
     /**
      * Tap the corresponding button on Camera page
      *
-     * @step. I tap (Take Photo|Camera Roll) button on Camera page$
+     * @step. ^I tap (Take Photo|Camera Roll|Sketch) button on Camera (?:preview |\s*)page
      * @throws Exception
      */
-    @When("^I tap (Take Photo|Camera Roll) button on Camera page$")
+    @When("^I tap (Take Photo|Camera Roll|Sketch) button on Camera (?:preview |\\s*)page$")
     public void TTapButton(String name) throws Exception {
         switch (name.toLowerCase()) {
             case "take photo":
@@ -25,6 +25,9 @@ public class CameraPageSteps {
                 break;
             case "camera roll":
                 getCameraPage().tapCameraRollButton();
+                break;
+            case "sketch":
+                getCameraPage().tapSketchButton();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
