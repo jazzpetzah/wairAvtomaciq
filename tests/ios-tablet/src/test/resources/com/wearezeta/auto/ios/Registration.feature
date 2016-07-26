@@ -15,6 +15,7 @@ Feature: Registration
     And I press Choose Own Picture button
     And I press Choose Photo button
     And I select the first picture from Camera Roll
+    And I tap Confirm button on Picture preview page
     And I tap Share Contacts button on Share Contacts overlay
     Then I see conversations list
 
