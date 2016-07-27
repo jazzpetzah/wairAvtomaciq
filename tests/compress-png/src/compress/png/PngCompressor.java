@@ -260,7 +260,7 @@ public class PngCompressor {
                 filesTotal = countFiles(args[0]);
                 setSavedSize(0);
 
-                System.out.println("\n0..............100");
+                System.out.println("\n0................100");
                 compressPngsInFolder(args[0], minSize, maxSize);
                 System.out.println("\n\nPNG compression finished after " + (System.currentTimeMillis() - startTime) / 1000 + " " +
                         "seconds. Released " + String.format("%.2f", (float) getSavedSize() / 1024 / 1024) + " Mb");
