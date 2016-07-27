@@ -154,7 +154,7 @@ Feature: Link Preview
       | Name      | Contact   | Link                                               |
       | user1Name | user2Name | https://en.wikipedia.org/wiki/Provincial_Secretary |
 
-  @C167041 @staging
+  @C167041 @regression
   Scenario Outline: Verify link preview isn't shown for YouTube, SoundCloud, Vimeo, Giphy
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

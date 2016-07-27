@@ -17,7 +17,7 @@ Feature: Keyboard Gallery
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C173057 @staging
+  @C173057 @regression
   Scenario Outline: Verify opening gallery tapping on gallery icon
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
