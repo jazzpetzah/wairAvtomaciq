@@ -268,7 +268,7 @@ public class ConversationsListPage extends IOSPage {
     }
 
     public void openArchivedConversations() throws Exception {
-        getElement(nameOpenArchiveButton).click();
+        clickElementWithRetryIfStillDisplayed(nameOpenArchiveButton);
     }
 
     public boolean isArchiveButtonVisible() throws Exception {
