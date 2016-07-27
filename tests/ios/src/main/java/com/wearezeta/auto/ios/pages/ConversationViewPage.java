@@ -460,31 +460,23 @@ public class ConversationViewPage extends IOSPage {
 
     private static final long KEYBOARD_OPEN_ANIMATION_DURATION = 5500; // milliseconds
 
-    public void typeAndSendConversationMessage(String message) throws Exception {
+    public void typeMessage(String message, boolean shouldSend) throws Exception {
         final WebElement convoInput = getElement(nameConversationInput,
                 "Conversation input is not visible after the timeout");
+        final boolean isKbdInvisible = this.isKeyboardInvisible(1);
         convoInput.click();
-        // Wait for animation
-        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
-//        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-//            inputStringFromKeyboard(convoInput, message, true);
-//        } else {
+        if (isKbdInvisible) {
+            // Wait for keyboard opening animation
+            Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
+        }
         convoInput.sendKeys(message);
-        this.clickKeyboardCommitButton();
-//        }
+        if (shouldSend) {
+            this.tapKeyboardCommitButton();
+        }
     }
 
     public void typeMessage(String message) throws Exception {
-        final WebElement convoInput = getElement(nameConversationInput,
-                "Conversation input is not visible after the timeout");
-        convoInput.click();
-        // Wait for animation
-        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
-//        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-//            inputStringFromKeyboard(convoInput, message, false);
-//        } else {
-        convoInput.sendKeys(message);
-//        }
+        typeMessage(message, false);
     }
 
     public void clickOnPlayVideoButton() throws Exception {

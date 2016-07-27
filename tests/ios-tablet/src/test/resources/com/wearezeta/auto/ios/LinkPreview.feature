@@ -8,7 +8,7 @@ Feature: Link Preview
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I post url link <Link>
+    And I type the "<Link>" message and send it
     Then I see link preview container in the conversation view
 
     Examples:
@@ -23,7 +23,7 @@ Feature: Link Preview
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I post url link <Link>
+    And I type the "<Link>" message and send it
     Then I see link preview container in the conversation view
     When I long tap on link preview in conversation view
     And I tap on Delete badge item

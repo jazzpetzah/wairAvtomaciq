@@ -430,7 +430,7 @@ public class CommonIOSSteps {
                 pagesCollection.getCommonPage().clickSpaceKeyboardButton();
                 break;
             case "done":
-                pagesCollection.getCommonPage().clickKeyboardCommitButton();
+                pagesCollection.getCommonPage().tapKeyboardCommitButton();
                 break;
             default:
                 throw new IllegalArgumentException(String.format("Unknown button name: %s", btnName));
@@ -940,7 +940,7 @@ public class CommonIOSSteps {
         if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
             IOSSimulatorHelper.pressEnterKey();
         } else {
-            pagesCollection.getCommonPage().clickKeyboardCommitButton();
+            pagesCollection.getCommonPage().tapKeyboardCommitButton();
         }
     }
 

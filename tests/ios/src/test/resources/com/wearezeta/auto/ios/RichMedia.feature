@@ -7,7 +7,7 @@ Feature: Rich Media
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I post url link <YouTubeLink>
+    And I type the "<YouTubeLink>" message and send it
     And I click video container for the first time
     # Wait until web page is loaded
     And I wait for 5 seconds

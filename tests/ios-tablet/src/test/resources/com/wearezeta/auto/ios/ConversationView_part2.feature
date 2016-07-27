@@ -75,7 +75,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I post url link <YouTubeLink>
+    And I type the "<YouTubeLink>" message and send it
     And I click video container for the first time
     And I wait for 5 seconds
     Then I see video player page is opened
@@ -92,7 +92,7 @@ Feature: Conversation View
     Given I Sign in on tablet using my email
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I post url link <YouTubeLink>
+    And I type the "<YouTubeLink>" message and send it
     And I click video container for the first time
     And I wait for 5 seconds
     Then I see video player page is opened
