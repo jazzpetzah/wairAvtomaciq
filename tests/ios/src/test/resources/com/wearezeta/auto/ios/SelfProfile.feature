@@ -153,3 +153,28 @@ Feature: Self Profile
     Examples:
       | Name      | Timeout |
       | user1Name | 60      |
+
+  Scenario Outline: Verify adding email to the contact signed up with phone number
+    Given I see sign in screen
+    When I enter phone number for <Name>
+    And I enter activation code
+    And I accept terms of service
+    And I input name <Name> and hit Enter
+    And I press Choose Own Picture button
+    And I press Choose Photo button
+    And I select the first picture from Camera Roll
+    And I tap Share Contacts button on Share Contacts overlay
+    Then I see conversations list
+    When I tap settings gear button
+    And I tap ADD EMAIL ADDRESS AND PASSWORD
+    And I enter email <Email>
+    And I enter password <Password>
+    And I start activation email monitoring
+    And I click Create Account Button
+    And I see confirmation page
+    And I verify registration address
+    Then I see email <Email> on Personal page
+
+    Examples:
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
