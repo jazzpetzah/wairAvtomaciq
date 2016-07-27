@@ -45,8 +45,9 @@ Feature: Search
     When I open search UI
     And I see top people list on People picker page
     Then I tap on first 3 top connections
-    And I tap Send image action button on People picker page
-    And I select the first picture from Keyboard Gallery
+    When I tap Send image action button on People picker page
+    And I tap Camera Roll button on Camera page
+    And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the conversation view
@@ -68,8 +69,9 @@ Feature: Search
     When I open search UI
     And I see top people list on People picker page
     Then I tap on first 3 top connections
-    And I tap Send image action button on People picker page
-    And I select the first picture from Keyboard Gallery
+    When I tap Send image action button on People picker page
+    And I tap Camera Roll button on Camera page
+    And I select the first picture from Camera Roll
     And I tap Confirm button on Picture preview page
     Then I see group chat page with users <Contact1>,<Contact2>,<Contact3>
     And I see 1 photo in the conversation view

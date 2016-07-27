@@ -125,10 +125,6 @@ public abstract class IOSPage extends BasePage {
         return (Future<ZetaIOSDriver>) super.getLazyDriver();
     }
 
-    public void swipeRight(int time, int percentX, int percentY) throws Exception {
-        DriverUtils.swipeRight(this.getDriver(), getElement(nameMainWindow), time, percentX, percentY);
-    }
-
     public void swipeUp(int time) throws Exception {
         DriverUtils.swipeElementPointToPoint(this.getDriver(), getElement(nameMainWindow), time,
                 50, 55, 50, 10);
@@ -424,13 +420,9 @@ public abstract class IOSPage extends BasePage {
         });
          */
         final ZetaIOSDriver driver = this.getDriver();
-        final Callable callable = new Callable<Boolean>() {
-
-            @Override
-            public Boolean call() throws Exception {
-                driver.lockScreen(20);
-                return true;
-            }
+        final Callable callable = () -> {
+            driver.lockScreen(20);
+            return true;
         };
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(callable);
@@ -604,14 +596,6 @@ public abstract class IOSPage extends BasePage {
 
     public boolean waitUntilAlertAppears(int timeoutSeconds) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), classAlert, timeoutSeconds);
-    }
-
-    public boolean waitUntilAlertDisappears() throws Exception {
-        return waitUntilAlertDisappears(DriverUtils.getDefaultLookupTimeoutSeconds());
-    }
-
-    public boolean waitUntilAlertDisappears(int timeoutSeconds) throws Exception {
-        return DriverUtils.waitUntilLocatorDissapears(getDriver(), classAlert, timeoutSeconds);
     }
 
     public void tapAlertButton(String caption) throws Exception {
