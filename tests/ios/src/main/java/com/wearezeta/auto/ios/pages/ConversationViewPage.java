@@ -14,6 +14,7 @@ import com.wearezeta.auto.common.sync_engine_bridge.Constants;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.ios.IOSElement;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -466,12 +467,12 @@ public class ConversationViewPage extends IOSPage {
         convoInput.click();
         // Wait for animation
         Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            inputStringFromKeyboard(convoInput, message, true);
-        } else {
-            convoInput.sendKeys(message);
-            this.clickKeyboardCommitButton();
-        }
+//        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+//            inputStringFromKeyboard(convoInput, message, true);
+//        } else {
+        ((IOSElement) convoInput).setValue(message);
+        this.clickKeyboardCommitButton();
+//        }
     }
 
     public void typeMessage(String message) throws Exception {
