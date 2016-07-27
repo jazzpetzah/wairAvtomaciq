@@ -205,10 +205,15 @@ public final class CommonCallingSteps2 {
      */
     public void startInstances(List<String> calleeNames, String instanceType) throws Exception {
         LOG.debug("Creating instances for " + Arrays.toString(calleeNames.toArray()));
-        createInstances(calleeNames, instanceType);
+        createInstances(calleeNames, instanceType, "Unknown", ZetaFormatter.getScenario());
     }
-
-    private void createInstances(final List<String> calleeNames, String instanceType) throws InterruptedException,
+    
+    public void startInstances(List<String> calleeNames, String instanceType, String platform, String scenarioName) throws Exception {
+        LOG.debug("Creating instances for " + Arrays.toString(calleeNames.toArray()));
+        createInstances(calleeNames, instanceType, platform, scenarioName);
+    }
+    
+    private void createInstances(final List<String> calleeNames, String instanceType, String platform, String scenarioName) throws InterruptedException,
             ExecutionException, NoSuchUserException, TimeoutException {
         Map<String, CompletableFuture<Instance>> createTasks = new HashMap<>(calleeNames.size());
         for (String calleeName : calleeNames) {
@@ -218,7 +223,7 @@ public final class CommonCallingSteps2 {
                     return CompletableFuture.supplyAsync(() -> {
                         try {
                             final Instance instance = client.startInstance(userAs, convertTypeStringToTypeObject(instanceType),
-                                    ZetaFormatter.getScenario());
+                                    String.format("%s: \n%s", platform, scenarioName));
                             addInstance(instance, userAs);
                             return instance;
                         } catch (CallingServiceInstanceException ex) {

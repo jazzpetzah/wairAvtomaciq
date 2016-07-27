@@ -5,6 +5,7 @@ import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
+import com.wearezeta.auto.common.ZetaFormatter;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -132,7 +133,7 @@ public class CallingSteps {
      */
     @When("(.*) starts? instance using (.*)$")
     public void UserXStartsInstance(String callees, String callingServiceBackend) throws Exception {
-        commonCallingSteps.startInstances(splitAliases(callees), callingServiceBackend);
+        commonCallingSteps.startInstances(splitAliases(callees), callingServiceBackend, "iOS", ZetaFormatter.getScenario());
     }
 
     /**

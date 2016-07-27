@@ -3,6 +3,7 @@ package com.wearezeta.auto.osx.steps;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
+import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.steps.CallPageSteps;
@@ -124,8 +125,7 @@ public class CallingSteps {
     @When("(.*) starts? instances? using (.*)$")
     public void UserXStartsInstance(String callees,
             String callingServiceBackend) throws Exception {
-        commonCallingSteps.startInstances(splitAliases(callees),
-                callingServiceBackend);
+        commonCallingSteps.startInstances(splitAliases(callees), callingServiceBackend, "OSX_Wrapper", ZetaFormatter.getScenario());
     }
 
     /**
