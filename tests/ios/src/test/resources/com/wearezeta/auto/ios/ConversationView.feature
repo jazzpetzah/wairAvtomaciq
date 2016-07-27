@@ -55,7 +55,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I tap Add Picture button from input tools
     And I select the first picture from Keyboard Gallery
-    And I tap Confirm button on Camera preview page
+    And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
 
     Examples:
@@ -335,8 +335,8 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I see conversations list
     Given User <Name> sends encrypted message "<VimeoLink>" to user <Contact1>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     Then I see vimeo link <VimeoLink> and media in dialog
 
