@@ -33,7 +33,7 @@ Feature: Extended Cursor Camera
       | user1Name | user2Name |
 
 
-  @C183870 @staging
+  @C183870 @regression
   Scenario Outline: When select picture from thumbnail and tap cancel in preview -  Gallery Keyboard should be still opened
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -50,8 +50,8 @@ Feature: Extended Cursor Camera
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C183871 @staging
-  Scenario Outline: When I tap external camera button - I see the a picture
+  @C183871 @regression
+  Scenario Outline: When I tap enlarge button - full camera view appears
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -67,7 +67,7 @@ Feature: Extended Cursor Camera
       | user1Name | user2Name |
 
 
-  @C183872 @staging
+  @C183872 @regression @rc
   Scenario Outline: When I tap shoot button - Picture taken and preview appears
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -86,8 +86,8 @@ Feature: Extended Cursor Camera
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C183885 @C183886 @staging
-  Scenario Outline: When device locked/unlocked with opened Gallery Kezboard - keyboard should be dismissed
+  @C183885 @C183886 @regression
+  Scenario Outline: When device locked/unlocked with opened Gallery Keyboard - keyboard should be dismissed
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -114,7 +114,7 @@ Feature: Extended Cursor Camera
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C183887 @staging
+  @C183887 @regression
   Scenario Outline: When I swipe to conversations list with opened Gallery Keyboard and then back to conversation - Keyboard should be closed
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -133,7 +133,7 @@ Feature: Extended Cursor Camera
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C183877 @staging
+  @C183877 @regression
   Scenario Outline: I can retake picture from mini camera (dismiss one in preview and shoot another)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
