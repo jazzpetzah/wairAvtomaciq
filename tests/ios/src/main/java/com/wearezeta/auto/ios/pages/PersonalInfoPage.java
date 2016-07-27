@@ -22,7 +22,7 @@ public class PersonalInfoPage extends IOSPage {
 
     private static final By nameTermsOfUseButton = MobileBy.AccessibilityId("Terms of Use");
 
-//    private static final By nameOpenCameraRollButton = MobileBy.AccessibilityId("CameraLibraryButton");
+    private static final By nameOpenCameraRollButton = MobileBy.AccessibilityId("CameraLibraryButton");
 
     private static final By nameOpenCameraButton = MobileBy.AccessibilityId("cameraButton");
 
@@ -232,5 +232,9 @@ public class PersonalInfoPage extends IOSPage {
         return getElementScreenshot(getElement(nameAccentColorPicker)).orElseThrow(
                 () -> new IllegalStateException("Cannot get a screenshot of color picker")
         );
+    }
+
+    public void tapCameraRollButton() throws Exception {
+        getElement(nameOpenCameraRollButton).click();
     }
 }

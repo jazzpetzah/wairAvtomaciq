@@ -220,9 +220,18 @@ public class PersonalInfoPageSteps {
         getPersonalInfoPage().tapOnScreenCenter();
     }
 
-    @When("^I tap Camera button on personal screen$")
-    public void ITapCameraButton() throws Exception {
-        getPersonalInfoPage().tapCameraButton();
+    @When("^I tap (Camera|Camera Roll) button on personal screen$")
+    public void ITapButton(String name) throws Exception {
+        switch (name.toLowerCase()) {
+            case "camera":
+                getPersonalInfoPage().tapCameraButton();
+                break;
+            case "camera roll":
+                getPersonalInfoPage().tapCameraRollButton();
+                break;
+            default:
+                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
+        }
     }
 
     private ElementState previousProfilePictureScreenshot = new ElementState(
