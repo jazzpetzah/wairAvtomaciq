@@ -9,9 +9,9 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 
 public class CameraPage extends IOSPage {
-    private static final By nameCameraRollButton = MobileBy.AccessibilityId("Camera Roll");
+    private static final By nameCameraRollButton = MobileBy.AccessibilityId("CameraLibraryButton");
 
-    private static final By nameTakePhotoButton = MobileBy.AccessibilityId("PhotoCapture");
+    private static final By nameTakePhotoButton = MobileBy.AccessibilityId("cameraButton");
 
     private boolean isTestImageUploaded = false;
 
