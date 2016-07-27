@@ -202,8 +202,8 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I Sign in on tablet using my email
-    Given I see conversations list
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact1>
+    Given I see conversations list
     When I tap on contact name <Contact1>
     Then I see vimeo link <VimeoLink> and media in dialog
 
@@ -217,9 +217,8 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    Given I see conversations list
     Given User Myself sends encrypted message "<VimeoLink>" to user <Contact1>
-    When I tap on contact name <Contact1>
+    When I see conversations list
     Then I see vimeo link <VimeoLink> and media in dialog
 
     Examples:
