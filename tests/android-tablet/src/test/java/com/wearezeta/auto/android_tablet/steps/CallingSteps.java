@@ -7,6 +7,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
+import com.wearezeta.auto.common.ZetaFormatter;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.*;
@@ -112,8 +113,7 @@ public class CallingSteps {
     @When("(.*) starts? instances? using (.*)$")
     public void UserXStartsInstance(String callees,
             String callingServiceBackend) throws Exception {
-        commonCallingSteps.startInstances(splitAliases(callees),
-                callingServiceBackend);
+        commonCallingSteps.startInstances(splitAliases(callees), callingServiceBackend, "Android_Tablet", ZetaFormatter.getScenario());
     }
 
     /**

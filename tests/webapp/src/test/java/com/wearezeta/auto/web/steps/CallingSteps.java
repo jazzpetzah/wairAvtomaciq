@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.common.TestContext;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -137,7 +138,8 @@ public class CallingSteps {
     public void UserXStartsInstance(String callees,
             String callingServiceBackend) throws Exception {
         context.startPinging();
-        context.getCallingManager().startInstances(splitAliases(callees), callingServiceBackend);
+        context.getCallingManager().startInstances(splitAliases(callees), callingServiceBackend, 
+                String.format("%s_%s", "Webapp", WebAppExecutionContext.getBrowser()), context.getTestname());
         context.stopPinging();
     }
 
