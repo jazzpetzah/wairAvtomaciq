@@ -9,9 +9,10 @@ import org.openqa.selenium.By;
 import java.util.concurrent.Future;
 
 public class CameraPage extends IOSPage {
-    private static final By nameCameraRollButton = MobileBy.AccessibilityId("cameraLibraryButton");
 
-    private static final By nameTakePhotoButton = MobileBy.AccessibilityId("cameraShutterButton");
+    private static final By xpathCameraRollButton = By.xpath("//UIAButton[@name='cameraLibraryButton' or @name='CameraLibraryButton']");
+
+    private static final By xpathTakePhotoButton = By.xpath("//UIAButton[@name='cameraShutterButton' or @name='cameraButton']");
 
     private static final By nameCloseButton = MobileBy.AccessibilityId("cameraCloseButton");
 
@@ -24,9 +25,9 @@ public class CameraPage extends IOSPage {
     private By getButtonByName(String name) {
         switch (name.toLowerCase()) {
             case "take photo":
-                return nameTakePhotoButton;
+                return xpathTakePhotoButton;
             case "camera roll":
-                return nameCameraRollButton;
+                return xpathCameraRollButton;
             case "close":
                 return nameCloseButton;
             default:
@@ -36,7 +37,7 @@ public class CameraPage extends IOSPage {
 
     public void tapButton(String name) throws Exception {
         final By locator = getButtonByName(name);
-        if (!isTestImageUploaded && locator.equals(nameCameraRollButton) &&
+        if (!isTestImageUploaded && locator.equals(xpathCameraRollButton) &&
                 CommonUtils.getIsSimulatorFromConfig(getClass())) {
             IOSSimulatorHelper.uploadImage();
             isTestImageUploaded = true;
