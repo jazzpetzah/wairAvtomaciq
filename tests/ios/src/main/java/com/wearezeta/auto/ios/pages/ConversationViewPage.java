@@ -949,4 +949,7 @@ public class ConversationViewPage extends IOSPage {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLinkPreviewImage);
     }
 
+    public boolean isFileTransferMenuItemVisible(String itemName) throws Exception {
+        return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(itemName));
+    }
 }

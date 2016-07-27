@@ -33,3 +33,21 @@ Feature: Keyboard Gallery
     Examples:
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @C183864 @staging
+  Scenario Outline: Verify switching camera keyboard with all others
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    Given I see conversations list
+    Given I tap on contact name <Contact>
+    When I tap Add Picture button from input tools
+    Then I see Camera Roll button on Keyboard Gallery overlay
+    When I tap File Transfer button from input tools
+    Then I see file transfer menu item <ItemName>
+    And I do not see Camera Roll button on Keyboard Gallery overlay
+    And I do not see the on-screen keyboard
+
+    Examples:
+      | Name      | Contact   | ItemName                   |
+      | user1Name | user2Name | FTRANSFER_MENU_DEFAULT_PNG |

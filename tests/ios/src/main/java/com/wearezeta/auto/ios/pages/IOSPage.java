@@ -602,4 +602,8 @@ public abstract class IOSPage extends BasePage {
         final By locator = By.xpath(xpathStrAlertButtonByCaption.apply(caption));
         getElement(locator).click();
     }
+
+    public boolean isKeyboardInvisible() throws Exception {
+        return this.onScreenKeyboard.isInvisible();
+    }
 }

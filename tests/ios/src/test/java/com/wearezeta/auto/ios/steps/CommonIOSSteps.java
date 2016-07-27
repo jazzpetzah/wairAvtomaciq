@@ -995,8 +995,8 @@ public class CommonIOSSteps {
     /**
      * Tap OK/Cancel button on the current page
      *
-     * @throws Exception
      * @param action either 'confirm' or 'deny'
+     * @throws Exception
      * @step. ^I (confirm|discard) my choice$
      */
     @When("^I (confirm|discard) my choice$")
@@ -1154,5 +1154,22 @@ public class CommonIOSSteps {
             throws Exception {
         commonSteps.UserSharesLocationTo(userNameAlias, dstNameAlias, convoType.equals("group conversation"),
                 deviceName);
+    }
+
+    /**
+     * Verify whether on-screen keyboard is visible or not
+     *
+     * @param shouldNotSee equals to null if the keyboard should be visible
+     * @throws Exception
+     * @step. ^I (do not )?see the on-screen keyboard$
+     */
+    @Then("^I (do not )?see the on-screen keyboard$")
+    public void ISeeOnScreenKeyboard(String shouldNotSee) throws Exception {
+        if (shouldNotSee == null) {
+            Assert.assertTrue("On-screen keyboard is not visible", pagesCollection.getCommonPage().isKeyboardVisible());
+        } else {
+            Assert.assertTrue("On-screen keyboard is visible, but should be hidden",
+                    pagesCollection.getCommonPage().isKeyboardInvisible());
+        }
     }
 }

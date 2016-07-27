@@ -932,6 +932,17 @@ public class ConversationViewPageSteps {
                 avgThreshold, MAX_SIMILARITY_THRESHOLD), avgThreshold < MAX_SIMILARITY_THRESHOLD);
     }
 
+    private String expandFileTransferItemName(String itemName) {
+        switch (itemName) {
+            case "FTRANSFER_MENU_DEFAULT_PNG":
+                return FTRANSFER_MENU_DEFAULT_PNG;
+            case "TOO_BIG":
+                return FTRANSFER_MENU_TOO_BIG;
+            default:
+                return itemName;
+        }
+    }
+
     /**
      * Tap on file transfer menu item by name
      *
@@ -941,16 +952,22 @@ public class ConversationViewPageSteps {
      */
     @When("^I tap file transfer menu item (.*)")
     public void ITapFileTransferMenuItem(String itemName) throws Exception {
-        String realName = itemName;
-        switch (itemName) {
-            case "FTRANSFER_MENU_DEFAULT_PNG":
-                realName = FTRANSFER_MENU_DEFAULT_PNG;
-                break;
-            case "TOO_BIG":
-                realName = FTRANSFER_MENU_TOO_BIG;
-                break;
-        }
+        final String realName = expandFileTransferItemName(itemName);
         getConversationViewPage().tapFileTransferMenuItem(realName);
+    }
+
+    /**
+     * Verify visibility of the corresponding file transfer menu item
+     *
+     * @param itemName name of the item
+     * @throws Exception
+     * @step. ^I see file transfer menu item (.*)
+     */
+    @When("^I see file transfer menu item (.*)")
+    public void ISeeFileTransferMenuItem(String itemName) throws Exception {
+        final String realName = expandFileTransferItemName(itemName);
+        Assert.assertTrue(String.format("File transfer menu item '%s' is not visible", realName),
+                getConversationViewPage().isFileTransferMenuItemVisible(realName));
     }
 
     /**
@@ -1173,7 +1190,7 @@ public class ConversationViewPageSteps {
         if (tapFunc == null) {
             throw new IllegalArgumentException(
                     String.format("Cannot perform%s tap on '%s' container, because it is not implemented",
-                    (isLongTap == null) ? "" : " long", conversationItem));
+                            (isLongTap == null) ? "" : " long", conversationItem));
         }
         tapFunc.run();
     }
