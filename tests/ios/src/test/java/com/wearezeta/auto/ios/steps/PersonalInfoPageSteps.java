@@ -459,5 +459,16 @@ public class PersonalInfoPageSteps {
         Assert.assertTrue("Color picker state has not been changed",
                 colorPickerState.isChanged(COLOR_PICKER_STATE_CHANGE_TIMEOUT, MIN_COLOR_PICKER_SIMILARITY_SCORE));
     }
+
+    /**
+     * Tap on ADD EMAIL ADDRESS AND PASSWORD buttton
+     *
+     * @throws Exception
+     * @step. ^I tap ADD EMAIL ADDRESS AND PASSWORD$
+     */
+    @When("^I tap ADD EMAIL ADDRESS AND PASSWORD$")
+    public void ITapAddEmailAddress() throws Exception {
+        getPersonalInfoPage().tapAddEmailAddressButton();
+    }
 }
 

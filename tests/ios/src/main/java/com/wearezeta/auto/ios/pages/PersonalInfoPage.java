@@ -69,6 +69,8 @@ public class PersonalInfoPage extends IOSPage {
     private static final By xpathTermsAndConditions = By.xpath("//*[@name='Basic Information']");
     private static final By xpathPrivacyPolicy= By.xpath("//*[@name='Our Privacy Commitment']");
 
+    private static final By nameAddEmailAddressButton = MobileBy.AccessibilityId("ADD EMAIL ADDRESS AND PASSWORD");
+
     private static final int COLORS_COUNT = 7;
 
     public PersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -236,5 +238,9 @@ public class PersonalInfoPage extends IOSPage {
 
     public void tapCameraRollButton() throws Exception {
         getElement(nameOpenCameraRollButton).click();
+    }
+
+    public void tapAddEmailAddressButton() throws Exception {
+        getElement(nameAddEmailAddressButton).click();
     }
 }
