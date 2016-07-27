@@ -62,6 +62,9 @@ public class ConversationViewPage extends IOSPage {
     private static final Function<String, String> xpathStrMessageByTextPart = text ->
             String.format("%s[contains(@value, '%s')]", xpathStrAllTextMessages, text);
 
+    private static final Function<String, String> xpathStrMessageByExactText = text ->
+            String.format("%s[@value='%s']", xpathStrAllTextMessages, text);
+
     private static final Function<String, String> xpathStrMessageCellByTextPart = text ->
             String.format("%s[contains(@value, '%s')]/parent::*", xpathStrAllTextMessages, text);
 
@@ -951,5 +954,10 @@ public class ConversationViewPage extends IOSPage {
 
     public boolean isFileTransferMenuItemVisible(String itemName) throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), MobileBy.AccessibilityId(itemName));
+    }
+
+    public int getMessageHeight(String msg) throws Exception {
+        final By locator = By.xpath(xpathStrMessageByExactText.apply(msg));
+        return getElement(locator).getSize().getHeight();
     }
 }
