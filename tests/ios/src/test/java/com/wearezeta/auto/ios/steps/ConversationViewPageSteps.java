@@ -110,9 +110,9 @@ public class ConversationViewPageSteps {
     @When("^I type the (default|\".*\") message and send it$")
     public void ITypeTheMessageAndSendIt(String msg) throws Exception {
         if (msg.equals("default")) {
-            getConversationViewPage().typeAndSendConversationMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE);
+            getConversationViewPage().typeMessage(CommonIOSSteps.DEFAULT_AUTOMATION_MESSAGE, true);
         } else {
-            getConversationViewPage().typeAndSendConversationMessage(msg.replaceAll("^\"|\"$", ""));
+            getConversationViewPage().typeMessage(msg.replaceAll("^\"|\"$", ""), true);
         }
     }
 
@@ -140,7 +140,7 @@ public class ConversationViewPageSteps {
 
     @When("^I send the message$")
     public void WhenISendTheMessage() throws Exception {
-        getConversationViewPage().clickKeyboardCommitButton();
+        getConversationViewPage().tapKeyboardCommitButton();
     }
 
     @Then("^I see (\\d+) (default )?messages? in the conversation view$")
@@ -286,11 +286,6 @@ public class ConversationViewPageSteps {
     @When("I click video container for the first time")
     public void IPlayVideoFirstTime() throws Exception {
         getConversationViewPage().clickOnPlayVideoButton();
-    }
-
-    @When("^I post url link (.*)$")
-    public void IPostURLLink(String link) throws Throwable {
-        getConversationViewPage().typeAndSendConversationMessage(link);
     }
 
     /**
@@ -774,7 +769,7 @@ public class ConversationViewPageSteps {
      */
     @When("^I click send button on keyboard$")
     public void iClickSendButtonOnKeyboard() throws Exception {
-        getConversationViewPage().clickKeyboardCommitButton();
+        getConversationViewPage().tapKeyboardCommitButton();
     }
 
     /**

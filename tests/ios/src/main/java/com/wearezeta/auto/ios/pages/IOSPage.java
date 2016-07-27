@@ -242,7 +242,7 @@ public abstract class IOSPage extends BasePage {
             getDriver().tap(1, tapX, tapY, DriverUtils.SINGLE_TAP_DURATION);
             this.onScreenKeyboard.typeString(str);
             if (shouldCommitInput) {
-                this.clickKeyboardCommitButton();
+                this.tapKeyboardCommitButton();
             }
         }
     }
@@ -262,7 +262,7 @@ public abstract class IOSPage extends BasePage {
             getDriver().tap(1, tapX, tapY, DriverUtils.LONG_TAP_DURATION);
             getElement(nameEditingItemPaste, "Paste item is not visible", 15).click();
             if (shouldCommitInput) {
-                this.clickKeyboardCommitButton();
+                this.tapKeyboardCommitButton();
             }
         }
     }
@@ -273,6 +273,10 @@ public abstract class IOSPage extends BasePage {
 
     public boolean isKeyboardVisible() throws Exception {
         return this.onScreenKeyboard.isVisible();
+    }
+
+    public boolean isKeyboardInvisible(int timeoutSeconds) throws Exception {
+        return this.onScreenKeyboard.isInvisible(timeoutSeconds);
     }
 
     public void clickKeyboardDeleteButton() throws Exception {
@@ -287,7 +291,7 @@ public abstract class IOSPage extends BasePage {
         this.onScreenKeyboard.pressSpaceButton();
     }
 
-    public void clickKeyboardCommitButton() throws Exception {
+    public void tapKeyboardCommitButton() throws Exception {
         this.onScreenKeyboard.pressCommitButton();
     }
 

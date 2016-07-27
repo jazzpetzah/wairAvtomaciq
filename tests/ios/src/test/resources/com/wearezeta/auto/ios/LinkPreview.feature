@@ -7,7 +7,7 @@ Feature: Link Preview
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I post url link <Link>
+    And I type the "<Link>" message and send it
     # This is to make the keyboard invisible as sometimes the keyboard is still visible after posting the link
     And I navigate back to conversations list
     And I tap on contact name <Contact>
@@ -27,14 +27,14 @@ Feature: Link Preview
     Given I see conversations list
     When I tap on contact name <Contact>
     # Check link + text
-    And I post url link <Link> <Text>
+    And I type the "<Link> <Text>" message and send it
     # This is to make the keyboard invisible
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     Then I see link preview container in the conversation view
     And I see the conversation view contains message <Link> <Text>
     # Check text + link
-    When I post url link <Text1> <Link>
+    And I type the "<Text1> <Link>" message and send it
     # This is to make the keyboard invisible
     And I navigate back to conversations list
     And I tap on contact name <Contact>
@@ -42,7 +42,7 @@ Feature: Link Preview
     And I do not see the conversation view contains message <Text1> <Link>
     And I see link preview container in the conversation view
     # Check text + link + text
-    When I post url link <Text1> <Link> <Text>
+    When I type the "<Text1> <Link> <Text>" message and send it
     # This is to make the keyboard invisible
     And I navigate back to conversations list
     And I tap on contact name <Contact>
@@ -60,7 +60,7 @@ Feature: Link Preview
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    When I post url link <Shortenlink>
+    And I type the "<Shortenlink>" message and send it
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     Then I see link preview container in the conversation view
@@ -76,7 +76,7 @@ Feature: Link Preview
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    When I post url link <Link>
+    And I type the "<Link>" message and send it
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     Then I see link preview container in the conversation view
@@ -84,7 +84,7 @@ Feature: Link Preview
     And I tap on Delete badge item
     # Sometimes the alert is not accepted automatically
     And I tap Delete button on the alert
-    When I post url link <Link1>
+    When I type the "<Link1>" message and send it
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     Then I see link preview container in the conversation view
@@ -92,7 +92,7 @@ Feature: Link Preview
     And I tap on Delete badge item
     # Sometimes the alert is not accepted automatically
     And I tap Delete button on the alert
-    When I post url link <Link2>
+    When I type the "<Link2>" message and send it
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     Then I see link preview container in the conversation view
@@ -100,7 +100,7 @@ Feature: Link Preview
     And I tap on Delete badge item
     # Sometimes the alert is not accepted automatically
     And I tap Delete button on the alert
-    When I post url link <Link3>
+    When I type the "<Link3>" message and send it
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     Then I see link preview container in the conversation view
@@ -108,7 +108,7 @@ Feature: Link Preview
     And I tap on Delete badge item
     # Sometimes the alert is not accepted automatically
     And I tap Delete button on the alert
-    When I post url link <Link4>
+    When I type the "<Link4>" message and send it
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     Then I see link preview container in the conversation view
@@ -124,7 +124,7 @@ Feature: Link Preview
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I post url link <Link>
+    When I type the "<Link>" message and send it
     Then I see link preview container in the conversation view
     When I long tap on link preview in conversation view
     And I tap on Copy badge item
@@ -146,7 +146,7 @@ Feature: Link Preview
     Given I sign in using my email or phone number
     Given I see conversations list
     When I tap on contact name <Contact>
-    And I post url link <Link>
+    And I type the "<Link>" message and send it
     Then I see link preview container in the conversation view
     And I do not see link preview image in the conversation view
 

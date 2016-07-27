@@ -69,7 +69,7 @@ public class GroupChatInfoPage extends IOSPage {
             nameInputField.clear();
             nameInputField.sendKeys(name);
         }
-        clickKeyboardCommitButton();
+        tapKeyboardCommitButton();
     }
 
     public boolean isCorrectConversationName(List<String> expectedNames) throws Exception {

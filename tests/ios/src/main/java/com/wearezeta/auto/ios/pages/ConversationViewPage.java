@@ -14,6 +14,7 @@ import com.wearezeta.auto.common.sync_engine_bridge.Constants;
 import com.wearezeta.auto.ios.tools.IOSSimulatorHelper;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.ios.IOSElement;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -460,31 +461,25 @@ public class ConversationViewPage extends IOSPage {
 
     private static final long KEYBOARD_OPEN_ANIMATION_DURATION = 5500; // milliseconds
 
-    public void typeAndSendConversationMessage(String message) throws Exception {
+    public void typeMessage(String message, boolean shouldSend) throws Exception {
         final WebElement convoInput = getElement(nameConversationInput,
                 "Conversation input is not visible after the timeout");
-        convoInput.click();
-        // Wait for animation
-        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            inputStringFromKeyboard(convoInput, message, true);
+        if (this.isKeyboardInvisible(1)) {
+            convoInput.click();
+            // Wait for keyboard opening animation
+            Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
+        }
+        if (shouldSend) {
+            // This is faster and allows to avoid autocorrection, but does not update input cursor position properly
+            ((IOSElement) convoInput).setValue(message);
+            this.tapKeyboardCommitButton();
         } else {
             convoInput.sendKeys(message);
-            this.clickKeyboardCommitButton();
         }
     }
 
     public void typeMessage(String message) throws Exception {
-        final WebElement convoInput = getElement(nameConversationInput,
-                "Conversation input is not visible after the timeout");
-        convoInput.click();
-        // Wait for animation
-        Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            inputStringFromKeyboard(convoInput, message, false);
-        } else {
-            convoInput.sendKeys(message);
-        }
+        typeMessage(message, false);
     }
 
     public void clickOnPlayVideoButton() throws Exception {
