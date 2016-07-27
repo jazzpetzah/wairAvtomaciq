@@ -309,7 +309,6 @@ Feature: Conversation View
     And I tap Sketch button on Picture preview page
     And I draw a random sketch
     And I send my sketch
-    And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
 
     Examples:
