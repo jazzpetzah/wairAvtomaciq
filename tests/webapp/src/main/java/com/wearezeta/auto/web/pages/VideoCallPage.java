@@ -186,4 +186,16 @@ public class VideoCallPage extends WebPage {
     public WebElement getLocalScreenShareVideoElement() throws Exception {
         return localScreenShareVideo;
     }
+
+    public Point getLocalScreenShareVideoElementLocation() throws Exception {
+        Long top = (Long) getDriver().executeScript("return arguments[0].getBoundingClientRect().top", localScreenShareVideo);
+        Long left = (Long) getDriver().executeScript("return arguments[0].getBoundingClientRect().left", localScreenShareVideo);
+        return new Point(top.intValue(), left.intValue());
+    }
+
+    public Dimension getLocalScreenShareVideoElementSize() throws Exception {
+        Long width = (Long) getDriver().executeScript("return arguments[0].getBoundingClientRect().width", localScreenShareVideo);
+        Long height = (Long) getDriver().executeScript("return arguments[0].getBoundingClientRect().height", localScreenShareVideo);
+        return new Dimension(width.intValue(), height.intValue());
+    }
 }

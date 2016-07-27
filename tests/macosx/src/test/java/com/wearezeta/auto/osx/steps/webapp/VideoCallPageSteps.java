@@ -98,9 +98,8 @@ public class VideoCallPageSteps {
         VideoCallPage videoCallPage = webappPagesCollection.getPage(VideoCallPage.class);
 
         // get position and size of self video element
-        WebElement element = videoCallPage.getLocalScreenShareVideoElement();
-        final Point elementLocation = element.getLocation();
-        final Dimension elementSize = element.getSize();
+        final Point elementLocation = videoCallPage.getLocalScreenShareVideoElementLocation();
+        final Dimension elementSize = videoCallPage.getLocalScreenShareVideoElementSize();
 
         // get local screenshot
         MainWirePage mainWirePage = osxPagesCollection.getPage(MainWirePage.class);
@@ -119,7 +118,7 @@ public class VideoCallPageSteps {
 
         // Write images to disk
         String resizedScreenshotName = "target/resizedScreenshot" + System.currentTimeMillis() + ".png";
-        String localScreenShareVideoName = "target/remoteScreenshot" + System.currentTimeMillis() + ".png";
+        String localScreenShareVideoName = "target/localScreenshare" + System.currentTimeMillis() + ".png";
         ImageUtil.storeImage(resizedScreenshot, new File(resizedScreenshotName));
         ImageUtil.storeImage(localScreenShareVideo, new File(localScreenShareVideoName));
         String reportPath = "../artifact/tests/macosx/";

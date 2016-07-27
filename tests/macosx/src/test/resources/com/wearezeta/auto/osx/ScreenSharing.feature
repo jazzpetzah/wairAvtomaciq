@@ -13,7 +13,7 @@ Feature: Screen Sharing
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I click on screen share button
     And I wait for 5 seconds
-    #Then I verify my self video shows my screen
+    Then I verify my self video shows my screen
     Then I verify <Contact> sees my screen
 
     Examples:
@@ -56,16 +56,16 @@ Feature: Screen Sharing
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     When I click on video button
     And I see my self video is off
-    And I see video from other user is not black
+    #And I see video from other user is not black
     When I click on video button
     Then I see my self video is on
-    And I see video from other user is not black
+    #And I see video from other user is not black
     When I click on screen share button
     And I wait for 5 seconds
     Then I verify <Contact> sees my screen
     When I click on screen share button
     And I see my self video is off
-    And I see video from other user is not black
+    #And I see video from other user is not black
 
     Examples:
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
