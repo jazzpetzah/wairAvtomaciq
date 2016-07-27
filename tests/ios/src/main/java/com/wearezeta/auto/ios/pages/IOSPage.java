@@ -72,7 +72,7 @@ public abstract class IOSPage extends BasePage {
 
     private static final By xpathConfirmButton = By.xpath("//UIAButton[@name='OK' and @visible='true']");
 
-    private static final By nameCancelButton = MobileBy.AccessibilityId("Cancel");
+    private static final By xpathCancelButton = By.xpath("//UIAButton[@name='Cancel' and @visible='true']");
 
     private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
 
@@ -553,7 +553,7 @@ public abstract class IOSPage extends BasePage {
     }
 
     public void tapCancelButton() throws Exception {
-        getElement(nameCancelButton).click();
+        getElement(xpathCancelButton).click();
     }
 
     public void tapDoneButton() throws Exception {
