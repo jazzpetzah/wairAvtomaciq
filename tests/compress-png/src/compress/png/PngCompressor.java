@@ -217,7 +217,7 @@ public class PngCompressor {
             }
             if (progress < (int) (100 * currFileNum / filesTotal)) {
                 progress = (int) (100 * currFileNum / filesTotal);
-                System.out.print("\rprogress " + progress + "%");
+                if (progress % 5 == 0) System.out.print("*");
             }
         });
     }
@@ -259,8 +259,10 @@ public class PngCompressor {
 
                 filesTotal = countFiles(args[0]);
                 setSavedSize(0);
+
+                System.out.println("\n0..............100");
                 compressPngsInFolder(args[0], minSize, maxSize);
-                System.out.println("\rPNG compression finished after " + (System.currentTimeMillis() - startTime) / 1000 + " " +
+                System.out.println("\n\nPNG compression finished after " + (System.currentTimeMillis() - startTime) / 1000 + " " +
                         "seconds. Released " + String.format("%.2f", (float) getSavedSize() / 1024 / 1024) + " Mb");
             } else System.out.println("<Path> to compress is missed");
         }
