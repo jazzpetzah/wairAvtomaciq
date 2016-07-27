@@ -470,7 +470,7 @@ public class ConversationViewPage extends IOSPage {
 //        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
 //            inputStringFromKeyboard(convoInput, message, true);
 //        } else {
-        ((IOSElement) convoInput).setValue(message);
+        convoInput.sendKeys(message);
         this.clickKeyboardCommitButton();
 //        }
     }
@@ -481,11 +481,11 @@ public class ConversationViewPage extends IOSPage {
         convoInput.click();
         // Wait for animation
         Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
-        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-            inputStringFromKeyboard(convoInput, message, false);
-        } else {
-            convoInput.sendKeys(message);
-        }
+//        if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+//            inputStringFromKeyboard(convoInput, message, false);
+//        } else {
+        convoInput.sendKeys(message);
+//        }
     }
 
     public void clickOnPlayVideoButton() throws Exception {
