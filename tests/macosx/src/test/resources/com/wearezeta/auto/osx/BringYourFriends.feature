@@ -32,3 +32,20 @@ Feature: Bring Your Friends
     Examples:
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @C149664 @smoke
+  Scenario Outline: Import address book from preferences
+    Given There is 1 user where <Name> is me
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Given I am signed in properly
+    When I type shortcut combination for preferences
+    And I see Settings dialog
+    And I click button to import contacts from address book
+#    When I verify address book permission window is visible
+    Then I allow address book access
+    And I see more than 0 suggestions in people picker
+
+    Examples:
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

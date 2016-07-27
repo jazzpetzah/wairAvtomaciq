@@ -1,9 +1,9 @@
 package com.wearezeta.auto.osx.steps.webapp;
 
+import com.wearezeta.auto.osx.pages.webapp.SettingsPage;
 import org.junit.Assert;
 
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
-import com.wearezeta.auto.web.pages.SettingsPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -31,6 +31,16 @@ public class PreferencesPageSteps {
     @When("^I click button to import contacts from Gmail$")
     public void IClickImportButton() throws Exception {
         WebappPagesCollection.getInstance().getPage(SettingsPage.class).clickImportButton();
+    }
+    
+    /**
+     * Click on import contacts from address book via Setting
+     *
+     * @throws Exception
+     */
+    @When("^I click button to import contacts from address book$")
+    public void IClickAddressbookImportButton() throws Exception {
+        WebappPagesCollection.getInstance().getPage(SettingsPage.class).clickImportAddressbookButton();
     }
 
 }

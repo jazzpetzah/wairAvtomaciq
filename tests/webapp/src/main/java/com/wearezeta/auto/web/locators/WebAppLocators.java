@@ -276,6 +276,7 @@ public final class WebAppLocators {
         public static final String cssConfirmText = "[data-uie-name='delete-confirm-text']";
         public static final String cssSentText = "[data-uie-name='delete-sent']";
         public static final String cssImportButton = "[data-uie-name='do-share-contacts']";
+        public static final String cssImportAddressbookButton = "[data-uie-name='do-share-osx-contacts']";//macOS
         public static final String cssBackButton = "[data-uie-name='do-device-close']";
         public static final String cssVerificationToggle = ".button-label";
         public static final String cssDeviceIds = ".self-settings-device-list .device-info [data-uie-name='device-id']";

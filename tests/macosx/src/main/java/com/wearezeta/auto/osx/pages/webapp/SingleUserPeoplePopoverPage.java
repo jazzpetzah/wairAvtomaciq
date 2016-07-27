@@ -1,4 +1,4 @@
-package com.wearezeta.auto.osx.pages.osx;
+package com.wearezeta.auto.osx.pages.webapp;
 
 import java.util.concurrent.Future;
 

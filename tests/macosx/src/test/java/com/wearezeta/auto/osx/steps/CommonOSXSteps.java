@@ -14,6 +14,7 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
+import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAddressbookPermission;
 
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
 import static com.wearezeta.auto.osx.common.OSXCommonUtils.getSizeOfAppInMB;
@@ -222,7 +223,7 @@ public class CommonOSXSteps {
             Thread.sleep(5000);
             clearAppData();
             // Disabled addressbook permission revoke
-//			clearAddressbookPermission();
+            clearAddressbookPermission();
         } catch (Exception e) {
             LOG.error(e);
         }

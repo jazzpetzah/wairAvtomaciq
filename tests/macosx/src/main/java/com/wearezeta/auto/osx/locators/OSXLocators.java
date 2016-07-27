@@ -54,6 +54,17 @@ public final class OSXLocators {
         public static final String xpathMinimizeButton = xpathWindow
                 + "//AXButton[@AXRoleDescription='minimize button']";
     }
+    
+    public static final class AddressBookPermissionPage {
+
+        public static final String xpathWindow = "//AXApplication[contains(@AXTitle,'UserNotificationCenter')]//AXWindow";
+
+        public static final String xpathOkButton = xpathWindow
+                + "//AXButton[@AXTitle='OK']";
+
+        public static final String xpathNoButton = xpathWindow
+                + "//AXButton[@AXTitle='Don't Allow]";
+    }
 
     public static final class ContactListContextMenuPage {
 
