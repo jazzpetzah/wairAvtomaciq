@@ -22,7 +22,9 @@ public class PersonalInfoPage extends IOSPage {
 
     private static final By nameTermsOfUseButton = MobileBy.AccessibilityId("Terms of Use");
 
-    private static final By namePictureButton = MobileBy.AccessibilityId("CameraLibraryButton");
+//    private static final By nameOpenCameraRollButton = MobileBy.AccessibilityId("CameraLibraryButton");
+
+    private static final By nameOpenCameraButton = MobileBy.AccessibilityId("cameraButton");
 
     private static final By xpathProfileNameEditField =
             By.xpath("//UIAElement[@name='ProfileSelfNameField']/UIATextView");
@@ -187,7 +189,7 @@ public class PersonalInfoPage extends IOSPage {
     }
 
     public void tapCameraButton() throws Exception {
-        getElement(namePictureButton).click();
+        getElement(nameOpenCameraButton).click();
     }
 
     public void tapOnSettingsButton() throws Exception {

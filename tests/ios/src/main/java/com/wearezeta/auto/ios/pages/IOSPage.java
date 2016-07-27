@@ -70,9 +70,9 @@ public abstract class IOSPage extends BasePage {
 
     protected static final By nameBackToWireBrowserButton = MobileBy.AccessibilityId("Back to Wire");
 
-    private static final By xpathConfirmButton = By.xpath("//UIAButton[@name='OK' and @visible='true']");
+    protected static final By xpathConfirmButton = By.xpath("//UIAButton[@name='OK' and @visible='true']");
 
-    private static final By xpathCancelButton = By.xpath("//UIAButton[@name='Cancel' and @visible='true']");
+    protected static final By xpathCancelButton = By.xpath("//UIAButton[@name='Cancel' and @visible='true']");
 
     private static final By nameDoneButton = MobileBy.AccessibilityId("Done");
 

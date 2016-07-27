@@ -14,24 +14,12 @@ public class PicturePreviewPageSteps {
     /**
      * Tap the corresponding button on Picture preview page
      *
-     * @step. I tap (Sketch|Confirm|Cancel) button on Picture [Pp]review page$
+     * @step. I tap (Sketch|Confirm|Cancel|Use Photo|Retake) button on Picture [Pp]review page$
      * @param name one of possible button names
      * @throws Exception
      */
-    @When("^I tap (Sketch|Confirm|Cancel) button on Picture [Pp]review page$")
+    @When("^I tap (Sketch|Confirm|Cancel|Use Photo|Retake) button on Picture [Pp]review page$")
     public void ITapButton(String name) throws Exception {
-        switch (name.toLowerCase()) {
-            case "sketch":
-                getPicturePreviewPage().tapSketchButton();
-                break;
-            case "confirm":
-                getPicturePreviewPage().tapConfirmButton();
-                break;
-            case "cancel":
-                getPicturePreviewPage().tapCancelButton();
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("Unknown button name '%s'", name));
-        }
+        getPicturePreviewPage().tapButton(name);
     }
 }
