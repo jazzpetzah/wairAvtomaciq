@@ -915,7 +915,7 @@ Feature: Calling
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | Contact10  | ChatName              | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | GroupCallConversation | chrome      | chrome      | 20      |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | GroupCallConversation | chrome      | chrome      | 30      |
 
   @C1813 @regression @calling @group @calling_debug
   Scenario Outline: Verify initiating group call
