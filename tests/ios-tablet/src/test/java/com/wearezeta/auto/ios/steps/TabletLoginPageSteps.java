@@ -31,7 +31,7 @@ public class TabletLoginPageSteps {
     @Given("^I Sign in on tablet using my email$")
     public void GivenISignInUsingEmail() throws Exception {
         getTabletLoginPage().switchToLogin();
-        if (!FastLoginContainer.getInstance().isEnabled()) {
+        if (FastLoginContainer.getInstance().isEnabled()) {
             return;
         }
         final ClientUser self = usrMgr.getSelfUserOrThrowError();
