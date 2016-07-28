@@ -17,9 +17,9 @@ public class ExtendedCursorCameraOverlayPageSteps {
      *
      * @param buttonName the button name in overlay
      * @throws Exception
-     * @step. ^I tap (Take Photo|Switch Camera|Gallery|External Camera|External Video|Back) button on Extended cursor camera overlay$
+     * @step. ^I tap (Take Photo|Switch Camera|Gallery|Camera|External Video|Back) button on Extended cursor camera overlay$
      */
-    @When("^I tap (Take Photo|Switch Camera|Gallery|External Camera|External Video|Back) button on Extended cursor camera overlay$")
+    @When("^I tap (Take Photo|Switch Camera|Gallery|Camera|External Video|Back) button on Extended cursor camera overlay$")
     public void ITapButton(String buttonName) throws Exception {
         getExtendedCursorCameraOverlayPage().tapOnButton(buttonName);
     }
@@ -84,9 +84,9 @@ public class ExtendedCursorCameraOverlayPageSteps {
      * @param shouldNotSee equal null means the button should be visible
      * @param buttonName   button name
      * @throws Exception
-     * @step. ^I see (Take Photo|Switch Camera|Gallery|External Camera|External Video) button on Extended cursor camera overlay$
+     * @step. ^I see (Take Photo|Switch Camera|Gallery|Camera|External Video) button on Extended cursor camera overlay$
      */
-    @Then("^I (do not )?see (Take Photo|Switch Camera|Gallery|External Camera|External Video|Back) button on Extended cursor camera overlay$")
+    @Then("^I (do not )?see (Take Photo|Switch Camera|Gallery|Camera|External Video|Back) button on Extended cursor camera overlay$")
     public void ISeeButton(String shouldNotSee, String buttonName) throws Exception {
         if (shouldNotSee == null) {
             getExtendedCursorCameraOverlayPage().waitUntilButtonVisible(buttonName);
