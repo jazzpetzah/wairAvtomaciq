@@ -11,15 +11,6 @@ NODE_PASSWORD = os.getenv('NODE_PASSWORD', '123456')
 MAX_NODES_PER_HOST = 5
 CURRENT_HOST_IP = socket.gethostbyname(socket.gethostname())
 
-
-def get_current_vm_number():
-    ip_as_list = CURRENT_HOST_IP.split('.')
-    # Must be IPv4
-    assert len(ip_as_list) == 4
-    last_digit = int(ip_as_list[-1])
-    return last_digit % MAX_NODES_PER_HOST
-
-
 POWER_CYCLE_SCRIPT = """#!/usr/bin/env python
 
 import time
@@ -35,12 +26,14 @@ if __name__ == '__main__':
     if spec is None:
         raise RuntimeError("No USBHub is connected!")
     stem.connect_from_spec(spec)
-    stem.usb.setPowerDisable({})
+    for portnum in xrange(4):
+        stem.usb.setPowerDisable(portnum)
     time.sleep(1)
-    stem.usb.setPowerEnable({})
+    for portnum in xrange(4):
+        stem.usb.setPowerEnable(portnum)
     time.sleep(1)
-""".format(get_current_vm_number() - 1)
-# VM number starts from 1
+"""
+
 
 def calc_vm_master_host_ip():
     ip_as_list = CURRENT_HOST_IP.split('.')
