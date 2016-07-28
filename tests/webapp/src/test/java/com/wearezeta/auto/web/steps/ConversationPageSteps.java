@@ -1336,16 +1336,16 @@ public class ConversationPageSteps {
         context.getPagesCollection().getPage(ConversationPage.class).cancelVideoDownload(fileName);
     }
 
-    @When("^I see the video button is( not)? pulsating$")
+    @When("^I see broadcast indicator is( not)? shown for video$")
     public void ISeeVideoButtonPulsating(String not) throws Exception {
         if (not == null) {
             // video button pulsating?
-            assertThat("Video button is not pulsating :(",
-                    context.getPagesCollection().getPage(ConversationPage.class).isVideoCallButtonPulsating());
+            assertThat("broadcast indicator not shown :(",
+                    context.getPagesCollection().getPage(ConversationPage.class).isBroadcastIndicatorVideoShown());
         } else {
             // video button not pulsating?
-            assertThat("Video button is pulsating :(",
-                    context.getPagesCollection().getPage(ConversationPage.class).isVideoCallButtonNotPulsating());
+            assertThat("broadcast indicator is shown :(",
+                    context.getPagesCollection().getPage(ConversationPage.class).isBroadcastIndicatorVideoNotShown());
         }
     }
 }

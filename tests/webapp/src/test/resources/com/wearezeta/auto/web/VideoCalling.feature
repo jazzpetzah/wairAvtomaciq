@@ -756,7 +756,7 @@ Feature: VideoCalling
     And I see video call is maximized
     When I minimize video call
     Then I see video call is minimized
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     When I open conversation with <Contact2>
     When I start a video call
     Then I see another call warning modal
@@ -764,7 +764,7 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verifies to get video data from me
@@ -774,7 +774,7 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verifies to get video data from me
@@ -784,7 +784,7 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verifies to get video data from me
@@ -804,7 +804,7 @@ Feature: VideoCalling
     Then I see video call is minimized
     And I do not see the ongoing call controls for conversation <Contact1>
     And I see the ongoing call controls for conversation <Contact2>
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
@@ -848,13 +848,13 @@ Feature: VideoCalling
     Then I see my self video is on
     And I see video from other user is not black
     When I minimize video call
-    Then I see the video button is pulsating
+    Then I see broadcast indicator is shown for video
     When I click on video button
     And I see video button unpressed
-    Then I see the video button is not pulsating
+    Then I see broadcast indicator is not shown for video
     When I click on video button
     Then I see video button pressed
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     When <Contact> switches video off
     Then I see minimized video is black
     When I maximize video call
