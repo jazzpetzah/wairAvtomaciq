@@ -121,7 +121,7 @@ public class CommonIOSSteps {
                 "-UseHockey", "0",
                 "-ZMBackendEnvironmentType", backendType,
                 // https://wearezeta.atlassian.net/browse/ZIOS-5769
-                "-DisableAutoCorrection", "1",
+                "--disable-autocorrection",
                 // https://wearezeta.atlassian.net/browse/ZIOS-5259
                 "-AnalyticsUserDefaultsDisabledKey", "0"
                 // ,"--debug-log-network"
@@ -133,10 +133,9 @@ public class CommonIOSSteps {
                         (entry.getValue() instanceof ClientUser)) {
                     processArgs.addAll(Arrays.asList(
                             // https://github.com/wearezeta/zclient-ios/pull/2152
-                            "--loginemail=" + ((ClientUser) entry.getValue()).getEmail(),
-                            "--loginpassword=" + ((ClientUser) entry.getValue()).getPassword(),
                             // https://wearezeta.atlassian.net/browse/ZIOS-6747
-                            "-SkipLoginAlerts", "1"
+                            "--loginemail=" + ((ClientUser) entry.getValue()).getEmail(),
+                            "--loginpassword=" + ((ClientUser) entry.getValue()).getPassword()
                     ));
                 } else {
                     capabilities.setCapability(entry.getKey(), entry.getValue());
