@@ -648,7 +648,8 @@ Feature: VideoCalling
     Then I see random message in conversation
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
-    And I see broadcast indicator is shown for video
+    When I open conversation with <Contact1>
+    Then I see broadcast indicator is shown for video
     When I maximize video call via button on remote video
     Then I see video call is maximized
     And <Contact1> verifies to have 1 flow
