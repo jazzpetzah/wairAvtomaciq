@@ -456,7 +456,6 @@ Feature: VideoCalling
     When I start a video call
     Then I see my self video view
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
-    And I see video call is maximized
     When I wait for 5 seconds
     Then I see video call is minimized
     And <Contact> verifies to have 1 flow
