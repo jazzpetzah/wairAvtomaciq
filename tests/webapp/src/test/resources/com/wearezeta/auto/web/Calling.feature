@@ -1018,7 +1018,7 @@ Feature: Calling
     And I wait for 65 seconds
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    When I accept the call from conversation <ChatName>
+    When I join call of conversation <ChatName>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And <Contact1>,<Contact2> verify to have 2 flows
