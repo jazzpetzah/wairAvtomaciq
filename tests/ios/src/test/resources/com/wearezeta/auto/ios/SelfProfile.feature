@@ -154,7 +154,7 @@ Feature: Self Profile
       | Name      | Timeout |
       | user1Name | 60      |
 
-  @C1086 @staging
+  @C1086 @regression
   Scenario Outline: Verify adding email to the contact signed up with phone number
     Given I see sign in screen
     Given I enter phone number for <Name>
