@@ -13,4 +13,4 @@ Feature: Emoji
 
     Examples:
       | Name      | Contact   | NormalText | EmojiText | MinHeightDiff |
-      | user1Name | user2Name | Yo👿       | 👿        | 120           |
+      | user1Name | user2Name | Yo👿       | 👿        | 100           |
