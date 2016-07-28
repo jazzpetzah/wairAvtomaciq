@@ -19,7 +19,7 @@
         <package>com.waz.zclient.dev</package>
         <mainActivity>com.waz.zclient.MainActivity</mainActivity>
         <loginActivity>com.waz.zclient.AppEntryActivity</loginActivity>
-        <convoListActivity>com.waz.zclient.LaunchActivity</convoListActivity>
+        <launchActivity>com.waz.zclient.LaunchActivity</launchActivity>
         <driverTimeoutSeconds>7</driverTimeoutSeconds>
         <androidClientInfoPath>/Project/builds_info/classes.dex</androidClientInfoPath>
         <androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
@@ -35,6 +35,7 @@
         <rcNotificationsRecepients>vova@wire.com,nick@wire.com,robin@wire.com</rcNotificationsRecepients>
         <adbPrefix></adbPrefix>
         <showLogcat>true</showLogcat>
+        <hasBackendSelection>true</hasBackendSelection>
     </properties>
 
     <dependencies>

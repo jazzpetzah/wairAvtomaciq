@@ -20,7 +20,7 @@ specialEmail=${specialEmail}
 specialPassword=${specialPassword}
 extendedLoggingLevel=${extendedLoggingLevel}
 #staging, production, edge
-backendType=staging
+backendType=${backendType}
 otrOnly=${otrOnly}
 rcNotificationsRecepients=${rcNotificationsRecepients}
 testrailUser=smoketester+webapp@wire.com

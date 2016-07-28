@@ -16,16 +16,13 @@ public class TakePicturePageSteps {
     }
 
     /**
-     * Tap the corresponding button on Take Picture view,
-     * No option for "Confirm" and "Cancel" because the tablet rotation issue,
-     * Now after you tap on "take photo" or "image gallery" button on camera view, it will skip the confirmation process,
-     * and confirm the image automatically. (Which only impact tablet)
+     * Tap the corresponding button on Take Picture view
      *
      * @param buttonName the button to press
      * @throws Exception
-     * @step. ^I tap "(Take Photo|Image Close|Switch Camera|Sketch Image Paint|Close)" button on Take Picture view$
+     * @step. ^I tap (Take Photo|Change Photo|Confirm|Cancel|Gallery Camera|Image Close|Switch Camera|Sketch Image Paint|Close) button on Take Picture view$
      */
-    @When("^I tap (Take Photo|Change Photo|Gallery Camera|Image Close|Switch Camera|Sketch Image Paint|Close) button on Take Picture view$")
+    @When("^I tap (Take Photo|Change Photo|Confirm|Cancel|Gallery Camera|Image Close|Switch Camera|Sketch Image Paint|Close) button on Take Picture view$")
     public void WhenIPressButton(String buttonName) throws Exception {
         switch (buttonName.toLowerCase()) {
             case "take photo":
@@ -33,6 +30,12 @@ public class TakePicturePageSteps {
                 break;
             case "change photo":
                 getTakePicturePage().tapChangePhotoButton();
+                break;
+            case "confirm":
+                getTakePicturePage().confirm();
+                break;
+            case "cancel":
+                getTakePicturePage().cancel();
                 break;
             case "gallery camera":
                 getTakePicturePage().openGalleryFromCameraView();

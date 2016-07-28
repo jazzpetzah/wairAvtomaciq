@@ -47,6 +47,7 @@ Feature: Offline Mode
     When I hide keyboard
     And I tap Add picture button from cursor toolbar
     And I tap Take Photo button on Take Picture view
+    And I tap Confirm button on Take Picture view
     Then I see a new picture in the conversation view
     And I scroll to the bottom of the conversation view
     And I see unsent indicator next to new picture in the conversation view
