@@ -147,7 +147,7 @@ Feature: Self Profile
     And I tap on personal screen
     And I tap Camera button on personal screen
     And I tap Take Photo button on Camera page
-    And I tap Use Photo button on Picture preview page
+    And I tap Confirm button on Picture preview page
     Then I wait up to <Timeout> seconds until my profile picture is changed
 
     Examples:

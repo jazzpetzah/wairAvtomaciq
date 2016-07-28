@@ -464,14 +464,20 @@ public class ConversationViewPage extends IOSPage {
     public void typeMessage(String message, boolean shouldSend) throws Exception {
         final WebElement convoInput = getElement(nameConversationInput,
                 "Conversation input is not visible after the timeout");
-        if (this.isKeyboardInvisible(1)) {
+        final boolean wasKeyboardInvisible = this.isKeyboardInvisible(2);
+        if (wasKeyboardInvisible) {
             convoInput.click();
             // Wait for keyboard opening animation
             Thread.sleep(KEYBOARD_OPEN_ANIMATION_DURATION);
         }
         if (shouldSend) {
-            // This is faster and allows to avoid autocorrection, but does not update input cursor position properly
-            ((IOSElement) convoInput).setValue(message);
+            if (wasKeyboardInvisible) {
+                // This is faster and allows to avoid autocorrection, but does not update input cursor position properly
+                ((IOSElement) convoInput).setValue(message);
+            } else {
+                // to keep the existing stuff inside the input field
+                convoInput.sendKeys(message);
+            }
             this.tapKeyboardCommitButton();
         } else {
             convoInput.sendKeys(message);
