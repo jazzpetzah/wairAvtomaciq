@@ -1088,9 +1088,10 @@ Feature: Calling
     Then I see the incoming call controls for conversation <Contact3>
     When I ignore the call from conversation <Contact3>
     Then I see the ongoing call controls for conversation <ChatName1>
-    Then I do not see the incoming call controls for conversation <Contact3>
+    And I see join call button for conversation <Contact3>
     When <Contact3> stops calling me
-    And <Contact3> calls me
+    Then I do not see the incoming call controls for conversation <Contact3>
+    When <Contact3> calls me
     Then I see the incoming call controls for conversation <Contact3>
     When I accept the call from conversation <Contact3>
     Then I see another call warning modal
