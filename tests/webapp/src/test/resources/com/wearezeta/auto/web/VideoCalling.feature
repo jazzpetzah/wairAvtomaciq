@@ -694,7 +694,6 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see broadcast indicator is shown for video
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verifies to get video data from me
@@ -704,7 +703,6 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see broadcast indicator is shown for video
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verifies to get video data from me
@@ -714,7 +712,6 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see broadcast indicator is shown for video
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verifies to get video data from me
@@ -725,6 +722,7 @@ Feature: VideoCalling
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I do not see the ongoing call controls for conversation <Contact1>
     And I see the ongoing call controls for conversation <Contact2>
+    And I see broadcast indicator is shown for video
     And <Contact2> verifies to have 1 flow
     And <Contact2> verifies to get audio data from me
     And <Contact2> verifies that all audio flows have greater than 0 bytes
