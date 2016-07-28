@@ -32,11 +32,12 @@ public class TabletLoginPageSteps {
     public void GivenISignInUsingEmail() throws Exception {
         getTabletLoginPage().switchToLogin();
         if (!FastLoginContainer.getInstance().isEnabled()) {
-            final ClientUser self = usrMgr.getSelfUserOrThrowError();
-            getTabletLoginPage().setLogin(self.getEmail());
-            getTabletLoginPage().setPassword(self.getPassword());
-            getTabletLoginPage().clickLoginButton();
+            return;
         }
+        final ClientUser self = usrMgr.getSelfUserOrThrowError();
+        getTabletLoginPage().setLogin(self.getEmail());
+        getTabletLoginPage().setPassword(self.getPassword());
+        getTabletLoginPage().clickLoginButton();
         getTabletLoginPage().waitForLoginToFinish();
         getTabletLoginPage().acceptAlertIfVisible(5);
         getFirstTimeOverlayPage().acceptIfVisible(2);
