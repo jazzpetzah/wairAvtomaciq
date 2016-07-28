@@ -7,7 +7,7 @@ Feature: Connect
     Given User me change accent color to VividRed
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
+    And I am signed in properly
     When I see connection request from one user
     And I open the list of incoming connection requests
     And I see correct color for accept button in connection request from user <Contact>
