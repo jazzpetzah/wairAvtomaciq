@@ -1172,4 +1172,15 @@ public class CommonIOSSteps {
                     pagesCollection.getCommonPage().isKeyboardInvisible());
         }
     }
+
+    /**
+     * Clicks the send button on the keyboard
+     *
+     * @throws Exception
+     * @step. ^I tap (?:Commit|Return|Send|Enter) button on the keyboard$
+     */
+    @When("^I tap (?:Commit|Return|Send|Enter) button on the keyboard$")
+    public void ITapCommitButtonOnKeyboard() throws Exception {
+        pagesCollection.getCommonPage().tapKeyboardCommitButton();
+    }
 }

@@ -762,17 +762,6 @@ public class ConversationViewPageSteps {
     }
 
     /**
-     * Clicks the send button on the keyboard
-     *
-     * @throws Exception
-     * @step. ^I click send button on keyboard
-     */
-    @When("^I click send button on keyboard$")
-    public void iClickSendButtonOnKeyboard() throws Exception {
-        getConversationViewPage().tapKeyboardCommitButton();
-    }
-
-    /**
      * Verify whether shield icon is visible next to convo input field
      *
      * @param shouldNotSee equals to null if the shield should be visible

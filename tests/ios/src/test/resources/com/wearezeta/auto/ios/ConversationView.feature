@@ -102,7 +102,7 @@ Feature: Conversation View
     And I navigate back to conversations list
     And I tap on contact name <Contact>
     And I tap on text input
-    And I press Enter key in Simulator window
+    And I tap Send button on the keyboard
     Then I see 1 default message in the conversation view
 
     Examples:
