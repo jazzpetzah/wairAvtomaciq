@@ -451,18 +451,20 @@ Feature: VideoCalling
     And I see the incoming call controls for conversation <Contact>
     And I see decline call button for conversation <Contact>
     When I ignore the call from conversation <Contact>
-    Then I do not see the call controls for conversation <Contact>
+    And I see join call button for conversation <Contact>
     And I open conversation with <Contact>
     When I start a video call
     Then I see my self video view
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see video call is maximized
+    When I wait for 5 seconds
+    Then I see video call is minimized
     And <Contact> verifies to have 1 flow
     And <Contact> verifies to get audio data from me
     And <Contact> verifies to get video data from me
     And <Contact> verifies that all audio flows have greater than 0 bytes
     And <Contact> verifies that all video flows have greater than 0 bytes
-    When I end the video call
+    When I hang up call with conversation <Contact>
     Then I do not see the call controls for conversation <Contact>
     And I do not see my self video view
 
