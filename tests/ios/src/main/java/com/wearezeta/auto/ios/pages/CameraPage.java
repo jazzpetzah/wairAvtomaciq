@@ -10,9 +10,11 @@ import java.util.concurrent.Future;
 
 public class CameraPage extends IOSPage {
 
-    private static final By xpathCameraRollButton = By.xpath("//UIAButton[@name='cameraLibraryButton' or @name='CameraLibraryButton']");
+    private static final By xpathCameraRollButton =
+            By.xpath("//UIAButton[@name='cameraLibraryButton' or @name='CameraLibraryButton']");
 
-    private static final By xpathTakePhotoButton = By.xpath("//UIAButton[@name='cameraShutterButton' or @name='cameraButton']");
+    private static final By xpathTakePhotoButton =
+            By.xpath("//UIAButton[@name='cameraShutterButton' or @name='cameraButton' or @name='PhotoCapture']");
 
     private static final By nameCloseButton = MobileBy.AccessibilityId("cameraCloseButton");
 
