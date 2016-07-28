@@ -111,7 +111,7 @@ public class VideoCallPage extends WebPage {
     }
 
     public boolean isMinimizeVideoCallButtonNotVisible() throws Exception {
-        WebCommonUtils.hoverOverElement(getDriver(), minimizeVideoCallButton);
+        //WebCommonUtils.hoverOverElement(getDriver(), minimizeVideoCallButton);
         return DriverUtils.waitUntilLocatorDissapears(getDriver(),
                 By.cssSelector(WebAppLocators.VideoCallPage.cssMinimizeVideoCallButton));
     }

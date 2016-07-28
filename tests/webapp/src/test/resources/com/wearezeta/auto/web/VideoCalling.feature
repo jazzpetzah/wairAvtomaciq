@@ -79,7 +79,7 @@ Feature: VideoCalling
     And I see decline call button for conversation <Contact>
     And I see my self video view
     When I ignore the call from conversation <Contact>
-    Then I do not see the call controls for conversation <Contact>
+    Then I see join call button for conversation <Contact>
     And I do not see accept video call button for conversation <Contact>
     And I do not see decline call button for conversation <Contact>
     And I do not see my self video view
@@ -456,9 +456,9 @@ Feature: VideoCalling
     When I start a video call
     Then I see my self video view
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
-    And I see video call is maximized
     When I wait for 5 seconds
     Then I see video call is minimized
+    And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies to have 1 flow
     And <Contact> verifies to get audio data from me
     And <Contact> verifies to get video data from me
@@ -649,7 +649,8 @@ Feature: VideoCalling
     Then I see random message in conversation
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
-    And I see broadcast indicator is shown for video
+    When I open conversation with <Contact1>
+    Then I see broadcast indicator is shown for video
     When I maximize video call via button on remote video
     Then I see video call is maximized
     And <Contact1> verifies to have 1 flow
@@ -694,7 +695,6 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see broadcast indicator is shown for video
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verifies to get video data from me
@@ -704,7 +704,6 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see broadcast indicator is shown for video
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verifies to get video data from me
@@ -714,7 +713,6 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see broadcast indicator is shown for video
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verifies to get video data from me
