@@ -214,39 +214,6 @@ public abstract class IOSPage extends BasePage {
                 String.format("%.2f", y * 1.0 / windowSize.height), "2");
     }
 
-    /**
-     * !!! this method is not able to enter line breaks !!!
-     *
-     * @param dstElement          the destination eit field
-     * @param relativeClickPointX where to click the element before type, 0% <= X <= 100%
-     * @param relativeClickPointY where to click the element before type, 0% <= Y <= 100%
-     * @param str                 string to enter
-     * @throws Exception
-     */
-    public void inputStringFromKeyboard(WebElement dstElement, int relativeClickPointX, int relativeClickPointY,
-                                        String str, boolean shouldCommitInput) throws Exception {
-        final Dimension elSize = dstElement.getSize();
-        final Point elLocation = dstElement.getLocation();
-        final int tapX = elLocation.x + (relativeClickPointX * elSize.width) / 100;
-        final int tapY = elLocation.y + (relativeClickPointY * elSize.height) / 100;
-        if (CommonUtils.getIsSimulatorFromConfig(this.getClass())) {
-            CommonUtils.setStringValueInSystemClipboard(str);
-            // FIXME: Paste menu will not be shown without this
-            IOSSimulatorHelper.selectPasteMenuItem();
-            longClickAtSimulator(tapX, tapY);
-            getElement(nameEditingItemPaste).click();
-            if (shouldCommitInput) {
-                IOSSimulatorHelper.pressEnterKey();
-            }
-        } else {
-            getDriver().tap(1, tapX, tapY, DriverUtils.SINGLE_TAP_DURATION);
-            this.onScreenKeyboard.typeString(str);
-            if (shouldCommitInput) {
-                this.tapKeyboardCommitButton();
-            }
-        }
-    }
-
     public void inputStringFromPasteboard(WebElement dstElement, boolean shouldCommitInput) throws Exception {
         final Dimension elSize = dstElement.getSize();
         final Point elLocation = dstElement.getLocation();
@@ -265,10 +232,6 @@ public abstract class IOSPage extends BasePage {
                 this.tapKeyboardCommitButton();
             }
         }
-    }
-
-    public void inputStringFromKeyboard(WebElement dstElement, String str, boolean shouldCommitInput) throws Exception {
-        inputStringFromKeyboard(dstElement, 50, 50, str, shouldCommitInput);
     }
 
     public boolean isKeyboardVisible() throws Exception {
