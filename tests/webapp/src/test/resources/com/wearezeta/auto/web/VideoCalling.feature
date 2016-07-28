@@ -79,7 +79,7 @@ Feature: VideoCalling
     And I see decline call button for conversation <Contact>
     And I see my self video view
     When I ignore the call from conversation <Contact>
-    Then I do not see the call controls for conversation <Contact>
+    Then I see join call button for conversation <Contact>
     And I do not see accept video call button for conversation <Contact>
     And I do not see decline call button for conversation <Contact>
     And I do not see my self video view
