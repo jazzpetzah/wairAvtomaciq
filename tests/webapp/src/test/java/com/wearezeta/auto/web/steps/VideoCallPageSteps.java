@@ -112,7 +112,18 @@ public class VideoCallPageSteps {
      * @throws Exception
      * @step. ^I maximize video call$
      */
-    @When("^I maximize video call$")
+    @When("^I maximize video call via button on remote video$")
+    public void IMaximizeVideoCallWithRemoteVideoButton() throws Exception {
+        context.getPagesCollection().getPage(VideoCallPage.class).clickMaximizeVideoCallButtonOnRemoteVideo();
+    }
+
+    /**
+     * Maximizes video call
+     *
+     * @throws Exception
+     * @step. ^I maximize video call$
+     */
+    @When("^I maximize video call via titlebar$")
     public void IMaximizeVideoCall() throws Exception {
         context.getPagesCollection().getPage(VideoCallPage.class).clickMaximizeVideoCallButton();
     }
@@ -129,7 +140,7 @@ public class VideoCallPageSteps {
         VideoCallPage videoCallPage = context.getPagesCollection().getPage(VideoCallPage.class);
         if (videoCallSize.equals("minimized")) {
             //Assert.assertTrue("Video is in portrait mode", videoCallPage.isVideoNotInPortrait());
-            Assert.assertTrue("Maximize Video Call button is not visible", videoCallPage.isMaximizeVideoCallButtonVisible());
+            Assert.assertTrue("Minimize Video Call button is visible", videoCallPage.isMinimizeVideoCallButtonNotVisible());
         } else {
             //Assert.assertTrue("Video is not in portrait mode", videoCallPage.isVideoInPortrait());
             Assert.assertTrue("Minimize Video Call button is not visible", videoCallPage.isMinimizeVideoCallButtonVisible());

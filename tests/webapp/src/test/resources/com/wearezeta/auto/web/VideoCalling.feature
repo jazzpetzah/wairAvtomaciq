@@ -451,18 +451,20 @@ Feature: VideoCalling
     And I see the incoming call controls for conversation <Contact>
     And I see decline call button for conversation <Contact>
     When I ignore the call from conversation <Contact>
-    Then I do not see the call controls for conversation <Contact>
+    And I see join call button for conversation <Contact>
     And I open conversation with <Contact>
     When I start a video call
     Then I see my self video view
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     And I see video call is maximized
+    When I wait for 5 seconds
+    Then I see video call is minimized
     And <Contact> verifies to have 1 flow
     And <Contact> verifies to get audio data from me
     And <Contact> verifies to get video data from me
     And <Contact> verifies that all audio flows have greater than 0 bytes
     And <Contact> verifies that all video flows have greater than 0 bytes
-    When I end the video call
+    When I hang up call with conversation <Contact>
     Then I do not see the call controls for conversation <Contact>
     And I do not see my self video view
 
@@ -635,7 +637,7 @@ Feature: VideoCalling
     When I minimize video call
     Then I see video call is minimized
     Then I do not see my self video view
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     When I write random message
     And I send message
     Then I see random message in conversation
@@ -647,8 +649,8 @@ Feature: VideoCalling
     Then I see random message in conversation
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
-    And I see the video button is pulsating
-    When I maximize video call
+    And I see broadcast indicator is shown for video
+    When I maximize video call via button on remote video
     Then I see video call is maximized
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
@@ -684,7 +686,7 @@ Feature: VideoCalling
     And I see video call is maximized
     When I minimize video call
     Then I see video call is minimized
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     When I open conversation with <Contact2>
     And I call
     Then I see another call warning modal
@@ -692,7 +694,7 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verifies to get video data from me
@@ -702,7 +704,7 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verifies to get video data from me
@@ -712,7 +714,7 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verifies to get video data from me
@@ -756,7 +758,7 @@ Feature: VideoCalling
     And I see video call is maximized
     When I minimize video call
     Then I see video call is minimized
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     When I open conversation with <Contact2>
     When I start a video call
     Then I see another call warning modal
@@ -764,7 +766,7 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verifies to get video data from me
@@ -774,7 +776,7 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verifies to get video data from me
@@ -784,7 +786,7 @@ Feature: VideoCalling
     Then I do not see another call warning modal
     And I see video call is minimized
     And I see the ongoing call controls for conversation <Contact1>
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
     And <Contact1> verifies to get video data from me
@@ -804,7 +806,7 @@ Feature: VideoCalling
     Then I see video call is minimized
     And I do not see the ongoing call controls for conversation <Contact1>
     And I see the ongoing call controls for conversation <Contact2>
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
 
     Examples:
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | Timeout |
@@ -837,27 +839,26 @@ Feature: VideoCalling
     And <Contact> verify that all audio flows have greater than 0 bytes
     And <Contact> verify that all video flows have greater than 0 bytes
 #    And <Contact> verifies to not get video data from me
-    Then I see my self video is black
     Then I see my self video is off
     And I see video from other user is not black
     When I click on video button
     And I see video button pressed
     And <Contact> verify that all audio flows have greater than 0 bytes
     And <Contact> verify that all video flows have greater than 0 bytes
-    Then I see my self video is not black
     Then I see my self video is on
+    And I see my self video is not black
     And I see video from other user is not black
     When I minimize video call
-    Then I see the video button is pulsating
+    Then I see broadcast indicator is shown for video
     When I click on video button
     And I see video button unpressed
-    Then I see the video button is not pulsating
+    Then I see broadcast indicator is not shown for video
     When I click on video button
     Then I see video button pressed
-    And I see the video button is pulsating
+    And I see broadcast indicator is shown for video
     When <Contact> switches video off
     Then I see minimized video is black
-    When I maximize video call
+    When I maximize video call via titlebar
     Then I see video from other user is black
     When <Contact> switches video on
     Then I see video from other user is not black

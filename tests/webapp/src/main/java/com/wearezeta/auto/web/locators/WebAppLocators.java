@@ -477,7 +477,9 @@ public final class WebAppLocators {
 
         public static final String cssVideoCallButton = "[data-uie-name='do-video-call']";
 
-        public static final String cssVideoCallButtonPulsating = ".icon-video.button-round-pulsate";
+        public static final String cssBroadcastIndicatorVideo = "[data-uie-name='status-self-video']";
+
+        public static final String cssBroadcastIndicatorScreensharing = "[data-uie-name='status-self-screensharing']";
 
         public static final String cssGIFButton = "[data-uie-name='do-giphy-popover']";
 
@@ -708,7 +710,9 @@ public final class WebAppLocators {
 
         public static final String cssMinimizeVideoCallButton = "[data-uie-name='do-call-controls-video-minimize']";
 
-        public static final String cssMaximizeVideoCallButton = "[data-uie-name='do-call-controls-video-maximize']";
+        public static final String cssMaximizeVideoCallButtonOnRemotevideo = "[data-uie-name='do-call-controls-video-maximize']";
+
+        public static final String cssMaximizeVideoCallButton = "[data-uie-name='do-maximize-call']";
 
         public static final String cssDurationTimer = ".video-timer";
 

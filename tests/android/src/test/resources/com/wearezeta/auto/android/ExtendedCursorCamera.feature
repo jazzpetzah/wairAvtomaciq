@@ -1,7 +1,7 @@
 Feature: Extended Cursor Camera
 
-  @C183865 @C183866 @C183867 @C183869 @staging
-  Scenario Outline:  Gallery Keyboard UI test
+  @C183899 @regression @rc
+  Scenario Outline: Check Gallery Keyboard UI and interaction with buttons
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -153,7 +153,7 @@ Feature: Extended Cursor Camera
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @C183881 @staging
+  @C183881 @regression @rc
   Scenario Outline: I can draw a sketch on picture selected from thumbnail
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -172,7 +172,7 @@ Feature: Extended Cursor Camera
       | Name      | Contact   | NumColors |
       | user1Name | user2Name | 2         |
 
-  @C183882 @staging
+  @C183882 @regression @rc
   Scenario Outline: I can draw a sketch on camera photo (mini camera)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

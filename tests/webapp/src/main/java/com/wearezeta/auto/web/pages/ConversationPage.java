@@ -1108,13 +1108,13 @@ public class ConversationPage extends WebPage {
         return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By.cssSelector(WebAppLocators.ConversationPage.cssSharedLocation));
     }
 
-    public boolean isVideoCallButtonPulsating() throws Exception {
+    public boolean isBroadcastIndicatorVideoShown() throws Exception {
         return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
-                .cssVideoCallButtonPulsating));
+                .cssBroadcastIndicatorVideo));
     }
 
-    public boolean isVideoCallButtonNotPulsating() throws Exception {
+    public boolean isBroadcastIndicatorVideoNotShown() throws Exception {
         return DriverUtils.waitUntilLocatorDissapears(getDriver(), By.cssSelector(WebAppLocators.ConversationPage
-                .cssVideoCallButtonPulsating));
+                .cssBroadcastIndicatorVideo));
     }
 }
