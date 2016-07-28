@@ -457,7 +457,7 @@ Feature: VideoCalling
     Then I see my self video view
     And <Contact> verifies that call status to <Name> is changed to active in <Timeout> seconds
     When I wait for 5 seconds
-    Then I see connected message for <Contact> in conversation
+    Then I see video call is minimized
     And I see the ongoing call controls for conversation <Contact>
     And <Contact> verifies to have 1 flow
     And <Contact> verifies to get audio data from me
