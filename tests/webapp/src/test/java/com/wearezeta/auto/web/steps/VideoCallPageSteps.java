@@ -112,7 +112,18 @@ public class VideoCallPageSteps {
      * @throws Exception
      * @step. ^I maximize video call$
      */
-    @When("^I maximize video call$")
+    @When("^I maximize video call via button on remote video$")
+    public void IMaximizeVideoCallWithRemoteVideoButton() throws Exception {
+        context.getPagesCollection().getPage(VideoCallPage.class).clickMaximizeVideoCallButtonOnRemoteVideo();
+    }
+
+    /**
+     * Maximizes video call
+     *
+     * @throws Exception
+     * @step. ^I maximize video call$
+     */
+    @When("^I maximize video call via titlebar$")
     public void IMaximizeVideoCall() throws Exception {
         context.getPagesCollection().getPage(VideoCallPage.class).clickMaximizeVideoCallButton();
     }

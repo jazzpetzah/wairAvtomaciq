@@ -648,7 +648,7 @@ Feature: VideoCalling
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
     And I see the video button is pulsating
-    When I maximize video call
+    When I maximize video call via button on remote video
     Then I see video call is maximized
     And <Contact1> verifies to have 1 flow
     And <Contact1> verifies to get audio data from me
@@ -837,15 +837,14 @@ Feature: VideoCalling
     And <Contact> verify that all audio flows have greater than 0 bytes
     And <Contact> verify that all video flows have greater than 0 bytes
 #    And <Contact> verifies to not get video data from me
-    Then I see my self video is black
     Then I see my self video is off
     And I see video from other user is not black
     When I click on video button
     And I see video button pressed
     And <Contact> verify that all audio flows have greater than 0 bytes
     And <Contact> verify that all video flows have greater than 0 bytes
-    Then I see my self video is not black
     Then I see my self video is on
+    And I see my self video is not black
     And I see video from other user is not black
     When I minimize video call
     Then I see broadcast indicator is shown for video
@@ -857,7 +856,7 @@ Feature: VideoCalling
     And I see broadcast indicator is shown for video
     When <Contact> switches video off
     Then I see minimized video is black
-    When I maximize video call
+    When I maximize video call via titlebar
     Then I see video from other user is black
     When <Contact> switches video on
     Then I see video from other user is not black
