@@ -27,6 +27,7 @@ Feature: Keyboard Gallery
     And I tap Add Picture button from input tools
     And I tap Camera Roll button on Keyboard Gallery overlay
     And I select the first picture from Camera Roll
+    And I tap Confirm button on Picture preview page
     Then I see 1 photo in the conversation view
 
     Examples:
