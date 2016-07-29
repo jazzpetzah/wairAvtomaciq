@@ -7,8 +7,14 @@ import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import static org.hamcrest.Matchers.*;
 
+import com.wearezeta.auto.common.log.ZetaLogger;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.apache.log4j.Logger;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
@@ -189,5 +195,105 @@ public class CallingSteps {
             assertNotNull("There are no metrics available for this call \n" + call, call.getMetrics());
             assertTrue("Call failed: \n" + call + "\n" + call.getMetrics(), call.getMetrics().isSuccess());
         }
+    }
+    private static final Logger LOG = ZetaLogger.getLog(CallingSteps.class
+            .getName());
+
+    /**
+     * Executes consecutive calls without logging out etc.
+     *
+     * @step. ^I call (\\d+) times for (\\d+) minutes with (.*)$
+     *
+     * @param callDurationMinutes
+     * @param times number of consecutive calls
+     * @param callees participants which will wait for a call
+     * @throws java.lang.Throwable
+     */
+    @Then("^I call (\\d+) times for (\\d+) minutes with (.*)$")
+    public void ICallXTimes(int times, int callDurationMinutes, String callees)
+            throws Throwable {
+        final int flowWaitTime = 3;
+        final List<String> calleeList = splitAliases(callees);
+        final ConversationViewPageSteps convSteps = new ConversationViewPageSteps();
+        final CallIncomingPageSteps callIncomingPageSteps = new CallIncomingPageSteps();
+        final CallOngoingAudioPageSteps callOngoingPageSteps = new CallOngoingAudioPageSteps();
+        final Map<Integer, Throwable> failures = new HashMap<>();
+        for (int i = 0; i < times; i++) {
+            LOG.info("\n\nSTARTING CALL " + i);
+            try {
+                for (String callee : calleeList) {
+                    UserXAcceptsNextIncomingCallAutomatically(callee, null);
+                }
+                LOG.info("All instances are waiting");
+                try {
+                    convSteps.ITapTopToolbarButton();
+                    for (String callee : calleeList) {
+                        UserXVerifesCallStatusToUserY(callee, "active", 60);
+                    }
+                    Thread.sleep(flowWaitTime * 1000);
+                    int totalFlowChecks = callDurationMinutes * 4;
+                    Map<String, Flow> flows = new HashMap<>();
+                    LOG.info(totalFlowChecks + " checks");
+                    for (int j = totalFlowChecks; j > 0; j--) {
+                        LOG.info("checking flows   " + j);
+                        for (String callee : calleeList) {
+                            UserXVerifesHavingXFlows(callee);
+                        }
+                        LOG.info("All instances are active");
+                        callOngoingPageSteps.ISeeOngoingCall(null);
+                        long flowCheckInterval = (callDurationMinutes * 60 * 1000)
+                                / totalFlowChecks;
+                        LOG.info("Waiting for " + flowCheckInterval + "ms ...");
+                        Thread.sleep(flowCheckInterval);
+                        LOG.info("!");
+                    }
+
+                    LOG.info("All instances are active");
+                    callPageSteps.ISeeCallControlsForConversation(null, null, callees);
+                    LOG.info("Callingbar is visible");
+                    callPageSteps.IClickEndCallButton(callees);
+                    LOG.info("Terminated call");
+                    callPageSteps.ISeeCallControlsForConversation("not", null, callees);
+                    LOG.info("Calling bar is not visible anymore");
+                    LOG.info("CALL " + i + " SUCCESSFUL");
+                } catch (Throwable e) {
+                    LOG.info("CALL " + i + " FAILED");
+                    failures.put(i, e);
+                    try {
+                        callPageSteps.IClickEndCallButton(callees);
+                        callPageSteps.ISeeCallControlsForConversation("not", null, callees);
+                    } catch (Throwable ex) {
+                        LOG.error("Cannot stop call " + i + " " + ex);
+                    }
+                }
+                commonCallingSteps.stopIncomingCall(calleeList);
+                LOG.info("All instances are stopped");
+            } catch (Throwable e) {
+                LOG.error("Can not stop waiting call " + i + " " + e);
+                try {
+                    callPageSteps.IClickEndCallButton(callees);
+                    callPageSteps.ISeeCallControlsForConversation("not", null, callees);
+                } catch (Throwable ex) {
+                    LOG.error("Can not stop call " + i + " " + ex);
+                }
+            }
+            LOG.info("Waiting end...");
+            Thread.sleep(10000);
+            LOG.info("!");
+        }
+
+        LOG.info(failures.size() + " failures happened during " + times
+                + " calls");
+        failures.forEach((Integer i, Throwable t) -> {
+            LOG.error(i + ": " + t.getMessage());
+        });
+
+        for (Map.Entry<Integer, Throwable> entrySet : failures.entrySet()) {
+            // will just throw the first exception to indicate failed calls in
+            // test results
+            throw entrySet.getValue();
+        }
+        LOG.info(failures.size() + " failures happened during " + times
+                + " calls");
     }
 }
