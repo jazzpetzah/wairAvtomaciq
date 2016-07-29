@@ -137,7 +137,7 @@ Feature: Conversation View
     And I tap on contact name <Contact2>
     And I tap on contact name <Contact1>
     And I tap on text input
-    And I press Enter key in Simulator window
+    And I tap Send button on the keyboard
     Then I see 1 default message in the conversation view
 
     Examples:
