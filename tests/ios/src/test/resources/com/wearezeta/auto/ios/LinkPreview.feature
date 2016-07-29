@@ -96,8 +96,8 @@ Feature: Link Preview
     Then I see link preview container in the conversation view
 
     Examples:
-      | Name      | Contact   | Link                | Link1                | Link2                   | Link3               | Link4               | Device  |
-      | user1Name | user2Name | http://facebook.com | https://facebook.com | http://www.facebook.com | Http://facebook.com | HTTP://FACEBOOK.COM | Device1 |
+      | Name      | Contact   | Link                | Link1                | Link2                   | Link3               | Link4               |
+      | user1Name | user2Name | http://facebook.com | https://facebook.com | http://www.facebook.com | Http://facebook.com | HTTP://FACEBOOK.COM |
 
   @C167038 @regression @fastLogin
   Scenario Outline: Verify copying link preview
