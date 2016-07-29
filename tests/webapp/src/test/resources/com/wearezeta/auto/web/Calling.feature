@@ -900,17 +900,19 @@ Feature: Calling
     When <Contact1> calls <ChatName>
     And <Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>,<Contact10> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    And I see the incoming call controls for conversation <ChatName>
-    When I accept the call from conversation <ChatName>
+# waiting for join call controls
+    And I wait for 10 seconds
+    And I see the join call controls for conversation <ChatName>
+    When I join call of conversation <ChatName>
     And I wait for 1 seconds
     Then I see full call warning modal
     And I close the full call warning modal
-    When I accept the call from conversation <ChatName>
+    When I join call of conversation <ChatName>
     And I wait for 1 seconds
     Then I see full call warning modal
     And I click on "Ok" button in full call warning modal
     When <Contact1> stops calling <ChatName>
-    And I accept the call from conversation <ChatName>
+    When I join call of conversation <ChatName>
     Then I see the ongoing call controls for conversation <ChatName>
 
     Examples:
